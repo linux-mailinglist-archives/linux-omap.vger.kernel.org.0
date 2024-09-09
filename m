@@ -1,88 +1,92 @@
-Return-Path: <linux-omap+bounces-2157-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2158-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 465AF971CE7
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Sep 2024 16:40:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3358A971DAF
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Sep 2024 17:13:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA05A283DED
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Sep 2024 14:40:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D47CD2846A0
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Sep 2024 15:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84DC01BAEF0;
-	Mon,  9 Sep 2024 14:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48EBB1CD23;
+	Mon,  9 Sep 2024 15:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="rLIW0/Jk"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="PwYoDTkf"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B631BAECA
-	for <linux-omap@vger.kernel.org>; Mon,  9 Sep 2024 14:40:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80B61C683
+	for <linux-omap@vger.kernel.org>; Mon,  9 Sep 2024 15:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725892850; cv=none; b=Ru2NIfxbaM3+ObULNvl3dQoraB9EIrb8deUOYDRkWQPm+WOgyamf6tlUEIXRbuFPCSMupf2K0S1EUcdJgUibzFlXKCpj26EKAXAmgGWzgkqHU3T6T8LWV8sY5Na/TRHMFYWZszXw9QIt5agFpxBI/irg7MFODAfDBXRXfurPtqk=
+	t=1725894771; cv=none; b=CMlaqpd0cR4BQgCVvABny2yr+PFtSSw0KqmAqmamZQO0+yZwb+PlnyoFYn70w4xBxlMGQa9g3JriEZNrcGDLdbu+kuRz8Orm9/lSIVhYvGH0zONXKdgpsjuhyqFVF7/wQZry+MKewdJBVcJ7U/wFH8vhZQY8TJBQxkP/albmhwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725892850; c=relaxed/simple;
-	bh=j6oxQzX8ktpqjrs6WGYHwHeH+LPGWcQ0aJKKbbyaSq0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YJ+5l7ki9QjNF1dX7lIUa/lTrRAvRAkPw/ati3+u9+kRXBFSWZbkyNoBR2E2b6XZYGxN464n1aAVkERMok7iVnVWZhEpRzEyZgGSlJlJg0hXdc259rRewV/01+UsSU4BKiinLQH2ajd616QJBlIM6Tn2qhN3ERpw9jkxsZfCV1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=rLIW0/Jk; arc=none smtp.client-ip=209.85.221.50
+	s=arc-20240116; t=1725894771; c=relaxed/simple;
+	bh=rBiW+3k+a1x1D2A5lwtHk7OSzZuOaBPwVcIRASRnLWY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=U5R1eU6Aw1f+LKnLgXtjvzITlLpVJd/bP+fwFM/cuqhalw4P52rtEgCGpkSQDnwV9kboSS77BkRmM1r76l4Nt7+L2doZG56Xg4sRg3tHtOm9drjXaH3a6k6mV0nfsQbh3JJiMJ6ecdKob0C6Almpn8BuqPblnaXbw0/y3XYZy2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=PwYoDTkf; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-374c326c638so3327097f8f.2
-        for <linux-omap@vger.kernel.org>; Mon, 09 Sep 2024 07:40:42 -0700 (PDT)
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3770320574aso2727218f8f.2
+        for <linux-omap@vger.kernel.org>; Mon, 09 Sep 2024 08:12:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725892841; x=1726497641; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725894765; x=1726499565; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=82X6+XFTi+Q/yv+UThdKkxI3SwQWoYIK4L72wu4gwQ4=;
-        b=rLIW0/JkmE8BdnzyTBoVN6bg2LAW6oaQk4zVn/kq3axV1x9rxEau3U5XYOmFDE5jUS
-         Urktmoe1K7xwoJuy3KjVE8b0IqSKcFcT6zxxHaQCgXSdNt/2svJTlyAVBCN+RjSsM+bD
-         fCghTgUXQNSvUJyvmWck4DFlsi3U4fVBug6uSU8G15hT4LpdAyrfKGOS4HgScnJLNcYa
-         oAwTwDfuGVDZVsSNY1BYHHkjMh0gccxD9M1z2PfFNKz2vVgsstKQTh3jU+UsZjjp4Jgr
-         VUygkd4oYUlTfE/AOaZRRJuP0CcJDn5IPHF2h03y8aeyuyR6wvng242ICqE7POH6iKn+
-         +UZw==
+        bh=Sgkqs1A/DqOd+LNi6PkmNKStV4y6ssrPBnrKxQJYrqU=;
+        b=PwYoDTkf5dmcZWyYjvjhQY0icb25hb/PbDx6o+Gt6pTYSng5b2GFdB99JLZfne3VT+
+         1wWxixp65WVnYU9gdCKETwAooa09AA8C1piJn8KbjLUviD8VhUrx0wJAUpfjaXJtouyO
+         1fyw+kkNdfzHCCyyVCS9m2Uy2xpGe4ld5QuEOmGbnySQaRKavNAw/DEi9inGF36NUgp9
+         5THCt6N45vvtDYjwCa8XYWLU/AIfyALA4EcE5CCZl4kBXVxrxzX6KzUyvACra2gJDKid
+         WUVuyQZ/kGciZQxm+JsPJ+3z5SZIaSNQeCYscXh4vThquMXymTuzPzwMbg52fXBR7NHx
+         ELAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725892841; x=1726497641;
+        d=1e100.net; s=20230601; t=1725894765; x=1726499565;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=82X6+XFTi+Q/yv+UThdKkxI3SwQWoYIK4L72wu4gwQ4=;
-        b=bil/RANtKIa6QY3sUuQlFXhOIL3YonRcX5aeHow4vudQN8KMzKgoJ7/7aMA4wmcCfs
-         bs9Ybr7v+N+c0yuW+8RTguPl+HLsgMaH+owtQs2edbOp0R4PaSISwk5g26NHNuozC7vV
-         tcAfUvCvinFkw03lXYj1lL7XOaSChUxAkseUf6pAOVMUhbm/tZRM7RcMi/KSktF6l1Fs
-         hh/sPwyKnajrtR2bqY9jV4y4cfLxwx6/keFTfsyhSWU4CBjK4Z1DUPceuEBtP89YCGZa
-         jlcV6doT9kL2kG0L93PW+tK/0Pz2GBjSOJYWrRC6AwdtGnn/OMCLE989V6Oo93adxrba
-         bJaw==
-X-Forwarded-Encrypted: i=1; AJvYcCXQXTyQ7wXWCZ6zRQ88ZV8WYh16BHqjzzU6mZBwakmihnb/nqAMNF7fnmHvtkeiFD4ox0eKvMnnSObq@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2CBbyGvjO+43QHfW9hWCKvu6pfIPdgXyIS3BSpDzl12dt84Uv
-	XQP0TtTWuTnB0cxN0f8TD7WefdaZ+0wfGrJliZD8ZqfyJqZ9/znDnqJgHXImOLY=
-X-Google-Smtp-Source: AGHT+IG/tidUOTx8WgWrffe1bCeYC36Mg+9mbyUzqrOK7dTn6rhdzj9E2aCuBZbB0dNbZQ5pqfa2gw==
-X-Received: by 2002:a5d:4109:0:b0:371:9395:9c2d with SMTP id ffacd0b85a97d-378896c797cmr7683757f8f.55.1725892840595;
-        Mon, 09 Sep 2024 07:40:40 -0700 (PDT)
+        bh=Sgkqs1A/DqOd+LNi6PkmNKStV4y6ssrPBnrKxQJYrqU=;
+        b=TOrWb97alblG15O3omGaMTf572IvsGmnahuPLVuNJQPf1sP/oQ6H7kFACPOTcPN09a
+         azmIwR/Ush/X9JrQLMg0WFk03uSF6jIM6YE9luzkaQWDL6mpzsL5VGXmQsP2wkSwCmOQ
+         CkWZrtfBRnB8SxdnyFh+9AK/Z579ijtuKEP4Qt3Ouc1PUR4InSzAq9i2P+Cp6/huDOCI
+         D9qMZHmXmN4AJBSi1LrPlYma22TLLpW5URSrM1LSCZI+ClqEanu3bWax3VrOtofpp1DF
+         Kkj7g1t+fWvIRzvpN7n1PRCgWa1Y9CZwlKxSArL0lfY1j8RgMgOqcWILl6O60ug10GCg
+         sb0A==
+X-Forwarded-Encrypted: i=1; AJvYcCXDQ84TB1wmN5LEMZ6aC2vxXqf9Q14BLNVmi7s3k/t4IeUJ64U5QdmuK6FJxjil0HXPaGnUEN314kqa@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0WwzuqCQRRhCwZ9eX6B5R28V3X55tpWfmzIqU/qZA19t+xs5U
+	13xhdDHzPJJRYeDbCAjy41RGhzwQAv3ICw66KaA0LL/bTvMBU8BDV6heALMvRiQ=
+X-Google-Smtp-Source: AGHT+IHJTw/xKgEpMgu1MGbGfdtG7mXHCy2bRWEfK1at3MWjli3167F6xq+bAVrnFnz6pX3wfGN6+Q==
+X-Received: by 2002:adf:fac4:0:b0:374:c287:2af9 with SMTP id ffacd0b85a97d-3788967a59dmr6799776f8f.46.1725894764248;
+        Mon, 09 Sep 2024 08:12:44 -0700 (PDT)
 Received: from localhost (p200300f65f01db004d6a46a6454a1385.dip0.t-ipconnect.de. [2003:f6:5f01:db00:4d6a:46a6:454a:1385])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37895675b8bsm6222193f8f.54.2024.09.09.07.40.39
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378956e8674sm6309178f8f.115.2024.09.09.08.12.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Sep 2024 07:40:39 -0700 (PDT)
+        Mon, 09 Sep 2024 08:12:43 -0700 (PDT)
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Cc: linux-clk@vger.kernel.org,
-	linux-rpi-kernel@lists.infradead.org,
+To: Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Cc: linux-sound@vger.kernel.org,
+	asahi@lists.linux.dev,
+	alsa-devel@alsa-project.org,
 	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	arm-scmi@vger.kernel.org,
+	patches@opensource.cirrus.com,
+	linux-arm-msm@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
 	imx@lists.linux.dev,
 	linux-mediatek@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
+	linux-amlogic@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	sound-open-firmware@alsa-project.org,
 	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev,
 	linux-tegra@vger.kernel.org,
 	linux-omap@vger.kernel.org
-Subject: [PATCH] clk: Switch back to struct platform_driver::remove()
-Date: Mon,  9 Sep 2024 16:40:25 +0200
-Message-ID: <20240909144026.870565-2-u.kleine-koenig@baylibre.com>
+Subject: [PATCH] ASoC: Switch back to struct platform_driver::remove()
+Date: Mon,  9 Sep 2024 17:12:30 +0200
+Message-ID: <20240909151230.909818-2-u.kleine-koenig@baylibre.com>
 X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -91,7 +95,7 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=123187; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=j6oxQzX8ktpqjrs6WGYHwHeH+LPGWcQ0aJKKbbyaSq0=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBm3wjaZ/+DEsQEvQx4q8kHC/1zWdSGPkbk9b4jK Kp3JbyF4jiJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZt8I2gAKCRCPgPtYfRL+ TtLwB/9ic6jqVLfrrWc5iow4w1mItKnR4Cd+k8F7Fy8hL+CiNr9i9yztkTVy3G0j/LF7YwI8TI3 x3H3cMs5ZrugShDZq48Vwt79SUDRnfUgKl2CIAOos1gZJ/umAsJbUsNkdDr1uA3vVoo0Njz9FSI +QhyQaWyBpP4HP0cTQaWJwNxfZ7SSAqnIyo/oXOvN61TXR59i6BIi0fDC/qKe1sbaF+oii6ydTE iAr+NrYcxHT41XerWLp1Ra3hGVFDS9ScD29fsfOz8E8nzg3By6OqYqSiXBlIeQHiTLM2TfEwo37 i48uv4BxbvJx3Mzr5QW8wlsQ69c09Gm7oxv4v+Y2QPEvdk2K
+X-Developer-Signature: v=1; a=openpgp-sha256; l=101320; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=rBiW+3k+a1x1D2A5lwtHk7OSzZuOaBPwVcIRASRnLWY=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBm3xBeDLBqHMpYXzY7REYdaOrZ4HhGfGYVlZGKe /9I4AHVmEaJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZt8QXgAKCRCPgPtYfRL+ TlmCB/oCkRGu204c17XxYIzSHp5vRrOoRMIE5dDRpxj9PxqINJGZLDxs6vRCIxYRf3m0dfJAW4s J3nY98MVcktFA1vhoGwj5xczjCvm2NfE9bjoM+mOjiEl2PMyM3A8y+4izTyxOn357yDK+cCSfIy KUxWty1vTv7+ucFY6y4xM1+tfGdhdaQ8LgNP6UDzCwTVxvXB/GwBr7koQuUSQhh84B25yTSSwkx 82+YlvMOb/wNdvgOvwK3NDm1+V/dXM6QFKS/B3AxSdbNIhGDRgKqKdKt09Z4CYO1cHu3zsMi9Cs jw093eDBOCpHqbX09tM6M1b0pLSbH0JkeUijBJN3eIOuVt8P
 X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
@@ -99,2841 +103,2604 @@ After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
 return void") .remove() is (again) the right callback to implement for
 platform drivers.
 
-Convert all clk drivers to use .remove(), with the eventual goal to drop
-struct platform_driver::remove_new(). As .remove() and .remove_new() have
-the same prototypes, conversion is done by just changing the structure
-member name in the driver initializer.
+Convert all drivers below sound/soc to use .remove(), with the eventual
+goal to drop struct platform_driver::remove_new(). As .remove() and
+.remove_new() have the same prototypes, conversion is done by just
+changing the structure member name in the driver initializer.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 ---
 Hello,
 
-I was lazy and created a single patch for all of clk. Please tell me if
-I should split per vendor (or per-driver). Given that touches so many
-drivers, I also stripped the individual maintainers and just kept the
-mailing lists. I hope this doesn't prevent people to give feedback, but
-otherwise the Cc: list gets Huge.
+this is a single patch for all of sound/soc. If you prefer, I can split
+it. If so, just tell how (per subdir? per driver? somehow else?) Also I trimmed
+the list of recipents compared to what scripts/get_maintainer.sh emits. I
+dropped all the maintainers for the individual drivers and only kept the list.
+Otherwise the set of recipents is too huge.
 
 Best regards
 Uwe
 
- drivers/clk/axs10x/i2s_pll_clock.c              | 2 +-
- drivers/clk/bcm/clk-bcm2711-dvp.c               | 2 +-
- drivers/clk/bcm/clk-bcm63xx-gate.c              | 2 +-
- drivers/clk/bcm/clk-raspberrypi.c               | 2 +-
- drivers/clk/clk-fixed-factor.c                  | 2 +-
- drivers/clk/clk-fixed-mmio.c                    | 2 +-
- drivers/clk/clk-fixed-rate.c                    | 2 +-
- drivers/clk/clk-palmas.c                        | 2 +-
- drivers/clk/clk-pwm.c                           | 2 +-
- drivers/clk/clk-s2mps11.c                       | 2 +-
- drivers/clk/clk-scpi.c                          | 2 +-
- drivers/clk/hisilicon/clk-hi3519.c              | 2 +-
- drivers/clk/hisilicon/clk-hi3559a.c             | 2 +-
- drivers/clk/hisilicon/crg-hi3516cv300.c         | 2 +-
- drivers/clk/hisilicon/crg-hi3798cv200.c         | 2 +-
- drivers/clk/imx/clk-imx8-acm.c                  | 2 +-
- drivers/clk/imx/clk-imx8mp-audiomix.c           | 2 +-
- drivers/clk/keystone/sci-clk.c                  | 2 +-
- drivers/clk/mediatek/clk-mt2701-aud.c           | 2 +-
- drivers/clk/mediatek/clk-mt2701-bdp.c           | 2 +-
- drivers/clk/mediatek/clk-mt2701-eth.c           | 2 +-
- drivers/clk/mediatek/clk-mt2701-g3d.c           | 2 +-
- drivers/clk/mediatek/clk-mt2701-hif.c           | 2 +-
- drivers/clk/mediatek/clk-mt2701-img.c           | 2 +-
- drivers/clk/mediatek/clk-mt2701-mm.c            | 2 +-
- drivers/clk/mediatek/clk-mt2701-vdec.c          | 2 +-
- drivers/clk/mediatek/clk-mt2712-apmixedsys.c    | 2 +-
- drivers/clk/mediatek/clk-mt2712-bdp.c           | 2 +-
- drivers/clk/mediatek/clk-mt2712-img.c           | 2 +-
- drivers/clk/mediatek/clk-mt2712-jpgdec.c        | 2 +-
- drivers/clk/mediatek/clk-mt2712-mfg.c           | 2 +-
- drivers/clk/mediatek/clk-mt2712-mm.c            | 2 +-
- drivers/clk/mediatek/clk-mt2712-vdec.c          | 2 +-
- drivers/clk/mediatek/clk-mt2712-venc.c          | 2 +-
- drivers/clk/mediatek/clk-mt2712.c               | 2 +-
- drivers/clk/mediatek/clk-mt6765-audio.c         | 2 +-
- drivers/clk/mediatek/clk-mt6765-cam.c           | 2 +-
- drivers/clk/mediatek/clk-mt6765-img.c           | 2 +-
- drivers/clk/mediatek/clk-mt6765-mipi0a.c        | 2 +-
- drivers/clk/mediatek/clk-mt6765-mm.c            | 2 +-
- drivers/clk/mediatek/clk-mt6765-vcodec.c        | 2 +-
- drivers/clk/mediatek/clk-mt6779-aud.c           | 2 +-
- drivers/clk/mediatek/clk-mt6779-cam.c           | 2 +-
- drivers/clk/mediatek/clk-mt6779-img.c           | 2 +-
- drivers/clk/mediatek/clk-mt6779-ipe.c           | 2 +-
- drivers/clk/mediatek/clk-mt6779-mfg.c           | 2 +-
- drivers/clk/mediatek/clk-mt6779-mm.c            | 2 +-
- drivers/clk/mediatek/clk-mt6779-vdec.c          | 2 +-
- drivers/clk/mediatek/clk-mt6779-venc.c          | 2 +-
- drivers/clk/mediatek/clk-mt6779.c               | 2 +-
- drivers/clk/mediatek/clk-mt6795-apmixedsys.c    | 2 +-
- drivers/clk/mediatek/clk-mt6795-infracfg.c      | 2 +-
- drivers/clk/mediatek/clk-mt6795-mfg.c           | 2 +-
- drivers/clk/mediatek/clk-mt6795-mm.c            | 2 +-
- drivers/clk/mediatek/clk-mt6795-pericfg.c       | 2 +-
- drivers/clk/mediatek/clk-mt6795-topckgen.c      | 2 +-
- drivers/clk/mediatek/clk-mt6795-vdecsys.c       | 2 +-
- drivers/clk/mediatek/clk-mt6795-vencsys.c       | 2 +-
- drivers/clk/mediatek/clk-mt6797-img.c           | 2 +-
- drivers/clk/mediatek/clk-mt6797-mm.c            | 2 +-
- drivers/clk/mediatek/clk-mt6797-vdec.c          | 2 +-
- drivers/clk/mediatek/clk-mt6797-venc.c          | 2 +-
- drivers/clk/mediatek/clk-mt7622-apmixedsys.c    | 2 +-
- drivers/clk/mediatek/clk-mt7622-aud.c           | 2 +-
- drivers/clk/mediatek/clk-mt7622-eth.c           | 2 +-
- drivers/clk/mediatek/clk-mt7622-hif.c           | 2 +-
- drivers/clk/mediatek/clk-mt7622-infracfg.c      | 2 +-
- drivers/clk/mediatek/clk-mt7622.c               | 2 +-
- drivers/clk/mediatek/clk-mt7629-hif.c           | 2 +-
- drivers/clk/mediatek/clk-mt7981-eth.c           | 2 +-
- drivers/clk/mediatek/clk-mt7981-infracfg.c      | 2 +-
- drivers/clk/mediatek/clk-mt7981-topckgen.c      | 2 +-
- drivers/clk/mediatek/clk-mt7986-eth.c           | 2 +-
- drivers/clk/mediatek/clk-mt7986-infracfg.c      | 2 +-
- drivers/clk/mediatek/clk-mt7986-topckgen.c      | 2 +-
- drivers/clk/mediatek/clk-mt7988-eth.c           | 2 +-
- drivers/clk/mediatek/clk-mt7988-infracfg.c      | 2 +-
- drivers/clk/mediatek/clk-mt7988-topckgen.c      | 2 +-
- drivers/clk/mediatek/clk-mt7988-xfipll.c        | 2 +-
- drivers/clk/mediatek/clk-mt8135-apmixedsys.c    | 2 +-
- drivers/clk/mediatek/clk-mt8135.c               | 2 +-
- drivers/clk/mediatek/clk-mt8167-aud.c           | 2 +-
- drivers/clk/mediatek/clk-mt8167-img.c           | 2 +-
- drivers/clk/mediatek/clk-mt8167-mfgcfg.c        | 2 +-
- drivers/clk/mediatek/clk-mt8167-mm.c            | 2 +-
- drivers/clk/mediatek/clk-mt8167-vdec.c          | 2 +-
- drivers/clk/mediatek/clk-mt8167.c               | 2 +-
- drivers/clk/mediatek/clk-mt8173-apmixedsys.c    | 2 +-
- drivers/clk/mediatek/clk-mt8173-img.c           | 2 +-
- drivers/clk/mediatek/clk-mt8173-infracfg.c      | 2 +-
- drivers/clk/mediatek/clk-mt8173-mm.c            | 2 +-
- drivers/clk/mediatek/clk-mt8173-pericfg.c       | 2 +-
- drivers/clk/mediatek/clk-mt8173-topckgen.c      | 2 +-
- drivers/clk/mediatek/clk-mt8173-vdecsys.c       | 2 +-
- drivers/clk/mediatek/clk-mt8173-vencsys.c       | 2 +-
- drivers/clk/mediatek/clk-mt8183-audio.c         | 2 +-
- drivers/clk/mediatek/clk-mt8183-cam.c           | 2 +-
- drivers/clk/mediatek/clk-mt8183-img.c           | 2 +-
- drivers/clk/mediatek/clk-mt8183-ipu0.c          | 2 +-
- drivers/clk/mediatek/clk-mt8183-ipu1.c          | 2 +-
- drivers/clk/mediatek/clk-mt8183-ipu_adl.c       | 2 +-
- drivers/clk/mediatek/clk-mt8183-ipu_conn.c      | 2 +-
- drivers/clk/mediatek/clk-mt8183-mfgcfg.c        | 2 +-
- drivers/clk/mediatek/clk-mt8183-mm.c            | 2 +-
- drivers/clk/mediatek/clk-mt8183-vdec.c          | 2 +-
- drivers/clk/mediatek/clk-mt8183-venc.c          | 2 +-
- drivers/clk/mediatek/clk-mt8183.c               | 2 +-
- drivers/clk/mediatek/clk-mt8186-apmixedsys.c    | 2 +-
- drivers/clk/mediatek/clk-mt8186-cam.c           | 2 +-
- drivers/clk/mediatek/clk-mt8186-img.c           | 2 +-
- drivers/clk/mediatek/clk-mt8186-imp_iic_wrap.c  | 2 +-
- drivers/clk/mediatek/clk-mt8186-infra_ao.c      | 2 +-
- drivers/clk/mediatek/clk-mt8186-ipe.c           | 2 +-
- drivers/clk/mediatek/clk-mt8186-mcu.c           | 2 +-
- drivers/clk/mediatek/clk-mt8186-mdp.c           | 2 +-
- drivers/clk/mediatek/clk-mt8186-mfg.c           | 2 +-
- drivers/clk/mediatek/clk-mt8186-mm.c            | 2 +-
- drivers/clk/mediatek/clk-mt8186-topckgen.c      | 2 +-
- drivers/clk/mediatek/clk-mt8186-vdec.c          | 2 +-
- drivers/clk/mediatek/clk-mt8186-venc.c          | 2 +-
- drivers/clk/mediatek/clk-mt8186-wpe.c           | 2 +-
- drivers/clk/mediatek/clk-mt8188-adsp_audio26m.c | 2 +-
- drivers/clk/mediatek/clk-mt8188-apmixedsys.c    | 2 +-
- drivers/clk/mediatek/clk-mt8188-cam.c           | 2 +-
- drivers/clk/mediatek/clk-mt8188-ccu.c           | 2 +-
- drivers/clk/mediatek/clk-mt8188-img.c           | 2 +-
- drivers/clk/mediatek/clk-mt8188-imp_iic_wrap.c  | 2 +-
- drivers/clk/mediatek/clk-mt8188-infra_ao.c      | 2 +-
- drivers/clk/mediatek/clk-mt8188-ipe.c           | 2 +-
- drivers/clk/mediatek/clk-mt8188-mfg.c           | 2 +-
- drivers/clk/mediatek/clk-mt8188-peri_ao.c       | 2 +-
- drivers/clk/mediatek/clk-mt8188-topckgen.c      | 2 +-
- drivers/clk/mediatek/clk-mt8188-vdec.c          | 2 +-
- drivers/clk/mediatek/clk-mt8188-vdo0.c          | 2 +-
- drivers/clk/mediatek/clk-mt8188-vdo1.c          | 2 +-
- drivers/clk/mediatek/clk-mt8188-venc.c          | 2 +-
- drivers/clk/mediatek/clk-mt8188-vpp0.c          | 2 +-
- drivers/clk/mediatek/clk-mt8188-vpp1.c          | 2 +-
- drivers/clk/mediatek/clk-mt8188-wpe.c           | 2 +-
- drivers/clk/mediatek/clk-mt8192-apmixedsys.c    | 2 +-
- drivers/clk/mediatek/clk-mt8192-aud.c           | 2 +-
- drivers/clk/mediatek/clk-mt8192-cam.c           | 2 +-
- drivers/clk/mediatek/clk-mt8192-img.c           | 2 +-
- drivers/clk/mediatek/clk-mt8192-imp_iic_wrap.c  | 2 +-
- drivers/clk/mediatek/clk-mt8192-ipe.c           | 2 +-
- drivers/clk/mediatek/clk-mt8192-mdp.c           | 2 +-
- drivers/clk/mediatek/clk-mt8192-mfg.c           | 2 +-
- drivers/clk/mediatek/clk-mt8192-mm.c            | 2 +-
- drivers/clk/mediatek/clk-mt8192-msdc.c          | 2 +-
- drivers/clk/mediatek/clk-mt8192-scp_adsp.c      | 2 +-
- drivers/clk/mediatek/clk-mt8192-vdec.c          | 2 +-
- drivers/clk/mediatek/clk-mt8192-venc.c          | 2 +-
- drivers/clk/mediatek/clk-mt8192.c               | 2 +-
- drivers/clk/mediatek/clk-mt8195-apmixedsys.c    | 2 +-
- drivers/clk/mediatek/clk-mt8195-apusys_pll.c    | 2 +-
- drivers/clk/mediatek/clk-mt8195-cam.c           | 2 +-
- drivers/clk/mediatek/clk-mt8195-ccu.c           | 2 +-
- drivers/clk/mediatek/clk-mt8195-img.c           | 2 +-
- drivers/clk/mediatek/clk-mt8195-imp_iic_wrap.c  | 2 +-
- drivers/clk/mediatek/clk-mt8195-infra_ao.c      | 2 +-
- drivers/clk/mediatek/clk-mt8195-ipe.c           | 2 +-
- drivers/clk/mediatek/clk-mt8195-mfg.c           | 2 +-
- drivers/clk/mediatek/clk-mt8195-peri_ao.c       | 2 +-
- drivers/clk/mediatek/clk-mt8195-scp_adsp.c      | 2 +-
- drivers/clk/mediatek/clk-mt8195-topckgen.c      | 2 +-
- drivers/clk/mediatek/clk-mt8195-vdec.c          | 2 +-
- drivers/clk/mediatek/clk-mt8195-vdo0.c          | 2 +-
- drivers/clk/mediatek/clk-mt8195-vdo1.c          | 2 +-
- drivers/clk/mediatek/clk-mt8195-venc.c          | 2 +-
- drivers/clk/mediatek/clk-mt8195-vpp0.c          | 2 +-
- drivers/clk/mediatek/clk-mt8195-vpp1.c          | 2 +-
- drivers/clk/mediatek/clk-mt8195-wpe.c           | 2 +-
- drivers/clk/mediatek/clk-mt8365-apu.c           | 2 +-
- drivers/clk/mediatek/clk-mt8365-cam.c           | 2 +-
- drivers/clk/mediatek/clk-mt8365-mfg.c           | 2 +-
- drivers/clk/mediatek/clk-mt8365-mm.c            | 2 +-
- drivers/clk/mediatek/clk-mt8365-vdec.c          | 2 +-
- drivers/clk/mediatek/clk-mt8365-venc.c          | 2 +-
- drivers/clk/mediatek/clk-mt8365.c               | 2 +-
- drivers/clk/mediatek/clk-mt8516-aud.c           | 2 +-
- drivers/clk/mediatek/clk-mt8516.c               | 2 +-
- drivers/clk/mmp/clk-audio.c                     | 2 +-
- drivers/clk/mvebu/armada-37xx-periph.c          | 2 +-
- drivers/clk/mvebu/armada-37xx-tbg.c             | 2 +-
- drivers/clk/mvebu/armada-37xx-xtal.c            | 2 +-
- drivers/clk/qcom/apcs-msm8916.c                 | 2 +-
- drivers/clk/qcom/apcs-sdx55.c                   | 2 +-
- drivers/clk/qcom/clk-cbf-8996.c                 | 2 +-
- drivers/clk/qcom/gcc-msm8960.c                  | 2 +-
- drivers/clk/renesas/rcar-usb2-clock-sel.c       | 2 +-
- drivers/clk/samsung/clk-exynos-audss.c          | 2 +-
- drivers/clk/samsung/clk-exynos-clkout.c         | 2 +-
- drivers/clk/starfive/clk-starfive-jh7110-isp.c  | 2 +-
- drivers/clk/starfive/clk-starfive-jh7110-vout.c | 2 +-
- drivers/clk/stm32/clk-stm32mp1.c                | 2 +-
- drivers/clk/tegra/clk-tegra124-dfll-fcpu.c      | 2 +-
- drivers/clk/ti/adpll.c                          | 2 +-
- drivers/clk/x86/clk-fch.c                       | 2 +-
- drivers/clk/x86/clk-pmc-atom.c                  | 2 +-
- drivers/clk/xilinx/clk-xlnx-clock-wizard.c      | 2 +-
- drivers/clk/xilinx/xlnx_vcu.c                   | 2 +-
- 201 files changed, 201 insertions(+), 201 deletions(-)
+ sound/soc/adi/axi-i2s.c                             | 2 +-
+ sound/soc/adi/axi-spdif.c                           | 2 +-
+ sound/soc/amd/acp-pcm-dma.c                         | 2 +-
+ sound/soc/amd/acp/acp-rembrandt.c                   | 2 +-
+ sound/soc/amd/acp/acp-renoir.c                      | 2 +-
+ sound/soc/amd/acp/acp-sdw-sof-mach.c                | 2 +-
+ sound/soc/amd/acp/acp63.c                           | 2 +-
+ sound/soc/amd/acp/acp70.c                           | 2 +-
+ sound/soc/amd/ps/ps-pdm-dma.c                       | 2 +-
+ sound/soc/amd/ps/ps-sdw-dma.c                       | 2 +-
+ sound/soc/amd/raven/acp3x-pcm-dma.c                 | 2 +-
+ sound/soc/amd/renoir/acp3x-pdm-dma.c                | 2 +-
+ sound/soc/amd/vangogh/acp5x-pcm-dma.c               | 2 +-
+ sound/soc/amd/yc/acp6x-pdm-dma.c                    | 2 +-
+ sound/soc/apple/mca.c                               | 2 +-
+ sound/soc/atmel/atmel-i2s.c                         | 2 +-
+ sound/soc/atmel/atmel_wm8904.c                      | 2 +-
+ sound/soc/atmel/mchp-i2s-mcc.c                      | 2 +-
+ sound/soc/atmel/mchp-pdmc.c                         | 2 +-
+ sound/soc/atmel/mchp-spdifrx.c                      | 2 +-
+ sound/soc/atmel/mchp-spdiftx.c                      | 2 +-
+ sound/soc/atmel/sam9g20_wm8731.c                    | 2 +-
+ sound/soc/atmel/sam9x5_wm8731.c                     | 2 +-
+ sound/soc/atmel/tse850-pcm5142.c                    | 2 +-
+ sound/soc/au1x/ac97c.c                              | 2 +-
+ sound/soc/au1x/i2sc.c                               | 2 +-
+ sound/soc/au1x/psc-ac97.c                           | 2 +-
+ sound/soc/au1x/psc-i2s.c                            | 2 +-
+ sound/soc/bcm/bcm63xx-i2s-whistler.c                | 2 +-
+ sound/soc/bcm/cygnus-ssp.c                          | 2 +-
+ sound/soc/cirrus/edb93xx.c                          | 2 +-
+ sound/soc/cirrus/ep93xx-i2s.c                       | 2 +-
+ sound/soc/codecs/cs42l43.c                          | 2 +-
+ sound/soc/codecs/cs47l15.c                          | 2 +-
+ sound/soc/codecs/cs47l24.c                          | 2 +-
+ sound/soc/codecs/cs47l35.c                          | 2 +-
+ sound/soc/codecs/cs47l85.c                          | 2 +-
+ sound/soc/codecs/cs47l90.c                          | 2 +-
+ sound/soc/codecs/cs47l92.c                          | 2 +-
+ sound/soc/codecs/inno_rk3036.c                      | 2 +-
+ sound/soc/codecs/lpass-rx-macro.c                   | 2 +-
+ sound/soc/codecs/lpass-tx-macro.c                   | 2 +-
+ sound/soc/codecs/lpass-va-macro.c                   | 2 +-
+ sound/soc/codecs/lpass-wsa-macro.c                  | 2 +-
+ sound/soc/codecs/msm8916-wcd-digital.c              | 2 +-
+ sound/soc/codecs/rk817_codec.c                      | 2 +-
+ sound/soc/codecs/wcd937x.c                          | 2 +-
+ sound/soc/codecs/wcd938x.c                          | 2 +-
+ sound/soc/codecs/wcd939x.c                          | 2 +-
+ sound/soc/codecs/wm5102.c                           | 2 +-
+ sound/soc/codecs/wm5110.c                           | 2 +-
+ sound/soc/codecs/wm8994.c                           | 2 +-
+ sound/soc/codecs/wm8997.c                           | 2 +-
+ sound/soc/codecs/wm8998.c                           | 2 +-
+ sound/soc/dwc/dwc-i2s.c                             | 2 +-
+ sound/soc/fsl/fsl_asrc.c                            | 2 +-
+ sound/soc/fsl/fsl_aud2htx.c                         | 2 +-
+ sound/soc/fsl/fsl_audmix.c                          | 2 +-
+ sound/soc/fsl/fsl_dma.c                             | 2 +-
+ sound/soc/fsl/fsl_easrc.c                           | 2 +-
+ sound/soc/fsl/fsl_esai.c                            | 2 +-
+ sound/soc/fsl/fsl_micfil.c                          | 2 +-
+ sound/soc/fsl/fsl_mqs.c                             | 2 +-
+ sound/soc/fsl/fsl_rpmsg.c                           | 2 +-
+ sound/soc/fsl/fsl_sai.c                             | 2 +-
+ sound/soc/fsl/fsl_spdif.c                           | 2 +-
+ sound/soc/fsl/fsl_ssi.c                             | 2 +-
+ sound/soc/fsl/fsl_xcvr.c                            | 2 +-
+ sound/soc/fsl/imx-audmux.c                          | 2 +-
+ sound/soc/fsl/imx-pcm-rpmsg.c                       | 2 +-
+ sound/soc/fsl/imx-sgtl5000.c                        | 2 +-
+ sound/soc/fsl/mpc5200_psc_ac97.c                    | 2 +-
+ sound/soc/fsl/mpc5200_psc_i2s.c                     | 2 +-
+ sound/soc/fsl/p1022_ds.c                            | 2 +-
+ sound/soc/fsl/p1022_rdk.c                           | 2 +-
+ sound/soc/fsl/pcm030-audio-fabric.c                 | 2 +-
+ sound/soc/generic/audio-graph-card.c                | 2 +-
+ sound/soc/generic/audio-graph-card2-custom-sample.c | 2 +-
+ sound/soc/generic/audio-graph-card2.c               | 2 +-
+ sound/soc/generic/simple-card.c                     | 2 +-
+ sound/soc/generic/test-component.c                  | 2 +-
+ sound/soc/img/img-i2s-in.c                          | 2 +-
+ sound/soc/img/img-i2s-out.c                         | 2 +-
+ sound/soc/img/img-parallel-out.c                    | 2 +-
+ sound/soc/img/img-spdif-in.c                        | 2 +-
+ sound/soc/img/img-spdif-out.c                       | 2 +-
+ sound/soc/img/pistachio-internal-dac.c              | 2 +-
+ sound/soc/intel/atom/sst-mfld-platform-pcm.c        | 2 +-
+ sound/soc/intel/atom/sst/sst_acpi.c                 | 2 +-
+ sound/soc/intel/boards/bytcht_es8316.c              | 2 +-
+ sound/soc/intel/boards/bytcr_rt5640.c               | 2 +-
+ sound/soc/intel/boards/bytcr_rt5651.c               | 2 +-
+ sound/soc/intel/boards/bytcr_wm5102.c               | 2 +-
+ sound/soc/intel/boards/cht_bsw_max98090_ti.c        | 2 +-
+ sound/soc/intel/boards/sof_es8336.c                 | 2 +-
+ sound/soc/intel/boards/sof_pcm512x.c                | 2 +-
+ sound/soc/intel/boards/sof_sdw.c                    | 2 +-
+ sound/soc/intel/boards/sof_wm8804.c                 | 2 +-
+ sound/soc/intel/catpt/device.c                      | 2 +-
+ sound/soc/kirkwood/kirkwood-i2s.c                   | 2 +-
+ sound/soc/mediatek/common/mtk-btcvsd.c              | 2 +-
+ sound/soc/mediatek/mt2701/mt2701-afe-pcm.c          | 2 +-
+ sound/soc/mediatek/mt6797/mt6797-afe-pcm.c          | 2 +-
+ sound/soc/mediatek/mt7986/mt7986-afe-pcm.c          | 2 +-
+ sound/soc/mediatek/mt8173/mt8173-afe-pcm.c          | 2 +-
+ sound/soc/mediatek/mt8183/mt8183-afe-pcm.c          | 2 +-
+ sound/soc/mediatek/mt8192/mt8192-afe-pcm.c          | 2 +-
+ sound/soc/mediatek/mt8195/mt8195-afe-pcm.c          | 2 +-
+ sound/soc/mediatek/mt8365/mt8365-afe-pcm.c          | 2 +-
+ sound/soc/meson/aiu.c                               | 2 +-
+ sound/soc/meson/axg-card.c                          | 2 +-
+ sound/soc/meson/gx-card.c                           | 2 +-
+ sound/soc/mxs/mxs-sgtl5000.c                        | 2 +-
+ sound/soc/pxa/mmp-sspa.c                            | 2 +-
+ sound/soc/pxa/pxa2xx-ac97.c                         | 2 +-
+ sound/soc/qcom/lpass-apq8016.c                      | 2 +-
+ sound/soc/qcom/lpass-ipq806x.c                      | 2 +-
+ sound/soc/qcom/lpass-sc7180.c                       | 2 +-
+ sound/soc/qcom/lpass-sc7280.c                       | 2 +-
+ sound/soc/qcom/qdsp6/q6routing.c                    | 2 +-
+ sound/soc/rockchip/rockchip_i2s.c                   | 2 +-
+ sound/soc/rockchip/rockchip_i2s_tdm.c               | 2 +-
+ sound/soc/rockchip/rockchip_pdm.c                   | 2 +-
+ sound/soc/rockchip/rockchip_rt5645.c                | 2 +-
+ sound/soc/rockchip/rockchip_spdif.c                 | 2 +-
+ sound/soc/samsung/arndale.c                         | 2 +-
+ sound/soc/samsung/i2s.c                             | 2 +-
+ sound/soc/samsung/odroid.c                          | 2 +-
+ sound/soc/samsung/pcm.c                             | 2 +-
+ sound/soc/samsung/snow.c                            | 2 +-
+ sound/soc/samsung/spdif.c                           | 2 +-
+ sound/soc/sh/fsi.c                                  | 2 +-
+ sound/soc/sh/hac.c                                  | 2 +-
+ sound/soc/sh/rcar/core.c                            | 2 +-
+ sound/soc/sh/rz-ssi.c                               | 2 +-
+ sound/soc/sh/siu_dai.c                              | 2 +-
+ sound/soc/sof/imx/imx8.c                            | 2 +-
+ sound/soc/sof/imx/imx8m.c                           | 2 +-
+ sound/soc/sof/imx/imx8ulp.c                         | 2 +-
+ sound/soc/sof/intel/bdw.c                           | 2 +-
+ sound/soc/sof/intel/byt.c                           | 2 +-
+ sound/soc/sof/mediatek/mt8186/mt8186.c              | 2 +-
+ sound/soc/sof/mediatek/mt8195/mt8195.c              | 2 +-
+ sound/soc/sprd/sprd-mcdt.c                          | 2 +-
+ sound/soc/starfive/jh7110_pwmdac.c                  | 2 +-
+ sound/soc/starfive/jh7110_tdm.c                     | 2 +-
+ sound/soc/stm/stm32_adfsdm.c                        | 2 +-
+ sound/soc/stm/stm32_i2s.c                           | 2 +-
+ sound/soc/stm/stm32_sai_sub.c                       | 2 +-
+ sound/soc/stm/stm32_spdifrx.c                       | 2 +-
+ sound/soc/sunxi/sun4i-codec.c                       | 2 +-
+ sound/soc/sunxi/sun4i-i2s.c                         | 2 +-
+ sound/soc/sunxi/sun4i-spdif.c                       | 2 +-
+ sound/soc/sunxi/sun50i-dmic.c                       | 2 +-
+ sound/soc/sunxi/sun8i-codec.c                       | 2 +-
+ sound/soc/tegra/tegra186_asrc.c                     | 2 +-
+ sound/soc/tegra/tegra186_dspk.c                     | 2 +-
+ sound/soc/tegra/tegra20_ac97.c                      | 2 +-
+ sound/soc/tegra/tegra20_i2s.c                       | 2 +-
+ sound/soc/tegra/tegra210_admaif.c                   | 2 +-
+ sound/soc/tegra/tegra210_adx.c                      | 2 +-
+ sound/soc/tegra/tegra210_ahub.c                     | 2 +-
+ sound/soc/tegra/tegra210_amx.c                      | 2 +-
+ sound/soc/tegra/tegra210_dmic.c                     | 2 +-
+ sound/soc/tegra/tegra210_i2s.c                      | 2 +-
+ sound/soc/tegra/tegra210_mixer.c                    | 2 +-
+ sound/soc/tegra/tegra210_mvc.c                      | 2 +-
+ sound/soc/tegra/tegra210_ope.c                      | 2 +-
+ sound/soc/tegra/tegra210_sfc.c                      | 2 +-
+ sound/soc/tegra/tegra30_ahub.c                      | 2 +-
+ sound/soc/tegra/tegra30_i2s.c                       | 2 +-
+ sound/soc/tegra/tegra_audio_graph_card.c            | 2 +-
+ sound/soc/ti/ams-delta.c                            | 2 +-
+ sound/soc/ti/davinci-i2s.c                          | 2 +-
+ sound/soc/ti/davinci-mcasp.c                        | 2 +-
+ sound/soc/ti/omap-mcbsp.c                           | 2 +-
+ sound/soc/uniphier/aio-ld11.c                       | 2 +-
+ sound/soc/uniphier/aio-pxs2.c                       | 2 +-
+ sound/soc/uniphier/evea.c                           | 2 +-
+ sound/soc/ux500/mop500.c                            | 2 +-
+ sound/soc/ux500/ux500_msp_dai.c                     | 2 +-
+ sound/soc/xilinx/xlnx_formatter_pcm.c               | 2 +-
+ sound/soc/xilinx/xlnx_spdif.c                       | 2 +-
+ sound/soc/xtensa/xtfpga-i2s.c                       | 2 +-
+ 184 files changed, 184 insertions(+), 184 deletions(-)
 
-diff --git a/drivers/clk/axs10x/i2s_pll_clock.c b/drivers/clk/axs10x/i2s_pll_clock.c
-index 2334e6c334cf..9667ce898428 100644
---- a/drivers/clk/axs10x/i2s_pll_clock.c
-+++ b/drivers/clk/axs10x/i2s_pll_clock.c
-@@ -215,7 +215,7 @@ static struct platform_driver i2s_pll_clk_driver = {
- 		.of_match_table = i2s_pll_clk_id,
+diff --git a/sound/soc/adi/axi-i2s.c b/sound/soc/adi/axi-i2s.c
+index 4107eddc9ca8..41f89384f8fd 100644
+--- a/sound/soc/adi/axi-i2s.c
++++ b/sound/soc/adi/axi-i2s.c
+@@ -293,7 +293,7 @@ static struct platform_driver axi_i2s_driver = {
+ 		.of_match_table = axi_i2s_of_match,
  	},
- 	.probe = i2s_pll_clk_probe,
--	.remove_new = i2s_pll_clk_remove,
-+	.remove = i2s_pll_clk_remove,
+ 	.probe = axi_i2s_probe,
+-	.remove_new = axi_i2s_dev_remove,
++	.remove = axi_i2s_dev_remove,
  };
- module_platform_driver(i2s_pll_clk_driver);
+ module_platform_driver(axi_i2s_driver);
  
-diff --git a/drivers/clk/bcm/clk-bcm2711-dvp.c b/drivers/clk/bcm/clk-bcm2711-dvp.c
-index 3cb235df9d37..e79720e85685 100644
---- a/drivers/clk/bcm/clk-bcm2711-dvp.c
-+++ b/drivers/clk/bcm/clk-bcm2711-dvp.c
-@@ -110,7 +110,7 @@ MODULE_DEVICE_TABLE(of, clk_dvp_dt_ids);
+diff --git a/sound/soc/adi/axi-spdif.c b/sound/soc/adi/axi-spdif.c
+index 10545bd99704..5581134201a3 100644
+--- a/sound/soc/adi/axi-spdif.c
++++ b/sound/soc/adi/axi-spdif.c
+@@ -258,7 +258,7 @@ static struct platform_driver axi_spdif_driver = {
+ 		.of_match_table = axi_spdif_of_match,
+ 	},
+ 	.probe = axi_spdif_probe,
+-	.remove_new = axi_spdif_dev_remove,
++	.remove = axi_spdif_dev_remove,
+ };
+ module_platform_driver(axi_spdif_driver);
  
- static struct platform_driver clk_dvp_driver = {
- 	.probe	= clk_dvp_probe,
--	.remove_new = clk_dvp_remove,
-+	.remove = clk_dvp_remove,
+diff --git a/sound/soc/amd/acp-pcm-dma.c b/sound/soc/amd/acp-pcm-dma.c
+index b857e2676fe8..897dde630022 100644
+--- a/sound/soc/amd/acp-pcm-dma.c
++++ b/sound/soc/amd/acp-pcm-dma.c
+@@ -1426,7 +1426,7 @@ static const struct dev_pm_ops acp_pm_ops = {
+ 
+ static struct platform_driver acp_dma_driver = {
+ 	.probe = acp_audio_probe,
+-	.remove_new = acp_audio_remove,
++	.remove = acp_audio_remove,
+ 	.driver = {
+ 		.name = DRV_NAME,
+ 		.pm = &acp_pm_ops,
+diff --git a/sound/soc/amd/acp/acp-rembrandt.c b/sound/soc/amd/acp/acp-rembrandt.c
+index e19981c7d65a..396434a45eea 100644
+--- a/sound/soc/amd/acp/acp-rembrandt.c
++++ b/sound/soc/amd/acp/acp-rembrandt.c
+@@ -295,7 +295,7 @@ static const struct dev_pm_ops rmb_dma_pm_ops = {
+ 
+ static struct platform_driver rembrandt_driver = {
+ 	.probe = rembrandt_audio_probe,
+-	.remove_new = rembrandt_audio_remove,
++	.remove = rembrandt_audio_remove,
+ 	.driver = {
+ 		.name = "acp_asoc_rembrandt",
+ 		.pm = &rmb_dma_pm_ops,
+diff --git a/sound/soc/amd/acp/acp-renoir.c b/sound/soc/amd/acp/acp-renoir.c
+index db835ed7c208..5e3f730aa6bf 100644
+--- a/sound/soc/amd/acp/acp-renoir.c
++++ b/sound/soc/amd/acp/acp-renoir.c
+@@ -244,7 +244,7 @@ static const struct dev_pm_ops rn_dma_pm_ops = {
+ 
+ static struct platform_driver renoir_driver = {
+ 	.probe = renoir_audio_probe,
+-	.remove_new = renoir_audio_remove,
++	.remove = renoir_audio_remove,
+ 	.driver = {
+ 		.name = "acp_asoc_renoir",
+ 		.pm = &rn_dma_pm_ops,
+diff --git a/sound/soc/amd/acp/acp-sdw-sof-mach.c b/sound/soc/amd/acp/acp-sdw-sof-mach.c
+index 08f368b3bbc8..b1cd173f607d 100644
+--- a/sound/soc/amd/acp/acp-sdw-sof-mach.c
++++ b/sound/soc/amd/acp/acp-sdw-sof-mach.c
+@@ -729,7 +729,7 @@ static struct platform_driver sof_sdw_driver = {
+ 		.pm = &snd_soc_pm_ops,
+ 	},
+ 	.probe = mc_probe,
+-	.remove_new = mc_remove,
++	.remove = mc_remove,
+ 	.id_table = mc_id_table,
+ };
+ 
+diff --git a/sound/soc/amd/acp/acp63.c b/sound/soc/amd/acp/acp63.c
+index f340920b3289..f325c374f228 100644
+--- a/sound/soc/amd/acp/acp63.c
++++ b/sound/soc/amd/acp/acp63.c
+@@ -304,7 +304,7 @@ static const struct dev_pm_ops acp63_dma_pm_ops = {
+ 
+ static struct platform_driver acp63_driver = {
+ 	.probe = acp63_audio_probe,
+-	.remove_new = acp63_audio_remove,
++	.remove = acp63_audio_remove,
+ 	.driver = {
+ 		.name = "acp_asoc_acp63",
+ 		.pm = &acp63_dma_pm_ops,
+diff --git a/sound/soc/amd/acp/acp70.c b/sound/soc/amd/acp/acp70.c
+index 1b0b59a22924..68d2590e1a4e 100644
+--- a/sound/soc/amd/acp/acp70.c
++++ b/sound/soc/amd/acp/acp70.c
+@@ -278,7 +278,7 @@ static const struct dev_pm_ops acp70_dma_pm_ops = {
+ 
+ static struct platform_driver acp70_driver = {
+ 	.probe = acp_acp70_audio_probe,
+-	.remove_new = acp_acp70_audio_remove,
++	.remove = acp_acp70_audio_remove,
+ 	.driver = {
+ 		.name = "acp_asoc_acp70",
+ 		.pm = &acp70_dma_pm_ops,
+diff --git a/sound/soc/amd/ps/ps-pdm-dma.c b/sound/soc/amd/ps/ps-pdm-dma.c
+index 7bbacbab1095..318fc260f293 100644
+--- a/sound/soc/amd/ps/ps-pdm-dma.c
++++ b/sound/soc/amd/ps/ps-pdm-dma.c
+@@ -448,7 +448,7 @@ static const struct dev_pm_ops acp63_pdm_pm_ops = {
+ 
+ static struct platform_driver acp63_pdm_dma_driver = {
+ 	.probe = acp63_pdm_audio_probe,
+-	.remove_new = acp63_pdm_audio_remove,
++	.remove = acp63_pdm_audio_remove,
+ 	.driver = {
+ 		.name = "acp_ps_pdm_dma",
+ 		.pm = &acp63_pdm_pm_ops,
+diff --git a/sound/soc/amd/ps/ps-sdw-dma.c b/sound/soc/amd/ps/ps-sdw-dma.c
+index 2f630753278d..3b4b9c6b3171 100644
+--- a/sound/soc/amd/ps/ps-sdw-dma.c
++++ b/sound/soc/amd/ps/ps-sdw-dma.c
+@@ -551,7 +551,7 @@ static const struct dev_pm_ops acp63_pm_ops = {
+ 
+ static struct platform_driver acp63_sdw_dma_driver = {
+ 	.probe = acp63_sdw_platform_probe,
+-	.remove_new = acp63_sdw_platform_remove,
++	.remove = acp63_sdw_platform_remove,
+ 	.driver = {
+ 		.name = "amd_ps_sdw_dma",
+ 		.pm = &acp63_pm_ops,
+diff --git a/sound/soc/amd/raven/acp3x-pcm-dma.c b/sound/soc/amd/raven/acp3x-pcm-dma.c
+index 3a50558f6751..bb9ed52d744d 100644
+--- a/sound/soc/amd/raven/acp3x-pcm-dma.c
++++ b/sound/soc/amd/raven/acp3x-pcm-dma.c
+@@ -509,7 +509,7 @@ static const struct dev_pm_ops acp3x_pm_ops = {
+ 
+ static struct platform_driver acp3x_dma_driver = {
+ 	.probe = acp3x_audio_probe,
+-	.remove_new = acp3x_audio_remove,
++	.remove = acp3x_audio_remove,
+ 	.driver = {
+ 		.name = "acp3x_rv_i2s_dma",
+ 		.pm = &acp3x_pm_ops,
+diff --git a/sound/soc/amd/renoir/acp3x-pdm-dma.c b/sound/soc/amd/renoir/acp3x-pdm-dma.c
+index c3b47e9bd239..95ac8c680037 100644
+--- a/sound/soc/amd/renoir/acp3x-pdm-dma.c
++++ b/sound/soc/amd/renoir/acp3x-pdm-dma.c
+@@ -489,7 +489,7 @@ static const struct dev_pm_ops acp_pdm_pm_ops = {
+ 
+ static struct platform_driver acp_pdm_dma_driver = {
+ 	.probe = acp_pdm_audio_probe,
+-	.remove_new = acp_pdm_audio_remove,
++	.remove = acp_pdm_audio_remove,
+ 	.driver = {
+ 		.name = "acp_rn_pdm_dma",
+ 		.pm = &acp_pdm_pm_ops,
+diff --git a/sound/soc/amd/vangogh/acp5x-pcm-dma.c b/sound/soc/amd/vangogh/acp5x-pcm-dma.c
+index 491b16e52a72..d5965f2b09bc 100644
+--- a/sound/soc/amd/vangogh/acp5x-pcm-dma.c
++++ b/sound/soc/amd/vangogh/acp5x-pcm-dma.c
+@@ -499,7 +499,7 @@ static const struct dev_pm_ops acp5x_pm_ops = {
+ 
+ static struct platform_driver acp5x_dma_driver = {
+ 	.probe = acp5x_audio_probe,
+-	.remove_new = acp5x_audio_remove,
++	.remove = acp5x_audio_remove,
+ 	.driver = {
+ 		.name = "acp5x_i2s_dma",
+ 		.pm = &acp5x_pm_ops,
+diff --git a/sound/soc/amd/yc/acp6x-pdm-dma.c b/sound/soc/amd/yc/acp6x-pdm-dma.c
+index 72c4591e451b..3eb3e82efb10 100644
+--- a/sound/soc/amd/yc/acp6x-pdm-dma.c
++++ b/sound/soc/amd/yc/acp6x-pdm-dma.c
+@@ -440,7 +440,7 @@ static const struct dev_pm_ops acp6x_pdm_pm_ops = {
+ 
+ static struct platform_driver acp6x_pdm_dma_driver = {
+ 	.probe = acp6x_pdm_audio_probe,
+-	.remove_new = acp6x_pdm_audio_remove,
++	.remove = acp6x_pdm_audio_remove,
+ 	.driver = {
+ 		.name = "acp_yc_pdm_dma",
+ 		.pm = &acp6x_pdm_pm_ops,
+diff --git a/sound/soc/apple/mca.c b/sound/soc/apple/mca.c
+index 3780aca71076..c9e7d40c47cc 100644
+--- a/sound/soc/apple/mca.c
++++ b/sound/soc/apple/mca.c
+@@ -1179,7 +1179,7 @@ static struct platform_driver apple_mca_driver = {
+ 		.of_match_table = apple_mca_of_match,
+ 	},
+ 	.probe = apple_mca_probe,
+-	.remove_new = apple_mca_remove,
++	.remove = apple_mca_remove,
+ };
+ module_platform_driver(apple_mca_driver);
+ 
+diff --git a/sound/soc/atmel/atmel-i2s.c b/sound/soc/atmel/atmel-i2s.c
+index 6c20c643f321..762199faf872 100644
+--- a/sound/soc/atmel/atmel-i2s.c
++++ b/sound/soc/atmel/atmel-i2s.c
+@@ -733,7 +733,7 @@ static struct platform_driver atmel_i2s_driver = {
+ 		.of_match_table	= atmel_i2s_dt_ids,
+ 	},
+ 	.probe		= atmel_i2s_probe,
+-	.remove_new	= atmel_i2s_remove,
++	.remove		= atmel_i2s_remove,
+ };
+ module_platform_driver(atmel_i2s_driver);
+ 
+diff --git a/sound/soc/atmel/atmel_wm8904.c b/sound/soc/atmel/atmel_wm8904.c
+index b7f16ea0cdfc..0f4021c6c588 100644
+--- a/sound/soc/atmel/atmel_wm8904.c
++++ b/sound/soc/atmel/atmel_wm8904.c
+@@ -187,7 +187,7 @@ static struct platform_driver atmel_asoc_wm8904_driver = {
+ 		.pm		= &snd_soc_pm_ops,
+ 	},
+ 	.probe = atmel_asoc_wm8904_probe,
+-	.remove_new = atmel_asoc_wm8904_remove,
++	.remove = atmel_asoc_wm8904_remove,
+ };
+ 
+ module_platform_driver(atmel_asoc_wm8904_driver);
+diff --git a/sound/soc/atmel/mchp-i2s-mcc.c b/sound/soc/atmel/mchp-i2s-mcc.c
+index 35a56b266b8d..fbcb0070c188 100644
+--- a/sound/soc/atmel/mchp-i2s-mcc.c
++++ b/sound/soc/atmel/mchp-i2s-mcc.c
+@@ -1129,7 +1129,7 @@ static struct platform_driver mchp_i2s_mcc_driver = {
+ 		.of_match_table	= mchp_i2s_mcc_dt_ids,
+ 	},
+ 	.probe		= mchp_i2s_mcc_probe,
+-	.remove_new	= mchp_i2s_mcc_remove,
++	.remove		= mchp_i2s_mcc_remove,
+ };
+ module_platform_driver(mchp_i2s_mcc_driver);
+ 
+diff --git a/sound/soc/atmel/mchp-pdmc.c b/sound/soc/atmel/mchp-pdmc.c
+index dcc4e14b3dde..260074018da9 100644
+--- a/sound/soc/atmel/mchp-pdmc.c
++++ b/sound/soc/atmel/mchp-pdmc.c
+@@ -1153,7 +1153,7 @@ static struct platform_driver mchp_pdmc_driver = {
+ 		.pm		= pm_ptr(&mchp_pdmc_pm_ops),
+ 	},
+ 	.probe	= mchp_pdmc_probe,
+-	.remove_new = mchp_pdmc_remove,
++	.remove = mchp_pdmc_remove,
+ };
+ module_platform_driver(mchp_pdmc_driver);
+ 
+diff --git a/sound/soc/atmel/mchp-spdifrx.c b/sound/soc/atmel/mchp-spdifrx.c
+index 33ce5e54482b..b2507a1491b7 100644
+--- a/sound/soc/atmel/mchp-spdifrx.c
++++ b/sound/soc/atmel/mchp-spdifrx.c
+@@ -1194,7 +1194,7 @@ static void mchp_spdifrx_remove(struct platform_device *pdev)
+ 
+ static struct platform_driver mchp_spdifrx_driver = {
+ 	.probe	= mchp_spdifrx_probe,
+-	.remove_new = mchp_spdifrx_remove,
++	.remove = mchp_spdifrx_remove,
  	.driver	= {
- 		.name		= "brcm2711-dvp",
- 		.of_match_table	= clk_dvp_dt_ids,
-diff --git a/drivers/clk/bcm/clk-bcm63xx-gate.c b/drivers/clk/bcm/clk-bcm63xx-gate.c
-index 36c7b302e396..d6d857474436 100644
---- a/drivers/clk/bcm/clk-bcm63xx-gate.c
-+++ b/drivers/clk/bcm/clk-bcm63xx-gate.c
-@@ -567,7 +567,7 @@ static const struct of_device_id clk_bcm63xx_dt_ids[] = {
+ 		.name	= "mchp_spdifrx",
+ 		.of_match_table = mchp_spdifrx_dt_ids,
+diff --git a/sound/soc/atmel/mchp-spdiftx.c b/sound/soc/atmel/mchp-spdiftx.c
+index a201a96fa690..4c60ea652896 100644
+--- a/sound/soc/atmel/mchp-spdiftx.c
++++ b/sound/soc/atmel/mchp-spdiftx.c
+@@ -888,7 +888,7 @@ static void mchp_spdiftx_remove(struct platform_device *pdev)
  
- static struct platform_driver clk_bcm63xx = {
- 	.probe = clk_bcm63xx_probe,
--	.remove_new = clk_bcm63xx_remove,
-+	.remove = clk_bcm63xx_remove,
- 	.driver = {
- 		.name = "bcm63xx-clock",
- 		.of_match_table = clk_bcm63xx_dt_ids,
-diff --git a/drivers/clk/bcm/clk-raspberrypi.c b/drivers/clk/bcm/clk-raspberrypi.c
-index 4d411408e4af..a18a8768feb4 100644
---- a/drivers/clk/bcm/clk-raspberrypi.c
-+++ b/drivers/clk/bcm/clk-raspberrypi.c
-@@ -458,7 +458,7 @@ static struct platform_driver raspberrypi_clk_driver = {
- 		.of_match_table = raspberrypi_clk_match,
+ static struct platform_driver mchp_spdiftx_driver = {
+ 	.probe	= mchp_spdiftx_probe,
+-	.remove_new = mchp_spdiftx_remove,
++	.remove = mchp_spdiftx_remove,
+ 	.driver	= {
+ 		.name	= "mchp_spdiftx",
+ 		.of_match_table = mchp_spdiftx_dt_ids,
+diff --git a/sound/soc/atmel/sam9g20_wm8731.c b/sound/soc/atmel/sam9g20_wm8731.c
+index d3ec9826d505..335e216ea7b4 100644
+--- a/sound/soc/atmel/sam9g20_wm8731.c
++++ b/sound/soc/atmel/sam9g20_wm8731.c
+@@ -207,7 +207,7 @@ static struct platform_driver at91sam9g20ek_audio_driver = {
+ 		.of_match_table = of_match_ptr(at91sam9g20ek_wm8731_dt_ids),
  	},
- 	.probe          = raspberrypi_clk_probe,
--	.remove_new	= raspberrypi_clk_remove,
-+	.remove		= raspberrypi_clk_remove,
- };
- module_platform_driver(raspberrypi_clk_driver);
- 
-diff --git a/drivers/clk/clk-fixed-factor.c b/drivers/clk/clk-fixed-factor.c
-index fe0500a1af3e..8fba63fc70c5 100644
---- a/drivers/clk/clk-fixed-factor.c
-+++ b/drivers/clk/clk-fixed-factor.c
-@@ -405,7 +405,7 @@ static struct platform_driver of_fixed_factor_clk_driver = {
- 		.of_match_table = of_fixed_factor_clk_ids,
- 	},
- 	.probe = of_fixed_factor_clk_probe,
--	.remove_new = of_fixed_factor_clk_remove,
-+	.remove = of_fixed_factor_clk_remove,
- };
- builtin_platform_driver(of_fixed_factor_clk_driver);
- #endif
-diff --git a/drivers/clk/clk-fixed-mmio.c b/drivers/clk/clk-fixed-mmio.c
-index 0e08cb22c196..3bfcf4cd98a2 100644
---- a/drivers/clk/clk-fixed-mmio.c
-+++ b/drivers/clk/clk-fixed-mmio.c
-@@ -91,7 +91,7 @@ static struct platform_driver of_fixed_mmio_clk_driver = {
- 		.of_match_table = of_fixed_mmio_clk_ids,
- 	},
- 	.probe = of_fixed_mmio_clk_probe,
--	.remove_new = of_fixed_mmio_clk_remove,
-+	.remove = of_fixed_mmio_clk_remove,
- };
- module_platform_driver(of_fixed_mmio_clk_driver);
- 
-diff --git a/drivers/clk/clk-fixed-rate.c b/drivers/clk/clk-fixed-rate.c
-index 3481eb8cdeb3..6b4f76b9c4da 100644
---- a/drivers/clk/clk-fixed-rate.c
-+++ b/drivers/clk/clk-fixed-rate.c
-@@ -232,7 +232,7 @@ static struct platform_driver of_fixed_clk_driver = {
- 		.of_match_table = of_fixed_clk_ids,
- 	},
- 	.probe = of_fixed_clk_probe,
--	.remove_new = of_fixed_clk_remove,
-+	.remove = of_fixed_clk_remove,
- };
- builtin_platform_driver(of_fixed_clk_driver);
- #endif
-diff --git a/drivers/clk/clk-palmas.c b/drivers/clk/clk-palmas.c
-index 5efb10776ae5..39049f62dbbb 100644
---- a/drivers/clk/clk-palmas.c
-+++ b/drivers/clk/clk-palmas.c
-@@ -281,7 +281,7 @@ static struct platform_driver palmas_clks_driver = {
- 		.of_match_table = palmas_clks_of_match,
- 	},
- 	.probe = palmas_clks_probe,
--	.remove_new = palmas_clks_remove,
-+	.remove = palmas_clks_remove,
+ 	.probe	= at91sam9g20ek_audio_probe,
+-	.remove_new = at91sam9g20ek_audio_remove,
++	.remove = at91sam9g20ek_audio_remove,
  };
  
- module_platform_driver(palmas_clks_driver);
-diff --git a/drivers/clk/clk-pwm.c b/drivers/clk/clk-pwm.c
-index 3dd2b83d0404..bd4f21c22004 100644
---- a/drivers/clk/clk-pwm.c
-+++ b/drivers/clk/clk-pwm.c
-@@ -142,7 +142,7 @@ MODULE_DEVICE_TABLE(of, clk_pwm_dt_ids);
- 
- static struct platform_driver clk_pwm_driver = {
- 	.probe = clk_pwm_probe,
--	.remove_new = clk_pwm_remove,
-+	.remove = clk_pwm_remove,
- 	.driver = {
- 		.name = "pwm-clock",
- 		.of_match_table = clk_pwm_dt_ids,
-diff --git a/drivers/clk/clk-s2mps11.c b/drivers/clk/clk-s2mps11.c
-index 38c456540d1b..014db6386624 100644
---- a/drivers/clk/clk-s2mps11.c
-+++ b/drivers/clk/clk-s2mps11.c
-@@ -263,7 +263,7 @@ static struct platform_driver s2mps11_clk_driver = {
- 		.name  = "s2mps11-clk",
+ module_platform_driver(at91sam9g20ek_audio_driver);
+diff --git a/sound/soc/atmel/sam9x5_wm8731.c b/sound/soc/atmel/sam9x5_wm8731.c
+index d1c1f370a9cd..1b5ef4e9d2b8 100644
+--- a/sound/soc/atmel/sam9x5_wm8731.c
++++ b/sound/soc/atmel/sam9x5_wm8731.c
+@@ -196,7 +196,7 @@ static struct platform_driver sam9x5_wm8731_driver = {
+ 		.of_match_table = of_match_ptr(sam9x5_wm8731_of_match),
  	},
- 	.probe = s2mps11_clk_probe,
--	.remove_new = s2mps11_clk_remove,
-+	.remove = s2mps11_clk_remove,
- 	.id_table = s2mps11_clk_id,
+ 	.probe = sam9x5_wm8731_driver_probe,
+-	.remove_new = sam9x5_wm8731_driver_remove,
++	.remove = sam9x5_wm8731_driver_remove,
  };
- module_platform_driver(s2mps11_clk_driver);
-diff --git a/drivers/clk/clk-scpi.c b/drivers/clk/clk-scpi.c
-index 108b697bd317..19d530d52e64 100644
---- a/drivers/clk/clk-scpi.c
-+++ b/drivers/clk/clk-scpi.c
-@@ -303,7 +303,7 @@ static struct platform_driver scpi_clocks_driver = {
- 		.of_match_table = scpi_clocks_ids,
+ module_platform_driver(sam9x5_wm8731_driver);
+ 
+diff --git a/sound/soc/atmel/tse850-pcm5142.c b/sound/soc/atmel/tse850-pcm5142.c
+index 5d208e0b4b90..0a9efd5f2861 100644
+--- a/sound/soc/atmel/tse850-pcm5142.c
++++ b/sound/soc/atmel/tse850-pcm5142.c
+@@ -431,7 +431,7 @@ static struct platform_driver tse850_driver = {
+ 		.of_match_table = tse850_dt_ids,
  	},
- 	.probe = scpi_clocks_probe,
--	.remove_new = scpi_clocks_remove,
-+	.remove = scpi_clocks_remove,
+ 	.probe = tse850_probe,
+-	.remove_new = tse850_remove,
++	.remove = tse850_remove,
  };
- module_platform_driver(scpi_clocks_driver);
  
-diff --git a/drivers/clk/hisilicon/clk-hi3519.c b/drivers/clk/hisilicon/clk-hi3519.c
-index 141b727ff60d..0c50acd8543a 100644
---- a/drivers/clk/hisilicon/clk-hi3519.c
-+++ b/drivers/clk/hisilicon/clk-hi3519.c
-@@ -179,7 +179,7 @@ MODULE_DEVICE_TABLE(of, hi3519_clk_match_table);
+ module_platform_driver(tse850_driver);
+diff --git a/sound/soc/au1x/ac97c.c b/sound/soc/au1x/ac97c.c
+index b0e1a1253e10..f8ab936250dc 100644
+--- a/sound/soc/au1x/ac97c.c
++++ b/sound/soc/au1x/ac97c.c
+@@ -336,7 +336,7 @@ static struct platform_driver au1xac97c_driver = {
+ 		.pm	= AU1XPSCAC97_PMOPS,
+ 	},
+ 	.probe		= au1xac97c_drvprobe,
+-	.remove_new	= au1xac97c_drvremove,
++	.remove		= au1xac97c_drvremove,
+ };
  
- static struct platform_driver hi3519_clk_driver = {
- 	.probe          = hi3519_clk_probe,
--	.remove_new	= hi3519_clk_remove,
-+	.remove		= hi3519_clk_remove,
- 	.driver         = {
- 		.name   = "hi3519-clk",
- 		.of_match_table = hi3519_clk_match_table,
-diff --git a/drivers/clk/hisilicon/clk-hi3559a.c b/drivers/clk/hisilicon/clk-hi3559a.c
-index 8646e9d352ed..f297fb25c512 100644
---- a/drivers/clk/hisilicon/clk-hi3559a.c
-+++ b/drivers/clk/hisilicon/clk-hi3559a.c
-@@ -817,7 +817,7 @@ static void hi3559av100_crg_remove(struct platform_device *pdev)
+ module_platform_driver(au1xac97c_driver);
+diff --git a/sound/soc/au1x/i2sc.c b/sound/soc/au1x/i2sc.c
+index 064406080d72..7d296f29dade 100644
+--- a/sound/soc/au1x/i2sc.c
++++ b/sound/soc/au1x/i2sc.c
+@@ -313,7 +313,7 @@ static struct platform_driver au1xi2s_driver = {
+ 		.pm	= AU1XI2SC_PMOPS,
+ 	},
+ 	.probe		= au1xi2s_drvprobe,
+-	.remove_new	= au1xi2s_drvremove,
++	.remove		= au1xi2s_drvremove,
+ };
  
- static struct platform_driver hi3559av100_crg_driver = {
- 	.probe		= hi3559av100_crg_probe,
--	.remove_new	= hi3559av100_crg_remove,
-+	.remove		= hi3559av100_crg_remove,
+ module_platform_driver(au1xi2s_driver);
+diff --git a/sound/soc/au1x/psc-ac97.c b/sound/soc/au1x/psc-ac97.c
+index 1727eeb12b64..8a59a50978b9 100644
+--- a/sound/soc/au1x/psc-ac97.c
++++ b/sound/soc/au1x/psc-ac97.c
+@@ -486,7 +486,7 @@ static struct platform_driver au1xpsc_ac97_driver = {
+ 		.pm	= AU1XPSCAC97_PMOPS,
+ 	},
+ 	.probe		= au1xpsc_ac97_drvprobe,
+-	.remove_new	= au1xpsc_ac97_drvremove,
++	.remove		= au1xpsc_ac97_drvremove,
+ };
+ 
+ module_platform_driver(au1xpsc_ac97_driver);
+diff --git a/sound/soc/au1x/psc-i2s.c b/sound/soc/au1x/psc-i2s.c
+index 52734dec8247..bee013555e7a 100644
+--- a/sound/soc/au1x/psc-i2s.c
++++ b/sound/soc/au1x/psc-i2s.c
+@@ -404,7 +404,7 @@ static struct platform_driver au1xpsc_i2s_driver = {
+ 		.pm	= AU1XPSCI2S_PMOPS,
+ 	},
+ 	.probe		= au1xpsc_i2s_drvprobe,
+-	.remove_new	= au1xpsc_i2s_drvremove,
++	.remove		= au1xpsc_i2s_drvremove,
+ };
+ 
+ module_platform_driver(au1xpsc_i2s_driver);
+diff --git a/sound/soc/bcm/bcm63xx-i2s-whistler.c b/sound/soc/bcm/bcm63xx-i2s-whistler.c
+index c64609718738..c47ed1e6ea2b 100644
+--- a/sound/soc/bcm/bcm63xx-i2s-whistler.c
++++ b/sound/soc/bcm/bcm63xx-i2s-whistler.c
+@@ -293,7 +293,7 @@ static struct platform_driver bcm63xx_i2s_driver = {
+ 		.of_match_table = of_match_ptr(snd_soc_bcm_audio_match),
+ 	},
+ 	.probe = bcm63xx_i2s_dev_probe,
+-	.remove_new = bcm63xx_i2s_dev_remove,
++	.remove = bcm63xx_i2s_dev_remove,
+ };
+ 
+ module_platform_driver(bcm63xx_i2s_driver);
+diff --git a/sound/soc/bcm/cygnus-ssp.c b/sound/soc/bcm/cygnus-ssp.c
+index 90088516fed0..e0ce0232eb1e 100644
+--- a/sound/soc/bcm/cygnus-ssp.c
++++ b/sound/soc/bcm/cygnus-ssp.c
+@@ -1390,7 +1390,7 @@ MODULE_DEVICE_TABLE(of, cygnus_ssp_of_match);
+ 
+ static struct platform_driver cygnus_ssp_driver = {
+ 	.probe		= cygnus_ssp_probe,
+-	.remove_new	= cygnus_ssp_remove,
++	.remove		= cygnus_ssp_remove,
  	.driver		= {
- 		.name	= "hi3559av100-clock",
- 		.of_match_table = hi3559av100_crg_match_table,
-diff --git a/drivers/clk/hisilicon/crg-hi3516cv300.c b/drivers/clk/hisilicon/crg-hi3516cv300.c
-index e602e65fbc38..b66140f74c51 100644
---- a/drivers/clk/hisilicon/crg-hi3516cv300.c
-+++ b/drivers/clk/hisilicon/crg-hi3516cv300.c
-@@ -294,7 +294,7 @@ static void hi3516cv300_crg_remove(struct platform_device *pdev)
- 
- static struct platform_driver hi3516cv300_crg_driver = {
- 	.probe          = hi3516cv300_crg_probe,
--	.remove_new	= hi3516cv300_crg_remove,
-+	.remove		= hi3516cv300_crg_remove,
- 	.driver         = {
- 		.name   = "hi3516cv300-crg",
- 		.of_match_table = hi3516cv300_crg_match_table,
-diff --git a/drivers/clk/hisilicon/crg-hi3798cv200.c b/drivers/clk/hisilicon/crg-hi3798cv200.c
-index f651b197e45a..8eabd1cc229f 100644
---- a/drivers/clk/hisilicon/crg-hi3798cv200.c
-+++ b/drivers/clk/hisilicon/crg-hi3798cv200.c
-@@ -377,7 +377,7 @@ static void hi3798cv200_crg_remove(struct platform_device *pdev)
- 
- static struct platform_driver hi3798cv200_crg_driver = {
- 	.probe          = hi3798cv200_crg_probe,
--	.remove_new	= hi3798cv200_crg_remove,
-+	.remove		= hi3798cv200_crg_remove,
- 	.driver         = {
- 		.name   = "hi3798cv200-crg",
- 		.of_match_table = hi3798cv200_crg_match_table,
-diff --git a/drivers/clk/imx/clk-imx8-acm.c b/drivers/clk/imx/clk-imx8-acm.c
-index 61d8c7e9ae0b..6c351050b82a 100644
---- a/drivers/clk/imx/clk-imx8-acm.c
-+++ b/drivers/clk/imx/clk-imx8-acm.c
-@@ -488,7 +488,7 @@ static struct platform_driver imx8_acm_clk_driver = {
- 		.pm = &imx8_acm_pm_ops,
+ 		.name	= "cygnus-ssp",
+ 		.of_match_table = cygnus_ssp_of_match,
+diff --git a/sound/soc/cirrus/edb93xx.c b/sound/soc/cirrus/edb93xx.c
+index 8bb67d7d2b4b..8dac754ddb0d 100644
+--- a/sound/soc/cirrus/edb93xx.c
++++ b/sound/soc/cirrus/edb93xx.c
+@@ -105,7 +105,7 @@ static struct platform_driver edb93xx_driver = {
+ 		.name	= "edb93xx-audio",
  	},
- 	.probe = imx8_acm_clk_probe,
--	.remove_new = imx8_acm_clk_remove,
-+	.remove = imx8_acm_clk_remove,
+ 	.probe		= edb93xx_probe,
+-	.remove_new	= edb93xx_remove,
++	.remove		= edb93xx_remove,
  };
- module_platform_driver(imx8_acm_clk_driver);
  
-diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c b/drivers/clk/imx/clk-imx8mp-audiomix.c
-index 50ad5873c990..b2cb157703c5 100644
---- a/drivers/clk/imx/clk-imx8mp-audiomix.c
-+++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
-@@ -454,7 +454,7 @@ MODULE_DEVICE_TABLE(of, clk_imx8mp_audiomix_of_match);
+ module_platform_driver(edb93xx_driver);
+diff --git a/sound/soc/cirrus/ep93xx-i2s.c b/sound/soc/cirrus/ep93xx-i2s.c
+index 522de4b80293..d45862ceb0c9 100644
+--- a/sound/soc/cirrus/ep93xx-i2s.c
++++ b/sound/soc/cirrus/ep93xx-i2s.c
+@@ -523,7 +523,7 @@ MODULE_DEVICE_TABLE(of, ep93xx_i2s_of_ids);
  
- static struct platform_driver clk_imx8mp_audiomix_driver = {
- 	.probe	= clk_imx8mp_audiomix_probe,
--	.remove_new = clk_imx8mp_audiomix_remove,
-+	.remove = clk_imx8mp_audiomix_remove,
- 	.driver = {
- 		.name = "imx8mp-audio-blk-ctrl",
- 		.of_match_table = clk_imx8mp_audiomix_of_match,
-diff --git a/drivers/clk/keystone/sci-clk.c b/drivers/clk/keystone/sci-clk.c
-index 5cefc30a843e..c5894fc9395e 100644
---- a/drivers/clk/keystone/sci-clk.c
-+++ b/drivers/clk/keystone/sci-clk.c
-@@ -707,7 +707,7 @@ static void ti_sci_clk_remove(struct platform_device *pdev)
- 
- static struct platform_driver ti_sci_clk_driver = {
- 	.probe = ti_sci_clk_probe,
--	.remove_new = ti_sci_clk_remove,
-+	.remove = ti_sci_clk_remove,
- 	.driver = {
- 		.name = "ti-sci-clk",
- 		.of_match_table = of_match_ptr(ti_sci_clk_of_match),
-diff --git a/drivers/clk/mediatek/clk-mt2701-aud.c b/drivers/clk/mediatek/clk-mt2701-aud.c
-index 15859132c769..425c69cfb105 100644
---- a/drivers/clk/mediatek/clk-mt2701-aud.c
-+++ b/drivers/clk/mediatek/clk-mt2701-aud.c
-@@ -158,7 +158,7 @@ static void clk_mt2701_aud_remove(struct platform_device *pdev)
- 
- static struct platform_driver clk_mt2701_aud_drv = {
- 	.probe = clk_mt2701_aud_probe,
--	.remove_new = clk_mt2701_aud_remove,
-+	.remove = clk_mt2701_aud_remove,
- 	.driver = {
- 		.name = "clk-mt2701-aud",
- 		.of_match_table = of_match_clk_mt2701_aud,
-diff --git a/drivers/clk/mediatek/clk-mt2701-bdp.c b/drivers/clk/mediatek/clk-mt2701-bdp.c
-index e203dca70786..5da3eabffd3e 100644
---- a/drivers/clk/mediatek/clk-mt2701-bdp.c
-+++ b/drivers/clk/mediatek/clk-mt2701-bdp.c
-@@ -99,7 +99,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt2701_bdp);
- 
- static struct platform_driver clk_mt2701_bdp_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt2701-bdp",
- 		.of_match_table = of_match_clk_mt2701_bdp,
-diff --git a/drivers/clk/mediatek/clk-mt2701-eth.c b/drivers/clk/mediatek/clk-mt2701-eth.c
-index f6e1fdc9ee0a..608252e73f24 100644
---- a/drivers/clk/mediatek/clk-mt2701-eth.c
-+++ b/drivers/clk/mediatek/clk-mt2701-eth.c
-@@ -53,7 +53,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt2701_eth);
- 
- static struct platform_driver clk_mt2701_eth_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt2701-eth",
- 		.of_match_table = of_match_clk_mt2701_eth,
-diff --git a/drivers/clk/mediatek/clk-mt2701-g3d.c b/drivers/clk/mediatek/clk-mt2701-g3d.c
-index 5e04975433ea..b3e18b6db75d 100644
---- a/drivers/clk/mediatek/clk-mt2701-g3d.c
-+++ b/drivers/clk/mediatek/clk-mt2701-g3d.c
-@@ -50,7 +50,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt2701_g3d);
- 
- static struct platform_driver clk_mt2701_g3d_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt2701-g3d",
- 		.of_match_table = of_match_clk_mt2701_g3d,
-diff --git a/drivers/clk/mediatek/clk-mt2701-hif.c b/drivers/clk/mediatek/clk-mt2701-hif.c
-index c7b38d066403..000e00576052 100644
---- a/drivers/clk/mediatek/clk-mt2701-hif.c
-+++ b/drivers/clk/mediatek/clk-mt2701-hif.c
-@@ -50,7 +50,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt2701_hif);
- 
- static struct platform_driver clk_mt2701_hif_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt2701-hif",
- 		.of_match_table = of_match_clk_mt2701_hif,
-diff --git a/drivers/clk/mediatek/clk-mt2701-img.c b/drivers/clk/mediatek/clk-mt2701-img.c
-index ce13b79a7994..875594bc9dcb 100644
---- a/drivers/clk/mediatek/clk-mt2701-img.c
-+++ b/drivers/clk/mediatek/clk-mt2701-img.c
-@@ -47,7 +47,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt2701_img);
- 
- static struct platform_driver clk_mt2701_img_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt2701-img",
- 		.of_match_table = of_match_clk_mt2701_img,
-diff --git a/drivers/clk/mediatek/clk-mt2701-mm.c b/drivers/clk/mediatek/clk-mt2701-mm.c
-index 903592be56b5..bc68fa718878 100644
---- a/drivers/clk/mediatek/clk-mt2701-mm.c
-+++ b/drivers/clk/mediatek/clk-mt2701-mm.c
-@@ -80,7 +80,7 @@ MODULE_DEVICE_TABLE(platform, clk_mt2701_mm_id_table);
- 
- static struct platform_driver clk_mt2701_mm_drv = {
- 	.probe = mtk_clk_pdev_probe,
--	.remove_new = mtk_clk_pdev_remove,
-+	.remove = mtk_clk_pdev_remove,
- 	.driver = {
- 		.name = "clk-mt2701-mm",
+ static struct platform_driver ep93xx_i2s_driver = {
+ 	.probe	= ep93xx_i2s_probe,
+-	.remove_new = ep93xx_i2s_remove,
++	.remove = ep93xx_i2s_remove,
+ 	.driver	= {
+ 		.name	= "ep93xx-i2s",
+ 		.of_match_table = ep93xx_i2s_of_ids,
+diff --git a/sound/soc/codecs/cs42l43.c b/sound/soc/codecs/cs42l43.c
+index 5183b4586424..d0098b4558b5 100644
+--- a/sound/soc/codecs/cs42l43.c
++++ b/sound/soc/codecs/cs42l43.c
+@@ -2461,7 +2461,7 @@ static struct platform_driver cs42l43_codec_driver = {
  	},
-diff --git a/drivers/clk/mediatek/clk-mt2701-vdec.c b/drivers/clk/mediatek/clk-mt2701-vdec.c
-index 591091fb2151..94db86f8d0a4 100644
---- a/drivers/clk/mediatek/clk-mt2701-vdec.c
-+++ b/drivers/clk/mediatek/clk-mt2701-vdec.c
-@@ -52,7 +52,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt2701_vdec);
  
- static struct platform_driver clk_mt2701_vdec_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt2701-vdec",
- 		.of_match_table = of_match_clk_mt2701_vdec,
-diff --git a/drivers/clk/mediatek/clk-mt2712-apmixedsys.c b/drivers/clk/mediatek/clk-mt2712-apmixedsys.c
-index 66987d205eee..a60622d251ff 100644
---- a/drivers/clk/mediatek/clk-mt2712-apmixedsys.c
-+++ b/drivers/clk/mediatek/clk-mt2712-apmixedsys.c
-@@ -156,7 +156,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt2712_apmixed);
- 
- static struct platform_driver clk_mt2712_apmixed_drv = {
- 	.probe = clk_mt2712_apmixed_probe,
--	.remove_new = clk_mt2712_apmixed_remove,
-+	.remove = clk_mt2712_apmixed_remove,
- 	.driver = {
- 		.name = "clk-mt2712-apmixed",
- 		.of_match_table = of_match_clk_mt2712_apmixed,
-diff --git a/drivers/clk/mediatek/clk-mt2712-bdp.c b/drivers/clk/mediatek/clk-mt2712-bdp.c
-index 93c5453e4392..c838311a0c51 100644
---- a/drivers/clk/mediatek/clk-mt2712-bdp.c
-+++ b/drivers/clk/mediatek/clk-mt2712-bdp.c
-@@ -69,7 +69,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt2712_bdp);
- 
- static struct platform_driver clk_mt2712_bdp_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt2712-bdp",
- 		.of_match_table = of_match_clk_mt2712_bdp,
-diff --git a/drivers/clk/mediatek/clk-mt2712-img.c b/drivers/clk/mediatek/clk-mt2712-img.c
-index 84abd0515fd2..bedebf86b0b5 100644
---- a/drivers/clk/mediatek/clk-mt2712-img.c
-+++ b/drivers/clk/mediatek/clk-mt2712-img.c
-@@ -47,7 +47,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt2712_img);
- 
- static struct platform_driver clk_mt2712_img_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt2712-img",
- 		.of_match_table = of_match_clk_mt2712_img,
-diff --git a/drivers/clk/mediatek/clk-mt2712-jpgdec.c b/drivers/clk/mediatek/clk-mt2712-jpgdec.c
-index 89be9082adba..1a73474b2f99 100644
---- a/drivers/clk/mediatek/clk-mt2712-jpgdec.c
-+++ b/drivers/clk/mediatek/clk-mt2712-jpgdec.c
-@@ -43,7 +43,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt2712_jpgdec);
- 
- static struct platform_driver clk_mt2712_jpgdec_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt2712-jpgdec",
- 		.of_match_table = of_match_clk_mt2712_jpgdec,
-diff --git a/drivers/clk/mediatek/clk-mt2712-mfg.c b/drivers/clk/mediatek/clk-mt2712-mfg.c
-index f7e0d0ebf665..c1bb45c7469e 100644
---- a/drivers/clk/mediatek/clk-mt2712-mfg.c
-+++ b/drivers/clk/mediatek/clk-mt2712-mfg.c
-@@ -42,7 +42,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt2712_mfg);
- 
- static struct platform_driver clk_mt2712_mfg_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt2712-mfg",
- 		.of_match_table = of_match_clk_mt2712_mfg,
-diff --git a/drivers/clk/mediatek/clk-mt2712-mm.c b/drivers/clk/mediatek/clk-mt2712-mm.c
-index 248529d3134d..32ecb949f7eb 100644
---- a/drivers/clk/mediatek/clk-mt2712-mm.c
-+++ b/drivers/clk/mediatek/clk-mt2712-mm.c
-@@ -121,7 +121,7 @@ MODULE_DEVICE_TABLE(platform, clk_mt2712_mm_id_table);
- 
- static struct platform_driver clk_mt2712_mm_drv = {
- 	.probe = mtk_clk_pdev_probe,
--	.remove_new = mtk_clk_pdev_remove,
-+	.remove = mtk_clk_pdev_remove,
- 	.driver = {
- 		.name = "clk-mt2712-mm",
- 	},
-diff --git a/drivers/clk/mediatek/clk-mt2712-vdec.c b/drivers/clk/mediatek/clk-mt2712-vdec.c
-index a063f1f0aa52..a766342fbafa 100644
---- a/drivers/clk/mediatek/clk-mt2712-vdec.c
-+++ b/drivers/clk/mediatek/clk-mt2712-vdec.c
-@@ -55,7 +55,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt2712_vdec);
- 
- static struct platform_driver clk_mt2712_vdec_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt2712-vdec",
- 		.of_match_table = of_match_clk_mt2712_vdec,
-diff --git a/drivers/clk/mediatek/clk-mt2712-venc.c b/drivers/clk/mediatek/clk-mt2712-venc.c
-index 5b15df0a26f5..fc193dc8e8f6 100644
---- a/drivers/clk/mediatek/clk-mt2712-venc.c
-+++ b/drivers/clk/mediatek/clk-mt2712-venc.c
-@@ -44,7 +44,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt2712_venc);
- 
- static struct platform_driver clk_mt2712_venc_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt2712-venc",
- 		.of_match_table = of_match_clk_mt2712_venc,
-diff --git a/drivers/clk/mediatek/clk-mt2712.c b/drivers/clk/mediatek/clk-mt2712.c
-index 91af45160aa4..964c92130e3c 100644
---- a/drivers/clk/mediatek/clk-mt2712.c
-+++ b/drivers/clk/mediatek/clk-mt2712.c
-@@ -993,7 +993,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt2712);
- 
- static struct platform_driver clk_mt2712_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt2712",
- 		.of_match_table = of_match_clk_mt2712,
-diff --git a/drivers/clk/mediatek/clk-mt6765-audio.c b/drivers/clk/mediatek/clk-mt6765-audio.c
-index 3e481c697eff..2be1458087e6 100644
---- a/drivers/clk/mediatek/clk-mt6765-audio.c
-+++ b/drivers/clk/mediatek/clk-mt6765-audio.c
-@@ -69,7 +69,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt6765_audio);
- 
- static struct platform_driver clk_mt6765_audio_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt6765-audio",
- 		.of_match_table = of_match_clk_mt6765_audio,
-diff --git a/drivers/clk/mediatek/clk-mt6765-cam.c b/drivers/clk/mediatek/clk-mt6765-cam.c
-index fed9c789d9fa..2a7f30dc85bb 100644
---- a/drivers/clk/mediatek/clk-mt6765-cam.c
-+++ b/drivers/clk/mediatek/clk-mt6765-cam.c
-@@ -50,7 +50,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt6765_cam);
- 
- static struct platform_driver clk_mt6765_cam_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt6765-cam",
- 		.of_match_table = of_match_clk_mt6765_cam,
-diff --git a/drivers/clk/mediatek/clk-mt6765-img.c b/drivers/clk/mediatek/clk-mt6765-img.c
-index 34bb89ffd2dd..ff857852cfb0 100644
---- a/drivers/clk/mediatek/clk-mt6765-img.c
-+++ b/drivers/clk/mediatek/clk-mt6765-img.c
-@@ -46,7 +46,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt6765_img);
- 
- static struct platform_driver clk_mt6765_img_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt6765-img",
- 		.of_match_table = of_match_clk_mt6765_img,
-diff --git a/drivers/clk/mediatek/clk-mt6765-mipi0a.c b/drivers/clk/mediatek/clk-mt6765-mipi0a.c
-index 957eb494fee5..8261dfd12a9a 100644
---- a/drivers/clk/mediatek/clk-mt6765-mipi0a.c
-+++ b/drivers/clk/mediatek/clk-mt6765-mipi0a.c
-@@ -43,7 +43,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt6765_mipi0a);
- 
- static struct platform_driver clk_mt6765_mipi0a_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt6765-mipi0a",
- 		.of_match_table = of_match_clk_mt6765_mipi0a,
-diff --git a/drivers/clk/mediatek/clk-mt6765-mm.c b/drivers/clk/mediatek/clk-mt6765-mm.c
-index 099540fcfc76..e525919f9e81 100644
---- a/drivers/clk/mediatek/clk-mt6765-mm.c
-+++ b/drivers/clk/mediatek/clk-mt6765-mm.c
-@@ -72,7 +72,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt6765_mm);
- 
- static struct platform_driver clk_mt6765_mm_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt6765-mm",
- 		.of_match_table = of_match_clk_mt6765_mm,
-diff --git a/drivers/clk/mediatek/clk-mt6765-vcodec.c b/drivers/clk/mediatek/clk-mt6765-vcodec.c
-index 64f3451d0aee..f309d1090cda 100644
---- a/drivers/clk/mediatek/clk-mt6765-vcodec.c
-+++ b/drivers/clk/mediatek/clk-mt6765-vcodec.c
-@@ -45,7 +45,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt6765_vcodec);
- 
- static struct platform_driver clk_mt6765_vcodec_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt6765-vcodec",
- 		.of_match_table = of_match_clk_mt6765_vcodec,
-diff --git a/drivers/clk/mediatek/clk-mt6779-aud.c b/drivers/clk/mediatek/clk-mt6779-aud.c
-index 3d23b8e29af6..8ed318bd7765 100644
---- a/drivers/clk/mediatek/clk-mt6779-aud.c
-+++ b/drivers/clk/mediatek/clk-mt6779-aud.c
-@@ -104,7 +104,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt6779_aud);
- 
- static struct platform_driver clk_mt6779_aud_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt6779-aud",
- 		.of_match_table = of_match_clk_mt6779_aud,
-diff --git a/drivers/clk/mediatek/clk-mt6779-cam.c b/drivers/clk/mediatek/clk-mt6779-cam.c
-index e76b2c4f548e..f397b55606de 100644
---- a/drivers/clk/mediatek/clk-mt6779-cam.c
-+++ b/drivers/clk/mediatek/clk-mt6779-cam.c
-@@ -55,7 +55,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt6779_cam);
- 
- static struct platform_driver clk_mt6779_cam_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt6779-cam",
- 		.of_match_table = of_match_clk_mt6779_cam,
-diff --git a/drivers/clk/mediatek/clk-mt6779-img.c b/drivers/clk/mediatek/clk-mt6779-img.c
-index 0c5971f3966a..474a59a4ca9e 100644
---- a/drivers/clk/mediatek/clk-mt6779-img.c
-+++ b/drivers/clk/mediatek/clk-mt6779-img.c
-@@ -47,7 +47,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt6779_img);
- 
- static struct platform_driver clk_mt6779_img_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt6779-img",
- 		.of_match_table = of_match_clk_mt6779_img,
-diff --git a/drivers/clk/mediatek/clk-mt6779-ipe.c b/drivers/clk/mediatek/clk-mt6779-ipe.c
-index 9c1a9f1b0f3e..c2314654f43a 100644
---- a/drivers/clk/mediatek/clk-mt6779-ipe.c
-+++ b/drivers/clk/mediatek/clk-mt6779-ipe.c
-@@ -49,7 +49,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt6779_ipe);
- 
- static struct platform_driver clk_mt6779_ipe_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt6779-ipe",
- 		.of_match_table = of_match_clk_mt6779_ipe,
-diff --git a/drivers/clk/mediatek/clk-mt6779-mfg.c b/drivers/clk/mediatek/clk-mt6779-mfg.c
-index 3cc82b59117f..21793cb6e6e3 100644
---- a/drivers/clk/mediatek/clk-mt6779-mfg.c
-+++ b/drivers/clk/mediatek/clk-mt6779-mfg.c
-@@ -44,7 +44,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt6779_mfg);
- 
- static struct platform_driver clk_mt6779_mfg_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt6779-mfg",
- 		.of_match_table = of_match_clk_mt6779_mfg,
-diff --git a/drivers/clk/mediatek/clk-mt6779-mm.c b/drivers/clk/mediatek/clk-mt6779-mm.c
-index 97d437a6f98f..30bbab308388 100644
---- a/drivers/clk/mediatek/clk-mt6779-mm.c
-+++ b/drivers/clk/mediatek/clk-mt6779-mm.c
-@@ -98,7 +98,7 @@ MODULE_DEVICE_TABLE(platform, clk_mt6779_mm_id_table);
- 
- static struct platform_driver clk_mt6779_mm_drv = {
- 	.probe = mtk_clk_pdev_probe,
--	.remove_new = mtk_clk_pdev_remove,
-+	.remove = mtk_clk_pdev_remove,
- 	.driver = {
- 		.name = "clk-mt6779-mm",
- 	},
-diff --git a/drivers/clk/mediatek/clk-mt6779-vdec.c b/drivers/clk/mediatek/clk-mt6779-vdec.c
-index a9122e627aa5..458d012f023c 100644
---- a/drivers/clk/mediatek/clk-mt6779-vdec.c
-+++ b/drivers/clk/mediatek/clk-mt6779-vdec.c
-@@ -56,7 +56,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt6779_vdec);
- 
- static struct platform_driver clk_mt6779_vdec_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt6779-vdec",
- 		.of_match_table = of_match_clk_mt6779_vdec,
-diff --git a/drivers/clk/mediatek/clk-mt6779-venc.c b/drivers/clk/mediatek/clk-mt6779-venc.c
-index 2cd032648eb1..70cebc274031 100644
---- a/drivers/clk/mediatek/clk-mt6779-venc.c
-+++ b/drivers/clk/mediatek/clk-mt6779-venc.c
-@@ -47,7 +47,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt6779_venc);
- 
- static struct platform_driver clk_mt6779_venc_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt6779-venc",
- 		.of_match_table = of_match_clk_mt6779_venc,
-diff --git a/drivers/clk/mediatek/clk-mt6779.c b/drivers/clk/mediatek/clk-mt6779.c
-index 819253b97a02..86732f5acf93 100644
---- a/drivers/clk/mediatek/clk-mt6779.c
-+++ b/drivers/clk/mediatek/clk-mt6779.c
-@@ -1305,7 +1305,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt6779);
- 
- static struct platform_driver clk_mt6779_infra_drv  = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt6779-infra",
- 		.of_match_table = of_match_clk_mt6779_infra,
-diff --git a/drivers/clk/mediatek/clk-mt6795-apmixedsys.c b/drivers/clk/mediatek/clk-mt6795-apmixedsys.c
-index 8c65974ed9b8..91665d7f125e 100644
---- a/drivers/clk/mediatek/clk-mt6795-apmixedsys.c
-+++ b/drivers/clk/mediatek/clk-mt6795-apmixedsys.c
-@@ -201,7 +201,7 @@ static void clk_mt6795_apmixed_remove(struct platform_device *pdev)
- 
- static struct platform_driver clk_mt6795_apmixed_drv = {
- 	.probe = clk_mt6795_apmixed_probe,
--	.remove_new = clk_mt6795_apmixed_remove,
-+	.remove = clk_mt6795_apmixed_remove,
- 	.driver = {
- 		.name = "clk-mt6795-apmixed",
- 		.of_match_table = of_match_clk_mt6795_apmixed,
-diff --git a/drivers/clk/mediatek/clk-mt6795-infracfg.c b/drivers/clk/mediatek/clk-mt6795-infracfg.c
-index 06d7fdf3098b..e4559569f5b0 100644
---- a/drivers/clk/mediatek/clk-mt6795-infracfg.c
-+++ b/drivers/clk/mediatek/clk-mt6795-infracfg.c
-@@ -144,7 +144,7 @@ static struct platform_driver clk_mt6795_infracfg_drv = {
- 		.of_match_table = of_match_clk_mt6795_infracfg,
- 	},
- 	.probe = clk_mt6795_infracfg_probe,
--	.remove_new = clk_mt6795_infracfg_remove,
-+	.remove = clk_mt6795_infracfg_remove,
+ 	.probe		= cs42l43_codec_probe,
+-	.remove_new	= cs42l43_codec_remove,
++	.remove		= cs42l43_codec_remove,
+ 	.id_table	= cs42l43_codec_id_table,
  };
- module_platform_driver(clk_mt6795_infracfg_drv);
- 
-diff --git a/drivers/clk/mediatek/clk-mt6795-mfg.c b/drivers/clk/mediatek/clk-mt6795-mfg.c
-index dff6a6ded837..1d658bb19e82 100644
---- a/drivers/clk/mediatek/clk-mt6795-mfg.c
-+++ b/drivers/clk/mediatek/clk-mt6795-mfg.c
-@@ -43,7 +43,7 @@ static struct platform_driver clk_mt6795_mfg_drv = {
- 		.of_match_table = of_match_clk_mt6795_mfg,
+ module_platform_driver(cs42l43_codec_driver);
+diff --git a/sound/soc/codecs/cs47l15.c b/sound/soc/codecs/cs47l15.c
+index ab6e7cd99733..29a2bcfb3048 100644
+--- a/sound/soc/codecs/cs47l15.c
++++ b/sound/soc/codecs/cs47l15.c
+@@ -1493,7 +1493,7 @@ static struct platform_driver cs47l15_codec_driver = {
+ 		.name = "cs47l15-codec",
  	},
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
+ 	.probe = &cs47l15_probe,
+-	.remove_new = cs47l15_remove,
++	.remove = cs47l15_remove,
  };
- module_platform_driver(clk_mt6795_mfg_drv);
  
-diff --git a/drivers/clk/mediatek/clk-mt6795-mm.c b/drivers/clk/mediatek/clk-mt6795-mm.c
-index dd1708d689dc..733d0e2021fc 100644
---- a/drivers/clk/mediatek/clk-mt6795-mm.c
-+++ b/drivers/clk/mediatek/clk-mt6795-mm.c
-@@ -93,7 +93,7 @@ static struct platform_driver clk_mt6795_mm_drv = {
+ module_platform_driver(cs47l15_codec_driver);
+diff --git a/sound/soc/codecs/cs47l24.c b/sound/soc/codecs/cs47l24.c
+index ec405ef66a8e..e2a839fae4fc 100644
+--- a/sound/soc/codecs/cs47l24.c
++++ b/sound/soc/codecs/cs47l24.c
+@@ -1344,7 +1344,7 @@ static struct platform_driver cs47l24_codec_driver = {
+ 		.name = "cs47l24-codec",
  	},
- 	.id_table = clk_mt6795_mm_id_table,
- 	.probe = mtk_clk_pdev_probe,
--	.remove_new = mtk_clk_pdev_remove,
-+	.remove = mtk_clk_pdev_remove,
+ 	.probe = cs47l24_probe,
+-	.remove_new = cs47l24_remove,
++	.remove = cs47l24_remove,
  };
- module_platform_driver(clk_mt6795_mm_drv);
  
-diff --git a/drivers/clk/mediatek/clk-mt6795-pericfg.c b/drivers/clk/mediatek/clk-mt6795-pericfg.c
-index 3f6bea418a5a..d48240eb2a67 100644
---- a/drivers/clk/mediatek/clk-mt6795-pericfg.c
-+++ b/drivers/clk/mediatek/clk-mt6795-pericfg.c
-@@ -153,7 +153,7 @@ static struct platform_driver clk_mt6795_pericfg_drv = {
- 		.of_match_table = of_match_clk_mt6795_pericfg,
+ module_platform_driver(cs47l24_codec_driver);
+diff --git a/sound/soc/codecs/cs47l35.c b/sound/soc/codecs/cs47l35.c
+index 0d7ee7ea6257..85555c7a2e4b 100644
+--- a/sound/soc/codecs/cs47l35.c
++++ b/sound/soc/codecs/cs47l35.c
+@@ -1769,7 +1769,7 @@ static struct platform_driver cs47l35_codec_driver = {
+ 		.name = "cs47l35-codec",
  	},
- 	.probe = clk_mt6795_pericfg_probe,
--	.remove_new = clk_mt6795_pericfg_remove,
-+	.remove = clk_mt6795_pericfg_remove,
+ 	.probe = &cs47l35_probe,
+-	.remove_new = cs47l35_remove,
++	.remove = cs47l35_remove,
  };
- module_platform_driver(clk_mt6795_pericfg_drv);
  
-diff --git a/drivers/clk/mediatek/clk-mt6795-topckgen.c b/drivers/clk/mediatek/clk-mt6795-topckgen.c
-index be595853a925..9c6d63a80b19 100644
---- a/drivers/clk/mediatek/clk-mt6795-topckgen.c
-+++ b/drivers/clk/mediatek/clk-mt6795-topckgen.c
-@@ -547,7 +547,7 @@ static struct platform_driver clk_mt6795_topckgen_drv = {
- 		.of_match_table = of_match_clk_mt6795_topckgen,
+ module_platform_driver(cs47l35_codec_driver);
+diff --git a/sound/soc/codecs/cs47l85.c b/sound/soc/codecs/cs47l85.c
+index 2dfb867e6edd..d34f4e8c26d3 100644
+--- a/sound/soc/codecs/cs47l85.c
++++ b/sound/soc/codecs/cs47l85.c
+@@ -2720,7 +2720,7 @@ static struct platform_driver cs47l85_codec_driver = {
+ 		.name = "cs47l85-codec",
  	},
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
+ 	.probe = &cs47l85_probe,
+-	.remove_new = cs47l85_remove,
++	.remove = cs47l85_remove,
  };
- module_platform_driver(clk_mt6795_topckgen_drv);
  
-diff --git a/drivers/clk/mediatek/clk-mt6795-vdecsys.c b/drivers/clk/mediatek/clk-mt6795-vdecsys.c
-index 9e91d6f7f5bf..f2968f859dca 100644
---- a/drivers/clk/mediatek/clk-mt6795-vdecsys.c
-+++ b/drivers/clk/mediatek/clk-mt6795-vdecsys.c
-@@ -44,7 +44,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt6795_vdecsys);
- 
- static struct platform_driver clk_mt6795_vdecsys_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt6795-vdecsys",
- 		.of_match_table = of_match_clk_mt6795_vdecsys,
-diff --git a/drivers/clk/mediatek/clk-mt6795-vencsys.c b/drivers/clk/mediatek/clk-mt6795-vencsys.c
-index bd81e80b744f..2f8d48da1a85 100644
---- a/drivers/clk/mediatek/clk-mt6795-vencsys.c
-+++ b/drivers/clk/mediatek/clk-mt6795-vencsys.c
-@@ -43,7 +43,7 @@ static struct platform_driver clk_mt6795_vencsys_drv = {
- 		.of_match_table = of_match_clk_mt6795_vencsys,
+ module_platform_driver(cs47l85_codec_driver);
+diff --git a/sound/soc/codecs/cs47l90.c b/sound/soc/codecs/cs47l90.c
+index 2549cb1fc121..a9e703981f37 100644
+--- a/sound/soc/codecs/cs47l90.c
++++ b/sound/soc/codecs/cs47l90.c
+@@ -2644,7 +2644,7 @@ static struct platform_driver cs47l90_codec_driver = {
+ 		.name = "cs47l90-codec",
  	},
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
+ 	.probe = &cs47l90_probe,
+-	.remove_new = cs47l90_remove,
++	.remove = cs47l90_remove,
  };
- module_platform_driver(clk_mt6795_vencsys_drv);
  
-diff --git a/drivers/clk/mediatek/clk-mt6797-img.c b/drivers/clk/mediatek/clk-mt6797-img.c
-index 0ec0cf2154dc..338c69234f24 100644
---- a/drivers/clk/mediatek/clk-mt6797-img.c
-+++ b/drivers/clk/mediatek/clk-mt6797-img.c
-@@ -43,7 +43,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt6797_img);
- 
- static struct platform_driver clk_mt6797_img_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt6797-img",
- 		.of_match_table = of_match_clk_mt6797_img,
-diff --git a/drivers/clk/mediatek/clk-mt6797-mm.c b/drivers/clk/mediatek/clk-mt6797-mm.c
-index f5701e965792..ddb40b8a1a7d 100644
---- a/drivers/clk/mediatek/clk-mt6797-mm.c
-+++ b/drivers/clk/mediatek/clk-mt6797-mm.c
-@@ -93,7 +93,7 @@ MODULE_DEVICE_TABLE(platform, clk_mt6797_mm_id_table);
- 
- static struct platform_driver clk_mt6797_mm_drv = {
- 	.probe = mtk_clk_pdev_probe,
--	.remove_new = mtk_clk_pdev_remove,
-+	.remove = mtk_clk_pdev_remove,
- 	.driver = {
- 		.name = "clk-mt6797-mm",
+ module_platform_driver(cs47l90_codec_driver);
+diff --git a/sound/soc/codecs/cs47l92.c b/sound/soc/codecs/cs47l92.c
+index 0c05ae0b09fb..2c355c61acd8 100644
+--- a/sound/soc/codecs/cs47l92.c
++++ b/sound/soc/codecs/cs47l92.c
+@@ -2092,7 +2092,7 @@ static struct platform_driver cs47l92_codec_driver = {
+ 		.name = "cs47l92-codec",
  	},
-diff --git a/drivers/clk/mediatek/clk-mt6797-vdec.c b/drivers/clk/mediatek/clk-mt6797-vdec.c
-index c967d5e25c7d..d832f48123f5 100644
---- a/drivers/clk/mediatek/clk-mt6797-vdec.c
-+++ b/drivers/clk/mediatek/clk-mt6797-vdec.c
-@@ -54,7 +54,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt6797_vdec);
- 
- static struct platform_driver clk_mt6797_vdec_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt6797-vdec",
- 		.of_match_table = of_match_clk_mt6797_vdec,
-diff --git a/drivers/clk/mediatek/clk-mt6797-venc.c b/drivers/clk/mediatek/clk-mt6797-venc.c
-index f6fac5db65b0..fd4446f4a9d7 100644
---- a/drivers/clk/mediatek/clk-mt6797-venc.c
-+++ b/drivers/clk/mediatek/clk-mt6797-venc.c
-@@ -45,7 +45,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt6797_venc);
- 
- static struct platform_driver clk_mt6797_venc_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt6797-venc",
- 		.of_match_table = of_match_clk_mt6797_venc,
-diff --git a/drivers/clk/mediatek/clk-mt7622-apmixedsys.c b/drivers/clk/mediatek/clk-mt7622-apmixedsys.c
-index 1b8f859b6b6c..2350592d9a93 100644
---- a/drivers/clk/mediatek/clk-mt7622-apmixedsys.c
-+++ b/drivers/clk/mediatek/clk-mt7622-apmixedsys.c
-@@ -137,7 +137,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt7622_apmixed);
- 
- static struct platform_driver clk_mt7622_apmixed_drv = {
- 	.probe = clk_mt7622_apmixed_probe,
--	.remove_new = clk_mt7622_apmixed_remove,
-+	.remove = clk_mt7622_apmixed_remove,
- 	.driver = {
- 		.name = "clk-mt7622-apmixed",
- 		.of_match_table = of_match_clk_mt7622_apmixed,
-diff --git a/drivers/clk/mediatek/clk-mt7622-aud.c b/drivers/clk/mediatek/clk-mt7622-aud.c
-index b7bf626e4d14..931a0598e598 100644
---- a/drivers/clk/mediatek/clk-mt7622-aud.c
-+++ b/drivers/clk/mediatek/clk-mt7622-aud.c
-@@ -149,7 +149,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt7622_aud);
- 
- static struct platform_driver clk_mt7622_aud_drv = {
- 	.probe = clk_mt7622_aud_probe,
--	.remove_new = clk_mt7622_aud_remove,
-+	.remove = clk_mt7622_aud_remove,
- 	.driver = {
- 		.name = "clk-mt7622-aud",
- 		.of_match_table = of_match_clk_mt7622_aud,
-diff --git a/drivers/clk/mediatek/clk-mt7622-eth.c b/drivers/clk/mediatek/clk-mt7622-eth.c
-index fa4876317a8d..1c1033a92c46 100644
---- a/drivers/clk/mediatek/clk-mt7622-eth.c
-+++ b/drivers/clk/mediatek/clk-mt7622-eth.c
-@@ -79,7 +79,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt7622_eth);
- 
- static struct platform_driver clk_mt7622_eth_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt7622-eth",
- 		.of_match_table = of_match_clk_mt7622_eth,
-diff --git a/drivers/clk/mediatek/clk-mt7622-hif.c b/drivers/clk/mediatek/clk-mt7622-hif.c
-index 8e57582454c2..5bcfe12c4fd0 100644
---- a/drivers/clk/mediatek/clk-mt7622-hif.c
-+++ b/drivers/clk/mediatek/clk-mt7622-hif.c
-@@ -91,7 +91,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt7622_hif);
- 
- static struct platform_driver clk_mt7622_hif_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt7622-hif",
- 		.of_match_table = of_match_clk_mt7622_hif,
-diff --git a/drivers/clk/mediatek/clk-mt7622-infracfg.c b/drivers/clk/mediatek/clk-mt7622-infracfg.c
-index 6bc911cb29a6..cfdf3b07c3e0 100644
---- a/drivers/clk/mediatek/clk-mt7622-infracfg.c
-+++ b/drivers/clk/mediatek/clk-mt7622-infracfg.c
-@@ -118,7 +118,7 @@ static struct platform_driver clk_mt7622_infracfg_drv = {
- 		.of_match_table = of_match_clk_mt7622_infracfg,
- 	},
- 	.probe = clk_mt7622_infracfg_probe,
--	.remove_new = clk_mt7622_infracfg_remove,
-+	.remove = clk_mt7622_infracfg_remove,
+ 	.probe = &cs47l92_probe,
+-	.remove_new = cs47l92_remove,
++	.remove = cs47l92_remove,
  };
- module_platform_driver(clk_mt7622_infracfg_drv);
  
-diff --git a/drivers/clk/mediatek/clk-mt7622.c b/drivers/clk/mediatek/clk-mt7622.c
-index 27781a62a131..f62b03abab4f 100644
---- a/drivers/clk/mediatek/clk-mt7622.c
-+++ b/drivers/clk/mediatek/clk-mt7622.c
-@@ -524,7 +524,7 @@ static struct platform_driver clk_mt7622_drv = {
- 		.of_match_table = of_match_clk_mt7622,
+ module_platform_driver(cs47l92_codec_driver);
+diff --git a/sound/soc/codecs/inno_rk3036.c b/sound/soc/codecs/inno_rk3036.c
+index 11320423c69c..fdd19f8e8864 100644
+--- a/sound/soc/codecs/inno_rk3036.c
++++ b/sound/soc/codecs/inno_rk3036.c
+@@ -476,7 +476,7 @@ static struct platform_driver rk3036_codec_platform_driver = {
+ 		.of_match_table = of_match_ptr(rk3036_codec_of_match),
  	},
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
+ 	.probe = rk3036_codec_platform_probe,
+-	.remove_new = rk3036_codec_platform_remove,
++	.remove = rk3036_codec_platform_remove,
  };
- module_platform_driver(clk_mt7622_drv)
  
-diff --git a/drivers/clk/mediatek/clk-mt7629-hif.c b/drivers/clk/mediatek/clk-mt7629-hif.c
-index 96d1a82ad75f..3fdc2d7d4274 100644
---- a/drivers/clk/mediatek/clk-mt7629-hif.c
-+++ b/drivers/clk/mediatek/clk-mt7629-hif.c
-@@ -86,7 +86,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt7629_hif);
- 
- static struct platform_driver clk_mt7629_hif_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt7629-hif",
- 		.of_match_table = of_match_clk_mt7629_hif,
-diff --git a/drivers/clk/mediatek/clk-mt7981-eth.c b/drivers/clk/mediatek/clk-mt7981-eth.c
-index e8cb247db0ce..906aec9ddff5 100644
---- a/drivers/clk/mediatek/clk-mt7981-eth.c
-+++ b/drivers/clk/mediatek/clk-mt7981-eth.c
-@@ -107,7 +107,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt7981_eth);
- 
- static struct platform_driver clk_mt7981_eth_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt7981-eth",
- 		.of_match_table = of_match_clk_mt7981_eth,
-diff --git a/drivers/clk/mediatek/clk-mt7981-infracfg.c b/drivers/clk/mediatek/clk-mt7981-infracfg.c
-index b2b055151297..0487b6bb80ae 100644
---- a/drivers/clk/mediatek/clk-mt7981-infracfg.c
-+++ b/drivers/clk/mediatek/clk-mt7981-infracfg.c
-@@ -197,7 +197,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt7981_infracfg);
- 
- static struct platform_driver clk_mt7981_infracfg_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt7981-infracfg",
- 		.of_match_table = of_match_clk_mt7981_infracfg,
-diff --git a/drivers/clk/mediatek/clk-mt7981-topckgen.c b/drivers/clk/mediatek/clk-mt7981-topckgen.c
-index 72f2f4f30e85..1943f11e47c1 100644
---- a/drivers/clk/mediatek/clk-mt7981-topckgen.c
-+++ b/drivers/clk/mediatek/clk-mt7981-topckgen.c
-@@ -413,7 +413,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt7981_topckgen);
- 
- static struct platform_driver clk_mt7981_topckgen_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt7981-topckgen",
- 		.of_match_table = of_match_clk_mt7981_topckgen,
-diff --git a/drivers/clk/mediatek/clk-mt7986-eth.c b/drivers/clk/mediatek/clk-mt7986-eth.c
-index 7ab78e0f49a1..4514d42c0829 100644
---- a/drivers/clk/mediatek/clk-mt7986-eth.c
-+++ b/drivers/clk/mediatek/clk-mt7986-eth.c
-@@ -92,7 +92,7 @@ static struct platform_driver clk_mt7986_eth_drv = {
- 		.of_match_table = of_match_clk_mt7986_eth,
+ module_platform_driver(rk3036_codec_platform_driver);
+diff --git a/sound/soc/codecs/lpass-rx-macro.c b/sound/soc/codecs/lpass-rx-macro.c
+index ce42749660c8..71e0d3bffd3f 100644
+--- a/sound/soc/codecs/lpass-rx-macro.c
++++ b/sound/soc/codecs/lpass-rx-macro.c
+@@ -4024,7 +4024,7 @@ static struct platform_driver rx_macro_driver = {
+ 		.pm = &rx_macro_pm_ops,
  	},
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
+ 	.probe = rx_macro_probe,
+-	.remove_new = rx_macro_remove,
++	.remove = rx_macro_remove,
  };
- module_platform_driver(clk_mt7986_eth_drv);
  
-diff --git a/drivers/clk/mediatek/clk-mt7986-infracfg.c b/drivers/clk/mediatek/clk-mt7986-infracfg.c
-index cb8ab3e53abf..732c65e616de 100644
---- a/drivers/clk/mediatek/clk-mt7986-infracfg.c
-+++ b/drivers/clk/mediatek/clk-mt7986-infracfg.c
-@@ -177,7 +177,7 @@ static struct platform_driver clk_mt7986_infracfg_drv = {
- 		.of_match_table = of_match_clk_mt7986_infracfg,
+ module_platform_driver(rx_macro_driver);
+diff --git a/sound/soc/codecs/lpass-tx-macro.c b/sound/soc/codecs/lpass-tx-macro.c
+index 209c12ec16dd..a134584acf90 100644
+--- a/sound/soc/codecs/lpass-tx-macro.c
++++ b/sound/soc/codecs/lpass-tx-macro.c
+@@ -2534,7 +2534,7 @@ static struct platform_driver tx_macro_driver = {
+ 		.pm = &tx_macro_pm_ops,
  	},
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
+ 	.probe = tx_macro_probe,
+-	.remove_new = tx_macro_remove,
++	.remove = tx_macro_remove,
  };
- module_platform_driver(clk_mt7986_infracfg_drv);
  
-diff --git a/drivers/clk/mediatek/clk-mt7986-topckgen.c b/drivers/clk/mediatek/clk-mt7986-topckgen.c
-index b644b4ca4710..2dd30da306d9 100644
---- a/drivers/clk/mediatek/clk-mt7986-topckgen.c
-+++ b/drivers/clk/mediatek/clk-mt7986-topckgen.c
-@@ -306,7 +306,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt7986_topckgen);
- 
- static struct platform_driver clk_mt7986_topckgen_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt7986-topckgen",
- 		.of_match_table = of_match_clk_mt7986_topckgen,
-diff --git a/drivers/clk/mediatek/clk-mt7988-eth.c b/drivers/clk/mediatek/clk-mt7988-eth.c
-index adf4a9d39b38..7d9463688be2 100644
---- a/drivers/clk/mediatek/clk-mt7988-eth.c
-+++ b/drivers/clk/mediatek/clk-mt7988-eth.c
-@@ -142,7 +142,7 @@ static struct platform_driver clk_mt7988_eth_drv = {
- 		.of_match_table = of_match_clk_mt7988_eth,
+ module_platform_driver(tx_macro_driver);
+diff --git a/sound/soc/codecs/lpass-va-macro.c b/sound/soc/codecs/lpass-va-macro.c
+index e95d1f29ef18..c781da476240 100644
+--- a/sound/soc/codecs/lpass-va-macro.c
++++ b/sound/soc/codecs/lpass-va-macro.c
+@@ -1738,7 +1738,7 @@ static struct platform_driver va_macro_driver = {
+ 		.pm = &va_macro_pm_ops,
  	},
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
+ 	.probe = va_macro_probe,
+-	.remove_new = va_macro_remove,
++	.remove = va_macro_remove,
  };
- module_platform_driver(clk_mt7988_eth_drv);
  
-diff --git a/drivers/clk/mediatek/clk-mt7988-infracfg.c b/drivers/clk/mediatek/clk-mt7988-infracfg.c
-index 6c2bebabb4de..ef8267319d91 100644
---- a/drivers/clk/mediatek/clk-mt7988-infracfg.c
-+++ b/drivers/clk/mediatek/clk-mt7988-infracfg.c
-@@ -292,7 +292,7 @@ static struct platform_driver clk_mt7988_infracfg_drv = {
- 		.of_match_table = of_match_clk_mt7988_infracfg,
+ module_platform_driver(va_macro_driver);
+diff --git a/sound/soc/codecs/lpass-wsa-macro.c b/sound/soc/codecs/lpass-wsa-macro.c
+index 76900274acf3..c989d82d1d3c 100644
+--- a/sound/soc/codecs/lpass-wsa-macro.c
++++ b/sound/soc/codecs/lpass-wsa-macro.c
+@@ -2980,7 +2980,7 @@ static struct platform_driver wsa_macro_driver = {
+ 		.pm = &wsa_macro_pm_ops,
  	},
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
+ 	.probe = wsa_macro_probe,
+-	.remove_new = wsa_macro_remove,
++	.remove = wsa_macro_remove,
  };
- module_platform_driver(clk_mt7988_infracfg_drv);
  
-diff --git a/drivers/clk/mediatek/clk-mt7988-topckgen.c b/drivers/clk/mediatek/clk-mt7988-topckgen.c
-index 7300e9694582..50e02cc7a214 100644
---- a/drivers/clk/mediatek/clk-mt7988-topckgen.c
-+++ b/drivers/clk/mediatek/clk-mt7988-topckgen.c
-@@ -315,7 +315,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt7988_topckgen);
- 
- static struct platform_driver clk_mt7988_topckgen_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt7988-topckgen",
- 		.of_match_table = of_match_clk_mt7988_topckgen,
-diff --git a/drivers/clk/mediatek/clk-mt7988-xfipll.c b/drivers/clk/mediatek/clk-mt7988-xfipll.c
-index 9b9ca5471158..f941e4d3ef28 100644
---- a/drivers/clk/mediatek/clk-mt7988-xfipll.c
-+++ b/drivers/clk/mediatek/clk-mt7988-xfipll.c
-@@ -74,7 +74,7 @@ static struct platform_driver clk_mt7988_xfipll_drv = {
- 		.of_match_table = of_match_clk_mt7988_xfipll,
+ module_platform_driver(wsa_macro_driver);
+diff --git a/sound/soc/codecs/msm8916-wcd-digital.c b/sound/soc/codecs/msm8916-wcd-digital.c
+index 978c4d056e81..ebb6f2e84818 100644
+--- a/sound/soc/codecs/msm8916-wcd-digital.c
++++ b/sound/soc/codecs/msm8916-wcd-digital.c
+@@ -1241,7 +1241,7 @@ static struct platform_driver msm8916_wcd_digital_driver = {
+ 		   .of_match_table = msm8916_wcd_digital_match_table,
  	},
- 	.probe = clk_mt7988_xfipll_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
+ 	.probe = msm8916_wcd_digital_probe,
+-	.remove_new = msm8916_wcd_digital_remove,
++	.remove = msm8916_wcd_digital_remove,
  };
- module_platform_driver(clk_mt7988_xfipll_drv);
  
-diff --git a/drivers/clk/mediatek/clk-mt8135-apmixedsys.c b/drivers/clk/mediatek/clk-mt8135-apmixedsys.c
-index 41bb2d2e2ea7..bdadc35c64cb 100644
---- a/drivers/clk/mediatek/clk-mt8135-apmixedsys.c
-+++ b/drivers/clk/mediatek/clk-mt8135-apmixedsys.c
-@@ -93,7 +93,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8135_apmixed);
- 
- static struct platform_driver clk_mt8135_apmixed_drv = {
- 	.probe = clk_mt8135_apmixed_probe,
--	.remove_new = clk_mt8135_apmixed_remove,
-+	.remove = clk_mt8135_apmixed_remove,
- 	.driver = {
- 		.name = "clk-mt8135-apmixed",
- 		.of_match_table = of_match_clk_mt8135_apmixed,
-diff --git a/drivers/clk/mediatek/clk-mt8135.c b/drivers/clk/mediatek/clk-mt8135.c
-index 019af88d7f9c..084e48a554c2 100644
---- a/drivers/clk/mediatek/clk-mt8135.c
-+++ b/drivers/clk/mediatek/clk-mt8135.c
-@@ -558,7 +558,7 @@ static struct platform_driver clk_mt8135_drv = {
- 		.of_match_table = of_match_clk_mt8135,
- 	},
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
+ module_platform_driver(msm8916_wcd_digital_driver);
+diff --git a/sound/soc/codecs/rk817_codec.c b/sound/soc/codecs/rk817_codec.c
+index 5fea600bc3a4..3c5b66357661 100644
+--- a/sound/soc/codecs/rk817_codec.c
++++ b/sound/soc/codecs/rk817_codec.c
+@@ -529,7 +529,7 @@ static struct platform_driver rk817_codec_driver = {
+ 		   .name = "rk817-codec",
+ 		   },
+ 	.probe = rk817_platform_probe,
+-	.remove_new = rk817_platform_remove,
++	.remove = rk817_platform_remove,
  };
- module_platform_driver(clk_mt8135_drv);
  
-diff --git a/drivers/clk/mediatek/clk-mt8167-aud.c b/drivers/clk/mediatek/clk-mt8167-aud.c
-index d1a42ff549c1..d6cff4bdf4cb 100644
---- a/drivers/clk/mediatek/clk-mt8167-aud.c
-+++ b/drivers/clk/mediatek/clk-mt8167-aud.c
-@@ -54,7 +54,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8167_audsys);
+ module_platform_driver(rk817_codec_driver);
+diff --git a/sound/soc/codecs/wcd937x.c b/sound/soc/codecs/wcd937x.c
+index af296b77a723..45f32d281908 100644
+--- a/sound/soc/codecs/wcd937x.c
++++ b/sound/soc/codecs/wcd937x.c
+@@ -2957,7 +2957,7 @@ MODULE_DEVICE_TABLE(of, wcd937x_of_match);
  
- static struct platform_driver clk_mt8167_audsys_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
+ static struct platform_driver wcd937x_codec_driver = {
+ 	.probe = wcd937x_probe,
+-	.remove_new = wcd937x_remove,
++	.remove = wcd937x_remove,
  	.driver = {
- 		.name = "clk-mt8167-audsys",
- 		.of_match_table = of_match_clk_mt8167_audsys,
-diff --git a/drivers/clk/mediatek/clk-mt8167-img.c b/drivers/clk/mediatek/clk-mt8167-img.c
-index 888ac3bdeacb..42d38ae94b69 100644
---- a/drivers/clk/mediatek/clk-mt8167-img.c
-+++ b/drivers/clk/mediatek/clk-mt8167-img.c
-@@ -46,7 +46,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8167_imgsys);
+ 		.name = "wcd937x_codec",
+ 		.of_match_table = of_match_ptr(wcd937x_of_match),
+diff --git a/sound/soc/codecs/wcd938x.c b/sound/soc/codecs/wcd938x.c
+index aa92f1bfc921..f2a4f3262bdb 100644
+--- a/sound/soc/codecs/wcd938x.c
++++ b/sound/soc/codecs/wcd938x.c
+@@ -3596,7 +3596,7 @@ MODULE_DEVICE_TABLE(of, wcd938x_dt_match);
  
- static struct platform_driver clk_mt8167_imgsys_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
+ static struct platform_driver wcd938x_codec_driver = {
+ 	.probe = wcd938x_probe,
+-	.remove_new = wcd938x_remove,
++	.remove = wcd938x_remove,
  	.driver = {
- 		.name = "clk-mt8167-imgsys",
- 		.of_match_table = of_match_clk_mt8167_imgsys,
-diff --git a/drivers/clk/mediatek/clk-mt8167-mfgcfg.c b/drivers/clk/mediatek/clk-mt8167-mfgcfg.c
-index e873766f130c..1ef37a3e6851 100644
---- a/drivers/clk/mediatek/clk-mt8167-mfgcfg.c
-+++ b/drivers/clk/mediatek/clk-mt8167-mfgcfg.c
-@@ -44,7 +44,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8167_mfgcfg);
+ 		.name = "wcd938x_codec",
+ 		.of_match_table = of_match_ptr(wcd938x_dt_match),
+diff --git a/sound/soc/codecs/wcd939x.c b/sound/soc/codecs/wcd939x.c
+index 68fc591670dc..4a417a92514d 100644
+--- a/sound/soc/codecs/wcd939x.c
++++ b/sound/soc/codecs/wcd939x.c
+@@ -3683,7 +3683,7 @@ MODULE_DEVICE_TABLE(of, wcd939x_dt_match);
  
- static struct platform_driver clk_mt8167_mfgcfg_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
+ static struct platform_driver wcd939x_codec_driver = {
+ 	.probe = wcd939x_probe,
+-	.remove_new = wcd939x_remove,
++	.remove = wcd939x_remove,
  	.driver = {
- 		.name = "clk-mt8167-mfgcfg",
- 		.of_match_table = of_match_clk_mt8167_mfgcfg,
-diff --git a/drivers/clk/mediatek/clk-mt8167-mm.c b/drivers/clk/mediatek/clk-mt8167-mm.c
-index 38deedffaacf..cef66ee836f3 100644
---- a/drivers/clk/mediatek/clk-mt8167-mm.c
-+++ b/drivers/clk/mediatek/clk-mt8167-mm.c
-@@ -85,7 +85,7 @@ MODULE_DEVICE_TABLE(platform, clk_mt8167_mm_id_table);
- 
- static struct platform_driver clk_mt8167_mm_drv = {
- 	.probe = mtk_clk_pdev_probe,
--	.remove_new = mtk_clk_pdev_remove,
-+	.remove = mtk_clk_pdev_remove,
- 	.driver = {
- 		.name = "clk-mt8167-mm",
+ 		.name = "wcd939x_codec",
+ 		.of_match_table = of_match_ptr(wcd939x_dt_match),
+diff --git a/sound/soc/codecs/wm5102.c b/sound/soc/codecs/wm5102.c
+index 4ecf07c7448c..651f1319204d 100644
+--- a/sound/soc/codecs/wm5102.c
++++ b/sound/soc/codecs/wm5102.c
+@@ -2174,7 +2174,7 @@ static struct platform_driver wm5102_codec_driver = {
+ 		.name = "wm5102-codec",
  	},
-diff --git a/drivers/clk/mediatek/clk-mt8167-vdec.c b/drivers/clk/mediatek/clk-mt8167-vdec.c
-index c3c892bb8334..e3769bc556a9 100644
---- a/drivers/clk/mediatek/clk-mt8167-vdec.c
-+++ b/drivers/clk/mediatek/clk-mt8167-vdec.c
-@@ -53,7 +53,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8167_vdec);
- 
- static struct platform_driver clk_mt8167_vdec_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8167-vdecsys",
- 		.of_match_table = of_match_clk_mt8167_vdec,
-diff --git a/drivers/clk/mediatek/clk-mt8167.c b/drivers/clk/mediatek/clk-mt8167.c
-index 5c94995f859c..c64d918c37de 100644
---- a/drivers/clk/mediatek/clk-mt8167.c
-+++ b/drivers/clk/mediatek/clk-mt8167.c
-@@ -887,7 +887,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8167);
- 
- static struct platform_driver clk_mt8167_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8167",
- 		.of_match_table = of_match_clk_mt8167,
-diff --git a/drivers/clk/mediatek/clk-mt8173-apmixedsys.c b/drivers/clk/mediatek/clk-mt8173-apmixedsys.c
-index 6cab483b8e1e..95385bb67d55 100644
---- a/drivers/clk/mediatek/clk-mt8173-apmixedsys.c
-+++ b/drivers/clk/mediatek/clk-mt8173-apmixedsys.c
-@@ -207,7 +207,7 @@ static void clk_mt8173_apmixed_remove(struct platform_device *pdev)
- 
- static struct platform_driver clk_mt8173_apmixed_drv = {
- 	.probe = clk_mt8173_apmixed_probe,
--	.remove_new = clk_mt8173_apmixed_remove,
-+	.remove = clk_mt8173_apmixed_remove,
- 	.driver = {
- 		.name = "clk-mt8173-apmixed",
- 		.of_match_table = of_match_clk_mt8173_apmixed,
-diff --git a/drivers/clk/mediatek/clk-mt8173-img.c b/drivers/clk/mediatek/clk-mt8173-img.c
-index 1011b9ab3dad..6db2b9ab2bc9 100644
---- a/drivers/clk/mediatek/clk-mt8173-img.c
-+++ b/drivers/clk/mediatek/clk-mt8173-img.c
-@@ -44,7 +44,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8173_imgsys);
- 
- static struct platform_driver clk_mt8173_vdecsys_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8173-imgsys",
- 		.of_match_table = of_match_clk_mt8173_imgsys,
-diff --git a/drivers/clk/mediatek/clk-mt8173-infracfg.c b/drivers/clk/mediatek/clk-mt8173-infracfg.c
-index ecc8b0063ea5..fa2d1d557e04 100644
---- a/drivers/clk/mediatek/clk-mt8173-infracfg.c
-+++ b/drivers/clk/mediatek/clk-mt8173-infracfg.c
-@@ -156,7 +156,7 @@ static struct platform_driver clk_mt8173_infracfg_drv = {
- 		.of_match_table = of_match_clk_mt8173_infracfg,
- 	},
- 	.probe = clk_mt8173_infracfg_probe,
--	.remove_new = clk_mt8173_infracfg_remove,
-+	.remove = clk_mt8173_infracfg_remove,
+ 	.probe = wm5102_probe,
+-	.remove_new = wm5102_remove,
++	.remove = wm5102_remove,
  };
- module_platform_driver(clk_mt8173_infracfg_drv);
  
-diff --git a/drivers/clk/mediatek/clk-mt8173-mm.c b/drivers/clk/mediatek/clk-mt8173-mm.c
-index fd903bee328f..26d27250b914 100644
---- a/drivers/clk/mediatek/clk-mt8173-mm.c
-+++ b/drivers/clk/mediatek/clk-mt8173-mm.c
-@@ -106,7 +106,7 @@ static struct platform_driver clk_mt8173_mm_drv = {
+ module_platform_driver(wm5102_codec_driver);
+diff --git a/sound/soc/codecs/wm5110.c b/sound/soc/codecs/wm5110.c
+index 0f299cd07b2e..502196253d42 100644
+--- a/sound/soc/codecs/wm5110.c
++++ b/sound/soc/codecs/wm5110.c
+@@ -2534,7 +2534,7 @@ static struct platform_driver wm5110_codec_driver = {
+ 		.name = "wm5110-codec",
  	},
- 	.id_table = clk_mt8173_mm_id_table,
- 	.probe = mtk_clk_pdev_probe,
--	.remove_new = mtk_clk_pdev_remove,
-+	.remove = mtk_clk_pdev_remove,
+ 	.probe = wm5110_probe,
+-	.remove_new = wm5110_remove,
++	.remove = wm5110_remove,
  };
- module_platform_driver(clk_mt8173_mm_drv);
  
-diff --git a/drivers/clk/mediatek/clk-mt8173-pericfg.c b/drivers/clk/mediatek/clk-mt8173-pericfg.c
-index 783efed3f254..bebda74d0f43 100644
---- a/drivers/clk/mediatek/clk-mt8173-pericfg.c
-+++ b/drivers/clk/mediatek/clk-mt8173-pericfg.c
-@@ -115,7 +115,7 @@ static struct platform_driver clk_mt8173_pericfg_drv = {
- 		.of_match_table = of_match_clk_mt8173_pericfg,
+ module_platform_driver(wm5110_codec_driver);
+diff --git a/sound/soc/codecs/wm8994.c b/sound/soc/codecs/wm8994.c
+index a99908582a50..a4abe6e53bfc 100644
+--- a/sound/soc/codecs/wm8994.c
++++ b/sound/soc/codecs/wm8994.c
+@@ -4699,7 +4699,7 @@ static struct platform_driver wm8994_codec_driver = {
+ 		.pm = &wm8994_pm_ops,
  	},
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
+ 	.probe = wm8994_probe,
+-	.remove_new = wm8994_remove,
++	.remove = wm8994_remove,
  };
- module_platform_driver(clk_mt8173_pericfg_drv);
  
-diff --git a/drivers/clk/mediatek/clk-mt8173-topckgen.c b/drivers/clk/mediatek/clk-mt8173-topckgen.c
-index 6bb7ffd74487..42c37541cebb 100644
---- a/drivers/clk/mediatek/clk-mt8173-topckgen.c
-+++ b/drivers/clk/mediatek/clk-mt8173-topckgen.c
-@@ -646,7 +646,7 @@ static struct platform_driver clk_mt8173_topckgen_drv = {
- 		.of_match_table = of_match_clk_mt8173_topckgen,
+ module_platform_driver(wm8994_codec_driver);
+diff --git a/sound/soc/codecs/wm8997.c b/sound/soc/codecs/wm8997.c
+index 87442840f0af..5389c363b14e 100644
+--- a/sound/soc/codecs/wm8997.c
++++ b/sound/soc/codecs/wm8997.c
+@@ -1210,7 +1210,7 @@ static struct platform_driver wm8997_codec_driver = {
+ 		.name = "wm8997-codec",
  	},
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
+ 	.probe = wm8997_probe,
+-	.remove_new = wm8997_remove,
++	.remove = wm8997_remove,
  };
- module_platform_driver(clk_mt8173_topckgen_drv);
  
-diff --git a/drivers/clk/mediatek/clk-mt8173-vdecsys.c b/drivers/clk/mediatek/clk-mt8173-vdecsys.c
-index 011e3812156f..625ca0b09cc2 100644
---- a/drivers/clk/mediatek/clk-mt8173-vdecsys.c
-+++ b/drivers/clk/mediatek/clk-mt8173-vdecsys.c
-@@ -46,7 +46,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8173_vdecsys);
- 
- static struct platform_driver clk_mt8173_vdecsys_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8173-vdecsys",
- 		.of_match_table = of_match_clk_mt8173_vdecsys,
-diff --git a/drivers/clk/mediatek/clk-mt8173-vencsys.c b/drivers/clk/mediatek/clk-mt8173-vencsys.c
-index 1bf84ae6a0bc..87755dd1a337 100644
---- a/drivers/clk/mediatek/clk-mt8173-vencsys.c
-+++ b/drivers/clk/mediatek/clk-mt8173-vencsys.c
-@@ -57,7 +57,7 @@ static struct platform_driver clk_mt8173_vencsys_drv = {
- 		.of_match_table = of_match_clk_mt8173_vencsys,
+ module_platform_driver(wm8997_codec_driver);
+diff --git a/sound/soc/codecs/wm8998.c b/sound/soc/codecs/wm8998.c
+index 3c2c4d12c08e..b72b8a64be8f 100644
+--- a/sound/soc/codecs/wm8998.c
++++ b/sound/soc/codecs/wm8998.c
+@@ -1426,7 +1426,7 @@ static struct platform_driver wm8998_codec_driver = {
+ 		.name = "wm8998-codec",
  	},
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
+ 	.probe = wm8998_probe,
+-	.remove_new = wm8998_remove,
++	.remove = wm8998_remove,
  };
- module_platform_driver(clk_mt8173_vencsys_drv);
  
-diff --git a/drivers/clk/mediatek/clk-mt8183-audio.c b/drivers/clk/mediatek/clk-mt8183-audio.c
-index 30a20e8ba84b..011d329ad30e 100644
---- a/drivers/clk/mediatek/clk-mt8183-audio.c
-+++ b/drivers/clk/mediatek/clk-mt8183-audio.c
-@@ -101,7 +101,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8183_audio);
- 
- static struct platform_driver clk_mt8183_audio_drv = {
- 	.probe = clk_mt8183_audio_probe,
--	.remove_new = clk_mt8183_audio_remove,
-+	.remove = clk_mt8183_audio_remove,
- 	.driver = {
- 		.name = "clk-mt8183-audio",
- 		.of_match_table = of_match_clk_mt8183_audio,
-diff --git a/drivers/clk/mediatek/clk-mt8183-cam.c b/drivers/clk/mediatek/clk-mt8183-cam.c
-index f16c3aa3c911..c7642085f8de 100644
---- a/drivers/clk/mediatek/clk-mt8183-cam.c
-+++ b/drivers/clk/mediatek/clk-mt8183-cam.c
-@@ -51,7 +51,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8183_cam);
- 
- static struct platform_driver clk_mt8183_cam_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8183-cam",
- 		.of_match_table = of_match_clk_mt8183_cam,
-diff --git a/drivers/clk/mediatek/clk-mt8183-img.c b/drivers/clk/mediatek/clk-mt8183-img.c
-index 32ee6a1867fc..ee92459c74ca 100644
---- a/drivers/clk/mediatek/clk-mt8183-img.c
-+++ b/drivers/clk/mediatek/clk-mt8183-img.c
-@@ -51,7 +51,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8183_img);
- 
- static struct platform_driver clk_mt8183_img_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8183-img",
- 		.of_match_table = of_match_clk_mt8183_img,
-diff --git a/drivers/clk/mediatek/clk-mt8183-ipu0.c b/drivers/clk/mediatek/clk-mt8183-ipu0.c
-index dc2916c4e0dc..6831747f123b 100644
---- a/drivers/clk/mediatek/clk-mt8183-ipu0.c
-+++ b/drivers/clk/mediatek/clk-mt8183-ipu0.c
-@@ -44,7 +44,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8183_ipu_core0);
- 
- static struct platform_driver clk_mt8183_ipu_core0_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8183-ipu_core0",
- 		.of_match_table = of_match_clk_mt8183_ipu_core0,
-diff --git a/drivers/clk/mediatek/clk-mt8183-ipu1.c b/drivers/clk/mediatek/clk-mt8183-ipu1.c
-index 9c63e4c592d0..ecf434432e7b 100644
---- a/drivers/clk/mediatek/clk-mt8183-ipu1.c
-+++ b/drivers/clk/mediatek/clk-mt8183-ipu1.c
-@@ -44,7 +44,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8183_ipu_core1);
- 
- static struct platform_driver clk_mt8183_ipu_core1_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8183-ipu_core1",
- 		.of_match_table = of_match_clk_mt8183_ipu_core1,
-diff --git a/drivers/clk/mediatek/clk-mt8183-ipu_adl.c b/drivers/clk/mediatek/clk-mt8183-ipu_adl.c
-index 54a50eda1719..c1a770ba3245 100644
---- a/drivers/clk/mediatek/clk-mt8183-ipu_adl.c
-+++ b/drivers/clk/mediatek/clk-mt8183-ipu_adl.c
-@@ -42,7 +42,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8183_ipu_adl);
- 
- static struct platform_driver clk_mt8183_ipu_adl_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8183-ipu_adl",
- 		.of_match_table = of_match_clk_mt8183_ipu_adl,
-diff --git a/drivers/clk/mediatek/clk-mt8183-ipu_conn.c b/drivers/clk/mediatek/clk-mt8183-ipu_conn.c
-index 99a817d3be6c..f0e72e6edb7a 100644
---- a/drivers/clk/mediatek/clk-mt8183-ipu_conn.c
-+++ b/drivers/clk/mediatek/clk-mt8183-ipu_conn.c
-@@ -111,7 +111,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8183_ipu_conn);
- 
- static struct platform_driver clk_mt8183_ipu_conn_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8183-ipu_conn",
- 		.of_match_table = of_match_clk_mt8183_ipu_conn,
-diff --git a/drivers/clk/mediatek/clk-mt8183-mfgcfg.c b/drivers/clk/mediatek/clk-mt8183-mfgcfg.c
-index b1e802bbfaef..be44889783ff 100644
---- a/drivers/clk/mediatek/clk-mt8183-mfgcfg.c
-+++ b/drivers/clk/mediatek/clk-mt8183-mfgcfg.c
-@@ -44,7 +44,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8183_mfg);
- 
- static struct platform_driver clk_mt8183_mfg_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8183-mfg",
- 		.of_match_table = of_match_clk_mt8183_mfg,
-diff --git a/drivers/clk/mediatek/clk-mt8183-mm.c b/drivers/clk/mediatek/clk-mt8183-mm.c
-index 59acf1e2951b..0f132f05fa8b 100644
---- a/drivers/clk/mediatek/clk-mt8183-mm.c
-+++ b/drivers/clk/mediatek/clk-mt8183-mm.c
-@@ -95,7 +95,7 @@ MODULE_DEVICE_TABLE(platform, clk_mt8183_mm_id_table);
- 
- static struct platform_driver clk_mt8183_mm_drv = {
- 	.probe = mtk_clk_pdev_probe,
--	.remove_new = mtk_clk_pdev_remove,
-+	.remove = mtk_clk_pdev_remove,
- 	.driver = {
- 		.name = "clk-mt8183-mm",
- 	},
-diff --git a/drivers/clk/mediatek/clk-mt8183-vdec.c b/drivers/clk/mediatek/clk-mt8183-vdec.c
-index 48a8ef3f69aa..43bf34077b16 100644
---- a/drivers/clk/mediatek/clk-mt8183-vdec.c
-+++ b/drivers/clk/mediatek/clk-mt8183-vdec.c
-@@ -55,7 +55,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8183_vdec);
- 
- static struct platform_driver clk_mt8183_vdec_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8183-vdec",
- 		.of_match_table = of_match_clk_mt8183_vdec,
-diff --git a/drivers/clk/mediatek/clk-mt8183-venc.c b/drivers/clk/mediatek/clk-mt8183-venc.c
-index 8f36688dfa14..c3d99b3b8ff7 100644
---- a/drivers/clk/mediatek/clk-mt8183-venc.c
-+++ b/drivers/clk/mediatek/clk-mt8183-venc.c
-@@ -47,7 +47,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8183_venc);
- 
- static struct platform_driver clk_mt8183_venc_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8183-venc",
- 		.of_match_table = of_match_clk_mt8183_venc,
-diff --git a/drivers/clk/mediatek/clk-mt8183.c b/drivers/clk/mediatek/clk-mt8183.c
-index 27eee4ef2c0f..aa7cc7709b2d 100644
---- a/drivers/clk/mediatek/clk-mt8183.c
-+++ b/drivers/clk/mediatek/clk-mt8183.c
-@@ -899,7 +899,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8183);
- 
- static struct platform_driver clk_mt8183_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8183",
- 		.of_match_table = of_match_clk_mt8183,
-diff --git a/drivers/clk/mediatek/clk-mt8186-apmixedsys.c b/drivers/clk/mediatek/clk-mt8186-apmixedsys.c
-index 6f7127003e4f..4b2b16578232 100644
---- a/drivers/clk/mediatek/clk-mt8186-apmixedsys.c
-+++ b/drivers/clk/mediatek/clk-mt8186-apmixedsys.c
-@@ -185,7 +185,7 @@ static void clk_mt8186_apmixed_remove(struct platform_device *pdev)
- 
- static struct platform_driver clk_mt8186_apmixed_drv = {
- 	.probe = clk_mt8186_apmixed_probe,
--	.remove_new = clk_mt8186_apmixed_remove,
-+	.remove = clk_mt8186_apmixed_remove,
- 	.driver = {
- 		.name = "clk-mt8186-apmixed",
- 		.of_match_table = of_match_clk_mt8186_apmixed,
-diff --git a/drivers/clk/mediatek/clk-mt8186-cam.c b/drivers/clk/mediatek/clk-mt8186-cam.c
-index 0082f0d9286b..2ddd5f90377f 100644
---- a/drivers/clk/mediatek/clk-mt8186-cam.c
-+++ b/drivers/clk/mediatek/clk-mt8186-cam.c
-@@ -82,7 +82,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8186_cam);
- 
- static struct platform_driver clk_mt8186_cam_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8186-cam",
- 		.of_match_table = of_match_clk_mt8186_cam,
-diff --git a/drivers/clk/mediatek/clk-mt8186-img.c b/drivers/clk/mediatek/clk-mt8186-img.c
-index 0583a18805ce..5e466e1f5f44 100644
---- a/drivers/clk/mediatek/clk-mt8186-img.c
-+++ b/drivers/clk/mediatek/clk-mt8186-img.c
-@@ -60,7 +60,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8186_img);
- 
- static struct platform_driver clk_mt8186_img_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8186-img",
- 		.of_match_table = of_match_clk_mt8186_img,
-diff --git a/drivers/clk/mediatek/clk-mt8186-imp_iic_wrap.c b/drivers/clk/mediatek/clk-mt8186-imp_iic_wrap.c
-index 2a2a6bb23205..75abb871044c 100644
---- a/drivers/clk/mediatek/clk-mt8186-imp_iic_wrap.c
-+++ b/drivers/clk/mediatek/clk-mt8186-imp_iic_wrap.c
-@@ -59,7 +59,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8186_imp_iic_wrap);
- 
- static struct platform_driver clk_mt8186_imp_iic_wrap_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8186-imp_iic_wrap",
- 		.of_match_table = of_match_clk_mt8186_imp_iic_wrap,
-diff --git a/drivers/clk/mediatek/clk-mt8186-infra_ao.c b/drivers/clk/mediatek/clk-mt8186-infra_ao.c
-index d7239875fb15..8d9d86a510ff 100644
---- a/drivers/clk/mediatek/clk-mt8186-infra_ao.c
-+++ b/drivers/clk/mediatek/clk-mt8186-infra_ao.c
-@@ -231,7 +231,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8186_infra_ao);
- 
- static struct platform_driver clk_mt8186_infra_ao_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8186-infra-ao",
- 		.of_match_table = of_match_clk_mt8186_infra_ao,
-diff --git a/drivers/clk/mediatek/clk-mt8186-ipe.c b/drivers/clk/mediatek/clk-mt8186-ipe.c
-index 77bdd2806517..f66a0aeaa6b3 100644
---- a/drivers/clk/mediatek/clk-mt8186-ipe.c
-+++ b/drivers/clk/mediatek/clk-mt8186-ipe.c
-@@ -47,7 +47,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8186_ipe);
- 
- static struct platform_driver clk_mt8186_ipe_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8186-ipe",
- 		.of_match_table = of_match_clk_mt8186_ipe,
-diff --git a/drivers/clk/mediatek/clk-mt8186-mcu.c b/drivers/clk/mediatek/clk-mt8186-mcu.c
-index eb54ccb77b74..d1640e4dc2ad 100644
---- a/drivers/clk/mediatek/clk-mt8186-mcu.c
-+++ b/drivers/clk/mediatek/clk-mt8186-mcu.c
-@@ -60,7 +60,7 @@ static struct platform_driver clk_mt8186_mcu_drv = {
- 		.of_match_table = of_match_clk_mt8186_mcu,
- 	},
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- };
- module_platform_driver(clk_mt8186_mcu_drv);
- 
-diff --git a/drivers/clk/mediatek/clk-mt8186-mdp.c b/drivers/clk/mediatek/clk-mt8186-mdp.c
-index fb47d6bacf7f..01561cf902c4 100644
---- a/drivers/clk/mediatek/clk-mt8186-mdp.c
-+++ b/drivers/clk/mediatek/clk-mt8186-mdp.c
-@@ -72,7 +72,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8186_mdp);
- 
- static struct platform_driver clk_mt8186_mdp_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8186-mdp",
- 		.of_match_table = of_match_clk_mt8186_mdp,
-diff --git a/drivers/clk/mediatek/clk-mt8186-mfg.c b/drivers/clk/mediatek/clk-mt8186-mfg.c
-index 64cdee1fddd4..3f21b1f222e1 100644
---- a/drivers/clk/mediatek/clk-mt8186-mfg.c
-+++ b/drivers/clk/mediatek/clk-mt8186-mfg.c
-@@ -41,7 +41,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8186_mfg);
- 
- static struct platform_driver clk_mt8186_mfg_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8186-mfg",
- 		.of_match_table = of_match_clk_mt8186_mfg,
-diff --git a/drivers/clk/mediatek/clk-mt8186-mm.c b/drivers/clk/mediatek/clk-mt8186-mm.c
-index 403566187e64..fc8488c44866 100644
---- a/drivers/clk/mediatek/clk-mt8186-mm.c
-+++ b/drivers/clk/mediatek/clk-mt8186-mm.c
-@@ -71,7 +71,7 @@ MODULE_DEVICE_TABLE(platform, clk_mt8186_mm_id_table);
- 
- static struct platform_driver clk_mt8186_mm_drv = {
- 	.probe = mtk_clk_pdev_probe,
--	.remove_new = mtk_clk_pdev_remove,
-+	.remove = mtk_clk_pdev_remove,
- 	.driver = {
- 		.name = "clk-mt8186-mm",
- 	},
-diff --git a/drivers/clk/mediatek/clk-mt8186-topckgen.c b/drivers/clk/mediatek/clk-mt8186-topckgen.c
-index eb9f51e77ca8..14f1cbdbbd13 100644
---- a/drivers/clk/mediatek/clk-mt8186-topckgen.c
-+++ b/drivers/clk/mediatek/clk-mt8186-topckgen.c
-@@ -725,7 +725,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8186_topck);
- 
- static struct platform_driver clk_mt8186_topck_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8186-topck",
- 		.of_match_table = of_match_clk_mt8186_topck,
-diff --git a/drivers/clk/mediatek/clk-mt8186-vdec.c b/drivers/clk/mediatek/clk-mt8186-vdec.c
-index 25465704ddfb..522b8c952969 100644
---- a/drivers/clk/mediatek/clk-mt8186-vdec.c
-+++ b/drivers/clk/mediatek/clk-mt8186-vdec.c
-@@ -80,7 +80,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8186_vdec);
- 
- static struct platform_driver clk_mt8186_vdec_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8186-vdec",
- 		.of_match_table = of_match_clk_mt8186_vdec,
-diff --git a/drivers/clk/mediatek/clk-mt8186-venc.c b/drivers/clk/mediatek/clk-mt8186-venc.c
-index 647dd66a3ce0..c0c98bc75112 100644
---- a/drivers/clk/mediatek/clk-mt8186-venc.c
-+++ b/drivers/clk/mediatek/clk-mt8186-venc.c
-@@ -43,7 +43,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8186_venc);
- 
- static struct platform_driver clk_mt8186_venc_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8186-venc",
- 		.of_match_table = of_match_clk_mt8186_venc,
-diff --git a/drivers/clk/mediatek/clk-mt8186-wpe.c b/drivers/clk/mediatek/clk-mt8186-wpe.c
-index 47f96e088361..babd7b2778c2 100644
---- a/drivers/clk/mediatek/clk-mt8186-wpe.c
-+++ b/drivers/clk/mediatek/clk-mt8186-wpe.c
-@@ -43,7 +43,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8186_wpe);
- 
- static struct platform_driver clk_mt8186_wpe_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8186-wpe",
- 		.of_match_table = of_match_clk_mt8186_wpe,
-diff --git a/drivers/clk/mediatek/clk-mt8188-adsp_audio26m.c b/drivers/clk/mediatek/clk-mt8188-adsp_audio26m.c
-index 5ac035bbe684..dcde2187d24a 100644
---- a/drivers/clk/mediatek/clk-mt8188-adsp_audio26m.c
-+++ b/drivers/clk/mediatek/clk-mt8188-adsp_audio26m.c
-@@ -40,7 +40,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8188_adsp_audio26m);
- 
- static struct platform_driver clk_mt8188_adsp_audio26m_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8188-adsp_audio26m",
- 		.of_match_table = of_match_clk_mt8188_adsp_audio26m,
-diff --git a/drivers/clk/mediatek/clk-mt8188-apmixedsys.c b/drivers/clk/mediatek/clk-mt8188-apmixedsys.c
-index 85d573d96081..21d7a9a2ab1a 100644
---- a/drivers/clk/mediatek/clk-mt8188-apmixedsys.c
-+++ b/drivers/clk/mediatek/clk-mt8188-apmixedsys.c
-@@ -145,7 +145,7 @@ static void clk_mt8188_apmixed_remove(struct platform_device *pdev)
- 
- static struct platform_driver clk_mt8188_apmixed_drv = {
- 	.probe = clk_mt8188_apmixed_probe,
--	.remove_new = clk_mt8188_apmixed_remove,
-+	.remove = clk_mt8188_apmixed_remove,
- 	.driver = {
- 		.name = "clk-mt8188-apmixed",
- 		.of_match_table = of_match_clk_mt8188_apmixed,
-diff --git a/drivers/clk/mediatek/clk-mt8188-cam.c b/drivers/clk/mediatek/clk-mt8188-cam.c
-index a6a6581f0461..7500bd25387f 100644
---- a/drivers/clk/mediatek/clk-mt8188-cam.c
-+++ b/drivers/clk/mediatek/clk-mt8188-cam.c
-@@ -109,7 +109,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8188_cam);
- 
- static struct platform_driver clk_mt8188_cam_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8188-cam",
- 		.of_match_table = of_match_clk_mt8188_cam,
-diff --git a/drivers/clk/mediatek/clk-mt8188-ccu.c b/drivers/clk/mediatek/clk-mt8188-ccu.c
-index 9532fc652f01..1566fc437ea3 100644
---- a/drivers/clk/mediatek/clk-mt8188-ccu.c
-+++ b/drivers/clk/mediatek/clk-mt8188-ccu.c
-@@ -39,7 +39,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8188_ccu);
- 
- static struct platform_driver clk_mt8188_ccu_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8188-ccu",
- 		.of_match_table = of_match_clk_mt8188_ccu,
-diff --git a/drivers/clk/mediatek/clk-mt8188-img.c b/drivers/clk/mediatek/clk-mt8188-img.c
-index 00ad6d7884ae..cb2fbd4136b9 100644
---- a/drivers/clk/mediatek/clk-mt8188-img.c
-+++ b/drivers/clk/mediatek/clk-mt8188-img.c
-@@ -101,7 +101,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8188_imgsys_main);
- 
- static struct platform_driver clk_mt8188_imgsys_main_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8188-imgsys_main",
- 		.of_match_table = of_match_clk_mt8188_imgsys_main,
-diff --git a/drivers/clk/mediatek/clk-mt8188-imp_iic_wrap.c b/drivers/clk/mediatek/clk-mt8188-imp_iic_wrap.c
-index 7b713f4cd662..14a4b575b583 100644
---- a/drivers/clk/mediatek/clk-mt8188-imp_iic_wrap.c
-+++ b/drivers/clk/mediatek/clk-mt8188-imp_iic_wrap.c
-@@ -71,7 +71,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8188_imp_iic_wrap);
- 
- static struct platform_driver clk_mt8188_imp_iic_wrap_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8188-imp_iic_wrap",
- 		.of_match_table = of_match_clk_mt8188_imp_iic_wrap,
-diff --git a/drivers/clk/mediatek/clk-mt8188-infra_ao.c b/drivers/clk/mediatek/clk-mt8188-infra_ao.c
-index face3e191464..b9bc8fcc2ade 100644
---- a/drivers/clk/mediatek/clk-mt8188-infra_ao.c
-+++ b/drivers/clk/mediatek/clk-mt8188-infra_ao.c
-@@ -213,7 +213,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8188_infra_ao);
- 
- static struct platform_driver clk_mt8188_infra_ao_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8188-infra_ao",
- 		.of_match_table = of_match_clk_mt8188_infra_ao,
-diff --git a/drivers/clk/mediatek/clk-mt8188-ipe.c b/drivers/clk/mediatek/clk-mt8188-ipe.c
-index fa439af34359..8f1933b71e28 100644
---- a/drivers/clk/mediatek/clk-mt8188-ipe.c
-+++ b/drivers/clk/mediatek/clk-mt8188-ipe.c
-@@ -41,7 +41,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8188_ipe);
- 
- static struct platform_driver clk_mt8188_ipe_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8188-ipe",
- 		.of_match_table = of_match_clk_mt8188_ipe,
-diff --git a/drivers/clk/mediatek/clk-mt8188-mfg.c b/drivers/clk/mediatek/clk-mt8188-mfg.c
-index ec562e7d459d..2ddfb1a3de47 100644
---- a/drivers/clk/mediatek/clk-mt8188-mfg.c
-+++ b/drivers/clk/mediatek/clk-mt8188-mfg.c
-@@ -38,7 +38,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8188_mfgcfg);
- 
- static struct platform_driver clk_mt8188_mfgcfg_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8188-mfgcfg",
- 		.of_match_table = of_match_clk_mt8188_mfgcfg,
-diff --git a/drivers/clk/mediatek/clk-mt8188-peri_ao.c b/drivers/clk/mediatek/clk-mt8188-peri_ao.c
-index e4339885b062..639865335fc8 100644
---- a/drivers/clk/mediatek/clk-mt8188-peri_ao.c
-+++ b/drivers/clk/mediatek/clk-mt8188-peri_ao.c
-@@ -49,7 +49,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8188_peri_ao);
- 
- static struct platform_driver clk_mt8188_peri_ao_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8188-peri_ao",
- 		.of_match_table = of_match_clk_mt8188_peri_ao,
-diff --git a/drivers/clk/mediatek/clk-mt8188-topckgen.c b/drivers/clk/mediatek/clk-mt8188-topckgen.c
-index 2ccc8a1c98f9..c4baf4076ed6 100644
---- a/drivers/clk/mediatek/clk-mt8188-topckgen.c
-+++ b/drivers/clk/mediatek/clk-mt8188-topckgen.c
-@@ -1347,7 +1347,7 @@ static void clk_mt8188_topck_remove(struct platform_device *pdev)
- 
- static struct platform_driver clk_mt8188_topck_drv = {
- 	.probe = clk_mt8188_topck_probe,
--	.remove_new = clk_mt8188_topck_remove,
-+	.remove = clk_mt8188_topck_remove,
- 	.driver = {
- 		.name = "clk-mt8188-topck",
- 		.of_match_table = of_match_clk_mt8188_topck,
-diff --git a/drivers/clk/mediatek/clk-mt8188-vdec.c b/drivers/clk/mediatek/clk-mt8188-vdec.c
-index bf388997c3f8..f48f0716d7c2 100644
---- a/drivers/clk/mediatek/clk-mt8188-vdec.c
-+++ b/drivers/clk/mediatek/clk-mt8188-vdec.c
-@@ -81,7 +81,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8188_vdec);
- 
- static struct platform_driver clk_mt8188_vdec_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8188-vdec",
- 		.of_match_table = of_match_clk_mt8188_vdec,
-diff --git a/drivers/clk/mediatek/clk-mt8188-vdo0.c b/drivers/clk/mediatek/clk-mt8188-vdo0.c
-index 935371fbf1d2..017d6662589b 100644
---- a/drivers/clk/mediatek/clk-mt8188-vdo0.c
-+++ b/drivers/clk/mediatek/clk-mt8188-vdo0.c
-@@ -97,7 +97,7 @@ MODULE_DEVICE_TABLE(platform, clk_mt8188_vdo0_id_table);
- 
- static struct platform_driver clk_mt8188_vdo0_drv = {
- 	.probe = mtk_clk_pdev_probe,
--	.remove_new = mtk_clk_pdev_remove,
-+	.remove = mtk_clk_pdev_remove,
- 	.driver = {
- 		.name = "clk-mt8188-vdo0",
- 	},
-diff --git a/drivers/clk/mediatek/clk-mt8188-vdo1.c b/drivers/clk/mediatek/clk-mt8188-vdo1.c
-index fb24c9026fd8..4fa355f8f0c2 100644
---- a/drivers/clk/mediatek/clk-mt8188-vdo1.c
-+++ b/drivers/clk/mediatek/clk-mt8188-vdo1.c
-@@ -144,7 +144,7 @@ MODULE_DEVICE_TABLE(platform, clk_mt8188_vdo1_id_table);
- 
- static struct platform_driver clk_mt8188_vdo1_drv = {
- 	.probe = mtk_clk_pdev_probe,
--	.remove_new = mtk_clk_pdev_remove,
-+	.remove = mtk_clk_pdev_remove,
- 	.driver = {
- 		.name = "clk-mt8188-vdo1",
- 	},
-diff --git a/drivers/clk/mediatek/clk-mt8188-venc.c b/drivers/clk/mediatek/clk-mt8188-venc.c
-index 4df8d4e05159..01e971545506 100644
---- a/drivers/clk/mediatek/clk-mt8188-venc.c
-+++ b/drivers/clk/mediatek/clk-mt8188-venc.c
-@@ -45,7 +45,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8188_venc1);
- 
- static struct platform_driver clk_mt8188_venc1_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8188-venc1",
- 		.of_match_table = of_match_clk_mt8188_venc1,
-diff --git a/drivers/clk/mediatek/clk-mt8188-vpp0.c b/drivers/clk/mediatek/clk-mt8188-vpp0.c
-index 310792108793..cd2579b7b9c3 100644
---- a/drivers/clk/mediatek/clk-mt8188-vpp0.c
-+++ b/drivers/clk/mediatek/clk-mt8188-vpp0.c
-@@ -104,7 +104,7 @@ MODULE_DEVICE_TABLE(platform, clk_mt8188_vpp0_id_table);
- 
- static struct platform_driver clk_mt8188_vpp0_drv = {
- 	.probe = mtk_clk_pdev_probe,
--	.remove_new = mtk_clk_pdev_remove,
-+	.remove = mtk_clk_pdev_remove,
- 	.driver = {
- 		.name = "clk-mt8188-vpp0",
- 	},
-diff --git a/drivers/clk/mediatek/clk-mt8188-vpp1.c b/drivers/clk/mediatek/clk-mt8188-vpp1.c
-index 0aa10aaa0292..0e1bd8306e8a 100644
---- a/drivers/clk/mediatek/clk-mt8188-vpp1.c
-+++ b/drivers/clk/mediatek/clk-mt8188-vpp1.c
-@@ -99,7 +99,7 @@ MODULE_DEVICE_TABLE(platform, clk_mt8188_vpp1_id_table);
- 
- static struct platform_driver clk_mt8188_vpp1_drv = {
- 	.probe = mtk_clk_pdev_probe,
--	.remove_new = mtk_clk_pdev_remove,
-+	.remove = mtk_clk_pdev_remove,
- 	.driver = {
- 		.name = "clk-mt8188-vpp1",
- 	},
-diff --git a/drivers/clk/mediatek/clk-mt8188-wpe.c b/drivers/clk/mediatek/clk-mt8188-wpe.c
-index fbac440363cc..d709bb1ee1d6 100644
---- a/drivers/clk/mediatek/clk-mt8188-wpe.c
-+++ b/drivers/clk/mediatek/clk-mt8188-wpe.c
-@@ -94,7 +94,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8188_wpe);
- 
- static struct platform_driver clk_mt8188_wpe_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8188-wpe",
- 		.of_match_table = of_match_clk_mt8188_wpe,
-diff --git a/drivers/clk/mediatek/clk-mt8192-apmixedsys.c b/drivers/clk/mediatek/clk-mt8192-apmixedsys.c
-index 3590932acc63..0b66a27e4d5a 100644
---- a/drivers/clk/mediatek/clk-mt8192-apmixedsys.c
-+++ b/drivers/clk/mediatek/clk-mt8192-apmixedsys.c
-@@ -206,7 +206,7 @@ static struct platform_driver clk_mt8192_apmixed_drv = {
- 		.of_match_table = of_match_clk_mt8192_apmixed,
- 	},
- 	.probe = clk_mt8192_apmixed_probe,
--	.remove_new = clk_mt8192_apmixed_remove,
-+	.remove = clk_mt8192_apmixed_remove,
- };
- module_platform_driver(clk_mt8192_apmixed_drv);
- MODULE_DESCRIPTION("MediaTek MT8192 apmixed clocks driver");
-diff --git a/drivers/clk/mediatek/clk-mt8192-aud.c b/drivers/clk/mediatek/clk-mt8192-aud.c
-index b438ebad998d..f3ebf8713fbb 100644
---- a/drivers/clk/mediatek/clk-mt8192-aud.c
-+++ b/drivers/clk/mediatek/clk-mt8192-aud.c
-@@ -111,7 +111,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8192_aud);
- 
- static struct platform_driver clk_mt8192_aud_drv = {
- 	.probe = clk_mt8192_aud_probe,
--	.remove_new = clk_mt8192_aud_remove,
-+	.remove = clk_mt8192_aud_remove,
- 	.driver = {
- 		.name = "clk-mt8192-aud",
- 		.of_match_table = of_match_clk_mt8192_aud,
-diff --git a/drivers/clk/mediatek/clk-mt8192-cam.c b/drivers/clk/mediatek/clk-mt8192-cam.c
-index 3eed4a7b6d8e..891d2f88d9cf 100644
---- a/drivers/clk/mediatek/clk-mt8192-cam.c
-+++ b/drivers/clk/mediatek/clk-mt8192-cam.c
-@@ -99,7 +99,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8192_cam);
- 
- static struct platform_driver clk_mt8192_cam_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8192-cam",
- 		.of_match_table = of_match_clk_mt8192_cam,
-diff --git a/drivers/clk/mediatek/clk-mt8192-img.c b/drivers/clk/mediatek/clk-mt8192-img.c
-index 13a435332752..c08e831125a5 100644
---- a/drivers/clk/mediatek/clk-mt8192-img.c
-+++ b/drivers/clk/mediatek/clk-mt8192-img.c
-@@ -62,7 +62,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8192_img);
- 
- static struct platform_driver clk_mt8192_img_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8192-img",
- 		.of_match_table = of_match_clk_mt8192_img,
-diff --git a/drivers/clk/mediatek/clk-mt8192-imp_iic_wrap.c b/drivers/clk/mediatek/clk-mt8192-imp_iic_wrap.c
-index 45585f2edd50..0f9530d9263c 100644
---- a/drivers/clk/mediatek/clk-mt8192-imp_iic_wrap.c
-+++ b/drivers/clk/mediatek/clk-mt8192-imp_iic_wrap.c
-@@ -111,7 +111,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8192_imp_iic_wrap);
- 
- static struct platform_driver clk_mt8192_imp_iic_wrap_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8192-imp_iic_wrap",
- 		.of_match_table = of_match_clk_mt8192_imp_iic_wrap,
-diff --git a/drivers/clk/mediatek/clk-mt8192-ipe.c b/drivers/clk/mediatek/clk-mt8192-ipe.c
-index da2e2d83cd25..c932b8b20edc 100644
---- a/drivers/clk/mediatek/clk-mt8192-ipe.c
-+++ b/drivers/clk/mediatek/clk-mt8192-ipe.c
-@@ -49,7 +49,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8192_ipe);
- 
- static struct platform_driver clk_mt8192_ipe_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8192-ipe",
- 		.of_match_table = of_match_clk_mt8192_ipe,
-diff --git a/drivers/clk/mediatek/clk-mt8192-mdp.c b/drivers/clk/mediatek/clk-mt8192-mdp.c
-index be674d6c31d7..30334ebca864 100644
---- a/drivers/clk/mediatek/clk-mt8192-mdp.c
-+++ b/drivers/clk/mediatek/clk-mt8192-mdp.c
-@@ -74,7 +74,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8192_mdp);
- 
- static struct platform_driver clk_mt8192_mdp_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8192-mdp",
- 		.of_match_table = of_match_clk_mt8192_mdp,
-diff --git a/drivers/clk/mediatek/clk-mt8192-mfg.c b/drivers/clk/mediatek/clk-mt8192-mfg.c
-index 2da969f4ca6b..9d176659e8a2 100644
---- a/drivers/clk/mediatek/clk-mt8192-mfg.c
-+++ b/drivers/clk/mediatek/clk-mt8192-mfg.c
-@@ -44,7 +44,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8192_mfg);
- 
- static struct platform_driver clk_mt8192_mfg_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8192-mfg",
- 		.of_match_table = of_match_clk_mt8192_mfg,
-diff --git a/drivers/clk/mediatek/clk-mt8192-mm.c b/drivers/clk/mediatek/clk-mt8192-mm.c
-index 2b9c1c4524c2..bda4406e1304 100644
---- a/drivers/clk/mediatek/clk-mt8192-mm.c
-+++ b/drivers/clk/mediatek/clk-mt8192-mm.c
-@@ -93,7 +93,7 @@ MODULE_DEVICE_TABLE(platform, clk_mt8192_mm_id_table);
- 
- static struct platform_driver clk_mt8192_mm_drv = {
- 	.probe = mtk_clk_pdev_probe,
--	.remove_new = mtk_clk_pdev_remove,
-+	.remove = mtk_clk_pdev_remove,
- 	.driver = {
- 		.name = "clk-mt8192-mm",
- 	},
-diff --git a/drivers/clk/mediatek/clk-mt8192-msdc.c b/drivers/clk/mediatek/clk-mt8192-msdc.c
-index bc5ce987b76c..04a66220f269 100644
---- a/drivers/clk/mediatek/clk-mt8192-msdc.c
-+++ b/drivers/clk/mediatek/clk-mt8192-msdc.c
-@@ -56,7 +56,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8192_msdc);
- 
- static struct platform_driver clk_mt8192_msdc_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8192-msdc",
- 		.of_match_table = of_match_clk_mt8192_msdc,
-diff --git a/drivers/clk/mediatek/clk-mt8192-scp_adsp.c b/drivers/clk/mediatek/clk-mt8192-scp_adsp.c
-index e017d30a8832..f9e4c16573e2 100644
---- a/drivers/clk/mediatek/clk-mt8192-scp_adsp.c
-+++ b/drivers/clk/mediatek/clk-mt8192-scp_adsp.c
-@@ -42,7 +42,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8192_scp_adsp);
- 
- static struct platform_driver clk_mt8192_scp_adsp_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8192-scp_adsp",
- 		.of_match_table = of_match_clk_mt8192_scp_adsp,
-diff --git a/drivers/clk/mediatek/clk-mt8192-vdec.c b/drivers/clk/mediatek/clk-mt8192-vdec.c
-index fcb34b1dcdab..9c10161807b2 100644
---- a/drivers/clk/mediatek/clk-mt8192-vdec.c
-+++ b/drivers/clk/mediatek/clk-mt8192-vdec.c
-@@ -86,7 +86,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8192_vdec);
- 
- static struct platform_driver clk_mt8192_vdec_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8192-vdec",
- 		.of_match_table = of_match_clk_mt8192_vdec,
-diff --git a/drivers/clk/mediatek/clk-mt8192-venc.c b/drivers/clk/mediatek/clk-mt8192-venc.c
-index 98d58a9397cd..0b01e2b7f036 100644
---- a/drivers/clk/mediatek/clk-mt8192-venc.c
-+++ b/drivers/clk/mediatek/clk-mt8192-venc.c
-@@ -45,7 +45,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8192_venc);
- 
- static struct platform_driver clk_mt8192_venc_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8192-venc",
- 		.of_match_table = of_match_clk_mt8192_venc,
-diff --git a/drivers/clk/mediatek/clk-mt8192.c b/drivers/clk/mediatek/clk-mt8192.c
-index bce2298ebc8d..50b43807c60c 100644
---- a/drivers/clk/mediatek/clk-mt8192.c
-+++ b/drivers/clk/mediatek/clk-mt8192.c
-@@ -1026,7 +1026,7 @@ static struct platform_driver clk_mt8192_drv = {
- 		.of_match_table = of_match_clk_mt8192,
- 	},
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- };
- module_platform_driver(clk_mt8192_drv);
- 
-diff --git a/drivers/clk/mediatek/clk-mt8195-apmixedsys.c b/drivers/clk/mediatek/clk-mt8195-apmixedsys.c
-index 049ae8123e34..282a3137dc89 100644
---- a/drivers/clk/mediatek/clk-mt8195-apmixedsys.c
-+++ b/drivers/clk/mediatek/clk-mt8195-apmixedsys.c
-@@ -223,7 +223,7 @@ static void clk_mt8195_apmixed_remove(struct platform_device *pdev)
- 
- static struct platform_driver clk_mt8195_apmixed_drv = {
- 	.probe = clk_mt8195_apmixed_probe,
--	.remove_new = clk_mt8195_apmixed_remove,
-+	.remove = clk_mt8195_apmixed_remove,
- 	.driver = {
- 		.name = "clk-mt8195-apmixed",
- 		.of_match_table = of_match_clk_mt8195_apmixed,
-diff --git a/drivers/clk/mediatek/clk-mt8195-apusys_pll.c b/drivers/clk/mediatek/clk-mt8195-apusys_pll.c
-index b1b562e44cb4..8b45a3fad02f 100644
---- a/drivers/clk/mediatek/clk-mt8195-apusys_pll.c
-+++ b/drivers/clk/mediatek/clk-mt8195-apusys_pll.c
-@@ -103,7 +103,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8195_apusys_pll);
- 
- static struct platform_driver clk_mt8195_apusys_pll_drv = {
- 	.probe = clk_mt8195_apusys_pll_probe,
--	.remove_new = clk_mt8195_apusys_pll_remove,
-+	.remove = clk_mt8195_apusys_pll_remove,
- 	.driver = {
- 		.name = "clk-mt8195-apusys_pll",
- 		.of_match_table = of_match_clk_mt8195_apusys_pll,
-diff --git a/drivers/clk/mediatek/clk-mt8195-cam.c b/drivers/clk/mediatek/clk-mt8195-cam.c
-index 7c8f77817616..02cb20c2948b 100644
---- a/drivers/clk/mediatek/clk-mt8195-cam.c
-+++ b/drivers/clk/mediatek/clk-mt8195-cam.c
-@@ -135,7 +135,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8195_cam);
- 
- static struct platform_driver clk_mt8195_cam_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8195-cam",
- 		.of_match_table = of_match_clk_mt8195_cam,
-diff --git a/drivers/clk/mediatek/clk-mt8195-ccu.c b/drivers/clk/mediatek/clk-mt8195-ccu.c
-index f78afd7b6ade..22cd1cb070f1 100644
---- a/drivers/clk/mediatek/clk-mt8195-ccu.c
-+++ b/drivers/clk/mediatek/clk-mt8195-ccu.c
-@@ -43,7 +43,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8195_ccu);
- 
- static struct platform_driver clk_mt8195_ccu_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8195-ccu",
- 		.of_match_table = of_match_clk_mt8195_ccu,
-diff --git a/drivers/clk/mediatek/clk-mt8195-img.c b/drivers/clk/mediatek/clk-mt8195-img.c
-index a59c082ef522..11beba4b2ac2 100644
---- a/drivers/clk/mediatek/clk-mt8195-img.c
-+++ b/drivers/clk/mediatek/clk-mt8195-img.c
-@@ -89,7 +89,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8195_img);
- 
- static struct platform_driver clk_mt8195_img_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8195-img",
- 		.of_match_table = of_match_clk_mt8195_img,
-diff --git a/drivers/clk/mediatek/clk-mt8195-imp_iic_wrap.c b/drivers/clk/mediatek/clk-mt8195-imp_iic_wrap.c
-index 54557f1b0681..8711b18b1576 100644
---- a/drivers/clk/mediatek/clk-mt8195-imp_iic_wrap.c
-+++ b/drivers/clk/mediatek/clk-mt8195-imp_iic_wrap.c
-@@ -59,7 +59,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8195_imp_iic_wrap);
- 
- static struct platform_driver clk_mt8195_imp_iic_wrap_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8195-imp_iic_wrap",
- 		.of_match_table = of_match_clk_mt8195_imp_iic_wrap,
-diff --git a/drivers/clk/mediatek/clk-mt8195-infra_ao.c b/drivers/clk/mediatek/clk-mt8195-infra_ao.c
-index 165fe92c6f61..bb648a88e43a 100644
---- a/drivers/clk/mediatek/clk-mt8195-infra_ao.c
-+++ b/drivers/clk/mediatek/clk-mt8195-infra_ao.c
-@@ -233,7 +233,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8195_infra_ao);
- 
- static struct platform_driver clk_mt8195_infra_ao_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8195-infra_ao",
- 		.of_match_table = of_match_clk_mt8195_infra_ao,
-diff --git a/drivers/clk/mediatek/clk-mt8195-ipe.c b/drivers/clk/mediatek/clk-mt8195-ipe.c
-index 38a23d88370b..b1af00348a86 100644
---- a/drivers/clk/mediatek/clk-mt8195-ipe.c
-+++ b/drivers/clk/mediatek/clk-mt8195-ipe.c
-@@ -44,7 +44,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8195_ipe);
- 
- static struct platform_driver clk_mt8195_ipe_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8195-ipe",
- 		.of_match_table = of_match_clk_mt8195_ipe,
-diff --git a/drivers/clk/mediatek/clk-mt8195-mfg.c b/drivers/clk/mediatek/clk-mt8195-mfg.c
-index e19968eeb346..07c358db1af9 100644
---- a/drivers/clk/mediatek/clk-mt8195-mfg.c
-+++ b/drivers/clk/mediatek/clk-mt8195-mfg.c
-@@ -42,7 +42,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8195_mfg);
- 
- static struct platform_driver clk_mt8195_mfg_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8195-mfg",
- 		.of_match_table = of_match_clk_mt8195_mfg,
-diff --git a/drivers/clk/mediatek/clk-mt8195-peri_ao.c b/drivers/clk/mediatek/clk-mt8195-peri_ao.c
-index fc341030f10b..b743eb60a30b 100644
---- a/drivers/clk/mediatek/clk-mt8195-peri_ao.c
-+++ b/drivers/clk/mediatek/clk-mt8195-peri_ao.c
-@@ -55,7 +55,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8195_peri_ao);
- 
- static struct platform_driver clk_mt8195_peri_ao_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8195-peri_ao",
- 		.of_match_table = of_match_clk_mt8195_peri_ao,
-diff --git a/drivers/clk/mediatek/clk-mt8195-scp_adsp.c b/drivers/clk/mediatek/clk-mt8195-scp_adsp.c
-index 1f37bde97d90..bc73fccd0515 100644
---- a/drivers/clk/mediatek/clk-mt8195-scp_adsp.c
-+++ b/drivers/clk/mediatek/clk-mt8195-scp_adsp.c
-@@ -40,7 +40,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8195_scp_adsp);
- 
- static struct platform_driver clk_mt8195_scp_adsp_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8195-scp_adsp",
- 		.of_match_table = of_match_clk_mt8195_scp_adsp,
-diff --git a/drivers/clk/mediatek/clk-mt8195-topckgen.c b/drivers/clk/mediatek/clk-mt8195-topckgen.c
-index 704498c40349..b1f44b873354 100644
---- a/drivers/clk/mediatek/clk-mt8195-topckgen.c
-+++ b/drivers/clk/mediatek/clk-mt8195-topckgen.c
-@@ -1354,7 +1354,7 @@ static void clk_mt8195_topck_remove(struct platform_device *pdev)
- 
- static struct platform_driver clk_mt8195_topck_drv = {
- 	.probe = clk_mt8195_topck_probe,
--	.remove_new = clk_mt8195_topck_remove,
-+	.remove = clk_mt8195_topck_remove,
- 	.driver = {
- 		.name = "clk-mt8195-topck",
- 		.of_match_table = of_match_clk_mt8195_topck,
-diff --git a/drivers/clk/mediatek/clk-mt8195-vdec.c b/drivers/clk/mediatek/clk-mt8195-vdec.c
-index 9e4cc1a82cbe..0bad706047c9 100644
---- a/drivers/clk/mediatek/clk-mt8195-vdec.c
-+++ b/drivers/clk/mediatek/clk-mt8195-vdec.c
-@@ -97,7 +97,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8195_vdec);
- 
- static struct platform_driver clk_mt8195_vdec_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8195-vdec",
- 		.of_match_table = of_match_clk_mt8195_vdec,
-diff --git a/drivers/clk/mediatek/clk-mt8195-vdo0.c b/drivers/clk/mediatek/clk-mt8195-vdo0.c
-index 6e9c3ef19502..581d99f8c254 100644
---- a/drivers/clk/mediatek/clk-mt8195-vdo0.c
-+++ b/drivers/clk/mediatek/clk-mt8195-vdo0.c
-@@ -106,7 +106,7 @@ MODULE_DEVICE_TABLE(platform, clk_mt8195_vdo0_id_table);
- 
- static struct platform_driver clk_mt8195_vdo0_drv = {
- 	.probe = mtk_clk_pdev_probe,
--	.remove_new = mtk_clk_pdev_remove,
-+	.remove = mtk_clk_pdev_remove,
- 	.driver = {
- 		.name = "clk-mt8195-vdo0",
- 	},
-diff --git a/drivers/clk/mediatek/clk-mt8195-vdo1.c b/drivers/clk/mediatek/clk-mt8195-vdo1.c
-index 422e5729386c..7f8b1a8967bd 100644
---- a/drivers/clk/mediatek/clk-mt8195-vdo1.c
-+++ b/drivers/clk/mediatek/clk-mt8195-vdo1.c
-@@ -133,7 +133,7 @@ MODULE_DEVICE_TABLE(platform, clk_mt8195_vdo1_id_table);
- 
- static struct platform_driver clk_mt8195_vdo1_drv = {
- 	.probe = mtk_clk_pdev_probe,
--	.remove_new = mtk_clk_pdev_remove,
-+	.remove = mtk_clk_pdev_remove,
- 	.driver = {
- 		.name = "clk-mt8195-vdo1",
- 	},
-diff --git a/drivers/clk/mediatek/clk-mt8195-venc.c b/drivers/clk/mediatek/clk-mt8195-venc.c
-index db7a6ce97ed0..3b52ff025d5e 100644
---- a/drivers/clk/mediatek/clk-mt8195-venc.c
-+++ b/drivers/clk/mediatek/clk-mt8195-venc.c
-@@ -62,7 +62,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8195_venc);
- 
- static struct platform_driver clk_mt8195_venc_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8195-venc",
- 		.of_match_table = of_match_clk_mt8195_venc,
-diff --git a/drivers/clk/mediatek/clk-mt8195-vpp0.c b/drivers/clk/mediatek/clk-mt8195-vpp0.c
-index 77d9aaf47a25..0e3e1dd7977c 100644
---- a/drivers/clk/mediatek/clk-mt8195-vpp0.c
-+++ b/drivers/clk/mediatek/clk-mt8195-vpp0.c
-@@ -99,7 +99,7 @@ MODULE_DEVICE_TABLE(platform, clk_mt8195_vpp0_id_table);
- 
- static struct platform_driver clk_mt8195_vpp0_drv = {
- 	.probe = mtk_clk_pdev_probe,
--	.remove_new = mtk_clk_pdev_remove,
-+	.remove = mtk_clk_pdev_remove,
- 	.driver = {
- 		.name = "clk-mt8195-vpp0",
- 	},
-diff --git a/drivers/clk/mediatek/clk-mt8195-vpp1.c b/drivers/clk/mediatek/clk-mt8195-vpp1.c
-index 18ca8f1d9538..fb7b7aef0bba 100644
---- a/drivers/clk/mediatek/clk-mt8195-vpp1.c
-+++ b/drivers/clk/mediatek/clk-mt8195-vpp1.c
-@@ -97,7 +97,7 @@ MODULE_DEVICE_TABLE(platform, clk_mt8195_vpp1_id_table);
- 
- static struct platform_driver clk_mt8195_vpp1_drv = {
- 	.probe = mtk_clk_pdev_probe,
--	.remove_new = mtk_clk_pdev_remove,
-+	.remove = mtk_clk_pdev_remove,
- 	.driver = {
- 		.name = "clk-mt8195-vpp1",
- 	},
-diff --git a/drivers/clk/mediatek/clk-mt8195-wpe.c b/drivers/clk/mediatek/clk-mt8195-wpe.c
-index 9c45a2fed0ce..315b93bbfcdc 100644
---- a/drivers/clk/mediatek/clk-mt8195-wpe.c
-+++ b/drivers/clk/mediatek/clk-mt8195-wpe.c
-@@ -136,7 +136,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8195_wpe);
- 
- static struct platform_driver clk_mt8195_wpe_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8195-wpe",
- 		.of_match_table = of_match_clk_mt8195_wpe,
-diff --git a/drivers/clk/mediatek/clk-mt8365-apu.c b/drivers/clk/mediatek/clk-mt8365-apu.c
-index 934060e6d9e9..2583c4704ffa 100644
---- a/drivers/clk/mediatek/clk-mt8365-apu.c
-+++ b/drivers/clk/mediatek/clk-mt8365-apu.c
-@@ -46,7 +46,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8365_apu);
- 
- static struct platform_driver clk_mt8365_apu_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8365-apu",
- 		.of_match_table = of_match_clk_mt8365_apu,
-diff --git a/drivers/clk/mediatek/clk-mt8365-cam.c b/drivers/clk/mediatek/clk-mt8365-cam.c
-index c8fe5f5bb06c..89d2bd50263b 100644
---- a/drivers/clk/mediatek/clk-mt8365-cam.c
-+++ b/drivers/clk/mediatek/clk-mt8365-cam.c
-@@ -48,7 +48,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8365_cam);
- 
- static struct platform_driver clk_mt8365_cam_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8365-cam",
- 		.of_match_table = of_match_clk_mt8365_cam,
-diff --git a/drivers/clk/mediatek/clk-mt8365-mfg.c b/drivers/clk/mediatek/clk-mt8365-mfg.c
-index 5355f725363d..41bcd389119c 100644
---- a/drivers/clk/mediatek/clk-mt8365-mfg.c
-+++ b/drivers/clk/mediatek/clk-mt8365-mfg.c
-@@ -54,7 +54,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8365_mfg);
- 
- static struct platform_driver clk_mt8365_mfg_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8365-mfg",
- 		.of_match_table = of_match_clk_mt8365_mfg,
-diff --git a/drivers/clk/mediatek/clk-mt8365-mm.c b/drivers/clk/mediatek/clk-mt8365-mm.c
-index 8201949bfdae..56fb2a43ecd0 100644
---- a/drivers/clk/mediatek/clk-mt8365-mm.c
-+++ b/drivers/clk/mediatek/clk-mt8365-mm.c
-@@ -85,7 +85,7 @@ MODULE_DEVICE_TABLE(platform, clk_mt8365_mm_id_table);
- 
- static struct platform_driver clk_mt8365_mm_drv = {
- 	.probe = mtk_clk_pdev_probe,
--	.remove_new = mtk_clk_pdev_remove,
-+	.remove = mtk_clk_pdev_remove,
- 	.driver = {
- 		.name = "clk-mt8365-mm",
- 	},
-diff --git a/drivers/clk/mediatek/clk-mt8365-vdec.c b/drivers/clk/mediatek/clk-mt8365-vdec.c
-index 1be0b3faa2c3..f5d0518bc2e0 100644
---- a/drivers/clk/mediatek/clk-mt8365-vdec.c
-+++ b/drivers/clk/mediatek/clk-mt8365-vdec.c
-@@ -54,7 +54,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8365_vdec);
- 
- static struct platform_driver clk_mt8365_vdec_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8365-vdec",
- 		.of_match_table = of_match_clk_mt8365_vdec,
-diff --git a/drivers/clk/mediatek/clk-mt8365-venc.c b/drivers/clk/mediatek/clk-mt8365-venc.c
-index 4228ddec5657..35abd908537c 100644
---- a/drivers/clk/mediatek/clk-mt8365-venc.c
-+++ b/drivers/clk/mediatek/clk-mt8365-venc.c
-@@ -43,7 +43,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8365_venc);
- 
- static struct platform_driver clk_mt8365_venc_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8365-venc",
- 		.of_match_table = of_match_clk_mt8365_venc,
-diff --git a/drivers/clk/mediatek/clk-mt8365.c b/drivers/clk/mediatek/clk-mt8365.c
-index 485b525b8acd..e7952121112e 100644
---- a/drivers/clk/mediatek/clk-mt8365.c
-+++ b/drivers/clk/mediatek/clk-mt8365.c
-@@ -809,7 +809,7 @@ static struct platform_driver clk_mt8365_drv = {
- 		.of_match_table = of_match_clk_mt8365,
- 	},
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- };
- module_platform_driver(clk_mt8365_drv);
- 
-diff --git a/drivers/clk/mediatek/clk-mt8516-aud.c b/drivers/clk/mediatek/clk-mt8516-aud.c
-index 53e1866fb8e2..6227635fd5a1 100644
---- a/drivers/clk/mediatek/clk-mt8516-aud.c
-+++ b/drivers/clk/mediatek/clk-mt8516-aud.c
-@@ -53,7 +53,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8516_aud);
- 
- static struct platform_driver clk_mt8516_aud_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8516-aud",
- 		.of_match_table = of_match_clk_mt8516_aud,
-diff --git a/drivers/clk/mediatek/clk-mt8516.c b/drivers/clk/mediatek/clk-mt8516.c
-index b8ae837c59dc..21eb052b0a53 100644
---- a/drivers/clk/mediatek/clk-mt8516.c
-+++ b/drivers/clk/mediatek/clk-mt8516.c
-@@ -669,7 +669,7 @@ MODULE_DEVICE_TABLE(of, of_match_clk_mt8516);
- 
- static struct platform_driver clk_mt8516_drv = {
- 	.probe = mtk_clk_simple_probe,
--	.remove_new = mtk_clk_simple_remove,
-+	.remove = mtk_clk_simple_remove,
- 	.driver = {
- 		.name = "clk-mt8516",
- 		.of_match_table = of_match_clk_mt8516,
-diff --git a/drivers/clk/mmp/clk-audio.c b/drivers/clk/mmp/clk-audio.c
-index ae521aaf8cdc..88d798d510cd 100644
---- a/drivers/clk/mmp/clk-audio.c
-+++ b/drivers/clk/mmp/clk-audio.c
-@@ -436,7 +436,7 @@ static struct platform_driver mmp2_audio_clk_driver = {
- 		.pm = &mmp2_audio_clk_pm_ops,
- 	},
- 	.probe = mmp2_audio_clk_probe,
--	.remove_new = mmp2_audio_clk_remove,
-+	.remove = mmp2_audio_clk_remove,
- };
- module_platform_driver(mmp2_audio_clk_driver);
- 
-diff --git a/drivers/clk/mvebu/armada-37xx-periph.c b/drivers/clk/mvebu/armada-37xx-periph.c
-index 8701a58a5804..13906e31bef8 100644
---- a/drivers/clk/mvebu/armada-37xx-periph.c
-+++ b/drivers/clk/mvebu/armada-37xx-periph.c
-@@ -792,7 +792,7 @@ static void armada_3700_periph_clock_remove(struct platform_device *pdev)
- 
- static struct platform_driver armada_3700_periph_clock_driver = {
- 	.probe = armada_3700_periph_clock_probe,
--	.remove_new = armada_3700_periph_clock_remove,
-+	.remove = armada_3700_periph_clock_remove,
+ module_platform_driver(wm8998_codec_driver);
+diff --git a/sound/soc/dwc/dwc-i2s.c b/sound/soc/dwc/dwc-i2s.c
+index e6a5eebe5bc9..57b789d7fbed 100644
+--- a/sound/soc/dwc/dwc-i2s.c
++++ b/sound/soc/dwc/dwc-i2s.c
+@@ -1089,7 +1089,7 @@ static const struct dev_pm_ops dwc_pm_ops = {
+ 
+ static struct platform_driver dw_i2s_driver = {
+ 	.probe		= dw_i2s_probe,
+-	.remove_new	= dw_i2s_remove,
++	.remove		= dw_i2s_remove,
  	.driver		= {
- 		.name	= "marvell-armada-3700-periph-clock",
- 		.of_match_table = armada_3700_periph_clock_of_match,
-diff --git a/drivers/clk/mvebu/armada-37xx-tbg.c b/drivers/clk/mvebu/armada-37xx-tbg.c
-index e94c336e0f1c..1a16f9c0b1d8 100644
---- a/drivers/clk/mvebu/armada-37xx-tbg.c
-+++ b/drivers/clk/mvebu/armada-37xx-tbg.c
-@@ -141,7 +141,7 @@ static const struct of_device_id armada_3700_tbg_clock_of_match[] = {
+ 		.name	= "designware-i2s",
+ 		.of_match_table = of_match_ptr(dw_i2s_of_match),
+diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
+index b793263291dc..bd5c46d763c0 100644
+--- a/sound/soc/fsl/fsl_asrc.c
++++ b/sound/soc/fsl/fsl_asrc.c
+@@ -1392,7 +1392,7 @@ MODULE_DEVICE_TABLE(of, fsl_asrc_ids);
  
- static struct platform_driver armada_3700_tbg_clock_driver = {
- 	.probe = armada_3700_tbg_clock_probe,
--	.remove_new = armada_3700_tbg_clock_remove,
-+	.remove = armada_3700_tbg_clock_remove,
+ static struct platform_driver fsl_asrc_driver = {
+ 	.probe = fsl_asrc_probe,
+-	.remove_new = fsl_asrc_remove,
++	.remove = fsl_asrc_remove,
+ 	.driver = {
+ 		.name = "fsl-asrc",
+ 		.of_match_table = fsl_asrc_ids,
+diff --git a/sound/soc/fsl/fsl_aud2htx.c b/sound/soc/fsl/fsl_aud2htx.c
+index a6cbaa6364c7..021d73e409aa 100644
+--- a/sound/soc/fsl/fsl_aud2htx.c
++++ b/sound/soc/fsl/fsl_aud2htx.c
+@@ -296,7 +296,7 @@ static const struct dev_pm_ops fsl_aud2htx_pm_ops = {
+ 
+ static struct platform_driver fsl_aud2htx_driver = {
+ 	.probe = fsl_aud2htx_probe,
+-	.remove_new = fsl_aud2htx_remove,
++	.remove = fsl_aud2htx_remove,
+ 	.driver = {
+ 		.name = "fsl-aud2htx",
+ 		.pm = pm_ptr(&fsl_aud2htx_pm_ops),
+diff --git a/sound/soc/fsl/fsl_audmix.c b/sound/soc/fsl/fsl_audmix.c
+index f3a24758aedb..3cd9a66b70a1 100644
+--- a/sound/soc/fsl/fsl_audmix.c
++++ b/sound/soc/fsl/fsl_audmix.c
+@@ -548,7 +548,7 @@ static const struct dev_pm_ops fsl_audmix_pm = {
+ 
+ static struct platform_driver fsl_audmix_driver = {
+ 	.probe = fsl_audmix_probe,
+-	.remove_new = fsl_audmix_remove,
++	.remove = fsl_audmix_remove,
+ 	.driver = {
+ 		.name = "fsl-audmix",
+ 		.of_match_table = fsl_audmix_ids,
+diff --git a/sound/soc/fsl/fsl_dma.c b/sound/soc/fsl/fsl_dma.c
+index c4bc9395dff7..aca066b5a43c 100644
+--- a/sound/soc/fsl/fsl_dma.c
++++ b/sound/soc/fsl/fsl_dma.c
+@@ -911,7 +911,7 @@ static struct platform_driver fsl_soc_dma_driver = {
+ 		.of_match_table = fsl_soc_dma_ids,
+ 	},
+ 	.probe = fsl_soc_dma_probe,
+-	.remove_new = fsl_soc_dma_remove,
++	.remove = fsl_soc_dma_remove,
+ };
+ 
+ module_platform_driver(fsl_soc_dma_driver);
+diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
+index 962f30912091..82359edd6a8b 100644
+--- a/sound/soc/fsl/fsl_easrc.c
++++ b/sound/soc/fsl/fsl_easrc.c
+@@ -2093,7 +2093,7 @@ static const struct dev_pm_ops fsl_easrc_pm_ops = {
+ 
+ static struct platform_driver fsl_easrc_driver = {
+ 	.probe = fsl_easrc_probe,
+-	.remove_new = fsl_easrc_remove,
++	.remove = fsl_easrc_remove,
+ 	.driver = {
+ 		.name = "fsl-easrc",
+ 		.pm = pm_ptr(&fsl_easrc_pm_ops),
+diff --git a/sound/soc/fsl/fsl_esai.c b/sound/soc/fsl/fsl_esai.c
+index d0d8a01da9bd..a65f5b9935a2 100644
+--- a/sound/soc/fsl/fsl_esai.c
++++ b/sound/soc/fsl/fsl_esai.c
+@@ -1198,7 +1198,7 @@ static const struct dev_pm_ops fsl_esai_pm_ops = {
+ 
+ static struct platform_driver fsl_esai_driver = {
+ 	.probe = fsl_esai_probe,
+-	.remove_new = fsl_esai_remove,
++	.remove = fsl_esai_remove,
+ 	.driver = {
+ 		.name = "fsl-esai-dai",
+ 		.pm = &fsl_esai_pm_ops,
+diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
+index 22b240a70ad4..193be098fa5e 100644
+--- a/sound/soc/fsl/fsl_micfil.c
++++ b/sound/soc/fsl/fsl_micfil.c
+@@ -1317,7 +1317,7 @@ static const struct dev_pm_ops fsl_micfil_pm_ops = {
+ 
+ static struct platform_driver fsl_micfil_driver = {
+ 	.probe = fsl_micfil_probe,
+-	.remove_new = fsl_micfil_remove,
++	.remove = fsl_micfil_remove,
+ 	.driver = {
+ 		.name = "fsl-micfil-dai",
+ 		.pm = &fsl_micfil_pm_ops,
+diff --git a/sound/soc/fsl/fsl_mqs.c b/sound/soc/fsl/fsl_mqs.c
+index df160834c81b..145f9ca15e43 100644
+--- a/sound/soc/fsl/fsl_mqs.c
++++ b/sound/soc/fsl/fsl_mqs.c
+@@ -381,7 +381,7 @@ MODULE_DEVICE_TABLE(of, fsl_mqs_dt_ids);
+ 
+ static struct platform_driver fsl_mqs_driver = {
+ 	.probe		= fsl_mqs_probe,
+-	.remove_new	= fsl_mqs_remove,
++	.remove		= fsl_mqs_remove,
  	.driver		= {
- 		.name	= "marvell-armada-3700-tbg-clock",
- 		.of_match_table = armada_3700_tbg_clock_of_match,
-diff --git a/drivers/clk/mvebu/armada-37xx-xtal.c b/drivers/clk/mvebu/armada-37xx-xtal.c
-index 0e2e7d00ae11..ca88e5e78b06 100644
---- a/drivers/clk/mvebu/armada-37xx-xtal.c
-+++ b/drivers/clk/mvebu/armada-37xx-xtal.c
-@@ -77,7 +77,7 @@ static const struct of_device_id armada_3700_xtal_clock_of_match[] = {
+ 		.name	= "fsl-mqs",
+ 		.of_match_table = fsl_mqs_dt_ids,
+diff --git a/sound/soc/fsl/fsl_rpmsg.c b/sound/soc/fsl/fsl_rpmsg.c
+index be46fbfd487a..0a551be3053b 100644
+--- a/sound/soc/fsl/fsl_rpmsg.c
++++ b/sound/soc/fsl/fsl_rpmsg.c
+@@ -328,7 +328,7 @@ static const struct dev_pm_ops fsl_rpmsg_pm_ops = {
  
- static struct platform_driver armada_3700_xtal_clock_driver = {
- 	.probe = armada_3700_xtal_clock_probe,
--	.remove_new = armada_3700_xtal_clock_remove,
-+	.remove = armada_3700_xtal_clock_remove,
+ static struct platform_driver fsl_rpmsg_driver = {
+ 	.probe  = fsl_rpmsg_probe,
+-	.remove_new = fsl_rpmsg_remove,
++	.remove = fsl_rpmsg_remove,
+ 	.driver = {
+ 		.name = "fsl_rpmsg",
+ 		.pm = pm_ptr(&fsl_rpmsg_pm_ops),
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index d03b0172b8ad..ab58a4461073 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -1817,7 +1817,7 @@ static const struct dev_pm_ops fsl_sai_pm_ops = {
+ 
+ static struct platform_driver fsl_sai_driver = {
+ 	.probe = fsl_sai_probe,
+-	.remove_new = fsl_sai_remove,
++	.remove = fsl_sai_remove,
+ 	.driver = {
+ 		.name = "fsl-sai",
+ 		.pm = &fsl_sai_pm_ops,
+diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
+index eace399cb064..b6ff04f7138a 100644
+--- a/sound/soc/fsl/fsl_spdif.c
++++ b/sound/soc/fsl/fsl_spdif.c
+@@ -1763,7 +1763,7 @@ static struct platform_driver fsl_spdif_driver = {
+ 		.pm = pm_ptr(&fsl_spdif_pm),
+ 	},
+ 	.probe = fsl_spdif_probe,
+-	.remove_new = fsl_spdif_remove,
++	.remove = fsl_spdif_remove,
+ };
+ 
+ module_platform_driver(fsl_spdif_driver);
+diff --git a/sound/soc/fsl/fsl_ssi.c b/sound/soc/fsl/fsl_ssi.c
+index c4c1d9c44056..320108bebf30 100644
+--- a/sound/soc/fsl/fsl_ssi.c
++++ b/sound/soc/fsl/fsl_ssi.c
+@@ -1734,7 +1734,7 @@ static struct platform_driver fsl_ssi_driver = {
+ 		.pm = pm_sleep_ptr(&fsl_ssi_pm),
+ 	},
+ 	.probe = fsl_ssi_probe,
+-	.remove_new = fsl_ssi_remove,
++	.remove = fsl_ssi_remove,
+ };
+ 
+ module_platform_driver(fsl_ssi_driver);
+diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
+index c98e3db74fe7..beede7344efd 100644
+--- a/sound/soc/fsl/fsl_xcvr.c
++++ b/sound/soc/fsl/fsl_xcvr.c
+@@ -1540,7 +1540,7 @@ static struct platform_driver fsl_xcvr_driver = {
+ 		.pm = pm_ptr(&fsl_xcvr_pm_ops),
+ 		.of_match_table = fsl_xcvr_dt_ids,
+ 	},
+-	.remove_new = fsl_xcvr_remove,
++	.remove = fsl_xcvr_remove,
+ };
+ module_platform_driver(fsl_xcvr_driver);
+ 
+diff --git a/sound/soc/fsl/imx-audmux.c b/sound/soc/fsl/imx-audmux.c
+index f97ae14dc452..43e14f2eca8d 100644
+--- a/sound/soc/fsl/imx-audmux.c
++++ b/sound/soc/fsl/imx-audmux.c
+@@ -354,7 +354,7 @@ static const struct dev_pm_ops imx_audmux_pm = {
+ 
+ static struct platform_driver imx_audmux_driver = {
+ 	.probe		= imx_audmux_probe,
+-	.remove_new	= imx_audmux_remove,
++	.remove		= imx_audmux_remove,
+ 	.driver	= {
+ 		.name	= DRIVER_NAME,
+ 		.pm = pm_sleep_ptr(&imx_audmux_pm),
+diff --git a/sound/soc/fsl/imx-pcm-rpmsg.c b/sound/soc/fsl/imx-pcm-rpmsg.c
+index 22156f99dcee..1daf0be3d100 100644
+--- a/sound/soc/fsl/imx-pcm-rpmsg.c
++++ b/sound/soc/fsl/imx-pcm-rpmsg.c
+@@ -822,7 +822,7 @@ MODULE_DEVICE_TABLE(platform, imx_rpmsg_pcm_id_table);
+ 
+ static struct platform_driver imx_pcm_rpmsg_driver = {
+ 	.probe  = imx_rpmsg_pcm_probe,
+-	.remove_new = imx_rpmsg_pcm_remove,
++	.remove = imx_rpmsg_pcm_remove,
+ 	.id_table = imx_rpmsg_pcm_id_table,
+ 	.driver = {
+ 		.name = IMX_PCM_DRV_NAME,
+diff --git a/sound/soc/fsl/imx-sgtl5000.c b/sound/soc/fsl/imx-sgtl5000.c
+index 3c1e69092d2f..8bcf54ef709e 100644
+--- a/sound/soc/fsl/imx-sgtl5000.c
++++ b/sound/soc/fsl/imx-sgtl5000.c
+@@ -214,7 +214,7 @@ static struct platform_driver imx_sgtl5000_driver = {
+ 		.of_match_table = imx_sgtl5000_dt_ids,
+ 	},
+ 	.probe = imx_sgtl5000_probe,
+-	.remove_new = imx_sgtl5000_remove,
++	.remove = imx_sgtl5000_remove,
+ };
+ module_platform_driver(imx_sgtl5000_driver);
+ 
+diff --git a/sound/soc/fsl/mpc5200_psc_ac97.c b/sound/soc/fsl/mpc5200_psc_ac97.c
+index 0423cf43c7a0..8554fb690772 100644
+--- a/sound/soc/fsl/mpc5200_psc_ac97.c
++++ b/sound/soc/fsl/mpc5200_psc_ac97.c
+@@ -327,7 +327,7 @@ MODULE_DEVICE_TABLE(of, psc_ac97_match);
+ 
+ static struct platform_driver psc_ac97_driver = {
+ 	.probe = psc_ac97_of_probe,
+-	.remove_new = psc_ac97_of_remove,
++	.remove = psc_ac97_of_remove,
+ 	.driver = {
+ 		.name = "mpc5200-psc-ac97",
+ 		.of_match_table = psc_ac97_match,
+diff --git a/sound/soc/fsl/mpc5200_psc_i2s.c b/sound/soc/fsl/mpc5200_psc_i2s.c
+index 931b430fa983..9ad44eeed6ad 100644
+--- a/sound/soc/fsl/mpc5200_psc_i2s.c
++++ b/sound/soc/fsl/mpc5200_psc_i2s.c
+@@ -225,7 +225,7 @@ MODULE_DEVICE_TABLE(of, psc_i2s_match);
+ 
+ static struct platform_driver psc_i2s_driver = {
+ 	.probe = psc_i2s_of_probe,
+-	.remove_new = psc_i2s_of_remove,
++	.remove = psc_i2s_of_remove,
+ 	.driver = {
+ 		.name = "mpc5200-psc-i2s",
+ 		.of_match_table = psc_i2s_match,
+diff --git a/sound/soc/fsl/p1022_ds.c b/sound/soc/fsl/p1022_ds.c
+index 6f5eecf6d88c..66db05970d82 100644
+--- a/sound/soc/fsl/p1022_ds.c
++++ b/sound/soc/fsl/p1022_ds.c
+@@ -408,7 +408,7 @@ static void p1022_ds_remove(struct platform_device *pdev)
+ 
+ static struct platform_driver p1022_ds_driver = {
+ 	.probe = p1022_ds_probe,
+-	.remove_new = p1022_ds_remove,
++	.remove = p1022_ds_remove,
+ 	.driver = {
+ 		/*
+ 		 * The name must match 'compatible' property in the device tree,
+diff --git a/sound/soc/fsl/p1022_rdk.c b/sound/soc/fsl/p1022_rdk.c
+index a42149311c8b..d4568346714f 100644
+--- a/sound/soc/fsl/p1022_rdk.c
++++ b/sound/soc/fsl/p1022_rdk.c
+@@ -370,7 +370,7 @@ static void p1022_rdk_remove(struct platform_device *pdev)
+ 
+ static struct platform_driver p1022_rdk_driver = {
+ 	.probe = p1022_rdk_probe,
+-	.remove_new = p1022_rdk_remove,
++	.remove = p1022_rdk_remove,
+ 	.driver = {
+ 		/*
+ 		 * The name must match 'compatible' property in the device tree,
+diff --git a/sound/soc/fsl/pcm030-audio-fabric.c b/sound/soc/fsl/pcm030-audio-fabric.c
+index 2bab0fc1de59..5542c4ee6d12 100644
+--- a/sound/soc/fsl/pcm030-audio-fabric.c
++++ b/sound/soc/fsl/pcm030-audio-fabric.c
+@@ -124,7 +124,7 @@ MODULE_DEVICE_TABLE(of, pcm030_audio_match);
+ 
+ static struct platform_driver pcm030_fabric_driver = {
+ 	.probe		= pcm030_fabric_probe,
+-	.remove_new	= pcm030_fabric_remove,
++	.remove		= pcm030_fabric_remove,
  	.driver		= {
- 		.name	= "marvell-armada-3700-xtal-clock",
- 		.of_match_table = armada_3700_xtal_clock_of_match,
-diff --git a/drivers/clk/qcom/apcs-msm8916.c b/drivers/clk/qcom/apcs-msm8916.c
-index ce57b333ec99..ef31386831eb 100644
---- a/drivers/clk/qcom/apcs-msm8916.c
-+++ b/drivers/clk/qcom/apcs-msm8916.c
-@@ -128,7 +128,7 @@ static void qcom_apcs_msm8916_clk_remove(struct platform_device *pdev)
- 
- static struct platform_driver qcom_apcs_msm8916_clk_driver = {
- 	.probe = qcom_apcs_msm8916_clk_probe,
--	.remove_new = qcom_apcs_msm8916_clk_remove,
-+	.remove = qcom_apcs_msm8916_clk_remove,
- 	.driver = {
- 		.name = "qcom-apcs-msm8916-clk",
+ 		.name	= DRV_NAME,
+ 		.of_match_table    = pcm030_audio_match,
+diff --git a/sound/soc/generic/audio-graph-card.c b/sound/soc/generic/audio-graph-card.c
+index 03add80e75f3..4b384475b972 100644
+--- a/sound/soc/generic/audio-graph-card.c
++++ b/sound/soc/generic/audio-graph-card.c
+@@ -664,7 +664,7 @@ static struct platform_driver graph_card = {
+ 		.of_match_table = graph_of_match,
  	},
-diff --git a/drivers/clk/qcom/apcs-sdx55.c b/drivers/clk/qcom/apcs-sdx55.c
-index d644e6e1f8b7..76ece6c4a969 100644
---- a/drivers/clk/qcom/apcs-sdx55.c
-+++ b/drivers/clk/qcom/apcs-sdx55.c
-@@ -131,7 +131,7 @@ static void qcom_apcs_sdx55_clk_remove(struct platform_device *pdev)
+ 	.probe = graph_probe,
+-	.remove_new = simple_util_remove,
++	.remove = simple_util_remove,
+ };
+ module_platform_driver(graph_card);
  
- static struct platform_driver qcom_apcs_sdx55_clk_driver = {
- 	.probe = qcom_apcs_sdx55_clk_probe,
--	.remove_new = qcom_apcs_sdx55_clk_remove,
-+	.remove = qcom_apcs_sdx55_clk_remove,
- 	.driver = {
- 		.name = "qcom-sdx55-acps-clk",
+diff --git a/sound/soc/generic/audio-graph-card2-custom-sample.c b/sound/soc/generic/audio-graph-card2-custom-sample.c
+index 8e5a51098490..7151d426bee9 100644
+--- a/sound/soc/generic/audio-graph-card2-custom-sample.c
++++ b/sound/soc/generic/audio-graph-card2-custom-sample.c
+@@ -177,7 +177,7 @@ static struct platform_driver custom_card = {
+ 		.of_match_table = custom_of_match,
  	},
-diff --git a/drivers/clk/qcom/clk-cbf-8996.c b/drivers/clk/qcom/clk-cbf-8996.c
-index f5fd1ff9c6c9..ce4efcd995ea 100644
---- a/drivers/clk/qcom/clk-cbf-8996.c
-+++ b/drivers/clk/qcom/clk-cbf-8996.c
-@@ -346,7 +346,7 @@ MODULE_DEVICE_TABLE(of, qcom_msm8996_cbf_match_table);
+ 	.probe	= custom_probe,
+-	.remove_new = simple_util_remove,
++	.remove = simple_util_remove,
+ };
+ module_platform_driver(custom_card);
  
- static struct platform_driver qcom_msm8996_cbf_driver = {
- 	.probe = qcom_msm8996_cbf_probe,
--	.remove_new = qcom_msm8996_cbf_remove,
-+	.remove = qcom_msm8996_cbf_remove,
+diff --git a/sound/soc/generic/audio-graph-card2.c b/sound/soc/generic/audio-graph-card2.c
+index bf4c1ab4ec58..4ad3d1b0714f 100644
+--- a/sound/soc/generic/audio-graph-card2.c
++++ b/sound/soc/generic/audio-graph-card2.c
+@@ -1438,7 +1438,7 @@ static struct platform_driver graph_card = {
+ 		.of_match_table = graph_of_match,
+ 	},
+ 	.probe	= graph_probe,
+-	.remove_new = simple_util_remove,
++	.remove = simple_util_remove,
+ };
+ module_platform_driver(graph_card);
+ 
+diff --git a/sound/soc/generic/simple-card.c b/sound/soc/generic/simple-card.c
+index 42c60b92cca5..76a1d05e2ebe 100644
+--- a/sound/soc/generic/simple-card.c
++++ b/sound/soc/generic/simple-card.c
+@@ -838,7 +838,7 @@ static struct platform_driver simple_card = {
+ 		.of_match_table = simple_of_match,
+ 	},
+ 	.probe = simple_probe,
+-	.remove_new = simple_util_remove,
++	.remove = simple_util_remove,
+ };
+ 
+ module_platform_driver(simple_card);
+diff --git a/sound/soc/generic/test-component.c b/sound/soc/generic/test-component.c
+index df2487b700cc..407288055741 100644
+--- a/sound/soc/generic/test-component.c
++++ b/sound/soc/generic/test-component.c
+@@ -637,7 +637,7 @@ static struct platform_driver test_driver = {
+ 		.of_match_table = test_of_match,
+ 	},
+ 	.probe  = test_driver_probe,
+-	.remove_new = test_driver_remove,
++	.remove = test_driver_remove,
+ };
+ module_platform_driver(test_driver);
+ 
+diff --git a/sound/soc/img/img-i2s-in.c b/sound/soc/img/img-i2s-in.c
+index b69a364d619e..6a988976fb0d 100644
+--- a/sound/soc/img/img-i2s-in.c
++++ b/sound/soc/img/img-i2s-in.c
+@@ -607,7 +607,7 @@ static struct platform_driver img_i2s_in_driver = {
+ 		.pm = &img_i2s_in_pm_ops
+ 	},
+ 	.probe = img_i2s_in_probe,
+-	.remove_new = img_i2s_in_dev_remove
++	.remove = img_i2s_in_dev_remove
+ };
+ module_platform_driver(img_i2s_in_driver);
+ 
+diff --git a/sound/soc/img/img-i2s-out.c b/sound/soc/img/img-i2s-out.c
+index 6f9831c6d6e0..1211e6184d97 100644
+--- a/sound/soc/img/img-i2s-out.c
++++ b/sound/soc/img/img-i2s-out.c
+@@ -607,7 +607,7 @@ static struct platform_driver img_i2s_out_driver = {
+ 		.pm = &img_i2s_out_pm_ops
+ 	},
+ 	.probe = img_i2s_out_probe,
+-	.remove_new = img_i2s_out_dev_remove
++	.remove = img_i2s_out_dev_remove
+ };
+ module_platform_driver(img_i2s_out_driver);
+ 
+diff --git a/sound/soc/img/img-parallel-out.c b/sound/soc/img/img-parallel-out.c
+index 815e68a7048c..4ec63119d67c 100644
+--- a/sound/soc/img/img-parallel-out.c
++++ b/sound/soc/img/img-parallel-out.c
+@@ -311,7 +311,7 @@ static struct platform_driver img_prl_out_driver = {
+ 		.pm = &img_prl_out_pm_ops
+ 	},
+ 	.probe = img_prl_out_probe,
+-	.remove_new = img_prl_out_dev_remove
++	.remove = img_prl_out_dev_remove
+ };
+ module_platform_driver(img_prl_out_driver);
+ 
+diff --git a/sound/soc/img/img-spdif-in.c b/sound/soc/img/img-spdif-in.c
+index 9646e9d3f0bc..3c513f5b8c54 100644
+--- a/sound/soc/img/img-spdif-in.c
++++ b/sound/soc/img/img-spdif-in.c
+@@ -878,7 +878,7 @@ static struct platform_driver img_spdif_in_driver = {
+ 		.pm = &img_spdif_in_pm_ops
+ 	},
+ 	.probe = img_spdif_in_probe,
+-	.remove_new = img_spdif_in_dev_remove
++	.remove = img_spdif_in_dev_remove
+ };
+ module_platform_driver(img_spdif_in_driver);
+ 
+diff --git a/sound/soc/img/img-spdif-out.c b/sound/soc/img/img-spdif-out.c
+index dfa72afa946e..402695b5fc41 100644
+--- a/sound/soc/img/img-spdif-out.c
++++ b/sound/soc/img/img-spdif-out.c
+@@ -468,7 +468,7 @@ static struct platform_driver img_spdif_out_driver = {
+ 		.pm = &img_spdif_out_pm_ops
+ 	},
+ 	.probe = img_spdif_out_probe,
+-	.remove_new = img_spdif_out_dev_remove
++	.remove = img_spdif_out_dev_remove
+ };
+ module_platform_driver(img_spdif_out_driver);
+ 
+diff --git a/sound/soc/img/pistachio-internal-dac.c b/sound/soc/img/pistachio-internal-dac.c
+index da6251680e41..fdeceb271e7f 100644
+--- a/sound/soc/img/pistachio-internal-dac.c
++++ b/sound/soc/img/pistachio-internal-dac.c
+@@ -271,7 +271,7 @@ static struct platform_driver pistachio_internal_dac_plat_driver = {
+ 		.pm = &pistachio_internal_dac_pm_ops
+ 	},
+ 	.probe = pistachio_internal_dac_probe,
+-	.remove_new = pistachio_internal_dac_remove
++	.remove = pistachio_internal_dac_remove
+ };
+ module_platform_driver(pistachio_internal_dac_plat_driver);
+ 
+diff --git a/sound/soc/intel/atom/sst-mfld-platform-pcm.c b/sound/soc/intel/atom/sst-mfld-platform-pcm.c
+index 8652b4a20020..373d68b4cf88 100644
+--- a/sound/soc/intel/atom/sst-mfld-platform-pcm.c
++++ b/sound/soc/intel/atom/sst-mfld-platform-pcm.c
+@@ -812,7 +812,7 @@ static struct platform_driver sst_platform_driver = {
+ 		.pm             = &sst_platform_pm,
+ 	},
+ 	.probe		= sst_platform_probe,
+-	.remove_new	= sst_platform_remove,
++	.remove		= sst_platform_remove,
+ };
+ 
+ module_platform_driver(sst_platform_driver);
+diff --git a/sound/soc/intel/atom/sst/sst_acpi.c b/sound/soc/intel/atom/sst/sst_acpi.c
+index 29d44c989e5f..9956dc63db74 100644
+--- a/sound/soc/intel/atom/sst/sst_acpi.c
++++ b/sound/soc/intel/atom/sst/sst_acpi.c
+@@ -358,7 +358,7 @@ static struct platform_driver sst_acpi_driver = {
+ 		.pm			= &intel_sst_pm,
+ 	},
+ 	.probe	= sst_acpi_probe,
+-	.remove_new = sst_acpi_remove,
++	.remove = sst_acpi_remove,
+ };
+ 
+ module_platform_driver(sst_acpi_driver);
+diff --git a/sound/soc/intel/boards/bytcht_es8316.c b/sound/soc/intel/boards/bytcht_es8316.c
+index 3539c9ff0fd2..d3327bc237b5 100644
+--- a/sound/soc/intel/boards/bytcht_es8316.c
++++ b/sound/soc/intel/boards/bytcht_es8316.c
+@@ -709,7 +709,7 @@ static struct platform_driver snd_byt_cht_es8316_mc_driver = {
+ 		.name = "bytcht_es8316",
+ 	},
+ 	.probe = snd_byt_cht_es8316_mc_probe,
+-	.remove_new = snd_byt_cht_es8316_mc_remove,
++	.remove = snd_byt_cht_es8316_mc_remove,
+ };
+ 
+ module_platform_driver(snd_byt_cht_es8316_mc_driver);
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index 4479825c08b5..2ed49acb4e36 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -1918,7 +1918,7 @@ static struct platform_driver snd_byt_rt5640_mc_driver = {
+ 		.name = "bytcr_rt5640",
+ 	},
+ 	.probe = snd_byt_rt5640_mc_probe,
+-	.remove_new = snd_byt_rt5640_mc_remove,
++	.remove = snd_byt_rt5640_mc_remove,
+ };
+ 
+ module_platform_driver(snd_byt_rt5640_mc_driver);
+diff --git a/sound/soc/intel/boards/bytcr_rt5651.c b/sound/soc/intel/boards/bytcr_rt5651.c
+index 1f54da98aacf..8e4b821efe92 100644
+--- a/sound/soc/intel/boards/bytcr_rt5651.c
++++ b/sound/soc/intel/boards/bytcr_rt5651.c
+@@ -1142,7 +1142,7 @@ static struct platform_driver snd_byt_rt5651_mc_driver = {
+ 		.name = "bytcr_rt5651",
+ 	},
+ 	.probe = snd_byt_rt5651_mc_probe,
+-	.remove_new = snd_byt_rt5651_mc_remove,
++	.remove = snd_byt_rt5651_mc_remove,
+ };
+ 
+ module_platform_driver(snd_byt_rt5651_mc_driver);
+diff --git a/sound/soc/intel/boards/bytcr_wm5102.c b/sound/soc/intel/boards/bytcr_wm5102.c
+index e5a7cc606aa9..0b10d89cb189 100644
+--- a/sound/soc/intel/boards/bytcr_wm5102.c
++++ b/sound/soc/intel/boards/bytcr_wm5102.c
+@@ -663,7 +663,7 @@ static struct platform_driver snd_byt_wm5102_mc_driver = {
+ 		.name = "bytcr_wm5102",
+ 	},
+ 	.probe = snd_byt_wm5102_mc_probe,
+-	.remove_new = snd_byt_wm5102_mc_remove,
++	.remove = snd_byt_wm5102_mc_remove,
+ };
+ 
+ module_platform_driver(snd_byt_wm5102_mc_driver);
+diff --git a/sound/soc/intel/boards/cht_bsw_max98090_ti.c b/sound/soc/intel/boards/cht_bsw_max98090_ti.c
+index f43bc20d6aae..d7c114858833 100644
+--- a/sound/soc/intel/boards/cht_bsw_max98090_ti.c
++++ b/sound/soc/intel/boards/cht_bsw_max98090_ti.c
+@@ -637,7 +637,7 @@ static struct platform_driver snd_cht_mc_driver = {
+ 		.name = "cht-bsw-max98090",
+ 	},
+ 	.probe = snd_cht_mc_probe,
+-	.remove_new = snd_cht_mc_remove,
++	.remove = snd_cht_mc_remove,
+ };
+ 
+ module_platform_driver(snd_cht_mc_driver)
+diff --git a/sound/soc/intel/boards/sof_es8336.c b/sound/soc/intel/boards/sof_es8336.c
+index 578271b4230a..fc998fe4b196 100644
+--- a/sound/soc/intel/boards/sof_es8336.c
++++ b/sound/soc/intel/boards/sof_es8336.c
+@@ -838,7 +838,7 @@ static struct platform_driver sof_es8336_driver = {
+ 		.pm = &snd_soc_pm_ops,
+ 	},
+ 	.probe = sof_es8336_probe,
+-	.remove_new = sof_es8336_remove,
++	.remove = sof_es8336_remove,
+ 	.id_table = board_ids,
+ };
+ module_platform_driver(sof_es8336_driver);
+diff --git a/sound/soc/intel/boards/sof_pcm512x.c b/sound/soc/intel/boards/sof_pcm512x.c
+index b01cb2329542..5de883b9563e 100644
+--- a/sound/soc/intel/boards/sof_pcm512x.c
++++ b/sound/soc/intel/boards/sof_pcm512x.c
+@@ -430,7 +430,7 @@ static void sof_pcm512x_remove(struct platform_device *pdev)
+ 
+ static struct platform_driver sof_audio = {
+ 	.probe = sof_audio_probe,
+-	.remove_new = sof_pcm512x_remove,
++	.remove = sof_pcm512x_remove,
  	.driver = {
- 		.name = "qcom-msm8996-cbf",
- 		.of_match_table = qcom_msm8996_cbf_match_table,
-diff --git a/drivers/clk/qcom/gcc-msm8960.c b/drivers/clk/qcom/gcc-msm8960.c
-index a82a8212e322..9ddce11db6df 100644
---- a/drivers/clk/qcom/gcc-msm8960.c
-+++ b/drivers/clk/qcom/gcc-msm8960.c
-@@ -3761,7 +3761,7 @@ static void gcc_msm8960_remove(struct platform_device *pdev)
+ 		.name = "sof_pcm512x",
+ 		.pm = &snd_soc_pm_ops,
+diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
+index 855109d22131..f10ed95770ea 100644
+--- a/sound/soc/intel/boards/sof_sdw.c
++++ b/sound/soc/intel/boards/sof_sdw.c
+@@ -1368,7 +1368,7 @@ static struct platform_driver sof_sdw_driver = {
+ 		.pm = &snd_soc_pm_ops,
+ 	},
+ 	.probe = mc_probe,
+-	.remove_new = mc_remove,
++	.remove = mc_remove,
+ 	.id_table = mc_id_table,
+ };
  
- static struct platform_driver gcc_msm8960_driver = {
- 	.probe		= gcc_msm8960_probe,
--	.remove_new	= gcc_msm8960_remove,
-+	.remove		= gcc_msm8960_remove,
+diff --git a/sound/soc/intel/boards/sof_wm8804.c b/sound/soc/intel/boards/sof_wm8804.c
+index 0a5ce34d7f7b..facc6c32cbfe 100644
+--- a/sound/soc/intel/boards/sof_wm8804.c
++++ b/sound/soc/intel/boards/sof_wm8804.c
+@@ -294,7 +294,7 @@ static struct platform_driver sof_wm8804_driver = {
+ 		.pm = &snd_soc_pm_ops,
+ 	},
+ 	.probe = sof_wm8804_probe,
+-	.remove_new = sof_wm8804_remove,
++	.remove = sof_wm8804_remove,
+ };
+ module_platform_driver(sof_wm8804_driver);
+ 
+diff --git a/sound/soc/intel/catpt/device.c b/sound/soc/intel/catpt/device.c
+index 2e1fa79a04d4..2aa637124bec 100644
+--- a/sound/soc/intel/catpt/device.c
++++ b/sound/soc/intel/catpt/device.c
+@@ -374,7 +374,7 @@ MODULE_DEVICE_TABLE(acpi, catpt_ids);
+ 
+ static struct platform_driver catpt_acpi_driver = {
+ 	.probe = catpt_acpi_probe,
+-	.remove_new = catpt_acpi_remove,
++	.remove = catpt_acpi_remove,
+ 	.driver = {
+ 		.name = "intel_catpt",
+ 		.acpi_match_table = catpt_ids,
+diff --git a/sound/soc/kirkwood/kirkwood-i2s.c b/sound/soc/kirkwood/kirkwood-i2s.c
+index d1eb90310afa..99bd066c7309 100644
+--- a/sound/soc/kirkwood/kirkwood-i2s.c
++++ b/sound/soc/kirkwood/kirkwood-i2s.c
+@@ -759,7 +759,7 @@ MODULE_DEVICE_TABLE(of, mvebu_audio_of_match);
+ 
+ static struct platform_driver kirkwood_i2s_driver = {
+ 	.probe  = kirkwood_i2s_dev_probe,
+-	.remove_new = kirkwood_i2s_dev_remove,
++	.remove = kirkwood_i2s_dev_remove,
+ 	.driver = {
+ 		.name = DRV_NAME,
+ 		.of_match_table = of_match_ptr(mvebu_audio_of_match),
+diff --git a/sound/soc/mediatek/common/mtk-btcvsd.c b/sound/soc/mediatek/common/mtk-btcvsd.c
+index c12d170fa1de..d07f288f9752 100644
+--- a/sound/soc/mediatek/common/mtk-btcvsd.c
++++ b/sound/soc/mediatek/common/mtk-btcvsd.c
+@@ -1400,7 +1400,7 @@ static struct platform_driver mtk_btcvsd_snd_driver = {
+ 		.of_match_table = mtk_btcvsd_snd_dt_match,
+ 	},
+ 	.probe = mtk_btcvsd_snd_probe,
+-	.remove_new = mtk_btcvsd_snd_remove,
++	.remove = mtk_btcvsd_snd_remove,
+ };
+ 
+ module_platform_driver(mtk_btcvsd_snd_driver);
+diff --git a/sound/soc/mediatek/mt2701/mt2701-afe-pcm.c b/sound/soc/mediatek/mt2701/mt2701-afe-pcm.c
+index 6a17deb874df..5f11bc5438bd 100644
+--- a/sound/soc/mediatek/mt2701/mt2701-afe-pcm.c
++++ b/sound/soc/mediatek/mt2701/mt2701-afe-pcm.c
+@@ -1473,7 +1473,7 @@ static struct platform_driver mt2701_afe_pcm_driver = {
+ 		   .pm = &mt2701_afe_pm_ops,
+ 	},
+ 	.probe = mt2701_afe_pcm_dev_probe,
+-	.remove_new = mt2701_afe_pcm_dev_remove,
++	.remove = mt2701_afe_pcm_dev_remove,
+ };
+ 
+ module_platform_driver(mt2701_afe_pcm_driver);
+diff --git a/sound/soc/mediatek/mt6797/mt6797-afe-pcm.c b/sound/soc/mediatek/mt6797/mt6797-afe-pcm.c
+index c1dee119e93a..9159b42adf6a 100644
+--- a/sound/soc/mediatek/mt6797/mt6797-afe-pcm.c
++++ b/sound/soc/mediatek/mt6797/mt6797-afe-pcm.c
+@@ -890,7 +890,7 @@ static struct platform_driver mt6797_afe_pcm_driver = {
+ 		   .pm = &mt6797_afe_pm_ops,
+ 	},
+ 	.probe = mt6797_afe_pcm_dev_probe,
+-	.remove_new = mt6797_afe_pcm_dev_remove,
++	.remove = mt6797_afe_pcm_dev_remove,
+ };
+ 
+ module_platform_driver(mt6797_afe_pcm_driver);
+diff --git a/sound/soc/mediatek/mt7986/mt7986-afe-pcm.c b/sound/soc/mediatek/mt7986/mt7986-afe-pcm.c
+index 572ded279b53..d400bea0ef9c 100644
+--- a/sound/soc/mediatek/mt7986/mt7986-afe-pcm.c
++++ b/sound/soc/mediatek/mt7986/mt7986-afe-pcm.c
+@@ -601,7 +601,7 @@ static struct platform_driver mt7986_afe_pcm_driver = {
+ 		   .pm = &mt7986_afe_pm_ops,
+ 	},
+ 	.probe = mt7986_afe_pcm_dev_probe,
+-	.remove_new = mt7986_afe_pcm_dev_remove,
++	.remove = mt7986_afe_pcm_dev_remove,
+ };
+ module_platform_driver(mt7986_afe_pcm_driver);
+ 
+diff --git a/sound/soc/mediatek/mt8173/mt8173-afe-pcm.c b/sound/soc/mediatek/mt8173/mt8173-afe-pcm.c
+index b6291b7c811e..03250273ea9c 100644
+--- a/sound/soc/mediatek/mt8173/mt8173-afe-pcm.c
++++ b/sound/soc/mediatek/mt8173/mt8173-afe-pcm.c
+@@ -1223,7 +1223,7 @@ static struct platform_driver mt8173_afe_pcm_driver = {
+ 		   .pm = &mt8173_afe_pm_ops,
+ 	},
+ 	.probe = mt8173_afe_pcm_dev_probe,
+-	.remove_new = mt8173_afe_pcm_dev_remove,
++	.remove = mt8173_afe_pcm_dev_remove,
+ };
+ 
+ module_platform_driver(mt8173_afe_pcm_driver);
+diff --git a/sound/soc/mediatek/mt8183/mt8183-afe-pcm.c b/sound/soc/mediatek/mt8183/mt8183-afe-pcm.c
+index 25348fdf75fa..3f377ba4ad53 100644
+--- a/sound/soc/mediatek/mt8183/mt8183-afe-pcm.c
++++ b/sound/soc/mediatek/mt8183/mt8183-afe-pcm.c
+@@ -1268,7 +1268,7 @@ static struct platform_driver mt8183_afe_pcm_driver = {
+ 		   .pm = &mt8183_afe_pm_ops,
+ 	},
+ 	.probe = mt8183_afe_pcm_dev_probe,
+-	.remove_new = mt8183_afe_pcm_dev_remove,
++	.remove = mt8183_afe_pcm_dev_remove,
+ };
+ 
+ module_platform_driver(mt8183_afe_pcm_driver);
+diff --git a/sound/soc/mediatek/mt8192/mt8192-afe-pcm.c b/sound/soc/mediatek/mt8192/mt8192-afe-pcm.c
+index 424c5c68f78a..9b502f4cd6ea 100644
+--- a/sound/soc/mediatek/mt8192/mt8192-afe-pcm.c
++++ b/sound/soc/mediatek/mt8192/mt8192-afe-pcm.c
+@@ -2325,7 +2325,7 @@ static struct platform_driver mt8192_afe_pcm_driver = {
+ 		   .pm = &mt8192_afe_pm_ops,
+ 	},
+ 	.probe = mt8192_afe_pcm_dev_probe,
+-	.remove_new = mt8192_afe_pcm_dev_remove,
++	.remove = mt8192_afe_pcm_dev_remove,
+ };
+ 
+ module_platform_driver(mt8192_afe_pcm_driver);
+diff --git a/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c b/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
+index 38891d1bd18a..8016bfb35015 100644
+--- a/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
++++ b/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
+@@ -3199,7 +3199,7 @@ static struct platform_driver mt8195_afe_pcm_driver = {
+ 		   .pm = &mt8195_afe_pm_ops,
+ 	},
+ 	.probe = mt8195_afe_pcm_dev_probe,
+-	.remove_new = mt8195_afe_pcm_dev_remove,
++	.remove = mt8195_afe_pcm_dev_remove,
+ };
+ 
+ module_platform_driver(mt8195_afe_pcm_driver);
+diff --git a/sound/soc/mediatek/mt8365/mt8365-afe-pcm.c b/sound/soc/mediatek/mt8365/mt8365-afe-pcm.c
+index df6dd8c5bbe5..49efcdea975e 100644
+--- a/sound/soc/mediatek/mt8365/mt8365-afe-pcm.c
++++ b/sound/soc/mediatek/mt8365/mt8365-afe-pcm.c
+@@ -2264,7 +2264,7 @@ static struct platform_driver mt8365_afe_pcm_driver = {
+ 		   .pm = &mt8365_afe_pm_ops,
+ 	},
+ 	.probe = mt8365_afe_pcm_dev_probe,
+-	.remove_new = mt8365_afe_pcm_dev_remove,
++	.remove = mt8365_afe_pcm_dev_remove,
+ };
+ 
+ module_platform_driver(mt8365_afe_pcm_driver);
+diff --git a/sound/soc/meson/aiu.c b/sound/soc/meson/aiu.c
+index 5d1419ed7a62..f2890111c1d2 100644
+--- a/sound/soc/meson/aiu.c
++++ b/sound/soc/meson/aiu.c
+@@ -345,7 +345,7 @@ MODULE_DEVICE_TABLE(of, aiu_of_match);
+ 
+ static struct platform_driver aiu_pdrv = {
+ 	.probe = aiu_probe,
+-	.remove_new = aiu_remove,
++	.remove = aiu_remove,
+ 	.driver = {
+ 		.name = "meson-aiu",
+ 		.of_match_table = aiu_of_match,
+diff --git a/sound/soc/meson/axg-card.c b/sound/soc/meson/axg-card.c
+index 646ab87afac2..59deb332bd35 100644
+--- a/sound/soc/meson/axg-card.c
++++ b/sound/soc/meson/axg-card.c
+@@ -360,7 +360,7 @@ MODULE_DEVICE_TABLE(of, axg_card_of_match);
+ 
+ static struct platform_driver axg_card_pdrv = {
+ 	.probe = meson_card_probe,
+-	.remove_new = meson_card_remove,
++	.remove = meson_card_remove,
+ 	.driver = {
+ 		.name = "axg-sound-card",
+ 		.of_match_table = axg_card_of_match,
+diff --git a/sound/soc/meson/gx-card.c b/sound/soc/meson/gx-card.c
+index 7edca3e49c8f..455f6bfc9f8f 100644
+--- a/sound/soc/meson/gx-card.c
++++ b/sound/soc/meson/gx-card.c
+@@ -129,7 +129,7 @@ MODULE_DEVICE_TABLE(of, gx_card_of_match);
+ 
+ static struct platform_driver gx_card_pdrv = {
+ 	.probe = meson_card_probe,
+-	.remove_new = meson_card_remove,
++	.remove = meson_card_remove,
+ 	.driver = {
+ 		.name = "gx-sound-card",
+ 		.of_match_table = gx_card_of_match,
+diff --git a/sound/soc/mxs/mxs-sgtl5000.c b/sound/soc/mxs/mxs-sgtl5000.c
+index 310e3ac77424..a41a13ae38a5 100644
+--- a/sound/soc/mxs/mxs-sgtl5000.c
++++ b/sound/soc/mxs/mxs-sgtl5000.c
+@@ -185,7 +185,7 @@ static struct platform_driver mxs_sgtl5000_audio_driver = {
+ 		.of_match_table = mxs_sgtl5000_dt_ids,
+ 	},
+ 	.probe = mxs_sgtl5000_probe,
+-	.remove_new = mxs_sgtl5000_remove,
++	.remove = mxs_sgtl5000_remove,
+ };
+ 
+ module_platform_driver(mxs_sgtl5000_audio_driver);
+diff --git a/sound/soc/pxa/mmp-sspa.c b/sound/soc/pxa/mmp-sspa.c
+index abfaf3cdf5bb..73f36c9dd35c 100644
+--- a/sound/soc/pxa/mmp-sspa.c
++++ b/sound/soc/pxa/mmp-sspa.c
+@@ -574,7 +574,7 @@ static struct platform_driver asoc_mmp_sspa_driver = {
+ 		.of_match_table = of_match_ptr(mmp_sspa_of_match),
+ 	},
+ 	.probe = asoc_mmp_sspa_probe,
+-	.remove_new = asoc_mmp_sspa_remove,
++	.remove = asoc_mmp_sspa_remove,
+ };
+ 
+ module_platform_driver(asoc_mmp_sspa_driver);
+diff --git a/sound/soc/pxa/pxa2xx-ac97.c b/sound/soc/pxa/pxa2xx-ac97.c
+index 80e0ea0ec9fb..78f50032afc5 100644
+--- a/sound/soc/pxa/pxa2xx-ac97.c
++++ b/sound/soc/pxa/pxa2xx-ac97.c
+@@ -286,7 +286,7 @@ static DEFINE_SIMPLE_DEV_PM_OPS(pxa2xx_ac97_pm_ops,
+ 
+ static struct platform_driver pxa2xx_ac97_driver = {
+ 	.probe		= pxa2xx_ac97_dev_probe,
+-	.remove_new	= pxa2xx_ac97_dev_remove,
++	.remove		= pxa2xx_ac97_dev_remove,
  	.driver		= {
- 		.name	= "gcc-msm8960",
- 		.of_match_table = gcc_msm8960_match_table,
-diff --git a/drivers/clk/renesas/rcar-usb2-clock-sel.c b/drivers/clk/renesas/rcar-usb2-clock-sel.c
-index de4896cf5f40..421ae973ea8e 100644
---- a/drivers/clk/renesas/rcar-usb2-clock-sel.c
-+++ b/drivers/clk/renesas/rcar-usb2-clock-sel.c
-@@ -212,7 +212,7 @@ static struct platform_driver rcar_usb2_clock_sel_driver = {
- 		.pm	= &rcar_usb2_clock_sel_pm_ops,
+ 		.name	= "pxa2xx-ac97",
+ 		.pm	= &pxa2xx_ac97_pm_ops,
+diff --git a/sound/soc/qcom/lpass-apq8016.c b/sound/soc/qcom/lpass-apq8016.c
+index 9005c85f8c54..b8f23414eb77 100644
+--- a/sound/soc/qcom/lpass-apq8016.c
++++ b/sound/soc/qcom/lpass-apq8016.c
+@@ -300,7 +300,7 @@ static struct platform_driver apq8016_lpass_cpu_platform_driver = {
+ 		.of_match_table	= of_match_ptr(apq8016_lpass_cpu_device_id),
  	},
- 	.probe		= rcar_usb2_clock_sel_probe,
--	.remove_new	= rcar_usb2_clock_sel_remove,
-+	.remove		= rcar_usb2_clock_sel_remove,
+ 	.probe	= asoc_qcom_lpass_cpu_platform_probe,
+-	.remove_new = asoc_qcom_lpass_cpu_platform_remove,
++	.remove = asoc_qcom_lpass_cpu_platform_remove,
  };
- builtin_platform_driver(rcar_usb2_clock_sel_driver);
+ module_platform_driver(apq8016_lpass_cpu_platform_driver);
  
-diff --git a/drivers/clk/samsung/clk-exynos-audss.c b/drivers/clk/samsung/clk-exynos-audss.c
-index e44b172d7255..abd49edcf707 100644
---- a/drivers/clk/samsung/clk-exynos-audss.c
-+++ b/drivers/clk/samsung/clk-exynos-audss.c
-@@ -292,7 +292,7 @@ static struct platform_driver exynos_audss_clk_driver = {
- 		.pm = &exynos_audss_clk_pm_ops,
+diff --git a/sound/soc/qcom/lpass-ipq806x.c b/sound/soc/qcom/lpass-ipq806x.c
+index 5c874139f39d..e57d29ea4ce7 100644
+--- a/sound/soc/qcom/lpass-ipq806x.c
++++ b/sound/soc/qcom/lpass-ipq806x.c
+@@ -172,7 +172,7 @@ static struct platform_driver ipq806x_lpass_cpu_platform_driver = {
+ 		.of_match_table	= of_match_ptr(ipq806x_lpass_cpu_device_id),
  	},
- 	.probe = exynos_audss_clk_probe,
--	.remove_new = exynos_audss_clk_remove,
-+	.remove = exynos_audss_clk_remove,
+ 	.probe	= asoc_qcom_lpass_cpu_platform_probe,
+-	.remove_new = asoc_qcom_lpass_cpu_platform_remove,
++	.remove = asoc_qcom_lpass_cpu_platform_remove,
  };
+ module_platform_driver(ipq806x_lpass_cpu_platform_driver);
  
- module_platform_driver(exynos_audss_clk_driver);
-diff --git a/drivers/clk/samsung/clk-exynos-clkout.c b/drivers/clk/samsung/clk-exynos-clkout.c
-index 89cf2000884f..2ef5748c139b 100644
---- a/drivers/clk/samsung/clk-exynos-clkout.c
-+++ b/drivers/clk/samsung/clk-exynos-clkout.c
-@@ -241,7 +241,7 @@ static struct platform_driver exynos_clkout_driver = {
- 		.pm = &exynos_clkout_pm_ops,
+diff --git a/sound/soc/qcom/lpass-sc7180.c b/sound/soc/qcom/lpass-sc7180.c
+index e6bcdf6ed796..fbead6af3d95 100644
+--- a/sound/soc/qcom/lpass-sc7180.c
++++ b/sound/soc/qcom/lpass-sc7180.c
+@@ -315,7 +315,7 @@ static struct platform_driver sc7180_lpass_cpu_platform_driver = {
+ 		.pm = &sc7180_lpass_pm_ops,
  	},
- 	.probe = exynos_clkout_probe,
--	.remove_new = exynos_clkout_remove,
-+	.remove = exynos_clkout_remove,
+ 	.probe = asoc_qcom_lpass_cpu_platform_probe,
+-	.remove_new = asoc_qcom_lpass_cpu_platform_remove,
++	.remove = asoc_qcom_lpass_cpu_platform_remove,
+ 	.shutdown = asoc_qcom_lpass_cpu_platform_shutdown,
  };
- module_platform_driver(exynos_clkout_driver);
  
-diff --git a/drivers/clk/starfive/clk-starfive-jh7110-isp.c b/drivers/clk/starfive/clk-starfive-jh7110-isp.c
-index d3c85421f948..8c4c3a958a9f 100644
---- a/drivers/clk/starfive/clk-starfive-jh7110-isp.c
-+++ b/drivers/clk/starfive/clk-starfive-jh7110-isp.c
-@@ -216,7 +216,7 @@ MODULE_DEVICE_TABLE(of, jh7110_ispcrg_match);
+diff --git a/sound/soc/qcom/lpass-sc7280.c b/sound/soc/qcom/lpass-sc7280.c
+index 47c622327a8d..7cd3e291382a 100644
+--- a/sound/soc/qcom/lpass-sc7280.c
++++ b/sound/soc/qcom/lpass-sc7280.c
+@@ -445,7 +445,7 @@ static struct platform_driver sc7280_lpass_cpu_platform_driver = {
+ 		.pm = &sc7280_lpass_pm_ops,
+ 	},
+ 	.probe = asoc_qcom_lpass_cpu_platform_probe,
+-	.remove_new = asoc_qcom_lpass_cpu_platform_remove,
++	.remove = asoc_qcom_lpass_cpu_platform_remove,
+ 	.shutdown = asoc_qcom_lpass_cpu_platform_shutdown,
+ };
  
- static struct platform_driver jh7110_ispcrg_driver = {
- 	.probe = jh7110_ispcrg_probe,
--	.remove_new = jh7110_ispcrg_remove,
-+	.remove = jh7110_ispcrg_remove,
+diff --git a/sound/soc/qcom/qdsp6/q6routing.c b/sound/soc/qcom/qdsp6/q6routing.c
+index 81fde0681f95..90228699ba7d 100644
+--- a/sound/soc/qcom/qdsp6/q6routing.c
++++ b/sound/soc/qcom/qdsp6/q6routing.c
+@@ -1161,7 +1161,7 @@ static struct platform_driver q6pcm_routing_platform_driver = {
+ 		.of_match_table = of_match_ptr(q6pcm_routing_device_id),
+ 	},
+ 	.probe = q6pcm_routing_probe,
+-	.remove_new = q6pcm_routing_remove,
++	.remove = q6pcm_routing_remove,
+ };
+ module_platform_driver(q6pcm_routing_platform_driver);
+ 
+diff --git a/sound/soc/rockchip/rockchip_i2s.c b/sound/soc/rockchip/rockchip_i2s.c
+index b378f870b3ad..4315da4a47c1 100644
+--- a/sound/soc/rockchip/rockchip_i2s.c
++++ b/sound/soc/rockchip/rockchip_i2s.c
+@@ -866,7 +866,7 @@ static const struct dev_pm_ops rockchip_i2s_pm_ops = {
+ 
+ static struct platform_driver rockchip_i2s_driver = {
+ 	.probe = rockchip_i2s_probe,
+-	.remove_new = rockchip_i2s_remove,
++	.remove = rockchip_i2s_remove,
  	.driver = {
- 		.name = "clk-starfive-jh7110-isp",
- 		.of_match_table = jh7110_ispcrg_match,
-diff --git a/drivers/clk/starfive/clk-starfive-jh7110-vout.c b/drivers/clk/starfive/clk-starfive-jh7110-vout.c
-index aabd0484ac23..04eeed199087 100644
---- a/drivers/clk/starfive/clk-starfive-jh7110-vout.c
-+++ b/drivers/clk/starfive/clk-starfive-jh7110-vout.c
-@@ -223,7 +223,7 @@ MODULE_DEVICE_TABLE(of, jh7110_voutcrg_match);
+ 		.name = DRV_NAME,
+ 		.of_match_table = of_match_ptr(rockchip_i2s_match),
+diff --git a/sound/soc/rockchip/rockchip_i2s_tdm.c b/sound/soc/rockchip/rockchip_i2s_tdm.c
+index ee517d7b5b7b..d1f28699652f 100644
+--- a/sound/soc/rockchip/rockchip_i2s_tdm.c
++++ b/sound/soc/rockchip/rockchip_i2s_tdm.c
+@@ -1423,7 +1423,7 @@ static const struct dev_pm_ops rockchip_i2s_tdm_pm_ops = {
  
- static struct platform_driver jh7110_voutcrg_driver = {
- 	.probe = jh7110_voutcrg_probe,
--	.remove_new = jh7110_voutcrg_remove,
-+	.remove = jh7110_voutcrg_remove,
+ static struct platform_driver rockchip_i2s_tdm_driver = {
+ 	.probe = rockchip_i2s_tdm_probe,
+-	.remove_new = rockchip_i2s_tdm_remove,
++	.remove = rockchip_i2s_tdm_remove,
  	.driver = {
- 		.name = "clk-starfive-jh7110-vout",
- 		.of_match_table = jh7110_voutcrg_match,
-diff --git a/drivers/clk/stm32/clk-stm32mp1.c b/drivers/clk/stm32/clk-stm32mp1.c
-index 7e2337297402..5fcc4c77c11f 100644
---- a/drivers/clk/stm32/clk-stm32mp1.c
-+++ b/drivers/clk/stm32/clk-stm32mp1.c
-@@ -2354,7 +2354,7 @@ static struct platform_driver stm32mp1_rcc_clocks_driver = {
- 		.of_match_table = stm32mp1_match_data,
- 	},
- 	.probe = stm32mp1_rcc_clocks_probe,
--	.remove_new = stm32mp1_rcc_clocks_remove,
-+	.remove = stm32mp1_rcc_clocks_remove,
- };
+ 		.name = DRV_NAME,
+ 		.of_match_table = rockchip_i2s_tdm_match,
+diff --git a/sound/soc/rockchip/rockchip_pdm.c b/sound/soc/rockchip/rockchip_pdm.c
+index d16a4a67a6a2..cae91108f7a8 100644
+--- a/sound/soc/rockchip/rockchip_pdm.c
++++ b/sound/soc/rockchip/rockchip_pdm.c
+@@ -703,7 +703,7 @@ static const struct dev_pm_ops rockchip_pdm_pm_ops = {
  
- static int __init stm32mp1_clocks_init(void)
-diff --git a/drivers/clk/tegra/clk-tegra124-dfll-fcpu.c b/drivers/clk/tegra/clk-tegra124-dfll-fcpu.c
-index a9be4b56b2b7..0251618b82c8 100644
---- a/drivers/clk/tegra/clk-tegra124-dfll-fcpu.c
-+++ b/drivers/clk/tegra/clk-tegra124-dfll-fcpu.c
-@@ -635,7 +635,7 @@ static const struct dev_pm_ops tegra124_dfll_pm_ops = {
- 
- static struct platform_driver tegra124_dfll_fcpu_driver = {
- 	.probe = tegra124_dfll_fcpu_probe,
--	.remove_new = tegra124_dfll_fcpu_remove,
-+	.remove = tegra124_dfll_fcpu_remove,
+ static struct platform_driver rockchip_pdm_driver = {
+ 	.probe  = rockchip_pdm_probe,
+-	.remove_new = rockchip_pdm_remove,
++	.remove = rockchip_pdm_remove,
  	.driver = {
- 		.name = "tegra124-dfll",
- 		.of_match_table = tegra124_dfll_fcpu_of_match,
-diff --git a/drivers/clk/ti/adpll.c b/drivers/clk/ti/adpll.c
-index 6121020b4b38..e305fcbac647 100644
---- a/drivers/clk/ti/adpll.c
-+++ b/drivers/clk/ti/adpll.c
-@@ -934,7 +934,7 @@ static struct platform_driver ti_adpll_driver = {
- 		.of_match_table = ti_adpll_match,
+ 		.name = "rockchip-pdm",
+ 		.of_match_table = of_match_ptr(rockchip_pdm_match),
+diff --git a/sound/soc/rockchip/rockchip_rt5645.c b/sound/soc/rockchip/rockchip_rt5645.c
+index 449f62820045..b085d80ea2e4 100644
+--- a/sound/soc/rockchip/rockchip_rt5645.c
++++ b/sound/soc/rockchip/rockchip_rt5645.c
+@@ -233,7 +233,7 @@ MODULE_DEVICE_TABLE(of, rockchip_rt5645_of_match);
+ 
+ static struct platform_driver snd_rk_mc_driver = {
+ 	.probe = snd_rk_mc_probe,
+-	.remove_new = snd_rk_mc_remove,
++	.remove = snd_rk_mc_remove,
+ 	.driver = {
+ 		.name = DRV_NAME,
+ 		.pm = &snd_soc_pm_ops,
+diff --git a/sound/soc/rockchip/rockchip_spdif.c b/sound/soc/rockchip/rockchip_spdif.c
+index eb9d5dee196e..d87c0e4f6f91 100644
+--- a/sound/soc/rockchip/rockchip_spdif.c
++++ b/sound/soc/rockchip/rockchip_spdif.c
+@@ -380,7 +380,7 @@ static const struct dev_pm_ops rk_spdif_pm_ops = {
+ 
+ static struct platform_driver rk_spdif_driver = {
+ 	.probe = rk_spdif_probe,
+-	.remove_new = rk_spdif_remove,
++	.remove = rk_spdif_remove,
+ 	.driver = {
+ 		.name = "rockchip-spdif",
+ 		.of_match_table = of_match_ptr(rk_spdif_match),
+diff --git a/sound/soc/samsung/arndale.c b/sound/soc/samsung/arndale.c
+index f02873b6ce7f..9619f550608c 100644
+--- a/sound/soc/samsung/arndale.c
++++ b/sound/soc/samsung/arndale.c
+@@ -207,7 +207,7 @@ static struct platform_driver arndale_audio_driver = {
+ 		.of_match_table = arndale_audio_of_match,
  	},
- 	.probe = ti_adpll_probe,
--	.remove_new = ti_adpll_remove,
-+	.remove = ti_adpll_remove,
+ 	.probe = arndale_audio_probe,
+-	.remove_new = arndale_audio_remove,
++	.remove = arndale_audio_remove,
  };
  
- static int __init ti_adpll_init(void)
-diff --git a/drivers/clk/x86/clk-fch.c b/drivers/clk/x86/clk-fch.c
-index aed7d22fae63..cf5cd3ad4647 100644
---- a/drivers/clk/x86/clk-fch.c
-+++ b/drivers/clk/x86/clk-fch.c
-@@ -115,6 +115,6 @@ static struct platform_driver fch_clk_driver = {
- 		.suppress_bind_attrs = true,
- 	},
- 	.probe = fch_clk_probe,
--	.remove_new = fch_clk_remove,
-+	.remove = fch_clk_remove,
- };
- builtin_platform_driver(fch_clk_driver);
-diff --git a/drivers/clk/x86/clk-pmc-atom.c b/drivers/clk/x86/clk-pmc-atom.c
-index 5ec9255e33fa..99291ba65da7 100644
---- a/drivers/clk/x86/clk-pmc-atom.c
-+++ b/drivers/clk/x86/clk-pmc-atom.c
-@@ -373,6 +373,6 @@ static struct platform_driver plt_clk_driver = {
- 		.name = "clk-pmc-atom",
- 	},
- 	.probe = plt_clk_probe,
--	.remove_new = plt_clk_remove,
-+	.remove = plt_clk_remove,
- };
- builtin_platform_driver(plt_clk_driver);
-diff --git a/drivers/clk/xilinx/clk-xlnx-clock-wizard.c b/drivers/clk/xilinx/clk-xlnx-clock-wizard.c
-index 19eb3fb7ae31..7a0269bdfbb3 100644
---- a/drivers/clk/xilinx/clk-xlnx-clock-wizard.c
-+++ b/drivers/clk/xilinx/clk-xlnx-clock-wizard.c
-@@ -1257,7 +1257,7 @@ static struct platform_driver clk_wzrd_driver = {
- 		.pm = &clk_wzrd_dev_pm_ops,
- 	},
- 	.probe = clk_wzrd_probe,
--	.remove_new = clk_wzrd_remove,
-+	.remove = clk_wzrd_remove,
- };
- module_platform_driver(clk_wzrd_driver);
+ module_platform_driver(arndale_audio_driver);
+diff --git a/sound/soc/samsung/i2s.c b/sound/soc/samsung/i2s.c
+index 1bcabb114e29..8f6deb06e234 100644
+--- a/sound/soc/samsung/i2s.c
++++ b/sound/soc/samsung/i2s.c
+@@ -1741,7 +1741,7 @@ static const struct dev_pm_ops samsung_i2s_pm = {
  
-diff --git a/drivers/clk/xilinx/xlnx_vcu.c b/drivers/clk/xilinx/xlnx_vcu.c
-index d983fab12756..81501b48412e 100644
---- a/drivers/clk/xilinx/xlnx_vcu.c
-+++ b/drivers/clk/xilinx/xlnx_vcu.c
-@@ -729,7 +729,7 @@ static struct platform_driver xvcu_driver = {
- 		.of_match_table = xvcu_of_id_table,
+ static struct platform_driver samsung_i2s_driver = {
+ 	.probe  = samsung_i2s_probe,
+-	.remove_new = samsung_i2s_remove,
++	.remove = samsung_i2s_remove,
+ 	.id_table = samsung_i2s_driver_ids,
+ 	.driver = {
+ 		.name = "samsung-i2s",
+diff --git a/sound/soc/samsung/odroid.c b/sound/soc/samsung/odroid.c
+index 110ae14dd7ea..ed865cc07e2e 100644
+--- a/sound/soc/samsung/odroid.c
++++ b/sound/soc/samsung/odroid.c
+@@ -341,7 +341,7 @@ static struct platform_driver odroid_audio_driver = {
+ 		.pm		= &snd_soc_pm_ops,
  	},
- 	.probe                  = xvcu_probe,
--	.remove_new             = xvcu_remove,
-+	.remove                 = xvcu_remove,
+ 	.probe	= odroid_audio_probe,
+-	.remove_new = odroid_audio_remove,
++	.remove = odroid_audio_remove,
+ };
+ module_platform_driver(odroid_audio_driver);
+ 
+diff --git a/sound/soc/samsung/pcm.c b/sound/soc/samsung/pcm.c
+index 573b2dee7f07..a03ba9374c2e 100644
+--- a/sound/soc/samsung/pcm.c
++++ b/sound/soc/samsung/pcm.c
+@@ -590,7 +590,7 @@ static void s3c_pcm_dev_remove(struct platform_device *pdev)
+ 
+ static struct platform_driver s3c_pcm_driver = {
+ 	.probe  = s3c_pcm_dev_probe,
+-	.remove_new = s3c_pcm_dev_remove,
++	.remove = s3c_pcm_dev_remove,
+ 	.driver = {
+ 		.name = "samsung-pcm",
+ 	},
+diff --git a/sound/soc/samsung/snow.c b/sound/soc/samsung/snow.c
+index aad0f9b4d4fc..4bbe7bcdb845 100644
+--- a/sound/soc/samsung/snow.c
++++ b/sound/soc/samsung/snow.c
+@@ -245,7 +245,7 @@ static struct platform_driver snow_driver = {
+ 		.of_match_table = snow_of_match,
+ 	},
+ 	.probe = snow_probe,
+-	.remove_new = snow_remove,
++	.remove = snow_remove,
  };
  
- module_platform_driver(xvcu_driver);
+ module_platform_driver(snow_driver);
+diff --git a/sound/soc/samsung/spdif.c b/sound/soc/samsung/spdif.c
+index f44e3180e8d3..235d0063d1b3 100644
+--- a/sound/soc/samsung/spdif.c
++++ b/sound/soc/samsung/spdif.c
+@@ -476,7 +476,7 @@ static void spdif_remove(struct platform_device *pdev)
+ 
+ static struct platform_driver samsung_spdif_driver = {
+ 	.probe	= spdif_probe,
+-	.remove_new = spdif_remove,
++	.remove = spdif_remove,
+ 	.driver	= {
+ 		.name	= "samsung-spdif",
+ 	},
+diff --git a/sound/soc/sh/fsi.c b/sound/soc/sh/fsi.c
+index 087e379aa3bc..221ce91f1950 100644
+--- a/sound/soc/sh/fsi.c
++++ b/sound/soc/sh/fsi.c
+@@ -2107,7 +2107,7 @@ static struct platform_driver fsi_driver = {
+ 		.of_match_table = fsi_of_match,
+ 	},
+ 	.probe		= fsi_probe,
+-	.remove_new	= fsi_remove,
++	.remove		= fsi_remove,
+ 	.id_table	= fsi_id_table,
+ };
+ 
+diff --git a/sound/soc/sh/hac.c b/sound/soc/sh/hac.c
+index cc200f45826c..db618c09d1e0 100644
+--- a/sound/soc/sh/hac.c
++++ b/sound/soc/sh/hac.c
+@@ -334,7 +334,7 @@ static struct platform_driver hac_pcm_driver = {
+ 	},
+ 
+ 	.probe = hac_soc_platform_probe,
+-	.remove_new = hac_soc_platform_remove,
++	.remove = hac_soc_platform_remove,
+ };
+ 
+ module_platform_driver(hac_pcm_driver);
+diff --git a/sound/soc/sh/rcar/core.c b/sound/soc/sh/rcar/core.c
+index 15cb5e7008f9..9784718a2b6f 100644
+--- a/sound/soc/sh/rcar/core.c
++++ b/sound/soc/sh/rcar/core.c
+@@ -2087,7 +2087,7 @@ static struct platform_driver rsnd_driver = {
+ 		.of_match_table = rsnd_of_match,
+ 	},
+ 	.probe		= rsnd_probe,
+-	.remove_new	= rsnd_remove,
++	.remove		= rsnd_remove,
+ };
+ module_platform_driver(rsnd_driver);
+ 
+diff --git a/sound/soc/sh/rz-ssi.c b/sound/soc/sh/rz-ssi.c
+index d0bf0487bf1b..040ce0431fd2 100644
+--- a/sound/soc/sh/rz-ssi.c
++++ b/sound/soc/sh/rz-ssi.c
+@@ -1204,7 +1204,7 @@ static struct platform_driver rz_ssi_driver = {
+ 		.of_match_table = rz_ssi_of_match,
+ 	},
+ 	.probe		= rz_ssi_probe,
+-	.remove_new	= rz_ssi_remove,
++	.remove		= rz_ssi_remove,
+ };
+ 
+ module_platform_driver(rz_ssi_driver);
+diff --git a/sound/soc/sh/siu_dai.c b/sound/soc/sh/siu_dai.c
+index d0b5c543fd2f..7e771a164a80 100644
+--- a/sound/soc/sh/siu_dai.c
++++ b/sound/soc/sh/siu_dai.c
+@@ -788,7 +788,7 @@ static struct platform_driver siu_driver = {
+ 		.name	= "siu-pcm-audio",
+ 	},
+ 	.probe		= siu_probe,
+-	.remove_new	= siu_remove,
++	.remove		= siu_remove,
+ };
+ 
+ module_platform_driver(siu_driver);
+diff --git a/sound/soc/sof/imx/imx8.c b/sound/soc/sof/imx/imx8.c
+index 9f24e3c283dd..f09ee0dea2cc 100644
+--- a/sound/soc/sof/imx/imx8.c
++++ b/sound/soc/sof/imx/imx8.c
+@@ -658,7 +658,7 @@ MODULE_DEVICE_TABLE(of, sof_of_imx8_ids);
+ /* DT driver definition */
+ static struct platform_driver snd_sof_of_imx8_driver = {
+ 	.probe = sof_of_probe,
+-	.remove_new = sof_of_remove,
++	.remove = sof_of_remove,
+ 	.driver = {
+ 		.name = "sof-audio-of-imx8",
+ 		.pm = &sof_of_pm,
+diff --git a/sound/soc/sof/imx/imx8m.c b/sound/soc/sof/imx/imx8m.c
+index cdd1e79ef9f6..01d3ad3314f3 100644
+--- a/sound/soc/sof/imx/imx8m.c
++++ b/sound/soc/sof/imx/imx8m.c
+@@ -505,7 +505,7 @@ MODULE_DEVICE_TABLE(of, sof_of_imx8m_ids);
+ /* DT driver definition */
+ static struct platform_driver snd_sof_of_imx8m_driver = {
+ 	.probe = sof_of_probe,
+-	.remove_new = sof_of_remove,
++	.remove = sof_of_remove,
+ 	.driver = {
+ 		.name = "sof-audio-of-imx8m",
+ 		.pm = &sof_of_pm,
+diff --git a/sound/soc/sof/imx/imx8ulp.c b/sound/soc/sof/imx/imx8ulp.c
+index 2585b1beef23..e5eee1c9f6da 100644
+--- a/sound/soc/sof/imx/imx8ulp.c
++++ b/sound/soc/sof/imx/imx8ulp.c
+@@ -507,7 +507,7 @@ MODULE_DEVICE_TABLE(of, sof_of_imx8ulp_ids);
+ /* DT driver definition */
+ static struct platform_driver snd_sof_of_imx8ulp_driver = {
+ 	.probe = sof_of_probe,
+-	.remove_new = sof_of_remove,
++	.remove = sof_of_remove,
+ 	.driver = {
+ 		.name = "sof-audio-of-imx8ulp",
+ 		.pm = &sof_of_pm,
+diff --git a/sound/soc/sof/intel/bdw.c b/sound/soc/sof/intel/bdw.c
+index 7f18080e4e19..322ff118f0f6 100644
+--- a/sound/soc/sof/intel/bdw.c
++++ b/sound/soc/sof/intel/bdw.c
+@@ -684,7 +684,7 @@ static int sof_broadwell_probe(struct platform_device *pdev)
+ /* acpi_driver definition */
+ static struct platform_driver snd_sof_acpi_intel_bdw_driver = {
+ 	.probe = sof_broadwell_probe,
+-	.remove_new = sof_acpi_remove,
++	.remove = sof_acpi_remove,
+ 	.driver = {
+ 		.name = "sof-audio-acpi-intel-bdw",
+ 		.pm = &sof_acpi_pm,
+diff --git a/sound/soc/sof/intel/byt.c b/sound/soc/sof/intel/byt.c
+index 7a57e162fb1c..f531710cf94e 100644
+--- a/sound/soc/sof/intel/byt.c
++++ b/sound/soc/sof/intel/byt.c
+@@ -465,7 +465,7 @@ static int sof_baytrail_probe(struct platform_device *pdev)
+ /* acpi_driver definition */
+ static struct platform_driver snd_sof_acpi_intel_byt_driver = {
+ 	.probe = sof_baytrail_probe,
+-	.remove_new = sof_acpi_remove,
++	.remove = sof_acpi_remove,
+ 	.driver = {
+ 		.name = "sof-audio-acpi-intel-byt",
+ 		.pm = &sof_acpi_pm,
+diff --git a/sound/soc/sof/mediatek/mt8186/mt8186.c b/sound/soc/sof/mediatek/mt8186/mt8186.c
+index 74522400207e..9466f7d2e535 100644
+--- a/sound/soc/sof/mediatek/mt8186/mt8186.c
++++ b/sound/soc/sof/mediatek/mt8186/mt8186.c
+@@ -656,7 +656,7 @@ MODULE_DEVICE_TABLE(of, sof_of_mt8186_ids);
+ /* DT driver definition */
+ static struct platform_driver snd_sof_of_mt8186_driver = {
+ 	.probe = sof_of_probe,
+-	.remove_new = sof_of_remove,
++	.remove = sof_of_remove,
+ 	.shutdown = sof_of_shutdown,
+ 	.driver = {
+ 	.name = "sof-audio-of-mt8186",
+diff --git a/sound/soc/sof/mediatek/mt8195/mt8195.c b/sound/soc/sof/mediatek/mt8195/mt8195.c
+index 82d221f53a46..5b4423ed8023 100644
+--- a/sound/soc/sof/mediatek/mt8195/mt8195.c
++++ b/sound/soc/sof/mediatek/mt8195/mt8195.c
+@@ -612,7 +612,7 @@ MODULE_DEVICE_TABLE(of, sof_of_mt8195_ids);
+ /* DT driver definition */
+ static struct platform_driver snd_sof_of_mt8195_driver = {
+ 	.probe = sof_of_probe,
+-	.remove_new = sof_of_remove,
++	.remove = sof_of_remove,
+ 	.shutdown = sof_of_shutdown,
+ 	.driver = {
+ 	.name = "sof-audio-of-mt8195",
+diff --git a/sound/soc/sprd/sprd-mcdt.c b/sound/soc/sprd/sprd-mcdt.c
+index 688419c6b092..814a1cde1d35 100644
+--- a/sound/soc/sprd/sprd-mcdt.c
++++ b/sound/soc/sprd/sprd-mcdt.c
+@@ -993,7 +993,7 @@ MODULE_DEVICE_TABLE(of, sprd_mcdt_of_match);
+ 
+ static struct platform_driver sprd_mcdt_driver = {
+ 	.probe = sprd_mcdt_probe,
+-	.remove_new = sprd_mcdt_remove,
++	.remove = sprd_mcdt_remove,
+ 	.driver = {
+ 		.name = "sprd-mcdt",
+ 		.of_match_table = sprd_mcdt_of_match,
+diff --git a/sound/soc/starfive/jh7110_pwmdac.c b/sound/soc/starfive/jh7110_pwmdac.c
+index 4a4dd431b82b..a603dd17931c 100644
+--- a/sound/soc/starfive/jh7110_pwmdac.c
++++ b/sound/soc/starfive/jh7110_pwmdac.c
+@@ -516,7 +516,7 @@ static struct platform_driver jh7110_pwmdac_driver = {
+ 		.pm = pm_ptr(&jh7110_pwmdac_pm_ops),
+ 	},
+ 	.probe		= jh7110_pwmdac_probe,
+-	.remove_new	= jh7110_pwmdac_remove,
++	.remove		= jh7110_pwmdac_remove,
+ };
+ module_platform_driver(jh7110_pwmdac_driver);
+ 
+diff --git a/sound/soc/starfive/jh7110_tdm.c b/sound/soc/starfive/jh7110_tdm.c
+index 1e0ff6720747..d38090e68df5 100644
+--- a/sound/soc/starfive/jh7110_tdm.c
++++ b/sound/soc/starfive/jh7110_tdm.c
+@@ -660,7 +660,7 @@ static struct platform_driver jh7110_tdm_driver = {
+ 		.pm = pm_ptr(&jh7110_tdm_pm_ops),
+ 	},
+ 	.probe = jh7110_tdm_probe,
+-	.remove_new = jh7110_tdm_dev_remove,
++	.remove = jh7110_tdm_dev_remove,
+ };
+ module_platform_driver(jh7110_tdm_driver);
+ 
+diff --git a/sound/soc/stm/stm32_adfsdm.c b/sound/soc/stm/stm32_adfsdm.c
+index fb5dd9a68bea..9351727dce1a 100644
+--- a/sound/soc/stm/stm32_adfsdm.c
++++ b/sound/soc/stm/stm32_adfsdm.c
+@@ -398,7 +398,7 @@ static struct platform_driver stm32_adfsdm_driver = {
+ 		   .of_match_table = stm32_adfsdm_of_match,
+ 		   },
+ 	.probe = stm32_adfsdm_probe,
+-	.remove_new = stm32_adfsdm_remove,
++	.remove = stm32_adfsdm_remove,
+ };
+ 
+ module_platform_driver(stm32_adfsdm_driver);
+diff --git a/sound/soc/stm/stm32_i2s.c b/sound/soc/stm/stm32_i2s.c
+index a96aa308681a..faa00103ee7f 100644
+--- a/sound/soc/stm/stm32_i2s.c
++++ b/sound/soc/stm/stm32_i2s.c
+@@ -1216,7 +1216,7 @@ static struct platform_driver stm32_i2s_driver = {
+ 		.pm = &stm32_i2s_pm_ops,
+ 	},
+ 	.probe = stm32_i2s_probe,
+-	.remove_new = stm32_i2s_remove,
++	.remove = stm32_i2s_remove,
+ };
+ 
+ module_platform_driver(stm32_i2s_driver);
+diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
+index ad2492efb1cd..7bc4a96b7503 100644
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -1619,7 +1619,7 @@ static struct platform_driver stm32_sai_sub_driver = {
+ 		.pm = &stm32_sai_sub_pm_ops,
+ 	},
+ 	.probe = stm32_sai_sub_probe,
+-	.remove_new = stm32_sai_sub_remove,
++	.remove = stm32_sai_sub_remove,
+ };
+ 
+ module_platform_driver(stm32_sai_sub_driver);
+diff --git a/sound/soc/stm/stm32_spdifrx.c b/sound/soc/stm/stm32_spdifrx.c
+index 9eed3c57e3f1..d1b32ba1e1a2 100644
+--- a/sound/soc/stm/stm32_spdifrx.c
++++ b/sound/soc/stm/stm32_spdifrx.c
+@@ -1072,7 +1072,7 @@ static struct platform_driver stm32_spdifrx_driver = {
+ 		.pm = &stm32_spdifrx_pm_ops,
+ 	},
+ 	.probe = stm32_spdifrx_probe,
+-	.remove_new = stm32_spdifrx_remove,
++	.remove = stm32_spdifrx_remove,
+ };
+ 
+ module_platform_driver(stm32_spdifrx_driver);
+diff --git a/sound/soc/sunxi/sun4i-codec.c b/sound/soc/sunxi/sun4i-codec.c
+index 25af47b63bdd..330bc0c09f56 100644
+--- a/sound/soc/sunxi/sun4i-codec.c
++++ b/sound/soc/sunxi/sun4i-codec.c
+@@ -1828,7 +1828,7 @@ static struct platform_driver sun4i_codec_driver = {
+ 		.of_match_table = sun4i_codec_of_match,
+ 	},
+ 	.probe = sun4i_codec_probe,
+-	.remove_new = sun4i_codec_remove,
++	.remove = sun4i_codec_remove,
+ };
+ module_platform_driver(sun4i_codec_driver);
+ 
+diff --git a/sound/soc/sunxi/sun4i-i2s.c b/sound/soc/sunxi/sun4i-i2s.c
+index 3af0b2aab291..40de99a34bc3 100644
+--- a/sound/soc/sunxi/sun4i-i2s.c
++++ b/sound/soc/sunxi/sun4i-i2s.c
+@@ -1684,7 +1684,7 @@ static const struct dev_pm_ops sun4i_i2s_pm_ops = {
+ 
+ static struct platform_driver sun4i_i2s_driver = {
+ 	.probe	= sun4i_i2s_probe,
+-	.remove_new = sun4i_i2s_remove,
++	.remove = sun4i_i2s_remove,
+ 	.driver	= {
+ 		.name		= "sun4i-i2s",
+ 		.of_match_table	= sun4i_i2s_match,
+diff --git a/sound/soc/sunxi/sun4i-spdif.c b/sound/soc/sunxi/sun4i-spdif.c
+index f41c30955857..0aa416423246 100644
+--- a/sound/soc/sunxi/sun4i-spdif.c
++++ b/sound/soc/sunxi/sun4i-spdif.c
+@@ -726,7 +726,7 @@ static struct platform_driver sun4i_spdif_driver = {
+ 		.pm	= &sun4i_spdif_pm,
+ 	},
+ 	.probe		= sun4i_spdif_probe,
+-	.remove_new	= sun4i_spdif_remove,
++	.remove		= sun4i_spdif_remove,
+ };
+ 
+ module_platform_driver(sun4i_spdif_driver);
+diff --git a/sound/soc/sunxi/sun50i-dmic.c b/sound/soc/sunxi/sun50i-dmic.c
+index 884394ddaf86..3e751b5694fe 100644
+--- a/sound/soc/sunxi/sun50i-dmic.c
++++ b/sound/soc/sunxi/sun50i-dmic.c
+@@ -426,7 +426,7 @@ static struct platform_driver sun50i_dmic_driver = {
+ 		.pm     = &sun50i_dmic_pm,
+ 	},
+ 	.probe          = sun50i_dmic_probe,
+-	.remove_new     = sun50i_dmic_remove,
++	.remove         = sun50i_dmic_remove,
+ };
+ 
+ module_platform_driver(sun50i_dmic_driver);
+diff --git a/sound/soc/sunxi/sun8i-codec.c b/sound/soc/sunxi/sun8i-codec.c
+index b5dafb749c3f..8c645e04d571 100644
+--- a/sound/soc/sunxi/sun8i-codec.c
++++ b/sound/soc/sunxi/sun8i-codec.c
+@@ -1713,7 +1713,7 @@ static struct platform_driver sun8i_codec_driver = {
+ 		.pm = &sun8i_codec_pm_ops,
+ 	},
+ 	.probe = sun8i_codec_probe,
+-	.remove_new = sun8i_codec_remove,
++	.remove = sun8i_codec_remove,
+ };
+ module_platform_driver(sun8i_codec_driver);
+ 
+diff --git a/sound/soc/tegra/tegra186_asrc.c b/sound/soc/tegra/tegra186_asrc.c
+index 22af5135d77a..d914dba56013 100644
+--- a/sound/soc/tegra/tegra186_asrc.c
++++ b/sound/soc/tegra/tegra186_asrc.c
+@@ -1034,7 +1034,7 @@ static struct platform_driver tegra186_asrc_driver = {
+ 		.pm = &tegra186_asrc_pm_ops,
+ 	},
+ 	.probe = tegra186_asrc_platform_probe,
+-	.remove_new = tegra186_asrc_platform_remove,
++	.remove = tegra186_asrc_platform_remove,
+ };
+ module_platform_driver(tegra186_asrc_driver)
+ 
+diff --git a/sound/soc/tegra/tegra186_dspk.c b/sound/soc/tegra/tegra186_dspk.c
+index 21cd41fec7a9..508128b7783e 100644
+--- a/sound/soc/tegra/tegra186_dspk.c
++++ b/sound/soc/tegra/tegra186_dspk.c
+@@ -542,7 +542,7 @@ static struct platform_driver tegra186_dspk_driver = {
+ 		.pm = &tegra186_dspk_pm_ops,
+ 	},
+ 	.probe = tegra186_dspk_platform_probe,
+-	.remove_new = tegra186_dspk_platform_remove,
++	.remove = tegra186_dspk_platform_remove,
+ };
+ module_platform_driver(tegra186_dspk_driver);
+ 
+diff --git a/sound/soc/tegra/tegra20_ac97.c b/sound/soc/tegra/tegra20_ac97.c
+index 8011afe93c96..08c58e8f3c22 100644
+--- a/sound/soc/tegra/tegra20_ac97.c
++++ b/sound/soc/tegra/tegra20_ac97.c
+@@ -448,7 +448,7 @@ static struct platform_driver tegra20_ac97_driver = {
+ 		.of_match_table = tegra20_ac97_of_match,
+ 	},
+ 	.probe = tegra20_ac97_platform_probe,
+-	.remove_new = tegra20_ac97_platform_remove,
++	.remove = tegra20_ac97_platform_remove,
+ };
+ module_platform_driver(tegra20_ac97_driver);
+ 
+diff --git a/sound/soc/tegra/tegra20_i2s.c b/sound/soc/tegra/tegra20_i2s.c
+index f11618e8f13e..3b9823d1a87a 100644
+--- a/sound/soc/tegra/tegra20_i2s.c
++++ b/sound/soc/tegra/tegra20_i2s.c
+@@ -500,7 +500,7 @@ static struct platform_driver tegra20_i2s_driver = {
+ 		.pm = &tegra20_i2s_pm_ops,
+ 	},
+ 	.probe = tegra20_i2s_platform_probe,
+-	.remove_new = tegra20_i2s_platform_remove,
++	.remove = tegra20_i2s_platform_remove,
+ };
+ module_platform_driver(tegra20_i2s_driver);
+ 
+diff --git a/sound/soc/tegra/tegra210_admaif.c b/sound/soc/tegra/tegra210_admaif.c
+index 9f9334e48049..a866aeb2719d 100644
+--- a/sound/soc/tegra/tegra210_admaif.c
++++ b/sound/soc/tegra/tegra210_admaif.c
+@@ -856,7 +856,7 @@ static const struct dev_pm_ops tegra_admaif_pm_ops = {
+ 
+ static struct platform_driver tegra_admaif_driver = {
+ 	.probe = tegra_admaif_probe,
+-	.remove_new = tegra_admaif_remove,
++	.remove = tegra_admaif_remove,
+ 	.driver = {
+ 		.name = "tegra210-admaif",
+ 		.of_match_table = tegra_admaif_of_match,
+diff --git a/sound/soc/tegra/tegra210_adx.c b/sound/soc/tegra/tegra210_adx.c
+index d2530443a221..109f763fe211 100644
+--- a/sound/soc/tegra/tegra210_adx.c
++++ b/sound/soc/tegra/tegra210_adx.c
+@@ -532,7 +532,7 @@ static struct platform_driver tegra210_adx_driver = {
+ 		.pm = &tegra210_adx_pm_ops,
+ 	},
+ 	.probe = tegra210_adx_platform_probe,
+-	.remove_new = tegra210_adx_platform_remove,
++	.remove = tegra210_adx_platform_remove,
+ };
+ module_platform_driver(tegra210_adx_driver);
+ 
+diff --git a/sound/soc/tegra/tegra210_ahub.c b/sound/soc/tegra/tegra210_ahub.c
+index ab3c6b2544d2..1920b996e9aa 100644
+--- a/sound/soc/tegra/tegra210_ahub.c
++++ b/sound/soc/tegra/tegra210_ahub.c
+@@ -1416,7 +1416,7 @@ static const struct dev_pm_ops tegra_ahub_pm_ops = {
+ 
+ static struct platform_driver tegra_ahub_driver = {
+ 	.probe = tegra_ahub_probe,
+-	.remove_new = tegra_ahub_remove,
++	.remove = tegra_ahub_remove,
+ 	.driver = {
+ 		.name = "tegra210-ahub",
+ 		.of_match_table = tegra_ahub_of_match,
+diff --git a/sound/soc/tegra/tegra210_amx.c b/sound/soc/tegra/tegra210_amx.c
+index 91e405909e0f..38a2d6ec033b 100644
+--- a/sound/soc/tegra/tegra210_amx.c
++++ b/sound/soc/tegra/tegra210_amx.c
+@@ -589,7 +589,7 @@ static struct platform_driver tegra210_amx_driver = {
+ 		.pm = &tegra210_amx_pm_ops,
+ 	},
+ 	.probe = tegra210_amx_platform_probe,
+-	.remove_new = tegra210_amx_platform_remove,
++	.remove = tegra210_amx_platform_remove,
+ };
+ module_platform_driver(tegra210_amx_driver);
+ 
+diff --git a/sound/soc/tegra/tegra210_dmic.c b/sound/soc/tegra/tegra210_dmic.c
+index e53c0278ae9a..d9b577f146dc 100644
+--- a/sound/soc/tegra/tegra210_dmic.c
++++ b/sound/soc/tegra/tegra210_dmic.c
+@@ -559,7 +559,7 @@ static struct platform_driver tegra210_dmic_driver = {
+ 		.pm = &tegra210_dmic_pm_ops,
+ 	},
+ 	.probe = tegra210_dmic_probe,
+-	.remove_new = tegra210_dmic_remove,
++	.remove = tegra210_dmic_remove,
+ };
+ module_platform_driver(tegra210_dmic_driver)
+ 
+diff --git a/sound/soc/tegra/tegra210_i2s.c b/sound/soc/tegra/tegra210_i2s.c
+index e93ceb7afb4c..a3908b15dfdc 100644
+--- a/sound/soc/tegra/tegra210_i2s.c
++++ b/sound/soc/tegra/tegra210_i2s.c
+@@ -1019,7 +1019,7 @@ static struct platform_driver tegra210_i2s_driver = {
+ 		.pm = &tegra210_i2s_pm_ops,
+ 	},
+ 	.probe = tegra210_i2s_probe,
+-	.remove_new = tegra210_i2s_remove,
++	.remove = tegra210_i2s_remove,
+ };
+ module_platform_driver(tegra210_i2s_driver)
+ 
+diff --git a/sound/soc/tegra/tegra210_mixer.c b/sound/soc/tegra/tegra210_mixer.c
+index 024614f6ec0b..e07e2f1d2f70 100644
+--- a/sound/soc/tegra/tegra210_mixer.c
++++ b/sound/soc/tegra/tegra210_mixer.c
+@@ -674,7 +674,7 @@ static struct platform_driver tegra210_mixer_driver = {
+ 		.pm = &tegra210_mixer_pm_ops,
+ 	},
+ 	.probe = tegra210_mixer_platform_probe,
+-	.remove_new = tegra210_mixer_platform_remove,
++	.remove = tegra210_mixer_platform_remove,
+ };
+ module_platform_driver(tegra210_mixer_driver);
+ 
+diff --git a/sound/soc/tegra/tegra210_mvc.c b/sound/soc/tegra/tegra210_mvc.c
+index b89f5edafa03..4ead52564ab6 100644
+--- a/sound/soc/tegra/tegra210_mvc.c
++++ b/sound/soc/tegra/tegra210_mvc.c
+@@ -766,7 +766,7 @@ static struct platform_driver tegra210_mvc_driver = {
+ 		.pm = &tegra210_mvc_pm_ops,
+ 	},
+ 	.probe = tegra210_mvc_platform_probe,
+-	.remove_new = tegra210_mvc_platform_remove,
++	.remove = tegra210_mvc_platform_remove,
+ };
+ module_platform_driver(tegra210_mvc_driver)
+ 
+diff --git a/sound/soc/tegra/tegra210_ope.c b/sound/soc/tegra/tegra210_ope.c
+index 136ed17f3650..e2bc604e8b79 100644
+--- a/sound/soc/tegra/tegra210_ope.c
++++ b/sound/soc/tegra/tegra210_ope.c
+@@ -407,7 +407,7 @@ static struct platform_driver tegra210_ope_driver = {
+ 		.pm = &tegra210_ope_pm_ops,
+ 	},
+ 	.probe = tegra210_ope_probe,
+-	.remove_new = tegra210_ope_remove,
++	.remove = tegra210_ope_remove,
+ };
+ module_platform_driver(tegra210_ope_driver)
+ 
+diff --git a/sound/soc/tegra/tegra210_sfc.c b/sound/soc/tegra/tegra210_sfc.c
+index 028747c44f37..e16bbb44cc77 100644
+--- a/sound/soc/tegra/tegra210_sfc.c
++++ b/sound/soc/tegra/tegra210_sfc.c
+@@ -3631,7 +3631,7 @@ static struct platform_driver tegra210_sfc_driver = {
+ 		.pm = &tegra210_sfc_pm_ops,
+ 	},
+ 	.probe = tegra210_sfc_platform_probe,
+-	.remove_new = tegra210_sfc_platform_remove,
++	.remove = tegra210_sfc_platform_remove,
+ };
+ module_platform_driver(tegra210_sfc_driver)
+ 
+diff --git a/sound/soc/tegra/tegra30_ahub.c b/sound/soc/tegra/tegra30_ahub.c
+index d2e8078e444a..c9b52f54cea8 100644
+--- a/sound/soc/tegra/tegra30_ahub.c
++++ b/sound/soc/tegra/tegra30_ahub.c
+@@ -608,7 +608,7 @@ static const struct dev_pm_ops tegra30_ahub_pm_ops = {
+ 
+ static struct platform_driver tegra30_ahub_driver = {
+ 	.probe = tegra30_ahub_probe,
+-	.remove_new = tegra30_ahub_remove,
++	.remove = tegra30_ahub_remove,
+ 	.driver = {
+ 		.name = DRV_NAME,
+ 		.of_match_table = tegra30_ahub_of_match,
+diff --git a/sound/soc/tegra/tegra30_i2s.c b/sound/soc/tegra/tegra30_i2s.c
+index a8ff51d12edb..0d3badfbe143 100644
+--- a/sound/soc/tegra/tegra30_i2s.c
++++ b/sound/soc/tegra/tegra30_i2s.c
+@@ -560,7 +560,7 @@ static struct platform_driver tegra30_i2s_driver = {
+ 		.pm = &tegra30_i2s_pm_ops,
+ 	},
+ 	.probe = tegra30_i2s_platform_probe,
+-	.remove_new = tegra30_i2s_platform_remove,
++	.remove = tegra30_i2s_platform_remove,
+ };
+ module_platform_driver(tegra30_i2s_driver);
+ 
+diff --git a/sound/soc/tegra/tegra_audio_graph_card.c b/sound/soc/tegra/tegra_audio_graph_card.c
+index feba9d42bbc5..8b48813c2c59 100644
+--- a/sound/soc/tegra/tegra_audio_graph_card.c
++++ b/sound/soc/tegra/tegra_audio_graph_card.c
+@@ -248,7 +248,7 @@ static struct platform_driver tegra_audio_graph_card = {
+ 		.of_match_table = graph_of_tegra_match,
+ 	},
+ 	.probe = tegra_audio_graph_probe,
+-	.remove_new = simple_util_remove,
++	.remove = simple_util_remove,
+ };
+ module_platform_driver(tegra_audio_graph_card);
+ 
+diff --git a/sound/soc/ti/ams-delta.c b/sound/soc/ti/ams-delta.c
+index 76bda188e992..94645f275495 100644
+--- a/sound/soc/ti/ams-delta.c
++++ b/sound/soc/ti/ams-delta.c
+@@ -595,7 +595,7 @@ static struct platform_driver ams_delta_driver = {
+ 		.name = DRV_NAME,
+ 	},
+ 	.probe = ams_delta_probe,
+-	.remove_new = ams_delta_remove,
++	.remove = ams_delta_remove,
+ };
+ 
+ module_platform_driver(ams_delta_driver);
+diff --git a/sound/soc/ti/davinci-i2s.c b/sound/soc/ti/davinci-i2s.c
+index 0f15a743c798..d682b98d6848 100644
+--- a/sound/soc/ti/davinci-i2s.c
++++ b/sound/soc/ti/davinci-i2s.c
+@@ -920,7 +920,7 @@ MODULE_DEVICE_TABLE(of, davinci_i2s_match);
+ 
+ static struct platform_driver davinci_mcbsp_driver = {
+ 	.probe		= davinci_i2s_probe,
+-	.remove_new	= davinci_i2s_remove,
++	.remove		= davinci_i2s_remove,
+ 	.driver		= {
+ 		.name	= "davinci-mcbsp",
+ 		.of_match_table = of_match_ptr(davinci_i2s_match),
+diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
+index 2b1ed91a736c..a0b8cca31cba 100644
+--- a/sound/soc/ti/davinci-mcasp.c
++++ b/sound/soc/ti/davinci-mcasp.c
+@@ -2535,7 +2535,7 @@ static const struct dev_pm_ops davinci_mcasp_pm_ops = {
+ 
+ static struct platform_driver davinci_mcasp_driver = {
+ 	.probe		= davinci_mcasp_probe,
+-	.remove_new	= davinci_mcasp_remove,
++	.remove		= davinci_mcasp_remove,
+ 	.driver		= {
+ 		.name	= "davinci-mcasp",
+ 		.pm     = &davinci_mcasp_pm_ops,
+diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
+index 2110ffe5281c..411970399271 100644
+--- a/sound/soc/ti/omap-mcbsp.c
++++ b/sound/soc/ti/omap-mcbsp.c
+@@ -1430,7 +1430,7 @@ static struct platform_driver asoc_mcbsp_driver = {
+ 	},
+ 
+ 	.probe = asoc_mcbsp_probe,
+-	.remove_new = asoc_mcbsp_remove,
++	.remove = asoc_mcbsp_remove,
+ };
+ 
+ module_platform_driver(asoc_mcbsp_driver);
+diff --git a/sound/soc/uniphier/aio-ld11.c b/sound/soc/uniphier/aio-ld11.c
+index 01cc3b961999..a041ce8e23a4 100644
+--- a/sound/soc/uniphier/aio-ld11.c
++++ b/sound/soc/uniphier/aio-ld11.c
+@@ -347,7 +347,7 @@ static struct platform_driver uniphier_aio_driver = {
+ 		.of_match_table = of_match_ptr(uniphier_aio_of_match),
+ 	},
+ 	.probe    = uniphier_aio_probe,
+-	.remove_new = uniphier_aio_remove,
++	.remove = uniphier_aio_remove,
+ };
+ module_platform_driver(uniphier_aio_driver);
+ 
+diff --git a/sound/soc/uniphier/aio-pxs2.c b/sound/soc/uniphier/aio-pxs2.c
+index fba13a212bdb..889f64b2c01f 100644
+--- a/sound/soc/uniphier/aio-pxs2.c
++++ b/sound/soc/uniphier/aio-pxs2.c
+@@ -256,7 +256,7 @@ static struct platform_driver uniphier_aio_driver = {
+ 		.of_match_table = of_match_ptr(uniphier_aio_of_match),
+ 	},
+ 	.probe    = uniphier_aio_probe,
+-	.remove_new = uniphier_aio_remove,
++	.remove = uniphier_aio_remove,
+ };
+ module_platform_driver(uniphier_aio_driver);
+ 
+diff --git a/sound/soc/uniphier/evea.c b/sound/soc/uniphier/evea.c
+index d90b3e4b0104..662e45882c90 100644
+--- a/sound/soc/uniphier/evea.c
++++ b/sound/soc/uniphier/evea.c
+@@ -560,7 +560,7 @@ static struct platform_driver evea_codec_driver = {
+ 		.of_match_table = of_match_ptr(evea_of_match),
+ 	},
+ 	.probe  = evea_probe,
+-	.remove_new = evea_remove,
++	.remove = evea_remove,
+ };
+ module_platform_driver(evea_codec_driver);
+ 
+diff --git a/sound/soc/ux500/mop500.c b/sound/soc/ux500/mop500.c
+index e0ab4534fe3e..ae6d326167d1 100644
+--- a/sound/soc/ux500/mop500.c
++++ b/sound/soc/ux500/mop500.c
+@@ -157,7 +157,7 @@ static struct platform_driver snd_soc_mop500_driver = {
+ 		.of_match_table = snd_soc_mop500_match,
+ 	},
+ 	.probe = mop500_probe,
+-	.remove_new = mop500_remove,
++	.remove = mop500_remove,
+ };
+ 
+ module_platform_driver(snd_soc_mop500_driver);
+diff --git a/sound/soc/ux500/ux500_msp_dai.c b/sound/soc/ux500/ux500_msp_dai.c
+index 3fd13e8dd110..a2dd739fdf2d 100644
+--- a/sound/soc/ux500/ux500_msp_dai.c
++++ b/sound/soc/ux500/ux500_msp_dai.c
+@@ -816,7 +816,7 @@ static struct platform_driver msp_i2s_driver = {
+ 		.of_match_table = ux500_msp_i2s_match,
+ 	},
+ 	.probe = ux500_msp_drv_probe,
+-	.remove_new = ux500_msp_drv_remove,
++	.remove = ux500_msp_drv_remove,
+ };
+ module_platform_driver(msp_i2s_driver);
+ 
+diff --git a/sound/soc/xilinx/xlnx_formatter_pcm.c b/sound/soc/xilinx/xlnx_formatter_pcm.c
+index 158fc21a86c1..17ef05309469 100644
+--- a/sound/soc/xilinx/xlnx_formatter_pcm.c
++++ b/sound/soc/xilinx/xlnx_formatter_pcm.c
+@@ -713,7 +713,7 @@ MODULE_DEVICE_TABLE(of, xlnx_formatter_pcm_of_match);
+ 
+ static struct platform_driver xlnx_formatter_pcm_driver = {
+ 	.probe	= xlnx_formatter_pcm_probe,
+-	.remove_new = xlnx_formatter_pcm_remove,
++	.remove = xlnx_formatter_pcm_remove,
+ 	.driver	= {
+ 		.name	= DRV_NAME,
+ 		.of_match_table	= xlnx_formatter_pcm_of_match,
+diff --git a/sound/soc/xilinx/xlnx_spdif.c b/sound/soc/xilinx/xlnx_spdif.c
+index d52d5fc7b5b8..7febb3830dc2 100644
+--- a/sound/soc/xilinx/xlnx_spdif.c
++++ b/sound/soc/xilinx/xlnx_spdif.c
+@@ -325,7 +325,7 @@ static struct platform_driver xlnx_spdif_driver = {
+ 		.of_match_table = xlnx_spdif_of_match,
+ 	},
+ 	.probe = xlnx_spdif_probe,
+-	.remove_new = xlnx_spdif_remove,
++	.remove = xlnx_spdif_remove,
+ };
+ module_platform_driver(xlnx_spdif_driver);
+ 
+diff --git a/sound/soc/xtensa/xtfpga-i2s.c b/sound/soc/xtensa/xtfpga-i2s.c
+index 6e2b72d7a65d..4eaa9011405f 100644
+--- a/sound/soc/xtensa/xtfpga-i2s.c
++++ b/sound/soc/xtensa/xtfpga-i2s.c
+@@ -635,7 +635,7 @@ static const struct dev_pm_ops xtfpga_i2s_pm_ops = {
+ 
+ static struct platform_driver xtfpga_i2s_driver = {
+ 	.probe   = xtfpga_i2s_probe,
+-	.remove_new = xtfpga_i2s_remove,
++	.remove = xtfpga_i2s_remove,
+ 	.driver  = {
+ 		.name = "xtfpga-i2s",
+ 		.of_match_table = of_match_ptr(xtfpga_i2s_of_match),
 
 base-commit: 100cc857359b5d731407d1038f7e76cd0e871d94
 -- 
 2.45.2
-
 
