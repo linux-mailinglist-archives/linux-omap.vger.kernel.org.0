@@ -1,85 +1,91 @@
-Return-Path: <linux-omap+bounces-2161-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2162-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 746BE972477
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Sep 2024 23:21:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA773972A71
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Sep 2024 09:18:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A77391C23170
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Sep 2024 21:21:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD4D31C24172
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Sep 2024 07:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4DC18C901;
-	Mon,  9 Sep 2024 21:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A891417C9EB;
+	Tue, 10 Sep 2024 07:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FKV7PFNo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JGenVeDF"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14D9189F2F;
-	Mon,  9 Sep 2024 21:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4397D17C7BD;
+	Tue, 10 Sep 2024 07:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725916858; cv=none; b=MtYCqa5W2nnK1KozcwOZrOKCToRKwe4swXTmOWHabx7R8+xn8uEwIq5jaLBMe5hAObHxGyqrqI6fGKtOJctcPHa7Vp95eWE1jmLc/wOwSfvTHNoc5gjvySc4OlvUjjEAjFDcGWiaL8PLZd+wwetpLFH0cj4w40XoutcIq3e0meI=
+	t=1725952687; cv=none; b=Bm6yJAH9Q+rAhep5JrK0fd4heckkrtctBPPT1a80xw6/FksLlP8pBztvadl62UHB8GyCK/jycOh3lJt42sxTLJJo+Xu+uXhhDqONMwqb/g4q4qOULSQmbTDOOj/Uu/qzHXjgwsGuBaDWWA+XpGOJiDGJ+eLQLUZDqhDwJfcTHcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725916858; c=relaxed/simple;
-	bh=tK0vooX06fNMJDsOaDbjgFNdPUmm25HgOZttNw444Wc=;
-	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
-	 Subject:From:Cc:To:Date; b=dNQ4Na63UWlfDf3BQomFp0i6v+lp/o4IiGcPi6qV735FWJV7oHLUkdjqx7UH5eymp1gOwG8obzysAGXxPRU4ZYx/n5T2Fe7xttPFDwynuE0ldXSUoTnRJmNJ6CworiL97bvZ5hUEbjmFEiPTJYolZrxVDBEH76HYa8RzNw3XBFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FKV7PFNo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A2BC4CEC5;
-	Mon,  9 Sep 2024 21:20:57 +0000 (UTC)
+	s=arc-20240116; t=1725952687; c=relaxed/simple;
+	bh=OnyMkOUZUp3mVLWHnjm3K66y8reg6sgBhI6dE1mMjYk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=aeMYopslueJOyVOgEWG9KJsS5WHsehIfvP+Tpvt75kg5CC09BG83YTiNEd9VUg/34NJzpSgYuEb1R/2zNXMAXp34rubXf2DEmnnCsc4MrOkPfNHzkSJ6L8n4gBSPbNCQ1nXOosHz4ZOsPIEsRiX8vb0oGdj7YkFLt9KhrtsgU08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JGenVeDF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BE0C4CEC3;
+	Tue, 10 Sep 2024 07:18:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725916857;
-	bh=tK0vooX06fNMJDsOaDbjgFNdPUmm25HgOZttNw444Wc=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=FKV7PFNoHKTi30ShjIpCoZkwRE9t9Bfen1obWZlTvE/7kBYKoIEn31C3N39nYrzLS
-	 wV2jGW6w3KN0K3zsvrErlzYPWwBetvWrY2f307qC1q/3r6J+/p1zFtPeTYhXIBOgN0
-	 eciafNUixANNFxl6vSdZtqlBS5a9LmNMRn55+D94diIDR7T0G/PHhYyWeO5X33k4FG
-	 eTc+U7uq9LECMV+8qgZJNyPQQ3B1/4G+QyMY4iVu63qvL0PddnNwd/KXYnczd4Jcm4
-	 IDC2sERGEVlUEXtxEBNhzMRj5ryAeR0lohVqt8NWNujt4iZz2fJvqK4Z8M+XAaInC8
-	 wBai1QZE/xkAA==
-Message-ID: <ca22b69fe6311ba87a7dcca9948a62a7.sboyd@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1725952686;
+	bh=OnyMkOUZUp3mVLWHnjm3K66y8reg6sgBhI6dE1mMjYk=;
+	h=From:Subject:Date:To:Cc:From;
+	b=JGenVeDFkaAhwiBhE0wl3TChSfLAhJqBLTUSvjz35IZrYtVTkYoZKoqFDBjMbr3HL
+	 EPv1gsURNVPR7cnsm1ydTcJnLovAqNI0CoWJftiEH69y6QqQDM7+OMw179jrQ+xESk
+	 mjPxHhxeFiBMHDFEXoNwab1vuuPoOHsiuR6R/Xq3uUbr1sDnLi6Kf/NaYbFVUiGuJ9
+	 RHGPiqyzd789VIslYGWeV67fnw6yht/HCoGVhWgFrxW2jHL95m4Pte6xpfqIw3JdJU
+	 l7aI9/sWDWzvgIejwPNTPHRFEqZG5P3L4FFTkn8XzEyHMREAFMdETDg/x8BfPzJpCW
+	 Gy9u1hJUN0FgA==
+From: Simon Horman <horms@kernel.org>
+Subject: [PATCH net-next 0/3] net: ethernet: ti: Address some warnings
+Date: Tue, 10 Sep 2024 08:17:55 +0100
+Message-Id: <20240910-ti-warn-v1-0-afd1e404abbe@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20240909144026.870565-2-u.kleine-koenig@baylibre.com>
-References: <20240909144026.870565-2-u.kleine-koenig@baylibre.com>
-Subject: Re: [PATCH] clk: Switch back to struct platform_driver::remove()
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: linux-clk@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, arm-scmi@vger.kernel.org, imx@lists.linux.dev, linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org
-To: Michael Turquette <mturquette@baylibre.com>, Uwe =?utf-8?q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Date: Mon, 09 Sep 2024 14:20:55 -0700
-User-Agent: alot/0.10
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKPy32YC/x3MQQqAIBBA0avErBtQKdCuEi3KxprNFColRHdPW
+ j74/AcSRaYEQ/NApIsTH1Kh2wb8PstGyGs1GGU65bTCzHjPUXBd/OI6a03oDdT6jBS4/KcRhDI
+ KlQzT+34RCdTcYwAAAA==
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Siddharth Vadapalli <s-vadapalli@ti.com>, 
+ Roger Quadros <rogerq@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+ Nick Desaulniers <ndesaulniers@google.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
+Cc: netdev@vger.kernel.org, linux-omap@vger.kernel.org, 
+ llvm@lists.linux.dev
+X-Mailer: b4 0.14.0
 
-Quoting Uwe Kleine-K=C3=B6nig (2024-09-09 07:40:25)
-> After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
-> return void") .remove() is (again) the right callback to implement for
-> platform drivers.
->=20
-> Convert all clk drivers to use .remove(), with the eventual goal to drop
-> struct platform_driver::remove_new(). As .remove() and .remove_new() have
-> the same prototypes, conversion is done by just changing the structure
-> member name in the driver initializer.
->=20
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
-> ---
-> Hello,
->=20
-> I was lazy and created a single patch for all of clk. Please tell me if
-> I should split per vendor (or per-driver). Given that touches so many
-> drivers, I also stripped the individual maintainers and just kept the
-> mailing lists. I hope this doesn't prevent people to give feedback, but
-> otherwise the Cc: list gets Huge.
->=20
+Hi,
 
-I'll apply it on top of clk-next right before sending the main clk PR to
-Linus.
+This patchset addresses some warnings flagged by Sparse, and clang-18 in
+TI Ethernet drivers.
+
+Although these changes do not alter the functionality of the code, by
+addressing them real problems introduced in future which are flagged by
+tooling will stand out more readily.
+
+Compile tested only.
+
+---
+Simon Horman (3):
+      net: ethernet: ti: am65-cpsw: Address __percpu Sparse warnings
+      net: ethernet: ti: am65-cpsw: Use __be64 type for id_temp
+      net: ethernet: ti: cpsw_ale: Remove unused accessor functions
+
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c |  8 +++-----
+ drivers/net/ethernet/ti/cpsw_ale.c       | 30 +++++++++++++++++++++---------
+ 2 files changed, 24 insertions(+), 14 deletions(-)
+
+base-commit: a9b1fab3b69f163bbe7a012d0c3f6b5204500c05
+
 
