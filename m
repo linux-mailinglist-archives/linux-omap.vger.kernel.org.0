@@ -1,85 +1,82 @@
-Return-Path: <linux-omap+bounces-2184-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2185-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A07D5975915
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Sep 2024 19:12:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1859975A59
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Sep 2024 20:25:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4590A1F2701B
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Sep 2024 17:12:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CC591F25FEE
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Sep 2024 18:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEDDC1B29B5;
-	Wed, 11 Sep 2024 17:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D48E1B9B51;
+	Wed, 11 Sep 2024 18:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CpnFAkMA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="avqJjFg4"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C56742A94;
-	Wed, 11 Sep 2024 17:12:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FC11B655A;
+	Wed, 11 Sep 2024 18:25:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726074736; cv=none; b=SOAFWVWNKSlPnAw1QJDLNGb5K49TbvG2JxX/9+b6J9N+hgMhRWrWESipLxWQdX+wl+aUgoeVOxcdA3dUkLOpaMKERjmqvAfwTh4+0StWeoTATyw4rYRKocnYTWckuWtPzJn2ZAjaXBpgqHn/4lf3Gu+q+gtCPbDYa2GTtpVk1NU=
+	t=1726079123; cv=none; b=NKSEOvs4PaP/0C26aa+8Il+ySOlIZm8ApJexgzojlwKSltBN9jrGUX7a5Q7alfL7AlOsv1nBmeTJ2LBnEP6QdKg0YnEWuw6audrSeN4Pra0CG/rHUiEQdrgmL7eA3hjqGO7hF9kukuMAOMVjTaadvVDJWLPGDbHxMfnWpCk71I4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726074736; c=relaxed/simple;
-	bh=28aqfpBmczL2qL3N4PcWXgfXmd+sa3neIRFO5MVhRbk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NjT7pzZt8LkfjRBXOAGwlewanlcn8xP8v6qb3KS1Qpo8SG0VUzk/zQRTxOu3tH+t5/8ZY9fYc082qgROIhBPqsqjZw/n5G1hMK/36UxCjtH3sLlRlfZGk6GtCTdYaGU0ni9lWpODC98ZD9NcGPoMEgI/ersPLzhOfOMF/wvR8IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CpnFAkMA; arc=none smtp.client-ip=209.85.215.173
+	s=arc-20240116; t=1726079123; c=relaxed/simple;
+	bh=ZFbm6RvuGzyg/OXzLGx4dFjmyQYMdMuowComNjj6Bbc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NuyI+Sz/Z7mBnGkHu+k1j3wZfbJQy/sff3Oknh3+gIjuDs613g5rDBM3cb9td8YKlm4uJYmQVpBvWeTZNtXbKZOeM+6lZhJzNwaeWL+BZlJEkF0gKhVcSv0suXjhpXRNQnMOZZrAfF+Wk4IwKVBIKdvHAcfpVQ2ZyUnUdYg5Qek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=avqJjFg4; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-7db19de6346so72166a12.2;
-        Wed, 11 Sep 2024 10:12:15 -0700 (PDT)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-42cd74c0d16so532655e9.1;
+        Wed, 11 Sep 2024 11:25:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726074734; x=1726679534; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1726079121; x=1726683921; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=x6xlgjjvIv4Tu6d6E5+S2TBi3KJntXgaOfCvHBzY5Ik=;
-        b=CpnFAkMA6CdmnbRE17RdZCFNmnwFkPCCS+pKk/QgP8RFJ8n/KCB4WOAC6AjcBL/YBL
-         wmyeD6ExuWpcUtcYHdQIjmISmOyxCp7llOkV9zv+b+GNlW7xSk/wqqoF29B8//FJPDKg
-         +Fd/OgGi0hUD/pAFMRQKv+2KY8BXaBwJtitdZltRqCLq5sD78aKk2LvSA5ZG1/aKfudg
-         Wh7bXCHsMlUfVguvcwHt48NvXTSfZlXNAxeeeZroMdc8800kbPveQYh6wpoe/3o0b8Vs
-         FkrVIWV+5yqStx+xxOV0aAXJYbtxTPC68zUv8Egg5aNXyRcGNEDj4GQjGDD7hFp5Fap8
-         wpXA==
+        bh=TxR+vNB93ufPg0Y1ZRk8v4VwhhNXPxM1gxuKsa+d6/0=;
+        b=avqJjFg4O4NdBLdgSPIBByggRc6VkPGcarvqwNd+yq2tWrnVbolb/ulrzn+dz1mlJX
+         Jx36PQOFsMXZTQrTIhwHNNGPP4kfWa8CuE03mcuqxku4NN/PIVA4u/ZGNFeetZ3qJrPQ
+         mqar0m0V+eDucVKdgEWVSM2nh4Tpbvapqbv/VxXGLbQS1UHGtM/UOBqIpNESvwzWheXJ
+         icqSMfs4vhs8wDwDpfrKOsyolM/MDemBz06HJ2kjnp5y2x+oqvZVgG9zh3PAk4efNBZX
+         9hgI3Hg9dlDjwzpkRMC1hL+xzXb0HuBEJtyV9QZLNpHVOE0BH2XOKmwVKoWaX5gAsnee
+         m4lQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726074734; x=1726679534;
+        d=1e100.net; s=20230601; t=1726079121; x=1726683921;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=x6xlgjjvIv4Tu6d6E5+S2TBi3KJntXgaOfCvHBzY5Ik=;
-        b=wPvbv6nAYo0yDpZpja4FFGDylEn8YlJmO8cC/G6+YIob2EGvjwRdw2b0aEYsXa3ov1
-         mnxyQ91ShGNWDzkti6xSkfsfZFWTebfBW/SMgfNOwK7wq68To9NleSTeQ/t0Pi9kUc1Z
-         NCss++wJZgBGsVhkWyVN3UvnjtPAmKaLz2Of/ilnBDtUqG81s0oJmVUuc/9auSkJBRf/
-         K+vMCOjNdhjSuwemnFZ8G1tU7gRRGKhBNMxqPIoqoT2IHdUeSBZb0pOJr0eidtPdmhrj
-         udjXuQSXZa573Pyd2gUkUwEpzeE1K16FGETlZpjo1qncM5zFs3yxmlPytOc+ijGMntPw
-         lqrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVa97xYqYOoTFIeXHzMia3D6RTbWRTkblKbjEl+IaeER9nLWQz6meKjUzyqt8YFke6noKhrQVDdLLCx/w==@vger.kernel.org, AJvYcCVxAXB7apKZPa/Vfm4X8bcnki/M51gCBOpUbOJOF13+ObK+K/CIt85yIoARhoU7Ooh+2A87j0zM9/BWOys=@vger.kernel.org, AJvYcCXFhY1oaITDOUPTnXJcxVe5dTxmQqu/wa0NqQxABlslT48iSpVQ350UkQ5vhQlOm7LDktzhKxPBrErb@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+vL7XZ+CO11fiGAPUKKTJSBEO6AV2pshgd1qR6k/7TjSthpf2
-	ITMRJ8BUtJ1sCbSBKjHTAg/+cCbXV07cqAyGpZ2+IOS+d6OMgx/k
-X-Google-Smtp-Source: AGHT+IEd9DUYp7cewHHHvNv74waHQ4dQOFb6ONOUbfu4/MofpupHbJr5iv8/iTXTvi/uirT/M2eDAw==
-X-Received: by 2002:a05:6a21:e8f:b0:1cf:513f:f1cb with SMTP id adf61e73a8af0-1cf5e03398amr7177453637.4.1726074734275;
-        Wed, 11 Sep 2024 10:12:14 -0700 (PDT)
-Received: from fedora.. ([106.219.162.154])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-719090c9b08sm3193102b3a.207.2024.09.11.10.12.10
+        bh=TxR+vNB93ufPg0Y1ZRk8v4VwhhNXPxM1gxuKsa+d6/0=;
+        b=QHfsKnp3e98dSNxAK9vxN5g+HRi3foWk08iqc84aGvplbQst1WY0uTuAHlLc1iYC6l
+         ehmDqJPV8XQKfEWl287idp1w+ZKTbxoqpkF5ognmko4c1YIUtVczqv8lAdzyphjTZ7WH
+         QYvEMZW6Vw+88mjvSh/qXyu5uUeh2aStinHgD4BnVpfVG4ZvwLMaflbPiNW0so19uTVr
+         lyn0ju7FAVRzK4fKLMnb9VYjIBW2QURQCdm6P8wVSPTBuMbRE+eD/uF2agEuySQoy9B4
+         kEEj/TYFqSah98uziNRFL/6q0WtNbpqjQzlmCpwG3IWyWdRRza5exRLjuXcDdsil2ai2
+         k+0w==
+X-Forwarded-Encrypted: i=1; AJvYcCUAc2fgLeU9+IgFdOsDuNweuU9SEusRkFcQtvrEwQnCim40xYCtscGQIegLh1yd6T/TSNt2hQYAKCKjrx8=@vger.kernel.org, AJvYcCVEEBDcaMv+TbkdN9DQ6lm4r/6tu3gh4ep9X1jozZEvtWDLL8imjoney8MfHDo0Q6914C4VC9isSX364sko@vger.kernel.org, AJvYcCVxV3Sl5YIhmLQJlGhARptqKggoKIwaNcNdsNlcaA4dbQ9WkjbsMEXQyVKCvScifZ8I3Gqbi0tMyGfi3bbrVMY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZR+Uv8LpJcQhcHZ0d+geGPdM9Kk5ZuBTHKhB6pFTYPDBIACd5
+	CekxAwAyBFXAglQg0tRzDiVXQGFnXmQ5RI+COO6KtqqrESz93bzI
+X-Google-Smtp-Source: AGHT+IG6EBJS+D/O14RGqyVdq3Z1OqN0oOzz6xJGseNGrMXdlv0fn7sOAFcf/NaC2Z7Gh++8z1XETA==
+X-Received: by 2002:a05:600c:45cf:b0:42c:a802:540a with SMTP id 5b1f17b1804b1-42cdb511f33mr3768055e9.7.1726079119903;
+        Wed, 11 Sep 2024 11:25:19 -0700 (PDT)
+Received: from void.void ([141.226.10.46])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42cb099acf6sm146736855e9.9.2024.09.11.11.25.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Sep 2024 10:12:13 -0700 (PDT)
-From: Riyan Dhiman <riyandhiman14@gmail.com>
-To: vigneshr@ti.com,
-	s-vadapalli@ti.com,
-	lpieralisi@kernel.org,
-	kw@linux.com,
-	bhelgaas@google.com
-Cc: kishon@kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
+        Wed, 11 Sep 2024 11:25:19 -0700 (PDT)
+From: Andrew Kreimer <algonell@gmail.com>
+To: Helge Deller <deller@gmx.de>
+Cc: linux-omap@vger.kernel.org,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
-	Riyan Dhiman <riyandhiman14@gmail.com>
-Subject: [PATCH] PCI: dra7xx: Added error handling in probe function when devm_phy_get() fails
-Date: Wed, 11 Sep 2024 22:41:13 +0530
-Message-ID: <20240911171112.46322-2-riyandhiman14@gmail.com>
+	kernel-janitors@vger.kernel.org,
+	Andrew Kreimer <algonell@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: [PATCH] video: fbdev: Fix a typo
+Date: Wed, 11 Sep 2024 21:24:37 +0300
+Message-ID: <20240911182503.3600-1-algonell@gmail.com>
 X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -89,34 +86,27 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-While creation of device link, if devm_phy_get() function fails then it directly
-returns PTR_ERR without any cleanup of previous added device links.
-Added goto statement when devm_phy_get() fails, to handle the cleanup of already
-added device links.
+Fix a typo in comments.
 
-Fixes: 7a4db656a635 (PCI: dra7xx: Create functional dependency between PCIe and PHY)
-Signed-off-by: Riyan Dhiman <riyandhiman14@gmail.com>
+Reported-by: Matthew Wilcox <willy@infradead.org>
+Signed-off-by: Andrew Kreimer <algonell@gmail.com>
 ---
- drivers/pci/controller/dwc/pci-dra7xx.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/omap2/omapfb/dss/hdmi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-index 4fe3b0cb72ec..c329d107b811 100644
---- a/drivers/pci/controller/dwc/pci-dra7xx.c
-+++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-@@ -762,8 +762,10 @@ static int dra7xx_pcie_probe(struct platform_device *pdev)
- 	for (i = 0; i < phy_count; i++) {
- 		snprintf(name, sizeof(name), "pcie-phy%d", i);
- 		phy[i] = devm_phy_get(dev, name);
--		if (IS_ERR(phy[i]))
--			return PTR_ERR(phy[i]);
-+		if (IS_ERR(phy[i])) {
-+			ret = PTR_ERR(phy[i]);
-+			goto err_link;
-+		}
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi.h b/drivers/video/fbdev/omap2/omapfb/dss/hdmi.h
+index 9a7253355f6d..cdb1dedca492 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi.h
++++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi.h
+@@ -351,7 +351,7 @@ struct omap_hdmi {
+ 	bool audio_configured;
+ 	struct omap_dss_audio audio_config;
  
- 		link[i] = device_link_add(dev, &phy[i]->dev, DL_FLAG_STATELESS);
- 		if (!link[i]) {
+-	/* This lock should be taken when booleans bellow are touched. */
++	/* This lock should be taken when booleans below are touched. */
+ 	spinlock_t audio_playing_lock;
+ 	bool audio_playing;
+ 	bool display_enabled;
 -- 
 2.46.0
 
