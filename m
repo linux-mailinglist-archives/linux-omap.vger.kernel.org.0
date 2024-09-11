@@ -1,113 +1,148 @@
-Return-Path: <linux-omap+bounces-2185-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2186-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1859975A59
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Sep 2024 20:25:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BDEA975A98
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Sep 2024 20:54:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CC591F25FEE
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Sep 2024 18:25:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 814FA1F24743
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Sep 2024 18:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D48E1B9B51;
-	Wed, 11 Sep 2024 18:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308E51B9B47;
+	Wed, 11 Sep 2024 18:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="avqJjFg4"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="HJDZdiRF"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FC11B655A;
-	Wed, 11 Sep 2024 18:25:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F2C12EBEA;
+	Wed, 11 Sep 2024 18:53:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726079123; cv=none; b=NKSEOvs4PaP/0C26aa+8Il+ySOlIZm8ApJexgzojlwKSltBN9jrGUX7a5Q7alfL7AlOsv1nBmeTJ2LBnEP6QdKg0YnEWuw6audrSeN4Pra0CG/rHUiEQdrgmL7eA3hjqGO7hF9kukuMAOMVjTaadvVDJWLPGDbHxMfnWpCk71I4=
+	t=1726080833; cv=none; b=JHamt9EOfDJ4UnkJI53TaHUqhaFtSXC9ax6sErvlWxszRSYQyNAgDqOIxOxmV4t4GsA70z+1uPdrrp6Pr9v1pb+5aO7zqZX6JH9kpfhcrgQOcO9ya+UZG3E9hcyWWG2TktA17Um2067V5YSi0K7PMF5ykqzToTlHrWKxCwveCS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726079123; c=relaxed/simple;
-	bh=ZFbm6RvuGzyg/OXzLGx4dFjmyQYMdMuowComNjj6Bbc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NuyI+Sz/Z7mBnGkHu+k1j3wZfbJQy/sff3Oknh3+gIjuDs613g5rDBM3cb9td8YKlm4uJYmQVpBvWeTZNtXbKZOeM+6lZhJzNwaeWL+BZlJEkF0gKhVcSv0suXjhpXRNQnMOZZrAfF+Wk4IwKVBIKdvHAcfpVQ2ZyUnUdYg5Qek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=avqJjFg4; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-42cd74c0d16so532655e9.1;
-        Wed, 11 Sep 2024 11:25:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726079121; x=1726683921; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TxR+vNB93ufPg0Y1ZRk8v4VwhhNXPxM1gxuKsa+d6/0=;
-        b=avqJjFg4O4NdBLdgSPIBByggRc6VkPGcarvqwNd+yq2tWrnVbolb/ulrzn+dz1mlJX
-         Jx36PQOFsMXZTQrTIhwHNNGPP4kfWa8CuE03mcuqxku4NN/PIVA4u/ZGNFeetZ3qJrPQ
-         mqar0m0V+eDucVKdgEWVSM2nh4Tpbvapqbv/VxXGLbQS1UHGtM/UOBqIpNESvwzWheXJ
-         icqSMfs4vhs8wDwDpfrKOsyolM/MDemBz06HJ2kjnp5y2x+oqvZVgG9zh3PAk4efNBZX
-         9hgI3Hg9dlDjwzpkRMC1hL+xzXb0HuBEJtyV9QZLNpHVOE0BH2XOKmwVKoWaX5gAsnee
-         m4lQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726079121; x=1726683921;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TxR+vNB93ufPg0Y1ZRk8v4VwhhNXPxM1gxuKsa+d6/0=;
-        b=QHfsKnp3e98dSNxAK9vxN5g+HRi3foWk08iqc84aGvplbQst1WY0uTuAHlLc1iYC6l
-         ehmDqJPV8XQKfEWl287idp1w+ZKTbxoqpkF5ognmko4c1YIUtVczqv8lAdzyphjTZ7WH
-         QYvEMZW6Vw+88mjvSh/qXyu5uUeh2aStinHgD4BnVpfVG4ZvwLMaflbPiNW0so19uTVr
-         lyn0ju7FAVRzK4fKLMnb9VYjIBW2QURQCdm6P8wVSPTBuMbRE+eD/uF2agEuySQoy9B4
-         kEEj/TYFqSah98uziNRFL/6q0WtNbpqjQzlmCpwG3IWyWdRRza5exRLjuXcDdsil2ai2
-         k+0w==
-X-Forwarded-Encrypted: i=1; AJvYcCUAc2fgLeU9+IgFdOsDuNweuU9SEusRkFcQtvrEwQnCim40xYCtscGQIegLh1yd6T/TSNt2hQYAKCKjrx8=@vger.kernel.org, AJvYcCVEEBDcaMv+TbkdN9DQ6lm4r/6tu3gh4ep9X1jozZEvtWDLL8imjoney8MfHDo0Q6914C4VC9isSX364sko@vger.kernel.org, AJvYcCVxV3Sl5YIhmLQJlGhARptqKggoKIwaNcNdsNlcaA4dbQ9WkjbsMEXQyVKCvScifZ8I3Gqbi0tMyGfi3bbrVMY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZR+Uv8LpJcQhcHZ0d+geGPdM9Kk5ZuBTHKhB6pFTYPDBIACd5
-	CekxAwAyBFXAglQg0tRzDiVXQGFnXmQ5RI+COO6KtqqrESz93bzI
-X-Google-Smtp-Source: AGHT+IG6EBJS+D/O14RGqyVdq3Z1OqN0oOzz6xJGseNGrMXdlv0fn7sOAFcf/NaC2Z7Gh++8z1XETA==
-X-Received: by 2002:a05:600c:45cf:b0:42c:a802:540a with SMTP id 5b1f17b1804b1-42cdb511f33mr3768055e9.7.1726079119903;
-        Wed, 11 Sep 2024 11:25:19 -0700 (PDT)
-Received: from void.void ([141.226.10.46])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42cb099acf6sm146736855e9.9.2024.09.11.11.25.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Sep 2024 11:25:19 -0700 (PDT)
-From: Andrew Kreimer <algonell@gmail.com>
-To: Helge Deller <deller@gmx.de>
-Cc: linux-omap@vger.kernel.org,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Andrew Kreimer <algonell@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>
-Subject: [PATCH] video: fbdev: Fix a typo
-Date: Wed, 11 Sep 2024 21:24:37 +0300
-Message-ID: <20240911182503.3600-1-algonell@gmail.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1726080833; c=relaxed/simple;
+	bh=2eWulHbrslLH7unscxNUS7ux6ddpJhYik4GRKwf6Lfo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=u65CzK8Su6ctdZnU+lHroAIMEVbVCsz7qmc6UMIP08BlgLJpazmogfLfDAZuSvDRAFY/1vPDUbq608rRv+NY/8x938VTLopNKQ6cVuugY7lOebLtlD6F4ZZC1l6PsTBYhe7i1hfBYJbHAigfMnve3aKAqjAhty5EiCmKufh6s0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=HJDZdiRF; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1726080818; x=1726685618; i=deller@gmx.de;
+	bh=RAeWmAP3CL6OPacnXksWF2kShTXW4DW4MGJ08mgAvig=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=HJDZdiRFFaCWzMERovSmESRTtVIqcgeWeEzi70aZ/S0ZwwzMnj2vGC1Vg+1segFx
+	 7FndCBD0j1OmW2xU1oDxknevRFBPMk52TVsh2dW4NAi5FBTso3OpH8faa/+nFLfom
+	 Iw+1qul8qny8wDSt21o7WZ+StYCIe3Tomo4NUlCSAwzJmfm5esE59imLgV2p6s1ra
+	 d3/zycEmqlEPUuC6Mn7QjV6Dl5hnougjl1qbuAdkEO9LKzk7lsdpwAVFFyyD0Uw+Q
+	 h07yjmmMfJMmsy/3bFKIIJT1lA3ZwWGwDRv+JgDgSbE76fKVLsTk/AsiW5T+Dl/Wt
+	 6N8u7gPBYv9Dp7hDSQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.55] ([109.250.63.79]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M26r3-1sqOHT0Jqb-00A5EP; Wed, 11
+ Sep 2024 20:53:38 +0200
+Message-ID: <466fd103-0f09-484f-85ca-3a76af074981@gmx.de>
+Date: Wed, 11 Sep 2024 20:53:36 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] video: fbdev: Fix a typo
+To: Andrew Kreimer <algonell@gmail.com>
+Cc: linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, Matthew Wilcox <willy@infradead.org>
+References: <20240911182503.3600-1-algonell@gmail.com>
+Content-Language: en-US
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <20240911182503.3600-1-algonell@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:bQat50RglNLMaBz6IIm3J3R2rNcu3r52S6Pl0xxl1cteAp5Viup
+ THc/kbcNeKEOctjzHARJBkwnI3rrRCaZgnpNFPveS8fKOYr/mxf5fXAyFJHXl1j115C9nrM
+ zwm0ugzRlECYm3LOq+zKAki5GB1DE33qjh1CS8M/jI+SmTLR3V5FWmGKouEfZQsUSz7zCIX
+ 6eNmphJ+GfLvAe81GzHWA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:RiN6x8TT1Xw=;icW6K4VPNDutPh6K2ruukh7vOUe
+ GTAaTCepcytGS8BJttTg+WOIKvL8/stSaWwUhDl6UhTwX/x9gQxJWHuQRlMk0TaAr3pP1ZxEL
+ Tqhr+/SLt00rwLn6IS1UFn6C6vKoaOd9EOZlnHIeN5/8og7yweoXFIAcYcYaMzxlzsAhoGDyy
+ 1URffqt2wha6GJGKtTyZJ3xFmXQKjPuwJOyu3SN8MrxDp//HUpMhxmb7f0RGD9Wfj6gQt3twu
+ RSjnAwI9AnhzYxd1AR0T/O1gAN6vTfGDUpKqkJBP+nA2mm58vOTFaXDK5KiRgvCUHYNOsDDoO
+ +u++Lxx4GCaSoSkPFrxnf8F2IJT5miQ0EB8Na5cOZmz4pw3qfSenwNluIqtLNt12jeqlGc9KA
+ 0YALSCganpQDiH3UGyV2xmbyxprfhBU8ZTDya2ZSyZ985n6Xvm6uoXDc0FVWfUJnlzWp48DEo
+ g3ijAgSNBFgecTufwQQPyDsmDJoTjIrnpD51Cq33pzSzR09gPcTkWK97Ei4ls8GZKvfTZeaoo
+ 4QMXiuUC1/QHG/JEmUXfjicKZiDLuP5Vcl3vpzgVqf6QCCEyVV2BjTUFXEE2JyaC7++jkgZeb
+ hlmAsohqaExAtrhEVZQjxIFazbBpMUodDFAqQZubuR+LM5QqfK9e5AmrY5O4PdgWrV6mxCTXR
+ +WP7atQBaLVrYPBf8JuoWujf3AcxWB2GJB5QBb+dp7rSU60U0x0RFZz9BngwLLWPBdUsIEtm3
+ fKv8N5CY0kIA50BIGwb5/UcYo9cc75Rw88B8d4ki30VRJLa0aOR6yKy4BnfDNtk5pRile9drr
+ VjpWoaMQqod1Y5ngx1Hthujg==
 
-Fix a typo in comments.
+On 9/11/24 20:24, Andrew Kreimer wrote:
+> Fix a typo in comments.
+>
+> Reported-by: Matthew Wilcox <willy@infradead.org>
+> Signed-off-by: Andrew Kreimer <algonell@gmail.com>
+> ---
+>   drivers/video/fbdev/omap2/omapfb/dss/hdmi.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reported-by: Matthew Wilcox <willy@infradead.org>
-Signed-off-by: Andrew Kreimer <algonell@gmail.com>
----
- drivers/video/fbdev/omap2/omapfb/dss/hdmi.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+applied.
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/hdmi.h b/drivers/video/fbdev/omap2/omapfb/dss/hdmi.h
-index 9a7253355f6d..cdb1dedca492 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/hdmi.h
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/hdmi.h
-@@ -351,7 +351,7 @@ struct omap_hdmi {
- 	bool audio_configured;
- 	struct omap_dss_audio audio_config;
- 
--	/* This lock should be taken when booleans bellow are touched. */
-+	/* This lock should be taken when booleans below are touched. */
- 	spinlock_t audio_playing_lock;
- 	bool audio_playing;
- 	bool display_enabled;
--- 
-2.46.0
+Thanks!
+Helge
 
 
