@@ -1,64 +1,64 @@
-Return-Path: <linux-omap+bounces-2191-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2192-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 010B2976516
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Sep 2024 10:59:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3449976630
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Sep 2024 11:58:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 845FC1F24532
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Sep 2024 08:59:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA85428563E
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Sep 2024 09:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE909193403;
-	Thu, 12 Sep 2024 08:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B8F19F10D;
+	Thu, 12 Sep 2024 09:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M/CtgxfV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gJXGwV+G"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E98126C16;
-	Thu, 12 Sep 2024 08:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D809A1917CD;
+	Thu, 12 Sep 2024 09:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726131575; cv=none; b=nXRqrObqn3RFQiC0xhokiyiBKTzJq6MMAJCtYXxQw1BO7oNFYQD72xPiZaL+g4rUtd6EtHYdId5NenDS52pNmFG6TG+tLLBhEhOPrW37hu5xOyCxbmv2m0surrzIjQag37s0G7BOH/9VL0iw0LjTNLsFGFGWkzvwC0naZWhOEHk=
+	t=1726135099; cv=none; b=Fd66n2BpPqA8nlKBuoGlYAM5aCIwd9+yKrJ89KV3+KImJa2rIXJt/4T4bjBMQGIACWQDXYKZXjuAoHO63VIIIXV3Wylvh8+TTNGjG6fchTfnCS9aXAFwGVAfWxT2CVuzLtyKsQsZ6ib4AtrWEgIUlsOaVf/QHFICQFHiGj2N8PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726131575; c=relaxed/simple;
-	bh=5wbXtFl13LS4fzM8TQZTImPk5C3pfWEpGNTii/WzCkA=;
+	s=arc-20240116; t=1726135099; c=relaxed/simple;
+	bh=pGm77ANVkT4UjIg+7YwlFpf9b4RnE1vwLMkeVsZ5LT0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QTYV2BdFB5jHXRa5TbmNSxFfpPl+VV8K/CnRi/L2p1QxLAWLC+VBVS7llJoCjw2KxarLaW5hp2Drb9dOL8xUZCeQZ7bi+JMhOEJNJyV8ab3ccFDM18v3ANDQOXuXqnNoLymqMRGytkN96janlb6add8VhLyi9iTraLVlnTLnJaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M/CtgxfV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2F1C4CEC3;
-	Thu, 12 Sep 2024 08:59:32 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=K8CZp9frp7RSo3qbDJMSgYU13kKs4D6WDLYkwcSJ5RAB9lbuB4nL56IYFKW+kZAqmg/AxjBG7zNmzbvjray6isNGzpR9lG+PrCWngA3MI62a8O46tPrv85mXczcNsxfDS33ZMH594m47b2ZPSpR6iZRZPzRruFGZBQ16Z1521cU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gJXGwV+G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D29C4CEC3;
+	Thu, 12 Sep 2024 09:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726131574;
-	bh=5wbXtFl13LS4fzM8TQZTImPk5C3pfWEpGNTii/WzCkA=;
+	s=k20201202; t=1726135098;
+	bh=pGm77ANVkT4UjIg+7YwlFpf9b4RnE1vwLMkeVsZ5LT0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M/CtgxfVU2D/w1RmOoTi0eip/rfA0KuoA1S0sRFkVN1djn/ltmt83JWAcaOjPqvEE
-	 DoarBNsXKxN9kxThfFfiXlmSxvYS45uGksKK8eOHmxj4hbxTYykOXOgb+ZDpG2VJLS
-	 kDJNIJahyLaxaaNGexEJ9Sc0Uy42++Em46W4nNJZcUDrN2ec/ZUWK3ia9BpVqxbq9v
-	 FS/9J10o3mB0LSojf16TCO0+vpXKqW3E3J4R1Evp2LVqIYTHGabL40f5fKec+AaJ7W
-	 yBr/VSy59BU4sb/SkCoNscNGF70YvNIsj/qnFwBUQqBRaJ/5cYa7LjmIRig7/0XscB
-	 xK4UDMDyWgPaw==
-Date: Thu, 12 Sep 2024 09:59:29 +0100
+	b=gJXGwV+GUsUXJln3GGPb2TSZeK6y9o46kL0BfYxpsR+1MnVUHiIhGJxXw5KcWarC3
+	 A9lpz0XIXoHTY5VcpwtZ7ewZatzF1irI0r+x2htLa2omKKxgyGaeJQayxuRhoaqrRN
+	 vBm8EtV7NEExljZvEwg0ZKhg9hoeO8ItpUcLDdPrah1Y4Nzf/X2i1LESXmzVVDQbDs
+	 Xw7PKttgrOE+X489oCesAqu7GbABbpKP3Ab2ZxjdapAjHZzMHZ+CnUWpL5N0V2OV4C
+	 DT8HjK5LsDemovhLx32hmTdjqPJYmyJh0RU76r5lsqbi6MQ263ym24Zph3Q2qK0pDt
+	 9NRcPrSBRZq+w==
+Date: Thu, 12 Sep 2024 10:58:13 +0100
 From: Simon Horman <horms@kernel.org>
-To: Roger Quadros <rogerq@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
 Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
 	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
 	Nathan Chancellor <nathan@kernel.org>,
 	Nick Desaulniers <ndesaulniers@google.com>,
 	Bill Wendling <morbo@google.com>,
 	Justin Stitt <justinstitt@google.com>, netdev@vger.kernel.org,
 	linux-omap@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH net-next 3/3] net: ethernet: ti: cpsw_ale: Remove unused
- accessor functions
-Message-ID: <20240912085929.GF572255@kernel.org>
+Subject: Re: [PATCH net-next 1/3] net: ethernet: ti: am65-cpsw: Address
+ __percpu Sparse warnings
+Message-ID: <20240912095813.GG572255@kernel.org>
 References: <20240910-ti-warn-v1-0-afd1e404abbe@kernel.org>
- <20240910-ti-warn-v1-3-afd1e404abbe@kernel.org>
- <78b4ca2a-9448-4451-8e25-c57306af38e9@kernel.org>
+ <20240910-ti-warn-v1-1-afd1e404abbe@kernel.org>
+ <20240911170643.7ecb1bbb@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -67,132 +67,31 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <78b4ca2a-9448-4451-8e25-c57306af38e9@kernel.org>
+In-Reply-To: <20240911170643.7ecb1bbb@kernel.org>
 
-On Thu, Sep 12, 2024 at 10:07:27AM +0300, Roger Quadros wrote:
-> Hi Simon,
+On Wed, Sep 11, 2024 at 05:06:43PM -0700, Jakub Kicinski wrote:
+> On Tue, 10 Sep 2024 08:17:56 +0100 Simon Horman wrote:
+> > An alternate, approach would be to create a variant of
+> > devm_add_action_or_reset() which expects __percpu data.  This would
+> > avoid discarding the __percpu annotation, and any value it may have
+> > between the casts added by this patch.  However, doing so appears to
+> > require a significant amount of plumbing.  And, as far as I can see, the
+> > code updated by this patch would be the only user of it.  So this patch
+> > takes a simpler approach.
 > 
-> On 10/09/2024 10:17, Simon Horman wrote:
-> > W=1 builds flag that some accessor functions for ALE fields are unused.
-> > 
-> > Address this by splitting up the macros used to define these
-> > accessors to allow only those that are used to be declared.
-> > 
-> > The warnings are verbose, but for example, the mcast_state case is
-> > flagged by clang-18 as:
-> > 
-> > .../cpsw_ale.c:220:1: warning: unused function 'cpsw_ale_get_mcast_state' [-Wunused-function]
-> >   220 | DEFINE_ALE_FIELD(mcast_state,           62,     2)
-> >       | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > .../cpsw_ale.c:145:19: note: expanded from macro 'DEFINE_ALE_FIELD'
-> >   145 | static inline int cpsw_ale_get_##name(u32 *ale_entry)                   \
-> >       |                   ^~~~~~~~~~~~~~~~~~~
-> > <scratch space>:196:1: note: expanded from here
-> >   196 | cpsw_ale_get_mcast_state
-> >       | ^~~~~~~~~~~~~~~~~~~~~~~~
-> > 
-> > Compile tested only.
-> > No functional change intended.
-> > 
-> > Signed-off-by: Simon Horman <horms@kernel.org>
-> > ---
-> >  drivers/net/ethernet/ti/cpsw_ale.c | 30 +++++++++++++++++++++---------
-> >  1 file changed, 21 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-> > index 64bf22cd860c..d37b4ddd6787 100644
-> > --- a/drivers/net/ethernet/ti/cpsw_ale.c
-> > +++ b/drivers/net/ethernet/ti/cpsw_ale.c
-> > @@ -141,27 +141,39 @@ static inline void cpsw_ale_set_field(u32 *ale_entry, u32 start, u32 bits,
-> >  	ale_entry[idx] |=  (value << start);
-> >  }
-> >  
-> > -#define DEFINE_ALE_FIELD(name, start, bits)				\
-> > +#define DEFINE_ALE_FIELD_GET(name, start, bits)				\
-> >  static inline int cpsw_ale_get_##name(u32 *ale_entry)			\
-> >  {									\
-> >  	return cpsw_ale_get_field(ale_entry, start, bits);		\
-> > -}									\
-> > +}
-> > +
-> > +#define DEFINE_ALE_FIELD_SET(name, start, bits)				\
-> >  static inline void cpsw_ale_set_##name(u32 *ale_entry, u32 value)	\
-> >  {									\
-> >  	cpsw_ale_set_field(ale_entry, start, bits, value);		\
-> >  }
-> >  
-> > -#define DEFINE_ALE_FIELD1(name, start)					\
-> > +#define DEFINE_ALE_FIELD(name, start, bits)				\
-> > +DEFINE_ALE_FIELD_GET(name, start, bits)					\
-> > +DEFINE_ALE_FIELD_SET(name, start, bits)
-> > +
-> > +#define DEFINE_ALE_FIELD1_GET(name, start)				\
-> >  static inline int cpsw_ale_get_##name(u32 *ale_entry, u32 bits)		\
-> >  {									\
-> >  	return cpsw_ale_get_field(ale_entry, start, bits);		\
-> > -}									\
-> > +}
-> > +
-> > +#define DEFINE_ALE_FIELD1_SET(name, start)				\
-> >  static inline void cpsw_ale_set_##name(u32 *ale_entry, u32 value,	\
-> >  		u32 bits)						\
-> >  {									\
-> >  	cpsw_ale_set_field(ale_entry, start, bits, value);		\
-> >  }
-> >  
-> > +#define DEFINE_ALE_FIELD1(name, start)					\
-> > +DEFINE_ALE_FIELD1_GET(name, start)					\
-> > +DEFINE_ALE_FIELD1_SET(name, start)
-> > +
-> >  enum {
-> >  	ALE_ENT_VID_MEMBER_LIST = 0,
-> >  	ALE_ENT_VID_UNREG_MCAST_MSK,
-> > @@ -217,14 +229,14 @@ static const struct ale_entry_fld vlan_entry_k3_cpswxg[] = {
-> >  
-> >  DEFINE_ALE_FIELD(entry_type,		60,	2)
-> >  DEFINE_ALE_FIELD(vlan_id,		48,	12)
-> > -DEFINE_ALE_FIELD(mcast_state,		62,	2)
-> > +DEFINE_ALE_FIELD_SET(mcast_state,	62,	2)
-> 
-> I don't understand why we need separate macros for GET and SET.
-> The original intent was to use one macro for both.
-> 
-> Otherwise we will have to add DEFINE_ALE_FIELD/1_SET to all the fields.
+> Sorry if this was already discussed, but struct am65_cpsw_ndev_stats
+> appears to be identical to struct pcpu_sw_netstats but for ordering.
+> Can we let the core allocate the stats by setting
+> netdev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS?
 
-Hi Roger,
+Hi Jakub,
 
-Sorry for not being clearer.
+Thanks for pointing that out, and sorry for not thinking of it myself.
 
-My intent was to avoid declaring functions that are never used.
-Perhaps it is best explained by some examples.
+Looking over the code, and taking a first pass at implementing this,
+I believe the answer is yes :)
 
-In the case of mcast_state, the compiler flags that the get accessor is
-never used. The intent is of this patch addresses that by declaring the set
-accessor for mcast_state. Likewise for other similar cases.
-
-OTOH, in the case of, f.e. vlan_id, the set and get accessor functions are
-both used, and DEFINE_ALE_FIELD continues to be used to define them both.
-DEFINE_ALE_FIELD is implemented as the combination of _SET and _GET.
-
-> 
-> >  DEFINE_ALE_FIELD1(port_mask,		66)
-> >  DEFINE_ALE_FIELD(super,			65,	1)
-> >  DEFINE_ALE_FIELD(ucast_type,		62,     2)
-> > -DEFINE_ALE_FIELD1(port_num,		66)
-> > -DEFINE_ALE_FIELD(blocked,		65,     1)
-> > -DEFINE_ALE_FIELD(secure,		64,     1)
-> > -DEFINE_ALE_FIELD(mcast,			40,	1)
-> > +DEFINE_ALE_FIELD1_SET(port_num,		66)
-> > +DEFINE_ALE_FIELD_SET(blocked,		65,     1)
-> > +DEFINE_ALE_FIELD_SET(secure,		64,     1)
-> > +DEFINE_ALE_FIELD_GET(mcast,		40,	1)
-> >  
-> >  #define NU_VLAN_UNREG_MCAST_IDX	1
-> >  
-> > 
-> 
-> -- 
-> cheers,
-> -roger
-> 
+I also think that, as a second step, by using dev_core_stats,
+the custom ndo_get_stats64() implementation can be removed.
+LMKWYT.
 
