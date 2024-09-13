@@ -1,163 +1,190 @@
-Return-Path: <linux-omap+bounces-2199-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2200-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C640977331
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Sep 2024 22:59:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA40C977C47
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Sep 2024 11:37:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93D461F2504C
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Sep 2024 20:59:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 573311F27E6D
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Sep 2024 09:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331EE1C243C;
-	Thu, 12 Sep 2024 20:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C0CE1D6DA3;
+	Fri, 13 Sep 2024 09:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="zMYKHmeH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ADHNJSSe"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE5C1C175D
-	for <linux-omap@vger.kernel.org>; Thu, 12 Sep 2024 20:58:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EEF175D45;
+	Fri, 13 Sep 2024 09:37:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726174692; cv=none; b=MIJoWI2SEM09/I0djVVoBSlVoUmFYj4NBvEvLeOyGD+38QrbFM9eCAaHGfFc28byuk7CznzToQJr1Ey83eS0bp3dvf2jXCkJJxbFh2sjyK68ZM34FY7vpj4uRnpL8Q6ZQfK7snpd3OWGCDrAd38tGJQJXBXKqxcG1GkXLeT1lp4=
+	t=1726220261; cv=none; b=YHYObShzlpergT6N0RSbJ9RE0q8LunxqMGxi4BbF3fOAdfFrVC59N43j/iDVbDrix1eevFsa26dWmeREOECEIxGeWIS7YFixrCH6bFmidkaTBTlwLqmdmOvC9fasRwi87rx9F+Cp2bf48IU5ubAqp/CCv15liPzWSRJvqRXvUFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726174692; c=relaxed/simple;
-	bh=MYDZvrqlWEpmfJ0PC8MrAJxxkqkqQuxjGFHhVbXAtYE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ufi5Cfv5hCBhz1UyLCAinuhqqXLLVzdKecDzAuOW4UCgGs5OE4EoGcMDduzDhMit37ljUOOHBtUQ94KoojPd7L52rIpQSfHCWMVFSlJfYWqB0KC5sMMKfeKDt6teiFlIzbqJ0VJzbBaxAoSO/cPOa0Y2LJuPHeqypVqBbWo3TMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=zMYKHmeH; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-20688fbaeafso2672195ad.0
-        for <linux-omap@vger.kernel.org>; Thu, 12 Sep 2024 13:58:09 -0700 (PDT)
+	s=arc-20240116; t=1726220261; c=relaxed/simple;
+	bh=Muc8CTJ6tUBeBmqYfUSLjI05P6c+7aACxxpXBvHZK3g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RiC/IVXBmEhQdW1kiFkioDWvRgOvPUXgP0vcRKI8oQAozpzhcK1LW0orWB455mQEIWapoTJ3XE5wghND6eEtzB8xY4GgzXMrGxa4RAWpV20+x/16+UBw4ghzjk0pPxux8d1wrVlroIC/mqcBK7G9it8MkL+89gyptpo4eTB48dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ADHNJSSe; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-53661ac5ba1so2068562e87.2;
+        Fri, 13 Sep 2024 02:37:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1726174689; x=1726779489; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=awElkTLWK6u37rMcH6vV+9dmrRY/uH5yY9ycJ6GvqvQ=;
-        b=zMYKHmeHeQVgR09jItL/tqN8Iu4Z3xtNVUJI3mfrZ+xz47TgmOXyD7WQL1V+VVGI3b
-         057mf/boAlQUxGXeRg11VB7fhHybVjqZLyWIvQcSGLVNYAvEv6iVp2R/U2+FSV02jjcd
-         suOfT2n8WEHaIQZ7MAl3Mw314o+l/CEiO4Pp1cMKbQGXY3VLZ/4NDcgIO8whd3++PjfM
-         bYNypxqJ5LyaYGOl2easU6fx3QBQhOBcywyL59Sdf/VWM4nvA43cJPIq7jivxdDaK1Wr
-         50tRSpf6h/DSxjes6lm4PoYYfAuZHQUzhdoTCApthYu9TE1JgagCpEIBtR2wsA4IRZTO
-         6LEA==
+        d=gmail.com; s=20230601; t=1726220257; x=1726825057; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=poNRBe+GqBqtFV5yIuKftcM+UDfFRe/cSM7MSFErS7k=;
+        b=ADHNJSSeKzR8q5Xokl7KOsGHY9bEXVEC6Lfhm+zhflJscS8OUZyzPguvvCw2hnCPAD
+         YFB1pBIccoqbbchh5J8YAyouV7JCZ3t3I2Pf63B9HXMPv2FCbQyaBp+YUvYgQmqOmyZ5
+         EHmx5lbz54QDxtiJ6aUNMkW6Yu3BUvbnFLdmHBPXW0/Tsv22mDfOVtWkoezPvihyWQFj
+         x27aivG6KXcJh0hZPDtcgC42z9Nve5jzW8a5Ma/8W55nZmL9Z5GrqY3/5nPdkQl6rURb
+         AEx42KlEWt0vBIcS95q00JHgufvs4QFNdJdFgBV1eRL9LQRFTBAE3q5DI1ZtTSfe/XYk
+         2l+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726174689; x=1726779489;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=awElkTLWK6u37rMcH6vV+9dmrRY/uH5yY9ycJ6GvqvQ=;
-        b=ERwBfXj2RZ24lxqNCrsZPxjiOR6G+yAEujbDH81qXlNkDX0lOgSecXMRH0k6tZmZfb
-         CwDzBOq1TqE9iowjts6XgBkTqFXekOWqjMLf7SvfCAwsm2aPn6zwCOXoVCHNWz1ukFhh
-         gN9BWrIgM4RsB8oHcg5enMPTMxqsggyovP49z/Oo8QqRb74wiNAtWSqZjkYE2fsBAuTH
-         Wuxez8l2YsI1rg18D4E5ZagvB7kKJ45mh8T4ll7afCeZQUWMgTYdJ33LwV4sCSLP0o8B
-         GMCKIisAdwxANvRHtxgha2BZW2bR/JWouou3RfTOkHggangfP3BdN/jwTcgVvRmkUJV4
-         7OWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUYKjCIoKWOipRhCL3aalrXlxnJyCe4mdL0JNjiGJb0HeFFWqcdovENdbmN62ZoWozlqAtwtT53gdLU@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJhEdAW3lRLgrGyl08HVY2dF0H5NRudwQSBE2INRz4BtENBtW9
-	dKqaykI3DoZJMzgPfmQ+XsQbe3xy3sEb1n608DQm+Xo2eQ3TRZ3YkLYGr6o22EQ=
-X-Google-Smtp-Source: AGHT+IFNbFNRlMUVnmzvIAqMYOHLNoYiu39w2cW+++5PhbuKhP72IpMktdJxCrIrvKb5Z0jSCotKrw==
-X-Received: by 2002:a17:902:f60e:b0:205:809c:d490 with SMTP id d9443c01a7336-20781d61d67mr8439965ad.16.1726174689001;
-        Thu, 12 Sep 2024 13:58:09 -0700 (PDT)
-Received: from ghost ([50.145.13.30])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2076b0097desm18030445ad.247.2024.09.12.13.58.06
+        d=1e100.net; s=20230601; t=1726220257; x=1726825057;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=poNRBe+GqBqtFV5yIuKftcM+UDfFRe/cSM7MSFErS7k=;
+        b=hkVG2bxZQTMGUDhfFh2qIGEXcfJMv+ZOR14h+D+R/HTAOBEwU0+miLZHM874G5Njpe
+         e1R2Te+ZHX2+Uk8gMNFyU9JC2+qh8hK+Q5n6jiPK6wIYUNrPAZiodF4t4PJTXCTW38mX
+         gZKB48NKtjU0WLxRnzJGmsnx6ZepKhI0c0zh3VxfAMbbiDrCXj5mIKUoQ0IUfJ2/tucK
+         7Zb7BLL1c+EHuKK9o7+3ggVhmvLnRut6ewY7b0GEu5/W/qtEoHhsoUuC2xVzQW+Q2w0X
+         xdG4qUP1Vo0/RuZ1/T6XcY0fSt2iLN6By2TEio8TQ0pN7qix97qm+hk6zdL4+Zd+hhFA
+         Rz6w==
+X-Forwarded-Encrypted: i=1; AJvYcCVGID/F7GcvfiBgaXKsdk6Oqhwt55dD7rFvjZkm2D+Dav6yr2HVpiccEopn1TiXXXASjbxv8alAkL0y0Yo3zkM=@vger.kernel.org, AJvYcCWpwg5cDsh1hGC7hecahiQV0GnkICojpIIaCJnH0F3gp+e4MvfYtzS6H/BLQj+T6eFhX/H/kn58+7F9og==@vger.kernel.org, AJvYcCX/uqkMhVpnZxWx6B7ogAf/astLx5Oao6+vRz2uvutwREHO+vON9Px0Hdn3t2Jj6Rpx+s79ruNsyuVQ33q0@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNqlXtUfBth+JipXHqfh5NSQ6wQzmfRolr8et9ll2ZWTn6ce3d
+	ls+7w6vXyFOMonm1RFeRynp3Pqy5V3X0Vq6TAGeEIB0AC3cLUXJ8
+X-Google-Smtp-Source: AGHT+IHPJDR3vrgdy7/5HudOfik7GjSbGIw/RQHKxVrRjeXrJNFMhS6eIKZWgtPsUyW4DKS7qLG5Ow==
+X-Received: by 2002:a05:6512:230b:b0:535:6d34:5cd7 with SMTP id 2adb3069b0e04-53678fb2001mr3195481e87.11.1726220257027;
+        Fri, 13 Sep 2024 02:37:37 -0700 (PDT)
+Received: from void.void ([141.226.9.10])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3789564a340sm16347128f8f.24.2024.09.13.02.37.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Sep 2024 13:58:08 -0700 (PDT)
-Date: Thu, 12 Sep 2024 13:58:05 -0700
-From: Charlie Jenkins <charlie@rivosinc.com>
-To: Celeste Liu <coelacanthushex@gmail.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Guo Ren <guoren@kernel.org>,
-	Anup Patel <anup@brainfault.org>,
-	Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Russell King <linux@armlinux.org.uk>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-sh@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rpi-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-	linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v3 1/4] riscv: defconfig: drop RT_GROUP_SCHED=y
-Message-ID: <ZuNV3ewTH63lb972@ghost>
-References: <20240910-fix-riscv-rt_group_sched-v3-0-486e75e5ae6d@gmail.com>
- <20240910-fix-riscv-rt_group_sched-v3-1-486e75e5ae6d@gmail.com>
+        Fri, 13 Sep 2024 02:37:36 -0700 (PDT)
+From: Andrew Kreimer <algonell@gmail.com>
+To: Eduardo Valentin <edubezval@gmail.com>,
+	Keerthy <j-keerthy@ti.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>
+Cc: linux-pm@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Andrew Kreimer <algonell@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: [PATCH] thermal/ti-soc-thermal: Fix typos
+Date: Fri, 13 Sep 2024 12:37:05 +0300
+Message-ID: <20240913093713.12376-1-algonell@gmail.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240910-fix-riscv-rt_group_sched-v3-1-486e75e5ae6d@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 10, 2024 at 08:51:07PM +0800, Celeste Liu wrote:
-> Commit ba6cfef057e1 ("riscv: enable Docker requirements in defconfig")
-> introduced it because of Docker, but Docker has removed this requirement
-> since [1] (2023-04-19).
-> 
-> For cgroup v1, if turned on, and there's any cgroup in the "cpu" hierarchy it
-> needs an RT budget assigned, otherwise the processes in it will not be able to
-> get RT at all. The problem with RT group scheduling is that it requires the
-> budget assigned but there's no way we could assign a default budget, since the
-> values to assign are both upper and lower time limits, are absolute, and need to
-> be sum up to < 1 for each individal cgroup. That means we cannot really come up
-> with values that would work by default in the general case.[2]
-> 
-> For cgroup v2, it's almost unusable as well. If it turned on, the cpu controller
-> can only be enabled when all RT processes are in the root cgroup. But it will
-> lose the benefits of cgroup v2 if all RT process were placed in the same cgroup.
-> 
-> Red Hat, Gentoo, Arch Linux and Debian all disable it. systemd also doesn't
-> support it.[3]
-> 
-> [1]: https://github.com/moby/moby/commit/005150ed69c540fb0b5323e0f2208608c1204536
-> [2]: https://bugzilla.redhat.com/show_bug.cgi?id=1229700
-> [3]: https://github.com/systemd/systemd/issues/13781#issuecomment-549164383
-> 
-> Acked-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-> Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
+Fix typos in comments.
 
-Acked-by: Charlie Jenkins <charlie@rivosinc.com>
+Reported-by: Matthew Wilcox <willy@infradead.org>
+Signed-off-by: Andrew Kreimer <algonell@gmail.com>
+---
+ drivers/thermal/ti-soc-thermal/dra752-bandgap.h   | 4 ++--
+ drivers/thermal/ti-soc-thermal/omap4xxx-bandgap.h | 8 ++++----
+ drivers/thermal/ti-soc-thermal/omap5xxx-bandgap.h | 4 ++--
+ 3 files changed, 8 insertions(+), 8 deletions(-)
 
-> ---
->  arch/riscv/configs/defconfig | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/arch/riscv/configs/defconfig b/arch/riscv/configs/defconfig
-> index 12dc8c73a8acfaa5c8f442968a807de303428d9e..de85c3ab261e6d62b2089a3c89bdc9d1b34fa792 100644
-> --- a/arch/riscv/configs/defconfig
-> +++ b/arch/riscv/configs/defconfig
-> @@ -9,7 +9,6 @@ CONFIG_CGROUPS=y
->  CONFIG_MEMCG=y
->  CONFIG_CGROUP_SCHED=y
->  CONFIG_CFS_BANDWIDTH=y
-> -CONFIG_RT_GROUP_SCHED=y
->  CONFIG_CGROUP_PIDS=y
->  CONFIG_CGROUP_FREEZER=y
->  CONFIG_CGROUP_HUGETLB=y
-> 
-> -- 
-> 2.46.0
-> 
-> 
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+diff --git a/drivers/thermal/ti-soc-thermal/dra752-bandgap.h b/drivers/thermal/ti-soc-thermal/dra752-bandgap.h
+index d1b5b699cf23..1402b8c44c6b 100644
+--- a/drivers/thermal/ti-soc-thermal/dra752-bandgap.h
++++ b/drivers/thermal/ti-soc-thermal/dra752-bandgap.h
+@@ -74,7 +74,7 @@
+ /**
+  * Register bitfields for DRA752
+  *
+- * All the macros bellow define the required bits for
++ * All the macros below define the required bits for
+  * controlling temperature on DRA752. Bit defines are
+  * grouped by register.
+  */
+@@ -125,7 +125,7 @@
+ /**
+  * Temperature limits and thresholds for DRA752
+  *
+- * All the macros bellow are definitions for handling the
++ * All the macros below are definitions for handling the
+  * ADC conversions and representation of temperature limits
+  * and thresholds for DRA752. Definitions are grouped
+  * by temperature domain.
+diff --git a/drivers/thermal/ti-soc-thermal/omap4xxx-bandgap.h b/drivers/thermal/ti-soc-thermal/omap4xxx-bandgap.h
+index c63f439e01d6..3963f1badfc9 100644
+--- a/drivers/thermal/ti-soc-thermal/omap4xxx-bandgap.h
++++ b/drivers/thermal/ti-soc-thermal/omap4xxx-bandgap.h
+@@ -32,7 +32,7 @@
+ /**
+  * Register and bit definitions for OMAP4430
+  *
+- * All the macros bellow define the required bits for
++ * All the macros below define the required bits for
+  * controlling temperature on OMAP4430. Bit defines are
+  * grouped by register.
+  */
+@@ -48,7 +48,7 @@
+ /**
+  * Temperature limits and thresholds for OMAP4430
+  *
+- * All the macros bellow are definitions for handling the
++ * All the macros below are definitions for handling the
+  * ADC conversions and representation of temperature limits
+  * and thresholds for OMAP4430.
+  */
+@@ -102,7 +102,7 @@
+ /**
+  * Register bitfields for OMAP4460
+  *
+- * All the macros bellow define the required bits for
++ * All the macros below define the required bits for
+  * controlling temperature on OMAP4460. Bit defines are
+  * grouped by register.
+  */
+@@ -135,7 +135,7 @@
+ /**
+  * Temperature limits and thresholds for OMAP4460
+  *
+- * All the macros bellow are definitions for handling the
++ * All the macros below are definitions for handling the
+  * ADC conversions and representation of temperature limits
+  * and thresholds for OMAP4460.
+  */
+diff --git a/drivers/thermal/ti-soc-thermal/omap5xxx-bandgap.h b/drivers/thermal/ti-soc-thermal/omap5xxx-bandgap.h
+index 3880e667ea96..b70084b8013a 100644
+--- a/drivers/thermal/ti-soc-thermal/omap5xxx-bandgap.h
++++ b/drivers/thermal/ti-soc-thermal/omap5xxx-bandgap.h
+@@ -56,7 +56,7 @@
+ /**
+  * Register bitfields for OMAP5430
+  *
+- * All the macros bellow define the required bits for
++ * All the macros below define the required bits for
+  * controlling temperature on OMAP5430. Bit defines are
+  * grouped by register.
+  */
+@@ -101,7 +101,7 @@
+ /**
+  * Temperature limits and thresholds for OMAP5430
+  *
+- * All the macros bellow are definitions for handling the
++ * All the macros below are definitions for handling the
+  * ADC conversions and representation of temperature limits
+  * and thresholds for OMAP5430. Definitions are grouped
+  * by temperature domain.
+-- 
+2.46.0
+
 
