@@ -1,47 +1,47 @@
-Return-Path: <linux-omap+bounces-2218-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2219-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF1AD97BBAE
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Sep 2024 13:36:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87E3397BC65
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Sep 2024 14:43:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C265B238EA
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Sep 2024 11:36:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40C6A1F232A2
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Sep 2024 12:43:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E087217C992;
-	Wed, 18 Sep 2024 11:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247BE189BA0;
+	Wed, 18 Sep 2024 12:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="aB4sLtY8"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="6QoRj0X8"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAC1282E5;
-	Wed, 18 Sep 2024 11:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3952915B10C;
+	Wed, 18 Sep 2024 12:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726659356; cv=none; b=o+hJWUIx7dqvr036pSe5U0KqRdDrEOboRhJeQxDvemtccWnCN3A5z3dX0PKBfyhB+nrzGFd6gveJURdKLloIrndpGw9p6p+upG4xMtg25krVXsLBJRcxdEqulP9SEN8viWgJdQsJB6EJpDMneD2KzUCcmzhoRPANMpaqANx/Q5g=
+	t=1726663414; cv=none; b=qED7jXXEylMIWkNdU/u9/1F2pzVPLqG6CefU24QMmJWecsTSNorTN99Nglc1lj6NDeEGykdBDy8imPzTunYDNwKP13pUOOI1URdb45YXTHe38/HNhWi1vK+IG7Ln07Motq2ajLnJvrAkQBL4RF7UF5gsc/Gl3pMRWdeyLh1gD/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726659356; c=relaxed/simple;
-	bh=PPDrz82lIfrteE+dEjEqvbG0bP+PLJJgb9hsrt8OMl8=;
+	s=arc-20240116; t=1726663414; c=relaxed/simple;
+	bh=a1kNO5OucUhoyax/JdvcsOyRuZI9nX9J5YIBVmy0l+4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Aws+d+2TUygEap33mcJJsQW0VIbD91LdtKQPKmbVj78o/ufIdrr0OpEChTVj7K02i2iZ0/IISXbbeEa+wia3CEGwW8zxb4/LKuR7dNFacpT334sBnmhHO4V8DWC1b4xVNHxQSRQ94c0YN4He1nlicyfBewDQVrjw0BPJgbVxtJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=aB4sLtY8; arc=none smtp.client-ip=178.238.236.174
+	 MIME-Version:Content-Type; b=GYVQURgFUz/mbIEMf79B4BVpGhCDdBEy2DrZZUhbGH67AJfTqMJOOMg/FBxmgi8jAW0oJPXzjfOfNFB5AamwVlT3p8vaewoM90dNoRngnRmMIKT2x5VpbY9mioCQp4/uoEND4ncAUjMa0JTVnRbdjC8MB4cZGnn5qY1BQPp9pdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=6QoRj0X8; arc=none smtp.client-ip=178.238.236.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=c+4wISZpTBZ5pFb7R+0lordsy6M0zdVfp3Wwwcoc6g4=; b=aB4sLtY8ju6ohBMuN3AV9zX8TM
-	3F4E1iB+yGNMjguydi/Akd6s9lRhMiXsWALCyq9WH0wvHNyGlsk1xcUnQjthvySuaGtoTs9xGIYpD
-	/cV/Z7zU9jknjL/ASjyez8+PY+sEs+Ij0NuxZtra+Fo/W/737JPZCbyjle2o13cJ3Xs7oWDtwElCw
-	oizzrpcGkBeSvDDaDPaEQeTYXafcDEQOFHzncVUh91ww7dFUTN+SJAO0j2Hx5BclczEj6DhHcRSPy
-	TtwueghTfLIt8oMFKUKVKAmch8k25EGf7pOVeocYOFHbwn4WCKzIAHY+aTv5Jk2oRn5nXp5PVmFtz
-	qvSD6nlA==;
-Date: Wed, 18 Sep 2024 13:35:46 +0200
+	bh=MjmO4lbzN3jRe2aqKAF2+FoHL9f/7t+lzoy6eLtQfAc=; b=6QoRj0X8tzGMFh1YZJhmJ62L03
+	1IfI72dMRmM0y0Rtm7e2w6w1Wodn6+oqyU6nrCxUNsLaQDQP4/K/EF6D10PWemwt399Xpd7f9clWb
+	iwHShiscCcYK3IwDopH/Ssg0OjlF1H/ntktLgbxF3mpabzw2TNsSf0XoS2f+I/tWj7j5APS/mkg+H
+	2cH0nNWtAbGsURVER37lkU1dtiRygAuIKxMzrbdunXZd/jFWGpqUB8G9dQXAK/PasOBLZKbGrBlGD
+	LdvHmbIKRWEtmNkej9LrWZFs9j9SGB4+bpVUYliFmj7HfAFJOrCcabfFmvBePYCGgh16PtH71PAN6
+	eCe02ZRA==;
+Date: Wed, 18 Sep 2024 14:43:25 +0200
 From: Andreas Kemnade <andreas@kemnade.info>
 To: Krzysztof Kozlowski <krzk@kernel.org>
 Cc: tony@atomide.com, Sebastian Reichel <sre@kernel.org>,
@@ -49,13 +49,12 @@ Cc: tony@atomide.com, Sebastian Reichel <sre@kernel.org>,
  <lee@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
  <krzk+dt@kernel.org>, linux-kernel@vger.kernel.org, Conor Dooley
  <conor+dt@kernel.org>, linux-pm@vger.kernel.org
-Subject: Re: [PATCH 2/3] dt-bindings: mfd: twl: add charger node also for
- TWL603x
-Message-ID: <20240918133546.33cb6d68@akair>
-In-Reply-To: <c38c9ada-e054-4a14-9265-25065048ae54@kernel.org>
+Subject: Re: [PATCH 3/3] power: supply: initial support for TWL6030/32
+Message-ID: <20240918144325.0ccca89c@akair>
+In-Reply-To: <89a7e86b-8866-4148-9f9e-13ca84c1aede@kernel.org>
 References: <20240918084132.928295-1-andreas@kemnade.info>
-	<20240918084132.928295-3-andreas@kemnade.info>
-	<c38c9ada-e054-4a14-9265-25065048ae54@kernel.org>
+	<20240918084132.928295-4-andreas@kemnade.info>
+	<89a7e86b-8866-4148-9f9e-13ca84c1aede@kernel.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -66,55 +65,42 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-Am Wed, 18 Sep 2024 12:47:22 +0200
+Am Wed, 18 Sep 2024 12:43:01 +0200
 schrieb Krzysztof Kozlowski <krzk@kernel.org>:
 
-> On 18/09/2024 10:41, Andreas Kemnade wrote:
-> > Also the TWL603X devices have a charger, so allow to specify it
-> > here.
-> > 
-> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> > ---
-> >  .../devicetree/bindings/mfd/ti,twl.yaml        | 18
-> > ++++++++++++++++++ 1 file changed, 18 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-> > b/Documentation/devicetree/bindings/mfd/ti,twl.yaml index
-> > e94b0fd7af0f8..4064a228cb0fc 100644 ---
-> > a/Documentation/devicetree/bindings/mfd/ti,twl.yaml +++
-> > b/Documentation/devicetree/bindings/mfd/ti,twl.yaml @@ -105,6
-> > +105,11 @@ allOf: regulator-initial-mode: false
-> >  
-> >        properties:
-> > +        bci:  
+[...]
+> Drop {}, see checkpatch.
 > 
-> charger
-> 
-> > +          type: object  
-> 
-> additionalProperties: true
-> 
-> Each node must end with additionalProperties or unevaluated. I think
-> you never tested it, because dtschema reports this.
-> 
-I did run it, no complaints:
+> > +		return dev_err_probe(&pdev->dev, ret,
+> > +				     "could not request irq %d\n",
+> > +				     charger->irq_chg);
+> > +	}
+> > +
 
-andi@aktux:~/kernel$ touch Documentation/devicetree/bindings/mfd/ti,twl.yaml 
-andi@aktux:~/kernel$ touch Documentation/devicetree/bindings/power/supply/ti,twl6030-charger.yaml 
-andi@aktux:~/kernel$ make ARCH=arm dt_binding_check DT_SCHEMA_FILES=twl
-  SCHEMA  Documentation/devicetree/bindings/processed-schema.json
-/home/andi/kernel/Documentation/devicetree/bindings/net/snps,dwmac.yaml: mac-mode: missing type definition
-  CHKDT   Documentation/devicetree/bindings
-  LINT    Documentation/devicetree/bindings
-  DTC [C] Documentation/devicetree/bindings/power/supply/twl4030-charger.example.dtb
-  DTEX    Documentation/devicetree/bindings/power/supply/ti,twl6030-charger.example.dts
-  DTC [C] Documentation/devicetree/bindings/power/supply/ti,twl6030-charger.example.dtb
-  DTC [C] Documentation/devicetree/bindings/iio/adc/ti,twl6030-gpadc.example.dtb
-  DTC [C] Documentation/devicetree/bindings/iio/adc/ti,twl4030-madc.example.dtb
-  DTEX    Documentation/devicetree/bindings/mfd/ti,twl.example.dts
-  DTC [C] Documentation/devicetree/bindings/mfd/ti,twl.example.dtb
-andi@aktux:~/kernel$
+Apparently checkpatch only moans about {} around single *lines*
+not single *statements*, even with --strict.
 
-Regards,
+Coding-style says single statements,  so maybe checkpatch should be
+fixed?
+
+Same for other appearance of this pattern.
+
+> > +	/* turing to charging to configure things */
+> > +	twl6030_charger_write(CONTROLLER_CTRL1, 0);
+> > +	twl6030_charger_interrupt(0, charger);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static const struct of_device_id twl_charger_of_match[]
+> > __maybe_unused = {
+> > +	{.compatible = "ti,twl6030-charger", },
+> > +	{.compatible = "ti,twl6032-charger", },  
+> 
+> So they are compatible? Why two entries in such case?
+> 
+There is one device_is_compatible() in the file.
+
+Regrads,
 Andreas
 
