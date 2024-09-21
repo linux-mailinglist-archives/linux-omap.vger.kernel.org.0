@@ -1,103 +1,96 @@
-Return-Path: <linux-omap+bounces-2224-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2225-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA79797DB0B
-	for <lists+linux-omap@lfdr.de>; Sat, 21 Sep 2024 02:51:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D1697DED2
+	for <lists+linux-omap@lfdr.de>; Sat, 21 Sep 2024 22:39:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8543D1F21F4A
-	for <lists+linux-omap@lfdr.de>; Sat, 21 Sep 2024 00:51:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EFE4281071
+	for <lists+linux-omap@lfdr.de>; Sat, 21 Sep 2024 20:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D941257D;
-	Sat, 21 Sep 2024 00:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DF178C60;
+	Sat, 21 Sep 2024 20:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="skeOAPTI"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="V0o5SAw/"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED59C15C3;
-	Sat, 21 Sep 2024 00:51:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38583A268
+	for <linux-omap@vger.kernel.org>; Sat, 21 Sep 2024 20:39:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726879887; cv=none; b=sa9dYtk/wa18EVByys6lZEXoquAS+oeOhQein9sfjNdQ3N9vEWOkTW9jGwXsu0ahxKh87pkVtH16qMLUiw9V6xFt0RYF0WGy9aOkwsv0VoSbiaAC5kG79GF7IHrrkCDU2dE1HtB5+uae+m2VaCFv2+Ihe0qLN378w07YK8d/nX8=
+	t=1726951147; cv=none; b=THG0a03g99vr8KPGYGuGQoNujvy6IXnv+cOlms72aFxKdWt62NT80y0GcGGFRgi6CtSRLmb6Xbjcq4ZnB4JpfgjyjyzOhWGuFEctzBoUeeUs1b2GIm3cJIGF/sgaRmqtgur1h9GEyN8orTnJi3ajpqEjHAlBfKa6ri7aOs0zMyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726879887; c=relaxed/simple;
-	bh=xfWEe9VXimdKEOoSPZSqdLphGcQU8Jjk+vswELSDzKw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lbaoMATRiVOy1/t2/wkZ0rU8QGTPeiOcLu0NM+Jo8UdFdsZ349DSW55wa7xJHP+VnECOnUvH4SK9Eu+9YAP0iaRCpQfh+ROoogmW/kJIRmWlGlqc2ss3rWML5CEJBtPdcMJfQajilaZZ/S+8mcsdpoSeb52lArkHugxL0/jLyfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=skeOAPTI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FCFAC4CEC3;
-	Sat, 21 Sep 2024 00:51:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726879886;
-	bh=xfWEe9VXimdKEOoSPZSqdLphGcQU8Jjk+vswELSDzKw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=skeOAPTIlhpkJyDgBSPs5lSqa5ttldDH1qhOvFY47o2jtPOmt98dPmGz2ZWeIYbBn
-	 X5TX4p2FOFvPG3+S99hf4SM363DCLmO9ZYVKtY4t+9TQ5vNxzOG+pBi50upxD6S9Oi
-	 KZWFSdcoLA/PyNC3GhxFRXlRA9+nm3NECq8E1mh/jd2yDdkVRyhtBolDiRz3Rxadcs
-	 UgibMqjG1YgTR9+FwBYkFPvwkq1A5ZNzlHw8rWSfMk0k+TZPTHX3mtyAVWOYs4qQVM
-	 xDkHRrGyyF3Y/b47s7Z80nPQNR+r3EocThTdC49Re83f/2tZD0zoXuxVqrb86RSxcJ
-	 +7aptXJOWuuiQ==
-Date: Fri, 20 Sep 2024 19:51:25 -0500
-From: Rob Herring <robh@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Andreas Kemnade <andreas@kemnade.info>, tony@atomide.com,
-	Sebastian Reichel <sre@kernel.org>, linux-omap@vger.kernel.org,
-	devicetree@vger.kernel.org, Lee Jones <lee@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	linux-pm@vger.kernel.org
-Subject: Re: [PATCH 2/3] dt-bindings: mfd: twl: add charger node also for
- TWL603x
-Message-ID: <20240921005125.GA165161-robh@kernel.org>
-References: <20240918084132.928295-1-andreas@kemnade.info>
- <20240918084132.928295-3-andreas@kemnade.info>
- <c38c9ada-e054-4a14-9265-25065048ae54@kernel.org>
+	s=arc-20240116; t=1726951147; c=relaxed/simple;
+	bh=AyVqua7DBuP73sr6LdsAc4ij9mOlg1l35TcNGrJmYRY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=aXIhWEm7hE5goBAeMogo1hn7ZOHnokaoy5NeJE86MNV7B3XYnC51nubxUOPiC83ryloKpOmXvebrrXtZ2qbY73Wh2TL6nCy6yAsXOS2g/IJqvK63XlWwwYv19R7LZgd165JkRep7geODcQtxa9eh6S4aCn3u/T4luLBaX0vI2q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=V0o5SAw/; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-718d8d6af8fso2286704b3a.3
+        for <linux-omap@vger.kernel.org>; Sat, 21 Sep 2024 13:39:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1726951145; x=1727555945; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=AyVqua7DBuP73sr6LdsAc4ij9mOlg1l35TcNGrJmYRY=;
+        b=V0o5SAw/PEQNZMjdEk8TuEye1LTpwY0xhvB/HvUnKIulw6boRorqI3ILQ5kBnTyYfG
+         npy3XetsHffH+ZIrRJXRzlfJCFiUmXyp/uDhqQf4wWgbQRh5uie2NeOsdQBw1iFw5mYd
+         mtKBRMhCOZb1a/GmEBW+N4qem8dD791KzwDm+EbYMvAFMYtusgr9ucVW0KO6Vz+Rm6tJ
+         BGppS+2xRsBFxfkUe9zDvjF17g2NztIavdMjpqKNQ6ESY96M6nDj0Av+D+nG40fBp6SX
+         1YwMAGjsTuLciCIgH6HGT7SXFctUziO+Pgp0eT7Lh6ZLjEJ5LEB5/wIrXnDxuP+qcTMx
+         1ZWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726951145; x=1727555945;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AyVqua7DBuP73sr6LdsAc4ij9mOlg1l35TcNGrJmYRY=;
+        b=sbwSefPnKUWOULZJ5QrVU1ctU/5079DKPd9/thLrEUd/a6Ji+eWymCxGv1h5nKa2kE
+         CDGu8ciMBHv2qTZPiQZXhNcZxMQ3NqbszRr8QsUTlsucSuGcGlQ7+clVxrJNY/N1hjDR
+         95RPYcWknLeEAYY67uIKHeW5JqnClgs5jPlflRCxHPtgjqPrBN7XpfXfjjDxgF5jTgPr
+         GBKIsofELhufV+JhE4QLG6+EdnOh8+8LkOybqhgeNSKlSyTodN2GXyGsJv62gE6kRgC+
+         LpSM4x/nVGslaMEN6HjhnwJMQhfNYliBINguYIg//8KHDcrseDo1/963rNjP6RbwIm6I
+         A3mg==
+X-Forwarded-Encrypted: i=1; AJvYcCXsfGgrER7+fOuthW0FUI4fRFUVL8CXugtmidoH/FCRegPesTXPm8oE8AuvxWk8+hWVcUly8Xx8qqNN@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyos5jKe0dRGK8EFjm+sNvwKLNuSg9jnMbnXT2UQsfcaY4SCChY
+	ukaM0RiRiJ4fm+FMnZpCb1oTZ3E+lCCchWNEQRU7Sw861vLSNGKq0DpFv6BOC0M=
+X-Google-Smtp-Source: AGHT+IGSzf1OM5od5f0nFNm51QF3jg/VW386sXVPnsQavt+rpXh6YPFhKzaO6e2KVxD1CMa8j89X5A==
+X-Received: by 2002:a05:6a00:928c:b0:717:8ece:2f8b with SMTP id d2e1a72fcca58-7199ca4ccb2mr10882084b3a.17.1726951145048;
+        Sat, 21 Sep 2024 13:39:05 -0700 (PDT)
+Received: from localhost ([71.212.170.185])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7e5650424a8sm2546683a12.84.2024.09.21.13.39.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 21 Sep 2024 13:39:04 -0700 (PDT)
+From: Kevin Hilman <khilman@baylibre.com>
+To: Andreas Kemnade <andreas@kemnade.info>, linux-kernel@vger.kernel.org,
+ Tony Lindgren <tony@atomide.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
+ Roger Quadros <rogerq@kernel.org>, linux-omap@vger.kernel.org, Arnd
+ Bergmann <arnd@arndb.de>
+Cc: Andreas Kemnade <andreas@kemnade.info>
+Subject: Re: [PATCH] MAINTAINERS: sync omap devicetree maintainers with omap
+ platform
+In-Reply-To: <20240915195321.1071967-1-andreas@kemnade.info>
+References: <20240915195321.1071967-1-andreas@kemnade.info>
+Date: Sat, 21 Sep 2024 13:39:03 -0700
+Message-ID: <7hed5cpwrc.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c38c9ada-e054-4a14-9265-25065048ae54@kernel.org>
+Content-Type: text/plain
 
-On Wed, Sep 18, 2024 at 12:47:22PM +0200, Krzysztof Kozlowski wrote:
-> On 18/09/2024 10:41, Andreas Kemnade wrote:
-> > Also the TWL603X devices have a charger, so allow to specify it here.
-> > 
-> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> > ---
-> >  .../devicetree/bindings/mfd/ti,twl.yaml        | 18 ++++++++++++++++++
-> >  1 file changed, 18 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/mfd/ti,twl.yaml b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-> > index e94b0fd7af0f8..4064a228cb0fc 100644
-> > --- a/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-> > +++ b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-> > @@ -105,6 +105,11 @@ allOf:
-> >              regulator-initial-mode: false
-> >  
-> >        properties:
-> > +        bci:
-> 
-> charger
-> 
-> > +          type: object
-> 
-> additionalProperties: true
-> 
-> Each node must end with additionalProperties or unevaluated. I think you
-> never tested it, because dtschema reports this.
+Andreas Kemnade <andreas@kemnade.info> writes:
 
-This is under an if/then schema is why there's no errors.
+> Both used to go through Tony's branches, so lets keep things together.
+> This was missed at the time when Co-Maintainers were added.
+>
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
 
-This schema probably should have been 3 with a ti,twl-common.yaml schema 
-for the common properties, but I'm not sure it is worth changing now.
-
-Rob
+Acked-by: Kevin Hilman <khilman@baylibre.com>
 
