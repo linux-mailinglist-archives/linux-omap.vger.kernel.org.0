@@ -1,168 +1,194 @@
-Return-Path: <linux-omap+bounces-2229-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2230-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1525097EB40
-	for <lists+linux-omap@lfdr.de>; Mon, 23 Sep 2024 14:05:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E1797EC7A
+	for <lists+linux-omap@lfdr.de>; Mon, 23 Sep 2024 15:41:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4729C1C215A5
-	for <lists+linux-omap@lfdr.de>; Mon, 23 Sep 2024 12:05:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77D251C214BC
+	for <lists+linux-omap@lfdr.de>; Mon, 23 Sep 2024 13:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76A5195980;
-	Mon, 23 Sep 2024 12:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="NU6ilw1s"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0451C199958;
+	Mon, 23 Sep 2024 13:41:45 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715D27641D;
-	Mon, 23 Sep 2024 12:04:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722EA38394;
+	Mon, 23 Sep 2024 13:41:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727093101; cv=none; b=WwtW/6hQMucdJZY6ePh/qN8+frlYU1NVFUJiA+H/xvLenuQ3dG8rDGjQL5EatfCsuGJpn56WCdwDBz15ouxN6mXCW8B6yx0k0wvisQtv5waIyYaWJIc7LqZwD1bG1SoUjl/8hHNNyAHVUU8bhGsPvY+FV63mp9aC2csUw3bST8M=
+	t=1727098904; cv=none; b=rPdD3obTmVcyy7oYhZ+tFingYqh5VZ9iw3iIWmWi0d1Q5FVPHozZ1wKYYqeqio3FjsVUDXjIhca9O34XAUoyUhe6SrvEPSHCQ7Qd1suN5RjdkFScyOGkrfolAU3C1vNrgPLmnMCxVlkqUPt6l3rns0LGSsTJO6Ri70nb0MFwZmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727093101; c=relaxed/simple;
-	bh=qi1PjlEounPLmGZYg7mFt0VV1DkZCSccR1+CiRtSriA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ngtPBVup0iV8ecF16drQBG18mlGaUfFAfpURb0asYHuo4Il+iNOhypbVyfJkV0UdPe7XQCso4O+20OqgcFHEsZHun2uh/HA3pOUz4PQaOtyX7rZIw1qoaoAX8kWqOcsX1KQbdI8DUKifxECkLVyE0ZhDj7O1XG1/srzDO3S1Chk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=NU6ilw1s; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=944JnV41oDL5cWaTC4YkKMMn7PnL1zs+tDD23HR6gmU=; b=NU6ilw1scRJqTBU9WERjk0Lais
-	fWLooE72b+yK18VuzcpbrqHOSeEjlibWqZ9dXkNQpOhCCbUzcHAClurvjhQEC0ue2QhDec2YD0V0o
-	tGOzf+mKnmNXX4BQ0BnkfWJwrt3uDnKslDmKvkauCWyiOz8cXyueqOrfDFBilnk0b9TpRUpOrUmO7
-	ZKsLVxG4qSkxut/Eh4Jpk20skQhykd5K6bLYhA6JzGYnRFWBLCGnfli6WhzcGEjk4ndIZSdCV32kK
-	NDOtc5hcqmdPHepBopaJwIqTJ98XIIpc5qJvl1nlQUuPEXpgY3alX6RIIVWnLiyHDatsl8JPs0PxB
-	O+JUB4hA==;
-Date: Mon, 23 Sep 2024 14:04:47 +0200
-From: Andreas Kemnade <andreas@kemnade.info>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>, linux-omap@vger.kernel.org,
- linux-clk@vger.kernel.org, Paul Walmsley <paul@pwsan.com>, Tony Lindgren
- <tony@atomide.com>
-Subject: Re: clk mess on omap4460 with mpu clock
-Message-ID: <20240923140447.60c5efff@akair>
-In-Reply-To: <ZtdQ+Ay9DKAooahN@shell.armlinux.org.uk>
-References: <20240603234139.280629b2@aktux>
-	<CAMuHMdWU74DsWEZtZQJctQQog=9UCG_1LZu5yWvyxx0Zw4LQow@mail.gmail.com>
-	<20240903143357.2532258b@akair>
-	<CAMuHMdWF4G5Uon1=6TMzBogN2CX8EuiVBMuCPtAAMPNa-DtiOw@mail.gmail.com>
-	<20240903192203.1dddbf0d@akair>
-	<ZtdQ+Ay9DKAooahN@shell.armlinux.org.uk>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1727098904; c=relaxed/simple;
+	bh=hsxv2s0aP4r3lxntQOdM0DgLVU7283pZh+orvWKbXoM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NzqztbqNPUA4eHOsiwB+G+r6X/jmj+1pgitPqg6uX7V9WD+1E0bMCboF+//ltgynYUeGfa79Z+VhrBgrbsWD5hutOeXhOME9o9e1QL2i/PKusUOvoZLHwtyBt2bYEF9VkJEvs9Dh9FwA1HG9UQi/cLtTedDfO0blOMdYcsGTBn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-6dffe3fe4fcso20018957b3.1;
+        Mon, 23 Sep 2024 06:41:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727098901; x=1727703701;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=t1Nb87hNB3zzIbZ7p6JsVdiw/rvLzl7jE2mKiDh11Ss=;
+        b=cPncJKBeIEi92osID8qicn52NpCCjk5O2wyPc4PPGNmjV/zRT7WtHRau1GSVPgrsqD
+         +YE6WDcrpNFfOgbdyhtre5cZ9nwBJE0SbIwkkwvDVw/r8ngQTVm6CqifP5fSl69AuEuH
+         zuy4GxIT6m8yPz1puXlnbnAIt9+goAyXVHKgex8cGfE74cNCDMarDzrApb3RJqHVxaqa
+         pg2SOois21lYOt1ZrbJGV+WKklqY7HclqwaF6UnchH5mKojULbVseNrHyn8j4hgBP+AU
+         uTLLMWHST+mnFm3abxhm3uszRKXGF3CMei0Ha4DAWICs9kp0y7L6vZdM6HG+o4TzogDu
+         d8jQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUUGGEB2d/R3J1384oFa+vpK3jj/O+Ezvx/HzbI06QIXAtB4o/KFZBE98wyCR7TIXagjMg=@vger.kernel.org, AJvYcCVQPcfX4MZaSiOUf9u45B2jLwWjRGX6CqpxAkKNRopPyts6ii/ezXXinUYt3NDeKB2jFncE0xsexL75xli/@vger.kernel.org, AJvYcCVvx64HEQ4AAZB3/d5dyczIsPhiaCdrgJZexAPLu8c5xHPtoUAb+d0N+RT00eIUEQI1eJ0NQCXt@vger.kernel.org, AJvYcCWpH87WWRU58iw1NUKWSQ3clEOc1Fz8R+EbNy0GRFpCd2pG2CusoO1zsgLXBWdcfAX3OHpIXGtS8ZxDwA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIgZ/q5E9lc3Y623b8eGpYZJvYurJMrKFddOFSARzoHykJSDPM
+	1Qry6rb6sLV/QBhW6XzQflGtckQFqO4U11f8GeNEJOA2YZw6S0pTDz0e4S/g
+X-Google-Smtp-Source: AGHT+IEp1tOQad9OBsRlt3qcuhXq4am6XPqR3aO2VhPUjzwA7mT8FDgYo1wkrQ73zneRvZMTntdyOw==
+X-Received: by 2002:a05:690c:6612:b0:62c:c684:b1e1 with SMTP id 00721157ae682-6dfeeeeb549mr89065737b3.29.1727098901027;
+        Mon, 23 Sep 2024 06:41:41 -0700 (PDT)
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com. [209.85.128.178])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6dbe2f0759asm34603967b3.131.2024.09.23.06.41.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Sep 2024 06:41:40 -0700 (PDT)
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-6e00f47f70eso11568657b3.0;
+        Mon, 23 Sep 2024 06:41:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCViIVIrs6YPpgNkjENoW1fPQ0tDdyupyBgo75So/gc7bduCUumGQSoyyU4AhYE8SP4Dz6k=@vger.kernel.org, AJvYcCWPFF9tZR/1S8lAha5Ky99xyRrCpKUdC+9c2WtEItKKU5/rZ0ueBw3BQKiBchwBI+QPpsdtyY2v@vger.kernel.org, AJvYcCWQ6il4IJyGnImudLNnCpHOuDM7AfJHezot6GSYUsxsQ2HZa/Mm8VJh+5vMFCiaaR2XSWrx1VRuX2+PQNBT@vger.kernel.org, AJvYcCWsNGBszvr3aUa3K+cb49ZKR1SkCExGMrJyud6Yua2gMOG9C+bqrtVwDT1ETteYUx9yrURtkXjv53zFPg==@vger.kernel.org
+X-Received: by 2002:a05:690c:6a03:b0:6d3:be51:6d03 with SMTP id
+ 00721157ae682-6dfeed8e97fmr94972827b3.23.1727098900023; Mon, 23 Sep 2024
+ 06:41:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20240910-am65-cpsw-multi-rx-v4-0-077fa6403043@kernel.org> <20240910-am65-cpsw-multi-rx-v4-3-077fa6403043@kernel.org>
+In-Reply-To: <20240910-am65-cpsw-multi-rx-v4-3-077fa6403043@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 23 Sep 2024 15:41:27 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUf-tKRDzkz2_m8qdFTFutefddU0NTratVrEjRTzA3yQQ@mail.gmail.com>
+Message-ID: <CAMuHMdUf-tKRDzkz2_m8qdFTFutefddU0NTratVrEjRTzA3yQQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v4 3/6] net: ethernet: ti: cpsw_ale: use
+ regfields for number of Entries and Policers
+To: Roger Quadros <rogerq@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Siddharth Vadapalli <s-vadapalli@ti.com>, Julien Panis <jpanis@baylibre.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
+	Simon Horman <horms@kernel.org>, Andrew Lunn <andrew@lunn.ch>, Joe Damato <jdamato@fastly.com>, srk@ti.com, 
+	vigneshr@ti.com, danishanwar@ti.com, pekka Varis <p-varis@ti.com>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-omap@vger.kernel.org, bpf@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Am Tue, 3 Sep 2024 19:10:00 +0100
-schrieb "Russell King (Oracle)" <linux@armlinux.org.uk>:
+Hi Roger,
 
-> On Tue, Sep 03, 2024 at 07:22:03PM +0200, Andreas Kemnade wrote:
-> > Am Tue, 3 Sep 2024 14:36:05 +0200
-> > schrieb Geert Uytterhoeven <geert@linux-m68k.org>:
-> >  =20
-> > > Hi Andreas,
-> > >=20
-> > > On Tue, Sep 3, 2024 at 2:34=E2=80=AFPM Andreas Kemnade
-> > > <andreas@kemnade.info> wrote: =20
-> > > > Am Mon, 2 Sep 2024 15:53:07 +0200
-> > > > schrieb Geert Uytterhoeven <geert@linux-m68k.org>:   =20
-> > > > > On Mon, Jun 3, 2024 at 11:41=E2=80=AFPM Andreas Kemnade
-> > > > > <andreas@kemnade.info> wrote:   =20
-> > > > > > just stumbled across this on 6.10-rc1:
-> > > > > >
-> > > > > > [    1.475830] ocp:target-module@48210000:mpu:fck: device
-> > > > > > ID is greater than 24 [    1.483154] ti-sysc
-> > > > > > ocp:target-module@48210000: could not add child clock fck:
-> > > > > > -12   =20
-> > > > >
-> > > > > And on boneblack:
-> > > > >
-> > > > > 48000000.interconnect:segment@200000:target-module@0:mpu@0:fck:
-> > > > > device ID is greater than 24
-> > > > > target-module@4b000000:target-module@140000:pmu@0:fck: device
-> > > > > ID is greater than 24
-> > > > >   =20
-> > > > > > Maybe
-> > > > > >         /*
-> > > > > >          * Use clkdev_add() instead of clkdev_alloc() to
-> > > > > > avoid the MAX_DEV_ID
-> > > > > >          * limit for clk_get(). If cl ever needs to be
-> > > > > > freed, it should be done
-> > > > > >          * with clkdev_drop().
-> > > > > >          */
-> > > > > > in ti-sysc.c does not work anymore?
-> > > > > >
-> > > > > > The offending clock definition is in omap4.dtsi
-> > > > > >
-> > > > > > clocks =3D <&mpuss_clkctrl OMAP4_MPU_CLKCTRL 0>;
-> > > > > >
-> > > > > > Did not bisect that yet.   =20
-> > > > >
-> > > > > Commit 8d532528ff6a6b1b ("clkdev: report over-sized strings
-> > > > > when creating clkdev entries") in v6.10-rc1, with follow-up
-> > > > > commit 616501eccb58615f ("clkdev: don't fail clkdev_alloc() if
-> > > > > over-sized") in v6.10-rc4.
-> > > > >
-> > > > > I have no idea if these clkdev registrations are still
-> > > > > necessary/used.  =20
-> > > > well, it might explain some mystery behavior in the past. Lets
-> > > > see where it comes from. As the comment says, there should be a
-> > > > workaround against that limitation. So the problem should not be
-> > > > there in the first place. I have some strange problems with
-> > > > clk_disable_unused.
-> > > >
-> > > > I first thought it is a id < 24 issue and not a
-> > > > strlen(something) < 24.   =20
-> > >=20
-> > > Me too :-(
-> > >  =20
-> > Ok, setting
-> > MAX_DEV_ID to 64 in clkdev.c lets the warnings disappear. ti-sys.c
-> > has at one place precautions for overlong dev_ids, but on another
-> > place it happily calls clkdev_create() running into this issue.=20
-> >=20
-> > The follow-up commit then again at least does not cause a failure
-> > for dev registration. I am still unsure what the consequences are.
-> > Between 6.10 and 6.11 something interesting happened which makes
-> > the bt200 reliably boot with near-mainline u-boot+spl even without
-> > clk_ignore_unused. So no frankenstein-boot (vendor X-Loader + new
-> > U-boot) anymore. =20
->=20
-> The bottom line: if you are getting warnings that the strings exceed
-> the existing sizes, then _any_ lookups using clkdev will have been
-> failing. Nothing has changed with that. The only thing that changed
-> recently was to print a warning for this case, and initially to fail
-> the attempt to register with clkdev. However, that broke stuff, so it
-> was made not to fail, but still report the problem.
->=20
-yes, understood. The main question what bothers me is whether we have
-some real problems behind it. The warning message is just an indicator
-of something odd which was already odd before the message was
-introduced.
-I have seen something working with some u-boot and some other not,
-so things might not get properly initialized...=20
+On Tue, Sep 10, 2024 at 11:25=E2=80=AFAM Roger Quadros <rogerq@kernel.org> =
+wrote:
+> Use regfields for number of ALE Entries and Policers.
+>
+> The variants that support Policers/Classifiers have the number
+> of policers encoded in the ALE_STATUS register.
+>
+> Use that and show the number of Policers in the ALE info message.
+>
+> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+> Reviewed-by: Simon Horman <horms@kernel.org>
+> ---
+> Changelog:
+> v4:
+> - reverse Xmas tree declaration order fixes
 
-So the way forward is to check whether that registration is really
-needed at:
-https://elixir.bootlin.com/linux/v6.11/source/drivers/bus/ti-sysc.c#L2380
-If yes, then
-a) increade the size of the name in the clk subsystem or
-b) workaround like
-https://elixir.bootlin.com/linux/v6.11/source/drivers/bus/ti-sysc.c#L353
+Thanks for your patch, which is now commit 11cbcfeaa79e5c76 ("net:
+ethernet: ti: cpsw_ale: use regfields for number of Entries
+and Policers").
 
-Regards,
-Andreas
+This is causing the following warning on BeagleBone Black:
+
+    WARNING: CPU: 0 PID: 34 at drivers/base/regmap/regmap.c:1208
+devm_regmap_field_alloc+0xac/0xc8
+    invalid empty mask defined
+    CPU: 0 UID: 0 PID: 34 Comm: kworker/u4:3 Not tainted
+6.11.0-rc7-boneblack-01443-g11cbcfeaa79e #152
+    Hardware name: Generic AM33XX (Flattened Device Tree)
+    Workqueue: events_unbound deferred_probe_work_func
+    Call trace:
+     unwind_backtrace from show_stack+0x10/0x14
+     show_stack from dump_stack_lvl+0x68/0x88
+     dump_stack_lvl from __warn+0x6c/0x1a8
+     __warn from warn_slowpath_fmt+0x1bc/0x1d0
+     warn_slowpath_fmt from devm_regmap_field_alloc+0xac/0xc8
+     devm_regmap_field_alloc from cpsw_ale_create+0x10c/0x36c
+     cpsw_ale_create from cpsw_init_common+0x1fc/0x310
+
+> --- a/drivers/net/ethernet/ti/cpsw_ale.c
+> +++ b/drivers/net/ethernet/ti/cpsw_ale.c
+> @@ -1303,6 +1303,9 @@ static const struct reg_field ale_fields_cpsw_nu[] =
+=3D {
+>         /* CPSW_ALE_IDVER_REG */
+>         [MINOR_VER]     =3D REG_FIELD(ALE_IDVER, 0, 7),
+>         [MAJOR_VER]     =3D REG_FIELD(ALE_IDVER, 8, 10),
+> +       /* CPSW_ALE_STATUS_REG */
+> +       [ALE_ENTRIES]   =3D REG_FIELD(ALE_STATUS, 0, 7),
+> +       [ALE_POLICERS]  =3D REG_FIELD(ALE_STATUS, 8, 15),
+
+You are adding these entries only to ale_fields_cpsw_nu[], not
+to ale_fields_cpsw[], while cpsw_ale_regfield_init() loops over
+ALE_FIELDS_MAX entries, whether they are valid or not:
+
+    static int cpsw_ale_regfield_init(struct cpsw_ale *ale)
+    {
+            const struct reg_field *reg_fields =3D ale->params.reg_fields;
+            struct device *dev =3D ale->params.dev;
+            struct regmap *regmap =3D ale->regmap;
+            int i;
+
+            for (i =3D 0; i < ALE_FIELDS_MAX; i++) {
+                    ale->fields[i] =3D devm_regmap_field_alloc(dev, regmap,
+                                                             reg_fields[i])=
+;
+
+                    [...]
+            }
+
+            return 0;
+    }
+
+I tried fixing this by skipping entries where all of .reg, .lsb,
+and .msb are zero, but that doesn't work as that runs beyond the
+end of ale_fields_cpsw[], thus operating on random data.
+I think you do have to store the size of the array, instead of assuming
+ALE_FIELDS_MAX entries everywhere.
+
+> --- a/drivers/net/ethernet/ti/cpsw_ale.h
+> +++ b/drivers/net/ethernet/ti/cpsw_ale.h
+> @@ -33,6 +34,8 @@ struct regmap;
+>  enum ale_fields {
+>         MINOR_VER,
+>         MAJOR_VER,
+> +       ALE_ENTRIES,
+> +       ALE_POLICERS,
+>         /* terminator */
+>         ALE_FIELDS_MAX,
+>  };
+>
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
