@@ -1,179 +1,132 @@
-Return-Path: <linux-omap+bounces-2231-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2232-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E50697ECD4
-	for <lists+linux-omap@lfdr.de>; Mon, 23 Sep 2024 16:07:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5692097EF48
+	for <lists+linux-omap@lfdr.de>; Mon, 23 Sep 2024 18:30:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A6CD1F2227F
-	for <lists+linux-omap@lfdr.de>; Mon, 23 Sep 2024 14:07:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 197CA280405
+	for <lists+linux-omap@lfdr.de>; Mon, 23 Sep 2024 16:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DAB219CC3C;
-	Mon, 23 Sep 2024 14:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B9C919F120;
+	Mon, 23 Sep 2024 16:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZVhPECaM"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="gsi6BcX+"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D3319CC15;
-	Mon, 23 Sep 2024 14:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B16197A97;
+	Mon, 23 Sep 2024 16:29:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727100422; cv=none; b=BFBPwG598pq0nkMKBMhRN6OEnqhQ6509nGzFkANvqSy6z/A+5JmXOr2SWA3PJ0zVyZzFjiWrTSg36MpmuKVVLhrra/Jy7Rvj1PihOfz1hK+f5Xgds+qybX4k5y+QkRGvdTvjdaRO37NXfFhb5UQvzQnAeGPe1LLukupxQC8y0XU=
+	t=1727108998; cv=none; b=BMOaGX/sb3UHe+2PcsUDAtwo6co9vO1/5mE0Rn1MFkFahmDS7F3c7NFj+vbTzY4RhfSbfoDe0mjCA4zT+T2askg5hdkF246ARUFg/A6kvXozAIin0finxcaMVp7TBi6toF9p+4KsAY7KsbamFoEvVzEvthBoScuWLdxFYVNZpzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727100422; c=relaxed/simple;
-	bh=kAhkFOZRzpqpdAPuuKV5YZkv/119rUuKLhWUmcZLwCM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b7C+0SDV3qDejlUH6B1DxKYXKgCVKUzm5AVSR8/xSHVp8AEFWnvwz8f4elpdgeGGRUfym0FdPmp4RnK4AFINGxsN8glz0OBlidIHbDvEe13j3N3fWqJOL4Bq7A67wq/sILSflZZdLjrJ7pw0SiyTf2Fin9/UE5xUbId+lkeWH0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZVhPECaM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4667C4CEC4;
-	Mon, 23 Sep 2024 14:06:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727100422;
-	bh=kAhkFOZRzpqpdAPuuKV5YZkv/119rUuKLhWUmcZLwCM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZVhPECaMceyeaFxgYxfHSJDrWpi3BtHICiUSQ+8mosAzrH3pxFeM+TfPMtR/wxPMC
-	 7exCHZPOJ4JF6i7H7OQEh6LwpJOMmrLkXpM1IqK5U24GtPKxar0DrhNOGprBKRVf19
-	 WlzbpOWKcTUXgYpMjWLEgP3o5BaizCH8BkT+9UZ1+81uVGPDvCo8F+/qBJD0BWt2p7
-	 +mZ0+fZA62i63cc3oYQwfvmYgLTW+EaWD6z5FC93AYzW1aeEDxX7LZC1Lv3RSbnCHQ
-	 umu0McA3VJZCd8z7LaKhumGi84S9qzSmyudsZ3VR8QzAAsD1ZSSfhrByAENfcrGPFR
-	 ZnVfwTCNnOlog==
-Message-ID: <42b347ec-df8e-44b8-ba19-150ebaf04771@kernel.org>
-Date: Mon, 23 Sep 2024 17:06:55 +0300
+	s=arc-20240116; t=1727108998; c=relaxed/simple;
+	bh=Txy4umxwzXeEDZRELo1lzkAdTGPrrnMyXfHjONuFz5g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hrrrROmvZ5IiXkXXboQ6d997zE/SheB0RGvvNroDbVKKbt0+uPaiap6N5fWaQc+uT0zfKvEuTH8J090y2/2aTT0z6DG4WhIl/5hQcMhMte9nxcnlJeEPXEIMqkp02bczM9ac8PB4Rr51z61l7PChMDx6lSLl/03xCg+bPsNa5zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=gsi6BcX+; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=/AmOiAHeLFGH+2TLf+NtkplfI90prKE8BJKRX3gixao=; b=gsi6BcX+zG9nEqxAcxGMxx/fgN
+	2jgqpr6PExcCYdzFQCihd0v4Zi7g74au7D+dN9q9LtadEJL3AcMv17el/g6ZUE8TnLEpIktJ/Sp6a
+	7XeTSjqIvmvtcn4hrty8sb8OG+9iQicgUSvxzmQj5JN9BYgbRsNb96u/Ob4cz0k65IWGzCs48NaKL
+	Bi5vlbpojSHzlUQIWjH8xS/F+eozz1pJVhHPNVoXi1zjLAw+j77xwj19RsKG+rxgDfrOxLbDyoNGo
+	zIuntuBrSkGRYY8nnv9RN1VtNZcokp7pPm1oDo3fl9f7J4BJnsWINIemRb7pKpq0LjRvFsYgr4Ju0
+	9y0JHXlg==;
+Date: Mon, 23 Sep 2024 18:29:48 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: tony@atomide.com, Sebastian Reichel <sre@kernel.org>,
+ linux-omap@vger.kernel.org, devicetree@vger.kernel.org, Lee Jones
+ <lee@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, linux-kernel@vger.kernel.org, Conor Dooley
+ <conor+dt@kernel.org>, linux-pm@vger.kernel.org
+Subject: Re: [PATCH 3/3] power: supply: initial support for TWL6030/32
+Message-ID: <20240923182948.571eaa59@akair>
+In-Reply-To: <89a7e86b-8866-4148-9f9e-13ca84c1aede@kernel.org>
+References: <20240918084132.928295-1-andreas@kemnade.info>
+	<20240918084132.928295-4-andreas@kemnade.info>
+	<89a7e86b-8866-4148-9f9e-13ca84c1aede@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 3/6] net: ethernet: ti: cpsw_ale: use
- regfields for number of Entries and Policers
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Siddharth Vadapalli <s-vadapalli@ti.com>,
- Julien Panis <jpanis@baylibre.com>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, Simon Horman <horms@kernel.org>,
- Andrew Lunn <andrew@lunn.ch>, Joe Damato <jdamato@fastly.com>, srk@ti.com,
- vigneshr@ti.com, danishanwar@ti.com, pekka Varis <p-varis@ti.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-omap@vger.kernel.org, bpf@vger.kernel.org
-References: <20240910-am65-cpsw-multi-rx-v4-0-077fa6403043@kernel.org>
- <20240910-am65-cpsw-multi-rx-v4-3-077fa6403043@kernel.org>
- <CAMuHMdUf-tKRDzkz2_m8qdFTFutefddU0NTratVrEjRTzA3yQQ@mail.gmail.com>
-Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <CAMuHMdUf-tKRDzkz2_m8qdFTFutefddU0NTratVrEjRTzA3yQQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Geert,
+Am Wed, 18 Sep 2024 12:43:01 +0200
+schrieb Krzysztof Kozlowski <krzk@kernel.org>:
 
-On 23/09/2024 16:41, Geert Uytterhoeven wrote:
-> Hi Roger,
+> On 18/09/2024 10:41, Andreas Kemnade wrote:
+> > Add a driver for the charger in the TWL6030/32. For now it does not
+> > report much in sysfs but parameters are set up for USB, charging is
+> > enabled with the specified parameters. It stops charging when full
+> > and also restarts charging.
+> > This prevents ending up in a system setup where you run out of
+> > battery although a charger is plugged in after precharge completed.
+> > 
+> > Battery voltage behavior was checked via the GPADC.
+> >   
 > 
-> On Tue, Sep 10, 2024 at 11:25 AM Roger Quadros <rogerq@kernel.org> wrote:
->> Use regfields for number of ALE Entries and Policers.
->>
->> The variants that support Policers/Classifiers have the number
->> of policers encoded in the ALE_STATUS register.
->>
->> Use that and show the number of Policers in the ALE info message.
->>
->> Signed-off-by: Roger Quadros <rogerq@kernel.org>
->> Reviewed-by: Simon Horman <horms@kernel.org>
->> ---
->> Changelog:
->> v4:
->> - reverse Xmas tree declaration order fixes
+> Few stylistic comments below.
 > 
-> Thanks for your patch, which is now commit 11cbcfeaa79e5c76 ("net:
-> ethernet: ti: cpsw_ale: use regfields for number of Entries
-> and Policers").
+> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> > ---
+> >  drivers/power/supply/Kconfig           |  10 +
+> >  drivers/power/supply/Makefile          |   1 +
+> >  drivers/power/supply/twl6030_charger.c | 566
+> > +++++++++++++++++++++++++ 3 files changed, 577 insertions(+)
+> >  create mode 100644 drivers/power/supply/twl6030_charger.c
+> > 
+> > diff --git a/drivers/power/supply/Kconfig
+> > b/drivers/power/supply/Kconfig index bcfa63fb9f1e2..9f2eef6787f7a
+> > 100644 --- a/drivers/power/supply/Kconfig
+> > +++ b/drivers/power/supply/Kconfig
+> > @@ -493,6 +493,16 @@ config CHARGER_TWL4030
+> >  	help
+> >  	  Say Y here to enable support for TWL4030 Battery Charge
+> > Interface. 
+> > +config CHARGER_TWL6030
+> > +	tristate "OMAP TWL6030 BCI charger driver"
+> > +	depends on IIO && TWL4030_CORE  
 > 
-> This is causing the following warning on BeagleBone Black:
+> || COMPILE_TEST, at least for TWL part
+> (but please test first)
 > 
->     WARNING: CPU: 0 PID: 34 at drivers/base/regmap/regmap.c:1208
-> devm_regmap_field_alloc+0xac/0xc8
->     invalid empty mask defined
->     CPU: 0 UID: 0 PID: 34 Comm: kworker/u4:3 Not tainted
-> 6.11.0-rc7-boneblack-01443-g11cbcfeaa79e #152
->     Hardware name: Generic AM33XX (Flattened Device Tree)
->     Workqueue: events_unbound deferred_probe_work_func
->     Call trace:
->      unwind_backtrace from show_stack+0x10/0x14
->      show_stack from dump_stack_lvl+0x68/0x88
->      dump_stack_lvl from __warn+0x6c/0x1a8
->      __warn from warn_slowpath_fmt+0x1bc/0x1d0
->      warn_slowpath_fmt from devm_regmap_field_alloc+0xac/0xc8
->      devm_regmap_field_alloc from cpsw_ale_create+0x10c/0x36c
->      cpsw_ale_create from cpsw_init_common+0x1fc/0x310
-> 
->> --- a/drivers/net/ethernet/ti/cpsw_ale.c
->> +++ b/drivers/net/ethernet/ti/cpsw_ale.c
->> @@ -1303,6 +1303,9 @@ static const struct reg_field ale_fields_cpsw_nu[] = {
->>         /* CPSW_ALE_IDVER_REG */
->>         [MINOR_VER]     = REG_FIELD(ALE_IDVER, 0, 7),
->>         [MAJOR_VER]     = REG_FIELD(ALE_IDVER, 8, 10),
->> +       /* CPSW_ALE_STATUS_REG */
->> +       [ALE_ENTRIES]   = REG_FIELD(ALE_STATUS, 0, 7),
->> +       [ALE_POLICERS]  = REG_FIELD(ALE_STATUS, 8, 15),
-> 
-> You are adding these entries only to ale_fields_cpsw_nu[], not
-> to ale_fields_cpsw[], while cpsw_ale_regfield_init() loops over
-> ALE_FIELDS_MAX entries, whether they are valid or not:
-> 
->     static int cpsw_ale_regfield_init(struct cpsw_ale *ale)
->     {
->             const struct reg_field *reg_fields = ale->params.reg_fields;
->             struct device *dev = ale->params.dev;
->             struct regmap *regmap = ale->regmap;
->             int i;
-> 
->             for (i = 0; i < ALE_FIELDS_MAX; i++) {
->                     ale->fields[i] = devm_regmap_field_alloc(dev, regmap,
->                                                              reg_fields[i]);
-> 
->                     [...]
->             }
-> 
->             return 0;
->     }
-> 
-> I tried fixing this by skipping entries where all of .reg, .lsb,
-> and .msb are zero, but that doesn't work as that runs beyond the
-> end of ale_fields_cpsw[], thus operating on random data.
-> I think you do have to store the size of the array, instead of assuming
-> ALE_FIELDS_MAX entries everywhere.
+ERROR: modpost: "twl_i2c_write"
+[drivers/power/supply/twl6030_charger.ko] undefined! ERROR: modpost:
+"twl_i2c_read" [drivers/power/supply/twl6030_charger.ko] undefined!
 
-Thanks for the report and suggestion. I will send a fix soon.
+>
+> > +	{ }
+> > +};
+> > +MODULE_DEVICE_TABLE(of, twl_charger_of_match);
+> > +
+> > +static struct platform_driver twl6030_charger_driver = {
+> > +	.probe = twl6030_charger_probe,
+> > +	.driver	= {
+> > +		.name	= "twl6030_charger",
+> > +		.of_match_table =
+> > of_match_ptr(twl_charger_of_match),  
+> 
+> I propose to drop of_match_ptr and maybe_unused, so this won't be
+> restricted only to OF
+>
+so that more things get compile-tested without OF? But I see no reason
+why .probe would be optimized away (and with it a lot more things) by
+the compiler.
 
-> 
->> --- a/drivers/net/ethernet/ti/cpsw_ale.h
->> +++ b/drivers/net/ethernet/ti/cpsw_ale.h
->> @@ -33,6 +34,8 @@ struct regmap;
->>  enum ale_fields {
->>         MINOR_VER,
->>         MAJOR_VER,
->> +       ALE_ENTRIES,
->> +       ALE_POLICERS,
->>         /* terminator */
->>         ALE_FIELDS_MAX,
->>  };
->>
-> 
-> Gr{oetje,eeting}s,
-> 
->                         Geert
-> 
-
--- 
-cheers,
--roger
+Regards,
+Andreas
 
