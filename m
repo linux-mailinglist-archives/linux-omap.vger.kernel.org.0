@@ -1,73 +1,60 @@
-Return-Path: <linux-omap+bounces-2241-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2242-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4BBB984A05
-	for <lists+linux-omap@lfdr.de>; Tue, 24 Sep 2024 18:53:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E50F1984A4B
+	for <lists+linux-omap@lfdr.de>; Tue, 24 Sep 2024 19:29:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0934D1C2265F
-	for <lists+linux-omap@lfdr.de>; Tue, 24 Sep 2024 16:53:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 868CCB23371
+	for <lists+linux-omap@lfdr.de>; Tue, 24 Sep 2024 17:29:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB871ABEBD;
-	Tue, 24 Sep 2024 16:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3D11AC428;
+	Tue, 24 Sep 2024 17:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="0yQK//tf"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="UUeEnJsB"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC2E1A4F0C;
-	Tue, 24 Sep 2024 16:53:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E884A2E419;
+	Tue, 24 Sep 2024 17:29:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727196803; cv=none; b=nfjmw8LbaYIB7ohwF810CAChRPGCGlIOEBLvL1ExZieIOJJQjlHBWm9h8/WNvW8K+IG1YkuiDdIxQ6ACb7KSgCcpFe4tO0MIsXc7vC4EyvhJatqwrJa6RhAA2EDIP0h907M5mf5aq4pqRp5A3JmokNAKvxBK/t9rW+aH0DAhPMg=
+	t=1727198958; cv=none; b=Aqabs4XOAOUqPhN9X2468k0nxZwtm9d/ZZ9xJkvtiLaTJ4n9iTiP1zAEj/TFcZANXTAnbBB+3+mndI5DtbGqMgEpPvZeQr0Z0fg1rITv0nyPXfT/cRpRVTuNoboNlZXyuM3SrARUQt7NhFny0TIldEL3BfN/I7QmuJChC3ZNKI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727196803; c=relaxed/simple;
-	bh=4AfOwKBsz+Hue+wqsjnOb5eB1YfYBPv7QSwJXi4tWew=;
+	s=arc-20240116; t=1727198958; c=relaxed/simple;
+	bh=1MiYoJ352dg3Tzl7QgwgHf+oqQEjGcjapxsqge4jKa0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rqVp+W5Kdh8pI2dCo3cAwrApUjswGNW+5MtBnd8LxdBd5WOXQDQYeOhLxKZtBFBasYqDGZZPOrxNX4I8SNE+SgZLKcaboCxdmdYkILeSeZ7biTf5c0S0cuk6FF/TqVFg14sWzTxfjVckb+a2jvPR62zWWLc3kqulClk6T20K2Gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=0yQK//tf; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=lghdmMqPtdFFzMso3aFSPggmycBw6rFOEbv5T/gFw6U=; b=0yQK//tfIzJWo2mOwQoF9qJvUb
-	x0HZfTXf5yiv8JxhubWkXnnitYNaZ0+xAEaAXdq5Qp9ZjOHXjxrmjpkr+bz6AhPAm8kdhA3+Wqr8/
-	85KbqRYIARcW5IeXIpgKHpTVE+R4/G+2brKMGz8iVV8IT08nfslY3vFZu5zydZTY3Nb8646lgkodB
-	0XHrR0+dBe7diwBJ1jaVk18onQiWklJKdNdnmwz/TM0Tjk4YxbNY09OTsBA168Yz44toh6sV9AMYN
-	VvBSw7hbC8nnW/9CCE6gL8hA51ltHPvMPwZV763tSOIqxF26fKDB5zd3c9bbVSHi6hD1K5CekD9lv
-	H+7oNTiw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:35852)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1st8mt-0005hM-15;
-	Tue, 24 Sep 2024 17:53:18 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1st8mr-0006WV-2a;
-	Tue, 24 Sep 2024 17:53:17 +0100
-Date: Tue, 24 Sep 2024 17:53:17 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+	 Content-Type:Content-Disposition:In-Reply-To; b=IqW2+xrtTzKYoGQooIxH/mJWkqoK1uV4CS7gfWuI0TkBAL9Zvy3PTgAFF8LfCC2qrlWEemE+FbvMt0AChLx2O+gaEE7xVljcVJCVWDw04YSuSDV83JdFC6o0UCH0uPa0BJSLC0Qr3p9nUcqLxs+9wKfeEWmu1J1XBRlmvz7NR+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=UUeEnJsB; arc=none smtp.client-ip=74.50.62.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
+Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
+	by mail5.25mail.st (Postfix) with ESMTPSA id 1691360365;
+	Tue, 24 Sep 2024 17:19:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
+	s=25mailst; t=1727198382;
+	bh=1MiYoJ352dg3Tzl7QgwgHf+oqQEjGcjapxsqge4jKa0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UUeEnJsBUUxBeUugiL01ollULfa2nuiEOuB3MOfG0KNkVBZd1Rk5Eqd+++BsNjAzK
+	 E7TpHF9D4pkvN33n+CVhTDl6W78CCed4PugJJvC314O0UNhRsfxSBkXBnW6GeH/uWr
+	 4BYp+EdX2bmqvboL4Ge26U4awQsntz8Er8VkfvrowpOeFDD53SCgCpUvTh7IJR6AaY
+	 EN2mKxyRRVB4NlmwkAZMuoZN7+njzB5y9uZ5VmbDK+H51RjoM1oszreUH9017jGr73
+	 RhXCBaAVY9W1RnBGnNgqC2k0tc2za24mWYTOP+lO9+2Cbj7J8Zcbagx74ZbE4WRYq/
+	 NegJ8D0gzGBdQ==
+Date: Tue, 24 Sep 2024 20:19:26 +0300
+From: Tony Lindgren <tony@atomide.com>
 To: Andreas Kemnade <andreas@kemnade.info>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>, linux-omap@vger.kernel.org,
-	linux-clk@vger.kernel.org, Paul Walmsley <paul@pwsan.com>,
-	Tony Lindgren <tony@atomide.com>
-Subject: Re: clk mess on omap4460 with mpu clock
-Message-ID: <ZvLufU15ZJ4CKuuv@shell.armlinux.org.uk>
-References: <20240603234139.280629b2@aktux>
- <CAMuHMdWU74DsWEZtZQJctQQog=9UCG_1LZu5yWvyxx0Zw4LQow@mail.gmail.com>
- <20240903143357.2532258b@akair>
- <CAMuHMdWF4G5Uon1=6TMzBogN2CX8EuiVBMuCPtAAMPNa-DtiOw@mail.gmail.com>
- <20240903192203.1dddbf0d@akair>
- <ZtdQ+Ay9DKAooahN@shell.armlinux.org.uk>
- <20240923140447.60c5efff@akair>
+Cc: linux-kernel@vger.kernel.org, Kevin Hilman <khilman@baylibre.com>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Roger Quadros <rogerq@kernel.org>, linux-omap@vger.kernel.org,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH] MAINTAINERS: sync omap devicetree maintainers with omap
+ platform
+Message-ID: <20240924171926.GA5102@atomide.com>
+References: <20240915195321.1071967-1-andreas@kemnade.info>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -76,23 +63,11 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240923140447.60c5efff@akair>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <20240915195321.1071967-1-andreas@kemnade.info>
 
-On Mon, Sep 23, 2024 at 02:04:47PM +0200, Andreas Kemnade wrote:
-> So the way forward is to check whether that registration is really
-> needed at:
-> https://elixir.bootlin.com/linux/v6.11/source/drivers/bus/ti-sysc.c#L2380
-> If yes, then
-> a) increade the size of the name in the clk subsystem or
-> b) workaround like
-> https://elixir.bootlin.com/linux/v6.11/source/drivers/bus/ti-sysc.c#L353
+* Andreas Kemnade <andreas@kemnade.info> [240915 19:53]:
+> Both used to go through Tony's branches, so lets keep things together.
+> This was missed at the time when Co-Maintainers were added.
 
-I'll also mention that if one is using DT, then the clkdev tables should
-not be relevant - the lookups of clocks should be done by parsing the
-clocks property in the description of the device.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Acked-by: Tony Lindgren <tony@atomide.com>
 
