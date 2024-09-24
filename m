@@ -1,235 +1,231 @@
-Return-Path: <linux-omap+bounces-2235-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2237-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3CA69843BD
-	for <lists+linux-omap@lfdr.de>; Tue, 24 Sep 2024 12:36:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 960249845E7
+	for <lists+linux-omap@lfdr.de>; Tue, 24 Sep 2024 14:29:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0496284A6C
-	for <lists+linux-omap@lfdr.de>; Tue, 24 Sep 2024 10:36:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8B6C1C22D92
+	for <lists+linux-omap@lfdr.de>; Tue, 24 Sep 2024 12:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF51319C544;
-	Tue, 24 Sep 2024 10:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB091A705D;
+	Tue, 24 Sep 2024 12:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="rov/Wwhq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qVu7s6p8"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0ED319AA53;
-	Tue, 24 Sep 2024 10:36:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877253F9D5;
+	Tue, 24 Sep 2024 12:29:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727174185; cv=none; b=E+1+K73bO0NujeW37g+h2lW8iPbCjZO1W49/FJePu6qyfD0StC20nidcOxLeAu77+d3fUxzfZKB5bKxc/8djsHmhNkWMk+J8D0ZIQxqsJaPqN+L3kV2HbHSGboZBLIX9g58YjScceYdzpsAj1Cf2vhmsiHMoPcMb9AdbQJ9hP10=
+	t=1727180948; cv=none; b=DUg5bdMNAocBP8VgXeRpQQakgenqzxRnPWKyx4JyWNc6Bv/wkIt6dNYA2CnFBPCry69OgQqn7wf0Tog4WpHBez/tj6QQe1O9XVyLPC90m4rZa8F1xnCbnJxKw/AN0QLDFmGZKRVgamCf0EWA+zEWEy1Rm7e5lwjNyGUDfxa+tws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727174185; c=relaxed/simple;
-	bh=vW0P19aA/rIIdX1ImGnej+GSht9aIHupafntyIJlNsY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XmAOdUbqWgucJ1yqYgQjElnGPMJOgIH7tBO/olwwuFxcIo8xmKNB41HauKnsi22rpR1fgxXFQYXK1BXTDCg2k23vcXDQoJRT+YjxMocrN5av96x9iWOH6bVHY+fgJ/TsJqm5LePhNLfVbmBfIsRgXGBzYNRBGG+tQyDOYg3YEC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=rov/Wwhq; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=MS82ELjpW2VgTub5lfeSCEOlBHZ2k01XkWgRiHetWnk=; b=rov/Wwhq3jTc5TLiMWGthetR+N
-	az8SV3teDNPrWzcuAOJc/3ZkRmOADKOubJvsZ5VZ9y1UDsKTHHdvpF9bv8YXpI9jWxMJ0OwrgaEP7
-	LZ+q3EpMOeF5VAjkj608hC9lgA0SxLS4YMFPAhobUHh0L5L0nXOivYooEeD5vOFZfJsGEFOuUG0uf
-	rT7rDv6iWuz/73fFDLoM7wzxSA6CDqyJ3UScGzHPyI+ITjcR0ab1DWTYbf4X3XpuJXZweaSuoye56
-	0QdcxiItlgnYaEgQ6pmDe1dOhB2zc3Bd5tKJZn7impQnQoADtLMjnZjkU4rs5Ee3CQSIhLYzveU5z
-	bbo0R//A==;
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Roger Quadros <rogerq@kernel.org>,
-	linux-omap@vger.kernel.org,
-	Stephen Boyd <sboyd@kernel.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	linux-kernel@vger.kernel.org,
-	Lee Jones <lee@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	linux-clk@vger.kernel.org
-Cc: Andreas Kemnade <andreas@kemnade.info>
-Subject: [PATCH 2/2] clk: twl: add TWL6030 support
-Date: Tue, 24 Sep 2024 12:36:09 +0200
-Message-Id: <20240924103609.12513-3-andreas@kemnade.info>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20240924103609.12513-1-andreas@kemnade.info>
-References: <20240924103609.12513-1-andreas@kemnade.info>
+	s=arc-20240116; t=1727180948; c=relaxed/simple;
+	bh=j4z0lX44fz/Sd7pRd8ALq4d+XegAN608GA7cOyTsM8E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=VkA/VeagLmyVbS6t6Yc+XTnuuw3D/SnG9ywvVJ8TFWrMeCBH9d2z3lNen0hgSJdQ8i/3ztkgPrLJOaXH+h1NQQGwTrJJZCqBdIzVE8x4km/aL+/4tFxMKR3KMq3P6ix69hZ0NtHMAb2jHU0W7U/eG49XU0hJtR3gNqhM1j2qGJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qVu7s6p8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DAE9C4CEC4;
+	Tue, 24 Sep 2024 12:29:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727180948;
+	bh=j4z0lX44fz/Sd7pRd8ALq4d+XegAN608GA7cOyTsM8E=;
+	h=From:Date:Subject:To:Cc:From;
+	b=qVu7s6p8nbi3VajIJsqEswpWLGuhg71uIclSzX3H9S4SqoYChxRLxiFWGJ9UH/CxW
+	 i6+8J/GaFoU7gCnAilli7wsMdCVgT+VxrDPYvajY6b/fzztDnY9j/9bYsABpoZMh7v
+	 CDFzA7+bkmxrg0A/sek35GA4uCrljB2rPqI27FvU55g04FtiqzMPjNoErylO5+Qlgk
+	 woNZzVXnCptgmP/b1IDgK+d/5/auAqLkuS8tWRwrxS7fdu4y8F+fNcSM55yKyOjSzL
+	 qMNmWmJYfw5WMZZhZpapPEODR/FYRCBdFNwdtrmgxMaXT0waAzUlWoWAccU7gV/uM4
+	 Sf2ByMwiqmK0w==
+From: Roger Quadros <rogerq@kernel.org>
+Date: Tue, 24 Sep 2024 15:28:48 +0300
+Subject: [PATCH net] net: ethernet: ti: cpsw_ale: Fix warning on some
+ platforms
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240924-am65-cpsw-multi-rx-fix-v1-1-0ca3fa9a1398@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAH+w8mYC/x2MSwqEMBAFryK9ngaNUUavMriI8akNY5TEH4h3N
+ 7isgqqLArwgUJ1c5LFLkNlFyD4J2dG4ASxdZFKp0mmlcjZTWbBdwsHT9l+F/cm9nIxWf2F6qyu
+ UFOPFI+p3/COHlZr7fgA72Hm4bQAAAA==
+To: Siddharth Vadapalli <s-vadapalli@ti.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: linux-omap@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, srk@ti.com, 
+ Geert Uytterhoeven <geert@linux-m68k.org>, 
+ Roger Quadros <rogerq@kernel.org>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5815; i=rogerq@kernel.org;
+ h=from:subject:message-id; bh=j4z0lX44fz/Sd7pRd8ALq4d+XegAN608GA7cOyTsM8E=;
+ b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBm8rCN5OnVq+tKLHFO7qebc5JvbOtP+nlqhorcK
+ MffmXJ5iamJAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCZvKwjQAKCRDSWmvTvnYw
+ k1BsEACakksbQcenbrbugMW2XDKw/NdZ+s2xyMQ6Fwdla/P/463h3+Pp1nIadSj1asvVCMLPSvH
+ kFGnLlzfBX8FXQtM5MFFcXqiarE2tpse9Q+tFk42g27/fFodXUrN0MOfpMCYeG7Gx5lgwqsV4g8
+ kxXoNAuVLC5jk6LNFKol9ZFTz6itHAPYwZTomh7Ir3vwjeCydyZhiMzY2f5VajC0+oqAgmdTOla
+ zXVXt/hefEzY8dj5HNkgamXttkUpDZll3+A1ozcVxL+SVfSoYpEd+5+sT6rSzkd8lITAOmTaTe6
+ N0RfH0ipjE7sklXOwLz/HIabQCrvQ/8F1zKFtTIpU6PCBKc/2QV7uCbCVlpZ7Mt7fdmLdhITeVw
+ FZyIk65qqhaefEIZZsQ9RHJ7llXEBY8pIkO2lyUfHSMVfTrJluWoPiyNSJVWsZtesaRPK7w1Q5o
+ CDrm0B9/fD95cOcRCGRGbj07c4bggbrN8cApP/xShzwJsIc8wPYGTh/TNahhuF1Pqem8z2Ntlm8
+ 7rBdKb9uidc4KGYGUUj1+iMmR1Q9Ykum/0QUNNDp4zs27o9jaSsnlgMVJecOcBvoV3HRYDZImNB
+ Co16PLBxYFxN/uOJZMlCoSvHd0TPVG1cXKxSoJg4Zl1asg0nmgRETwEYtebI3002cFC5xg4xHss
+ EXVohPEbbMpXcLw==
+X-Developer-Key: i=rogerq@kernel.org; a=openpgp;
+ fpr=412165D44C9F52780FAB1058D25A6BD3BE763093
 
-The TWL6030 has similar clocks, so add support for it. Take care of the
-resource grouping handling needed.
+The number of register fields cannot be assumed to be ALE_FIELDS_MAX
+as some platforms can have lesser fields.
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Solve this by embedding the actual number of fields available
+in platform data and use that instead of ALE_FIELDS_MAX.
+
+Gets rid of the below warning on BeagleBone Black
+
+[    1.007735] WARNING: CPU: 0 PID: 33 at drivers/base/regmap/regmap.c:1208 regmap_field_init+0x88/0x9c
+[    1.007802] invalid empty mask defined
+[    1.007812] Modules linked in:
+[    1.007842] CPU: 0 UID: 0 PID: 33 Comm: kworker/u4:3 Not tainted 6.11.0-01459-g508403ab7b74-dirty #840
+[    1.007867] Hardware name: Generic AM33XX (Flattened Device Tree)
+[    1.007890] Workqueue: events_unbound deferred_probe_work_func
+[    1.007935] Call trace:
+[    1.007957]  unwind_backtrace from show_stack+0x10/0x14
+[    1.007999]  show_stack from dump_stack_lvl+0x50/0x64
+[    1.008033]  dump_stack_lvl from __warn+0x70/0x124
+[    1.008077]  __warn from warn_slowpath_fmt+0x194/0x1a8
+[    1.008113]  warn_slowpath_fmt from regmap_field_init+0x88/0x9c
+[    1.008154]  regmap_field_init from devm_regmap_field_alloc+0x48/0x64
+[    1.008193]  devm_regmap_field_alloc from cpsw_ale_create+0xfc/0x320
+[    1.008251]  cpsw_ale_create from cpsw_init_common+0x214/0x354
+[    1.008286]  cpsw_init_common from cpsw_probe+0x4ac/0xb88
+
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Closes: https://lore.kernel.org/netdev/CAMuHMdUf-tKRDzkz2_m8qdFTFutefddU0NTratVrEjRTzA3yQQ@mail.gmail.com/
+Fixes: 11cbcfeaa79e ("net: ethernet: ti: cpsw_ale: use regfields for number of Entries and Policers")
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
 ---
- drivers/clk/clk-twl.c | 97 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 95 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/ti/cpsw_ale.c | 12 +++++++++++-
+ drivers/net/ethernet/ti/cpsw_ale.h |  1 +
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk-twl.c b/drivers/clk/clk-twl.c
-index eab9d3c8ed8a..194f11ac5e14 100644
---- a/drivers/clk/clk-twl.c
-+++ b/drivers/clk/clk-twl.c
-@@ -11,10 +11,22 @@
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- 
--#define VREG_STATE              2
-+#define VREG_STATE		2
-+#define VREG_GRP		0
- #define TWL6030_CFG_STATE_OFF   0x00
- #define TWL6030_CFG_STATE_ON    0x01
- #define TWL6030_CFG_STATE_MASK  0x03
-+#define TWL6030_CFG_STATE_GRP_SHIFT	5
-+#define TWL6030_CFG_STATE_APP_SHIFT	2
-+#define TWL6030_CFG_STATE_MASK		0x03
-+#define TWL6030_CFG_STATE_APP_MASK	(0x03 << TWL6030_CFG_STATE_APP_SHIFT)
-+#define TWL6030_CFG_STATE_APP(v)	(((v) & TWL6030_CFG_STATE_APP_MASK) >>\
-+						TWL6030_CFG_STATE_APP_SHIFT)
-+#define P1_GRP BIT(0) /* processor power group */
-+#define ALL_GRP (BIT(0) | BIT(1) | BIT(2))
-+
-+#define DRIVER_DATA_TWL6030 0
-+#define DRIVER_DATA_TWL6032 1
- 
- struct twl_clock_info {
- 	struct device *dev;
-@@ -53,6 +65,49 @@ static unsigned long twl_clks_recalc_rate(struct clk_hw *hw,
- 	return 32768;
- }
- 
-+static int twl6030_clks_prepare(struct clk_hw *hw)
-+{
-+	struct twl_clock_info *cinfo = to_twl_clks_info(hw);
-+	int grp;
-+
-+	grp = twlclk_read(cinfo, TWL_MODULE_PM_RECEIVER, VREG_GRP);
-+	if (grp < 0)
-+		return grp;
-+
-+	return twlclk_write(cinfo, TWL_MODULE_PM_RECEIVER, VREG_STATE,
-+			    grp << TWL6030_CFG_STATE_GRP_SHIFT |
-+			    TWL6030_CFG_STATE_ON);
-+}
-+
-+static void twl6030_clks_unprepare(struct clk_hw *hw)
-+{
-+	struct twl_clock_info *cinfo = to_twl_clks_info(hw);
-+
-+	twlclk_write(cinfo, TWL_MODULE_PM_RECEIVER, VREG_STATE,
-+		     ALL_GRP << TWL6030_CFG_STATE_GRP_SHIFT |
-+		     TWL6030_CFG_STATE_OFF);
-+}
-+
-+static int twl6030_clks_is_prepared(struct clk_hw *hw)
-+{
-+	struct twl_clock_info *cinfo = to_twl_clks_info(hw);
-+	int val;
-+
-+	val = twlclk_read(cinfo, TWL_MODULE_PM_RECEIVER, VREG_GRP);
-+	if (val < 0)
-+		return val;
-+
-+	if (!(val & P1_GRP))
-+		return 0;
-+
-+	val = twlclk_read(cinfo, TWL_MODULE_PM_RECEIVER, VREG_STATE);
-+	if (val < 0)
-+		return val;
-+
-+	val = TWL6030_CFG_STATE_APP(val);
-+	return val == TWL6030_CFG_STATE_ON;
-+}
-+
- static int twl6032_clks_prepare(struct clk_hw *hw)
- {
- 	struct twl_clock_info *cinfo = to_twl_clks_info(hw);
-@@ -93,6 +148,13 @@ static int twl6032_clks_is_prepared(struct clk_hw *hw)
- 	return val == TWL6030_CFG_STATE_ON;
- }
- 
-+static const struct clk_ops twl6030_clks_ops = {
-+	.prepare	= twl6030_clks_prepare,
-+	.unprepare	= twl6030_clks_unprepare,
-+	.is_prepared	= twl6030_clks_is_prepared,
-+	.recalc_rate	= twl_clks_recalc_rate,
-+};
-+
- static const struct clk_ops twl6032_clks_ops = {
- 	.prepare	= twl6032_clks_prepare,
- 	.unprepare	= twl6032_clks_unprepare,
-@@ -105,6 +167,28 @@ struct twl_clks_data {
- 	u8 base;
+diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+index 0d5d8917c70b..8d02d2b21429 100644
+--- a/drivers/net/ethernet/ti/cpsw_ale.c
++++ b/drivers/net/ethernet/ti/cpsw_ale.c
+@@ -96,6 +96,7 @@ enum {
+  * @features: features supported by ALE
+  * @tbl_entries: number of ALE entries
+  * @reg_fields: pointer to array of register field configuration
++ * @num_fields: number of fields in the reg_fields array
+  * @nu_switch_ale: NU Switch ALE
+  * @vlan_entry_tbl: ALE vlan entry fields description tbl
+  */
+@@ -104,6 +105,7 @@ struct cpsw_ale_dev_id {
+ 	u32 features;
+ 	u32 tbl_entries;
+ 	const struct reg_field *reg_fields;
++	int num_fields;
+ 	bool nu_switch_ale;
+ 	const struct ale_entry_fld *vlan_entry_tbl;
  };
- 
-+static const struct twl_clks_data twl6030_clks[] = {
-+	{
-+		.init = {
-+			.name = "clk32kg",
-+			.ops = &twl6030_clks_ops,
-+			.flags = CLK_IGNORE_UNUSED,
-+		},
-+		.base = 0x8C,
-+	},
-+	{
-+		.init = {
-+			.name = "clk32kaudio",
-+			.ops = &twl6030_clks_ops,
-+			.flags = CLK_IGNORE_UNUSED,
-+		},
-+		.base = 0x8F,
-+	},
-+	{
-+		/* sentinel */
-+	}
-+};
-+
- static const struct twl_clks_data twl6032_clks[] = {
+@@ -1400,6 +1402,7 @@ static const struct cpsw_ale_dev_id cpsw_ale_id_match[] = {
+ 		.dev_id = "cpsw",
+ 		.tbl_entries = 1024,
+ 		.reg_fields = ale_fields_cpsw,
++		.num_fields = ARRAY_SIZE(ale_fields_cpsw),
+ 		.vlan_entry_tbl = vlan_entry_cpsw,
+ 	},
  	{
- 		.init = {
-@@ -127,6 +211,11 @@ static const struct twl_clks_data twl6032_clks[] = {
- 	}
- };
- 
-+static const struct twl_clks_data *const twl_clks[] = {
-+	[DRIVER_DATA_TWL6030] = twl6030_clks,
-+	[DRIVER_DATA_TWL6032] = twl6032_clks,
-+};
-+
- static int twl_clks_probe(struct platform_device *pdev)
- {
- 	struct clk_hw_onecell_data *clk_data;
-@@ -137,7 +226,7 @@ static int twl_clks_probe(struct platform_device *pdev)
+@@ -1407,12 +1410,14 @@ static const struct cpsw_ale_dev_id cpsw_ale_id_match[] = {
+ 		.dev_id = "66ak2h-xgbe",
+ 		.tbl_entries = 2048,
+ 		.reg_fields = ale_fields_cpsw,
++		.num_fields = ARRAY_SIZE(ale_fields_cpsw),
+ 		.vlan_entry_tbl = vlan_entry_cpsw,
+ 	},
+ 	{
+ 		.dev_id = "66ak2el",
+ 		.features = CPSW_ALE_F_STATUS_REG,
+ 		.reg_fields = ale_fields_cpsw_nu,
++		.num_fields = ARRAY_SIZE(ale_fields_cpsw_nu),
+ 		.nu_switch_ale = true,
+ 		.vlan_entry_tbl = vlan_entry_nu,
+ 	},
+@@ -1421,6 +1426,7 @@ static const struct cpsw_ale_dev_id cpsw_ale_id_match[] = {
+ 		.features = CPSW_ALE_F_STATUS_REG,
+ 		.tbl_entries = 64,
+ 		.reg_fields = ale_fields_cpsw_nu,
++		.num_fields = ARRAY_SIZE(ale_fields_cpsw_nu),
+ 		.nu_switch_ale = true,
+ 		.vlan_entry_tbl = vlan_entry_nu,
+ 	},
+@@ -1429,6 +1435,7 @@ static const struct cpsw_ale_dev_id cpsw_ale_id_match[] = {
+ 		.features = CPSW_ALE_F_STATUS_REG | CPSW_ALE_F_HW_AUTOAGING,
+ 		.tbl_entries = 64,
+ 		.reg_fields = ale_fields_cpsw_nu,
++		.num_fields = ARRAY_SIZE(ale_fields_cpsw_nu),
+ 		.nu_switch_ale = true,
+ 		.vlan_entry_tbl = vlan_entry_nu,
+ 	},
+@@ -1436,12 +1443,14 @@ static const struct cpsw_ale_dev_id cpsw_ale_id_match[] = {
+ 		.dev_id = "j721e-cpswxg",
+ 		.features = CPSW_ALE_F_STATUS_REG | CPSW_ALE_F_HW_AUTOAGING,
+ 		.reg_fields = ale_fields_cpsw_nu,
++		.num_fields = ARRAY_SIZE(ale_fields_cpsw_nu),
+ 		.vlan_entry_tbl = vlan_entry_k3_cpswxg,
+ 	},
+ 	{
+ 		.dev_id = "am64-cpswxg",
+ 		.features = CPSW_ALE_F_STATUS_REG | CPSW_ALE_F_HW_AUTOAGING,
+ 		.reg_fields = ale_fields_cpsw_nu,
++		.num_fields = ARRAY_SIZE(ale_fields_cpsw_nu),
+ 		.vlan_entry_tbl = vlan_entry_k3_cpswxg,
+ 		.tbl_entries = 512,
+ 	},
+@@ -1477,7 +1486,7 @@ static int cpsw_ale_regfield_init(struct cpsw_ale *ale)
+ 	struct regmap *regmap = ale->regmap;
  	int i;
- 	int count;
  
--	hw_data = twl6032_clks;
-+	hw_data = twl_clks[platform_get_device_id(pdev)->driver_data];
- 	for (count = 0; hw_data[count].init.name; count++)
- 		;
+-	for (i = 0; i < ALE_FIELDS_MAX; i++) {
++	for (i = 0; i < ale->params.num_fields; i++) {
+ 		ale->fields[i] = devm_regmap_field_alloc(dev, regmap,
+ 							 reg_fields[i]);
+ 		if (IS_ERR(ale->fields[i])) {
+@@ -1503,6 +1512,7 @@ struct cpsw_ale *cpsw_ale_create(struct cpsw_ale_params *params)
+ 	params->ale_entries = ale_dev_id->tbl_entries;
+ 	params->nu_switch_ale = ale_dev_id->nu_switch_ale;
+ 	params->reg_fields = ale_dev_id->reg_fields;
++	params->num_fields = ale_dev_id->num_fields;
  
-@@ -176,7 +265,11 @@ static int twl_clks_probe(struct platform_device *pdev)
- 
- static const struct platform_device_id twl_clks_id[] = {
- 	{
-+		.name = "twl6030-clk",
-+		.driver_data = DRIVER_DATA_TWL6030,
-+	}, {
- 		.name = "twl6032-clk",
-+		.driver_data = DRIVER_DATA_TWL6032,
- 	}, {
- 		/* sentinel */
- 	}
+ 	ale = devm_kzalloc(params->dev, sizeof(*ale), GFP_KERNEL);
+ 	if (!ale)
+diff --git a/drivers/net/ethernet/ti/cpsw_ale.h b/drivers/net/ethernet/ti/cpsw_ale.h
+index 1e4e9a3dd234..87b7d1b3a34a 100644
+--- a/drivers/net/ethernet/ti/cpsw_ale.h
++++ b/drivers/net/ethernet/ti/cpsw_ale.h
+@@ -24,6 +24,7 @@ struct cpsw_ale_params {
+ 	 */
+ 	bool			nu_switch_ale;
+ 	const struct reg_field *reg_fields;
++	int			num_fields;
+ 	const char		*dev_id;
+ 	unsigned long		bus_freq;
+ };
+
+---
+base-commit: 9410645520e9b820069761f3450ef6661418e279
+change-id: 20240923-am65-cpsw-multi-rx-fix-eb48eafc49e6
+
+Best regards,
 -- 
-2.39.5
+Roger Quadros <rogerq@kernel.org>
 
 
