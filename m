@@ -1,73 +1,76 @@
-Return-Path: <linux-omap+bounces-2242-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2243-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E50F1984A4B
-	for <lists+linux-omap@lfdr.de>; Tue, 24 Sep 2024 19:29:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D031985342
+	for <lists+linux-omap@lfdr.de>; Wed, 25 Sep 2024 08:52:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 868CCB23371
-	for <lists+linux-omap@lfdr.de>; Tue, 24 Sep 2024 17:29:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F22428123D
+	for <lists+linux-omap@lfdr.de>; Wed, 25 Sep 2024 06:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3D11AC428;
-	Tue, 24 Sep 2024 17:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607D4156222;
+	Wed, 25 Sep 2024 06:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="UUeEnJsB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BHO8om+E"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E884A2E419;
-	Tue, 24 Sep 2024 17:29:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB63D155A25;
+	Wed, 25 Sep 2024 06:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727198958; cv=none; b=Aqabs4XOAOUqPhN9X2468k0nxZwtm9d/ZZ9xJkvtiLaTJ4n9iTiP1zAEj/TFcZANXTAnbBB+3+mndI5DtbGqMgEpPvZeQr0Z0fg1rITv0nyPXfT/cRpRVTuNoboNlZXyuM3SrARUQt7NhFny0TIldEL3BfN/I7QmuJChC3ZNKI4=
+	t=1727247164; cv=none; b=N1SZJEcoj3fo3ti0raEbJVTIrgLyKBXQSXiO76sch9/Vw5JOves+lCdeIFLe5eo0lllsonYUIn5UBCNBb6oM0gNU9FJRCWn1BBK5RS+POJjdo/iA/RHkQWVhfVdTQ5T0jtGNoCwKjWA9pZt7jomLtCmt3+mbLQcYu9tor1YoZuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727198958; c=relaxed/simple;
-	bh=1MiYoJ352dg3Tzl7QgwgHf+oqQEjGcjapxsqge4jKa0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IqW2+xrtTzKYoGQooIxH/mJWkqoK1uV4CS7gfWuI0TkBAL9Zvy3PTgAFF8LfCC2qrlWEemE+FbvMt0AChLx2O+gaEE7xVljcVJCVWDw04YSuSDV83JdFC6o0UCH0uPa0BJSLC0Qr3p9nUcqLxs+9wKfeEWmu1J1XBRlmvz7NR+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=UUeEnJsB; arc=none smtp.client-ip=74.50.62.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
-Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
-	by mail5.25mail.st (Postfix) with ESMTPSA id 1691360365;
-	Tue, 24 Sep 2024 17:19:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
-	s=25mailst; t=1727198382;
-	bh=1MiYoJ352dg3Tzl7QgwgHf+oqQEjGcjapxsqge4jKa0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UUeEnJsBUUxBeUugiL01ollULfa2nuiEOuB3MOfG0KNkVBZd1Rk5Eqd+++BsNjAzK
-	 E7TpHF9D4pkvN33n+CVhTDl6W78CCed4PugJJvC314O0UNhRsfxSBkXBnW6GeH/uWr
-	 4BYp+EdX2bmqvboL4Ge26U4awQsntz8Er8VkfvrowpOeFDD53SCgCpUvTh7IJR6AaY
-	 EN2mKxyRRVB4NlmwkAZMuoZN7+njzB5y9uZ5VmbDK+H51RjoM1oszreUH9017jGr73
-	 RhXCBaAVY9W1RnBGnNgqC2k0tc2za24mWYTOP+lO9+2Cbj7J8Zcbagx74ZbE4WRYq/
-	 NegJ8D0gzGBdQ==
-Date: Tue, 24 Sep 2024 20:19:26 +0300
-From: Tony Lindgren <tony@atomide.com>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: linux-kernel@vger.kernel.org, Kevin Hilman <khilman@baylibre.com>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Roger Quadros <rogerq@kernel.org>, linux-omap@vger.kernel.org,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH] MAINTAINERS: sync omap devicetree maintainers with omap
- platform
-Message-ID: <20240924171926.GA5102@atomide.com>
-References: <20240915195321.1071967-1-andreas@kemnade.info>
+	s=arc-20240116; t=1727247164; c=relaxed/simple;
+	bh=KLZATHZn1r6caQ2yuujVtvluk43DfEBBZHvX3r39fEc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=JCYff29KYUVZsl+qSo6Otl3TEkwX0PXGt+aB1OdQ6rOhdSaesP+yMO394VL3nZBnpcXqSftHskDkn0BoXiINaVtXOzW7ZPTHVTzeJ0X9c8IPTCAp+KOQvW+nYHFiO6HveeutWO9Jg6MfpD/+V6PhtnVNBsN2En1ciJE6RNmqE6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BHO8om+E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D30C4CEC3;
+	Wed, 25 Sep 2024 06:52:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727247163;
+	bh=KLZATHZn1r6caQ2yuujVtvluk43DfEBBZHvX3r39fEc=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=BHO8om+EfbAP5rX4yaAhNEAd4edcIOatU1RCcNxfeloMJBcdaLS3C+7XH3VoDeZcZ
+	 r1D5z0fRsO3j27GqtqclhqpLQpK9n7IrJpsIVTU0wR4xgaQYOdF5sbisN31ldL9/rr
+	 ew2OyNTA2PcDbFfK7tnRpf4ER7SQ7AE4N7kASG5thxYLcZTVe11rO0RnWHxAhRtKhr
+	 XGVdgVIpmfyO1AFupme7BUG1DWqOORRBHjJ/65Ko4rzg7YOp0EHJrxDoOtDoqxqOvG
+	 Oe1cWrSyzW1V0LlM6sm0egKAxPQz1Y21Lc4LVgw0ZpdMti7+1kbmsg7GejRKyY5na+
+	 NtbcE2EoSnP6g==
+Message-ID: <c4535369-0c17-4cbe-a2dd-e0c093029a58@kernel.org>
+Date: Wed, 25 Sep 2024 09:52:38 +0300
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240915195321.1071967-1-andreas@kemnade.info>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mfd: twl-core: Add a clock subdevice for the TWL6030
+To: Andreas Kemnade <andreas@kemnade.info>, linux-omap@vger.kernel.org,
+ Stephen Boyd <sboyd@kernel.org>, Kevin Hilman <khilman@baylibre.com>,
+ Michael Turquette <mturquette@baylibre.com>,
+ Aaro Koskinen <aaro.koskinen@iki.fi>, linux-kernel@vger.kernel.org,
+ Lee Jones <lee@kernel.org>, Tony Lindgren <tony@atomide.com>,
+ linux-clk@vger.kernel.org
+References: <20240924103609.12513-1-andreas@kemnade.info>
+ <20240924103609.12513-2-andreas@kemnade.info>
+Content-Language: en-US
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20240924103609.12513-2-andreas@kemnade.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-* Andreas Kemnade <andreas@kemnade.info> [240915 19:53]:
-> Both used to go through Tony's branches, so lets keep things together.
-> This was missed at the time when Co-Maintainers were added.
 
-Acked-by: Tony Lindgren <tony@atomide.com>
+
+On 24/09/2024 13:36, Andreas Kemnade wrote:
+> Also the TWL6030 has some clocks, so add a subdevice for that.
+> 
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
 
