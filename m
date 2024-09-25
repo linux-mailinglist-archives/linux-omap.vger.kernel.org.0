@@ -1,185 +1,232 @@
-Return-Path: <linux-omap+bounces-2250-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2251-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 857749866F3
-	for <lists+linux-omap@lfdr.de>; Wed, 25 Sep 2024 21:36:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D0C69869FD
+	for <lists+linux-omap@lfdr.de>; Thu, 26 Sep 2024 02:00:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4467B285D6C
-	for <lists+linux-omap@lfdr.de>; Wed, 25 Sep 2024 19:36:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EBD72815AF
+	for <lists+linux-omap@lfdr.de>; Thu, 26 Sep 2024 00:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ECC7145323;
-	Wed, 25 Sep 2024 19:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752D01A4B66;
+	Thu, 26 Sep 2024 00:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="d25R1Nl6"
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="FgFNZSPi"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011041.outbound.protection.outlook.com [40.107.74.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E2B38DE4;
-	Wed, 25 Sep 2024 19:35:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727292953; cv=none; b=TtyAXJ3wDVWIHxBi7GfD5AUdLTqHenWO/h/YPqY5pwtTuglNkN11dlV2nZRanzwwjva4/3UY/Dsc3IP6WibsBZ5VxhLt3jK0ucjDQhKnpQppaNVXZNEyhqiXWmsAMbKmBgEkY3j9+q0wZzw86IfCZTGmXq92YJa/nbFlwtdvJwg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727292953; c=relaxed/simple;
-	bh=W1htSqqTN7odWFnelYUc3taH1Vevq2GYu5/u0ivvThM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M0Qh6s6Sbh+ikRUGVgCa6GMvB1AZt+VlBUpW8tsz1sL3lqbbv7zs3KeKVeT5kjX9XrAGxZkDvXbMfyW1yhgyYtt6lxJvt3Z+pMHqebqr9Rw7sDZCJdUsyND5GRUCGOrCcBcrF9TJyitEUOotYzsv1aKI0IqqckCCaznowX6fT+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=d25R1Nl6; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1727292940; x=1727897740; i=deller@gmx.de;
-	bh=UB8PYpZok1cm1fKMdh4ZJQbRWVWkKAGkJRWWz1kVeZg=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=d25R1Nl6uF75x6VL2EaFtfT77epmiA6ICHST9kRIWTzLHpVAsnG6nkQNnr6JX/Ht
-	 9mMj3IIY4BzqvI/NDyD2mF1U2o/o58OwfAcKJMQzjw7oseR4nyuJOlqm/M+1r8+lu
-	 l0siMsbwiGE2mu1cCvOBRPshoDfizILbgHQh4W7Xq58Lu9xsdTvaUzel/G+b9oNjT
-	 j3TJzyrgArTpu2uM+9Q/io56k0OAR7WKQcUdWaB350R34trNJW00Petmlre85PMQk
-	 gqJBv1/k9S7h/gBlU5/gwgX60LUQP/9HTtodGoPNCCswjCnJfTyGT3z6+IcMpzxiY
-	 /w1ZFZzJdGusGBZGpg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([109.250.63.79]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MUXtY-1sT2jb3dvE-00WlAq; Wed, 25
- Sep 2024 21:35:39 +0200
-Message-ID: <42d8b0ac-edb4-41be-9b7e-87626889e33b@gmx.de>
-Date: Wed, 25 Sep 2024 21:35:37 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B96B1A38F2;
+	Wed, 25 Sep 2024 23:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727308802; cv=fail; b=MkAjd+CMDckq/hjR3gceQ9XldKV9bCxu6KlfKGs2Yjb6a5ozKFnyy3jd8n4vmcPekH+vQiz7dHBOFsxRkXOnuFMaTRiFu4PLgTcucJ8PIpEtZrDU5yPy13DP+vRhUELykb8XuuT1gn/MSKAIVMjP2v6yKVyqChfIMMPWl8KFDQs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727308802; c=relaxed/simple;
+	bh=LPWO1dfTdEj2ImMYrikhC7rnMYT/HY+NssJhFn33cSo=;
+	h=Message-ID:From:To:Subject:Content-Type:Date:MIME-Version; b=hyS1Vxyh1LnyXWy0M0g0Dq40MFxNNcOL99S5nugmtD0qQff3waAqsONKMaqjtzjStNZO/zuFmzl4FYZSE69sO5hhPUko3M0O0m62z9QN3yULy/gfea6+UEimxUSyAb/5Z4s1AZPg/ZxzDM0zs/wOfMEtUNCu77X+ceytpNG3j9o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=FgFNZSPi; arc=fail smtp.client-ip=40.107.74.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AoBe6XHDEpSd4FeL3fOUv+4l0CRmDvEW8DOstOLPGbLpBOFQd9kt+OEkYGAeY3byX5/x3TRa9o39W11QDIdt2UM+QLWnKNKBzrZgpj2BR4UDwAEoazzmOr+MBkTYNIgd7+FelPu3L7YoLam9ha3vAu7hPf7+AWLTmn8OqvmOtkhrmuuJu+ihIiU83vwMXwt9BLKpf3fdE2Y7HkYZIHQcTEOxrjz1iNeXOvt0VufFKRdhyWuO2mbdI3iJziMfLLqzqrqFFfB7yJXtNOzSkqJSTRBkihSCODNpqA1oI9rPBLLvluu+c7JuikGX3q+uksmowC1m6wq2nFkr3eODhrroYA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=r16qzp9K4woRIS6tr7zWrTGHV4SZ91rSOmPWxOFY25U=;
+ b=cveq/JGuhZfwkiqPOeUTz0VHIt+CCSQ9frdkex4c1UmNwnuVrPMNFnzBjLllwSZOwseSUiVz9ktXYDtxdgdnCsjFIxf/KHfJs+H7X/VnBlS2ubyhBHwHWTc4JFMcucf/gfqZWmyzOVYtQIIcK/SwPEg7tZ9f0LDj/Kj7oJ+jUWwdMRSC8vcFQ5LWAHrubhA5djFnpTFum7DMWAgLkQDgyJPlEbKcCQbYoGpuetWqXTDjD1HocxWE7+D3GFn3Z7HlOyQ+trqyO5oJ01MaY2NcJ5NjzkkugHFaPSiLwqSirx7B1KKM6ObH/BUSIB5GkngUC5EQM1PlQe371Phdgkxx0Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=r16qzp9K4woRIS6tr7zWrTGHV4SZ91rSOmPWxOFY25U=;
+ b=FgFNZSPiegvBfjigTarb3z3x9cOtTUpUpU1tniQSQrnbMe4BnR4CzkdjtzfULTq9V/D7SXTZ+EpZ79rX3der0SL02fZOQ6dtQ1Y222yYRDMjjHu26E53TKAqZgHBjTEn0LxrwJERTBc8CTARRglf4U6STFgEd9+TOEuaSUmCiK4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11) by OS9PR01MB13322.jpnprd01.prod.outlook.com
+ (2603:1096:604:310::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.27; Wed, 25 Sep
+ 2024 23:59:55 +0000
+Received: from TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::c568:1028:2fd1:6e11]) by TYCPR01MB10914.jpnprd01.prod.outlook.com
+ ([fe80::c568:1028:2fd1:6e11%5]) with mapi id 15.20.8005.017; Wed, 25 Sep 2024
+ 23:59:55 +0000
+Message-ID: <877caz9tdw.wl-kuninori.morimoto.gx@renesas.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+To: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, Helge Deller <deller@gmx.de>, Jaroslav Kysela <perex@perex.cz>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Liam Girdwood <lgirdwood@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Mark Brown <broonie@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Maxime Ripard <mripard@kernel.org>, Michal Simek <michal.simek@amd.com>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, Takashi Iwai <tiwai@suse.com>, Thomas Zimmermann <tzimmermann@suse.de>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org, linux-media@vger.kernel.org, linux-omap@vger.kernel.org, linux-sound@vger.kernel.org, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Sakari Ailus <sakari.ailus@iki.fi>
+Subject: [PATCH v6 0/9] of: property: add of_graph_get_next_port/port_endpoint()
+User-Agent: Wanderlust/2.15.9 Emacs/29.3 Mule/6.0
+Content-Type: text/plain; charset=US-ASCII
+Date: Wed, 25 Sep 2024 23:59:55 +0000
+X-ClientProxiedBy: TYCP286CA0256.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:455::14) To TYCPR01MB10914.jpnprd01.prod.outlook.com
+ (2603:1096:400:3a9::11)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fbdev: omapfb: Call of_node_put(ep) only once in
- omapdss_of_find_source_for_first_ep()
-To: Markus Elfring <Markus.Elfring@web.de>, linux-omap@vger.kernel.org,
- linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
- Dave Airlie <airlied@gmail.com>, Rob Clark <robdclark@gmail.com>,
- Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-References: <f7a08897-94cb-4776-9aee-c6ca9fbfd750@web.de>
-Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <f7a08897-94cb-4776-9aee-c6ca9fbfd750@web.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:nawLftjT8T401jHGx+NfGosxAeVyt8qpLFVIBuIZBQl+gwF2JOo
- O4pYQuGFx8jA8Po7zSeaS5KCqdUQ3DVK9W23bgX40IRFd37J3zOZ4JhR7DLtiY/NfS8laf4
- 1GsUv7qVaui4Jt/UtjXrTQI/B2gRb9xtKhH88FX32yFaPWLt0i3+BLrG/H+NUIlLr8HL3e4
- p+8C+r1Ue1JVAnNARr9Ww==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:2QQ4RunGkjA=;dp/f057ANWAS2lP+JeMzJGAerOE
- rv6DkJO46DGV9kC32DfW6+67IOPqY+fBRWv/0pzrsNhxYUPsmfPIT8LcyqZ66orKEAAjpJrH+
- 4YfGD8Uhp8fXfkRWXtzg0Qj/5F4lR0DKI6FywT73QeALrGVCYCHvhh328kGwafuxyCjbtQwTt
- 7quaTTYlPHGF0HaE6IUYTt9esveDRN2h1aejonuqqWLaBs4J+GJnY9qG1LxD59pJX7Snuz7dL
- 907qwmFkKIIV8vKTEPJpf6mQ/ewu0BXZfNu6q1N5BnCWXxbwLDsWvDy4K4lWUWmGmAEhv4Qp4
- gPfNGJoWKmHrGSvCoq2zFyVJPbxf6ZhPFoALBORHhCG00BxiHvbcAVVr111IeazcYZ7girX4x
- 0f3nAAD6FlOlw2jSBdB/EK/jNGIV8POaH5CijDdM2YAN3E42219cMdjgF8m3AxKdFKUnqgnt1
- ulmZI/ntil0/gvPr7oscjFybXImgnUuoa3+AJg55DhDHtWaBLFYoE840zAWNAkrjZT6WpCrOe
- 4n15FTEQA4+e4ACQ/UBBP7N1DcaRWyw4DCsjZlxoDav4n4PaKxxjV5+wdrfSOdH5UPaEJGL9v
- xUxymuaTkvW7EVwoND7WoUL39oECgIRLk1DmnGOc/ntMm2+Y1XFvmdEuKtV8U0WS5huE38V4C
- QPDpajv8D2WKTQcmiTXBfFIlygWWj9U8zhR05U3AyMMOjI93SmCWYvMXAa/NSEShRU6zLK+Zg
- ZOXdsibFr8dcIIL3bVN3UYGpOulBLdS1jzBjwl3DIikO1N8xijqYdl07aV3V3WIhIO8m26jPp
- /CENVoRnBiBIQRAWOrs+zW2Q==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCPR01MB10914:EE_|OS9PR01MB13322:EE_
+X-MS-Office365-Filtering-Correlation-Id: c881c422-84a7-4d6a-1a52-08dcddbe2783
+X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|7416014|376014|52116014|1800799024|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?o3/NX2n4bNii+GGNVf2mmPssKqMJTJ4ZX7xOuErNHwdxSsJBQEAo2D/JDBh/?=
+ =?us-ascii?Q?vP6m7i+rlluB06ERSUHByMUQftYFQ4slqZZG1AwUHWp3WDm1YV48GJXsH3RJ?=
+ =?us-ascii?Q?WakTWpf57Rvq7seCwqK4IvDr75V7ptrf91GuaMOStl8AKzNCNZbOdyWwSLZX?=
+ =?us-ascii?Q?DJ+Pc1T6rUW6SwwwTVu2/zU1WlwYv7v1uZVZuh637cBt7e/XxLqfIgfQm+xv?=
+ =?us-ascii?Q?f03X24NLkUoAhm4IPA+nC8wDKNRSmF4JMr9dtAIS6gyQ/T/Ueee1ZIn/tBYP?=
+ =?us-ascii?Q?CV7hD0sS1ebs/exXYd8ZstD9TONb5CduvdykQCjKCkin44cFBI6tJw4DEwKi?=
+ =?us-ascii?Q?kf6p+LuAxeG3vfDBVKePUvJKBM1vw+AzM36b8vPt9CRY70thVBdEFqm3wuef?=
+ =?us-ascii?Q?Cm885ss85veXTiVg24MgvUf9KKbyeBmGMF2KnaIoGcVXegV75bWzzfoBdYxk?=
+ =?us-ascii?Q?q5KTpHidwiti13hUMZv0n4RngR3+Qu6W1JgNCY2tarmzwA9EQCqMOGx03l51?=
+ =?us-ascii?Q?+gCJBCMycz/zhnEkX9jjf0YWZ18Js3fWigw1fHq4of+hAZPVxpBEMPEXNdM/?=
+ =?us-ascii?Q?GlrW+FzQM6foAF4JvTt4yybY0FFCsvmFB3AdT3dc3G5/yHwYGwi4JEl0AX/x?=
+ =?us-ascii?Q?POMabWrnSqFe9CAQFq+1rLZXU1CDJUk0/gBPoGy+KVlmeCwhbTlodn0c9Q3A?=
+ =?us-ascii?Q?6BvmRbfoCbCPDynhHZs7yQmmlCPj/HFxWDzwQzT0R1YA/JPPjTwkonaEEfcS?=
+ =?us-ascii?Q?KLs1eGPcKRbxI0lKycoLQ44wrxExPnbzb0GwuGdJYNDtMrMtXA9ufLr0qEZS?=
+ =?us-ascii?Q?BlgytIRNhvyLKOma/XsuuezM7g3xNsalBSWD0oBhskgTYR4BRTdDWKpR6TwX?=
+ =?us-ascii?Q?FquoJFJ5FVFiOXnRozmtgV8vYXPTTAqa7sjB4wyszbEJUr/AEEywNWDJCK02?=
+ =?us-ascii?Q?+gPXMHdz384RvzY2blF67QSZ6wWO2ouWFuVnRbJb3IELtSEHnFfnGHIUuRRc?=
+ =?us-ascii?Q?zwt1E1whefKwqKgOSxGcG4GncfwNFtIEM52QhcNhJlhkYyeDo1jMeD/EF9R6?=
+ =?us-ascii?Q?vfqrm0/mzWRsuo+DV4/q9Z0WXSajsUw8Y+k6jsIXMzJc0OaEPEXrWVJTnevm?=
+ =?us-ascii?Q?FBDD0C7bNjbeKv8FgKGKLp9rlPQakll4LvZtOil2erISw0KlDt6b4SN4qy/c?=
+ =?us-ascii?Q?2SL+eZ4RkcVl7syNy8VlVbHT9MGJvuKJwfsOOxMDgbyK/k5WZLdkSBbi2bmB?=
+ =?us-ascii?Q?bpzFbQLEI8MXXi5fqIXYHg3yV3ytRTVYvSf9n3Ccq0U+L/XDdGv0dQoJ9ZIQ?=
+ =?us-ascii?Q?iT6smy4STBWG4Dy+OWwrZ++qCxHe1jLZuwFBYFdzHMFl5K1HRdsg8u78KvtN?=
+ =?us-ascii?Q?4KK2/Jc=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB10914.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(52116014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?8BNl4UAY7kLA3ZkP3PAG2XqAjqevWKxhqquYWexa6jYN0xGWFzccJXmMHx7T?=
+ =?us-ascii?Q?cv2WmHU+FM0ZvvSyUlpHNItDycDR305tXFSkKT9V/hhn/yFrs09sK57QJNqv?=
+ =?us-ascii?Q?xStAA7rzL9g8cnAFj7/TNpU3rRwkmzA87bn0T0ToM4LSQx9CsJoAXlAUSBt0?=
+ =?us-ascii?Q?w3FpPhj2ojd/ePyAI/p4bVOFBafkxhgoYzyNr0sNzEVMH2q41N1RvILLU/x6?=
+ =?us-ascii?Q?Of6OdwXyaaHZEwwC84aroMzKw0wnVNnzcbsAprWK95VTKAOwpEUnuHwnbfjR?=
+ =?us-ascii?Q?5hrd31OnfKqMPKQkbJUkkQTKsHfKE2C9ip0RewsgU3wydRMQl7L+RKHgppL6?=
+ =?us-ascii?Q?2R3ZCYvmEvoHhnM3T+jJDQ1L8Y23bfS2wKTbS2GaL11toY4rliVEf68mGSz8?=
+ =?us-ascii?Q?7AiQUpUFSts11Mabl4UumfpDU5oZEc7QEsPlSsS+gfQXmTWdaslwZfZdltvv?=
+ =?us-ascii?Q?NxV9TlvdByLwS7yghbgCFKQIaWhQqGh2Ltmpjwi3IpjqlHb8tYjLwew7jHWL?=
+ =?us-ascii?Q?0PXL/LqF3Q3/HbGuVLnRBbzIr55ShNuZgy5TjkXnKGx3wXyd6inMzrFakvgP?=
+ =?us-ascii?Q?pSJaaBDinEE9wFP3P1ZwkpiE+7Qa2d9LfB/LK59vTFJePCeldnIGH6QHIoDj?=
+ =?us-ascii?Q?QAfIIO3rVY8/TAcNddD3sAb0Eg2i51eD9g+cy0LnxEKjOYQAKJsfK3ikEbMy?=
+ =?us-ascii?Q?UHlySCvf1hG9Tin1Krg2dYIvD7dqfuAnJGSI1Du8QwqwALJwFDXZwwSUawGa?=
+ =?us-ascii?Q?Kalb1PcWUiG+m96tZOMZ8Gm25dRiE542SPGwaVnYgM+J0feNzve1wJWM3x+G?=
+ =?us-ascii?Q?nZSvxhvMGIrxtfwtd4+pga4WgdX5Z+CkP5/rKFN/FcnhKURzVos+w8EcAJvG?=
+ =?us-ascii?Q?pVvl28xp0ZzkRIZWJrMVs+8FD/85YveEYrot5NCsYe3zsrjvxnVhkCDY7yCl?=
+ =?us-ascii?Q?8olt10QrMQ6Wb+qytl4HHJHmr6qsm6Zw40yCyXmhmI0+eGAENarwpCxQ2+yw?=
+ =?us-ascii?Q?VBZZu4hMrTVV971uxMwaPHN7vxtazKVEnbf1HPUXbXoAAtX8mdgKXu378ccq?=
+ =?us-ascii?Q?ZO9a25yE5kPCgLM72gvCpyM1/NehkF8xxzxYlX1hyiYY9Y3ARXXFsv3Y+A6l?=
+ =?us-ascii?Q?afFGVo1cjntD7PrLPtQZtTFoRzUvdenD7wiJY0CA+Bb+3S1lTz8KUct9lArN?=
+ =?us-ascii?Q?W1VRmMUBWBO8BYqAZTqHgpE5gP1VALEiLhwNJjwg1rsEf7FEvAJ9hzcz73TK?=
+ =?us-ascii?Q?yRw6DjLMPfUyp9XQBLccKEo7rQIEXxeLmGZni3ZCV0mCOPxNgErES7NVwQbn?=
+ =?us-ascii?Q?PfSiZX2abEJxnlucrMiqOpmq5pvxUVhlJdgxZ3D0uNQXzlA7USv79T7K1pLK?=
+ =?us-ascii?Q?laCv4ighaqpfJlW9YqZN7eNcy1g+Nrt4ONObWv5h2QyOoiJL9Ejc25Vhnu21?=
+ =?us-ascii?Q?VprfkZ7rK9tWpMVOReIUcAiQlYTij63PW5t6ajNvG8ZltjxthMnLYrFs0Y8D?=
+ =?us-ascii?Q?FQbTx1hYr1MWYCifIp/cDkZYZuSfrN7jTGD1WXN3I5vNcgN8oA7JJtxxwYev?=
+ =?us-ascii?Q?uMWmkgZkhO7Fuj5RsjMseuH724UiSbELtZHCLhOvZNpiCCRI0anfPanN0wMp?=
+ =?us-ascii?Q?rj3od9h0PuzEmUqWOlz6eaI=3D?=
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c881c422-84a7-4d6a-1a52-08dcddbe2783
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB10914.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2024 23:59:55.7633
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cCNRecMqJmCMfMX0hYoRt+yLnHhVxUhY+MD0IPEnaxR2s1wEmzAbQesOkaX0HhwNsy501VlYoEhdwM9RiFLOp6xUclYzTr+UKLOKVHh8G1mqpy1i1gyktjzkhgeSLaGR
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS9PR01MB13322
 
-On 9/25/24 21:21, Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Wed, 25 Sep 2024 21:12:36 +0200
->
-> An of_node_put(ep) call was immediately used after a pointer check
-> for a of_graph_get_remote_port() call in this function implementation.
-> Thus call such a function only once instead directly before the check.
->
-> This issue was transformed by using the Coccinelle software.
->
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
-applied.
+Hi Rob, Saravana, Tomi, Laurent, Sakari, Mark
 
-Thanks!
-Helge
+This is v6 patch-set
 
-> ---
->   drivers/video/fbdev/omap2/omapfb/dss/dss-of.c | 7 ++-----
->   1 file changed, 2 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c b/drivers/vid=
-eo/fbdev/omap2/omapfb/dss/dss-of.c
-> index 4040e247e026..d5a43b3bf45e 100644
-> --- a/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
-> +++ b/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
-> @@ -129,12 +129,9 @@ omapdss_of_find_source_for_first_ep(struct device_n=
-ode *node)
->   		return ERR_PTR(-EINVAL);
->
->   	src_port =3D of_graph_get_remote_port(ep);
-> -	if (!src_port) {
-> -		of_node_put(ep);
-> -		return ERR_PTR(-EINVAL);
-> -	}
-> -
->   	of_node_put(ep);
-> +	if (!src_port)
-> +		return ERR_PTR(-EINVAL);
->
->   	src =3D omap_dss_find_output_by_port_node(src_port);
->
-> --
-> 2.46.1
->
+Current Of-graph has "endpoint base" for loop, but doesn't have
+"port base" loop. "endpoint base" loop only is not enough.
+This patch-set add new "port base" for loop, and use it.
+
+Unfortunately, new helper function need to call of_node_get()
+if dts doesn't have "ports" node, so we can't replace existing
+loop by new helper, because it is using "const".
+
+I noticed that some developer posted the patch to ALSA ML and
+its and [5/9][6/9] patch will conflict. I think it is better to
+repost these to ALSA ML *after* main patches (= [1/9][2/9]) were
+included to linus/master tree (?). (Mark, can you agree ?)
+So, [5/9][6/9] wants "review" only here.
+
+v5 -> v6
+	- based on latest linus/master branch
+	- [9/9]: fixed compile warrning
+
+v4 -> v5
+	- tidyup comments
+	- [8/9]: parent NULL check was removed
+	- [9/9]: use for_each_of_graph_port()
+
+v3 -> v4
+	- new for_each loop includes __free()
+	 - comment indicates to use return_ptr() or no_free_ptr() if
+	   it need to continue to use node
+	 - each driver based on it
+	- care "prev" leak on of_graph_get_next_ports()
+	- of_graph_get_next_port_endpoint() indicates WARN() if port
+	  has non-endpoint node
+	- tidyup each git-log
+
+v2 -> v3
+	- return NULL if it it doesn't have ports / port
+	- add visible comment on of_graph_get_next_ports()
+
+v1 -> v2
+	- add each Reviewed-by / Acked-by
+	- tidyup/update Kernel Docs
+	- use prev as parameter
+	- update git-log explanation
+	- remove extra changes
+
+
+Kuninori Morimoto (9):
+  of: property: add of_graph_get_next_port()
+  of: property: add of_graph_get_next_port_endpoint()
+  ASoC: test-component: use new of_graph functions
+  ASoC: rcar_snd: use new of_graph functions
+  ASoC: audio-graph-card: use new of_graph functions
+  ASoC: audio-graph-card2: use new of_graph functions
+  gpu: drm: omapdrm: use new of_graph functions
+  fbdev: omapfb: use new of_graph functions
+  media: xilinx-tpg: use new of_graph functions
+
+ drivers/gpu/drm/omapdrm/dss/dpi.c             |   3 +-
+ drivers/gpu/drm/omapdrm/dss/sdi.c             |   3 +-
+ drivers/media/platform/xilinx/xilinx-tpg.c    |  14 +-
+ drivers/of/property.c                         | 154 ++++++++++++++++++
+ drivers/video/fbdev/omap2/omapfb/dss/dpi.c    |   3 +-
+ drivers/video/fbdev/omap2/omapfb/dss/dss-of.c |  66 --------
+ drivers/video/fbdev/omap2/omapfb/dss/dss.c    |  20 +--
+ drivers/video/fbdev/omap2/omapfb/dss/sdi.c    |   3 +-
+ include/linux/of_graph.h                      |  71 ++++++++
+ include/video/omapfb_dss.h                    |   8 -
+ sound/soc/generic/audio-graph-card.c          |   2 +-
+ sound/soc/generic/audio-graph-card2.c         | 104 ++++++------
+ sound/soc/generic/test-component.c            |   3 +-
+ sound/soc/sh/rcar/core.c                      |  21 +--
+ 14 files changed, 302 insertions(+), 173 deletions(-)
+
+-- 
+2.43.0
 
 
