@@ -1,279 +1,113 @@
-Return-Path: <linux-omap+bounces-2244-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2245-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 470A4985364
-	for <lists+linux-omap@lfdr.de>; Wed, 25 Sep 2024 09:07:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC55C985515
+	for <lists+linux-omap@lfdr.de>; Wed, 25 Sep 2024 10:06:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69D3E1C2312B
-	for <lists+linux-omap@lfdr.de>; Wed, 25 Sep 2024 07:07:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E8E928129C
+	for <lists+linux-omap@lfdr.de>; Wed, 25 Sep 2024 08:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8595155300;
-	Wed, 25 Sep 2024 07:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1498158D9C;
+	Wed, 25 Sep 2024 08:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MhoaE7dH"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="LO206aC1"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4545B132103;
-	Wed, 25 Sep 2024 07:07:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F60B158A26;
+	Wed, 25 Sep 2024 08:06:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727248055; cv=none; b=BEvtdqYqsuBx1YODrHV0VWxoqLSiku3Vrrnm14evmFAP7cwxh/JJWXrOqNA6opWi91qaMNuhqwC31oBmZzC0o1y4TJGu6NuWr6tL2C58UVd1CAAUt1q1Q2j+pFPRrkCx+ym0b5h+8jSD4aemswudHbzrthNfYzrGCOVM+b5/zqQ=
+	t=1727251578; cv=none; b=VoMdBLavECE53/hIMU322PHkTY65nTcy8a9/nVeOC7j1nBp82INJ12rV4YerTx9YE4hVkw/gMB+o6LyWSaPIGIn0rwFDnr/ZKw25MzYnRurAgM9oRLtRr+ek0VvOV2Sa9aOxaa3CGEu35iuJhnPzoVD3deZbY8xvuqiVDsgmG7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727248055; c=relaxed/simple;
-	bh=TSGsyKlj+xheK0shDTdEtR6NWfwiOu5gzzjKjqLIDq4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=bzp3ewMha1z91oz8j7520s7C/S98Nr5aXwmOCsGyT6+acX0vZ1VU/6W1AnkWNHle3joCJeWbjXXIRgS1nLJD7eHxYgmt8XYOSG1o2hhSdO3Er+ibgzr9ulyqda9z1nexxstFrE9Q+QDnePY7anlSS0KA/0PxQBGV27AiCZ37wt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MhoaE7dH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82503C4CEC3;
-	Wed, 25 Sep 2024 07:07:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727248054;
-	bh=TSGsyKlj+xheK0shDTdEtR6NWfwiOu5gzzjKjqLIDq4=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=MhoaE7dHCC8Z6cTvhQs5+k94wwc6uUXKBjIN4m7/3krr04wN2sYI8vZPlTsSdKQta
-	 qnuijkRBQQuhF9dB9cRHPHzVFYQwOPzPbQS89HI37qV6fyo0uRN+76Jb5VXl8tLlKM
-	 VPgMXf48yUeJLJ3ux4djRaCdAkWapQkzZ936X2P/2aBTTBDr3kmOoeuXF1vHb9su7I
-	 dUzx1oJdVrZ+NKXWe2mLqVK+//zI4gHZNFq4kzRTLxxxpzESR3F0Vn/cV9vywqaaqe
-	 uhRGnwbA+JuRljL/yOLaODHfJD/b52kQ0Kfjy24l/iV4JQkTW3NBIxpNiBLqFpxnjY
-	 OXHDIy31b8xXw==
-Message-ID: <9b7f6995-586e-44ee-a73b-9baf1bf23a69@kernel.org>
-Date: Wed, 25 Sep 2024 10:07:29 +0300
+	s=arc-20240116; t=1727251578; c=relaxed/simple;
+	bh=pfI77LU2eox0cmMD3zp6as+u8VALvLVt/tg8dlAL3wc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NmssRioSa6YB2q3zXXexdpQIAZpp5xTck2NqhM1QOyAXgwuVa9yD3PV4feCUk6Xp7t3Wf40i/zhB1rZEmj+BupIP7Sy4gnD2uw7nGyqBsrt3luD8E2au0Vk/T4C/p1qKfEWo+1s/H7doXRUDNa/8LjWv/CnkzFM3P0ilyXjh3+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=LO206aC1; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=e4Rgcmwcz3lr2vNozPSESKQBhKfA4rwgyNTTb9qHIOI=; b=LO206aC1tm4HrUsK7OK/hojjkW
+	828fCZ6snVF6zFlYE8Iajge3YD6PCPlqn5Ihp5GsRMCJtjS5Z2sXTcfftB6DwP+ZpQ9ya54wS1i59
+	u23bBXH4Ew1fNottWlTBSFR9xbFPljEmVDz+zLvZ+OirbRqRhE/4IKsBKKc9tnfewV7G5b7tARU5Y
+	iIA81DutqPKTArvr7q8LMpZpE6TaJJOzonqsSTEyczomHdIHsFaDZPw1QCe2aKnHmBuWdxtaTy+cq
+	d7S7fxPHbsUSRMWw0YSDohyrXEQMrcviJviWkR7cg2gx7MFHx8Nrz99ElpxxYZsjUK7TLjVho95dT
+	llODI5rA==;
+Date: Wed, 25 Sep 2024 10:06:03 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>, linux-omap@vger.kernel.org,
+ linux-clk@vger.kernel.org, Paul Walmsley <paul@pwsan.com>, Tony Lindgren
+ <tony@atomide.com>
+Subject: Re: clk mess on omap4460 with mpu clock
+Message-ID: <20240925100603.4cba9176@akair>
+In-Reply-To: <ZvLufU15ZJ4CKuuv@shell.armlinux.org.uk>
+References: <20240603234139.280629b2@aktux>
+	<CAMuHMdWU74DsWEZtZQJctQQog=9UCG_1LZu5yWvyxx0Zw4LQow@mail.gmail.com>
+	<20240903143357.2532258b@akair>
+	<CAMuHMdWF4G5Uon1=6TMzBogN2CX8EuiVBMuCPtAAMPNa-DtiOw@mail.gmail.com>
+	<20240903192203.1dddbf0d@akair>
+	<ZtdQ+Ay9DKAooahN@shell.armlinux.org.uk>
+	<20240923140447.60c5efff@akair>
+	<ZvLufU15ZJ4CKuuv@shell.armlinux.org.uk>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] clk: twl: add TWL6030 support
-To: Andreas Kemnade <andreas@kemnade.info>, linux-omap@vger.kernel.org,
- Stephen Boyd <sboyd@kernel.org>, Kevin Hilman <khilman@baylibre.com>,
- Michael Turquette <mturquette@baylibre.com>,
- Aaro Koskinen <aaro.koskinen@iki.fi>, linux-kernel@vger.kernel.org,
- Lee Jones <lee@kernel.org>, Tony Lindgren <tony@atomide.com>,
- linux-clk@vger.kernel.org
-References: <20240924103609.12513-1-andreas@kemnade.info>
- <20240924103609.12513-3-andreas@kemnade.info>
-Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20240924103609.12513-3-andreas@kemnade.info>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-Hi Andreas,
+Am Tue, 24 Sep 2024 17:53:17 +0100
+schrieb "Russell King (Oracle)" <linux@armlinux.org.uk>:
 
-On 24/09/2024 13:36, Andreas Kemnade wrote:
-> The TWL6030 has similar clocks, so add support for it. Take care of the
-> resource grouping handling needed.
+> On Mon, Sep 23, 2024 at 02:04:47PM +0200, Andreas Kemnade wrote:
+> > So the way forward is to check whether that registration is really
+> > needed at:
+> > https://elixir.bootlin.com/linux/v6.11/source/drivers/bus/ti-sysc.c#L2380
+> > If yes, then
+> > a) increade the size of the name in the clk subsystem or
+> > b) workaround like
+> > https://elixir.bootlin.com/linux/v6.11/source/drivers/bus/ti-sysc.c#L353
+> >  
 > 
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> ---
->  drivers/clk/clk-twl.c | 97 ++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 95 insertions(+), 2 deletions(-)
+> I'll also mention that if one is using DT, then the clkdev tables
+> should not be relevant - the lookups of clocks should be done by
+> parsing the clocks property in the description of the device.
 > 
-> diff --git a/drivers/clk/clk-twl.c b/drivers/clk/clk-twl.c
+I played around to ensure I know really what I am doing and what I am
+messing around with:
+we have in i2c-omap.c:
+      
+fclk = clk_get(omap->dev, "fck");
+just for getting the module clock rate to configure i2c accordingly
+That only works if
+https://elixir.bootlin.com/linux/v6.11/source/drivers/bus/ti-sysc.c#L2380
 
-You will have to add information about TWL6030 to Kconfig.
+is working. Here some clk_get(omap->dev->parent, ...) would also just
+work without said line in ti-sysc.c because then dt lookup kicks in.
 
-"config CLK_TWL
-        tristate "Clock driver for the TWL PMIC family"
-        depends on TWL4030_CORE
-        help
-          Enable support for controlling the clock resources on TWL family
-          PMICs. These devices have some 32K clock outputs which can be
-          controlled by software. For now, only the TWL6032 clocks are
-          supported."
+In the omap3 case, there are several devices using the older hwmod
+mechanism and are not converted to ti-sysc yet. Then the clock gets
+registered here:
+https://elixir.bootlin.com/linux/v6.11/source/arch/arm/mach-omap2/omap_device.c#L116
 
-> index eab9d3c8ed8a..194f11ac5e14 100644
-> --- a/drivers/clk/clk-twl.c
-> +++ b/drivers/clk/clk-twl.c
-> @@ -11,10 +11,22 @@
->  #include <linux/platform_device.h>
->  #include <linux/slab.h>
->  
-> -#define VREG_STATE              2
-> +#define VREG_STATE		2
-> +#define VREG_GRP		0
->  #define TWL6030_CFG_STATE_OFF   0x00
->  #define TWL6030_CFG_STATE_ON    0x01
->  #define TWL6030_CFG_STATE_MASK  0x03
-> +#define TWL6030_CFG_STATE_GRP_SHIFT	5
-> +#define TWL6030_CFG_STATE_APP_SHIFT	2
-> +#define TWL6030_CFG_STATE_MASK		0x03
+In the case, a clk_get(omap->dev->parent, ...) in e.g. i2c-omap.c would
+fail. No dt lookup can kick in.
 
-unnecessary change?
-let's leave TWL6030_CFG_STATE_MASK before TWL6030_CFG_STATE_GRP_SHIFT.
+The background of this is to ensure to keep soc-specific pm out of the
+drivers and do it in a common place.
 
-> +#define TWL6030_CFG_STATE_APP_MASK	(0x03 << TWL6030_CFG_STATE_APP_SHIFT)
-> +#define TWL6030_CFG_STATE_APP(v)	(((v) & TWL6030_CFG_STATE_APP_MASK) >>\
-> +						TWL6030_CFG_STATE_APP_SHIFT)
-> +#define P1_GRP BIT(0) /* processor power group */
-What are the other power groups? Looks like there are 2 more from below code.
-
-> +#define ALL_GRP (BIT(0) | BIT(1) | BIT(2))
-Please use earlier defined groups (P1_GRP, etc) instead of re-defining with BIT().
-
-> +
-> +#define DRIVER_DATA_TWL6030 0
-> +#define DRIVER_DATA_TWL6032 1
->  
->  struct twl_clock_info {
->  	struct device *dev;
-> @@ -53,6 +65,49 @@ static unsigned long twl_clks_recalc_rate(struct clk_hw *hw,
->  	return 32768;
->  }
->  
-> +static int twl6030_clks_prepare(struct clk_hw *hw)
-> +{
-> +	struct twl_clock_info *cinfo = to_twl_clks_info(hw);
-> +	int grp;
-> +
-> +	grp = twlclk_read(cinfo, TWL_MODULE_PM_RECEIVER, VREG_GRP);
-> +	if (grp < 0)
-> +		return grp;
-> +
-> +	return twlclk_write(cinfo, TWL_MODULE_PM_RECEIVER, VREG_STATE,
-> +			    grp << TWL6030_CFG_STATE_GRP_SHIFT |
-> +			    TWL6030_CFG_STATE_ON);
-> +}
-> +
-> +static void twl6030_clks_unprepare(struct clk_hw *hw)
-> +{
-> +	struct twl_clock_info *cinfo = to_twl_clks_info(hw);
-> +
-> +	twlclk_write(cinfo, TWL_MODULE_PM_RECEIVER, VREG_STATE,
-> +		     ALL_GRP << TWL6030_CFG_STATE_GRP_SHIFT |
-
-Why are you unpreparing ALL_GRP? In prepare you only used VREG_GRP.
-
-> +		     TWL6030_CFG_STATE_OFF);
-> +}
-> +
-> +static int twl6030_clks_is_prepared(struct clk_hw *hw)
-> +{
-> +	struct twl_clock_info *cinfo = to_twl_clks_info(hw);
-> +	int val;
-> +
-> +	val = twlclk_read(cinfo, TWL_MODULE_PM_RECEIVER, VREG_GRP);
-> +	if (val < 0)
-> +		return val;
-> +
-> +	if (!(val & P1_GRP))
-> +		return 0;
-> +
-> +	val = twlclk_read(cinfo, TWL_MODULE_PM_RECEIVER, VREG_STATE);
-> +	if (val < 0)
-> +		return val;
-> +
-> +	val = TWL6030_CFG_STATE_APP(val);
-> +	return val == TWL6030_CFG_STATE_ON
-
-Is there a possibility that after calling twl6030_clks_prepare()
-the clock can still remain OFF?
-If not then we could just use a private flag to indicate clock
-prepared status and return that instead of reading the registers again.
-
-
-> +}
-> +
->  static int twl6032_clks_prepare(struct clk_hw *hw)
->  {
->  	struct twl_clock_info *cinfo = to_twl_clks_info(hw);
-> @@ -93,6 +148,13 @@ static int twl6032_clks_is_prepared(struct clk_hw *hw)
->  	return val == TWL6030_CFG_STATE_ON;
->  }
->  
-> +static const struct clk_ops twl6030_clks_ops = {
-> +	.prepare	= twl6030_clks_prepare,
-> +	.unprepare	= twl6030_clks_unprepare,
-> +	.is_prepared	= twl6030_clks_is_prepared,
-> +	.recalc_rate	= twl_clks_recalc_rate,
-> +};
-
-Instead of re-defining all the clock ops can't we just reuse the
-existing twl6032 clock ops?
-
-We just need to tackle the twl6030 specific stuff inside the ops based on
-some platform driver data flag.
-
-> +
->  static const struct clk_ops twl6032_clks_ops = {
->  	.prepare	= twl6032_clks_prepare,
->  	.unprepare	= twl6032_clks_unprepare,
-> @@ -105,6 +167,28 @@ struct twl_clks_data {
->  	u8 base;
->  };
->  
-> +static const struct twl_clks_data twl6030_clks[] = {
-> +	{
-> +		.init = {
-> +			.name = "clk32kg",
-> +			.ops = &twl6030_clks_ops,
-> +			.flags = CLK_IGNORE_UNUSED,
-> +		},
-> +		.base = 0x8C,
-> +	},
-> +	{
-> +		.init = {
-> +			.name = "clk32kaudio",
-> +			.ops = &twl6030_clks_ops,
-> +			.flags = CLK_IGNORE_UNUSED,
-> +		},
-> +		.base = 0x8F,
-> +	},
-> +	{
-> +		/* sentinel */
-> +	}
-> +};
-> +
-
-This clock data is identical to twl6032.
-We could implement the same feature with a lot less code if we just
-reuse the data and clock ops.
-
->  static const struct twl_clks_data twl6032_clks[] = {
->  	{
->  		.init = {
-> @@ -127,6 +211,11 @@ static const struct twl_clks_data twl6032_clks[] = {
->  	}
->  };
->  
-> +static const struct twl_clks_data *const twl_clks[] = {
-> +	[DRIVER_DATA_TWL6030] = twl6030_clks,
-> +	[DRIVER_DATA_TWL6032] = twl6032_clks,
-> +};
-> +
->  static int twl_clks_probe(struct platform_device *pdev)
->  {
->  	struct clk_hw_onecell_data *clk_data;
-> @@ -137,7 +226,7 @@ static int twl_clks_probe(struct platform_device *pdev)
->  	int i;
->  	int count;
->  
-> -	hw_data = twl6032_clks;
-> +	hw_data = twl_clks[platform_get_device_id(pdev)->driver_data];
->  	for (count = 0; hw_data[count].init.name; count++)
->  		;
->  
-> @@ -176,7 +265,11 @@ static int twl_clks_probe(struct platform_device *pdev)
->  
->  static const struct platform_device_id twl_clks_id[] = {
->  	{
-> +		.name = "twl6030-clk",
-> +		.driver_data = DRIVER_DATA_TWL6030,
-> +	}, {
->  		.name = "twl6032-clk",
-> +		.driver_data = DRIVER_DATA_TWL6032,
->  	}, {
->  		/* sentinel */
->  	}
-
--- 
-cheers,
--roger
+Regards,
+Andreas
 
