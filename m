@@ -1,127 +1,93 @@
-Return-Path: <linux-omap+bounces-2285-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2286-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5951098BA29
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Oct 2024 12:58:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F3F898BEB0
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Oct 2024 15:59:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9498A1C23589
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Oct 2024 10:58:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28C5E1F220E8
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Oct 2024 13:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBA61BE87D;
-	Tue,  1 Oct 2024 10:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12D701C8FCB;
+	Tue,  1 Oct 2024 13:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jToG2rnW"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="PQiPWADI"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C517E1BE844;
-	Tue,  1 Oct 2024 10:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33E01C8FCE
+	for <linux-omap@vger.kernel.org>; Tue,  1 Oct 2024 13:57:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727780275; cv=none; b=rn55Aqpzh3IUIyQMNN7uzkdd2pYad4P97Kfz5lF5O9+bJkIEVFq1C+fe57c6KYgJnVY09pgPw7CZvi0/Bu26UXNoS/ei+q6kqdy9hCDrRs9IxnkPvH4U2+X2N5l0jQwCQUMBCURfJJb8SnFcynMyOK0UP7t01VheiTouQvUxZyA=
+	t=1727791053; cv=none; b=npOOhQkgtJKHMdJ+Ci0gXpJBIg9913Hwz3jXVJFq2HBMFAoTEX2f8NywUA6j43SmhyCv9RENyr4pmd6/VYg5DsbSiX4yoYEZW2ngomV5MssSowapYz8KZFR+MPigsoswg7Zg0bbXbb9K0QLXaNzAtSC6VfaxElvzHDemKaB72zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727780275; c=relaxed/simple;
-	bh=kX4fvjsFongNoCxNryFoqj8xRI066V4+yt0N+iVFFMQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DoLaf/weNSpxhtruYqQrxJZH5DOLvUAlMqsW64nKf5yjJejUVxY0VWZoNR3ILg/Q/+b1nj83XodUPr7yjSjjESiHIMXeIhsqiZhoWRVwOUpAQ13f0JPmJl6iNRQ4yd/olAI5TfgTHLxX4PAZaerJ9zC1XR4QDozFl9qUhIgl8JA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jToG2rnW; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-6e7b121be30so3570923a12.1;
-        Tue, 01 Oct 2024 03:57:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727780273; x=1728385073; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+XodivF81UWtP2cNwWOGWcI/Uct7qBUohMsaji6ENUY=;
-        b=jToG2rnWCSFqzJ0MlJqhXN6Vg/OVFH5q1qn/xh5XYOWAhUUt9YF8TFEz65oGeqZ5W5
-         Dho7UwVPnanpap6gEwt/mlm3ZRjZib2nYrDgwnW5wPFfokmSYYBSFWep+uD6wD+l4i+u
-         Oeds6ZWdn96wzoGYPO2UpAZ1HlFR8CmiAINlTJWgXy5siL5i8ltWgiHsUDFkcq4AdMPi
-         pQGTBLTZtEhgixVKwGgy8NUz5H2sQ9J/sCTAtfsgWq6C06JJAQjE5houGd9OjdE1MYRQ
-         91jCGljlChYWwi3KN9K82cSq2TsGrXf7VxfRJtLP49ssTFKWQED1iNzjVdALvjoU7djQ
-         aK6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727780273; x=1728385073;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+XodivF81UWtP2cNwWOGWcI/Uct7qBUohMsaji6ENUY=;
-        b=fPooNu8CrIc5ZHsEW+UmBMLqBWU6SsKeeQEj6hgTAAW426jizuzJJfsOrdJxnDB+Vb
-         /UdEOgymPpMYQbEha2L0f3Daopa8p91YSwRFe/PmAVgvL+vm7CGp26zAvXvbEmpIUfjS
-         waBxHdGINjgISlx/qm803YjL8mc4xzBm6hMI1BhckBXFOwdDV1MfzwEeWj8LVM5M+TyB
-         SBW+zpzXM+Tsdwa1Hm0WJkcT/OhowF0fWkvS/EySq/xQCP/hGU29MEBE5ABK2N2oVsIh
-         jMFJGIT1bUTswrWKuFrehDHISZAZ897WDPU8OB7ynA4oQGJDm92jg4jnu3zPAVnnsmo/
-         iHHA==
-X-Forwarded-Encrypted: i=1; AJvYcCV4wynpvycPVeXz1yQlxYD/3zOog7ZMicfKspzBlkkB/VYvyTMWRXs7qCmCYoJpKHqQKNcqx6O4aT/vNg==@vger.kernel.org, AJvYcCXo/TuZD2llutxwEH7q3alWNPk49USlia45YOcNFMEKIdCSySdl8G8gho+pKfSNfmSUTnQjKrKl9P03@vger.kernel.org, AJvYcCXvWnfPexuMJpDXF2uCImG/ySKfDn8zPZ/eR/e2jtnzCWShkNi//LxB8PKK3FHqZ6AQ9hctkM7on4fjuQQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YydrF5fCmFf+ac8RixNgcD2jkNgtWnhoR+rMYeno6mRlTjzxopg
-	R6wuA6/ZK0orLLGWKTVuzQdntKws/TrraOSnSy7zAVZYKqlsAR0H
-X-Google-Smtp-Source: AGHT+IGhZN9+wVKG14eYUdsgaPGOEoVAZRpX351sFX9Rh29MejCBf9Qb4pmMk6uv2ceETeAVZBeWUA==
-X-Received: by 2002:a05:6a21:1193:b0:1c4:9ef6:499b with SMTP id adf61e73a8af0-1d4fa6cfd50mr21889572637.29.1727780272943;
-        Tue, 01 Oct 2024 03:57:52 -0700 (PDT)
-Received: from fedora.. ([106.219.166.49])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7e6db5ed0e9sm8069195a12.57.2024.10.01.03.57.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Oct 2024 03:57:52 -0700 (PDT)
-From: Riyan Dhiman <riyandhiman14@gmail.com>
-To: vigneshr@ti.com,
-	s-vadapalli@ti.com,
-	lpieralisi@kernel.org,
-	kw@linux.com,
-	bhelgaas@google.com
-Cc: kishon@kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Riyan Dhiman <riyandhiman14@gmail.com>
-Subject: [PATCH v2] PCI: dra7xx: Added error handling in probe function when devm_phy_get() fails
-Date: Tue,  1 Oct 2024 16:27:18 +0530
-Message-ID: <20241001105717.4566-2-riyandhiman14@gmail.com>
-X-Mailer: git-send-email 2.46.1
+	s=arc-20240116; t=1727791053; c=relaxed/simple;
+	bh=tU+rT3jHPfSlQ4P3EjN8ZFvptV03KWRVGxYC5+jLrrg=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=UXV208W9a5LNnwss9C1kIkmtS2fn4X/nSt+d0+PSqrJyUw98SZDOVvbCbGHqD077SGA+gfEMLzFc25AA2nTJl6rE/Iewbg3jfAvjahEHHpVLoCcPDF8byvKPr+3ySxqPWIfHx8xLdEatzMm3NKLcv712IQTShfjYKZT6tEYy7oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=PQiPWADI; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=From:Sender:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=nyt4QMRCO8b80oOCvQeQNhtP1tpWKgeDL4PfIRy6O3M=; b=PQiPWADI69PJzlEhgN2ZUavec1
+	UVhzVl62G6fE/YCVRnNfxy87l1TG7aGwFjjqGBnkm8UUYS5k+woDriwFMSuMklyBXc/01u4oLwtK0
+	NN40Q+4jahWPsbFo5JQ1L4bLB5OIhoRqYp7BszBqps8yRIDagVxqIbgk54qCiCmoEeIBprbC6OEHo
+	Q1t1LbkKRhPmQQttUg4g9xxClC0JiPnKpe0c8HesYnDn6OBRIoprBdkT6QV62n650HY5ZsqrpAgQC
+	zoR0CnWjpg4NkNSMUG3kVHVmujq63E/YpAEPVHkqveNp9mnd8KYXHoyovF0PMJxL6hhVzU5Uv9vKH
+	PPnlMFhQ==;
+Date: Tue, 1 Oct 2024 15:57:28 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: linux-omap@vger.kernel.org
+Subject: __omap2_common_pm_late_init too early
+Message-ID: <20241001155728.55a5bb1a@akair>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-While creation of device link, if devm_phy_get() function fails then it 
-directly returns PTR_ERR without any cleanup of previous added device 
-links.
+Hi,
 
-Added goto statement to handle the cleanup of already added device links.
+I analyzed boot issues a bit:
 
-Fixes: 7a4db656a635 (PCI: dra7xx: Create functional dependency between 
-PCIe and PHY)
-Signed-off-by: Riyan Dhiman <riyandhiman14@gmail.com>
----
-v2: resend when tree is open and reformat commit message
+On the bt200 (OMAP4460) I see:
+[    1.647430] twl: not initialized
+[    1.650817] twl6030_uv_to_vsel:OUT OF RANGE! non mapped vsel for
+1375000 Vs max 1316660
 
- drivers/pci/controller/dwc/pci-dra7xx.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+All that is called from __omap2_common_pm_late_init
 
-diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-index 4fe3b0cb72ec..c329d107b811 100644
---- a/drivers/pci/controller/dwc/pci-dra7xx.c
-+++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-@@ -762,8 +762,10 @@ static int dra7xx_pcie_probe(struct platform_device *pdev)
- 	for (i = 0; i < phy_count; i++) {
- 		snprintf(name, sizeof(name), "pcie-phy%d", i);
- 		phy[i] = devm_phy_get(dev, name);
--		if (IS_ERR(phy[i]))
--			return PTR_ERR(phy[i]);
-+		if (IS_ERR(phy[i])) {
-+			ret = PTR_ERR(phy[i]);
-+			goto err_link;
-+		}
- 
- 		link[i] = device_link_add(dev, &phy[i]->dev, DL_FLAG_STATELESS);
- 		if (!link[i]) {
--- 
-2.46.1
+Well, the second line is the consequence of the first line.
+TWL is not initialized yet, nor i2c nor ti-sysc.
+So that cannot work. Probably it did only work in days when async probe
+was not that widespread.
 
+It is declared as 
+omap_late_initcall(omap2_common_pm_late_init);
+
+In the past there were some stories where omap3 offmode could only be
+enabled from userspace... So maybe more trouble here because we are
+doing things sometimes too early.
+I am a bit unsure when it should be started.
+
+For comparison, other places where things  should be done  when the
+system should be basically known:
+clk uses late_initcall_sync() instead of late_initcall() for disabling
+unused clocks.
+regualtor uses late_initcall_sync() +30s delayed_work for disabling
+unused regulators.
+
+Opinions?
+
+Regards,
+Andreas
 
