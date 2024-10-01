@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-2279-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2280-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D32DC98B424
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Oct 2024 08:17:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78CDF98B42F
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Oct 2024 08:18:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CD601F24386
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Oct 2024 06:17:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00209B230A8
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Oct 2024 06:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3894F1BBBEB;
-	Tue,  1 Oct 2024 06:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A3B1BBBFD;
+	Tue,  1 Oct 2024 06:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BarxashM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bCGpghBS"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDB5C153;
-	Tue,  1 Oct 2024 06:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B12198E9B;
+	Tue,  1 Oct 2024 06:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727763415; cv=none; b=TQPKfhkg1c1XsKExPK8rQqEm7Hc0NjO5JVbg26xde4MgER7nZ6uFOWMbZ/vSIU00WPqxwif+8zA6CYlgmUqktWWOhmrPc2Im4E5c9/GxwvF2yDX81EmzfMY1N94AuYhpyebpgNbfKO21kG9jL/59t8b7N+wy3RAWTIyz3va3k0s=
+	t=1727763491; cv=none; b=FSJBUkyNDyzbbZaYXeVMwKhC0jpIUZrUpDkw5+es9KxC0JNi1AzpuqeixYLBgtA16AiWJt1xcDu0RYHJN346nmWJKbgBbV+2XiVnM1ZXDtAyQv5Zh0RYLzPKzmi5SRM0mWq0O4lXBd/DqBVUFo0gpJQpp7PhZ6SCgekJ94LPCLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727763415; c=relaxed/simple;
-	bh=Hg4IVEOTj4JriXTMF/0hLXqKoldcay2hkZN5Fq1Yakc=;
+	s=arc-20240116; t=1727763491; c=relaxed/simple;
+	bh=aFp3SriOPWs0xVXrnZzTQWGqrUjwlRHRfGp7sGKX3sc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mTfxIEIug3fPndbcaeYk+j4jfndE8gfc4EyXaXhnlhegIYawvLtwvbPI0UysZdlhQy6/VcL/5EwS+zwSS2zJch62UrrNUWUG6ilaVuCFNPzBV2Osda0jrxxgWlDnaXbUY4SFg8JLh32IQynMtb37aISj9eswfwx3kNbFHfiMdQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BarxashM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9DDCC4CEC6;
-	Tue,  1 Oct 2024 06:16:40 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=Caermq2cmylzhk3t7GZYIE2qV/PY/MB0hnslDBa4Y/HRzx5LI4WlAGgQv58KC+Bvkguexgke4aeJE4MmsrMgztqG09HG/JQcKbKOHbjIdwj4DYNGVXgi31g97usM6CvzPww+0FA9ZAMvl0BiObXLHrh3i+7nisb2Onfm71n0//U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bCGpghBS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E86C4CEC6;
+	Tue,  1 Oct 2024 06:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727763415;
-	bh=Hg4IVEOTj4JriXTMF/0hLXqKoldcay2hkZN5Fq1Yakc=;
+	s=k20201202; t=1727763491;
+	bh=aFp3SriOPWs0xVXrnZzTQWGqrUjwlRHRfGp7sGKX3sc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BarxashMr3+CY5FBEM2U/PJW5q6wPC6dVt+mzB8egTBhcrlaVcQFYdktWYgO+j7Yv
-	 st50W7cT6gVEA1/dqDGaNjGnQ9AA7gJD8n39MO3BV+QS8PYRyKkFgRwCwRf2uXp2Y8
-	 dp0MSy8wQU32Rg+er7QSDMBsvPmxO8FtjjNjWdI+RBSy9Pkiff17xYddZcuy1U7MmD
-	 8G2j28TOkFm0vYpz5O+m6VrxQgVrUbADYqKtkm4v+kH0x6BE0wOgLNe9/byQAyhzAt
-	 oANVnz/YuEyuHy0rS3qUYr1qmkfNjzY7Or6LCFfrX8R+CDPDSbqK8TRB8tpythzZkI
-	 KC1d+v2a8Gx6A==
-Message-ID: <2915d4aa-a01d-4d00-ada9-43bbc227f9eb@kernel.org>
-Date: Tue, 1 Oct 2024 08:16:38 +0200
+	b=bCGpghBSrw70nVQy4SZ+l3iTCF/jeyzhjMl8snn+Ad8CAr5veY5sqYrWH8ye1Jds/
+	 d2bTkG2L1t98Fhw6tIb1RQ5MdHcKgtQ+dmbSO3AnflysQi/g2nkwD5pgS8QDMlKAf0
+	 C2layRfhxwO50GLHe2mSrEUbU0qRnl5EHApVYFmqdAQDmxTxABlb2FWFVd93eEIWTw
+	 vxD0cgHSqb97BdSLSYnmMJaISH055Gmp8VmDUXxLZP75L0x0r+fNpt7yd4pOQOSpH2
+	 aqN7thfnjUQXtqU9l++pRCzxs1Ge0mhIg8B4e0frFI2hfiPtxcwaz8wpRJIVtG59/T
+	 f2k/dmCILB+xg==
+Message-ID: <62220abe-196a-4434-a200-5e39af1d184d@kernel.org>
+Date: Tue, 1 Oct 2024 08:17:53 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -50,7 +50,7 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] ARM: dts: replace gpio = with gpios =
+Subject: Re: [PATCH 2/2] ARM: dts: assign reg to memory nodes
 To: Rosen Penev <rosenp@gmail.com>, linux-arm-kernel@lists.infradead.org
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
@@ -107,7 +107,7 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  <linux-samsung-soc@vger.kernel.org>,
  "open list:OMAP DEVICE TREE SUPPORT" <linux-omap@vger.kernel.org>
 References: <20240930223550.353882-1-rosenp@gmail.com>
- <20240930223550.353882-2-rosenp@gmail.com>
+ <20240930223550.353882-3-rosenp@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -153,26 +153,20 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240930223550.353882-2-rosenp@gmail.com>
+In-Reply-To: <20240930223550.353882-3-rosenp@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 01/10/2024 00:35, Rosen Penev wrote:
-> Found with dtc:
-> 
-> Warning (deprecated_gpio_property): '[*-]gpio' is deprecated, use
-> '[*-]gpios' instead
-> 
-> Transformation performed with
-> 
-> find -name "*.dts" -exec sed -i 's/\tgpio = </\tgpios = </g' '{}' \
-> find -name "*.dtsi" -exec sed -i 's/\tgpio = </\tgpios = </g' '{}' \
+> Fixes dtc warnings:
 
-Uh, no, please check if each is correct and already handled by bindings.
+What warnings?
 
-> 
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Anyway, please list platforms where you tested this. This patch might
+break several of them.
 
+Such one huge patch, not split per subach, is another problem. There is
+no reason to make it one huge chunk.
 
 
 Best regards,
