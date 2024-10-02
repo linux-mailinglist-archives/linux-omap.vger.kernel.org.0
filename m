@@ -1,45 +1,46 @@
-Return-Path: <linux-omap+bounces-2293-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2292-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C60D298D1FD
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Oct 2024 13:08:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B79498D1FA
+	for <lists+linux-omap@lfdr.de>; Wed,  2 Oct 2024 13:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 036471C215A6
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Oct 2024 11:08:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E8711F22446
+	for <lists+linux-omap@lfdr.de>; Wed,  2 Oct 2024 11:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20973200123;
-	Wed,  2 Oct 2024 11:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EBB21EC01F;
+	Wed,  2 Oct 2024 11:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="LXCEtMkx"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="qUNOTZxA"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C342A1EBFFB;
-	Wed,  2 Oct 2024 11:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D834A1940AA;
+	Wed,  2 Oct 2024 11:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727867259; cv=none; b=qAaKlrDewBJIeJAD97gEhnajxuYe03I+HVR1iith/OneQelfQu/j8+qkSDJhRpOPf3XvgLPZdC9vbDcazhpn+ZGcP2+7yGmU7Qgb1IukPAoxo7hqtCFO962LMOrnkr7NR/shTUYkPEGNBSgE5G2RyQi+/2ahnK0LUaigQ1PLogM=
+	t=1727867258; cv=none; b=hjXgHsZOTy7h7XCPEJm8wXCLYMtqXE5i0SbwASSbpTWG6Ar0H1GvUzopRy6Ul/3fF8UsmTihTJL22JiMsjqc0EXCCJMqJe9N3nY8l70wqma48K06WSppBAA6nR1YsGy4rihirRgycjy17CnOCqKOQ/l3lYLh2/YUtWI5DozAUrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727867259; c=relaxed/simple;
-	bh=vB9vI6WRzdRxXmbdZXI9Iwk/JIrxAnatd2u6aYQNlCE=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=LXt1lsHiNwX1nF7M6jhaAxwqDpfxqFd2PNkpSXxYn86c/AK4WI2WpnIa6K7YfxlBQ2HGv2v0CB+JPqenUCuIGRyRPkBPrjfvrYk4bQmH+LHTRz06p6fNli4OBmUTZcIwHDuqo2A0lpGBggDgz6N7qPJHY2a6MTFOeQGQoqFePS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=LXCEtMkx; arc=none smtp.client-ip=178.238.236.174
+	s=arc-20240116; t=1727867258; c=relaxed/simple;
+	bh=w6NUHNgk5fQy3ZvEAcTfcWJZZNi43o1KIpFRTO+yMN8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=LtHllCgLDCRAi2ucUdD1llr5yH1WfDZ361kFa4sIVNGEIyquBKRqg+k7VtpvjthKDqjBTIl7JItLizjlM3p1c2qVaCoVpp9oLYzQr3mahVxJh3KpI+QowCWVGpLDbDN55o6DFeIPriOr1TAoW7c4AKqIzQdCaYLCYIq8uYOokvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=qUNOTZxA; arc=none smtp.client-ip=178.238.236.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=Cc:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=j4JZqMGLjPIlJYiU7SXMyC/1ARZVOo0mx0L4xwVNZ9E=; b=LXCEtMkxFUmFHXHZW+9MJS/Z4O
-	fLAQ+iXjrA9oougpjYjO9nYj8wbG5B7kZR3pVbD0d39B//HPtTEPciV8hUjIoC37QZCXAM3n+L5/P
-	Eh+hlWlz8ed6VfWUSgfPbGfbxUFypZdarvvBzRewNOTJ56fuVFZYzzPhWIDsJLdPvnk2g3vjfXS5/
-	WvRt3tXA62UCl6RBuAT72z1yG/8xmdvnaI3npaWewUZtbeY93egu8qZwdNPjwsF1O4QioSlXRpKHF
-	It8ksHXvi+HWTgYD/PfQzOU0JYdDN/4XpPT5IRJapYeqEmZ5wjIdp1tPC6jrCiWcQ1bWBNSbPMa2S
-	ns4ZanQA==;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=gvgKHqill5h7LNCZgWlTthTr5OPqrMhJylEvVsoYuv8=; b=qUNOTZxAlaT1aNDiDa0FFJZt0d
+	S+Wzt10YiS94ztjaoL7QAU2sfSTtxhxRklhhW8RNYsCresPnsFrdSA1kTCK4p/Ti4K+cKxA9iDhQ0
+	ukPU3xd42JfmVFSQ7/L9r3I0Wb41+/CDZ6AVOk619Eu6G5QiGkDAYTfPKBRs3xSQYVpjC1eX7RTek
+	RwYvgU5FsCYkDJ8IpFnOkHf5FKfADxipVE478g8wmhdBwIiUOHAVQaIyz11XCemATPxJWc2IQ0BsD
+	tTnOZkAaDSHhRmwMIx1L/M4pLyRBUad2pSEnb6YP57dgrNzwwLJSXUzMdsYSrfTYXxr2eii8rk869
+	pWeoEYcQ==;
 From: Andreas Kemnade <andreas@kemnade.info>
 To: Stephen Boyd <sboyd@kernel.org>,
 	Tony Lindgren <tony@atomide.com>,
@@ -52,11 +53,12 @@ To: Stephen Boyd <sboyd@kernel.org>,
 	Roger Quadros <rogerq@kernel.org>,
 	Michael Turquette <mturquette@baylibre.com>
 Cc: Andreas Kemnade <andreas@kemnade.info>
-Subject: [PATCH v2 0/3] mfd: twl: Add clock for TWL6030
-Date: Wed,  2 Oct 2024 13:07:15 +0200
-Message-Id: <20241002110718.528337-1-andreas@kemnade.info>
+Subject: [PATCH v2 1/3] mfd: twl-core: Add a clock subdevice for the TWL6030
+Date: Wed,  2 Oct 2024 13:07:16 +0200
+Message-Id: <20241002110718.528337-2-andreas@kemnade.info>
 X-Mailer: git-send-email 2.39.5
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20241002110718.528337-1-andreas@kemnade.info>
+References: <20241002110718.528337-1-andreas@kemnade.info>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -65,21 +67,65 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Previously the clock support for only implemented for TWL6032 so add
-it also for the TWL6030. There are devices out there where especially
-WLAN only works if these clocks are enabled by some patched U-Boot.
-This allows to explicitly specify the clock requirements.
+Also the TWL6030 has some clocks, so add a subdevice for that.
 
-Andreas Kemnade (3):
-  mfd: twl-core: Add a clock subdevice for the TWL6030
-  clk: twl: remove is_prepared
-  clk: twl: add TWL6030 support
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+---
+ drivers/mfd/twl-core.c | 32 ++++++++++++++++++++++----------
+ 1 file changed, 22 insertions(+), 10 deletions(-)
 
- drivers/clk/Kconfig    |  2 +-
- drivers/clk/clk-twl.c  | 71 +++++++++++++++++++++++++-----------------
- drivers/mfd/twl-core.c | 32 +++++++++++++------
- 3 files changed, 65 insertions(+), 40 deletions(-)
-
+diff --git a/drivers/mfd/twl-core.c b/drivers/mfd/twl-core.c
+index c130ffef182f..c981922f62d5 100644
+--- a/drivers/mfd/twl-core.c
++++ b/drivers/mfd/twl-core.c
+@@ -711,6 +711,10 @@ static struct of_dev_auxdata twl_auxdata_lookup[] = {
+ 	{ /* sentinel */ },
+ };
+ 
++static const struct mfd_cell twl6030_cells[] = {
++	{ .name = "twl6030-clk" },
++};
++
+ static const struct mfd_cell twl6032_cells[] = {
+ 	{ .name = "twl6032-clk" },
+ };
+@@ -861,17 +865,25 @@ twl_probe(struct i2c_client *client)
+ 				 TWL4030_DCDC_GLOBAL_CFG);
+ 	}
+ 
+-	if (id->driver_data == (TWL6030_CLASS | TWL6032_SUBCLASS)) {
+-		status = devm_mfd_add_devices(&client->dev,
+-					      PLATFORM_DEVID_NONE,
+-					      twl6032_cells,
+-					      ARRAY_SIZE(twl6032_cells),
+-					      NULL, 0, NULL);
+-		if (status < 0)
+-			goto free;
+-	}
+-
+ 	if (twl_class_is_6030()) {
++		if (id->driver_data & TWL6032_SUBCLASS) {
++			status = devm_mfd_add_devices(&client->dev,
++						      PLATFORM_DEVID_NONE,
++						      twl6032_cells,
++						      ARRAY_SIZE(twl6032_cells),
++						      NULL, 0, NULL);
++			if (status < 0)
++				goto free;
++		} else {
++			status = devm_mfd_add_devices(&client->dev,
++						      PLATFORM_DEVID_NONE,
++						      twl6030_cells,
++						      ARRAY_SIZE(twl6030_cells),
++						      NULL, 0, NULL);
++			if (status < 0)
++				goto free;
++		}
++
+ 		if (of_device_is_system_power_controller(node)) {
+ 			if (!pm_power_off)
+ 				pm_power_off = twl6030_power_off;
 -- 
 2.39.5
 
