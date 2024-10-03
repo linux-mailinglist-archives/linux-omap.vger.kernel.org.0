@@ -1,147 +1,133 @@
-Return-Path: <linux-omap+bounces-2299-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2300-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3156E98F62C
-	for <lists+linux-omap@lfdr.de>; Thu,  3 Oct 2024 20:33:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0550B98F93C
+	for <lists+linux-omap@lfdr.de>; Thu,  3 Oct 2024 23:52:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AFBB1C21A29
-	for <lists+linux-omap@lfdr.de>; Thu,  3 Oct 2024 18:33:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 384CF1C21D9A
+	for <lists+linux-omap@lfdr.de>; Thu,  3 Oct 2024 21:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFEB1A76B7;
-	Thu,  3 Oct 2024 18:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4E61C2DB0;
+	Thu,  3 Oct 2024 21:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ijzerbout.nl header.i=@ijzerbout.nl header.b="afBLU+5v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OFkJM08r"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from bout3.ijzerbout.nl (bout3.ijzerbout.nl [136.144.140.114])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4102BA41;
-	Thu,  3 Oct 2024 18:33:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.144.140.114
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD511BDAB9;
+	Thu,  3 Oct 2024 21:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727980421; cv=none; b=HEDiHR1YCrp4ka1omiUO4WxiUnCL8B5//D9XhqN77Hp6UnmsJ8gfJlXtQ+umubnvr9e1aFRq0TA+oRj5qEZ2ogSzifARmHjvMCTR5VUOaTHypsdccLlHcs2VtpRwSyUlZBJD2h42ITDgVWVfXJ/Qt5LkE4lWrqyVnBW1ZpGetz8=
+	t=1727992339; cv=none; b=RqHyg/dinZSEp3HByvNWJ0GhJh5lcbrQM7ZhtR1wKEhhaQRsM9bBbZfrddG+1g3HKVSzE+TqQnHRxsxIZfLAf8lK3/DaHk66J+Ds3cJYCnUJO9Auso1bhM9uh7jYVMv7JXGPET7ZCr6Wy9K4CLdnI/t+99Kl7Ps3aukQcGUYw3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727980421; c=relaxed/simple;
-	bh=jhFYqWg1DPLvJtPrtFOahr4PJQTIzonQwvX+X8Bxz7c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=reQiy2/8Ghp74iznUXOSyzxVCRTIMlzctr81+U62CwyDohANYXm642d3AKfjTp0sBbKo0QVX9dyAvYZT1OSEEEfYADzZsHkWQtrYHisL0j+lpLRZf+oJXzaeoDzKDKus2PZgH6J9DqEvlbOfkTdgm+b1v61qDjdq+x+kd7DY144=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ijzerbout.nl; spf=pass smtp.mailfrom=ijzerbout.nl; dkim=pass (4096-bit key) header.d=ijzerbout.nl header.i=@ijzerbout.nl header.b=afBLU+5v; arc=none smtp.client-ip=136.144.140.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ijzerbout.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ijzerbout.nl
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ijzerbout.nl; s=key;
-	t=1727980415; bh=jhFYqWg1DPLvJtPrtFOahr4PJQTIzonQwvX+X8Bxz7c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=afBLU+5vzn7VD6q6cxkR+Q3zJ6tz2KITlrTy/NdrPz4/Vy1UWEAyUYQHTZ+QknUPF
-	 /517c+1KvNZr6yPHR5pg20Z85HcchfXcyVKcOcQWw9iAyXlLbLiUwuAzGuMBCJ+7u5
-	 kqq7xiIC/AKL2Pjy/1cRBEnJTl82aq2WXidK1V+2ZHPLftlGzTuG30wFYns/sZIlzS
-	 rW3ImCf4rzWL7NANraXcK8VjJaqWbxeevAhoomMxjLemlenSEoTCskym7+KwEJGK8W
-	 UG9EItaZukWj9zo0wTS5vKoZJ+q/zOTpKVZ9hKzT/cHnd/P0GxcvZ90bvRdowr2GVb
-	 xYbdav5bU/Da5LtMUALsjOaE8lCMEi3x7uUxby1busanVPzWIjwzHDUcSBc6YwJeTW
-	 wMhkjzhkn4fghyW6dEydFM5/IYOl/V3JmZkxWAfb+BcjG4rgKyihotMkSxtqPnjd6e
-	 0uQtgAi/BKAKFBDmAXGLbmCdPwEV9KtLrNbAMx7ywTqxxjiSMHiERtaSHd/yL3UGF0
-	 2RValQA5KF0K3D0Dz7nKaPAaQpYQWOdQtADr3UtnBgSFyOvzWBwk6TII3SQCAGOUHW
-	 oQu+V1F5wX9PrSjSPTYPv1jx9DI6VAZyWZYCoG8eLAm2w3MXLU9/A46AaWN9r6Vnp4
-	 cvFY1UrJhElljvlJfPxvzU1w=
-Received: from [IPV6:2a10:3781:99:1:1ac0:4dff:fea7:ec3a] (racer.ijzerbout.nl [IPv6:2a10:3781:99:1:1ac0:4dff:fea7:ec3a])
-	by bout3.ijzerbout.nl (Postfix) with ESMTPSA id CBB9F18D1E6;
-	Thu,  3 Oct 2024 20:33:33 +0200 (CEST)
-Message-ID: <07d296ac-765c-4f89-bcaf-098ec29a4b7a@ijzerbout.nl>
-Date: Thu, 3 Oct 2024 20:33:31 +0200
+	s=arc-20240116; t=1727992339; c=relaxed/simple;
+	bh=dNBSGplwis3K3/BoL1llvA0r10YCQrzM8dDYNiQKPf0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=hFkaAq+OO6OYT87WyVWjS3shyESJJXs4eX8L7L5O85IJ9plVE//62zKHQ172AHU9QmmxgU44Urs+NKudxd4p3fNemlS3IqsxJE9fvHAECEMJ4kfOaLrGNxoYQ22JVyZ5Eo40lDH08kamitAl3FcyL1zHgRdo6nGxnNAd0H28YtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OFkJM08r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B90C4CEC5;
+	Thu,  3 Oct 2024 21:52:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727992338;
+	bh=dNBSGplwis3K3/BoL1llvA0r10YCQrzM8dDYNiQKPf0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=OFkJM08rFSi8aZtXHy9IcjrHdWQ0uJl4NGs2vHxEYWcVSCL++MdeTG14/EMMULXR4
+	 mAs2LRqTtUB5P3xWP/OEpwzrOVR9zzyPaSejovUAZskqTSnpEXafq0xYTwEbLleb7M
+	 /sjXgymA0+ZB9mpjGj5TLbnTRtA85IhP8Id5nb/niURGG98WY/OuS4FqA7YDOW4AWt
+	 Ujm2aFbY/oIWFm8Dqgul9AC6K0nXig05mWpjdmGxvDd5z+DYzLyjMBHRKot3Bhc6fW
+	 Z8RlyqCJhYwh6gYC+8y4dAiLLDvUqmwD6mNsvsag8gwpaIwTghfa4aJGnjthx96G5p
+	 PXoPaAr7aJRmQ==
+Date: Thu, 3 Oct 2024 16:52:17 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+	linux-pci@vger.kernel.org, vigneshr@ti.com, s-vadapalli@ti.com,
+	lpieralisi@kernel.org, kw@linux.com,
+	manivannan.sadhasivam@linaro.org, robh@kernel.org,
+	bhelgaas@google.com, jingoohan1@gmail.com, krzk@kernel.org,
+	alim.akhtar@samsung.com, shawn.guo@linaro.org,
+	songxiaowei@hisilicon.com, marek.vasut+renesas@gmail.com,
+	yoshihiro.shimoda.uh@renesas.com, thierry.reding@gmail.com,
+	jonathanh@nvidia.com, thomas.petazzoni@bootlin.com, pali@kernel.org,
+	florian.fainelli@broadcom.com,
+	angelogioacchino.delregno@collabora.com, ryder.lee@mediatek.com,
+	heiko@sntech.de, kevin.xie@starfivetech.com, kishon@kernel.org,
+	dlemoal@kernel.org, shawn.lin@rock-chips.com,
+	linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
+	linux-samsung-soc@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] PCI: controller: Switch back to struct
+ platform_driver::remove()
+Message-ID: <20241003215217.GA326383@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 20/28] fbdev: clps711x-fb: Replace check_fb in favor of
- struct fb_info.lcd_dev
-To: Thomas Zimmermann <tzimmermann@suse.de>, lee@kernel.org,
- daniel.thompson@linaro.org, jingoohan1@gmail.com, deller@gmx.de,
- bonbons@linux-vserver.org, jikos@kernel.org, bentiss@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, shawnguo@kernel.org,
- festevam@gmail.com
-Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
- linux-omap@vger.kernel.org
-References: <20240906075439.98476-1-tzimmermann@suse.de>
- <20240906075439.98476-21-tzimmermann@suse.de>
-Content-Language: en-US
-From: Kees Bakker <kees@ijzerbout.nl>
-In-Reply-To: <20240906075439.98476-21-tzimmermann@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <tdxrmmqyzcufupnwkdbg7lwgadizm7v3lxjirykijbml7x54ze@upbdzycdsilm>
 
-Op 06-09-2024 om 09:52 schreef Thomas Zimmermann:
-> Store the lcd device in struct fb_info.lcd_dev. The lcd subsystem can
-> now detect the lcd's fbdev device from this field.
->
-> This makes the implementation of check_fb in clps711x_lcd_ops obsolete.
-> Remove it.
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-> ---
->   drivers/video/fbdev/clps711x-fb.c | 23 ++++++++++-------------
->   1 file changed, 10 insertions(+), 13 deletions(-)
->
-> diff --git a/drivers/video/fbdev/clps711x-fb.c b/drivers/video/fbdev/clps711x-fb.c
-> index 6171a98a48fd..4340ea3b9660 100644
-> --- a/drivers/video/fbdev/clps711x-fb.c
-> +++ b/drivers/video/fbdev/clps711x-fb.c
-> @@ -162,13 +162,6 @@ static const struct fb_ops clps711x_fb_ops = {
->   	.fb_blank	= clps711x_fb_blank,
->   };
->   
-> -static int clps711x_lcd_check_fb(struct lcd_device *lcddev, struct fb_info *fi)
-> -{
-> -	struct clps711x_fb_info *cfb = dev_get_drvdata(&lcddev->dev);
-> -
-> -	return (!fi || fi->par == cfb) ? 1 : 0;
-> -}
-> -
->   static int clps711x_lcd_get_power(struct lcd_device *lcddev)
->   {
->   	struct clps711x_fb_info *cfb = dev_get_drvdata(&lcddev->dev);
-> @@ -198,7 +191,6 @@ static int clps711x_lcd_set_power(struct lcd_device *lcddev, int blank)
->   }
->   
->   static const struct lcd_ops clps711x_lcd_ops = {
-> -	.check_fb	= clps711x_lcd_check_fb,
->   	.get_power	= clps711x_lcd_get_power,
->   	.set_power	= clps711x_lcd_set_power,
->   };
-> @@ -325,16 +317,21 @@ static int clps711x_fb_probe(struct platform_device *pdev)
->   	if (ret)
->   		goto out_fb_dealloc_cmap;
->   
-> +	lcd = devm_lcd_device_register(dev, "clps711x-lcd", dev, cfb,
-> +				       &clps711x_lcd_ops);
-> +	if (IS_ERR(lcd)) {
-> +		ret = PTR_ERR(lcd);
-> +		goto out_fb_dealloc_cmap;
-> +	}
-> +
-> +	info->lcd_dev = lcd;
-> +
->   	ret = register_framebuffer(info);
->   	if (ret)
->   		goto out_fb_dealloc_cmap;
->   
-> -	lcd = devm_lcd_device_register(dev, "clps711x-lcd", dev, cfb,
-> -				       &clps711x_lcd_ops);
-> -	if (!IS_ERR(lcd))
-> -		return 0;
-> +	return 0;
->   
-> -	ret = PTR_ERR(lcd);
->   	unregister_framebuffer(info);
->   
->   out_fb_dealloc_cmap:
-Something is not right here. With the current patch you'll make the 
-unregister_framebuffer(info)
-unreachable, because there is a return 0 in front.
-Please check again.
--- 
-Kees Bakker
+On Thu, Oct 03, 2024 at 12:17:08PM +0200, Uwe Kleine-König wrote:
+> Hello,
+> 
+> I found this patch in next as 712359cb5e9d9553c1383fc5005593aa1988efc4.
+> 
+> While rebasing my patches with the same purpose I found that this patch
+> handled the indention differently than I did for two files:
+
+Updated 712359cb5e9d ("PCI: controller: Switch back to struct
+platform_driver::remove()") to adopt your indentation changes and also
+convert drivers/pci/controller/pcie-xilinx-nwl.c, thank you very much
+for noticing this!
+
+> On Mon, Sep 23, 2024 at 08:57:06AM +0200, Sergio Paracuellos wrote:
+> > diff --git a/drivers/pci/controller/pcie-altera.c b/drivers/pci/controller/pcie-altera.c
+> > index ef73baefaeb9..b921bbb4de80 100644
+> > --- a/drivers/pci/controller/pcie-altera.c
+> > +++ b/drivers/pci/controller/pcie-altera.c
+> > @@ -817,7 +817,7 @@ static void altera_pcie_remove(struct platform_device *pdev)
+> >  
+> >  static struct platform_driver altera_pcie_driver = {
+> >  	.probe		= altera_pcie_probe,
+> > -	.remove_new	= altera_pcie_remove,
+> > +	.remove	= altera_pcie_remove,
+> >  	.driver = {
+> >  		.name	= "altera-pcie",
+> >  		.of_match_table = altera_pcie_of_match,
+> 
+> here indention is inconsistent already before, I replaced the tabs after
+> ".probe" by a single space (and after .remove, too).
+> 
+> > [...]
+> > diff --git a/drivers/pci/controller/pcie-hisi-error.c b/drivers/pci/controller/pcie-hisi-error.c
+> > index ad9d5ffcd9e3..cb5fcfe032d1 100644
+> > --- a/drivers/pci/controller/pcie-hisi-error.c
+> > +++ b/drivers/pci/controller/pcie-hisi-error.c
+> > @@ -317,7 +317,7 @@ static struct platform_driver hisi_pcie_error_handler_driver = {
+> >  		.acpi_match_table = hisi_pcie_acpi_match,
+> >  	},
+> >  	.probe		= hisi_pcie_error_handler_probe,
+> > -	.remove_new	= hisi_pcie_error_handler_remove,
+> > +	.remove	= hisi_pcie_error_handler_remove,
+> >  };
+> >  module_platform_driver(hisi_pcie_error_handler_driver);
+> >  
+> 
+> Here I added another tab after ".remove".
+> 
+> > [...]
+> 
+> Also the patch missed to adapt drivers/pci/controller/pcie-xilinx-nwl.c.
+> 
+> Best regards
+> Uwe
+
+
 
