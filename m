@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-2303-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2304-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A1B998FDCB
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Oct 2024 09:25:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90CA198FDE9
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Oct 2024 09:38:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C6821C21E32
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Oct 2024 07:25:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC3691C21341
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Oct 2024 07:38:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEAED137903;
-	Fri,  4 Oct 2024 07:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57487139579;
+	Fri,  4 Oct 2024 07:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IlmJXMVZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NU4mDWFh"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC9769D2B;
-	Fri,  4 Oct 2024 07:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87CD130499;
+	Fri,  4 Oct 2024 07:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728026735; cv=none; b=d1rg5aQnDIBCyEojYyYn4Ynbk8afnheAFZG9SjoTPblzFfWK788574Oc4AFx7rU4ClnbR34y7adu8QDRgVcG4uUyvwnbvRWYdyvOyIaA4mxYLp6xfV72+tPBweCbG+4QhtLyYS8/BMqpr1bVXUuMcao0cjMIuBEgpSMBbvJ1/Ms=
+	t=1728027507; cv=none; b=igbo+HsRfw/3srYygpRDQo2kymvO+VblgKEfJDMq2WU6DPMNo5PZKrHB3VscBjFK+5V/ReHMxFgJw4GQ/cv7abZK+0u9CMowqeHimprpnrAiYw96Zs+amld2RUocFvB9pSm1+0hGXQJNi8uk/Tbgqxo/cgcwMlYvJm33pUXMr7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728026735; c=relaxed/simple;
-	bh=xNfejlh8XzHSHTAFLtN4lCwtNkypHdytUiDxiKP7+xc=;
+	s=arc-20240116; t=1728027507; c=relaxed/simple;
+	bh=o0yKYeTnHlj1IBqcV9+Tlo4aUsb74pKV9hHiBfKT/z0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Wtd7VbURKfGZg6D5WLsk9Uyk4GU9Z2AI5PXIPwcTTR3b/Zn7IU8on0QH9Mav7UsRca0O03/q69pl/stZQdTbPSrA0M/9Zx7b8fyj9PCs/8un+jJ3zNFPIHShaycW6y0ExwMcTEgTrDGHd3uV5igJATRnciH4mnSKmR4oyhPzLeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IlmJXMVZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF461C4CEC6;
-	Fri,  4 Oct 2024 07:25:32 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=kl3QWqU3w3EgPFgcXDFNxKv5FhgLvjxP8TnxSiBnYHrRh6X/Kl/Z9sHveOTkK0BbQOgnJbjoYLdIwQej0F1w12VyCtCtO5DRxmtoCkngwd7coZabTqqiQlE9biF9zLFPiWvQlkjYWwZBJxoq3714a1pScHoGfr+/MnZutaiu/YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NU4mDWFh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C6BC4CEC6;
+	Fri,  4 Oct 2024 07:38:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728026735;
-	bh=xNfejlh8XzHSHTAFLtN4lCwtNkypHdytUiDxiKP7+xc=;
+	s=k20201202; t=1728027506;
+	bh=o0yKYeTnHlj1IBqcV9+Tlo4aUsb74pKV9hHiBfKT/z0=;
 	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=IlmJXMVZNxCbT/pJjXxAUS4X+2DHhFX8NZLJuFWzHTlFvMRxYTD+jgwHxELu8cXfb
-	 MrtFpAJG7H5yWTvLnZztuFM9HVA2c9SRsRmMAu46hgg/EAfbsruGTcEU3p/o6QoutT
-	 WxuRQ73GLR8ezZXJNW+a+fBeq90Mk0toqLBjX0I3xRfI3Ra6+uj9xeAyqjWFoybnyG
-	 FR/7mTH+e5m92H3dRkThEFPrQD5lLMYGYSTBkdy/jjIkAqqHQPwwAxoQdOjg54JSv9
-	 /70TXm4ToCtfdSrs0LBFSraRtVT6D6rQ89BXfhbzt2NCZjDcct1Osk/JiPoO7VJIMt
-	 09V27kZW5iWuA==
-Message-ID: <7b183e8c-6ca9-447e-a514-63044c389359@kernel.org>
-Date: Fri, 4 Oct 2024 10:25:30 +0300
+	b=NU4mDWFhtyRfJW00oPkiGwm63cfzNgc+L8k3wAwcrmeekLe3Qee+g5aFLnTKPFlHp
+	 bY090ryzwCr4x6nI6cj89KSumb9O8CvMU0J9/3adDwRo+v9h6a4lGgAYh4e6XedItc
+	 XU3fPW7Q/xziQlMYXgLfNdyV0Y7IfZoKgl02hcbh/bshKoDHpqLCUZIaHFvuenMES7
+	 TOx3Nj0KnCG+yUo0pKJA5nCc79BIAsbj8daLS6tGC+pQTC5zITgm+Fp4ZZ4dsnNCue
+	 ckjWhSV7oiwqoAtiEd3uQbxA7BzFefGj0fIrHT8sPwZiAgWfII8wOFky3aNU3R9osA
+	 MHAni2I1Qf0iQ==
+Message-ID: <79d9aeef-2b38-44c5-a371-f696f6ae1de3@kernel.org>
+Date: Fri, 4 Oct 2024 10:38:22 +0300
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -73,6 +73,61 @@ On 01/10/2024 00:30, Andreas Kemnade wrote:
 > many things requiring lower voltages.
 > 
 > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> ---
+>  arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts | 11 ++++-------
+>  1 file changed, 4 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
+> index d6b0abba19f6..cc1b6080bf95 100644
+> --- a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
+> +++ b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
+> @@ -20,13 +20,13 @@ memory@80000000 {
+>  	backlight-left {
+>  		compatible = "pwm-backlight";
+>  		pwms = <&twl_pwm 1 7812500>;
+> -		power-supply = <&unknown_supply>;
+> +		power-supply = <&lb_v50>;
 
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
+This is probably wrong. I noticed this while reviewing patch 3.
+
+you probably want to wire this to blc_l?
+
+>  	};
+>  
+>  	backlight-right {
+>  		compatible = "pwm-backlight";
+>  		pwms = <&twl_pwm 0 7812500>;
+> -		power-supply = <&unknown_supply>;
+> +		power-supply = <&lb_v50>;
+
+this one should be wired to blc_r?
+
+>  	};
+>  
+>  	cb_v18: cb-v18 {
+> @@ -95,11 +95,6 @@ lb_v50: lb-v50 {
+>  		enable-active-high;
+>  	};
+>  
+> -	unknown_supply: unknown-supply {
+> -		compatible = "regulator-fixed";
+> -		regulator-name = "unknown";
+> -	};
+> -
+>  	wl12xx_pwrseq: wl12xx-pwrseq {
+>  		compatible = "mmc-pwrseq-simple";
+>  		clocks = <&twl 1>;
+> @@ -308,6 +303,8 @@ mpu9150: imu@68 {
+>  		pinctrl-0 = <&mpu9150_pins>;
+>  		interrupt-parent = <&gpio2>;
+>  		interrupt = <7 IRQ_TYPE_LEVEL_HIGH>;
+> +		vddio-supply = <&cb_v18>;
+> +		vdd-supply = <&cb_v33>;
+>  		invensense,level-shifter;
+>  	};
+>  };
+
+-- 
+cheers,
+-roger
 
