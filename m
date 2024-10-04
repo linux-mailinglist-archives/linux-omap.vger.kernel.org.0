@@ -1,116 +1,136 @@
-Return-Path: <linux-omap+bounces-2307-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2308-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5520398FE29
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Oct 2024 09:55:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22BAA98FF2E
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Oct 2024 11:01:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1536C283EAC
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Oct 2024 07:55:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C9D61C21813
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Oct 2024 09:01:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0249313AD2A;
-	Fri,  4 Oct 2024 07:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A21C2145341;
+	Fri,  4 Oct 2024 09:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9XZ/+pN"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="rNAbWE5l"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D3D13790B;
-	Fri,  4 Oct 2024 07:55:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B141A12D20D;
+	Fri,  4 Oct 2024 09:01:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728028507; cv=none; b=O5BL8NDyPF2uve0C5LZrzpHkDyAxQSkY2uQp3aSIFWtNCQ6+rDnQoQwZrfBZr+blWjBjNJU38mq7/Q7n7k5uP7VVCKjepsLDq6LmLWzDIqPDvuBx2qXb+WMg/MmvXljwAGgAdMcY4C19SsOjLCB0kSDy0HtX6LpkW6Oo4rUeGfQ=
+	t=1728032479; cv=none; b=ffViNACex9kEpyhpdu4MgJ93H0usn+mhIeHv10n0CV0Qu2ktOeRgO+pZReXikKdJxvzn3Xa5Bmd3G1rHpCNasZNfg/xV+RUSRiyXsH0ANQeVE2RnojQd7rgeLldyC8j/Q1qAYPbyteBME1aRWMsUQ09PXFB8nqJzvAmZfd8azN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728028507; c=relaxed/simple;
-	bh=1rmn9mgHgl3weh7NzIfLqPn3lhDo4MFolXnng4SzFaU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hg7nMfnb8lnFQKmPaWmvF15G5RWWUqC1cdwPebBV0/TkJ5bOABy91Yhn3Ah4LPdyNinDkTlvJKnmLChOsdB8qZVFMbjL22HM25LgcDYG/PM+zfmyj41b1dwqZaaH1oYsvSmDXbW/HZ9H/cOh9imFnwtlZ3JS4Jxqxd9RJez/FrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9XZ/+pN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F96C4CECC;
-	Fri,  4 Oct 2024 07:55:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728028507;
-	bh=1rmn9mgHgl3weh7NzIfLqPn3lhDo4MFolXnng4SzFaU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=l9XZ/+pNVkF3L9myb7e8hwq0l3jOHXxFwO6z0LaGfTSbcoIgu9NwpZ0YBO6/n6FbA
-	 xUs27AG/fd0zovRdhPGi4YKPGJKET9zBkdxBG8ehrZthl+Px6LPmnjd5GD49P4BdVP
-	 ty/0Qu8hcE/1kxqrsVGFX6PNhZze3jc/E4YF3oH8lQfAymLTA6FZTP1SIGNnw0NZ8z
-	 zT0PeDnowf7TGE8ddeN3fkwxdIv6mud/HYFoAFZ/ga/UajrEmebXXyUVCw6wowJpdf
-	 FE5Z94eWbARGQe8D20MfSRNSbEDwONw3Y02W/8UIbNpThPRoOHXe5ORx8LvEAWquiY
-	 SpObda5m08E/A==
-Message-ID: <2bf32fb2-6b1d-4527-8ca2-96e21b8a813e@kernel.org>
-Date: Fri, 4 Oct 2024 10:55:02 +0300
+	s=arc-20240116; t=1728032479; c=relaxed/simple;
+	bh=W4GAHxyNiNKuPlq2+RXiCRq+1TQKeFjvCI65OjVVneE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=E3Jni2Zo2lCWA8MwkBk3AqPIdqkl/Frk1jyZ9ksF0vo538WxWH3hXqzUyVvvb1qEQkrX1Mg1A988MdrJY30pFJDtldOW2aKEGjYjhZBK3sTWN4Jj6+D3DuFO5F4bm8faFv7CVclth/B9R6RHdDrW61NgB+StMLUHH6T8NKLXA2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=rNAbWE5l; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=H+G5CybCC2JMZtP4NDbstG6wlm8WTWPuUqRFjDgdgzI=; b=rNAbWE5lLRTXtQgm9xk9REWd+/
+	bmSrgHqLgzxdXjDzt3g5krIluPhJCbpq+iCV+M/tt9EsL7TmWLr+VVin4i0jjF/WTEx4VpAyrKE61
+	AIY+Vn8sujUTSh2A2Pb4l8kD6KS2Bdg6agTBGZwheibEXSDupiR9y6Hz/oY8gCVeRthUWUCgQSQtO
+	UsJj81S1RJscGGBD/LFxRHMozAb+Gaaohdzmd8FmAKzs8yT7V4lwtrZQp235b0lqNj7WivFgpIwun
+	qDskjoo1CAOPgDmYpZzYKgeEzSCg3C5UPN7HdLTgYMiT+Lw9YpA8AQ3SxqvzAI+tlFqqX/j3Bvmkz
+	c1gCws6Q==;
+Date: Fri, 4 Oct 2024 11:01:10 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Roger Quadros <rogerq@kernel.org>
+Cc: Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, linux-kernel@vger.kernel.org, Rob Herring
+ <robh@kernel.org>, khilman@baylibre.com, devicetree@vger.kernel.org,
+ tony@atomide.com, aaro.koskinen@iki.fi, linux-omap@vger.kernel.org
+Subject: Re: [PATCH 2/4] ARM: dts: omap: omap4-epson-embt2ws: wire up
+ regulators
+Message-ID: <20241004110110.163db244@akair>
+In-Reply-To: <79d9aeef-2b38-44c5-a371-f696f6ae1de3@kernel.org>
+References: <20240930213008.159647-1-andreas@kemnade.info>
+	<20240930213008.159647-3-andreas@kemnade.info>
+	<79d9aeef-2b38-44c5-a371-f696f6ae1de3@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] ARM: dts: omap: omap4-epson-embt2ws: define GPIO
- regulators
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: Conor Dooley <conor+dt@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-kernel@vger.kernel.org,
- Rob Herring <robh@kernel.org>, khilman@baylibre.com,
- devicetree@vger.kernel.org, tony@atomide.com, aaro.koskinen@iki.fi,
- linux-omap@vger.kernel.org
-References: <20240930213008.159647-1-andreas@kemnade.info>
- <20240930213008.159647-2-andreas@kemnade.info>
- <3c83c399-708c-41e2-988d-4ccec63c6042@kernel.org>
- <20241004094117.51c8adcd@akair>
-Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20241004094117.51c8adcd@akair>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
+Am Fri, 4 Oct 2024 10:38:22 +0300
+schrieb Roger Quadros <rogerq@kernel.org>:
 
-
-On 04/10/2024 10:41, Andreas Kemnade wrote:
-> Am Fri, 4 Oct 2024 10:24:32 +0300
-> schrieb Roger Quadros <rogerq@kernel.org>:
+> On 01/10/2024 00:30, Andreas Kemnade wrote:
+> > Wire up the regulators where usage is plausible. Do not
+> > wire them if purpose/usage is unclear like 5V for
+> > many things requiring lower voltages.
+> > 
+> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> > ---
+> >  arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts | 11 ++++-------
+> >  1 file changed, 4 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
+> > b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts index
+> > d6b0abba19f6..cc1b6080bf95 100644 ---
+> > a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts +++
+> > b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts @@ -20,13
+> > +20,13 @@ memory@80000000 { backlight-left {
+> >  		compatible = "pwm-backlight";
+> >  		pwms = <&twl_pwm 1 7812500>;
+> > -		power-supply = <&unknown_supply>;
+> > +		power-supply = <&lb_v50>;  
 > 
->> On 01/10/2024 00:30, Andreas Kemnade wrote:
->>> To properly have things running after cold boot, define
->>> GPIO regulators. Naming is based on board file.
->>>
->>> In the vendor kernel they are enabled in a function
->>> called bt2ws_dcdc_init() if the system is not booted just
->>> to charge the battery.
->>>
->>> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
->>> ---
->>>  .../boot/dts/ti/omap/omap4-epson-embt2ws.dts  | 73
->>> +++++++++++++++++++ 1 file changed, 73 insertions(+)
->>>
->>> diff --git a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
->>> b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts index
->>> 339e52ba3614..d6b0abba19f6 100644 ---
->>> a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts +++
->>> b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts @@ -29,6 +29,42
->>> @@ backlight-right { power-supply = <&unknown_supply>;
->>>  	};
->>>  
->>> +	cb_v18: cb-v18 {  
->>
->> https://devicetree-specification.readthedocs.io/en/v0.3/devicetree-basics.html#generic-names-recommendation
->>
->>
->> So regulator@n
->> where n is some index if it can't be address.
->>
-> No, no @n. The above link says: "If the node has no reg property, the
-> @unit-address must be omitted and the node-name alone differentiates
-> the node from other nodes at the same level in the tree." So
-> probably regulator-cb-v18.
+> This is probably wrong. I noticed this while reviewing patch 3.
+> 
+> you probably want to wire this to blc_l?
+> 
+No idea was blc_l is. I did not find any code handling blc_l.
+looking at the vendor kernel:
 
-Yes, I agree.
+$ grep -R BLC_L_GPIO *
+arch/arm/mach-omap2/board-bt2ws.c:#define BLC_L_GPIO
+16	/* LB LED GPIO */ arch/arm/mach-omap2/board-bt2ws.c:
+{BLC_L_GPIO,   GPIOF_OUT_INIT_LOW,  "gpio_blc_l"   },
+arch/arm/mach-omap2/board-bt2ws.c:	gpio_export(BLC_L_GPIO, 0);
+arch/arm/mach-omap2/board-bt2ts.c:#define BLC_L_GPIO
+16	/* LB LED GPIO */ arch/arm/mach-omap2/board-bt2ts.c:
+{BLC_L_GPIO,   GPIOF_OUT_INIT_LOW,  "gpio_blc_l"   },
+arch/arm/mach-omap2/board-bt2ts.c:	gpio_export(BLC_L_GPIO, 0);
 
--- 
-cheers,
--roger
+These two gpios are exported. But they seem not to influence
+backlight in any way. I just tested again to make sure. Maybe it is just
+a leftover from earlier board revisions.
+
+> >  	};
+> >  
+> >  	backlight-right {
+> >  		compatible = "pwm-backlight";
+> >  		pwms = <&twl_pwm 0 7812500>;
+> > -		power-supply = <&unknown_supply>;
+> > +		power-supply = <&lb_v50>;  
+> 
+> this one should be wired to blc_r?
+>
+Same as with blc_l.
+$ grep -R BLC_R_GPIO *
+arch/arm/mach-omap2/board-bt2ws.c:#define BLC_R_GPIO
+17	/* LB LED GPIO */ arch/arm/mach-omap2/board-bt2ws.c:
+{BLC_R_GPIO,   GPIOF_OUT_INIT_LOW,  "gpio_blc_r"   },
+arch/arm/mach-omap2/board-bt2ws.c:	gpio_export(BLC_R_GPIO, 0);
+arch/arm/mach-omap2/board-bt2ts.c:#define BLC_R_GPIO
+17	/* LB LED GPIO */ arch/arm/mach-omap2/board-bt2ts.c:
+{BLC_R_GPIO,   GPIOF_OUT_INIT_LOW,  "gpio_blc_r"   },
+arch/arm/mach-omap2/board-bt2ts.c:	gpio_export(BLC_R_GPIO, 0);
+
+Regards,
+Andreas
 
