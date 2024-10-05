@@ -1,108 +1,111 @@
-Return-Path: <linux-omap+bounces-2317-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2319-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EFFB991188
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Oct 2024 23:41:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B927F9914C0
+	for <lists+linux-omap@lfdr.de>; Sat,  5 Oct 2024 08:05:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17BD2283CA0
-	for <lists+linux-omap@lfdr.de>; Fri,  4 Oct 2024 21:41:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63FA41F238B8
+	for <lists+linux-omap@lfdr.de>; Sat,  5 Oct 2024 06:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCC491AE018;
-	Fri,  4 Oct 2024 21:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5AA77BB15;
+	Sat,  5 Oct 2024 06:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="r2Zt/cjE"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="9XWwScD8"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8821411DE
-	for <linux-omap@vger.kernel.org>; Fri,  4 Oct 2024 21:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41AE3F9D5;
+	Sat,  5 Oct 2024 06:05:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728078058; cv=none; b=mMNph/UAmGhh1tJStRxpll2fVrzqr3b+U9L8Kag9KYqBVaOCHsBrBcfarX0iq24wMez+GnEKx5gOGPVrWPadjWzbCfuAIbL0VPU62ktVWwkoL5nEKGkxAO/IaR5VOt6jLVUEPAXJkcP+ps9LL5ZDd57hUjqJDJ6l+fZ7LuB7ukM=
+	t=1728108318; cv=none; b=B4PdfJJ/G8+Jc/eMIAutQB8LujrNkKflL4z6iwE2L2/l2hI+sUy1sgz3Hw20EsFKYX9sugAb6Wo8eGnRaRgBBCnqkdxmmd/Zaa91OIiunJ9o6Y1pTesLMoyPfGhMHFtuIrDp/r4NMO0HGhMTc6NXZ59+tr6be/T+3w5+nDpwkmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728078058; c=relaxed/simple;
-	bh=UoYyHSaGN4evXNG/TbmwzxroeUm+2Gmv++PjScBOvoQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=t6Xqv32WYXU7+qnWTvUDZGuTEbyU3PWSsYEW0E9/kdt48izy5lBYwmZiluTE5Tfz0XoVf738vhwbl1WZC8JFKWoV/ObaL6EOLnarD9WG6Bm1sQ0ES/ZrmgGOTrPiMP/TSJGG/qQdNJ6ksadKhuXrsCd1r6XGQ/9HVrvhdOrtFPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=r2Zt/cjE; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-71957eb256bso2333548b3a.3
-        for <linux-omap@vger.kernel.org>; Fri, 04 Oct 2024 14:40:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1728078056; x=1728682856; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0tXUbWLYJR3U+zEjSbqk0pk+6bVLw22kfGamouLUdmc=;
-        b=r2Zt/cjE3xn30hPQCxPePWk2SdFuQyE8ptxtmGs/Hkfj3+ONDHbFHz6FEpZPysk8o4
-         T4+No5jlW28IwB+HbP5kq8KgADrnubILnFA4RamQpGGTCYFeO7IKNhvMXgAd8Vrd5KJV
-         86yfKodNCASQa3MHrRmks7J/K4BR+/o+M2IxuTt3wyy+N7HTpgFLwf0Uyjsu4US/k3kJ
-         2IjRdGfFqjkzZL2aq6SNFcoQ0HcTBEztqFiSxVpyVoyJcmiafQie2//A+2tnOmpSB9jS
-         wSngk5OmxozMGUDYQ4EY2XyGE+EuTvY9BOxxwjlJWvv4ZXxPHcB50hTNhit57IUaxnfR
-         W5RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728078056; x=1728682856;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0tXUbWLYJR3U+zEjSbqk0pk+6bVLw22kfGamouLUdmc=;
-        b=PqlLCXb4oIdY/olDPu8RUQcVNtL0qeNCX9zNmKVboiXmG+uqNiXO5Chf5MLP+XoykV
-         MT90FdaYjxtZrjFx3pC0MXUKErq0VEdWM4ub3OvROrJ6VDBq0tTbdGohwenZLIxVhkDi
-         EOGOA89ckyxtkcgVMulqOJYzj1Th6Af9lRrWfGQnVjpCuoVSl3lFFFyGiiiHOWvu2qPl
-         Caj20GpHKzp6voukcs1Rgtnd1wgq2Q7WioYDhnpIMw7yz8KoDWnkG0lzpv6W17bHJ1m3
-         9DJ5wAuMvQDNMq4MIGqkw+AdG0aitQQG8mZyb4sUrGsdURY6ikwIiH/z7Ra/TqDsRFwQ
-         2shw==
-X-Forwarded-Encrypted: i=1; AJvYcCVeAggu4tCMg9S9wRsNddFu3c5rgA611VcJWS4OZxstNciwG7NhxGm8ZSaof46fWj3OT9dQwcCluIAu@vger.kernel.org
-X-Gm-Message-State: AOJu0YxT1KJFUHxrrQwWcE6Ax/QJNqvlRHYZ5RWYVUFLrBN/CLZNIa9X
-	HECxR9CrUvyeFp2V1zRD2BRpMcoR/hDwXcJFdUULbV3YFWvfeCykJBQ3SFVcEwY=
-X-Google-Smtp-Source: AGHT+IGaTO9NlECH4L11tO3rmXARCrwfZWwkyx8BS6wAVI9KvFTpdxilVZxd5eG3rkBDAnNyLMXExg==
-X-Received: by 2002:a05:6a00:1a8c:b0:717:8568:8cee with SMTP id d2e1a72fcca58-71de23d01a4mr6922378b3a.12.1728078056364;
-        Fri, 04 Oct 2024 14:40:56 -0700 (PDT)
-Received: from localhost ([71.212.170.185])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71df0d7b9d6sm330093b3a.187.2024.10.04.14.40.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Oct 2024 14:40:56 -0700 (PDT)
-From: Kevin Hilman <khilman@baylibre.com>
-To: tony@atomide.com, robh@kernel.org, krzk+dt@kernel.org, 
- conor+dt@kernel.org, linux-omap@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Andreas Kemnade <andreas@kemnade.info>
-Cc: Paul Kocialkowski <contact@paulk.fr>
-In-Reply-To: <20240915193527.1071792-1-andreas@kemnade.info>
-References: <20240915193527.1071792-1-andreas@kemnade.info>
-Subject: Re: [PATCH] ARM: dts: omap4-kc1: fix twl6030 power node
-Message-Id: <172807805572.806523.7110616698781538712.b4-ty@baylibre.com>
-Date: Fri, 04 Oct 2024 14:40:55 -0700
+	s=arc-20240116; t=1728108318; c=relaxed/simple;
+	bh=U0485fxW6LEVGII+rpQROcHZFV3myBUP+VWYTWxPL/E=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=LI2MEI4a3NEiLTYzvQlWZ/nFSRcrYQFKk2dhISFXP4pY6SaNO8XKu9wkmV7D5lBC2lCmiZj//se4BEPTZ1Hi1uJPDWJOKYwG1BGW99TB9NfTus8Mfz5S1M4VUzh/p5oL852oJnquCCT37zbGvKoZHAQywAXTJdsfUb2b+C0HTtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=9XWwScD8; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=Cc:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=Z3guRNwJopPlkQDmMZn6yU9cOKBqNwYsRwH+H1VXDzU=; b=9XWwScD8dFjQLHxmfFn93uuyVQ
+	BlGGQfr17WfaTX4lLKqORlX4uZuTqR8Qa/r3mNmLdI3knjhOe7fNNyviS0SIgOjav5CqQyBakO3RY
+	XcrVTRDDaNpEYiSbSenfbL0ABOxUmWcHfPIhvtZJRGpcS6NL4PESSDAQlWhBFG85fRLhPJgyGZTMK
+	spZqQyMGww3+IE9Kg/VQk6e2s1GztajusHkhCZiy0tyEXbUS2jbDoKju/cfoH3w+MfR4pjBWmc+5T
+	3GDTFp3qViAhNIR3ffdY2115cQbJsUS3ESV0YLWEwnPpniZKGiepfq3MK4Qk8muL0MXHQWod6Xdfy
+	Fg8AZ/nw==;
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Sebastian Reichel <sre@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	tony@atomide.com,
+	linux-kernel@vger.kernel.org,
+	khilman@baylibre.com,
+	linux-pm@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	Lee Jones <lee@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	devicetree@vger.kernel.org,
+	Rob Herring <robh@kernel.org>
+Cc: Andreas Kemnade <andreas@kemnade.info>
+Subject: [PATCH v3 0/4] power: supply: twl6030/32 charger
+Date: Sat,  5 Oct 2024 08:05:07 +0200
+Message-Id: <20241005060511.1334049-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.2
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-cb14d
+Content-Transfer-Encoding: 8bit
 
+Add basic support for the charger in the TWL6030/32. Supported is the USB
+path. AC path is not handled yet, also there is no entry yet
+in /sys/class/power_supply with type battery yet.
 
-On Sun, 15 Sep 2024 21:35:27 +0200, Andreas Kemnade wrote:
-> dtbs_check was moaning about twl6030-power, use the standard property
-> instead.
-> Apparently that twl6030 power snippet slipped in without the
-> corresponding driver. Now it is handled by the standard property.
-> 
-> 
+Without this series, devices will happily drain battery when running
+on mainline.
 
-Applied, thanks!
+Changes in v3:
+- define charger in toplevel
+- s/bci/charger for twl4030
 
-[1/1] ARM: dts: omap4-kc1: fix twl6030 power node
-      commit: 59caaade193003e4dcbc92c82e66906ab7558951
+Changes in v2:
+- s/bci/charger in mfd schema
+- additionalProperties for charger node
+- extended example in mfd schema
+- no quotes for compatibles in charger schema
+- no example in charger schema
+- interrupt description in charger schema
+- replace device_is_compatible by driver data
+- clang compile fix
+- removed alias
+- style fixes
 
-Best regards,
+Andreas Kemnade (4):
+  dt-bindings: power: supply: Add TI TWL603X charger
+  dt-bindings: mfd: twl: add charger node also for TWL603x
+  power: supply: initial support for TWL6030/32
+  ARM: dts: ti/omap: use standard node name for twl4030 charger
+
+ .../devicetree/bindings/mfd/ti,twl.yaml       |  30 +-
+ .../power/supply/ti,twl6030-charger.yaml      |  48 ++
+ arch/arm/boot/dts/ti/omap/twl4030.dtsi        |   2 +-
+ drivers/power/supply/Kconfig                  |  10 +
+ drivers/power/supply/Makefile                 |   1 +
+ drivers/power/supply/twl6030_charger.c        | 580 ++++++++++++++++++
+ 6 files changed, 668 insertions(+), 3 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/power/supply/ti,twl6030-charger.yaml
+ create mode 100644 drivers/power/supply/twl6030_charger.c
+
 -- 
-Kevin Hilman <khilman@baylibre.com>
+2.39.2
 
 
