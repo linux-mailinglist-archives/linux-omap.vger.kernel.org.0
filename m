@@ -1,135 +1,127 @@
-Return-Path: <linux-omap+bounces-2327-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2328-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB6C89919C4
-	for <lists+linux-omap@lfdr.de>; Sat,  5 Oct 2024 20:57:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B50991BDC
+	for <lists+linux-omap@lfdr.de>; Sun,  6 Oct 2024 03:56:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDDEF1C211E8
-	for <lists+linux-omap@lfdr.de>; Sat,  5 Oct 2024 18:57:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8535DB21B4B
+	for <lists+linux-omap@lfdr.de>; Sun,  6 Oct 2024 01:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9468116087B;
-	Sat,  5 Oct 2024 18:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957AC16F908;
+	Sun,  6 Oct 2024 01:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eNJ4Rw5E"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bHJhnSlc"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298D21369BC;
-	Sat,  5 Oct 2024 18:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6F879CD;
+	Sun,  6 Oct 2024 01:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728154643; cv=none; b=RbGQ9YzyqZSFwn7jBWMexoS/pujgKmdQ29w4y+N9yU5fPwNUCXi43+RyCVkIQ2FTiwY1Qsb+Nk6O1t3+cEWr/nZpeM5zEC1aRDryykUAHeunFlDGgx8qr6QQ/g1/EhKgv4+5RI0oHDrFMf63z55mpwbmtPNUZsa1B/E9/BLyUEw=
+	t=1728179746; cv=none; b=LP318No42i0OaqiwKWZMISmKiFXkbwrQCUbJs1F8sfV9Mal+phTOyTebVl2hYn2rvyMB4tpP0RYJAM6NCMNKeuwZovG3k46+qD4Rz9eMVExPMSx1ONhvSx3lXcsDygfv4T7L2wxuQYM9in9YX63v960FPHoizN6I3ePzcuc4QuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728154643; c=relaxed/simple;
-	bh=bUzrElpcmZy00FDHR/UrYDu1AHlhoN1235+oQw1lFjU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FqLBzSdMVzonFpop4W4Jqxr+NTRKpYqpiBtlNEQuR1CA2HgQRvXp6wJNLm94MV2D94zIvcy7rs+XRRz1TS6rtzyZ3OJs4PCZ0i31XTTgvEoQaoSrA+XTf/Q1hZI+325PBxnlqhvImmdRU4o9VGqYlyKm42Atz09eeDB/OyIr0QE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eNJ4Rw5E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765A1C4CEC2;
-	Sat,  5 Oct 2024 18:57:22 +0000 (UTC)
+	s=arc-20240116; t=1728179746; c=relaxed/simple;
+	bh=/4L+Waftv30hJTd8pHAaY7MDs2ik61gNjRPrwI78SK4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rs7lWhEgKgtboQkS2yenDkRykYlGFQt5/01n7rhw//hm4PIJrYSZUlKwMb+vZeNZDTa3js21Fwb/g+uKo35QzwZLlbztusZr4Vraiqu8FlrJYeYh115nJjXRIkJ9wQXj6ANLcLYLRoU7HWqQHDlzJ0N7RuTLao5d6zNmxNH+oyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bHJhnSlc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 442DCC4CEC2;
+	Sun,  6 Oct 2024 01:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728154642;
-	bh=bUzrElpcmZy00FDHR/UrYDu1AHlhoN1235+oQw1lFjU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eNJ4Rw5EnTkMqwFtWfHJ78gew7KNhf2tBTGben4UzqCy6C7DCci1zzmqLFT/1gF23
-	 lU1TRWSM2jC0D0WU3SvjtK+PRpE3ih2n7TKA5NUwiB0mochG2qvhtRCcWqPMf/mM5/
-	 FsULZsWYP5rdZe13rz4A7HPh3+XPfV2gSVqdipAQbBCqlovWv/BTNl4AE5zGmWMiS6
-	 OXBoKC7PX2glSS7f62COrifq8EbPZzZM+vPElmybVVcwXetsopcz0nPQDirQBnCCeu
-	 qak4k6wO/zXIJoUcNVIVq1bF5bXP6zXmR+kgXWd34TG5/kKx2MysCbx7Be9xWyaX/v
-	 6nzks70GS3aew==
-Date: Sat, 5 Oct 2024 13:57:21 -0500
-From: Rob Herring <robh@kernel.org>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: Sebastian Reichel <sre@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, tony@atomide.com,
-	linux-kernel@vger.kernel.org, khilman@baylibre.com,
-	linux-pm@vger.kernel.org, linux-omap@vger.kernel.org,
-	Lee Jones <lee@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 2/4] dt-bindings: mfd: twl: add charger node also for
- TWL603x
-Message-ID: <20241005185721.GA524539-robh@kernel.org>
-References: <20241005060511.1334049-1-andreas@kemnade.info>
- <20241005060511.1334049-3-andreas@kemnade.info>
+	s=k20201202; t=1728179745;
+	bh=/4L+Waftv30hJTd8pHAaY7MDs2ik61gNjRPrwI78SK4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bHJhnSlcDypCxKXc9/0e8sSwcsPUcNs5OrzLmNK372VoYuGepvQT+MeJe7gZxz24S
+	 Td8OetlGIX6VQqxeo+oLpBwCwYCr2xh0kr7HWG2dWxJwS9C9I5+F0Ozm3XgnvgOi6R
+	 eyo7cMIiqgZ5im6lRwsEC9egd6IBXTkhxhVOAfSeJ6SqQ1OAUWk36taYJoiLw9dpJ9
+	 1TD2kMI24gaTyunNoaEycYfyV8WJ6EL2ZaaiP5SsbbYsVWCcKHV7TrlwKb7lUEYqTY
+	 l48kzmdHzTLb/dBfgaSN3gUHXAeR3ENezjiB4lZZ+5JAICFVxSM/ycZNnlcwg/pUoP
+	 0Njb/XOnUh7ew==
+From: Bjorn Andersson <andersson@kernel.org>
+To: linux-gpio@vger.kernel.org,
+	Julia Lawall <Julia.Lawall@inria.fr>
+Cc: kernel-janitors@vger.kernel.org,
+	audit@vger.kernel.org,
+	linux-mtd@lists.infradead.org,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-usb@vger.kernel.org,
+	linux-mm@kvack.org,
+	maple-tree@lists.infradead.org,
+	alsa-devel@alsa-project.org,
+	Sanyog Kale <sanyog.r.kale@intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	dccp@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Jan Kara <jack@suse.cz>,
+	drbd-dev@lists.linbit.com,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	netdev@vger.kernel.org,
+	nvdimm@lists.linux.dev,
+	linux-leds@vger.kernel.org,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	tipc-discussion@lists.sourceforge.net,
+	Robin Murphy <robin.murphy@arm.com>,
+	iommu@lists.linux.dev,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	linux-trace-kernel@vger.kernel.org,
+	Neil Brown <neilb@suse.de>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-nfs@vger.kernel.org,
+	amd-gfx@lists.freedesktop.org,
+	linux-wireless@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org
+Subject: Re: (subset) [PATCH 00/35] Reorganize kerneldoc parameter names
+Date: Sat,  5 Oct 2024 20:55:35 -0500
+Message-ID: <172817973322.398361.12931602917664759173.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240930112121.95324-1-Julia.Lawall@inria.fr>
+References: <20240930112121.95324-1-Julia.Lawall@inria.fr>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241005060511.1334049-3-andreas@kemnade.info>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Sat, Oct 05, 2024 at 08:05:09AM +0200, Andreas Kemnade wrote:
-> Also the TWL603X devices have a charger, so allow to specify it here.
+
+On Mon, 30 Sep 2024 13:20:46 +0200, Julia Lawall wrote:
+> Reorganize kerneldoc parameter names to match the parameter
+> order in the function header.
 > 
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> ---
->  .../devicetree/bindings/mfd/ti,twl.yaml       | 30 +++++++++++++++++--
->  1 file changed, 28 insertions(+), 2 deletions(-)
+> The misordered cases were identified using the following
+> Coccinelle semantic patch:
 > 
-> diff --git a/Documentation/devicetree/bindings/mfd/ti,twl.yaml b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-> index e94b0fd7af0f8..e772d13adbfdc 100644
-> --- a/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-> +++ b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-> @@ -54,7 +54,7 @@ allOf:
->            $ref: /schemas/iio/adc/ti,twl4030-madc.yaml
->            unevaluatedProperties: false
->  
-> -        bci:
-> +        charger:
->            type: object
->            $ref: /schemas/power/supply/twl4030-charger.yaml
->            unevaluatedProperties: false
-> @@ -105,6 +105,11 @@ allOf:
->              regulator-initial-mode: false
->  
->        properties:
-> +        charger:
-> +          type: object
-> +          properties:
-> +            compatible:
-> +              const: ti,twl6030-charger
->          gpadc:
->            type: object
->            properties:
-> @@ -136,6 +141,13 @@ allOf:
->              regulator-initial-mode: false
->  
->        properties:
-> +        charger:
-> +          type: object
-> +          properties:
-> +            compatible:
-> +              items:
-> +                - const: ti,twl6032-charger
-> +                - const: ti,twl6030-charger
->          gpadc:
->            type: object
->            properties:
-> @@ -169,6 +181,12 @@ properties:
->    "#clock-cells":
->      const: 1
->  
-> +  charger:
-> +    type: object
-> +    additionalProperties: true
-> +    properties:
-> +      compatible: true
+> // <smpl>
+> @initialize:ocaml@
+> @@
+> 
+> [...]
 
-I think the behavior you're after is:
+Applied, thanks!
 
-required:
-  - compatible
+[24/35] soc: qcom: qmi: Reorganize kerneldoc parameter names
+        commit: eea73fa08e69fec9cdc915592022bec6a9ac8ad7
 
-Because what you have is true when compatible is not present.
-
-With that,
-
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
 
