@@ -1,151 +1,114 @@
-Return-Path: <linux-omap+bounces-2364-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2365-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71856996BC2
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Oct 2024 15:23:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89C9E997708
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Oct 2024 22:56:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29B931F26DEF
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Oct 2024 13:23:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA14C1C22A37
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Oct 2024 20:56:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A1C197A97;
-	Wed,  9 Oct 2024 13:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1BD61E2301;
+	Wed,  9 Oct 2024 20:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D1513Eko"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="dbMHHWHq"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37BEC192D80;
-	Wed,  9 Oct 2024 13:22:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73E6188926;
+	Wed,  9 Oct 2024 20:56:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728480175; cv=none; b=Eq5VZPkU4Z3u/c0WoVOaLU2rvCFsbT+Jzgsz9Z/Q1XTJo37ac7pGjxzLi1RhdNL2KmUNabmKQnLpjBephTTzDIGPOiG3u0bi7T2+n5BQBA8KlTHaFNo6jfvHvkDt2Ttqojzo4YMi+MwVmohAmB8DCxhZM845DAopNb2h0zOzohE=
+	t=1728507399; cv=none; b=IUHBeapP5vTgtu3HUhYaJlzU+jmXkWwTkSrZM0r1K1w3iOCYNaf2MjrqfC+lnmaJtAA1XT5G9nsosO0BMTKENPOuhFTXtcH3z7BbAwmGTPtAJ5/8whZ5I9+ksYgzAQnfcgTqcJcLxhxRPoQGzCu0j8UZIlOF0qffLKysV/P0iPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728480175; c=relaxed/simple;
-	bh=zhhK3FaUkQMbNK2hkbHPY3f2BUJsOzxajZKqhWPK0nc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LFJTfd3N3dhtRp4hb7433RHohh8u+qZ/mtRd/4Ggyx7nLVOBLUxckT4U+xIr8NiYpIanGn5fKOjcbspmJTxs0f8Ed9opSk4S2UMPmODvd7kiXgSXrUsRa+dvu4EaloCksd3XSs+smLOkP3w7Wa2wYFrW0HWWt87J3wPi8le91oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D1513Eko; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CB6C4CEC5;
-	Wed,  9 Oct 2024 13:22:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728480174;
-	bh=zhhK3FaUkQMbNK2hkbHPY3f2BUJsOzxajZKqhWPK0nc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=D1513EkoFkmorAganPoIWaBGs1W8UFS54B1MdFmh+bqNHOsD/edUMJxfIKwGIjrD1
-	 NABHlp/FLvt5HxMMCOt6GBuCxnNh7x5UGeYI3GNdE4I/Lzm3M936H2zYdqKSyhKfnl
-	 dhD2fIMEMtjMoobXJ/MfF7JBpIfqNctjxfYWXIJt9NpTZ0Iut611G6494XtsWkNio+
-	 f/gTBywqYBNqfVxh/SE/34H4kPBI8o0aNwho/tDE4Li16CGq9/NJJuqwlXjLpPOXSs
-	 NUvVUK3IUkKgTB2hxjuEJoe6eUIHz2YAZ7UY9N6+wiLxT9rqt2RxFEtI+fzfm+rLt0
-	 Tr1NFhuLPXPWg==
-Date: Wed, 9 Oct 2024 14:22:49 +0100
-From: Lee Jones <lee@kernel.org>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: Roger Quadros <rogerq@kernel.org>, linux-omap@vger.kernel.org,
-	Stephen Boyd <sboyd@kernel.org>,
+	s=arc-20240116; t=1728507399; c=relaxed/simple;
+	bh=uHecwGZTeAdJYv1+uRlHFdDx0vUd1P+3XExydJncsoU=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Il4SHu3cE2A3HQmPYV9pve7hXKUoRxoVMPBWBz134W3IXnR6Blhxj38DrgTpCWU1rvQIol3VexNAtiqE1PR70krtaxOXgALphqf2gqA/kLA/PC+vsCj2lJJCzay6UEJNdgfpDepC9+SnYFpyR1eadGkWKhNeXUeqZSaSwwpWhqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=dbMHHWHq; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=From:Sender:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=pcw8S7IZiwFrBBm3SN24yyQYyUIOE4d4lAS5k1CzpUg=; b=dbMHHWHqAZU0hcHHkIX+LRJS1y
+	WgIZF/nZFK+CLATPf0ZxBjtBoUg7YN3y3Ieee2SAB7uvObxcFl7MJ5hsM65RlyXvmifXRbfJsdaD8
+	hwpNCkSZHzEXIOOzoACcoRm/+5enSoiHLYFtSp6I0zAVEWAGV6VfSf71YYKtbrRQFRMCMN2amqrYy
+	obB6maNn464AlbC+nS/uvyx4B+Q8oo0FatVykKuWkk5RnN/Z0ovnx1zoxJs3OK9Cs603mvZwxL7/9
+	vm4mAQiQgFGBQS3UbRyY+o8cF+EQGZ6mQicZ4SildBA2HQJMTZ3APJ3N6MBvi7q43kh1kDWqfx/FK
+	xKl6XGzA==;
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Tony Lindgren <tony@atomide.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	linux-omap@vger.kernel.org,
 	Kevin Hilman <khilman@baylibre.com>,
+	devicetree@vger.kernel.org,
+	Andreas Kemnade <andreas@kemnade.info>,
+	linux-clk@vger.kernel.org,
+	Tero Kristo <kristo@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Michael Turquette <mturquette@baylibre.com>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>, linux-kernel@vger.kernel.org,
-	Tony Lindgren <tony@atomide.com>, linux-clk@vger.kernel.org
-Subject: Re: [PATCH 1/2] mfd: twl-core: Add a clock subdevice for the TWL6030
-Message-ID: <20241009132249.GH276481@google.com>
-References: <20240924103609.12513-1-andreas@kemnade.info>
- <20240924103609.12513-2-andreas@kemnade.info>
+	Stephen Boyd <sboyd@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH RFC v2 0/2] dt-bindings: clock: ti: convert to yaml
+Date: Wed,  9 Oct 2024 22:56:17 +0200
+Message-Id: <20241009205619.16250-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.5
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240924103609.12513-2-andreas@kemnade.info>
 
-On Tue, 24 Sep 2024, Andreas Kemnade wrote:
+Convert some clock schemas to yaml. These are one of the most used non-yaml
+compatibles.
 
-> Also the TWL6030 has some clocks, so add a subdevice for that.
-> 
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> ---
->  drivers/mfd/twl-core.c | 32 ++++++++++++++++++++++----------
->  1 file changed, 22 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/mfd/twl-core.c b/drivers/mfd/twl-core.c
-> index c130ffef182f..c981922f62d5 100644
-> --- a/drivers/mfd/twl-core.c
-> +++ b/drivers/mfd/twl-core.c
-> @@ -711,6 +711,10 @@ static struct of_dev_auxdata twl_auxdata_lookup[] = {
->  	{ /* sentinel */ },
->  };
->  
-> +static const struct mfd_cell twl6030_cells[] = {
-> +	{ .name = "twl6030-clk" },
-> +};
-> +
->  static const struct mfd_cell twl6032_cells[] = {
->  	{ .name = "twl6032-clk" },
->  };
-> @@ -861,17 +865,25 @@ twl_probe(struct i2c_client *client)
->  				 TWL4030_DCDC_GLOBAL_CFG);
->  	}
->  
-> -	if (id->driver_data == (TWL6030_CLASS | TWL6032_SUBCLASS)) {
-> -		status = devm_mfd_add_devices(&client->dev,
-> -					      PLATFORM_DEVID_NONE,
-> -					      twl6032_cells,
-> -					      ARRAY_SIZE(twl6032_cells),
-> -					      NULL, 0, NULL);
-> -		if (status < 0)
-> -			goto free;
-> -	}
-> -
->  	if (twl_class_is_6030()) {
-> +		if (id->driver_data & TWL6032_SUBCLASS) {
-> +			status = devm_mfd_add_devices(&client->dev,
-> +						      PLATFORM_DEVID_NONE,
-> +						      twl6032_cells,
-> +						      ARRAY_SIZE(twl6032_cells),
-> +						      NULL, 0, NULL);
-> +			if (status < 0)
-> +				goto free;
-> +		} else {
-> +			status = devm_mfd_add_devices(&client->dev,
-> +						      PLATFORM_DEVID_NONE,
-> +						      twl6030_cells,
-> +						      ARRAY_SIZE(twl6030_cells),
-> +						      NULL, 0, NULL);
-> +			if (status < 0)
-> +				goto free;
-> +		}
-> +
+All can appear under a ti,clksel or without a ti,clksel
 
-Before this gets too crazy, how about:
+Reason for being RFC. In the comments for the first version, it was said that
+everything which can be below a ti,clksel should be converted at the same
+time. But I want to know whether I am on the right track.
+I plan to convert the clock things from time to time.
+So enforcing certain compatibles below ti,clksel i not there yet.
 
-> +		if (id->driver_data & TWL6032_SUBCLASS) {
-> +			cells = twl6032_cells;
-> +			num_cells = ARRAY_SIZE(twl6032_cells);
-> +		} else {
-> +			cells = twl6030_cells;
-> +			num_cells = ARRAY_SIZE(twl6030_cells);
-> +		}
-> +
-> +		status = devm_mfd_add_devices(&client->dev, PLATFORM_DEVID_NONE,
-> +					      cells, num_cells, NULL, 0, NULL);
-> +		if (status < 0)
-> +			goto free;
+Open question: I set license to GPL-2 only because the .txt bindings the
+yaml binding was derived from were
+GPL-2. I personally have no problem with dual-licensing the binding.
+No idea about the legal side wether that is possible or who must agree.
 
+Changes in v2:
+- added conversion of divider
+- require reg now, makes sense after
+  https://lore.kernel.org/linux-omap/20240213105730.5287-1-tony@atomide.com/
+- clean up of examples
+- improvement of documentation
 
->  		if (of_device_is_system_power_controller(node)) {
->  			if (!pm_power_off)
->  				pm_power_off = twl6030_power_off;
-> -- 
-> 2.39.5
-> 
+v1 is at https://lore.kernel.org/linux-omap/20231127202359.145778-1-andreas@kemnade.info/
+
+Andreas Kemnade (2):
+  dt-bindings: clock: ti: Convert interface.txt to json-schema
+  dt-bindings: clock: ti: Convert divider.txt to json-schema
+
+ .../devicetree/bindings/clock/ti/divider.txt  | 115 ------------
+ .../bindings/clock/ti/interface.txt           |  55 ------
+ .../bindings/clock/ti/ti,divider-clock.yaml   | 175 ++++++++++++++++++
+ .../bindings/clock/ti/ti,interface-clock.yaml |  70 +++++++
+ 4 files changed, 245 insertions(+), 170 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/clock/ti/divider.txt
+ delete mode 100644 Documentation/devicetree/bindings/clock/ti/interface.txt
+ create mode 100644 Documentation/devicetree/bindings/clock/ti/ti,divider-clock.yaml
+ create mode 100644 Documentation/devicetree/bindings/clock/ti/ti,interface-clock.yaml
 
 -- 
-Lee Jones [李琼斯]
+2.39.5
+
 
