@@ -1,113 +1,151 @@
-Return-Path: <linux-omap+bounces-2363-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2364-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3854996BA1
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Oct 2024 15:17:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71856996BC2
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Oct 2024 15:23:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A091E1F233F0
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Oct 2024 13:17:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29B931F26DEF
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Oct 2024 13:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E562199949;
-	Wed,  9 Oct 2024 13:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A1C197A97;
+	Wed,  9 Oct 2024 13:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a05V+9rb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D1513Eko"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9CD198E61;
-	Wed,  9 Oct 2024 13:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37BEC192D80;
+	Wed,  9 Oct 2024 13:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728479835; cv=none; b=DWgxEtHhC2lKkPbYjpknYmzW88Sc2hbp3ZEZvSFqQYgFKa3bWdLUtLZVwG8tbvpFfBnt41/9kIomSB62UuhKzboCTHF57wxyh2hGZLYC9GCT+R/NIX4U6EP0o+RKYQk4xdv+a/EYQsodOCkDsmEEKeEELdkUVeOotcxpv2TxDpY=
+	t=1728480175; cv=none; b=Eq5VZPkU4Z3u/c0WoVOaLU2rvCFsbT+Jzgsz9Z/Q1XTJo37ac7pGjxzLi1RhdNL2KmUNabmKQnLpjBephTTzDIGPOiG3u0bi7T2+n5BQBA8KlTHaFNo6jfvHvkDt2Ttqojzo4YMi+MwVmohAmB8DCxhZM845DAopNb2h0zOzohE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728479835; c=relaxed/simple;
-	bh=qabjB5oibBgOuYQ06RZQUBqxaBt1BLUrAcsWFSZ6Tb8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JMyn0cadcR1t0yyH/CPMVtPfd8W/tXSvMMNXqLBT5PkLEZIaEE98qmNdgNCniH9U2zgUx1mecdXCd+i8gnh37U7i/otst348Xk+PMa6dz4OMTW79LVZPala8wIvlYjfJGblJsoseZ1ab6fumG+vFxRLgMuxL/yz8qgXXIaN8DJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a05V+9rb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822CAC4CECF;
-	Wed,  9 Oct 2024 13:17:11 +0000 (UTC)
+	s=arc-20240116; t=1728480175; c=relaxed/simple;
+	bh=zhhK3FaUkQMbNK2hkbHPY3f2BUJsOzxajZKqhWPK0nc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LFJTfd3N3dhtRp4hb7433RHohh8u+qZ/mtRd/4Ggyx7nLVOBLUxckT4U+xIr8NiYpIanGn5fKOjcbspmJTxs0f8Ed9opSk4S2UMPmODvd7kiXgSXrUsRa+dvu4EaloCksd3XSs+smLOkP3w7Wa2wYFrW0HWWt87J3wPi8le91oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D1513Eko; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CB6C4CEC5;
+	Wed,  9 Oct 2024 13:22:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728479834;
-	bh=qabjB5oibBgOuYQ06RZQUBqxaBt1BLUrAcsWFSZ6Tb8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=a05V+9rb1s+pELwbKiWc4dreO1AdB6/QQrYiXhhS76bHtBrbWLfvZFNDsXNvNTOEN
-	 z1WmP9JF+UyEkC3Ws/sqF8PQUyMQACRpiRFMfzmIjdnr3Jf8f72rwOLageEGyhYx/v
-	 ChtUEgsUzMIsgW2S6B7zbAobiyR1S+/N5ersyryjXZAGUSzsymPjcrbRDBq8UfARJh
-	 4L+NO2wI/Ux35b1hJiQ3i0u5aRcpB+5Z5YByy+VEo8hBfYUb+20SwWBBeZgwwZxqoR
-	 W+lhfkYK9pKKKwoYyJoE19DSDa8GTnTkMz8YoPkDd0c3iV4tKoLZzbdXNkseuTg0AE
-	 D48HvlQpIb/3Q==
-From: Roger Quadros <rogerq@kernel.org>
-Date: Wed, 09 Oct 2024 16:16:56 +0300
-Subject: [PATCH v2 3/3] ARM: dts: ti: omap3434-sdp: drop linux,mtd-name
- from onenand node
+	s=k20201202; t=1728480174;
+	bh=zhhK3FaUkQMbNK2hkbHPY3f2BUJsOzxajZKqhWPK0nc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=D1513EkoFkmorAganPoIWaBGs1W8UFS54B1MdFmh+bqNHOsD/edUMJxfIKwGIjrD1
+	 NABHlp/FLvt5HxMMCOt6GBuCxnNh7x5UGeYI3GNdE4I/Lzm3M936H2zYdqKSyhKfnl
+	 dhD2fIMEMtjMoobXJ/MfF7JBpIfqNctjxfYWXIJt9NpTZ0Iut611G6494XtsWkNio+
+	 f/gTBywqYBNqfVxh/SE/34H4kPBI8o0aNwho/tDE4Li16CGq9/NJJuqwlXjLpPOXSs
+	 NUvVUK3IUkKgTB2hxjuEJoe6eUIHz2YAZ7UY9N6+wiLxT9rqt2RxFEtI+fzfm+rLt0
+	 Tr1NFhuLPXPWg==
+Date: Wed, 9 Oct 2024 14:22:49 +0100
+From: Lee Jones <lee@kernel.org>
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: Roger Quadros <rogerq@kernel.org>, linux-omap@vger.kernel.org,
+	Stephen Boyd <sboyd@kernel.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>, linux-kernel@vger.kernel.org,
+	Tony Lindgren <tony@atomide.com>, linux-clk@vger.kernel.org
+Subject: Re: [PATCH 1/2] mfd: twl-core: Add a clock subdevice for the TWL6030
+Message-ID: <20241009132249.GH276481@google.com>
+References: <20240924103609.12513-1-andreas@kemnade.info>
+ <20240924103609.12513-2-andreas@kemnade.info>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241009-gpmc-omap-dtbx-v2-3-fc68124a090a@kernel.org>
-References: <20241009-gpmc-omap-dtbx-v2-0-fc68124a090a@kernel.org>
-In-Reply-To: <20241009-gpmc-omap-dtbx-v2-0-fc68124a090a@kernel.org>
-To: Kevin Hilman <khilman@baylibre.com>, Tony Lindgren <tony@atomide.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Enric Balletbo i Serra <eballetbo@gmail.com>, 
- Javier Martinez Canillas <javier@dowhile0.org>
-Cc: Nishanth Menon <nm@ti.com>, srk@ti.com, linux-omap@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, Roger Quadros <rogerq@kernel.org>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=823; i=rogerq@kernel.org;
- h=from:subject:message-id; bh=qabjB5oibBgOuYQ06RZQUBqxaBt1BLUrAcsWFSZ6Tb8=;
- b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBnBoJMlLFvUib/q7OQiXiXTF0e38wjrIT3PCKuU
- qh/ixB0i5yJAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCZwaCTAAKCRDSWmvTvnYw
- k8OjD/42GvrALMGM/CBBCWlCcoml/dZ0NHNw4bu3ygSTduNVURvcJ8QNkiMzd9rrPM/or8c2KKc
- KbtJFxEog8W0sdnERmLsz0zK67SIEHPzyxaSbYYLSkt1JWbeZ/YJOPfHhlrEyy76Jn8T0qHsovm
- sTyYM2/VpdgspOShrbSQaByAaLoq9hWE9z+Uh0jIHZhhClxi1811pNXPhNH91VonrhjJJswTwLZ
- SGDyGB8TpmJepuoGoGRVuutJBhnxtp5jE8SirWb1oaOWiz7qWM4B8kq5Lq/uLW5G+k+z76N4PQf
- O056oEfzJYYmA8A+RCN+8JWxvYREMcYGOhOJ9abMGAgRPSQeSN/be8ksKFLuWS0BWGiN9dytH2V
- W9h0j18ReRHIJWLH43ETqF8iKKXqZKCMainiQBSFA9hHdoD3BkFQSQyzG+H9E/Db2lluSOLWmqn
- ajYUDN0vfYQ6PI/L/+aJECxcgnW15S/QGwjktHQBnEovs6aSgxF6YhVv4YY9NpgKT+tKHMGGWsq
- wKHc6MiLlLsN4JD36aX2sQ0xewbw6I4sqJkpQNbj325MDD4t8kiv7tCRiTZC9gMeH2KWVR/3+Sf
- S2jHULyCaWFa8H1+8WXQqmMK5hIxA++pCes/JAeEl2jVBy3hSDQsVr4HQn8jRXXaTu3cU6j9569
- UvDVGO9q+TcJ3PA==
-X-Developer-Key: i=rogerq@kernel.org; a=openpgp;
- fpr=412165D44C9F52780FAB1058D25A6BD3BE763093
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240924103609.12513-2-andreas@kemnade.info>
 
-linux,mtd-name is only applicable for PHYSMAP driver and not for
-OneNAND.
+On Tue, 24 Sep 2024, Andreas Kemnade wrote:
 
-Fixes the below dtbs_check warning
+> Also the TWL6030 has some clocks, so add a subdevice for that.
+> 
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> ---
+>  drivers/mfd/twl-core.c | 32 ++++++++++++++++++++++----------
+>  1 file changed, 22 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/mfd/twl-core.c b/drivers/mfd/twl-core.c
+> index c130ffef182f..c981922f62d5 100644
+> --- a/drivers/mfd/twl-core.c
+> +++ b/drivers/mfd/twl-core.c
+> @@ -711,6 +711,10 @@ static struct of_dev_auxdata twl_auxdata_lookup[] = {
+>  	{ /* sentinel */ },
+>  };
+>  
+> +static const struct mfd_cell twl6030_cells[] = {
+> +	{ .name = "twl6030-clk" },
+> +};
+> +
+>  static const struct mfd_cell twl6032_cells[] = {
+>  	{ .name = "twl6032-clk" },
+>  };
+> @@ -861,17 +865,25 @@ twl_probe(struct i2c_client *client)
+>  				 TWL4030_DCDC_GLOBAL_CFG);
+>  	}
+>  
+> -	if (id->driver_data == (TWL6030_CLASS | TWL6032_SUBCLASS)) {
+> -		status = devm_mfd_add_devices(&client->dev,
+> -					      PLATFORM_DEVID_NONE,
+> -					      twl6032_cells,
+> -					      ARRAY_SIZE(twl6032_cells),
+> -					      NULL, 0, NULL);
+> -		if (status < 0)
+> -			goto free;
+> -	}
+> -
+>  	if (twl_class_is_6030()) {
+> +		if (id->driver_data & TWL6032_SUBCLASS) {
+> +			status = devm_mfd_add_devices(&client->dev,
+> +						      PLATFORM_DEVID_NONE,
+> +						      twl6032_cells,
+> +						      ARRAY_SIZE(twl6032_cells),
+> +						      NULL, 0, NULL);
+> +			if (status < 0)
+> +				goto free;
+> +		} else {
+> +			status = devm_mfd_add_devices(&client->dev,
+> +						      PLATFORM_DEVID_NONE,
+> +						      twl6030_cells,
+> +						      ARRAY_SIZE(twl6030_cells),
+> +						      NULL, 0, NULL);
+> +			if (status < 0)
+> +				goto free;
+> +		}
+> +
 
-"omap3430-sdp.dtb: onenand@2,0: Unevaluated properties are not allowed ('linux,mtd-name' was unexpected)"
+Before this gets too crazy, how about:
 
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
----
- arch/arm/boot/dts/ti/omap/omap3430-sdp.dts | 1 -
- 1 file changed, 1 deletion(-)
+> +		if (id->driver_data & TWL6032_SUBCLASS) {
+> +			cells = twl6032_cells;
+> +			num_cells = ARRAY_SIZE(twl6032_cells);
+> +		} else {
+> +			cells = twl6030_cells;
+> +			num_cells = ARRAY_SIZE(twl6030_cells);
+> +		}
+> +
+> +		status = devm_mfd_add_devices(&client->dev, PLATFORM_DEVID_NONE,
+> +					      cells, num_cells, NULL, 0, NULL);
+> +		if (status < 0)
+> +			goto free;
 
-diff --git a/arch/arm/boot/dts/ti/omap/omap3430-sdp.dts b/arch/arm/boot/dts/ti/omap/omap3430-sdp.dts
-index 1454a89aa980..cc5e9035ef73 100644
---- a/arch/arm/boot/dts/ti/omap/omap3430-sdp.dts
-+++ b/arch/arm/boot/dts/ti/omap/omap3430-sdp.dts
-@@ -147,7 +147,6 @@ partition@780000 {
- 	};
- 
- 	onenand@2,0 {
--		linux,mtd-name = "samsung,kfm2g16q2m-deb8";
- 		#address-cells = <1>;
- 		#size-cells = <1>;
- 		compatible = "ti,omap2-onenand";
+
+>  		if (of_device_is_system_power_controller(node)) {
+>  			if (!pm_power_off)
+>  				pm_power_off = twl6030_power_off;
+> -- 
+> 2.39.5
+> 
 
 -- 
-2.34.1
-
+Lee Jones [李琼斯]
 
