@@ -1,98 +1,87 @@
-Return-Path: <linux-omap+bounces-2383-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2386-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05C5E9985A3
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2024 14:13:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22900998603
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2024 14:30:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00B95283113
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2024 12:13:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C36C1F24F58
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2024 12:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D27BE1C3F2F;
-	Thu, 10 Oct 2024 12:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F411C7B78;
+	Thu, 10 Oct 2024 12:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m7c8xwrX"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="0WRlaLW+"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB3718FDBE;
-	Thu, 10 Oct 2024 12:13:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81DD1C462A;
+	Thu, 10 Oct 2024 12:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728562404; cv=none; b=XKWY9Net2IIkrva54YpMGXeUrIBimfOpvvseGxuUG3ab9qvnHcTTJvB5sicTKmbsTIMmkcfWNC48CXo7H2chSwYxpzpgj8yOfrI1yN2L+mswzpD7SBFOAv2E0dpMx7yiaWK0M2B9VuidpON3XoRGEu1nN0gn1jjYUOd/8gwrsX8=
+	t=1728563409; cv=none; b=ExyYK7R/COksY9AzGpc0dY9wQCdO1fF8K4OEpyxoDt1u7cDDfzfZ55wkyfqEMhEAE9qsBNsb+vIXzySAS2zv1CknwQq4bamd0NuR3vVeahCJJCkM20UYcautXRkjDknJiYQDFauvKqCHvtO3k4VW2+YZhEZ5qiJAIWSd004zyvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728562404; c=relaxed/simple;
-	bh=Tc6A6TaGVOox3EIjIA4GenN9OJksko5HfFiGTMLyOdo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b3EWJcW8/6VAjnQ2xRtSSEGqY0+iD4pVoTD5geAHpMO4VD4/7slDqo2QnlGpzQx4f5vSO5VW1NpQ9bAOuOdoXcm1T67FyE28gb1c6WnPcRG0+tF39b+8Hn62LEa6ny2wHq8MAptqZNDIl+eHQexdQPZ8sc5ZvWAJIIFbOd6liyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m7c8xwrX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7EAC4CEC5;
-	Thu, 10 Oct 2024 12:13:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728562403;
-	bh=Tc6A6TaGVOox3EIjIA4GenN9OJksko5HfFiGTMLyOdo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=m7c8xwrXmArRa9h19qkaCkYGSI8npxe+vBHX9lQ6hjifhqzIfoZHoslZO37k/RoRB
-	 Et8W25eMf/DBaRLn/L+uzMlfn5+sKCNgSHFsF8C2gAaZoSeLBN0pFinnjCpL8MDiJF
-	 SEf8A68mQAyeX2Z+ir5+a6/27Wx3tkkqlDt7thOB97ltIlfbI75Pez3NqxPfbutOId
-	 uSKy3bC/ytkc70c9kmizGrtgAhReol0YWNkeUnxPefSJdfbkdOP3tuCx81DOtNfjBj
-	 YJtGjJe5nmBk6oIngzBsDr51dflFEWpH5zPv3hRgvY0VOPI+6a4DJhccHPbRB0VHr+
-	 uQ9zQruF096wg==
-Message-ID: <9a99bf9e-ea1b-4fab-8b50-a2bd8a320579@kernel.org>
-Date: Thu, 10 Oct 2024 15:13:18 +0300
+	s=arc-20240116; t=1728563409; c=relaxed/simple;
+	bh=JWXg+Ubk4qve2mWsXaskRMHHJ/AwpTpHGviQ7FBTz7U=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=h9/59zoNjjE5VKUu37fy2/smF7qQ8mTTrXUM0KHQRDQGHo7Nfnrf3RbEPtcdS9LZPmx9TuINICfvYVfVAAq/19Ho0TIhwFAFpZsjM09v+lywwcr2tAJcd/uS3ddpi1yn8q8c5abOkwZlvvBW/xVSgJ720jIIz/Rw9vRennRWyfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=0WRlaLW+; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=Cc:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=cx5CrLKNKJqqRncSO8lH+4+XhRsA7iIxOG9ymt9XpPQ=; b=0WRlaLW+TsDc/xQzIfc4IGG4UM
+	cQs5gZCLok5OqDyWx4AFN1Q9K4xyhZKPnltzsczhjBh3Nw0LPyMvLmyrvWnmCFVXvtn/rI1TZC6Zo
+	lWqq8pvYmfw2hTD3IaWsxhxnMsQPkh9pJ/5wEsnCIdFn0OPvdzhF4tAruevBW9cYCNjNGPeA+qdN7
+	M9mT5Xz9NH6s3I9pVGbHYjs0jMHOwaCK2+fIRpF/oegKpc1hJtuq5TcWPEzOgoFw3I+MXowDPqlt9
+	OlYBNDuborhahlNU/9CM5tNsQ4CrMSdCJ1Rvx7xrDy3q7WR8xV7OiiBzOSD2yaqSYqvtq+zy3mUH0
+	nEZXvyDw==;
+From: Andreas Kemnade <andreas@kemnade.info>
+To: linux-kernel@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	rogerq@kernel.org,
+	linux-omap@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	tony@atomide.com,
+	devicetree@vger.kernel.org,
+	khilman@baylibre.com,
+	Conor Dooley <conor+dt@kernel.org>,
+	aaro.koskinen@iki.fi
+Cc: Andreas Kemnade <andreas@kemnade.info>
+Subject: [PATCH v2 0/4] ARM: dts: omap: omap4-epson-embt2ws: misc gpio definitions
+Date: Thu, 10 Oct 2024 14:29:53 +0200
+Message-Id: <20241010122957.85164-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.5
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 3/3] net: ethernet: ti: cpsw_ale: Remove
- unused accessor functions
-To: Simon Horman <horms@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
- <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Kalesh AP <kalesh-anakkur.purayil@broadcom.com>, netdev@vger.kernel.org,
- linux-omap@vger.kernel.org, llvm@lists.linux.dev
-References: <20241010-ti-warn-v2-0-9c8304af5544@kernel.org>
- <20241010-ti-warn-v2-3-9c8304af5544@kernel.org>
-Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20241010-ti-warn-v2-3-9c8304af5544@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+Bring the system into a more defined state and do not rely
+on things being initialized by bootloader.
 
+Changes in V2:
+- better comment strange GPIOs
+- proper names for regulator nodes
 
-On 10/10/2024 14:04, Simon Horman wrote:
-> W=1 builds flag that some accessor functions for ALE fields are unused.
-> 
-> Address this by splitting up the macros used to define these
-> accessors to allow only those that are used to be declared.
-> 
-> The warnings are verbose, but for example, the mcast_state case is
-> flagged by clang-18 as:
-> 
-> .../cpsw_ale.c:220:1: warning: unused function 'cpsw_ale_get_mcast_state' [-Wunused-function]
->   220 | DEFINE_ALE_FIELD(mcast_state,           62,     2)
->       | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> .../cpsw_ale.c:145:19: note: expanded from macro 'DEFINE_ALE_FIELD'
->   145 | static inline int cpsw_ale_get_##name(u32 *ale_entry)                   \
->       |                   ^~~~~~~~~~~~~~~~~~~
-> <scratch space>:196:1: note: expanded from here
->   196 | cpsw_ale_get_mcast_state
->       | ^~~~~~~~~~~~~~~~~~~~~~~~
-> 
-> Compile tested only.
-> No functional change intended.
-> 
-> Signed-off-by: Simon Horman <horms@kernel.org>
+Andreas Kemnade (4):
+  ARM: dts: omap: omap4-epson-embt2ws: define GPIO regulators
+  ARM: dts: omap: omap4-epson-embt2ws: wire up regulators
+  ARM: dts: omap: omap4-epson-embt2ws: add unknown gpio outputs
+  ARM: dts: omap: omap4-epson-embt2ws: add GPIO expander
 
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
+ .../boot/dts/ti/omap/omap4-epson-embt2ws.dts  | 183 +++++++++++++++++-
+ 1 file changed, 179 insertions(+), 4 deletions(-)
+
+-- 
+2.39.5
+
 
