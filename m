@@ -1,115 +1,110 @@
-Return-Path: <linux-omap+bounces-2390-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2391-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E766E9989E5
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2024 16:39:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9620A999191
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2024 21:03:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07E1E1C23DFF
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2024 14:39:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A85D91C2099B
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2024 19:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68971F473D;
-	Thu, 10 Oct 2024 14:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017781E9066;
+	Thu, 10 Oct 2024 18:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="raHaHj/T"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="fv8laoxR"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407461F4729;
-	Thu, 10 Oct 2024 14:30:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C323F1E47BC;
+	Thu, 10 Oct 2024 18:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728570611; cv=none; b=kSvQV49g8l993/XdUe3SBPZLjI0qOZqatbphY3c4OAjcDi7QXIovO0E2FLNqn+AYo2qioFcHlrm6/7VbrPpNen0mfj3dcG6ubK4qVD0VMw3Y1wnHzgF9rULIDX0IOEYiHFmAntIG60R+zkuhy2oDEc4nJ+PJ1nsFsUoQOXJFBYY=
+	t=1728586090; cv=none; b=qlxsZ4s9tVROZ4XXVOBasa8nm7blQtdvimFQR6NsS4SPxOZv50WIi+T+y4EILE4IpRan0Ln1lJJfAxUqWn6wqDmuSrHJM3yOFFnxmqicfoNhgQ8PDygXjvLpUgWJlSje5IC757tguUzTdPTJKghIKiLHdHKe2fjCU65TK29w/VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728570611; c=relaxed/simple;
-	bh=xoxOhi2+OpIb75Sn+0Qqr2+/Un7nZwXxykLiEyYmRfY=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=S2ZY4EevoLn6MvrzmnIHrZoUm6lhb8rrRSxJhYYj57F7mlrhJviH+mTIBHm3vb8gaFduN/u6Ot0yXkOVtcRAspMY5nSHoZ6aDn3uGHAWUjiAKKMHiVtft7tjSDXt5Wpbyb4PUdZ1ZFLNYIfdiN1daR69n/+zM/fPAILZOGk7E1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=raHaHj/T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D98BC4CECC;
-	Thu, 10 Oct 2024 14:30:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728570610;
-	bh=xoxOhi2+OpIb75Sn+0Qqr2+/Un7nZwXxykLiEyYmRfY=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=raHaHj/TeyeMwvTxB9+w+e12JIQM/CVRC995kLr+E/56CClE7HjYxfT8mc2mtenNS
-	 MAXNMmPfhx0HpMzYOdmjhf6SyNm82Cuq4gba7pQ8ox+lulf6AcgFXHPwVZw/iSLTmg
-	 +3rCbKPmCV+vFT6Qt7gdj1z/ipRbsS2v5kM9MyvJtvizm0NG7d1TnnWVpZjtR+rGhI
-	 WauwOYOa9DQQA9SQXeUdRSKSsK2244VIDo4YfJb0tRXF8GFs5POMH9xUaHRXbr6fID
-	 +DoWxaWS1u3kDR+1dDbI/eO8sPjG0foikrdzyxjRy4L1WwIN+30ScABnlfkSSmuid4
-	 Ee+IzC6SKotNg==
-Date: Thu, 10 Oct 2024 09:30:09 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1728586090; c=relaxed/simple;
+	bh=XU6KmgHcjyIjMVl12Cm+lG0klvIKpJ9dcOyD6tP6tDg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HG1m002vbLLijBAUQRKUa8hmXz0zGR7u2WP8hjm3+DGZ1Q6/13LXdQJpvonp9wUCQmxe7pUVkjUHJ35UneFihNdQrrF3kkZpuRv4aPRo1RT/wSPdpcULdX2RaKR5Mp4AosFGTh6cznHvTw9CaWInJE8/X4Qs+8L8WU2iPqN8XWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=fv8laoxR; arc=none smtp.client-ip=198.47.23.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 49AIm46k043199;
+	Thu, 10 Oct 2024 13:48:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1728586084;
+	bh=gYHYJ2w8rIJc49DpxauOJHYCyVEiJQE9ESWAyGTiKrY=;
+	h=From:To:CC:Subject:Date;
+	b=fv8laoxRBMI64u4YShE0k3lMZdCNkl2+bEgKjkl+T9uq5nsHxRO1uouQtMmIJrDSO
+	 6FxWYqn1DonzyepcduNwEUf8ALRwtJPmwPuaK5UR3af7VVpXPW/R8Vkq8AypY6pnRD
+	 0ltAxyVpeGKOGfvwyzjfMzs3SQKVe248VWjYlp2s=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 49AIm4kO090341;
+	Thu, 10 Oct 2024 13:48:04 -0500
+Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 10
+ Oct 2024 13:48:04 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 10 Oct 2024 13:48:04 -0500
+Received: from judy-hp.dhcp.ti.com (judy-hp.dhcp.ti.com [128.247.81.105])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 49AIm3V8011182;
+	Thu, 10 Oct 2024 13:48:03 -0500
+From: Judith Mendez <jm@ti.com>
+To: Grygorii Strashko <grygorii.strashko@ti.com>,
+        Santosh Shilimkar
+	<ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        Linus Walleij
+	<linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>
+CC: <linux-omap@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-serial@vger.kernel.org>,
+        Judith Mendez
+	<jm@ti.com>
+Subject: [PATCH 0/2] Misc omap GPIO/UART fixes
+Date: Thu, 10 Oct 2024 13:48:00 -0500
+Message-ID: <20241010184802.203441-1-jm@ti.com>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: aaro.koskinen@iki.fi, khilman@baylibre.com, rogerq@kernel.org, 
- linux-omap@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, 
- linux-kernel@vger.kernel.org, tony@atomide.com
-In-Reply-To: <20241010122957.85164-1-andreas@kemnade.info>
-References: <20241010122957.85164-1-andreas@kemnade.info>
-Message-Id: <172857036157.1533290.9663617637580743712.robh@kernel.org>
-Subject: Re: [PATCH v2 0/4] ARM: dts: omap: omap4-epson-embt2ws: misc gpio
- definitions
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+
+This patch series carries some miscellaneous
+omap driver fixes for GPIO and UART drivers.
+
+For GPIO, add gpio_enable and gpio_disable calls
+to gpio-omap which fixes an issue where if there
+is an irq storm, serial console is unresponsive.
+
+For UART, move pm_runtime_get_sync since the
+current order of omap_8250_rx_dma_flush and
+pm_runtime_get_sync calls are set in a way that
+when omap_8250_shutdown returns, dma->rx_running
+is set and this causes issues next time the UART
+is re-opened.
+
+Judith Mendez (2):
+  gpio: omap: Add omap_gpio_disable/enable_irq calls
+  serial: 8250: omap: Move pm_runtime_get_sync
+
+ drivers/gpio/gpio-omap.c            | 29 +++++++++++++++++++++++++++++
+ drivers/tty/serial/8250/8250_omap.c |  4 ++--
+ 2 files changed, 31 insertions(+), 2 deletions(-)
 
 
-On Thu, 10 Oct 2024 14:29:53 +0200, Andreas Kemnade wrote:
-> Bring the system into a more defined state and do not rely
-> on things being initialized by bootloader.
-> 
-> Changes in V2:
-> - better comment strange GPIOs
-> - proper names for regulator nodes
-> 
-> Andreas Kemnade (4):
->   ARM: dts: omap: omap4-epson-embt2ws: define GPIO regulators
->   ARM: dts: omap: omap4-epson-embt2ws: wire up regulators
->   ARM: dts: omap: omap4-epson-embt2ws: add unknown gpio outputs
->   ARM: dts: omap: omap4-epson-embt2ws: add GPIO expander
-> 
->  .../boot/dts/ti/omap/omap4-epson-embt2ws.dts  | 183 +++++++++++++++++-
->  1 file changed, 179 insertions(+), 4 deletions(-)
-> 
-> --
-> 2.39.5
-> 
-> 
-> 
-
-
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
-
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-New warnings running 'make CHECK_DTBS=y ti/omap/omap4-epson-embt2ws.dtb' for 20241010122957.85164-1-andreas@kemnade.info:
-
-arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dtb: serial@0: {'compatible': ['ti,omap4-uart'], 'reg': [[0, 256]], 'interrupts': [[0, 74, 4]], 'clock-frequency': 48000000, 'pinctrl-names': ['default'], 'pinctrl-0': [[115]], 'interrupts-extended': [[1, 0, 74, 4], [116, 260]], '$nodename': ['serial@0']} is valid under each of {'required': ['interrupts-extended']}, {'required': ['interrupts']}
-	from schema $id: http://devicetree.org/schemas/serial/8250_omap.yaml#
-arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dtb: serial@0: {'compatible': ['ti,omap4-uart'], 'reg': [[0, 256]], 'interrupts': [[0, 73, 4]], 'clock-frequency': 48000000, 'pinctrl-names': ['default'], 'pinctrl-0': [[118, 119]], 'interrupts-extended': [[1, 0, 73, 4], [116, 220]], 'bluetooth-gnss': {'compatible': ['ti,wl1283-st'], 'enable-gpios': [[120, 25, 0]], 'clocks': [[121, 1]], 'clock-names': ['ext_clock']}, '$nodename': ['serial@0']} is valid under each of {'required': ['interrupts-extended']}, {'required': ['interrupts']}
-	from schema $id: http://devicetree.org/schemas/serial/8250_omap.yaml#
-
-
-
-
+base-commit: f45840d172a06d07a1a408b38bdb0be9ab3fd8cb
+-- 
+2.46.2
 
 
