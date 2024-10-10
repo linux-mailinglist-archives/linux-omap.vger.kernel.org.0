@@ -1,168 +1,108 @@
-Return-Path: <linux-omap+bounces-2379-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2380-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C857998464
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2024 13:04:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C96679984FB
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2024 13:31:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E73E2833D0
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2024 11:04:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BE34B224BF
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Oct 2024 11:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E407A1C2DD4;
-	Thu, 10 Oct 2024 11:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719E81BFDEE;
+	Thu, 10 Oct 2024 11:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c9CzpfCl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M0wM1ASZ"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D58D29AF;
-	Thu, 10 Oct 2024 11:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B48F183CD9;
+	Thu, 10 Oct 2024 11:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728558268; cv=none; b=SXuV/q1crVPFvux9b0xp9CtdOdxSmgnpUe/pUhvWps6xiHROyD2IHjTWENki8yiJB7tEHM+LPHxeMlD+q+1L+esaNJx+PP4W9iIqPz4JP+Bf8NPWTPR1DOxoL+Vq3VBHERR3XNbFnlq4qu0f32K26ouCzijMr5n2Zh7E+5pHv5M=
+	t=1728559890; cv=none; b=Ji+wsvMX8I79Kz1BrgPXMwoeVYLoTn8yzDD5TEhJvzZGDEHjbiSRMMMPjZpoEnSSylrlj2BSDuoC0kyaFK55spfrluYFH6oLNeZrFm5XWj0Aj6Xiy8rDHJxOC/uPaQ4qzc8lyGORffl/6Uur3i6LkL+OA0JLZBwV3MqMSBQrhZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728558268; c=relaxed/simple;
-	bh=6TMgSvGiDN6j/aETnpccRiSZui1zKiAqfIErIRFhoAE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=maOp3fmxVE+7udSH/28Yl02BXPHGNP1THVyVtFAMzojLPMcMLEwBIocISAgboTuOuKuyLjGzzOs6sufI5QrIGYNmKyl8PWrd6KxJwri1Jn5uPoNtHynwFuDHBX6X7t+u0TFKsbd//gvW3zebVSDKD0rk3TcMjy8eiy4Y/BT+ZAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c9CzpfCl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFDCEC4CEC6;
-	Thu, 10 Oct 2024 11:04:25 +0000 (UTC)
+	s=arc-20240116; t=1728559890; c=relaxed/simple;
+	bh=6kZxYCKvv6k0kzD63s3zngdbwEofAsvTXacllI/8md0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lzu3bstRd0uUx66Q+3L9ySi/BrdLx15rGXhJHhUj2u8qcKp4ELHga5K4IckvxJ2p9n6QjtcI+6vEoeSKqo1yK7S9M3tQ+hMWYl2nk3jEq597BgPH/xh36t7NNWU1oZxi04r7iA/pX+MEA8sDyG49hQ6kaRDSYDUxcsWeH2ivpGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M0wM1ASZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7045FC4CEC5;
+	Thu, 10 Oct 2024 11:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728558268;
-	bh=6TMgSvGiDN6j/aETnpccRiSZui1zKiAqfIErIRFhoAE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=c9CzpfClOoeeZPFOvP1nVC4mppmn395JbKixYEukMIE/O/kby46lN061iY16l7VYX
-	 AAqg+yB2uC4iHPcNBf6BY8MITistn8S5sNVAiWCrThBs6y+ePCDkIflKX+aVbXOum5
-	 fFnlHm8Q934hdSk5aoOaGZ1hZHR2jEagWOkdBQSn7XDu6TqkhyOrCMJRzdgexxksBi
-	 r/fVeCn8xXgRBYi+dp0ujvEXxMoLO6Ac5m+blEy5ZxC1QENX2X4/cljsTxuMlPymbt
-	 D+txoVhtkJ0TsalFLz/01v7D1cxEpcRUYdyZsELV7Bf0yeHxuJTuDjk1H0BBOLNk6j
-	 ZYrgFjNQShZHA==
-From: Simon Horman <horms@kernel.org>
-Date: Thu, 10 Oct 2024 12:04:12 +0100
-Subject: [PATCH net-next v2 3/3] net: ethernet: ti: cpsw_ale: Remove unused
- accessor functions
+	s=k20201202; t=1728559889;
+	bh=6kZxYCKvv6k0kzD63s3zngdbwEofAsvTXacllI/8md0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=M0wM1ASZMdvxnCcoHagAoKRg05CCqBv5nVQrpEapZmr/yoSw9eZ6Yu9oqmLP30pe6
+	 S0vachKk7sx+RvCnXtaYrvDM3VelhChPi8SFyHa1Bz2Faa5rDf0uCSJoeioSqD42CB
+	 m9j50qT+rG41dImhwuDDJXJkJCLoVmsdwwOeuibbVwIAkx/nuwZs6TCvxKTiyfJTmV
+	 a6Jj7CWl4saKrFnq9bkYFBx/PCUOBua9f6DdaQDdToTxrJSFmrsfaIYe8g0jOcWzUp
+	 WLVjyn6nQKlxZqD1/guFqfacLbVARtkLaW+O5zqFu0gLmedeAKHDBNUQYqxkorgHXW
+	 ucRqCpmsjV3eQ==
+Message-ID: <eaf8485b-8791-4c3c-a9af-cdb7bb80804a@kernel.org>
+Date: Thu, 10 Oct 2024 14:31:23 +0300
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] ARM: dts: ti: omap: fix dtbs_check warnings for
+ ti,gpmc-nand and ti,gpmc-onenend
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: Kevin Hilman <khilman@baylibre.com>, Tony Lindgren <tony@atomide.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Enric Balletbo i Serra <eballetbo@gmail.com>,
+ Javier Martinez Canillas <javier@dowhile0.org>, Nishanth Menon <nm@ti.com>,
+ srk@ti.com, linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <20241009-gpmc-omap-dtbx-v2-0-fc68124a090a@kernel.org>
+ <20241010113557.1c987754@akair>
+Content-Language: en-US
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20241010113557.1c987754@akair>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241010-ti-warn-v2-3-9c8304af5544@kernel.org>
-References: <20241010-ti-warn-v2-0-9c8304af5544@kernel.org>
-In-Reply-To: <20241010-ti-warn-v2-0-9c8304af5544@kernel.org>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Siddharth Vadapalli <s-vadapalli@ti.com>, 
- Roger Quadros <rogerq@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, 
- Nick Desaulniers <ndesaulniers@google.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
- Kalesh AP <kalesh-anakkur.purayil@broadcom.com>, netdev@vger.kernel.org, 
- linux-omap@vger.kernel.org, llvm@lists.linux.dev
-X-Mailer: b4 0.14.0
 
-W=1 builds flag that some accessor functions for ALE fields are unused.
+Hi Andreas,
 
-Address this by splitting up the macros used to define these
-accessors to allow only those that are used to be declared.
+On 10/10/2024 12:35, Andreas Kemnade wrote:
+> Am Wed, 09 Oct 2024 16:16:53 +0300
+> schrieb Roger Quadros <rogerq@kernel.org>:
+> 
+>> This series fixes dtbs_check warnings on OMAP platforms
+>> for ti,gpmc-nand and ti,gpmc-onenand.
+>>
+>> The following warnings are fixed
+>> - "nand@0,0: Unevaluated properties are not allowed ('linux,mtd-name'
+>> was unexpected)"
+>> - "nand@0,0: Unevaluated properties are not allowed
+>> ('gpmc,device-nand' was unexpected)"
+>> - "omap3430-sdp.dtb: onenand@2,0: Unevaluated properties are not
+>> allowed ('linux,mtd-name' was unexpected)"
+>>
+>> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+>> ---
+>> Changes in v2:
+>> - Rebased on v6.12-rc1
+>> - Link to v1:
+>> https://lore.kernel.org/r/20240903-gpmc-dtb-v1-0-380952952e34@kernel.org
+>>
+> hmm, v1 seems to be applied. 
+> see
+> https://git.kernel.org/pub/scm/linux/kernel/git/khilman/linux-omap.git/commit/?h=for-next&id=ea453dc2d4d6b7bed89386fe76916252993676ab
+> Kevin seems to only have pushed the for-next branch and not the
+> individual topic-6.13 branches.
 
-The warnings are verbose, but for example, the mcast_state case is
-flagged by clang-18 as:
+Thank for pointing out.
 
-.../cpsw_ale.c:220:1: warning: unused function 'cpsw_ale_get_mcast_state' [-Wunused-function]
-  220 | DEFINE_ALE_FIELD(mcast_state,           62,     2)
-      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.../cpsw_ale.c:145:19: note: expanded from macro 'DEFINE_ALE_FIELD'
-  145 | static inline int cpsw_ale_get_##name(u32 *ale_entry)                   \
-      |                   ^~~~~~~~~~~~~~~~~~~
-<scratch space>:196:1: note: expanded from here
-  196 | cpsw_ale_get_mcast_state
-      | ^~~~~~~~~~~~~~~~~~~~~~~~
-
-Compile tested only.
-No functional change intended.
-
-Signed-off-by: Simon Horman <horms@kernel.org>
----
- drivers/net/ethernet/ti/cpsw_ale.c | 30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index 8d02d2b21429..d361caa80d05 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.c
-+++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -162,27 +162,39 @@ static inline void cpsw_ale_set_field(u32 *ale_entry, u32 start, u32 bits,
- 	ale_entry[idx] |=  (value << start);
- }
- 
--#define DEFINE_ALE_FIELD(name, start, bits)				\
-+#define DEFINE_ALE_FIELD_GET(name, start, bits)				\
- static inline int cpsw_ale_get_##name(u32 *ale_entry)			\
- {									\
- 	return cpsw_ale_get_field(ale_entry, start, bits);		\
--}									\
-+}
-+
-+#define DEFINE_ALE_FIELD_SET(name, start, bits)				\
- static inline void cpsw_ale_set_##name(u32 *ale_entry, u32 value)	\
- {									\
- 	cpsw_ale_set_field(ale_entry, start, bits, value);		\
- }
- 
--#define DEFINE_ALE_FIELD1(name, start)					\
-+#define DEFINE_ALE_FIELD(name, start, bits)				\
-+DEFINE_ALE_FIELD_GET(name, start, bits)					\
-+DEFINE_ALE_FIELD_SET(name, start, bits)
-+
-+#define DEFINE_ALE_FIELD1_GET(name, start)				\
- static inline int cpsw_ale_get_##name(u32 *ale_entry, u32 bits)		\
- {									\
- 	return cpsw_ale_get_field(ale_entry, start, bits);		\
--}									\
-+}
-+
-+#define DEFINE_ALE_FIELD1_SET(name, start)				\
- static inline void cpsw_ale_set_##name(u32 *ale_entry, u32 value,	\
- 		u32 bits)						\
- {									\
- 	cpsw_ale_set_field(ale_entry, start, bits, value);		\
- }
- 
-+#define DEFINE_ALE_FIELD1(name, start)					\
-+DEFINE_ALE_FIELD1_GET(name, start)					\
-+DEFINE_ALE_FIELD1_SET(name, start)
-+
- enum {
- 	ALE_ENT_VID_MEMBER_LIST = 0,
- 	ALE_ENT_VID_UNREG_MCAST_MSK,
-@@ -238,14 +250,14 @@ static const struct ale_entry_fld vlan_entry_k3_cpswxg[] = {
- 
- DEFINE_ALE_FIELD(entry_type,		60,	2)
- DEFINE_ALE_FIELD(vlan_id,		48,	12)
--DEFINE_ALE_FIELD(mcast_state,		62,	2)
-+DEFINE_ALE_FIELD_SET(mcast_state,	62,	2)
- DEFINE_ALE_FIELD1(port_mask,		66)
- DEFINE_ALE_FIELD(super,			65,	1)
- DEFINE_ALE_FIELD(ucast_type,		62,     2)
--DEFINE_ALE_FIELD1(port_num,		66)
--DEFINE_ALE_FIELD(blocked,		65,     1)
--DEFINE_ALE_FIELD(secure,		64,     1)
--DEFINE_ALE_FIELD(mcast,			40,	1)
-+DEFINE_ALE_FIELD1_SET(port_num,		66)
-+DEFINE_ALE_FIELD_SET(blocked,		65,     1)
-+DEFINE_ALE_FIELD_SET(secure,		64,     1)
-+DEFINE_ALE_FIELD_GET(mcast,		40,	1)
- 
- #define NU_VLAN_UNREG_MCAST_IDX	1
- 
+Please ignore this and sorry for the noise.
 
 -- 
-2.45.2
-
+cheers,
+-roger
 
