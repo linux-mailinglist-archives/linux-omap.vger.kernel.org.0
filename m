@@ -1,136 +1,138 @@
-Return-Path: <linux-omap+bounces-2398-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2399-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E596D999BC9
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Oct 2024 06:46:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF2E999FDB
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Oct 2024 11:12:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 935CB1F25BEF
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Oct 2024 04:46:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E253E280EEC
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Oct 2024 09:12:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9AE1F4731;
-	Fri, 11 Oct 2024 04:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 928E220CCE5;
+	Fri, 11 Oct 2024 09:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swBhvHwt"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="lm+kYWHO"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF111392;
-	Fri, 11 Oct 2024 04:46:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B8F20C46C;
+	Fri, 11 Oct 2024 09:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728621970; cv=none; b=hUYh0DIdtW3NbI+9bdntHPMuSEMAPTTmKr/2aiKtP1q4OilPrz02dPNeB/lQeEhbTSFKgwrj4GrFAaUS+X5W9uUWIeNi0UbNa5e4luXNgsJ4KbNOqpf9f2ApJ1tvY2KP6BuQ3qmOE/pobJIkk5lMFyRidJEpz6Lqc85c5si2XrY=
+	t=1728637943; cv=none; b=kmwQ5lMWQuoWNiHhvpGy0mfX0t0bdbVcaCWC9fpgNiOjTvOFgofadEEwvAoBEf6cJa4FOm9hzuavEcFgngIXDXS08h0yQOaTUNUqr2UmCdtw2V71/4roBTX7pZpLLoRR4NS2Qv540zpnaZyzjsCXONwCikUVH735a48NX/cCXyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728621970; c=relaxed/simple;
-	bh=V9ZExzkaPjw7sLS5aK7k8w5fJSCH/Aqbe7bVDfChCqw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dBOlwQ9fLDC5ssSSv5JxQNCeCDVt+m5aCK0igf58p+mlFiXDQxJBKQ/SkK09VXDq+Ev1akFst1uw/MNEUZ85naPigzvVdqBfgD8OIv5x6v0fkPrutzS1K/4LbOHH5N0Mq/KtwfOxAVpfUlY/avp9pcS34qfaMapfZN8vCPoxUO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swBhvHwt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 056A9C4CEC3;
-	Fri, 11 Oct 2024 04:46:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728621969;
-	bh=V9ZExzkaPjw7sLS5aK7k8w5fJSCH/Aqbe7bVDfChCqw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=swBhvHwtDB4ctG7VsCgkyNray4VQXs34QgP0CAXSHAkbeGPn57MborrgMF588/pYQ
-	 WPu3Vp5Qkh7mE6GiRm2n+Jf6mMR6irAFpKe7TS1WYROC+azqE8Kj9xoJ6Ep9LASVC2
-	 LNyuVAQO0VoAJUNycbeYRUo+nJSTAzjwi93REW0I=
-Date: Fri, 11 Oct 2024 06:46:06 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Judith Mendez <jm@ti.com>
-Cc: Grygorii Strashko <grygorii.strashko@ti.com>,
-	Santosh Shilimkar <ssantosh@kernel.org>,
-	Kevin Hilman <khilman@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, linux-omap@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org, Bin Liu <b-liu@ti.com>
-Subject: Re: [PATCH 2/2] serial: 8250: omap: Move pm_runtime_get_sync
-Message-ID: <2024101154-vest-freeing-dd4f@gregkh>
-References: <20241010184802.203441-1-jm@ti.com>
- <20241010184802.203441-3-jm@ti.com>
+	s=arc-20240116; t=1728637943; c=relaxed/simple;
+	bh=bLHgUxnHnm6nAbuqDcwCWdMNYnyXNokEveeBOy9gnl0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ml0RVNTmjFLIzFMQYPsn6DN2qIlEJhdhuG9+Zuhtf7r0kbb7dFgcIMxCSJbMSHDVs0ocPFcTSeaTa7MRaaBDWBgG+qmf+FBd7qiUo9I5bnMpG792Wo7UVRTGpghdrWeWrJt7Ok5cuigrGMlhvz05EzUzod5gtgY5gXBrYL8AS/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=lm+kYWHO; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=RNqNpxGxeeBAwX+19iC/FZZJ/fILbxplvkx/pcESrjA=; b=lm+kYWHOOUhxM9U8xqgQql7VVt
+	8UzoIxp7jYv2/pVOqdSp03IqQD9mfa6UEp6rEcvd8y/BT5AxnAw7ta3slMIcEZhFlX+6FSa6EuUQZ
+	dOVOHXV0ilTh38756LLGBxl/wQhWO1PEuWuW+gHfeiT12bIq88s/XIrI4UjRB/+lPTI7CdFmele2v
+	m9SYWrhmKvzOUUKWQoMVlMpht+lxV5k0l7SQMdflEwO/3nHdfYhohJibm/N5IM1hARXrA7VZp0Nfy
+	l6O91Ja4MfbWXLTcpVf/wAwDXgDWIPhFHkcpHOWe4BT0XaU6qw2nMXSZHnRZDmTJnwO4kybRvHiOg
+	/IY4hWwQ==;
+Date: Fri, 11 Oct 2024 11:12:12 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Roger Quadros <rogerq@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>,
+ linux-omap@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ tony@atomide.com, devicetree@vger.kernel.org, khilman@baylibre.com, Conor
+ Dooley <conor+dt@kernel.org>, aaro.koskinen@iki.fi
+Subject: Re: [PATCH v2 3/4] ARM: dts: omap: omap4-epson-embt2ws: add unknown
+ gpio outputs
+Message-ID: <20241011111212.1b935eb8@akair>
+In-Reply-To: <7cde7090-639b-4115-8240-88a63c760d93@kernel.org>
+References: <20241010122957.85164-1-andreas@kemnade.info>
+	<20241010122957.85164-4-andreas@kemnade.info>
+	<7cde7090-639b-4115-8240-88a63c760d93@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241010184802.203441-3-jm@ti.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 10, 2024 at 01:48:02PM -0500, Judith Mendez wrote:
-> Currently in omap_8250_shutdown, the dma->rx_running
-> flag is set to zero in omap_8250_rx_dma_flush. Next
-> pm_runtime_get_sync is called, which is a runtime
-> resume call stack which can re-set the flag. When the
-> call omap_8250_shutdown returns, the flag is expected
-> to be UN-SET, but this is not the case. This is causing
-> issues the next time UART is re-opened and omap_8250_rx_dma
-> is called. Fix by moving pm_runtime_get_sync before the
-> omap_8250_rx_dma_flush.
+Am Thu, 10 Oct 2024 23:15:51 +0300
+schrieb Roger Quadros <rogerq@kernel.org>:
+
+> On 10/10/2024 15:29, Andreas Kemnade wrote:
+> > Set them to the state seen in a running system, initialized
+> > by vendor u-boot or kernel. Add line names where they are defined
+> > in the vendor kernel.
+> > gpio15 resets something in the display, otherwise meaning of the
+> > gpios is not known.
+> > 
+> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> > ---
+> >  .../boot/dts/ti/omap/omap4-epson-embt2ws.dts  | 92
+> > +++++++++++++++++++ 1 file changed, 92 insertions(+)
+> > 
+> > diff --git a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
+> > b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts index
+> > 7684868a2eed..983a21d95db3 100644 ---
+> > a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts +++
+> > b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts @@ -115,6
+> > +115,73 @@ wl12xx_vmmc: wl12xx-vmmc { };
+> >  };
+> >  
+> > +&gpio1 {
+> > +	pinctrl-names = "default";
+> > +	pinctrl-0 = <&gpio1_hog_pins &gpio1wk_hog_pins>;
+> > +
+> > +	lb-reset-hog {
+> > +		gpio-hog;
+> > +		gpios = <9 GPIO_ACTIVE_HIGH>;
+> > +		output-low;
+> > +		line-name = "lb_reset";
+> > +	};
+> > +
+> > +	power-en-hog {
+> > +		gpio-hog;
+> > +		gpios = <10 GPIO_ACTIVE_HIGH>;
+> > +		output-high;
+> > +		line-name = "power_en";
+> > +	};  
 > 
-> Fixes: 0e31c8d173ab ("tty: serial: 8250_omap: add custom DMA-RX callback")
-> Signed-off-by: Bin Liu <b-liu@ti.com>
-> Signed-off-by: Judith Mendez <jm@ti.com>
-> ---
->  drivers/tty/serial/8250/8250_omap.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> As GPIO 9 and 10 come form the Wake-up domain, my guess is 
+> they are used as wake-up input source. Reset button / Power off/wake
+> button? From pinmux they seem to be Input. So why do we need to force
+> them to a certain output state?
+
+Interesting reasoning and good to bring up those thoughts.
+
+Vendor v3.0 kernel:
+shell@android:/sys/kernel/debug # cat gpio 
+GPIOs 0-31, gpio:
+[...]
+ gpio-9   (gpio_lb_reset       ) out lo
+ gpio-10  (gpio_power_en       ) out hi
+
+So they are configured as output.
+There is one power button. It can be handled via the TWL6032 (driver
+not upstreamed yet). There is also one reset button resetting the SoC.
+
+I do not see a reason why to deviate from vendor kernel.
+ 
+> Can you please confirm if everything works as usual without this hog?
 > 
-> diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-> index 88b58f44e4e9..0dd68bdbfbcf 100644
-> --- a/drivers/tty/serial/8250/8250_omap.c
-> +++ b/drivers/tty/serial/8250/8250_omap.c
-> @@ -776,12 +776,12 @@ static void omap_8250_shutdown(struct uart_port *port)
->  	struct uart_8250_port *up = up_to_u8250p(port);
->  	struct omap8250_priv *priv = port->private_data;
->  
-> +	pm_runtime_get_sync(port->dev);
-> +
->  	flush_work(&priv->qos_work);
->  	if (up->dma)
->  		omap_8250_rx_dma_flush(up);
->  
-> -	pm_runtime_get_sync(port->dev);
-> -
->  	serial_out(up, UART_OMAP_WER, 0);
->  	if (priv->habit & UART_HAS_EFR2)
->  		serial_out(up, UART_OMAP_EFR2, 0x0);
-> -- 
-> 2.46.2
-> 
-> 
+Well, if everything is working well, I would agree to optimize
+these things. But not now. There are races in the boot process
+and I would like to rule out that any random or strange behavior has
+anything to do with some gpio setting.
 
-Hi,
-
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
-
-You are receiving this message because of the following common error(s)
-as indicated below:
-
-- You have marked a patch with a "Fixes:" tag for a commit that is in an
-  older released kernel, yet you do not have a cc: stable line in the
-  signed-off-by area at all, which means that the patch will not be
-  applied to any older kernel releases.  To properly fix this, please
-  follow the documented rules in the
-  Documentation/process/stable-kernel-rules.rst file for how to resolve
-  this.
-
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
+Regards,
+Andreas
 
