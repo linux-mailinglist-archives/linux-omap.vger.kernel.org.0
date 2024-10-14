@@ -1,45 +1,46 @@
-Return-Path: <linux-omap+bounces-2413-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2414-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4EAB99CFA6
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2024 16:56:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3938A99CFAB
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2024 16:57:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 088CF1C2341B
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2024 14:56:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F24F52837A5
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2024 14:57:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81461CACFA;
-	Mon, 14 Oct 2024 14:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3081CC179;
+	Mon, 14 Oct 2024 14:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="HSlBYlWX"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="ISC9u4+Q"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3711C303A;
-	Mon, 14 Oct 2024 14:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CED91CBE82;
+	Mon, 14 Oct 2024 14:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917629; cv=none; b=Ts7xS0F/0YUU34xts1kT1wmdrqRE6ODt+8HiUhu7qZ5vyU97pkFGgZ7xlFSPLimgBwiP66FvLlY62J8zjDjSEdAlzqCGDnlX3IG2zvioGbN0KY7AQNbfwBHnAe39t1ZZLEZ5QMJ6UOxr0z+a5Av0eaL3ipXqdsWBYsACKb92ik0=
+	t=1728917632; cv=none; b=MSAp6ssLlmcIJa1c40h8wCp0PcBiHK7+bntU6ht2i73NyqbRVvzm2y0xj1j1K/OllvVUNkIpiv4zbIjjmD6zB5ExlUFF4q5uwt1G8InTXjdUOr7Enz66xfkwmZJSFvEX7CC0cYhVRC30WlFKlxuIH92MNwGYYPU9Drji1qeqleA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917629; c=relaxed/simple;
-	bh=oUVukm9STL6kt7psZEb5CMMMJANo5cADWByz4L1JE1c=;
-	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=TUpYUT3C3RPifha2TX1pwjCWPPBnoW0QLiGaNxNxgghhm4+AuogTuac1Z/8DJFKlYtmHVcLblIpDUPH1F6PwRQ6Nn95+a0flfa/iSYvjwFJrKDTY+rmnK8VufDRu9usJk1xz9kuCTLExIJCWaOGSMj5AwIDAbfhpYwLfGU5Fbos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=HSlBYlWX; arc=none smtp.client-ip=178.238.236.174
+	s=arc-20240116; t=1728917632; c=relaxed/simple;
+	bh=29G8ECvETDfh2WadY+mE8ZjBcP3848PKCmM1Z1+ZSDw=;
+	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=MoJDxaDEBisS7jCYGJkKWCQIUTfA5XPcGA5jIvNIQ9+MH7aawn02jDC5WJ8BKle8vQWxSPlPdzw6ntn37j2iRMzDpe+gWeYy9LRMGm4GSC1Xk6efho8w8kRr+Svu3es0izyn5x+D7XyQF/WqVE2o9LYwDdcvDF9K2whKu3yzyXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=ISC9u4+Q; arc=none smtp.client-ip=178.238.236.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=From:Sender:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=lp5ayGMbaEMRV2NJ0zX0xRA46vwyiDoLRxWN3jh1y8A=; b=HSlBYlWXNjV/RXvjzM9s72dMnr
-	GdtfKuQ+5ytUMDEo+m08LOwgKuHouf1evegZKR88k3kiBv8ILzb19sd25CgXb1BRKq78KzxiJ1n4B
-	kIl0PbC6lCo1mUnechx6Kyei7IJT4pmBUomYx+9PJJgwtUUZ7ecCkJKYuW8wMCyaDkODkEGFiIPpj
-	kwx0W6J15iWLIs9bZuu+bUGzQqRM0Ot4yCB4DkH5bWOx/WsSxCNJCqWmnTKU5bxG1X4he8qfoKFGg
-	G2F6gccB+ZMTU4Kxhuk9+hz/GQWn2PuPBZzXbCqnVaQggzpQAnIO17r0Yl3/kd3S9pvyMiqvUY3bb
-	yJbMGp/A==;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:From:Sender:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=Aa5zOAlNxgnq3cdfWL7tQky3C+H1xGL4iFEI0MzyYuE=; b=ISC9u4+Q6qi04JODGrlJRT5icY
+	Z9dmTXFrXegiWZP4U8QZu8ZXj1QtHCZ4Ks8EZToMGkzpEHfX9yix5kbKtZxHB5tD/wFVk2QZU+7sO
+	Dx4bIdHzmckFLqA8msmM4tTm/uJaVNNmtqbWcSfszmdrLZYrOfopazTYH9Ah778urnZ1b0Ny1J07V
+	/CRu/FioD1pwVfx11V3v4CVlyeoN2yj1KmzcS+6xpgxJwHPWb1C1eQ12MoM3pzxANJv0Fsfq3CapD
+	P2UPtWhQ7ZKqJoI4Ae/2G95cTPUflkcsuvqWwBt2XwpuO5OzixvNZKbwdsqZc9UL1trGm7IgNOuDC
+	17FpiUxg==;
 From: Andreas Kemnade <andreas@kemnade.info>
 To: khilman@baylibre.com,
 	devicetree@vger.kernel.org,
@@ -53,11 +54,12 @@ To: khilman@baylibre.com,
 	linux-input@vger.kernel.org,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	linux-omap@vger.kernel.org
-Subject: [PATCH 0/2] ARM: ti/omap: gta04: properly specify GTA04 touchscreen properties
-Date: Mon, 14 Oct 2024 16:12:38 +0200
-Message-Id: <20241014141240.92072-1-andreas@kemnade.info>
+Subject: [PATCH 1/2] Input: tsc2007 - accept standard properties
+Date: Mon, 14 Oct 2024 16:12:39 +0200
+Message-Id: <20241014141240.92072-2-andreas@kemnade.info>
 X-Mailer: git-send-email 2.39.2
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20241014141240.92072-1-andreas@kemnade.info>
+References: <20241014141240.92072-1-andreas@kemnade.info>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -66,20 +68,61 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Specify touchscreen in a way that no userspace configuration is needed.
+Only some driver-specific properties were accepted, change it
+to use the now-available standard properties which are
+found in devicetrees containing this chip.
 
-Note: if the devicetree patch is in without the input patch, things
-will be broken in a different way.
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+---
+ drivers/input/touchscreen/tsc2007.h      | 2 ++
+ drivers/input/touchscreen/tsc2007_core.c | 5 ++---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-Andreas Kemnade (2):
-  Input: tsc2007 - accept standard properties
-  ARM: dts: ti/omap: omap3-gta04: use proper touchscreen properties
-
- arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi | 6 ++++--
- drivers/input/touchscreen/tsc2007.h        | 2 ++
- drivers/input/touchscreen/tsc2007_core.c   | 5 ++---
- 3 files changed, 8 insertions(+), 5 deletions(-)
-
+diff --git a/drivers/input/touchscreen/tsc2007.h b/drivers/input/touchscreen/tsc2007.h
+index 69b08dd6c8df1..e346fb4f75521 100644
+--- a/drivers/input/touchscreen/tsc2007.h
++++ b/drivers/input/touchscreen/tsc2007.h
+@@ -19,6 +19,7 @@
+ #ifndef _TSC2007_H
+ #define _TSC2007_H
+ 
++#include <linux/input/touchscreen.h>
+ struct gpio_desc;
+ 
+ #define TSC2007_MEASURE_TEMP0		(0x0 << 4)
+@@ -63,6 +64,7 @@ struct tsc2007 {
+ 
+ 	struct i2c_client	*client;
+ 
++	struct touchscreen_properties prop;
+ 	u16			model;
+ 	u16			x_plate_ohms;
+ 	u16			max_rt;
+diff --git a/drivers/input/touchscreen/tsc2007_core.c b/drivers/input/touchscreen/tsc2007_core.c
+index 8d832a372b897..5252301686ec6 100644
+--- a/drivers/input/touchscreen/tsc2007_core.c
++++ b/drivers/input/touchscreen/tsc2007_core.c
+@@ -142,8 +142,7 @@ static irqreturn_t tsc2007_soft_irq(int irq, void *handle)
+ 			rt = ts->max_rt - rt;
+ 
+ 			input_report_key(input, BTN_TOUCH, 1);
+-			input_report_abs(input, ABS_X, tc.x);
+-			input_report_abs(input, ABS_Y, tc.y);
++			touchscreen_report_pos(input, &ts->prop, tc.x, tc.y, false);
+ 			input_report_abs(input, ABS_PRESSURE, rt);
+ 
+ 			input_sync(input);
+@@ -339,9 +338,9 @@ static int tsc2007_probe(struct i2c_client *client)
+ 	input_set_drvdata(input_dev, ts);
+ 
+ 	input_set_capability(input_dev, EV_KEY, BTN_TOUCH);
+-
+ 	input_set_abs_params(input_dev, ABS_X, 0, MAX_12BIT, ts->fuzzx, 0);
+ 	input_set_abs_params(input_dev, ABS_Y, 0, MAX_12BIT, ts->fuzzy, 0);
++	touchscreen_parse_properties(input_dev, false, &ts->prop);
+ 	input_set_abs_params(input_dev, ABS_PRESSURE, 0, MAX_12BIT,
+ 			     ts->fuzzz, 0);
+ 
 -- 
 2.39.2
 
