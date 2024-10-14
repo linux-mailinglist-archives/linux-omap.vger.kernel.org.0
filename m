@@ -1,49 +1,62 @@
-Return-Path: <linux-omap+bounces-2411-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2413-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046E999CA25
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2024 14:30:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4EAB99CFA6
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2024 16:56:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96C871F23633
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2024 12:30:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 088CF1C2341B
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2024 14:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CAA01A4E9F;
-	Mon, 14 Oct 2024 12:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81461CACFA;
+	Mon, 14 Oct 2024 14:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cc8oNisw"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="HSlBYlWX"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4101A4AB3;
-	Mon, 14 Oct 2024 12:30:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3711C303A;
+	Mon, 14 Oct 2024 14:53:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728909024; cv=none; b=cVzPqbZ0rRLcttWxozpxvPALmDaFptaEjcPqgYmSOssB47NAOhUe48cFYMGEF+c5ZIRs7Bcztfx20JVgDB1bnQOFGjxgM3ev7Rekth4XL4IrDeUpGGyDWjwSKcQSfmtXtDqK3h/uaYoaqWzFSc6ofNJ99wsO5H6gL9ioNfTsaiI=
+	t=1728917629; cv=none; b=Ts7xS0F/0YUU34xts1kT1wmdrqRE6ODt+8HiUhu7qZ5vyU97pkFGgZ7xlFSPLimgBwiP66FvLlY62J8zjDjSEdAlzqCGDnlX3IG2zvioGbN0KY7AQNbfwBHnAe39t1ZZLEZ5QMJ6UOxr0z+a5Av0eaL3ipXqdsWBYsACKb92ik0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728909024; c=relaxed/simple;
-	bh=XVK9EjCdeEAv4B/wdJyWPtMZjV/x5MQsY7gUvvin5dU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=OEfjGcPXhf1hlLofS+tA/gjifnXuJL7CK2Ii8Vu6bu2c5FpaaViFcJ8IuYkblzU1/wXyDfFh7sdQTk4DrD+FQRQjmbBo5a/BisEe5VwAm8WYCUd+xnyp9RmKxb01adV56r9trK/VISBjSdl7WhDYeWPorwpPcs97hyaKVmz4qzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cc8oNisw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E56C4CEC3;
-	Mon, 14 Oct 2024 12:30:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728909024;
-	bh=XVK9EjCdeEAv4B/wdJyWPtMZjV/x5MQsY7gUvvin5dU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=cc8oNisw3v0g4p9hXkd/PebHJc8em1Ay7gUAztHCIcaSLKYcZGeuxAa85xc8Lesh2
-	 YZAu+IiiwkmJha+280HQYX1OjvSeTxCYtJnxqsLD3BwYiNQ7JHQVUb3va3xHvwsPYk
-	 6Kr+k8zsYuRh6baZVOFmSs65IiuaFt/E3JX6KRH6YggGultzGAJtKpycu1pZuF8arZ
-	 +TxvbfVZ3PJopZ2mLbPoEcGYYUdAux8ETpus6v6ZkGVuPJ0zagBWPVbmV2uiW3ifbz
-	 G+k3Ia3/9pW/RmP7kKKxuvGiyHmaONsP8A5D7eAmxwXtkxXWlO7yIAVkVJU86d7voX
-	 flCAHVNoh6ZGA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 715D43822E4C;
-	Mon, 14 Oct 2024 12:30:30 +0000 (UTC)
+	s=arc-20240116; t=1728917629; c=relaxed/simple;
+	bh=oUVukm9STL6kt7psZEb5CMMMJANo5cADWByz4L1JE1c=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=TUpYUT3C3RPifha2TX1pwjCWPPBnoW0QLiGaNxNxgghhm4+AuogTuac1Z/8DJFKlYtmHVcLblIpDUPH1F6PwRQ6Nn95+a0flfa/iSYvjwFJrKDTY+rmnK8VufDRu9usJk1xz9kuCTLExIJCWaOGSMj5AwIDAbfhpYwLfGU5Fbos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=HSlBYlWX; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=From:Sender:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=lp5ayGMbaEMRV2NJ0zX0xRA46vwyiDoLRxWN3jh1y8A=; b=HSlBYlWXNjV/RXvjzM9s72dMnr
+	GdtfKuQ+5ytUMDEo+m08LOwgKuHouf1evegZKR88k3kiBv8ILzb19sd25CgXb1BRKq78KzxiJ1n4B
+	kIl0PbC6lCo1mUnechx6Kyei7IJT4pmBUomYx+9PJJgwtUUZ7ecCkJKYuW8wMCyaDkODkEGFiIPpj
+	kwx0W6J15iWLIs9bZuu+bUGzQqRM0Ot4yCB4DkH5bWOx/WsSxCNJCqWmnTKU5bxG1X4he8qfoKFGg
+	G2F6gccB+ZMTU4Kxhuk9+hz/GQWn2PuPBZzXbCqnVaQggzpQAnIO17r0Yl3/kd3S9pvyMiqvUY3bb
+	yJbMGp/A==;
+From: Andreas Kemnade <andreas@kemnade.info>
+To: khilman@baylibre.com,
+	devicetree@vger.kernel.org,
+	Tony Lindgren <tony@atomide.com>,
+	linux-kernel@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Conor Dooley <conor+dt@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	linux-input@vger.kernel.org,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	linux-omap@vger.kernel.org
+Subject: [PATCH 0/2] ARM: ti/omap: gta04: properly specify GTA04 touchscreen properties
+Date: Mon, 14 Oct 2024 16:12:38 +0200
+Message-Id: <20241014141240.92072-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.2
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -52,49 +65,22 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/3] net: ethernet: ti: Address some warnings
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <172890902927.497553.15127625651293052823.git-patchwork-notify@kernel.org>
-Date: Mon, 14 Oct 2024 12:30:29 +0000
-References: <20241010-ti-warn-v2-0-9c8304af5544@kernel.org>
-In-Reply-To: <20241010-ti-warn-v2-0-9c8304af5544@kernel.org>
-To: Simon Horman <horms@kernel.org>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, s-vadapalli@ti.com, rogerq@kernel.org, nathan@kernel.org,
- ndesaulniers@google.com, morbo@google.com, justinstitt@google.com,
- kalesh-anakkur.purayil@broadcom.com, netdev@vger.kernel.org,
- linux-omap@vger.kernel.org, llvm@lists.linux.dev
 
-Hello:
+Specify touchscreen in a way that no userspace configuration is needed.
 
-This series was applied to netdev/net-next.git (main)
-by David S. Miller <davem@davemloft.net>:
+Note: if the devicetree patch is in without the input patch, things
+will be broken in a different way.
 
-On Thu, 10 Oct 2024 12:04:09 +0100 you wrote:
-> Hi,
-> 
-> This patchset addresses some warnings flagged by Sparse, and clang-18 in
-> TI Ethernet drivers.
-> 
-> Although these changes do not alter the functionality of the code, by
-> addressing them real problems introduced in future which are flagged by
-> tooling will stand out more readily.
-> 
-> [...]
+Andreas Kemnade (2):
+  Input: tsc2007 - accept standard properties
+  ARM: dts: ti/omap: omap3-gta04: use proper touchscreen properties
 
-Here is the summary with links:
-  - [net-next,v2,1/3] net: ethernet: ti: am65-cpsw: Use __be64 type for id_temp
-    https://git.kernel.org/netdev/net-next/c/5c16e118b796
-  - [net-next,v2,2/3] net: ethernet: ti: am65-cpsw: Use tstats instead of open coded version
-    https://git.kernel.org/netdev/net-next/c/4a7b2ba94a59
-  - [net-next,v2,3/3] net: ethernet: ti: cpsw_ale: Remove unused accessor functions
-    https://git.kernel.org/netdev/net-next/c/2c9eacbb56de
+ arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi | 6 ++++--
+ drivers/input/touchscreen/tsc2007.h        | 2 ++
+ drivers/input/touchscreen/tsc2007_core.c   | 5 ++---
+ 3 files changed, 8 insertions(+), 5 deletions(-)
 
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.39.2
 
 
