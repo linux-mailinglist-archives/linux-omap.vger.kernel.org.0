@@ -1,46 +1,46 @@
-Return-Path: <linux-omap+bounces-2414-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2412-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3938A99CFAB
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2024 16:57:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27BD699CFA1
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2024 16:56:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F24F52837A5
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2024 14:57:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E003428C709
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2024 14:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3081CC179;
-	Mon, 14 Oct 2024 14:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E991AC448;
+	Mon, 14 Oct 2024 14:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="ISC9u4+Q"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="m3N/hZUO"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CED91CBE82;
-	Mon, 14 Oct 2024 14:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8475E4595B;
+	Mon, 14 Oct 2024 14:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728917632; cv=none; b=MSAp6ssLlmcIJa1c40h8wCp0PcBiHK7+bntU6ht2i73NyqbRVvzm2y0xj1j1K/OllvVUNkIpiv4zbIjjmD6zB5ExlUFF4q5uwt1G8InTXjdUOr7Enz66xfkwmZJSFvEX7CC0cYhVRC30WlFKlxuIH92MNwGYYPU9Drji1qeqleA=
+	t=1728917626; cv=none; b=JCvEErKVaCHpNZaT373E8gKlJeh7sK5FFAvFG7XVC6LkouX9F3OCJxEUwYDQpngIi4QgCugJHFA60lDoivNv6jGNGxR8htyNtNm2qu1W5zu7cMDzGHWTOws7RPO1XrLD5Dg16z+COSjgfv60OAy2rMeXiKhsQMMRbctwCsxqqzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728917632; c=relaxed/simple;
-	bh=29G8ECvETDfh2WadY+mE8ZjBcP3848PKCmM1Z1+ZSDw=;
+	s=arc-20240116; t=1728917626; c=relaxed/simple;
+	bh=8fVr6gzTsVSd9RJTj3DDOtYEVKuodxZash/T0KweiBw=;
 	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MoJDxaDEBisS7jCYGJkKWCQIUTfA5XPcGA5jIvNIQ9+MH7aawn02jDC5WJ8BKle8vQWxSPlPdzw6ntn37j2iRMzDpe+gWeYy9LRMGm4GSC1Xk6efho8w8kRr+Svu3es0izyn5x+D7XyQF/WqVE2o9LYwDdcvDF9K2whKu3yzyXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=ISC9u4+Q; arc=none smtp.client-ip=178.238.236.174
+	 MIME-Version; b=k0GwR7fDY3WzyPqApTjoYqBFHiEeghLIkgt0ki0IIrueT+M0bMLE1E7etiYmwK1iS2coruqefFl8Fy1LUXe8EFvlYcfzRVj+DW+Zq5+QeMJSl7g/Po7PaLXPkMlsrJONexcj8TJqmUNTHKyseVl9ppogj0CDDlE17EUJPy94tio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=m3N/hZUO; arc=none smtp.client-ip=178.238.236.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=kemnade.info; s=20220719; h=References:In-Reply-To:From:Sender:Reply-To:Cc:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=Aa5zOAlNxgnq3cdfWL7tQky3C+H1xGL4iFEI0MzyYuE=; b=ISC9u4+Q6qi04JODGrlJRT5icY
-	Z9dmTXFrXegiWZP4U8QZu8ZXj1QtHCZ4Ks8EZToMGkzpEHfX9yix5kbKtZxHB5tD/wFVk2QZU+7sO
-	Dx4bIdHzmckFLqA8msmM4tTm/uJaVNNmtqbWcSfszmdrLZYrOfopazTYH9Ah778urnZ1b0Ny1J07V
-	/CRu/FioD1pwVfx11V3v4CVlyeoN2yj1KmzcS+6xpgxJwHPWb1C1eQ12MoM3pzxANJv0Fsfq3CapD
-	P2UPtWhQ7ZKqJoI4Ae/2G95cTPUflkcsuvqWwBt2XwpuO5OzixvNZKbwdsqZc9UL1trGm7IgNOuDC
-	17FpiUxg==;
+	bh=tEHKWSYZzrPud4eXjIaCbUyCf6H6XReStSM2EiV1xCk=; b=m3N/hZUOAZgKVqJ4STMDBZ0Rpp
+	oqj6R4bYf+U08CcHux+/PgpLknRmBcxJUe6bzXKupy5H7fy+8A/sSgql/Mu5Z6DMMiOlKJbEqXGdo
+	bAHEojeqXPirMCkTIG+qcxoIcY38uE91q8GeXEjGPeTCUmwZj56e6Qaswx+vBW9FLRcACYSK4s6iU
+	QieP3cbOOuzCnuKc8QxdZh5iZ0RfQRh+tlvEj8aqsf5PLqliwTffMv2aQ21fk34CTdnnejrRPn7LX
+	LHy6IjXo1cPfJWbFIvVkUTsFkTGgXH84Gteei0Rai23dbH4sy+gc2KrQqtUjWrGWknPff4dPD9SK5
+	yiom9F/Q==;
 From: Andreas Kemnade <andreas@kemnade.info>
 To: khilman@baylibre.com,
 	devicetree@vger.kernel.org,
@@ -54,9 +54,9 @@ To: khilman@baylibre.com,
 	linux-input@vger.kernel.org,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	linux-omap@vger.kernel.org
-Subject: [PATCH 1/2] Input: tsc2007 - accept standard properties
-Date: Mon, 14 Oct 2024 16:12:39 +0200
-Message-Id: <20241014141240.92072-2-andreas@kemnade.info>
+Subject: [PATCH 2/2] ARM: dts: ti/omap: omap3-gta04: use proper touchscreen properties
+Date: Mon, 14 Oct 2024 16:12:40 +0200
+Message-Id: <20241014141240.92072-3-andreas@kemnade.info>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20241014141240.92072-1-andreas@kemnade.info>
 References: <20241014141240.92072-1-andreas@kemnade.info>
@@ -68,61 +68,37 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Only some driver-specific properties were accepted, change it
-to use the now-available standard properties which are
-found in devicetrees containing this chip.
+Specify the dimensions of the touchscreen propertly so that
+no userspace configuration is needed for it.
+Tested with x11 and weston on Debian bookworm.
+
+What is in now is some debris from earlier tries to handle
+scaling in kernel:
+
+https://lore.kernel.org/linux-input/cover.1482936802.git.hns@goldelico.com/
 
 Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
 ---
- drivers/input/touchscreen/tsc2007.h      | 2 ++
- drivers/input/touchscreen/tsc2007_core.c | 5 ++---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/input/touchscreen/tsc2007.h b/drivers/input/touchscreen/tsc2007.h
-index 69b08dd6c8df1..e346fb4f75521 100644
---- a/drivers/input/touchscreen/tsc2007.h
-+++ b/drivers/input/touchscreen/tsc2007.h
-@@ -19,6 +19,7 @@
- #ifndef _TSC2007_H
- #define _TSC2007_H
- 
-+#include <linux/input/touchscreen.h>
- struct gpio_desc;
- 
- #define TSC2007_MEASURE_TEMP0		(0x0 << 4)
-@@ -63,6 +64,7 @@ struct tsc2007 {
- 
- 	struct i2c_client	*client;
- 
-+	struct touchscreen_properties prop;
- 	u16			model;
- 	u16			x_plate_ohms;
- 	u16			max_rt;
-diff --git a/drivers/input/touchscreen/tsc2007_core.c b/drivers/input/touchscreen/tsc2007_core.c
-index 8d832a372b897..5252301686ec6 100644
---- a/drivers/input/touchscreen/tsc2007_core.c
-+++ b/drivers/input/touchscreen/tsc2007_core.c
-@@ -142,8 +142,7 @@ static irqreturn_t tsc2007_soft_irq(int irq, void *handle)
- 			rt = ts->max_rt - rt;
- 
- 			input_report_key(input, BTN_TOUCH, 1);
--			input_report_abs(input, ABS_X, tc.x);
--			input_report_abs(input, ABS_Y, tc.y);
-+			touchscreen_report_pos(input, &ts->prop, tc.x, tc.y, false);
- 			input_report_abs(input, ABS_PRESSURE, rt);
- 
- 			input_sync(input);
-@@ -339,9 +338,9 @@ static int tsc2007_probe(struct i2c_client *client)
- 	input_set_drvdata(input_dev, ts);
- 
- 	input_set_capability(input_dev, EV_KEY, BTN_TOUCH);
--
- 	input_set_abs_params(input_dev, ABS_X, 0, MAX_12BIT, ts->fuzzx, 0);
- 	input_set_abs_params(input_dev, ABS_Y, 0, MAX_12BIT, ts->fuzzy, 0);
-+	touchscreen_parse_properties(input_dev, false, &ts->prop);
- 	input_set_abs_params(input_dev, ABS_PRESSURE, 0, MAX_12BIT,
- 			     ts->fuzzz, 0);
- 
+diff --git a/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi b/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
+index 3661340009e7a..6e25db29a4bb9 100644
+--- a/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
++++ b/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
+@@ -591,8 +591,10 @@ tsc2007@48 {
+ 		interrupts = <0 IRQ_TYPE_EDGE_FALLING>; /* GPIO_160 */
+ 		gpios = <&gpio6 0 GPIO_ACTIVE_LOW>;	/* GPIO_160 */
+ 		ti,x-plate-ohms = <600>;
+-		touchscreen-size-x = <480>;
+-		touchscreen-size-y = <640>;
++		touchscreen-size-x = <0xf00>;
++		touchscreen-size-y = <0xf00>;
++		touchscreen-min-x = <0x100>;
++		touchscreen-min-y = <0x100>;
+ 		touchscreen-max-pressure = <1000>;
+ 		touchscreen-fuzz-x = <3>;
+ 		touchscreen-fuzz-y = <8>;
 -- 
 2.39.2
 
