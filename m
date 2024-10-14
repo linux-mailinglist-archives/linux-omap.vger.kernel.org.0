@@ -1,92 +1,100 @@
-Return-Path: <linux-omap+bounces-2410-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2411-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9219199B4D0
-	for <lists+linux-omap@lfdr.de>; Sat, 12 Oct 2024 14:27:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 046E999CA25
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2024 14:30:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B49E31C21703
-	for <lists+linux-omap@lfdr.de>; Sat, 12 Oct 2024 12:27:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96C871F23633
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2024 12:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA7E1714BA;
-	Sat, 12 Oct 2024 12:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CAA01A4E9F;
+	Mon, 14 Oct 2024 12:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="1mnqTPr0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cc8oNisw"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5031547EC;
-	Sat, 12 Oct 2024 12:27:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4101A4AB3;
+	Mon, 14 Oct 2024 12:30:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728736040; cv=none; b=sJ6hsZEAN3hZakEzj/aHG61T9zJLWXO/V2EP8d/UhZZimZaza77W33u9SvfX0A5rXtndY6S9V7rADtszeOwRPXreN5PG+qlJESMZqm91hh439KEAKwGgufKsfuddT4zP/7FPnvk5N7VyMikPNPnyASDpCX1Ym8LJRP7LCeSonHg=
+	t=1728909024; cv=none; b=cVzPqbZ0rRLcttWxozpxvPALmDaFptaEjcPqgYmSOssB47NAOhUe48cFYMGEF+c5ZIRs7Bcztfx20JVgDB1bnQOFGjxgM3ev7Rekth4XL4IrDeUpGGyDWjwSKcQSfmtXtDqK3h/uaYoaqWzFSc6ofNJ99wsO5H6gL9ioNfTsaiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728736040; c=relaxed/simple;
-	bh=AW3dEJfXkbvZDC5i5vXpP3e1g5C6PDrzUBF9uv7oO34=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KkPA6HhOpGmBpfgf1z9twGB0dHVaYTkllUmY869AxTwfe9Xrv4Dxo+xXt8l6DF9ckZNeH24WHxguYc3IfXP4O+5y1YiscNKyXyNxMZs8Vf9Ad4srYVJ5WITdSN5skpOjpQLmRC63I8lBccPWE3lECP4MFGI5wdUvN49sT34LvUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=1mnqTPr0; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=4ouJYdrPCXF2NJQrf7iMXlQZzT4n+FtO70LbtnE4RZU=; b=1mnqTPr0eBEi3IeJWGox1VV5/1
-	inNkaoFOaWMs96HyZ2kcGkhbzo32MQCaV9GLJESuvPKnN8KZ2gbhmOovzeSMblWibDR/MZG/xkHwa
-	9/BCRYDBkY3gTtPGyivmAT4lCVk6HhimUy9kcfNoUa+eApDA9OofreMMjYlEdy0MO2zEjrB72oes3
-	uReUcx4lhaAYTiM7C3tm9ODy3+M0b7UGI9yOITXzKa3mzXBH/L2uQWpfhE6w2IBJJKOnCXCk1ti1w
-	xGjvoLshLjrdCPbUAQj/X/XaK2lQOrZpr0++0OMN6a606W5dND76raZ3Q8FDviwDS1/MgeLVPfIJS
-	hlxmkWng==;
-Date: Sat, 12 Oct 2024 14:27:05 +0200
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Judith Mendez <jm@ti.com>
-Cc: Santosh Shilimkar <ssantosh@kernel.org>, Kevin Hilman
- <khilman@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, Bartosz
- Golaszewski <brgl@bgdev.pl>, <linux-omap@vger.kernel.org>,
- <linux-gpio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Bin Liu
- <b-liu@ti.com>, <linux-serial@vger.kernel.org>
-Subject: Re: [PATCH RESEND 2/2] serial: 8250: omap: Move pm_runtime_get_sync
-Message-ID: <20241012142705.45948f7d@akair>
-In-Reply-To: <20241011173356.870883-3-jm@ti.com>
-References: <20241011173356.870883-1-jm@ti.com>
-	<20241011173356.870883-3-jm@ti.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1728909024; c=relaxed/simple;
+	bh=XVK9EjCdeEAv4B/wdJyWPtMZjV/x5MQsY7gUvvin5dU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=OEfjGcPXhf1hlLofS+tA/gjifnXuJL7CK2Ii8Vu6bu2c5FpaaViFcJ8IuYkblzU1/wXyDfFh7sdQTk4DrD+FQRQjmbBo5a/BisEe5VwAm8WYCUd+xnyp9RmKxb01adV56r9trK/VISBjSdl7WhDYeWPorwpPcs97hyaKVmz4qzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cc8oNisw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E56C4CEC3;
+	Mon, 14 Oct 2024 12:30:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728909024;
+	bh=XVK9EjCdeEAv4B/wdJyWPtMZjV/x5MQsY7gUvvin5dU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=cc8oNisw3v0g4p9hXkd/PebHJc8em1Ay7gUAztHCIcaSLKYcZGeuxAa85xc8Lesh2
+	 YZAu+IiiwkmJha+280HQYX1OjvSeTxCYtJnxqsLD3BwYiNQ7JHQVUb3va3xHvwsPYk
+	 6Kr+k8zsYuRh6baZVOFmSs65IiuaFt/E3JX6KRH6YggGultzGAJtKpycu1pZuF8arZ
+	 +TxvbfVZ3PJopZ2mLbPoEcGYYUdAux8ETpus6v6ZkGVuPJ0zagBWPVbmV2uiW3ifbz
+	 G+k3Ia3/9pW/RmP7kKKxuvGiyHmaONsP8A5D7eAmxwXtkxXWlO7yIAVkVJU86d7voX
+	 flCAHVNoh6ZGA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 715D43822E4C;
+	Mon, 14 Oct 2024 12:30:30 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2 0/3] net: ethernet: ti: Address some warnings
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172890902927.497553.15127625651293052823.git-patchwork-notify@kernel.org>
+Date: Mon, 14 Oct 2024 12:30:29 +0000
+References: <20241010-ti-warn-v2-0-9c8304af5544@kernel.org>
+In-Reply-To: <20241010-ti-warn-v2-0-9c8304af5544@kernel.org>
+To: Simon Horman <horms@kernel.org>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, s-vadapalli@ti.com, rogerq@kernel.org, nathan@kernel.org,
+ ndesaulniers@google.com, morbo@google.com, justinstitt@google.com,
+ kalesh-anakkur.purayil@broadcom.com, netdev@vger.kernel.org,
+ linux-omap@vger.kernel.org, llvm@lists.linux.dev
 
-Am Fri, 11 Oct 2024 12:33:56 -0500
-schrieb Judith Mendez <jm@ti.com>:
+Hello:
 
-> Currently in omap_8250_shutdown, the dma->rx_running
-> flag is set to zero in omap_8250_rx_dma_flush. Next
-> pm_runtime_get_sync is called, which is a runtime
-> resume call stack which can re-set the flag. When the
-> call omap_8250_shutdown returns, the flag is expected
-> to be UN-SET, but this is not the case. This is causing
-> issues the next time UART is re-opened and omap_8250_rx_dma
-> is called. Fix by moving pm_runtime_get_sync before the
-> omap_8250_rx_dma_flush.
+This series was applied to netdev/net-next.git (main)
+by David S. Miller <davem@davemloft.net>:
+
+On Thu, 10 Oct 2024 12:04:09 +0100 you wrote:
+> Hi,
 > 
-> Signed-off-by: Bin Liu <b-liu@ti.com>
-> Signed-off-by: Judith Mendez <jm@ti.com>
+> This patchset addresses some warnings flagged by Sparse, and clang-18 in
+> TI Ethernet drivers.
+> 
+> Although these changes do not alter the functionality of the code, by
+> addressing them real problems introduced in future which are flagged by
+> tooling will stand out more readily.
+> 
+> [...]
 
-Is this a theorectical problem or some real practical problem?
-So you are running a system with runtime pm enabled on serial
-console.
-How did you come across this issue?
-I could run the serial console/getty with runtime pm autosuspend enabled
-without issues all the years.
+Here is the summary with links:
+  - [net-next,v2,1/3] net: ethernet: ti: am65-cpsw: Use __be64 type for id_temp
+    https://git.kernel.org/netdev/net-next/c/5c16e118b796
+  - [net-next,v2,2/3] net: ethernet: ti: am65-cpsw: Use tstats instead of open coded version
+    https://git.kernel.org/netdev/net-next/c/4a7b2ba94a59
+  - [net-next,v2,3/3] net: ethernet: ti: cpsw_ale: Remove unused accessor functions
+    https://git.kernel.org/netdev/net-next/c/2c9eacbb56de
 
-Regards,
-Andreas
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
