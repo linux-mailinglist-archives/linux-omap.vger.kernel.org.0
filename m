@@ -1,118 +1,102 @@
-Return-Path: <linux-omap+bounces-2415-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2416-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 602A899D24D
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2024 17:24:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D380499D456
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2024 18:11:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23244286DBD
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2024 15:24:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A25FFB254EE
+	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2024 16:11:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8E61B4F0D;
-	Mon, 14 Oct 2024 15:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3AD1ADFF9;
+	Mon, 14 Oct 2024 16:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="HzQokqH2"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="9LrovJmu"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8341AE01F;
-	Mon, 14 Oct 2024 15:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16D81AC427;
+	Mon, 14 Oct 2024 16:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728919365; cv=none; b=MjwUeAsVZbtvmk5ojjtb2N97ksn1eVRe2SZ5dZx9/oO/rxsL7J25FDPTW/LXJ0+YkmMZKJ/G/XjIdqy1ypX4uJk18+pelkBuDzFlt13kb4DkNkwSQRe7CK7OQM7JIqFBd2lmOX2sgpj5sgofmfr6g7FMu7nzh3WgsijV9xLOeRM=
+	t=1728922281; cv=none; b=d2dDjtYfv5NQpv2RsCk2a4IWYm2NL+74Nq6xTjrlCWPLaP6qEgZrxJ/aXMSaBO40SmKVqd5XuILYRZ+j8Ygw+soAp0N1WoAwu/KqVnQsJlf5Yo33WuRrnuE/n17GUsH2XDcV1yngjC+xzM4/Gi3TpGq202XjuCaUJ75I6gw0/MI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728919365; c=relaxed/simple;
-	bh=riXFOTomC+rJMGpA1bmlrqeX3Yd+ngcuOvBAzntGC3Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KUETXbv+L6/Aagd1h2138a4JFeELk13+Yyr7Jer07lpbkydqppPlj1t9gqwV7hsZb3jzNgVcD2y3oF+s+e1Ftf1jXzPC39mo5i3/6qba2kq8pgsD/6luKtOhxi9OmG2pfCmyUXG+blCrYwhgTpEAdlJ17RjB5p0K3tRGjsGEBq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=HzQokqH2; arc=none smtp.client-ip=178.238.236.174
+	s=arc-20240116; t=1728922281; c=relaxed/simple;
+	bh=CCqoYBX8pBuwkzPFUfuawngByr5CbP5nCkxTn1wCSCg=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=VxadRcHDaZCjsFxHZ5WepwElz/8emq36INGhZkLsgyzs4z1RPZBkKBaQKmKtn3kQ09NWriY8ghPtyXwyFkYE87ETyhQmQjywR3ltMgSe+A1IZC0WWJ0RcReRN+pRaPU8MiB+8Su23yNNAoroOYe9puPzQ8190nIJM/SB4MNUIcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=9LrovJmu; arc=none smtp.client-ip=178.238.236.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=riXFOTomC+rJMGpA1bmlrqeX3Yd+ngcuOvBAzntGC3Y=; b=HzQokqH2HhbTAwK0NvS/BSx/lN
-	S+gpVOrdx1XnxxgppSHuLlOyRzSg1/TAGLw+Hv7IYnoXWkgYcFj0htDoLTAghLwy9vx9s6ivPlNdg
-	rtqVtcqPsSA2ttFf4Vt4NvE6drpug/dFXTTLFSBohy2wQ9bs6KSgnSw72/GHlDlHoS7/5w7pIAPm0
-	qr4+KoYm2HsCSW/G0x1sn0fWpQBivOAcu961c1vgDhtNjLvVKTK96mLsLDgf31WtECME0qE0wNlga
-	srHIudAXzkLkyWd8RP2Tbq5pDyFbP4wTsBDEosrzXuRZPgiiCIZ8BcM+Rs+um/q9P0beHkTSIOqWM
-	onwvGadQ==;
-Date: Mon, 14 Oct 2024 17:22:37 +0200
+	d=kemnade.info; s=20220719; h=Cc:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=GA4cCZNoAOxgHgJeiTfPi9G3f1MMYyOonIw27jABOF0=; b=9LrovJmuyzjNeWyHc9x5F+yWFg
+	+YvnQ6F3cqHPrrTaDOQIiBkuuoiN+I0sz4tYr5BiSpeeTPFrHw20en34dQssbg5YekGtbljys9V7i
+	bWkaMJf/FXeEjME91Nol0HHBuH5F9sxnMLfRUdgmZdkmM+2y9KyqvO/q+7Z9X+yz91YNIRRJHhdem
+	8JlmKuD/Eam+QC0dmRovTWCZ97JJIe4CjpuJRqThJxWRn1k7Wrdv/8Wi8tVXVjf4JCrN0zPgcBkp1
+	BClszf1/Y/1ZLxQlbKqb05oF0GwMZFtEmE0KJByuuoRL5L7ixGO6SRkFgyVdF/Phcnf0/fIZgiV+/
+	z0CvWc1Q==;
 From: Andreas Kemnade <andreas@kemnade.info>
-To: Bin Liu <binmlist@gmail.com>
-Cc: Judith Mendez <jm@ti.com>, Santosh Shilimkar <ssantosh@kernel.org>,
- Kevin Hilman <khilman@kernel.org>, Linus Walleij
- <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
- linux-omap@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Bin Liu <b-liu@ti.com>,
- linux-serial@vger.kernel.org
-Subject: Re: [PATCH RESEND 2/2] serial: 8250: omap: Move pm_runtime_get_sync
-Message-ID: <20241014172237.63e9625f@akair>
-In-Reply-To: <4297747A-8AB9-4E50-93FF-723672B6471C@gmail.com>
-References: <20241012142705.45948f7d@akair>
-	<4297747A-8AB9-4E50-93FF-723672B6471C@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+To: Tony Lindgren <tony@atomide.com>,
+	linux-omap@vger.kernel.org,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Lee Jones <lee@kernel.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	linux-kernel@vger.kernel.org,
+	Roger Quadros <rogerq@kernel.org>,
+	linux-clk@vger.kernel.org,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Cc: Andreas Kemnade <andreas@kemnade.info>
+Subject: [PATCH v5 0/3] mfd: twl: Add clock for TWL6030
+Date: Mon, 14 Oct 2024 18:11:06 +0200
+Message-Id: <20241014161109.2222-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.5
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Am Sun, 13 Oct 2024 21:52:05 -0500
-schrieb Bin Liu <binmlist@gmail.com>:
+Previously the clock support for only implemented for TWL6032 so add
+it also for the TWL6030. There are devices out there where especially
+WLAN only works if these clocks are enabled by some patched U-Boot.
+This allows to explicitly specify the clock requirements.
 
-> Hi,
->=20
-> Somehow this email wasn=E2=80=99t cc=E2=80=99d to my company email account
-> b-liu@ti.com, so I am replying from my personal email which
-> subscribed to the mailing list, and sorry if the formatting is wrong
-> since I am writing this response on my phone.=C2=A0
->=20
-> On Oct 12, 2024, at 7:27=E2=80=AFAM, Andreas Kemnade <andreas@kemnade.inf=
-o>
-> wrote:
-> >=20
-> > =EF=BB=BFAm Fri, 11 Oct 2024 12:33:56 -0500
-> > schrieb Judith Mendez <jm@ti.com>:
-> >=20
-> > Currently in omap_8250_shutdown, the dma->rx_running
-> >> flag is set to zero in omap_8250_rx_dma_flush. Next
-> >> pm_runtime_get_sync is called, which is a runtime
-> >> resume call stack which can re-set the flag. When the
-> >> call omap_8250_shutdown returns, the flag is expected
-> >> to be UN-SET, but this is not the case. This is causing
-> >> issues the next time UART is re-opened and omap_8250_rx_dma
-> >> is called. Fix by moving pm_runtime_get_sync before the
-> >> omap_8250_rx_dma_flush.
-> >>=20
-> >> Signed-off-by: Bin Liu <b-liu@ti.com>
-> >> Signed-off-by: Judith Mendez <jm@ti.com>
-> >>=20
-> > Is this a theorectical problem or some real practical problem?
-> > So you are running a system with runtime pm enabled on serial
-> > console.
-> > How did you come across this issue?
-> > I could run the serial console/getty with runtime pm autosuspend
-> > enabled without issues all the years.
-> >=20
-> Yes this is a real issue reported on AM335x. Please see the report
-> linked below.
->=20
-> PROCESSOR-SDK-AM335X: Possible bug in 8250_omap UART driver -
-> Processors forum - Processors - TI E2E support forums e2e.ti.com
->=20
->=20
-Thanks for information, so it looks like material for backporting.
-Maybe add the link in the description and add the cc stable and=20
-add back the fixes tag.
+Changes in V5:
+- fix unprepare 6032 vs 30 mismatch
 
-Regards,
-Andreas
+Changes in V4:
+- cleanup if (TWL6032_SUBCLASS)
+
+Changes in V3:
+- use type enum in driver_data and twl_clock_info
+- revert back to store device instead of platform_device
+
+Changes in V2:
+- cleanup some defines
+- no separate ops for 6030
+- remove is_prepared()
+- update Kconfig
+
+Andreas Kemnade (3):
+  mfd: twl-core: Add a clock subdevice for the TWL6030
+  clk: twl: remove is_prepared
+  clk: twl: add TWL6030 support
+
+ drivers/clk/Kconfig    |  2 +-
+ drivers/clk/clk-twl.c  | 69 ++++++++++++++++++++++++++----------------
+ drivers/mfd/twl-core.c | 26 +++++++++++-----
+ 3 files changed, 62 insertions(+), 35 deletions(-)
+
+-- 
+2.39.5
+
 
