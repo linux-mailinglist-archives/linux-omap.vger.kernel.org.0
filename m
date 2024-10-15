@@ -1,122 +1,136 @@
-Return-Path: <linux-omap+bounces-2420-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2421-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A89799D491
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2024 18:24:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A84B499DFA7
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Oct 2024 09:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABF851C2365C
-	for <lists+linux-omap@lfdr.de>; Mon, 14 Oct 2024 16:24:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D4F028261E
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Oct 2024 07:49:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 518951B4F15;
-	Mon, 14 Oct 2024 16:24:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b="ku52fG03"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226A71AAE2C;
+	Tue, 15 Oct 2024 07:49:47 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from meesny.iki.fi (meesny.iki.fi [195.140.195.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628401ADFF9;
-	Mon, 14 Oct 2024 16:24:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=195.140.195.201
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728923090; cv=fail; b=CO4DvI5SyCOh9ZqLZfJ2+c/OPnEMyDeUGBUw1WqD+1o1b36iWpDu4j716weGTDxGJZ4MVI990dI33i6ZN1C3b8pDuZowFv9NAdrAI8nLjvYKnhbLcsSKxH/ba1HERvlpLGnTH71pLZHfveJr08O3cS9LTppG/jJ5EyhhqMsYveI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728923090; c=relaxed/simple;
-	bh=lgVZeGHaAeoVCaZ7zXfdGDNEV1YbO1LVdewMscb//Oc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Mo4dPG147R+2O3vXVGcMIH/zWGhMdntVat3yOIq5QTrkMcwVNXtlNcp9Zk3PHz+g3R+pLZXjt+ils2IGY4VHSZAYF29ry15dm5PHZ6lvxVW+KgSXaVXPY7/hy60mJbgvegSHbEAnx0eFS4xZDJ+o4TYZ7PxSnZHBr+hK0QG3drk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b=ku52fG03; arc=fail smtp.client-ip=195.140.195.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
-Received: from darkstar.musicnaut.iki.fi (85-76-77-198-nat.elisa-mobile.fi [85.76.77.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: aaro.koskinen)
-	by meesny.iki.fi (Postfix) with ESMTPSA id 4XS2cl1kVMzyQK;
-	Mon, 14 Oct 2024 19:24:39 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
-	t=1728923080;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bA88+Mwqcu5TZnmEDMTMatD0BKBGd4kdYquoS68m2WQ=;
-	b=ku52fG03aScxdHq2rJkQRkp8cMQFHabGe9J5p/+nlrubv6mTQ/YnKhtgGTbHNlc0QJJ6BJ
-	5rYH5+1iz7WqVbJ1LzSJQ8fdD7yHDiahJJ/zPbzVYvZD6G0u/jQPuWvI+QwGG9VUPDvHlX
-	9Egs2h8e1kALnATOtQrit7PaK50hVu0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=meesny; t=1728923080;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bA88+Mwqcu5TZnmEDMTMatD0BKBGd4kdYquoS68m2WQ=;
-	b=GLKKt0dd0aPsnhOb33Mnviq7/X6KnqacA+hMHKOajyk9D6o+8XdMAsHTY5Y3niLsmZsUdm
-	zdAdwFbzACkWYNSA7sPCkJbxUaG8IcPDm0YOhvIMbycCY1V/5xxfwZGXTYF0RZUUMdNAcj
-	zd9bGS6criXhl4O6G657whC27cL/Mbw=
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
-ARC-Seal: i=1; s=meesny; d=iki.fi; t=1728923080; a=rsa-sha256; cv=none;
-	b=BrmgWvL4sGQ2P9OOZGpp8GGlMjFWZiIfs0Sypxy7ZfctAvwN1jmV5sKz80L8lLQksD1rot
-	VsJT8n7GEmrr+kZi9xHmx/ZKfvHY/tdl2AwuhtJ5Y9/DqMgvoQ5IzCtfCdFbf2BnimY/bg
-	tz3nd5A2Ftu8kibH6xnvYhFCdNuHRcA=
-Date: Mon, 14 Oct 2024 19:24:37 +0300
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: linux-kernel@vger.kernel.org, Tony Lindgren <tony@atomide.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>, linux-omap@vger.kernel.org,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH] MAINTAINERS: sync omap devicetree maintainers with omap
- platform
-Message-ID: <Zw1FxSzcs1OSR8QR@darkstar.musicnaut.iki.fi>
-References: <20240915195321.1071967-1-andreas@kemnade.info>
+Received: from cmccmta3.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF998189BBF;
+	Tue, 15 Oct 2024 07:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.139
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728978586; cv=none; b=kw/Ssgy71zbxIDZ6CZxQAJ0Vc2v2x6ckMBaelzbrvaf3M5Z/yT80moXp3XgbVDtSDTs7++W0CfxPoJvPFk3XKzrYbL1/k3HpmEVv3nzbcwuPqOfFebaQVfGWSLsqo3e65sqNCzBYzPlC/jhXM+aavKfuqCIo31/++0wXNr8G6fw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728978586; c=relaxed/simple;
+	bh=ERi7IPOprRx59JXhjMC3xTcDaqfRPPR8xmHcnPlE138=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mlu9XtP4Ud2oY0YS7eE5TCY9lNzNhPy9bcn9pFPFr6bGrXuDjF/e5cYW6Z3DKCxMwO5n+xJF6KXmBDH9jJPP5Iij1BzU1cn52i3pXaGPVyC2I0E5cSingEBXZnT1c5OdMyj/IqnYx4pDOj3qgHdolkKDGIhM5A0r5ehFpoL0VXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; arc=none smtp.client-ip=111.22.67.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app09-12009 (RichMail) with SMTP id 2ee9670e1e9281e-2782b;
+	Tue, 15 Oct 2024 15:49:40 +0800 (CST)
+X-RM-TRANSID:2ee9670e1e9281e-2782b
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[223.108.79.103])
+	by rmsmtp-syy-appsvr07-12007 (RichMail) with SMTP id 2ee7670e1e93b5a-f518e;
+	Tue, 15 Oct 2024 15:49:40 +0800 (CST)
+X-RM-TRANSID:2ee7670e1e93b5a-f518e
+From: Liu Jing <liujing@cmss.chinamobile.com>
+To: peter.ujfalusi@gmail.com
+Cc: jarkko.nikula@bitmer.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	alsa-devel@alsa-project.org,
+	linux-omap@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Liu Jing <liujing@cmss.chinamobile.com>
+Subject: [PATCH] Use card->dev in replace of the &pdev->dev argument in the dev_err function
+Date: Tue, 15 Oct 2024 15:49:38 +0800
+Message-Id: <20241015074938.6247-1-liujing@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.27.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240915195321.1071967-1-andreas@kemnade.info>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Because card->dev = &pdev->dev is already defined in the rx51_soc_probe function,
+and then &pdev->dev is still used.
 
-On Sun, Sep 15, 2024 at 09:53:21PM +0200, Andreas Kemnade wrote:
-> Both used to go through Tony's branches, so lets keep things together.
-> This was missed at the time when Co-Maintainers were added.
-> 
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> ---
->  MAINTAINERS | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index cc40a9d9b8cd1..755c378cb2e73 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16653,6 +16653,10 @@ S:	Maintained
->  F:	arch/arm/*omap*/*clock*
->  
->  OMAP DEVICE TREE SUPPORT
-> +M:	Aaro Koskinen <aaro.koskinen@iki.fi>
+Signed-off-by: Liu Jing <liujing@cmss.chinamobile.com>
+---
+ sound/soc/ti/rx51.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+diff --git a/sound/soc/ti/rx51.c b/sound/soc/ti/rx51.c
+index 77296237575a..d9900c69e536 100644
+--- a/sound/soc/ti/rx51.c
++++ b/sound/soc/ti/rx51.c
+@@ -371,7 +371,7 @@ static int rx51_soc_probe(struct platform_device *pdev)
+ 
+ 		dai_node = of_parse_phandle(np, "nokia,cpu-dai", 0);
+ 		if (!dai_node) {
+-			dev_err(&pdev->dev, "McBSP node is not provided\n");
++			dev_err(card->dev, "McBSP node is not provided\n");
+ 			return -EINVAL;
+ 		}
+ 		rx51_dai[0].cpus->dai_name = NULL;
+@@ -381,7 +381,7 @@ static int rx51_soc_probe(struct platform_device *pdev)
+ 
+ 		dai_node = of_parse_phandle(np, "nokia,audio-codec", 0);
+ 		if (!dai_node) {
+-			dev_err(&pdev->dev, "Codec node is not provided\n");
++			dev_err(card->dev, "Codec node is not provided\n");
+ 			return -EINVAL;
+ 		}
+ 		rx51_dai[0].codecs->name = NULL;
+@@ -389,7 +389,7 @@ static int rx51_soc_probe(struct platform_device *pdev)
+ 
+ 		dai_node = of_parse_phandle(np, "nokia,audio-codec", 1);
+ 		if (!dai_node) {
+-			dev_err(&pdev->dev, "Auxiliary Codec node is not provided\n");
++			dev_err(card->dev, "Auxiliary Codec node is not provided\n");
+ 			return -EINVAL;
+ 		}
+ 		rx51_aux_dev[0].dlc.name = NULL;
+@@ -399,7 +399,7 @@ static int rx51_soc_probe(struct platform_device *pdev)
+ 
+ 		dai_node = of_parse_phandle(np, "nokia,headphone-amplifier", 0);
+ 		if (!dai_node) {
+-			dev_err(&pdev->dev, "Headphone amplifier node is not provided\n");
++			dev_err(card->dev, "Headphone amplifier node is not provided\n");
+ 			return -EINVAL;
+ 		}
+ 		rx51_aux_dev[1].dlc.name = NULL;
+@@ -408,7 +408,7 @@ static int rx51_soc_probe(struct platform_device *pdev)
+ 		rx51_codec_conf[1].dlc.of_node = dai_node;
+ 	}
+ 
+-	pdata = devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KERNEL);
++	pdata = devm_kzalloc(card->dev, sizeof(*pdata), GFP_KERNEL);
+ 	if (pdata == NULL)
+ 		return -ENOMEM;
+ 
+@@ -439,7 +439,7 @@ static int rx51_soc_probe(struct platform_device *pdev)
+ 
+ 	err = devm_snd_soc_register_card(card->dev, card);
+ 	if (err) {
+-		dev_err(&pdev->dev, "snd_soc_register_card failed (%d)\n", err);
++		dev_err(card->dev, "snd_soc_register_card failed (%d)\n", err);
+ 		return err;
+ 	}
+ 
+-- 
+2.27.0
 
-A.
 
-> +M:	Andreas Kemnade <andreas@kemnade.info>
-> +M:	Kevin Hilman <khilman@baylibre.com>
-> +M:	Roger Quadros <rogerq@kernel.org>
->  M:	Tony Lindgren <tony@atomide.com>
->  L:	linux-omap@vger.kernel.org
->  L:	devicetree@vger.kernel.org
-> -- 
-> 2.39.2
-> 
-> 
+
 
