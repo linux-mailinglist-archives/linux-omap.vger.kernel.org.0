@@ -1,136 +1,81 @@
-Return-Path: <linux-omap+bounces-2421-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2422-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84B499DFA7
-	for <lists+linux-omap@lfdr.de>; Tue, 15 Oct 2024 09:49:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1361099E12B
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Oct 2024 10:33:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D4F028261E
-	for <lists+linux-omap@lfdr.de>; Tue, 15 Oct 2024 07:49:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A556EB23122
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Oct 2024 08:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226A71AAE2C;
-	Tue, 15 Oct 2024 07:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6DC1C8776;
+	Tue, 15 Oct 2024 08:33:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JP3f/g+o"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from cmccmta3.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF998189BBF;
-	Tue, 15 Oct 2024 07:49:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.139
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA2318BBA2;
+	Tue, 15 Oct 2024 08:33:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728978586; cv=none; b=kw/Ssgy71zbxIDZ6CZxQAJ0Vc2v2x6ckMBaelzbrvaf3M5Z/yT80moXp3XgbVDtSDTs7++W0CfxPoJvPFk3XKzrYbL1/k3HpmEVv3nzbcwuPqOfFebaQVfGWSLsqo3e65sqNCzBYzPlC/jhXM+aavKfuqCIo31/++0wXNr8G6fw=
+	t=1728981193; cv=none; b=lY/j8JTM17P4WvLagQUEtTvcKmff5JF4Nx5a+f9MbpGMM93b9/yLFAqQh8Z2E8nvk+FP33XdFOd9wk1GpHACVL3nuGF3Ej9I5e6OSmjvII/yTnPhcHuQkTfMAO92jjmP9lK0HBMD2DR/2q2evEstPw+HCwmLq+KdA98aCMmu/Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728978586; c=relaxed/simple;
-	bh=ERi7IPOprRx59JXhjMC3xTcDaqfRPPR8xmHcnPlE138=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mlu9XtP4Ud2oY0YS7eE5TCY9lNzNhPy9bcn9pFPFr6bGrXuDjF/e5cYW6Z3DKCxMwO5n+xJF6KXmBDH9jJPP5Iij1BzU1cn52i3pXaGPVyC2I0E5cSingEBXZnT1c5OdMyj/IqnYx4pDOj3qgHdolkKDGIhM5A0r5ehFpoL0VXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; arc=none smtp.client-ip=111.22.67.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app09-12009 (RichMail) with SMTP id 2ee9670e1e9281e-2782b;
-	Tue, 15 Oct 2024 15:49:40 +0800 (CST)
-X-RM-TRANSID:2ee9670e1e9281e-2782b
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.localdomain (unknown[223.108.79.103])
-	by rmsmtp-syy-appsvr07-12007 (RichMail) with SMTP id 2ee7670e1e93b5a-f518e;
-	Tue, 15 Oct 2024 15:49:40 +0800 (CST)
-X-RM-TRANSID:2ee7670e1e93b5a-f518e
-From: Liu Jing <liujing@cmss.chinamobile.com>
-To: peter.ujfalusi@gmail.com
-Cc: jarkko.nikula@bitmer.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org,
-	linux-omap@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Liu Jing <liujing@cmss.chinamobile.com>
-Subject: [PATCH] Use card->dev in replace of the &pdev->dev argument in the dev_err function
-Date: Tue, 15 Oct 2024 15:49:38 +0800
-Message-Id: <20241015074938.6247-1-liujing@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.27.0
+	s=arc-20240116; t=1728981193; c=relaxed/simple;
+	bh=qSHMuG4Fq9b0x2gCn0cRZ9FrjmHewU55gF4kABDNxWM=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=XC5jTQqGox1UlqGkdCpi2y5LzgJQlcXIac1J0OmUHxm5M7ScemLdKohBtyYbkcb3irUE4mqa2f/s8QA6hsdheixo0EwJNPWXZjZ+HSEVqu50AlDCQuiAftinnbbdXnm8Op4X+A9C8JuyiEfqunA4LRTJhPrYsjq5QenNGv0+4V0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JP3f/g+o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60009C4CEC7;
+	Tue, 15 Oct 2024 08:33:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728981192;
+	bh=qSHMuG4Fq9b0x2gCn0cRZ9FrjmHewU55gF4kABDNxWM=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=JP3f/g+opdc1UaZ70uB6cQ6IUa/824NdZeIpu4s1so0/WjMWSo+vSs+3fH1k8rx6n
+	 8xyQAfNpQzC+eKxnIoVLHk7u1cG5NExJzfo2kDnFp/u29xoA8h6jCnp8qE2YWKqew2
+	 qTROn8srssPzf0DVTmpaIfJHJa5jVCR/4a9EDAvFMe9g6clsgrkYFtGFnusQ+duvSQ
+	 UXpYWDwFhMHnjeLCDoIbstSCgoXvYW+RdK0ZXG8XSMPNakwDPaiaXNpi6nyf72FX/k
+	 YIee06lE6+LLeh1SjU4gYpyaLRsXyA0j3D6jPQ85FJLVSmt5fM+lzTyh55UMOTRcSw
+	 51UJaPW/LRZyg==
+From: Lee Jones <lee@kernel.org>
+To: Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org, 
+ Aaro Koskinen <aaro.koskinen@iki.fi>, Lee Jones <lee@kernel.org>, 
+ Kevin Hilman <khilman@baylibre.com>, linux-kernel@vger.kernel.org, 
+ Roger Quadros <rogerq@kernel.org>, linux-clk@vger.kernel.org, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Andreas Kemnade <andreas@kemnade.info>
+In-Reply-To: <20241014161109.2222-2-andreas@kemnade.info>
+References: <20241014161109.2222-1-andreas@kemnade.info>
+ <20241014161109.2222-2-andreas@kemnade.info>
+Subject: Re: (subset) [PATCH v5 1/3] mfd: twl-core: Add a clock subdevice
+ for the TWL6030
+Message-Id: <172898119013.384451.4986094816910935104.b4-ty@kernel.org>
+Date: Tue, 15 Oct 2024 09:33:10 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.13.0
 
-Because card->dev = &pdev->dev is already defined in the rx51_soc_probe function,
-and then &pdev->dev is still used.
+On Mon, 14 Oct 2024 18:11:07 +0200, Andreas Kemnade wrote:
+> Also the TWL6030 has some clocks, so add a subdevice for that.
+> 
+> 
 
-Signed-off-by: Liu Jing <liujing@cmss.chinamobile.com>
----
- sound/soc/ti/rx51.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Applied, thanks!
 
-diff --git a/sound/soc/ti/rx51.c b/sound/soc/ti/rx51.c
-index 77296237575a..d9900c69e536 100644
---- a/sound/soc/ti/rx51.c
-+++ b/sound/soc/ti/rx51.c
-@@ -371,7 +371,7 @@ static int rx51_soc_probe(struct platform_device *pdev)
- 
- 		dai_node = of_parse_phandle(np, "nokia,cpu-dai", 0);
- 		if (!dai_node) {
--			dev_err(&pdev->dev, "McBSP node is not provided\n");
-+			dev_err(card->dev, "McBSP node is not provided\n");
- 			return -EINVAL;
- 		}
- 		rx51_dai[0].cpus->dai_name = NULL;
-@@ -381,7 +381,7 @@ static int rx51_soc_probe(struct platform_device *pdev)
- 
- 		dai_node = of_parse_phandle(np, "nokia,audio-codec", 0);
- 		if (!dai_node) {
--			dev_err(&pdev->dev, "Codec node is not provided\n");
-+			dev_err(card->dev, "Codec node is not provided\n");
- 			return -EINVAL;
- 		}
- 		rx51_dai[0].codecs->name = NULL;
-@@ -389,7 +389,7 @@ static int rx51_soc_probe(struct platform_device *pdev)
- 
- 		dai_node = of_parse_phandle(np, "nokia,audio-codec", 1);
- 		if (!dai_node) {
--			dev_err(&pdev->dev, "Auxiliary Codec node is not provided\n");
-+			dev_err(card->dev, "Auxiliary Codec node is not provided\n");
- 			return -EINVAL;
- 		}
- 		rx51_aux_dev[0].dlc.name = NULL;
-@@ -399,7 +399,7 @@ static int rx51_soc_probe(struct platform_device *pdev)
- 
- 		dai_node = of_parse_phandle(np, "nokia,headphone-amplifier", 0);
- 		if (!dai_node) {
--			dev_err(&pdev->dev, "Headphone amplifier node is not provided\n");
-+			dev_err(card->dev, "Headphone amplifier node is not provided\n");
- 			return -EINVAL;
- 		}
- 		rx51_aux_dev[1].dlc.name = NULL;
-@@ -408,7 +408,7 @@ static int rx51_soc_probe(struct platform_device *pdev)
- 		rx51_codec_conf[1].dlc.of_node = dai_node;
- 	}
- 
--	pdata = devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KERNEL);
-+	pdata = devm_kzalloc(card->dev, sizeof(*pdata), GFP_KERNEL);
- 	if (pdata == NULL)
- 		return -ENOMEM;
- 
-@@ -439,7 +439,7 @@ static int rx51_soc_probe(struct platform_device *pdev)
- 
- 	err = devm_snd_soc_register_card(card->dev, card);
- 	if (err) {
--		dev_err(&pdev->dev, "snd_soc_register_card failed (%d)\n", err);
-+		dev_err(card->dev, "snd_soc_register_card failed (%d)\n", err);
- 		return err;
- 	}
- 
--- 
-2.27.0
+[1/3] mfd: twl-core: Add a clock subdevice for the TWL6030
+      commit: 5ebc60259a0fdd13aef077726b1773f1ae091efc
 
-
+--
+Lee Jones [李琼斯]
 
 
