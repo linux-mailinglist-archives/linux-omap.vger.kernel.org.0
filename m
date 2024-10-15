@@ -1,56 +1,56 @@
-Return-Path: <linux-omap+bounces-2429-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2430-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D21EA99F60D
-	for <lists+linux-omap@lfdr.de>; Tue, 15 Oct 2024 20:51:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29D7399F696
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Oct 2024 20:58:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D7C42820E1
-	for <lists+linux-omap@lfdr.de>; Tue, 15 Oct 2024 18:51:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC4DA28330C
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Oct 2024 18:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72852175D48;
-	Tue, 15 Oct 2024 18:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7C81B6CFE;
+	Tue, 15 Oct 2024 18:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="MC+ozjnY"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="XhIh3es0"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDDD2036F1;
-	Tue, 15 Oct 2024 18:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63441F80DF;
+	Tue, 15 Oct 2024 18:53:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729018297; cv=none; b=uQfTmy5tO+dhnX1zHGdzWG5aLtygMqDX7jIBrYRh7Y+yLrWYVfgJHT/FXY4/+YHxaDiY28l+bG34BPwL2eWeF5rlygCHTFQNKt87lD6QWgw/nUDetxcWtuC8XAMgZSTlTbnfuj3wKDlVA8yCYajtuO9RJS3e6zD5SelGm8ZShCc=
+	t=1729018419; cv=none; b=JDEIPyHmrIUJsb+OnO9+p6Jobi985o2833IQnYqgPxZUc5hDLPRBKW/fFy1Q5RR6VICPZ2fZyoIlzT7kBHSrEXMU6oJnGk75PxTOQ7/RFDl652kHfHmXb6NANTgpP1Ca+5tlualwOtVU8GT5e+gM6Xrw8znK+fu3lh00Ufigyuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729018297; c=relaxed/simple;
-	bh=4RQYhM1GERHWSxPDCyVIe0s/83fAm3MMFNdqMZSuIfk=;
+	s=arc-20240116; t=1729018419; c=relaxed/simple;
+	bh=FnvPIsPJXXekymtGe9+tlCMWyTNarqOY411JwMK9xXw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=kvce9gTQn3+q64X5M3Al0veqAUYLjTOF/7iMrYWCYqact0WDvr+bcyiwFw1Es7VJDtE+aOKCtt20BoQ+dWuTwxcreWaZi9vHNaowyYvMNxB/OPu2yuauALEOhDeQsuLxFmygPC7JThUMqjhmZKcnwzNBdON+8n+CHBhROAdK4sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=MC+ozjnY; arc=none smtp.client-ip=212.227.15.15
+	 In-Reply-To:Content-Type; b=l1L8jR91N6xxKEXVQlwlQL3ZELS8yJnCDEmcaNLxAaZj5faE4wNRlYjn4CA8xja4W33OhtN4cjaub3qWgmy7MqxHr9g7eHfFMoaO3YZEienosAasGeDf6iT5uOqch3LCkTvYyu3pXuvuWkVELC3BzC81KIGzPprplQywwAzISlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=XhIh3es0; arc=none smtp.client-ip=212.227.15.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1729018269; x=1729623069; i=deller@gmx.de;
-	bh=9jaQnEjymFY3oxOxnvMn1q08An0kyg3ycazGUlE2w4Y=;
+	s=s31663417; t=1729018395; x=1729623195; i=deller@gmx.de;
+	bh=/4lCssT+YxgQtaLjUjFf7pmDtxcsWNYEpDD9ZxoWbWE=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=MC+ozjnYCodS1EJ0Jv4hpnQM7VCHIB5SXkONEUhNHuAOnVlfFVPVIIs7VLPy2PtZ
-	 o9vBYGYylfNDj/5P23G9x7Pu6dolQAsb8h8utLkcwMEHaagBj4JO3uSPxoUiN6xDt
-	 OAGKl09queEsN/xtOniVe9DxH8dtbOLPGKOi+A+oNce44ed8bgTmDW450AVXVEy0O
-	 lgF8ouPYMEZxLpCkg+ItHAnPABawQtjB30yb2RSIYwELsgQ7IymtseNP24ZAz30KS
-	 kuw7SNpseL1dXniyaKJ3y9Sn6CKLHqo5qnkn941bWO/GzjI/Si9vOCDT2vqNb3vst
-	 w1MSBMBmZxSHwmtPSQ==
+	b=XhIh3es0T3mmY4YPODzwoJg50iq7lLmBh5XdP6N9t7qV/6wbsnAU8+5UxbKsez4V
+	 ooqxT+w02b1AcpMyTQbN6J9fw2qtgSSKlQZsuVBhDWGb3wn82mteL3Xiuw6pfetgL
+	 sYESuKkjlMZMsPaGlL0P/H0s3HTSwLYEJzy+5nPw7Rz1Lxl9Ux2x8cEItcIqCIAn/
+	 qu/idri56jSff+qkIKE3Hxn3AjMfc2QEKB1T1657Usva+UXlJFFDJoWSqRJSJ3cXd
+	 iOAHe5C2R8CB5zZGwcGVX9CwolZB5JC6Fhu05+uibmo9OJhwMEW3xT8nXYzdKJ9cr
+	 Y8yLMbwSITYnaCf2gg==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([109.250.63.79]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N7i8O-1u46wB0nD8-00zMgp; Tue, 15
- Oct 2024 20:51:09 +0200
-Message-ID: <cc055b74-f424-45a9-a4ae-d8881dd985a0@gmx.de>
-Date: Tue, 15 Oct 2024 20:51:07 +0200
+Received: from [192.168.20.55] ([109.250.63.79]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Ma24s-1tUVIt2oVw-00SG6H; Tue, 15
+ Oct 2024 20:53:15 +0200
+Message-ID: <2981d860-ea1e-4973-839b-1c5bbfe9a1b2@gmx.de>
+Date: Tue, 15 Oct 2024 20:53:14 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -58,14 +58,16 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 8/9] fbdev: omapfb: use new of_graph functions
+Subject: Re: [PATCH v7 7/9] gpu: drm: omapdrm: use new of_graph functions
 To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
- Jaroslav Kysela <perex@perex.cz>, Rob Herring <robh@kernel.org>,
+ Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
  devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
  linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
- linux-omap@vger.kernel.org
+ linux-media@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-sound@vger.kernel.org
 References: <87wmiirqwy.wl-kuninori.morimoto.gx@renesas.com>
- <87ldyyrqv7.wl-kuninori.morimoto.gx@renesas.com>
+ <87msjerqvc.wl-kuninori.morimoto.gx@renesas.com>
 Content-Language: en-US
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
@@ -111,41 +113,85 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <87ldyyrqv7.wl-kuninori.morimoto.gx@renesas.com>
+In-Reply-To: <87msjerqvc.wl-kuninori.morimoto.gx@renesas.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:EdVI0VSYeL3LEOEJi+jbSkms2cqQAE1hN0i+/9ZcCXcEGnmNG0n
- gj0Dp1Xb0FLCEB1Pmha36fyLEIHmAUNJHUnVUOXn/XYf+iwVVsIDWvqJuByBOfLs91Bk1se
- o7WoInpOefGGHfmvdjloogyUuWi7FcB2xNXLcOOFyyNv1Z5QQzIG9OHBEqHjDEG0N40k5yZ
- 2gzcyvmMsR2CUL+wYCTfA==
+X-Provags-ID: V03:K1:GMZwETlnB80Lx7Otxy4eciy8ZRlWTkiD3kOGYHPUY+DW0DX7Sk+
+ Nz6yJ7efbum5vN1tDD9Dlnt3UHEYyic6GqUmkj3eTC/O8W4/oQWqn2rgHU+WD0O/MyExG7g
+ BGCxHyUr/MRxQEpBhCWHW18JGepRdF5WOgiMozEECgHYSFbeux3Imoh7ATBpwX5l+1LWC7z
+ TBfrKEKBmeiVYnnvdeR/w==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:zPouFLlPz0M=;gnMXag3WKBn0uZpYW3G8t8VVrpZ
- afPUrS5i7P6iHoOeiY3ybTUI1T9MIwvF4UP+R3whEtLqyxOfU/o8tGlZyLpnfWDEz5KONemre
- IAENelYowMsZgNUbMnEEK0IjNezITScNNToEpsfISMUl3xd0XuNTSzCaODbbE9TKGHesY62NE
- J6vxs5qX2NQyciPX1SAMJxDJNiy9lk3SjiZY0CE9LL6+IYrkD2V20vF5Inr684DjOTlkS2S40
- z/XcBtCaIk6krvXzWoNLjAfB2A1qNbX0kQ6oOrj17nAyaLtjbaSMRaFP+LL/cPI8WcREpJP1B
- QkTPCdBmlRzMhXYls+moSajojWqQCjYk4G1jOkOvkft/QdIxKLwwOUc3KcOkgvu6mpV3TX9PG
- syqwv4QFGASh0gEJk3i09GnQ+x9Sc4jgYjJ9WaSHjLT+HmE/RgNF9ZBAM1dXi+V187aK9Jbec
- Pvd/8jAOx26pFr0qbpEA3HNx9FteXYf4s8ngCLSPyq6HqYWhbMHdzSSTmyvXX7Jr59Dmc+jQh
- JNyEouHIE4zTWJLxZ8kRXw4hwWcgBGdyl40hZchV1i7NcjY8jz90g9jnECs4H/HtlCfc6uNEe
- MeXUZT2Yn7yLdqp+5/7a6wp0ypiLcPhadiQ6Bv9Ka6C6X7bphQ4gMWIZ7iYsSw4ZOmBE3PaAH
- F2CF18RMFVSrmRI/8qEfoQKXJ7d5v87K5AiBPaAb+fymm5RxHTInVDHm6Fg1/JdwzD2gBl8qm
- e67vOz3BEHpTKxuDIdollUZSzQPjCdAJ3hWXPYRhGO9abUozXJRMLToc65DOOIJFw85lh4lIC
- C0cnFw0CMCHBNbG8fF+Z92OQ==
+UI-OutboundReport: notjunk:1;M01:P0:M9nxfO0ieLk=;HGpKT2hr0ywTMcNBYmZ+kEtFgPm
+ 7yWjFAi4wPel1wpdJCNOCFD7cujb7i990YvEaLXWRoOMMW15ikXUtwZDYGroLrMYl6V5xkOou
+ uBvAIX+ICdneoSBA+TUqF3VR4QD5JAxOueXxE0KgCGqla2Vy1k5MFoZ07dKEIcOIuz+S8I73j
+ JSbSPRIs8G2OExkpprbfKl1mveT5gB19g2y9lNY5VA8WeHS3car+FjtG0cSEe3XT1wZVxo3gl
+ gBKhJEIW+JPkSinFxxwv3U6Dq0l+TolXSxTg+Y7AGCamH2z1tIh1faox0C6o8UI2C9/6Hj89I
+ zY1bwK1/FmRwcXODy2o1XfbUKoOg8ppWGpxKGtAwAdeeKz7j1b3znSu0lpmFxk4+FeKNJIkSL
+ kFSZgvXNbPoXKapj97w7ilZlXsso0ut8HBZsiMWuOPDXXOnonrgXuRvoYK9We+ooY/zWwIpCm
+ TVscp0UrQrNvAgl4FJTM9E13pHJcNdONEVuCwEOymoMwmaRwDw3nNQPEDtjK2oLOt5cGECrA0
+ WQbQtLrX/eH77zyMeuuuUPMt8KnfKTRbPtwd1c2Cr34NoEUf5vU0R1fDBrdA2TkHdQtfZJJ30
+ sORoRqXJqhP0FYVJcjunFt94vCO/T+NEvadP0EFx+LYyqIJZ3gIMjTOAvqYZ7xz1E5uySvdTy
+ tJq1Oc8azbYP6YmkJdvbUcfwjzOe7K1TkAXjsiWpVATxID1oECLpj+0XMZlph1BjtdhKSh2Dg
+ Rjb0Upa/keHA24ZDq27eA2H/A23xrbmoSUXwICQnhLCBl3b0fjEMQVt6X8kHMfU52Qgozs2QR
+ f4+Ma3DKCwORYv9FIKP+Px4A==
 
 On 10/9/24 03:45, Kuninori Morimoto wrote:
 > Now we can use new port related functions for port parsing. Use it.
 >
 > Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-
+> Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
 Acked-by: Helge Deller <deller@gmx.de>
 
 > ---
->   drivers/video/fbdev/omap2/omapfb/dss/dpi.c    |  3 +-
->   drivers/video/fbdev/omap2/omapfb/dss/dss-of.c | 66 -------------------
->   drivers/video/fbdev/omap2/omapfb/dss/dss.c    | 20 +++---
->   drivers/video/fbdev/omap2/omapfb/dss/sdi.c    |  3 +-
->   include/video/omapfb_dss.h                    |  8 ---
->   5 files changed, 13 insertions(+), 87 deletions(-)
+>   drivers/gpu/drm/omapdrm/dss/dpi.c | 3 ++-
+>   drivers/gpu/drm/omapdrm/dss/sdi.c | 3 ++-
+>   2 files changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/omapdrm/dss/dpi.c b/drivers/gpu/drm/omapdrm=
+/dss/dpi.c
+> index 030f997eccd0..b17e77f700dd 100644
+> --- a/drivers/gpu/drm/omapdrm/dss/dpi.c
+> +++ b/drivers/gpu/drm/omapdrm/dss/dpi.c
+> @@ -16,6 +16,7 @@
+>   #include <linux/export.h>
+>   #include <linux/kernel.h>
+>   #include <linux/of.h>
+> +#include <linux/of_graph.h>
+>   #include <linux/platform_device.h>
+>   #include <linux/regulator/consumer.h>
+>   #include <linux/string.h>
+> @@ -709,7 +710,7 @@ int dpi_init_port(struct dss_device *dss, struct pla=
+tform_device *pdev,
+>   	if (!dpi)
+>   		return -ENOMEM;
+>
+> -	ep =3D of_get_next_child(port, NULL);
+> +	ep =3D of_graph_get_next_port_endpoint(port, NULL);
+>   	if (!ep)
+>   		return 0;
+>
+> diff --git a/drivers/gpu/drm/omapdrm/dss/sdi.c b/drivers/gpu/drm/omapdrm=
+/dss/sdi.c
+> index 91eaae3b9481..f9ae358e8e52 100644
+> --- a/drivers/gpu/drm/omapdrm/dss/sdi.c
+> +++ b/drivers/gpu/drm/omapdrm/dss/sdi.c
+> @@ -11,6 +11,7 @@
+>   #include <linux/export.h>
+>   #include <linux/kernel.h>
+>   #include <linux/of.h>
+> +#include <linux/of_graph.h>
+>   #include <linux/platform_device.h>
+>   #include <linux/regulator/consumer.h>
+>   #include <linux/string.h>
+> @@ -346,7 +347,7 @@ int sdi_init_port(struct dss_device *dss, struct pla=
+tform_device *pdev,
+>   	if (!sdi)
+>   		return -ENOMEM;
+>
+> -	ep =3D of_get_next_child(port, NULL);
+> +	ep =3D of_graph_get_next_port_endpoint(port, NULL);
+>   	if (!ep) {
+>   		r =3D 0;
+>   		goto err_free;
 
 
