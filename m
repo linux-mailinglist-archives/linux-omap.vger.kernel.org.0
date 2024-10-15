@@ -1,76 +1,56 @@
-Return-Path: <linux-omap+bounces-2428-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2429-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C35599F4EB
-	for <lists+linux-omap@lfdr.de>; Tue, 15 Oct 2024 20:12:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D21EA99F60D
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Oct 2024 20:51:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22D501F22879
-	for <lists+linux-omap@lfdr.de>; Tue, 15 Oct 2024 18:12:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D7C42820E1
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Oct 2024 18:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189641B21BA;
-	Tue, 15 Oct 2024 18:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72852175D48;
+	Tue, 15 Oct 2024 18:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aovbXWg2"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="MC+ozjnY"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E582038DC7
-	for <linux-omap@vger.kernel.org>; Tue, 15 Oct 2024 18:12:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDDD2036F1;
+	Tue, 15 Oct 2024 18:51:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729015941; cv=none; b=bdLSfya243JekRIbjd7j6q5fxKUk7xskDW2zmK8OaMNF4zz7QuplnN+q5RdeyGrI3NPm+6SBIn4U71HoIhaf80TtGQhHSy9EqBQr6z0bePU/k8EMaMVafS0sJbGLMjK36BajJf9SxytCiGs/2sd/pPrsy2YqIEFF1NwONoBQghg=
+	t=1729018297; cv=none; b=uQfTmy5tO+dhnX1zHGdzWG5aLtygMqDX7jIBrYRh7Y+yLrWYVfgJHT/FXY4/+YHxaDiY28l+bG34BPwL2eWeF5rlygCHTFQNKt87lD6QWgw/nUDetxcWtuC8XAMgZSTlTbnfuj3wKDlVA8yCYajtuO9RJS3e6zD5SelGm8ZShCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729015941; c=relaxed/simple;
-	bh=o3xTGKWw14K+2YCJ350EN3k9Ov8FIsTtbvqG2q9t+Pc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pat6e8cig+RogV9r4Ol17Y0VimMzgTm+T3P3T/SKhh7sti7fHnRGmNHGLZ32DpxkrZLwCSjwI0xqtLVr1PuHxBkG6AwdjbQUn7a3dpmN6TCyTPaYHxMHrlZayMAVEkp1mh9s/ls3AdveweFs6YE22/ycvHBgmxHrOTfHzxJ4GUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aovbXWg2; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2e2ed2230d8so3284953a91.0
-        for <linux-omap@vger.kernel.org>; Tue, 15 Oct 2024 11:12:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729015939; x=1729620739; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=o9gbxtrbkwmYfAu8IPWm7lrkELPbP+4od1knPrQZ4d0=;
-        b=aovbXWg2DQfyJPfs40BIUTXTEKje2K+blteXRhORDntBVnZ6TiMrB4TyU5PrupnFdZ
-         +XMhoGB/HIrERCrzG8iDuqsZ3s2+fQAQTp4R7vcwr/3H+9TRERWd7loE2vXPa9kaTPrS
-         SAm3wCEN/atVH5HoBkvEABRpUmeMED4Byv9Cf/CujwRXiViGTVsoxWrRngnegxis28w9
-         iVoXoHvWvPHiziABxqyD5ccVoCNiTt7XvR8roTPB9LTpHoAGqEIqp8Eq4SFnppvP8+01
-         OPngNXX9nptet0KpXH99H0aeOqFBQjSfLzwLzIscJgo+oCUyUuUeNxkZYoYLzDyKhRhW
-         UBDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729015939; x=1729620739;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o9gbxtrbkwmYfAu8IPWm7lrkELPbP+4od1knPrQZ4d0=;
-        b=MTDCA9/pMQZg6bcwfBFiSckl+wI5IiJbR5XYJVsYc1RT6kStZn98tKSKn39hfDFtQy
-         ZIkbUAxBnlNttTlayZNqauwEeuN5gP5t6b8UpbLn2ngGI70qt4KsCEfqSnWHqcQAmVUb
-         XOZBejdGTcB0Utt78vlHaAGbo3Q1jOAPwm/UwUbidml5nASYiYnjbe3fbfT1dQzjXBNY
-         xfBn3ovGOBUqAZxx4wzvLE7OhKgugzFzpwlXRZJI28lmFeXh+2FPWQMdua4Iriyo+qvO
-         7MX8/o1RpaInw8E8DU8fEALqBRXicQfm8iNNmuq1YXkIFWZLPyxqFDtMd7g4af5Q3Ch/
-         FvzA==
-X-Forwarded-Encrypted: i=1; AJvYcCWOSvJPn7D7ev4d/8ptsW+i+LM1LDpos/ajC/hQmnNJwSIkJ+V39j22fXso6eBEfq90t5R4j/IhGck0@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBwFXCmYNvCk7dsED4RfaIkV1wxw/FB0249j34QyAEWqDijQb6
-	6VL6akFB3xz4U9lU9B5pm66cV1TP4b45OAwEaoyQ/IkV8kUMnw4B
-X-Google-Smtp-Source: AGHT+IHvcmO5BATRNEmo8TJ+o91bxbQqNd5G+G0SL9TeJoNgQ8tXH4FgIOx0JejVbSh+yUSv7h6rZw==
-X-Received: by 2002:a17:90a:17e2:b0:2c8:65cf:e820 with SMTP id 98e67ed59e1d1-2e3151b7869mr15214998a91.2.1729015939103;
-        Tue, 15 Oct 2024 11:12:19 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20d1806c1c0sm14926035ad.301.2024.10.15.11.12.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Oct 2024 11:12:18 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <cf7c8f57-22d5-4a40-bd87-0f15f5457d48@roeck-us.net>
-Date: Tue, 15 Oct 2024 11:12:16 -0700
+	s=arc-20240116; t=1729018297; c=relaxed/simple;
+	bh=4RQYhM1GERHWSxPDCyVIe0s/83fAm3MMFNdqMZSuIfk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=kvce9gTQn3+q64X5M3Al0veqAUYLjTOF/7iMrYWCYqact0WDvr+bcyiwFw1Es7VJDtE+aOKCtt20BoQ+dWuTwxcreWaZi9vHNaowyYvMNxB/OPu2yuauALEOhDeQsuLxFmygPC7JThUMqjhmZKcnwzNBdON+8n+CHBhROAdK4sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=MC+ozjnY; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1729018269; x=1729623069; i=deller@gmx.de;
+	bh=9jaQnEjymFY3oxOxnvMn1q08An0kyg3ycazGUlE2w4Y=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=MC+ozjnYCodS1EJ0Jv4hpnQM7VCHIB5SXkONEUhNHuAOnVlfFVPVIIs7VLPy2PtZ
+	 o9vBYGYylfNDj/5P23G9x7Pu6dolQAsb8h8utLkcwMEHaagBj4JO3uSPxoUiN6xDt
+	 OAGKl09queEsN/xtOniVe9DxH8dtbOLPGKOi+A+oNce44ed8bgTmDW450AVXVEy0O
+	 lgF8ouPYMEZxLpCkg+ItHAnPABawQtjB30yb2RSIYwELsgQ7IymtseNP24ZAz30KS
+	 kuw7SNpseL1dXniyaKJ3y9Sn6CKLHqo5qnkn941bWO/GzjI/Si9vOCDT2vqNb3vst
+	 w1MSBMBmZxSHwmtPSQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.55] ([109.250.63.79]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N7i8O-1u46wB0nD8-00zMgp; Tue, 15
+ Oct 2024 20:51:09 +0200
+Message-ID: <cc055b74-f424-45a9-a4ae-d8881dd985a0@gmx.de>
+Date: Tue, 15 Oct 2024 20:51:07 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -78,123 +58,94 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: possible deprecation and removal of some old QEMU Arm machine
- types (pxa2xx, omap, sa1110)
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: QEMU Developers <qemu-devel@nongnu.org>, qemu-arm <qemu-arm@nongnu.org>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Aaro Koskinen <aaro.koskinen@iki.fi>,
- Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>,
- linux-omap@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- Daniel Mack <daniel@zonque.org>, Robert Jarzmik <robert.jarzmik@free.fr>,
- Haojian Zhuang <haojian.zhuang@gmail.com>, Thomas Huth <thuth@redhat.com>
-References: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
- <fe5476c7-82e0-4353-a943-7f39b14e1b5b@roeck-us.net>
- <CAFEAcA-bqOM4Ptws-tsEwo2HDZ6YSX1Y+xGkR0WueRD_dUd0+Q@mail.gmail.com>
- <7bd858a2-9983-4ddf-8749-09c9b2e261f9@roeck-us.net>
- <CAFEAcA_-eTfF8tVaLk4yLgWMSA1+KjPBYyS3EjMQNC+59hT0Aw@mail.gmail.com>
- <CAFEAcA95QmpcsrgCj5uE-Ng8ahNir3MuVEHWBCvjb3UwBbOFRA@mail.gmail.com>
- <ec0e8a75-c59f-41b3-b559-43c057fca8fd@roeck-us.net>
- <CAFEAcA9AZS1dGaLG85zZE8U0d7AcrLgKXNbhxkCoP+PLmbFn2g@mail.gmail.com>
+Subject: Re: [PATCH v7 8/9] fbdev: omapfb: use new of_graph functions
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+ Jaroslav Kysela <perex@perex.cz>, Rob Herring <robh@kernel.org>,
+ devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
+ linux-omap@vger.kernel.org
+References: <87wmiirqwy.wl-kuninori.morimoto.gx@renesas.com>
+ <87ldyyrqv7.wl-kuninori.morimoto.gx@renesas.com>
 Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <CAFEAcA9AZS1dGaLG85zZE8U0d7AcrLgKXNbhxkCoP+PLmbFn2g@mail.gmail.com>
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <87ldyyrqv7.wl-kuninori.morimoto.gx@renesas.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:EdVI0VSYeL3LEOEJi+jbSkms2cqQAE1hN0i+/9ZcCXcEGnmNG0n
+ gj0Dp1Xb0FLCEB1Pmha36fyLEIHmAUNJHUnVUOXn/XYf+iwVVsIDWvqJuByBOfLs91Bk1se
+ o7WoInpOefGGHfmvdjloogyUuWi7FcB2xNXLcOOFyyNv1Z5QQzIG9OHBEqHjDEG0N40k5yZ
+ 2gzcyvmMsR2CUL+wYCTfA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:zPouFLlPz0M=;gnMXag3WKBn0uZpYW3G8t8VVrpZ
+ afPUrS5i7P6iHoOeiY3ybTUI1T9MIwvF4UP+R3whEtLqyxOfU/o8tGlZyLpnfWDEz5KONemre
+ IAENelYowMsZgNUbMnEEK0IjNezITScNNToEpsfISMUl3xd0XuNTSzCaODbbE9TKGHesY62NE
+ J6vxs5qX2NQyciPX1SAMJxDJNiy9lk3SjiZY0CE9LL6+IYrkD2V20vF5Inr684DjOTlkS2S40
+ z/XcBtCaIk6krvXzWoNLjAfB2A1qNbX0kQ6oOrj17nAyaLtjbaSMRaFP+LL/cPI8WcREpJP1B
+ QkTPCdBmlRzMhXYls+moSajojWqQCjYk4G1jOkOvkft/QdIxKLwwOUc3KcOkgvu6mpV3TX9PG
+ syqwv4QFGASh0gEJk3i09GnQ+x9Sc4jgYjJ9WaSHjLT+HmE/RgNF9ZBAM1dXi+V187aK9Jbec
+ Pvd/8jAOx26pFr0qbpEA3HNx9FteXYf4s8ngCLSPyq6HqYWhbMHdzSSTmyvXX7Jr59Dmc+jQh
+ JNyEouHIE4zTWJLxZ8kRXw4hwWcgBGdyl40hZchV1i7NcjY8jz90g9jnECs4H/HtlCfc6uNEe
+ MeXUZT2Yn7yLdqp+5/7a6wp0ypiLcPhadiQ6Bv9Ka6C6X7bphQ4gMWIZ7iYsSw4ZOmBE3PaAH
+ F2CF18RMFVSrmRI/8qEfoQKXJ7d5v87K5AiBPaAb+fymm5RxHTInVDHm6Fg1/JdwzD2gBl8qm
+ e67vOz3BEHpTKxuDIdollUZSzQPjCdAJ3hWXPYRhGO9abUozXJRMLToc65DOOIJFw85lh4lIC
+ C0cnFw0CMCHBNbG8fF+Z92OQ==
 
-On 10/15/24 10:35, Peter Maydell wrote:
-> On Tue, 15 Oct 2024 at 18:30, Guenter Roeck <linux@roeck-us.net> wrote:
->>
->> On 10/15/24 10:13, Peter Maydell wrote:
->>> On Fri, 8 Mar 2024 at 15:41, Peter Maydell <peter.maydell@linaro.org> wrote:
->>>> Thanks to everybody for your input on this thread. My
->>>> proposal is to drop from QEMU:
->>>>    * all the PXA2xx machines
->>>>    * all the OMAP2 machines
->>>>    * the cheetah OMAP1 machine
->>>>
->>>> leaving (at least for now) sx1, sx1-v1, collie.
->>>
->>> This has now gone through. I'm now looking for test images
->>> for these remaining boards, so we can keep them from breaking
->>> when we do refactoring and code cleanup/modernization.
->>> Specifically, I'm looking for:
->>>    * QEMU command line
->>>    * all the binary blobs that go with it (hosted somewhere that
->>>      doesn't mind when our CI downloads all the images to run
->>>      its tests...)
->>>    * ideally, exercising the SD card interface if present
->>>
->>> Could the people who are still using/testing these boards
->>> help here ?
->>>
->>
->> You'll find everything at https://github.com/groeck/linux-build-test.git,
->> but give me a couple of days and I'll create explicit information.
-> 
-> Yeah, I had a look at that but could only find the rootfs
-> and got a bit lost trying to figure out what the QEMU
-> commandline would end up being :-)
-> 
+On 10/9/24 03:45, Kuninori Morimoto wrote:
+> Now we can use new port related functions for port parsing. Use it.
+>
+> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-Surprise :-)
+Acked-by: Helge Deller <deller@gmx.de>
 
->> Is it ok if I create a github repository specifically for this purpose,
->> or does it have to be direct file downloads ?
-> 
-> A github repo should be OK -- I'm pretty sure we can download
-> from there (e.g. we already download some rootfs images from
-> your linux-build-test github repo).
-> 
-
-Please let me know if https://github.com/groeck/linux-test-downloads.git
-meets your needs. For now I added 'collie'. I'll add more after it is
-in a state that is useful for you.
-
-Thanks,
-Guenter
+> ---
+>   drivers/video/fbdev/omap2/omapfb/dss/dpi.c    |  3 +-
+>   drivers/video/fbdev/omap2/omapfb/dss/dss-of.c | 66 -------------------
+>   drivers/video/fbdev/omap2/omapfb/dss/dss.c    | 20 +++---
+>   drivers/video/fbdev/omap2/omapfb/dss/sdi.c    |  3 +-
+>   include/video/omapfb_dss.h                    |  8 ---
+>   5 files changed, 13 insertions(+), 87 deletions(-)
 
 
