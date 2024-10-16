@@ -1,135 +1,116 @@
-Return-Path: <linux-omap+bounces-2432-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2434-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4807A99FB01
-	for <lists+linux-omap@lfdr.de>; Wed, 16 Oct 2024 00:12:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 221979A0394
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Oct 2024 10:05:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CFA2282534
-	for <lists+linux-omap@lfdr.de>; Tue, 15 Oct 2024 22:12:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE6F12812DA
+	for <lists+linux-omap@lfdr.de>; Wed, 16 Oct 2024 08:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342A81B6CE8;
-	Tue, 15 Oct 2024 22:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29741D460B;
+	Wed, 16 Oct 2024 08:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b="Y8MlYOVa"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="ViUJ/ZGW"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1021B0F2A;
-	Tue, 15 Oct 2024 22:11:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729030314; cv=pass; b=PIqqmk11RtR5IIUBqRkbvDHy5A3n2ENkFKEKTfnREW1EB83tlFQF0e9bQJ1fu919sATwrjQowPV4ZDFLX6PAqwf3Qb1ak2QbsdC1G5OlHyjh6xI0sI6r+lpbXMD7IiU4DEBbH+35NggLmgcQ0inLuN0c/wPEfH0qYQhitUF44cs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729030314; c=relaxed/simple;
-	bh=HMj/ZyO9zNpccPB0josTS7wpa0dytJ4KoeNtxF9AKRA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gPU2uKOiMT9DXVSv4rLRj9kQ9nOm07xcQiH0p9HbcN9c+TUF/VLv3KBr4x5msGln81CpUni8HOtRii8g/JuK8yC8Nc9iwDLUDM4/G3cmXwH0CN4AwGFCkP+pwgLZuuNaHBicb+yz0+m0AzLsm2SDMv6cWrWX82x7TCCSOT8mzzY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b=Y8MlYOVa; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1729030293; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=JvPspVLsF+z9g2UWZCKpHn+pWhy37tJ9ndVdbmFdzRYnovcBFYNv8zVZKou8o3B+VFftpcJpy2ge4hJh2xigOa+EPmxlwATMSGmW1XltIxVw74/CdH9UiqRAgoP6QRmabvdke+65H9jszG9flVxo6i0WqIooBCNyf3xGrlzwXog=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1729030293; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=HMj/ZyO9zNpccPB0josTS7wpa0dytJ4KoeNtxF9AKRA=; 
-	b=G2pUFb4TDq2aT4WM7TFjsULRNIMTP18C4V9zDvuZfAPpP66Kge+2Qe4uzN7YNmnNon/g/GF15HBtrV3s0Z+V1Xx3gxchBffp5AoGToOa9WTfQtcnt0HNF9HDR7UzFFfFaSZZyLq2TETckbk6U3sJRG3QF2dvcMAq+IXXvTx0xUA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=sebastian.reichel@collabora.com;
-	dmarc=pass header.from=<sebastian.reichel@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1729030293;
-	s=zohomail; d=collabora.com; i=sebastian.reichel@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=HMj/ZyO9zNpccPB0josTS7wpa0dytJ4KoeNtxF9AKRA=;
-	b=Y8MlYOVantCVrTrickvcshdEGEY58KLgbYcyZ+a8Eo8pEWNrbx7UVYCiHEKXsuFH
-	kgH0JeSbnlC4uF97D+iCnHXfsM/5F0B0ApOIgaNRbp1FMQKV+9BsJUGwrOFmGKVDm/o
-	PPq4xBK/p1yd/RmKwULLjavvEo40PeQJRZepOanM=
-Received: by mx.zohomail.com with SMTPS id 1729030292653381.82924626488114;
-	Tue, 15 Oct 2024 15:11:32 -0700 (PDT)
-Received: by mercury (Postfix, from userid 1000)
-	id 90E5F1060433; Wed, 16 Oct 2024 00:11:15 +0200 (CEST)
-Date: Wed, 16 Oct 2024 00:11:15 +0200
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: devicetree@vger.kernel.org, Lee Jones <lee@kernel.org>, 
-	linux-kernel@vger.kernel.org, tony@atomide.com, Rob Herring <robh@kernel.org>, 
-	linux-pm@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, khilman@baylibre.com, 
-	linux-omap@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>
-Subject: Re: [PATCH v4 3/4] power: supply: initial support for TWL6030/32
-Message-ID: <7ucahlofrnajeb7z3tmkx2aninkxpbwx3mdykeeugtsct2o5gh@5dxrvnl23dsy>
-References: <20241007150120.1416698-1-andreas@kemnade.info>
- <20241007150120.1416698-4-andreas@kemnade.info>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB6A1D1F7B;
+	Wed, 16 Oct 2024 08:03:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729065807; cv=none; b=tvDIvgAQ8N6SavcVz7wHx+JlOjuCW3lqqlUIYujTQ/wI/r+/bWDL8L+RMOE0Ae3WrH4ItZ52DkOLt7fJdArQFzDnF0yICSB41nENJkOnQsyMmrEIwGodfhixxalvUjDgKPb2S0hclMcJ40flB5Y7P9YXFKaQxyzM3OR5qgIKX58=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729065807; c=relaxed/simple;
+	bh=1eBE8U39+8j137AwN33pMYfhhzaw9VZgdIiKVZwF988=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=XxViUjxt58qOqLrDDTIZWvqeUlCq8iYfPZFAR9S0tHm4sBqGojGetJz7atkPQ/y5CHsY1pafSPmzJteMjCQk3G9Z5xpfbidCYR5dnVzz23yWtWtoseVyMO/F9lj8Pk5E1MWh/WvA1csvJ6ikkPCYF1M8h4XJ9wjBzWPntlPSWdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=ViUJ/ZGW; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=Cc:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=c9rfrELr3kRzTw8yZu4HzqoH7y14nBKXVdFWDw/SolM=; b=ViUJ/ZGWKl2UB9Qk8ombMz0OHE
+	3u0VaMVhgjskeFwTVmisO1nbpWGjVx+p+uCIPMG9zTklCvTZXgC+xCJ7Q313H1vOyILsWICgs7g6h
+	1kYjsOfosZA+p9AoRXuaxAAMHlLIeAmdjeU2nsghWMVnueHAZyf6aoaykNRrbwG0sqnw9tDSPSJh8
+	LKU9RmjqObc8v0JYXz3BZ8qpuGFenSkMNWdDXClPK/eaJaGT3dgqMG2RrQ64rW9hWCtexvtGNGdWZ
+	D8LbKuWhTE6M+5Q7snp6VigiWaywvCAzL/+SgK11v5Oy9G6FgDShe4ai1Y8UvW/0SrdWp+J0pSrnH
+	HseQYJUA==;
+From: Andreas Kemnade <andreas@kemnade.info>
+To: khilman@baylibre.com,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	Sebastian Reichel <sre@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	devicetree@vger.kernel.org,
+	Lee Jones <lee@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	tony@atomide.com,
+	linux-omap@vger.kernel.org
+Cc: Andreas Kemnade <andreas@kemnade.info>
+Subject: [PATCH v5 0/3] power: supply: twl6030/32 charger
+Date: Wed, 16 Oct 2024 10:03:11 +0200
+Message-Id: <20241016080314.222674-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.2
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="feqi6aul6coybbv6"
-Content-Disposition: inline
-In-Reply-To: <20241007150120.1416698-4-andreas@kemnade.info>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-1.3.1/228.353.45
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 8bit
 
+Add basic support for the charger in the TWL6030/32. Supported is the USB
+path. AC path is not handled yet, also there is no entry yet
+in /sys/class/power_supply with type battery yet.
 
---feqi6aul6coybbv6
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v4 3/4] power: supply: initial support for TWL6030/32
-MIME-Version: 1.0
+Without this series, devices will happily drain battery when running
+on mainline.
 
-Hi,
+Changes in v5:
+- set fwnode
+- drop mfd patch as it is already applied
 
-On Mon, Oct 07, 2024 at 05:01:19PM +0200, Andreas Kemnade wrote:
-> Add a driver for the charger in the TWL6030/32. For now it does not report
-> much in sysfs but parameters are set up for USB, charging is enabled with
-> the specified parameters. It stops charging when full and also restarts
-> charging.
-> This prevents ending up in a system setup where you run out of battery
-> although a charger is plugged in after precharge completed.
->=20
-> Battery voltage behavior was checked via the GPADC.
->=20
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> ---
+Changes in v4:
+- require compatible in charger node
 
-Looks mostly good, but the driver should set the fwnode for the
-power_supply device to be ready for better battery support in
-the future:
+Changes in v3:
+- define charger in toplevel
+- s/bci/charger for twl4030
 
-psy_cfg.fwnode =3D dev_fwnode(&pdev->dev);
+Changes in v2:
+- s/bci/charger in mfd schema
+- additionalProperties for charger node
+- extended example in mfd schema
+- no quotes for compatibles in charger schema
+- no example in charger schema
+- interrupt description in charger schema
+- replace device_is_compatible by driver data
+- clang compile fix
+- removed alias
+- style fixes
 
-Greetings,
+Andreas Kemnade (3):
+  dt-bindings: power: supply: Add TI TWL603X charger
+  power: supply: initial support for TWL6030/32
+  ARM: dts: ti/omap: use standard node name for twl4030 charger
 
--- Sebastian
+ .../power/supply/ti,twl6030-charger.yaml      |  48 ++
+ arch/arm/boot/dts/ti/omap/twl4030.dtsi        |   2 +-
+ drivers/power/supply/Kconfig                  |  10 +
+ drivers/power/supply/Makefile                 |   1 +
+ drivers/power/supply/twl6030_charger.c        | 581 ++++++++++++++++++
+ 5 files changed, 641 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/power/supply/ti,twl6030-charger.yaml
+ create mode 100644 drivers/power/supply/twl6030_charger.c
 
---feqi6aul6coybbv6
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+2.39.2
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmcO6HkACgkQ2O7X88g7
-+pqLdQ/+PXvfJs7me93/MDmbZz1KCEnmFhnBP3VDUkgMuOeF0/AtoiXKlImJOjSl
-Vd8WmGESe5nbalm0muNz9j83t96RxDZaBJl1wS637l3A760SyMuBrLJaQ6WNPNnW
-kW8VUW4uzPRLPs9/QjxVaeYqAnPG/xaavLiuWvbh3LJcgnNEgwTlWjqOKr1qtAr8
-1GuhPGndgRMIPfdWrwXMZH5ovXGRTcGCaXsBgKrqodsE9fF0C50ZM7+JluOD8aRX
-SnrC61Ik+WEJ8J1aHgwg20dhK4TmcpTjRRPHbZlFgGv3wLUapuCr4ngZdxUyDuOJ
-A6VSxvVd7dJmbz1UQkOwCJcDQBtTUTMKu5si4f3gw8SoGpjuFCuwkphF1YWaOQ/+
-8AON8jOAJLotGQ692uirk/7XbNJv2/oEtM8Rb/rj96sY7veumxEqW79o9HhzhT+/
-u9r0HB/em0nCOxHZthflcK3oSGKi7tR9HHiEO/P7cncztqZHyL5SHb4T6/6hgt8a
-GKYVC58MK0VomCMOe1Du/YOFw0y+ldtoCGpanTMcUC1ZbIn/k8M65ikSTQgfxjCo
-NwfaH5hSSo+YxeSolMyPtvFRB/vkadBmvPy3MsTuEv6vzQbaw6EmowqJa1uxRBwM
-CUw5YY1XiunxmbDO4eZpFeK5qgmwiA0DdrgcKSsdpLoCOt+DoQg=
-=iWqU
------END PGP SIGNATURE-----
-
---feqi6aul6coybbv6--
 
