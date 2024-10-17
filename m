@@ -1,142 +1,138 @@
-Return-Path: <linux-omap+bounces-2447-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2448-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C4D19A281F
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Oct 2024 18:11:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6A9C9A2B74
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Oct 2024 19:54:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F07DDB21CA8
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Oct 2024 16:08:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B77A1F23195
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Oct 2024 17:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D971DC739;
-	Thu, 17 Oct 2024 16:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1A7A1DFE10;
+	Thu, 17 Oct 2024 17:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fW9F76Wl"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dX26kejy"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E459A1DE2DD
-	for <linux-omap@vger.kernel.org>; Thu, 17 Oct 2024 16:07:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76AC51DF978
+	for <linux-omap@vger.kernel.org>; Thu, 17 Oct 2024 17:53:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729181282; cv=none; b=WLg8jV+I1nOMPtDIESi4H1061aM9ztKE7PpkcxXwxmOpTrbQDe4acYgSv01EtXWPyleTa4kv3aVEB+ux/j8pV4brWgsMA4twwwGYVlelwKCbdNnP7NCFolzqN5dwamY6B8itnoAQeOD9QIi3i7/UydEQXOe5HTrmjHp8VvpNwEk=
+	t=1729187636; cv=none; b=jg2FNeyFfEIVSIJCn+12X2XTX4jyuk9nlIfvV3Poq3o72SIHCsPkgOZx8yFHRZGtG02Yy2i858rMgA+VhxtBBcqrA9QF1IyabUtGMZ4k8BPSIAXo94ZTJlvFfBHjwAU6qD1POmOXQI/E0dezpGWyqo2CJqnnyrAQb9U6gkbboDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729181282; c=relaxed/simple;
-	bh=dRuk12QHv6ps7aNLPKYR+/znjdtbp5GFRMiK+/8rOSc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NW2f2AzYi5kC4N2aqpiWD4M720mZS8v7ROUXKgXTNNW6qzi2ZbH58zv5xXYwhvrFtCp2CJDGkVKlZxkVywWzL1qUiXmSLcPiiKERgClNUfCrwa/UCTJqRBsv80X7yzZbimDUqVfJkbCNcrTAXZxYhi52d80Ij0ontDOzmkP76/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fW9F76Wl; arc=none smtp.client-ip=209.85.208.41
+	s=arc-20240116; t=1729187636; c=relaxed/simple;
+	bh=GF5Qo9DhkPse5Mx5TYP1+75YoCNUfAkqZFVDx4Xpj68=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dtIJeHO4iFo8kyM5dEVs5OlpAStPIIVpptOElWJmTtQUnEPbxoyvnW7iNay9FqkiWVas/ydHTQJbYV6vMFISRZPe70tRpefmLlX+lpEZqPYbBvgWD0MsaXpSpAA7j8oyiZm/QCGlOLXwE1qdt85LY86SauQ2fS7BMOzy0WgwPlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dX26kejy; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5c9388a00cfso1304542a12.3
-        for <linux-omap@vger.kernel.org>; Thu, 17 Oct 2024 09:07:56 -0700 (PDT)
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-20c9978a221so15788495ad.1
+        for <linux-omap@vger.kernel.org>; Thu, 17 Oct 2024 10:53:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729181275; x=1729786075; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=dRuk12QHv6ps7aNLPKYR+/znjdtbp5GFRMiK+/8rOSc=;
-        b=fW9F76Wl/5I4gaFa92un21m/KochcHCCGLcjqoT1a8+F5t/jCJkbP3tvnPUcC4VPNG
-         upHySZ5ege+9aFDvWl71XtsWhMzCOnh6K+tiZ+/Cnb6ctWpnQTBq2d3wd0a/yaNv8KWP
-         POhPvPTCTFPB8nWYQ+FR8+ezY8PPBoTaPOGJXb8rBVGowPzjItN3yKrOTbqH20Vqr6qM
-         sDzXUZ3BfkBHsBdnDQ3G4MovgOm5hinhAX9wL+OiQEuupO3G2YC+AlSCMYt1wedU37Zp
-         WJkbo/lk2Y3UfvOaK/7Plhul04FM8/wQRQ4njy97vBRyQfR8DPoAkmmU9ASfX2ZM0twI
-         66OA==
+        d=linaro.org; s=google; t=1729187631; x=1729792431; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=02oeOFeK7jtYuCzX8W9dU5PdVKq3pbuOMiR05+cTM30=;
+        b=dX26kejyLWT2M5iuxTFq0nqK/Ji9BbU+OhgLZIkplsU8mVJ5Vo284KLS4XuwvD0dFD
+         kkjppWkIrtXhzxMcIAjbSiE23PSTVZKTfMD7wluQACF7YvafXJCyee1fD05F0fsbFLxU
+         mvFEE5L3p76RMktM7uiiWHYn22L/Fg1EBIuAQNfvo+9GRrqq1dxNo6m5VyA/HRGekH7I
+         0SU3za0KMoJgtL5Pph1XbiDZgzB7mR+Np+ciMynU9AgD7HkDYVWRlCVSq6oIICBA+VPc
+         NC0LfYEmKjumAeTXupXzBJr5ASVYNB9L31bxyzSLn/nweW/Z7Iw5x9vxab0ueCLGNNNA
+         L03w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729181275; x=1729786075;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dRuk12QHv6ps7aNLPKYR+/znjdtbp5GFRMiK+/8rOSc=;
-        b=NGbmZ+ycZaqhRbzABGp8E8jhcAlKtnAELGKmEUk/TsWG5FSTJnP6Q8vI0Hhl8meihz
-         rcRZtLljWSBRpkDmKcY7r/BWuEneZDcWpKi2h9FgBoh0QF4gL56NY4vPFQFFAUlc8DdM
-         Qrw+x4gbD6FR2bVUOCIrMw2yVevc3Ne38u1On81s1QlWLtZZhanCvmaxYQdc/f0acl3r
-         9Ckl1YJ0LAxIjLkB31W96WIG2xc3ixWIIxqGNBHNSsTX+8lvYzO9q7LTyWqfnkmcMKNk
-         021REp/4uKWjwFvtM1Emay7ujkir7pgxwD+kpgIH/XkwhwJ4iQ8l66AsSTQ3YvjnLfHh
-         QFaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUDmMmEXvVZ9SUAQynvDFAquyGUGCS6TCpR/HAFmWi2EJ6nsiA0QrYQnop+mPagxq+UFCrv88gcUz9t@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0xXgOsimISBsB47itKkFVDNAa4Yr1ZcaVptpG+lrVIOPV71wD
-	tKNhERekSEuQFKWmSkFdC/JuhgHa2Io7qjoQPD/R95mN0TdvS76EhYeXvph079A+FSsmE4QMgN9
-	efrN68c/3pIHdAx7dVrlgVSPCg+onN03sewwDmA==
-X-Google-Smtp-Source: AGHT+IHnqRPUFxMsxpUc6xNTucKBv1HPPKb9a15BqgxeA4o/UszURdq9L6szLULYtYWcPRZOXLQhdJp9uUm/wjBx530=
-X-Received: by 2002:a05:6402:350e:b0:5c9:5bcf:db95 with SMTP id
- 4fb4d7f45d1cf-5c9950618a8mr6873634a12.16.1729181275258; Thu, 17 Oct 2024
- 09:07:55 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1729187631; x=1729792431;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=02oeOFeK7jtYuCzX8W9dU5PdVKq3pbuOMiR05+cTM30=;
+        b=aKHfW60AcI5GPM5TjGpVEAsnVjNp4ObmuUOX1r5wbEHXT2L7ZgPVy80xeA9G//W16j
+         ubG9fI3TSWuq/a9+bwF/eRJSjSw0OG1UQFeMOA5OXo4UtY3bNLO7IlXH/RK0e0RzYPNJ
+         NL/lOZZwfecSlxLsgTsAedLs1oYBSf1URVLT1QllkFDqE5AKSRV0AdA45ZbKMKzTXdyr
+         k/jvPK7A2YwQyPH6q9dnvcaE0/ZuI8bYf2qW5FqhVlFrxiLJIueWWMk5kOtZ/G5khzIp
+         tktrWF912UhYsgRE9NAPmVldhoRfTquhZu+236xdfD//l2/5w+mJklfT3l+FMSBiagWo
+         k8dg==
+X-Forwarded-Encrypted: i=1; AJvYcCVJBEktN0h/SZ9JaGK4fqCPxsO+mPuQDxZ+cFLh64O/eoEG7kf8MjZk9zEg2DfxHJaj7bSgefD0hRa2@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIO5Etxn6u6IJFJiWw5PFslO8JfpaBaWirHV/nt5C/fl2+AsEQ
+	92kK7fbzArOLLFn+OyqfzvnBOEm7lAKte2VuFAmCL/i524itks7ffOxPUrxuZJQ=
+X-Google-Smtp-Source: AGHT+IGyA7u1b10iGVQrb28N/d5XTMtA2jAsrnF1YFrxdnEHtsgbGORXNhMnwGLviCOX5FjE3mCQ7A==
+X-Received: by 2002:a17:903:22cb:b0:20c:9821:699d with SMTP id d9443c01a7336-20d27f41966mr130474815ad.51.1729187630791;
+        Thu, 17 Oct 2024 10:53:50 -0700 (PDT)
+Received: from [192.168.100.35] ([45.176.88.162])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20d17f9d321sm47037755ad.68.2024.10.17.10.53.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Oct 2024 10:53:50 -0700 (PDT)
+Message-ID: <5b6e9f3f-36e7-4b0f-8698-15a419095558@linaro.org>
+Date: Thu, 17 Oct 2024 14:53:45 -0300
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
- <fe5476c7-82e0-4353-a943-7f39b14e1b5b@roeck-us.net> <CAFEAcA-bqOM4Ptws-tsEwo2HDZ6YSX1Y+xGkR0WueRD_dUd0+Q@mail.gmail.com>
- <7bd858a2-9983-4ddf-8749-09c9b2e261f9@roeck-us.net> <CAFEAcA_-eTfF8tVaLk4yLgWMSA1+KjPBYyS3EjMQNC+59hT0Aw@mail.gmail.com>
- <CAFEAcA95QmpcsrgCj5uE-Ng8ahNir3MuVEHWBCvjb3UwBbOFRA@mail.gmail.com>
- <ec0e8a75-c59f-41b3-b559-43c057fca8fd@roeck-us.net> <CAFEAcA9AZS1dGaLG85zZE8U0d7AcrLgKXNbhxkCoP+PLmbFn2g@mail.gmail.com>
- <cf7c8f57-22d5-4a40-bd87-0f15f5457d48@roeck-us.net> <CAFEAcA98=2OdT9ykg5ibDuVLtSXuq4g0PLmSbxkYmt1SyKe9iQ@mail.gmail.com>
- <c354e331-39c4-4520-9a69-b62a8ecdddbc@roeck-us.net> <CAFEAcA-NreDmpCoFgrTJ5dEto5jQbjRg1eCfqg9Ns8VwQ9-Qzw@mail.gmail.com>
- <2e8046a2-c229-4ed5-add1-d31f437325b9@roeck-us.net>
-In-Reply-To: <2e8046a2-c229-4ed5-add1-d31f437325b9@roeck-us.net>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 17 Oct 2024 17:07:43 +0100
-Message-ID: <CAFEAcA9AfH7cTO8TYSh9E+FnYN8SbTLDkXW8W5Jwi9Kfcddr6g@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: possible deprecation and removal of some old QEMU Arm machine
  types (pxa2xx, omap, sa1110)
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: QEMU Developers <qemu-devel@nongnu.org>, qemu-arm <qemu-arm@nongnu.org>, 
-	Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org, 
-	Arnd Bergmann <arnd@arndb.de>, Daniel Mack <daniel@zonque.org>, 
-	Robert Jarzmik <robert.jarzmik@free.fr>, Haojian Zhuang <haojian.zhuang@gmail.com>, 
-	Thomas Huth <thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+To: Peter Maydell <peter.maydell@linaro.org>,
+ Guenter Roeck <linux@roeck-us.net>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, qemu-arm <qemu-arm@nongnu.org>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Aaro Koskinen <aaro.koskinen@iki.fi>,
+ Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>,
+ linux-omap@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ Daniel Mack <daniel@zonque.org>, Robert Jarzmik <robert.jarzmik@free.fr>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+References: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
+ <fe5476c7-82e0-4353-a943-7f39b14e1b5b@roeck-us.net>
+ <CAFEAcA-bqOM4Ptws-tsEwo2HDZ6YSX1Y+xGkR0WueRD_dUd0+Q@mail.gmail.com>
+ <7bd858a2-9983-4ddf-8749-09c9b2e261f9@roeck-us.net>
+ <CAFEAcA_-eTfF8tVaLk4yLgWMSA1+KjPBYyS3EjMQNC+59hT0Aw@mail.gmail.com>
+ <CAFEAcA95QmpcsrgCj5uE-Ng8ahNir3MuVEHWBCvjb3UwBbOFRA@mail.gmail.com>
+ <ec0e8a75-c59f-41b3-b559-43c057fca8fd@roeck-us.net>
+ <CAFEAcA9AZS1dGaLG85zZE8U0d7AcrLgKXNbhxkCoP+PLmbFn2g@mail.gmail.com>
+ <cf7c8f57-22d5-4a40-bd87-0f15f5457d48@roeck-us.net>
+ <CAFEAcA98=2OdT9ykg5ibDuVLtSXuq4g0PLmSbxkYmt1SyKe9iQ@mail.gmail.com>
+ <c354e331-39c4-4520-9a69-b62a8ecdddbc@roeck-us.net>
+ <CAFEAcA-NreDmpCoFgrTJ5dEto5jQbjRg1eCfqg9Ns8VwQ9-Qzw@mail.gmail.com>
+ <2e8046a2-c229-4ed5-add1-d31f437325b9@roeck-us.net>
+ <CAFEAcA9AfH7cTO8TYSh9E+FnYN8SbTLDkXW8W5Jwi9Kfcddr6g@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA9AfH7cTO8TYSh9E+FnYN8SbTLDkXW8W5Jwi9Kfcddr6g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, 17 Oct 2024 at 16:29, Guenter Roeck <linux@roeck-us.net> wrote:
->
-> On 10/17/24 07:29, Peter Maydell wrote:
-> > On Thu, 17 Oct 2024 at 15:12, Guenter Roeck <linux@roeck-us.net> wrote:
-> >>
-> >> On 10/17/24 05:42, Peter Maydell wrote:
-> >>> On Tue, 15 Oct 2024 at 19:12, Guenter Roeck <linux@roeck-us.net> wrote:
-> >>>> Please let me know if https://github.com/groeck/linux-test-downloads.git
-> >>>> meets your needs. For now I added 'collie'. I'll add more after it is
-> >>>> in a state that is useful for you.
-> >>>
-> >>> Yes, that's great, exactly what we need. I've put together a QEMU
-> >>> 'functional test' case that downloads the collie rootfs and image
-> >>> and checks that they boot. (I'll send the patches for that out
-> >>> in a bit.)
-> >>>
-> >>> (I've coded the test case to pull the binaries for a specific
-> >>> git revision of that repo rather than always-from-head, so
-> >>> we're testing always the same thing against head-of-QEMU.)
-> >>>
-> >>
-> >> Sounds good. I now also added information for sx1, so you should
-> >> be able to use that as well. Please let me know if you need any
-> >> others.
-> >
-> > I think sx1 and collie are all we need currently.
-> >
-> > By the way, it looks to me like QEMU has a regression
-> > somewhere where we can't boot that sx1 test for the SD
-> > card version -- it hangs during kernel boot waiting for
-> > the MMC card. (An elderly QEMU binary I have boots OK.)
-> > I'm looking into what's happened there.
-> >
->
-> Yes, you are correct. I did a quick check; the problem started with v9.1.
-> v9.0 boots fine.
+On 17/10/24 13:07, Peter Maydell wrote:
+> On Thu, 17 Oct 2024 at 16:29, Guenter Roeck <linux@roeck-us.net> wrote:
 
-It's an issue with commit 1ab08790bb75e4 -- when we did a refactor
-of the SD card emulation we didn't notice that the omap mmc
-controller was also using the sd_cmd_type_t enum and relied
-on the values of that enum matching the meanings of the
-different values of the controller's MMC_CMD register Type field.
-I'm just testing a patch.
 
-thanks
--- PMM
+>>> By the way, it looks to me like QEMU has a regression
+>>> somewhere where we can't boot that sx1 test for the SD
+>>> card version -- it hangs during kernel boot waiting for
+>>> the MMC card. (An elderly QEMU binary I have boots OK.)
+>>> I'm looking into what's happened there.
+>>>
+>>
+>> Yes, you are correct. I did a quick check; the problem started with v9.1.
+>> v9.0 boots fine.
+> 
+> It's an issue with commit 1ab08790bb75e4 -- when we did a refactor
+> of the SD card emulation we didn't notice that the omap mmc
+> controller was also using the sd_cmd_type_t enum and relied
+> on the values of that enum matching the meanings of the
+> different values of the controller's MMC_CMD register Type field.
+> I'm just testing a patch.
+
+Doh indeed I missed that use in omap_mmc_command()...
+
+Thanks for the quick analysis!
+
+Phil.
+
 
