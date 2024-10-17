@@ -1,101 +1,98 @@
-Return-Path: <linux-omap+bounces-2441-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2442-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A445B9A202D
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Oct 2024 12:38:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85D749A222C
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Oct 2024 14:27:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1A6528590C
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Oct 2024 10:38:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43F422835E9
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Oct 2024 12:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC171DB540;
-	Thu, 17 Oct 2024 10:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B5811DD539;
+	Thu, 17 Oct 2024 12:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="KSnU/J+K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N5VyLTfz"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A791DA63D;
-	Thu, 17 Oct 2024 10:38:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0455A16BE2A;
+	Thu, 17 Oct 2024 12:27:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729161491; cv=none; b=gqtoilxabSDg8tO0+Dgy1F6s7JigBIthGYVDqE4EhdX6I+/8P3Yyvvs4Z2byfavQb8Ai1SRymnAVmsvE/xGujZF4q+C8jJXQtJlXna5RUu/3OQKMt4e3KGeQbQi+H1Z4wgkQMY/Tj58W678lkS5BR6L2nnEklZ4YPKAQYnaR6Zw=
+	t=1729168052; cv=none; b=R9oFyVhCTluWbP/73vEjKyX9440/evgRdmXLV3fOQFlYmPxOQz8mxgvIPOhz8atTeCVZ2OeSZtyfqd0aFb20TneDfKomDNxVMUgsxXB8UWR5SYZFXWjd9jZTEhLzIJjScUjQXz5xmzy+XUzqCIo2nak53gHeSdDyDfPCJVNOeQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729161491; c=relaxed/simple;
-	bh=RR6bz3XCL62/D4xY5KpvyClNWTpDgWb9zj1D7PAIJA8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jSQSIkxVeNV1GhN0j43ZblYUw/7XPBl9JXsXSS3lMwmeUMRQzaMXFTdMJWTdSEGQWTNa52M17AUn5qRMjKzBCleP+IDuOTlLBt+xrRcLBCcLEkVJ1SJcN+hnkKVmeClkrN+beWc1E+KKgPMlPrWr0vWcYJsFyVa5h+HoBXOmMC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=KSnU/J+K; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=4jISAdD4xM5sRPnE95Fnijjjk3Ui/0+o9PGVY2w2gFY=; b=KSnU/J+Kh+hnJdgGpxOSa/xuLf
-	rkuIwFzzzCp9E3iAY0S6CpEm17p3owrbe8P0/1xOTeQHITCZqvC134Kr43oEm2XIiws0MmtqRSi7I
-	9mu76khV5nKMkO8LYNoQOjM1Xbq0iLnbExeUL/S9QDq1arKziDESQSe7pub+WwLnLzhE0LgYFvxZa
-	hK+3yEOkZfotA0qE1oFe+ZR05ZVgBSzm2xeeVqmAv3qAFMbNk1kMbV+vCVKGmdqmFrOfl3mrOWks/
-	NhQdROTXNDaoWVtwd5iXmH6IfN9Xb/lJRuOgcuQt2CeL4Y8xLPoUJXaaTvNtMWwIlQYjKFRzwgD/I
-	pjPLpeFQ==;
-Date: Thu, 17 Oct 2024 12:38:02 +0200
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Rob Herring <robh@kernel.org>
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>, Tony Lindgren <tony@atomide.com>,
- Roger Quadros <rogerq@kernel.org>, linux-omap@vger.kernel.org, Kevin Hilman
- <khilman@baylibre.com>, devicetree@vger.kernel.org,
- linux-clk@vger.kernel.org, Tero Kristo <kristo@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Stephen
- Boyd <sboyd@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC v2 2/2] dt-bindings: clock: ti: Convert divider.txt
- to json-schema
-Message-ID: <20241017123802.2a1fff05@akair>
-In-Reply-To: <20241010034434.GB1297859-robh@kernel.org>
-References: <20241009205619.16250-1-andreas@kemnade.info>
-	<20241009205619.16250-3-andreas@kemnade.info>
-	<20241010034434.GB1297859-robh@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1729168052; c=relaxed/simple;
+	bh=yML8YLnaaxEbTZOnEVaz9cJvWjVJLT9ZoM8pWfFqnAc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HOFsYZaoWLzL8OAcLuwgencs38Ybnsa+r6A8og1fyNuNTw+3fxJk/GymPBTrw8xjYey60mkhoftzEKTkGARLl68LDjtuD7xDmfnr8St/C+mza5GdyCITO+X8MHM2tpAAUIm+kU3mu3AYGOTQXwoh/UUxykS47nKVr83eDT7HD7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N5VyLTfz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E65C4CEC3;
+	Thu, 17 Oct 2024 12:27:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729168051;
+	bh=yML8YLnaaxEbTZOnEVaz9cJvWjVJLT9ZoM8pWfFqnAc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=N5VyLTfz4HegLOGnLNKgp3gka/fENLvm+D10iNkmfvYP3WcZ9v9V1tboP0T81IKiA
+	 RY/xE4YObwge5sKaJ99poSmkrvyVuvafhQDHaDlPoAqNSrN9TVOEAxuFLSk2SiZvHg
+	 sZIkr4bKgLs0Avj5L1qEPdxVlHdIKbiLu4kCzWNqynYmU4KZE5plBiAThEfTsR+csQ
+	 Q3iSHNfWGDi+rEoyg0hrc4EoTI3MKKFtTtS4mxi55/lmV7H/f4wL3LBfq9jlpoYnkI
+	 uWZNgSeYQ0DvbCNcYzLcrw3QTK8bFJrvi50eQ9Mk6SglZpZAJpwbdaRRE0a6Ukfjnm
+	 WVpyAqKVndO+Q==
+Date: Thu, 17 Oct 2024 13:27:26 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Liu Jing <liujing@cmss.chinamobile.com>
+Cc: peter.ujfalusi@gmail.com, jarkko.nikula@bitmer.com, lgirdwood@gmail.com,
+	perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org,
+	linux-omap@vger.kernel.org, linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Use card->dev in replace of the &pdev->dev argument in
+ the dev_err function
+Message-ID: <472cca80-5078-4da4-8956-5e4664cd4896@sirena.org.uk>
+References: <20241015074938.6247-1-liujing@cmss.chinamobile.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="/q42gE//8EX6uO5h"
+Content-Disposition: inline
+In-Reply-To: <20241015074938.6247-1-liujing@cmss.chinamobile.com>
+X-Cookie: One picture is worth 128K words.
 
-Am Wed, 9 Oct 2024 22:44:34 -0500
-schrieb Rob Herring <robh@kernel.org>:
 
-> > +
-> > +  ti,min-div:
-> > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > +    description:
-> > +      min divisor for dividing the input clock rate, only
-> > +      needed if the first divisor is offset from the default value
-> > (1)  
-> 
-> minimum: 1
-> maximum: ?
-> default: 1
+--/q42gE//8EX6uO5h
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-maximum is complex: there is one place in the code where this runs
-through a u8 (_get_val). although it it read from the devicetree as a
-uint32.
-So, if we do not care about a specific implementation, then
-in the power-of-two case, the theoretical maximum would be 1 << (1 <<
-(32-bitshift) - 1) clipped to UINT32_MAX due to type constraints. And
-also the maximum lifetime of electronics and elementary elements and
-pieces, probably even with the proposed decay time of protons.
-In the index-starts-at-case, we would have (1 << (32-bitshift)) - 1.
-otherwise 1 << (32-bitshift).
+On Tue, Oct 15, 2024 at 03:49:38PM +0800, Liu Jing wrote:
+> Because card->dev = &pdev->dev is already defined in the rx51_soc_probe function,
+> and then &pdev->dev is still used.
 
-I would propose not to define a maximum here.
+Please submit patches using subject lines reflecting the style for the
+subsystem, this makes it easier for people to identify relevant patches.
+Look at what existing commits in the area you're changing are doing and
+make sure your subject lines visually resemble what they're doing.
+There's no need to resubmit to fix this alone.
 
-Regards,
-Andreas
+--/q42gE//8EX6uO5h
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcRAq0ACgkQJNaLcl1U
+h9BkLAf7BD0R0IogvhM6zCSen+9sEo1tR8I0AA3KN5HzmTd/kYF6wH8RhJmSb9xW
+VLdVMUpr459/nQlwyowLmzUvaEnL+r9dtu0B5w/+um+VNEAxc1Ij8PBl8b6WRmsp
+AfuIO2089hOZ9u2epH+10orqPdYr7QlQuNhRxoChOw5+SvuAeHAk++TCOd1rCH7v
+vboMNRKtr4Q756fx3Dh1hHk8Yo0IAcxwg8KrY8+I+0Y38ToKb/D/uezSR/qHt1do
+ZaU4CsY86GyanpjU6v+KuUZ4JMIIRmnnkIk7ssq+SHKQYF5Pb44DeRF6x3JVs6EW
+8HWR2sOeAiNk6nnSfJL88hDYcS69Ug==
+=W4TK
+-----END PGP SIGNATURE-----
+
+--/q42gE//8EX6uO5h--
 
