@@ -1,137 +1,71 @@
-Return-Path: <linux-omap+bounces-2450-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2451-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E00939A2C7A
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Oct 2024 20:48:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40D839A2D3A
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Oct 2024 21:05:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DBCA1C20F83
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Oct 2024 18:48:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BDAFAB25307
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Oct 2024 19:05:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E16EA219CA9;
-	Thu, 17 Oct 2024 18:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419E221C17C;
+	Thu, 17 Oct 2024 19:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="EveOSQRh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bO0sfrEl"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA23A218D97;
-	Thu, 17 Oct 2024 18:48:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CDD1E0DC3;
+	Thu, 17 Oct 2024 19:05:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729190893; cv=none; b=AJCmLVtD1gUNIixaZRSVMBzrXoY+PuHPvCKGQllaXvxh/pGODsIC/Ujn4/MmX5XGasfM0QyThai+RyF6c12ayDbzsrz9AoXkPsrL6afG8slbQHy8AEfAwaLAHYh2zAkYc9skpdqTTkPBlpXwTC6bDH0li/P9CPZgAdClkaVinY4=
+	t=1729191947; cv=none; b=ZO4IWrI/TM7bqxcISTC4NCe5Dsc8MDRmKy/x55zm8otOgFpMiuzcwZdH3gfS0oimEVfSOv3szNYL2jBl7aZK0BqNYxI4twGk3spE95JJVc6a2+vRscGwy9wJlfBprXORQVTgoUGDcan5kfHECdlDLJq7ePb1L5ak/S7lAevzIXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729190893; c=relaxed/simple;
-	bh=KrNvW2xPuZ3Vzy4j7ZihZA5fPqTzWZC+JAIhX358z08=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=L0Ej/AX9v3TgMFudrqo+N+ZQCpqK3dsIgclIEGIrGwRTH6pNyvoxBTgdWiw980kD7xeC22mjXsiO3KxuJOTG5An+tmCyBZA7tbbuTsAers+h9EJUy5UToKg40f+I5NSaML//aGQNlfIu7vlQHkW06kF51erVGNgzTyfOHhtgAd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=EveOSQRh; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 49HIlsvY019099;
-	Thu, 17 Oct 2024 13:47:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1729190874;
-	bh=Uyxhf/wT/ziG6U5bQclxVG7deSecT/6OEca8reXhby0=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=EveOSQRhSrKjpYz1RmldYH9T8UjgbeOksAJtDAn4lxoVPf9k91IrOxI3XQkO0oS1s
-	 21k28Q361xyarWkfHFhme2ivixwoR12bHNjuft8RHPlvzLb/2zxfX+8S/Hp7ex5U0h
-	 7siCUP7f5pw8to9roIBKIEVnzf2RD1p3ALWMawcc=
-Received: from DLEE101.ent.ti.com (dlee101.ent.ti.com [157.170.170.31])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 49HIls1l015092
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 17 Oct 2024 13:47:54 -0500
-Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE101.ent.ti.com
- (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 17
- Oct 2024 13:47:54 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 17 Oct 2024 13:47:54 -0500
-Received: from [128.247.81.105] (judy-hp.dhcp.ti.com [128.247.81.105])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 49HIls8k079046;
-	Thu, 17 Oct 2024 13:47:54 -0500
-Message-ID: <4d8ac8c5-7f4a-4e58-a968-ffd1fc3df03a@ti.com>
-Date: Thu, 17 Oct 2024 13:47:54 -0500
+	s=arc-20240116; t=1729191947; c=relaxed/simple;
+	bh=VQaBVm9CjXK0nklcOUYIdZpmxP4P6wdk49V4w1nZPZ0=;
+	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
+	 Subject:From:Cc:To:Date; b=ePern+iwsGMPz4SPssfo/qGHhPUK1vlf7E+YEtX+58cgK2sMEq9iPQVIjuo5xsYrax/eBzAE61inqVguPi6fWfHRrWHRCEMi2vA5AUTfOjMbX9ALCTDFeMRs1t0sdIGeQxMz+QFg9WORMUS9VbH1I7srGxQh75WZ2uuplyNAHAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bO0sfrEl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0618C4CECE;
+	Thu, 17 Oct 2024 19:05:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729191947;
+	bh=VQaBVm9CjXK0nklcOUYIdZpmxP4P6wdk49V4w1nZPZ0=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=bO0sfrEl1cB8MBNxrCsRRmzTLSLp8SsBhPWN0X94jAGbYEAm43j/Xli5RhxoozpQR
+	 k2anvNMPRnmaGV5v2sWGf0eSscXB1faR/IxjWqgt2jI7duaP0MdogLjOxE8P9lkE27
+	 p2ZtMe9bSTc93VJc5s99tIJsE+t7jlSvmvO76I8x/RscqeDcsCqJ/B+RySu5iRKAFu
+	 NY+3HY/mhtPCDpdaZWLV/pN2z61TAaE/ZmKIPrGlw5i2LQ3nhQi+sMjraoixf8oX7j
+	 N37or/8tZXQ1/ogSMJy0L1Y2deD0T6nZGyHjTHe2z/O76K5qfU+qgN+T1uo5F7IqtT
+	 aFF1bTHAvgqYg==
+Message-ID: <fdc177319e03cd0f8deddeb2146eca55.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND 2/2] serial: 8250: omap: Move pm_runtime_get_sync
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: Santosh Shilimkar <ssantosh@kernel.org>,
-        Kevin Hilman
-	<khilman@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz
- Golaszewski <brgl@bgdev.pl>, <linux-omap@vger.kernel.org>,
-        <linux-gpio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Bin Liu
-	<b-liu@ti.com>, <linux-serial@vger.kernel.org>
-References: <20241011173356.870883-1-jm@ti.com>
- <20241011173356.870883-3-jm@ti.com> <2024101218-overpay-yoga-7423@gregkh>
-Content-Language: en-US
-From: Judith Mendez <jm@ti.com>
-In-Reply-To: <2024101218-overpay-yoga-7423@gregkh>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20241014161109.2222-3-andreas@kemnade.info>
+References: <20241014161109.2222-1-andreas@kemnade.info> <20241014161109.2222-3-andreas@kemnade.info>
+Subject: Re: [PATCH v5 2/3] clk: twl: remove is_prepared
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: Andreas Kemnade <andreas@kemnade.info>
+To: Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, Lee Jones <lee@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Date: Thu, 17 Oct 2024 12:05:45 -0700
+User-Agent: alot/0.10
 
-Hi Greg,
+Quoting Andreas Kemnade (2024-10-14 09:11:08)
+> Remove is_prepared to simplify adding of TWL6030 support.
+> The default implementation should be enough.
+>=20
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> Reviewed-by: Roger Quadros <rogerq@kernel.org>
+> ---
 
-On 10/12/24 3:03 AM, Greg KH wrote:
-> On Fri, Oct 11, 2024 at 12:33:56PM -0500, Judith Mendez wrote:
->> Currently in omap_8250_shutdown, the dma->rx_running
->> flag is set to zero in omap_8250_rx_dma_flush. Next
->> pm_runtime_get_sync is called, which is a runtime
->> resume call stack which can re-set the flag. When the
->> call omap_8250_shutdown returns, the flag is expected
->> to be UN-SET, but this is not the case. This is causing
->> issues the next time UART is re-opened and omap_8250_rx_dma
->> is called. Fix by moving pm_runtime_get_sync before the
->> omap_8250_rx_dma_flush.
-> 
-> You can go to 72 columns :)
-
-ok, will fix, thanks!
-
-> 
->> Signed-off-by: Bin Liu <b-liu@ti.com>
->> Signed-off-by: Judith Mendez <jm@ti.com>
-> 
-> Wait, who wrote this, Bin?  If so, there needs to be a "From:" line
-> saying so.
-
-I did not realize I could create a patch for someone, apologies, I
-will be sending v3 with correct "From:".
-
-> 
-> What commit id does this fix?  Do you want it backported to older
-> kernels?  Why mix two different subsystems in the same patch series, who
-> is supposed to take it?
-
-
-I suppose it should be backported to older kernels so I will add back
-the fixes tag.
-
-Apologies for sending two different subsystems in one series, I thought
-describing as "misc" would be good enough to mix the two, but I can
-separate the patches and respin. Thanks.
-
-~ Judith
-
-
-> 
-> thanks,
-> 
-> greg k-h
-
+Applied to clk-next
 
