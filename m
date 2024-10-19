@@ -1,99 +1,70 @@
-Return-Path: <linux-omap+bounces-2459-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2460-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00A319A4922
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Oct 2024 23:48:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2640B9A4B5F
+	for <lists+linux-omap@lfdr.de>; Sat, 19 Oct 2024 07:46:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01E381C21E59
-	for <lists+linux-omap@lfdr.de>; Fri, 18 Oct 2024 21:48:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FD8DB2267D
+	for <lists+linux-omap@lfdr.de>; Sat, 19 Oct 2024 05:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1439E18E368;
-	Fri, 18 Oct 2024 21:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595971D798B;
+	Sat, 19 Oct 2024 05:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="zTEuWelX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JvA7dBgH"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0247C16D4E6;
-	Fri, 18 Oct 2024 21:48:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BA95478E;
+	Sat, 19 Oct 2024 05:46:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729288128; cv=none; b=R6lvxux7gBtly93LP0CmydpN0A5kubbzYRp2QrV5QNO/bQ1wca87z9iTXpSy/Wqq+7D+i6muDo0z6LlCw6q+lUor2tZ2MBrS7IAH2SaG8c7t3DyE0hKIE5VK1lczuhHtTlyT/JyIqjZJZVRuEz7qclGQy1B2c36LkXU0TdaVLVo=
+	t=1729316779; cv=none; b=ZPAmM5mUSa+uAhQ0vYbi4aIOMZFq8l1rE+iQVMwBIyy5Y7hmcjWwX6/AVruyfb8p0PJ/c5yhtI30N9KdV1eUMxYuQsOmmdccRCPKGeplWBdHKGp/hZubAihl1/SCDMs6ublwlk9+dPfoY4TrEMInPfc/LybgCbRtbFqiYUAV1dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729288128; c=relaxed/simple;
-	bh=pm7Umla3tm9jpux63hr248UjUv/yWTbSi1mqVJVDW6g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BxWy2mxEWPKUNHE0JE5WyM3/UnX6EcCF+pCiLSHHwSSIgK4OiWVm2VDk/BHeknj1VzQ5OIXIRNZEQsQZTHTvRC4EltqWOGnztjpKpqnzZEky5DxB/buqLaIlz7fwkJaR9toAGAeb3H86oI66zoopcyq67GIBDl2zJ8sCmpi6YAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=zTEuWelX; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=Cc:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=vfuHGGp/gXQEREQV7oenTHDDKxIs/pz9s2cGnpdqQLc=; b=zTEuWelX6tS3cuR1euUJ5RylYX
-	skKJusB/TTtzT7xkLzvT0Ap2bSKwkb2LWG7fZ5DM1vh1m4JXFQxeDlhn4Zi9+kQlbBWQlyrQn35Ij
-	gOpaw1my2y8SHwJBcGWbpOsxCk47z8aOw6pzcSvEMN+I0+gN6GEZ1oIrQh6s3Z+bQVxWA5lMMQFjx
-	MLj5qdcX7v0JuSvj19xbM2pfhgIMwDwFSHz3ffX8L1u7VjaZpBVOdGCtHOaDDdW/XffZGCvCTM6bT
-	pKdSw09V55rKXGSLRy4uZMfckWbNZCfUxSLD7hGMWfX2ABLI6e3FN6AiZ8IAhpdBCDp/MaSHJsKk2
-	abjZduFg==;
-From: Andreas Kemnade <andreas@kemnade.info>
-To: tony@atomide.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	linux-omap@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	aaro.koskinen@iki.fi,
-	khilman@baylibre.com,
-	Roger Quadros <rogerq@kernel.org>
-Cc: Andreas Kemnade <andreas@kemnade.info>
-Subject: [PATCH] ARM: ti/omap: omap3-gta04a5: add Bluetooth
-Date: Fri, 18 Oct 2024 23:48:42 +0200
-Message-Id: <20241018214842.275194-1-andreas@kemnade.info>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1729316779; c=relaxed/simple;
+	bh=RRK0d5O3+eFc8tOfdqBi70X6wmeZkUievoZshWFIsz0=;
+	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
+	 Subject:From:To:Date; b=ppvnJ4RUsfPOBFE9XonVL5KBSE2ekbmb162aWrSfWkJhJf671RN+VSTix2vGjmeUs8kzbG9TrWMe1Q5wgUYCCfTOg/3LkRxTt0f905r7Smq6jEHXVfcYHT+FH+hWsnN4aKtm53WgPc9kQ/hyDKZUJyZb9yjA8GL/BpolUO+w4HY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JvA7dBgH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A5AEC4CEC7;
+	Sat, 19 Oct 2024 05:46:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729316776;
+	bh=RRK0d5O3+eFc8tOfdqBi70X6wmeZkUievoZshWFIsz0=;
+	h=In-Reply-To:References:Subject:From:To:Date:From;
+	b=JvA7dBgHQXXwHKkAmxjm2hI7zVmGj7NF/WXklQFlLem1ZpxLN8XrhVY3MCk157rI7
+	 buBVlyxJ+uqfmANt9I7JffsQoJfjInZKVeNdS5n3cwpmBxDR041WGMOh6myR1prs7y
+	 wszn52FoE0oghaMDeM7S05H7cXlh6WgMWIhEQ9xJSbwWfMg/kClZyS73FOj8xPyohF
+	 6ncA1/1H4KaPCWOtVMHCPJ6V//XyFwJXRZcCh22eOLS4oG3ieOI98XT/O1LT2DZY4F
+	 vowXJy8+2BWNVf3Bt661N/0YBeOnwYZjsX/MStXGMZhng5NOm/877xThHbCUb3DMAW
+	 ffIMKZd3RJtvg==
+Message-ID: <5529f20ba6488c3eb94cec1e26b52068.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20241018085347.95071-2-andreas@kemnade.info>
+References: <20241018085347.95071-1-andreas@kemnade.info> <20241018085347.95071-2-andreas@kemnade.info>
+Subject: Re: [PATCH v3 1/2] dt-bindings: clock: ti: Convert interface.txt to json-schema
+From: Stephen Boyd <sboyd@kernel.org>
+To: Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, Conor Dooley <conor+dt@kernel.org>, Kevin Hilman <khilman@baylibre.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Rob Herring <robh@kernel.org>, Roger Quadros <rogerq@kernel.org>, Tero Kristo <kristo@kernel.org>, Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Date: Fri, 18 Oct 2024 22:46:14 -0700
+User-Agent: alot/0.10
 
-The GTA04A5 model has a wl1837 WLAN/Bluetooth combo chip, add
-it.
+Quoting Andreas Kemnade (2024-10-18 01:53:46)
+> Convert the OMAP interface clock device tree binding to json-schema.
+> Specify the creator of the original binding as a maintainer.
+>=20
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
----
- arch/arm/boot/dts/ti/omap/omap3-gta04a5.dts | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/arch/arm/boot/dts/ti/omap/omap3-gta04a5.dts b/arch/arm/boot/dts/ti/omap/omap3-gta04a5.dts
-index 8bd6b4b1f30b8..d3a81f0b880fd 100644
---- a/arch/arm/boot/dts/ti/omap/omap3-gta04a5.dts
-+++ b/arch/arm/boot/dts/ti/omap/omap3-gta04a5.dts
-@@ -114,6 +114,16 @@ wlcore: wlcore@2 {
- 	};
- };
- 
-+&uart1 {
-+	bluetooth {
-+		compatible = "ti,wl1837-st";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&bt_pins>;
-+		enable-gpios = <&gpio5 9 GPIO_ACTIVE_HIGH>;	/* GPIO_137 */
-+	};
-+};
-+
-+
- &i2c2 {
- 	/delete-node/ bmp085@77;
- 	/delete-node/ bma180@41;
--- 
-2.39.2
-
+Applied to clk-next
 
