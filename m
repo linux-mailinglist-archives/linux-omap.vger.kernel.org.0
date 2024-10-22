@@ -1,129 +1,130 @@
-Return-Path: <linux-omap+bounces-2466-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2467-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AAB99A9B3C
-	for <lists+linux-omap@lfdr.de>; Tue, 22 Oct 2024 09:39:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10CED9A9CAF
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Oct 2024 10:32:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB6C4B20B7C
-	for <lists+linux-omap@lfdr.de>; Tue, 22 Oct 2024 07:39:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F7D41C23277
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Oct 2024 08:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28BE1527B1;
-	Tue, 22 Oct 2024 07:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F12B15666C;
+	Tue, 22 Oct 2024 08:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="Ug5CIh3w"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="isz6k2P0"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B403414EC60;
-	Tue, 22 Oct 2024 07:38:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729582737; cv=pass; b=hUeBpc/BpA1XKVhgcfA5RZ4YCsCfgTyl3n2ULd5bSTdm5szNPiAZi38EE1bOebVOi0dysu6C6OyN/nrIK0kjurL5fRmcTjnjkpwNJwgqtG6HrthfyGYXx4mADBamxHyDC7Jw8KvvwCUBi7FJtQGDK8G5PYGERXHT119uJ0Wm7s8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729582737; c=relaxed/simple;
-	bh=iVC4rGuUWrDbXKFGbcB0c7rDS+JuAC4pEITpMqaVOWo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GEGO47yFR+X27fG7czhU8JsowMYLM7dXu4IQDqMgz1l4QLk2Pq5qX6j5IRWxkVkTi+26qB5YKcb03t4aMtcrliNXm6AxqhwKcBdZ8w5qkoph8kEODumCvLFMlv6ukbxQ/LkFy3aXQtasBLPfyQEveOZo4AlYP2Vma0AEc3oSqPU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=Ug5CIh3w; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
-Received: from hillosipuli.retiisi.eu (2a00-1190-d1dd-0-c641-1eff-feae-163c.v6.cust.suomicom.net [IPv6:2a00:1190:d1dd:0:c641:1eff:feae:163c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sailus)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4XXkZD0MHgz49QB3;
-	Tue, 22 Oct 2024 10:38:43 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1729582726;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JywbDX15nq2UroYMBFhAwnTYlwi6J5gla6pJnh99TIQ=;
-	b=Ug5CIh3wd2favuBs1zfGzgeIkMM18PuICQn4kLoZEJF0I4Iln0b7X/T7H6MzFZJyZE2cJu
-	ZUYb1Aatxq1+44x1A5kz1yR7y5GHTVbmSGuF35ipvd5WZdwq7NANsn9zr9//Q0s++1RBcT
-	zD33msa5ng7EXjNYRn68gTZ0y+GUcXNPSiG5dPoiMd3O7K8iFJe51SmJupZNXjgE8Q/dR+
-	dfzbvBKXHPdl1o8VxEb3MVqgwkyN9xJa7zr8egkcNAqPqeWgCHTYCgbo7r8jEFczuEQ5eg
-	10ahoL7v44SCGrGMK4rS6ZgIPKTyVaRLrCnImsjCepCwK6aZAl0gVAv6/3M4Bw==
-ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1729582726; a=rsa-sha256;
-	cv=none;
-	b=aVNLoEqQSDWxxRn0i2iY3h5UOGcvN7v8Fehljky+yjTbGMIJcUIdD4BmdcMe7y0/md0qwO
-	OF/IjxdhqSq5jEQ4GUF7ljU9ap6QpiQ/eh2wT5PQcE8IFX7BRLFN9RleK1VVNRALBoTDPN
-	3Z7ZTPph2Bb078svCVX8lPkJrPXmh6SgZjROgX8mIwL6cMspFPT6LNSUeBUk1Kf1g8PHDr
-	0HHSkkEWwZzcKCebGtxNdk3Au8JHDqiFuGVTX7Ts7dwEPt2/VQh/Tthg8nnNPwZ6aPmP44
-	pBVJ4av4Ug9EzkKMvHHAUJ+Vfe+5vKuaEMAqigUQ7EjG0kyZLGMWj2ilzK+N4Q==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1729582726;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JywbDX15nq2UroYMBFhAwnTYlwi6J5gla6pJnh99TIQ=;
-	b=ahBeazQXJN0sr8dX4cYyLxfpE+ornNZKUNgPkuQhUNVFh0GvouWLDbBG6hj/J+Jol/+lZY
-	Vbmm5gMKvx0zgA8qPZMD3mwduEwy+9nbCnDPvxKzJcxz1vqcBRe+QN6nOEyvHl0+fqQrZz
-	MDk1ep9790xOKq/TLoQ3eU7aoKaHUVHl/VPWpxGlbrPeYIFs1uidFn/18kHKVCDUOSVQic
-	q6GzpsxzFrcVfeZUOEVb6jklequWQjeYxTWdjlI2l0iK5oevJrOtJPuO95m0Md8A11wVXa
-	XpFapAUycljenzSdhyVUKPCuqSHQSUBZrpNWmzLQguxrxcmhy2v+jB/jk7MfKA==
-Received: from valkosipuli.retiisi.eu (valkosipuli.localdomain [192.168.4.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by hillosipuli.retiisi.eu (Postfix) with ESMTPS id 96BB5634C93;
-	Tue, 22 Oct 2024 10:38:43 +0300 (EEST)
-Date: Tue, 22 Oct 2024 07:38:43 +0000
-From: Sakari Ailus <sakari.ailus@iki.fi>
-To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
-	Helge Deller <deller@gmx.de>, Jaroslav Kysela <perex@perex.cz>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Michal Simek <michal.simek@amd.com>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Takashi Iwai <tiwai@suse.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-sound@vger.kernel.org
-Subject: Re: [PATCH v7 9/9] media: xilinx-tpg: use new of_graph functions
-Message-ID: <ZxdWg68UVopg7ZvT@valkosipuli.retiisi.eu>
-References: <87wmiirqwy.wl-kuninori.morimoto.gx@renesas.com>
- <87jzeirqv3.wl-kuninori.morimoto.gx@renesas.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E834A27735;
+	Tue, 22 Oct 2024 08:32:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729585932; cv=none; b=hEIBx/e8C+BfNUZAvG5s4j/dh67wgaiw6JjgEwTr9wXMEO0X2SqnnLpLQtb1lOvj7ZZU+j6z5J4GsStShdIBvLw5zBykItkKEe7fo8FdtLmMv7m0EPkR1kvFGQK5/CnXi2fstsKryFo7oonrW9CPwEx0Z1awkRhH31J921KXoCc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729585932; c=relaxed/simple;
+	bh=24FHTTIKlshgcnqTCzujRu8x5PDDvQ70ZtdJSrLkunU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XyicZ4xnwhOYq73gV/eiAuhLMnK4UVS1fMy6VnJ1DifYw05PXXer+4v0ThimZiuK5pcjotGMgjHQntjw19QXN6yYALPcIwunZe2xDVtuh0148eESmdPm2mADz2iaKDp9EIOxPX8WmyqBdNXxjSsEUDuogRwQSNFe2BQklOVPTpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=isz6k2P0; arc=none smtp.client-ip=198.47.23.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 49M8VqwT103269;
+	Tue, 22 Oct 2024 03:31:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1729585912;
+	bh=YAMUtebJLSB7p1vdKcR9hmMWoyxoGZwJK0XkcbmsWm8=;
+	h=From:To:CC:Subject:Date;
+	b=isz6k2P0v8fKnPaNqF5TebLSNayOh1js0lHQ4hRVh8cqllDL6AX/fVn2DeM1ZeNU6
+	 SmF9yj7+a0QpNrOCHstvwgotebSqWao97gqGpKBuGy2LfYxehfLpdwbI/9IEw2GkJB
+	 fAlb/p+RgaEYEiAG3yQbU5uQ23dYNZ8qkT+my4RM=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 49M8Vq1S033237;
+	Tue, 22 Oct 2024 03:31:52 -0500
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 22
+ Oct 2024 03:31:52 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 22 Oct 2024 03:31:52 -0500
+Received: from uda0492258.dhcp.ti.com (uda0492258.dhcp.ti.com [10.24.72.81])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 49M8Vm4B052525;
+	Tue, 22 Oct 2024 03:31:49 -0500
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: <bhelgaas@google.com>, <lpieralisi@kernel.org>, <kw@linux.com>,
+        <robh@kernel.org>, <vigneshr@ti.com>,
+        <manivannan.sadhasivam@linaro.org>, <thomas.richard@bootlin.com>
+CC: <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <srk@ti.com>, <s-vadapalli@ti.com>
+Subject: [PATCH] PCI: j721e: Deassert PERST# after a delay of PCIE_T_PVPERL_MS ms
+Date: Tue, 22 Oct 2024 14:01:47 +0530
+Message-ID: <20241022083147.2773123-1-s-vadapalli@ti.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87jzeirqv3.wl-kuninori.morimoto.gx@renesas.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Hi Morimoto-san, Rob,
+According to Section 2.2 of the PCI Express Card Electromechanical
+Specification (Revision 5.1), in order to ensure that the power and the
+reference clock are stable, PERST# has to be deasserted after a delay of
+100 milliseconds (TPVPERL). Currently, it is being assumed that the power
+is already stable, which is not necessarily true. Hence, change the delay
+to PCIE_T_PVPERL_MS to guarantee that power and reference clock are stable.
 
-On Wed, Oct 09, 2024 at 01:45:36AM +0000, Kuninori Morimoto wrote:
-> Now we can use new port related functions for port parsing. Use it.
-> 
-> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-> Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+Fixes: f96b69713733 ("PCI: j721e: Use T_PERST_CLK_US macro")
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+---
 
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Hello,
 
-I.e. it's ok to merge this via non-media tree.
+This patch is based on commit
+c2ee9f594da8 KVM: selftests: Fix build on on non-x86 architectures
+of Mainline Linux.
 
+Regards,
+Siddharth.
+
+ drivers/pci/controller/cadence/pci-j721e.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+index 284f2e0e4d26..e464cfc2c332 100644
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -671,15 +671,14 @@ static int j721e_pcie_resume_noirq(struct device *dev)
+ 			return ret;
+ 
+ 		/*
+-		 * The "Power Sequencing and Reset Signal Timings" table of the
+-		 * PCI Express Card Electromechanical Specification, Revision
+-		 * 5.1, Section 2.9.2, Symbol "T_PERST-CLK", indicates PERST#
+-		 * should be deasserted after minimum of 100us once REFCLK is
+-		 * stable. The REFCLK to the connector in RC mode is selected
+-		 * while enabling the PHY. So deassert PERST# after 100 us.
++		 * Section 2.2 of the PCI Express Card Electromechanical
++		 * Specification (Revision 5.1) mandates that the deassertion
++		 * of the PERST# signal should be delayed by 100 ms (TPVPERL).
++		 * This shall ensure that the power and the reference clock
++		 * are stable.
+ 		 */
+ 		if (pcie->reset_gpio) {
+-			fsleep(PCIE_T_PERST_CLK_US);
++			msleep(PCIE_T_PVPERL_MS);
+ 			gpiod_set_value_cansleep(pcie->reset_gpio, 1);
+ 		}
+ 
 -- 
-Kind regards,
+2.40.1
 
-Sakari Ailus
 
