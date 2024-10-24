@@ -1,180 +1,163 @@
-Return-Path: <linux-omap+bounces-2482-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2483-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99BA09AED60
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Oct 2024 19:12:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D88589AF508
+	for <lists+linux-omap@lfdr.de>; Fri, 25 Oct 2024 00:03:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C4AF28762F
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Oct 2024 17:12:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 635D91F22A03
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Oct 2024 22:03:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7385A1FAF1E;
-	Thu, 24 Oct 2024 17:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD3921733C;
+	Thu, 24 Oct 2024 22:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ifUgwEqS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aDsd6eet"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD451F76DC;
-	Thu, 24 Oct 2024 17:10:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E34422B667;
+	Thu, 24 Oct 2024 22:03:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729789831; cv=none; b=rVMHu47r8kKA6/ku9J0VZ+KHO96l6r3x0CYYM7KnyM3hcH84BT1wU+F3oCPvnvVh/m3vgc/ae7Z0rJ1kca/twcY8M9d5N3ACLS4iblBMoWcJLqtuuiD5YwYnSd931asgJ+7c08CsfGW//+5JDUqAxL0JCxlipcr8WXvYx9/+QTY=
+	t=1729807429; cv=none; b=Zrn2bHrKEbOb7f0mrOIPnAR11oWvdudD5sEe367AOax0sUDqMf2mav2Q88YfSv5IoxAhiqTLMAbvp8ln+Q96fDqaUkyHPJ8YZbEGlL4H8B1Mug8neC6CRRoiscn31FrXWz4xp79w67SV6txWv95lYxJ33YxHBralZM3Hj8h6/bA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729789831; c=relaxed/simple;
-	bh=qzyA85RlVv5b1+7j63HwIxCokuuE9Z6WzA34gaCnMFU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EpvvuFPwwLnlY+ybENuIViYzjcjbwIXCICiiMlocVaVUx/5PZkKoMy0Q+5efWSh16R1YPMZeFIimh8gHdB4k7UQqvPe4PHNodMqjuXW5ONBXmBSyy7v65fnX3akJ9FbXXt9fxBM8UAdLU0xTAm01pczuULnLUFOAHWacFD9Gq1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ifUgwEqS; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2fabb837ddbso18709771fa.1;
-        Thu, 24 Oct 2024 10:10:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729789826; x=1730394626; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FTKrnBluD4JxPICdqME0ajZ+Fx27J0/+WYJKBnAywrU=;
-        b=ifUgwEqSiytVMwYHhTkhKn2v0Xx37v4N7KCZ4KZ3VgDyFpS6MPuZXTJrBu1Yjxi7rL
-         6MYO0VXKvBQ6kroLZcwvMwwgVGksWmOQm0pZTs0puhsCJ+MQG61W0MMbJU6rNLT1Ty3B
-         s+trImFKOWzEZASw7EGpOsvpk8OIgarMqkKyKLFR4wfqe3lvoLbEaoNhnT/v8aT/5Ba5
-         QiVmhcm8c6udZqQVq04YoLWFitZybMzt394FLOEj9qd/n81yV1epo/uUhpDPlncLqkXD
-         kEbuRsVgDLu/g/uSZke0GHmDaP+q/zQfEsaKphOQLNe/0om6ZNnOL/u3wqEhZnhXe7HF
-         xBug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729789826; x=1730394626;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FTKrnBluD4JxPICdqME0ajZ+Fx27J0/+WYJKBnAywrU=;
-        b=jp84mokp/9ZlFZ2PWHSkmF6VoArnHVjou9etiKNklyiyqZhs1hQsk+VOPZJucBICpa
-         nwgH2x1P3y6r0Zxs+wskl6FRbVD51kXVje2o9+N0y8PNv0+9bpqfh4V50S/fv7QUmiYM
-         FdyIzjZkCIod1IitEJVDV593geq+lPk0vTTEAzJQZ92SC+yWWgzLocVVHOpSUrFl5FU5
-         Ww6lWdPLSdxKWMCtrjq0fh38rMZlA21LtcKUNog6fEQa7CkXc0gEpOAtb2+I/h5zrDGD
-         +Di0EoOZQ8k8lcDRVt4sqy4IiEr2/kG6BiRsqqCrODcmse5ckmco9OhsgqJu0FOTFaQY
-         NRBw==
-X-Forwarded-Encrypted: i=1; AJvYcCVKzoHnISE18jGzdRKNH9prh/fXwBPzZzP6STQd3JIZnvsOBpBNur8q3/h9wLOUsp43izcleu8ZAqQ=@vger.kernel.org, AJvYcCVbH1I6gAQCZ3lYW/ohlkk6BDKF1JavrHLDavg+mWYL2aDa0z5scI9jpuIkW4Z1thJCj6tgjC+VGVOz83A=@vger.kernel.org, AJvYcCWRRzwbOyG0NG9IZ4fnFevraVeG+YQ7RfjbGmFpmFY37bJOCjL8Az0wXzfHntMewfkZKRnbSBbVdGi88fs=@vger.kernel.org, AJvYcCXQ9eQ4wYmC4Jsp84uatUvV17C4YXoqADp6iwRcExDa+/sR9u1TCs20Gshp6R43Q/+YIs66zMBieHG8Ew==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxESBFzB9KgZok5SicunOV+sRJ4nEP0JitMnUgJEJXygxfAUDzB
-	neNOtjJkvHt02xXNjTn4Y9AvjdTOf7yWUmdgKzoJqPA4USXTRfGq
-X-Google-Smtp-Source: AGHT+IE6fiv+vs26SxlA2LCU8dr7H03wlCXlCxw07cHtczrt07/pTtUnxZ56Zdpp4aB7P5gDnnkT3Q==
-X-Received: by 2002:a05:651c:1545:b0:2fb:3960:9667 with SMTP id 38308e7fff4ca-2fc9d31b55bmr61721431fa.14.1729789825771;
-        Thu, 24 Oct 2024 10:10:25 -0700 (PDT)
-Received: from orome (p200300e41f26ec00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f26:ec00:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a91370e75sm641392466b.130.2024.10.24.10.10.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2024 10:10:25 -0700 (PDT)
-Date: Thu, 24 Oct 2024 19:10:23 +0200
-From: Thierry Reding <thierry.reding@gmail.com>
-To: Celeste Liu <coelacanthushex@gmail.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Guo Ren <guoren@kernel.org>, 
-	Anup Patel <anup@brainfault.org>, Heinrich Schuchardt <heinrich.schuchardt@canonical.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Russell King <linux@armlinux.org.uk>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, Tony Lindgren <tony@atomide.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Palmer Dabbelt <palmer@rivosinc.com>, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-sh@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-rpi-kernel@lists.infradead.org, linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org, 
-	Stefan Wahren <wahrenst@gmx.net>, Kevin Hilman <khilman@baylibre.com>
-Subject: Re: [PATCH v3 4/4] arm: defconfig: drop RT_GROUP_SCHED=y from
- bcm2835/tegra/omap2plus
-Message-ID: <6m77wg6b76abyk2ebfniayxvrabvzur7onwar4isajb6tvfxbv@7a24p2xkmevj>
-References: <20240910-fix-riscv-rt_group_sched-v3-0-486e75e5ae6d@gmail.com>
- <20240910-fix-riscv-rt_group_sched-v3-4-486e75e5ae6d@gmail.com>
+	s=arc-20240116; t=1729807429; c=relaxed/simple;
+	bh=rvm0sqyM2Iuo+G/JA+hU3fSOwR/fA93E6NiMqCWY8ZM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kmravTH5kLNPMNRti9iIq2NYzgMPRE4AyB+oifewTCay1kfLf2UPlXWSs9z/vBbBbbgoHE4RWD5BnrTkOpqqqQxhzER9rTCpon2Fc6DWqZ9pqd+0GnNrZB0oGSsCi1lw1U2EBAGM+UxjgzgIf/P983I9hiVRiDEqF/7nfRWBSJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aDsd6eet; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99380C4CEEA;
+	Thu, 24 Oct 2024 22:03:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729807428;
+	bh=rvm0sqyM2Iuo+G/JA+hU3fSOwR/fA93E6NiMqCWY8ZM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=aDsd6eetFsT76YujCvqrxSBlJhCRJNUngo87sX6virrURSXimyoeFnMa5ZKEoB2vS
+	 sloVjhcFws7WV2JObyvAvI+z4ZXexaOdiAuky+EswMc/HKZBxCf28NsCXTkRhx3s1O
+	 gOvPEpZT0eeit87A36FG+IfjCUsl0z6fQ0m5oRi/dIqEpVkdnaUWdO/0NESausgkHM
+	 MN3Y15ywDOzTv0c/VI4cqnDNKt6fVbE47tJ5q8W4OavsZ+bOOL/3PSOYYhi/0yw+jc
+	 DJkXNG/LBk4yCWyBALyDoKgYqrJZ0ZYGXB2N1aOQStWWGzKjjghAcjTQGyPlgkDKXZ
+	 MHAZrVHT8uIkQ==
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2fb3ce15172so23370391fa.0;
+        Thu, 24 Oct 2024 15:03:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUF/wJ46uDtDX5RmJB00qZLIdQoNpVhRlpPlUMXakhZxf+Z1j1RzFwsZ534jFJnFDC/unAyieTKDmOzJiE=@vger.kernel.org, AJvYcCV8yMVnTa1vBq/FI0/nQVMG3ftFA66M7TpXBXJM0zqmEsg5MjRLmVJRsGU30mx0+NTzTb2Q7AI17wPfkw==@vger.kernel.org, AJvYcCVCxOR4NIDyNqdREfekd4TXdIkk4HnAEwzTucxjzRDTn8A+WUoQLAgGAYcdZ3t8zjLWHxuWR8xnW+rcBvs=@vger.kernel.org, AJvYcCWL6jadlCNQhckJnS6Y4uev/eN6DXGOzMTaw2L8pKLqAeu8cYpdnmWPUcO0VpqeBc5Ly8wK4Wlx2JUt@vger.kernel.org, AJvYcCXU4caww3SZXWGyQQ16JU0WcQ1wEaPAtLGBbhM7sCYelwvfiSx0PSr9GLER5zymrsZGAnfSsV1Qah/RgSw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw81ixjs+7eTZF+4PjIcGjneamKrra98VeCU7vkYfR4chJvdDH7
+	OEUssDg2AlRozwMDSHE/dvgPb0BghYGQ4/G4+b4Y75h2gfFhxtUmgnxMGXrAqm9XYSR+7i4BwJt
+	SmO2+gxgO9Y8TU28pFD3GrL4l+w==
+X-Google-Smtp-Source: AGHT+IGF6eWZ0+7n7HQRyqqTejSHhmgOHjWsU/iJM8V90fYyb1ZIuNBy89dtclskBrr3PVViovbrpowh66UndWkfyZM=
+X-Received: by 2002:a05:6512:3d0e:b0:536:7a79:b4df with SMTP id
+ 2adb3069b0e04-53b2371753fmr1240151e87.14.1729807426772; Thu, 24 Oct 2024
+ 15:03:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="mgvujidfj33lw4eo"
-Content-Disposition: inline
-In-Reply-To: <20240910-fix-riscv-rt_group_sched-v3-4-486e75e5ae6d@gmail.com>
-
-
---mgvujidfj33lw4eo
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
+References: <87msiub5tt.wl-kuninori.morimoto.gx@renesas.com>
+In-Reply-To: <87msiub5tt.wl-kuninori.morimoto.gx@renesas.com>
+From: Rob Herring <robh@kernel.org>
+Date: Thu, 24 Oct 2024 17:03:33 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKcznR3WoVjUpnWCs6KFW-DAXW1Nvr2_Usb_OzPkkoVuQ@mail.gmail.com>
+Message-ID: <CAL_JsqKcznR3WoVjUpnWCs6KFW-DAXW1Nvr2_Usb_OzPkkoVuQ@mail.gmail.com>
+Subject: Re: [PATCH v8 0/9] of: property: add of_graph_get_next_port/port_endpoint()
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>, Helge Deller <deller@gmx.de>, 
+	Jaroslav Kysela <perex@perex.cz>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Mark Brown <broonie@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Maxime Ripard <mripard@kernel.org>, Michal Simek <michal.simek@amd.com>, 
+	Saravana Kannan <saravanak@google.com>, Takashi Iwai <tiwai@suse.com>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+	devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-sound@vger.kernel.org, Sakari Ailus <sakari.ailus@iki.fi>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v3 4/4] arm: defconfig: drop RT_GROUP_SCHED=y from
- bcm2835/tegra/omap2plus
-MIME-Version: 1.0
 
-On Tue, Sep 10, 2024 at 08:51:10PM +0800, Celeste Liu wrote:
-> Commit 673ce00c5d6c ("ARM: omap2plus_defconfig: Add support for distros
-> with systemd") said it's because of recommendation from systemd. But
-> systemd changed their recommendation later.[1]
->=20
-> For cgroup v1, if turned on, and there's any cgroup in the "cpu" hierarch=
-y it
-> needs an RT budget assigned, otherwise the processes in it will not be ab=
-le to
-> get RT at all. The problem with RT group scheduling is that it requires t=
-he
-> budget assigned but there's no way we could assign a default budget, sinc=
-e the
-> values to assign are both upper and lower time limits, are absolute, and =
-need to
-> be sum up to < 1 for each individal cgroup. That means we cannot really c=
-ome up
-> with values that would work by default in the general case.[2]
->=20
-> For cgroup v2, it's almost unusable as well. If it turned on, the cpu con=
-troller
-> can only be enabled when all RT processes are in the root cgroup. But it =
-will
-> lose the benefits of cgroup v2 if all RT process were placed in the same =
-cgroup.
->=20
-> Red Hat, Gentoo, Arch Linux and Debian all disable it. systemd also doesn=
-'t
-> support it.
->=20
-> [1]: https://github.com/systemd/systemd/commit/f4e74be1856b3ac058acbf1be3=
-21c31d5299f69f
-> [2]: https://bugzilla.redhat.com/show_bug.cgi?id=3D1229700
->=20
-> Tested-by: Stefan Wahren <wahrenst@gmx.net>
-> Acked-by: Kevin Hilman <khilman@baylibre.com>
-> Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
-> ---
->  arch/arm/configs/bcm2835_defconfig   | 1 -
->  arch/arm/configs/omap2plus_defconfig | 1 -
->  arch/arm/configs/tegra_defconfig     | 1 -
->  3 files changed, 3 deletions(-)
+On Wed, Oct 23, 2024 at 9:19=E2=80=AFPM Kuninori Morimoto
+<kuninori.morimoto.gx@renesas.com> wrote:
+>
+>
+> Hi Rob, Saravana, Tomi, Laurent, Sakari, Mark
+>
+> This is v8 patch-set
+>
+> Current Of-graph has "endpoint base" for loop, but doesn't have
+> "port base" loop. "endpoint base" loop only is not enough.
+> This patch-set add new "port base" for loop, and use it.
+>
+> v7 -> v8
+>         - add Acked-by from Sakari/Helge
+>         - tidyup comment line
+>
+> v6 -> v7
+>         - based on latest linus/master branch
+>         - remove "ports" base functions
+>         - use "port" base function on "endpoint" function ([3/9])
+>         - tidyup [1/9] explanation
+>
+> v5 -> v6
+>         - based on latest linus/master branch
+>         - [9/9]: fixed compile warrning
+>
+> v4 -> v5
+>         - tidyup comments
+>         - [8/9]: parent NULL check was removed
+>         - [9/9]: use for_each_of_graph_port()
+>
+> v3 -> v4
+>         - new for_each loop includes __free()
+>          - comment indicates to use return_ptr() or no_free_ptr() if
+>            it need to continue to use node
+>          - each driver based on it
+>         - care "prev" leak on of_graph_get_next_ports()
+>         - of_graph_get_next_port_endpoint() indicates WARN() if port
+>           has non-endpoint node
+>         - tidyup each git-log
+>
+> v2 -> v3
+>         - return NULL if it it doesn't have ports / port
+>         - add visible comment on of_graph_get_next_ports()
+>
+> v1 -> v2
+>         - add each Reviewed-by / Acked-by
+>         - tidyup/update Kernel Docs
+>         - use prev as parameter
+>         - update git-log explanation
+>         - remove extra changes
+>
+> Kuninori Morimoto (9):
+>   of: property: add of_graph_get_next_port()
+>   of: property: add of_graph_get_next_port_endpoint()
+>   of: property: use new of_graph functions
+>   ASoC: test-component: use new of_graph functions
+>   ASoC: audio-graph-card: use new of_graph functions
+>   ASoC: audio-graph-card2: use new of_graph functions
+>   gpu: drm: omapdrm: use new of_graph functions
+>   fbdev: omapfb: use new of_graph functions
+>   media: xilinx-tpg: use new of_graph functions
+>
+>  drivers/gpu/drm/omapdrm/dss/dpi.c             |   3 +-
+>  drivers/gpu/drm/omapdrm/dss/sdi.c             |   3 +-
+>  drivers/media/platform/xilinx/xilinx-tpg.c    |  14 +--
+>  drivers/of/property.c                         |  99 ++++++++++++++---
+>  drivers/video/fbdev/omap2/omapfb/dss/dpi.c    |   3 +-
+>  drivers/video/fbdev/omap2/omapfb/dss/dss-of.c |  66 -----------
+>  drivers/video/fbdev/omap2/omapfb/dss/dss.c    |  20 ++--
+>  drivers/video/fbdev/omap2/omapfb/dss/sdi.c    |   3 +-
+>  include/linux/of_graph.h                      |  49 +++++++++
+>  include/video/omapfb_dss.h                    |   8 --
+>  sound/soc/generic/audio-graph-card.c          |   2 +-
+>  sound/soc/generic/audio-graph-card2.c         | 104 ++++++++----------
+>  sound/soc/generic/test-component.c            |   3 +-
+>  13 files changed, 205 insertions(+), 172 deletions(-)
 
-Any idea who will want to pick this up? Probably something the ARM SoC
-maintainers can do directly, in which case:
+Applied, thanks.
 
-Acked-by: Thierry Reding <treding@nvidia.com>
-
---mgvujidfj33lw4eo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmcaf38ACgkQ3SOs138+
-s6Eb2RAAph/IveI76N2c7lk/cbmWs1cQoFHZmyzXgY26ZBU9nc81ILsjchLmkF85
-h1M3kPkxMquC56MplXj0gSQGCIQIuLlbJf/cR4bL+PPOw7ecV5Dwg3cvg17do6+w
-7+zAVkx+pXA8HbBAqVpHuQcP+YyPN4GEFDy8L8bdOa3GrAdpFKehSTCvr0cmvZCD
-LtNd8P4xocqpMrxdGbH3YcOT/eJtbwlmRCYbeWavOtFfdiiIuNH73drj1L67sOjv
-A0rgJOdsEtMCQG/sCtMkGd7KY62fZCE4nTu9RUM4/ett8nlROC674VgvJrpCW6Ym
-hSZmJaRPXSInSFk9olAC3wWChah4WncpBj7qEfZ8g8dwMchFeGwgYTxxmCUIV7o8
-A1Q1pbb1BMAS64SRaLv2bRkuWJ0FdI0bll+pihc7MSYtiWAuP5muOxK6QWdbr/ig
-tTpYEh0PSsBkBAJ4zswAfXggM0HOUzqUOVsGDW0ky95K9pVDuDF9LVIY1FuEMgDw
-72WHhE1zsbgVlfzTIOC0s8cD9ghl6e49g/TIl+BHxLh3xEWz2DOY8yLyj5M2OCgk
-2Y+9jS20AREVOhtvxmeW5MDJavSj+4LXvqQE/7G63JDamadu/N1GYPfCqmQxQSiW
-WaSdrnjknZjngwZWPQ+1p4LgKnlEr78OUc/jCnsSMyYXnBb3EzA=
-=YCp7
------END PGP SIGNATURE-----
-
---mgvujidfj33lw4eo--
+Rob
 
