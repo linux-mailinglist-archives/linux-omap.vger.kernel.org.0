@@ -1,159 +1,99 @@
-Return-Path: <linux-omap+bounces-2501-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2502-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D159B5035
-	for <lists+linux-omap@lfdr.de>; Tue, 29 Oct 2024 18:18:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E84379B526B
+	for <lists+linux-omap@lfdr.de>; Tue, 29 Oct 2024 20:09:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 578EE28492A
-	for <lists+linux-omap@lfdr.de>; Tue, 29 Oct 2024 17:18:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACBD2283C43
+	for <lists+linux-omap@lfdr.de>; Tue, 29 Oct 2024 19:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA711D356C;
-	Tue, 29 Oct 2024 17:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE289206E92;
+	Tue, 29 Oct 2024 19:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VayZLpSy"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1172107;
-	Tue, 29 Oct 2024 17:18:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB64B1E0B93;
+	Tue, 29 Oct 2024 19:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730222311; cv=none; b=sHZQ3HDaI6o8ZpglyMEAVC7+iAIvWWaSCyFpocpI44LL/NvY3cPwk7/8muhnk/SwfQjK3wI/oi/TcMipeBnUmPw6oYaM/xsfeZtfdospUSygqphyE2MqE9sfFhCd1Yq1doZ0bW/TLw47oUvdtPKeYcwvUcMzOHXlvN5H2ufXgiQ=
+	t=1730228934; cv=none; b=ClpAV0kPZA1U/KVj1ieiFgcOH4CLIw9HcXEhNZBF1Bls99hsPu4ib+AHRiJQHOMCH3P8J4WWvkrSu3W98YjDPWurV1y29NeRxB8kD5mRChXbHkiP5YUfyM6qiBU/KgLudSbtHbdW/vIEOOLHH5D+VABJ1okqDHNC1ZrQICQ+fWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730222311; c=relaxed/simple;
-	bh=FQFD4uMr5FwFyabGa4bZLCg4OXzHpYuyv7FgK3XpFXI=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=UzFVGBv1Hh+dZDVTpn7xiXQMERFYzMlWqonHn5Y+mACW4EM/4/eJeTkewLv5/QfgsmyhpnXjGyc0ubc5DHy1nDVccP5EsrHCnnc6I6mIQgchVGWXEs7CM+OTjzy/dQoxGQ7pG6e5Cyb7w894juZ8OxDeaIiNOeWGIso7CjvbqI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+	s=arc-20240116; t=1730228934; c=relaxed/simple;
+	bh=tIfGwD/HdO/jnrrCromSFeH1ke0AevLnE2PgsP2rc6w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NrwJw18v9x0u80fMVC7CvGb6Fqxh/EEhgDrhDYGU/QBz0lMGveHmIOB6e9At8CYiCKpTbGilNxYfuUBGFbVfls7cK4Pxq9FyTTVGKA+6R7xCSH/qDmNta9YrjezefSFdWtGg3i7tbrvgutqhcJ2ebZX4vfQ1FpWXcrhZaHVnW7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VayZLpSy; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-6e59a9496f9so63177147b3.0;
-        Tue, 29 Oct 2024 10:18:28 -0700 (PDT)
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-20cbcd71012so62634325ad.3;
+        Tue, 29 Oct 2024 12:08:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730228932; x=1730833732; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tIfGwD/HdO/jnrrCromSFeH1ke0AevLnE2PgsP2rc6w=;
+        b=VayZLpSyehjVIm1LwX/JA4IFEGyv8jWBvMxG72euyzVtPZOUSRbtPYdcoZHR1PnHn3
+         rIZoQc8pcGcP3/E9bKyjuc7tOcbRIg68EGaVPFzZPaS9HlOU7KW0H1cDgFen8oDfglDp
+         7fkaSiBAS3SDcH+n/4HKsFQmAW9WlJpqnIRkfe2I6ajFZik8EE7A7HDHAIUqhqsBp5KV
+         Aq6GcC9uLNmMMYvluav+MwvsqadG/e/lUoyxocW/GXYkFdpst1gaCGqwCR/OKrp0gcQp
+         6Qn751G/zVdgD9QKtLNYD28tnJ9CPWchy3jyFAZdelU3kvOwLrfLWLUHUTj8iCHo+l8Y
+         GJCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730222307; x=1730827107;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PoG2ltFbfN+WnHJpt5RjjG6F3QLPQGH+biFB2YP687g=;
-        b=m8GA6lXLX/cPrTnYMq0txvVRrMpyNNMGB3RvMFURSIn8I45FQXDAWfOniNCGRzahJU
-         Ir26clVaUGM4180/BiFYMr+COWm6l7lTABl6yudKa+5iHysOt9ywW/3ygsLEkaWL7U94
-         +WTxdiH3Uh9xFtM9LmBxM/SP0LWrT1cgY4O+ZvGd6utmC7zK6rilsD3pGopS3Z6Y48Is
-         O/Xp4+zPgMQihY/E6/ohX5Vdcn5iGQOQY0YeW2trSkwsCAG/0L5oL+wdNMKaoy69Ta7x
-         TJeL0ZYiLn3B0ib6HyfTgbbGK87hHLg0+Dpk59+3ZLzr1wQj+VhGhPGllUjY3CX/7MK7
-         6B6A==
-X-Forwarded-Encrypted: i=1; AJvYcCUa3ihp+KgEoYjMYAE2KfGwUoonLKkSqt/Zm9IZJ9Dud/xol/QDCeb4AnZMU4lbQy/mD45mv1s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBE+ble5AMs5KbRGbUvlNxWtK/i3tXf+0wnJ32DyUVtXJSDk0v
-	hs1BKAOAfQ7Y1/hAdM58XG93vbiF5lWtEbdz1wGSL3qIDVfhqkCj/I3s5vEd
-X-Google-Smtp-Source: AGHT+IEBxRyf+UFU+mWLqLU/z24F1xiHXDpjFMKgo3GcqmcoVzpIdFH28jPgmOPRGlsy7r50CobyJQ==
-X-Received: by 2002:a05:690c:ecd:b0:6e5:d35b:ca80 with SMTP id 00721157ae682-6e9d88fd872mr115316317b3.5.1730222307449;
-        Tue, 29 Oct 2024 10:18:27 -0700 (PDT)
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com. [209.85.128.180])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6e9c6c96991sm20386147b3.123.2024.10.29.10.18.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Oct 2024 10:18:27 -0700 (PDT)
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6e9ed5e57a7so23645677b3.1;
-        Tue, 29 Oct 2024 10:18:26 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXTsHmYxi+m+MTh4GqLzFV8h8iPQGfqvdLLQyVxFDvyzBdSuQ0EOvxmJajUsNjfOCIMkHxhj2Y=@vger.kernel.org
-X-Received: by 2002:a05:690c:6885:b0:6dd:fb48:118c with SMTP id
- 00721157ae682-6e9d8ab3d0bmr135385657b3.31.1730222306713; Tue, 29 Oct 2024
- 10:18:26 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1730228932; x=1730833732;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tIfGwD/HdO/jnrrCromSFeH1ke0AevLnE2PgsP2rc6w=;
+        b=fAu8TruAi2YaT9GXir9n8ylVeBGIF5WH1NFNmN/eQ55EsAMAv+pG0TRguYejhupLuz
+         4p8Rky/7d0iqeODHxLNQpgkuduTTe9mV/ZBR7Fpv990shAmIDT1MNEs+S2YXGcPTGF8i
+         qP3vQJPzT4MAUMWYzqCKykLP6irKE3HAEXKq2OwDLp9kywnPSdEdvUBY8pFx62e0qQRI
+         G708z7bosb13HxzedzkB34yP0OJkCckgri/P7u39vfiVvrzYT5ws/BkwBAgeZXi0LJQx
+         qkqP1W9EC2ZatpyfAI5GvBLN5VgyBHoiIJ4FKkI+8nmVE3MuSWCO41r4rVaqzlZOafvd
+         hjaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUH+C4jDiPiiQkO+cWa9d9i4peqY9zy+n2AdFEg2NyB4Xo9wU+L0V9PPFnPh54di+SFr9JBgTxAAJ5czA==@vger.kernel.org, AJvYcCV9pF3lQgOUlZijAOG7obW6Y3jer3QYUl5ue4zYTFkGLJ1TJwR1TlkzDTE3Pv89ZdGwUklb1ftwzaVx@vger.kernel.org, AJvYcCXMMVoHAXl8rsWM2949YXut72M6saZ3ThipQx/2oPUa+Me9BOPeEqLGDVSWIqoXezpCTXRaQXmAGlHS7ZGc@vger.kernel.org
+X-Gm-Message-State: AOJu0YyeMFY+IG4V1H7EMGQWtN8WX2s/oDGmlB7XOkDLxw+k7bEGUzz1
+	cRmnu1bEYwZBPKQE4cSZZzRiF17aGjmr1rQS20wbk7xX+FpFhgvv
+X-Google-Smtp-Source: AGHT+IFQ4p5UFgCpOtHK7NrcYjknJvrx7h8QNzPleJb/62ppRwEmYxJQFe2k/57b5BUSrupD/3lbDw==
+X-Received: by 2002:a17:902:d4c7:b0:20b:4875:2c51 with SMTP id d9443c01a7336-210c6c01a6cmr151731295ad.27.1730228932088;
+        Tue, 29 Oct 2024 12:08:52 -0700 (PDT)
+Received: from mighty.kangaroo-insen.ts.net ([45.64.12.145])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-210bc089668sm69591265ad.308.2024.10.29.12.08.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Oct 2024 12:08:51 -0700 (PDT)
+From: MightyM17 <bavishimithil@gmail.com>
+To: bavishimithil@gmail.com
+Cc: andreas@kemnade.info,
+	bcousson@baylibre.com,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	krzk+dt@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	robh@kernel.org,
+	tony@atomide.com
+Subject: Re: [PATCH v2] ARM: dts: twl6032: Add DTS file for TWL6032 PMIC
+Date: Tue, 29 Oct 2024 19:08:44 +0000
+Message-ID: <20241029190844.791-1-bavishimithil@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240626095056.12607-1-bavishimithil@gmail.com>
+References: <20240626095056.12607-1-bavishimithil@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 29 Oct 2024 18:18:14 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdX-1bBphfFmEy708MeBePb2pF6rWj0xOjR4d9S-KVgA3A@mail.gmail.com>
-Message-ID: <CAMuHMdX-1bBphfFmEy708MeBePb2pF6rWj0xOjR4d9S-KVgA3A@mail.gmail.com>
-Subject: BeagleBone Black Ethernet PHY issues
-To: ext Tony Lindgren <tony@atomide.com>, Siddharth Vadapalli <s-vadapalli@ti.com>, 
-	Roger Quadros <rogerq@kernel.org>
-Cc: "open list:TI ETHERNET SWITCH DRIVER (CPSW)" <linux-omap@vger.kernel.org>, netdev <netdev@vger.kernel.org>, 
-	Matti Vaittinen <mazziesaccount@gmail.com>, Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi all,
+Hello, is there anything blocking this? Previous problems have been mentioned in this v2 patch, any further reviews?
 
-During the last few months, booting kernels on BeagleBone Black
-sometimes fails with:
-
-    +SMSC LAN8710/LAN8720 4a101000.mdio:00: probe with driver SMSC
-LAN8710/LAN8720 failed with error -5
-     davinci_mdio 4a101000.mdio: phy[0]: device 4a101000.mdio:00,
-driver SMSC LAN8710/LAN8720
-     soc_device_match(cpsw_soc_devices): no match
-     cpsw-switch 4a100000.switch: initialized cpsw ale version 1.4
-     ...
-     am335x-phy-driver 47401300.usb-phy: dummy supplies not allowed
-for exclusive requests (id=vbus)
-    +cpsw-125mhz-clkctrl:0014:0: failed to disable
-     am335x-phy-driver 47401b00.usb-phy: using DT
-'/ocp/target-module@47400000/usb-phy@1b00' for 'reset' GPIO lookup
-     ...
-     cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
-    -SMSC LAN8710/LAN8720 4a101000.mdio:00: attached PHY driver
-(mii_bus:phy_addr=4a101000.mdio:00, irq=POLL)
-    -cpsw-switch 4a100000.switch eth0: Link is Up - 100Mbps/Full -
-flow control off
-    -Sending DHCP requests ., OK
-    -IP-Config: Complete:
-    -[...]
-    +cpsw-switch 4a100000.switch: phy
-"/ocp/interconnect@4a000000/segment@0/target-module@100000/switch@0/mdio@1000/ethernet-phy@0"
-not found on slave 0
-    +[HANG]
-
-Adding debug prints to smsc_phy_probe() makes the issue go away, so it
-must be timing related.
-
-Adding specific debug prints in the failure case gives:
-
-    SMSC LAN8710/LAN8720 4a101000.mdio:00: genphy_read_abilities:2859:
-phy_read(MII_BMSR) failed -EIO
-    SMSC LAN8710/LAN8720 4a101000.mdio:00: phy_probe:3613:
-genphy_read_abilities() failed -EIO
-    SMSC LAN8710/LAN8720 4a101000.mdio:00: probe with driver SMSC
-LAN8710/LAN8720 failed with error -5
-
-and later:
-
-    Generic PHY 4a101000.mdio:00: genphy_read_abilities:2859:
-phy_read(MII_BMSR) failed -EIO
-    Generic PHY 4a101000.mdio:00: phy_probe:3609:
-genphy_read_abilities failed -EIO
-    cpsw-switch 4a100000.switch: phy
-"/ocp/interconnect@4a000000/segment@0/target-module@100000/switch@0/mdio@1000/ethernet-phy@0"
-not found on slave 0
-
-Adding debug prints to __mdiobus_read() and davinci_mdio_read() gives:
-
-    mdio_bus 4a101000.mdio: davinci_mdio_read:444:
-readl(&data->regs->user[0].access) = 0x3a0ffff
-    mdio_bus 4a101000.mdio: __mdiobus_read:900: davinci_mdio_read failed -EIO
-
-but this is a different (and unimportant?) early failure from
-smsc_phy_config_intr(), and that debug print actually makes the issue go
-away, too.
-
-Ignoring the early failure reveals that phy_read(MII_BMSR) failed due
-to:
-
-    mdio_bus 4a101000.mdio: davinci_mdio_read:446:
-readl(&data->regs->user[0].access) = 0x20ffff
-
-Anyone with a clue?
-Thanks!
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Best Regards,
+Mithil
 
