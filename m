@@ -1,99 +1,97 @@
-Return-Path: <linux-omap+bounces-2502-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2503-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E84379B526B
-	for <lists+linux-omap@lfdr.de>; Tue, 29 Oct 2024 20:09:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 776EE9B5307
+	for <lists+linux-omap@lfdr.de>; Tue, 29 Oct 2024 21:02:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACBD2283C43
-	for <lists+linux-omap@lfdr.de>; Tue, 29 Oct 2024 19:08:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F59D1F23CA9
+	for <lists+linux-omap@lfdr.de>; Tue, 29 Oct 2024 20:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE289206E92;
-	Tue, 29 Oct 2024 19:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D4F2071FC;
+	Tue, 29 Oct 2024 20:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VayZLpSy"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="tDYgHkvG"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB64B1E0B93;
-	Tue, 29 Oct 2024 19:08:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57BDE1940B3;
+	Tue, 29 Oct 2024 20:02:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730228934; cv=none; b=ClpAV0kPZA1U/KVj1ieiFgcOH4CLIw9HcXEhNZBF1Bls99hsPu4ib+AHRiJQHOMCH3P8J4WWvkrSu3W98YjDPWurV1y29NeRxB8kD5mRChXbHkiP5YUfyM6qiBU/KgLudSbtHbdW/vIEOOLHH5D+VABJ1okqDHNC1ZrQICQ+fWo=
+	t=1730232162; cv=none; b=CBBWNMIe7PRUgWTIXeUdJAyFr9A+heOqQDoJd3MEeJZU+hOCOI5c56zNRra90RnuP/2/a/cAEFk4VBBNLHpK5JGzY6pf3bSOtApbAKoBDOrK2w/8+OaZoGzrScwRCfmcu9ESapGZ1aISGC+7y+FDbZERmXn2LK8RVaRzPftwbbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730228934; c=relaxed/simple;
-	bh=tIfGwD/HdO/jnrrCromSFeH1ke0AevLnE2PgsP2rc6w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NrwJw18v9x0u80fMVC7CvGb6Fqxh/EEhgDrhDYGU/QBz0lMGveHmIOB6e9At8CYiCKpTbGilNxYfuUBGFbVfls7cK4Pxq9FyTTVGKA+6R7xCSH/qDmNta9YrjezefSFdWtGg3i7tbrvgutqhcJ2ebZX4vfQ1FpWXcrhZaHVnW7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VayZLpSy; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-20cbcd71012so62634325ad.3;
-        Tue, 29 Oct 2024 12:08:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730228932; x=1730833732; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tIfGwD/HdO/jnrrCromSFeH1ke0AevLnE2PgsP2rc6w=;
-        b=VayZLpSyehjVIm1LwX/JA4IFEGyv8jWBvMxG72euyzVtPZOUSRbtPYdcoZHR1PnHn3
-         rIZoQc8pcGcP3/E9bKyjuc7tOcbRIg68EGaVPFzZPaS9HlOU7KW0H1cDgFen8oDfglDp
-         7fkaSiBAS3SDcH+n/4HKsFQmAW9WlJpqnIRkfe2I6ajFZik8EE7A7HDHAIUqhqsBp5KV
-         Aq6GcC9uLNmMMYvluav+MwvsqadG/e/lUoyxocW/GXYkFdpst1gaCGqwCR/OKrp0gcQp
-         6Qn751G/zVdgD9QKtLNYD28tnJ9CPWchy3jyFAZdelU3kvOwLrfLWLUHUTj8iCHo+l8Y
-         GJCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730228932; x=1730833732;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tIfGwD/HdO/jnrrCromSFeH1ke0AevLnE2PgsP2rc6w=;
-        b=fAu8TruAi2YaT9GXir9n8ylVeBGIF5WH1NFNmN/eQ55EsAMAv+pG0TRguYejhupLuz
-         4p8Rky/7d0iqeODHxLNQpgkuduTTe9mV/ZBR7Fpv990shAmIDT1MNEs+S2YXGcPTGF8i
-         qP3vQJPzT4MAUMWYzqCKykLP6irKE3HAEXKq2OwDLp9kywnPSdEdvUBY8pFx62e0qQRI
-         G708z7bosb13HxzedzkB34yP0OJkCckgri/P7u39vfiVvrzYT5ws/BkwBAgeZXi0LJQx
-         qkqP1W9EC2ZatpyfAI5GvBLN5VgyBHoiIJ4FKkI+8nmVE3MuSWCO41r4rVaqzlZOafvd
-         hjaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUH+C4jDiPiiQkO+cWa9d9i4peqY9zy+n2AdFEg2NyB4Xo9wU+L0V9PPFnPh54di+SFr9JBgTxAAJ5czA==@vger.kernel.org, AJvYcCV9pF3lQgOUlZijAOG7obW6Y3jer3QYUl5ue4zYTFkGLJ1TJwR1TlkzDTE3Pv89ZdGwUklb1ftwzaVx@vger.kernel.org, AJvYcCXMMVoHAXl8rsWM2949YXut72M6saZ3ThipQx/2oPUa+Me9BOPeEqLGDVSWIqoXezpCTXRaQXmAGlHS7ZGc@vger.kernel.org
-X-Gm-Message-State: AOJu0YyeMFY+IG4V1H7EMGQWtN8WX2s/oDGmlB7XOkDLxw+k7bEGUzz1
-	cRmnu1bEYwZBPKQE4cSZZzRiF17aGjmr1rQS20wbk7xX+FpFhgvv
-X-Google-Smtp-Source: AGHT+IFQ4p5UFgCpOtHK7NrcYjknJvrx7h8QNzPleJb/62ppRwEmYxJQFe2k/57b5BUSrupD/3lbDw==
-X-Received: by 2002:a17:902:d4c7:b0:20b:4875:2c51 with SMTP id d9443c01a7336-210c6c01a6cmr151731295ad.27.1730228932088;
-        Tue, 29 Oct 2024 12:08:52 -0700 (PDT)
-Received: from mighty.kangaroo-insen.ts.net ([45.64.12.145])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-210bc089668sm69591265ad.308.2024.10.29.12.08.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Oct 2024 12:08:51 -0700 (PDT)
-From: MightyM17 <bavishimithil@gmail.com>
-To: bavishimithil@gmail.com
-Cc: andreas@kemnade.info,
-	bcousson@baylibre.com,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	krzk+dt@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	robh@kernel.org,
-	tony@atomide.com
+	s=arc-20240116; t=1730232162; c=relaxed/simple;
+	bh=f3UuPOeTZD4/EqjwCyUXIfeYlRaYApjvPjNvGd90k78=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ItWE5WKAVQ6zkibFS4lPoyeup1vtCoNR36J0IxroNy3vJXkF1b3glORxqLMAnyvD84oLRF7hEvDA0Lv/NoGgE8Pp4Jzt/6ZPMkE03FNgGfpZgdvo6aEmw0kHgOGt2SvQn1EEFA2viHp+38V0D4juIVIXBTwKlvJ+UTPF5O/us10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=tDYgHkvG; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=4OcGl0KWTU3dE20CCOU72pTkjwMEmHgpOFmz9ZwbjCY=; b=tDYgHkvGew+c1P8rkg5Y4/g87J
+	GKZJMUOHNPhJdKvoD5vcYEBCk1tGPcwqxE7F7w2NTv7cVN/eFG6on0e57m74Mng1wvl47OkS3lNkx
+	N5r92+cpnoNTN1BJ76ssekUmXkyOzoDWb5BxdkTodlBoOKjgBK2dubX2eskLC426EpPGTH1C35Y5u
+	HrNSaqAF1Zni7609ZB0Ko4fj3JMOcg9rNtg0PiDbGNAwSNubOIJ+Qr1KaZ7RKJt40FQ4gWKpBHdIg
+	9bF1CqPB90k3F2qzqKKZRWYj3Ntlrv/kcZc7p7xoSma7e8lT+Osciwet4VeFQ/oZDbHXY/VT3/Nrb
+	UtGDVw9A==;
+Date: Tue, 29 Oct 2024 21:02:28 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Mighty <bavishimithil@gmail.com>
+Cc: =?UTF-8?B?QmVub8OudA==?= Cousson <bcousson@baylibre.com>, Tony Lindgren
+ <tony@atomide.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2] ARM: dts: twl6032: Add DTS file for TWL6032 PMIC
-Date: Tue, 29 Oct 2024 19:08:44 +0000
-Message-ID: <20241029190844.791-1-bavishimithil@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Message-ID: <20241029210228.3c517751@akair>
 In-Reply-To: <20240626095056.12607-1-bavishimithil@gmail.com>
 References: <20240626095056.12607-1-bavishimithil@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello, is there anything blocking this? Previous problems have been mentioned in this v2 patch, any further reviews?
+Am Wed, 26 Jun 2024 15:20:56 +0530
+schrieb Mighty <bavishimithil@gmail.com>:
 
-Best Regards,
-Mithil
+> From: Mithil Bavishi <bavishimithil@gmail.com>
+> 
+> Add a dedicated DTS file for the TWL6032 PMIC (Phoenix Lite). Already
+> has driver support with TWL6030 (Phoenix) since both of them are so
+> similar, some nodes can be reused from TWL6030 as well.
+> 
+> This can be included in the board files like twl6030.
+> Example:
+> ...
+> &i2c1 {
+>     twl: twl@48 {
+>         reg = <0x48>;
+>         interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
+>         interrupt-controller;
+>         interrupt-parent = <&gic>;
+>     };
+> };
+> 
+> /include/ "twl6032.dtsi"
+> ...
+> 
+> Used in devices like samsung-espresso, amazon-jem, epson-embt2ws etc.
+> 
+Well, no, the file is not used at the moment, I do not think it makes
+sense to have it in without an actual in-tree user.
+
+Regards,
+Andreas
 
