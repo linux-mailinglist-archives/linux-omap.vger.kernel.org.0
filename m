@@ -1,70 +1,64 @@
-Return-Path: <linux-omap+bounces-2521-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2522-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F01499B66C3
-	for <lists+linux-omap@lfdr.de>; Wed, 30 Oct 2024 16:01:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D7B59B6703
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Oct 2024 16:09:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E9D1B23BEF
-	for <lists+linux-omap@lfdr.de>; Wed, 30 Oct 2024 15:01:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A3981F2168A
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Oct 2024 15:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D691F5822;
-	Wed, 30 Oct 2024 15:00:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z2GBuIhe"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6901F213129;
+	Wed, 30 Oct 2024 15:08:55 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0F28C0B;
-	Wed, 30 Oct 2024 15:00:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE03212F1C;
+	Wed, 30 Oct 2024 15:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730300434; cv=none; b=AwgdCvMc5uQIHkxPQwNk9OaRsNnCWS4LWNMu9/dJxCawbb851G/ScqFOj01GAZ6vtji4bUWGlCeuk5UH0k6AwRsaKIsrH09JYJBbfv0rq9K3KSVHi9yWOwNAIQ0No25y3n1QSrSyKNm/xO0QG9HsJp1myUSyknXbeIcwEemNTms=
+	t=1730300935; cv=none; b=Xg1RI/ZfcoX/+jStD8Gc668Fgfkb7lz5KRW/nUSv4B6OTYA3+aUlc3I03a4k+yQUkzSGWkdBClx2SiX31F0WxeTgRblMpSAHVCfvyDjpvPtuWOeEvf44gRVN1mF0DZrcbL6mrN3sP4MUjPe6X6CJWVIULTltbtog/fe0oplSqf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730300434; c=relaxed/simple;
-	bh=NSUsPKNIcxxIl25/ie9F75hAbipw9DFEqV26/g+9lQs=;
+	s=arc-20240116; t=1730300935; c=relaxed/simple;
+	bh=ejF+LhbN4p+CJJaxM5KezRpQLarvwOeSL14GAdk+D4c=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kVBzWlgozVD1pev9ne9lM2eCCaKwLBghDe03CIIhURlrXXwBRwNYUsYKqXyPb5v0B0xisTn0PwDfBPL/AZcG0c9tFf9K27odWClTA6uHdNl72i7IsQW1z9qSjoDZOgZuaPmfdW2MgRD/QZawN6cCfaVRNRn4GMY5bCY/wv15t2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z2GBuIhe; arc=none smtp.client-ip=209.85.217.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	 To:Cc:Content-Type; b=qJdUO3WhBG3lAA4boLO3vkbS8mY/i/CMWKHovaNmirxw+g112zWfRfKQkSieMcS0hNvzo6gmySP+kKFHnNZik+4PBKtbqjZCM4s/9Y1HpHr3yIONJ2rgfr8lkCz1HylUvkg55WRQWUP7fGE5rFfFvh6wh6Ty8b9HyZl9zgYGNno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-4a46d662fccso2250188137.2;
-        Wed, 30 Oct 2024 08:00:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730300431; x=1730905231; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rULvNichQesAS+BgmPl/sd0NpNj1EoASQ5iS96a/gGA=;
-        b=Z2GBuIheyDVyDXeput23V0l/PAlnOo1GwXjU9KN6EMnjaxtOCk52ZmUWUo6kY+WJuJ
-         Son+whZgToHjKX7D7hIWjs0mMzA9tu2Ye1Rbxz5elLRd1g/o3uPUr+VyNUe6hb+/QydR
-         6AB+SBl8zi5LE8GKdMHcRaYVycxE3EPLjZJvu91Vq8nTyybUY4Oat+SGQTAFJ+AHYvIx
-         cBaC4HlG0ZBjYsaDi1HjUABvWj421TCz98z3HJQGIAFMqXhTdvBvWwVQl6nrH7nVZEYO
-         VfsRRWe/GE/7ScBNhhSzFM9p0QgzV7JmBPQAjJY/tJbxcTKGtHr3Y3KNVtmq6bk4XvD2
-         GAsg==
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6e330b7752cso7381457b3.1;
+        Wed, 30 Oct 2024 08:08:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730300431; x=1730905231;
+        d=1e100.net; s=20230601; t=1730300931; x=1730905731;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rULvNichQesAS+BgmPl/sd0NpNj1EoASQ5iS96a/gGA=;
-        b=ji3td4l7aUYyoAECSEGf21AhBjMf5TISnHKpAixsiEAxeI2Jgt+KYpC2EtYLOytApl
-         O90G5vhErSTNi1ONDg82snJ2JwMVh9HXapcEcWt+Ssq7UvKMeUy8AD5aLREFhXZ7bsgD
-         Elnhnpri40+lrA74GmCyDhe/x3Ids4cjDCCOB6XZH1Tf6JLcgyoZcM6Sv72TxZCvqlBt
-         vKHtWp9a98NyBhaIOxpt14VRW8ojOt17hX+My0n0aPgHeyHHJPDaIoqip35ufrWiC4r6
-         alM272QMfztfxmD0FgqWDbbn5EYWzH6wrv4vezMA6sIW+FNkMDuXs4zZtZdRev51Ehf0
-         iQ8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWIEa3iCAa1edhvtSYhozfZjwoDjMT2oGH05jpVhVpNJ7gf8qu1MQ7lzw7zIUQ16gJ6btIkrt0S@vger.kernel.org, AJvYcCWqqn2WZY3I/kqfhkJlopYE75SXSqAbvIu+668gRQLqy57gdfAz03oFlXBcg3jvbvWAxGJofJGr0giH@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4coM5rmOqX2UgFn3AwHZd3P/Mauwe4Fjn/wHmlJdTmlbJQIp5
-	IKZVKKhgtvwyVy3s+2komL7AlnX1MUmpOPNZTqzNR8NBUZ3R0McyfnKSGniQq0CbqMcQtJor9tv
-	S6RXShJDz74g8p9egxuFNuNqDFs4=
-X-Google-Smtp-Source: AGHT+IGQPAOAvrDdaWqZtP3lATUixCSPGWfj+d5lffyZ2v6OC+36VZ5Z0Mp2NekS6Gn1XXBZCpriDdcwWyKIc08XnTQ=
-X-Received: by 2002:a05:6102:6c9:b0:497:6bb5:398a with SMTP id
- ada2fe7eead31-4a8cfb5d0c6mr12909664137.7.1730300431163; Wed, 30 Oct 2024
- 08:00:31 -0700 (PDT)
+        bh=fwJLsP/X3bIPlA750OvhbizLaCKZ63BQRtUHuQ3kd0c=;
+        b=Az+XD+DaKbzOuR/cDLeubj55jfVuQDI9B6U4afvv7TLTSXAUOBUmk6UpD9SxQe0B39
+         fMkc8eUG3PZGU8++FOxtAuViPxxbrH+iZYrrGKQjieaP/utObTjrbIxIpVXQNbMDjUyz
+         gE66FJxJG/gv0ikID+BSCtodjuB+bK0VaoaRJ38+N7vOtO/db4kx4z8llIJB5AAXAdgX
+         xp3Tr26fxThxzkwLSqTpy1/gPcBAROZZU4AACX1P7gO/DVWXkJupn7ZwsLxRGBU7tu3S
+         +5Rvh7scI6M6+JQaxYSuPd7KyslGUcbV4btcath7A/z1x2DIgYZ5uL3EdnMaw+roRNmM
+         iHuA==
+X-Forwarded-Encrypted: i=1; AJvYcCWeom1GYRLN68rN4ZuztX2+2YDuHKl2e9d6MTICI3pqdlWMKJkdutDh324aSeyQBscsvUPoaccf@vger.kernel.org, AJvYcCX4lEyG3kCjA2UEuf16OPr7bMQzEdc3d34H3UguuMpZbgiB9xvC5cv5Vhb+GUULQ5WGqqFSgab9wh8f@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0SxeR2f9H8afyxqRKwM6ov/YDE23/1Vh2FC0qq10h53hrEjvP
+	yK3jizbuBFzmP6t7uLjtjkW3Bh0r+lJEgV2Vu3ROf+w2blngROFi++iS+VtD
+X-Google-Smtp-Source: AGHT+IGvsBSR45dD3zTrEdwBfs9mL619xmrp5Sbc5ZHexoObE/H4MOU6o2j0QChUTuLHMzPKQhQCHg==
+X-Received: by 2002:a05:690c:380b:b0:6e3:7625:15f7 with SMTP id 00721157ae682-6ea3e8fb1bbmr23594627b3.10.1730300930577;
+        Wed, 30 Oct 2024 08:08:50 -0700 (PDT)
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com. [209.85.128.172])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6e9c6c193b6sm24370397b3.66.2024.10.30.08.08.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Oct 2024 08:08:50 -0700 (PDT)
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-6e39bf12830so8991267b3.1;
+        Wed, 30 Oct 2024 08:08:49 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUu8PPaRyFxgl04vSEuavOP45w+IzwuyrgtXgVcWDA3D3y3HwRJesbWLgcPz9RG9hXS3rkma5GYXNl6@vger.kernel.org, AJvYcCXl2FzjvN4Tk9nsemMdoclaaGVc6A7bawPz8enhiPul1fcdBGa1mnhus+F9O8W+d8uFDECVO8nj@vger.kernel.org
+X-Received: by 2002:a05:690c:e07:b0:6db:dee9:f6fb with SMTP id
+ 00721157ae682-6ea3e8fbba7mr22563157b3.11.1730300929652; Wed, 30 Oct 2024
+ 08:08:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -72,93 +66,108 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <CAMuHMdX-1bBphfFmEy708MeBePb2pF6rWj0xOjR4d9S-KVgA3A@mail.gmail.com>
-In-Reply-To: <CAMuHMdX-1bBphfFmEy708MeBePb2pF6rWj0xOjR4d9S-KVgA3A@mail.gmail.com>
-From: Robert Nelson <robertcnelson@gmail.com>
-Date: Wed, 30 Oct 2024 10:00:03 -0500
-Message-ID: <CAOCHtYgRD_HTD1F-5+CQ3H1PK3Lbhb-ZdyqDYp3wN2wRK5vOUA@mail.gmail.com>
+ <1f927944-30aa-4298-9bd0-d9d3ace3fc78@kernel.org>
+In-Reply-To: <1f927944-30aa-4298-9bd0-d9d3ace3fc78@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 30 Oct 2024 16:08:37 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVN_xNLTvy9u6FvK=agSAUzSHxEuyBS37sOA7jpGLwddw@mail.gmail.com>
+Message-ID: <CAMuHMdVN_xNLTvy9u6FvK=agSAUzSHxEuyBS37sOA7jpGLwddw@mail.gmail.com>
 Subject: Re: BeagleBone Black Ethernet PHY issues
-To: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Roger Quadros <rogerq@kernel.org>
 Cc: ext Tony Lindgren <tony@atomide.com>, Siddharth Vadapalli <s-vadapalli@ti.com>, 
-	Roger Quadros <rogerq@kernel.org>, 
 	"open list:TI ETHERNET SWITCH DRIVER (CPSW)" <linux-omap@vger.kernel.org>, netdev <netdev@vger.kernel.org>, 
 	Matti Vaittinen <mazziesaccount@gmail.com>, Linux ARM <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 29, 2024 at 12:18=E2=80=AFPM Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
->
-> Hi all,
->
-> During the last few months, booting kernels on BeagleBone Black
-> sometimes fails with:
->
->     +SMSC LAN8710/LAN8720 4a101000.mdio:00: probe with driver SMSC
-> LAN8710/LAN8720 failed with error -5
->      davinci_mdio 4a101000.mdio: phy[0]: device 4a101000.mdio:00,
-> driver SMSC LAN8710/LAN8720
->      soc_device_match(cpsw_soc_devices): no match
->      cpsw-switch 4a100000.switch: initialized cpsw ale version 1.4
->      ...
->      am335x-phy-driver 47401300.usb-phy: dummy supplies not allowed
-> for exclusive requests (id=3Dvbus)
->     +cpsw-125mhz-clkctrl:0014:0: failed to disable
->      am335x-phy-driver 47401b00.usb-phy: using DT
-> '/ocp/target-module@47400000/usb-phy@1b00' for 'reset' GPIO lookup
->      ...
->      cpsw-switch 4a100000.switch: starting ndev. mode: dual_mac
->     -SMSC LAN8710/LAN8720 4a101000.mdio:00: attached PHY driver
-> (mii_bus:phy_addr=3D4a101000.mdio:00, irq=3DPOLL)
->     -cpsw-switch 4a100000.switch eth0: Link is Up - 100Mbps/Full -
-> flow control off
->     -Sending DHCP requests ., OK
->     -IP-Config: Complete:
->     -[...]
->     +cpsw-switch 4a100000.switch: phy
-> "/ocp/interconnect@4a000000/segment@0/target-module@100000/switch@0/mdio@=
-1000/ethernet-phy@0"
-> not found on slave 0
->     +[HANG]
->
-> Adding debug prints to smsc_phy_probe() makes the issue go away, so it
-> must be timing related.
->
-> Adding specific debug prints in the failure case gives:
->
->     SMSC LAN8710/LAN8720 4a101000.mdio:00: genphy_read_abilities:2859:
-> phy_read(MII_BMSR) failed -EIO
->     SMSC LAN8710/LAN8720 4a101000.mdio:00: phy_probe:3613:
-> genphy_read_abilities() failed -EIO
->     SMSC LAN8710/LAN8720 4a101000.mdio:00: probe with driver SMSC
-> LAN8710/LAN8720 failed with error -5
->
-> and later:
->
->     Generic PHY 4a101000.mdio:00: genphy_read_abilities:2859:
-> phy_read(MII_BMSR) failed -EIO
->     Generic PHY 4a101000.mdio:00: phy_probe:3609:
-> genphy_read_abilities failed -EIO
->     cpsw-switch 4a100000.switch: phy
-> "/ocp/interconnect@4a000000/segment@0/target-module@100000/switch@0/mdio@=
-1000/ethernet-phy@0"
-> not found on slave 0
+Hi Roger,
 
-Hey Geert,
+On Wed, Oct 30, 2024 at 1:58=E2=80=AFPM Roger Quadros <rogerq@kernel.org> w=
+rote:
+> On 29/10/2024 19:18, Geert Uytterhoeven wrote:
+> > During the last few months, booting kernels on BeagleBone Black
+> > sometimes fails with:
+> >
+> >     +SMSC LAN8710/LAN8720 4a101000.mdio:00: probe with driver SMSC
+> > LAN8710/LAN8720 failed with error -5
 
-What revision of the board do you have, Bx, Cx, etc.
+[...]
 
-Only C3 has the new PCB with the phy 'reset' gpio line.
+> Just wondering if the Reset is happening correctly and it has settled
+> before PHY access.
+>
+> From arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
+>
+> &davinci_mdio_sw {
+>         pinctrl-names =3D "default", "sleep";
+>         pinctrl-0 =3D <&davinci_mdio_default>;
+>         pinctrl-1 =3D <&davinci_mdio_sleep>;
+>
+>         ethphy0: ethernet-phy@0 {
+>                 reg =3D <0>;
+>                 /* Support GPIO reset on revision C3 boards */
+>                 reset-gpios =3D <&gpio1 8 GPIO_ACTIVE_LOW>;
+>                 reset-assert-us =3D <300>;
+>                 reset-deassert-us =3D <13000>;
+>         };
+> };
+>
+> Do we need to increase reset-deassert-us for some reason?
 
-https://openbeagle.org/beagleboard/beaglebone-black/-/blob/master/BBB_SCH.p=
-df?ref_type=3Dheads
+Thanks for the hint!
 
-For pre-C3 boards, removing "C24" has fixed a large percentage of my
-boards in my ci test farm, while it's not a perfect fix as some still
-fail..
+This is indeed on Rev. C3 (my other boards are Rev. A5C or C, but
+I don't test boot recent kernels on them, as they are in active use).
 
-Regards,
+Multiplying reset-deassert-us by 10 gives me a booting board.
+More experiments reveal that I need a delay of 14 ms to boot
+successfully, and 15 ms to avoid the early __mdiobus_read()
+failure, too.
 
---=20
-Robert Nelson
-https://rcn-ee.com/
+> I couldn't find MII ready time after reset de-assert information form the
+> PHY datasheet. except the following line [1].
+> "For the first 16us after coming out of reset, the MII/RMII interface wil=
+l run at 2.5 MHz. After this time, it will
+> switch to 25 MHz if auto-negotiation is enabled"
+>
+> [1] 3.8.5 RESETS
+> https://ww1.microchip.com/downloads/aemDocuments/documents/UNG/ProductDoc=
+uments/DataSheets/LAN8710A-LAN8710Ai-Data-Sheet-DS00002164.pdf
+
+3.8.5.1 Hardware Reset
+"A Hardware reset is asserted by driving the nRST input pin low. When
+ driven, nRST should be held low for the minimum time detailed in
+ Section 5.6.3, "Power-On nRST & Configuration Strap Timing," on page
+ 60 to ensure a proper transceiver reset."
+
+5.6.3 POWER-ON NRST & CONFIGURATION STRAP TIMING
+"For proper operation, nRST must be asserted for no less than trstia."
+
+TABLE 5-8: POWER-ON NRST & CONFIGURATION STRAP TIMING VALUES
+"trstia nRST input assertion time min. 100 =C2=B5S"
+
+On Rev. C3, ETH_RESETn is controlled by an open-drain AND gate.
+It is pulled high by a 10K resistor, and has a 4.7=C2=B5F capacitor to
+ground.  That gives an RC constant of 47ms.  As you need 0.7RC to charge
+the capacitor above the threshold voltage of a CMOS input (VDD/2),
+reset-deassert-us should be at least 33ms. Considering the typical
+tolerance of 20% on capacitors, 40ms would be safer. Or perhaps
+even 50ms?
+
+If you agree, I can send a patch.
+Thanks!
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
