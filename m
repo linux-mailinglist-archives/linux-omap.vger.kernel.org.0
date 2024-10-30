@@ -1,102 +1,157 @@
-Return-Path: <linux-omap+bounces-2540-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2541-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 554A79B6FF9
-	for <lists+linux-omap@lfdr.de>; Wed, 30 Oct 2024 23:42:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B14939B701C
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Oct 2024 23:59:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8562D1C21016
-	for <lists+linux-omap@lfdr.de>; Wed, 30 Oct 2024 22:42:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7641C281974
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Oct 2024 22:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EDCE21730A;
-	Wed, 30 Oct 2024 22:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 223F51D1E8D;
+	Wed, 30 Oct 2024 22:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="00GX5QV+"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="GCA9x10E"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472331BD9EB;
-	Wed, 30 Oct 2024 22:42:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4551CF5E0;
+	Wed, 30 Oct 2024 22:59:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730328151; cv=none; b=Ob6WOsJw6jmHCkJ1Ghv3kX0lz6nORb4HUANLeyEkhQ3xDuNdU8g+3tLhYkAvgXnPQqGz6D40uvHlXJXHOXDzxC4lwKRlQKcbENPY3+1AlhiuIEQZ2EZCuUDyLGKki+oTGAAXpfHBIMZvUE2r3b/8i6b9iLxi5KKAeywzZC3WzFg=
+	t=1730329155; cv=none; b=IpRaMUeeJ4UYyX61Az0mQzYAZyumjz8Wt/N4lcim4zynwJiGFOT3oI48YsQ8TZ1wQ9S5+ymM2bS9GAXX7ifdqKmgW7Y8yPfdCgigklsxy32dzRej4rqiDoD0USPNPG2htY3Yh33F0d6NrNh0ApUeZNErNMw3qLmfF1v9QIHcU5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730328151; c=relaxed/simple;
-	bh=DT9pXJgvQX5AoW7dMqWsYEaIWt1s6GH3Zy1zRV6DS2o=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mhm8sbcM+7aiIpUDsUnvi7QGeAHY3vXrayivWNKCcfq4nbLUGBuZxCskf9bKWD5sZjew1IyV1jpuyIn4xXs/qN++bs1rPGQ9edmdcDnxfctnkIaCVSpdHkYRgfQrOL79IqgAVMwIkTEQ9XyQDH1eNkFKJa4N58/42jxmYKXd0o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=00GX5QV+; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=/W1gnm6AuW6BiVpiHLFOI6HfP0cwzclLuehGNTmJEiQ=; b=00GX5QV+tX1qkKGx+RyXSzKDho
-	Kux6Mjn7iGMuDxARmDJm0d5PuUapZC/Fnwq4sQf2idXitSJCTmFVK6aAk/hTOtIfPuJZUHY226XDd
-	w4XrFQmvzUM3OTv6QjO+S8R6QF9Rl2QtFsWLbo5aRyfZbvxoQ6hrFnxVO10nCaodXsdcFSaxeIlQ8
-	+YLrPqjE6RH4WG1j+dzm7EqT+GO2FUiff2Ewikwp0P8oSgFglSRX4/wGkJ8EQmt8Psmsy+NdTlSf9
-	uRXlumfQIe8zGBBmWGo+kJzVtb7V5erNALFp1lg7+1B93TZA8nRljUJxx+8SLqeu56aZnQYqrHMns
-	aAeMDHAg==;
-Date: Wed, 30 Oct 2024 23:42:19 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Mithil Bavishi <bavishimithil@gmail.com>
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>, Kevin Hilman
- <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, Tony Lindgren
- <tony@atomide.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v2 2/6] arm/dts: Add common device tree for Samsung
- Galaxy Tab 2 series
-Message-ID: <20241030234219.2d918b34@akair>
-In-Reply-To: <20241030211215.347710-3-bavishimithil@gmail.com>
-References: <20241030211215.347710-1-bavishimithil@gmail.com>
-	<20241030211215.347710-3-bavishimithil@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1730329155; c=relaxed/simple;
+	bh=1MzvB5yUlO0rY30H+j8fLPLIINPuVbLXh4qjNidexYs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TL+C9h/zLYF/tbvD6B7axLhIo0f56HrBW363PK1uEEbL5ZWVCkxy12d+bLR6jSOsShJN7rZ/H18E6qRfU00mq2PxB+bwtJ/Dt4r5wyih5nqNiOh0l/wuT2mMdtfabdNKiicgOHN1DQMZifvrukD/u7QW408HGNrkTN2HDROk86k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=GCA9x10E; arc=none smtp.client-ip=198.47.23.248
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 49UMx1dt107945;
+	Wed, 30 Oct 2024 17:59:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1730329141;
+	bh=4ytvWiOQvLWl7zLeqbP754meWrgcjcPi8srBZ8kvprk=;
+	h=From:To:CC:Subject:Date;
+	b=GCA9x10Ea5z3bDwdxpF9sgrSAs063qNYL/SG4WodEtGHrwieCQOhBxaZP1z3/o5/T
+	 KLT3pMUXCA5iGJr+R6jTzU6wSXZrpuQnB4oPMus6yv9k/4AY2yr0FKDVCxSEAQqryB
+	 J7VBfxM/hMOGGIt8tifJYz9vWNDo3jmsRZPAYiQI=
+Received: from DFLE110.ent.ti.com (dfle110.ent.ti.com [10.64.6.31])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 49UMx0t9084597;
+	Wed, 30 Oct 2024 17:59:00 -0500
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 30
+ Oct 2024 17:59:00 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Wed, 30 Oct 2024 17:59:00 -0500
+Received: from judy-hp.dhcp.ti.com (judy-hp.dhcp.ti.com [128.247.81.105])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 49UMx0j2053988;
+	Wed, 30 Oct 2024 17:59:00 -0500
+From: Judith Mendez <jm@ti.com>
+To: Grygorii Strashko <grygorii.strashko@ti.com>,
+        Santosh Shilimkar
+	<ssantosh@kernel.org>,
+        Kevin Hilman <khilman@kernel.org>
+CC: Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski
+	<brgl@bgdev.pl>, <linux-omap@vger.kernel.org>,
+        <linux-gpio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Bin Liu <b-liu@ti.com>, Judith Mendez
+	<jm@ti.com>
+Subject: [PATCH v2] gpio: omap: Add omap_gpio_disable/enable_irq calls
+Date: Wed, 30 Oct 2024 17:59:00 -0500
+Message-ID: <20241030225900.59844-1-jm@ti.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Hi Mithil,
+Add omap_gpio_disable_irq and omap_gpio_enable_irq
+calls in gpio-omap.
 
-Am Wed, 30 Oct 2024 21:12:11 +0000
-schrieb Mithil Bavishi <bavishimithil@gmail.com>:
+Currently, kernel cannot disable gpio interrupts in
+case of a irq storm, so add omap_gpio_disable/enable_irq
+so that interrupts can be disabled/enabled.
 
-> +	twl: twl@48 {
-> +		reg = <0x48>;
-> +		#clock-cells = <1>;
-> +
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <
-> +			&twl6030_pins
-> +			&twl6030_wkup_pins
-> +		>;
-> +
-> +		/* SPI = 0, IRQ# = 7, 4 = active high
-> level-sensitive */
-> +		interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>; /*
-> IRQ_SYS_1N cascaded to gic */
-> +		interrupt-parent = <&gic>;
-> +		ti,system-power-controller;
+Signed-off-by: Bin Liu <b-liu@ti.com>
+[Judith: Add commit message]
+Signed-off-by: Judith Mendez <jm@ti.com>
+---
+Changes since v1 RESEND:
+- split patch from series [0]
+- Add disable/enable calls without wrapper functions
+[0] https://lore.kernel.org/linux-omap/20241011173356.870883-1-jm@ti.com/
 
-this has to be system-power-controller;
+Tested on am335x BeagleBone Black
+---
+ drivers/gpio/gpio-omap.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-And you have it correctly here:
-https://gitlab.postmarketos.org/postmarketOS/pmaports/-/blob/master/device/community/linux-postmarketos-omap/0002-arm-dts-Add-common-dtsi-for-espresso.patch?ref_type=heads#L532
+diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
+index 76d5d87e9681e..137aabada26f9 100644
+--- a/drivers/gpio/gpio-omap.c
++++ b/drivers/gpio/gpio-omap.c
+@@ -711,6 +711,28 @@ static void omap_gpio_unmask_irq(struct irq_data *d)
+ 	raw_spin_unlock_irqrestore(&bank->lock, flags);
+ }
+ 
++static void omap_gpio_disable_irq(struct irq_data *d)
++{
++	struct gpio_bank *bank = omap_irq_data_get_bank(d);
++	unsigned int offset = d->hwirq;
++	unsigned long flags;
++
++	raw_spin_lock_irqsave(&bank->lock, flags);
++	omap_set_gpio_irqenable(bank, offset, 0);
++	raw_spin_unlock_irqrestore(&bank->lock, flags);
++}
++
++static void omap_gpio_enable_irq(struct irq_data *d)
++{
++	struct gpio_bank *bank = omap_irq_data_get_bank(d);
++	unsigned int offset = d->hwirq;
++	unsigned long flags;
++
++	raw_spin_lock_irqsave(&bank->lock, flags);
++	omap_set_gpio_irqenable(bank, offset, 1);
++	raw_spin_unlock_irqrestore(&bank->lock, flags);
++}
++
+ static void omap_gpio_irq_print_chip(struct irq_data *d, struct seq_file *p)
+ {
+ 	struct gpio_bank *bank = omap_irq_data_get_bank(d);
+@@ -723,6 +745,8 @@ static const struct irq_chip omap_gpio_irq_chip = {
+ 	.irq_shutdown = omap_gpio_irq_shutdown,
+ 	.irq_mask = omap_gpio_mask_irq,
+ 	.irq_unmask = omap_gpio_unmask_irq,
++	.irq_disable = omap_gpio_disable_irq,
++	.irq_enable = omap_gpio_enable_irq,
+ 	.irq_set_type = omap_gpio_irq_type,
+ 	.irq_set_wake = omap_gpio_wake_enable,
+ 	.irq_bus_lock = omap_gpio_irq_bus_lock,
+@@ -737,6 +761,8 @@ static const struct irq_chip omap_gpio_irq_chip_nowake = {
+ 	.irq_shutdown = omap_gpio_irq_shutdown,
+ 	.irq_mask = omap_gpio_mask_irq,
+ 	.irq_unmask = omap_gpio_unmask_irq,
++	.irq_disable = omap_gpio_disable_irq,
++	.irq_enable = omap_gpio_enable_irq,
+ 	.irq_set_type = omap_gpio_irq_type,
+ 	.irq_bus_lock = omap_gpio_irq_bus_lock,
+ 	.irq_bus_sync_unlock = gpio_irq_bus_sync_unlock,
+-- 
+2.47.0
 
-so, please double-check if you are trying to mainline the right branch.
-No need to respin just for this line. There is still a lot other stuff
-to fix here but I want to make sure we are looking at the right thing.
-
-Regards,
-Andreas
 
