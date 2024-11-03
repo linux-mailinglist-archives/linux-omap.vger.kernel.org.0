@@ -1,102 +1,121 @@
-Return-Path: <linux-omap+bounces-2561-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2562-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4EBF9BA0B5
-	for <lists+linux-omap@lfdr.de>; Sat,  2 Nov 2024 15:19:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A7D59BA740
+	for <lists+linux-omap@lfdr.de>; Sun,  3 Nov 2024 18:36:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2578B1C20DCA
-	for <lists+linux-omap@lfdr.de>; Sat,  2 Nov 2024 14:19:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0EFB1F214EB
+	for <lists+linux-omap@lfdr.de>; Sun,  3 Nov 2024 17:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0AB19E982;
-	Sat,  2 Nov 2024 14:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD2518991E;
+	Sun,  3 Nov 2024 17:36:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="s19XAgN7"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C466D18A925;
-	Sat,  2 Nov 2024 14:19:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF8F13049E;
+	Sun,  3 Nov 2024 17:36:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730557161; cv=none; b=urONHNihTj4xFkxCYMKFGET1Ybx3Hr0C53TjB+96NKlm1TWwqAPCfN7US/DYHj4aZRsJ7tX2SJOT8oiEROVG1njMABKbcwT7HR4zpDZQZYb3DKqSxTEhsZ+OhJP+RuLufTj5h6DuX1xLPe8C1XeJ3g5EF4XygK1xU3Gz+ni4rhU=
+	t=1730655406; cv=none; b=O4izUBSg1yZJjhy3Ixb0Oxrs9vgqoYDGHlvs/F1mkAdc8P4LaxzD84404p4RLYzT9+xzKThRvSIdQMgT6D+/QS3hdCdmYxm8s0KBL5eD7dDH4tH/E2V1IbTfW0KpapWhC6fc9xDjPMFVILwcWKOznpBN9BCIXxZVdkYkmSuu8iI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730557161; c=relaxed/simple;
-	bh=i4VUhHPhcihVwDXVjt1X6R/W0FnDjTq2LIn5IcgTqe0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=edJFIGgSCi30AxsZAIJ9NPYC4MoBEbqzc367YCIF0pIUy5Ma+Kn5EdkUnzgSVn87UMT4PpOnK4Cwik0K4AFi57hZ6mOdtrie68OvMA7PtUUgXmwy6BLmEcYpUmeTLgcUpvl0qXm7l0n9kgtN40tej8RgM3SPCYU4KcU0hm77mN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-71e983487a1so2456399b3a.2;
-        Sat, 02 Nov 2024 07:19:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730557157; x=1731161957;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RoNhd3PU7MNVWI+sf1DSija4VTsLivchGzEQ82Up2A4=;
-        b=cPmrYyIa55ThLP4WAwzIA2ce5QvaJjOvLZ7TBc/WR/dLgAzCe7f2toPst2d03hOO8x
-         9ZBultzA7uMjKnTV8Tk+McEi1V57zJR2siW0K7F1yI2JoW4H3xWhEYyl+4d5tS8O/YcE
-         ibrPTWOrur/XcKjedUmUibOKl3CvIRsvsxa8J/Mk9pvSjN+M/ApbFXzQTqOBDQO3FcVt
-         aLas0EIOMihXR56tGSkgPU/kjU9ph1fKS2T6+C+dtx2Lx/wQvI0Bj9jz2BqVsHIARykV
-         P37kDaPx0R2y3e2CKaOUO3C4/l9L9BAaZe2cIFZPgVXR46sJknrzW9REAijcuLi7WPj6
-         /D9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWHrqbBCKNcQf+OEunbRuBztdZO4szLk2IZ6ptw9QrrU+t+YZq8I9gZDjAull5EDZ4gIoE2kXVC6y7l@vger.kernel.org, AJvYcCWZoWAxn1kB+JtiuG8aceeybOgsvddqRPWFhrEU00ATPB1F9QtlixNwQIpRYQoUgawDvDuAHl6rNjQyw6M=@vger.kernel.org, AJvYcCXIkD3XmMhdGskFxsrMhuy4GDBlFbt7edZNlQnc/0SSPg1jPgg/WPSvzHiWljEzxFnQEs+aRGfXKUyBsg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/IbRvdCVJ+YCTGH+ohfLDNrPqhfU8Kt9x/WpBd5r9Bey1JgrF
-	hl/oDqmi4BG7/NiSB9SON/nIJHsOUHiF+XyuSsc9rF6E/mvSLZmS
-X-Google-Smtp-Source: AGHT+IHPcKNMt6OSC6S/K2FJ3EposZZ5TOsaoIOHKw561pjEChI1kIfOypmeQ6NBttJJZ5y0zs9rDw==
-X-Received: by 2002:a05:6a00:2ea5:b0:71e:82b4:6e6e with SMTP id d2e1a72fcca58-720b9bb3edbmr14950575b3a.4.1730557157041;
-        Sat, 02 Nov 2024 07:19:17 -0700 (PDT)
-Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-720bc2c3902sm4096567b3a.136.2024.11.02.07.19.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 Nov 2024 07:19:16 -0700 (PDT)
-Date: Sat, 2 Nov 2024 23:19:14 +0900
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: bhelgaas@google.com, lpieralisi@kernel.org, robh@kernel.org,
-	vigneshr@ti.com, manivannan.sadhasivam@linaro.org,
-	thomas.richard@bootlin.com, linux-omap@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, srk@ti.com
-Subject: Re: [PATCH] PCI: j721e: Deassert PERST# after a delay of
- PCIE_T_PVPERL_MS ms
-Message-ID: <20241102141914.GA3440781@rocinante>
-References: <20241022083147.2773123-1-s-vadapalli@ti.com>
+	s=arc-20240116; t=1730655406; c=relaxed/simple;
+	bh=vG1dN2jvK4GPiTUTN7lh6GhShEszT/+pyjWmhMpifgw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MDTxVWA1VV4jM/HvBTH5xJMd3Ug7lb8hCuxUVGxFsymeB79F/onOuoz8YY09G5sTK/02C8bhoB8rR/vtJ3SeMp6S9KnG9DYideuuFcNX7BXQXSb27MpOUeFnrkhm6IA9pMKfUdVVVm80x3NYj+6JV2QhTKizGArtQppwzXP70OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=s19XAgN7; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=nyvL5hW9tmY/2ZluyWSap3lYfFpEuf8kt49tqGDLvnA=; b=s19XAgN7WqbV0BHsi5WaM4bDOm
+	JGBBm+7BlljD6UfjZsdpYjdy5WwyEQbkIjXNcGHLz5Klu6H/I8waWhTJkVUJ/53YvZIVHmgkz4Ok1
+	W4K9ScDj9s+4tGfDfG7J/gB+nIILhvFJ9BinAC7mxjNXtO8bY/tEHyyFzxB0eqORsri/ICRgDYbvO
+	+K6nh8T9YYZBsmq+ZOg3L9EydEudOJRIMFXuPgpvh7Xb+Ct0GT4LpBmWKkUhFjcQlTQGzgkHRldY3
+	bkhVJPS/8Gu+QrafZzsKCVOyFiliF5PU/UyB3/LL/7bVYXAHB0bFZ4HV69JQbRWFDZNmDy7vr5ON6
+	qB2mSxYw==;
+Date: Sun, 3 Nov 2024 18:36:36 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Mithil Bavishi <bavishimithil@gmail.com>
+Cc: aaro.koskinen@iki.fi, conor+dt@kernel.org, devicetree@vger.kernel.org,
+ khilman@baylibre.com, krzk+dt@kernel.org, linux-hardening@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, robh@kernel.org,
+ rogerq@kernel.org, tony@atomide.com
+Subject: Re: [PATCH v2 2/6] arm/dts: Add common device tree for Samsung
+ Galaxy Tab 2 series
+Message-ID: <20241103183636.40cc37fc@akair>
+In-Reply-To: <20241031104146.4538-1-bavishimithil@gmail.com>
+References: <20241031083248.043d25d0@akair>
+	<20241031104146.4538-1-bavishimithil@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241022083147.2773123-1-s-vadapalli@ti.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello,
+Am Thu, 31 Oct 2024 10:41:45 +0000
+schrieb Mithil Bavishi <bavishimithil@gmail.com>:
 
-> According to Section 2.2 of the PCI Express Card Electromechanical
-> Specification (Revision 5.1), in order to ensure that the power and the
-> reference clock are stable, PERST# has to be deasserted after a delay of
-> 100 milliseconds (TPVPERL). Currently, it is being assumed that the power
-> is already stable, which is not necessarily true. Hence, change the delay
-> to PCIE_T_PVPERL_MS to guarantee that power and reference clock are stable.
-[...]
-> This patch is based on commit
-> c2ee9f594da8 KVM: selftests: Fix build on on non-x86 architectures
-> of Mainline Linux.
+> > well, that takes time, I wanted to start that on the right thing.  
+> 
+> Yes indeed, I'll be more careful the next time, again sorry for the 
+> trouble, I am not used to the process of mailing lists and may have
+> done some mistakes there as well.
+> 
+probably you did not notice an error in make dtbs and the old
+devicetree on the device was still there and was used.
 
-Why KVM?  Do you have the link to this commit handy?
+> > 1. make dtbs shows warnings  
+> 
+> > 2. make CHECK_DTBS=y ti/omap/omap4-samsung-espresso7.dtb is too
+> > noisy (probably same for espresso10).  
+> 
+> > a lot comes from the dtsi files, so you need to ignore a lot,
+> > probably either strip down the new dts to almost nothing besides
+> > dtsi includes to determine the background noise or take a similar
+> > device, redirect output and errors, diff that output with the full
+> > devicetree. I am trying to clean that dtsi warning mess up,
+> > linux-next shows a lot less warnings but that takes time.  
+> 
+> Oh, I was not aware of such tool, ran it and yeah there are a ton of
+> warnings, where can I ask for assitance if I need it while fixing
+> them.
+> 
+I hope you understood that warnings like this:
+arch/arm/boot/dts/ti/omap/omap4-samsung-espresso7.dtb:
+/ocp/interconnect@4a000000/segment@0/target-module@4000/cm1@0/clocks/pad_clks_ck@108:
+failed to match any schema with compatible: ['ti,gate-clock']
 
-[...]
->  		if (pcie->reset_gpio) {
-> -			fsleep(PCIE_T_PERST_CLK_US);
-> +			msleep(PCIE_T_PVPERL_MS);
+are not the ones you need to fix, so just the diff between old and new.
 
-fsleep() with the same macro and for the same reason is also used in the
-j721e_pcie_probe() callback.  I think, we would want both changed.
+> > One of the warnings that should be fixed:
+> > dts/ti/omap/omap4-samsung-espresso7.dtb: lvds-encoder: compatible:
+> > 'oneOf' conditional failed, one must be fixed: ['lvds-encoder'] is
+> > too short 'lvds-encoder' is not one of ['ti,ds90c185',
+> > 'ti,ds90c187', 'ti,sn75lvds83'] 'lvds-encoder' is not one of
+> > ['ti,ds90cf364a', 'ti,ds90cf384a', 'ti,sn65lvds94'] 'lvds-encoder'
+> > is not one of ['thine,thc63lvdm83d'] from schema $id:
+> > 	http://devicetree.org/schemas/display/bridge/lvds-codec.yaml
+> >  
+> 
+> Ah right, I have to add the encoder (doestek, dtc34lm85am) in
+> bindings and in vendor, this patchset may grow too big I assume.
+>
+You can do the binding stuff separately, lvds-encoder/panel should be
+trivial, so one patch for vendor prefix if needed and one for the
+binding.
 
-	Krzysztof
+Regards,
+Andreas
 
