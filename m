@@ -1,163 +1,101 @@
-Return-Path: <linux-omap+bounces-2576-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2577-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F56D9BBDCA
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 20:10:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F6C09BBDD4
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 20:14:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B33C61C2338F
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 19:10:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DF6FB21F32
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 19:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8651CBE85;
-	Mon,  4 Nov 2024 19:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F27C1CC899;
+	Mon,  4 Nov 2024 19:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="VmoVlPXj"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="v73xZXuw"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47CB2E552
-	for <linux-omap@vger.kernel.org>; Mon,  4 Nov 2024 19:10:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F4A18C926;
+	Mon,  4 Nov 2024 19:14:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730747424; cv=none; b=Zfa8OBGkNs9w48ujvaqjT6J+4piddCyuLTZuX1v5z2Iru12j0Pjko3P9M35gJsB4VokzuL5DVY/9X04siSzGJhRtjbUhzwjGotnXQM9rhvf821LAbBI6+d3IgsUttIcQbnd1DR1Gkn2rAQSdfSAmNwwRvplXOoyTP7mB4hZ424s=
+	t=1730747671; cv=none; b=YcFKPp5mkBy0xcQ3raiZT0/2LVxllOXxjCT9TRST4h6KWyGlyNGj0w0Z5w4fWqGEu9xkDV35F48xvmw20grOMHjRT5VF0PjXdFHCZ1wZpo531z7oI01jUCZCKQ/hlTUM/tCb3MKTaGGARiFoN8ydjZiw9uR5kda6NF5B4nNTyjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730747424; c=relaxed/simple;
-	bh=aaYgFrJhT9A6u8DPjoUnnutIAW+Io5answdj9XabaDE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Xop9NMQiMgHcAg3GKWtsN/UkTBXosrVkf+2WdM7vHAic8lC6KmBNrnMw0hUPZ0h0xWWcO7nliWznB3qYAQrAAPOb54e0Bp7rfTlPCbKgXZ7k/evybFELfzrntna8R/zckjp6ZhcF1j+j7RgUswWrZyUrElYg/VWSY5nI6KKFnjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=VmoVlPXj; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-71e4c2e36daso3593877b3a.0
-        for <linux-omap@vger.kernel.org>; Mon, 04 Nov 2024 11:10:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730747420; x=1731352220; darn=vger.kernel.org;
-        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=2y3LHlBNTbsSu0Hs3sn5efdwnygjby0IGD43ArzpIfo=;
-        b=VmoVlPXj3P3vE455770bXhBy3MHHtfFIhWK3205TSaTiUmClsqKMgWUOTCdOpKdTG/
-         TaMG6QQ2DSr1CLajV7MPB5QWtSDK4M/ix2rzWLy4Pfwj6wl/urxdKydtH0uJGcCTU9vj
-         fwGZGwMcmmFxWvWnKjrfyzb49mgZdTXgt+O0LFeJv1ETrEUdTdid4pR0iQ68YhsBT237
-         NEgiHU7Cuin1/b7zULH6ifLxA/HAEkf89gxWabx1mAHsGxCVxTqY+3vtd587LOzXofpS
-         ZbwEwnF5E5O9+iXQk9C6SELA75RAGtVTZyfNqUw8S+a9KVdDlfowPLWgubYXqYt88NDi
-         3jUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730747420; x=1731352220;
-        h=mime-version:message-id:date:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2y3LHlBNTbsSu0Hs3sn5efdwnygjby0IGD43ArzpIfo=;
-        b=N1VQAYlrJQpFGRkhZM1GUltlLsqnjSpjmQjGDAqfz8xcTBeHUYnrX7bldsDgEEVaye
-         KzyaTwEh71I0YO6A6qV6K0rfkcLjN94ekGfIUhavB6C7FnHnYwDPeluAazV/Ji7M2OKe
-         kZ8Q16pZAXaJEtbRgyvjjlWmeQfNgLPtYzaYVC8v4lVyVxK55GDTthSE0N7CjvTJtAnY
-         EdBXSylLQ/TqdyL38KGkOhhwcLnjzfVzFBRPqSP/KbAe+9VA/2kYrqfWTHITiJZxKp+R
-         IUwdisJddz/dNfpKZf6h/M9Vaymzwzpelu6N1MroT/pinv1rlsrMlBPLegr7FTHlS1jy
-         EGYg==
-X-Gm-Message-State: AOJu0YyS/Pa0jXi9scSNTTCpLpM+f+Gd2hjA81WoEjAQTWzdoHOzDFfM
-	AcugqH48Jm3+oqbsalkmtSsSwswTIkv2AP59ODks83IcC2wuh1zJd0sGwtZCSt5hMcz+Y7mM/NW
-	c8f0=
-X-Google-Smtp-Source: AGHT+IEjWO1rixoyJxbVGtJmuxL0xP1l7hFGkamZjG4E+eqTDpqyz2JlInUTxjamsjs8DazSCd4u+A==
-X-Received: by 2002:a05:6a20:7288:b0:1d8:a67e:d323 with SMTP id adf61e73a8af0-1dba423639cmr20344552637.22.1730747420431;
-        Mon, 04 Nov 2024 11:10:20 -0800 (PST)
-Received: from localhost ([97.126.177.194])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7ee459f8fb9sm7442891a12.61.2024.11.04.11.10.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Nov 2024 11:10:20 -0800 (PST)
-From: Kevin Hilman <khilman@baylibre.com>
-To: soc@kernel.org
-Cc: linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [GIT PULL v2] ARM: dts: OMAP updates for v6.13
-Date: Mon, 04 Nov 2024 11:10:19 -0800
-Message-ID: <7h8qtyolwk.fsf@baylibre.com>
+	s=arc-20240116; t=1730747671; c=relaxed/simple;
+	bh=o4Q21EUOtQ5gP8TVU/SzyX8KbHV1rScUhI+UDQ2yHfc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MyFbNLI1CCZSRKTz2USS98tZP4rO4qUnPmHFwS1ZGp9+G/Pre40ho3KcMe6E1tOPH1CVlUQs62CQnyg5VuBf7Ft2hjmFjMh/b+yb/6tCsQ6zJAGTWixDcwedNgKVwi4JO662Us2bKF+erQBV0fllFayinmTbP5H00FIAiK61JE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=v73xZXuw; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=PljaPNPt6R2nYVku9vBFHgDoW/TWpHwXI6NoLjiVHnU=; b=v73xZXuwTsYAUpHnxPLfsov4D0
+	1OOd+L5YITYru9ut7DOvY9bNkEc2XKaSf730FSo76TcYGoTYxqFv1T5YFDB1kcL3H0UF2ELxgIwzv
+	fnXHRRoq7N5FvXRLQMQLF8YAEH+Zgd/vw/GSi3qALx+dLNqUWFiLtODMcq/vBL/RrItgZPQG3oPfe
+	nCTzMv4VJxUAmstFs6PFFgy2nsEZmKHIWqfrpa/qXakPaGxCWBrlXtWAR0nG4QYnza+Mbq/7wEXM0
+	8AZtOpmiiVrV0mnVj0YGmfalBdDjKNRUqQsN825VsP9zLVZiijB5DFoTaH+FP+6DpS8mzPP0Pknyd
+	RpYRZI/g==;
+Date: Mon, 4 Nov 2024 20:14:24 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Kevin Hilman <khilman@kernel.org>
+Cc: rafael@kernel.org, viresh.kumar@linaro.org, zhipeng.wang_1@nxp.com,
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-omap@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] cpufreq: fix using cpufreq-dt as module
+Message-ID: <20241104201424.2a42efdd@akair>
+In-Reply-To: <7httcmonip.fsf@baylibre.com>
+References: <20241103210251.762050-1-andreas@kemnade.info>
+	<7httcmonip.fsf@baylibre.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-The following changes since commit 9852d85ec9d492ebef56dc5f229416c925758edc:
+Am Mon, 04 Nov 2024 10:35:26 -0800
+schrieb Kevin Hilman <khilman@kernel.org>:
 
-  Linux 6.12-rc1 (2024-09-29 15:06:19 -0700)
+> Andreas Kemnade <andreas@kemnade.info> writes:
+> 
+> > E.g. omap2plus_defconfig compiles cpufreq-dt as module. As there is
+> > no module alias nor a module_init(), cpufreq-dt-platdev will not be
+> > used and therefore on several omap platforms there is no cpufreq.
+> >
+> > Enforce builtin compile of cpufreq-dt-platdev to make it effective.
+> >
+> > Fixes: 3b062a086984 ("cpufreq: dt-platdev: Support building as
+> > module") Cc: stable@vger.kernel.org
+> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>  
+> 
+> I'd much rather see this fixed to work as a module.  You already
+> hinted at the right way to do that, so please do that instead.
+> 
+no clear idea how. What aliases should I add? The cpufreq-dt-platdev is
+not a real driver, so I could not create mod_devicetable aliases to
+match a given device. It constructs a device under certain conditions
+depending on the board compatible, so no simple list of compatibles, it
+contains allow and blocklists.
 
-are available in the Git repository at:
+cpufreq-dt then binds to that device and that one can be built as a
+module (which then made cpufreq-dt-platdev also a module, causing the
+trouble). I do not see any benefit from having cpufreq-dt-platdev as a
+module. ti-cpufreq has a similar role and is also just builtin.
+It does itself no real work but provides a device cpufreq-dt then binds
+to.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/khilman/linux-omap.git tags/omap-for-v6.13/dt-signed-1
+Handling module removal would probably need to be added and tested. I
+feel not comfortable having such as a regression fix and for stable.
 
-for you to fetch changes up to 13746595a1581e09289adf9b5202e237c5e0814b:
-
-  ARM: dts: omap4-kc1: fix twl6030 power node (2024-11-04 10:42:22 -0800)
-
-----------------------------------------------------------------
-ARM: dts: OMAP updates for v6.13
-
-Misc. minor updates for OMAP3, OMAP4, AM3 and DRA7 platforms.
-
-----------------------------------------------------------------
-Andreas Kemnade (10):
-      ARM: dts: omap: omap4-epson-embt2ws: define GPIO regulators
-      ARM: dts: omap: omap4-epson-embt2ws: wire up regulators
-      ARM: dts: omap: omap4-epson-embt2ws: add unknown gpio outputs
-      ARM: dts: omap: omap4-epson-embt2ws: add GPIO expander
-      ARM: dts: ti/omap: use standard node name for twl4030 charger
-      ARM: dts: ti/omap: dra7: fix redundant clock divider definition
-      ARM: ti/omap: omap3-gta04a5: add Bluetooth
-      ARM: dts: omap36xx: declare 1GHz OPP as turbo again
-      ARM: dts: ti/omap: omap4-epson-embt2ws: add charger
-      ARM: dts: omap4-kc1: fix twl6030 power node
-
-Geert Uytterhoeven (1):
-      ARM: dts: am335x-bone-common: Increase MDIO reset deassert delay to 50ms
-
-Marcus Folkesson (1):
-      ARM: dts: ti: dra7: Remove double include of clock bindings
-
-Rob Herring (Arm) (1):
-      ARM: dts: ti/omap: Fix at24 EEPROM node names
-
-Roger Quadros (3):
-      ARM: dts: ti: drop linux,mtd-name from NAND nodes
-      ARM: dts: ti: omap: am335x-baltos: drop "gpmc,device-nand" from NAND node
-      ARM: dts: ti: omap3434-sdp: drop linux,mtd-name from onenand node
-
- arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi       |   3 +-
- arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi  |  12 +--
- arch/arm/boot/dts/ti/omap/am335x-boneblue.dts      |   2 +-
- arch/arm/boot/dts/ti/omap/am335x-pdu001.dts        |   6 +-
- arch/arm/boot/dts/ti/omap/am335x-shc.dts           |   2 +-
- arch/arm/boot/dts/ti/omap/am3517-som.dtsi          |   1 -
- arch/arm/boot/dts/ti/omap/am3874-iceboard.dts      |   8 +-
- arch/arm/boot/dts/ti/omap/am437x-cm-t43.dts        |   2 +-
- arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts       |   2 +-
- arch/arm/boot/dts/ti/omap/am437x-sbc-t43.dts       |   2 +-
- arch/arm/boot/dts/ti/omap/am437x-sk-evm.dts        |   2 +-
- arch/arm/boot/dts/ti/omap/am43x-epos-evm.dts       |   2 +-
- arch/arm/boot/dts/ti/omap/am57xx-cl-som-am57x.dts  |   2 +-
- arch/arm/boot/dts/ti/omap/am57xx-sbc-am57x.dts     |   2 +-
- arch/arm/boot/dts/ti/omap/dm8148-evm.dts           |   1 -
- arch/arm/boot/dts/ti/omap/dm8168-evm.dts           |   1 -
- arch/arm/boot/dts/ti/omap/dra62x-j5eco-evm.dts     |   1 -
- arch/arm/boot/dts/ti/omap/dra7.dtsi                |   1 -
- arch/arm/boot/dts/ti/omap/dra7xx-clocks.dtsi       |   1 -
- arch/arm/boot/dts/ti/omap/logicpd-som-lv.dtsi      |   1 -
- arch/arm/boot/dts/ti/omap/logicpd-torpedo-som.dtsi |   3 +-
- arch/arm/boot/dts/ti/omap/omap3-cm-t3x.dtsi        |   2 +-
- arch/arm/boot/dts/ti/omap/omap3-evm-37xx.dts       |   1 -
- arch/arm/boot/dts/ti/omap/omap3-evm.dts            |   1 -
- arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi         |   2 +-
- arch/arm/boot/dts/ti/omap/omap3-gta04a5.dts        |  10 +++
- arch/arm/boot/dts/ti/omap/omap3-igep.dtsi          |   1 -
- arch/arm/boot/dts/ti/omap/omap3-ldp.dts            |   1 -
- arch/arm/boot/dts/ti/omap/omap3-overo-base.dtsi    |   1 -
- arch/arm/boot/dts/ti/omap/omap3-sb-t35.dtsi        |   2 +-
- arch/arm/boot/dts/ti/omap/omap3430-sdp.dts         |   2 -
- arch/arm/boot/dts/ti/omap/omap36xx.dtsi            |   1 +
- arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts  | 211 +++++++++++++++++++++++++++++++++++++++++++++--
- arch/arm/boot/dts/ti/omap/omap4-kc1.dts            |   6 +-
- arch/arm/boot/dts/ti/omap/omap5-cm-t54.dts         |   2 +-
- arch/arm/boot/dts/ti/omap/omap5-sbc-t54.dts        |   2 +-
- arch/arm/boot/dts/ti/omap/twl4030.dtsi             |   2 +-
- 37 files changed, 248 insertions(+), 56 deletions(-)
+Regards,
+Andreas
 
