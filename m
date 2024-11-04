@@ -1,94 +1,310 @@
-Return-Path: <linux-omap+bounces-2568-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2569-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A37A9BB5D9
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 14:23:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 381C19BB6D9
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 14:56:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 128A41F2254C
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 13:23:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5D731F2194F
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 13:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F5C7E111;
-	Mon,  4 Nov 2024 13:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 896911339A4;
+	Mon,  4 Nov 2024 13:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="cf8P6HaJ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB747083F;
-	Mon,  4 Nov 2024 13:22:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A3B42A9E;
+	Mon,  4 Nov 2024 13:56:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730726545; cv=none; b=p0yc7OTKj7cPQ3fhE2mmgKU5XoE4XzH70tAe518zZGuJLt8NrBOaUkcyCkWXyXGMc5KQVpjQhmqaadppBowOhL/F7Y0iaS9zTN9lNe0IIz+rh0GBKBTkanlObV3UCRbh98a9qWJqW7HBDT0EQTpgGE47pUW0SF5gu8ddzw2aP+c=
+	t=1730728580; cv=none; b=i0I2qiqkOaCUU1FrYMjMTQ7Gt1vLygwQkCemuG5Sgz7Acp0KY8dE16N2TtK5KLeansz1aTGPQcAJBsruQPosCpUxLj0JKlR6g3OznIRexGZAm1X1j0nnHcFH7CNd+isEz8yEDiT8YULzwvQ1lGGn3xN6FkDv8UkHadagYnb9AT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730726545; c=relaxed/simple;
-	bh=dVzhkYwajzOcp/k61L3BTjdvz62YtWheav4zFKEnZAo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ixM1hu+L7Qq0s2+O3i7x/M1Hkzv0EWaaqkPPRX+yCOg40YUFKXVvuT1gkaiTp2F7tlwcIrXtG9G7zeZR/hwZTR/FA+mQbwq8NNMaFIdNmvEJNw0S5XXcXx5IS850e9Rtx+5ZJgWiZQ4VaD7t+iS8BjyhS33jY4yxFoDm2rg8VSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2110a622d76so31727775ad.3;
-        Mon, 04 Nov 2024 05:22:23 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730726543; x=1731331343;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UiVWnP7kdfguO3vKrywHszcKuT/ax89aUHhWpqrDlzU=;
-        b=ZHJ8FQr7rPQgMwo3jvx6htS35KBdjsJCKia4jjaCUONhR+y9PJ09oFdu5C2W2yqnwA
-         2P90UBpoVljN9Qe8Kh91McHrni3gCUr/JAFKGQCz1Zaq9vGEE261NcFm4+cp5RBME9MO
-         PU62nVhw9sFs1thR1/uLWlZzlEZhPJe1SzQBTy16dfgWIdwd4IUZU0PA78KMEckXEw8v
-         jP9iYQC+lHRUElc+Hn77NPSqmlULgj1jp7KZiWinHwfC5XxtvUSIgQysijlpAxiUXDOI
-         SX71hXgkdBLI7YwciS/cCDVq933y4sJrdGL7t+sar0OZhZSO+oFtjE7+4iHjX2MCqBp/
-         mYQA==
-X-Forwarded-Encrypted: i=1; AJvYcCVxVmjcLJmzrVmDIak/j36DMqHkyz0/bYSKITM90k6a+Wcy1grqPUNfUFOPsSRUOzP8C3AMggvWt1XlK8Q=@vger.kernel.org, AJvYcCWr+9BoELMbKmQyzV1YZUpGnWJLSbzb7ctbdbT2CpzeMBXq7KkVPjeUn/5DImilRU/joUV32cAcNnIddg==@vger.kernel.org, AJvYcCXqOTVREsgHR2UVuXaE/uTnC7ld5lewHgDnSuxdFPAvbo6szTaPzL5MKiDe+S/gYB0WILnj9gFeorqf@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5uMMfcoAqvc+iWHnMvy6cuk9BhjKBUZMazMt7Xnv+sjOFXa0z
-	BkkciUxgQ+sw1YRWSMsfYVtSqR0r3J1Bmru7S3Zs/TUK+ytrWfsS
-X-Google-Smtp-Source: AGHT+IHpDIGv2RScWEaNKHsryqx6v1lrXJOztR/qFFp197CdN99mxwH5uovMf6w+lDn72OzEgzUsUA==
-X-Received: by 2002:a17:903:2bce:b0:20c:f27f:fbf with SMTP id d9443c01a7336-210c6ae7f15mr465977105ad.25.1730726543312;
-        Mon, 04 Nov 2024 05:22:23 -0800 (PST)
-Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211057f3dd1sm60195775ad.308.2024.11.04.05.22.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Nov 2024 05:22:22 -0800 (PST)
-Date: Mon, 4 Nov 2024 22:22:21 +0900
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: bhelgaas@google.com, lpieralisi@kernel.org, robh@kernel.org,
-	vigneshr@ti.com, manivannan.sadhasivam@linaro.org,
-	kishon@kernel.org, thomas.richard@bootlin.com,
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	srk@ti.com
-Subject: Re: [PATCH v2] PCI: j721e: Deassert PERST# after a delay of
- PCIE_T_PVPERL_MS ms
-Message-ID: <20241104132221.GB2504924@rocinante>
-References: <20241104074420.1862932-1-s-vadapalli@ti.com>
+	s=arc-20240116; t=1730728580; c=relaxed/simple;
+	bh=LFnGHyIFnPZpnC4W0TkiCtiiQ6Tj7q5qpaFCImtsPX0=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=A75lrw3aWl5xTI8wh8d8kTFm6GI7IV9khMO5t2FGyFG8p9uWl1tHvU7C+v3Sxsk64zQDUL6ZlAHG3KPb1GreSS3LMb2R2vc116oMM3t9fGWSRvAN/nlW/7bKK9YOVN1lvBsnO1i3mnTPic3gTS4MYr+gAKeFSIHdK4WRh2YiDsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=cf8P6HaJ; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=From:Sender:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=AHIiq5Bgi/FTE/bmYNE1/BMipbYGBmIox57V0t9XEzE=; b=cf8P6HaJpBSwdOjWDt9jLXknGU
+	xbRVUw9y1lcilcRVpw7gpWcW9xvDjGY4tRMqYV5a5Dqj473gE8+fKb8momeqLs1eEjWTHIGdAGzRj
+	FemwuVr6LK5NHy2UY6O/4OKU1cvNM9dag3tCPDPgEfIlHD4slWLnYkQnbg8dO2Fk8ZSut39hphmIy
+	qC3uTAz5kwhGntFSLpeQh8oiv7owjKi2+Ilm1ZxwwvL39CgkKnD3Urd0jEfIyn5nwEB4lTQrKBOLK
+	cPYztuudPUD4if8ElH6d8ktDCoQR6XIQTJmPEQpzutQLLka4vN+FCJyaqi4I4YprF5iSIFbib4f7A
+	wNDjtSKA==;
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Michael Turquette <mturquette@baylibre.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	Tero Kristo <kristo@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	devicetree@vger.kernel.org
+Subject: [PATCH] dt-bindings: clock: ti: Convert mux.txt to json-schema
+Date: Mon,  4 Nov 2024 14:55:49 +0100
+Message-Id: <20241104135549.38486-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241104074420.1862932-1-s-vadapalli@ti.com>
+Content-Transfer-Encoding: 8bit
 
-Hello,
+Convert the OMAP mux clock device tree binding to json-schema.
+Specify the creator of the original binding as a maintainer.
+Choose GPL-only license because original binding was also GPL.
 
-> According to Section 2.2 of the PCI Express Card Electromechanical
-> Specification (Revision 5.1), in order to ensure that the power and the
-> reference clock are stable, PERST# has to be deasserted after a delay of
-> 100 milliseconds (TPVPERL). Currently, it is being assumed that the power
-> is already stable, which is not necessarily true. Hence, change the delay
-> to PCIE_T_PVPERL_MS to guarantee that power and reference clock are stable.
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+---
+ .../bindings/clock/ti/composite.txt           |   2 +-
+ .../devicetree/bindings/clock/ti/mux.txt      |  78 -----------
+ .../bindings/clock/ti/ti,mux-clock.yaml       | 123 ++++++++++++++++++
+ 3 files changed, 124 insertions(+), 79 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/clock/ti/mux.txt
+ create mode 100644 Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml
 
-Applied to controller/j721e, thank you!
+diff --git a/Documentation/devicetree/bindings/clock/ti/composite.txt b/Documentation/devicetree/bindings/clock/ti/composite.txt
+index b02f22490dcb..238e6f7d74f8 100644
+--- a/Documentation/devicetree/bindings/clock/ti/composite.txt
++++ b/Documentation/devicetree/bindings/clock/ti/composite.txt
+@@ -16,7 +16,7 @@ merged to this clock. The component clocks shall be of one of the
+ "ti,*composite*-clock" types.
+ 
+ [1] Documentation/devicetree/bindings/clock/clock-bindings.txt
+-[2] Documentation/devicetree/bindings/clock/ti/mux.txt
++[2] Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml
+ [3] Documentation/devicetree/bindings/clock/ti/ti,divider-clock.yaml
+ [4] Documentation/devicetree/bindings/clock/ti/gate.txt
+ 
+diff --git a/Documentation/devicetree/bindings/clock/ti/mux.txt b/Documentation/devicetree/bindings/clock/ti/mux.txt
+deleted file mode 100644
+index cd56d3c1c09f..000000000000
+--- a/Documentation/devicetree/bindings/clock/ti/mux.txt
++++ /dev/null
+@@ -1,78 +0,0 @@
+-Binding for TI mux clock.
+-
+-This binding uses the common clock binding[1].  It assumes a
+-register-mapped multiplexer with multiple input clock signals or
+-parents, one of which can be selected as output.  This clock does not
+-gate or adjust the parent rate via a divider or multiplier.
+-
+-By default the "clocks" property lists the parents in the same order
+-as they are programmed into the register.  E.g:
+-
+-	clocks = <&foo_clock>, <&bar_clock>, <&baz_clock>;
+-
+-results in programming the register as follows:
+-
+-register value		selected parent clock
+-0			foo_clock
+-1			bar_clock
+-2			baz_clock
+-
+-Some clock controller IPs do not allow a value of zero to be programmed
+-into the register, instead indexing begins at 1.  The optional property
+-"index-starts-at-one" modified the scheme as follows:
+-
+-register value		selected clock parent
+-1			foo_clock
+-2			bar_clock
+-3			baz_clock
+-
+-The binding must provide the register to control the mux. Optionally
+-the number of bits to shift the control field in the register can be
+-supplied. If the shift value is missing it is the same as supplying
+-a zero shift.
+-
+-[1] Documentation/devicetree/bindings/clock/clock-bindings.txt
+-
+-Required properties:
+-- compatible : shall be "ti,mux-clock" or "ti,composite-mux-clock".
+-- #clock-cells : from common clock binding; shall be set to 0.
+-- clocks : link phandles of parent clocks
+-- reg : register offset for register controlling adjustable mux
+-
+-Optional properties:
+-- clock-output-names : from common clock binding.
+-- ti,bit-shift : number of bits to shift the bit-mask, defaults to
+-  0 if not present
+-- ti,index-starts-at-one : valid input select programming starts at 1, not
+-  zero
+-- ti,set-rate-parent : clk_set_rate is propagated to parent clock,
+-  not supported by the composite-mux-clock subtype
+-- ti,latch-bit : latch the mux value to HW, only needed if the register
+-  access requires this. As an example, dra7x DPLL_GMAC H14 muxing
+-  implements such behavior.
+-
+-Examples:
+-
+-sys_clkin_ck: sys_clkin_ck@4a306110 {
+-	#clock-cells = <0>;
+-	compatible = "ti,mux-clock";
+-	clocks = <&virt_12000000_ck>, <&virt_13000000_ck>, <&virt_16800000_ck>, <&virt_19200000_ck>, <&virt_26000000_ck>, <&virt_27000000_ck>, <&virt_38400000_ck>;
+-	reg = <0x0110>;
+-	ti,index-starts-at-one;
+-};
+-
+-abe_dpll_bypass_clk_mux_ck: abe_dpll_bypass_clk_mux_ck@4a306108 {
+-	#clock-cells = <0>;
+-	compatible = "ti,mux-clock";
+-	clocks = <&sys_clkin_ck>, <&sys_32k_ck>;
+-	ti,bit-shift = <24>;
+-	reg = <0x0108>;
+-};
+-
+-mcbsp5_mux_fck: mcbsp5_mux_fck {
+-	#clock-cells = <0>;
+-	compatible = "ti,composite-mux-clock";
+-	clocks = <&core_96m_fck>, <&mcbsp_clks>;
+-	ti,bit-shift = <4>;
+-	reg = <0x02d8>;
+-};
+diff --git a/Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml b/Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml
+new file mode 100644
+index 000000000000..b271ab86dde1
+--- /dev/null
++++ b/Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml
+@@ -0,0 +1,123 @@
++# SPDX-License-Identifier: GPL-2.0-only
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/clock/ti/ti,mux-clock.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Texas Instruments mux clock
++
++maintainers:
++  - Tero Kristo <kristo@kernel.org>
++
++description: |
++  This clock assumes a register-mapped multiplexer with multiple inpt clock
++  signals or parents, one of which can be selected as output. This clock does
++  not gate or adjust the parent rate via a divider or multiplier.
++
++  By default the "clocks" property lists the parents in the same order
++  as they are programmed into the register.  E.g:
++
++    clocks = <&foo_clock>, <&bar_clock>, <&baz_clock>;
++
++  results in programming the register as follows:
++
++  register value   selected parent clock
++  0                foo_clock
++  1                bar_clock
++  2                baz_clock
++
++  Some clock controller IPs do not allow a value of zero to be programmed
++  into the register, instead indexing begins at 1.  The optional property
++  "index-starts-at-one" modified the scheme as follows:
++
++  register value   selected clock parent
++  1                foo_clock
++  2                bar_clock
++  3                baz_clock
++
++  The binding must provide the register to control the mux. Optionally
++  the number of bits to shift the control field in the register can be
++  supplied. If the shift value is missing it is the same as supplying
++  a zero shift.
++
++properties:
++  compatible:
++    enum:
++      - ti,mux-clock
++      - ti,composite-mux-clock
++
++  "#clock-cells":
++    const: 0
++
++  clocks: true
++
++  clock-output-names:
++    maxItems: 1
++
++  reg:
++    maxItems: 1
++
++  ti,bit-shift:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      number of bits to shift the bit-mask, defaults to 0 if not present
++    maximum: 31
++    default: 0
++
++  ti,index-starts-at-one:
++    type: boolean
++    description:
++      valid input select programming starts at 1, not zero
++
++  ti,set-rate-parent:
++    type: boolean
++    description:
++      clk_set_rate is propagated to parent clock,
++      not supported by the composite-mux-clock subtype.
++  ti,latch-bit:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      latch the mux value to HW, only needed if the register
++      access requires this. As an example, dra7x DPLL_GMAC H14 muxing
++      implements such behavior.
++
++if:
++  properties:
++    compatible:
++      contains:
++        const: ti,composite-mux-clock
++then:
++  properties:
++    ti,set-rate-parent: false
++
++required:
++  - compatible
++  - "#clock-cells"
++  - clocks
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    bus {
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      clock-controller@110 {
++        #clock-cells = <0>;
++        compatible = "ti,mux-clock";
++        clocks = <&virt_12000000_ck>, <&virt_13000000_ck>, <&virt_16800000_ck>;
++        reg = <0x0110>;
++        ti,index-starts-at-one;
++        ti,set-rate-parent;
++      };
++
++      clock-controller@120 {
++        #clock-cells = <0>;
++        compatible = "ti,composite-mux-clock";
++        clocks = <&core_96m_fck>, <&mcbsp_clks>;
++        ti,bit-shift = <4>;
++        reg = <0x02d8>;
++      };
++    };
+-- 
+2.39.5
 
-[01/01] PCI: j721e: Deassert PERST# after a delay of PCIE_T_PVPERL_MS milliseconds
-        https://git.kernel.org/pci/pci/c/22a9120479a4
-
-	Krzysztof
 
