@@ -1,121 +1,89 @@
-Return-Path: <linux-omap+bounces-2570-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2571-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392E89BB7BE
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 15:28:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5773B9BBD58
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 19:35:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1C4D284876
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 14:28:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C6A328278A
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 18:35:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1C71AC88B;
-	Mon,  4 Nov 2024 14:28:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZXbLCapV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8141CB9F6;
+	Mon,  4 Nov 2024 18:35:29 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471672AEFE;
-	Mon,  4 Nov 2024 14:28:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CB018BC37
+	for <linux-omap@vger.kernel.org>; Mon,  4 Nov 2024 18:35:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730730505; cv=none; b=DAOFcomgCU/K+gFaJpg+wqAqcHaK8PIX9iXv5gBYBPbVVsvqGo7zhlAaP0KGRLhJ7dSP495cW6UZIlSBMebfh4OKvkyEgX2J6bgL446qNY5ikJM9OEZ1A17Ug+Gs2CDPZHyCV+0iwo1wUd7iDteio3KUUy6KG+1k4j8VX3Zri30=
+	t=1730745329; cv=none; b=bmns2gAmDE+GAyqEi5kdLewDBDETPdj1cHdMlAgwNV17AXE13ZT2qsjocc77syKpKOfPT4qV+RJmgB1wbM7xuT1npDXETndrbyAhqbYD+bCuEJUbSQMZLJ2vM8vv27LAxtwt9I/g6oK3ox3z+E4MrMByJ/gHPI0FQqe1purORkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730730505; c=relaxed/simple;
-	bh=+RvpvKPAHbAWetHfa4i1WFNeuH1qBy1J2yJHuYrSv5Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GOWWn2Qi1E9LD3ij0KfmHWwbMJnbd8SVsiQWczdBQHFWXBl090dwStoFqSUKJr8QOktGWrtRx3sLszHqUl6u5p8QJqZFfWizf9Z9gAbGAbcRLjAZEtJd+REYFLlnT6f6BTDWRhKcKZRSOkqaarfVzDehL6gygoQCNx6YIE8bbI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZXbLCapV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7021DC4CECE;
-	Mon,  4 Nov 2024 14:28:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730730504;
-	bh=+RvpvKPAHbAWetHfa4i1WFNeuH1qBy1J2yJHuYrSv5Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZXbLCapVEzR0c3KczRPp4oermNy07DIC3TT7hKC5QbeHEFIWSOHIopXZv5r7hYcMq
-	 XOmR0X13sgNgOTiHQjQcbN0bd+Tjs0rHEvAHjEd1VrGw0HaJDs0p6g9Z4aZ79eg/so
-	 ZPA7uWo2eVXDTHeaxZDMdMmT/GdCnvAke6/j3iCnhVLumCfh6ZxHwIavmojiYBzSjz
-	 HlZy/M3nFJzH234/+gPB0Ocr2r5wKBoOSuXGGAFd5kQ8Fq0T/oHqRdKzIM9HYwsfzN
-	 vqUAjU7VhyjUMuLI4bWp51O32TByo/iYaNgdtIac20EYbttW0ab2N7L4kYiDjaLO+x
-	 SmZs6t8LYRJLA==
-Date: Mon, 4 Nov 2024 23:28:20 +0900
-From: William Breathitt Gray <wbg@kernel.org>
-To: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Cc: vigneshr@ti.com, jpanis@baylibre.com, gregkh@linuxfoundation.org,
-	linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] counter: ti-ecap-capture: Add check for clk_enable()
-Message-ID: <ZyjaBMgVVKvc8Kdb@ishi>
-References: <20241103213910.31976-1-jiashengjiangcool@gmail.com>
+	s=arc-20240116; t=1730745329; c=relaxed/simple;
+	bh=0q8JDwWzDntd/aeV9gPiXXtsjosur55lq2xvMgVntdk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=LMvS+6Qc/THRVwqUPZ/4oQb9gHAsIWM0bblMdtKrAGRdz9k1CX6mMMU+MmTZJvVR7CyPSBsvkgs417S8+IZJt6JEoIKKyr9QTVkrjzlSLp8hojLv8PmVl+50uxkUgjWGwUGwpNnR7er+Uvopr66hfXO2tnzknK437sgkl5RYQIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=baylibre.com; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-720c286bcd6so3568005b3a.3
+        for <linux-omap@vger.kernel.org>; Mon, 04 Nov 2024 10:35:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730745327; x=1731350127;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=q5psdNGZt7yO/EGDxsF0O7Dn6TNWS1865Oba3g5L+Z4=;
+        b=P9l9sHXCOk5hAJiq0kHxzamPFhy7Y2XGLHYZz1RjR7U6P8yQE096RoZUUgjYPfnwFm
+         1WBS5tbD2XLFKi2sENOdizscIV1twyhz/dLWVfGRJqm/sZhmjSICOfwm6J/uaRZxwKu1
+         iXkVUmDBWYmnbSYN0Sito9AK9z3MV4ZzA4DkAdql5PGcmmdzQsD0jNXhw2YaVau04VWr
+         JWmE11+dSOrd4X8xSzXYX3nGkHT016uj1mwI2cV/DaFbJ83vZ81iPy8N5hN2k5Z1kXxV
+         rW1oTV/NVvLMiWsEG5U/sSm76PbhzyhSVBTX9J10pW3RPlf20W72+QbXCamcJ4SZCCHJ
+         HdzA==
+X-Forwarded-Encrypted: i=1; AJvYcCVY5YH5Jb1ez7UIWkURNA+Bq3Odung4n2WJW81QebZlWIeFmR6tc5H389u08qenPcTs8uMuVxOgNxfG@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx82elnWr3PcBx2+gM/JwBqjOf9XftcgKD5piKQqOM2cErtUAxr
+	d3QeJKpInBRQrlwOqeiBE8WN+rSjWFbA4jxBf2IbKBtJ02bucomQfFya08sCF9c=
+X-Google-Smtp-Source: AGHT+IFdG0hVRz4dPBfiFMJhFlY8swzM18DsMZV8IwIUprVfLFdN6Gv/FIxkJZSrzjoyHAC39n6arw==
+X-Received: by 2002:a05:6a20:4389:b0:1d8:a3ab:720b with SMTP id adf61e73a8af0-1d9a83aeab7mr46788718637.9.1730745327258;
+        Mon, 04 Nov 2024 10:35:27 -0800 (PST)
+Received: from localhost ([97.126.177.194])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7ee45a0eae9sm7369576a12.84.2024.11.04.10.35.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Nov 2024 10:35:26 -0800 (PST)
+From: Kevin Hilman <khilman@kernel.org>
+To: Andreas Kemnade <andreas@kemnade.info>, rafael@kernel.org,
+ viresh.kumar@linaro.org, zhipeng.wang_1@nxp.com, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Cc: Andreas Kemnade <andreas@kemnade.info>, stable@vger.kernel.org
+Subject: Re: [PATCH] cpufreq: fix using cpufreq-dt as module
+In-Reply-To: <20241103210251.762050-1-andreas@kemnade.info>
+References: <20241103210251.762050-1-andreas@kemnade.info>
+Date: Mon, 04 Nov 2024 10:35:26 -0800
+Message-ID: <7httcmonip.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="W2oGqzCZLTycLuKz"
-Content-Disposition: inline
-In-Reply-To: <20241103213910.31976-1-jiashengjiangcool@gmail.com>
+Content-Type: text/plain
 
+Andreas Kemnade <andreas@kemnade.info> writes:
 
---W2oGqzCZLTycLuKz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> E.g. omap2plus_defconfig compiles cpufreq-dt as module. As there is no
+> module alias nor a module_init(), cpufreq-dt-platdev will not be used and
+> therefore on several omap platforms there is no cpufreq.
+>
+> Enforce builtin compile of cpufreq-dt-platdev to make it effective.
+>
+> Fixes: 3b062a086984 ("cpufreq: dt-platdev: Support building as module")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
 
-On Sun, Nov 03, 2024 at 09:39:10PM +0000, Jiasheng Jiang wrote:
-> Add check for the return value of clk_enable() in order to catch the
-> potential exception.
->=20
-> Fixes: 4e2f42aa00b6 ("counter: ti-ecap-capture: capture driver support fo=
-r ECAP")
-> Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-> ---
->  drivers/counter/ti-ecap-capture.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-=
-capture.c
-> index 675447315caf..30a269fa5da0 100644
-> --- a/drivers/counter/ti-ecap-capture.c
-> +++ b/drivers/counter/ti-ecap-capture.c
-> @@ -574,8 +574,11 @@ static int ecap_cnt_resume(struct device *dev)
->  {
->  	struct counter_device *counter_dev =3D dev_get_drvdata(dev);
->  	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter_dev);
-> +	int ret;
-> =20
-> -	clk_enable(ecap_dev->clk);
-> +	ret =3D clk_enable(ecap_dev->clk);
-> +	if (ret)
-> +		return ret;
-> =20
->  	ecap_cnt_capture_set_evmode(counter_dev, ecap_dev->pm_ctx.ev_mode);
-> =20
-> --=20
-> 2.25.1
+I'd much rather see this fixed to work as a module.  You already hinted
+at the right way to do that, so please do that instead.
 
-Similar to the stm32-timer-cnt patch comment: it's not necessarily clear
-that an error in the cnt_resume() callback is due to a clk_enable()
-failure, so you should call dev_err() before returning to indicate the
-reason for the error code.
-
-William Breathitt Gray
-
---W2oGqzCZLTycLuKz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZyjaBAAKCRC1SFbKvhIj
-K0pDAP9QHP7AC57PDlkPDoU6P7z0kuhaTVJ/f6c77VHBju/4pgD/V890BRoIB0A5
-+wk2gE1Mx4zVquZ2a0NtFHr9zonduwo=
-=/a3w
------END PGP SIGNATURE-----
-
---W2oGqzCZLTycLuKz--
+Kevin
 
