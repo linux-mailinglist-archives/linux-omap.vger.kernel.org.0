@@ -1,118 +1,118 @@
-Return-Path: <linux-omap+bounces-2564-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2565-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE49A9BA85A
-	for <lists+linux-omap@lfdr.de>; Sun,  3 Nov 2024 22:39:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 312CF9BACF9
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 08:08:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE2C41C20A38
-	for <lists+linux-omap@lfdr.de>; Sun,  3 Nov 2024 21:39:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD1E11F223AA
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 07:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08AEB18BC39;
-	Sun,  3 Nov 2024 21:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1241925BC;
+	Mon,  4 Nov 2024 07:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TJNM+rpr"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="s5xFpAYw"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4674E189BA3;
-	Sun,  3 Nov 2024 21:39:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB5018C91E;
+	Mon,  4 Nov 2024 07:08:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730669955; cv=none; b=MhNqyTMSkvAG14DmgRHP5LpI5sv73x3UNY6jo23jJR9Ay4qdDUwqcBuRS2WdQ6ZzPSQEoWjTfVXugQ6cM7vTDjCQeRmpsjHnFqGYcKvgOszLAOvZLILSqcASHklgMUXnQ5RaeFxGK5eXu5jGNboT3qMKeuV0DRXATReL4LQ8xb0=
+	t=1730704132; cv=none; b=r9fqCkLPKE4zcTvyc85tHi01iJYLBZtxibWphRBeiAApNmvDSiPC+kLg2+D29H1dCFc+Obtr3rnKBGGv7Cb1SzUCzNuIWM2Rm5sci9RXt3zcEX4/qXeL1LXHdRjmxLuDnwaNLytOtQBP2CeRXlThmrWOpKS1liDwP4A/FKwPbt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730669955; c=relaxed/simple;
-	bh=Jok0MB3/q3anWfOSQpzxb1BnAFdIcPOVvInpT0WAEfI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=C26t+bswlYuU2jQ3oxQ6KplBuUJ5+YaoLOLTP/S3nZxosW4+i0NN551D4TgPQE+Se0vGLm9B5EvMPDGDBScOXDfxYeXbkK1k2ixRmSaRh/wdLcP+ZHP6JUT2W7DSPJuQt0JzAAKnrbZ2BRLyBc7a54hfiR03Ym3yCSKO1719rwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TJNM+rpr; arc=none smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7b1467af9dbso276832885a.0;
-        Sun, 03 Nov 2024 13:39:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730669953; x=1731274753; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WFVi2mNc7smaUSpqUV8IgqBMIyn5vhuRCKFcW8iODME=;
-        b=TJNM+rprxcWZUU+WXu/rN5cWXRsBkpueCWdmT1fmOZLiFhlcWelAnEFZIpls/+uz5J
-         EvCE99E85pHi7KcspCvcXJfEY0P007xLInFwue/dwcCIFk0l2YhI58ZdrInQKHmqxcsx
-         m4RDM8h4Ejng9f5EseerwyOxY7YGb2WD0AEUXSF9Nwb7J47FqUkpJRbU+ML0uzEgIoDw
-         N+Oxb1CJZBd7x9LHDgtvE43GFqmSGuQnse29koZm6hwr9KyZCJ89/RQd2mw4zH1o9ect
-         ZsUe+LLSbTa9cqzma9kNC7JqdqQmOi7j1OaoygONA7u7t8XfIlK6mt1qLiPMcMObOyxO
-         Hq+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730669953; x=1731274753;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WFVi2mNc7smaUSpqUV8IgqBMIyn5vhuRCKFcW8iODME=;
-        b=S7IwU5KsKINC2wWg2asKMIONZP/rQE3JqJNy/irElZPO/2bbe7Hesw7AdEkVZTVw7B
-         EKlvZYQBtzjJnO6A68H+MMr7E4y8k3yREdqzAQuo7jTICldDPQsKE/XDzsuJab1hC3af
-         GpMioYVBnIPKHADObsxIu5teDSpUD1s0DtnvcZmGmvg0e83t4ibv7ceEdvHvoaVuywgS
-         ++SPO8bAjuu9utyGVGiZgP+vlwXWJomyTKGMziAlLOB22IUVU3D6v0iWGPicAb3Ie4gc
-         lu7pBvrHV42u5p4mLIBmb4PCfQZ8ikjg71nxW8mC8m7rFmf9CU9Z51e4pShnkbCFMw1/
-         f5Ug==
-X-Forwarded-Encrypted: i=1; AJvYcCU9G58BvNNWTJJNuU3gfqeWbs0JkZnEOa4vvYeb3icVjlvN7lUg9zGxhAuko/5udIpaUxBmWgvEJMGJMg==@vger.kernel.org, AJvYcCXmS9JPz6DJsxy/pUDrk8HY6wjF0eDLao1lhx732LgdPnCK7vCWSeSgsU5QlVKVsguSpXxo0aG5m+6Sak4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHqN2c4Tz4zwnyiYVuZRIqJtB91CDUKIO81juzXIuRPW7ixwqN
-	sGo0eZGTbgbJM/TKQU6phpB5Opyvc8NMeTPh/IAip4sdhiDSnSwL
-X-Google-Smtp-Source: AGHT+IEJJ81Rfz5B53h8fh2vx4nDSYEt9Cb2ocAO1cYoLk4b3StAYMYarD9H0rz2o7m2aF4Tcd72HQ==
-X-Received: by 2002:a05:620a:450e:b0:7b1:4762:45c4 with SMTP id af79cd13be357-7b1aee51f10mr2426040785a.54.1730669953050;
-        Sun, 03 Nov 2024 13:39:13 -0800 (PST)
-Received: from newman.cs.purdue.edu ([128.10.127.250])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b2f3a117c4sm365448685a.68.2024.11.03.13.39.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 Nov 2024 13:39:12 -0800 (PST)
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-To: vigneshr@ti.com,
-	jpanis@baylibre.com,
-	wbg@kernel.org,
-	gregkh@linuxfoundation.org
-Cc: linux-iio@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Subject: [PATCH] counter: ti-ecap-capture: Add check for clk_enable()
-Date: Sun,  3 Nov 2024 21:39:10 +0000
-Message-Id: <20241103213910.31976-1-jiashengjiangcool@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1730704132; c=relaxed/simple;
+	bh=78dbEaDmmE2c/pfPzbqF7TCsLAdRn7fUv12BsV3tLmA=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lp23W+KNGRwb+s6RQ0E3CsanOBaIYAy2wTdGYH/uiSYjzfc7245xUfm+BQQ6mTIN8Y8toSo8rFrhJw2sJDjVNWbiGkfk/EY2DbwsyH59ngjOeE1wtWyDk4xuZJys6gxQmJxhaTgEQv+OC3LF3eXRDwJ2kJp8Mb3xFF7xkWCY4qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=s5xFpAYw; arc=none smtp.client-ip=198.47.23.248
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4A478MPl070079;
+	Mon, 4 Nov 2024 01:08:22 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1730704102;
+	bh=3ytsICwmTbJhe85HPhytqFuyJa0/WkZiLuqCFnEPxn0=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=s5xFpAYwqov6w9bqiEVDICYvep4sREnxXz8Fw6lR2kSGs1cjNSkRVo801ESLL+cFy
+	 mnSajd+duQpzSHmvMeXychgOlCxTZry4THM9mxAyEn8y0uLwTlu9Eh7EEIzYpdrmfk
+	 H2aNAq+AtESPh2JjHTvkjcXBtFP0EfMWN31lCaH0=
+Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4A478MmU096909
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 4 Nov 2024 01:08:22 -0600
+Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 4
+ Nov 2024 01:08:22 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 4 Nov 2024 01:08:22 -0600
+Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.81])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4A478L0p003184;
+	Mon, 4 Nov 2024 01:08:21 -0600
+Date: Mon, 4 Nov 2024 12:38:20 +0530
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <bhelgaas@google.com>,
+        <lpieralisi@kernel.org>, <robh@kernel.org>, <vigneshr@ti.com>,
+        <manivannan.sadhasivam@linaro.org>, <thomas.richard@bootlin.com>,
+        <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <srk@ti.com>
+Subject: Re: [PATCH] PCI: j721e: Deassert PERST# after a delay of
+ PCIE_T_PVPERL_MS ms
+Message-ID: <f2af6cea-8365-42eb-be53-634eb0fe7cab@ti.com>
+References: <20241022083147.2773123-1-s-vadapalli@ti.com>
+ <20241102141914.GA3440781@rocinante>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241102141914.GA3440781@rocinante>
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Add check for the return value of clk_enable() in order to catch the
-potential exception.
+On Sat, Nov 02, 2024 at 11:19:14PM +0900, Krzysztof Wilczyński wrote:
+> Hello,
+> 
+> > According to Section 2.2 of the PCI Express Card Electromechanical
+> > Specification (Revision 5.1), in order to ensure that the power and the
+> > reference clock are stable, PERST# has to be deasserted after a delay of
+> > 100 milliseconds (TPVPERL). Currently, it is being assumed that the power
+> > is already stable, which is not necessarily true. Hence, change the delay
+> > to PCIE_T_PVPERL_MS to guarantee that power and reference clock are stable.
+> [...]
+> > This patch is based on commit
+> > c2ee9f594da8 KVM: selftests: Fix build on on non-x86 architectures
+> > of Mainline Linux.
+> 
+> Why KVM?  Do you have the link to this commit handy?
 
-Fixes: 4e2f42aa00b6 ("counter: ti-ecap-capture: capture driver support for ECAP")
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
----
- drivers/counter/ti-ecap-capture.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Since this is a fix, I had based the patch on the latest Mainline Linux
+with the head corresponding to the aforementioned commit. Link:
+https://github.com/torvalds/linux/commit/c2ee9f594da8
 
-diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-capture.c
-index 675447315caf..30a269fa5da0 100644
---- a/drivers/counter/ti-ecap-capture.c
-+++ b/drivers/counter/ti-ecap-capture.c
-@@ -574,8 +574,11 @@ static int ecap_cnt_resume(struct device *dev)
- {
- 	struct counter_device *counter_dev = dev_get_drvdata(dev);
- 	struct ecap_cnt_dev *ecap_dev = counter_priv(counter_dev);
-+	int ret;
- 
--	clk_enable(ecap_dev->clk);
-+	ret = clk_enable(ecap_dev->clk);
-+	if (ret)
-+		return ret;
- 
- 	ecap_cnt_capture_set_evmode(counter_dev, ecap_dev->pm_ctx.ev_mode);
- 
--- 
-2.25.1
+> 
+> [...]
+> >  		if (pcie->reset_gpio) {
+> > -			fsleep(PCIE_T_PERST_CLK_US);
+> > +			msleep(PCIE_T_PVPERL_MS);
+> 
+> fsleep() with the same macro and for the same reason is also used in the
+> j721e_pcie_probe() callback.  I think, we would want both changed.
 
+Thank you for pointing this out. I will update it in the v2 patch.
+
+Regards,
+Siddharth.
 
