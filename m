@@ -1,101 +1,128 @@
-Return-Path: <linux-omap+bounces-2577-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2578-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F6C09BBDD4
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 20:14:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C7609BBE09
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 20:31:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DF6FB21F32
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 19:14:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C496A282CC3
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 19:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F27C1CC899;
-	Mon,  4 Nov 2024 19:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D4A1CB318;
+	Mon,  4 Nov 2024 19:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="v73xZXuw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WTqkaU6b"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F4A18C926;
-	Mon,  4 Nov 2024 19:14:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277AE18DF72;
+	Mon,  4 Nov 2024 19:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730747671; cv=none; b=YcFKPp5mkBy0xcQ3raiZT0/2LVxllOXxjCT9TRST4h6KWyGlyNGj0w0Z5w4fWqGEu9xkDV35F48xvmw20grOMHjRT5VF0PjXdFHCZ1wZpo531z7oI01jUCZCKQ/hlTUM/tCb3MKTaGGARiFoN8ydjZiw9uR5kda6NF5B4nNTyjU=
+	t=1730748693; cv=none; b=g7TK/J9LXPcTUyXsTysfejvHe2+/TnrVzbjcvEcxSs94CWza+UipKsf/gTks54/uI5S904Gknfrz9d6YDH3V901BAm9eyLBUUTkwrh/6KYaaaZFrulgv2zPt6+UIBEfu3MRQVHjKH4TShBjihIXIqOUEHe3B9/RRQj2f7vfABf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730747671; c=relaxed/simple;
-	bh=o4Q21EUOtQ5gP8TVU/SzyX8KbHV1rScUhI+UDQ2yHfc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MyFbNLI1CCZSRKTz2USS98tZP4rO4qUnPmHFwS1ZGp9+G/Pre40ho3KcMe6E1tOPH1CVlUQs62CQnyg5VuBf7Ft2hjmFjMh/b+yb/6tCsQ6zJAGTWixDcwedNgKVwi4JO662Us2bKF+erQBV0fllFayinmTbP5H00FIAiK61JE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=v73xZXuw; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=PljaPNPt6R2nYVku9vBFHgDoW/TWpHwXI6NoLjiVHnU=; b=v73xZXuwTsYAUpHnxPLfsov4D0
-	1OOd+L5YITYru9ut7DOvY9bNkEc2XKaSf730FSo76TcYGoTYxqFv1T5YFDB1kcL3H0UF2ELxgIwzv
-	fnXHRRoq7N5FvXRLQMQLF8YAEH+Zgd/vw/GSi3qALx+dLNqUWFiLtODMcq/vBL/RrItgZPQG3oPfe
-	nCTzMv4VJxUAmstFs6PFFgy2nsEZmKHIWqfrpa/qXakPaGxCWBrlXtWAR0nG4QYnza+Mbq/7wEXM0
-	8AZtOpmiiVrV0mnVj0YGmfalBdDjKNRUqQsN825VsP9zLVZiijB5DFoTaH+FP+6DpS8mzPP0Pknyd
-	RpYRZI/g==;
-Date: Mon, 4 Nov 2024 20:14:24 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Kevin Hilman <khilman@kernel.org>
-Cc: rafael@kernel.org, viresh.kumar@linaro.org, zhipeng.wang_1@nxp.com,
- linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-omap@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] cpufreq: fix using cpufreq-dt as module
-Message-ID: <20241104201424.2a42efdd@akair>
-In-Reply-To: <7httcmonip.fsf@baylibre.com>
-References: <20241103210251.762050-1-andreas@kemnade.info>
-	<7httcmonip.fsf@baylibre.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1730748693; c=relaxed/simple;
+	bh=3bP3Qi/CQ5I6xaip1H8pfODV4gY33wAcd5kNSSVSc2w=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qtUKcX1M6a9+ORKTcv6AvJnnspu1pIlhjiOftpfby55W/S9MGfaZc7+JvxgmEt4JdqJlSsmmz2W0W7T3b5DFSS8sH742Cbo3CKpPGehh5W715Cs9z7AABKqI6XCdYFpwsDgajKUwOcdR3SG5/tZbIclvOJbMQxy7WYUJVmT98x0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WTqkaU6b; arc=none smtp.client-ip=209.85.219.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6ce3fc4e58bso28106416d6.0;
+        Mon, 04 Nov 2024 11:31:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730748691; x=1731353491; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bijSGqS0V/CqMGiSyPwWXdTb7/8nL6yldt4oUdDJBSc=;
+        b=WTqkaU6byBzyIN9YNk88NGR7y6UHe+Jz/lP0CGfXeri916zT27JW3BJbt1MNV1b4dq
+         UsSmGUtfAT/Z1WUIM9v/pbsrtc03mPSEUgv+tDDaiqbi/zKjVfadd7sil9dV+dZPkOtR
+         YEkTzp3vfegTZhpt5Yiw+F/gzs/hn/d1HLqjAxmml5JlgZZAK/AWaGiIQlQFurIKEW0F
+         3Q1o5mIkngYg/hJKtm6YPcvOQNwK3hPKJnpnYSVW5ShXL9Bu0SrDtI+Hv/+Ttvwmqs/f
+         OHuhmB7v9UQjnNT/9B8SQd0L/MVi2WpvMcAQXoIeXtqgenHNAYYXILhW8MdlvelMH6/o
+         FoQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730748691; x=1731353491;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bijSGqS0V/CqMGiSyPwWXdTb7/8nL6yldt4oUdDJBSc=;
+        b=YK+kk5WWofevpuEZTPQuz49jbZDBfX55EGj2pB2r2ng4CQgx0BMdx1BNCzh2JPrTg9
+         S8BRSddT5Hg1y57vI+MQcs0FC+zO+KsbKvIux5EQkKpVe1ZRH0A0bdOn6B9u0CZedgzZ
+         hz7kwnwFWt3yMq8AxmHGhjR6OD2epHBPWImdmLMTWx0ADOpTcpHaFdJs+zlFI2SkRnVQ
+         hHEkoZjXCK/mDwBkoy49JsWGSaakkI98MadZ6HU/xvq0YhC9IVOuyQ7Hpi5z8kdyh+s3
+         uAsHfrQksM74sI02bx7EUhy1tc7yAS+Cz7cUGTKU3XrI9I8xRIYdIHUwndbsOnUdfS3d
+         2v/A==
+X-Forwarded-Encrypted: i=1; AJvYcCUhuo5WTsuSBC8aT3iL+zE9uQEdqz1kWlXsAHpng6D3/6eFEN5WuVtloaK1BtC3RP0eC6WQFNwX7e4g1gY=@vger.kernel.org, AJvYcCWZiB8IaO+RP4gSP2/kQ0oNBQxXf9DG44MIZe6mZtsegFe8nHDVrxQrIB5JnJdJ40wxCwwdCuokLVyWOQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7pf9OUanRhTI5sVPHlGMEmM97jlBHWM13KWuAa9YhhZdjjQBK
+	FPwGrJXqNbxrRk/ksU9Fca4Q0xslDqOEsRvdEXjSyFgmamtcGmga
+X-Google-Smtp-Source: AGHT+IEcYubjvbNgxzZeMVraonxGDhXuv0kvdYzgHH1Wxp0npJOmSz9ZbtTTbbPQ7+ToZVAGW21gxw==
+X-Received: by 2002:a05:6214:3bc4:b0:6cc:a17:ba65 with SMTP id 6a1803df08f44-6d351af4758mr286893156d6.39.1730748690982;
+        Mon, 04 Nov 2024 11:31:30 -0800 (PST)
+Received: from newman.cs.purdue.edu ([128.10.127.250])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d354178071sm51852956d6.116.2024.11.04.11.31.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Nov 2024 11:31:30 -0800 (PST)
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+To: wbg@kernel.org,
+	vigneshr@ti.com,
+	jpanis@baylibre.com,
+	gregkh@linuxfoundation.org
+Cc: linux-iio@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Subject: Re: [PATCH] counter: ti-ecap-capture: Add check for clk_enable()
+Date: Mon,  4 Nov 2024 19:31:28 +0000
+Message-Id: <20241104193128.41871-1-jiashengjiangcool@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Am Mon, 04 Nov 2024 10:35:26 -0800
-schrieb Kevin Hilman <khilman@kernel.org>:
+On Mon, Nov 04, 2024 at 09:28:00AM -0500, William Breathitt Gray wrote:
+> On Sun, Nov 03, 2024 at 09:39:10PM +0000, Jiasheng Jiang wrote:
+>	Add check for the return value of clk_enable() in order to catch the
+>	potential exception.
+>
+>	Fixes: 4e2f42aa00b6 ("counter: ti-ecap-capture: capture driver support for ECAP")
+>	Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+>	---
+>	drivers/counter/ti-ecap-capture.c | 5 ++++-
+>	1 file changed, 4 insertions(+), 1 deletion(-)
+>
+>	diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-capture.c
+>	index 675447315caf..30a269fa5da0 100644
+>	--- a/drivers/counter/ti-ecap-capture.c
+>	+++ b/drivers/counter/ti-ecap-capture.c
+>	@@ -574,8 +574,11 @@ static int ecap_cnt_resume(struct device *dev)
+>	{
+>		struct counter_device *counter_dev = dev_get_drvdata(dev);
+>		struct ecap_cnt_dev *ecap_dev = counter_priv(counter_dev);
+>	+	int ret;
+>
+>	-	clk_enable(ecap_dev->clk);
+>	+	ret = clk_enable(ecap_dev->clk);
+>	+	if (ret)
+>	+		return ret;
+>
+>		ecap_cnt_capture_set_evmode(counter_dev, ecap_dev->pm_ctx.ev_mode);
+>
+>	--
+>	2.25.1
+>
+> Similar to the stm32-timer-cnt patch comment: it's not necessarily clear
+> that an error in the cnt_resume() callback is due to a clk_enable()
+> failure, so you should call dev_err() before returning to indicate the
+> reason for the error code.
 
-> Andreas Kemnade <andreas@kemnade.info> writes:
-> 
-> > E.g. omap2plus_defconfig compiles cpufreq-dt as module. As there is
-> > no module alias nor a module_init(), cpufreq-dt-platdev will not be
-> > used and therefore on several omap platforms there is no cpufreq.
-> >
-> > Enforce builtin compile of cpufreq-dt-platdev to make it effective.
-> >
-> > Fixes: 3b062a086984 ("cpufreq: dt-platdev: Support building as
-> > module") Cc: stable@vger.kernel.org
-> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>  
-> 
-> I'd much rather see this fixed to work as a module.  You already
-> hinted at the right way to do that, so please do that instead.
-> 
-no clear idea how. What aliases should I add? The cpufreq-dt-platdev is
-not a real driver, so I could not create mod_devicetable aliases to
-match a given device. It constructs a device under certain conditions
-depending on the board compatible, so no simple list of compatibles, it
-contains allow and blocklists.
+Thanks, I will add dev_err() in my v2 patches.
 
-cpufreq-dt then binds to that device and that one can be built as a
-module (which then made cpufreq-dt-platdev also a module, causing the
-trouble). I do not see any benefit from having cpufreq-dt-platdev as a
-module. ti-cpufreq has a similar role and is also just builtin.
-It does itself no real work but provides a device cpufreq-dt then binds
-to.
-
-Handling module removal would probably need to be added and tested. I
-feel not comfortable having such as a regression fix and for stable.
-
-Regards,
-Andreas
+-Jiasheng Jiang
 
