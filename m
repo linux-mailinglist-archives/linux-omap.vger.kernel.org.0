@@ -1,175 +1,163 @@
-Return-Path: <linux-omap+bounces-2575-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2576-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1BEC9BBDC2
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 20:08:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F56D9BBDCA
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 20:10:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6D32283503
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 19:08:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B33C61C2338F
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 19:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963921CCB56;
-	Mon,  4 Nov 2024 19:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8651CBE85;
+	Mon,  4 Nov 2024 19:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HdKZJ063"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="VmoVlPXj"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267AC1C9DDF;
-	Mon,  4 Nov 2024 19:08:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47CB2E552
+	for <linux-omap@vger.kernel.org>; Mon,  4 Nov 2024 19:10:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730747314; cv=none; b=IMdjXYbsxLhjMa6LV7Nkn+xTadxgEIkYi6j1YKtvt/Fa8CMrCOoYhU9IiRE5BPJdHF8BKihqiEYIdFqQ1wED6K7R3WG0PkKMyee0V7kIJo6osTOVKwdjMDE0JacIwVWMGQ+BJDZwoC7xavKsIcQ2HDjGl/9h9MDEW/HkEYAu7yA=
+	t=1730747424; cv=none; b=Zfa8OBGkNs9w48ujvaqjT6J+4piddCyuLTZuX1v5z2Iru12j0Pjko3P9M35gJsB4VokzuL5DVY/9X04siSzGJhRtjbUhzwjGotnXQM9rhvf821LAbBI6+d3IgsUttIcQbnd1DR1Gkn2rAQSdfSAmNwwRvplXOoyTP7mB4hZ424s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730747314; c=relaxed/simple;
-	bh=j7klqenx4annFQS56VxG5XYt0rD6Z/IoBUva+ojwv4E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pTdi0a+M+ygDWx2usk+vdsOcjIuTLyGZpFUx9DbrUgNVcW9Czy5mAxrjTc6Oof8ca0F0dkbJi2ik9SzRZ/bSj7Lp/ONAGHvTYdeb5fqBx9HbzUUhJ0QfdiiQqsxX2FCP5rWvfH60/NN1GlKULwpMVGyViJ0zPYtEN+Ch7S9egYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HdKZJ063; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C6EC4CECE;
-	Mon,  4 Nov 2024 19:08:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730747313;
-	bh=j7klqenx4annFQS56VxG5XYt0rD6Z/IoBUva+ojwv4E=;
-	h=From:To:Cc:Subject:Date:From;
-	b=HdKZJ063PdQWe4KE3HDKzbd3TrFv6VyHEc+ElSkkrX68ltrXZnmwnA2VKN2tG455J
-	 76wgJeHu5PV6lrlCt6dpcmZ2SxyRK9hD2vv0FQ8OwOYUrvnnqcRLccV3mmXsWNEGWg
-	 kbFqNzXelXllXntRtsDbWP1nDPUO95rC5JKwGpnChuUttI765wrVh3SkZwOpcJUpGO
-	 h2DjbTXBQWoW7ys4r+PSOiCIEEdWFjvtdOuQOEn1V83R2ajOQiPmWs0+yiNc6nvrm3
-	 oKv0k9eGkelA0p+H9PpucsqzNsRU5y8zrLnLHtsi9Zgv9eOvVtRgBOS7qwrX9TOsbK
-	 HAPUU/i1XfzFw==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Peter Chen <peter.chen@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Chunfeng Yun <chunfeng.yun@mediatek.com>
-Cc: linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH] usb: Use (of|device)_property_present() for non-boolean properties
-Date: Mon,  4 Nov 2024 13:08:18 -0600
-Message-ID: <20241104190820.277702-1-robh@kernel.org>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1730747424; c=relaxed/simple;
+	bh=aaYgFrJhT9A6u8DPjoUnnutIAW+Io5answdj9XabaDE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Xop9NMQiMgHcAg3GKWtsN/UkTBXosrVkf+2WdM7vHAic8lC6KmBNrnMw0hUPZ0h0xWWcO7nliWznB3qYAQrAAPOb54e0Bp7rfTlPCbKgXZ7k/evybFELfzrntna8R/zckjp6ZhcF1j+j7RgUswWrZyUrElYg/VWSY5nI6KKFnjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=VmoVlPXj; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-71e4c2e36daso3593877b3a.0
+        for <linux-omap@vger.kernel.org>; Mon, 04 Nov 2024 11:10:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730747420; x=1731352220; darn=vger.kernel.org;
+        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=2y3LHlBNTbsSu0Hs3sn5efdwnygjby0IGD43ArzpIfo=;
+        b=VmoVlPXj3P3vE455770bXhBy3MHHtfFIhWK3205TSaTiUmClsqKMgWUOTCdOpKdTG/
+         TaMG6QQ2DSr1CLajV7MPB5QWtSDK4M/ix2rzWLy4Pfwj6wl/urxdKydtH0uJGcCTU9vj
+         fwGZGwMcmmFxWvWnKjrfyzb49mgZdTXgt+O0LFeJv1ETrEUdTdid4pR0iQ68YhsBT237
+         NEgiHU7Cuin1/b7zULH6ifLxA/HAEkf89gxWabx1mAHsGxCVxTqY+3vtd587LOzXofpS
+         ZbwEwnF5E5O9+iXQk9C6SELA75RAGtVTZyfNqUw8S+a9KVdDlfowPLWgubYXqYt88NDi
+         3jUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730747420; x=1731352220;
+        h=mime-version:message-id:date:subject:cc:to:from:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2y3LHlBNTbsSu0Hs3sn5efdwnygjby0IGD43ArzpIfo=;
+        b=N1VQAYlrJQpFGRkhZM1GUltlLsqnjSpjmQjGDAqfz8xcTBeHUYnrX7bldsDgEEVaye
+         KzyaTwEh71I0YO6A6qV6K0rfkcLjN94ekGfIUhavB6C7FnHnYwDPeluAazV/Ji7M2OKe
+         kZ8Q16pZAXaJEtbRgyvjjlWmeQfNgLPtYzaYVC8v4lVyVxK55GDTthSE0N7CjvTJtAnY
+         EdBXSylLQ/TqdyL38KGkOhhwcLnjzfVzFBRPqSP/KbAe+9VA/2kYrqfWTHITiJZxKp+R
+         IUwdisJddz/dNfpKZf6h/M9Vaymzwzpelu6N1MroT/pinv1rlsrMlBPLegr7FTHlS1jy
+         EGYg==
+X-Gm-Message-State: AOJu0YyS/Pa0jXi9scSNTTCpLpM+f+Gd2hjA81WoEjAQTWzdoHOzDFfM
+	AcugqH48Jm3+oqbsalkmtSsSwswTIkv2AP59ODks83IcC2wuh1zJd0sGwtZCSt5hMcz+Y7mM/NW
+	c8f0=
+X-Google-Smtp-Source: AGHT+IEjWO1rixoyJxbVGtJmuxL0xP1l7hFGkamZjG4E+eqTDpqyz2JlInUTxjamsjs8DazSCd4u+A==
+X-Received: by 2002:a05:6a20:7288:b0:1d8:a67e:d323 with SMTP id adf61e73a8af0-1dba423639cmr20344552637.22.1730747420431;
+        Mon, 04 Nov 2024 11:10:20 -0800 (PST)
+Received: from localhost ([97.126.177.194])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7ee459f8fb9sm7442891a12.61.2024.11.04.11.10.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Nov 2024 11:10:20 -0800 (PST)
+From: Kevin Hilman <khilman@baylibre.com>
+To: soc@kernel.org
+Cc: linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: [GIT PULL v2] ARM: dts: OMAP updates for v6.13
+Date: Mon, 04 Nov 2024 11:10:19 -0800
+Message-ID: <7h8qtyolwk.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-The use of (of|device)_property_read_bool() for non-boolean properties
-is deprecated in favor of of_property_present() when testing for
-property presence.
+The following changes since commit 9852d85ec9d492ebef56dc5f229416c925758edc:
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
----
- drivers/usb/chipidea/core.c        | 2 +-
- drivers/usb/dwc3/core.c            | 2 +-
- drivers/usb/dwc3/dwc3-omap.c       | 2 +-
- drivers/usb/dwc3/dwc3-qcom.c       | 2 +-
- drivers/usb/mtu3/mtu3_plat.c       | 2 +-
- drivers/usb/phy/phy.c              | 2 +-
- drivers/usb/renesas_usbhs/common.c | 2 +-
- 7 files changed, 7 insertions(+), 7 deletions(-)
+  Linux 6.12-rc1 (2024-09-29 15:06:19 -0700)
 
-diff --git a/drivers/usb/chipidea/core.c b/drivers/usb/chipidea/core.c
-index 835bf2428dc6..18ecfcc08b97 100644
---- a/drivers/usb/chipidea/core.c
-+++ b/drivers/usb/chipidea/core.c
-@@ -765,7 +765,7 @@ static int ci_get_platdata(struct device *dev,
- 
- 	ext_id = ERR_PTR(-ENODEV);
- 	ext_vbus = ERR_PTR(-ENODEV);
--	if (of_property_read_bool(dev->of_node, "extcon")) {
-+	if (of_property_present(dev->of_node, "extcon")) {
- 		/* Each one of them is not mandatory */
- 		ext_vbus = extcon_get_edev_by_phandle(dev, 0);
- 		if (IS_ERR(ext_vbus) && PTR_ERR(ext_vbus) != -ENODEV)
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index 9eb085f359ce..e1beb760e913 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1935,7 +1935,7 @@ static struct extcon_dev *dwc3_get_extcon(struct dwc3 *dwc)
- 	struct extcon_dev *edev = NULL;
- 	const char *name;
- 
--	if (device_property_read_bool(dev, "extcon"))
-+	if (device_property_present(dev, "extcon"))
- 		return extcon_get_edev_by_phandle(dev, 0);
- 
- 	/*
-diff --git a/drivers/usb/dwc3/dwc3-omap.c b/drivers/usb/dwc3/dwc3-omap.c
-index 2a11fc0ee84f..c2d7582c151a 100644
---- a/drivers/usb/dwc3/dwc3-omap.c
-+++ b/drivers/usb/dwc3/dwc3-omap.c
-@@ -416,7 +416,7 @@ static int dwc3_omap_extcon_register(struct dwc3_omap *omap)
- 	struct device_node	*node = omap->dev->of_node;
- 	struct extcon_dev	*edev;
- 
--	if (of_property_read_bool(node, "extcon")) {
-+	if (of_property_present(node, "extcon")) {
- 		edev = extcon_get_edev_by_phandle(omap->dev, 0);
- 		if (IS_ERR(edev)) {
- 			dev_vdbg(omap->dev, "couldn't get extcon device\n");
-diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
-index c1d4b52f25b0..649166e2a8b8 100644
---- a/drivers/usb/dwc3/dwc3-qcom.c
-+++ b/drivers/usb/dwc3/dwc3-qcom.c
-@@ -161,7 +161,7 @@ static int dwc3_qcom_register_extcon(struct dwc3_qcom *qcom)
- 	struct extcon_dev	*host_edev;
- 	int			ret;
- 
--	if (!of_property_read_bool(dev->of_node, "extcon"))
-+	if (!of_property_present(dev->of_node, "extcon"))
- 		return 0;
- 
- 	qcom->edev = extcon_get_edev_by_phandle(dev, 0);
-diff --git a/drivers/usb/mtu3/mtu3_plat.c b/drivers/usb/mtu3/mtu3_plat.c
-index 6858ed9fc3b2..2380552025e4 100644
---- a/drivers/usb/mtu3/mtu3_plat.c
-+++ b/drivers/usb/mtu3/mtu3_plat.c
-@@ -307,7 +307,7 @@ static int get_ssusb_rscs(struct platform_device *pdev, struct ssusb_mtk *ssusb)
- 	if (otg_sx->role_sw_used || otg_sx->manual_drd_enabled)
- 		goto out;
- 
--	if (of_property_read_bool(node, "extcon")) {
-+	if (of_property_present(node, "extcon")) {
- 		otg_sx->edev = extcon_get_edev_by_phandle(ssusb->dev, 0);
- 		if (IS_ERR(otg_sx->edev)) {
- 			return dev_err_probe(dev, PTR_ERR(otg_sx->edev),
-diff --git a/drivers/usb/phy/phy.c b/drivers/usb/phy/phy.c
-index 06e0fb23566c..130f86a043ad 100644
---- a/drivers/usb/phy/phy.c
-+++ b/drivers/usb/phy/phy.c
-@@ -365,7 +365,7 @@ static int usb_add_extcon(struct usb_phy *x)
- {
- 	int ret;
- 
--	if (of_property_read_bool(x->dev->of_node, "extcon")) {
-+	if (of_property_present(x->dev->of_node, "extcon")) {
- 		x->edev = extcon_get_edev_by_phandle(x->dev, 0);
- 		if (IS_ERR(x->edev))
- 			return PTR_ERR(x->edev);
-diff --git a/drivers/usb/renesas_usbhs/common.c b/drivers/usb/renesas_usbhs/common.c
-index edc43f169d49..e4adfe692164 100644
---- a/drivers/usb/renesas_usbhs/common.c
-+++ b/drivers/usb/renesas_usbhs/common.c
-@@ -632,7 +632,7 @@ static int usbhs_probe(struct platform_device *pdev)
- 	if (IS_ERR(priv->base))
- 		return PTR_ERR(priv->base);
- 
--	if (of_property_read_bool(dev_of_node(dev), "extcon")) {
-+	if (of_property_present(dev_of_node(dev), "extcon")) {
- 		priv->edev = extcon_get_edev_by_phandle(dev, 0);
- 		if (IS_ERR(priv->edev))
- 			return PTR_ERR(priv->edev);
--- 
-2.45.2
+are available in the Git repository at:
 
+  git://git.kernel.org/pub/scm/linux/kernel/git/khilman/linux-omap.git tags/omap-for-v6.13/dt-signed-1
+
+for you to fetch changes up to 13746595a1581e09289adf9b5202e237c5e0814b:
+
+  ARM: dts: omap4-kc1: fix twl6030 power node (2024-11-04 10:42:22 -0800)
+
+----------------------------------------------------------------
+ARM: dts: OMAP updates for v6.13
+
+Misc. minor updates for OMAP3, OMAP4, AM3 and DRA7 platforms.
+
+----------------------------------------------------------------
+Andreas Kemnade (10):
+      ARM: dts: omap: omap4-epson-embt2ws: define GPIO regulators
+      ARM: dts: omap: omap4-epson-embt2ws: wire up regulators
+      ARM: dts: omap: omap4-epson-embt2ws: add unknown gpio outputs
+      ARM: dts: omap: omap4-epson-embt2ws: add GPIO expander
+      ARM: dts: ti/omap: use standard node name for twl4030 charger
+      ARM: dts: ti/omap: dra7: fix redundant clock divider definition
+      ARM: ti/omap: omap3-gta04a5: add Bluetooth
+      ARM: dts: omap36xx: declare 1GHz OPP as turbo again
+      ARM: dts: ti/omap: omap4-epson-embt2ws: add charger
+      ARM: dts: omap4-kc1: fix twl6030 power node
+
+Geert Uytterhoeven (1):
+      ARM: dts: am335x-bone-common: Increase MDIO reset deassert delay to 50ms
+
+Marcus Folkesson (1):
+      ARM: dts: ti: dra7: Remove double include of clock bindings
+
+Rob Herring (Arm) (1):
+      ARM: dts: ti/omap: Fix at24 EEPROM node names
+
+Roger Quadros (3):
+      ARM: dts: ti: drop linux,mtd-name from NAND nodes
+      ARM: dts: ti: omap: am335x-baltos: drop "gpmc,device-nand" from NAND node
+      ARM: dts: ti: omap3434-sdp: drop linux,mtd-name from onenand node
+
+ arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi       |   3 +-
+ arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi  |  12 +--
+ arch/arm/boot/dts/ti/omap/am335x-boneblue.dts      |   2 +-
+ arch/arm/boot/dts/ti/omap/am335x-pdu001.dts        |   6 +-
+ arch/arm/boot/dts/ti/omap/am335x-shc.dts           |   2 +-
+ arch/arm/boot/dts/ti/omap/am3517-som.dtsi          |   1 -
+ arch/arm/boot/dts/ti/omap/am3874-iceboard.dts      |   8 +-
+ arch/arm/boot/dts/ti/omap/am437x-cm-t43.dts        |   2 +-
+ arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts       |   2 +-
+ arch/arm/boot/dts/ti/omap/am437x-sbc-t43.dts       |   2 +-
+ arch/arm/boot/dts/ti/omap/am437x-sk-evm.dts        |   2 +-
+ arch/arm/boot/dts/ti/omap/am43x-epos-evm.dts       |   2 +-
+ arch/arm/boot/dts/ti/omap/am57xx-cl-som-am57x.dts  |   2 +-
+ arch/arm/boot/dts/ti/omap/am57xx-sbc-am57x.dts     |   2 +-
+ arch/arm/boot/dts/ti/omap/dm8148-evm.dts           |   1 -
+ arch/arm/boot/dts/ti/omap/dm8168-evm.dts           |   1 -
+ arch/arm/boot/dts/ti/omap/dra62x-j5eco-evm.dts     |   1 -
+ arch/arm/boot/dts/ti/omap/dra7.dtsi                |   1 -
+ arch/arm/boot/dts/ti/omap/dra7xx-clocks.dtsi       |   1 -
+ arch/arm/boot/dts/ti/omap/logicpd-som-lv.dtsi      |   1 -
+ arch/arm/boot/dts/ti/omap/logicpd-torpedo-som.dtsi |   3 +-
+ arch/arm/boot/dts/ti/omap/omap3-cm-t3x.dtsi        |   2 +-
+ arch/arm/boot/dts/ti/omap/omap3-evm-37xx.dts       |   1 -
+ arch/arm/boot/dts/ti/omap/omap3-evm.dts            |   1 -
+ arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi         |   2 +-
+ arch/arm/boot/dts/ti/omap/omap3-gta04a5.dts        |  10 +++
+ arch/arm/boot/dts/ti/omap/omap3-igep.dtsi          |   1 -
+ arch/arm/boot/dts/ti/omap/omap3-ldp.dts            |   1 -
+ arch/arm/boot/dts/ti/omap/omap3-overo-base.dtsi    |   1 -
+ arch/arm/boot/dts/ti/omap/omap3-sb-t35.dtsi        |   2 +-
+ arch/arm/boot/dts/ti/omap/omap3430-sdp.dts         |   2 -
+ arch/arm/boot/dts/ti/omap/omap36xx.dtsi            |   1 +
+ arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts  | 211 +++++++++++++++++++++++++++++++++++++++++++++--
+ arch/arm/boot/dts/ti/omap/omap4-kc1.dts            |   6 +-
+ arch/arm/boot/dts/ti/omap/omap5-cm-t54.dts         |   2 +-
+ arch/arm/boot/dts/ti/omap/omap5-sbc-t54.dts        |   2 +-
+ arch/arm/boot/dts/ti/omap/twl4030.dtsi             |   2 +-
+ 37 files changed, 248 insertions(+), 56 deletions(-)
 
