@@ -1,166 +1,121 @@
-Return-Path: <linux-omap+bounces-2566-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2567-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915869BAD61
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 08:45:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D84919BAE12
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 09:30:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46D431F21280
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 07:45:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63AEF2815F6
+	for <lists+linux-omap@lfdr.de>; Mon,  4 Nov 2024 08:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 305EB19993E;
-	Mon,  4 Nov 2024 07:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7783C18A6D9;
+	Mon,  4 Nov 2024 08:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="lmHbUCcj"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="TwkDpXXG"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6533818C91D;
-	Mon,  4 Nov 2024 07:44:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670EE17B428
+	for <linux-omap@vger.kernel.org>; Mon,  4 Nov 2024 08:30:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730706300; cv=none; b=FADVhJ8shT2xRV/QQ72Amc7dOi74HCrNosDy0VbXO1hdPYUPLOugvJ7BWjSs4dSHTEJRsb6xoF8EmZyi3aSdT2qvXSJgGoaAFPgOt0/di3VBZ4zjSuoCYGU7fEMNZ4bvvAzaa7gcIbTjX6xIznAxUxqcofn5JiUjGXNIDq0E8Zo=
+	t=1730709047; cv=none; b=X475wQTKHWgYuGZvGIG8AClEv+IVgGTmuMnfFBPPDATRB9i926XhfxgMgYGbqVyXAFSpgKDvdTTJG8AusBbPhJEAROHTqfkUkYryhVivAC5GBMvH/kQucAf95Hlo6g+DxyKJTdc2g/VO+qsmEIWbsC4G6BdKWa48soK6Uanes2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730706300; c=relaxed/simple;
-	bh=sXlF1I6gJMnXOR2kcQblYeKBKy9K5X1HlVpDHibIC8w=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fkZPQEnN2YWffa8cc6N0ng2ct4LUIfJfhjTviQt1Gi1EMZJgEkxr1zaMlGEd4ii9t/mfVv4L9GNVs+q3Kn3E+/i/pmO1H/QnulPl03Zryp2hYdOLHAJiPb2ZjFi/bNE5KmkkyxGGN9AR7vD/7OIRZaCNHdvDrHwuiTD2IKZX7yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=lmHbUCcj; arc=none smtp.client-ip=198.47.19.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4A47iPJM075574;
-	Mon, 4 Nov 2024 01:44:25 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1730706265;
-	bh=RBpswuLRxOZxNXlnIrevuU+zJUadRtGK4fTa3G3D7Cs=;
-	h=From:To:CC:Subject:Date;
-	b=lmHbUCcjSgY9hRjxgEpM8GRznC74D1elqB7AoasARInL54BaRHmUY4sGSOZSQwPe/
-	 1bNijh5yvg+YXTmJVH0Zuokrs3Q09Oxp2tzYVhWpPt+ZsJYM8cGesb/0cQ+vUXhYXS
-	 mfLCxPDjDHfA9o9PQVTZ8wJb39n/RcBWDGQmbvF8=
-Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4A47iPqx117294
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 4 Nov 2024 01:44:25 -0600
-Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 4
- Nov 2024 01:44:25 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 4 Nov 2024 01:44:25 -0600
-Received: from uda0492258.dhcp.ti.com (uda0492258.dhcp.ti.com [10.24.72.81])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4A47iKNV076611;
-	Mon, 4 Nov 2024 01:44:21 -0600
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: <bhelgaas@google.com>, <lpieralisi@kernel.org>, <kw@linux.com>,
-        <robh@kernel.org>, <vigneshr@ti.com>,
-        <manivannan.sadhasivam@linaro.org>, <kishon@kernel.org>,
-        <thomas.richard@bootlin.com>
-CC: <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <srk@ti.com>, <s-vadapalli@ti.com>
-Subject: [PATCH v2] PCI: j721e: Deassert PERST# after a delay of PCIE_T_PVPERL_MS ms
-Date: Mon, 4 Nov 2024 13:14:20 +0530
-Message-ID: <20241104074420.1862932-1-s-vadapalli@ti.com>
-X-Mailer: git-send-email 2.40.1
+	s=arc-20240116; t=1730709047; c=relaxed/simple;
+	bh=5VkJOu+g5b0qKiJ1jIlwSX5lX2+9tMD4oEX3nkRSlOU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eOGtKn9lKbtVHIIup4MsOTtuQKgwZT3k7zAAQqR//80lE79FWIEcuDZQuJg6Fo0Ry5aFPtDUkomRNkt4sDsyo3Qg3lmuU0w4OmLHhF0BsuAGs9kwmlx8FX267YG0sLgbZKpcfy2lRbHqFjTfro7b52jieRApERxsHpFlaHTU2Zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=TwkDpXXG; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43162cf1eaaso48412025e9.0
+        for <linux-omap@vger.kernel.org>; Mon, 04 Nov 2024 00:30:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730709044; x=1731313844; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1QGb6/0TsMbjRxg1vp5PNXgU38SBTpwljeMmmAjykPk=;
+        b=TwkDpXXGoOqJEt2O0sXuXl+/xTKmFcyjJ+YtjXH3dVO9AdT+gnoD/KrdCM0B6ihWXW
+         S23CNdLqaKDfJ+SxQOEOOv7h7VCh6qevuiQuLcg909kOhsb9ZYDfseh3aqm1vbmpeBRg
+         J9LN16v7ShJQhvEOiGmX6Ywd9cf53A4b9W4oMdywVq1k82+qR1F5lhoa7JP8vnK5Q+yC
+         pAHO5byFbE527TS75/cu2hVvb9XGYacBIja4ootgps65m/e70Qxlj+6mVl58Xp6bfXsq
+         ORafEloXj89Sct/oprxLWPHPbXVTxTbDVq1KeX4MjKmi95RMsc9l/Mtr6+3rlyUZre50
+         1KJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730709044; x=1731313844;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1QGb6/0TsMbjRxg1vp5PNXgU38SBTpwljeMmmAjykPk=;
+        b=pY6QNAFjRz1A0B5ISCas4KM3M6rggXy/oG4uxqHh+98dWpTyMoNtpFYUCOJ/wdzEAE
+         kYPPzOPAgIffNcWU6OjYRcg9thKe1XuB0eRmFdaJ/o7p2uDkBPGUK2XMpTazTCvDt+lA
+         4QLKgY9SOTyJ/2pvHSLl0iAXXhxV0WCl25ud1tNuFE1uqb/5Vq3gJSBZoDkB59e5imhQ
+         W7MqQodHJliLG1aqaK7TkJenTAy6gYHarYH/NKcYRf3ly+TpUBTtYMvwbUEoOMH/pocn
+         F8dFbArwI0TVMiCGYt53/zOzq/yNMyFdGM7RG1xwh+FhCyon9oaa2I9GaDHL9n6eU0CX
+         ON8A==
+X-Forwarded-Encrypted: i=1; AJvYcCVUy3FON+YFUzfBOrSNi2r8vmcUv8ZZ/7Yrqg46A7hpB9iXpeBoFQEe+5yFArV9mbw2qf6kx/5LTmXR@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyf8+Z7G8A4lCE5r8rlM4EBZ3WGRr4f1U/Wc3RlbrdGJ1RQIpog
+	jHvfFsuoylMS5gny2ySDYmDaXuKgET+Io7ggcV1FL2x/tCu7R5epiMEfACtw4rw=
+X-Google-Smtp-Source: AGHT+IFVV5wGFTKKBwe9YF3sHy2XdahxtRxXMb+KfShZQJ9smORqFjeuuKbIuJHbFCl9WsNYnco+Xw==
+X-Received: by 2002:a05:600c:3c83:b0:431:24c3:dbaa with SMTP id 5b1f17b1804b1-43283242aefmr123723985e9.2.1730709043788;
+        Mon, 04 Nov 2024 00:30:43 -0800 (PST)
+Received: from [192.168.1.94] (56.31.102.84.rev.sfr.net. [84.102.31.56])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd8e9145sm175101275e9.1.2024.11.04.00.30.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Nov 2024 00:30:43 -0800 (PST)
+Message-ID: <f91f55a1-850c-4368-86ef-9fce7cc4ccf1@baylibre.com>
+Date: Mon, 4 Nov 2024 09:30:41 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] counter: ti-ecap-capture: Add check for clk_enable()
+To: Jiasheng Jiang <jiashengjiangcool@gmail.com>, vigneshr@ti.com,
+ wbg@kernel.org, gregkh@linuxfoundation.org
+Cc: linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20241103213910.31976-1-jiashengjiangcool@gmail.com>
+Content-Language: en-US
+From: Julien Panis <jpanis@baylibre.com>
+In-Reply-To: <20241103213910.31976-1-jiashengjiangcool@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-According to Section 2.2 of the PCI Express Card Electromechanical
-Specification (Revision 5.1), in order to ensure that the power and the
-reference clock are stable, PERST# has to be deasserted after a delay of
-100 milliseconds (TPVPERL). Currently, it is being assumed that the power
-is already stable, which is not necessarily true. Hence, change the delay
-to PCIE_T_PVPERL_MS to guarantee that power and reference clock are stable.
+On 11/3/24 22:39, Jiasheng Jiang wrote:
+> Add check for the return value of clk_enable() in order to catch the
+> potential exception.
+>
+> Fixes: 4e2f42aa00b6 ("counter: ti-ecap-capture: capture driver support for ECAP")
+> Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+> ---
+>   drivers/counter/ti-ecap-capture.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-capture.c
+> index 675447315caf..30a269fa5da0 100644
+> --- a/drivers/counter/ti-ecap-capture.c
+> +++ b/drivers/counter/ti-ecap-capture.c
+> @@ -574,8 +574,11 @@ static int ecap_cnt_resume(struct device *dev)
+>   {
+>   	struct counter_device *counter_dev = dev_get_drvdata(dev);
+>   	struct ecap_cnt_dev *ecap_dev = counter_priv(counter_dev);
+> +	int ret;
+>   
+> -	clk_enable(ecap_dev->clk);
+> +	ret = clk_enable(ecap_dev->clk);
+> +	if (ret)
+> +		return ret;
+>   
+>   	ecap_cnt_capture_set_evmode(counter_dev, ecap_dev->pm_ctx.ev_mode);
+>   
 
-Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
-Fixes: f96b69713733 ("PCI: j721e: Use T_PERST_CLK_US macro")
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
----
-
-Hello,
-
-This patch is based on commit
-59b723cd2adb Linux 6.12-rc6
-of Mainline Linux.
-
-v1:
-https://lore.kernel.org/r/20241022083147.2773123-1-s-vadapalli@ti.com/
-Changes since v1:
-- Rebased patch on Linux 6.12-rc6
-- Based on Krzysztof's feedback at:
-  https://lore.kernel.org/r/20241102141914.GA3440781@rocinante/
-  PCIE_T_PERST_CLK_US has been replaced with PCIE_T_PVPERL_MS in
-  j721e_pcie_probe() as well.
-- Added Fixes tag corresponding to the above change in the commit
-  message.
-
-Regards,
-Siddharth.
-
- drivers/pci/controller/cadence/pci-j721e.c | 26 ++++++++++------------
- 1 file changed, 12 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index 284f2e0e4d26..e091c3e55b5c 100644
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -572,15 +572,14 @@ static int j721e_pcie_probe(struct platform_device *pdev)
- 		pcie->refclk = clk;
- 
- 		/*
--		 * The "Power Sequencing and Reset Signal Timings" table of the
--		 * PCI Express Card Electromechanical Specification, Revision
--		 * 5.1, Section 2.9.2, Symbol "T_PERST-CLK", indicates PERST#
--		 * should be deasserted after minimum of 100us once REFCLK is
--		 * stable. The REFCLK to the connector in RC mode is selected
--		 * while enabling the PHY. So deassert PERST# after 100 us.
-+		 * Section 2.2 of the PCI Express Card Electromechanical
-+		 * Specification (Revision 5.1) mandates that the deassertion
-+		 * of the PERST# signal should be delayed by 100 ms (TPVPERL).
-+		 * This shall ensure that the power and the reference clock
-+		 * are stable.
- 		 */
- 		if (gpiod) {
--			fsleep(PCIE_T_PERST_CLK_US);
-+			msleep(PCIE_T_PVPERL_MS);
- 			gpiod_set_value_cansleep(gpiod, 1);
- 		}
- 
-@@ -671,15 +670,14 @@ static int j721e_pcie_resume_noirq(struct device *dev)
- 			return ret;
- 
- 		/*
--		 * The "Power Sequencing and Reset Signal Timings" table of the
--		 * PCI Express Card Electromechanical Specification, Revision
--		 * 5.1, Section 2.9.2, Symbol "T_PERST-CLK", indicates PERST#
--		 * should be deasserted after minimum of 100us once REFCLK is
--		 * stable. The REFCLK to the connector in RC mode is selected
--		 * while enabling the PHY. So deassert PERST# after 100 us.
-+		 * Section 2.2 of the PCI Express Card Electromechanical
-+		 * Specification (Revision 5.1) mandates that the deassertion
-+		 * of the PERST# signal should be delayed by 100 ms (TPVPERL).
-+		 * This shall ensure that the power and the reference clock
-+		 * are stable.
- 		 */
- 		if (pcie->reset_gpio) {
--			fsleep(PCIE_T_PERST_CLK_US);
-+			msleep(PCIE_T_PVPERL_MS);
- 			gpiod_set_value_cansleep(pcie->reset_gpio, 1);
- 		}
- 
--- 
-2.40.1
+Reviewed-by: Julien Panis <jpanis@baylibre.com>
 
 
