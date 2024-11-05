@@ -1,50 +1,50 @@
-Return-Path: <linux-omap+bounces-2585-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2586-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2671E9BCEF3
-	for <lists+linux-omap@lfdr.de>; Tue,  5 Nov 2024 15:18:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B51CE9BCEF6
+	for <lists+linux-omap@lfdr.de>; Tue,  5 Nov 2024 15:19:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D274E1F25AC7
-	for <lists+linux-omap@lfdr.de>; Tue,  5 Nov 2024 14:18:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C14E41C22327
+	for <lists+linux-omap@lfdr.de>; Tue,  5 Nov 2024 14:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11D1F1D968A;
-	Tue,  5 Nov 2024 14:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8A91D9A7F;
+	Tue,  5 Nov 2024 14:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nYuB6fZ0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SgHL1rEu"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D771CC159;
-	Tue,  5 Nov 2024 14:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF61F1CC159;
+	Tue,  5 Nov 2024 14:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730816309; cv=none; b=IXDBGb6hSDwAuLdOF/k8wTLiP7o9kjgFr3f3A2keNW5tKk/pVuP8D6RlQxzu7gZogWtiVpufve1lcu25Sik/aHTeVL5KHKwp0/dj484yJe7RWvF8MxuQBZ3BX8jbvDNelcBZ5Y6Jk1RuRzX1hyTuXX0ssCMJw02TcKvx/A34yJA=
+	t=1730816313; cv=none; b=T+ru/JX8w+NMGnFsoCP/Yv61vX2OBmBup8IEjDDxWGukTLqYM3/aeOQn27hqAQvuyktNRB0KVB8errHIV1xz8/NI57Ict3Wi4K+axS6xDtIqLN2JOI/fQTy6YgFhSaxOtbMKWR0utBOwsrUhaWGnQ5MDVuphxqgMU5IBA7FvPGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730816309; c=relaxed/simple;
-	bh=b2XR5Pakav/3MMo/79kII62sHng+0aTMFbd6LpYwJQE=;
+	s=arc-20240116; t=1730816313; c=relaxed/simple;
+	bh=NrEV4iAZN0aliHTzyP3alx8+mfS5kV8sLdO0OPZy9zY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WIFQlaqgpOmwIufabXA9kfPEywWyn/tcToTFHxLVgmuTmtPYIVRwHeK1xleEnTBf0hoBJYNerE4JYn4wtSrD+72P3Tf4cELYjXDK4LM/HN/V9BC1J3RWUgSxdtHphmkrK7VXxFBQg5NQbew2+lKRZUMpMNymmxiiMMW4JMcZzic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nYuB6fZ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C40AC4CED3;
-	Tue,  5 Nov 2024 14:18:26 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=IIy/wqR4arx3ADCfdY7l/j0+Vd6vzfOzTF26DBQrHUiKBMg/bhrz/zgX/kuZaFG/prChZ+6miE6/NK+PUmCPpiG7vEdGAr+wHCgfT9sIXj3a8qmCFtuEexdiWVEc0D2qTZIvQwuvPI8E/ymFePNstboCOWbPeS/4FfWwh+gwf9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SgHL1rEu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F5CC4CECF;
+	Tue,  5 Nov 2024 14:18:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730816309;
-	bh=b2XR5Pakav/3MMo/79kII62sHng+0aTMFbd6LpYwJQE=;
+	s=k20201202; t=1730816312;
+	bh=NrEV4iAZN0aliHTzyP3alx8+mfS5kV8sLdO0OPZy9zY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=nYuB6fZ0xTQmE5Y9J/sjvdWY4t7Oz0iktzb7nA9F4ruDzYNKHmK1sODDpSptFdfmk
-	 GbB6UnPwTvgpYyNwvOlwpsy20KHFyifH6AWorhTgNVypuvo0qRTOPE0jHNBQXEPF3D
-	 GQzq+7gXD2ET8Xa3UDLakbnuOhNMgRnEEezhefgO3qJBybZDCqgw7z+FHsLqJ+u9JI
-	 c/9a+zijVsDw1mE9JOTJCFRIgvQ5vi5Qbfb57WLT0kd0kiXJUx2jy2Rg3TldFp+pvJ
-	 I0ZQJmEkK1Ax86qp7S/5tIQ4HAH2/bJPaPix350np4KftiAwAMBIne+FAMKwLEM06Y
-	 D5rNIXp9geCVw==
+	b=SgHL1rEusclIvRylQVHlw+BAIKGdQQlyGM6ZIFuAKxzbJ/6xVMYta9ASqZHOHtzDv
+	 PLphr7Oid5ZIm7wCv217mxQXYrDMQ6g4UVpLtcAk2DJcl/rlENHhrXimD02ddT7wPB
+	 sqIJRkONNBR5NX3Fj5aBzzaF2lROWs0wFtoqLDcvskO9f2hjatJce6ZLZDRAKZXuMX
+	 pTXwsgABd7WmAmHS+EjCoRoItPiAGbQokNlwb/ezk6m+pS0jOW+mmR1liO3UQdT/KD
+	 uI4+Gk4vSHurxpbOka9EWfa49lkp291G8xi45y5ilU4SWfvbGm07AZmxIhr9+KbBm9
+	 l4jiyJvu1gzew==
 From: Roger Quadros <rogerq@kernel.org>
-Date: Tue, 05 Nov 2024 16:18:10 +0200
-Subject: [PATCH net-next 1/2] net: ethernet: ti: am65-cpsw: update
- pri_thread_map as per IEEE802.1Q-2004
+Date: Tue, 05 Nov 2024 16:18:11 +0200
+Subject: [PATCH net-next 2/2] net: ethernet: ti: am65-cpsw: enable DSCP to
+ priority map for RX
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241105-am65-cpsw-multi-rx-dscp-v1-1-38db85333c88@kernel.org>
+Message-Id: <20241105-am65-cpsw-multi-rx-dscp-v1-2-38db85333c88@kernel.org>
 References: <20241105-am65-cpsw-multi-rx-dscp-v1-0-38db85333c88@kernel.org>
 In-Reply-To: <20241105-am65-cpsw-multi-rx-dscp-v1-0-38db85333c88@kernel.org>
 To: Siddharth Vadapalli <s-vadapalli@ti.com>, 
@@ -65,82 +65,117 @@ Cc: linux-omap@vger.kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, srk@ti.com, Pekka Varis <p-varis@ti.com>, 
  Roger Quadros <rogerq@kernel.org>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2615; i=rogerq@kernel.org;
- h=from:subject:message-id; bh=b2XR5Pakav/3MMo/79kII62sHng+0aTMFbd6LpYwJQE=;
- b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBnKikuSWkVynddpVzDQcbfGiY0uzntGrTPcoqp/
- FLmLzolG52JAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCZyopLgAKCRDSWmvTvnYw
- k6XzD/9B9agCSwTd8YHk+L42x9il02Kywol4fg7yGFJO+2YfSNqcrAEmnKJ20bbOTDhHBR/YyGv
- hrEhK3lc2623BkC8b2moHNLNlSdFQj198YyXvOj/LCCdc0IPVRo7UKS3F2rbuQF054fsCwBy8wN
- efn4uyNV94l3jydwpID95RscFb5rmTEqcAgGWGZRC/x0iNP191F9jtPW/SjaHQixBfAPlgy+WI+
- 9p+c0oGj+AlzTAkETAQaA1x1gZQCjxNXyLuz7CaKkSrL8BEe6tC4UGHj2wTd/7xKcTuZhVYJyRU
- mhIjv2S4+REj0rGRIF5QrcprBYff1bpN0M8IYIX/VJwSNuZDwc0Ot+R/suZfiw7OBimUnqJdcR+
- LXYg4ilCgtxIR0H4SnHtouzsAAjYXPM0+JHKLy3w3s+B+ZpN+MGIl1RfyDamlBozB3zlIqfYldE
- vYg+McGB10gGmsBAXO1QFB/zKUkOxqdrXOp/bYz7RGD7QOhITnHHxbt4iYQjYquoma4hk3edhbo
- bavN8NR+mtyg+qiUd+IXL58nPrlKC+wTgpZDX1Ka9N+fIdnufSBEC6d0HWAInGqDsch3Cssywyk
- sU4UBBUsK3r1FZtpZb3QU1vfM48IFE06nTeoR+bSQZgGbwMKroW2TtO6sAmDIhG3t16KLPgY/Ht
- QMWu6L4YkIfVSNQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3364; i=rogerq@kernel.org;
+ h=from:subject:message-id; bh=NrEV4iAZN0aliHTzyP3alx8+mfS5kV8sLdO0OPZy9zY=;
+ b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBnKikumLdHtahFOh9xQzDkn+wgNGej/VIF9qHfp
+ qIVLCTaxsGJAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCZyopLgAKCRDSWmvTvnYw
+ k9y/EAC/6GPMN2es35uVl3P8XaupweEtL1EY/+WKJX/hR3qLRiWl1UB4vF3ZJzWxwQI+zQ/jakK
+ fYyc7iE1X/Ai50xVjYlU9j4PlZ5AWJ0KkJzMu7Sh22D+0ZgIJN8PCDJdAARwPNkwsGku19PcQCy
+ +4fip6lWrTr4jrB0wknOsWSMG7crOBHUxdUOKfZQgFU4wC+dGwncNeld8r2/Vj0mqOfN6ieDUNx
+ 46oZiu1rE0S/ffRZNRBBan0CBat0Q0LZ/roTZKzVj6kN6ikmLihfBxv/KiWypNytS5YmgB9JAhy
+ WkrAEd7/m1Kf6yKyb9LL96Gt+iy2/pN8YZ4H+zlwETr8rx9cTKZhcUPf7A9sZ9QjTH5QoiSDi9R
+ iikb6WZ28Y8wimYNmwVGxXQbYE7ccgnkz+18mWgc1SZ/S5KuIRHCRmxNQFNAetK5AP41WXam8nf
+ zBE6uDkmx5HtKVLjaeT1TELLaHl3f9PRujpTL+MBH3eAg2a9iEhGu/I8pG3TDC0jbs34D9bxE64
+ r737XBgJGCqQmmxeAGlAnvtMOqlJLILeKSzN5DhHVrdoiuKDLg5tnoY5OPCVUOkoS3w/XLVNSYQ
+ feb8Oxn8I8PGRjekn7Imi7gebQMgCmRB3RTlMUr+/Zder0yq/kHOCTBzVepKu7O/EryhGMj5znS
+ pZ/qLo7bkz8WK1A==
 X-Developer-Key: i=rogerq@kernel.org; a=openpgp;
  fpr=412165D44C9F52780FAB1058D25A6BD3BE763093
 
-IEEE802.1Q-2004 superseeds IEEE802.1D-2004. Now Priority Code Point (PCP)
-2 is no longer at a lower priority than PCP 0. PCP 1 (Background) is still
-at a lower priority than PCP 0 (Best Effort).
+AM65 CPSW hardware can map the 6-bit DSCP/TOS field to
+appropriate priority queue via DSCP to Priority mapping registers
+(CPSW_PN_RX_PRI_MAP_REG).
 
-Reference:
-IEEE802.1Q-2004, Standard for Local and metropolitan area networks
-  Table G-2 - Traffic type acronyms
-  Table G-3 - Defining traffic types
+We use the upper 3 bits of the DSCP field that indicate IP Precedence
+to map traffic to 8 priority queues.
 
 Signed-off-by: Roger Quadros <rogerq@kernel.org>
 ---
- drivers/net/ethernet/ti/cpsw_ale.c | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 50 ++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index 8d02d2b21429..7dadd95cadc5 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.c
-+++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -1692,26 +1692,29 @@ static void cpsw_ale_policer_reset(struct cpsw_ale *ale)
- void cpsw_ale_classifier_setup_default(struct cpsw_ale *ale, int num_rx_ch)
- {
- 	int pri, idx;
--	/* IEEE802.1D-2004, Standard for Local and metropolitan area networks
-+	/* IEEE802.1Q-2004, Standard for Local and metropolitan area networks
- 	 *    Table G-2 - Traffic type acronyms
- 	 *    Table G-3 - Defining traffic types
--	 * User priority values 1 and 2 effectively communicate a lower
--	 * priority than 0. In the below table 0 is assigned to higher priority
--	 * thread than 1 and 2 wherever possible.
-+	 * Also: https://en.wikipedia.org/wiki/IEEE_P802.1p#Priority_levels
-+	 * Priority Code Point (PCP) value 1 (Background) communicates a lower
-+	 * priority than 0 (Best Effort). In the below table PCP 0 is assigned
-+	 * to a higher priority thread than PCP 1 wherever possible.
- 	 * The below table maps which thread the user priority needs to be
- 	 * sent to for a given number of threads (RX channels). Upper threads
- 	 * have higher priority.
- 	 * e.g. if number of threads is 8 then user priority 0 will map to
--	 * pri_thread_map[8-1][0] i.e. thread 2
-+	 * pri_thread_map[8-1][0] i.e. thread 1
- 	 */
--	int pri_thread_map[8][8] = {	{ 0, 0, 0, 0, 0, 0, 0, 0, },
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 0520e9f4bea7..65fbf6727e02 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -71,6 +71,8 @@
+ #define AM65_CPSW_PORT_REG_RX_PRI_MAP		0x020
+ #define AM65_CPSW_PORT_REG_RX_MAXLEN		0x024
+ 
++#define AM65_CPSW_PORTN_REG_CTL			0x004
++#define AM65_CPSW_PORTN_REG_DSCP_MAP		0x120
+ #define AM65_CPSW_PORTN_REG_SA_L		0x308
+ #define AM65_CPSW_PORTN_REG_SA_H		0x30c
+ #define AM65_CPSW_PORTN_REG_TS_CTL              0x310
+@@ -94,6 +96,10 @@
+ /* AM65_CPSW_PORT_REG_PRI_CTL */
+ #define AM65_CPSW_PORT_REG_PRI_CTL_RX_PTYPE_RROBIN	BIT(8)
+ 
++/* AM65_CPSW_PN_REG_CTL */
++#define AM65_CPSW_PN_REG_CTL_DSCP_IPV4_EN	BIT(1)
++#define AM65_CPSW_PN_REG_CTL_DSCP_IPV6_EN	BIT(2)
 +
-+	int pri_thread_map[8][8] = {   /* BK,BE,EE,CA,VI,VO,IC,NC */
-+					{ 0, 0, 0, 0, 0, 0, 0, 0, },
- 					{ 0, 0, 0, 0, 1, 1, 1, 1, },
- 					{ 0, 0, 0, 0, 1, 1, 2, 2, },
--					{ 1, 0, 0, 1, 2, 2, 3, 3, },
--					{ 1, 0, 0, 1, 2, 3, 4, 4, },
--					{ 1, 0, 0, 2, 3, 4, 5, 5, },
--					{ 1, 0, 0, 2, 3, 4, 5, 6, },
--					{ 2, 0, 1, 3, 4, 5, 6, 7, } };
-+					{ 0, 0, 1, 1, 2, 2, 3, 3, },
-+					{ 0, 0, 1, 1, 2, 2, 3, 4, },
-+					{ 1, 0, 2, 2, 3, 3, 4, 5, },
-+					{ 1, 0, 2, 3, 4, 4, 5, 6, },
-+					{ 1, 0, 2, 3, 4, 5, 6, 7 } };
+ /* AM65_CPSW_PN_TS_CTL register fields */
+ #define AM65_CPSW_PN_TS_CTL_TX_ANX_F_EN		BIT(4)
+ #define AM65_CPSW_PN_TS_CTL_TX_VLAN_LT1_EN	BIT(5)
+@@ -176,6 +182,49 @@ static void am65_cpsw_port_set_sl_mac(struct am65_cpsw_port *slave,
+ 	writel(mac_lo, slave->port_base + AM65_CPSW_PORTN_REG_SA_L);
+ }
  
- 	cpsw_ale_policer_reset(ale);
++#define AM65_CPSW_DSCP_MAX	GENMASK(5, 0)
++#define AM65_CPSW_PRI_MAX	GENMASK(2, 0)
++static int am65_cpsw_port_set_dscp_map(struct am65_cpsw_port *slave, u8 dscp, u8 pri)
++{
++	int reg_ofs;
++	int bit_ofs;
++	u32 val;
++
++	if (dscp > AM65_CPSW_DSCP_MAX)
++		return -EINVAL;
++
++	if (pri > AM65_CPSW_PRI_MAX)
++		return -EINVAL;
++
++	reg_ofs = (dscp / 8) * 4;	/* reg offset to this dscp */
++	bit_ofs = 4 * (dscp % 8);	/* bit offset to this dscp */
++	val = readl(slave->port_base + AM65_CPSW_PORTN_REG_DSCP_MAP + reg_ofs);
++	val &= ~(AM65_CPSW_PRI_MAX << bit_ofs);	/* clear */
++	val |= pri << bit_ofs;			/* set */
++	writel(val, slave->port_base + AM65_CPSW_PORTN_REG_DSCP_MAP + reg_ofs);
++	val = readl(slave->port_base + AM65_CPSW_PORTN_REG_DSCP_MAP + reg_ofs);
++
++	return 0;
++}
++
++static void am65_cpsw_port_enable_dscp_map(struct am65_cpsw_port *slave)
++{
++	int dscp, pri;
++	u32 val;
++
++	/* Map IP Precedence field to Priority */
++	for (dscp = 0; dscp <= AM65_CPSW_DSCP_MAX; dscp++) {
++		pri = dscp >> 3; /* Extract IP Precedence */
++		am65_cpsw_port_set_dscp_map(slave, dscp, pri);
++	}
++
++	/* enable port IPV4 and IPV6 DSCP for this port */
++	val = readl(slave->port_base + AM65_CPSW_PORTN_REG_CTL);
++	val |= AM65_CPSW_PN_REG_CTL_DSCP_IPV4_EN |
++		AM65_CPSW_PN_REG_CTL_DSCP_IPV6_EN;
++	writel(val, slave->port_base + AM65_CPSW_PORTN_REG_CTL);
++}
++
+ static void am65_cpsw_sl_ctl_reset(struct am65_cpsw_port *port)
+ {
+ 	cpsw_sl_reset(port->slave.mac_sl, 100);
+@@ -921,6 +970,7 @@ static int am65_cpsw_nuss_ndo_slave_open(struct net_device *ndev)
+ 	common->usage_count++;
  
+ 	am65_cpsw_port_set_sl_mac(port, ndev->dev_addr);
++	am65_cpsw_port_enable_dscp_map(port);
+ 
+ 	if (common->is_emac_mode)
+ 		am65_cpsw_init_port_emac_ale(port);
 
 -- 
 2.34.1
