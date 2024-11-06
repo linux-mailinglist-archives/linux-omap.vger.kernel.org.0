@@ -1,125 +1,135 @@
-Return-Path: <linux-omap+bounces-2596-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2597-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D349B9BEC19
-	for <lists+linux-omap@lfdr.de>; Wed,  6 Nov 2024 14:02:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 893369BEF4D
+	for <lists+linux-omap@lfdr.de>; Wed,  6 Nov 2024 14:43:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11A1F1C2273C
-	for <lists+linux-omap@lfdr.de>; Wed,  6 Nov 2024 13:02:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAB51B23EA9
+	for <lists+linux-omap@lfdr.de>; Wed,  6 Nov 2024 13:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E92D1FAEF0;
-	Wed,  6 Nov 2024 12:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74241F9EB3;
+	Wed,  6 Nov 2024 13:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="VTWXeJw6"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D331F426A;
-	Wed,  6 Nov 2024 12:51:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36C61F9EA6
+	for <linux-omap@vger.kernel.org>; Wed,  6 Nov 2024 13:42:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897520; cv=none; b=i+A5BZESwF4bo9YXHA1HsJlUUjIaVBxPPMWNn5Rb35cb61KsZp5NoWcUyP2wlxoDUPeP2kj+jc/JTcsDWEFYL20/LFyzVeTPjsmA/d6qBI3D9u0L46NhQWvKPeWRn2Yh01HEdVMdzYDInLb1nuxN5X7Y78V2CwH+Oy5kM9QTZQY=
+	t=1730900572; cv=none; b=D2RlG4V+V/kmkxlcytbjGaWn3cKZp3hNEnT87vBNu57bJ8SDIdmj8RGcZ7nee8Uq0IkMGvW2USm/yhQnhK/qkg6nn09osmuAhzVCKrqIUWO7A2+Qsg+U9YbGe8l0et0AVmgHUsQ3d040AfKELbDxe55B2luCQJbtz8Ov5pXCBMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897520; c=relaxed/simple;
-	bh=ocT+2Lqm7zGdt+U9dlPmYwTu8/bWc/XiFRrsH7iAX+0=;
+	s=arc-20240116; t=1730900572; c=relaxed/simple;
+	bh=KeBTnd9dk1BPL5p+cp+YTLVoAgKuRdIN2zFZaIO++7Y=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q1FW7fX2lCSVxSAeo7hYzQgMoJFc6GjeV0SRglFH7r4f0zAyBc0bj2hX+x9Ifu01iGze+3foC5Xj/ItsOZ9xnJxQvWxQ6FItledJGYGFAv5MSVQ3yXOPMQIyGGadq+1V/GsAWs7iCGq4ihmL1WxLZy1iMXLxFADfRE+EBZqKLcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-6e34339d41bso56965787b3.0;
-        Wed, 06 Nov 2024 04:51:57 -0800 (PST)
+	 To:Content-Type; b=CQDHC8+XKr2PfMUcmZST1V4ec9UnN9l2ZF+36xHuH5dIsRBlH3rA+eXPE2qzB54sZ/Q2CmHiZyQACRS1QqdH1Mg1Xz5+1sfDSEPhZRQlPOzZaqJOX0qldJ6lIXawNAo0TzTDzPGSpnM8xDkDb+gA2q+iKZJbo17sU2XddgkN9Xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=VTWXeJw6; arc=none smtp.client-ip=209.85.208.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2fb49510250so68686711fa.0
+        for <linux-omap@vger.kernel.org>; Wed, 06 Nov 2024 05:42:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1730900569; x=1731505369; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hqS6jiGSHPo4vOg4tSYtx/2BV3Y8RQyaC1jG/J2IFvc=;
+        b=VTWXeJw6mbNZ8bex9PW+Lp3aRtx8hfpOkppBH8maLoO2RpYuuSoSu+D8l+VVc953MS
+         kbedUxYefzlfNCG2rvtXKw8ziS+9D71OLh4xmuZvtp5V/cIltBNWtaFv6OJwiAteD6rq
+         eb5JY90Q6wB9ISbMdulW6HnCXndv0JG6A5b0It2vZVi2K53p37lLDDlmZt5g+YVikXSa
+         KiXvb3ZsQLj/6X3fgoECfFYYiHVHh9Lfhtijn3ttjHfKyYnb8gwH5H/LT8L8G9QSjo/4
+         YEG6wHjEQDu9WM3H1FtolQIZ7UduIa8kkfcs0jf8VCCJvnXZsVv7yAjhy4SnI7O/g3Ml
+         m4MQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730897515; x=1731502315;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+        d=1e100.net; s=20230601; t=1730900569; x=1731505369;
+        h=content-transfer-encoding:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PPHd5Ml+4dhfKf7+W9PSlfsoxE25t0TD5o+m/lVsDyw=;
-        b=qCYsgywD10AXEycUq3ASdAte2KQarLolUifxNJJgObOiKc21fk2T7L5X2v/WsLp+Zp
-         h7SCFdwWy0Tr8poEFPvqgWMRRarRc+XgLHOIrvqZMxejXUrI4/FpYjHOAOgBAWpVANBn
-         bRJDT8BZ84KoES4D7ZkWu1En7gOkfnTEpaXSXvTWFqI7FYCgRg6IkHrnPf+jhVz0SGfu
-         t33AdiVHgK0T2CCwpp47uDjmJQtimGc1FeloA3Ga6YoQawgx797+CDhrJTAIB4eUEm90
-         4keHXUzGOuLYPzxQ/zVRnEnsRs16D1E1Bqoc7kfhUL0O98DiwDpyX5Pgz+2szf/b5gLn
-         nDZg==
-X-Forwarded-Encrypted: i=1; AJvYcCUYYg1/chE9RfyYql9R8GLKqFEEXBT2rkZaZUbPBnV9vfFBr/59F9L5PM/coBgKDWW/a/Xz4isUW1h1AQ==@vger.kernel.org, AJvYcCW5i6vwqg2Rj3Rx6gR1AW6LA54ia0gwyOMmc8bYuHRTzO3snne2c+4Uid7IKWwJNldI4AtU3hIzC3ElvA4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7wRzm9j+UVXIKDsRb9W45B+elkhWpiwLvJl/qAa9CSeGKSrPZ
-	iNC+HmlZiF5lBoXHpy2h3ERt5iTRqg8SVsatKOFr2zu8SNjCfnqlZFSh4Ki0
-X-Google-Smtp-Source: AGHT+IH+jd+VaBYPbTe6J+NYKfpJFCGLSrhNc0YLq5nKsKaneGnlsYlL/yUDDpFIO7LhmHWQwTPgBQ==
-X-Received: by 2002:a05:690c:311:b0:6ea:c467:a632 with SMTP id 00721157ae682-6eac467c44fmr10185617b3.35.1730897515605;
-        Wed, 06 Nov 2024 04:51:55 -0800 (PST)
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com. [209.85.128.178])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6ea6965d0ccsm23137937b3.70.2024.11.06.04.51.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Nov 2024 04:51:53 -0800 (PST)
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-6e34339d41bso56965177b3.0;
-        Wed, 06 Nov 2024 04:51:53 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV3Gk/C+eNCoMzsy0GcO2wJMgTLBMtyMzYSlSgRm2DyPyDhYejft4j9WssrXxU19LJg2f6V7h8CXDcCHEg=@vger.kernel.org, AJvYcCXkzkb0bPfbm5awzFfyKuSMeMggSbC3oFUgR8RM3ETDoP0NSd9MPgUyVKRCKLVTGvOKrUguV+st929JJg==@vger.kernel.org
-X-Received: by 2002:a05:690c:6607:b0:6ea:9bca:9fcd with SMTP id
- 00721157ae682-6ea9bcaa376mr108385977b3.2.1730897513684; Wed, 06 Nov 2024
- 04:51:53 -0800 (PST)
+        bh=hqS6jiGSHPo4vOg4tSYtx/2BV3Y8RQyaC1jG/J2IFvc=;
+        b=jvvQaYXDwMipW+he9qVvcBTygA2KZmRgk3fxx4tZidmJ9nAR6IO9YlzoCrvalVVDFc
+         wXVW5+9Fx7D461NS5M+vcpiEFWjcv8LuLMdc3TfN433GHrR6MYv/Lg5pyBccV8bXRdrV
+         dYXlpqTpsKsAOUR20WRCY518yTwOAjv+qZVMruDrdILlFEZo6A+josyv4ZItK+HbrPQN
+         ozmBpLGb71fD8Ue3DHPnr5CJlUMkdDPx0LEY6hEJQ0+ZA4RDu/6g/3yQBctbjxSbqbC2
+         cFB0A+sCSSmbg5kcDy8SiGKacjs624uPJHgntoD3sRvr+0v73Gl/DSTuSg+ga+lv5cH6
+         D+HA==
+X-Forwarded-Encrypted: i=1; AJvYcCXrNfub4iaxBWlMcXJpAHrhxqi5C7iTiK0KS28aQvAiartxgqzgRcw5NBIqMj3KT3rsz2Bb0zpr7J/c@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9jdiI0xHTxfwB8DsShRuVC0gsM9ae3My9earliTbCgvidm27j
+	Q5r1yaADj/aukG5MLjHL7ztyegjIMCWRNZpWMKvwzApT4pLKvJVDltXzTbkzik/S3iAvmFQKnxc
+	8krmb5zWiJetc2yr1Tyx/8joEINXLY9OeLecCaq0US0fYIVJHQcc=
+X-Google-Smtp-Source: AGHT+IEHCVaQw8Cc2N4TDWFQRo6TwbO4VysfqY3eTkGEv36JhQCy52famljQArgTKiz8UVxsUufHkRMssP8f3wWEWhc=
+X-Received: by 2002:a05:651c:50c:b0:2fb:8920:99c6 with SMTP id
+ 38308e7fff4ca-2fdec85890bmr110424251fa.23.1730900568922; Wed, 06 Nov 2024
+ 05:42:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <9e56c0d03509d79736961ded7a1b90a361fd2e06.1730895069.git.geert+renesas@glider.be>
-In-Reply-To: <9e56c0d03509d79736961ded7a1b90a361fd2e06.1730895069.git.geert+renesas@glider.be>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 6 Nov 2024 13:51:41 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVkMezR+opdwY=8QQuKRsniMhP3D6EiHVycn69PRUuPeg@mail.gmail.com>
-Message-ID: <CAMuHMdVkMezR+opdwY=8QQuKRsniMhP3D6EiHVycn69PRUuPeg@mail.gmail.com>
-Subject: Re: [PATCH] pcmcia: omap_cf: : Mark driver struct with __refdata to
- prevent section mismatch
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Dominik Brodowski <linux@dominikbrodowski.net>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, 
-	Linux ARM <linux-arm-kernel@lists.infradead.org>
+References: <20241031145652.342696-1-jm@ti.com> <7h5xp7owmy.fsf@baylibre.com>
+ <520c7e6b-f9c0-441f-8810-8e5ede668f6a@ti.com> <20241105190005.cg6dpeedbirgflqm@iaqt7>
+In-Reply-To: <20241105190005.cg6dpeedbirgflqm@iaqt7>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Wed, 6 Nov 2024 14:42:37 +0100
+Message-ID: <CAMRc=MexFELAEVpEg39teG=Yr-R71gwxRR9TtGDwHjVijzDeWA@mail.gmail.com>
+Subject: Re: [PATCH RESEND v2] gpio: omap: Add omap_gpio_disable/enable_irq calls
+To: Bin Liu <b-liu@ti.com>, Judith Mendez <jm@ti.com>, Kevin Hilman <khilman@kernel.org>, 
+	Santosh Shilimkar <ssantosh@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, linux-omap@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 6, 2024 at 1:14=E2=80=AFPM Geert Uytterhoeven
-<geert+renesas@glider.be> wrote:
-> As described in the added code comment, a reference to .exit.text is ok
-> for drivers registered via platform_driver_probe().  Make this explicit
-> to prevent the following section mismatch warning
+On Tue, Nov 5, 2024 at 8:00=E2=80=AFPM Bin Liu <b-liu@ti.com> wrote:
 >
->     WARNING: modpost: drivers/pcmcia/omap_cf: section mismatch in referen=
-ce: omap_cf_driver+0x4 (section: .data) -> omap_cf_remove (section: .exit.t=
-ext)
+> On Tue, Nov 05, 2024 at 12:47:58PM -0600, Judith Mendez wrote:
+> > Hi Kevin,
+> >
+> > On 11/1/24 9:29 AM, Kevin Hilman wrote:
+> > > Hi Judith,
+> > >
+> > > Judith Mendez <jm@ti.com> writes:
+> > >
+> > > > From: Bin Liu <b-liu@ti.com>
+> > > >
+> > > > Add omap_gpio_disable_irq and omap_gpio_enable_irq
+> > > > calls in gpio-omap.
+> > > >
+> > > > Currently, kernel cannot disable gpio interrupts in
+> > > > case of a irq storm, so add omap_gpio_disable/enable_irq
+> > > > so that interrupts can be disabled/enabled.
+> > > >
+> > > > Signed-off-by: Bin Liu <b-liu@ti.com>
+> > > > [Judith: Add commit message]
+> > > > Signed-off-by: Judith Mendez <jm@ti.com>
+> > >
+> > > Thanks for this patch.  Can you give a bit more context on the
+> > > problem(s) this solves and on which SoCs/platforms it was
+> > > developed/validated?
+> >
+> > Sorry for the late response. Patch was tested/developed on am335x
+> > device BBB, If you feed a PWM signal at 200KHz frequency to
+> > GPIO, and execute gpiomon 0 12 &, Linux will be unresponsive
+> > even after CTRL+C without these 2 functions in this patch. Once
+> > this patch is applied, you can get console back after hitting
+> > CTRL+C and then proceed to kill gpiomon.
 >
-> that triggers on an omap1_defconfig + CONFIG_OMAP_CF=3Dm build.
+> In addtion to Judith's explanation, when the PWM is applied to a GPIO
+> pin, kernel detects the interrupt storm and disables the irq, however,
+> without these callbacks, this gpio platform driver doesn't really
+> disable the interrupt in the gpio controller, so the interrupt storm is
+> still happening and handled by this gpio controller driver then causes
+> Linux unresponsive.
 >
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> -Bin.
 
-There is one more in the DaVinci cpufreq driver, but that one never
-triggers a warning, as it cannot be a module.
+I take it that this is a fix then and should have relevant Fixes and Cc tag=
+s?
 
-So either davinci_cpufreq_remove() should be removed (it is never
-emitted), or the __exit and __exit_p() should be dropped (then it can
-be unbound manually, but never rebound).
-
-https://elixir.bootlin.com/linux/v6.11.6/source/drivers/cpufreq/davinci-cpu=
-freq.c#L134
-
-Thoughts?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+Bart
 
