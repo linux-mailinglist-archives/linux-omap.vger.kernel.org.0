@@ -1,133 +1,145 @@
-Return-Path: <linux-omap+bounces-2599-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2600-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A02D9BF954
-	for <lists+linux-omap@lfdr.de>; Wed,  6 Nov 2024 23:33:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C85539BF9AA
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Nov 2024 00:03:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DF872836FE
-	for <lists+linux-omap@lfdr.de>; Wed,  6 Nov 2024 22:33:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C6DE1F226D5
+	for <lists+linux-omap@lfdr.de>; Wed,  6 Nov 2024 23:03:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 007101DE2BE;
-	Wed,  6 Nov 2024 22:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466611DE2CD;
+	Wed,  6 Nov 2024 23:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BTFp2B/n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YlniAT2i"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-il1-f175.google.com (mail-il1-f175.google.com [209.85.166.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A6E1917F3;
-	Wed,  6 Nov 2024 22:33:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6821D47B3
+	for <linux-omap@vger.kernel.org>; Wed,  6 Nov 2024 23:03:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730932411; cv=none; b=AykiMEMcJWGUGlBX+XP6PAXXi81wasPp/O3FijzBQM7diRz270KzebZhOV0OJ3t7fPdpbeu2XixIWC2+DmWRE5J3ar9t0AYPk1V5PaP2uiBMjqY3sopW4CH9udLudQevVgTzRieggGF/JNffKQyYaXRAG5WBOpw4zhlHHqTAudQ=
+	t=1730934228; cv=none; b=IljaR4jySaVPBnQk8uOdUzmqDakLLl/CDlKMZw5jrGWDcxlUfO395rrITWtCoWUvzpJUI1TPgczLGOljMNt1kH6A00Hu8e5i7pQHG3MSCht3tq8R58s4rL6Llg594+r3Fy06eDonic0vkQ0AMtc6x5hBMWK8Fou483vUM6tUuRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730932411; c=relaxed/simple;
-	bh=HE6mLBEfL9/a/Tos4dsBa1PexW2n6zo9dCQ35lR2vxY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Xnch2+G+4g4l8FyTSc8r9aCKpTqk6m9kQgDZPvZJAXWnRSST8Nv0sBZK5+fe/CuirAaVkTPIHY0cvu1dx9BAJkxgPH5Fto8rO8v2V3QS5B7kRoiho0MiutWmCQ1XvuFG18mHy8FvmA+uLP6eV/S2PA+quq37Yol2zUFibUIJNgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BTFp2B/n; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5ceb75f9631so324350a12.0;
-        Wed, 06 Nov 2024 14:33:29 -0800 (PST)
+	s=arc-20240116; t=1730934228; c=relaxed/simple;
+	bh=2m3lGSb0KPE5zZ2Db41fVxKYqG6pSElwHvTQFR4SvdE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bqewprODHNlUc15Wz0V8O3IA8Px/iMhasukk363jfNOFnqEjWdc2YV9wfMoDVDkRyo3Yf5O6Ho+hjMuihmu474VAKM6kK99u/qGBvy367x5yg4i9+CS1s84DPkKziK1Eh6PapmUZiT0ugqF1dgRDg1MvvQZZnB9KaI/XdcOZ/DA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YlniAT2i; arc=none smtp.client-ip=209.85.166.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-il1-f175.google.com with SMTP id e9e14a558f8ab-3a394418442so1568385ab.0
+        for <linux-omap@vger.kernel.org>; Wed, 06 Nov 2024 15:03:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730932408; x=1731537208; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QjdktaingbKjbzf7rvf5GYXibzi7dkr6hz91zrQh0oU=;
-        b=BTFp2B/nwkJ6hIEQECvZOX4kFXYyClUPJQXKQU8+WdLKJOhbdmOIeXUNGzrzoYL2Bo
-         3Ok53p7KUsCbgjAoVkDOPgAAmLThrrDjg4BItRwL9YQO+Z5PZmS7d01Vtt3V2Iy4BW1Y
-         59G6NtXuTKzNSu2yVfcm42TF5Byx0Qm+Otp9coraDzLyenJbUAzunAKRWGR48sq3+078
-         goe7L7gGD/cDZaDPn8AHq5uvngG99DmOWwi2YuserL7CrVwa9plM0bQzb5lVxGhhcDk3
-         IkOFSthLf0VDGbkFHdzFc5MoKrqqXiiRPGgpbS2JSWwNv1/wrEVUMWcjgi044DMRp8Nn
-         RqpA==
+        d=linuxfoundation.org; s=google; t=1730934226; x=1731539026; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Q9d2gmeIZhRgxPs/QSdKvrnEtcel9X904K+JgPPLUDA=;
+        b=YlniAT2iuNJrph7yBz94aFd9UJiJZImS+7hgRg/eFHykZLsr0oeawH86WgDVeWF0Bn
+         hUs4jj2b3vvR0Z8teu5jXa1Wo61Q2JwK98QfOxJnHEGbltma5oF3O3ofbVFMKhl8cnfg
+         CX3E70KrXAY9EBONXHa2KHr5YXQa6G8pmTn9A=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730932408; x=1731537208;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QjdktaingbKjbzf7rvf5GYXibzi7dkr6hz91zrQh0oU=;
-        b=a2NmUvrV/V2LqCo0nTVFO/3LdLWgSsL47MKmTvLbdT5+O1LlkCvo5l//noI3QIhdNk
-         fq8iepU6g8XHV+A7dQ7Ov5HSG3lnUhfUFM8Nbq19UOYasmZ5gteXN7wipr6e5Yonfuq/
-         3vGwtoAwlmIQ/b0bHFD48SnuTa4XzEWUaETzQZ/GZTyr1aXM2MPsmcKnsGqyadXRYS6G
-         q/60HXe4tzAzaev4VsJ2hnRDWiovrtRhr8vNNENN1fSGr73y1tyNNfdGV7dUiDjsxlDv
-         RG3oi6EwBCe57ykDeEy4KQ0pGwQ43PW4fYYRe/nMQ464o/MESn27S+ywX//w9lwXFl23
-         MxfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXXYsp+bh/gV54w0qrH+PO76he72kPOkv6cfHLmq5wDG404BNbOV+vRJdtSCeN4C/wU+Vtjxa32zj96V2g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcAXbF3uy0kEah0K0VHR1a1RSnYoyX9us0YmGEnv7ikUyi/gVD
-	lBduiyoX266clZTIXWF1PE25HWYVBQhveh4aW8RjySIimQ5D5Gzc
-X-Google-Smtp-Source: AGHT+IGvLOT/ichZgOVIzA98EEQUV1NYypdLkCudLg8tXw4KKiAwP9oQsMz7M7vMO5P05oIPeUL11w==
-X-Received: by 2002:a05:6402:2114:b0:5ce:fa33:6c4c with SMTP id 4fb4d7f45d1cf-5cefa336cd2mr2075840a12.19.1730932408082;
-        Wed, 06 Nov 2024 14:33:28 -0800 (PST)
-Received: from localhost.localdomain ([83.168.79.145])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cee6afe46csm3295568a12.56.2024.11.06.14.33.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Nov 2024 14:33:26 -0800 (PST)
-From: Karol Przybylski <karprzy7@gmail.com>
-To: aaro.koskinen@iki.fi,
-	andreas@kemnade.info,
-	khilman@baylibre.com,
-	rogerq@kernel.org,
-	tony@atomide.com,
-	lee@kernel.org,
-	karprzy7@gmail.com
-Cc: linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org
-Subject: [PATCH] mfd: omap-usb-tll: handle clk_prepare return code in usbtll_omap_probe
-Date: Wed,  6 Nov 2024 23:33:24 +0100
-Message-Id: <20241106223324.479341-1-karprzy7@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1730934226; x=1731539026;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q9d2gmeIZhRgxPs/QSdKvrnEtcel9X904K+JgPPLUDA=;
+        b=pX6nuAZCzH9yEYaCmV+w9i5lfUJ4KcGtzIoYVBeijhv77aTm/Ain8JnKofa+mZkPSk
+         cZ2CtzFHIJK3BqWf03HAgpmMr2EeMiiY860PYrHl7M6sf8PyzxR7MYX3U4CzvA/eSYF5
+         OAayeJdplhb5VL3TAJfXIt64CRHMER4L8QUDv4W6fhg2x43dOBe/KPVFQNsOolm5hiEh
+         sv+Y//pKC9Gt4c2rx+SXIkCsgbZkJzkfm/lX7yD1EmeGNG8rmHNmI92maB6g+jU53x3z
+         tALlkg/ppZRAwOBzFStPYfBQPtF4ht7d4rN+EGxOZvXfwyNtw0wjsCK4F1uJOKshqRPh
+         2ABw==
+X-Gm-Message-State: AOJu0YwdXZ0R/JC3DofgRmZ5YyfHMbF1MJUvGYeQ0DAsY91/dCK73QnJ
+	0nINFb4TjDVlJyUXH+Ki9gVv1lQye0sOLUuy8A2RcxREGrDt0c91/e1oMcX3SqE=
+X-Google-Smtp-Source: AGHT+IG7HfSv2eyFIIKMy444jXmnmiWXPCH2AIv/dcp59B3nkjEgN8YGo6DZoIeWAXAVpXt23BaENQ==
+X-Received: by 2002:a92:cd86:0:b0:3a3:35f0:4c19 with SMTP id e9e14a558f8ab-3a6b03b0cd2mr218205245ab.21.1730934226357;
+        Wed, 06 Nov 2024 15:03:46 -0800 (PST)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4de5f83286fsm33597173.77.2024.11.06.15.03.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 Nov 2024 15:03:45 -0800 (PST)
+Message-ID: <a18a7906-b213-4dde-abfc-2503250ad1bf@linuxfoundation.org>
+Date: Wed, 6 Nov 2024 16:03:44 -0700
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mfd: omap-usb-tll: handle clk_prepare return code in
+ usbtll_omap_probe
+To: Karol Przybylski <karprzy7@gmail.com>, aaro.koskinen@iki.fi,
+ andreas@kemnade.info, khilman@baylibre.com, rogerq@kernel.org,
+ tony@atomide.com, lee@kernel.org
+Cc: linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20241106223324.479341-1-karprzy7@gmail.com>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20241106223324.479341-1-karprzy7@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-clk_prepare() is called in usbtll_omap_probe to fill clk array.
-Return code is not checked, leaving possible error condition unhandled.
+On 11/6/24 15:33, Karol Przybylski wrote:
+> clk_prepare() is called in usbtll_omap_probe to fill clk array.
+> Return code is not checked, leaving possible error condition unhandled.
+> 
+> Added variable to hold return value from clk_prepare() and return statement
+> when it's not successful.
+> 
+> Found in coverity scan, CID 1594680
+> 
+> Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
+> ---
+>   drivers/mfd/omap-usb-tll.c | 8 ++++++--
+>   1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
+> index 0f7fdb99c809..28446b082c85 100644
+> --- a/drivers/mfd/omap-usb-tll.c
+> +++ b/drivers/mfd/omap-usb-tll.c
+> @@ -202,7 +202,7 @@ static int usbtll_omap_probe(struct platform_device *pdev)
+>   	struct device				*dev =  &pdev->dev;
+>   	struct usbtll_omap			*tll;
+>   	void __iomem				*base;
+> -	int					i, nch, ver;
+> +	int					i, nch, ver, err;
+>   
+>   	dev_dbg(dev, "starting TI HSUSB TLL Controller\n");
+>   
+> @@ -251,7 +251,11 @@ static int usbtll_omap_probe(struct platform_device *pdev)
+>   		if (IS_ERR(tll->ch_clk[i]))
+>   			dev_dbg(dev, "can't get clock : %s\n", clkname);
+>   		else
+> -			clk_prepare(tll->ch_clk[i]);
 
-Added variable to hold return value from clk_prepare() and return statement
-when it's not successful.
+Braces for the conditional don't looks right.
 
-Found in coverity scan, CID 1594680
+> +			err = clk_prepare(tll->ch_clk[i]);
+> +			if (err) {
+> +				dev_err(dev, "Unable to prepare clock\n");
+> +				return err;
 
-Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
----
- drivers/mfd/omap-usb-tll.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Did you check to see if callers handle this new error return
+in this path?
 
-diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
-index 0f7fdb99c809..28446b082c85 100644
---- a/drivers/mfd/omap-usb-tll.c
-+++ b/drivers/mfd/omap-usb-tll.c
-@@ -202,7 +202,7 @@ static int usbtll_omap_probe(struct platform_device *pdev)
- 	struct device				*dev =  &pdev->dev;
- 	struct usbtll_omap			*tll;
- 	void __iomem				*base;
--	int					i, nch, ver;
-+	int					i, nch, ver, err;
- 
- 	dev_dbg(dev, "starting TI HSUSB TLL Controller\n");
- 
-@@ -251,7 +251,11 @@ static int usbtll_omap_probe(struct platform_device *pdev)
- 		if (IS_ERR(tll->ch_clk[i]))
- 			dev_dbg(dev, "can't get clock : %s\n", clkname);
- 		else
--			clk_prepare(tll->ch_clk[i]);
-+			err = clk_prepare(tll->ch_clk[i]);
-+			if (err) {
-+				dev_err(dev, "Unable to prepare clock\n");
-+				return err;
-+	}
- 	}
- 
- 	pm_runtime_put_sync(dev);
--- 
-2.34.1
+> +	}
+
+Same here
+
+>   	}
+>   
+
+Same here
+>   	pm_runtime_put_sync(dev);
+
+thanks,
+-- Shuah
 
 
