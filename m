@@ -1,72 +1,69 @@
-Return-Path: <linux-omap+bounces-2589-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2590-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1FA19BDA0F
-	for <lists+linux-omap@lfdr.de>; Wed,  6 Nov 2024 01:06:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC9B9BDA12
+	for <lists+linux-omap@lfdr.de>; Wed,  6 Nov 2024 01:07:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 726682847F0
-	for <lists+linux-omap@lfdr.de>; Wed,  6 Nov 2024 00:06:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D753B22334
+	for <lists+linux-omap@lfdr.de>; Wed,  6 Nov 2024 00:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70BE1FC8;
-	Wed,  6 Nov 2024 00:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF74DA47;
+	Wed,  6 Nov 2024 00:07:45 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5C836D
-	for <linux-omap@vger.kernel.org>; Wed,  6 Nov 2024 00:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14753646
+	for <linux-omap@vger.kernel.org>; Wed,  6 Nov 2024 00:07:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730851608; cv=none; b=hEJi4yygX+qzpPvxqHGap9nUA9QmHb0EawwMz8vQYktIAO24dgBUM/pgRw4wfYvdNRfe+tO6AD2UYE/VZW1RW05BWg4ZK3tByoRVDzAJ/KSa/P0u/7tekuSQoD6tcGLP7d0STjZgW6B2J0M0elK8CcEjbXeITqbO2KLBQeo8gqY=
+	t=1730851665; cv=none; b=DPjoj/PoC6oL/uC4RrL9MP47xhD/ZdWhW5Bz0Cp5ET7ZQ6OsziCFzjDW/Kp2t5ia06xZAZ7n2/MZf5nsafxd87iSUy9UmA16I7PwXYfKgtzKfzlLlbv5W0blHBk88FAkIqxz9ZymqEYLsHhL8k3VHih8XlUUt1bRen+DQhevEW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730851608; c=relaxed/simple;
-	bh=+iJID/0K/KasOwTpLpR4XJKYN4rMSxO66SLic9HxW6o=;
+	s=arc-20240116; t=1730851665; c=relaxed/simple;
+	bh=kTwQqa9A+0mZlhRq0JYu1svWNqI6Y/8y5m8xeFZJU3k=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=On8ZF6+O0NtivW0UVNe7U/3JQyYfhLBe6jr76+/gtKz9h5STlzKkY73I/a2uHAVhNsSYA2hFHE5twzi+LX9GGAEc8VGYV98jh0ENDMOKIEpVVKLjdF3wfylG20Fy3Fh2eQu4G1UPpFGZWEuD5uTKnxflfAw3vJesQbdqcY2ljgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=baylibre.com; arc=none smtp.client-ip=209.85.215.176
+	 MIME-Version:Content-Type; b=tAmUIc04JuShdrakxvqpi2b82kOC4/XQYFKoi+Hqvnfd7Zhs9AeXDdKPfTy6oG6lOoYxorwKxWgIXjFpeOZglQzc4fSFdcBCFwbnw8tN7TS7ZnGRRPzGwvY5j8jDxmhqaUickrPC2OjakbcjkxysbuzcmGA2+a7fwnFL8YsK9DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=baylibre.com; arc=none smtp.client-ip=209.85.210.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-7ea68af2f62so4596588a12.3
-        for <linux-omap@vger.kernel.org>; Tue, 05 Nov 2024 16:06:46 -0800 (PST)
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-71e61b47c6cso5440016b3a.2
+        for <linux-omap@vger.kernel.org>; Tue, 05 Nov 2024 16:07:43 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730851606; x=1731456406;
+        d=1e100.net; s=20230601; t=1730851663; x=1731456463;
         h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Gpxbqm68LJQ46p8jy6SSwPvqm4guZpDNWNtKHjTy7tU=;
-        b=bE+2Urk3wzc+f3HrWsEMfd5bJwoUKph6ZBOuE3enjATkJ8Wo0MvwG5OCrEngFvljk2
-         jlam1HLycgWaEfphkTj0GGTj5XmKgHmOHGoEEDKggYKqoEejcKyLUMJZM9T0q8fXMKa9
-         XPJkY8Fa8KKzu4v5WKgWdZpQj9YIaQXkL5vjD4O2nRacsbmgEte4uwE4SxFI5L/JLxwy
-         ixVqfDAo8WFp6ErImrWM8Sa5VW/lDM4h13qh382K/wa6btpbsfI8o4RokpnQIBCEKB/W
-         bu72VVz3GEw77RH9bPsS5hYJ+44K6+ilSihuOh7+PwIPo763t1pDGGUyffSmO9Upa9IO
-         NCMA==
-X-Forwarded-Encrypted: i=1; AJvYcCUeH3fEE4MhzUnw8xNgK8krsFAlbvRyTdRzPJlRfBJbzEEluenAQJmY2YkYU7krhOvfSQM8/BCU5Ua8@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhU/6c3+TYTpC2AFGgwFG/a+x9rz7Axx1Gvsppid2qW92JaO48
-	yapOU15BZlqFsP1wn7+gi9LqQOh64XsZbu/GJtGP1euNsLtpcS3cwEWM3ovaAr4=
-X-Google-Smtp-Source: AGHT+IE9eRsulH8cpjXGO7rVfrMbZI2XkHJeWXdq3TUXvQidK4aPFSF5njxwl9FhW4xyLO1oH9euXw==
-X-Received: by 2002:a17:90b:5448:b0:2e2:e8a9:a1f with SMTP id 98e67ed59e1d1-2e94c2c30famr26322573a91.13.1730851605690;
-        Tue, 05 Nov 2024 16:06:45 -0800 (PST)
+        bh=kTwQqa9A+0mZlhRq0JYu1svWNqI6Y/8y5m8xeFZJU3k=;
+        b=ta0xGA2BnTYfMIkZz7Zj21jkLdR/8955+u6pztrQjtKBRoH/SzEW5gZwheKQOOXv3H
+         uOxWd9VhVGsLnfbrNp1EiyClTR7MxqBetrQjM4iT7+cvuTfCluk7lPAFrt11V/fghyub
+         QfqCkxKFkUKlYZOKW7WUkPa6tUrbAQ680gojSBHzFX9ICaVwH0rCial7VGnGbuF/P/VT
+         +OollSovA9e3K/0iXx+pHpZRuzldns5DiGboDLFKkOaUEs+uhUY+Qkwu/o8xAVqI37RM
+         DUDdZ9L16wfz9yMjDLuLzW9gNzdJk/eD7tqy2WKM8MCcxgd2rG+8VWAdMWw+rOqfj25K
+         OWUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXVyIu3XzQ5NNY1FbQre+9mnuPnPgBGga+2Tsk1m1fraEgGqm7hKYagiJmholu5L15mUT9oN7sbO+jI@vger.kernel.org
+X-Gm-Message-State: AOJu0YzAtGb+8I2EZkWFuQRJTnJlJziwevat5/cnIvTm+pfBfVsDnKA8
+	luZ0KGIbqprL/eVO/UzjMbRI7HkzFT6TUHRJMscv1vlym8CuWTl8P46ruQVaAZU=
+X-Google-Smtp-Source: AGHT+IF2HQi/kddQ3FnPSxVXeVj8o38xZLdTphcs6EJ5ybOliVMZNihzO+Urim3X0QKInzH4JQmNGA==
+X-Received: by 2002:a05:6a00:3e16:b0:720:2dbf:9f60 with SMTP id d2e1a72fcca58-72062fd6edfmr55003071b3a.16.1730851663371;
+        Tue, 05 Nov 2024 16:07:43 -0800 (PST)
 Received: from localhost ([97.126.177.194])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e99a584e68sm129403a91.32.2024.11.05.16.06.45
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-720bc1ba19asm10395890b3a.21.2024.11.05.16.07.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Nov 2024 16:06:45 -0800 (PST)
+        Tue, 05 Nov 2024 16:07:42 -0800 (PST)
 From: Kevin Hilman <khilman@kernel.org>
-To: Bin Liu <b-liu@ti.com>, Judith Mendez <jm@ti.com>
-Cc: Santosh Shilimkar <ssantosh@kernel.org>, Linus Walleij
- <linus.walleij@linaro.org>, Bartosz
- Golaszewski <brgl@bgdev.pl>, linux-omap@vger.kernel.org,
- linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Judith Mendez <jm@ti.com>, Santosh Shilimkar <ssantosh@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
+ <brgl@bgdev.pl>, linux-omap@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Bin Liu <b-liu@ti.com>, Judith Mendez
+ <jm@ti.com>
 Subject: Re: [PATCH RESEND v2] gpio: omap: Add omap_gpio_disable/enable_irq
  calls
-In-Reply-To: <20241105190005.cg6dpeedbirgflqm@iaqt7>
+In-Reply-To: <20241031145652.342696-1-jm@ti.com>
 References: <20241031145652.342696-1-jm@ti.com>
- <7h5xp7owmy.fsf@baylibre.com>
- <520c7e6b-f9c0-441f-8810-8e5ede668f6a@ti.com>
- <20241105190005.cg6dpeedbirgflqm@iaqt7>
-Date: Tue, 05 Nov 2024 16:06:44 -0800
-Message-ID: <7hy11xjkdn.fsf@baylibre.com>
+Date: Tue, 05 Nov 2024 16:07:42 -0800
+Message-ID: <7hv7x1jkc1.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -75,48 +72,20 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Bin Liu <b-liu@ti.com> writes:
+Judith Mendez <jm@ti.com> writes:
 
-> On Tue, Nov 05, 2024 at 12:47:58PM -0600, Judith Mendez wrote:
->> Hi Kevin,
->> 
->> On 11/1/24 9:29 AM, Kevin Hilman wrote:
->> > Hi Judith,
->> > 
->> > Judith Mendez <jm@ti.com> writes:
->> > 
->> > > From: Bin Liu <b-liu@ti.com>
->> > > 
->> > > Add omap_gpio_disable_irq and omap_gpio_enable_irq
->> > > calls in gpio-omap.
->> > > 
->> > > Currently, kernel cannot disable gpio interrupts in
->> > > case of a irq storm, so add omap_gpio_disable/enable_irq
->> > > so that interrupts can be disabled/enabled.
->> > > 
->> > > Signed-off-by: Bin Liu <b-liu@ti.com>
->> > > [Judith: Add commit message]
->> > > Signed-off-by: Judith Mendez <jm@ti.com>
->> > 
->> > Thanks for this patch.  Can you give a bit more context on the
->> > problem(s) this solves and on which SoCs/platforms it was
->> > developed/validated?
->> 
->> Sorry for the late response. Patch was tested/developed on am335x
->> device BBB, If you feed a PWM signal at 200KHz frequency to
->> GPIO, and execute gpiomon 0 12 &, Linux will be unresponsive
->> even after CTRL+C without these 2 functions in this patch. Once
->> this patch is applied, you can get console back after hitting
->> CTRL+C and then proceed to kill gpiomon.
+> From: Bin Liu <b-liu@ti.com>
 >
-> In addtion to Judith's explanation, when the PWM is applied to a GPIO
-> pin, kernel detects the interrupt storm and disables the irq, however,
-> without these callbacks, this gpio platform driver doesn't really
-> disable the interrupt in the gpio controller, so the interrupt storm is
-> still happening and handled by this gpio controller driver then causes
-> Linux unresponsive.
+> Add omap_gpio_disable_irq and omap_gpio_enable_irq
+> calls in gpio-omap.
+>
+> Currently, kernel cannot disable gpio interrupts in
+> case of a irq storm, so add omap_gpio_disable/enable_irq
+> so that interrupts can be disabled/enabled.
+>
+> Signed-off-by: Bin Liu <b-liu@ti.com>
+> [Judith: Add commit message]
+> Signed-off-by: Judith Mendez <jm@ti.com>
 
-Excellent! Thank you both for the detailed explanations.
-
-Kevin
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
 
