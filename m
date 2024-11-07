@@ -1,370 +1,138 @@
-Return-Path: <linux-omap+bounces-2609-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2610-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F18249C096E
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Nov 2024 15:57:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD1799C0F8C
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Nov 2024 21:06:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 832501F245B4
-	for <lists+linux-omap@lfdr.de>; Thu,  7 Nov 2024 14:57:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41A51B22B9F
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Nov 2024 20:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BCB2212EFB;
-	Thu,  7 Nov 2024 14:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF51A217F2A;
+	Thu,  7 Nov 2024 20:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="md29J8U7"
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="ZXMr5U7T"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F46213149
-	for <linux-omap@vger.kernel.org>; Thu,  7 Nov 2024 14:57:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730991462; cv=none; b=LC33ws4Ti8eSwCniOUWbkfwfFp1Wdf13jwqr5Fb9EeHv0XivKx4dcYbd7QMGvUk7wvYWTm9IR8vDGgDNReAk5Kajo952rmKYNrZQkKe/Nn6I0O6pvkCBdscNLWxqkpqMEOWVft7YLStue2JhwR5rzaKNPUMaABrFmA3tunruu8U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730991462; c=relaxed/simple;
-	bh=BLY94gMzJV8bl1rs8ITlqHgcrX3WJaZb1Ugt48De6Y8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HKZ9+b38WM04vrKW3OYKMlfdjVskAR5PtJ7Y/xVUrtYoLI8o26Mivyl8ZdHLnWfmH6RJmFncaL/LjpiOG2AYZseN5f5AOwridVb416xwvSPBmy8a8DdtjbSQVTY61zMIWTNrzs+0DbcE3GpgCHv9w8TpJTMBC4TFIyZA+ktHLaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=md29J8U7; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-431548bd1b4so9203105e9.3
-        for <linux-omap@vger.kernel.org>; Thu, 07 Nov 2024 06:57:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730991458; x=1731596258; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lqk0qjxtF+D8UlnS4c7pFGqetkwdoGFt8LgY3js1r6w=;
-        b=md29J8U7/VHYYyn33wxR9udL2DoXIsYHTWs+uzv6i93xcwWP6pwa8L3qDFYa/chAyK
-         0BlcLGpcFDjYqz+OyX9iv7dVeajesA9oePaPntYSRh1FXM01yWkgeNLG/A72YNJyu1HN
-         ehMAgVj6Vmhgwv74vVmo/E8lNlsk5SPbSHHiIGyLDLcfYsP4gvEUGjkZ1+qD88ZRHe+8
-         2fWXwtl5hI8PX8AS3Us3tvx+scbgVhYENouumy3gRya4m3zOiC9t52AkcseDguGd5FSY
-         swUOon8XtuU4+SiN45YcuiCX+pN8xqRGIrtPMzMl4kJMsuSD4B6PdKkq1GkStSfo5hvb
-         SPkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730991458; x=1731596258;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lqk0qjxtF+D8UlnS4c7pFGqetkwdoGFt8LgY3js1r6w=;
-        b=aECyU8V/kf4efpsn+WEfKHK7nHBJK3uC+5Pzd2sa3NJr5wNSrLo6Jo3gYXIba93gUH
-         QN216/mr2foHnyuXzmKPW/JrZP9oCE5rS+RFczl1KF1uXPgEGieRo7bLsx00J04rZkDt
-         Oih6K0bezjzZvLO6Cz1kVUy4TkThtBA+PCXIWWDB9alhs5/QB5ya/3RX8ggAU2Pkyi6k
-         +gzNRW98+1cuFvHOk8UCCVMKydWjlGUfqE1CcsAoJL0q5eye5khbECQFj04viNqoHpl3
-         XeThZn0vdcx9AvRNUVX9FqnHfzj/aReeD2GPJNjp+AdGgMxkceAWKuE6PAWnvTTs/OnB
-         m7lQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUISuOIsf7l8bX523vUCmFLFYpycFbh2puWBzF1P3RzxZeVsro7rQ+9m+E5XvPH9CQeVE+20/Xr8DEc@vger.kernel.org
-X-Gm-Message-State: AOJu0YzK6CJW43uOOiBE3F68Ek3dezwVG31kl98kQVM03Tiw9XQDjRH/
-	9duVygXombzUmlXNnr2qJqlztqLxx/3yMA/YJnO5NZ1JdLG4SFXkjrxPOxkLGXQ=
-X-Google-Smtp-Source: AGHT+IFutcR0bwD8WGqeYpA0PxXHK8DXeXLoWqc0ukDAw+4BGJ+GPCxRmhBmc2u0+oKs2PA+/pN2iw==
-X-Received: by 2002:a05:600c:3c9d:b0:42f:823d:dddd with SMTP id 5b1f17b1804b1-4328327e6ddmr198325885e9.27.1730991458265;
-        Thu, 07 Nov 2024 06:57:38 -0800 (PST)
-Received: from localhost (p509159f1.dip0.t-ipconnect.de. [80.145.89.241])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432aa5b5e56sm66186115e9.2.2024.11.07.06.57.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Nov 2024 06:57:37 -0800 (PST)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Markus Mayer <mmayer@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Santosh Shilimkar <ssantosh@kernel.org>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Yong Wu <yong.wu@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Georgi Djakov <djakov@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-omap@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-tegra@vger.kernel.org
-Subject: [PATCH] memory: Switch back to struct platform_driver::remove()
-Date: Thu,  7 Nov 2024 15:57:16 +0100
-Message-ID:  <1a44c5fc95616d64157d2f4a55f460476d382554.1730987047.git.ukleinek@kernel.org>
-X-Mailer: git-send-email 2.45.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF0F2178F2;
+	Thu,  7 Nov 2024 20:06:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731009967; cv=pass; b=C7FdsDeSpUwADZwpyyUQ1nPp9x4RVKdo5cYMP9vFYSgU03QR64zEYVCci39tyGmM/Mxg94cMhEeqTNtEsnxNnG6u9p/qfQ0ydQxzAUAQB2wyQZyFKzfZjaS34KY1POCzw1HKjEEi8eSzP4Ysb0WkRabOhUP3/hHaynMOzxVOMZY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731009967; c=relaxed/simple;
+	bh=bIWxZW3d05aEsbuRDiylftdf+NrqOX1D5MPeOPhUH6I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=synTQu2qvn2Tl/Jq91Ij2emeyyvIeHv4wDWmWgC3Ez0881SZLkMNFt6sSUWDIN4AhjYiCPyBPDfVrCLpCoEYnCtBKph/x6fvvjJ+3ey0Npea0/k+IcVz4QFLXrxIfiN/WG+l5Z6DEHXsUtVWba2mWU8nLoxXX1dH+Hnis+R8zyM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=ZXMr5U7T; arc=pass smtp.client-ip=185.185.170.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+Received: from darkstar.musicnaut.iki.fi (85-76-164-62-nat.elisa-mobile.fi [85.76.164.62])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: aaro.koskinen)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4XktBg1zWDz49QDf;
+	Thu,  7 Nov 2024 21:56:58 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+	t=1731009420;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4YWtEjmtLE76qVSIEjq43uIzb418WRfFLv6WI08b71w=;
+	b=ZXMr5U7TdoHKEQnX5yCtCeenN02OS8m4uNzYmTfsj/V7rhvvwks0rdEEp6udpzq68j30s2
+	QqtP8nUrfQPZVJkFE788hgBYJ0/1r/pw3oh4SMeyvIKhU3yzts4A0KuIhlR5lVECI8RB2H
+	JlSBtdBSsi1pdk8LZ71EO44u7LmoZJkM1q2ZRYbSCjfSbtd4bdpUuTnUaJtvPhFeJHoYj+
+	Lu0p6RjgIGh7GI0Mlq+ePKyJaxqgFi/6JK9kM+VyH21SGF7Mng+4Os0Col3bMm89MmZ9lM
+	DnESOG9cIDMtfP4IABR8oRjEMQRnYdA/Pg71eAmMQP/L+jWZ4NihLU4uMHq/vw==
+ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1731009420; a=rsa-sha256;
+	cv=none;
+	b=jYjeIbuZYh6bowpd2ulbvyk8NgfBNEj8Vgox7pQIwNMLTlAt5tZGLoHCHGS5m/86sbnwTj
+	r5irUxOrheTgSk8wwR9sJZiFqWaagXx50ONMvOcZofzVHdOpPaB/0QxCeyVWLx9ZLZtGgE
+	i/nt5Z43UUXkB8OWwLSIHKg/i7WXgRUoc80vvt0HKG09+0LwW9qb9iEuEQPJ+wXU+zBs4d
+	EeccxRsAkAQBbKBjKS0equa20ID/IR3Xp78ZWNuGmiK1YZcryNCRLIToLy7hUDSBb3PTiU
+	TymG5itztfkTMTyYeAk1HXBC4OaNrleS4i4uMO40GRMPfuTf6+KvXdJx6BUfFg==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=lahtoruutu; t=1731009420;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4YWtEjmtLE76qVSIEjq43uIzb418WRfFLv6WI08b71w=;
+	b=pXDE5b0ywTdJO6e8XbToSw/5nS/lGCAokh5lo4oklzU2K76OyFBAutXLSsbIr2rpKny+gU
+	lVlfeynosp7XSxznXhIImGN6qZnAh2xEislkkYkRkrehOSDSbhDjsEdUayt2QUVSR/7+CV
+	HAUFoEpZFJ3oQqhU5m+zqvyQrjofJ/lcCn06eUFFnlE/+cxjVy/YHD+WcuHKjTEzmactgY
+	EUhTLYuOEbBh30BO1h+xFxVPyA75VDEExHi+G0xyo6Nu6U6oiD4Uo9EFwDZdWVUUdeBDqX
+	6WhS3Rxdn6dFAmWpA3GiZx7PhG9Mrv6ZEW+nvSPekxMzYbA8AU59kzNAguc+aA==
+Date: Thu, 7 Nov 2024 21:56:57 +0200
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Dominik Brodowski <linux@dominikbrodowski.net>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+	Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] pcmcia: omap_cf: : Mark driver struct with __refdata to
+ prevent section mismatch
+Message-ID: <Zy0bicseNf0yqxlz@darkstar.musicnaut.iki.fi>
+References: <9e56c0d03509d79736961ded7a1b90a361fd2e06.1730895069.git.geert+renesas@glider.be>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9746; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=BLY94gMzJV8bl1rs8ITlqHgcrX3WJaZb1Ugt48De6Y8=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnLNVM5QHSsQ7HgmkC6FzXKigeL1KUUWrXvsJ6O VJasoc4Mn+JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZyzVTAAKCRCPgPtYfRL+ TigRB/0bxEq95zaC2k3YuORkpdyWmyAoPbkwl6e0yDuizDWC8tUPgkPxjP6tjGCeLnO0fqtTk3M y5yD+Jo9qpEaO8Q4tCyiWZ/2EMw2eXve2+L6l/hFHq1HwUcDe3uru2yXBaXpbrOgNAuMKRlpApR 4KoXUXbQETaAPe5MhVphrGW+dxWzf5I0XHMXefWcg2fHXsoz2EI5hKEk0c25S3dI4tM4RZFqnfK 08Pp2+RlDKgDMTRbstCJeYXCYZxKahvwrIhg6AK9FP6yPsTpc8rlMvQsdBx6zilVYUex/dBgxeO pXTfPBqNmRn6mTjrN6Qu5lwEUnReoNrvyOCiooTUjAvWL240
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9e56c0d03509d79736961ded7a1b90a361fd2e06.1730895069.git.geert+renesas@glider.be>
 
-After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
-return void") .remove() is (again) the right callback to implement for
-platform drivers.
+Hi,
 
-Convert all platform drivers below drivers/memory to use .remove(), with
-the eventual goal to drop struct platform_driver::remove_new(). As
-.remove() and .remove_new() have the same prototypes, conversion is done
-by just changing the structure member name in the driver initializer.
+On Wed, Nov 06, 2024 at 01:13:57PM +0100, Geert Uytterhoeven wrote:
+> As described in the added code comment, a reference to .exit.text is ok
+> for drivers registered via platform_driver_probe().  Make this explicit
+> to prevent the following section mismatch warning
+> 
+>     WARNING: modpost: drivers/pcmcia/omap_cf: section mismatch in reference: omap_cf_driver+0x4 (section: .data) -> omap_cf_remove (section: .exit.text)
+> 
+> that triggers on an omap1_defconfig + CONFIG_OMAP_CF=m build.
+> 
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-A few white space changes are included to make indention consistent.
+Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
----
-Hello,
+A.
 
-I did a single patch for all of drivers/memory. While I usually prefer
-to do one logical change per patch, this seems to be overengineering
-here as the individual changes are really trivial and shouldn't be much
-in the way for stable backports. But I'll happily split the patch if you
-prefer it split. Also if you object the indentation stuff, I can rework
-that.
-
-This is based on yesterday's next, if conflicts arise when you apply it
-at some later time and don't want to resolve them, feel free to just
-drop the changes to the conflicting files. I'll notice and followup at a
-later time then. Or ask me for a fixed resend. (Having said that, I
-recommend b4 am -3 + git am -3 which should resolve most conflicts just
-fine.)
-
-Best regards
-Uwe
-
- drivers/memory/brcmstb_dpfe.c            | 2 +-
- drivers/memory/brcmstb_memc.c            | 2 +-
- drivers/memory/emif.c                    | 2 +-
- drivers/memory/fsl-corenet-cf.c          | 2 +-
- drivers/memory/fsl_ifc.c                 | 2 +-
- drivers/memory/jz4780-nemc.c             | 2 +-
- drivers/memory/mtk-smi.c                 | 4 ++--
- drivers/memory/omap-gpmc.c               | 2 +-
- drivers/memory/renesas-rpc-if.c          | 6 +++---
- drivers/memory/samsung/exynos5422-dmc.c  | 6 +++---
- drivers/memory/stm32-fmc2-ebi.c          | 6 +++---
- drivers/memory/tegra/tegra186-emc.c      | 2 +-
- drivers/memory/tegra/tegra210-emc-core.c | 2 +-
- drivers/memory/ti-emif-pm.c              | 2 +-
- 14 files changed, 21 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/memory/brcmstb_dpfe.c b/drivers/memory/brcmstb_dpfe.c
-index 5028467b2dc9..08d9e05b1b33 100644
---- a/drivers/memory/brcmstb_dpfe.c
-+++ b/drivers/memory/brcmstb_dpfe.c
-@@ -934,7 +934,7 @@ static struct platform_driver brcmstb_dpfe_driver = {
- 		.of_match_table = brcmstb_dpfe_of_match,
- 	},
- 	.probe = brcmstb_dpfe_probe,
--	.remove_new = brcmstb_dpfe_remove,
-+	.remove = brcmstb_dpfe_remove,
- 	.resume = brcmstb_dpfe_resume,
- };
- 
-diff --git a/drivers/memory/brcmstb_memc.c b/drivers/memory/brcmstb_memc.c
-index 4f17a93aa028..c87b37e2c1f0 100644
---- a/drivers/memory/brcmstb_memc.c
-+++ b/drivers/memory/brcmstb_memc.c
-@@ -283,7 +283,7 @@ static DEFINE_SIMPLE_DEV_PM_OPS(brcmstb_memc_pm_ops, brcmstb_memc_suspend,
- 
- static struct platform_driver brcmstb_memc_driver = {
- 	.probe = brcmstb_memc_probe,
--	.remove_new = brcmstb_memc_remove,
-+	.remove = brcmstb_memc_remove,
- 	.driver = {
- 		.name		= "brcmstb_memc",
- 		.of_match_table	= brcmstb_memc_of_match,
-diff --git a/drivers/memory/emif.c b/drivers/memory/emif.c
-index 99eb7d1baa5f..2e1ecae9e959 100644
---- a/drivers/memory/emif.c
-+++ b/drivers/memory/emif.c
-@@ -1159,7 +1159,7 @@ MODULE_DEVICE_TABLE(of, emif_of_match);
- 
- static struct platform_driver emif_driver = {
- 	.probe		= emif_probe,
--	.remove_new	= emif_remove,
-+	.remove		= emif_remove,
- 	.shutdown	= emif_shutdown,
- 	.driver = {
- 		.name = "emif",
-diff --git a/drivers/memory/fsl-corenet-cf.c b/drivers/memory/fsl-corenet-cf.c
-index f47d05f7c5c5..ecd6c1955153 100644
---- a/drivers/memory/fsl-corenet-cf.c
-+++ b/drivers/memory/fsl-corenet-cf.c
-@@ -249,7 +249,7 @@ static struct platform_driver ccf_driver = {
- 		.of_match_table = ccf_matches,
- 	},
- 	.probe = ccf_probe,
--	.remove_new = ccf_remove,
-+	.remove = ccf_remove,
- };
- 
- module_platform_driver(ccf_driver);
-diff --git a/drivers/memory/fsl_ifc.c b/drivers/memory/fsl_ifc.c
-index 15e919c24f81..27e041178c09 100644
---- a/drivers/memory/fsl_ifc.c
-+++ b/drivers/memory/fsl_ifc.c
-@@ -316,7 +316,7 @@ static struct platform_driver fsl_ifc_ctrl_driver = {
- 		.of_match_table = fsl_ifc_match,
- 	},
- 	.probe       = fsl_ifc_ctrl_probe,
--	.remove_new  = fsl_ifc_ctrl_remove,
-+	.remove      = fsl_ifc_ctrl_remove,
- };
- 
- static int __init fsl_ifc_init(void)
-diff --git a/drivers/memory/jz4780-nemc.c b/drivers/memory/jz4780-nemc.c
-index fb6db2ffe71b..1a8161514d03 100644
---- a/drivers/memory/jz4780-nemc.c
-+++ b/drivers/memory/jz4780-nemc.c
-@@ -407,7 +407,7 @@ static const struct of_device_id jz4780_nemc_dt_match[] = {
- 
- static struct platform_driver jz4780_nemc_driver = {
- 	.probe		= jz4780_nemc_probe,
--	.remove_new	= jz4780_nemc_remove,
-+	.remove		= jz4780_nemc_remove,
- 	.driver	= {
- 		.name	= "jz4780-nemc",
- 		.of_match_table = of_match_ptr(jz4780_nemc_dt_match),
-diff --git a/drivers/memory/mtk-smi.c b/drivers/memory/mtk-smi.c
-index 2bc034dff691..5710348f72f6 100644
---- a/drivers/memory/mtk-smi.c
-+++ b/drivers/memory/mtk-smi.c
-@@ -616,7 +616,7 @@ static const struct dev_pm_ops smi_larb_pm_ops = {
- 
- static struct platform_driver mtk_smi_larb_driver = {
- 	.probe	= mtk_smi_larb_probe,
--	.remove_new = mtk_smi_larb_remove,
-+	.remove = mtk_smi_larb_remove,
- 	.driver	= {
- 		.name = "mtk-smi-larb",
- 		.of_match_table = mtk_smi_larb_of_ids,
-@@ -838,7 +838,7 @@ static const struct dev_pm_ops smi_common_pm_ops = {
- 
- static struct platform_driver mtk_smi_common_driver = {
- 	.probe	= mtk_smi_common_probe,
--	.remove_new = mtk_smi_common_remove,
-+	.remove = mtk_smi_common_remove,
- 	.driver	= {
- 		.name = "mtk-smi-common",
- 		.of_match_table = mtk_smi_common_of_ids,
-diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
-index c8a0d82f9c27..50eb9f49512b 100644
---- a/drivers/memory/omap-gpmc.c
-+++ b/drivers/memory/omap-gpmc.c
-@@ -2743,7 +2743,7 @@ MODULE_DEVICE_TABLE(of, gpmc_dt_ids);
- 
- static struct platform_driver gpmc_driver = {
- 	.probe		= gpmc_probe,
--	.remove_new	= gpmc_remove,
-+	.remove		= gpmc_remove,
- 	.driver		= {
- 		.name	= DEVICE_NAME,
- 		.of_match_table = of_match_ptr(gpmc_dt_ids),
-diff --git a/drivers/memory/renesas-rpc-if.c b/drivers/memory/renesas-rpc-if.c
-index 7fbd36fa1a1b..55209ca43a96 100644
---- a/drivers/memory/renesas-rpc-if.c
-+++ b/drivers/memory/renesas-rpc-if.c
-@@ -794,10 +794,10 @@ static const struct of_device_id rpcif_of_match[] = {
- MODULE_DEVICE_TABLE(of, rpcif_of_match);
- 
- static struct platform_driver rpcif_driver = {
--	.probe	= rpcif_probe,
--	.remove_new = rpcif_remove,
-+	.probe = rpcif_probe,
-+	.remove = rpcif_remove,
- 	.driver = {
--		.name =	"rpc-if",
-+		.name = "rpc-if",
- 		.of_match_table = rpcif_of_match,
- 	},
- };
-diff --git a/drivers/memory/samsung/exynos5422-dmc.c b/drivers/memory/samsung/exynos5422-dmc.c
-index 7d80322754fa..dfc5ee54a9b7 100644
---- a/drivers/memory/samsung/exynos5422-dmc.c
-+++ b/drivers/memory/samsung/exynos5422-dmc.c
-@@ -1570,10 +1570,10 @@ static const struct of_device_id exynos5_dmc_of_match[] = {
- MODULE_DEVICE_TABLE(of, exynos5_dmc_of_match);
- 
- static struct platform_driver exynos5_dmc_platdrv = {
--	.probe	= exynos5_dmc_probe,
--	.remove_new = exynos5_dmc_remove,
-+	.probe = exynos5_dmc_probe,
-+	.remove = exynos5_dmc_remove,
- 	.driver = {
--		.name	= "exynos5-dmc",
-+		.name = "exynos5-dmc",
- 		.of_match_table = exynos5_dmc_of_match,
- 	},
- };
-diff --git a/drivers/memory/stm32-fmc2-ebi.c b/drivers/memory/stm32-fmc2-ebi.c
-index 566c225f71c0..2f1e2d7d54b5 100644
---- a/drivers/memory/stm32-fmc2-ebi.c
-+++ b/drivers/memory/stm32-fmc2-ebi.c
-@@ -1814,9 +1814,9 @@ static const struct of_device_id stm32_fmc2_ebi_match[] = {
- MODULE_DEVICE_TABLE(of, stm32_fmc2_ebi_match);
- 
- static struct platform_driver stm32_fmc2_ebi_driver = {
--	.probe	= stm32_fmc2_ebi_probe,
--	.remove_new = stm32_fmc2_ebi_remove,
--	.driver	= {
-+	.probe = stm32_fmc2_ebi_probe,
-+	.remove = stm32_fmc2_ebi_remove,
-+	.driver = {
- 		.name = "stm32_fmc2_ebi",
- 		.of_match_table = stm32_fmc2_ebi_match,
- 		.pm = &stm32_fmc2_ebi_pm_ops,
-diff --git a/drivers/memory/tegra/tegra186-emc.c b/drivers/memory/tegra/tegra186-emc.c
-index 33d67d251719..bc807d7fcd4e 100644
---- a/drivers/memory/tegra/tegra186-emc.c
-+++ b/drivers/memory/tegra/tegra186-emc.c
-@@ -406,7 +406,7 @@ static struct platform_driver tegra186_emc_driver = {
- 		.sync_state = icc_sync_state,
- 	},
- 	.probe = tegra186_emc_probe,
--	.remove_new = tegra186_emc_remove,
-+	.remove = tegra186_emc_remove,
- };
- module_platform_driver(tegra186_emc_driver);
- 
-diff --git a/drivers/memory/tegra/tegra210-emc-core.c b/drivers/memory/tegra/tegra210-emc-core.c
-index 78ca1d6c0977..2d5d8245a1d3 100644
---- a/drivers/memory/tegra/tegra210-emc-core.c
-+++ b/drivers/memory/tegra/tegra210-emc-core.c
-@@ -2051,7 +2051,7 @@ static struct platform_driver tegra210_emc_driver = {
- 		.pm = &tegra210_emc_pm_ops,
- 	},
- 	.probe = tegra210_emc_probe,
--	.remove_new = tegra210_emc_remove,
-+	.remove = tegra210_emc_remove,
- };
- 
- module_platform_driver(tegra210_emc_driver);
-diff --git a/drivers/memory/ti-emif-pm.c b/drivers/memory/ti-emif-pm.c
-index 592f70e9c8e5..df362ecc59e9 100644
---- a/drivers/memory/ti-emif-pm.c
-+++ b/drivers/memory/ti-emif-pm.c
-@@ -330,7 +330,7 @@ static const struct dev_pm_ops ti_emif_pm_ops = {
- 
- static struct platform_driver ti_emif_driver = {
- 	.probe = ti_emif_probe,
--	.remove_new = ti_emif_remove,
-+	.remove = ti_emif_remove,
- 	.driver = {
- 		.name = KBUILD_MODNAME,
- 		.of_match_table = ti_emif_of_match,
-
-base-commit: 5b913f5d7d7fe0f567dea8605f21da6eaa1735fb
--- 
-2.45.2
-
+> ---
+>  drivers/pcmcia/omap_cf.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pcmcia/omap_cf.c b/drivers/pcmcia/omap_cf.c
+> index 80137c7afe0d9bcf..938fad9c12aa8a4e 100644
+> --- a/drivers/pcmcia/omap_cf.c
+> +++ b/drivers/pcmcia/omap_cf.c
+> @@ -302,7 +302,13 @@ static void __exit omap_cf_remove(struct platform_device *pdev)
+>  	kfree(cf);
+>  }
+>  
+> -static struct platform_driver omap_cf_driver = {
+> +/*
+> + * omap_cf_remove() lives in .exit.text. For drivers registered via
+> + * platform_driver_probe() this is ok because they cannot get unbound at
+> + * runtime. So mark the driver struct with __refdata to prevent modpost
+> + * triggering a section mismatch warning.
+> + */
+> +static struct platform_driver omap_cf_driver __refdata = {
+>  	.driver = {
+>  		.name	= driver_name,
+>  	},
+> -- 
+> 2.34.1
+> 
 
