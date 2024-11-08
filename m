@@ -1,139 +1,112 @@
-Return-Path: <linux-omap+bounces-2624-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2625-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E8E9C20D5
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 16:43:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B219C2431
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 18:53:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8404EB247CE
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 15:43:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25B141C25285
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 17:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F12221B442;
-	Fri,  8 Nov 2024 15:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2529720B7EE;
+	Fri,  8 Nov 2024 17:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="U9hBt24h"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="E3Bi/Sjy"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AAC71EF0BD;
-	Fri,  8 Nov 2024 15:43:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB47A206E7C;
+	Fri,  8 Nov 2024 17:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731080593; cv=none; b=i9zI4R9cQ4Bbq/Jv4y0h2yPN1oM9hRa54cTURHUNxMEjqSz7ShG2yZLqChxl0w/HAv098Apzm4ru5oLN3YbqrMHu5K/KTSEkaBaF6dM0ZEamD5N5DGVrJvZrlUlK0dwclSiS5KsQXl7FwG+eyi7X2iXCl+xjZqOHUOW6BTE056g=
+	t=1731087696; cv=none; b=RwH9Hp+Qzt6VAmQhYaE2GtRPQHR5kFO4kA2LhjXSXthpYqWIxYCpr1yJzuQDXhBV+glkiv3DzgrFACKpdj6eajBP6fxs2G1nEICzDDV1nArVV2MwTuGNhTHFXwKbkhASQR4VAshW7pRYEc2d+8LUQXum4owfMEOh8cmcsFHOLs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731080593; c=relaxed/simple;
-	bh=b4X++9C+P9DTjtKS5lwaxeV29oAFiHpqKkhfWAGXw7M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:CC:From:
-	 In-Reply-To:Content-Type; b=qRzAMawDB8MzYsC1iiIG2Z2jlOqrBZBLzkO9IJPonkTGP0fEQhDWv6ZuqwyBIA+gZRdHtt14/fjPGRE4uxh3kYq+CXYJ8gmyOTby94rwvmjwA/0biIv0sCQC4dyRJ/dEE0cxs+jX8nKWqQhXp4fo0mmpB097rUZiuaWjvc2SM9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=U9hBt24h; arc=none smtp.client-ip=198.47.19.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4A8Fh5hd062572;
-	Fri, 8 Nov 2024 09:43:05 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1731080585;
-	bh=AdSqTP2kP6+Pzmnx8mliJefFa0Q27jkrh0vetk8iYjM=;
-	h=Date:Subject:To:References:CC:From:In-Reply-To;
-	b=U9hBt24hYZcfGOyRFgtoTXNs9ttIFvG/L2D8lrXXqa/dGIV0as6x+Fk7/T00ITi2Q
-	 4SnkPUoTTteayQmYNBNuUFI33FBpV5Joixk6+YBVWRUkIurU4Kbe+b25FRBwahk68y
-	 gvS3kaS83ETQ9XS2kRDYWOFqIDUp0KSrbfvJQ6Lo=
-Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4A8Fh583116200;
-	Fri, 8 Nov 2024 09:43:05 -0600
-Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 8
- Nov 2024 09:43:05 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 8 Nov 2024 09:43:05 -0600
-Received: from [128.247.81.105] (judy-hp.dhcp.ti.com [128.247.81.105])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4A8Fh5gp112055;
-	Fri, 8 Nov 2024 09:43:05 -0600
-Message-ID: <e54b0558-80ca-4352-b54a-22f9eb8c9001@ti.com>
-Date: Fri, 8 Nov 2024 09:43:05 -0600
+	s=arc-20240116; t=1731087696; c=relaxed/simple;
+	bh=xTBJQ3DHiqjQGaHvCuOnOqcxQvtxoUV/KnD4Xz/Z1lM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cV0zAVEqcWWaxZSlz97V61G+gKrj2zqHXnzxQKh2SG1rcu9o/VbRrdU+TB0P1tpDpVs5UM0zalRbnpYalb7IG9rEXm8YhqWxrvuqLKk7I9MUXGePFMR9xZUp7ajHWqYLkgYZkRCRRhoMBGxJR7vaJYymHT4hJJ06f6jl3A4K7tI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=E3Bi/Sjy; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=wBB+8hCTyd2m7Z6GTXu25olXNiRTxVMEW+Jjw45zRYQ=; b=E3Bi/SjyYTGX8PGyP5yMVmcZEi
+	Vk14b7t/g8S6znduaPSiyT8TdaF5dglB1h3Cq2qdgdbC+ZK2VTTAyrk7hlltdu6qEq8mgkpzyn2kL
+	EsAOmn+ExKStIAXH+GKT+4bb7mQYlGcIq1cnRIpXPrf1XWwf+9hU+fNlRlv2Tot0ZP5RUUpXweMmv
+	Uh1/5SZUXcLaVIWKJVD3f0ckM+SAuYPB9ly4UY1r3Db6oLUczjudKiIs1iXEDPgK1BuGfSmwdN1rf
+	9uXVYdnaaxTB5lIBYRlu9PuRKdWhr7t5nOfPF8y0DuI7+MT0uoTegyvgRb3T8yxT9OQsJpCu10OjI
+	1Hut1v2A==;
+Date: Fri, 8 Nov 2024 18:41:18 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Roger Quadros <rogerq@kernel.org>
+Cc: tony@atomide.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, hns@goldelico.com, linux-omap@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ aaro.koskinen@iki.fi, khilman@baylibre.com, stable@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: ti/omap: gta04: fix pm issues caused by spi
+ module
+Message-ID: <20241108184118.5ee8114c@akair>
+In-Reply-To: <b26c1fa8-b3b7-4aa9-bc78-793ddfa3bc6b@kernel.org>
+References: <20241107225100.1803943-1-andreas@kemnade.info>
+	<b26c1fa8-b3b7-4aa9-bc78-793ddfa3bc6b@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v2] gpio: omap: Add omap_gpio_disable/enable_irq
- calls
-To: Bartosz Golaszewski <brgl@bgdev.pl>, <linux-gpio@vger.kernel.org>
-References: <20241031145652.342696-1-jm@ti.com> <7h5xp7owmy.fsf@baylibre.com>
- <520c7e6b-f9c0-441f-8810-8e5ede668f6a@ti.com>
- <20241105190005.cg6dpeedbirgflqm@iaqt7>
- <CAMRc=MexFELAEVpEg39teG=Yr-R71gwxRR9TtGDwHjVijzDeWA@mail.gmail.com>
-Content-Language: en-US
-CC: Linus Walleij <linus.walleij@linaro.org>,
-        Santosh Shilimkar
-	<ssantosh@kernel.org>,
-        <linux-kernel@vger.kernel.org>, Kevin Hilman
-	<khilman@kernel.org>,
-        Bin Liu <b-liu@ti.com>, <linux-omap@vger.kernel.org>
-From: Judith Mendez <jm@ti.com>
-In-Reply-To: <CAMRc=MexFELAEVpEg39teG=Yr-R71gwxRR9TtGDwHjVijzDeWA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Bartosz,
+Am Fri, 8 Nov 2024 14:42:14 +0200
+schrieb Roger Quadros <rogerq@kernel.org>:
 
-On 11/6/24 7:42 AM, Bartosz Golaszewski wrote:
-> On Tue, Nov 5, 2024 at 8:00 PM Bin Liu <b-liu@ti.com> wrote:
->>
->> On Tue, Nov 05, 2024 at 12:47:58PM -0600, Judith Mendez wrote:
->>> Hi Kevin,
->>>
->>> On 11/1/24 9:29 AM, Kevin Hilman wrote:
->>>> Hi Judith,
->>>>
->>>> Judith Mendez <jm@ti.com> writes:
->>>>
->>>>> From: Bin Liu <b-liu@ti.com>
->>>>>
->>>>> Add omap_gpio_disable_irq and omap_gpio_enable_irq
->>>>> calls in gpio-omap.
->>>>>
->>>>> Currently, kernel cannot disable gpio interrupts in
->>>>> case of a irq storm, so add omap_gpio_disable/enable_irq
->>>>> so that interrupts can be disabled/enabled.
->>>>>
->>>>> Signed-off-by: Bin Liu <b-liu@ti.com>
->>>>> [Judith: Add commit message]
->>>>> Signed-off-by: Judith Mendez <jm@ti.com>
->>>>
->>>> Thanks for this patch.  Can you give a bit more context on the
->>>> problem(s) this solves and on which SoCs/platforms it was
->>>> developed/validated?
->>>
->>> Sorry for the late response. Patch was tested/developed on am335x
->>> device BBB, If you feed a PWM signal at 200KHz frequency to
->>> GPIO, and execute gpiomon 0 12 &, Linux will be unresponsive
->>> even after CTRL+C without these 2 functions in this patch. Once
->>> this patch is applied, you can get console back after hitting
->>> CTRL+C and then proceed to kill gpiomon.
->>
->> In addtion to Judith's explanation, when the PWM is applied to a GPIO
->> pin, kernel detects the interrupt storm and disables the irq, however,
->> without these callbacks, this gpio platform driver doesn't really
->> disable the interrupt in the gpio controller, so the interrupt storm is
->> still happening and handled by this gpio controller driver then causes
->> Linux unresponsive.
->>
->> -Bin.
+> > diff --git a/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi b/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
+> > index 3661340009e7a..11f8af34498b1 100644
+> > --- a/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
+> > +++ b/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
+> > @@ -612,19 +612,23 @@ &i2c3 {
+> >  };
+> >  
+> >  &mcspi1 {
+> > -	status = "disabled";  
 > 
-> I take it that this is a fix then and should have relevant Fixes and Cc tags?
+> But according to commit a622310f7f01 ("ARM: dts: gta04: fix excess dma channel usage"),
+> these mcspi modules are not used. So it doesn't make sense to enable them even if it
+> seems to solve the power management issue?
+> 
+They are not used, if they are just disabled, kernel does not touch
+them, so if it is there, the kernel can handle
+pm. At least as long as it is not under ti,sysc.
 
-ok, will send v3 with fixes tag.
+There are probably cleaner solutions for this, but for a CC: stable I
+would prefer something less invasive.
 
-~ Judith
+I can try a ti-sysc based fix in parallel.
 
+> Does bootloader leave the mcspi modules in a unwanted state?
+
+Or at least something related to them. 
+As said, for the blamed patch I checked only for CM_IDLEST1_CORE
+and CM_FCLKEN1_CORE.
+
+> Would it make sense for the bus driver to explicitly turn off all modules?
+
+Hmm, not very clear what you mean. AFAIK everything below ti-sysc gets
+turned off if a disable is in the child node. Explicitly disabling such
+stuff in the dtsi and enable it in the board dts sound sane
+to me at first glance. I think it is a common pattern. The question is
+whether that causes confusion with not ti-sysc stuff. Well, having
+status=okay everywhere in the dts should not harm.
+But as said for a regression fix some overhaul affecting every device 
+is out of scope.
+
+Regards,
+Andreas
 
