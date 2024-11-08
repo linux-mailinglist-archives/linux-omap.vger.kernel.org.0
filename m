@@ -1,62 +1,63 @@
-Return-Path: <linux-omap+bounces-2615-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2617-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BCA99C1D06
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 13:31:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 274AE9C1D60
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 13:53:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D260E286244
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 12:31:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 909491C22E4A
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 12:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9421E7C3D;
-	Fri,  8 Nov 2024 12:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857F21E882E;
+	Fri,  8 Nov 2024 12:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Go7R970h"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="NbiyaICU"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B5E1E7C06;
-	Fri,  8 Nov 2024 12:30:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E361D0F5C;
+	Fri,  8 Nov 2024 12:53:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731069049; cv=none; b=r/Auh+Fv/OjqiVRndwaoHV89DckrBWDRRQHPw0Jw0oF/ucZEDAe5WL0EMsitGkCADJce1HK3pW4Xzs85YDJE8CQMmowg2sdCUoIWGyzsSBC7t6sG15ru+wmKFNHaBiit36+HuB4I2C5xLilqyl59l7AJ905im644E+SkBw9nbcw=
+	t=1731070420; cv=none; b=aHdDDI0ia4KuWNbXhb874xqKh1uEO0rjJG3H2rYmB8TIbknKSyMjVrv/62Wlb2k0JhDYTPUPCwPaO4MuXq/w1C9PSguWAY87+2yqmMgQ0R6NfSq4lAsLTiNYdRbBC9nnh7KNiwM4Z9mif8mG/L//vWwdfFySY3kGyTqgo2ndqWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731069049; c=relaxed/simple;
-	bh=Ldm4gOTIksb3nGyt0Pl1ll27PtjAelWbJrhBkyzYrrk=;
+	s=arc-20240116; t=1731070420; c=relaxed/simple;
+	bh=rr/x3ww89sV9jqWghsW5iDpF0nmqWuGzXO+2uSnHi0g=;
 	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NZGPOzXR6iig9xiBZt5Lj66PAmUeM5ran3bVuIswNNoBVK6iYiCg4I/rFuGe2u8+KSSkenN1zJVVHkGvSQ5azRquvZYhTBVIui0YsjOg2d4HaY4uoxrj8LBRB8jY2/Cu6qNDGji1C2l0zFXvmioOpTDhYnUCcmsQUNnZDzxlIJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Go7R970h; arc=none smtp.client-ip=198.47.19.141
+	 Content-Type:Content-Disposition:In-Reply-To; b=aRqQERkzD1ZhFwXyWftNi14HHZ0CVPD1hYopEL8m+buITyw7dlCrAGOK7PshKMZA21pUggCaqxrms2mShUhf6fpVPOz66g3tMlK4UOGIQOfhXNTfqTk/2BbQruOudVTPSYZaEx/J10CbQjXMBMgHMUfwzJHbbT3maScyMVotixk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=NbiyaICU; arc=none smtp.client-ip=198.47.23.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4A8CUUUS067685;
-	Fri, 8 Nov 2024 06:30:30 -0600
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 4A8CbrOY2072987
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 8 Nov 2024 06:37:53 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1731069030;
-	bh=mLJWNoZktoBO6v4MYX1aptzzDn/jCQdbA65IirP2CYs=;
+	s=ti-com-17Q1; t=1731069473;
+	bh=+LZTSCJ82I2AofMnItCbVv3OHQLGWQAtNHwmmy7zLRs=;
 	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=Go7R970hAZD8Dp0jhW+EXrGCw4u+TkKtu5SGWVhtOEFhcv/tZF0RY4alZanxMPVeP
-	 0X6bB/KR3pO48ikHRNatEbZU3QOCKGpBUw2mh22WpkkeCqt0VSAvfqnWTslVxkq9Lz
-	 +EQQ/p3pzVKxBVXetES6f7Lb40bar0fT+57qKNgk=
+	b=NbiyaICU0pKnJSpnYAw+VgK/VAEfbDB6EmiwA+pZ4eDgtuV8MTi0sCS0MWy+HKsq/
+	 ISyc4vvHot5lJrGu3s7HsMYM/RyLPkZPvj1h8q1HcQpKWcHpkwr4FihL5o3p76dw3z
+	 UZB0YXjelxnYtUWJA5b4/z9kagjqt9+gAwrBuOyQ=
 Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4A8CUUBC005948
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4A8CbrpK039671
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 8 Nov 2024 06:30:30 -0600
-Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE100.ent.ti.com
+	Fri, 8 Nov 2024 06:37:53 -0600
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE100.ent.ti.com
  (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 8
- Nov 2024 06:30:29 -0600
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ Nov 2024 06:37:52 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 8 Nov 2024 06:30:30 -0600
+ Frontend Transport; Fri, 8 Nov 2024 06:37:52 -0600
 Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.81])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4A8CUSlk004575;
-	Fri, 8 Nov 2024 06:30:29 -0600
-Date: Fri, 8 Nov 2024 18:00:28 +0530
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4A8Cbpes012878;
+	Fri, 8 Nov 2024 06:37:52 -0600
+Date: Fri, 8 Nov 2024 18:07:51 +0530
 From: Siddharth Vadapalli <s-vadapalli@ti.com>
 To: Roger Quadros <rogerq@kernel.org>
 CC: Siddharth Vadapalli <s-vadapalli@ti.com>,
@@ -70,11 +71,11 @@ CC: Siddharth Vadapalli <s-vadapalli@ti.com>,
         <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <srk@ti.com>,
         Pekka Varis <p-varis@ti.com>
-Subject: Re: [PATCH net-next 2/2] net: ethernet: ti: am65-cpsw: enable DSCP
- to priority map for RX
-Message-ID: <8e6053ca-77fc-4f03-ae54-3f6af0addb88@ti.com>
-References: <20241105-am65-cpsw-multi-rx-dscp-v1-0-38db85333c88@kernel.org>
- <20241105-am65-cpsw-multi-rx-dscp-v1-2-38db85333c88@kernel.org>
+Subject: Re: [PATCH net-next v2 2/2] net: ethernet: ti: am65-cpsw: enable
+ DSCP to priority map for RX
+Message-ID: <908cc747-18a1-49c0-9b06-1c2f64e4c84e@ti.com>
+References: <20241107-am65-cpsw-multi-rx-dscp-v2-0-9e9cd1920035@kernel.org>
+ <20241107-am65-cpsw-multi-rx-dscp-v2-2-9e9cd1920035@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -83,12 +84,16 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20241105-am65-cpsw-multi-rx-dscp-v1-2-38db85333c88@kernel.org>
+In-Reply-To: <20241107-am65-cpsw-multi-rx-dscp-v2-2-9e9cd1920035@kernel.org>
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Tue, Nov 05, 2024 at 04:18:11PM +0200, Roger Quadros wrote:
+On Thu, Nov 07, 2024 at 02:29:30PM +0200, Roger Quadros wrote:
 
 Hello Roger,
+
+I accidentally reviewed and replied to the patch from the v1 series, but
+the comments still hold for this patch. For the sake of convenience, I
+am providing the same feedback as the v1 patch below.
 
 > AM65 CPSW hardware can map the 6-bit DSCP/TOS field to
 > appropriate priority queue via DSCP to Priority mapping registers
