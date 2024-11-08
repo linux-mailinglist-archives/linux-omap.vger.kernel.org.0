@@ -1,208 +1,173 @@
-Return-Path: <linux-omap+bounces-2620-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2621-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1E8F9C1D8B
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 14:03:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0221D9C1F82
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 15:43:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57BC41C22E75
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 13:03:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD018283D6D
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 14:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4261E9066;
-	Fri,  8 Nov 2024 13:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 560E11F4295;
+	Fri,  8 Nov 2024 14:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vHqqt/MQ"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="fqRcpZxf"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FF11E1C22;
-	Fri,  8 Nov 2024 13:03:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196BA188CC6;
+	Fri,  8 Nov 2024 14:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731070987; cv=none; b=CyIb3p89w2pxQM9C4nwBSfI+13OQ+LQ8g8v90z4DoLa0R+haBcYfh5aWww1G7g0IhS0J7UcyyizxhC4QangRf3jOKQPgNriK/PkpsmVPJOBk81pepRS+luGPzV+HkebC+KJBsYiBWB2yn+Rd5SCGKieBkc6FtjRYxZBKzEUAnzk=
+	t=1731076975; cv=none; b=s7yrqacCxzx5nTA/C52jI2p2xTc9FoIVUNsZhM8Bre1vDcMq6kZpC4zzIRxehcv/JcFsY75WAT7nJgM5yJ6bTmf05g237eHOuNfz7HWknYWfFY546FeXYl7wVMAvGXDh/VjYnZD1PDzPMMdU2bOv3HcwduzM7pCLnzv7UZlZuVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731070987; c=relaxed/simple;
-	bh=ROX3g1ipCssQb15geT/67wX8/vpFIqm08jZHanMKPhw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NKcGhkxO72AS2aBNE8m/voCuN8zCrZ+k9Q95w2U42/zPk5kh1r6Y9fLg6RBcZjYCxaJLoe8jNaijnTST9VeDJDSmkJp3Sdd7/YzblrMosSWIlUjLQJovzWvNZI4FGpx/+PvDnZfnWn6kfCu2fkfBxUNQjEkKG/IMNHigzS5M/wU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vHqqt/MQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B101EC4CED2;
-	Fri,  8 Nov 2024 13:03:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731070986;
-	bh=ROX3g1ipCssQb15geT/67wX8/vpFIqm08jZHanMKPhw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vHqqt/MQNH011ZbaWc8I2QRVF5632OsfVloRBYI53uffwUX1nnQEYGV3gPSz4g1IU
-	 VOeZI8I5aVl4K1Zg0UcQ7+mWEh7jOE07xCNQTatghE8Dx2lCN7rKZPopOuuSLfZQ7o
-	 KQxHZhzGmKP2MT0ur/5Mh+ZWi7qaQRGnsIxXT4Sd/fLJjphOZsW/JUeqjqVJMxiTvd
-	 RRYKkm1zmY8G/s36M59bbGh+42vVEbbE7LLB5BwGprC3prJ5bMtKhkcsTe87/skkvx
-	 P6LmTxSxrobxbj+wn8kcP25pu3riBPUgIMwbmZk7dRSWJUv5joujO1+CIpSPJpj7gl
-	 2TWec5uORuQsg==
-Message-ID: <36b61684-fede-4422-bd54-0421e6a0fc23@kernel.org>
-Date: Fri, 8 Nov 2024 15:03:01 +0200
+	s=arc-20240116; t=1731076975; c=relaxed/simple;
+	bh=0vi+xxM9vbYC0ABIEErdvdskYnYP7GEmBfVDVMfmNRw=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GsLC+5xqqt331YGkjHtVyIyaJ9hd0KN4k1c9PBTNtG2zOwqu8hTMO40WofHo+TdqG6yDS/KQTtYj3u4YEpCXDbQjR1mEHX/50CrEzCnL0mcM2GhrY0pY9GZLpwYZEwcL1Ywc4iE3aWcioSk79u1R/c1i+sElJpEKYQ2iUyJO0to=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=fqRcpZxf; arc=none smtp.client-ip=198.47.19.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4A8Egg15049601;
+	Fri, 8 Nov 2024 08:42:42 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1731076962;
+	bh=lwaXLo9fSftAJDId5wRFfi2VOW7QLA5Bl3KKudg18sI=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=fqRcpZxf6F0wkcCRz/30OVau3Yj8NgcLI+lVEGgbfo00GAe2DgZrWJ91qaXpX5TiO
+	 Yo5nuc2UhpBrSouiSrdbvewIL3YWrkvOUmNH5xbjnVQMuy+/+qa7oSk0l/GwDfBnAK
+	 DpecWhnnGqMWU+PBw8WnjMnF1k70gHGq1IEBaZaQ=
+Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4A8EggPe111457
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 8 Nov 2024 08:42:42 -0600
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 8
+ Nov 2024 08:42:42 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 8 Nov 2024 08:42:42 -0600
+Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.81])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4A8EgfIO039345;
+	Fri, 8 Nov 2024 08:42:41 -0600
+Date: Fri, 8 Nov 2024 20:12:40 +0530
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: Roger Quadros <rogerq@kernel.org>
+CC: Siddharth Vadapalli <s-vadapalli@ti.com>,
+        Andrew Lunn
+	<andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <srk@ti.com>,
+        Pekka Varis <p-varis@ti.com>
+Subject: Re: [PATCH net-next 2/2] net: ethernet: ti: am65-cpsw: enable DSCP
+ to priority map for RX
+Message-ID: <208a1472-c69b-4c20-9bb2-25158edfd7d8@ti.com>
+References: <20241105-am65-cpsw-multi-rx-dscp-v1-0-38db85333c88@kernel.org>
+ <20241105-am65-cpsw-multi-rx-dscp-v1-2-38db85333c88@kernel.org>
+ <8e6053ca-77fc-4f03-ae54-3f6af0addb88@ti.com>
+ <7ae1ccf9-67c0-45ba-9cb9-886701adb488@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dt-bindings: clock: ti: Convert mux.txt to json-schema
-To: Andreas Kemnade <andreas@kemnade.info>, Rob Herring <robh@kernel.org>,
- Tero Kristo <kristo@kernel.org>
-Cc: Michael Turquette <mturquette@baylibre.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-kernel@vger.kernel.org,
- linux-clk@vger.kernel.org, linux-omap@vger.kernel.org,
- Tony Lindgren <tony@atomide.com>, Conor Dooley <conor+dt@kernel.org>,
- Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org
-References: <20241104135549.38486-1-andreas@kemnade.info>
- <20241105135234.GA3100411-robh@kernel.org> <20241107075803.2cf33ab4@akair>
-Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20241107075803.2cf33ab4@akair>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <7ae1ccf9-67c0-45ba-9cb9-886701adb488@kernel.org>
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Hi Andreas,
-
-On 07/11/2024 08:58, Andreas Kemnade wrote:
-> Am Tue, 5 Nov 2024 07:52:34 -0600
-> schrieb Rob Herring <robh@kernel.org>:
+On Fri, Nov 08, 2024 at 02:55:18PM +0200, Roger Quadros wrote:
+> Hi Siddharth,
 > 
->> On Mon, Nov 04, 2024 at 02:55:49PM +0100, Andreas Kemnade wrote:
->>> Convert the OMAP mux clock device tree binding to json-schema.
->>> Specify the creator of the original binding as a maintainer.
->>> Choose GPL-only license because original binding was also GPL.
->>>
->>> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
->>> ---
->>>  .../bindings/clock/ti/composite.txt           |   2 +-
->>>  .../devicetree/bindings/clock/ti/mux.txt      |  78 -----------
->>>  .../bindings/clock/ti/ti,mux-clock.yaml       | 123 ++++++++++++++++++
->>>  3 files changed, 124 insertions(+), 79 deletions(-)
->>>  delete mode 100644 Documentation/devicetree/bindings/clock/ti/mux.txt
->>>  create mode 100644 Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml
->>>
->>> diff --git a/Documentation/devicetree/bindings/clock/ti/composite.txt b/Documentation/devicetree/bindings/clock/ti/composite.txt
->>> index b02f22490dcb..238e6f7d74f8 100644
->>> --- a/Documentation/devicetree/bindings/clock/ti/composite.txt
->>> +++ b/Documentation/devicetree/bindings/clock/ti/composite.txt
->>> @@ -16,7 +16,7 @@ merged to this clock. The component clocks shall be of one of the
->>>  "ti,*composite*-clock" types.
->>>  
->>>  [1] Documentation/devicetree/bindings/clock/clock-bindings.txt
->>> -[2] Documentation/devicetree/bindings/clock/ti/mux.txt
->>> +[2] Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml
->>>  [3] Documentation/devicetree/bindings/clock/ti/ti,divider-clock.yaml
->>>  [4] Documentation/devicetree/bindings/clock/ti/gate.txt
->>>  
->>> diff --git a/Documentation/devicetree/bindings/clock/ti/mux.txt b/Documentation/devicetree/bindings/clock/ti/mux.txt
->>> deleted file mode 100644
->>> index cd56d3c1c09f..000000000000
->>> --- a/Documentation/devicetree/bindings/clock/ti/mux.txt
->>> +++ /dev/null
->>> @@ -1,78 +0,0 @@
->>> -Binding for TI mux clock.
->>> -
->>> -This binding uses the common clock binding[1].  It assumes a
->>> -register-mapped multiplexer with multiple input clock signals or
->>> -parents, one of which can be selected as output.  This clock does not
->>> -gate or adjust the parent rate via a divider or multiplier.
->>> -
->>> -By default the "clocks" property lists the parents in the same order
->>> -as they are programmed into the register.  E.g:
->>> -
->>> -	clocks = <&foo_clock>, <&bar_clock>, <&baz_clock>;
->>> -
->>> -results in programming the register as follows:
->>> -
->>> -register value		selected parent clock
->>> -0			foo_clock
->>> -1			bar_clock
->>> -2			baz_clock
->>> -
->>> -Some clock controller IPs do not allow a value of zero to be programmed
->>> -into the register, instead indexing begins at 1.  The optional property
->>> -"index-starts-at-one" modified the scheme as follows:
->>> -
->>> -register value		selected clock parent
->>> -1			foo_clock
->>> -2			bar_clock
->>> -3			baz_clock
->>> -
->>> -The binding must provide the register to control the mux. Optionally
->>> -the number of bits to shift the control field in the register can be
->>> -supplied. If the shift value is missing it is the same as supplying
->>> -a zero shift.
->>> -
->>> -[1] Documentation/devicetree/bindings/clock/clock-bindings.txt
->>> -
->>> -Required properties:
->>> -- compatible : shall be "ti,mux-clock" or "ti,composite-mux-clock".
->>> -- #clock-cells : from common clock binding; shall be set to 0.
->>> -- clocks : link phandles of parent clocks
->>> -- reg : register offset for register controlling adjustable mux
->>> -
->>> -Optional properties:
->>> -- clock-output-names : from common clock binding.
->>> -- ti,bit-shift : number of bits to shift the bit-mask, defaults to
->>> -  0 if not present
->>> -- ti,index-starts-at-one : valid input select programming starts at 1, not
->>> -  zero
->>> -- ti,set-rate-parent : clk_set_rate is propagated to parent clock,
->>> -  not supported by the composite-mux-clock subtype
->>> -- ti,latch-bit : latch the mux value to HW, only needed if the register
->>> -  access requires this. As an example, dra7x DPLL_GMAC H14 muxing
->>> -  implements such behavior.
->>> -
->>> -Examples:
->>> -
->>> -sys_clkin_ck: sys_clkin_ck@4a306110 {
->>> -	#clock-cells = <0>;
->>> -	compatible = "ti,mux-clock";
->>> -	clocks = <&virt_12000000_ck>, <&virt_13000000_ck>, <&virt_16800000_ck>, <&virt_19200000_ck>, <&virt_26000000_ck>, <&virt_27000000_ck>, <&virt_38400000_ck>;
->>> -	reg = <0x0110>;
->>> -	ti,index-starts-at-one;
->>> -};
->>> -
->>> -abe_dpll_bypass_clk_mux_ck: abe_dpll_bypass_clk_mux_ck@4a306108 {
->>> -	#clock-cells = <0>;
->>> -	compatible = "ti,mux-clock";
->>> -	clocks = <&sys_clkin_ck>, <&sys_32k_ck>;
->>> -	ti,bit-shift = <24>;
->>> -	reg = <0x0108>;
->>> -};
->>> -
->>> -mcbsp5_mux_fck: mcbsp5_mux_fck {
->>> -	#clock-cells = <0>;
->>> -	compatible = "ti,composite-mux-clock";
->>> -	clocks = <&core_96m_fck>, <&mcbsp_clks>;
->>> -	ti,bit-shift = <4>;
->>> -	reg = <0x02d8>;
->>> -};
->>> diff --git a/Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml b/Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml
->>> new file mode 100644
->>> index 000000000000..b271ab86dde1
->>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml
->>> @@ -0,0 +1,123 @@
->>> +# SPDX-License-Identifier: GPL-2.0-only  
->>
->> Surely TI as the only author of the original binding would agree to
->> dual-license this?
->>
-> So there is a question mark. So you are waiting for some confirmation
-> form TI?
+> On 08/11/2024 14:30, Siddharth Vadapalli wrote:
 
-TI code uses below license clause. So better to stick to that.
+[...]
 
-# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> >> +#define AM65_CPSW_PORTN_REG_CTL			0x004
+> > 
+> > nitpick: indentation needs to be fixed here to align with the macros
+> > below.
+> 
+> It is fine in the code and in my editor in this reply email.
 
+That's strange. But it appears the same to me as seen at:
+https://lore.kernel.org/r/20241105-am65-cpsw-multi-rx-dscp-v1-2-38db85333c88@kernel.org/
+where the indentation looks incorrect.
 
--- 
-cheers,
--roger
+[...]
+
+> 
+> >> +
+> >> +	if (dscp > AM65_CPSW_DSCP_MAX)
+> >> +		return -EINVAL;
+> > 
+> > am65_cpsw_port_set_dscp_map() seems to be invoked by
+> > am65_cpsw_port_enable_dscp_map() below, where the above check is guaranteed
+> > to be satisfied. Is the check added for future-proofing this function?
+> > 
+> 
+> Right, future callers can't be guaranteed to do the check so I'd prefer
+> to have the check here.
+
+Thank you for the confirmation.
+
+> 
+> >> +
+> >> +	if (pri > AM65_CPSW_PRI_MAX)
+> >> +		return -EINVAL;
+> >> +
+> >> +	reg_ofs = (dscp / 8) * 4;	/* reg offset to this dscp */
+> >> +	bit_ofs = 4 * (dscp % 8);	/* bit offset to this dscp */
+> > 
+> > Maybe a macro can be used for the "4" since it is not clear what it
+> 
+> First 4 was for 4 bytes per register. Not sure if we need a macro for this.
+> The comment already mentions register offset and we know each register is
+> 32-bits wide.
+> 
+> We could add a macro for the 8 though
+> #define AM65_CPSW_DSCP_PRI_PER_REG	8
+> 
+> The second 4 is actually 4 bits per DSCP field. I could add a macro for this.
+> #define AM65_CPSW_DSCP_PRI_FIELD_WIDTH	4
+
+This looks good to me, but I am fine either way, in case you prefer to
+drop the macros.
+
+> 
+> 
+> > corresponds to. Or maybe two macros can be used for "reg_ofs" and
+> > "bit_ofs".
+> > 
+> >> +	val = readl(slave->port_base + AM65_CPSW_PORTN_REG_DSCP_MAP + reg_ofs);
+> >> +	val &= ~(AM65_CPSW_PRI_MAX << bit_ofs);	/* clear */
+> >> +	val |= pri << bit_ofs;			/* set */
+> >> +	writel(val, slave->port_base + AM65_CPSW_PORTN_REG_DSCP_MAP + reg_ofs);
+> >> +	val = readl(slave->port_base + AM65_CPSW_PORTN_REG_DSCP_MAP + reg_ofs);
+> > 
+> > The above readback seems to be just to flush the writel(). A comment of
+> > the form:
+> > /* flush */
+> > might help, considering that other drivers do the same. Also, assigning
+> > the returned value to "val" might not be required unless it is intended to
+> > be checked.
+> 
+> This was actually left over debug code. I'll drop the readl.
+
+Ok.
+
+Regards,
+Siddharth.
 
