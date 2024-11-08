@@ -1,82 +1,79 @@
-Return-Path: <linux-omap+bounces-2621-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2622-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0221D9C1F82
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 15:43:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 458869C1F9D
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 15:48:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD018283D6D
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 14:43:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 727C31C20E27
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 14:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 560E11F4295;
-	Fri,  8 Nov 2024 14:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9AE51F4274;
+	Fri,  8 Nov 2024 14:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="fqRcpZxf"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="JCKxbPX4"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196BA188CC6;
-	Fri,  8 Nov 2024 14:42:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50FCE1803A;
+	Fri,  8 Nov 2024 14:48:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731076975; cv=none; b=s7yrqacCxzx5nTA/C52jI2p2xTc9FoIVUNsZhM8Bre1vDcMq6kZpC4zzIRxehcv/JcFsY75WAT7nJgM5yJ6bTmf05g237eHOuNfz7HWknYWfFY546FeXYl7wVMAvGXDh/VjYnZD1PDzPMMdU2bOv3HcwduzM7pCLnzv7UZlZuVs=
+	t=1731077299; cv=none; b=dDGM4K527iBd4QDi9MuQ7351MIYi9S7zlyEPqITtwIpFmm1gZrSii9B9LKgOo5qjZFjw41mfO4s5xpXXAGMEhp/ztvqjcNFlXEtiWM+ty8eGN8J+Ppn7Fh+N5r1VwtqUE7lZBPPE9RwzCVUMPUfF+uAzUP2HbOuQyl8sYm7wRb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731076975; c=relaxed/simple;
-	bh=0vi+xxM9vbYC0ABIEErdvdskYnYP7GEmBfVDVMfmNRw=;
+	s=arc-20240116; t=1731077299; c=relaxed/simple;
+	bh=7Vh423k2v5rDiz9e5aaLWERcHQiPBA3gPcPJh9+KSjE=;
 	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GsLC+5xqqt331YGkjHtVyIyaJ9hd0KN4k1c9PBTNtG2zOwqu8hTMO40WofHo+TdqG6yDS/KQTtYj3u4YEpCXDbQjR1mEHX/50CrEzCnL0mcM2GhrY0pY9GZLpwYZEwcL1Ywc4iE3aWcioSk79u1R/c1i+sElJpEKYQ2iUyJO0to=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=fqRcpZxf; arc=none smtp.client-ip=198.47.19.142
+	 Content-Type:Content-Disposition:In-Reply-To; b=MpIBHCzX/fEPHBpBWScG9EVTbf+MIDrXQ/P77wr1jJbBy0flrEQnxdX/XurTUaDF+/FhBe0wfY2CQ06VweVz70vMlKYhpN0X5/HrnG9PRg5oo/ZXhpwdQg45x+jvO7ZR4QatYo+AF2KXONpQMksfr1OByWNGoingUeK5EsXnjxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=JCKxbPX4; arc=none smtp.client-ip=198.47.23.248
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4A8Egg15049601;
-	Fri, 8 Nov 2024 08:42:42 -0600
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4A8Em0fs090318;
+	Fri, 8 Nov 2024 08:48:00 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1731076962;
-	bh=lwaXLo9fSftAJDId5wRFfi2VOW7QLA5Bl3KKudg18sI=;
+	s=ti-com-17Q1; t=1731077280;
+	bh=Qb5W5ggwcyRExagNeS8k1z2C/XU9B9OpyZND0Okpr+k=;
 	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=fqRcpZxf6F0wkcCRz/30OVau3Yj8NgcLI+lVEGgbfo00GAe2DgZrWJ91qaXpX5TiO
-	 Yo5nuc2UhpBrSouiSrdbvewIL3YWrkvOUmNH5xbjnVQMuy+/+qa7oSk0l/GwDfBnAK
-	 DpecWhnnGqMWU+PBw8WnjMnF1k70gHGq1IEBaZaQ=
-Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4A8EggPe111457
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 8 Nov 2024 08:42:42 -0600
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+	b=JCKxbPX4DVN8tneV7P3AMBuhJNPuYU0QfitzY4gmH83N9yBfhPKrr+qoKhslW5c38
+	 d6vNtQX1F2y/O58SBJbogUS9lKLOlSE3nAkvo07bBobpJJlMHgRukB/tjZXHMwnjUg
+	 OD9b/jR4ZBrwUmcbtx1bNFE2n8eEdhU7CnNXul/s=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4A8Em0GJ083470;
+	Fri, 8 Nov 2024 08:48:00 -0600
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 8
- Nov 2024 08:42:42 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ Nov 2024 08:48:00 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 8 Nov 2024 08:42:42 -0600
-Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.81])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4A8EgfIO039345;
-	Fri, 8 Nov 2024 08:42:41 -0600
-Date: Fri, 8 Nov 2024 20:12:40 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+ Frontend Transport; Fri, 8 Nov 2024 08:48:00 -0600
+Received: from localhost (uda0133052.dhcp.ti.com [128.247.81.232])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4A8Em0LU031896;
+	Fri, 8 Nov 2024 08:48:00 -0600
+Date: Fri, 8 Nov 2024 08:48:00 -0600
+From: Nishanth Menon <nm@ti.com>
 To: Roger Quadros <rogerq@kernel.org>
-CC: Siddharth Vadapalli <s-vadapalli@ti.com>,
-        Andrew Lunn
-	<andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <srk@ti.com>,
-        Pekka Varis <p-varis@ti.com>
-Subject: Re: [PATCH net-next 2/2] net: ethernet: ti: am65-cpsw: enable DSCP
- to priority map for RX
-Message-ID: <208a1472-c69b-4c20-9bb2-25158edfd7d8@ti.com>
-References: <20241105-am65-cpsw-multi-rx-dscp-v1-0-38db85333c88@kernel.org>
- <20241105-am65-cpsw-multi-rx-dscp-v1-2-38db85333c88@kernel.org>
- <8e6053ca-77fc-4f03-ae54-3f6af0addb88@ti.com>
- <7ae1ccf9-67c0-45ba-9cb9-886701adb488@kernel.org>
+CC: Andreas Kemnade <andreas@kemnade.info>, Rob Herring <robh@kernel.org>,
+        Tero Kristo <kristo@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>, Tony Lindgren
+	<tony@atomide.com>,
+        Conor Dooley <conor+dt@kernel.org>, Stephen Boyd
+	<sboyd@kernel.org>,
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH] dt-bindings: clock: ti: Convert mux.txt to json-schema
+Message-ID: <20241108144800.ks7owznyt4fpcdap@thrive>
+References: <20241104135549.38486-1-andreas@kemnade.info>
+ <20241105135234.GA3100411-robh@kernel.org>
+ <20241107075803.2cf33ab4@akair>
+ <36b61684-fede-4422-bd54-0421e6a0fc23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -85,89 +82,45 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <7ae1ccf9-67c0-45ba-9cb9-886701adb488@kernel.org>
+In-Reply-To: <36b61684-fede-4422-bd54-0421e6a0fc23@kernel.org>
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Fri, Nov 08, 2024 at 02:55:18PM +0200, Roger Quadros wrote:
-> Hi Siddharth,
+On 15:03-20241108, Roger Quadros wrote:
+> >>> diff --git a/Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml b/Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml
+> >>> new file mode 100644
+> >>> index 000000000000..b271ab86dde1
+> >>> --- /dev/null
+> >>> +++ b/Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml
+> >>> @@ -0,0 +1,123 @@
+> >>> +# SPDX-License-Identifier: GPL-2.0-only  
+> >>
+> >> Surely TI as the only author of the original binding would agree to
+> >> dual-license this?
+> >>
+> > So there is a question mark. So you are waiting for some confirmation
+> > form TI?
 > 
-> On 08/11/2024 14:30, Siddharth Vadapalli wrote:
-
-[...]
-
-> >> +#define AM65_CPSW_PORTN_REG_CTL			0x004
-> > 
-> > nitpick: indentation needs to be fixed here to align with the macros
-> > below.
+> TI code uses below license clause. So better to stick to that.
 > 
-> It is fine in the code and in my editor in this reply email.
+> # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 
-That's strange. But it appears the same to me as seen at:
-https://lore.kernel.org/r/20241105-am65-cpsw-multi-rx-dscp-v1-2-38db85333c88@kernel.org/
-where the indentation looks incorrect.
+Just my 2 cents:
 
-[...]
+Just to be clear, as a corporate, as TI contributor we have approval for the
+following two:
 
-> 
-> >> +
-> >> +	if (dscp > AM65_CPSW_DSCP_MAX)
-> >> +		return -EINVAL;
-> > 
-> > am65_cpsw_port_set_dscp_map() seems to be invoked by
-> > am65_cpsw_port_enable_dscp_map() below, where the above check is guaranteed
-> > to be satisfied. Is the check added for future-proofing this function?
-> > 
-> 
-> Right, future callers can't be guaranteed to do the check so I'd prefer
-> to have the check here.
+For new stuff:  GPL-2.0-only OR MIT
+for legacy stuff, we had GPL-2.0-only.
 
-Thank you for the confirmation.
+There are indeed instances of community contributions with
+GPL-2.0-only OR BSD-2-Clause, but that is definitely something community
+is free to do. Looking at history of
+Documentation/devicetree/bindings/clock/ti/mux.txt, I believe, at least
+from TI perspective, we are fine with GPL-2.0-only OR MIT and I think it
+will let other s/w ecosystems consume the same as well.
 
-> 
-> >> +
-> >> +	if (pri > AM65_CPSW_PRI_MAX)
-> >> +		return -EINVAL;
-> >> +
-> >> +	reg_ofs = (dscp / 8) * 4;	/* reg offset to this dscp */
-> >> +	bit_ofs = 4 * (dscp % 8);	/* bit offset to this dscp */
-> > 
-> > Maybe a macro can be used for the "4" since it is not clear what it
-> 
-> First 4 was for 4 bytes per register. Not sure if we need a macro for this.
-> The comment already mentions register offset and we know each register is
-> 32-bits wide.
-> 
-> We could add a macro for the 8 though
-> #define AM65_CPSW_DSCP_PRI_PER_REG	8
-> 
-> The second 4 is actually 4 bits per DSCP field. I could add a macro for this.
-> #define AM65_CPSW_DSCP_PRI_FIELD_WIDTH	4
-
-This looks good to me, but I am fine either way, in case you prefer to
-drop the macros.
-
-> 
-> 
-> > corresponds to. Or maybe two macros can be used for "reg_ofs" and
-> > "bit_ofs".
-> > 
-> >> +	val = readl(slave->port_base + AM65_CPSW_PORTN_REG_DSCP_MAP + reg_ofs);
-> >> +	val &= ~(AM65_CPSW_PRI_MAX << bit_ofs);	/* clear */
-> >> +	val |= pri << bit_ofs;			/* set */
-> >> +	writel(val, slave->port_base + AM65_CPSW_PORTN_REG_DSCP_MAP + reg_ofs);
-> >> +	val = readl(slave->port_base + AM65_CPSW_PORTN_REG_DSCP_MAP + reg_ofs);
-> > 
-> > The above readback seems to be just to flush the writel(). A comment of
-> > the form:
-> > /* flush */
-> > might help, considering that other drivers do the same. Also, assigning
-> > the returned value to "val" might not be required unless it is intended to
-> > be checked.
-> 
-> This was actually left over debug code. I'll drop the readl.
-
-Ok.
-
+-- 
 Regards,
-Siddharth.
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
 
