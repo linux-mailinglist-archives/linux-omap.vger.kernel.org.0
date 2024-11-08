@@ -1,72 +1,72 @@
-Return-Path: <linux-omap+bounces-2627-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2628-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B259C2617
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 21:05:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 536779C261A
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 21:05:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49E931F218E2
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 20:05:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C3FD2842D2
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 20:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76471E22F3;
-	Fri,  8 Nov 2024 20:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADEC11F26C2;
+	Fri,  8 Nov 2024 20:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FG2WwoxS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zfzm2NJL"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E503A1C1F0E;
-	Fri,  8 Nov 2024 20:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3511C4609;
+	Fri,  8 Nov 2024 20:05:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731096303; cv=none; b=sHxQkMgJDQwiUk1oBeSjbgpfsUNYhfhCLgSF9MmV3GxAsblIynyqe8ZGmAHm3Rsqtx8m77cmLrlYBLefPzO1vaGGjspiZ9nOhJ3Hwe7yiO3tOyP44+94l3tKcHvtDD0HwZ2aIhZzO1hijH13d7orbTF3/+6jojVM4EglgGhjOEg=
+	t=1731096310; cv=none; b=h9X8q9iQdI56Mu7N2nG/YJKEGZsJU4J1AMvdZO3voKjk8+RNu9gC7yqSZjER1QP565CxK3OJCuEoWWcg5SLhHloBoyypCdXkEZ8O4mr8eUPt45hXGmzeWxpid8ZTNCqvjlQc+aLUS1XShOVN6kC6hKdqRKexw5yBcI316yB2EXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731096303; c=relaxed/simple;
-	bh=Cr5+IhCHxPHPW3626dojbnKDaxlXfjju7kU8t6CdTJ8=;
+	s=arc-20240116; t=1731096310; c=relaxed/simple;
+	bh=4qvDhqGP/Cvk78ZNcTXV1M1zGpmYtxAECuKXUmUpRbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TC8ALXH5Flt1SAYlhtSRGKjEw+/kqZhYTklzmOdGfR/DYoDBzfHestiwQo9mvFFHJg51UfCVQvFneyaoOOXk04raklHNrvOpcvrkOTKvTTydESy7VL7sZ5NdmFmefqTUVGq3B2YZKjatSwDV6/jN1sKdf5FDnVrvMni63AU50cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FG2WwoxS; arc=none smtp.client-ip=209.85.210.179
+	 MIME-Version; b=E4Vk7zRT9d9SrjF2rAfbMCFaKkx4s2YPtYhiEfkTsZEkC8+4vgugDiIjLyAq7tvTzT/w2o/0HIUMgFtvijGdn7yEHUnrEtvc9CxtRV1PyENw05s+pE/+a+pE/BuhGYkpIile44VGol28vwDms1SUNioeQc0FSpSWPiUTuKdh9js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zfzm2NJL; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-71e52582cf8so2139451b3a.2;
-        Fri, 08 Nov 2024 12:05:01 -0800 (PST)
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-71e52582cf8so2139539b3a.2;
+        Fri, 08 Nov 2024 12:05:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731096301; x=1731701101; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1731096308; x=1731701108; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nclpl2L8R9cKrulz3mBbfGGvQIswT/qMcBsWKZFoMYo=;
-        b=FG2WwoxSlKA5vDnktp39qW9EdtmhC/5ss25aCNlRwPa9EwJzAEvS21P6c4BZDsCkZI
-         abSE7t8qfXdLKCSs29VBIXIj6llZWz1dY0Z/d6Ul6DQ7/VuTl1LSdcDVi/MMTlYaHyDL
-         Px6Gka5hLZxrvXSZHTJjspMxg1KGKPm3jpVj6Ufs01CGZQ8XZtiEDEw9OCD0kp0OnDbj
-         p8llSua0meqeDo3SvDKnw5sCU1ekWhs9f0Lu/IQuaNRncv4GYxnJT7btKsEskcfnZ9rU
-         he0PfLBEXJRAlnTYaC4pHeaJPb/UgkZVjUkYne9WVK1DR3Fb6oEv/Bq1FLagKdYjHOu+
-         CGlQ==
+        bh=fiygXowfj2xS0ANkI4lNzcEmZTYJF85QwdGr+dM89hQ=;
+        b=Zfzm2NJLQUUBNIEYtclgdilQMJQzOysd3ux6hj8s59Mp4CcY8hNh8Sl6vEConTjT03
+         YvZwJMcIJJd1+mSFiskr1rbp+ddSCUYFC23n1XFZVXx07GM2MRGNF/UcXxGFraLKCG8l
+         bKfk772xjpTSJwTbGqkw0kM0qXQUiWf9AQhtiL4aA+MQQqAhmHtG0AW6CDTZQ4f4CsNZ
+         OKvONldZeT0r+TCsk1LJN0xBy7vSMHlDBkp3Brlrr6CKjywsMH7Yz36XgpNnBNpY6H40
+         SZYXqfeqEqGrnueU5lHn+G1oAqt9R+0KLYcmWke5aBehNm9Dr06aeTvmj+KmDr/MzaFT
+         Xt6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731096301; x=1731701101;
+        d=1e100.net; s=20230601; t=1731096308; x=1731701108;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nclpl2L8R9cKrulz3mBbfGGvQIswT/qMcBsWKZFoMYo=;
-        b=awiIFyBIOuYNVjjC2XoLS8FhiAzjvnn85hwq15DROhKqo+G9e79wNYP3+0G06sC/yH
-         6rUT+jg3VAtVAA4F/Fwnv+Ol0n48v9AAzX56BBzrAY2Yyo3/7E1G5Vl7la9wBkTWIC10
-         a9WBuh2JaDA4Flq4iy9Y51g4Z8p5T7O/iKxKvxuLoSE1NL0vuckw36E4lT4soyM+rYIU
-         0jKw15c1MnNQV68U0tPyi5tY3podNGKZXoTqmva+/TXVBCx/rVF06ahtpd98IZRBkZbK
-         HKJkDXlHIcji3AHk+zhwUcwIL9/i1o3RM7bWBS8o0gX46zvAapiDYKJLiT0D/g0B6FjH
-         hfTw==
-X-Forwarded-Encrypted: i=1; AJvYcCUXkd/oEdTfZbMp64qvZY3kP/LiOq7abKjzDueBWtaCK1sMSmAuc8D3t/ij50TRj7g3H2PpPx+H6oRlY/T3@vger.kernel.org, AJvYcCW3CBIVP+7uquzHhpUK9+wzwWI7ksIXoorV05669K1O+itYyPZhKXPLDUqkpGI3vBQLydluBkczfJqY@vger.kernel.org, AJvYcCWSuH2Q828NJgVCx3gI4U/TU3FGfCHX10VXHg8HYHcy3MWnA/BHVqokK4Tl4Ltk9lRyQ44E4xhxTt/0Xos8A7j+@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1Jb84P1r0w3VSJXweLSfdkJKTEYMTWxJ03HAZrgfioqinACh/
-	i3BVb/3Jvh4UIVWLMXvXfEpwUQSqHhr/8VGhCtgGV8iAU25GcsqY
-X-Google-Smtp-Source: AGHT+IGKkfE9EL1XG9TLXqRwviI1pwSILrbF7A+LIucI2Aznsbdg8kvZmaMir9TyW26Em6L1AGlazg==
-X-Received: by 2002:a05:6a00:1150:b0:71e:cc7:c507 with SMTP id d2e1a72fcca58-7241338bda9mr5333661b3a.23.1731096300408;
-        Fri, 08 Nov 2024 12:05:00 -0800 (PST)
+        bh=fiygXowfj2xS0ANkI4lNzcEmZTYJF85QwdGr+dM89hQ=;
+        b=f0wVhTU09MVEvAvoEec8ZGppMqDdiAFqgVTd74J199xpQGApvpKTyYxutkWmZVqLhK
+         eQdlpLxr3VRw+tq38ITatZ53fcf/VnZh1XqC13uyvmy6urJtCf3lxvhxc8I5vtxsQzx1
+         NloVQST+r2CwEpup3HrptzgIgLdHAO6QTJkQwy6Da9f9lyK2891AHdBmx6OuRXud36Xk
+         d+p6ay2t0WRYOrqXHyVGc+3PHzGL8/bg6b85vhGie09jY+iOSGai7kijIC+zelJL+G8B
+         JBl+Es5kf0yU5XfWFhAQE3KxUr0c8CCcRTVERuPeqJsJ6MYKlJI5/qD/tAmmKn0S3RLC
+         gfiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUwzoZM1aOCXK/5sYbtk66iqj1uVJNBY6UYx/cMWsSgma9NylAM3c4f0WH+b83c/kJeMSxE2aygUOoNNnabxjCf@vger.kernel.org, AJvYcCW9grBO5zPAfdxg3DJiCPSHuzxtFMQHhtSxv9ugyy2ympnyalTQ2icX5CQDJM1XKTBtAm6JPPlph5Gq@vger.kernel.org, AJvYcCX8O0i3FhG0WOA8H/Al5IalWQdxkaUXRQEEQ24G7n/8hWGEL5FinhbaiASqnjxJjTFYkrj3UmXwH3NmnvJ0@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywtpu1wVKRIgx5uY/9xi+Pg/pEHr/1u1UzOG2hrl7/2RCnOrS0j
+	/CK53uOd31yHql2RRI/HxynNkysuATSrtirgVkle8vayTsxnKVzl
+X-Google-Smtp-Source: AGHT+IHFVcWsj4wQxT4Lvx+sGGBEcUtl52l528efG+ad5oEcb6k9RWZbAuObnKv7LbWbEMApNtaWGQ==
+X-Received: by 2002:a05:6a00:1a89:b0:71e:2a0:b0b8 with SMTP id d2e1a72fcca58-7241327d630mr4861845b3a.1.1731096308018;
+        Fri, 08 Nov 2024 12:05:08 -0800 (PST)
 Received: from mighty.kangaroo-insen.ts.net ([120.88.183.182])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72407a56a30sm4323418b3a.188.2024.11.08.12.04.53
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72407a56a30sm4323418b3a.188.2024.11.08.12.05.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Nov 2024 12:04:59 -0800 (PST)
+        Fri, 08 Nov 2024 12:05:07 -0800 (PST)
 From: Mithil Bavishi <bavishimithil@gmail.com>
 To: Aaro Koskinen <aaro.koskinen@iki.fi>,
 	Andreas Kemnade <andreas@kemnade.info>,
@@ -95,9 +95,9 @@ Cc: linux-omap@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	linux-hardening@vger.kernel.org
-Subject: [PATCH v3 01/10] ARM: dts: twl6032: Add DTS file for TWL6032 PMIC
-Date: Fri,  8 Nov 2024 20:04:30 +0000
-Message-ID: <20241108200440.7562-2-bavishimithil@gmail.com>
+Subject: [PATCH v3 02/10] dt-bindings: vendor-prefixes: Add Doestek
+Date: Fri,  8 Nov 2024 20:04:31 +0000
+Message-ID: <20241108200440.7562-3-bavishimithil@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241108200440.7562-1-bavishimithil@gmail.com>
 References: <20241108200440.7562-1-bavishimithil@gmail.com>
@@ -109,116 +109,27 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a dedicated DTS file for the TWL6032 PMIC (Phoenix Lite). Already
-has driver support with TWL6030 (Phoenix) since both of them are so
-similar, some nodes can be reused from TWL6030 as well.
-
-This can be included in the board files like twl6030.
-Example:
-...
-&i2c1 {
-    twl: twl@48 {
-        reg = <0x48>;
-        interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
-        interrupt-controller;
-        interrupt-parent = <&gic>;
-    };
-};
-
-/include/ "twl6032.dtsi"
-...
-
-Used in devices like samsung-espresso, amazon-jem, epson-embt2ws etc.
+Add vendor prefix for Doestek Co., Ltd.
+Link: http://www.doestek.co.kr/
 
 Signed-off-by: Mithil Bavishi <bavishimithil@gmail.com>
 ---
- arch/arm/boot/dts/ti/omap/twl6032.dtsi | 77 ++++++++++++++++++++++++++
- 1 file changed, 77 insertions(+)
- create mode 100644 arch/arm/boot/dts/ti/omap/twl6032.dtsi
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boot/dts/ti/omap/twl6032.dtsi b/arch/arm/boot/dts/ti/omap/twl6032.dtsi
-new file mode 100644
-index 000000000..d599a2ca6
---- /dev/null
-+++ b/arch/arm/boot/dts/ti/omap/twl6032.dtsi
-@@ -0,0 +1,77 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Integrated Power Management Chip
-+ * https://www.ti.com/lit/ds/symlink/twl6032.pdf
-+ */
-+
-+&twl {
-+	compatible = "ti,twl6032";
-+	interrupt-controller;
-+	#interrupt-cells = <1>;
-+
-+	rtc {
-+		compatible = "ti,twl4030-rtc";
-+		interrupts = <11>;
-+	};
-+
-+	vio: regulator-vio {
-+		compatible = "ti,twl6032-vio";
-+	};
-+
-+	ldo1: regulator-ldo1 {
-+		compatible = "ti,twl6032-ldo1";
-+	};
-+
-+	ldo2: regulator-ldo2 {
-+		compatible = "ti,twl6032-ldo2";
-+	};
-+
-+	ldo3: regulator-ldo3 {
-+		compatible = "ti,twl6032-ldo3";
-+	};
-+
-+	ldo4: regulator-ldo4 {
-+		compatible = "ti,twl6032-ldo4";
-+	};
-+
-+	ldo5: regulator-ldo5 {
-+		compatible = "ti,twl6032-ldo5";
-+	};
-+
-+	ldo6: regulator-ldo6 {
-+		compatible = "ti,twl6032-ldo6";
-+	};
-+
-+	ldoln: regulator-ldoln {
-+		compatible = "ti,twl6032-ldoln";
-+	};
-+
-+	ldousb: regulator-ldousb {
-+		compatible = "ti,twl6032-ldousb";
-+	};
-+
-+	smps4: regulator-smps4 {
-+		compatible = "ti,twl6032-smps4";
-+	};
-+
-+	gpadc: gpadc {
-+		compatible = "ti,twl6032-gpadc";
-+		interrupts = <3>;
-+		#io-channel-cells = <1>;
-+	};
-+
-+	twl_usb_comparator: usb-comparator {
-+		compatible = "ti,twl6030-usb";
-+		interrupts = <4>, <10>;
-+	};
-+
-+	twl_pwm: pwm {
-+		compatible = "ti,twl6030-pwm";
-+		#pwm-cells = <2>;
-+	};
-+
-+	twl_pwmled: pwmled {
-+		compatible = "ti,twl6030-pwmled";
-+		#pwm-cells = <2>;
-+	};
-+};
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index b320a39de..3ef4c948a 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -392,6 +392,8 @@ patternProperties:
+     description: D-Link Corporation
+   "^dmo,.*":
+     description: Data Modul AG
++  "^doestek,*":
++    description: Doestek Co., Ltd.
+   "^domintech,.*":
+     description: Domintech Co., Ltd.
+   "^dongwoon,.*":
 -- 
 2.43.0
 
