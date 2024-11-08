@@ -1,106 +1,62 @@
-Return-Path: <linux-omap+bounces-2636-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2637-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB079C263C
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 21:08:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B51539C2800
+	for <lists+linux-omap@lfdr.de>; Sat,  9 Nov 2024 00:15:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3F4EB2360F
-	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 20:08:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14541B22C41
+	for <lists+linux-omap@lfdr.de>; Fri,  8 Nov 2024 23:15:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 219341C3316;
-	Fri,  8 Nov 2024 20:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1801E22FB;
+	Fri,  8 Nov 2024 23:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mbl23+1r"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="UE0VzJsJ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C831F26CC;
-	Fri,  8 Nov 2024 20:06:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE2B206E98;
+	Fri,  8 Nov 2024 23:15:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731096374; cv=none; b=W4D/ht0wmr4Tm2DblcBJsZTvCyUK8Vs3sg1JnOp8wC6Vc9YQdib57in52d4dObNXLlMeDoR1fedI6ensrtD9Zqwh5pICjDjVsea5bLsVx4DyKMSaLYre74+LRNdWgYWzSZKifFPXiiZUrkmFzSxXl6swj/8FrMHaQebsskjBL9o=
+	t=1731107705; cv=none; b=Y9V/+Z5thG3YNe4herZotg4VSxlxR4JGhAyAf+M4cf17TV+2LvuMAflbSWhijYtvcT5p+Y/d1NdexET3sqCHETXd2puxIqbnVmpyhdcxLp/Z5+ULK12dzb/ejYAwOD6EeWTkcEK8+5bMVmnfyXsZoLN6HKWp7rjngOv2ptBbl+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731096374; c=relaxed/simple;
-	bh=NzdEgMADxOb7swHOQ+PPR8bxpBS6jH60Rb6WdCmK4cw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EqTDQocPOFMe5RTQMNFbU07TEUJBs1CP9qaBygvPpV6qNFS6ojQQNfoRlGwp4LG6VN1GUGNoBZ0pzn083nCtY8aKbNSf3PW9/o8RdGY7hkpyAF6xyp6G21mrlDV6XJg8YracJS0HUamXlbaAQPWtxVZWBvaot0LCgja+2ZM0Bl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mbl23+1r; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-72410cc7be9so1772380b3a.0;
-        Fri, 08 Nov 2024 12:06:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731096373; x=1731701173; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e+pxJEv6PwGkDmgf7vlb0xaf/TsB7THqnGutHjf9Yl8=;
-        b=mbl23+1rw+8ijRg5ZKBNHyk4kRRUijcsq8mBDLT4Me5pPrah/mkbyUJX8Bwl4f5tG6
-         FaHFymLG2eKzH8V0sqpn7uuToLfYCbpoRQJRLo3XRwlklb2zNDnvioEZwTAInaL9Sdoq
-         s3S9GUlaiN3b4wcmncB9L83RqjlzTwv8cePXCbUyij1p4N0hPT8i7th01bPrVC7qWIqM
-         Kbly6hN+xpClxIoXk0RxajeyE2u1SbDCMXuWYzhQtmM+a2vrCF7IbCKTVwhIJC2bUOx+
-         PrJKpbUhdhrio42f6NT/gqSvePZZjXFmAWUiiVPmrerCCknexIHB1JLuTmtHuvKRkr7h
-         N+Fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731096373; x=1731701173;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=e+pxJEv6PwGkDmgf7vlb0xaf/TsB7THqnGutHjf9Yl8=;
-        b=Kt5DS1k0JIxjni36AnXjGdr87QdhXeHP1gDAaPMDXizql2hif4kiCeC1adt2hGoaVk
-         kiH5Cl+k7+RxTxmGaoqKDXbzTe0Aqm8gEC4hscGHZOTTiyOpOlwfPoQWofZX/yidfF0p
-         KUqJEG9xf7oee7wA6M5hMLfK8pYszRzVpMGwB7ZJ7il1sOZGtY61A8p1M7/xO/aHMx1y
-         vHzyHUjjaGdcZwf50+gERjFdpuGTiHYNsiPCw7zjTwiUHE4Br72fBOUSJfzkqhKfZbh3
-         VGaIMYQtAj6T9LhFjLMbl+fTQQClmDOnY38JipA4O54r5kqhqRJYQnjG8+8S0uMBzbkM
-         uz5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUoST+l0cYnaON8JO8BVN/hz8AU2dil/HDdTI8AVRv6PUtMO+c+4aP5JeYyJUpg9Fh6Ev3PvvgJziDkKtqTnAhB@vger.kernel.org, AJvYcCXFUMcQvlSHONfnhJjzJkDvGxWCAUyMdsHC/MBqmlhmF98vgz3ZjHWkICKV+c244RLpNx+/fDx54InfDlM5@vger.kernel.org, AJvYcCXPfCBvoJI4zJm+fCWrHMMZrtdK9oA01e4S2aTfAvRn+mrHIPY+LX4uQks6vCLMB5u/PfqNCL3n5ZT5@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx57qAHbPoNYY18fxyMvueJ3of8FCgCpP46ilV4Ns1IrqusNDeu
-	Hdo/uKLFqarkOmzOI/LNjNA/Zw05G29ob9HbG7hdFVAM318oWwi8
-X-Google-Smtp-Source: AGHT+IFwHvYMTTEotxw6SwVshq1ogJkCQXDcpNbNEFSr+fROy51ZN1A2AXf0NpMGBrlyOm6+qYerlg==
-X-Received: by 2002:a05:6a20:7faa:b0:1d0:2531:b2b9 with SMTP id adf61e73a8af0-1dc22b00bd8mr5826318637.36.1731096372599;
-        Fri, 08 Nov 2024 12:06:12 -0800 (PST)
-Received: from mighty.kangaroo-insen.ts.net ([120.88.183.182])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72407a56a30sm4323418b3a.188.2024.11.08.12.06.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Nov 2024 12:06:12 -0800 (PST)
-From: Mithil Bavishi <bavishimithil@gmail.com>
-To: Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Mithil Bavishi <bavishimithil@gmail.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Thierry Reding <thierry.reding@gmail.com>
-Cc: linux-omap@vger.kernel.org,
-	devicetree@vger.kernel.org,
+	s=arc-20240116; t=1731107705; c=relaxed/simple;
+	bh=wlyTTPORybbicCpr69x5bfrmf1XYOj7Mmn5DvMXtk4E=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=UFIXliTterezR+wnmsUe89xLUA34aKxmEoZPeY050ja510VOSoFffrYCVx/gNxnpzDDHzq3fk/BGZrSwRziuxzibcBMKDNFSI/QyHGkGIqYg4yRCGo8cImBtE0k3Ufr8kQ2CTIuqXrYffknW8B7d6S49Pfyl6D964bLSqNftVUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=UE0VzJsJ; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=From:Sender:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=wplBxjlGm3yRsOh0Lh/JZT69hLOASFhoN7GX1UmOd/U=; b=UE0VzJsJ7vT74mlg9gBDhIdTju
+	MbC0GzJbBKnu84tIg3PxPFoWm+EI7t18RQHSUOFRDmuqOb5s/GXBXZrzHwsBKTNqMPmjRrAdCPUh+
+	adR6z1ZfKPmsrnUT27oo2PhnknnjNSZErEYDn9Tmu3iBDkVdw7uV+0+Ire2yVjtBR6WnJ2gZhr+Or
+	wlTalKIyfEX67bYpz5yeV+zkIzZh5Xsmf5jQCy5MDi0J/eEFVF22SeleJLd4ymKF/kNicZJx1WswH
+	RvhTO99w6xMJVGog+TaUSKe7vMmb5nPfNKN9B/ZcQnLLs5PphSJH03yqoouCWQSyIKEE5sHET1TKH
+	klcoTavg==;
+From: Andreas Kemnade <andreas@kemnade.info>
+To: linux-clk@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH v3 10/10] ARM: dts: ti: omap: samsung-espresso10: Add initial support for Galaxy Tab 2 10.1
-Date: Fri,  8 Nov 2024 20:04:39 +0000
-Message-ID: <20241108200440.7562-11-bavishimithil@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241108200440.7562-1-bavishimithil@gmail.com>
-References: <20241108200440.7562-1-bavishimithil@gmail.com>
+	Michael Turquette <mturquette@baylibre.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	devicetree@vger.kernel.org,
+	Stephen Boyd <sboyd@kernel.org>,
+	linux-omap@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Tero Kristo <kristo@kernel.org>,
+	Rob Herring <robh@kernel.org>
+Subject: [PATCH v2] dt-bindings: clock: ti: Convert mux.txt to json-schema
+Date: Sat,  9 Nov 2024 00:14:53 +0100
+Message-Id: <20241108231453.247660-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -109,123 +65,254 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Create a device tree for the 10 inch variants (P5100, P5110, P5113)
+Convert the OMAP mux clock device tree binding to json-schema.
+Specify the creator of the original binding as a maintainer.
+Choose GPL-only license because original binding was also GPL.
 
-Signed-off-by: Mithil Bavishi <bavishimithil@gmail.com>
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
 ---
- .../dts/ti/omap/omap4-samsung-espresso10.dts  | 102 ++++++++++++++++++
- 1 file changed, 102 insertions(+)
- create mode 100644 arch/arm/boot/dts/ti/omap/omap4-samsung-espresso10.dts
+Changes in V2:
+- some orthography fixes
+- fix addresses in example
+- no prose for defaults
+- constraints for latch-bit
 
-diff --git a/arch/arm/boot/dts/ti/omap/omap4-samsung-espresso10.dts b/arch/arm/boot/dts/ti/omap/omap4-samsung-espresso10.dts
+ .../bindings/clock/ti/composite.txt           |   2 +-
+ .../devicetree/bindings/clock/ti/mux.txt      |  78 -----------
+ .../bindings/clock/ti/ti,mux-clock.yaml       | 125 ++++++++++++++++++
+ 3 files changed, 126 insertions(+), 79 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/clock/ti/mux.txt
+ create mode 100644 Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml
+
+diff --git a/Documentation/devicetree/bindings/clock/ti/composite.txt b/Documentation/devicetree/bindings/clock/ti/composite.txt
+index b02f22490dcb..238e6f7d74f8 100644
+--- a/Documentation/devicetree/bindings/clock/ti/composite.txt
++++ b/Documentation/devicetree/bindings/clock/ti/composite.txt
+@@ -16,7 +16,7 @@ merged to this clock. The component clocks shall be of one of the
+ "ti,*composite*-clock" types.
+ 
+ [1] Documentation/devicetree/bindings/clock/clock-bindings.txt
+-[2] Documentation/devicetree/bindings/clock/ti/mux.txt
++[2] Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml
+ [3] Documentation/devicetree/bindings/clock/ti/ti,divider-clock.yaml
+ [4] Documentation/devicetree/bindings/clock/ti/gate.txt
+ 
+diff --git a/Documentation/devicetree/bindings/clock/ti/mux.txt b/Documentation/devicetree/bindings/clock/ti/mux.txt
+deleted file mode 100644
+index cd56d3c1c09f..000000000000
+--- a/Documentation/devicetree/bindings/clock/ti/mux.txt
++++ /dev/null
+@@ -1,78 +0,0 @@
+-Binding for TI mux clock.
+-
+-This binding uses the common clock binding[1].  It assumes a
+-register-mapped multiplexer with multiple input clock signals or
+-parents, one of which can be selected as output.  This clock does not
+-gate or adjust the parent rate via a divider or multiplier.
+-
+-By default the "clocks" property lists the parents in the same order
+-as they are programmed into the register.  E.g:
+-
+-	clocks = <&foo_clock>, <&bar_clock>, <&baz_clock>;
+-
+-results in programming the register as follows:
+-
+-register value		selected parent clock
+-0			foo_clock
+-1			bar_clock
+-2			baz_clock
+-
+-Some clock controller IPs do not allow a value of zero to be programmed
+-into the register, instead indexing begins at 1.  The optional property
+-"index-starts-at-one" modified the scheme as follows:
+-
+-register value		selected clock parent
+-1			foo_clock
+-2			bar_clock
+-3			baz_clock
+-
+-The binding must provide the register to control the mux. Optionally
+-the number of bits to shift the control field in the register can be
+-supplied. If the shift value is missing it is the same as supplying
+-a zero shift.
+-
+-[1] Documentation/devicetree/bindings/clock/clock-bindings.txt
+-
+-Required properties:
+-- compatible : shall be "ti,mux-clock" or "ti,composite-mux-clock".
+-- #clock-cells : from common clock binding; shall be set to 0.
+-- clocks : link phandles of parent clocks
+-- reg : register offset for register controlling adjustable mux
+-
+-Optional properties:
+-- clock-output-names : from common clock binding.
+-- ti,bit-shift : number of bits to shift the bit-mask, defaults to
+-  0 if not present
+-- ti,index-starts-at-one : valid input select programming starts at 1, not
+-  zero
+-- ti,set-rate-parent : clk_set_rate is propagated to parent clock,
+-  not supported by the composite-mux-clock subtype
+-- ti,latch-bit : latch the mux value to HW, only needed if the register
+-  access requires this. As an example, dra7x DPLL_GMAC H14 muxing
+-  implements such behavior.
+-
+-Examples:
+-
+-sys_clkin_ck: sys_clkin_ck@4a306110 {
+-	#clock-cells = <0>;
+-	compatible = "ti,mux-clock";
+-	clocks = <&virt_12000000_ck>, <&virt_13000000_ck>, <&virt_16800000_ck>, <&virt_19200000_ck>, <&virt_26000000_ck>, <&virt_27000000_ck>, <&virt_38400000_ck>;
+-	reg = <0x0110>;
+-	ti,index-starts-at-one;
+-};
+-
+-abe_dpll_bypass_clk_mux_ck: abe_dpll_bypass_clk_mux_ck@4a306108 {
+-	#clock-cells = <0>;
+-	compatible = "ti,mux-clock";
+-	clocks = <&sys_clkin_ck>, <&sys_32k_ck>;
+-	ti,bit-shift = <24>;
+-	reg = <0x0108>;
+-};
+-
+-mcbsp5_mux_fck: mcbsp5_mux_fck {
+-	#clock-cells = <0>;
+-	compatible = "ti,composite-mux-clock";
+-	clocks = <&core_96m_fck>, <&mcbsp_clks>;
+-	ti,bit-shift = <4>;
+-	reg = <0x02d8>;
+-};
+diff --git a/Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml b/Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml
 new file mode 100644
-index 000000000..70bbef468
+index 000000000000..4a6f349ba2b0
 --- /dev/null
-+++ b/arch/arm/boot/dts/ti/omap/omap4-samsung-espresso10.dts
-@@ -0,0 +1,102 @@
-+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-+/dts-v1/;
++++ b/Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml
+@@ -0,0 +1,125 @@
++# SPDX-License-Identifier: GPL-2.0-only
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/clock/ti/ti,mux-clock.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+#include "omap4-samsung-espresso-common.dtsi"
-+#include <dt-bindings/power/summit,smb347-charger.h>
-+/ {
-+	model = "Samsung Galaxy Tab 2 (10 inch)";
-+	compatible = "samsung,espresso10", "ti,omap4430", "ti,omap4";
++title: Texas Instruments mux clock
 +
-+	i2c-gpio-5 {
-+		smb347: charger@6 {
-+			compatible = "summit,smb347";
-+			reg = <0x6>; // 0x0C >> 1
-+			interrupt-parent = <&gpio2>;
-+			interrupts = <0 IRQ_TYPE_EDGE_BOTH>;
++maintainers:
++  - Tero Kristo <kristo@kernel.org>
 +
-+			summit,enable-usb-charging;
-+			summit,enable-charge-control = <SMB3XX_CHG_ENABLE_SW>;
-+			summit,chip-temperature-threshold-celsius = <120>;
-+			summit,usb-current-limit-microamp = <1800000>;
-+		};
-+	};
++description: |
++  This clock assumes a register-mapped multiplexer with multiple inpt clock
++  signals or parents, one of which can be selected as output. This clock does
++  not gate or adjust the parent rate via a divider or multiplier.
 +
-+	backlight: backlight {
-+		compatible = "pwm-backlight";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&backlight_pins>;
-+		pwms = <&pwm10 0 1600 0>;
-+		power-supply = <&reg_lcd>;
-+		enable-gpios = <&gpio3 31 GPIO_ACTIVE_HIGH>;
-+		brightness-levels = <0 4 8 16 32 64 128 255>;
-+		default-brightness-level = <7>;
-+	};
++  By default the "clocks" property lists the parents in the same order
++  as they are programmed into the register.  E.g:
 +
-+	panel {
-+		compatible = "samsung,ltn101al03", "panel-lvds";
-+		power-supply = <&reg_lcd>;
-+		width-mm = <223>;
-+		height-mm = <125>;
-+		data-mapping = "vesa-24";
-+		backlight = <&backlight>;
++    clocks = <&foo_clock>, <&bar_clock>, <&baz_clock>;
 +
-+		panel-timing {
-+			clock-frequency = <69818000>;
++  Results in programming the register as follows:
 +
-+			hback-porch = <64>;
-+			hactive = <1280>;
-+			hfront-porch = <16>;
-+			hsync-len = <48>;
++  register value   selected parent clock
++  0                foo_clock
++  1                bar_clock
++  2                baz_clock
 +
-+			vback-porch = <11>;
-+			vactive = <800>;
-+			vfront-porch = <16>;
-+			vsync-len = <3>;
++  Some clock controller IPs do not allow a value of zero to be programmed
++  into the register, instead indexing begins at 1.  The optional property
++  "index-starts-at-one" modified the scheme as follows:
 +
-+			hsync-active = <0>;
-+			vsync-active = <0>;
-+			de-active = <1>;
-+			pixelclk-active = <1>;
-+		};
++  register value   selected clock parent
++  1                foo_clock
++  2                bar_clock
++  3                baz_clock
 +
-+		port {
-+			panel_in: endpoint {
-+				remote-endpoint = <&bridge_out>;
-+			};
-+		};
-+	};
-+};
++  The binding must provide the register to control the mux. Optionally
++  the number of bits to shift the control field in the register can be
++  supplied. If the shift value is missing it is the same as supplying
++  a zero shift.
 +
-+&i2c3 {
-+	touchscreen: synaptics-rmi4-i2c@20 {
-+		compatible = "syna,rmi4-i2c";
-+		reg = <0x20>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
++properties:
++  compatible:
++    enum:
++      - ti,mux-clock
++      - ti,composite-mux-clock
 +
-+		interrupt-parent = <&gpio2>;
-+		interrupts = <14 IRQ_TYPE_EDGE_FALLING>;
++  "#clock-cells":
++    const: 0
 +
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&touch_pins>;
++  clocks: true
 +
-+		avdd-supply = <&reg_touch_ldo_en>;
-+		vdd-supply = <&ldo6>;
++  clock-output-names:
++    maxItems: 1
 +
-+		syna,reset-delay-ms = <200>;
-+		syna,startup-delay-ms = <200>;
++  reg:
++    maxItems: 1
 +
-+		touchscreen-size-x = <1279>;
-+		touchscreen-size-y = <799>;
++  ti,bit-shift:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      Number of bits to shift the bit-mask
++    maximum: 31
++    default: 0
 +
-+		rmi4-f01@1 {
-+			reg = <0x01>;
-+			syna,nosleep-mode = <1>;
-+		};
++  ti,index-starts-at-one:
++    type: boolean
++    description:
++      Valid input select programming starts at 1, not zero
 +
-+		rmi4-f11@11 {
-+			reg = <0x11>;
-+			syna,sensor-type = <1>;
-+		};
-+	};
-+};
++  ti,set-rate-parent:
++    type: boolean
++    description:
++      clk_set_rate is propagated to parent clock,
++      not supported by the composite-mux-clock subtype.
++
++  ti,latch-bit:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      Latch the mux value to HW, only needed if the register
++      access requires this. As an example, dra7x DPLL_GMAC H14 muxing
++      implements such behavior.
++    maximum: 31
++
++if:
++  properties:
++    compatible:
++      contains:
++        const: ti,composite-mux-clock
++then:
++  properties:
++    ti,set-rate-parent: false
++
++required:
++  - compatible
++  - "#clock-cells"
++  - clocks
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    bus {
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      clock-controller@110 {
++        #clock-cells = <0>;
++        compatible = "ti,mux-clock";
++        clocks = <&virt_12000000_ck>, <&virt_13000000_ck>, <&virt_16800000_ck>;
++        reg = <0x0110>;
++        ti,index-starts-at-one;
++        ti,set-rate-parent;
++      };
++
++      clock-controller@120 {
++        #clock-cells = <0>;
++        compatible = "ti,composite-mux-clock";
++        clocks = <&core_96m_fck>, <&mcbsp_clks>;
++        ti,bit-shift = <4>;
++        reg = <0x0120>;
++      };
++    };
 -- 
-2.43.0
+2.39.5
 
 
