@@ -1,94 +1,133 @@
-Return-Path: <linux-omap+bounces-2643-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2644-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A969C2BDF
-	for <lists+linux-omap@lfdr.de>; Sat,  9 Nov 2024 11:35:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 838639C2BE6
+	for <lists+linux-omap@lfdr.de>; Sat,  9 Nov 2024 11:36:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5379A1C20F12
-	for <lists+linux-omap@lfdr.de>; Sat,  9 Nov 2024 10:35:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E676B2217C
+	for <lists+linux-omap@lfdr.de>; Sat,  9 Nov 2024 10:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3170152166;
-	Sat,  9 Nov 2024 10:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FE531547E2;
+	Sat,  9 Nov 2024 10:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uk3lXw5J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DO/ZCDai"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1D4233D73;
-	Sat,  9 Nov 2024 10:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB49E1537D4;
+	Sat,  9 Nov 2024 10:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731148501; cv=none; b=OnqJe6fm7tJJ6/QLdVu21shLrl98xVMxmo/S+/cyRZfQDZUPcPO7S2XKjbKnECnPix0I4Kb43eQa6lSwXEo5LoQmKtLiyYcUq23zQni/c1+Qq/LqPRz7RfCyqwXMq1fQDfq0o0K27xSLlrlFCh4a2dAEB/lbWeFCGE9e2LkbMuU=
+	t=1731148551; cv=none; b=Fs43z12HHTRzpr6blLdeIEygXOQ2tmbpHVeVX2immb+zwaKLhrklmWaScYKc6FB/f8SLsAsAfK1YVgmVzqzNqKrEiNmXZNccJ7pPmX5oza5pq7PrM4DLeLf9/Qt4TglEBKzqPnpWl7c0Y6ZhY+L/XrWkzqPp/2uCZbDVb4sIIeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731148501; c=relaxed/simple;
-	bh=nq6mooPKeU7DUSC5ySOB0ohGQFdAzM2NupJ0qrZLsH4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QDJl6+9ObsG6FODtKAsyKfiH+X33PLpEg4THWUFsI+LLtC65xz2drWnv7KoghyNNxaIEVF14Iv9+bwcxhN+JxrOMXsodNxN0S11ydmDU1B/snP7Y90+NJ5vRU6WPWxjNFt1DnrsSrff5hbPxfXTvW1v6uc05y746oKAI16tLCmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uk3lXw5J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6FCC4CECE;
-	Sat,  9 Nov 2024 10:35:00 +0000 (UTC)
+	s=arc-20240116; t=1731148551; c=relaxed/simple;
+	bh=jIhhqs6M2vvkxbfLN6sNUL24IiqGNpQgqOkwJlhnBIQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bdQr+8t2nAzxMLn2nCrkfBdDyhbjluwquxH5GCgXbvhyGK3qb7KEiM3uMFBo7SMEv7w13J2hGiVe7G3jUF+O+Nec/ZcYAMXHvOLQ51PfjFDH5oc9CXQcqQH2zVN/b17tygeC+84hAphgtUJSOLp1bdCKHaFVIgrTARORBANnmqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DO/ZCDai; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEC8C4CECE;
+	Sat,  9 Nov 2024 10:35:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731148501;
-	bh=nq6mooPKeU7DUSC5ySOB0ohGQFdAzM2NupJ0qrZLsH4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uk3lXw5JdeGdvzCD3+P5FvUxcuPrLiFLYYYYTUN/3zTpA/u0QOSj86KWb5RoQYwAv
-	 +ytIP31Fzr+I7dRuh4uy8tEGkLWj59n+xj9zpsLfAotuNfW9daWQDb5/PmA1tKgbPe
-	 Gpoh7+2d7u+rgKVPB9UgrDDMpIF9JICohaECDtNjgnFzA1pf7xtQ0CIfEhErJLXVhs
-	 TMOdufcOBaxOXLTWjm5Q2bhO1Jtf0XHJnnuTPwD0TtzQlz7pflY2fSDSSZ1s8Td70l
-	 B1WUtWunm1O1DvK4+J3zMveL5M3INqcyugnkJSWYYgu+Z5zkdYQoR9Tez4MIVPKxfV
-	 qA/gzyWBTwiCg==
-Date: Sat, 9 Nov 2024 11:34:57 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Mithil Bavishi <bavishimithil@gmail.com>
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>, 
-	Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
-	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Jessica Zhang <quic_jesszhan@quicinc.com>, Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, linux-omap@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v3 07/10] dt-bindings: omap: Add Samsung Galaxy Tab 2 7.0
-Message-ID: <duiiumt2ma3g5qbdwedyehtfm45lovjhslmy6idf3xkqroipmv@qpimirp4aptd>
-References: <20241108200440.7562-1-bavishimithil@gmail.com>
- <20241108200440.7562-8-bavishimithil@gmail.com>
+	s=k20201202; t=1731148551;
+	bh=jIhhqs6M2vvkxbfLN6sNUL24IiqGNpQgqOkwJlhnBIQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DO/ZCDai/slql9L4n2S5U0xfY7uG1mtFdk8AKkige9lN7O/iFyhBSzFrgGpyKomhY
+	 xZn3h5FWHCgAikgI8UYlajZDO8kn5ZQakmFtdTRbulHScaO6k5OjIEsHk7w8W7Y4T8
+	 SoTGqGH14+Gtp8p5cxWgCJr53O6AfiZye+0lXOaiMqAixi2lILNJestuErjgO4AWOr
+	 axS2zK1TdJ5rO/cbDsPj9eQVx4+8Hs3ZyeJ90iBlSDX3ALrU2hoeNnDvUk6xBi21dl
+	 xUrpqOmCPqJVqa8O/6lltE3AH8BcxLTPiLyuls2B1QatSw+heNlfKBCqATJH9j1JW2
+	 vj5CBQLtZkCGg==
+Message-ID: <f0c9cffe-e58f-4c1d-af64-cad04e0c5510@kernel.org>
+Date: Sat, 9 Nov 2024 11:35:41 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241108200440.7562-8-bavishimithil@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 09/10] dt-bindings: omap: Add Samsung Galaxy Tab 2 10.1
+To: Mithil Bavishi <bavishimithil@gmail.com>,
+ Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade
+ <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>,
+ Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Jessica Zhang <quic_jesszhan@quicinc.com>,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+ Thierry Reding <thierry.reding@gmail.com>
+Cc: linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-hardening@vger.kernel.org
+References: <20241108200440.7562-1-bavishimithil@gmail.com>
+ <20241108200440.7562-10-bavishimithil@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20241108200440.7562-10-bavishimithil@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Nov 08, 2024 at 08:04:36PM +0000, Mithil Bavishi wrote:
-> Add samsung-espresso7 codename for the 7 inch variant
+On 08/11/2024 21:04, Mithil Bavishi wrote:
+> Add samsung-espresso10 codename for the 10 inch variant
 > 
 > Signed-off-by: Mithil Bavishi <bavishimithil@gmail.com>
 > ---
 >  Documentation/devicetree/bindings/arm/ti/omap.yaml | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/arm/ti/omap.yaml b/Documentation/devicetree/bindings/arm/ti/omap.yaml
-> index 93e04a109..32978dd9e 100644
-> --- a/Documentation/devicetree/bindings/arm/ti/omap.yaml
-> +++ b/Documentation/devicetree/bindings/arm/ti/omap.yaml
-> @@ -138,6 +138,7 @@ properties:
->                - motorola,xyboard-mz617
->                - ti,omap4-panda
->                - ti,omap4-sdp
-> +              - samsung,espresso7
 
-Keep alphabetical order
+Squash it. Really, these are just one liners for similar devices.
 
 Best regards,
 Krzysztof
