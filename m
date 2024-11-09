@@ -1,187 +1,131 @@
-Return-Path: <linux-omap+bounces-2648-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2649-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 611359C2C12
-	for <lists+linux-omap@lfdr.de>; Sat,  9 Nov 2024 12:01:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 775BA9C2E85
+	for <lists+linux-omap@lfdr.de>; Sat,  9 Nov 2024 17:30:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 258C52822E2
-	for <lists+linux-omap@lfdr.de>; Sat,  9 Nov 2024 11:01:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25B321F21157
+	for <lists+linux-omap@lfdr.de>; Sat,  9 Nov 2024 16:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B904178370;
-	Sat,  9 Nov 2024 11:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5720519D880;
+	Sat,  9 Nov 2024 16:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CNbBIdwA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W/IYTpzA"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C461714A1;
-	Sat,  9 Nov 2024 11:00:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9422BB09;
+	Sat,  9 Nov 2024 16:30:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731150026; cv=none; b=tIaMJsumOGa/9ntxp0Q9TG2lY3YEU4LjQq+fOSj+KovbMsmAzItOux88sGfE+mZrUt92jy0b6V8Yk1LuFOZj4uH4dYqvoKx8Lrf83yxNypdU3Wln4UDXQmtOP3rhDvXsgTvRxFLYWnZvVN0iUdlqWWbvlpbOI1CTvvhU9Gh5FY4=
+	t=1731169847; cv=none; b=SxYC/ogeox4HyzFg+rePlBLTmtww7lr1vKtoHwigYQwUAh9xFxHvDNpKMzk8ppR8GT7JJmY0xKf9u9Gdnz0TXQ51sekXb7fxtKoVaBtbfW+jf+QPjDlw18Ps31IirCYjpOP8X1kuJDKU0PpU2GV+Q6gSxS0ashjHg90PoUTk09c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731150026; c=relaxed/simple;
-	bh=C2Ggr7/lBmMYcsEocbkbo4QN88kd46oS6nv6gv/iEgA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Tdk/dATG25qZsglyCT58Eah/YnxsKARFmIPTJjIJ7bcjxWSt+heubNXQegR7RfBFXrym2p8Cgqt9rbePWhd/dMoFCDea+8diu5XmimP5/uizJpvVfQq1tIbRTQEkzQHqQkt8fPxwFAmTILMe7zoSgmLzD1bS63oRBbiOq4dcjdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CNbBIdwA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA51C4CECE;
-	Sat,  9 Nov 2024 11:00:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731150025;
-	bh=C2Ggr7/lBmMYcsEocbkbo4QN88kd46oS6nv6gv/iEgA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=CNbBIdwAm3xS6s+wZ3pr+GNj3QD0NVrazS5bSRsfAn+kui58+vt57tSGgYlTJtj3p
-	 vxwpUW65Hu6ebxD/Gq5RA1ja2++m7Qz6dUgNWtByqvIHCrdlbkY3nm0Zj5u6az5JcS
-	 T4VAuRyZIaQ+WW8Ap2UDf3aiY7pDHOUV+aH6qb4ZxUbjeX5xoLeQFi2N91APv/y7Ot
-	 v2ZgVYMQ87KaBDAelMcPqHK30BqWFXJ6Vx6IjC0Tspm1wPfxKpzxQU1/EHLVTwgoTl
-	 9VzGA7WQ4b6W1tsdgRBDUGl6VDfK0YjNUP7pVr0l/CeiFcYpAllI+H50sPEU4JLGXH
-	 xI3XfRRrG+a4g==
-From: Roger Quadros <rogerq@kernel.org>
-Date: Sat, 09 Nov 2024 13:00:08 +0200
-Subject: [PATCH net-next v3 2/2] net: ethernet: ti: am65-cpsw: enable DSCP
- to priority map for RX
+	s=arc-20240116; t=1731169847; c=relaxed/simple;
+	bh=4nzEV01HerKl13JwtsONKUbgCEH5uMrLa3opUgMD+sU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Cmordxizhg4ehAW0Mv5Zn9ICqvZ62br26BUTLI9+zlZScZTGHQwMZmnS9lnCEnHxrhnL1VOyXv7fPqByenlpLsVek2vJRl7Hhe0e1yVM4qBdMos7hwUJq4NWjb9derhbhVnukv/ij1y45j45882ie9G8ykFhwIz12V9Wz1tA4bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W/IYTpzA; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-20caea61132so28139905ad.2;
+        Sat, 09 Nov 2024 08:30:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731169845; x=1731774645; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+HFu6d4lO7rqvd9CtGtNgYr/2KPNT3OuXCo4vOZrFRY=;
+        b=W/IYTpzAnK/sPvb52bME+7m/QPh9xrSGB4J4kikOvCTutjLs7/OTgPyi1oXiM+Nz4v
+         ldDm6T+Fm2ZB1QJ5L1oQofqaigeJhllEVcU8R+ldtDvQ91xYST7JHrbfx2HB68Co6CSl
+         qxqvhTPwfemjQDwZjJT8yozelN789Q+eHlPBed0jbUlGlo1KOUDyBGRuJjAF54BRtQLQ
+         4HYqRkerD1fTV+bWh2BKLjdc5+zcyxotjvPxEFlVcqTQie02NRlPEouHYSMRaaSWRDev
+         Mu0NM/LHlXKrgSaBSJYhPJRNe2/8M8fv/0vpwhNt3x9kkVidev57svOG66T5LxKG4zVB
+         GNvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731169845; x=1731774645;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+HFu6d4lO7rqvd9CtGtNgYr/2KPNT3OuXCo4vOZrFRY=;
+        b=Xp8jhpsDEVMBxO6tFL6YVKresPgXrTQ7MBTVRvdpuwlM/y4awUUOM/OUyKxQkchYZp
+         VOYW0JYJLIjFpJzLem84e+c9d2kKCHojawf9cACaXrYcLecEdzzzvqn3xFoEW7f1R04S
+         YhYm4H9NA1O+KkpT14umpQYwKZeHYz45GeqK62UbVrbBjDHbnEeGLJUZ+HyOuiEpxzI3
+         roVJZzBm2LM25HND8unB+DPDFYWtazfYSLCwogm06i3SxOljVhWNiEixBvj1KhoE0b5p
+         N4fA61nNQM+1lnLcXR1nRAZv33bWXhiU48wJzJVIacBwcNBz1ngW3PVHKPplxvjlhX7F
+         dJIw==
+X-Forwarded-Encrypted: i=1; AJvYcCUKzNWohtN+/N7BfO/RXetLddzHLPGFUypOgo1N51/VkZVRT7+b8b8Aaos1Bt0drJZF0pVj4DG5yTTdB2k=@vger.kernel.org, AJvYcCUYb78ItN1vhvcGS/CFEbWXzfDNxY+OEGJ6wOvMXqp3UXPVu7TsshA16VLtqAtphqbj43sp9ln/yCdNRQ==@vger.kernel.org, AJvYcCUq5teus+MW11U6Pr63rQNLslWrmtXvbJm56syMgxHDuh15gIAKYxlNpbkq+ynsTWzCe5ZKvN03GGYpmw==@vger.kernel.org, AJvYcCV6WTwy/kMsTl4cR3SY1l+GSTRB14/ArsuWs2ueURzgBXLBwldhQ3Mdbj5gAtvl6qwQUCR6O5HNNRc=@vger.kernel.org, AJvYcCWBgv+eMtn5hSTiMJlBCT+kzthf0UeusLzYGwcaXka3YIqxJqM+oPhLNXPPu0IpM/dwzclFtMCf3KIU/sw=@vger.kernel.org, AJvYcCWPdstUmWRWJgYQKIo21l5cWyHvuoXlhgJ+T5iXz0JwITLY5ii4gF3MUGLmzIsXMFfBcIXb6sNVIhX9cMf/OGss9Xw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLltKm/zeLk+pBondPtNaQTcN0wcaevBBX+HMoCU1IniDDdY4z
+	JOA1VcP5ECYKWRMWUns0Gfn4RGUGp4mIusmzMhTvrgzE4Go4kTjY
+X-Google-Smtp-Source: AGHT+IGGs2S0yCDvHRz6lhphL26+ZgfU8grAgZs942pwHOPtldd6rtgtD1s1xn3JASfB0aCkY4pxLg==
+X-Received: by 2002:a17:902:ea10:b0:210:fce4:11db with SMTP id d9443c01a7336-21183517ca8mr100546255ad.22.1731169844727;
+        Sat, 09 Nov 2024 08:30:44 -0800 (PST)
+Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177e6a3f4sm47858475ad.234.2024.11.09.08.30.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 09 Nov 2024 08:30:43 -0800 (PST)
+Message-ID: <3be2547e-d987-4987-9d75-30bf81cfe6cd@gmail.com>
+Date: Sat, 9 Nov 2024 08:30:40 -0800
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241109-am65-cpsw-multi-rx-dscp-v3-2-1cfb76928490@kernel.org>
-References: <20241109-am65-cpsw-multi-rx-dscp-v3-0-1cfb76928490@kernel.org>
-In-Reply-To: <20241109-am65-cpsw-multi-rx-dscp-v3-0-1cfb76928490@kernel.org>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: linux-omap@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, srk@ti.com, Pekka Varis <p-varis@ti.com>, 
- Roger Quadros <rogerq@kernel.org>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3478; i=rogerq@kernel.org;
- h=from:subject:message-id; bh=C2Ggr7/lBmMYcsEocbkbo4QN88kd46oS6nv6gv/iEgA=;
- b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBnL0C/p93EJarGcx0+FJBWemE0yLPM2z20HXQIa
- aYHJxbEwvSJAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCZy9AvwAKCRDSWmvTvnYw
- k29bEADKJNXfzn+YvxF+JuefXvuYT2LJBi7Qms8XonKOcs3hnOQsdAwJoFZV3fLHrIWN9PLvJel
- tMc58bXPRsgZ8nRGAKCV8zReWoVIx97bXBqpiPlMpW4KbiiqqjvL+2f4zkkXP8mer2NWN8m2Vvv
- UqSzHonhYSLvf17laJQLzbo8T6B22v9hS4GMZip63e42+AfkbWM0ORyuScnOhZh/Ec7JZQttq2I
- aQb97TRzCgeOIZ1g3sRllJfxTlbxhpeZ+pi/70BhoqVg0vf55sZEg58HBkfp10OG8jnETAFc+y8
- hH8ijX8Voeyu/Eifakh+sDdOWmX+Jr6VlE9kYugmr3VMWfASRzdI4+6A5NWhSz6RhKkC1sweZpn
- fq7kiEePmyavQBXJzy69mlurNdcLikgM29Z25OipCk31Izk46dl9OmB6Of9f2dHmOXD13LJZX5A
- 52fpub8Z8ri3oZGOX4uZ/GDH3bYrs+BchP4wAaWlKQfg0nrMdCH4FcgPObgfIMD+lj07mzrdBaZ
- +M5QuG5oKKeNBR1qI/GDUzOgSifXvRlzxQup0y9tMzrypVmmDC4eWMY9L7bZJFjc8U/QYqX5lvX
- vAEoQaAu0OJVlDYr2JkJVi+u4jmCQjwyF5R2uN5jgZ3Rrkr+o3ghDnH8aM7jls2lshKETSQ5+iE
- SKsV2xB6qP+9x0Q==
-X-Developer-Key: i=rogerq@kernel.org; a=openpgp;
- fpr=412165D44C9F52780FAB1058D25A6BD3BE763093
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] memory: Switch back to struct platform_driver::remove()
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Markus Mayer <mmayer@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Santosh Shilimkar <ssantosh@kernel.org>, Paul Cercueil
+ <paul@crapouillou.net>, Yong Wu <yong.wu@mediatek.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
+ Lukasz Luba <lukasz.luba@arm.com>, Alim Akhtar <alim.akhtar@samsung.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Konrad Dybcio <konradybcio@kernel.org>, Georgi Djakov <djakov@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ linux-omap@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-samsung-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-tegra@vger.kernel.org
+References: <1a44c5fc95616d64157d2f4a55f460476d382554.1730987047.git.ukleinek@kernel.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <1a44c5fc95616d64157d2f4a55f460476d382554.1730987047.git.ukleinek@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-AM65 CPSW hardware can map the 6-bit DSCP/TOS field to
-appropriate priority queue via DSCP to Priority mapping registers
-(CPSW_PN_RX_PRI_MAP_REG).
 
-We use the upper 3 bits of the DSCP field that indicate IP Precedence
-to map traffic to 8 priority queues.
 
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
----
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 54 ++++++++++++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
+On 11/7/2024 6:57 AM, Uwe Kleine-König wrote:
+> After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
+> return void") .remove() is (again) the right callback to implement for
+> platform drivers.
+> 
+> Convert all platform drivers below drivers/memory to use .remove(), with
+> the eventual goal to drop struct platform_driver::remove_new(). As
+> .remove() and .remove_new() have the same prototypes, conversion is done
+> by just changing the structure member name in the driver initializer.
+> 
+> A few white space changes are included to make indention consistent.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index 0520e9f4bea7..fab35e6aac7f 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -71,6 +71,8 @@
- #define AM65_CPSW_PORT_REG_RX_PRI_MAP		0x020
- #define AM65_CPSW_PORT_REG_RX_MAXLEN		0x024
- 
-+#define AM65_CPSW_PORTN_REG_CTL			0x004
-+#define AM65_CPSW_PORTN_REG_DSCP_MAP		0x120
- #define AM65_CPSW_PORTN_REG_SA_L		0x308
- #define AM65_CPSW_PORTN_REG_SA_H		0x30c
- #define AM65_CPSW_PORTN_REG_TS_CTL              0x310
-@@ -94,6 +96,10 @@
- /* AM65_CPSW_PORT_REG_PRI_CTL */
- #define AM65_CPSW_PORT_REG_PRI_CTL_RX_PTYPE_RROBIN	BIT(8)
- 
-+/* AM65_CPSW_PN_REG_CTL */
-+#define AM65_CPSW_PN_REG_CTL_DSCP_IPV4_EN	BIT(1)
-+#define AM65_CPSW_PN_REG_CTL_DSCP_IPV6_EN	BIT(2)
-+
- /* AM65_CPSW_PN_TS_CTL register fields */
- #define AM65_CPSW_PN_TS_CTL_TX_ANX_F_EN		BIT(4)
- #define AM65_CPSW_PN_TS_CTL_TX_VLAN_LT1_EN	BIT(5)
-@@ -176,6 +182,53 @@ static void am65_cpsw_port_set_sl_mac(struct am65_cpsw_port *slave,
- 	writel(mac_lo, slave->port_base + AM65_CPSW_PORTN_REG_SA_L);
- }
- 
-+#define AM65_CPSW_DSCP_MAX	GENMASK(5, 0)
-+#define AM65_CPSW_PRI_MAX	GENMASK(2, 0)
-+#define AM65_CPSW_DSCP_PRI_PER_REG	8
-+#define AM65_CPSW_DSCP_PRI_SIZE		4	/* in bits */
-+static int am65_cpsw_port_set_dscp_map(struct am65_cpsw_port *slave, u8 dscp, u8 pri)
-+{
-+	int reg_ofs;
-+	int bit_ofs;
-+	u32 val;
-+
-+	if (dscp > AM65_CPSW_DSCP_MAX)
-+		return -EINVAL;
-+
-+	if (pri > AM65_CPSW_PRI_MAX)
-+		return -EINVAL;
-+
-+	/* 32-bit register offset to this dscp */
-+	reg_ofs = (dscp / AM65_CPSW_DSCP_PRI_PER_REG) * 4;
-+	/* bit field offset to this dscp */
-+	bit_ofs = AM65_CPSW_DSCP_PRI_SIZE * (dscp % AM65_CPSW_DSCP_PRI_PER_REG);
-+
-+	val = readl(slave->port_base + AM65_CPSW_PORTN_REG_DSCP_MAP + reg_ofs);
-+	val &= ~(AM65_CPSW_PRI_MAX << bit_ofs);	/* clear */
-+	val |= pri << bit_ofs;			/* set */
-+	writel(val, slave->port_base + AM65_CPSW_PORTN_REG_DSCP_MAP + reg_ofs);
-+
-+	return 0;
-+}
-+
-+static void am65_cpsw_port_enable_dscp_map(struct am65_cpsw_port *slave)
-+{
-+	int dscp, pri;
-+	u32 val;
-+
-+	/* Map IP Precedence field to Priority */
-+	for (dscp = 0; dscp <= AM65_CPSW_DSCP_MAX; dscp++) {
-+		pri = dscp >> 3; /* Extract IP Precedence */
-+		am65_cpsw_port_set_dscp_map(slave, dscp, pri);
-+	}
-+
-+	/* enable port IPV4 and IPV6 DSCP for this port */
-+	val = readl(slave->port_base + AM65_CPSW_PORTN_REG_CTL);
-+	val |= AM65_CPSW_PN_REG_CTL_DSCP_IPV4_EN |
-+		AM65_CPSW_PN_REG_CTL_DSCP_IPV6_EN;
-+	writel(val, slave->port_base + AM65_CPSW_PORTN_REG_CTL);
-+}
-+
- static void am65_cpsw_sl_ctl_reset(struct am65_cpsw_port *port)
- {
- 	cpsw_sl_reset(port->slave.mac_sl, 100);
-@@ -921,6 +974,7 @@ static int am65_cpsw_nuss_ndo_slave_open(struct net_device *ndev)
- 	common->usage_count++;
- 
- 	am65_cpsw_port_set_sl_mac(port, ndev->dev_addr);
-+	am65_cpsw_port_enable_dscp_map(port);
- 
- 	if (common->is_emac_mode)
- 		am65_cpsw_init_port_emac_ale(port);
+For the brcmstb driver:
 
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.34.1
+Florian
 
 
