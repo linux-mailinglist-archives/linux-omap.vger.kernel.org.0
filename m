@@ -1,131 +1,129 @@
-Return-Path: <linux-omap+bounces-2649-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2650-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 775BA9C2E85
-	for <lists+linux-omap@lfdr.de>; Sat,  9 Nov 2024 17:30:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA419C300F
+	for <lists+linux-omap@lfdr.de>; Sun, 10 Nov 2024 00:30:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25B321F21157
-	for <lists+linux-omap@lfdr.de>; Sat,  9 Nov 2024 16:30:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45EDC1F215EF
+	for <lists+linux-omap@lfdr.de>; Sat,  9 Nov 2024 23:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5720519D880;
-	Sat,  9 Nov 2024 16:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D08A1A00F8;
+	Sat,  9 Nov 2024 23:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W/IYTpzA"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="mo6OhtIK"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9422BB09;
-	Sat,  9 Nov 2024 16:30:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C4F1E4BE;
+	Sat,  9 Nov 2024 23:30:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731169847; cv=none; b=SxYC/ogeox4HyzFg+rePlBLTmtww7lr1vKtoHwigYQwUAh9xFxHvDNpKMzk8ppR8GT7JJmY0xKf9u9Gdnz0TXQ51sekXb7fxtKoVaBtbfW+jf+QPjDlw18Ps31IirCYjpOP8X1kuJDKU0PpU2GV+Q6gSxS0ashjHg90PoUTk09c=
+	t=1731195017; cv=none; b=WBKRVRhUWxnjpj9NoiFOc71zYbv8byekwNbWmBcSvVE5ix3DQLhsllYlm05NzfOcohMGwDpad1YAnuoh1041coQDzW8qTvAhygmBvd5bIzHPSWhdzOyiQPDydaOeo6r4LcueSD//vFHoXi6l59z+tPF1a3eZ4OqNBjWr0y0A8hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731169847; c=relaxed/simple;
-	bh=4nzEV01HerKl13JwtsONKUbgCEH5uMrLa3opUgMD+sU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Cmordxizhg4ehAW0Mv5Zn9ICqvZ62br26BUTLI9+zlZScZTGHQwMZmnS9lnCEnHxrhnL1VOyXv7fPqByenlpLsVek2vJRl7Hhe0e1yVM4qBdMos7hwUJq4NWjb9derhbhVnukv/ij1y45j45882ie9G8ykFhwIz12V9Wz1tA4bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W/IYTpzA; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-20caea61132so28139905ad.2;
-        Sat, 09 Nov 2024 08:30:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731169845; x=1731774645; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+HFu6d4lO7rqvd9CtGtNgYr/2KPNT3OuXCo4vOZrFRY=;
-        b=W/IYTpzAnK/sPvb52bME+7m/QPh9xrSGB4J4kikOvCTutjLs7/OTgPyi1oXiM+Nz4v
-         ldDm6T+Fm2ZB1QJ5L1oQofqaigeJhllEVcU8R+ldtDvQ91xYST7JHrbfx2HB68Co6CSl
-         qxqvhTPwfemjQDwZjJT8yozelN789Q+eHlPBed0jbUlGlo1KOUDyBGRuJjAF54BRtQLQ
-         4HYqRkerD1fTV+bWh2BKLjdc5+zcyxotjvPxEFlVcqTQie02NRlPEouHYSMRaaSWRDev
-         Mu0NM/LHlXKrgSaBSJYhPJRNe2/8M8fv/0vpwhNt3x9kkVidev57svOG66T5LxKG4zVB
-         GNvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731169845; x=1731774645;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+HFu6d4lO7rqvd9CtGtNgYr/2KPNT3OuXCo4vOZrFRY=;
-        b=Xp8jhpsDEVMBxO6tFL6YVKresPgXrTQ7MBTVRvdpuwlM/y4awUUOM/OUyKxQkchYZp
-         VOYW0JYJLIjFpJzLem84e+c9d2kKCHojawf9cACaXrYcLecEdzzzvqn3xFoEW7f1R04S
-         YhYm4H9NA1O+KkpT14umpQYwKZeHYz45GeqK62UbVrbBjDHbnEeGLJUZ+HyOuiEpxzI3
-         roVJZzBm2LM25HND8unB+DPDFYWtazfYSLCwogm06i3SxOljVhWNiEixBvj1KhoE0b5p
-         N4fA61nNQM+1lnLcXR1nRAZv33bWXhiU48wJzJVIacBwcNBz1ngW3PVHKPplxvjlhX7F
-         dJIw==
-X-Forwarded-Encrypted: i=1; AJvYcCUKzNWohtN+/N7BfO/RXetLddzHLPGFUypOgo1N51/VkZVRT7+b8b8Aaos1Bt0drJZF0pVj4DG5yTTdB2k=@vger.kernel.org, AJvYcCUYb78ItN1vhvcGS/CFEbWXzfDNxY+OEGJ6wOvMXqp3UXPVu7TsshA16VLtqAtphqbj43sp9ln/yCdNRQ==@vger.kernel.org, AJvYcCUq5teus+MW11U6Pr63rQNLslWrmtXvbJm56syMgxHDuh15gIAKYxlNpbkq+ynsTWzCe5ZKvN03GGYpmw==@vger.kernel.org, AJvYcCV6WTwy/kMsTl4cR3SY1l+GSTRB14/ArsuWs2ueURzgBXLBwldhQ3Mdbj5gAtvl6qwQUCR6O5HNNRc=@vger.kernel.org, AJvYcCWBgv+eMtn5hSTiMJlBCT+kzthf0UeusLzYGwcaXka3YIqxJqM+oPhLNXPPu0IpM/dwzclFtMCf3KIU/sw=@vger.kernel.org, AJvYcCWPdstUmWRWJgYQKIo21l5cWyHvuoXlhgJ+T5iXz0JwITLY5ii4gF3MUGLmzIsXMFfBcIXb6sNVIhX9cMf/OGss9Xw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLltKm/zeLk+pBondPtNaQTcN0wcaevBBX+HMoCU1IniDDdY4z
-	JOA1VcP5ECYKWRMWUns0Gfn4RGUGp4mIusmzMhTvrgzE4Go4kTjY
-X-Google-Smtp-Source: AGHT+IGGs2S0yCDvHRz6lhphL26+ZgfU8grAgZs942pwHOPtldd6rtgtD1s1xn3JASfB0aCkY4pxLg==
-X-Received: by 2002:a17:902:ea10:b0:210:fce4:11db with SMTP id d9443c01a7336-21183517ca8mr100546255ad.22.1731169844727;
-        Sat, 09 Nov 2024 08:30:44 -0800 (PST)
-Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177e6a3f4sm47858475ad.234.2024.11.09.08.30.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 09 Nov 2024 08:30:43 -0800 (PST)
-Message-ID: <3be2547e-d987-4987-9d75-30bf81cfe6cd@gmail.com>
-Date: Sat, 9 Nov 2024 08:30:40 -0800
+	s=arc-20240116; t=1731195017; c=relaxed/simple;
+	bh=uFNBYnwd1ia1RoOgCQ/MjHn/GJ65pILhrHkUFUBF1Cc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DR0iQEL55yeplZcndDuQYTt9RTUFtiZQi/wx46ibJC+nRejV5f5kN05Fw1j3kgG5Yh/LhwB5WdCHW7DI3TqjhQjju4d2iDkTHPry/N2eWxtpNeMf79oZ6h9T/UW2L6nHP1Wyn7BiHDFgYdNTVWZCqgiUjDzIsHYo/HAfDRuiKOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=mo6OhtIK; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=ktlnpyzsZf9FCUvE5aBD8IabGy9VTcpXU6wv6DgGIBI=; b=mo6OhtIKngXJ2w/AnfAcvyE6te
+	Zg3yiePmUb7kwpQAbGxNklTS6vTBdmWM337hxiLTi8RHrVsumexa6P75JHVnQ7VVOJuRqyzaooCkN
+	svl6jfZrOsLHd9z7AerqLL6nQw4lGseBXJ+jv7kVP92Bqx/eByENmUJPGiTMY1z/ZK0kQdnhzIsH+
+	Yb7KgHPUmq+X6z0YpFc5jGe8Tgzu1NXaIXsoKSxFOLBKixgbbY1Lca+I4ivfrLGYPRecPDbgHwY+E
+	a+8R4Xm5uQ+h2h3TYTb0hWQ8rnCHaH7I0uwZBYnKnVIVAcipyOJ1TkH2gfz3wuqIYmNE6QiyhowDH
+	dYXHrr9A==;
+Date: Sun, 10 Nov 2024 00:29:54 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Karol P <karprzy7@gmail.com>
+Cc: aaro.koskinen@iki.fi, khilman@baylibre.com, rogerq@kernel.org,
+ tony@atomide.com, lee@kernel.org, linux-omap@vger.kernel.org,
+ linux-kernel@vger.kernel.org, skhan@linuxfoundation.org
+Subject: Re: [PATCH] mfd: omap-usb-tll: handle clk_prepare return code in
+ usbtll_omap_probe
+Message-ID: <20241110002954.1134398a@akair>
+In-Reply-To: <CAKwoAfp6iPN0F_kfNbF8xbpX7+Qh+BS55KgmZ5nis0u00vOFhw@mail.gmail.com>
+References: <20241106223324.479341-1-karprzy7@gmail.com>
+	<20241107001507.5a304718@akair>
+	<CAKwoAfp6iPN0F_kfNbF8xbpX7+Qh+BS55KgmZ5nis0u00vOFhw@mail.gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] memory: Switch back to struct platform_driver::remove()
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
- Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Markus Mayer <mmayer@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Santosh Shilimkar <ssantosh@kernel.org>, Paul Cercueil
- <paul@crapouillou.net>, Yong Wu <yong.wu@mediatek.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
- Lukasz Luba <lukasz.luba@arm.com>, Alim Akhtar <alim.akhtar@samsung.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Konrad Dybcio <konradybcio@kernel.org>, Georgi Djakov <djakov@kernel.org>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mediatek@lists.infradead.org,
- linux-omap@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-samsung-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-tegra@vger.kernel.org
-References: <1a44c5fc95616d64157d2f4a55f460476d382554.1730987047.git.ukleinek@kernel.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <1a44c5fc95616d64157d2f4a55f460476d382554.1730987047.git.ukleinek@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+Am Thu, 7 Nov 2024 12:12:52 +0100
+schrieb Karol P <karprzy7@gmail.com>:
 
-
-On 11/7/2024 6:57 AM, Uwe Kleine-König wrote:
-> After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
-> return void") .remove() is (again) the right callback to implement for
-> platform drivers.
+> On Thu, 7 Nov 2024 at 00:15, Andreas Kemnade <andreas@kemnade.info> wrote:
+> >
+> > Am Wed,  6 Nov 2024 23:33:24 +0100
+> > schrieb Karol Przybylski <karprzy7@gmail.com>:
+> >  
+> > > clk_prepare() is called in usbtll_omap_probe to fill clk array.
+> > > Return code is not checked, leaving possible error condition unhandled.
+> > >
+> > > Added variable to hold return value from clk_prepare() and return statement
+> > > when it's not successful.
+> > >
+> > > Found in coverity scan, CID 1594680
+> > >
+> > > Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
+> > > ---
+> > >  drivers/mfd/omap-usb-tll.c | 8 ++++++--
+> > >  1 file changed, 6 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
+> > > index 0f7fdb99c809..28446b082c85 100644
+> > > --- a/drivers/mfd/omap-usb-tll.c
+> > > +++ b/drivers/mfd/omap-usb-tll.c
+> > > @@ -202,7 +202,7 @@ static int usbtll_omap_probe(struct platform_device *pdev)
+> > >       struct device                           *dev =  &pdev->dev;
+> > >       struct usbtll_omap                      *tll;
+> > >       void __iomem                            *base;
+> > > -     int                                     i, nch, ver;
+> > > +     int                                     i, nch, ver, err;
+> > >
+> > >       dev_dbg(dev, "starting TI HSUSB TLL Controller\n");
+> > >
+> > > @@ -251,7 +251,11 @@ static int usbtll_omap_probe(struct platform_device *pdev)
+> > >               if (IS_ERR(tll->ch_clk[i]))
+> > >                       dev_dbg(dev, "can't get clock : %s\n", clkname);  
+> >
+> > if you add more intensive error checking, then why is this error
+> > ignored and not returned?  
 > 
-> Convert all platform drivers below drivers/memory to use .remove(), with
-> the eventual goal to drop struct platform_driver::remove_new(). As
-> .remove() and .remove_new() have the same prototypes, conversion is done
-> by just changing the structure member name in the driver initializer.
-> 
-> A few white space changes are included to make indention consistent.
-> 
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+> Thank you for the feedback. It does seem that elevated error checking
+> is not the way
+> to go in this case. 
 
-For the brcmstb driver:
+As far as I can see everything checks ch_clk[i] for validity before
+usage. Also clk_enable() called later is checked which would catch
+clk_prepare() failures, if there were even possible here.
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+So the only question which I am not 100% sure about is whether having
+ch_clk sparsly populated is normal operation. If that is the case, then
+more error checking is not useful. If not, then it might let us better
+sleep. As said as far as I can see errors are catched later.
 
+@Roger: what is your opintion towards this?
+
+BTW: If you do this kind of work, you could also use W=1 or
+CONFIG_WERROR during compiling to catch easy things. At least I see new
+compile warnings with your patch. 
+
+Regards,
+Andreas
 
