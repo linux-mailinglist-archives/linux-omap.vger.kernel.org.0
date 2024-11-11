@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-2653-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2654-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FE969C40E2
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2024 15:27:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A5B39C412A
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2024 15:42:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BF24B222BF
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2024 14:27:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37380280D15
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2024 14:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A821A0714;
-	Mon, 11 Nov 2024 14:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B8691A01D8;
+	Mon, 11 Nov 2024 14:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sbqA4CXw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PBHwPj5p"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3720115A85A;
-	Mon, 11 Nov 2024 14:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2D614EC55;
+	Mon, 11 Nov 2024 14:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731335260; cv=none; b=SqEIT18XpIXjG8qj7CBSGnliq569DC9sPWL3+WTF7K5H1zOJEtRxuPhZVpnFXFtpLKWGLIbmDXBVvZivCyAQ/mjUKM8NQVvNd/wDS+1F/POYTNm4GmkFV7jHCmxVmcDm8Txoh5xK6z2y/w4ic6eRVWKA/xEkBMsPGfuZ20hsRlY=
+	t=1731336113; cv=none; b=Uum+Cktut4ivuPCIl8U3JrRKFwQZDVXtGgOurWSthTT3q98LZOLiekU52MHUmW4dNvb8dGW/q9ut7Mf/rboBNPi7jiv9jyHaMcl0A2mxi0RZwwLs6cYbOc5vPwVPX7/ezT0OkUu/H3hj5uxzOnGVOnltn2t/afH3hmQ8SDhRiF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731335260; c=relaxed/simple;
-	bh=0HBp91eFMMg3rKBeBDysVTX9mLxQIHz9phYBimdndCc=;
+	s=arc-20240116; t=1731336113; c=relaxed/simple;
+	bh=gQfgqozLAE5g7m9L6Wx0p/96n80+SjfIScZYvj0WqsU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gH1DexspTWD5QXeNS80pGiITm/KnxOapgBRm+tHi90V+kAqYdI2Q4bS9pyJHI5IkGUbQUEyUY8/SHvtAXeVdSi4DueU2qyaBhkEL0rM4tOdQXsO7FIgQ83/EHF6a6eqdXLAMOZKi/hfzM710k/DJYyih9VPGgye3N+d/cz/B1hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sbqA4CXw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C70BCC4CECF;
-	Mon, 11 Nov 2024 14:27:33 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=uN2/VNYV26e6NJq4bKoi2YicOV7SeV49Ww8eWqCCK/CP8KYAeKd9TpPtzixHaSBVe0rFAJliXhYP7SascD711izASjeCNAbEBRTmlDUVmHf1wp8RWlzmyu0ZU/813ntWRZ3JOKRvpZN3lNhmcdtRDKLo9QL48NEJ/0ynZQX65+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PBHwPj5p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA9E0C4CECF;
+	Mon, 11 Nov 2024 14:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731335259;
-	bh=0HBp91eFMMg3rKBeBDysVTX9mLxQIHz9phYBimdndCc=;
+	s=k20201202; t=1731336112;
+	bh=gQfgqozLAE5g7m9L6Wx0p/96n80+SjfIScZYvj0WqsU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sbqA4CXwcNwBw8gvLUFLeNBaL48iTGzehpPg5Yhv0GwvduUO+nKVZahYoI2wdEQwi
-	 4BNpw+B4xRdHlzD8ZyUoZWhF5lpd4KL6Favdt3REZqqZPEs1OiVJEOyZi0zSAtx6Cs
-	 x98lCeuqTAtNNPvzPEejZyU7/45eOlFzcPYAGfmBltgfjVMo53DDBzpnarihw20/GQ
-	 Qx//WwmaP/HOa/mfOyQ8KAIi4S8s4d9/0eHgLGOyZngJWGH7ScMg5NMrS3NVTOY8kK
-	 r1Q0pjJW9N/UYlHS5ULw6XjL59ERlJ3eskvHZN2pzq/AD9x/6G5ScRAspOKKfeKuFJ
-	 I1AzT8XdOb8vg==
-Message-ID: <0c2f2274-4487-4d7e-a558-cb9608f59118@kernel.org>
-Date: Mon, 11 Nov 2024 16:27:30 +0200
+	b=PBHwPj5pU+LKgZ74/GqVQtVbFlbMHmQTmxO/Zgy8+uKQrFPK9g65MVNVpFtKXRURi
+	 2XUYux+tbUCyi5DS3cYAZGjz4Rlrsn2Vwwj9+o/sFlubR9lidzpoZt2yIpH9BfUWDJ
+	 NcgjMpsMvRSpSgESlg9K9KstOQ50/lq1hycPntwWhM6ODLhZvSG2NAKf/DB3YrlMh4
+	 O9LOMr418G8+HZMNedKk+FJPpqQk83aQjNBo8GGUbcPgfs399kGX3PvmwLNu6PpkxS
+	 AJjBbzmeXOEajMQuo75yLj0c///X0er86fR4egOOOZId25x+uM0O/JfHiWxwKoGfzq
+	 8tp0SZlJcC6Ag==
+Message-ID: <cd915c18-7230-4c38-a860-d2a777223147@kernel.org>
+Date: Mon, 11 Nov 2024 16:41:47 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -50,53 +50,97 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] memory: Switch back to struct platform_driver::remove()
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
- Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Markus Mayer <mmayer@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Santosh Shilimkar <ssantosh@kernel.org>, Paul Cercueil
- <paul@crapouillou.net>, Yong Wu <yong.wu@mediatek.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Tony Lindgren <tony@atomide.com>, Lukasz Luba <lukasz.luba@arm.com>,
- Alim Akhtar <alim.akhtar@samsung.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Konrad Dybcio <konradybcio@kernel.org>, Georgi Djakov <djakov@kernel.org>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mediatek@lists.infradead.org,
- linux-omap@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-samsung-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-tegra@vger.kernel.org
-References: <1a44c5fc95616d64157d2f4a55f460476d382554.1730987047.git.ukleinek@kernel.org>
+Subject: Re: [PATCH] mfd: omap-usb-tll: handle clk_prepare return code in
+ usbtll_omap_probe
+To: Andreas Kemnade <andreas@kemnade.info>, Karol P <karprzy7@gmail.com>
+Cc: aaro.koskinen@iki.fi, khilman@baylibre.com, tony@atomide.com,
+ lee@kernel.org, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+ skhan@linuxfoundation.org
+References: <20241106223324.479341-1-karprzy7@gmail.com>
+ <20241107001507.5a304718@akair>
+ <CAKwoAfp6iPN0F_kfNbF8xbpX7+Qh+BS55KgmZ5nis0u00vOFhw@mail.gmail.com>
+ <20241110002954.1134398a@akair>
 Content-Language: en-US
 From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <1a44c5fc95616d64157d2f4a55f460476d382554.1730987047.git.ukleinek@kernel.org>
+In-Reply-To: <20241110002954.1134398a@akair>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
+Hi,
 
-
-On 07/11/2024 16:57, Uwe Kleine-König wrote:
-> After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
-> return void") .remove() is (again) the right callback to implement for
-> platform drivers.
+On 10/11/2024 01:29, Andreas Kemnade wrote:
+> Am Thu, 7 Nov 2024 12:12:52 +0100
+> schrieb Karol P <karprzy7@gmail.com>:
 > 
-> Convert all platform drivers below drivers/memory to use .remove(), with
-> the eventual goal to drop struct platform_driver::remove_new(). As
-> .remove() and .remove_new() have the same prototypes, conversion is done
-> by just changing the structure member name in the driver initializer.
+>> On Thu, 7 Nov 2024 at 00:15, Andreas Kemnade <andreas@kemnade.info> wrote:
+>>>
+>>> Am Wed,  6 Nov 2024 23:33:24 +0100
+>>> schrieb Karol Przybylski <karprzy7@gmail.com>:
+>>>  
+>>>> clk_prepare() is called in usbtll_omap_probe to fill clk array.
+>>>> Return code is not checked, leaving possible error condition unhandled.
+>>>>
+>>>> Added variable to hold return value from clk_prepare() and return statement
+>>>> when it's not successful.
+>>>>
+>>>> Found in coverity scan, CID 1594680
+>>>>
+>>>> Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
+>>>> ---
+>>>>  drivers/mfd/omap-usb-tll.c | 8 ++++++--
+>>>>  1 file changed, 6 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
+>>>> index 0f7fdb99c809..28446b082c85 100644
+>>>> --- a/drivers/mfd/omap-usb-tll.c
+>>>> +++ b/drivers/mfd/omap-usb-tll.c
+>>>> @@ -202,7 +202,7 @@ static int usbtll_omap_probe(struct platform_device *pdev)
+>>>>       struct device                           *dev =  &pdev->dev;
+>>>>       struct usbtll_omap                      *tll;
+>>>>       void __iomem                            *base;
+>>>> -     int                                     i, nch, ver;
+>>>> +     int                                     i, nch, ver, err;
+>>>>
+>>>>       dev_dbg(dev, "starting TI HSUSB TLL Controller\n");
+>>>>
+>>>> @@ -251,7 +251,11 @@ static int usbtll_omap_probe(struct platform_device *pdev)
+>>>>               if (IS_ERR(tll->ch_clk[i]))
+>>>>                       dev_dbg(dev, "can't get clock : %s\n", clkname);  
+>>>
+>>> if you add more intensive error checking, then why is this error
+>>> ignored and not returned?  
+>>
+>> Thank you for the feedback. It does seem that elevated error checking
+>> is not the way
+>> to go in this case. 
 > 
-> A few white space changes are included to make indention consistent.
+> As far as I can see everything checks ch_clk[i] for validity before
+> usage. Also clk_enable() called later is checked which would catch
+> clk_prepare() failures, if there were even possible here.
 > 
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+> So the only question which I am not 100% sure about is whether having
+> ch_clk sparsly populated is normal operation. If that is the case, then
+> more error checking is not useful. If not, then it might let us better
+> sleep. As said as far as I can see errors are catched later.
+> 
+> @Roger: what is your opintion towards this?
 
-for drivers/memory/omap-gpmc.c 
+I don't see usb_tll_hs_usb_ch?_clk in any of the OMAP device trees.
+Could it be that they are optional?
+If so then we could convert it to devm_clk_get_optional()?
 
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
+While at that, maybe the device tree binding could also be updated and
+converted to yaml.
+
+> 
+> BTW: If you do this kind of work, you could also use W=1 or
+> CONFIG_WERROR during compiling to catch easy things. At least I see new
+> compile warnings with your patch. 
+> 
+> Regards,
+> Andreas
+
+-- 
+cheers,
+-roger
 
