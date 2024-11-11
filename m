@@ -1,129 +1,125 @@
-Return-Path: <linux-omap+bounces-2650-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2651-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA419C300F
-	for <lists+linux-omap@lfdr.de>; Sun, 10 Nov 2024 00:30:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE1D9C37BD
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2024 06:22:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45EDC1F215EF
-	for <lists+linux-omap@lfdr.de>; Sat,  9 Nov 2024 23:30:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48F071F21E3C
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2024 05:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D08A1A00F8;
-	Sat,  9 Nov 2024 23:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02BF114D439;
+	Mon, 11 Nov 2024 05:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="mo6OhtIK"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Eydcq1Fs"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C4F1E4BE;
-	Sat,  9 Nov 2024 23:30:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A297F48C;
+	Mon, 11 Nov 2024 05:22:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731195017; cv=none; b=WBKRVRhUWxnjpj9NoiFOc71zYbv8byekwNbWmBcSvVE5ix3DQLhsllYlm05NzfOcohMGwDpad1YAnuoh1041coQDzW8qTvAhygmBvd5bIzHPSWhdzOyiQPDydaOeo6r4LcueSD//vFHoXi6l59z+tPF1a3eZ4OqNBjWr0y0A8hc=
+	t=1731302562; cv=none; b=I0DfK9k0Ex4Y4Ql7+6opQXrjsgAHd7+o+rABDmiGIm3AHxjvpaPyVNBLuDGAyelc3wWfak1gtEispQs4nWCL8W+oOm/qpdyxLYcsQ0GvRwsRU8S7+GNvLzxmth7hQ48/qzAef5VKigupiTfafdt/L4Z+nZNPbPz6kd8+S6YkvlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731195017; c=relaxed/simple;
-	bh=uFNBYnwd1ia1RoOgCQ/MjHn/GJ65pILhrHkUFUBF1Cc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DR0iQEL55yeplZcndDuQYTt9RTUFtiZQi/wx46ibJC+nRejV5f5kN05Fw1j3kgG5Yh/LhwB5WdCHW7DI3TqjhQjju4d2iDkTHPry/N2eWxtpNeMf79oZ6h9T/UW2L6nHP1Wyn7BiHDFgYdNTVWZCqgiUjDzIsHYo/HAfDRuiKOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=mo6OhtIK; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=ktlnpyzsZf9FCUvE5aBD8IabGy9VTcpXU6wv6DgGIBI=; b=mo6OhtIKngXJ2w/AnfAcvyE6te
-	Zg3yiePmUb7kwpQAbGxNklTS6vTBdmWM337hxiLTi8RHrVsumexa6P75JHVnQ7VVOJuRqyzaooCkN
-	svl6jfZrOsLHd9z7AerqLL6nQw4lGseBXJ+jv7kVP92Bqx/eByENmUJPGiTMY1z/ZK0kQdnhzIsH+
-	Yb7KgHPUmq+X6z0YpFc5jGe8Tgzu1NXaIXsoKSxFOLBKixgbbY1Lca+I4ivfrLGYPRecPDbgHwY+E
-	a+8R4Xm5uQ+h2h3TYTb0hWQ8rnCHaH7I0uwZBYnKnVIVAcipyOJ1TkH2gfz3wuqIYmNE6QiyhowDH
-	dYXHrr9A==;
-Date: Sun, 10 Nov 2024 00:29:54 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Karol P <karprzy7@gmail.com>
-Cc: aaro.koskinen@iki.fi, khilman@baylibre.com, rogerq@kernel.org,
- tony@atomide.com, lee@kernel.org, linux-omap@vger.kernel.org,
- linux-kernel@vger.kernel.org, skhan@linuxfoundation.org
-Subject: Re: [PATCH] mfd: omap-usb-tll: handle clk_prepare return code in
- usbtll_omap_probe
-Message-ID: <20241110002954.1134398a@akair>
-In-Reply-To: <CAKwoAfp6iPN0F_kfNbF8xbpX7+Qh+BS55KgmZ5nis0u00vOFhw@mail.gmail.com>
-References: <20241106223324.479341-1-karprzy7@gmail.com>
-	<20241107001507.5a304718@akair>
-	<CAKwoAfp6iPN0F_kfNbF8xbpX7+Qh+BS55KgmZ5nis0u00vOFhw@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1731302562; c=relaxed/simple;
+	bh=Bw9LWQlZnCFPbZnHkKyCfmD7S3zw3L7iavpKU0ULmps=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lq4k5m+flG+Dy7vwZCcJ/Na3XVABRZ3bLoqhI636TEcHmf17yBYiD5+ykbte1GLkEQ/7sOFJHrGSZL8VLz40g8YrlAGl62h1xOXLXcILEEtlIY6/Ojecfep/SVf6xfUCmRjh4Lp4m0ua+jrQevdRN9NlN4tL9xd0xyUpbCHG7cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Eydcq1Fs; arc=none smtp.client-ip=198.47.23.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4AB5MHXl107072;
+	Sun, 10 Nov 2024 23:22:17 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1731302537;
+	bh=Pds8U84YLO1Rxp/CMtOtZpQB5O4H9mwiZVEmcFSOLaU=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=Eydcq1FsgvHGpu6zT/vhafWVwlokmaKm8Ouh0zFIJ3UypSjHcVWVsCTvMjifLCu3B
+	 0DwRmZxsYGGDc0tgbx5IpPgTlYo00HTwukHlK7CZTILvUhIHaGISciSXuTjIox8rco
+	 xUVCqvz0Y/RIlMe1Ad5XZOWJBRyKjNC/MH3xufNU=
+Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4AB5MH2Z030528
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Sun, 10 Nov 2024 23:22:17 -0600
+Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Sun, 10
+ Nov 2024 23:22:17 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Sun, 10 Nov 2024 23:22:17 -0600
+Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.81])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4AB5MGrr064822;
+	Sun, 10 Nov 2024 23:22:16 -0600
+Date: Mon, 11 Nov 2024 10:52:15 +0530
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: Roger Quadros <rogerq@kernel.org>
+CC: Siddharth Vadapalli <s-vadapalli@ti.com>,
+        Andrew Lunn
+	<andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <srk@ti.com>,
+        Pekka Varis <p-varis@ti.com>
+Subject: Re: [PATCH net-next 2/2] net: ethernet: ti: am65-cpsw: enable DSCP
+ to priority map for RX
+Message-ID: <cfd634a1-3cff-4edd-8db8-d979b37cc2ea@ti.com>
+References: <20241105-am65-cpsw-multi-rx-dscp-v1-0-38db85333c88@kernel.org>
+ <20241105-am65-cpsw-multi-rx-dscp-v1-2-38db85333c88@kernel.org>
+ <8e6053ca-77fc-4f03-ae54-3f6af0addb88@ti.com>
+ <7ae1ccf9-67c0-45ba-9cb9-886701adb488@kernel.org>
+ <208a1472-c69b-4c20-9bb2-25158edfd7d8@ti.com>
+ <73f8d7a9-59ef-4d54-a024-4cf99d60abc0@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <73f8d7a9-59ef-4d54-a024-4cf99d60abc0@kernel.org>
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Am Thu, 7 Nov 2024 12:12:52 +0100
-schrieb Karol P <karprzy7@gmail.com>:
-
-> On Thu, 7 Nov 2024 at 00:15, Andreas Kemnade <andreas@kemnade.info> wrote:
-> >
-> > Am Wed,  6 Nov 2024 23:33:24 +0100
-> > schrieb Karol Przybylski <karprzy7@gmail.com>:
-> >  
-> > > clk_prepare() is called in usbtll_omap_probe to fill clk array.
-> > > Return code is not checked, leaving possible error condition unhandled.
-> > >
-> > > Added variable to hold return value from clk_prepare() and return statement
-> > > when it's not successful.
-> > >
-> > > Found in coverity scan, CID 1594680
-> > >
-> > > Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
-> > > ---
-> > >  drivers/mfd/omap-usb-tll.c | 8 ++++++--
-> > >  1 file changed, 6 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
-> > > index 0f7fdb99c809..28446b082c85 100644
-> > > --- a/drivers/mfd/omap-usb-tll.c
-> > > +++ b/drivers/mfd/omap-usb-tll.c
-> > > @@ -202,7 +202,7 @@ static int usbtll_omap_probe(struct platform_device *pdev)
-> > >       struct device                           *dev =  &pdev->dev;
-> > >       struct usbtll_omap                      *tll;
-> > >       void __iomem                            *base;
-> > > -     int                                     i, nch, ver;
-> > > +     int                                     i, nch, ver, err;
-> > >
-> > >       dev_dbg(dev, "starting TI HSUSB TLL Controller\n");
-> > >
-> > > @@ -251,7 +251,11 @@ static int usbtll_omap_probe(struct platform_device *pdev)
-> > >               if (IS_ERR(tll->ch_clk[i]))
-> > >                       dev_dbg(dev, "can't get clock : %s\n", clkname);  
-> >
-> > if you add more intensive error checking, then why is this error
-> > ignored and not returned?  
+On Sat, Nov 09, 2024 at 12:31:24PM +0200, Roger Quadros wrote:
 > 
-> Thank you for the feedback. It does seem that elevated error checking
-> is not the way
-> to go in this case. 
+> 
+> On 08/11/2024 16:42, Siddharth Vadapalli wrote:
+> > On Fri, Nov 08, 2024 at 02:55:18PM +0200, Roger Quadros wrote:
+> >> Hi Siddharth,
+> >>
+> >> On 08/11/2024 14:30, Siddharth Vadapalli wrote:
+> > 
+> > [...]
+> > 
+> >>>> +#define AM65_CPSW_PORTN_REG_CTL			0x004
+> >>>
+> >>> nitpick: indentation needs to be fixed here to align with the macros
+> >>> below.
+> >>
+> >> It is fine in the code and in my editor in this reply email.
+> > 
+> > That's strange. But it appears the same to me as seen at:
+> > https://lore.kernel.org/r/20241105-am65-cpsw-multi-rx-dscp-v1-2-38db85333c88@kernel.org/
+> > where the indentation looks incorrect.
+> 
+> It is probably editor specific. There are in fact 3 tab spaces to align it
+> with the number.
+> 
+> Can you please apply the patch and see if it is OK in the code?
 
-As far as I can see everything checks ch_clk[i] for validity before
-usage. Also clk_enable() called later is checked which would catch
-clk_prepare() failures, if there were even possible here.
-
-So the only question which I am not 100% sure about is whether having
-ch_clk sparsly populated is normal operation. If that is the case, then
-more error checking is not useful. If not, then it might let us better
-sleep. As said as far as I can see errors are catched later.
-
-@Roger: what is your opintion towards this?
-
-BTW: If you do this kind of work, you could also use W=1 or
-CONFIG_WERROR during compiling to catch easy things. At least I see new
-compile warnings with your patch. 
+I still see the indentation being off, but maybe it is just me seeing
+this incorrectly.
 
 Regards,
-Andreas
+Siddharth.
 
