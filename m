@@ -1,104 +1,102 @@
-Return-Path: <linux-omap+bounces-2652-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2653-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04CD39C37C7
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2024 06:28:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FE969C40E2
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2024 15:27:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EA631C2131B
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2024 05:28:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BF24B222BF
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2024 14:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB75150990;
-	Mon, 11 Nov 2024 05:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A821A0714;
+	Mon, 11 Nov 2024 14:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Qqqf2NMA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sbqA4CXw"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD187F48C;
-	Mon, 11 Nov 2024 05:28:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3720115A85A;
+	Mon, 11 Nov 2024 14:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731302909; cv=none; b=aGsKeHZtVX9O9FH5dKQRPwhHsQPb8aTjHnezgR76AssLxSmn07ziAe624F4qFdE3P8XWpDpmQI1POykBdi5MtfFJRtAEYmwMw7CuselVDlPVPxehpB+Tj87ooIavcHuiTLZmNTKCy+Sb2Ctw+1s9fnqOIZfiwQZrtfz4j+wGLWs=
+	t=1731335260; cv=none; b=SqEIT18XpIXjG8qj7CBSGnliq569DC9sPWL3+WTF7K5H1zOJEtRxuPhZVpnFXFtpLKWGLIbmDXBVvZivCyAQ/mjUKM8NQVvNd/wDS+1F/POYTNm4GmkFV7jHCmxVmcDm8Txoh5xK6z2y/w4ic6eRVWKA/xEkBMsPGfuZ20hsRlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731302909; c=relaxed/simple;
-	bh=2VJkj37W8NzBI765umzbn9mxHpPfu6i6XO7znx1mpC0=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NIvw7jOr2g4yL8dHFpq6RZl67e7JVXlAfkga2dKi5o0gXSROxuVetwIP+mLF1NdpHZdvEdy2ChgRZp+LJcrs0emeWf853pK51+Yh9Ouo+BEeztx+TezkuQaas+9nLEuinBR83C3cWsd83VjVEckSuOXHynhpPyzOGEseOz8ij5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Qqqf2NMA; arc=none smtp.client-ip=198.47.23.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 4AB5S5xc2447016
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 10 Nov 2024 23:28:05 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1731302885;
-	bh=4ZEV2ZxgnwEtllg7eufXuTV2CsupDYa/A/hD/pRwm/k=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=Qqqf2NMAXqxsCp7Dqs7SsZf/q7POm90bWVGXvkkqm8PQepSk5Fd8wthyS80WAE8yW
-	 6WvPitUz9iDq1TvORdTETyfhMCWHbWVZXzR4Sf5Ie0nHrsEmP3WR2HP2yi2jOhfdqn
-	 9X9IGUm0MDS1sfuhbLN4F9EwWpsHfLNv0ZBu1g0A=
-Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4AB5S4PU107926
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Sun, 10 Nov 2024 23:28:04 -0600
-Received: from DFLE110.ent.ti.com (10.64.6.31) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Sun, 10
- Nov 2024 23:28:04 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE110.ent.ti.com
- (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Sun, 10 Nov 2024 23:28:04 -0600
-Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.81])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4AB5S2Ye082772;
-	Sun, 10 Nov 2024 23:28:03 -0600
-Date: Mon, 11 Nov 2024 10:58:02 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Roger Quadros <rogerq@kernel.org>
-CC: Siddharth Vadapalli <s-vadapalli@ti.com>,
-        Andrew Lunn
-	<andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <srk@ti.com>,
-        Pekka Varis <p-varis@ti.com>
-Subject: Re: [PATCH net-next v3 2/2] net: ethernet: ti: am65-cpsw: enable
- DSCP to priority map for RX
-Message-ID: <96666e98-3754-4f75-b1c6-3c14a840da05@ti.com>
-References: <20241109-am65-cpsw-multi-rx-dscp-v3-0-1cfb76928490@kernel.org>
- <20241109-am65-cpsw-multi-rx-dscp-v3-2-1cfb76928490@kernel.org>
+	s=arc-20240116; t=1731335260; c=relaxed/simple;
+	bh=0HBp91eFMMg3rKBeBDysVTX9mLxQIHz9phYBimdndCc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gH1DexspTWD5QXeNS80pGiITm/KnxOapgBRm+tHi90V+kAqYdI2Q4bS9pyJHI5IkGUbQUEyUY8/SHvtAXeVdSi4DueU2qyaBhkEL0rM4tOdQXsO7FIgQ83/EHF6a6eqdXLAMOZKi/hfzM710k/DJYyih9VPGgye3N+d/cz/B1hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sbqA4CXw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C70BCC4CECF;
+	Mon, 11 Nov 2024 14:27:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731335259;
+	bh=0HBp91eFMMg3rKBeBDysVTX9mLxQIHz9phYBimdndCc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=sbqA4CXwcNwBw8gvLUFLeNBaL48iTGzehpPg5Yhv0GwvduUO+nKVZahYoI2wdEQwi
+	 4BNpw+B4xRdHlzD8ZyUoZWhF5lpd4KL6Favdt3REZqqZPEs1OiVJEOyZi0zSAtx6Cs
+	 x98lCeuqTAtNNPvzPEejZyU7/45eOlFzcPYAGfmBltgfjVMo53DDBzpnarihw20/GQ
+	 Qx//WwmaP/HOa/mfOyQ8KAIi4S8s4d9/0eHgLGOyZngJWGH7ScMg5NMrS3NVTOY8kK
+	 r1Q0pjJW9N/UYlHS5ULw6XjL59ERlJ3eskvHZN2pzq/AD9x/6G5ScRAspOKKfeKuFJ
+	 I1AzT8XdOb8vg==
+Message-ID: <0c2f2274-4487-4d7e-a558-cb9608f59118@kernel.org>
+Date: Mon, 11 Nov 2024 16:27:30 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20241109-am65-cpsw-multi-rx-dscp-v3-2-1cfb76928490@kernel.org>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] memory: Switch back to struct platform_driver::remove()
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Markus Mayer <mmayer@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Santosh Shilimkar <ssantosh@kernel.org>, Paul Cercueil
+ <paul@crapouillou.net>, Yong Wu <yong.wu@mediatek.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Tony Lindgren <tony@atomide.com>, Lukasz Luba <lukasz.luba@arm.com>,
+ Alim Akhtar <alim.akhtar@samsung.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Konrad Dybcio <konradybcio@kernel.org>, Georgi Djakov <djakov@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ linux-omap@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-samsung-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-tegra@vger.kernel.org
+References: <1a44c5fc95616d64157d2f4a55f460476d382554.1730987047.git.ukleinek@kernel.org>
+Content-Language: en-US
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <1a44c5fc95616d64157d2f4a55f460476d382554.1730987047.git.ukleinek@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sat, Nov 09, 2024 at 01:00:08PM +0200, Roger Quadros wrote:
-> AM65 CPSW hardware can map the 6-bit DSCP/TOS field to
-> appropriate priority queue via DSCP to Priority mapping registers
-> (CPSW_PN_RX_PRI_MAP_REG).
+
+
+On 07/11/2024 16:57, Uwe Kleine-König wrote:
+> After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
+> return void") .remove() is (again) the right callback to implement for
+> platform drivers.
 > 
-> We use the upper 3 bits of the DSCP field that indicate IP Precedence
-> to map traffic to 8 priority queues.
+> Convert all platform drivers below drivers/memory to use .remove(), with
+> the eventual goal to drop struct platform_driver::remove_new(). As
+> .remove() and .remove_new() have the same prototypes, conversion is done
+> by just changing the structure member name in the driver initializer.
 > 
-> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+> A few white space changes are included to make indention consistent.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+for drivers/memory/omap-gpmc.c 
 
-Regards,
-Siddharth.
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
 
