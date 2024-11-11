@@ -1,179 +1,127 @@
-Return-Path: <linux-omap+bounces-2660-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2661-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A13629C4714
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2024 21:44:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F16D09C4949
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2024 23:46:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25721B2D6F3
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2024 20:31:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B55C8285375
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2024 22:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C175F1ACDE8;
-	Mon, 11 Nov 2024 20:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA6C1BCA02;
+	Mon, 11 Nov 2024 22:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UtqK3ele"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="6+nfhIIT"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496F2145346;
-	Mon, 11 Nov 2024 20:30:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB59156F5E;
+	Mon, 11 Nov 2024 22:46:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731357051; cv=none; b=ZtqySZ+RFj08XKvoXcVOQ+hds8OVTg4CHYg8AoMMVi0y8aTNS5/DshO06yHlKctnxKDWbCupDI008O1bQHUjj5RLUdhonzPL2kA7W2UMYcx4nPYJqZ1RBxZcghi7Z1q5Ltd6soeEDEF7cX6jchfy0QA1qv8JHJ70LLT91R/wQmc=
+	t=1731365181; cv=none; b=TX5YdZGb1tax5omU8EZlknYjvAOn+Ll9MnsgyqasD2Q4/tSqDFAj6aUXHnUljmb7cyR6/bTpraz1mF2CpDSTZ6wGWz5JVf5T7ZSx+eL29ycsHAzxOhgkAzpDyUmjY6tZuDXOcpUpvvqpMfwwyUe9seONIt1IenxW48mopGadqQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731357051; c=relaxed/simple;
-	bh=WGz13CZe+VKZX/rdxUUf7kIQc8SZ1agbogHAyM7xm4A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BblTsEpmKrYNrZ5GycK/MVrRkJfCckvKtcgq49aygWCt2fxm/GAFZVXGXQMrpOrBwXW3FkfFpz5Z8Umb66cXdH6XO3tY7y6WbsqVPFp+n5XRxvMHnU4rluAYYGRThPw13J3Jmd2uZHG0wZQaNpuYpusLLupGDifj6GrHMf9SmM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UtqK3ele; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94885C4CECF;
-	Mon, 11 Nov 2024 20:30:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731357050;
-	bh=WGz13CZe+VKZX/rdxUUf7kIQc8SZ1agbogHAyM7xm4A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UtqK3eleeS+IR8r9f119Olaf76MrcX6pSyrNXS7x+FZjRQrGBdI9soR3JUiY492+H
-	 P7PYLvi7POUG9LdFzYb3TBpgKGyPm6feJKnsuld5v1aZ89ZMVsx+5fw0TymPW7ojP1
-	 KtkiN+ug3ki++x4OGIFscQ/WI5iHxEGZix81xjcONdhPCK/tPyp4nvXs1aUFu/hKGD
-	 5dA+cWHj1XgIVX37ia1dg4SqKD0v2DLnKzlw4HumnZkPI8j/hpFlmXeQ9lD1PX6JlA
-	 tIOE/o5nkkjNb3WyFZPnNqid9q1puKehdZooPyh9dNKPZOaWvr3yP1WFsFzGqRlfLi
-	 MXXHt21tRZetg==
-Date: Mon, 11 Nov 2024 20:30:46 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Michael Turquette <mturquette@baylibre.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	Stephen Boyd <sboyd@kernel.org>, linux-omap@vger.kernel.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Tero Kristo <kristo@kernel.org>, Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v2] dt-bindings: clock: ti: Convert mux.txt to json-schema
-Message-ID: <20241111-finished-jinx-e810458a3381@spud>
-References: <20241108231453.247660-1-andreas@kemnade.info>
+	s=arc-20240116; t=1731365181; c=relaxed/simple;
+	bh=5rU8s0axoUdw/3t1/h8MiI09YYSTA7832OWSw1von30=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Go+1XQoRGffQjvZyWvt51QfKx0syxOCJDeNJPgxCUjLYjYrt0ZsP56AG36t1NQF4SUj6I4VlTKB3KxnnnsfXVn4FDHxXjY7zOWf32rSk0Um+RZi+2JgMBr1VuO5CQkjIeZTl/aImlm9YLY9hfHlnQL/I5/s0Ibk0nZizO1+1V74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=6+nfhIIT; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=ZpNWFQwQJn4BOXJoxOWOhm1D3BZjq+95hiepMT+RS3o=; b=6+nfhIIT4x7gLn4hQSvuQtkXNa
+	UZSEXOfK3jrd3mvTMKt6tfN3iheIbKI+u1S+umZla6RuEOU0LqZUDZv3CGzyTaCX6vcHBisX647ez
+	YPiIdMXvufk5IiO6NSWajWVotzfWfVaJriUWlfo8CB8HSP7nanWiWGomyUZVy7PHN9Kt9Zo4ytwQe
+	wHza5bS1Ufs9SgvGjkq3xnNAfaiDUS9O2Pd3SuSOf+tFz8tOcVu0ayydJwH/Ozp+AgCT2fT1d4UGN
+	0PwrvCCIiN3C4c90ppVIHre5ifjWESShxfPwAhK2jTDZ8BipgJ1p6Dpd7vh+7nvSzri8SbdHPXN28
+	sWQiJYvA==;
+Date: Mon, 11 Nov 2024 23:46:04 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Tony Lindgren <tony@atomide.com>
+Cc: Roger Quadros <rogerq@kernel.org>, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, hns@goldelico.com, linux-omap@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ aaro.koskinen@iki.fi, khilman@baylibre.com, stable@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: ti/omap: gta04: fix pm issues caused by spi
+ module
+Message-ID: <20241111234604.66a9691b@akair>
+In-Reply-To: <20241111193117.5a5f5ecb@akair>
+References: <20241107225100.1803943-1-andreas@kemnade.info>
+	<b26c1fa8-b3b7-4aa9-bc78-793ddfa3bc6b@kernel.org>
+	<20241108184118.5ee8114c@akair>
+	<20241111150953.GA23206@atomide.com>
+	<20241111193117.5a5f5ecb@akair>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Trh0whuzKXWjCbWM"
-Content-Disposition: inline
-In-Reply-To: <20241108231453.247660-1-andreas@kemnade.info>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+Am Mon, 11 Nov 2024 19:31:17 +0100
+schrieb Andreas Kemnade <andreas@kemnade.info>:
 
---Trh0whuzKXWjCbWM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Am Mon, 11 Nov 2024 17:09:53 +0200
+> schrieb Tony Lindgren <tony@atomide.com>:
+> 
+> > * Andreas Kemnade <andreas@kemnade.info> [241108 17:41]:  
+> > > They are not used, if they are just disabled, kernel does not touch
+> > > them, so if it is there, the kernel can handle
+> > > pm. At least as long as it is not under ti,sysc.
+> > > 
+> > > There are probably cleaner solutions for this, but for a CC: stable I
+> > > would prefer something less invasive.    
+> > 
+> > For unused devices, it's best to configure things to use ti-sysc, and
+> > then set status disabled (or reserved) for the child devices only. This
+> > way the parent interconnect target module is PM runtime managed by
+> > Linux, and it's power domain gets properly idled for the unused devices
+> > too.
+> >   
+> Hmm, we also have omap_hwmod_setup_all() which is still called if
+> without device nodes being available.
+> 
+> Converting mcspi to ti-sysc is more than 100 lines. So it does not
+> qualify for stable.
+> 
+> > > I can try a ti-sysc based fix in parallel.    
+> > 
+> > Yeah that should be trivial hopefully :)
+> >   
+> I played around, got pm issues too, tried to force-enable things (via
+> power/control),
+> watched CM_IDLEST1_CORE and CM_FCLKEN1_CORE, they behave. Bits are set
+> or reset.
+> 
+> but not CM_IDLEST_CKGEN, it is 0x209 instead of 0x1.
+> 
+> I test from initramfs, so no mmc activity involved
+> 
+> removing status = "disabled" from mcspi3 solves things.
+> With and without ti-sysc conversion. removing status = "disabled" from
+> mcspi4 seems not to help.
+> 
+> That all cannot be... I will retry tomorrow.
+> 
+well, I tried a bit further:
+I build the omap spi driver as module.
+and booted With mcspi3 not disabled and no module autoload.
 
-On Sat, Nov 09, 2024 at 12:14:53AM +0100, Andreas Kemnade wrote:
-> diff --git a/Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml=
- b/Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml
-> new file mode 100644
-> index 000000000000..4a6f349ba2b0
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml
-> @@ -0,0 +1,125 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/clock/ti/ti,mux-clock.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Texas Instruments mux clock
-> +
-> +maintainers:
-> +  - Tero Kristo <kristo@kernel.org>
-> +
-> +description: |
-> +  This clock assumes a register-mapped multiplexer with multiple inpt cl=
-ock
-> +  signals or parents, one of which can be selected as output. This clock=
- does
-> +  not gate or adjust the parent rate via a divider or multiplier.
-> +
-> +  By default the "clocks" property lists the parents in the same order
-> +  as they are programmed into the register.  E.g:
-> +
-> +    clocks =3D <&foo_clock>, <&bar_clock>, <&baz_clock>;
-> +
-> +  Results in programming the register as follows:
-> +
-> +  register value   selected parent clock
-> +  0                foo_clock
-> +  1                bar_clock
-> +  2                baz_clock
-> +
-> +  Some clock controller IPs do not allow a value of zero to be programmed
-> +  into the register, instead indexing begins at 1.  The optional property
-> +  "index-starts-at-one" modified the scheme as follows:
+without module loaded: pm bad, same as with mcspi3 disabled
+with module loaded: core pm ok
+with module loaded and unloaded: core pm ok.
 
-Not your doing, but this is a crock. How is someone meant to know when
-to use the property or not? Par for the course for ancient bindings I
-guess..
+so at least a trace.
 
-> +
-> +  register value   selected clock parent
-> +  1                foo_clock
-> +  2                bar_clock
-> +  3                baz_clock
-> +
-> +  The binding must provide the register to control the mux. Optionally
-> +  the number of bits to shift the control field in the register can be
-> +  supplied. If the shift value is missing it is the same as supplying
-> +  a zero shift.
-> +  - |
-> +    bus {
-> +      #address-cells =3D <1>;
-> +      #size-cells =3D <0>;
-> +
-> +      clock-controller@110 {
-> +        #clock-cells =3D <0>;
-> +        compatible =3D "ti,mux-clock";
-> +        clocks =3D <&virt_12000000_ck>, <&virt_13000000_ck>, <&virt_1680=
-0000_ck>;
-> +        reg =3D <0x0110>;
-> +        ti,index-starts-at-one;
-> +        ti,set-rate-parent;
-> +      };
-> +
-> +      clock-controller@120 {
-> +        #clock-cells =3D <0>;
-> +        compatible =3D "ti,composite-mux-clock";
-> +        clocks =3D <&core_96m_fck>, <&mcbsp_clks>;
-> +        ti,bit-shift =3D <4>;
-> +        reg =3D <0x0120>;
-
-Ordering here should be compatible, reg, clock properties, vendor
-properties.
-
-With that,=20
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-
-Cheers,
-Conor.
-
-> +      };
-> +    };
-> --=20
-> 2.39.5
->=20
-
---Trh0whuzKXWjCbWM
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZzJpdgAKCRB4tDGHoIJi
-0pRrAP9IAMMC4QQ1XmcaRQcIxjloiEmGeCoz/KUhen7MTd7ZcQD+O8dU04TD/eW1
-EzJCZAsNA+kwHG4eR4aM+L8k5NoJzAo=
-=VTPP
------END PGP SIGNATURE-----
-
---Trh0whuzKXWjCbWM--
+Regards,
+Andreas
 
