@@ -1,146 +1,91 @@
-Return-Path: <linux-omap+bounces-2654-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2655-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A5B39C412A
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2024 15:42:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC169C41B7
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2024 16:19:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37380280D15
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2024 14:41:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA25BB21519
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Nov 2024 15:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B8691A01D8;
-	Mon, 11 Nov 2024 14:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F94F13C3D3;
+	Mon, 11 Nov 2024 15:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PBHwPj5p"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="TQCyxVlN"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2D614EC55;
-	Mon, 11 Nov 2024 14:41:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968F31BC58;
+	Mon, 11 Nov 2024 15:19:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731336113; cv=none; b=Uum+Cktut4ivuPCIl8U3JrRKFwQZDVXtGgOurWSthTT3q98LZOLiekU52MHUmW4dNvb8dGW/q9ut7Mf/rboBNPi7jiv9jyHaMcl0A2mxi0RZwwLs6cYbOc5vPwVPX7/ezT0OkUu/H3hj5uxzOnGVOnltn2t/afH3hmQ8SDhRiF4=
+	t=1731338375; cv=none; b=dOdbVpvovXx1bZC291rIq/VMQp6+A+zuJwIHp6reNXJiDVEDFfByudHAUkNCoh280jmiaPGOyw38MuU9tJt9NNpG6DPEOVt38JsxqFqwJrRrPYnuh9DscO6YlGJFyScrIsKRG/MijmCl9TquoWZ7mQze77eIz3uM36JVCV7fBmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731336113; c=relaxed/simple;
-	bh=gQfgqozLAE5g7m9L6Wx0p/96n80+SjfIScZYvj0WqsU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uN2/VNYV26e6NJq4bKoi2YicOV7SeV49Ww8eWqCCK/CP8KYAeKd9TpPtzixHaSBVe0rFAJliXhYP7SascD711izASjeCNAbEBRTmlDUVmHf1wp8RWlzmyu0ZU/813ntWRZ3JOKRvpZN3lNhmcdtRDKLo9QL48NEJ/0ynZQX65+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PBHwPj5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA9E0C4CECF;
-	Mon, 11 Nov 2024 14:41:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731336112;
-	bh=gQfgqozLAE5g7m9L6Wx0p/96n80+SjfIScZYvj0WqsU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PBHwPj5pU+LKgZ74/GqVQtVbFlbMHmQTmxO/Zgy8+uKQrFPK9g65MVNVpFtKXRURi
-	 2XUYux+tbUCyi5DS3cYAZGjz4Rlrsn2Vwwj9+o/sFlubR9lidzpoZt2yIpH9BfUWDJ
-	 NcgjMpsMvRSpSgESlg9K9KstOQ50/lq1hycPntwWhM6ODLhZvSG2NAKf/DB3YrlMh4
-	 O9LOMr418G8+HZMNedKk+FJPpqQk83aQjNBo8GGUbcPgfs399kGX3PvmwLNu6PpkxS
-	 AJjBbzmeXOEajMQuo75yLj0c///X0er86fR4egOOOZId25x+uM0O/JfHiWxwKoGfzq
-	 8tp0SZlJcC6Ag==
-Message-ID: <cd915c18-7230-4c38-a860-d2a777223147@kernel.org>
-Date: Mon, 11 Nov 2024 16:41:47 +0200
+	s=arc-20240116; t=1731338375; c=relaxed/simple;
+	bh=ouHKreVCAASVnyqoZVthFsptyazNbdMX7z8KShh2ol8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nbeKoAdtb41wBIFD3CvFF4X+RGpmHtpOg2Ar1XTS2aTIuRH/m6V3ta60s1hvmgllHXK5hxOf8WP/h/Nt9t4wcQDI+PoIKqCJfEHyXq8Iylx0/jPYsp4jkPJ9U0W/VRYO5uO7cF50wVGQVwG6ZuOVbcXp0B3NL+Jpmf1lyzsmrfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=TQCyxVlN; arc=none smtp.client-ip=74.50.62.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
+Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
+	by mail5.25mail.st (Postfix) with ESMTPSA id 1EF4D6084E;
+	Mon, 11 Nov 2024 15:09:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
+	s=25mailst; t=1731337820;
+	bh=ouHKreVCAASVnyqoZVthFsptyazNbdMX7z8KShh2ol8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TQCyxVlNepxRuyUW6tOsADLtvaxBFtc3XkPQQfbHwWr81VCiGrQ8uaFiWnT5m5JJ7
+	 pn7XCib9XigdZw6F0/ogd45MpLIm3d12JjuuhATnPomZ5Op73upOdhZMKEykwlWtvv
+	 9flqVL3bnd5xmY/roOHjaxfvf84sJwinLEpIt9gEXa9SrWCVebVcEgPcG6HrlUB0O0
+	 cAKXG/dSncEJK2Tp2yKKVSdxS7BIPvaJMrdB9lxtAxe1mLsmYdYd/j21UjBW5+DBji
+	 I7k9EL+5G4zzwuKX+PfrCA2tXYkyC6CC9txqlyq/Dq8g0ezM4t5w4Wnr3TbCzTEWXi
+	 Up79x7a9HcC+Q==
+Date: Mon, 11 Nov 2024 17:09:53 +0200
+From: Tony Lindgren <tony@atomide.com>
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: Roger Quadros <rogerq@kernel.org>, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, hns@goldelico.com, linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	aaro.koskinen@iki.fi, khilman@baylibre.com, stable@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: ti/omap: gta04: fix pm issues caused by spi
+ module
+Message-ID: <20241111150953.GA23206@atomide.com>
+References: <20241107225100.1803943-1-andreas@kemnade.info>
+ <b26c1fa8-b3b7-4aa9-bc78-793ddfa3bc6b@kernel.org>
+ <20241108184118.5ee8114c@akair>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mfd: omap-usb-tll: handle clk_prepare return code in
- usbtll_omap_probe
-To: Andreas Kemnade <andreas@kemnade.info>, Karol P <karprzy7@gmail.com>
-Cc: aaro.koskinen@iki.fi, khilman@baylibre.com, tony@atomide.com,
- lee@kernel.org, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
- skhan@linuxfoundation.org
-References: <20241106223324.479341-1-karprzy7@gmail.com>
- <20241107001507.5a304718@akair>
- <CAKwoAfp6iPN0F_kfNbF8xbpX7+Qh+BS55KgmZ5nis0u00vOFhw@mail.gmail.com>
- <20241110002954.1134398a@akair>
-Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20241110002954.1134398a@akair>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241108184118.5ee8114c@akair>
 
-Hi,
+* Andreas Kemnade <andreas@kemnade.info> [241108 17:41]:
+> They are not used, if they are just disabled, kernel does not touch
+> them, so if it is there, the kernel can handle
+> pm. At least as long as it is not under ti,sysc.
+> 
+> There are probably cleaner solutions for this, but for a CC: stable I
+> would prefer something less invasive.
 
-On 10/11/2024 01:29, Andreas Kemnade wrote:
-> Am Thu, 7 Nov 2024 12:12:52 +0100
-> schrieb Karol P <karprzy7@gmail.com>:
-> 
->> On Thu, 7 Nov 2024 at 00:15, Andreas Kemnade <andreas@kemnade.info> wrote:
->>>
->>> Am Wed,  6 Nov 2024 23:33:24 +0100
->>> schrieb Karol Przybylski <karprzy7@gmail.com>:
->>>  
->>>> clk_prepare() is called in usbtll_omap_probe to fill clk array.
->>>> Return code is not checked, leaving possible error condition unhandled.
->>>>
->>>> Added variable to hold return value from clk_prepare() and return statement
->>>> when it's not successful.
->>>>
->>>> Found in coverity scan, CID 1594680
->>>>
->>>> Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
->>>> ---
->>>>  drivers/mfd/omap-usb-tll.c | 8 ++++++--
->>>>  1 file changed, 6 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
->>>> index 0f7fdb99c809..28446b082c85 100644
->>>> --- a/drivers/mfd/omap-usb-tll.c
->>>> +++ b/drivers/mfd/omap-usb-tll.c
->>>> @@ -202,7 +202,7 @@ static int usbtll_omap_probe(struct platform_device *pdev)
->>>>       struct device                           *dev =  &pdev->dev;
->>>>       struct usbtll_omap                      *tll;
->>>>       void __iomem                            *base;
->>>> -     int                                     i, nch, ver;
->>>> +     int                                     i, nch, ver, err;
->>>>
->>>>       dev_dbg(dev, "starting TI HSUSB TLL Controller\n");
->>>>
->>>> @@ -251,7 +251,11 @@ static int usbtll_omap_probe(struct platform_device *pdev)
->>>>               if (IS_ERR(tll->ch_clk[i]))
->>>>                       dev_dbg(dev, "can't get clock : %s\n", clkname);  
->>>
->>> if you add more intensive error checking, then why is this error
->>> ignored and not returned?  
->>
->> Thank you for the feedback. It does seem that elevated error checking
->> is not the way
->> to go in this case. 
-> 
-> As far as I can see everything checks ch_clk[i] for validity before
-> usage. Also clk_enable() called later is checked which would catch
-> clk_prepare() failures, if there were even possible here.
-> 
-> So the only question which I am not 100% sure about is whether having
-> ch_clk sparsly populated is normal operation. If that is the case, then
-> more error checking is not useful. If not, then it might let us better
-> sleep. As said as far as I can see errors are catched later.
-> 
-> @Roger: what is your opintion towards this?
+For unused devices, it's best to configure things to use ti-sysc, and
+then set status disabled (or reserved) for the child devices only. This
+way the parent interconnect target module is PM runtime managed by
+Linux, and it's power domain gets properly idled for the unused devices
+too.
 
-I don't see usb_tll_hs_usb_ch?_clk in any of the OMAP device trees.
-Could it be that they are optional?
-If so then we could convert it to devm_clk_get_optional()?
+> I can try a ti-sysc based fix in parallel.
 
-While at that, maybe the device tree binding could also be updated and
-converted to yaml.
+Yeah that should be trivial hopefully :)
 
-> 
-> BTW: If you do this kind of work, you could also use W=1 or
-> CONFIG_WERROR during compiling to catch easy things. At least I see new
-> compile warnings with your patch. 
-> 
-> Regards,
-> Andreas
+Regards,
 
--- 
-cheers,
--roger
+Tony
 
