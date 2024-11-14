@@ -1,114 +1,156 @@
-Return-Path: <linux-omap+bounces-2687-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2688-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89B229C8C72
-	for <lists+linux-omap@lfdr.de>; Thu, 14 Nov 2024 15:07:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D30D39C8CED
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Nov 2024 15:35:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DFB52869BF
-	for <lists+linux-omap@lfdr.de>; Thu, 14 Nov 2024 14:07:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 991AC286546
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Nov 2024 14:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 961C42943F;
-	Thu, 14 Nov 2024 14:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF57E2FE33;
+	Thu, 14 Nov 2024 14:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jT0GHCfW"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="E+qBOLrG"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEF81172A
-	for <linux-omap@vger.kernel.org>; Thu, 14 Nov 2024 14:07:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF7AF9E4;
+	Thu, 14 Nov 2024 14:35:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731593255; cv=none; b=DH2T6eJd16w3ddkHHUA9M0N0C/dG7m1IoHSRCtwAYmhX3daSOmCyOEJeSC1j6PavyGx6Qw1KiE3oa79K+4iL0rmNfRsm1hMCU6JFryFTAeK2V7ZT8vAytleAydiN+V73xeXak6yteTBpVF3wIUzuHTKPOE///oNTYYA21pYVmv0=
+	t=1731594922; cv=none; b=jZB8IO4zg2hSI/VcFAE9+IFkuGyX5fRh8vMUaxrCuqVLTy6365KorD3XIrjlPNDRzVA/gl7YETLIrlJDj7n5KiSH3GPU/FA+ecC3BnadAgY9wP3G+6AUjhJRNPm6EZAd5D61DOZ9m1e26fFAhCxXrftWjLI0+ZKGcdU4Y02XS7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731593255; c=relaxed/simple;
-	bh=WUzDeLLAJtW+Z0kgOfdgeEqqhYnBqQ4TWuHZqdvOLmE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IqM5hGFaxesZ2hFDvyX5SYKBZHhGrsNvCWDdgeVatSfcEYE102CuWWj7dbC+8U7wi43dSmjF2ZlbzeV6bRXiZOdlvrSJV7Lgiquh7dUZOARaDbgLtVpv/qGhJ67ppajCUzGFG4wUKPLlTYRxh+qSIBILsXzUPgShsnF8h+uVj2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jT0GHCfW; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731593252;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K0gBUaNEyoe8hJ+dYpFL/aTlXJr3V+IJ2ahMbY21d80=;
-	b=jT0GHCfWv1HUgAfDfPBs9up9oBzdFJvaPRSoIRF1DyDHTugqjexxeigSoirScn7i3eJTFd
-	bdir//QXaf2ieYnaOfMxT496co5BlOpfDPVkfZVxgmc3ExUXo8iCdjXADyj3RuqIQD1GnB
-	cI8oqpz7cK1Gc+uQITO8ZVJgLYTDA18=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-498-ik6n8DB6OiyzDYHqYzwybA-1; Thu, 14 Nov 2024 09:07:31 -0500
-X-MC-Unique: ik6n8DB6OiyzDYHqYzwybA-1
-X-Mimecast-MFC-AGG-ID: ik6n8DB6OiyzDYHqYzwybA
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4327bd6bd60so5115765e9.1
-        for <linux-omap@vger.kernel.org>; Thu, 14 Nov 2024 06:07:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731593250; x=1732198050;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K0gBUaNEyoe8hJ+dYpFL/aTlXJr3V+IJ2ahMbY21d80=;
-        b=DJ0kQPOdWbAYFZZ6vvSibvtvmekk1nHbE0HXF+iysFclS4ECCKX0XpVMGn39Za3oag
-         VBcOaDkqNoo15FfftWRKI3ESbDCA0T3ui2hpqudeFMX5bCluJccCysLBAP0uxd19rRlE
-         msFMZuKhEAVtLzWVTc5/yK+HidNB7+zpqLtPl9Y7+BZBOwgY9BhDg1G/DhIzKOCR1mey
-         XVwILRs4C/k1ryRRePg779jNTdNtOFUCrIB48NgH68bkpHfvCjjIBabtDmzWa4oSyfzd
-         /zddDWfvmyYD6yLzBkJ2aosiDrtFAsnzE3mp8SBID6Kk6RlCVhwGtN+bxPeGHKDPoKW9
-         T7Lg==
-X-Forwarded-Encrypted: i=1; AJvYcCW++n6VWWVcT01HkfAr8UEBX7DWc4BGn+6KUuYuXSWFUZEdnSyCkPB3DAsYTdAl3if8WSpcx4DePLPt@vger.kernel.org
-X-Gm-Message-State: AOJu0YzClGPK5RHYxJjc2Vdzz+jPaOlE5n4CTmi4scEoFnCsyT/P2deY
-	UTJcnLVRCoJbPQ8Tvs4LwOG8BzJUzL2mYqzk2i4yQ/1AaqmnU6jYnsst/sM9bCwAzgrll1xE6Dh
-	g8UvUqgXMCE1rPrIfVHViVUj9ymWxx+NF2Is3FpzvZF3cCzXuYdeo3iCeBis=
-X-Received: by 2002:a05:600c:4f09:b0:42e:93af:61c5 with SMTP id 5b1f17b1804b1-432b7501fdemr223068335e9.14.1731593249962;
-        Thu, 14 Nov 2024 06:07:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGlAsv5aiN/Qn1l2dvPuDWBAlvuNUEXu9wk/kXmBPHQK9kBVTOoQJEVnzmbxW6W/XkP1hbywQ==
-X-Received: by 2002:a05:600c:4f09:b0:42e:93af:61c5 with SMTP id 5b1f17b1804b1-432b7501fdemr223067825e9.14.1731593249568;
-        Thu, 14 Nov 2024 06:07:29 -0800 (PST)
-Received: from debian (2a01cb058d23d600b637ad91a758ba3f.ipv6.abo.wanadoo.fr. [2a01:cb05:8d23:d600:b637:ad91:a758:ba3f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432dab80ad9sm21463955e9.25.2024.11.14.06.07.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Nov 2024 06:07:29 -0800 (PST)
-Date: Thu, 14 Nov 2024 15:07:27 +0100
-From: Guillaume Nault <gnault@redhat.com>
-To: Roger Quadros <rogerq@kernel.org>
-Cc: Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, linux-omap@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, srk@ti.com,
-	Pekka Varis <p-varis@ti.com>
-Subject: Re: [PATCH net-next v4 2/2] net: ethernet: ti: am65-cpsw: enable
- DSCP to priority map for RX
-Message-ID: <ZzYEH+q4AG5FBCiG@debian>
-References: <20241114-am65-cpsw-multi-rx-dscp-v4-0-93eaf6760759@kernel.org>
- <20241114-am65-cpsw-multi-rx-dscp-v4-2-93eaf6760759@kernel.org>
+	s=arc-20240116; t=1731594922; c=relaxed/simple;
+	bh=DFpKUxNIg/0Q8AQl3GpB3e57cbY/U4sm5jilcZax0FY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nuHLwKxJ7ADqEG+a1Su8PkaUDFLPazBtJpNU18+vzyon5O4HNCj0xccixNx1tsqmxXP4Tk5+5h53W5NfXlPOm30URi4CIQdPKgOc26oEtBBvc6VaawjpMBPWmcMfXQM4ptR7U77Vq9Dbw8w/PEVHl2UNVyrs5qCb3QprGPX2Dm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=E+qBOLrG; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1731594915; x=1732199715; i=deller@gmx.de;
+	bh=7cL1d418pCLkOQWiNQwzOKQe/skb+LIVS7TMgzPtaDQ=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=E+qBOLrGAS6u1sUEZqTMCosHqbdJXMwTVuuZS7YTRAshuAzxGNZiKgAFBXlEJW2A
+	 8gwo17gdxuq/d0dHVZU+hchMdZMQxaL+9NkadmZ3VAFpEfqhtB6nKbYdiw71GfT3R
+	 nehKe4HZ8WEcpc8eom7eHR68SBarvdrSAIz85dsnS/rU0LvuZ7tDLawp5bLyUBykj
+	 BGEDQIFeV92A5ixRIf402r70v1PbREjqTf1QghGfL9Ve8WoGeHLGfNBpbelrq12Gw
+	 /98fhqiNqWoQVAbdWKGKzWtjaqLZ1SGK64OuuUczjZg64e/XH1wClFGJQLHJmLnil
+	 /naHNhdgE92PczkYXg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [10.8.0.6] ([78.94.87.245]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MeU0k-1tjplG3M5E-00pKcW; Thu, 14
+ Nov 2024 15:35:14 +0100
+Message-ID: <00edb739-458e-4ed0-a76c-4c6ceb4cbc3e@gmx.de>
+Date: Thu, 14 Nov 2024 15:35:13 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241114-am65-cpsw-multi-rx-dscp-v4-2-93eaf6760759@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fbdev: omapfb: Remove some deadcode
+To: linux@treblig.org, u.kleine-koenig@baylibre.com,
+ linux-omap@vger.kernel.org
+Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org
+References: <20241026220133.93956-1-linux@treblig.org>
+Content-Language: en-US
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <20241026220133.93956-1-linux@treblig.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:pEWBPUavsm7cxfKaowBGPWSvRP1x9pkmKjPqUW2Bf1916up1DWy
+ cwBOOut9ZLa/poGj9F4J3FseU5DECw0WtI7dJwWrshJkUbFroGUDE9ya6Z5Q/3/OHiN1Asx
+ 2+jvUIhW45QiXRt5lwQfiYv9Htej3vJDoay4lJK5MinPWDoelGynVNwt8VdR6LMtQomNgxn
+ 9lgE5TknsZiEQYMDaxSlA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:cGRXIVaS8Vc=;9av0evoZdcdWSn5Ee3L4RxQbIZz
+ l+6uYoZX4xhBb/5z73HYO1J7ypc8rV7Dq52Y/pIzKIxmJx/2sntzg3PO7kXyLxl18/JWg8hOz
+ JSgo0APgJyIEvwHVfob1OXpXBWR8V1CEqFHvGE7NaoZ8sA72ap9uYsvHFeR7n66Jz8PyW76Sf
+ TaaJOcfmGSi/LqwkmcGtpmZgzgc0f4f7ZlOlcWszvlz/34c0hZ/Tl7AWY8ZavDTLLhwOze8wG
+ j6WsrSNA0bZhlt+xGqf9PuPTBumRC3mA++zvR8JbMglQePOkAISjZGriyNH4JJmdBnpbygt6q
+ wuRlkTwP0kGIwDUuLsKeFPyx95H24TuXYjThp4xoh5ltQUIgOlV10BWwCuuaGCh1eAUz6NAR4
+ L780PCz8vww4yUe4wTwZz3fuHoTiHwqniwcr9OIo7osqkkBs54ivNabXOhTx/DUnMdAdR6LSP
+ aX7Z8+E2yw89shXuuR+Iqdzg++Ks1eJU6dX2+fMoI0g2iATwT6aDTBUe84uXDvRSHoxYI3uAu
+ 4u4tpumvk2pzea/QGcjBU8JvGR1CG/JMBH/pZm9ZaW1E+l1QCkgG7RrT/nASiccyqRBQ59zTO
+ /NNofE1K+/WLDkO88cm14CxzQL2cK/jX1gpp1dRPrhXXjdfeFQwlo0sCZa4rTwhfz2mbQqSG8
+ eb6gmnAA+aBtL6VBCG5H/WH0a1Rqa8LJrLReP6pJ78r6MTfjXg6ATzcrdtspcVTpp2BNHnIz1
+ CyclAsMIR61dXpsQWd9M1NOcfPgP3ot0Ym7W4PWUwleb81UaLtRn34KEbI349bqT7kfnuF6Jv
+ d+pUzMcQI0n+VlftZnALjeYFou+YGg2D776jn84O1cpnTkndL/929PhqcWh/QsHG5+BRkk7xi
+ R+RpTLRIMjWnWtyfLGqBlTXaRqsjoaeuECh5K9vToMvbiyTKSrFax9x3D
 
-On Thu, Nov 14, 2024 at 03:36:53PM +0200, Roger Quadros wrote:
-> AM65 CPSW hardware can map the 6-bit DSCP/TOS field to
-> appropriate priority queue via DSCP to Priority mapping registers
-> (CPSW_PN_RX_PRI_MAP_REG).
-> 
-> Use a default DSCP to User Priority (UP) mapping as per
-> https://datatracker.ietf.org/doc/html/rfc8325#section-4.3
-> and
-> https://datatracker.ietf.org/doc/html/rfc8622#section-11
+On 10/27/24 00:01, linux@treblig.org wrote:
+> From: "Dr. David Alan Gilbert" <linux@treblig.org>
+>
+> commit f76ee892a99e ("omapfb: copy omapdss & displays for omapfb")
+> took a copy of the omapdrm code into omapfb, however at that point
+> a couple of functions were already unused at that point.
+>
+> Remove dispc_mgr_get_clock_div() and dispc_enable_fifomerge() from
+> the omapfb copy.
+>
+> Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+> ---
+>   drivers/video/fbdev/omap2/omapfb/dss/dispc.c | 27 --------------------
+>   drivers/video/fbdev/omap2/omapfb/dss/dss.h   |  3 ---
+>   2 files changed, 30 deletions(-)
 
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
+applied.
+
+Thanks!
+Helge
 
 
