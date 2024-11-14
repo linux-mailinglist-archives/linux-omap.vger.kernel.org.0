@@ -1,212 +1,133 @@
-Return-Path: <linux-omap+bounces-2682-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2683-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 528579C8BA7
-	for <lists+linux-omap@lfdr.de>; Thu, 14 Nov 2024 14:19:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6072E9C8BEB
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Nov 2024 14:37:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFF30B346BA
-	for <lists+linux-omap@lfdr.de>; Thu, 14 Nov 2024 13:18:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CD3F2857F0
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Nov 2024 13:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4331FAEEC;
-	Thu, 14 Nov 2024 13:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C52C17BA6;
+	Thu, 14 Nov 2024 13:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fDcE/sIi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YZwywoWp"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E811F8918
-	for <linux-omap@vger.kernel.org>; Thu, 14 Nov 2024 13:17:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D914B3FC7;
+	Thu, 14 Nov 2024 13:37:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731590272; cv=none; b=NPB9pyTAXRHJl6dwUgOEBQo6yyN0JiJtADs3iYdZ+0hSYM0Ukd6uqOd2SEtews/KIWNEzbsnTVt2km5O+01V01MYq0ypyDZi3ip/XBNpnyCUrQmZo54ih/c0B8aPmk6VBOcr5XaIIVpx9F1IkbIzJVQFolOm/1wTAs8v1yiAHW0=
+	t=1731591428; cv=none; b=jkgK4bOt2E/SyUo8mlftIpgWj66smlYz5F3pGWPcuFW9S+INIIs3JdI4sFlE0D301k/Ve7+Ww5OUvEVbZB6xtFYe4QZoVg3194JvoNbXzglkvllhHeOMCrkKpSgo8W/D35s/7XKoTS5Jk1Y6XUvlqAKIQJ4wWrRradk5vEn+Qz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731590272; c=relaxed/simple;
-	bh=kOcxvdK94REh1oUeYcJmdN8/ZqLhYHikvQOHyzk0ZAU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QfR9ibLR6Cf0i8hFVTz5cQ1PfYyPm2SlRI535NTb5/G3d1Tz1BZ2oAU1M9azbNt+6S1V8Efs5I9zFOYNq94PE6VV7c8HbOT4RUoheO6SvmSIyIrC3De93h84Kug2ljpFrkdcqfSRfWxb0sIxGfj9edM8RUEOEOSZgyLX4etP9To=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fDcE/sIi; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731590270;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cIkbTTXRzRps+LUew0VaU/Iqcm4Qp8dWdivaxskb2+Q=;
-	b=fDcE/sIi5x1wZtnO1VabEAcb8VGTjUC7ePxpKpj1zXFdyzjgK/ytjMPyShv2/DNpiAe+fS
-	Zsr00Dp+PKQf7x9p852Hfg1R08wp99gqPKo0ytWamKukwA3+g4y0vVVxRhFV0kHB2BhLWJ
-	Sn5c+tcLgC1UfwxPMb/uO/nKZdsSbQg=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-615-SVyBJ65RN82jeji8DHRElA-1; Thu, 14 Nov 2024 08:17:48 -0500
-X-MC-Unique: SVyBJ65RN82jeji8DHRElA-1
-X-Mimecast-MFC-AGG-ID: SVyBJ65RN82jeji8DHRElA
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4315c1b5befso4893785e9.1
-        for <linux-omap@vger.kernel.org>; Thu, 14 Nov 2024 05:17:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731590267; x=1732195067;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cIkbTTXRzRps+LUew0VaU/Iqcm4Qp8dWdivaxskb2+Q=;
-        b=Cgv8t5jZwdfg3ZoJgFRQeC3RLLuHHXmzqCXqGtIE2okyN7K3CqOXxH+k35g7qBNohu
-         MsTmB2sZOHT/WkLyoSgz5bAr3NCRsXDYcY7woWcyyVpLpNc9gTpODTdIBqNUFIgTrxt/
-         Bej4B5l881rbBnuIskRvJt1Mcx/EuWdSIMVf0C9VLeXsfWAbIBvDFDNbLmli7BATzj10
-         AY30HQUbRhADdxjieG3ApxlGtyt8JS5zcEGnGFd+BAVRjVkPhRzga1QStuVz/G7rprUd
-         R1aDrnpRn7MmgG69jRvgIpo478tFRv+8gaqfFd3JYWtMN3yUtza2ceUP/QgifBn9y4qN
-         OOiA==
-X-Forwarded-Encrypted: i=1; AJvYcCWF0nFRbRKZyZUbSBmIrgiPF3Tyua98hSly52DLlVmQMIUGPi14YmBp6pCJj04poHWGoROVvemNR/6A@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGbBqoibAz+8r4QagjXF4nIPe134flrW4n+uKmXoX0X0zHGawc
-	kEvhAFkt+v6dueFP913S0mzy4BOag7A8wSLoHHAihjURXrLXIH8e7IS45YWmVxAkkJ2h2tMDOHY
-	+yXU6Yk6vvZvGX3s0n1lwMAyHbdZ59yrviYZnEsSByOGedYcQMoQZF8i8KvI=
-X-Received: by 2002:a05:600c:1f94:b0:431:5ab3:d28d with SMTP id 5b1f17b1804b1-432b75036eemr212205245e9.9.1731590267528;
-        Thu, 14 Nov 2024 05:17:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGI9dlGsQXrDIQispJUmVhXEmP25HAzMxF+CW2ZS8/AAybcLWHEjjID9r9LVs0dYjf7ZJUgGg==
-X-Received: by 2002:a05:600c:1f94:b0:431:5ab3:d28d with SMTP id 5b1f17b1804b1-432b75036eemr212205015e9.9.1731590267150;
-        Thu, 14 Nov 2024 05:17:47 -0800 (PST)
-Received: from debian (2a01cb058d23d600b637ad91a758ba3f.ipv6.abo.wanadoo.fr. [2a01:cb05:8d23:d600:b637:ad91:a758:ba3f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432dac0ae25sm19958155e9.35.2024.11.14.05.17.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Nov 2024 05:17:46 -0800 (PST)
-Date: Thu, 14 Nov 2024 14:17:44 +0100
-From: Guillaume Nault <gnault@redhat.com>
-To: Roger Quadros <rogerq@kernel.org>
-Cc: Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, linux-omap@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, srk@ti.com,
-	Pekka Varis <p-varis@ti.com>
-Subject: Re: [PATCH net-next v3 2/2] net: ethernet: ti: am65-cpsw: enable
- DSCP to priority map for RX
-Message-ID: <ZzX4eD/0i8SOOZGP@debian>
-References: <20241109-am65-cpsw-multi-rx-dscp-v3-0-1cfb76928490@kernel.org>
- <20241109-am65-cpsw-multi-rx-dscp-v3-2-1cfb76928490@kernel.org>
- <ZzVBS1zXIy31pnaf@debian>
- <76dd6141-5852-43ae-af98-f0edf0bc10f5@kernel.org>
- <8bfe8acc-9514-4ba8-9498-2427ddb0bb78@kernel.org>
- <ZzXm6SHjRfbaOX14@debian>
- <e9d3a6c8-fb12-4926-8c2b-414017681f03@kernel.org>
+	s=arc-20240116; t=1731591428; c=relaxed/simple;
+	bh=Otr49HiqCIUBuYxc55Qdh4UxZrNlr0pBF0Zbv5EShtw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ntcYWE7+pwg59hMnckB9t8VYWeCzAMzAytElBl5z2vX9wZ80n+R9gmYgJHivw7cvD/nF/tJuzorbtizbdFIVN9KRZHDNpnPJ30bRqHLzlwMRxvU0BVgs/gjvxKjuQFK8R04vTdJwqF0LpOdNsz6n/Z1oUfSHds3+bEcsCO/8Ry4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YZwywoWp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837E0C4CED4;
+	Thu, 14 Nov 2024 13:37:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731591427;
+	bh=Otr49HiqCIUBuYxc55Qdh4UxZrNlr0pBF0Zbv5EShtw=;
+	h=From:Subject:Date:To:Cc:From;
+	b=YZwywoWpA9qmQI8J/Z/HuGj5JdCDYJIPPGULaPITCmeYlvoxKSkQpS+TemifZx9ue
+	 Mb7xSqq4wf7A4DL5NVu7SfXFuH7T/21qkbO/IngBvgcaKKFbR/VPlBi7WNJaqT4Ue2
+	 KwJGvdffcYEGmq7JOa5bJVjoUb9NpgOnuSx+775ZOsmj1FYFE8pyg0EOAP+WJCR7Cg
+	 G/UdHi9Hhli6aM4bf2jl0znYJUUhEaZ6KCAQupO//6fQuD9vPAM3aMD+M6NGOvYiEu
+	 FFmJOjz0PM4W6Z1aqD21cXOj7N446FFiTSj3UXjcZS8smpnwslL0PuYo9iHALc4APy
+	 tJCV1Y8UzTy1Q==
+From: Roger Quadros <rogerq@kernel.org>
+Subject: [PATCH net-next v4 0/2] net: ethernet: ti: am65-cpsw: enable DSCP
+ to priority map for RX
+Date: Thu, 14 Nov 2024 15:36:51 +0200
+Message-Id: <20241114-am65-cpsw-multi-rx-dscp-v4-0-93eaf6760759@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e9d3a6c8-fb12-4926-8c2b-414017681f03@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPP8NWcC/3XNzQ6CMBAE4FcxPbtm2/LTevI9jAdoF23EQlpEj
+ OHdbYgHjeE4mcw3LxYpOIpsv3mxQKOLrvMpZNsNM5fKnwmcTZkJFBnnyKG6FTmYPj7gdm8HB2E
+ CG00PiFgLk1VNYZGldR+ocdMiH5mnATxNAzul5uLi0IXncjnypf/o+ao+ckCQytYql1IapQ5XC
+ p7aXRfOCzqKb6hch0SCNGljuRaIMv+D5Dek1yGZIG6auiy0UJnGH2ie5ze2dGCNWwEAAA==
+To: Siddharth Vadapalli <s-vadapalli@ti.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Guillaume Nault <gnault@redhat.com>
+Cc: linux-omap@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, srk@ti.com, Pekka Varis <p-varis@ti.com>, 
+ Roger Quadros <rogerq@kernel.org>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1890; i=rogerq@kernel.org;
+ h=from:subject:message-id; bh=Otr49HiqCIUBuYxc55Qdh4UxZrNlr0pBF0Zbv5EShtw=;
+ b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBnNfz8gMLsHnPA8JDXBA9DdypHaNiEPUf14Y7sX
+ oZ5/GdZ2S6JAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCZzX8/AAKCRDSWmvTvnYw
+ kw05D/0YYivwRAa5sUpBX8N0e/skK5+1BzN/f9Lvrm2Mi1vVhg8/UQXcfR4tT9wCo61N+AIEfKB
+ bDULIItecpGQlKO6cP2TNoZ4a5PY6X8AnUxJXzDsReSUhJTnfuicAAkn6B72yUs+2WXZtpXq2kP
+ e+vBSUc7yOUZ/WUY7SrqmBsYQZH6AiVmaW/MUnK9nmgCFo/JD3QREdJSxSoOxnhM4NwLX8HLTrU
+ A80IkVZXwD6Q7yfRlzKYgGwouiPsW64eR2gFIAC59iyzsEHBF2HbGq9W0DVFhP7aYText5J/J7z
+ pbiH8maIPZmDZb2bbnlbEjffk0WALTv0lv0KD9nTnA8aA6bDpxnRuqCalp9cM6P2BSiLYkVnWLl
+ Gl9zGQkYHA4JnPzg0g01dJiINrwL/9gwWw3xht+nyiluJPaM5xjKXRFITbfQiQeZMniGtgAWUoW
+ X8rEsvse2AkTk59dfTa0Se9LYHt3uHwPfjljIaxWe2YY1nrIK4WFt5eEcg3JhvmMjyPVtLCCubj
+ 4yvpYT8s2T7Uzj9j5ImYf6LqatSbyyV5ldDCo+5BFt73C8FG2a5/jV0Vbg41FLAgVrCINM00mv6
+ gbXjm5n3+AlUEH3ucAy2HEMDC3pnolpRaXO72+vQ9CWL66CcgjZNyN1GVhfw5Jdcahl9ZG0UBj8
+ j5xL90iCSo4eG+g==
+X-Developer-Key: i=rogerq@kernel.org; a=openpgp;
+ fpr=412165D44C9F52780FAB1058D25A6BD3BE763093
 
-On Thu, Nov 14, 2024 at 02:47:07PM +0200, Roger Quadros wrote:
-> 
-> 
-> On 14/11/2024 14:02, Guillaume Nault wrote:
-> > On Thu, Nov 14, 2024 at 12:12:47PM +0200, Roger Quadros wrote:
-> >> On 14/11/2024 11:41, Roger Quadros wrote:
-> >>> On 14/11/2024 02:16, Guillaume Nault wrote:
-> >>>> So what about following the IETF mapping found in section 4.3?
-> >>>> https://datatracker.ietf.org/doc/html/rfc8325#section-4.3
-> >>>
-> >>> Thanks for this tip.
-> >>> I will update this patch to have the default DSCP to UP mapping as per
-> >>> above link and map all unused DSCP to UP 0.
-> >>
-> >> How does the below code look in this regard?
-> > 
-> > Looks generally good to me. A few comments inline though.
-> > 
-> >> static void am65_cpsw_port_enable_dscp_map(struct am65_cpsw_port *slave)
-> >> {
-> >> 	int dscp, pri;
-> >> 	u32 val;
-> >>
-> >> 	/* Default DSCP to User Priority mapping as per:
-> >> 	 * https://datatracker.ietf.org/doc/html/rfc8325#section-4.3
-> > 
-> > Maybe also add a link to
-> > https://datatracker.ietf.org/doc/html/rfc8622#section-11
-> > which defines the LE PHB (Low Effort) and updates RFC 8325 accordingly.
-> > 
-> >> 	 */
-> >> 	for (dscp = 0; dscp <= AM65_CPSW_DSCP_MAX; dscp++) {
-> >> 		switch (dscp) {
-> >> 		case 56:	/* CS7 */
-> >> 		case 48:	/* CS6 */
-> >> 			pri = 7;
-> >> 			break;
-> >> 		case 46:	/* EF */
-> >> 		case 44:	/* VA */
-> >> 			pri = 6;
-> >> 			break;
-> >> 		case 40:	/* CS5 */
-> >> 			pri = 5;
-> >> 			break;
-> >> 		case 32:	/* CS4 */
-> >> 		case 34:	/* AF41 */
-> >> 		case 36:	/* AF42 */
-> >> 		case 38:	/* AF43 */
-> >> 		case 24:	/* CS3 */
-> >> 		case 26:	/* AF31 */
-> >> 		case 28:	/* AF32 */
-> >> 		case 30:	/* AF33 */
-> > 
-> > Until case 32 (CS4) you've kept the order of RFC 8325, table 1.
-> > It'd make life easier for reviewers if you could keep this order
-> > here. That is, moving CS4 after AF43 and CS3 after AF33.
-> > 
-> >> 			pri = 4;
-> >> 			break;
-> >> 		case 17:	/* AF21 */
-> > 
-> > AF21 is 18, not 17.
-> > 
-> >> 		case 20:	/* AF22 */
-> >> 		case 22:	/* AF23 */
-> >> 			pri = 3;
-> >> 			break;
-> >> 		case 8:		/* CS1 */
-> > 
-> > Let's be complete and add the case for LE (RFC 8622), which also
-> > maps to 1.
-> 
-> All comments are valid. I will fix and send v4 for this series.
-> 
-> > 
-> >> 			pri = 1;
-> >> 			break;
-> 
-> For sake of completeness I will mention CS2, AF11, AF12, AF13
-> here that can fallback to default case.
+Configure default DSCP to User Priority mapping registers as per:
+ https://datatracker.ietf.org/doc/html/rfc8325#section-4.3
+and
+ https://datatracker.ietf.org/doc/html/rfc8622#section-11
+    
+Also update Priority to Thread maping to be compliant with
+IEEE802.1Q-2014. Priority Code Point (PCP) 2 is higher priority than
+PCP 0 (Best Effort). PCP 1 (Background) is lower priority than
+PCP 0 (Best Effort).
 
-Yes, very nice.
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+---
+Changes in v4:
+- Updated default DSCP to User Priority mapping as per 
+  https://datatracker.ietf.org/doc/html/rfc8325#section-4.3
+  and
+  https://datatracker.ietf.org/doc/html/rfc8622#section-11
+- Link to v3: https://lore.kernel.org/r/20241109-am65-cpsw-multi-rx-dscp-v3-0-1cfb76928490@kernel.org
 
-> >> 		default:
-> >> 			pri = 0;
-> >> 			break;
-> >> 		}
-> >>
-> >> 		am65_cpsw_port_set_dscp_map(slave, dscp, pri);
-> >> 	}
-> >>
-> >> 	/* enable port IPV4 and IPV6 DSCP for this port */
-> >> 	val = readl(slave->port_base + AM65_CPSW_PORTN_REG_CTL);
-> >> 	val |= AM65_CPSW_PN_REG_CTL_DSCP_IPV4_EN |
-> >> 		AM65_CPSW_PN_REG_CTL_DSCP_IPV6_EN;
-> >> 	writel(val, slave->port_base + AM65_CPSW_PORTN_REG_CTL);
-> >> }
-> >>
-> >>>
-> 
-> -- 
-> cheers,
-> -roger
-> 
+Changes in v3:
+- Added Reviewed-by tag to patch 1
+- Added macros for DSCP PRI field size and DSCP PRI per register
+- Drop unnecessary readl() in am65_cpsw_port_set_dscp_map()
+- Link to v2: https://lore.kernel.org/r/20241107-am65-cpsw-multi-rx-dscp-v2-0-9e9cd1920035@kernel.org
+
+Changes in v2:
+- Updated references to more recent standard IEEE802.1Q-2014.
+- Dropped reference to web link which might change in the future.
+- Typo fix in commit log.
+- Link to v1: https://lore.kernel.org/r/20241105-am65-cpsw-multi-rx-dscp-v1-0-38db85333c88@kernel.org
+
+---
+Roger Quadros (2):
+      net: ethernet: ti: am65-cpsw: update pri_thread_map as per IEEE802.1Q-2014
+      net: ethernet: ti: am65-cpsw: enable DSCP to priority map for RX
+
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 100 +++++++++++++++++++++++++++++++
+ drivers/net/ethernet/ti/cpsw_ale.c       |  36 ++++++-----
+ 2 files changed, 122 insertions(+), 14 deletions(-)
+---
+base-commit: 42f7652d3eb527d03665b09edac47f85fb600924
+change-id: 20241101-am65-cpsw-multi-rx-dscp-000b2c4af6d0
+
+Best regards,
+-- 
+Roger Quadros <rogerq@kernel.org>
 
 
