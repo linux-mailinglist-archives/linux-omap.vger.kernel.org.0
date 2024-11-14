@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-2673-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2674-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE0A9C8558
-	for <lists+linux-omap@lfdr.de>; Thu, 14 Nov 2024 09:56:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E54529C865B
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Nov 2024 10:42:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD7031F2259B
-	for <lists+linux-omap@lfdr.de>; Thu, 14 Nov 2024 08:56:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23ABDB23B3A
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Nov 2024 09:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D60E1F76D5;
-	Thu, 14 Nov 2024 08:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B121F7080;
+	Thu, 14 Nov 2024 09:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j5KCiEAM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IPdEYXkZ"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCAC01F76BE;
-	Thu, 14 Nov 2024 08:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7F77C0BE;
+	Thu, 14 Nov 2024 09:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731574550; cv=none; b=CSmR7xTzmVrGrpYInsKIhZcnznPiSisp82vvazsaZRv+G/ltUsKEOssZeFCEnVqYH3Ke4xm31iFhLtmB5liVCg+aj7YtWLouz1SOMLFjZSqn2Bl9vMRldHGhWjIbA8nQX6CzXrHFdRmgx8wm8JJZ3i9EAhJU2qrMqYgQis09lH4=
+	t=1731577272; cv=none; b=moc1qLgqHakAdrg3ZBsIpPdy/JNbliB7kFPO0jok7nEzvvDoI7/vVtuky5XkYOs5FNu6VdZqlnLjXxXdtzQIerlF94hbduax1gKh5/BalfixITHfg+YyVAZSqFYuL1A4IZP0uOf8EryzUtbtmxK5/eGVJeOL3Aj1VxmByRhiPOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731574550; c=relaxed/simple;
-	bh=0KlX2H18ntqJgaqCjiRs6+LhDQC5r/IjDTi2u9Uni/8=;
+	s=arc-20240116; t=1731577272; c=relaxed/simple;
+	bh=5q3RktbUZXvf6M0hRM6HB/aJlJafYbTdCmLCZcHHYRM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BZyxu2yBGibIQBY3Dm/mCMF02Ga7Ekjtd4hPUd1GgB5eSYckdpUa2eKsx8xqHPWtKqtKbLnKSNFxPa1JPwpipFyfApgHPpWB0J7Lk8jHR37aL6dYEJutC4YCYnZfwOUg5yfc+iVPdF40GJyM+1vibbkVCQMBaR1yCEX6H+VXQKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j5KCiEAM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5544AC4CECD;
-	Thu, 14 Nov 2024 08:55:46 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=i0COk4VvmmblIHpXcQyUPCTozHQkt49dw3X5lw+GRGCPBVWdDxbCp6TNLiUVDXfw5keCAp78cpJsLCC7SvkpaaGkdoh0gfogW0ct38X5cJDAft++E5Vq5jBtbWH3UONDIH+Tn5qGS18etTK0AIqMSfjMMPn4d9g1+Jp2tJ4JouY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IPdEYXkZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C56C4CECD;
+	Thu, 14 Nov 2024 09:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731574549;
-	bh=0KlX2H18ntqJgaqCjiRs6+LhDQC5r/IjDTi2u9Uni/8=;
+	s=k20201202; t=1731577272;
+	bh=5q3RktbUZXvf6M0hRM6HB/aJlJafYbTdCmLCZcHHYRM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=j5KCiEAMoXlKkCjQtW4ZlTreO8bdQNE9vQEZAdn6IHmS84TxSCf9qQGo1Ikyxleub
-	 96xwUhQ/mJtCnhpFD8xArddswIJbJXJi/ZiiWI1RVjk+1/TVJWn9LEs17t4Sifjqfg
-	 sCbFZ8TCQnp2OFsIDWZ5N+2gfnRJ4U+qE++hNhqV1S2gA5A1U0nI8UPR7pQpydzo/6
-	 NOyrhwJFD7xZtVse/zuWWCdM5WFVdUJp7NKoFg8V/qHPuXNxe+0BR+z/lKW7LM48Yq
-	 3rsoInn+OMiU08++U1yjayvKo+LGP5Uv0h/hKo7InyfCojdCXu0m0zeYxZYfeeBue4
-	 TN6yCn98PwI4A==
-Message-ID: <5b05b09e-197c-40dc-98c3-7d8bfb0975d5@kernel.org>
-Date: Thu, 14 Nov 2024 10:55:43 +0200
+	b=IPdEYXkZsrnbsNA/amFr6z9+SaYXUFEEn5OGID34chnxsJmNyfI3ULyGkejnFEgxV
+	 +rIeZC7SCUBgT9L2KsA84kPhdSfWCnUP4A2Ldg6Dc+CMCLB9Nk8ljPXtr6Zamql35j
+	 8i6vRWmKuw4oazJ4jsbxUBRmc71AxrDwV/aIVlWfmhyrN7NHCBiHmHuENEvl8RYNw7
+	 OrW9qYHIwRlCIU3JXAnmCM/sFUj3VLY7ju0+cwBtKPYxzsmQKPluiwnvA7Yml4+zo3
+	 qcVGvv2zojvmC43lcEfVqx32JY69z60Z2WLAlGRUsGQD+h+yAXYI+Cb7imS6pNPJPl
+	 M6gF/uMoJX9qQ==
+Message-ID: <76dd6141-5852-43ae-af98-f0edf0bc10f5@kernel.org>
+Date: Thu, 14 Nov 2024 11:41:06 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -50,82 +50,166 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 0/2] net: ethernet: ti: am65-cpsw: enable DSCP
+Subject: Re: [PATCH net-next v3 2/2] net: ethernet: ti: am65-cpsw: enable DSCP
  to priority map for RX
-To: Guillaume Nault <gnault@redhat.com>, Simon Horman <horms@kernel.org>
+To: Guillaume Nault <gnault@redhat.com>
 Cc: Siddharth Vadapalli <s-vadapalli@ti.com>,
  Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
  <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- linux-omap@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, srk@ti.com, Pekka Varis <p-varis@ti.com>,
- Ido Schimmel <idosch@idosch.org>
+ Simon Horman <horms@kernel.org>, linux-omap@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, srk@ti.com,
+ Pekka Varis <p-varis@ti.com>
 References: <20241109-am65-cpsw-multi-rx-dscp-v3-0-1cfb76928490@kernel.org>
- <20241112140833.GP4507@kernel.org> <ZzVCDZR8a/xchDU6@debian>
+ <20241109-am65-cpsw-multi-rx-dscp-v3-2-1cfb76928490@kernel.org>
+ <ZzVBS1zXIy31pnaf@debian>
 Content-Language: en-US
 From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <ZzVCDZR8a/xchDU6@debian>
+In-Reply-To: <ZzVBS1zXIy31pnaf@debian>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Guillaume,
 
-On 14/11/2024 02:19, Guillaume Nault wrote:
-> On Tue, Nov 12, 2024 at 02:08:33PM +0000, Simon Horman wrote:
->> + Ido and Guilliame
+
+On 14/11/2024 02:16, Guillaume Nault wrote:
+> On Sat, Nov 09, 2024 at 01:00:08PM +0200, Roger Quadros wrote:
+>> AM65 CPSW hardware can map the 6-bit DSCP/TOS field to
+>> appropriate priority queue via DSCP to Priority mapping registers
+>> (CPSW_PN_RX_PRI_MAP_REG).
 >>
->> On Sat, Nov 09, 2024 at 01:00:06PM +0200, Roger Quadros wrote:
->>> Configure DSCP to Priority mapping registers so that IP precedence
->>> field (top 3 bits of DSCP) map it to one of the 8 priority queues
->>> for RX traffic.
->>>     
->>> Also update Priority to Thread maping to be compliant with
->>> IEEE802.1Q-2014. Priority Code Point (PCP) 2 is higher priority than
->>> PCP 0 (Best Effort). PCP 1 (Background) is lower priority than
->>> PCP 0 (Best Effort).
->>>
->>> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+>> We use the upper 3 bits of the DSCP field that indicate IP Precedence
+>> to map traffic to 8 priority queues.
 >>
->> Hi Ido and Guilliame,
+>> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+>> ---
+>>  drivers/net/ethernet/ti/am65-cpsw-nuss.c | 54 ++++++++++++++++++++++++++++++++
+>>  1 file changed, 54 insertions(+)
 >>
->> I am wondering if you could find time to review this series.
+>> diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+>> index 0520e9f4bea7..fab35e6aac7f 100644
+>> --- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+>> +++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+>> @@ -71,6 +71,8 @@
+>>  #define AM65_CPSW_PORT_REG_RX_PRI_MAP		0x020
+>>  #define AM65_CPSW_PORT_REG_RX_MAXLEN		0x024
+>>  
+>> +#define AM65_CPSW_PORTN_REG_CTL			0x004
+>> +#define AM65_CPSW_PORTN_REG_DSCP_MAP		0x120
+>>  #define AM65_CPSW_PORTN_REG_SA_L		0x308
+>>  #define AM65_CPSW_PORTN_REG_SA_H		0x30c
+>>  #define AM65_CPSW_PORTN_REG_TS_CTL              0x310
+>> @@ -94,6 +96,10 @@
+>>  /* AM65_CPSW_PORT_REG_PRI_CTL */
+>>  #define AM65_CPSW_PORT_REG_PRI_CTL_RX_PTYPE_RROBIN	BIT(8)
+>>  
+>> +/* AM65_CPSW_PN_REG_CTL */
+>> +#define AM65_CPSW_PN_REG_CTL_DSCP_IPV4_EN	BIT(1)
+>> +#define AM65_CPSW_PN_REG_CTL_DSCP_IPV6_EN	BIT(2)
+>> +
+>>  /* AM65_CPSW_PN_TS_CTL register fields */
+>>  #define AM65_CPSW_PN_TS_CTL_TX_ANX_F_EN		BIT(4)
+>>  #define AM65_CPSW_PN_TS_CTL_TX_VLAN_LT1_EN	BIT(5)
+>> @@ -176,6 +182,53 @@ static void am65_cpsw_port_set_sl_mac(struct am65_cpsw_port *slave,
+>>  	writel(mac_lo, slave->port_base + AM65_CPSW_PORTN_REG_SA_L);
+>>  }
+>>  
+>> +#define AM65_CPSW_DSCP_MAX	GENMASK(5, 0)
+>> +#define AM65_CPSW_PRI_MAX	GENMASK(2, 0)
+>> +#define AM65_CPSW_DSCP_PRI_PER_REG	8
+>> +#define AM65_CPSW_DSCP_PRI_SIZE		4	/* in bits */
+>> +static int am65_cpsw_port_set_dscp_map(struct am65_cpsw_port *slave, u8 dscp, u8 pri)
+>> +{
+>> +	int reg_ofs;
+>> +	int bit_ofs;
+>> +	u32 val;
+>> +
+>> +	if (dscp > AM65_CPSW_DSCP_MAX)
+>> +		return -EINVAL;
+>> +
+>> +	if (pri > AM65_CPSW_PRI_MAX)
+>> +		return -EINVAL;
+>> +
+>> +	/* 32-bit register offset to this dscp */
+>> +	reg_ofs = (dscp / AM65_CPSW_DSCP_PRI_PER_REG) * 4;
+>> +	/* bit field offset to this dscp */
+>> +	bit_ofs = AM65_CPSW_DSCP_PRI_SIZE * (dscp % AM65_CPSW_DSCP_PRI_PER_REG);
+>> +
+>> +	val = readl(slave->port_base + AM65_CPSW_PORTN_REG_DSCP_MAP + reg_ofs);
+>> +	val &= ~(AM65_CPSW_PRI_MAX << bit_ofs);	/* clear */
+>> +	val |= pri << bit_ofs;			/* set */
+>> +	writel(val, slave->port_base + AM65_CPSW_PORTN_REG_DSCP_MAP + reg_ofs);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static void am65_cpsw_port_enable_dscp_map(struct am65_cpsw_port *slave)
+>> +{
+>> +	int dscp, pri;
+>> +	u32 val;
+>> +
+>> +	/* Map IP Precedence field to Priority */
+>> +	for (dscp = 0; dscp <= AM65_CPSW_DSCP_MAX; dscp++) {
+>> +		pri = dscp >> 3; /* Extract IP Precedence */
+>> +		am65_cpsw_port_set_dscp_map(slave, dscp, pri);
+>> +	}
+>> +
+>> +	/* enable port IPV4 and IPV6 DSCP for this port */
+>> +	val = readl(slave->port_base + AM65_CPSW_PORTN_REG_CTL);
+>> +	val |= AM65_CPSW_PN_REG_CTL_DSCP_IPV4_EN |
+>> +		AM65_CPSW_PN_REG_CTL_DSCP_IPV6_EN;
+>> +	writel(val, slave->port_base + AM65_CPSW_PORTN_REG_CTL);
+>> +}
 > 
-> I don't have the IEEE802.1Q-2014 spec at hand, so I focused on
-> patch 2/2.
+> It seems that this hardware is capable of mapping all possible DSCP
+yes.
 
-You can look at an older spec along with this page
-https://en.wikipedia.org/wiki/IEEE_P802.1p#Priority_levels
+> values. Then why restricting the mapping to the 3 high order bits only?
+
+Currently, the 64 DSCP values are mapped to 8 User Priorities (UP) based
+on just the Class Selector Codepoint field (first 3 bits of DSCP).
+
+But now looking at rfc8325#section-4.3.
+"Note: All unused codepoints are RECOMMENDED to be mapped to UP 0"
+
+So what this patch does doesn't look like a good idea.
+
+> According to RFC 8325 section 2.3, this seem to be a common practice,
+> which this RFC considers a problem:
+> https://datatracker.ietf.org/doc/html/rfc8325#section-2.3
+
+Good to know about this.
 
 > 
->>> ---
->>> Changes in v3:
->>> - Added Reviewed-by tag to patch 1
->>> - Added macros for DSCP PRI field size and DSCP PRI per register
->>> - Drop unnecessary readl() in am65_cpsw_port_set_dscp_map()
->>> - Link to v2: https://lore.kernel.org/r/20241107-am65-cpsw-multi-rx-dscp-v2-0-9e9cd1920035@kernel.org
->>>
->>> Changes in v2:
->>> - Updated references to more recent standard IEEE802.1Q-2014.
->>> - Dropped reference to web link which might change in the future.
->>> - Typo fix in commit log.
->>> - Link to v1: https://lore.kernel.org/r/20241105-am65-cpsw-multi-rx-dscp-v1-0-38db85333c88@kernel.org
->>>
->>> ---
->>> Roger Quadros (2):
->>>       net: ethernet: ti: am65-cpsw: update pri_thread_map as per IEEE802.1Q-2014
->>>       net: ethernet: ti: am65-cpsw: enable DSCP to priority map for RX
->>>
->>>  drivers/net/ethernet/ti/am65-cpsw-nuss.c | 54 ++++++++++++++++++++++++++++++++
->>>  drivers/net/ethernet/ti/cpsw_ale.c       | 36 ++++++++++++---------
->>>  2 files changed, 76 insertions(+), 14 deletions(-)
->>> ---
->>> base-commit: 42f7652d3eb527d03665b09edac47f85fb600924
->>> change-id: 20241101-am65-cpsw-multi-rx-dscp-000b2c4af6d0
->>>
->>> Best regards,
->>> -- 
->>> Roger Quadros <rogerq@kernel.org>
->>>
+> I know this RFC is about 802.11, not 802.1p, but as far as I know, the
+> user priority (UP) are the same for both, so that shouldn't make a
+> difference.
+> 
+> So what about following the IETF mapping found in section 4.3?
+> https://datatracker.ietf.org/doc/html/rfc8325#section-4.3
+
+Thanks for this tip.
+I will update this patch to have the default DSCP to UP mapping as per
+above link and map all unused DSCP to UP 0.
+
+Is there any mechanism/API for network administrator to change this
+default mapping in the network drivers?
+
+> 
+>>  static void am65_cpsw_sl_ctl_reset(struct am65_cpsw_port *port)
+>>  {
+>>  	cpsw_sl_reset(port->slave.mac_sl, 100);
+>> @@ -921,6 +974,7 @@ static int am65_cpsw_nuss_ndo_slave_open(struct net_device *ndev)
+>>  	common->usage_count++;
+>>  
+>>  	am65_cpsw_port_set_sl_mac(port, ndev->dev_addr);
+>> +	am65_cpsw_port_enable_dscp_map(port);
+>>  
+>>  	if (common->is_emac_mode)
+>>  		am65_cpsw_init_port_emac_ale(port);
+>>
+>> -- 
+>> 2.34.1
+>>
 >>
 > 
 
