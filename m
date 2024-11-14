@@ -1,50 +1,50 @@
-Return-Path: <linux-omap+bounces-2683-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2684-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6072E9C8BEB
-	for <lists+linux-omap@lfdr.de>; Thu, 14 Nov 2024 14:37:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 557899C8C13
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Nov 2024 14:48:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CD3F2857F0
-	for <lists+linux-omap@lfdr.de>; Thu, 14 Nov 2024 13:37:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F5B6B2BC14
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Nov 2024 13:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C52C17BA6;
-	Thu, 14 Nov 2024 13:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37AFF2837B;
+	Thu, 14 Nov 2024 13:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YZwywoWp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qKh5Stmc"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D914B3FC7;
-	Thu, 14 Nov 2024 13:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71F0210FB;
+	Thu, 14 Nov 2024 13:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731591428; cv=none; b=jkgK4bOt2E/SyUo8mlftIpgWj66smlYz5F3pGWPcuFW9S+INIIs3JdI4sFlE0D301k/Ve7+Ww5OUvEVbZB6xtFYe4QZoVg3194JvoNbXzglkvllhHeOMCrkKpSgo8W/D35s/7XKoTS5Jk1Y6XUvlqAKIQJ4wWrRradk5vEn+Qz4=
+	t=1731591431; cv=none; b=UCPBDrHP/bsIThzWye6XF7KsiI4SfSVzJ+uOsNKYzICkTukr3t/FiT0m3PqCBfTm3DKySEaaTtDZygSFcYoI9EeDVg4sff89lbNiNQ43vyM8UfA6xzD+vU5+AyhgRytF5D48lyFnk5t4r89kK08FCjZPE5X92fqCaTFMjmbczo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731591428; c=relaxed/simple;
-	bh=Otr49HiqCIUBuYxc55Qdh4UxZrNlr0pBF0Zbv5EShtw=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ntcYWE7+pwg59hMnckB9t8VYWeCzAMzAytElBl5z2vX9wZ80n+R9gmYgJHivw7cvD/nF/tJuzorbtizbdFIVN9KRZHDNpnPJ30bRqHLzlwMRxvU0BVgs/gjvxKjuQFK8R04vTdJwqF0LpOdNsz6n/Z1oUfSHds3+bEcsCO/8Ry4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YZwywoWp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837E0C4CED4;
-	Thu, 14 Nov 2024 13:37:04 +0000 (UTC)
+	s=arc-20240116; t=1731591431; c=relaxed/simple;
+	bh=nH5ZbJEfnNtqpVAJdxQPimoXQFIYYcfa/hUchSNyuLA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=MoSX1HfxWY7JeaSLubn1jUWIv41uuni1Yr6KZX4jFIWBgWnBj+GlUZNDI9mZSDef+tdGqOeklgV2q1UMe6E5raLIY/ZK+BqInZwgmyPdAyKekbcknk+P0+SlK0/QZin4844sLfxoJK62abzedpLNF2u1b0R5ysNGIBcscshpioo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qKh5Stmc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF32C4CED8;
+	Thu, 14 Nov 2024 13:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731591427;
-	bh=Otr49HiqCIUBuYxc55Qdh4UxZrNlr0pBF0Zbv5EShtw=;
-	h=From:Subject:Date:To:Cc:From;
-	b=YZwywoWpA9qmQI8J/Z/HuGj5JdCDYJIPPGULaPITCmeYlvoxKSkQpS+TemifZx9ue
-	 Mb7xSqq4wf7A4DL5NVu7SfXFuH7T/21qkbO/IngBvgcaKKFbR/VPlBi7WNJaqT4Ue2
-	 KwJGvdffcYEGmq7JOa5bJVjoUb9NpgOnuSx+775ZOsmj1FYFE8pyg0EOAP+WJCR7Cg
-	 G/UdHi9Hhli6aM4bf2jl0znYJUUhEaZ6KCAQupO//6fQuD9vPAM3aMD+M6NGOvYiEu
-	 FFmJOjz0PM4W6Z1aqD21cXOj7N446FFiTSj3UXjcZS8smpnwslL0PuYo9iHALc4APy
-	 tJCV1Y8UzTy1Q==
+	s=k20201202; t=1731591431;
+	bh=nH5ZbJEfnNtqpVAJdxQPimoXQFIYYcfa/hUchSNyuLA=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=qKh5StmcVBtM/I/ZSER9ZsAy93sMeBbJguRosTsmTZ2N/tpBZujoXRsnBMCbwFKYE
+	 0eecR2BFdinknvUuzO3vhO/Wgkpjby408lYVps9nQoEZZtwHCXaBwOcdBIP1s1ul7Q
+	 F4dz4xAR+sq/2t2r5eOYYlE1TAV52jUtmvmsDVyRUe5uFLVX4tpOSgn329h6ZDkP6n
+	 Xiy7A+wrPnEQXzOPgNJhl0vbRm853hlo/K8oFlPtMKTC4Ilyd7CxDoMIq9FSb91uzN
+	 DKn8b1aSEdQWjsGCBFfwVAp/YwtARxFggSOXbYQtB3kZv6G3VvFeVN0xvfwS4Sh+oa
+	 IjzNFsUtG5CdA==
 From: Roger Quadros <rogerq@kernel.org>
-Subject: [PATCH net-next v4 0/2] net: ethernet: ti: am65-cpsw: enable DSCP
- to priority map for RX
-Date: Thu, 14 Nov 2024 15:36:51 +0200
-Message-Id: <20241114-am65-cpsw-multi-rx-dscp-v4-0-93eaf6760759@kernel.org>
+Date: Thu, 14 Nov 2024 15:36:52 +0200
+Subject: [PATCH net-next v4 1/2] net: ethernet: ti: am65-cpsw: update
+ pri_thread_map as per IEEE802.1Q-2014
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -53,10 +53,9 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAPP8NWcC/3XNzQ6CMBAE4FcxPbtm2/LTevI9jAdoF23EQlpEj
- OHdbYgHjeE4mcw3LxYpOIpsv3mxQKOLrvMpZNsNM5fKnwmcTZkJFBnnyKG6FTmYPj7gdm8HB2E
- CG00PiFgLk1VNYZGldR+ocdMiH5mnATxNAzul5uLi0IXncjnypf/o+ao+ckCQytYql1IapQ5XC
- p7aXRfOCzqKb6hch0SCNGljuRaIMv+D5Dek1yGZIG6auiy0UJnGH2ie5ze2dGCNWwEAAA==
+Message-Id: <20241114-am65-cpsw-multi-rx-dscp-v4-1-93eaf6760759@kernel.org>
+References: <20241114-am65-cpsw-multi-rx-dscp-v4-0-93eaf6760759@kernel.org>
+In-Reply-To: <20241114-am65-cpsw-multi-rx-dscp-v4-0-93eaf6760759@kernel.org>
 To: Siddharth Vadapalli <s-vadapalli@ti.com>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -66,68 +65,93 @@ Cc: linux-omap@vger.kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, srk@ti.com, Pekka Varis <p-varis@ti.com>, 
  Roger Quadros <rogerq@kernel.org>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1890; i=rogerq@kernel.org;
- h=from:subject:message-id; bh=Otr49HiqCIUBuYxc55Qdh4UxZrNlr0pBF0Zbv5EShtw=;
- b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBnNfz8gMLsHnPA8JDXBA9DdypHaNiEPUf14Y7sX
- oZ5/GdZ2S6JAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCZzX8/AAKCRDSWmvTvnYw
- kw05D/0YYivwRAa5sUpBX8N0e/skK5+1BzN/f9Lvrm2Mi1vVhg8/UQXcfR4tT9wCo61N+AIEfKB
- bDULIItecpGQlKO6cP2TNoZ4a5PY6X8AnUxJXzDsReSUhJTnfuicAAkn6B72yUs+2WXZtpXq2kP
- e+vBSUc7yOUZ/WUY7SrqmBsYQZH6AiVmaW/MUnK9nmgCFo/JD3QREdJSxSoOxnhM4NwLX8HLTrU
- A80IkVZXwD6Q7yfRlzKYgGwouiPsW64eR2gFIAC59iyzsEHBF2HbGq9W0DVFhP7aYText5J/J7z
- pbiH8maIPZmDZb2bbnlbEjffk0WALTv0lv0KD9nTnA8aA6bDpxnRuqCalp9cM6P2BSiLYkVnWLl
- Gl9zGQkYHA4JnPzg0g01dJiINrwL/9gwWw3xht+nyiluJPaM5xjKXRFITbfQiQeZMniGtgAWUoW
- X8rEsvse2AkTk59dfTa0Se9LYHt3uHwPfjljIaxWe2YY1nrIK4WFt5eEcg3JhvmMjyPVtLCCubj
- 4yvpYT8s2T7Uzj9j5ImYf6LqatSbyyV5ldDCo+5BFt73C8FG2a5/jV0Vbg41FLAgVrCINM00mv6
- gbXjm5n3+AlUEH3ucAy2HEMDC3pnolpRaXO72+vQ9CWL66CcgjZNyN1GVhfw5Jdcahl9ZG0UBj8
- j5xL90iCSo4eG+g==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2982; i=rogerq@kernel.org;
+ h=from:subject:message-id; bh=nH5ZbJEfnNtqpVAJdxQPimoXQFIYYcfa/hUchSNyuLA=;
+ b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBnNfz/v8cIP3B7VtnfeDCJMZAu81vTLTi1HM1W7
+ 3r4QxFCer+JAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCZzX8/wAKCRDSWmvTvnYw
+ k2zED/9GragteYn3PLE5hfVQ+5wvS2F4PIBWzcKKjEZKm8mMjZvEqWlPQQGpg770edHmHM8Cn0l
+ ASSAPukcG1Ja86mclzWNITqY/MI3EqUY/w1H+XoBC4ik7oDtniHLE3I3LKJZlHtddKw5awvx8e2
+ zFvqm5KRNIyIhfuLlS2YEpYLOwsu2BA9L7M7tPzEwvvnS0GcfkrZnS1WdSQlSFq55BBZw3qIgMt
+ Er0LEiR3L3cXmfYZtt4w9nXbTSrQSY19n31WgXNubfhfBtH10TF6b9SMLTa2kt3uBCuuPAg2iV9
+ /8SOabUMY33IU9dY8U30C4q/Ya+NIeDa2ceBz/bWw9rZD2sb0oy1CPm92MxEOa4c48Z6hG0kngB
+ rJ5D7Gt9RLxR1yNECDWraQLhL8Zod/lQOOvsl3yX2cMoSp5VM8txhwIwvmTGY46jEC0C4LcvWDV
+ MX4nQtN00H0EOb9gONgnaF3yAmXee8NOsiC6xne6rHXP7LIP+6+nQMv2OS1VCfmIUNrIYdhgxPI
+ cLEukDBvi2k51OXMqHha8GtLHdanAVHOPEbZ1rRd3V/OOvmJu5rGy2/pp2MaKBr353/iK7Dze3g
+ 3ojKd+B/4RVn/zGGTRaA+ksmpqfCa1s4gXO49SnhnMJiDdmcXYBPg97dkID60aCnijLWE2q7+c2
+ jbNdm7vNXNsyaPA==
 X-Developer-Key: i=rogerq@kernel.org; a=openpgp;
  fpr=412165D44C9F52780FAB1058D25A6BD3BE763093
 
-Configure default DSCP to User Priority mapping registers as per:
- https://datatracker.ietf.org/doc/html/rfc8325#section-4.3
-and
- https://datatracker.ietf.org/doc/html/rfc8622#section-11
-    
-Also update Priority to Thread maping to be compliant with
-IEEE802.1Q-2014. Priority Code Point (PCP) 2 is higher priority than
-PCP 0 (Best Effort). PCP 1 (Background) is lower priority than
-PCP 0 (Best Effort).
+IEEE802.1Q-2014 supersedes IEEE802.1D-2004. Now Priority Code Point (PCP)
+2 is no longer at a lower priority than PCP 0. PCP 1 (Background) is still
+at a lower priority than PCP 0 (Best Effort).
+
+Reference:
+IEEE802.1Q-2014, Standard for Local and metropolitan area networks
+  Table I-2 - Traffic type acronyms
+  Table I-3 - Defining traffic types
 
 Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
 ---
-Changes in v4:
-- Updated default DSCP to User Priority mapping as per 
-  https://datatracker.ietf.org/doc/html/rfc8325#section-4.3
-  and
-  https://datatracker.ietf.org/doc/html/rfc8622#section-11
-- Link to v3: https://lore.kernel.org/r/20241109-am65-cpsw-multi-rx-dscp-v3-0-1cfb76928490@kernel.org
+ drivers/net/ethernet/ti/cpsw_ale.c | 36 ++++++++++++++++++++++--------------
+ 1 file changed, 22 insertions(+), 14 deletions(-)
 
-Changes in v3:
-- Added Reviewed-by tag to patch 1
-- Added macros for DSCP PRI field size and DSCP PRI per register
-- Drop unnecessary readl() in am65_cpsw_port_set_dscp_map()
-- Link to v2: https://lore.kernel.org/r/20241107-am65-cpsw-multi-rx-dscp-v2-0-9e9cd1920035@kernel.org
+diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+index 8d02d2b21429..9f79056b3f48 100644
+--- a/drivers/net/ethernet/ti/cpsw_ale.c
++++ b/drivers/net/ethernet/ti/cpsw_ale.c
+@@ -1692,26 +1692,34 @@ static void cpsw_ale_policer_reset(struct cpsw_ale *ale)
+ void cpsw_ale_classifier_setup_default(struct cpsw_ale *ale, int num_rx_ch)
+ {
+ 	int pri, idx;
+-	/* IEEE802.1D-2004, Standard for Local and metropolitan area networks
+-	 *    Table G-2 - Traffic type acronyms
+-	 *    Table G-3 - Defining traffic types
+-	 * User priority values 1 and 2 effectively communicate a lower
+-	 * priority than 0. In the below table 0 is assigned to higher priority
+-	 * thread than 1 and 2 wherever possible.
+-	 * The below table maps which thread the user priority needs to be
++
++	/* Reference:
++	 * IEEE802.1Q-2014, Standard for Local and metropolitan area networks
++	 *    Table I-2 - Traffic type acronyms
++	 *    Table I-3 - Defining traffic types
++	 * Section I.4 Traffic types and priority values, states:
++	 * "0 is thus used both for default priority and for Best Effort, and
++	 *  Background is associated with a priority value of 1. This means
++	 * that the value 1 effectively communicates a lower priority than 0."
++	 *
++	 * In the table below, Priority Code Point (PCP) 0 is assigned
++	 * to a higher priority thread than PCP 1 wherever possible.
++	 * The table maps which thread the PCP traffic needs to be
+ 	 * sent to for a given number of threads (RX channels). Upper threads
+ 	 * have higher priority.
+ 	 * e.g. if number of threads is 8 then user priority 0 will map to
+-	 * pri_thread_map[8-1][0] i.e. thread 2
++	 * pri_thread_map[8-1][0] i.e. thread 1
+ 	 */
+-	int pri_thread_map[8][8] = {	{ 0, 0, 0, 0, 0, 0, 0, 0, },
++
++	int pri_thread_map[8][8] = {   /* BK,BE,EE,CA,VI,VO,IC,NC */
++					{ 0, 0, 0, 0, 0, 0, 0, 0, },
+ 					{ 0, 0, 0, 0, 1, 1, 1, 1, },
+ 					{ 0, 0, 0, 0, 1, 1, 2, 2, },
+-					{ 1, 0, 0, 1, 2, 2, 3, 3, },
+-					{ 1, 0, 0, 1, 2, 3, 4, 4, },
+-					{ 1, 0, 0, 2, 3, 4, 5, 5, },
+-					{ 1, 0, 0, 2, 3, 4, 5, 6, },
+-					{ 2, 0, 1, 3, 4, 5, 6, 7, } };
++					{ 0, 0, 1, 1, 2, 2, 3, 3, },
++					{ 0, 0, 1, 1, 2, 2, 3, 4, },
++					{ 1, 0, 2, 2, 3, 3, 4, 5, },
++					{ 1, 0, 2, 3, 4, 4, 5, 6, },
++					{ 1, 0, 2, 3, 4, 5, 6, 7 } };
+ 
+ 	cpsw_ale_policer_reset(ale);
+ 
 
-Changes in v2:
-- Updated references to more recent standard IEEE802.1Q-2014.
-- Dropped reference to web link which might change in the future.
-- Typo fix in commit log.
-- Link to v1: https://lore.kernel.org/r/20241105-am65-cpsw-multi-rx-dscp-v1-0-38db85333c88@kernel.org
-
----
-Roger Quadros (2):
-      net: ethernet: ti: am65-cpsw: update pri_thread_map as per IEEE802.1Q-2014
-      net: ethernet: ti: am65-cpsw: enable DSCP to priority map for RX
-
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 100 +++++++++++++++++++++++++++++++
- drivers/net/ethernet/ti/cpsw_ale.c       |  36 ++++++-----
- 2 files changed, 122 insertions(+), 14 deletions(-)
----
-base-commit: 42f7652d3eb527d03665b09edac47f85fb600924
-change-id: 20241101-am65-cpsw-multi-rx-dscp-000b2c4af6d0
-
-Best regards,
 -- 
-Roger Quadros <rogerq@kernel.org>
+2.34.1
 
 
