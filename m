@@ -1,134 +1,145 @@
-Return-Path: <linux-omap+bounces-2698-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2699-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA0BF9CDC8A
-	for <lists+linux-omap@lfdr.de>; Fri, 15 Nov 2024 11:28:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F189D00CB
+	for <lists+linux-omap@lfdr.de>; Sat, 16 Nov 2024 21:28:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C9B11F22852
-	for <lists+linux-omap@lfdr.de>; Fri, 15 Nov 2024 10:28:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 760671F23876
+	for <lists+linux-omap@lfdr.de>; Sat, 16 Nov 2024 20:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8BD1B392C;
-	Fri, 15 Nov 2024 10:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D46198840;
+	Sat, 16 Nov 2024 20:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b="dsbPoBiK"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="QFBDja2Z"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A712A847C
-	for <linux-omap@vger.kernel.org>; Fri, 15 Nov 2024 10:28:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5281928FF;
+	Sat, 16 Nov 2024 20:27:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731666503; cv=none; b=n8rtMgv/yUrhBpA4ZZx24+AlrP8oKXZa6t7NS169WZRuHdpQAUiDQhxdr1gnKSLuc0mDH6yLiNHlXyCzUMLN20NxenlWaxBqR6tp5OwmU7/tlLryKKtZMbgyhRrUwy2ZEHZqgduJtCELCXnHZhVgYV00r8+J5TjOR4s+00Yp/8M=
+	t=1731788877; cv=none; b=Xku0boNb7eQnWf+6fePOCZ2/HEJnI+FOkN4vBNWSTYgVPitrxUc3uZQDlglqxptGl8jeTvK5qBqQdDljhwdArtK2LjbvM9itLAuP9TqL9F0gpGM+RvFIB3GQa+Tg7yvsn6u9YIHiMHq5fw7DPzCHsW44QnieJBUAK1r4R5fe85w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731666503; c=relaxed/simple;
-	bh=I23MqRx0oVpPyh5En5+mqt8IakuAbOD21FSXB7Pokjw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m3pa1OFRzirLs9dY14tovwFh1HKAD/Ksmgv2EKoOyW1mXkQqX9srpbXNxNWcX9mf6w6SaI4jGAw99sDF8H6l5a7vOEGTHV0tN6Abc+p0a3+tG4dVaJhKNKgws7qaP0uu+jKul0o0M6bsRxvtvJuhh4x2SFsccCYQDBY2vYsu6fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr; spf=pass smtp.mailfrom=smile.fr; dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b=dsbPoBiK; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smile.fr
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-53da2140769so1721792e87.3
-        for <linux-omap@vger.kernel.org>; Fri, 15 Nov 2024 02:28:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1731666500; x=1732271300; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AeVRNwt25ArwMSQcy6JB+fjHlRU8KJMM5ExLQU0Xlhs=;
-        b=dsbPoBiKqMVljV6TpLy9EWyAwRz4Fs06M6lRVKotV3fEjkr63rQDLfUGfq41SN4pvi
-         nn6Fwparl+Hbz313+os6jx8DcGt3wNpwcLte3FPfqFkqQNHgr6639Ho2lw1hszlw2kf5
-         dKksOGPCA2burxFU4SWjPGGcSQEX+j46/rfFE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731666500; x=1732271300;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AeVRNwt25ArwMSQcy6JB+fjHlRU8KJMM5ExLQU0Xlhs=;
-        b=POGoskV4wbvTmzb5QQj7ZdkjXyJJIVGY34OMGFmrscNL4n3ipgrJtAby+HoEQLkY7H
-         c864TJxMIwaF/Pspi8cL7fz0sB9GJXtganI9AgbeDFiBiGAEXpyJqtSgzEKaB65FAVdC
-         noZNPbSJfT2mYk5Gve+C4v6bYB0CRhpdPTnkDkzJD2QQVOQ/bymdXbDXuEMBWw2y0/tN
-         VvGr0BBSLMj5jjKurO1oHih8kLAH3vp2qvDi50lLJtiSySRLRPNTYJre1nKY7h5DkyXZ
-         LGbcDk7DIR/YinlXYkaZBcd8dqJXswYDtRPe6xCzIwNP1b5jEnD4vbvVbSyC2d60jYHj
-         jCsQ==
-X-Gm-Message-State: AOJu0YyQB93WZ/ZGOX/9MsjPGrwOesiKUQjHDEzo+rwxS87Sh3UdI5P7
-	hbFcR0pd2kI9/sdtjY7ijHxD3kekdgMyOC87s0eBnHDpDfrwkYkVS2crMcfOiHX3LX6gD+CNFpV
-	O
-X-Google-Smtp-Source: AGHT+IFBN3peXOm6F+m+yUvXzEeZIpt7nq2QcdVGDQZHS7iuTlSaktisaS0pxP3Ep/mhVmKVtDpViQ==
-X-Received: by 2002:a05:6512:3b81:b0:53b:2105:1919 with SMTP id 2adb3069b0e04-53dab29ab3emr894205e87.14.1731666499761;
-        Fri, 15 Nov 2024 02:28:19 -0800 (PST)
-Received: from ?IPV6:2a01:cb05:949d:5800:e3ef:2d7a:4131:71f? (2a01cb05949d5800e3ef2d7a4131071f.ipv6.abo.wanadoo.fr. [2a01:cb05:949d:5800:e3ef:2d7a:4131:71f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3821ae16170sm3982865f8f.69.2024.11.15.02.28.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Nov 2024 02:28:19 -0800 (PST)
-Message-ID: <86e1ee84-788d-4809-8722-7a553f727751@smile.fr>
-Date: Fri, 15 Nov 2024 11:28:18 +0100
+	s=arc-20240116; t=1731788877; c=relaxed/simple;
+	bh=3W/vNeG99abzvcR9K+Bx5HhwVrlB/e7Cu6Zw6Ux/ASo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=s0p7Juwd6Kq9a7laJDyPn/IPy4oTwhrWftE8oCTcUTzjtU600cR0bh2vYDYpr58rwRsmnQT9y6/57abAV/K4DFP2tG7Dk2EYP2nx7xzaVc2LHR5YRnTt2aoLoOGkOpx1Lf7TBM98AudPw6NDFlYooBhNehYzl0hY8wQSxRm+N7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=QFBDja2Z; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=RZGy7qwsxGBnmfUQ6rUk5NOMwmA4dhgXmcF2ln4UgfM=; b=QFBDja2ZNto8VLe0W1q+K002OR
+	Yd5ZPiMmrhG2zziVo/PwybtfJpC7EAhpME6MhFdb7A8BpPCpaR8iz7lqEUTE4fhnPr58R9M0rscNg
+	EGIdwh2pyBgMnFeBDwdN+dvdXGnApEZpma9EVNRpLi7fmzCnV2Adf1OJZrDrn9qo2LuPA7vPV9Tww
+	QWiyVY6UGw08JrQqn8WZFyLZlaL8/UX1uEzmwvcTpjZtBwXpnZp7q4oRTec7Qk10nSFej3ezHWl0k
+	uKIZT0FUHyR+BG4UhkLHhuffLohA8LjW0Pdor+2t62R/r019WAUw0acti6nCyH/Ldqd8lxhbYKxEB
+	wju13Wrw==;
+Date: Sat, 16 Nov 2024 21:27:34 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Tony Lindgren <tony@atomide.com>
+Cc: Roger Quadros <rogerq@kernel.org>, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, hns@goldelico.com, linux-omap@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ aaro.koskinen@iki.fi, khilman@baylibre.com, stable@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: ti/omap: gta04: fix pm issues caused by spi
+ module
+Message-ID: <20241116212734.30f5d35b@akair>
+In-Reply-To: <20241111234604.66a9691b@akair>
+References: <20241107225100.1803943-1-andreas@kemnade.info>
+	<b26c1fa8-b3b7-4aa9-bc78-793ddfa3bc6b@kernel.org>
+	<20241108184118.5ee8114c@akair>
+	<20241111150953.GA23206@atomide.com>
+	<20241111193117.5a5f5ecb@akair>
+	<20241111234604.66a9691b@akair>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ARM: dts: dra7: Add bus_dma_limit for l4 cfg bus
-To: Roger Quadros <rogerq@kernel.org>, tony@atomide.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org
-Cc: linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
- stable@kernel.org, Romain Naour <romain.naour@skf.com>
-References: <20241114155759.1155567-1-romain.naour@smile.fr>
- <e4c45744-3e5d-4ded-a33e-0d9097aebcaa@kernel.org>
-Content-Language: en-US
-From: Romain Naour <romain.naour@smile.fr>
-In-Reply-To: <e4c45744-3e5d-4ded-a33e-0d9097aebcaa@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello Roger,
+Am Mon, 11 Nov 2024 23:46:04 +0100
+schrieb Andreas Kemnade <andreas@kemnade.info>:
 
-Le 15/11/2024 à 10:20, Roger Quadros a écrit :
+> Am Mon, 11 Nov 2024 19:31:17 +0100
+> schrieb Andreas Kemnade <andreas@kemnade.info>:
 > 
+> > Am Mon, 11 Nov 2024 17:09:53 +0200
+> > schrieb Tony Lindgren <tony@atomide.com>:
+> >   
+> > > * Andreas Kemnade <andreas@kemnade.info> [241108 17:41]:    
+> > > > They are not used, if they are just disabled, kernel does not touch
+> > > > them, so if it is there, the kernel can handle
+> > > > pm. At least as long as it is not under ti,sysc.
+> > > > 
+> > > > There are probably cleaner solutions for this, but for a CC: stable I
+> > > > would prefer something less invasive.      
+> > > 
+> > > For unused devices, it's best to configure things to use ti-sysc, and
+> > > then set status disabled (or reserved) for the child devices only. This
+> > > way the parent interconnect target module is PM runtime managed by
+> > > Linux, and it's power domain gets properly idled for the unused devices
+> > > too.
+> > >     
+> > Hmm, we also have omap_hwmod_setup_all() which is still called if
+> > without device nodes being available.
+> > 
+> > Converting mcspi to ti-sysc is more than 100 lines. So it does not
+> > qualify for stable.
+> >   
+> > > > I can try a ti-sysc based fix in parallel.      
+> > > 
+> > > Yeah that should be trivial hopefully :)
+> > >     
+> > I played around, got pm issues too, tried to force-enable things (via
+> > power/control),
+> > watched CM_IDLEST1_CORE and CM_FCLKEN1_CORE, they behave. Bits are set
+> > or reset.
+> > 
+> > but not CM_IDLEST_CKGEN, it is 0x209 instead of 0x1.
+> > 
+> > I test from initramfs, so no mmc activity involved
+> > 
+> > removing status = "disabled" from mcspi3 solves things.
+> > With and without ti-sysc conversion. removing status = "disabled" from
+> > mcspi4 seems not to help.
+> > 
+> > That all cannot be... I will retry tomorrow.
+> >   
+> well, I tried a bit further:
+> I build the omap spi driver as module.
+> and booted With mcspi3 not disabled and no module autoload.
 > 
-> On 14/11/2024 17:57, Romain Naour wrote:
->> From: Romain Naour <romain.naour@skf.com>
->>
->> A bus_dma_limit was added for l3 bus by commit cfb5d65f2595
->> ("ARM: dts: dra7: Add bus_dma_limit for L3 bus") to fix an issue
->> observed only with SATA on DRA7-EVM with 4GB RAM and CONFIG_ARM_LPAE
->> enabled.
->>
->> Since kernel 5.13, the SATA issue can be reproduced again following
->> the SATA node move from L3 bus to L4_cfg in commit 8af15365a368
->> ("ARM: dts: Configure interconnect target module for dra7 sata").
->>
->> Fix it by adding an empty dma-ranges property to l4_cfg and
->> segment@100000 nodes (parent device tree node of SATA controller) to
->> inherit the 2GB dma ranges limit from l3 bus node.
->>
->> Note: A similar fix was applied for PCIe controller by commit
->> 90d4d3f4ea45 ("ARM: dts: dra7: Fix bus_dma_limit for PCIe").
->>
->> Fixes: 8af15365a368 ("ARM: dts: Configure interconnect target module for dra7 sata").
->> Link: https://lore.kernel.org/linux-omap/c583e1bb-f56b-4489-8012-ce742e85f233@smile.fr/
+> without module loaded: pm bad, same as with mcspi3 disabled
+> with module loaded: core pm ok
+> with module loaded and unloaded: core pm ok.
 > 
-> Please add the stable tag here
+> so at least a trace.
 > 
-> Cc: <stable@vger.kernel.org> # 5.13
+ok, I am a bit further.
+mcspi is per default in slave mode, setting it to master solves issues.
+And that happens when the driver is probed because its default is
+master.
+Having the pins muxed as mode 7 also helps or selecting a pulldown for
+cs. (cs is active high per default!)
+switching to pullup does not harm once the spi module is off, but having
+active cs seems to prevent idling despite CM_IDLEST1_CORE
+not showing it.
 
-checkpatch.pl was complaining about "Cc: <stable@vger.kernel.org>" I tried
-yesterday. Now it fine with "# 5.13" tag.
+History: u-boot muxes McSPI3, because it can be available on an
+optionally fitted pin header. But there is no user known (would need
+a dtb overlay anyways). So I will rather mux to mode 7.
 
-Thanks!
-
-Best regards,
-Romain
-
-
-> 
->> Signed-off-by: Romain Naour <romain.naour@skf.com>
->> ---
-> 
-
+Regards,
+Andreas
 
