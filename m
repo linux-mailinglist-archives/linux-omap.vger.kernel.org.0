@@ -1,99 +1,159 @@
-Return-Path: <linux-omap+bounces-2704-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2705-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F0ED9D1060
-	for <lists+linux-omap@lfdr.de>; Mon, 18 Nov 2024 13:10:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B4989D1176
+	for <lists+linux-omap@lfdr.de>; Mon, 18 Nov 2024 14:09:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B212B236E3
-	for <lists+linux-omap@lfdr.de>; Mon, 18 Nov 2024 12:10:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E899B2722C
+	for <lists+linux-omap@lfdr.de>; Mon, 18 Nov 2024 13:09:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82EC190470;
-	Mon, 18 Nov 2024 12:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B5119C560;
+	Mon, 18 Nov 2024 13:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SYmCgRO1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HmPCodLv"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423D01990AE;
-	Mon, 18 Nov 2024 12:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED8B1E49B;
+	Mon, 18 Nov 2024 13:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731931818; cv=none; b=YmXEKmrWOiIoThy8fkA4IfAkOK12bHuWVqr0mqWAWB8vgzaV1g9dArk9vtDw0lsde1fD/ZiWz6ZDfWK90RotpQ6zZwue0eupbbjRcx6O5t3KkOVrGkjD6lKrIzh48jhuUyDMichPNDtjUUG3y2f8DvKaEnpv2tCYM6xMvrJBTDQ=
+	t=1731935334; cv=none; b=Rg/zXkykzoWhu4AV1Jd7VRPwEys5rsnD9DPBWsg7lmNuzEdjUesci0R7NGON650NWPElr8mTVB6Is3w6FmvOIKzgtw4J+n8KmfEiME/TQsWFXjGatFKWWi+kZujmQev/uslfXbYNOVHKSZTXogn3kqThkuwPMBSUvfxrBoYcwTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731931818; c=relaxed/simple;
-	bh=5GfeaRVAdwvLeKPNY2OBH0LLEXtP14oWureYeMtD9JI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=OjPfU5Cda+wkxXAaapeAVUSbq2diJHbW4biDVGUP22x/ZT0EtJKmdiO+5eM5czt58mMQ0otr4bQLpOgQ0sS2HDkyba4puK7JThyBsojKWkBREZdg3d/tVD+dC4HVCsBW3AUa0B+axSWTBqRj97CFQphQ0hQ1zEUEiJH3scPcDFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SYmCgRO1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A88E3C4CECC;
-	Mon, 18 Nov 2024 12:10:17 +0000 (UTC)
+	s=arc-20240116; t=1731935334; c=relaxed/simple;
+	bh=HzQVcMEu/w6/YCCfncF8ljt72py1cVuCfnwesEoiDQo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uP/VF1UeujbgY23Kz1OhpcAVZ1V23bChfSzkS5XB8ZsfalXq+7dEYwlkneR7wDIRDA3dHEHM6Dn26f9xqpgSaL8XT2XyIBmQPSiwOaZ/JfjgMB7Exq+oG+Z16CMdafcYyiiURJeRBd620zF99pePNhoUx1gtgiEsxUzDKcDaodI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HmPCodLv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79442C4CED0;
+	Mon, 18 Nov 2024 13:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731931817;
-	bh=5GfeaRVAdwvLeKPNY2OBH0LLEXtP14oWureYeMtD9JI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=SYmCgRO1ipdBeuJ2IpBO8Knk9he4zHVHUgADARYQnI6rhYKxGRu3RqEjVVIZ8n2vD
-	 9giIr8zFp2poeNKwK9JaHc2lFfs/M2Ne2Y87LoXYoVhmPk536MtGWI4bWjxFLyDkW1
-	 ziM1wszm8l6Aqh5EArkST12vxi8e+d2HXjC8OQeKGKPuRRzt6/Crvw75zewRJW022h
-	 uYJU2cZYKepOCFt0F/hs9oC7ka3NiqzsVuigKmTN/03tQURDEHDoHaeeZFJCipeMeR
-	 pn5pIqulJA4AOVypbB3KT3nFAZ0MeGqjaV1HMmgOBLroDmnMheU7GSYKn711rclZn+
-	 dEh8ZZoCTd0Kw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 342B63809A80;
-	Mon, 18 Nov 2024 12:10:30 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1731935334;
+	bh=HzQVcMEu/w6/YCCfncF8ljt72py1cVuCfnwesEoiDQo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HmPCodLvAM2mfqSr9Okjuq8iZqMlsiEye0sO/guWVcBWVoZs+sPvA5CiAw6bog4X0
+	 mh6l47DWBglsNNtT5g5w8SHLxo5rqFOHT0s9P/271Ee4EERKYSGdBJQeOXG+/mRLdr
+	 pG7EP9eILymffWjECadMwxXpa5xDADRbLgpYClIco/wSCrvMEo8yqJ0u3/wBADZf2e
+	 qc09Oh2k90EL64rXSJNMVn3OCKzaprPdNyyoIyQiWupl56RnZCITFuBtEfW5pgf6jg
+	 MtEAV5U6St4kmMNfV0YI1Ac7NSNEpGtbbspyDrzipyCcnaQBXQT8Gt6tZc/iHmVzOY
+	 3IF/mC5uwWtwg==
+Message-ID: <d1679678-8996-4484-bcf4-d4eaa6f009a4@kernel.org>
+Date: Mon, 18 Nov 2024 15:08:48 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v4 0/2] net: ethernet: ti: am65-cpsw: enable DSCP
- to priority map for RX
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173193182904.4015276.18003215536090772300.git-patchwork-notify@kernel.org>
-Date: Mon, 18 Nov 2024 12:10:29 +0000
-References: <20241114-am65-cpsw-multi-rx-dscp-v4-0-93eaf6760759@kernel.org>
-In-Reply-To: <20241114-am65-cpsw-multi-rx-dscp-v4-0-93eaf6760759@kernel.org>
-To: Roger Quadros <rogerq@kernel.org>
-Cc: s-vadapalli@ti.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- gnault@redhat.com, linux-omap@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, srk@ti.com, p-varis@ti.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ARM: dts: ti/omap: gta04: fix pm issues caused by spi
+ module
+To: Andreas Kemnade <andreas@kemnade.info>, Tony Lindgren <tony@atomide.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ hns@goldelico.com, linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, aaro.koskinen@iki.fi, khilman@baylibre.com,
+ stable@vger.kernel.org
+References: <20241107225100.1803943-1-andreas@kemnade.info>
+ <b26c1fa8-b3b7-4aa9-bc78-793ddfa3bc6b@kernel.org>
+ <20241108184118.5ee8114c@akair> <20241111150953.GA23206@atomide.com>
+ <20241111193117.5a5f5ecb@akair> <20241111234604.66a9691b@akair>
+ <20241116212734.30f5d35b@akair>
+Content-Language: en-US
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20241116212734.30f5d35b@akair>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello:
 
-This series was applied to netdev/net-next.git (main)
-by David S. Miller <davem@davemloft.net>:
 
-On Thu, 14 Nov 2024 15:36:51 +0200 you wrote:
-> Configure default DSCP to User Priority mapping registers as per:
->  https://datatracker.ietf.org/doc/html/rfc8325#section-4.3
-> and
->  https://datatracker.ietf.org/doc/html/rfc8622#section-11
+On 16/11/2024 22:27, Andreas Kemnade wrote:
+> Am Mon, 11 Nov 2024 23:46:04 +0100
+> schrieb Andreas Kemnade <andreas@kemnade.info>:
 > 
-> Also update Priority to Thread maping to be compliant with
-> IEEE802.1Q-2014. Priority Code Point (PCP) 2 is higher priority than
-> PCP 0 (Best Effort). PCP 1 (Background) is lower priority than
-> PCP 0 (Best Effort).
+>> Am Mon, 11 Nov 2024 19:31:17 +0100
+>> schrieb Andreas Kemnade <andreas@kemnade.info>:
+>>
+>>> Am Mon, 11 Nov 2024 17:09:53 +0200
+>>> schrieb Tony Lindgren <tony@atomide.com>:
+>>>   
+>>>> * Andreas Kemnade <andreas@kemnade.info> [241108 17:41]:    
+>>>>> They are not used, if they are just disabled, kernel does not touch
+>>>>> them, so if it is there, the kernel can handle
+>>>>> pm. At least as long as it is not under ti,sysc.
+>>>>>
+>>>>> There are probably cleaner solutions for this, but for a CC: stable I
+>>>>> would prefer something less invasive.      
+>>>>
+>>>> For unused devices, it's best to configure things to use ti-sysc, and
+>>>> then set status disabled (or reserved) for the child devices only. This
+>>>> way the parent interconnect target module is PM runtime managed by
+>>>> Linux, and it's power domain gets properly idled for the unused devices
+>>>> too.
+>>>>     
+>>> Hmm, we also have omap_hwmod_setup_all() which is still called if
+>>> without device nodes being available.
+>>>
+>>> Converting mcspi to ti-sysc is more than 100 lines. So it does not
+>>> qualify for stable.
+>>>   
+>>>>> I can try a ti-sysc based fix in parallel.      
+>>>>
+>>>> Yeah that should be trivial hopefully :)
+>>>>     
+>>> I played around, got pm issues too, tried to force-enable things (via
+>>> power/control),
+>>> watched CM_IDLEST1_CORE and CM_FCLKEN1_CORE, they behave. Bits are set
+>>> or reset.
+>>>
+>>> but not CM_IDLEST_CKGEN, it is 0x209 instead of 0x1.
+>>>
+>>> I test from initramfs, so no mmc activity involved
+>>>
+>>> removing status = "disabled" from mcspi3 solves things.
+>>> With and without ti-sysc conversion. removing status = "disabled" from
+>>> mcspi4 seems not to help.
+>>>
+>>> That all cannot be... I will retry tomorrow.
+>>>   
+>> well, I tried a bit further:
+>> I build the omap spi driver as module.
+>> and booted With mcspi3 not disabled and no module autoload.
+>>
+>> without module loaded: pm bad, same as with mcspi3 disabled
+>> with module loaded: core pm ok
+>> with module loaded and unloaded: core pm ok.
+>>
+>> so at least a trace.
+>>
+> ok, I am a bit further.
+> mcspi is per default in slave mode, setting it to master solves issues.
+> And that happens when the driver is probed because its default is
+> master.
+> Having the pins muxed as mode 7 also helps or selecting a pulldown for
+> cs. (cs is active high per default!)
+> switching to pullup does not harm once the spi module is off, but having
+> active cs seems to prevent idling despite CM_IDLEST1_CORE
+> not showing it.
 > 
-> [...]
+> History: u-boot muxes McSPI3, because it can be available on an
+> optionally fitted pin header. But there is no user known (would need
+> a dtb overlay anyways). So I will rather mux to mode 7.
 
-Here is the summary with links:
-  - [net-next,v4,1/2] net: ethernet: ti: am65-cpsw: update pri_thread_map as per IEEE802.1Q-2014
-    https://git.kernel.org/netdev/net-next/c/01a45daebb2e
-  - [net-next,v4,2/2] net: ethernet: ti: am65-cpsw: enable DSCP to priority map for RX
-    https://git.kernel.org/netdev/net-next/c/a208f417582f
+I'm sorry I didn't fully understand the problem.
 
-You are awesome, thank you!
+So, u-boot configures pinmux for McSPI3 and enables McSPI3 as well
+but fails to disable it properly?
+And because McSPI3 is in slave mode and CS is active it fails to
+transition to idle in Linux?
+
+So isn't this a u-boot issue?
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+cheers,
+-roger
 
 
