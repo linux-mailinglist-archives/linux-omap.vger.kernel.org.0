@@ -1,109 +1,122 @@
-Return-Path: <linux-omap+bounces-2707-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2708-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 144659D208D
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Nov 2024 08:02:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 152139D26D1
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Nov 2024 14:27:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54073B22075
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Nov 2024 07:02:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B7F2B248BA
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Nov 2024 13:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734701531C2;
-	Tue, 19 Nov 2024 07:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB6F1CCB27;
+	Tue, 19 Nov 2024 13:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="M/ugtK5f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mj0GY3VV"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A1A35280;
-	Tue, 19 Nov 2024 07:02:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A4F1C1F2A;
+	Tue, 19 Nov 2024 13:10:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731999766; cv=none; b=GW5/YZjeg5YPghFj0H7d8L5VQmSY4md38qiIAot7DXOFq/VEOgZsKYCNXVO0VMnclVcaaVYoxOxjrESPxDGxvZDvHrf8yxll1SyKBd7Ll4U3QFKT066OBRl0O4Gwm8TCvxoMdzAzv7awsvsKQ0KxDwgQbytCzYwT5h/K6NeBMws=
+	t=1732021829; cv=none; b=JGvZ5ojoCMxVAufJXS5ZmAvQLFFQ/MKP5en8Ag4nmxZo/isiVZnuTYKDblWxjOdDVlGxOgb0V2nYh6ELKJMRdx5LcE8PPZnt6scosLjoLSFoJiw9e9guao25Ukgo8wccGV4R5iP1N4WDZQThNme6ZdeyRcCXzpn6kdnTAjSRHjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731999766; c=relaxed/simple;
-	bh=R3cteRh3bg4p/wNsT9Jk5cHldt7PQAOlyISpABdqKW0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ol1tEb5B02la+QD/4HoxQTHB7Vlf4tfCa3LPN1+9reNNSjqn7f+PGGhKm+oU0OiJR4h2CvYa6mmwFA1ZZYS/9CBZORbBKrt5pKVtS71UqHR6JxlyeFUIyr+yfYp67zVPoyXloZ75Z/kmk4Tm0kj+PW655A0qW9Jge8jqpD7hdmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=M/ugtK5f; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 5EEF11230;
-	Tue, 19 Nov 2024 08:02:15 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1731999735;
-	bh=R3cteRh3bg4p/wNsT9Jk5cHldt7PQAOlyISpABdqKW0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M/ugtK5fyN+QV9wytgeuR8lBVoPw4BdDcWjVzCtS324ZL705twRetdQlqQKWLXlur
-	 lAH5WoPFggYrwpWSWyLiQauYnjIAgBYVBhyj3zE/NZgUDxjQGjc/uT+pERIkKBbFni
-	 1KCsA35JgBuvbTCgPXZjAlbKeafrqBxtE0pQCUTQ=
-Date: Tue, 19 Nov 2024 09:02:22 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: Hans Verkuil <hverkuil@xs4all.nl>, linux-omap@vger.kernel.org,
-	Linux Media Mailing List <linux-media@vger.kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: Re: [PATCH] media: staging: drop omap4iss
-Message-ID: <20241119070222.GX31681@pendragon.ideasonboard.com>
-References: <815a789d-85a5-44a1-8b9c-429ac0101e3f@xs4all.nl>
- <20241118200025.3daab676@akair>
+	s=arc-20240116; t=1732021829; c=relaxed/simple;
+	bh=jHtbwHjRYW5n1tFny3q7PX7aQBPP6aaxSjaFLlAFOb4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JUjS5osBd998e48ixSJTb8G1RGY2OPE9cTIsDgwhxtoG+uFkTYvitSsWOea7D4dJ/E2Z1HvolsxneqtJ5eTWWxxDGyY/Su6jo0XTk8csYBqJyx/AZgd9Xr2yVdnPbXgnUW47Ha53/8mQrd+ODKkM4BNo3pzVlCqcJ7AiyqDSFKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mj0GY3VV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0F7C4CECF;
+	Tue, 19 Nov 2024 13:10:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732021828;
+	bh=jHtbwHjRYW5n1tFny3q7PX7aQBPP6aaxSjaFLlAFOb4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=mj0GY3VVMgVE+r+8BuD2Uxil+06CzEMOa+aylCeNqcxkRo6N973nIJtVZ9NY5XcU+
+	 PttwBwX40Ah8EnaCCCBI+EXgrSXSDK6iKDKWwj2k5ydNWJqMadTzJfBEdRrrd0z+Se
+	 E71WakDqJfA2waNbgTIQHXdZRqKHE7yu75VACJ2o0x7xJL1yP/ssX+GDAZxt81BwfZ
+	 YZ3kxVNqadoCvWpb2bDq9keWfVEVmTVd4AFCNVP7j/BpjEZcl4ieohmdof27A5kvQ2
+	 RcyHmvYzLcrYeWyTIlheoyp/mWMjUqi/PMJff2XyMbrA9oqJcOJljHCfkeic7ZsGAP
+	 C0+rC0pgrptvA==
+Message-ID: <486d5734-aa02-4a5e-b2ee-fdbba65179a3@kernel.org>
+Date: Tue, 19 Nov 2024 15:10:23 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241118200025.3daab676@akair>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mfd: omap-usb-tll: check clk_prepare return code
+To: Karol Przybylski <karprzy7@gmail.com>, aaro.koskinen@iki.fi,
+ andreas@kemnade.info, khilman@baylibre.com, tony@atomide.com, lee@kernel.org
+Cc: linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+ skhan@linuxfoundation.org
+References: <20241113211614.518439-1-karprzy7@gmail.com>
+Content-Language: en-US
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20241113211614.518439-1-karprzy7@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Andreas,
+Hi,
 
-On Mon, Nov 18, 2024 at 08:00:25PM +0100, Andreas Kemnade wrote:
-> Am Mon, 2 Sep 2024 10:42:31 +0200 schrieb Hans Verkuil :
+On 13/11/2024 23:16, Karol Przybylski wrote:
+> clk_prepare() is called in usbtll_omap_probe to fill clk array.
+> Return code is not checked, leaving possible error condition unhandled.
 > 
-> > The omap4 camera driver has seen no progress since forever, and
-> > now OMAP4 support has also been dropped from u-boot (1). So it is
-> > time to retire this driver.
+> Added variable to hold return value from clk_prepare() and dev_dbg statement
+> when it's not successful.
 > 
-> Argumenting with OMAP4 support in U-Boot is silly. That indicates that
-> there is no movement in keeping u-boot uptodate. Bootloader
-> development/updating is more risky especially if not done by the vendor,
-> good chances to brick something. And the bootloader might need
-> signing. So that argument is done nothing.
+> Found in coverity scan, CID 1594680
 > 
-> Better arguments would be to check if someone has something cooking and
-> feels not comfortable yet to climb Mount Upstream.
+> Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
+> ---
+>  drivers/mfd/omap-usb-tll.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
 > 
-> A good place to ask would be the omap platform
-> list: linux-omap@vger.kernel.org
-> 
-> I get still devicetrees for omap4 devices to review. So there is some
-> activity with omap4. If you look at postmarketOS you see also some
-> activity.
-> 
-> And also someone ported the driver to devicetree support:
-> https://github.com/iridia-ulb/meta-builderbot/blob/master/recipes-kernel/linux/linux-stable-4.16/0008-omap4iss-Fix-multiple-bugs-and-use-device-tree.patch
-> 
-> So the situation is not that simple. I am still evaluating it because I
-> myself have a device with omap4 and camera.
+> diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
+> index 0f7fdb99c809..2e9319ee1b74 100644
+> --- a/drivers/mfd/omap-usb-tll.c
+> +++ b/drivers/mfd/omap-usb-tll.c
+> @@ -202,7 +202,7 @@ static int usbtll_omap_probe(struct platform_device *pdev)
+>  	struct device				*dev =  &pdev->dev;
+>  	struct usbtll_omap			*tll;
+>  	void __iomem				*base;
+> -	int					i, nch, ver;
+> +	int					i, nch, ver, err;
+>  
+>  	dev_dbg(dev, "starting TI HSUSB TLL Controller\n");
+>  
+> @@ -248,10 +248,13 @@ static int usbtll_omap_probe(struct platform_device *pdev)
+>  					"usb_tll_hs_usb_ch%d_clk", i);
+>  		tll->ch_clk[i] = clk_get(dev, clkname);
+>  
+> -		if (IS_ERR(tll->ch_clk[i]))
+> +		if (IS_ERR(tll->ch_clk[i])) {
+>  			dev_dbg(dev, "can't get clock : %s\n", clkname);
+> -		else
+> -			clk_prepare(tll->ch_clk[i]);
+> +		} else {
+> +			err = clk_prepare(tll->ch_clk[i]);
+> +			if (err)
+> +				dev_dbg(dev, "clock prepare error for: %s\n", clkname);
 
-Have you tested the camera recently ? The omap4iss driver has been
-unmaintained in mainline for a very, very long time, and I would be
-surprised if it worked.
+dev_err()?
 
-If someone is interested in taking over maintainership and improving the
-driver to get it out of drivers/staging/ to drivers/media/, the removal
-can certainly be reverted. drivers/staging/ is not a place where drivers
-are left to bitrot, it's meant for active development of code not fully
-ready for mainline yet.
+I think we should return the error in this case.
+(after unpreparing the prepared clocks and clk_put())
+
+> +		}
+>  	}
+>  
+>  	pm_runtime_put_sync(dev);
 
 -- 
-Regards,
+cheers,
+-roger
 
-Laurent Pinchart
 
