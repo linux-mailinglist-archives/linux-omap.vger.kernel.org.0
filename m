@@ -1,90 +1,113 @@
-Return-Path: <linux-omap+bounces-2717-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2718-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 275F69D4C63
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Nov 2024 12:57:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D16879D509C
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Nov 2024 17:21:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B94F4B25F04
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Nov 2024 11:57:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DC4C1F21F2C
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Nov 2024 16:21:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE32F1D5ADC;
-	Thu, 21 Nov 2024 11:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB09176AB9;
+	Thu, 21 Nov 2024 16:21:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="AbtmlJqI"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9119A1D47A0
-	for <linux-omap@vger.kernel.org>; Thu, 21 Nov 2024 11:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732190210; cv=pass; b=dvk4apQFGYAB6r9IP9unEgkQTqtULNZ/lsxFHG+/sjLus0mxn4pc0xRnbqo0GPO81aO6H9FPG0GWZWb6USLqxx3ktulJ8CuGIKcKtu0y+whnQ9xpBi7YuPSJXZjOv5n4EYOs8ohVXuqh95TYOwpOL3R1e1UbSBMvebo9aFroeEE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732190210; c=relaxed/simple;
-	bh=w1+Vj1dIkmLMXOY2n2Lm0v77fGsaIIvIuQPKDdfIDOw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qUOHjOUDUVVb1FiQvRSmynd1q8+lDV5n4N2RxJ3uOALDRLeDHH7ykkjYDiCJ2o3guhKh48kPi800K+N5wvQ4KgAt3lUu5a6FkfVKIiWNbs0yVSwSPIwyHTasaouqZ6tfkropeAOPQVoyzN4Z0lNqGuIvZTCJ+rxCsd8qFIi6+FE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uvos.xyz; spf=pass smtp.mailfrom=uvos.xyz; arc=pass smtp.client-ip=136.143.169.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uvos.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uvos.xyz
-ARC-Seal: i=1; a=rsa-sha256; t=1732189269; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=TUKJA0p2dO+QehMG4BdnenUH9iWIaKCyZt56b9+8AQuFZX8YZLKy+cCgx1vcDVXTHNnzp/DI+kL1E7TaBnjQJBuXVa4Qf2hYKcPie1k8N2Vx7pCTBsQi6EoZs2+AT6MZDyiuyieGvl/Qj1jiXVeGPgbaicE9sVgl2XB+yuE5DlM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1732189269; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=w1+Vj1dIkmLMXOY2n2Lm0v77fGsaIIvIuQPKDdfIDOw=; 
-	b=diL/oFnLM/igm3IL9iACVpTm5/7oDo6b2X7k2bolmYR9GY3GJvjULHYdS87arf7zv+ZWB/W5BkU6wx+xzDtgoDCLplxpX4FcpxCH0rU3xxEOQF1UTmXoPsvQ2rxdw24EjIjyIG2/Bk3jXmeopvz8yLVu3qX2NIwVTFTp0Bg58Y0=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	spf=pass  smtp.mailfrom=devnull@uvos.xyz;
-	dmarc=pass header.from=<devnull@uvos.xyz>
-Received: by mx.zoho.eu with SMTPS id 173218923820461.772127192647986;
-	Thu, 21 Nov 2024 12:40:38 +0100 (CET)
-Message-ID: <1aa03cb201857f70bc46143a16465f0a08870401.camel@uvos.xyz>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B71315887C;
+	Thu, 21 Nov 2024 16:21:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732206087; cv=none; b=hZKCC01pOdxXzpX7C6IB95Exvokb3vN272c297V/fwXCNL2fG73V7uADxV8M+7qWd4828eCyOWBU8tmtFnU/IEAILXNV84TeRdkYfn55SXFQ6Vu3epV7hxx5XdkfLdL31aT2C/SZupSXD4MjeLPOrC8xSG3T4EUr6+VSMN70nFg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732206087; c=relaxed/simple;
+	bh=dS8zJ7iQ/UYV1gaG03zDF6XXEZ1Xtpdd1Bh+TQ3XWJw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GXIDY/IB3PPq1DGB/EAl5TYDslQSl5/2kksMgA0TKjX2kSWqlN5cMH4gBPJmuYo1f8w7YzfA8pTWdZZhKjgy83oZIyhFdF7Hh57tz3k138sxtZ7mqUcRNKMl3haZ4LBJT/x2nVt3da9cdIzswq8e/ujKCG4T/qnGOxQwD88sGVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=AbtmlJqI; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=NvDE7O0jjICDQ9NrhZJeIIgFCkvS28y0b4rNX6BWUCA=; b=AbtmlJqIe7tJsI5mRzO2cAJ6KV
+	vJu4D40Dayz+7BGCvugfo9xRKtq/90f8bl7ws4NTXiPy6sHid8uMcqiYXqZdQqhQ99SW3nu8UiMxq
+	y8MdfkoyWH7gJxLOPLGH86MXRSSlGDABmV/aLv3YLkW+C56LTMqLjEFS6C1j3mRtqDl5gDxreQD/k
+	ddjPCITZynOteD/l+GZq2GJFKAGh7vynA0KwAPu/liXHVMYGnMJqsfe4YP4ytBmsfn0AwgfFiAYPW
+	YbtMhwZvLCievlGjW+xQzUlcNiNP0ycclkL3aMCqsipl6tqwRyVdGFydykulkMgnFjUHcmY3XM1QN
+	4+r8vDOQ==;
+Date: Thu, 21 Nov 2024 17:21:19 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Unknown <devnull@uvos.xyz>
+Cc: Laurent Pinchart  <laurent.pinchart@ideasonboard.com>,
+ linux-omap@vger.kernel.org, Hans Verkuil <hverkuil@xs4all.nl>, Linux Media
+ Mailing List  <linux-media@vger.kernel.org>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>
 Subject: Re: [PATCH] media: staging: drop omap4iss
-From: Unknown <devnull@uvos.xyz>
-To: Andreas Kemnade <andreas@kemnade.info>, Laurent Pinchart
-	 <laurent.pinchart@ideasonboard.com>, linux-omap@vger.kernel.org
-Cc: Hans Verkuil <hverkuil@xs4all.nl>, Linux Media Mailing List
-	 <linux-media@vger.kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>
-Date: Thu, 21 Nov 2024 12:40:37 +0100
-In-Reply-To: <20241120085406.4d864c6e@akair>
+Message-ID: <20241121172119.4b46727e@akair>
+In-Reply-To: <1aa03cb201857f70bc46143a16465f0a08870401.camel@uvos.xyz>
 References: <815a789d-85a5-44a1-8b9c-429ac0101e3f@xs4all.nl>
-	 <20241118200025.3daab676@akair>
-	 <20241119070222.GX31681@pendragon.ideasonboard.com>
-	 <20241120085406.4d864c6e@akair>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.1 
+	<20241118200025.3daab676@akair>
+	<20241119070222.GX31681@pendragon.ideasonboard.com>
+	<20241120085406.4d864c6e@akair>
+	<1aa03cb201857f70bc46143a16465f0a08870401.camel@uvos.xyz>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+Am Thu, 21 Nov 2024 12:40:37 +0100
+schrieb Unknown <devnull@uvos.xyz>:
 
-Hi,
+> Hi,
+> 
+> > BT200 has a camera without mainline sensor driver.
+> > Droid4 has also a camera. What is the status of the sensor driver?
+> > What about the samsung-espresso tablets? And the xyboards?  
+> 
+> Same as your device droid4 and xyboard handle the camera via m3
+> firmware.
+> The droid 4's rear camera is totaly unkown with no datasheed or open
+> source driver known to exist.
 
-> BT200 has a camera without mainline sensor driver.
-> Droid4 has also a camera. What is the status of the sensor driver?
-> What about the samsung-espresso tablets? And the xyboards?
+that page suggests that there is an open source driver for the
+rear camera:
 
-Same as your device droid4 and xyboard handle the camera via m3
-firmware.
-The droid 4's rear camera is totaly unkown with no datasheed or open
-source driver known to exist.
-The front camera has avaialble datasheed and out of tree driver.
-The xyboards cary the same sensor as the d4's rear module.
+https://elektranox.org/2018/02/0025-droid-camera/
 
-We (maemo leste, a distro that has put considerable effort into
-bringing up the droid 4, droid bionic and xyboard) do hope to
-eventually bring up the front camera on the droid, as all the
-componants for this are floating around, but are currenly not working
-on this issue.
+Quoting:
+https://searchcode.com/file/50297519/drivers/media/video/msm/sensors/ov8820_v4l2.c
 
-regards,
-Carl
+BTW:
+Bt200 has OV7692
+
+> The front camera has avaialble datasheed and out of tree driver.
+> The xyboards cary the same sensor as the d4's rear module.
+> 
+> We (maemo leste, a distro that has put considerable effort into
+> bringing up the droid 4, droid bionic and xyboard) do hope to
+> eventually bring up the front camera on the droid, as all the
+> componants for this are floating around, but are currenly not working
+> on this issue.
+> 
+So summary:
+there are potential real users of omap4-iss. Apparently all of them
+require besides a working a omap4-iss to work on some sensor driver to
+have something useful.
+
+If omap4-iss would be known-working there are probably better chances
+that more jump in.
+
+Regards,
+Andreas
 
