@@ -1,132 +1,156 @@
-Return-Path: <linux-omap+bounces-2713-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2714-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF899D495A
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Nov 2024 09:58:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71E139D4AE1
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Nov 2024 11:28:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34E1C285739
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Nov 2024 08:58:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37967287FA8
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Nov 2024 10:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66F71C7B64;
-	Thu, 21 Nov 2024 08:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B699B1CACE9;
+	Thu, 21 Nov 2024 10:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pbarker.dev header.i=@pbarker.dev header.b="oE6nIN0p";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="iZfWm76l"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="8tkkC4nj"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A32230983;
-	Thu, 21 Nov 2024 08:57:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7339823099D;
+	Thu, 21 Nov 2024 10:28:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732179483; cv=none; b=pn/DKcgm/90F5+Yo6VM3Iua19KrYbQzs6t307UaE9UbiL4NjUISXG+4a+NkALcw3A3ApCzY7/jFBwc7uwne9UYXR2Q2ZlDIQH3OW44CfluWxeetcjuq0wur9FptVHY0tmyvfcbYCy+0WRNFeoQHwl3C+Bz1dQIC8ZAZJ5VkHPbc=
+	t=1732184885; cv=none; b=iK9B2xGOmHJdXdYZ2IYYKGzf6CWP3CUFrl1Jim4hSqtnn9VpFSBMUWvyiE5cPHVytf/+YGVAatRi8C9cVT3fCQaoF2ni2Os/wTbj0S6CyWWmENvagWCz4cIPtym9YG3wJdGkpDf//1EnR0xp4qQTyf0AaAr3gz+WqW+TC1Zlq9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732179483; c=relaxed/simple;
-	bh=dNpESR7SOha5Fc3Svey2AgzTpApPcqbiWLit69d56Uo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=A9LLakwLw+jq9ysNb3z0VY9/SxcXoAnC2L9N6WRBjFiUMrr5zNU+KLbJWfnox3WYvF5hzXExO7nyuU2G6TXdQngjQ+OQ6R15r+VGJ6CW3cYteh/BLQb4z/MTv+2o6kERo8ZsCJ1I5Mvo2csaoYipgoCH5edfgzK40XafLoHUxdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pbarker.dev; spf=pass smtp.mailfrom=pbarker.dev; dkim=pass (2048-bit key) header.d=pbarker.dev header.i=@pbarker.dev header.b=oE6nIN0p; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=iZfWm76l; arc=none smtp.client-ip=103.168.172.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pbarker.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pbarker.dev
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id E8C5D11400D4;
-	Thu, 21 Nov 2024 03:57:57 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Thu, 21 Nov 2024 03:57:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pbarker.dev; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm2; t=1732179477; x=1732265877; bh=Fl8IfjPeTMcld8rU8oF/6
-	PMpOsrSYIJKaF2EMCqAW10=; b=oE6nIN0pwg8+2rN+mXN4LT4VoJ1kdbvcitsKr
-	r1Z9T11RHSnB7qWEGj1lSItKHLzYpoeEhO5iTRyw/EIbxN8att/2Qy8p2/mwI10V
-	hZ65P7wuxT/65f8n4tf7tpiCm0PGcYZPqLJSsNQeffJVvqPpfnt4qzWTNDPMfyo0
-	aMTYIOlu97W8vefejr+4QJR+AdEcr+egeJ6MwziXMvwRGn9vh8F7dVkTIM4v4Wp9
-	rPpsASE6xZdfBnEupctALIrg/EnoGLYB2oT+V4UWZBRRDtoQe52yECakS2EBawmV
-	f14qQ1Vc6yDgwKAdDrVfpw8YIOOD5XmRP92I0AQNTU6mYYwKQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1732179477; x=1732265877; bh=Fl8IfjPeTMcld8rU8oF/6PMpOsrSYIJKaF2
-	EMCqAW10=; b=iZfWm76ljDyB9NJJm+VVyXwQP0LdNTRBnbCr2F5ReaxQmq2YaCU
-	QA0VVigsYu7ss1KB5qv/OscXj1K9uhG/HUBgHxVp4/2/BdEz5WxgBi28vDHUXKej
-	0A3UyDC/60C7iaUnJMVxGDikoR9VMZD8OHyTcJmXHJzNcvQYt1tpu0pcDxzDUZ/q
-	mc895k8D2Au0KKZKMx+PmXxEatR42aC9WYr2n8RVp/4+eoHuzbuX1E6HMQCzzd79
-	Lglda9GWcf4dOsvPR9NWkhTuzGaDUFS0HpFJQ2yllkgdccNIECv1sErd0Gd4vuVJ
-	RDV6b0ro+xbMXfTVzJehz6wnG6y9HuTIc/A==
-X-ME-Sender: <xms:FfY-Z6ur7r4ff3WceLR22U6VdObd_BN4WRYuny9HZ3E7l4JQYb79YA>
-    <xme:FfY-Z_fVdI3Taq6Qftp9M1ciEltBTXjRtreG3ZTAaMDZHAIDHHLco-IID-C8U9h9C
-    pCcf0Ssu3vsr8ycNos>
-X-ME-Received: <xmr:FfY-Z1xcD5wXJwvFmBdGIcFRCPUtL8seZNjkxrcwvNS9U1-PHOxGWqqU3Wqi8Af7UINWBPDgBQVUR-m6yJCnVC6GXI-L9jqYVg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrfeehgdduvdefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhephffvvefufffkofgggfestdekredtredttdenucfh
-    rhhomheprfgruhhluceurghrkhgvrhcuoehprghulhesphgsrghrkhgvrhdruggvvheqne
-    cuggftrfgrthhtvghrnheptedvudefvdeihfeivdeufeeugfevheejgffhfeeileelveeg
-    vefgtdefiedtieeunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
-    hfrhhomhepphgruhhlsehpsggrrhhkvghrrdguvghvpdhnsggprhgtphhtthhopeehpdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopehtohhnhiesrghtohhmihguvgdrtghomh
-    dprhgtphhtthhopehprghulhesphgsrghrkhgvrhdruggvvhdprhgtphhtthhopehlihhn
-    uhigqdhomhgrphesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuh
-    igqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmrghr
-    tgdrmhhurhhphhihsehsrghntghlohhuugdrtghomh
-X-ME-Proxy: <xmx:FfY-Z1NnOHGvC72ujkE2SMcSQm_x6PLK9BOEYMCkmzEynwvxT1pjdA>
-    <xmx:FfY-Z69UoFg-j3jZL4gRj_zZ6HzCoI3EQIcNlW8HKF7gNYF_Nlqzog>
-    <xmx:FfY-Z9Xkkxzbo0vksN_aPd0Z2ohJMPrj-GKoYxbIrLc9YZT-44BChg>
-    <xmx:FfY-ZzdeiScJ98db7qC9eeKvQKXubbCkFO4SKiVsBeWYkR7wjoWSHA>
-    <xmx:FfY-ZxmofjsZ6i_GjPD0onAWyEHFDGZZbNpEBl8xBNpufsbQCGIlKba6>
-Feedback-ID: i51494658:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 21 Nov 2024 03:57:56 -0500 (EST)
-From: Paul Barker <paul@pbarker.dev>
-To: Tony Lindgren <tony@atomide.com>
-Cc: Paul Barker <paul@pbarker.dev>,
-	linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Marc Murphy <marc.murphy@sancloud.com>
-Subject: [PATCH] MAINTAINERS: Update email & status for SanCloud BBE dts files
-Date: Thu, 21 Nov 2024 08:57:42 +0000
-Message-Id: <20241121085742.3037946-1-paul@pbarker.dev>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1732184885; c=relaxed/simple;
+	bh=wtEHQkofAcnh3SC2zH1iKLgWqJq7luVnNBkLBFEBoVA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Sz7sPrMzgNDExn2jkNmxsdheBB5Zpf3n+MOL7j+aArBgWLst7AB9n5MG8Tl7vDEzdxLftFfqY1Y1jb41Uvws+9ZXwCu7rmiyXku0RPB9wqEu/03ooyLa0JTmSL5gBHeMzNZeEsADghSv1SwIDiSuZzXCqJowe4mtlRjHL4a8JC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=8tkkC4nj; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=iZHmtnZaPupw3FMfsjdu6r2fu38cHITN8Qp3hwNCkjo=; b=8tkkC4njub2Z5KoTXcXrawVgmc
+	ukcXcionHr5Vxx7YETwGQ4TrCDaUBrwGqqYP+dBzxGoTObuwB2ZEFU1upGD2RYM6oBDeN4CIilGlT
+	DpanqbLRVJjKqQx2N8jo6bMhNEQIMJmxYzhL+yctPUHAApT9Hyi27agMlQnlUmhW9NcnfD8vVuAuf
+	3f+wLakC02wLli29reQBt8yjp0RxYZvjzigrtdmXGKZyODrX4Tb5wL6TFmLQ3uTdkIuNMAPTnleqm
+	SoauXWaDy7XqLs8Ebh2Gy7IoyryF6puDb5A1sB5XI/9/mGAMb51BDZysmqc5eN/JJ9k1GIKHmYLTK
+	txM04J1A==;
+Date: Thu, 21 Nov 2024 11:27:50 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: linux-omap@vger.kernel.org, Hans Verkuil <hverkuil@xs4all.nl>, Linux
+ Media Mailing List <linux-media@vger.kernel.org>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>
+Subject: Re: [PATCH] media: staging: drop omap4iss
+Message-ID: <20241121112750.3f5d4d2c@akair>
+In-Reply-To: <20241120083938.GP12409@pendragon.ideasonboard.com>
+References: <815a789d-85a5-44a1-8b9c-429ac0101e3f@xs4all.nl>
+	<20241118200025.3daab676@akair>
+	<20241119070222.GX31681@pendragon.ideasonboard.com>
+	<20241120085406.4d864c6e@akair>
+	<20241120083938.GP12409@pendragon.ideasonboard.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-I am no longer employed by SanCloud, but I will continue to look after
-the BBE device tree files using my own email address.
+Am Wed, 20 Nov 2024 10:39:38 +0200
+schrieb Laurent Pinchart <laurent.pinchart@ideasonboard.com>:
 
-Signed-off-by: Paul Barker <paul@pbarker.dev>
-Acked-by: Marc Murphy <marc.murphy@sancloud.com>
----
- MAINTAINERS | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> Hi Andreas,
+> 
+> On Wed, Nov 20, 2024 at 08:54:06AM +0100, Andreas Kemnade wrote:
+> > Am Tue, 19 Nov 2024 09:02:22 +0200 schrieb Laurent Pinchart:  
+> > > On Mon, Nov 18, 2024 at 08:00:25PM +0100, Andreas Kemnade wrote:  
+> > > > Am Mon, 2 Sep 2024 10:42:31 +0200 schrieb Hans Verkuil :
+> > > >     
+> > > > > The omap4 camera driver has seen no progress since forever, and
+> > > > > now OMAP4 support has also been dropped from u-boot (1). So it is
+> > > > > time to retire this driver.    
+> > > > 
+> > > > Argumenting with OMAP4 support in U-Boot is silly. That indicates that
+> > > > there is no movement in keeping u-boot uptodate. Bootloader
+> > > > development/updating is more risky especially if not done by the vendor,
+> > > > good chances to brick something. And the bootloader might need
+> > > > signing. So that argument is done nothing.
+> > > > 
+> > > > Better arguments would be to check if someone has something cooking and
+> > > > feels not comfortable yet to climb Mount Upstream.
+> > > > 
+> > > > A good place to ask would be the omap platform
+> > > > list: linux-omap@vger.kernel.org
+> > > > 
+> > > > I get still devicetrees for omap4 devices to review. So there is some
+> > > > activity with omap4. If you look at postmarketOS you see also some
+> > > > activity.
+> > > > 
+> > > > And also someone ported the driver to devicetree support:
+> > > > https://github.com/iridia-ulb/meta-builderbot/blob/master/recipes-kernel/linux/linux-stable-4.16/0008-omap4iss-Fix-multiple-bugs-and-use-device-tree.patch
+> > > > 
+> > > > So the situation is not that simple. I am still evaluating it because I
+> > > > myself have a device with omap4 and camera.    
+> > > 
+> > > Have you tested the camera recently ? The omap4iss driver has been
+> > > unmaintained in mainline for a very, very long time, and I would be
+> > > surprised if it worked.  
+> > 
+> > No, I have not tested it. I only have a bitrot out of tree driver for my
+> > camera which was probably never used with omap. Vendor system seems to
+> > handle camera via the m3 processor in a closed-source firmware blob. So
+> > what is the overall picture:
+> > 
+> > Which omap4 devices have cameras? What is the status of the sensor
+> > driver? Known working/Mainline/Out-of-tree/none? Datasheet for
+> > sensor available?
+> > The question is whether omap4iss can be tested together with a
+> > known-working camera sensor driver. That would make things a lot easier.
+> >
+> > BT200 has a camera without mainline sensor driver.
+> > Droid4 has also a camera. What is the status of the sensor driver?
+> > What about the samsung-espresso tablets? And the xyboards?
+> > 
+> > Pandaboard camera module? If have a pandaboard I use for reference, but
+> > no camera there.  
+> 
+> I used to work on it using a Pandaboard and an MT9P031 camera module,
+> from Leopard Imaging if I recall correctly.
+>
+Hmm, that would require also soldering the connector and it seems like
+no standard thing, so I would need to create an adaptor. At least I do
+not find anything on ebay which looks like it can be attached to the
+Pandaboard.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a27407950242..0b20b60a212c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20451,9 +20451,9 @@ F:	drivers/phy/samsung/phy-samsung-usb2.c
- F:	drivers/phy/samsung/phy-samsung-usb2.h
- 
- SANCLOUD BEAGLEBONE ENHANCED DEVICE TREE
--M:	Paul Barker <paul.barker@sancloud.com>
-+M:	Paul Barker <paul@pbarker.dev>
- R:	Marc Murphy <marc.murphy@sancloud.com>
--S:	Supported
-+S:	Maintained
- F:	arch/arm/boot/dts/ti/omap/am335x-sancloud*
- 
- SC1200 WDT DRIVER
--- 
-2.39.5
+> > > If someone is interested in taking over maintainership and improving the
+> > > driver to get it out of drivers/staging/ to drivers/media/, the removal
+> > > can certainly be reverted. drivers/staging/ is not a place where drivers
+> > > are left to bitrot, it's meant for active development of code not fully
+> > > ready for mainline yet.  
+> > 
+> > I guess the way to start is to revert the remove and then update the
+> > above-mentioned devicetree support patch. I have no feeling how complex
+> > that whole task would be.  
+> 
+> That would be a first step, yes. After that, completing resizer support
+> will be a good task candidate, followed by exposing the ISP parameters
+> to userspace, and adding support for it to libcamera.
+> 
+Well, I guess before adding the resizer stuff, I want to see a picture
+influenced by what is in front of the camera of a device I really care
+about (!= pandaboard) and then adjusting things to the point where
+format configurations are solved. At some point more could also jump
+in to screw at sensor chip drivers.
 
+Regards,
+Andreas
 
