@@ -1,113 +1,140 @@
-Return-Path: <linux-omap+bounces-2718-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2719-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D16879D509C
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Nov 2024 17:21:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB1749D6AA1
+	for <lists+linux-omap@lfdr.de>; Sat, 23 Nov 2024 18:44:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DC4C1F21F2C
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Nov 2024 16:21:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4881AB213DD
+	for <lists+linux-omap@lfdr.de>; Sat, 23 Nov 2024 17:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB09176AB9;
-	Thu, 21 Nov 2024 16:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47B914EC47;
+	Sat, 23 Nov 2024 17:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="AbtmlJqI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZBiIVaqU"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B71315887C;
-	Thu, 21 Nov 2024 16:21:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8131862A;
+	Sat, 23 Nov 2024 17:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732206087; cv=none; b=hZKCC01pOdxXzpX7C6IB95Exvokb3vN272c297V/fwXCNL2fG73V7uADxV8M+7qWd4828eCyOWBU8tmtFnU/IEAILXNV84TeRdkYfn55SXFQ6Vu3epV7hxx5XdkfLdL31aT2C/SZupSXD4MjeLPOrC8xSG3T4EUr6+VSMN70nFg=
+	t=1732383870; cv=none; b=ivan9ybXh3xWqXX6J2PvPUV0KgQ9mcHvve6Zvc9A+GJllS5rgiKPrtvmOQhVgXyG2gjcatd7zWspoNenF0KBICrvEQ+o7c6AkuMd6Eq6UTq0TDPocBON8i67znIz10rv59QdnPG5Rsopn18KO7YDOjk0TRGu6mWoI0jxAqCr5Iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732206087; c=relaxed/simple;
-	bh=dS8zJ7iQ/UYV1gaG03zDF6XXEZ1Xtpdd1Bh+TQ3XWJw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GXIDY/IB3PPq1DGB/EAl5TYDslQSl5/2kksMgA0TKjX2kSWqlN5cMH4gBPJmuYo1f8w7YzfA8pTWdZZhKjgy83oZIyhFdF7Hh57tz3k138sxtZ7mqUcRNKMl3haZ4LBJT/x2nVt3da9cdIzswq8e/ujKCG4T/qnGOxQwD88sGVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=AbtmlJqI; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=NvDE7O0jjICDQ9NrhZJeIIgFCkvS28y0b4rNX6BWUCA=; b=AbtmlJqIe7tJsI5mRzO2cAJ6KV
-	vJu4D40Dayz+7BGCvugfo9xRKtq/90f8bl7ws4NTXiPy6sHid8uMcqiYXqZdQqhQ99SW3nu8UiMxq
-	y8MdfkoyWH7gJxLOPLGH86MXRSSlGDABmV/aLv3YLkW+C56LTMqLjEFS6C1j3mRtqDl5gDxreQD/k
-	ddjPCITZynOteD/l+GZq2GJFKAGh7vynA0KwAPu/liXHVMYGnMJqsfe4YP4ytBmsfn0AwgfFiAYPW
-	YbtMhwZvLCievlGjW+xQzUlcNiNP0ycclkL3aMCqsipl6tqwRyVdGFydykulkMgnFjUHcmY3XM1QN
-	4+r8vDOQ==;
-Date: Thu, 21 Nov 2024 17:21:19 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Unknown <devnull@uvos.xyz>
-Cc: Laurent Pinchart  <laurent.pinchart@ideasonboard.com>,
- linux-omap@vger.kernel.org, Hans Verkuil <hverkuil@xs4all.nl>, Linux Media
- Mailing List  <linux-media@vger.kernel.org>, Sakari Ailus
- <sakari.ailus@linux.intel.com>
-Subject: Re: [PATCH] media: staging: drop omap4iss
-Message-ID: <20241121172119.4b46727e@akair>
-In-Reply-To: <1aa03cb201857f70bc46143a16465f0a08870401.camel@uvos.xyz>
-References: <815a789d-85a5-44a1-8b9c-429ac0101e3f@xs4all.nl>
-	<20241118200025.3daab676@akair>
-	<20241119070222.GX31681@pendragon.ideasonboard.com>
-	<20241120085406.4d864c6e@akair>
-	<1aa03cb201857f70bc46143a16465f0a08870401.camel@uvos.xyz>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1732383870; c=relaxed/simple;
+	bh=Ei5aEIQ2VBjelOrvrfMxvLiVXuUpN0H7zkAP2TFMKJ4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OS273OxDyFDpKAuIsXGCZMmAJeHdzUcX5wZcjEAJVX3FsLlgiMNH+qKNfC0MfhJZZkxtVfTyQyK6dI95r00pP+6e4zM5tmWtTd8O8Ur2J3xh+fnyQiEprOS0mkC9g0npnmtzKG99xjZTERsx95SBC2/ewDIo7Mi1p7jqfTHCj7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZBiIVaqU; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2129fd7b1a5so17206245ad.1;
+        Sat, 23 Nov 2024 09:44:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732383867; x=1732988667; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Taj+3YSfAKDsLQncrgYkDoFlJMoLmNKBtRtkmtpeCa8=;
+        b=ZBiIVaqUNJyvs92rKJfnL7UKhBbHtJoIVYd0fsQBTirsm1Zb53FF8cHlciLjuYpqc6
+         mkSJkRywdTLZ2fA+hzm6tx0RmSJwcdoC7FwRTRuNximWUqTuOZTF5bKKLt5G00tb7OAc
+         SbsolBrhbCrhrkqjxnhGTKKyggd6f2we62LdGG2w/fv3cLYBKRvdHk5OASZlIBZFoP85
+         DU3RUBbI6fkeWtAa7R8qRdGjvyHipq0pGET5nwhC7J+L6mCYI3IZenB0C/enu2h53SJF
+         2/qtR5NFovxBPcHNU0TdM+mpgAT4pug2/DRMVxLhW+pavISpsm/gnrsgmU8e1fbpZimP
+         Ro+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732383867; x=1732988667;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Taj+3YSfAKDsLQncrgYkDoFlJMoLmNKBtRtkmtpeCa8=;
+        b=NuW8r1a1Lmo+e1bVWUHTvUtF2HUtwpdMVTOl4hI/Bcm0h6Zt/YQJMzBQK5D0mW5VgO
+         iFe/4hJtUwW6VolYQhhrH2yy5puH1qAS1G1fTIlt+L+PyN/jCNginuYjIRRIVYkq3yeQ
+         nyXfDi77aXtSbCMN50+mJsjSQfZqmjOHkqY/zrxfg7Vdva1rNryLfg9ojGWcdhoHrrqR
+         gdkqkFtkhsK/uF7rP8s59TNhrb0L0r53fxQM15nOluzrGcVzLBgRrtGDmtABPj0gXn76
+         6VWksllxnCeIwwIUqCOCfcL0ITyKG2hDukw0a9q63/uXVKTefnG1LZU8xpdmSh65njmL
+         LnmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVFQrevGeFGc/B2ACOrn1iHztO4vaQs5UcyjEJbNO8qtKirQSEcnvRhRGxFIfTHQHXEb/izpD/3j7cI4jxz@vger.kernel.org, AJvYcCVc9eQI6vIM649BjMClTxNifQ+X/BI0T+qXxojqm+OF+79Gf/Ur3LHJb89hOx7yUMImVHYgNSefD5vmlg==@vger.kernel.org, AJvYcCW00n4SgPUsURrNmyCTfA1gMYTxmYSKgo7zgK/z5TyyxdRBkYCVFHbbDaUx72gt2KAJBrLWRSf+TgXS@vger.kernel.org, AJvYcCXvUuQoYrw7jmjFNWf4TyrRAku/h8FefjWtzdUAp5HIDCTKkU6VZ4ev5932RCrbs6lwS+amaD7uvknz/mlqy4M2@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOYPIrtL74f7ocpZipAAT+Ct/cvzTipLuitJrOsRfsEBGFmHqw
+	2HRUTJJcoBdMhUazQzfwGHV+pnDDeDMkds0in7TlbDkLQdWqM2dk
+X-Gm-Gg: ASbGncsmr9BfzFnRdeZ/MH/4Sw2+o4k50fu1Uy6C+j2zhV6jfKLNZOukdRCKf1w0dJO
+	nrL/rJPtmYh/PlsC8ORyJJXw08R7cH1rDJNi85CYJJpBQc63pUnxIY8DJhXPZZwCxtnN589AQ6s
+	2qiEOk8y7JX3nZ+Jgbl2b0KSRymn0YkFg42l9sclpCX4Ihv7xGnh20G15hkR17NFE/IHb9d5mjQ
+	WjR6I6wV0+THNEB4Uk2/SXQiEAru93rCzwzX/6sv/iGaIsuY2IhFshbyXM6HtYmQ6ukv/j9DjU=
+X-Google-Smtp-Source: AGHT+IFEV5sx5M3llOMv5oeDGg6jrj5DSo4Cp/i06uwAuBbD/AfbChJ11DKh4isN2KMwLs0D/5WqjA==
+X-Received: by 2002:a17:902:f54a:b0:20b:951f:6dff with SMTP id d9443c01a7336-2129f1aa923mr117259275ad.0.1732383866948;
+        Sat, 23 Nov 2024 09:44:26 -0800 (PST)
+Received: from mighty.kangaroo-insen.ts.net ([45.64.12.174])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2129dba6aa3sm35213735ad.101.2024.11.23.09.44.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 Nov 2024 09:44:24 -0800 (PST)
+From: Mithil Bavishi <bavishimithil@gmail.com>
+To: andreas@kemnade.info
+Cc: Laurent.pinchart@ideasonboard.com,
+	aaro.koskinen@iki.fi,
+	airlied@gmail.com,
+	bavishimithil@gmail.com,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	jernej.skrabec@gmail.com,
+	jonas@kwiboo.se,
+	khilman@baylibre.com,
+	krzk+dt@kernel.org,
+	linux-hardening@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	neil.armstrong@linaro.org,
+	prabhakar.mahadev-lad.rj@bp.renesas.com,
+	quic_jesszhan@quicinc.com,
+	rfoss@kernel.org,
+	robh@kernel.org,
+	rogerq@kernel.org,
+	simona@ffwll.ch,
+	thierry.reding@gmail.com,
+	tony@atomide.com,
+	tzimmermann@suse.de
+Subject: Re: Re: [PATCH v3 08/10] ARM: dts: ti: omap: samsung-espresso7: Add initial support for Galaxy Tab 2 7.0
+Date: Sat, 23 Nov 2024 17:44:14 +0000
+Message-ID: <20241123174414.721-1-bavishimithil@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241112120020.7f9e0680@akair>
+References: <20241112120020.7f9e0680@akair>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Am Thu, 21 Nov 2024 12:40:37 +0100
-schrieb Unknown <devnull@uvos.xyz>:
+> > +&i2c3 {
+> > +	touchscreen@48 {
+> > +		compatible = "melfas,mms136";
+> > +		reg = <0x48>;
+> > +		interrupt-parent = <&gpio2>;
+> > +		interrupts = <14 IRQ_TYPE_EDGE_FALLING>;
+> > +		touchscreen-size-x = <1023>;
+>
+> Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml:
+> horizontal resolution of touchscreen (maximum x coordinate reported + 1)
+>
+> So this touchscreen reports max 1022?
+>
+> > +		touchscreen-size-y = <599>;
+>
+> same question.
 
-> Hi,
-> 
-> > BT200 has a camera without mainline sensor driver.
-> > Droid4 has also a camera. What is the status of the sensor driver?
-> > What about the samsung-espresso tablets? And the xyboards?  
-> 
-> Same as your device droid4 and xyboard handle the camera via m3
-> firmware.
-> The droid 4's rear camera is totaly unkown with no datasheed or open
-> source driver known to exist.
+My apologies, it should be 1023+1 (1024) and 599+1(600) respectively.
+Will fix it in the next revision.
 
-that page suggests that there is an open source driver for the
-rear camera:
+https://github.com/Unlegacy-Android/android_kernel_ti_omap4/blob/3.4/common/arch/arm/mach-omap2/board-espresso-input.c#L145
 
-https://elektranox.org/2018/02/0025-droid-camera/
-
-Quoting:
-https://searchcode.com/file/50297519/drivers/media/video/msm/sensors/ov8820_v4l2.c
-
-BTW:
-Bt200 has OV7692
-
-> The front camera has avaialble datasheed and out of tree driver.
-> The xyboards cary the same sensor as the d4's rear module.
-> 
-> We (maemo leste, a distro that has put considerable effort into
-> bringing up the droid 4, droid bionic and xyboard) do hope to
-> eventually bring up the front camera on the droid, as all the
-> componants for this are floating around, but are currenly not working
-> on this issue.
-> 
-So summary:
-there are potential real users of omap4-iss. Apparently all of them
-require besides a working a omap4-iss to work on some sensor driver to
-have something useful.
-
-If omap4-iss would be known-working there are probably better chances
-that more jump in.
-
-Regards,
-Andreas
+Best Regards,
+Mithil
 
