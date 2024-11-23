@@ -1,101 +1,118 @@
-Return-Path: <linux-omap+bounces-2724-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2725-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FF669D6B6B
-	for <lists+linux-omap@lfdr.de>; Sat, 23 Nov 2024 21:11:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB10C9D6BA4
+	for <lists+linux-omap@lfdr.de>; Sat, 23 Nov 2024 22:32:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20BA828174B
-	for <lists+linux-omap@lfdr.de>; Sat, 23 Nov 2024 20:11:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8085F28193F
+	for <lists+linux-omap@lfdr.de>; Sat, 23 Nov 2024 21:32:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F211822F8;
-	Sat, 23 Nov 2024 20:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3B519F115;
+	Sat, 23 Nov 2024 21:32:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="79uBzN66"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fgw23-7.mail.saunalahti.fi (fgw23-7.mail.saunalahti.fi [62.142.5.84])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FC5EADC
-	for <linux-omap@vger.kernel.org>; Sat, 23 Nov 2024 20:11:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFBE7CF16;
+	Sat, 23 Nov 2024 21:32:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732392669; cv=none; b=NVDmaTkzabw66P0Kmmgd3W7wv9oC3BVRhFEhpOAsFNsagj53i8WWibWGAh3zHyYDum2NoLo6lRA+fzNUVGLmkN+iwbiNpPqMuQqmBAMHnX2VFAMqBfUVLp8ksmoysD1uDlxRBbHLmZoc32YQjn2thG2jeUv/Ko33rBBfXqPJDlI=
+	t=1732397525; cv=none; b=RpioYeu3DqeuEliLuvklLDzj7LyXlz6Y4XNX4LpuOlVNR2Wr3ig5NXzJ0xnZHKZwgrN6xpZ1Mrywk29re6PGscLKKBngeACUESjuFM5PgQ/lfq9ipFt/YceXjnfLLfiHPIzDvZxD61eFZmSdC4vHVtJCijJawYlMN3PSGrY+4I4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732392669; c=relaxed/simple;
-	bh=GfY5OOJjYtKwKCT9nVoNfjEhMuP5Dx8oEGJHh7s+ZtQ=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ABLmJuFQQ2qhZTxJ+DDuP15X8zGpB9d3hnvtsY1BBcY6SLp3dGxl1RoS+DFmmufnQy4svOkTVkI3NGvr0YS9EQTq5lKSb86+CcXcUwPlvtN3EooPJThQmx+wsKwNPcxG4RgvcsOvyPBE28dvR5/VWMDKdTgT7GF7lJqvoPGkQxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
-Received: from localhost (88-113-25-143.elisa-laajakaista.fi [88.113.25.143])
-	by fgw21.mail.saunalahti.fi (Halon) with ESMTP
-	id 10a0d7d4-a9d7-11ef-8881-005056bdd08f;
-	Sat, 23 Nov 2024 22:11:04 +0200 (EET)
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sat, 23 Nov 2024 22:11:03 +0200
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: lee@kernel.org, daniel.thompson@linaro.org, jingoohan1@gmail.com,
-	deller@gmx.de, bonbons@linux-vserver.org, jikos@kernel.org,
-	bentiss@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	shawnguo@kernel.org, festevam@gmail.com,
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-	linux-omap@vger.kernel.org
-Subject: Re: [PATCH v2 20/28] fbdev: clps711x-fb: Replace check_fb in favor
- of struct fb_info.lcd_dev
-Message-ID: <Z0I211pFIHS_ajoX@surfacebook.localdomain>
-References: <20240906075439.98476-1-tzimmermann@suse.de>
- <20240906075439.98476-21-tzimmermann@suse.de>
+	s=arc-20240116; t=1732397525; c=relaxed/simple;
+	bh=gHwJmvzf21afgQoTvb2Bj0IrycV+YiiikoPnuvfjgsQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VgWLjgssXIJ6SdUeJ6dI0txVfF4PSRLgxUyrgsmttJrQhTPxSwGbvjR8yLyVCbeERSxYrfDKjO5G6eS1DDX6Ot6Dug5QTmHU84tDhmYEUFDIaiGpK6r35OY+s9DW4ICiIilD7WBvx4Sjt+rO0k4jt0Im8tCb/5pSCmtgdv4euI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=79uBzN66; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=zXUvUoL/OnaPQoLr5nrWhyhwl+PNI5Cabcfe7EiPBO0=; b=79uBzN66XDG3kLDz/RGUmS2Tfg
+	KsgILZO6wuZiDIuY2XJaHEyPjrIlrh309mXHfmBxhWllYKNiHdmEeMu7ouFMPCVVHL3JNJt0NgJXA
+	N/av56wGSxpZcnd8/7b2VaCGWeG15pLgKzanI+6Aq4g2+7lK9eItwqH3D8M06BXbZcn6V/bIeaU2b
+	2DncUejHN/IS/oNaBgvzaLMFsqoEsR/EymHYm/nfy4BGyc0/auYaRlOxBzdxetAYCCoNzLvZqPZcI
+	YqeR5CzuAUAsl6Ux78hvvPINAIXVvF7ehDopYjdXeIE42UnAhKIjvqEZyv80l2FT+Tt9hBjILl9ve
+	qFKomYFg==;
+Date: Sat, 23 Nov 2024 22:31:50 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Mithil Bavishi <bavishimithil@gmail.com>
+Cc: Laurent.pinchart@ideasonboard.com, aaro.koskinen@iki.fi,
+ airlied@gmail.com, conor+dt@kernel.org, devicetree@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, jernej.skrabec@gmail.com, jonas@kwiboo.se,
+ khilman@baylibre.com, krzk+dt@kernel.org, linux-hardening@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+ neil.armstrong@linaro.org, prabhakar.mahadev-lad.rj@bp.renesas.com,
+ quic_jesszhan@quicinc.com, rfoss@kernel.org, robh@kernel.org,
+ rogerq@kernel.org, simona@ffwll.ch, thierry.reding@gmail.com,
+ tony@atomide.com, tzimmermann@suse.de
+Subject: Re: [PATCH v3 10/10] ARM: dts: ti: omap: samsung-espresso10: Add
+ initial support for Galaxy Tab 2 10.1
+Message-ID: <20241123223150.28d4002b@akair>
+In-Reply-To: <20241123192633.2049-1-bavishimithil@gmail.com>
+References: <20241123200202.684d8bc5@akair>
+	<20241123192633.2049-1-bavishimithil@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240906075439.98476-21-tzimmermann@suse.de>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Fri, Sep 06, 2024 at 09:52:34AM +0200, Thomas Zimmermann kirjoitti:
-> Store the lcd device in struct fb_info.lcd_dev. The lcd subsystem can
-> now detect the lcd's fbdev device from this field.
+Am Sat, 23 Nov 2024 19:26:33 +0000
+schrieb Mithil Bavishi <bavishimithil@gmail.com>:
+
+> > well, look at the schematics and see how it is wired ;-)  
 > 
-> This makes the implementation of check_fb in clps711x_lcd_ops obsolete.
-> Remove it.
+> Schematic mentions vddtx, vdda, vdd and vbus, so unsure about that.
+> VDDTX is the one with 2.8V, VDD and VBUS are at 1.8V and VDDA is grounded,
+> it just gets the input from GDNA from the same touch sensor.
+> 
+> > As the vendor kernel seem to
+> > set i2c to gpio mode, so probably because the vio-supply is powered
+> > down according to the board file you posted.
+> > So it might be vio-supply only or vio and vdd-supply combined.
+> > In any case document what you have seen in the vendor kernel.  
+> 
+> https://github.com/Unlegacy-Android/android_kernel_ti_omap4/blob/3.4/common/arch/arm/mach-omap2/board-espresso-input.c
+> This just makes it more confusing. Very confused on what is what now xD.
+> reg_touch_ldo_en is 2.8V which goes to VDDTX, it is gpmc_nwp.gpio_54 - TSP_LDO_ON
+> ldo6 is 1.8V presumably ldo6 (VAP_IO_1.8V) which goes to VDD, VBUS.
+> 
+well, I think I2C bus runs at 1.8V, and there is IO_1.8V in the name,
+so vio-supply should be something at 1.8V, so probably ldo6 is
+vio-supply. Maybe add a remark in the comments. But then it might be
+not a good idea to turn that off in suspend. if the other regulator is
+kept on.
 
-...
+> > basically says that standard touchscreen properties are accepted below
+> > rmi4-f11.   
+> 
+> But we do not use any of those properties. If you're talking about the
+> touchscreen-size-x/y, even in the examples those are out of rmi4-f11, in
+> the parent node.
+>
+Where do you see those examples? Here touchscreen-invert-y is below
+rmi4-f11.
+https://elixir.bootlin.com/linux/v6.12/source/Documentation/devicetree/bindings/input/syna,rmi4.yaml#L269
 
-> +	lcd = devm_lcd_device_register(dev, "clps711x-lcd", dev, cfb,
-> +				       &clps711x_lcd_ops);
-> +	if (IS_ERR(lcd)) {
-> +		ret = PTR_ERR(lcd);
-> +		goto out_fb_dealloc_cmap;
-> +	}
-> +
-> +	info->lcd_dev = lcd;
-> +
->  	ret = register_framebuffer(info);
->  	if (ret)
->  		goto out_fb_dealloc_cmap;
->  
-> -	lcd = devm_lcd_device_register(dev, "clps711x-lcd", dev, cfb,
-> -				       &clps711x_lcd_ops);
-> -	if (!IS_ERR(lcd))
-> -		return 0;
-> +	return 0;
->  
-> -	ret = PTR_ERR(lcd);
->  	unregister_framebuffer(info);
+We have also the warning from dtbs_check:
+arch/arm/boot/dts/ti/omap/omap4-samsung-espresso10.dtb:
+synaptics-rmi4-i2c@20: Unevaluated properties are not allowed
+('avdd-supply', 'touchscreen-size-x', 'touchscreen-size-y' were
+unexpected)
 
-Haven't you got a dead code warning here?
-
->  
->  out_fb_dealloc_cmap:
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Regards,
+Andreas
 
