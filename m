@@ -1,132 +1,142 @@
-Return-Path: <linux-omap+bounces-2722-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2723-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8F2C9D6AFB
-	for <lists+linux-omap@lfdr.de>; Sat, 23 Nov 2024 20:02:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77AB59D6B18
+	for <lists+linux-omap@lfdr.de>; Sat, 23 Nov 2024 20:27:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A54F28201D
-	for <lists+linux-omap@lfdr.de>; Sat, 23 Nov 2024 19:02:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E85D9B21DC5
+	for <lists+linux-omap@lfdr.de>; Sat, 23 Nov 2024 19:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C815C155C8C;
-	Sat, 23 Nov 2024 19:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95905189B80;
+	Sat, 23 Nov 2024 19:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="kRjs/mEI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eBSm2t6O"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EBE3182C5;
-	Sat, 23 Nov 2024 19:02:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA7D27466;
+	Sat, 23 Nov 2024 19:26:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732388542; cv=none; b=AGsRIHrAvmNP3eEeXb5gV/FdzbI+ijjw9df0RbndMExL9Sux1Kn1v8xWti+OAy2LH94b2AqduFb1W17y7fH6KjYdfkZTbn8sPYdHaP+JSTMC3nPfPiJthvpP79fLRq48OBvBwPX8kgYB4HMHKJgsogif37Ea+bmLpx1zUBrNcoI=
+	t=1732390008; cv=none; b=aT8RO+NT/ru1MlLVFeZF4ktxtpz5a3f4Kde79lO0DexVsVZLH6Q+4qdKZzhJGyqPYYTaUvkKIKduJVv/71hbkNmh78MFowbpw9U8v2dG03M1gXRqSLBRU093gX8rnUA27BdlDODmyoCnFKhbWoUH16vxpblnNVw5nk5CN0Pe2GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732388542; c=relaxed/simple;
-	bh=+JDRYomU6ddZd09XJpOjydkJa21L4ORP64zWXQHJwFw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PHwkU9YiJSMW4DQP/0ryUqDDaUEwzLPzZ1lxt4ooOJfGE7lujY4798RnO+5gla8grRbMk7aM3morpblklaGD4RHZyxy8dgWggMrWOib9nMgek5TufpUnxQCSG4CTCG8YrLM20yGNuYWbzeKMfdZm9RmZvV6AE5KIhe/KOIrQoBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=kRjs/mEI; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=3/idsCltb7XExEF3zfCfI1F96Qrzn3w6Pf9qRmMeZ88=; b=kRjs/mEI8quU8JR51yWzV6vCk9
-	mwjzJZfb+f7ARjptBHmf9PxbReYerWhmgwFWPdU0k8tK6HE5/mb4vT0bf5S5rwpu+YU6nqW2p2NXf
-	gMK3k5ioVQYiiDgR1c105K4r5p9p/pktb1R6a2yldjfchH9c2VIfoNexZmI3IVcFTo05BF5Li0wnd
-	ZDn2PlybuUhPq3Q/WeVuzMT88Y4TTyLq1YYhZaquhUDNbC/Ggh4RqoibbDst/VTZKRifeh/9tomvo
-	Yo+mwPdtUgSi7cQUtNc+CxrHUnEIG+tGfxataUsC0pQXiFcUQSMVoKszy4Xayh9xJ/04gnN64VNKz
-	LQMN9KwA==;
-Date: Sat, 23 Nov 2024 20:02:02 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Mithil Bavishi <bavishimithil@gmail.com>
-Cc: Laurent.pinchart@ideasonboard.com, aaro.koskinen@iki.fi,
- airlied@gmail.com, conor+dt@kernel.org, devicetree@vger.kernel.org,
- dri-devel@lists.freedesktop.org, jernej.skrabec@gmail.com, jonas@kwiboo.se,
- khilman@baylibre.com, krzk+dt@kernel.org, linux-hardening@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- neil.armstrong@linaro.org, prabhakar.mahadev-lad.rj@bp.renesas.com,
- quic_jesszhan@quicinc.com, rfoss@kernel.org, robh@kernel.org,
- rogerq@kernel.org, simona@ffwll.ch, thierry.reding@gmail.com,
- tony@atomide.com, tzimmermann@suse.de
-Subject: Re: [PATCH v3 10/10] ARM: dts: ti: omap: samsung-espresso10: Add
- initial support for Galaxy Tab 2 10.1
-Message-ID: <20241123200202.684d8bc5@akair>
-In-Reply-To: <20241123175259.775-1-bavishimithil@gmail.com>
-References: <20241112114818.1eb238e9@akair>
-	<20241123175259.775-1-bavishimithil@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1732390008; c=relaxed/simple;
+	bh=8C0Kv2tQGtcVzLErsh8vX7WrbQjr8sudBmB1xAP8Xf0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=grVRalJYKqRjKVpcSKUrLE4kz/HLPxEzmWZVcOEq2HkmqtwHVcNjevayWPjiiB1Ag0BtOqRvZTNNW9nEwUgg+KY5vggsPVOz1kDd5YUi3exX+Arpnn6jsNu3Q6R0Etu55vKDr0gHidXLUlLPdQy6dDAfGv8cQafcRvryjzN5k8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eBSm2t6O; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-723f37dd76cso3159051b3a.0;
+        Sat, 23 Nov 2024 11:26:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732390006; x=1732994806; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EKFqWwSN5qTyHdwloGljW7z+Rtw5u2QrsWqXju4EFjo=;
+        b=eBSm2t6O1a0AzHWhWuwPVa7+ug6nYWL2HuiXOarHiuXHShZTBEXKXwb+BNi2CWUj22
+         4o3+aNpPX//4kg8V7BTmIPYxbUGPnzLWfSSSgyfF3gK9oQQLGWOQXsAX2GuspzeqPzCu
+         eSncT4ly8lG3VOTnWeJqeKeLfqItwaTKULysIGP9h1WASLdLPx5NUcvTlLV5iKVRz3WE
+         xc72QnSsmHQM7aalRtLAhY/I2ltckXiOAFLMCBmqqVv1tVKuUGNZUMLCzyKnOfHJsg7q
+         m6aBfU0LvkfjvQyMuG7D+QtQ9nU2UMh0K8Xdcop3ET6eCVK7C2cfbPpe7SaEsBYwKkm2
+         PnJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732390006; x=1732994806;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EKFqWwSN5qTyHdwloGljW7z+Rtw5u2QrsWqXju4EFjo=;
+        b=LmOQE33vAr40w2oDHy8ksMdHKe+zPItVpTBXtkvXmqSd+H5MxdF1BILZEko1nBY6An
+         2oQ3y71tRDy8u/02p5TquqDdB1zWWWt2lYmUX3cGMV4NytCNySh9iMFVVqLlkiG6F9K8
+         /WppinO5l0Zv0kG7Cr5nyufLSm4KpPIxremH9wOQl0Ti0WYMvjUFr5DHUuBxl78ZfgZ8
+         3EDWRe5FyQl43o4X8GXP79tnvEDoQEY1nqgm1wrlRNOod3CY0v5VOZ4Bra950zkAArpW
+         XrhYCxcUropqN4/3g+1ECp5jsDiyughYg6JIoWxU+Za/TZ0BGmF1DlrhYu2jQqD+uuw4
+         wlXg==
+X-Forwarded-Encrypted: i=1; AJvYcCV/buSqaMGYIPZJDzTFicZ6s/MTV9ak5W+0o0KCHhxtnNuYpr98XCCgMeA9RVnOmv+J4jgkptulKf32@vger.kernel.org, AJvYcCX49Wtj/KYRrIHQqaOx34T6D5QzM0OBUqSyB1GEjZDPgPqNG2N+WS6VMBdciQo4a7989131gh5YZVFhdQ==@vger.kernel.org, AJvYcCXCkgnf652KvDxIKKQHlJslXp+5KCUdjz3+h57hvbPZ8A5JD5M0RbXot3G9KAFL6vFL/WDHabVfIWCRN4IjhEAd@vger.kernel.org, AJvYcCXKu0shkV3QO59aBFRDrY6rxVbYb0bbSmLjeXUBiLw7NK/LlrpUllvNRLa2lalsBdnwv88vG3cxOatVSavs@vger.kernel.org
+X-Gm-Message-State: AOJu0Yws56yQtX+tihlgX1+8crGqj4C0TSNrY0tr+jyFJmIjiqWDPJLc
+	qxCMTKAXGdFMCUoJDZA0lk9pg81BanR+CmZOGGYJ/UNMZxvNV+qy
+X-Gm-Gg: ASbGncu4xvb0QbaNm8WJx4xoyT81nxS4Xc1wb0/TFSgXyy2h35LR+rkLB8GuS7k2t0q
+	anBa0Ch5enbL6MCdZ+hGC2s0c/5BKhb7Au/SeAqfdsqTsKaygVXmioSwMScUCx+WK+Cp1dyEPgC
+	h/kKsJxZ9bl5GGkuQ35wkPqfXUwKBTX/bVaaSclB/ptSvxXdnMZDZAC46zsLDWDVFXxhBaaeZ/i
+	AnAME9xjesn/Ua6EY3NzTlFKSDjJjJC4qJ6ZEolIDqTSuCIriGWo8eR9H2TVGoEIrTZdmZhn5Q=
+X-Google-Smtp-Source: AGHT+IHqe/epLud/t0Z0A5XPkXsAE+8YfobMQ1Kd10MhS+puwhDCWnm4VHQZFS7J5N/OC/pbwoUcwA==
+X-Received: by 2002:a05:6a21:33a2:b0:1db:de9a:bb01 with SMTP id adf61e73a8af0-1e09e5d90femr12799969637.40.1732390006051;
+        Sat, 23 Nov 2024 11:26:46 -0800 (PST)
+Received: from mighty.kangaroo-insen.ts.net ([45.64.12.174])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fbcc225e45sm3689734a12.42.2024.11.23.11.26.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 Nov 2024 11:26:45 -0800 (PST)
+From: Mithil Bavishi <bavishimithil@gmail.com>
+To: andreas@kemnade.info
+Cc: Laurent.pinchart@ideasonboard.com,
+	aaro.koskinen@iki.fi,
+	airlied@gmail.com,
+	bavishimithil@gmail.com,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	jernej.skrabec@gmail.com,
+	jonas@kwiboo.se,
+	khilman@baylibre.com,
+	krzk+dt@kernel.org,
+	linux-hardening@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	neil.armstrong@linaro.org,
+	prabhakar.mahadev-lad.rj@bp.renesas.com,
+	quic_jesszhan@quicinc.com,
+	rfoss@kernel.org,
+	robh@kernel.org,
+	rogerq@kernel.org,
+	simona@ffwll.ch,
+	thierry.reding@gmail.com,
+	tony@atomide.com,
+	tzimmermann@suse.de
+Subject: Re: [PATCH v3 10/10] ARM: dts: ti: omap: samsung-espresso10: Add initial support for Galaxy Tab 2 10.1
+Date: Sat, 23 Nov 2024 19:26:33 +0000
+Message-ID: <20241123192633.2049-1-bavishimithil@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241123200202.684d8bc5@akair>
+References: <20241123200202.684d8bc5@akair>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Am Sat, 23 Nov 2024 17:52:58 +0000
-schrieb Mithil Bavishi <bavishimithil@gmail.com>:
+> well, look at the schematics and see how it is wired ;-)
 
-> > > +&i2c3 {
-> > > +	touchscreen: synaptics-rmi4-i2c@20 {  
-> >
-> > touchscreen@20  
-> Fixed, generic node names right!
-> 
-> > > +		avdd-supply = <&reg_touch_ldo_en>;  
-> > not known in schema  
-> I cannot seem to find the "vio-supply" shown in the bindings. There is
-> only mention of avdd-supply and vdd-supply. I am not sure if avdd and
-> vio are equivalent, hence the confusion.
-> What should be the solution here?
-> 
-well, look at the schematics and see how it is wired ;-) 
-Without schematic, it is a bit tricky. So you can look how it is used.
-vdd-supply sounds like something to make the chip fully functional.
-vio-supply seems to be for the io lines.  As the vendor kernel seem to
-set i2c to gpio mode, so probably because the vio-supply is powered
-down according to the board file you posted.
-So it might be vio-supply only or vio and vdd-supply combined.
-In any case document what you have seen in the vendor kernel.
+Schematic mentions vddtx, vdda, vdd and vbus, so unsure about that.
+VDDTX is the one with 2.8V, VDD and VBUS are at 1.8V and VDDA is grounded,
+it just gets the input from GDNA from the same touch sensor.
 
-> > Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml:
-> > horizontal resolution of touchscreen (maximum x coordinate reported + 1)  
-> 
-> > So this touchscreen reports max 1278?  
-> 
-> Fixed it as well, 1280 and 800 respectively.
-> https://github.com/Unlegacy-Android/android_kernel_ti_omap4/blob/3.4/common/arch/arm/mach-omap2/board-espresso-input.c#L264
-> 
-> > And these things belong below rm4-f11 according to
-> > Documentation/devicetree/bindings/input/syna,rmi4.yaml  
-> 
-> I did not quite understand what you mean by this. I checked the bindings 
-> and a few examples, there is nothing "below" rmi4-f11.
-> 
-this part of the binding description
-patternProperties:
-  "^rmi4-f1[12]@1[12]$":
-    type: object
-    unevaluatedProperties: false
-    $ref: /schemas/input/touchscreen/touchscreen.yaml#
-    description:
+> As the vendor kernel seem to
+> set i2c to gpio mode, so probably because the vio-supply is powered
+> down according to the board file you posted.
+> So it might be vio-supply only or vio and vdd-supply combined.
+> In any case document what you have seen in the vendor kernel.
 
-basically says that standard touchscreen properties are accepted below
-rmi4-f11. 
+https://github.com/Unlegacy-Android/android_kernel_ti_omap4/blob/3.4/common/arch/arm/mach-omap2/board-espresso-input.c
+This just makes it more confusing. Very confused on what is what now xD.
+reg_touch_ldo_en is 2.8V which goes to VDDTX, it is gpmc_nwp.gpio_54 - TSP_LDO_ON
+ldo6 is 1.8V presumably ldo6 (VAP_IO_1.8V) which goes to VDD, VBUS.
 
-In the example you have:
-           rmi4-f11@11 {
-                reg = <0x11>;
-                touchscreen-inverted-y;
-                syna,sensor-type = <2>;
-            };
+> basically says that standard touchscreen properties are accepted below
+> rmi4-f11. 
 
-Regards,
-Andreas
+But we do not use any of those properties. If you're talking about the
+touchscreen-size-x/y, even in the examples those are out of rmi4-f11, in
+the parent node.
+
+Best Regards,
+Mithil
 
