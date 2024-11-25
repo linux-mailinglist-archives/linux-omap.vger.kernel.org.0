@@ -1,117 +1,252 @@
-Return-Path: <linux-omap+bounces-2727-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2728-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B22D9D7B01
-	for <lists+linux-omap@lfdr.de>; Mon, 25 Nov 2024 06:13:17 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F1F89D7D63
+	for <lists+linux-omap@lfdr.de>; Mon, 25 Nov 2024 09:48:40 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B98F162081
+	for <lists+linux-omap@lfdr.de>; Mon, 25 Nov 2024 08:48:36 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C08D1991BA;
+	Mon, 25 Nov 2024 08:45:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="Zjt93dZq"
+X-Original-To: linux-omap@vger.kernel.org
+Received: from mta-65-228.siemens.flowmailer.net (mta-65-228.siemens.flowmailer.net [185.136.65.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD63AB21913
-	for <lists+linux-omap@lfdr.de>; Mon, 25 Nov 2024 05:13:14 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BFD1531DC;
-	Mon, 25 Nov 2024 05:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="R+zB8iDk"
-X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C96F2E62B
-	for <linux-omap@vger.kernel.org>; Mon, 25 Nov 2024 05:13:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE75419ABC6
+	for <linux-omap@vger.kernel.org>; Mon, 25 Nov 2024 08:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732511587; cv=none; b=oKy11iq68yzpK8+6wuBdpVDD0Zv9hDLHRKaiVFvv4oC13fzRP9Ih3+iO9TM5kWyAywu/as+xXt8s6oJtxIbIiBS9eXgetaIN/Q3zDIz6laV3kXWV2CLX/QL2bCxgzBbYuDDHzXDeaKBRKSlukmIEIwmF88y2rZLU5CfWA25U1Ys=
+	t=1732524355; cv=none; b=IKzrBXMUxQnS5NCKQi+Abh5kDBMDjZpg+SLpvwMP6/7DrEAcn9tnoFlEoZMHqOaUUv00gLWhskIKCQP/7KwQMfG8W3GtUetd5TygY73CHF7yiXC/MBLcSWs1SXGwuhaCPfza2/q9e/O67TCevxMJY5I+aSBDFWb4jXP4Ch693Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732511587; c=relaxed/simple;
-	bh=Uxp3iPzfUnlFAtZhMOzTk6Quj5tPd+jppMxgxAL2OVk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qksE0imGGc/ZaNMXl7KMK4qjFdE2cS3ez2UPOHesIt1U5X80QEx7NoxykK/ekjgRnpvuE3RR9+Q5N1VROfuA1oSdkQbNP39LlreO7qy3cSWn5z0F6PZD5wxEeQz5hanQ3tOXkwmNOCvmhXtdlOCapOlhTulh//LKhxfGMWe8o8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=R+zB8iDk; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-21290973bcbso38684785ad.3
-        for <linux-omap@vger.kernel.org>; Sun, 24 Nov 2024 21:13:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1732511585; x=1733116385; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AL0bPZvRR1BK5PQ1+xak6vqZ/ECTRZ5b4f4dhCxRKPI=;
-        b=R+zB8iDk7BdqgDfwjF/vkM+4Nad2kgphcvCfHB9AVz+cxiXuaUGpQR68Is3zugtwJs
-         7dlnfiLtp5WQEZjWP9Lhs62tYLtfaVyn7lIffGdsE0ND1ZUNZI1yLElCEblX/uBz1BOs
-         27vDYgEsDiFHBotdBxAWreDlvmdqdHlVfrBLkFtnwh82DkANAawZQ1WB3LNKgrvN6+jV
-         l26naEW9KHY93XTd3I6cOVwbM65RYc01pTDNHxjM5A1eRvWR3TXqPIsfmEuoflqKPiX+
-         QNnadFKUPinD1wcnc9Uj1p0wUr/lw6AHBdKQ5WBTDrSILIcCzCRFVM7bqUL9TwDW6/XG
-         uCxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732511585; x=1733116385;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AL0bPZvRR1BK5PQ1+xak6vqZ/ECTRZ5b4f4dhCxRKPI=;
-        b=nXKFFebWgdRkodAtOYzqJ9+JYF2dqKOew+LX4SndeDsfGyQrOxBLX2DN+I2t8cM1w5
-         hS2V5nQryjikvY8RGRL3Nj+Zhxz8XTrWYIBp6oP9B/4uuXpcaoqhIMoKxaj9kdxhUcRD
-         jDNByygDpPYTB+9fxX0RkBk07wxXXhxmpio5iqoT5hVYxE9h+hidqzc4Qvd2UzLNo4yo
-         D3uTQxiyIhd4xy0h45HSTvq3zETWD/ZC5nrPI0ML+qtZZoKzwLDpFaJGgGuRPcgIU3zA
-         NqpP09YGuQb1jKMU6wGt/82s2O8WZ7WUXlQCW7wUb+7zbCYINe9NknGqAijhpQz0aBwg
-         x/Bw==
-X-Forwarded-Encrypted: i=1; AJvYcCXRExxtuhDB/OEBnx0pA5/Ca0obuEWKkrqGiDfXqXDQfV22zJWkI7QbLq4XfssSeyofkMpJmJ22Z5Hb@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxpm46bOD95giVDONn6dPKBKhv5T+Q5NY/Q1tIgpUlKCX3WUX37
-	wq+5oJbyHCXpWBxlt2ESz3AcAsSQ+4Zz4y1nuh7uGsn0F+hxC+rGsda7JAV0CZ0=
-X-Gm-Gg: ASbGncveHfPQEr25h/ATmWAK+SE9XdsTeg4n9+hyg+bIcU18T6Z4LXsZya1/Q0n06LT
-	kcysquJGDWq8kHvsLX9tGqGigjrMF41FL8Onmi2WYpdw1DKCUjONW8cDohjgBPVqCivKLfmmAbA
-	YOQdhTyVObUmYeqU3Z35OrM8Aa/bXovPQIwubSxCqXZITTumn8GL2lvGCFd+9L5GFX3Siwh6b3z
-	qvSmWKZgJZX1YBCZLt9cmsgjN7zcTKeLVxHVx2zhTa1XUXjbalh
-X-Google-Smtp-Source: AGHT+IGb7tmx1BneKh/B9vmKsU5AzzHIggDnEW9pXM5m409dP4HngsAxqYc/QOBvt2L7HfqexG1ylA==
-X-Received: by 2002:a17:902:f652:b0:212:655c:caf with SMTP id d9443c01a7336-2129f6122fcmr153868475ad.55.1732511585476;
-        Sun, 24 Nov 2024 21:13:05 -0800 (PST)
-Received: from localhost ([122.172.86.146])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2129dba6782sm55270585ad.102.2024.11.24.21.13.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 Nov 2024 21:13:04 -0800 (PST)
-Date: Mon, 25 Nov 2024 10:43:02 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: Kevin Hilman <khilman@kernel.org>, rafael@kernel.org,
-	zhipeng.wang_1@nxp.com, linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+	s=arc-20240116; t=1732524355; c=relaxed/simple;
+	bh=A7jjK4571ULQWsuUzRVqTOLAWKXzMMGDv/1J8nAJEbI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mbnMpKppaHhLVkI7B1XbRLiwTTxOfOOg5WsWzqn3FD/P45TVXXUO1rqJ7O+6eEejVQyWFL7T0wcrvbOUtUOMvX7sRLgdM1woAKsElUfCZiOYwKoWN5yjASxa9dxd9FArk6rY+E/vOVc+qhxpc8l6UtT8fMg2bkimTnoYdC6ob38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=Zjt93dZq; arc=none smtp.client-ip=185.136.65.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+Received: by mta-65-228.siemens.flowmailer.net with ESMTPSA id 202411250805326357e29096984072e0
+        for <linux-omap@vger.kernel.org>;
+        Mon, 25 Nov 2024 09:05:32 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
+ d=siemens.com; i=alexander.sverdlin@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=QtvmmKKnCZjY+drnBwcESe4cUSDKG7ZwbKlK60eekl0=;
+ b=Zjt93dZqmYpvi3n3PkNPJ0j5748XHXDMaispvy+1SYUH+0KAyfqt/r6fkxtpUnolOmhTk6
+ XeXCXHkjDICuAn0h/XPDHCOxAuwokGMSkoLpMLzxeBf9+nDicw6L3FyoXyKFolmDOpbzFCPl
+ v+5CcIwtwyqxPYpoaXRKsEdCMedS1O0wEUbDbYr2HwLLzJ0NqQcciE/IumoK4AHpFoZp81rD
+ LDm/fjAzscOaNopxFrkuOwfWllnEJhoa8A6b1OapF2zDYJjBT0iGZ2jnIQZiVDGnGWI+HV4S
+ 72nBjclSA5osDZdt/VVE3F6H2b/kox+Vj9nBwIky4MGelL9jNCayTErg==;
+From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+To: linux-gpio@vger.kernel.org
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Grygorii Strashko <grygorii.strashko@ti.com>,
+	Santosh Shilimkar <ssantosh@kernel.org>,
+	Kevin Hilman <khilman@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	linux-omap@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] cpufreq: fix using cpufreq-dt as module
-Message-ID: <20241125051302.6tmaog2ksfpk5m6u@vireshk-i7>
-References: <20241103210251.762050-1-andreas@kemnade.info>
- <7httcmonip.fsf@baylibre.com>
- <20241104201424.2a42efdd@akair>
+Subject: [PATCH] gpio: omap: Silence lockdep "Invalid wait context"
+Date: Mon, 25 Nov 2024 09:05:24 +0100
+Message-ID: <20241125080530.777123-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241104201424.2a42efdd@akair>
+Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-456497:519-21489:flowmailer
 
-On 04-11-24, 20:14, Andreas Kemnade wrote:
-> no clear idea how. What aliases should I add? The cpufreq-dt-platdev is
-> not a real driver, so I could not create mod_devicetable aliases to
-> match a given device. It constructs a device under certain conditions
-> depending on the board compatible, so no simple list of compatibles, it
-> contains allow and blocklists.
-> 
-> cpufreq-dt then binds to that device and that one can be built as a
-> module (which then made cpufreq-dt-platdev also a module, causing the
-> trouble). I do not see any benefit from having cpufreq-dt-platdev as a
-> module. ti-cpufreq has a similar role and is also just builtin.
-> It does itself no real work but provides a device cpufreq-dt then binds
-> to.
-> 
-> Handling module removal would probably need to be added and tested. I
-> feel not comfortable having such as a regression fix and for stable.
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-Applied this patch for now (with some changes to commit log), as there is no
-clean way to fix this for now. Got reports from other folks too about it.
+The problem apparetly has been known since the conversion to
+raw_spin_lock() (commit 4dbada2be460
+("gpio: omap: use raw locks for locking")).
 
+Symptom:
+
+[ BUG: Invalid wait context ]
+5.10.214
+-----------------------------
+swapper/1 is trying to lock:
+(enable_lock){....}-{3:3}, at: clk_enable_lock
+other info that might help us debug this:
+context-{5:5}
+2 locks held by swapper/1:
+ #0: (&dev->mutex){....}-{4:4}, at: device_driver_attach
+ #1: (&bank->lock){....}-{2:2}, at: omap_gpio_set_config
+stack backtrace:
+CPU: 0 PID: 1 Comm: swapper Not tainted 5.10.214
+Hardware name: Generic AM33XX (Flattened Device Tree)
+unwind_backtrace
+show_stack
+__lock_acquire
+lock_acquire.part.0
+_raw_spin_lock_irqsave
+clk_enable_lock
+clk_enable
+omap_gpio_set_config
+gpio_keys_setup_key
+gpio_keys_probe
+platform_drv_probe
+really_probe
+driver_probe_device
+device_driver_attach
+__driver_attach
+bus_for_each_dev
+bus_add_driver
+driver_register
+do_one_initcall
+do_initcalls
+kernel_init_freeable
+kernel_init
+
+Problematic spin_lock_irqsave(&enable_lock, ...) is being called by
+clk_enable()/clk_disable() in omap2_set_gpio_debounce() and
+omap_clear_gpio_debounce().
+
+For omap2_set_gpio_debounce() it's possible to move
+raw_spin_lock_irqsave(&bank->lock, ...) inside omap2_set_gpio_debounce()
+so that the locks nest as follows:
+
+  clk_enable(bank->dbck)
+  raw_spin_lock_irqsave(&bank->lock, ...)
+  raw_spin_unlock_irqrestore()
+  clk_disable()
+
+Two call-sites of omap_clear_gpio_debounce() are more convoluted, but one
+can take the advantage of the nesting nature of clk_enable()/clk_disable(),
+so that the inner clk_disable() becomes lockless:
+
+  clk_enable(bank->dbck)		<-- only to clk_enable_lock()
+  raw_spin_lock_irqsave(&bank->lock, ...)
+  omap_clear_gpio_debounce()
+    clk_disable()			<-- becomes lockless
+  raw_spin_unlock_irqrestore()
+  clk_disable()
+
+Cc: stable@vger.kernel.org
+Fixes: 4dbada2be460 ("gpio: omap: use raw locks for locking")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+---
+ drivers/gpio/gpio-omap.c | 35 ++++++++++++++++++++++++++++++-----
+ 1 file changed, 30 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
+index 7ad4534054962..f9e502aa57753 100644
+--- a/drivers/gpio/gpio-omap.c
++++ b/drivers/gpio/gpio-omap.c
+@@ -181,6 +181,7 @@ static inline void omap_gpio_dbck_disable(struct gpio_bank *bank)
+ static int omap2_set_gpio_debounce(struct gpio_bank *bank, unsigned offset,
+ 				   unsigned debounce)
+ {
++	unsigned long		flags;
+ 	u32			val;
+ 	u32			l;
+ 	bool			enable = !!debounce;
+@@ -196,13 +197,18 @@ static int omap2_set_gpio_debounce(struct gpio_bank *bank, unsigned offset,
+ 
+ 	l = BIT(offset);
+ 
++	/*
++	 * Ordering is important here: clk_enable() calls spin_lock_irqsave(),
++	 * therefore it must be outside of the following raw_spin_lock_irqsave()
++	 */
+ 	clk_enable(bank->dbck);
++	raw_spin_lock_irqsave(&bank->lock, flags);
++
+ 	writel_relaxed(debounce, bank->base + bank->regs->debounce);
+ 
+ 	val = omap_gpio_rmw(bank->base + bank->regs->debounce_en, l, enable);
+ 	bank->dbck_enable_mask = val;
+ 
+-	clk_disable(bank->dbck);
+ 	/*
+ 	 * Enable debounce clock per module.
+ 	 * This call is mandatory because in omap_gpio_request() when
+@@ -217,6 +223,9 @@ static int omap2_set_gpio_debounce(struct gpio_bank *bank, unsigned offset,
+ 		bank->context.debounce_en = val;
+ 	}
+ 
++	raw_spin_unlock_irqrestore(&bank->lock, flags);
++	clk_disable(bank->dbck);
++
+ 	return 0;
+ }
+ 
+@@ -647,6 +656,13 @@ static void omap_gpio_irq_shutdown(struct irq_data *d)
+ 	unsigned long flags;
+ 	unsigned offset = d->hwirq;
+ 
++	/*
++	 * Enable the clock here so that the nested clk_disable() in the
++	 * following omap_clear_gpio_debounce() is lockless
++	 */
++	if (bank->dbck_flag)
++		clk_enable(bank->dbck);
++
+ 	raw_spin_lock_irqsave(&bank->lock, flags);
+ 	bank->irq_usage &= ~(BIT(offset));
+ 	omap_set_gpio_triggering(bank, offset, IRQ_TYPE_NONE);
+@@ -656,6 +672,9 @@ static void omap_gpio_irq_shutdown(struct irq_data *d)
+ 		omap_clear_gpio_debounce(bank, offset);
+ 	omap_disable_gpio_module(bank, offset);
+ 	raw_spin_unlock_irqrestore(&bank->lock, flags);
++
++	if (bank->dbck_flag)
++		clk_disable(bank->dbck);
+ }
+ 
+ static void omap_gpio_irq_bus_lock(struct irq_data *data)
+@@ -827,6 +846,13 @@ static void omap_gpio_free(struct gpio_chip *chip, unsigned offset)
+ 	struct gpio_bank *bank = gpiochip_get_data(chip);
+ 	unsigned long flags;
+ 
++	/*
++	 * Enable the clock here so that the nested clk_disable() in the
++	 * following omap_clear_gpio_debounce() is lockless
++	 */
++	if (bank->dbck_flag)
++		clk_enable(bank->dbck);
++
+ 	raw_spin_lock_irqsave(&bank->lock, flags);
+ 	bank->mod_usage &= ~(BIT(offset));
+ 	if (!LINE_USED(bank->irq_usage, offset)) {
+@@ -836,6 +862,9 @@ static void omap_gpio_free(struct gpio_chip *chip, unsigned offset)
+ 	omap_disable_gpio_module(bank, offset);
+ 	raw_spin_unlock_irqrestore(&bank->lock, flags);
+ 
++	if (bank->dbck_flag)
++		clk_disable(bank->dbck);
++
+ 	pm_runtime_put(chip->parent);
+ }
+ 
+@@ -913,15 +942,11 @@ static int omap_gpio_debounce(struct gpio_chip *chip, unsigned offset,
+ 			      unsigned debounce)
+ {
+ 	struct gpio_bank *bank;
+-	unsigned long flags;
+ 	int ret;
+ 
+ 	bank = gpiochip_get_data(chip);
+ 
+-	raw_spin_lock_irqsave(&bank->lock, flags);
+ 	ret = omap2_set_gpio_debounce(bank, offset, debounce);
+-	raw_spin_unlock_irqrestore(&bank->lock, flags);
+-
+ 	if (ret)
+ 		dev_info(chip->parent,
+ 			 "Could not set line %u debounce to %u microseconds (%d)",
 -- 
-viresh
+2.47.0
+
 
