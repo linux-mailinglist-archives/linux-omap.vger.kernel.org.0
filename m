@@ -1,137 +1,117 @@
-Return-Path: <linux-omap+bounces-2726-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2727-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A5ED9D6CFA
-	for <lists+linux-omap@lfdr.de>; Sun, 24 Nov 2024 08:44:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B22D9D7B01
+	for <lists+linux-omap@lfdr.de>; Mon, 25 Nov 2024 06:13:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3C0E281551
-	for <lists+linux-omap@lfdr.de>; Sun, 24 Nov 2024 07:44:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD63AB21913
+	for <lists+linux-omap@lfdr.de>; Mon, 25 Nov 2024 05:13:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB5A187550;
-	Sun, 24 Nov 2024 07:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BFD1531DC;
+	Mon, 25 Nov 2024 05:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nANAZmy7"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="R+zB8iDk"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09072C80;
-	Sun, 24 Nov 2024 07:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C96F2E62B
+	for <linux-omap@vger.kernel.org>; Mon, 25 Nov 2024 05:13:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732434289; cv=none; b=My2yvTp4sIsQxuB0DHzftdVgGD8P1F+yetlrZrXKTPoPJ3yQD78UlqVyPbFzo00OUySh0if6dCHOVKhLhJnp+vwF/+1k7cMWdKy9VBqKq1n6SYZwABtVZtbg/i2uxxSA2ALUbOQ4MaE+jkT9FrSjp3G+WJMFkH/rVWAroXfCUsI=
+	t=1732511587; cv=none; b=oKy11iq68yzpK8+6wuBdpVDD0Zv9hDLHRKaiVFvv4oC13fzRP9Ih3+iO9TM5kWyAywu/as+xXt8s6oJtxIbIiBS9eXgetaIN/Q3zDIz6laV3kXWV2CLX/QL2bCxgzBbYuDDHzXDeaKBRKSlukmIEIwmF88y2rZLU5CfWA25U1Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732434289; c=relaxed/simple;
-	bh=Aq2f37XpxmkvDg9k6RPxNwitNinOPVD09l4HgvPD3Nw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MwQ1mTyRV7MFbzmxve0S53XRDhdb1qLVSD1yBn1Wog/WXZARX9lCv7qj7CJbwvTCow0Ier9lx4XIthVy26uFJ7byOaavpWIvviKdcko4HcMOrl853gMe9NMT0AcRnIPkVQ1mYxxhdKgLTwLEKRAasD5AHSVKxLBsh3l114PKKLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nANAZmy7; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2ea2bf25dc8so2932918a91.0;
-        Sat, 23 Nov 2024 23:44:47 -0800 (PST)
+	s=arc-20240116; t=1732511587; c=relaxed/simple;
+	bh=Uxp3iPzfUnlFAtZhMOzTk6Quj5tPd+jppMxgxAL2OVk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qksE0imGGc/ZaNMXl7KMK4qjFdE2cS3ez2UPOHesIt1U5X80QEx7NoxykK/ekjgRnpvuE3RR9+Q5N1VROfuA1oSdkQbNP39LlreO7qy3cSWn5z0F6PZD5wxEeQz5hanQ3tOXkwmNOCvmhXtdlOCapOlhTulh//LKhxfGMWe8o8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=R+zB8iDk; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-21290973bcbso38684785ad.3
+        for <linux-omap@vger.kernel.org>; Sun, 24 Nov 2024 21:13:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732434287; x=1733039087; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Aq2f37XpxmkvDg9k6RPxNwitNinOPVD09l4HgvPD3Nw=;
-        b=nANAZmy7IWQuXYfzxmtXOUE933+Y0uIpL8wISUjA0d6kNxuGol5cDlVhp2uvL1+2Jo
-         vk+onx3eSEtdMPJYmflt6uwP3UGeocSDATn/0ZFsHb/qLylsrkZ9wtGDZhZL3IUERWHr
-         KO3bY00yz+u4VmMs1WFNEB52GLgL7l1nh4Vr8LWbq2OOw9kgOs7ykLCx0YjP25bMx3Vx
-         rcWnMMi0FHVXE4trJrDzYp2fDO8IDVZwURbcczUDEUNPjFL4j1Si5JWTK+0LHzpTHEw0
-         YVJOhN5iAd9T40Ny23BHlpe4TuxVsXMSh+HlUhjld9TR7dlHhwN3XbqQ8zoUENS/ndMh
-         dFJg==
+        d=linaro.org; s=google; t=1732511585; x=1733116385; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AL0bPZvRR1BK5PQ1+xak6vqZ/ECTRZ5b4f4dhCxRKPI=;
+        b=R+zB8iDk7BdqgDfwjF/vkM+4Nad2kgphcvCfHB9AVz+cxiXuaUGpQR68Is3zugtwJs
+         7dlnfiLtp5WQEZjWP9Lhs62tYLtfaVyn7lIffGdsE0ND1ZUNZI1yLElCEblX/uBz1BOs
+         27vDYgEsDiFHBotdBxAWreDlvmdqdHlVfrBLkFtnwh82DkANAawZQ1WB3LNKgrvN6+jV
+         l26naEW9KHY93XTd3I6cOVwbM65RYc01pTDNHxjM5A1eRvWR3TXqPIsfmEuoflqKPiX+
+         QNnadFKUPinD1wcnc9Uj1p0wUr/lw6AHBdKQ5WBTDrSILIcCzCRFVM7bqUL9TwDW6/XG
+         uCxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732434287; x=1733039087;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Aq2f37XpxmkvDg9k6RPxNwitNinOPVD09l4HgvPD3Nw=;
-        b=sueBMLmmSEg5z0mhuaMIykaM1f+W2zXUd7duWTTA4sPU4TCv/TrxgT7VKuLxvtfIKt
-         47ciAEXII4/Ubz0zrKtEmoI+h08HAdExcExCA4uInPDohBrSDYXFb3yS2MqY0W0BEL/2
-         U4MfRTS+hLboL3nl7afWwJ+RcQl9OB8oeXNkCuPrY/NFN+B+fPyDoXK7i5JkN97ur379
-         SAOBTViFaGXrZpKnspPVAH14SNtk1I3pFSjB8Ks/axklcO42cU/mfIlSo1uKH0z4t5ih
-         RPBzhfmy+T/gTSFIzxXnjLdOBVHayIVCl+iOLoKIyGgK/OS9Cq3J/jkhhL2qqZNBU/4t
-         4K/w==
-X-Forwarded-Encrypted: i=1; AJvYcCVD1MC6JhB/+wxMFliW4mujGX0tvilbLk6jTf/C5gPhcx7NPirsrdat7+/WQqNOPjTNshDiYjeelO+HQZeH@vger.kernel.org, AJvYcCVUcGf3Zf4u9uqNYowmpb2ogwOeyYRJszP/crrLy8NkrCbqXM/3Ziy1h2x97E26wsZ0PAaO3lNqQMcLTQ==@vger.kernel.org, AJvYcCVyLcZ9hMc1snFMoCk7V1L5nt4rFJD31DXIvFGB4CIX8CYD7Trkyz1Z7UYTWslyiMOZIOdQlgMdEkqZ@vger.kernel.org, AJvYcCXFfqFTJSc65fbOTRyMeShLVkgT9uZDTqd2spynXQ0IoCou+swv2fb1xiJ+Gz6oeDvBTOD3Vt71eDFcuF2XXIgW@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkPrdLSnPrQeoixd1UfgmuBVxcg57jeHK+/Y/bSFzmMdRFdnf4
-	8/RqzLVU4OXlZSoARx+0FSinV49np7NcGq9LyLILhuhCq78cTPmW
-X-Gm-Gg: ASbGnctfdn3khWomDx30fKk3CC3Jo4B26tTJc0jNNftUdEY/0dXkFcAICpqIYZeDaDQ
-	YRTtl6Cl4yW8Li3Nehj/JD42oKuFd6aePgVSAgeBustc17sd4ckNr9vtmFxN1OKo51wmmnImezk
-	9RqecgyVLCYI3BQ116wrxtlpAP09Gnys4DWKRf32QKMK9sOLtriUxuTLBEcFt/2mrDE4MtBYfcl
-	MDlJz5yiVw7V/a1PdPOBSJ6S5T19FizPoMgaJS3ZMDn7xfgpqJWyXN3HphlahRckqKR+fVkQH4=
-X-Google-Smtp-Source: AGHT+IGmkHiMH8U4JrZGmeZGNyxfAdia1O9NuHDN7UBXQpwBwxx7QaDqfGke2FmpU6dpMC+J18Wgmw==
-X-Received: by 2002:a17:90b:4e8c:b0:2ea:525e:14a7 with SMTP id 98e67ed59e1d1-2eb0e866014mr11327597a91.29.1732434286850;
-        Sat, 23 Nov 2024 23:44:46 -0800 (PST)
-Received: from mighty.kangaroo-insen.ts.net ([45.64.12.219])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ead02eca46sm7870925a91.7.2024.11.23.23.44.37
+        d=1e100.net; s=20230601; t=1732511585; x=1733116385;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AL0bPZvRR1BK5PQ1+xak6vqZ/ECTRZ5b4f4dhCxRKPI=;
+        b=nXKFFebWgdRkodAtOYzqJ9+JYF2dqKOew+LX4SndeDsfGyQrOxBLX2DN+I2t8cM1w5
+         hS2V5nQryjikvY8RGRL3Nj+Zhxz8XTrWYIBp6oP9B/4uuXpcaoqhIMoKxaj9kdxhUcRD
+         jDNByygDpPYTB+9fxX0RkBk07wxXXhxmpio5iqoT5hVYxE9h+hidqzc4Qvd2UzLNo4yo
+         D3uTQxiyIhd4xy0h45HSTvq3zETWD/ZC5nrPI0ML+qtZZoKzwLDpFaJGgGuRPcgIU3zA
+         NqpP09YGuQb1jKMU6wGt/82s2O8WZ7WUXlQCW7wUb+7zbCYINe9NknGqAijhpQz0aBwg
+         x/Bw==
+X-Forwarded-Encrypted: i=1; AJvYcCXRExxtuhDB/OEBnx0pA5/Ca0obuEWKkrqGiDfXqXDQfV22zJWkI7QbLq4XfssSeyofkMpJmJ22Z5Hb@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxpm46bOD95giVDONn6dPKBKhv5T+Q5NY/Q1tIgpUlKCX3WUX37
+	wq+5oJbyHCXpWBxlt2ESz3AcAsSQ+4Zz4y1nuh7uGsn0F+hxC+rGsda7JAV0CZ0=
+X-Gm-Gg: ASbGncveHfPQEr25h/ATmWAK+SE9XdsTeg4n9+hyg+bIcU18T6Z4LXsZya1/Q0n06LT
+	kcysquJGDWq8kHvsLX9tGqGigjrMF41FL8Onmi2WYpdw1DKCUjONW8cDohjgBPVqCivKLfmmAbA
+	YOQdhTyVObUmYeqU3Z35OrM8Aa/bXovPQIwubSxCqXZITTumn8GL2lvGCFd+9L5GFX3Siwh6b3z
+	qvSmWKZgJZX1YBCZLt9cmsgjN7zcTKeLVxHVx2zhTa1XUXjbalh
+X-Google-Smtp-Source: AGHT+IGb7tmx1BneKh/B9vmKsU5AzzHIggDnEW9pXM5m409dP4HngsAxqYc/QOBvt2L7HfqexG1ylA==
+X-Received: by 2002:a17:902:f652:b0:212:655c:caf with SMTP id d9443c01a7336-2129f6122fcmr153868475ad.55.1732511585476;
+        Sun, 24 Nov 2024 21:13:05 -0800 (PST)
+Received: from localhost ([122.172.86.146])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2129dba6782sm55270585ad.102.2024.11.24.21.13.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Nov 2024 23:44:46 -0800 (PST)
-From: Mithil Bavishi <bavishimithil@gmail.com>
-To: andreas@kemnade.info
-Cc: Laurent.pinchart@ideasonboard.com,
-	aaro.koskinen@iki.fi,
-	airlied@gmail.com,
-	bavishimithil@gmail.com,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	jernej.skrabec@gmail.com,
-	jonas@kwiboo.se,
-	khilman@baylibre.com,
-	krzk+dt@kernel.org,
-	linux-hardening@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	neil.armstrong@linaro.org,
-	prabhakar.mahadev-lad.rj@bp.renesas.com,
-	quic_jesszhan@quicinc.com,
-	rfoss@kernel.org,
-	robh@kernel.org,
-	rogerq@kernel.org,
-	simona@ffwll.ch,
-	thierry.reding@gmail.com,
-	tony@atomide.com,
-	tzimmermann@suse.de
-Subject: Re: [PATCH v3 10/10] ARM: dts: ti: omap: samsung-espresso10: Add initial support for Galaxy Tab 2 10.1
-Date: Sun, 24 Nov 2024 07:44:34 +0000
-Message-ID: <20241124074434.534-1-bavishimithil@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241123223150.28d4002b@akair>
-References: <20241123223150.28d4002b@akair>
+        Sun, 24 Nov 2024 21:13:04 -0800 (PST)
+Date: Mon, 25 Nov 2024 10:43:02 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: Kevin Hilman <khilman@kernel.org>, rafael@kernel.org,
+	zhipeng.wang_1@nxp.com, linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] cpufreq: fix using cpufreq-dt as module
+Message-ID: <20241125051302.6tmaog2ksfpk5m6u@vireshk-i7>
+References: <20241103210251.762050-1-andreas@kemnade.info>
+ <7httcmonip.fsf@baylibre.com>
+ <20241104201424.2a42efdd@akair>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241104201424.2a42efdd@akair>
 
-> well, I think I2C bus runs at 1.8V, and there is IO_1.8V in the name,
-> so vio-supply should be something at 1.8V, so probably ldo6 is
-> vio-supply. Maybe add a remark in the comments. But then it might be
-> not a good idea to turn that off in suspend. if the other regulator is
-> kept on.
+On 04-11-24, 20:14, Andreas Kemnade wrote:
+> no clear idea how. What aliases should I add? The cpufreq-dt-platdev is
+> not a real driver, so I could not create mod_devicetable aliases to
+> match a given device. It constructs a device under certain conditions
+> depending on the board compatible, so no simple list of compatibles, it
+> contains allow and blocklists.
+> 
+> cpufreq-dt then binds to that device and that one can be built as a
+> module (which then made cpufreq-dt-platdev also a module, causing the
+> trouble). I do not see any benefit from having cpufreq-dt-platdev as a
+> module. ti-cpufreq has a similar role and is also just builtin.
+> It does itself no real work but provides a device cpufreq-dt then binds
+> to.
+> 
+> Handling module removal would probably need to be added and tested. I
+> feel not comfortable having such as a regression fix and for stable.
 
-But we are not sure if it is the same, also I personally cannot test it
-since I own the 7 inch version. Let's remove avdd supply for now and see
-if someone with 10 inch version can test it again later. This is better
-than putting potentially incorrect information.
+Applied this patch for now (with some changes to commit log), as there is no
+clean way to fix this for now. Got reports from other folks too about it.
 
-> We have also the warning from dtbs_check:
-> arch/arm/boot/dts/ti/omap/omap4-samsung-espresso10.dtb:
-> synaptics-rmi4-i2c@20: Unevaluated properties are not allowed
-> ('avdd-supply', 'touchscreen-size-x', 'touchscreen-size-y' were
-> unexpected)
-
-Ah, indeed. I missed it, will fix it as you've mentioned.
-
-Best Regards,
-Mithil
+-- 
+viresh
 
