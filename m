@@ -1,463 +1,170 @@
-Return-Path: <linux-omap+bounces-2739-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2740-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E019DAD52
-	for <lists+linux-omap@lfdr.de>; Wed, 27 Nov 2024 19:45:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B569DAF9B
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Nov 2024 00:00:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3E90B213B2
-	for <lists+linux-omap@lfdr.de>; Wed, 27 Nov 2024 18:45:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9324AB21C09
+	for <lists+linux-omap@lfdr.de>; Wed, 27 Nov 2024 23:00:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3262B1487ED;
-	Wed, 27 Nov 2024 18:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 919C4205E15;
+	Wed, 27 Nov 2024 22:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="SpYGPhig"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="tzkl8bGe"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mta-65-228.siemens.flowmailer.net (mta-65-228.siemens.flowmailer.net [185.136.65.228])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EB720309
-	for <linux-omap@vger.kernel.org>; Wed, 27 Nov 2024 18:45:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884C7205E0E;
+	Wed, 27 Nov 2024 22:59:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732733120; cv=none; b=hwYuymLrAkuVKA6hePDjoinVuJ9w2et3ppLnkgaj/ChGbdGep0Rusze7BjEIlcfBMSERpFWnWA7DEK9hvOSu2kZxzHTm/JlQloFj0tMvJeKPMRI2udSDLVg347mETX5HtpYBc3SdBLkkxtiHoIsi4vjbmtNC3KrKWsSUTg3tmq8=
+	t=1732748361; cv=none; b=n7r1VIhN9I0r8PH02iY5hzmgPaA98YZ0HNqyn63n+uQPrn5M8iQL/ERlfzE1qb/A8gTNgrk5W2ztD/o6kTFoLBQYqAHbly3QabWGaZEDueXO6VKbrQuszmP76jmpybHiJrDkA+3S+D0l7HMosFAaXrjH8D0FedcGswBHOlKAucU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732733120; c=relaxed/simple;
-	bh=NSub2cKOB+n9HzNB+Kf3pZUiuN/V+cWCYRqNML8oEX0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SEeGg5Ot2oZmDGrC8pWw+v3yqhSjbI5ANLnpDh6PQ8ccQI+WTgaVkBpXvRcZAFz5ruFkPRwJnhbPG00e8E+ybiqxz4RQn2v/P12ynPwUWwgqv2SnOWLfxhHTQDHe61iDUjLbkxvuKh8jQ5Xc2unEGWNZZ72NUPZIH9JkjE7P3oY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=SpYGPhig; arc=none smtp.client-ip=185.136.65.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-65-228.siemens.flowmailer.net with ESMTPSA id 20241127184508de9109d13c41d4a689
-        for <linux-omap@vger.kernel.org>;
-        Wed, 27 Nov 2024 19:45:08 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
- d=siemens.com; i=alexander.sverdlin@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
- bh=s3mbgWXFNUsvRMO58X9lemUQ0z+cOkdT4m/j9D8Qujk=;
- b=SpYGPhigfXb5YXRBNybbFekhNafidOzz0ctwThsWsEGILEWbB2NFaI5+xKPPa2m+zq/76i
- YOMGYjGH9usnXtRmYt1BfbaOO0eqS7NXvq0F1+r1xOnwi2gU9eHFJkOVdXryXZBAYAhuoNIa
- gvjlHZ3qhNeybwhpB7PL6JLEZrrKPfc0r+OhMLyNVRruUQAnm+hR2wcpRtb6LPHjgMaRRPr+
- 785y2+Ov4yR42VUlx+1ibPK0YnyhacuXg9N04hrrKsOnIIM5b2oty/tdY8yHQywihonz4YAb
- COwgVLVCwUzGTeYBvmS17bNsRtLgzgKJUqemsW5H18v307ceGouZhMfQ==;
-From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-To: linux-gpio@vger.kernel.org
-Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Grygorii Strashko <grygorii.strashko@ti.com>,
-	Santosh Shilimkar <ssantosh@kernel.org>,
-	Kevin Hilman <khilman@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	linux-omap@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] gpio: omap: Silence lockdep "Invalid wait context"
-Date: Wed, 27 Nov 2024 19:45:03 +0100
-Message-ID: <20241127184506.962756-1-alexander.sverdlin@siemens.com>
+	s=arc-20240116; t=1732748361; c=relaxed/simple;
+	bh=ZlIqQL9nhR8ZrTmEz4h9i7YgCxYv3bRODmwAhrVR7tQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JN+VIFtqpZR/dJ3oowI21Qp9Tyv0BapnKuY9IcTnItZgSZKVjQdbxpa9Mcn7nj6lHUCTt6V/5q561mb8a1cWqhANuODqUBsopoD68sE8qZdhQf6i52jRgiY4iAK5GTB6JBgEH2AkD6LKBDaon6HDXlIFsM1B5ycMQpA9xi2KD1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=tzkl8bGe; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=zYWPwKrxCHw1U304AUsx5/K0+fIPQMRZnHhXdfi9zsg=; b=tzkl8bGexeiM662e4bzFYg/nMt
+	sUv4PjlCkek4aSLZdlU9XIbsvVdWxEuVQsYteZ+HwGszkkLBj9kgDEBHHhYPVUmmo77z2VkyvIp6n
+	11GBvKKsz4J9ewjZGcUEBIAX/H/UI7riqhzsftJ4FqFPQzqKnn/x3sLyIhDO74xCMGwqJGrTwzqf0
+	KW4WJjENCdXKAVFHi0ynD4IcX1Un77p2msa9Ha9GwWlzST5kchQMTawaj7PrLw+ed3edrhEMxlG1B
+	UiwO+Kn6NEatA6y8TC7pxIhJimRpj7TxFTDT5f6YVxz0dwRb/Cg+KQVHTYEXDGYDzPgA5HfyuYkjb
+	d7mrlnig==;
+Date: Wed, 27 Nov 2024 23:58:58 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Roger Quadros <rogerq@kernel.org>
+Cc: Tony Lindgren <tony@atomide.com>, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, hns@goldelico.com, linux-omap@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ aaro.koskinen@iki.fi, khilman@baylibre.com, stable@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: ti/omap: gta04: fix pm issues caused by spi
+ module
+Message-ID: <20241127235858.44e1ce01@akair>
+In-Reply-To: <d1679678-8996-4484-bcf4-d4eaa6f009a4@kernel.org>
+References: <20241107225100.1803943-1-andreas@kemnade.info>
+	<b26c1fa8-b3b7-4aa9-bc78-793ddfa3bc6b@kernel.org>
+	<20241108184118.5ee8114c@akair>
+	<20241111150953.GA23206@atomide.com>
+	<20241111193117.5a5f5ecb@akair>
+	<20241111234604.66a9691b@akair>
+	<20241116212734.30f5d35b@akair>
+	<d1679678-8996-4484-bcf4-d4eaa6f009a4@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-456497:519-21489:flowmailer
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Am Mon, 18 Nov 2024 15:08:48 +0200
+schrieb Roger Quadros <rogerq@kernel.org>:
 
-The problem apparetly has been known since the conversion to
-raw_spin_lock() (commit 4dbada2be460
-("gpio: omap: use raw locks for locking")).
+> On 16/11/2024 22:27, Andreas Kemnade wrote:
+> > Am Mon, 11 Nov 2024 23:46:04 +0100
+> > schrieb Andreas Kemnade <andreas@kemnade.info>:
+> >   
+> >> Am Mon, 11 Nov 2024 19:31:17 +0100
+> >> schrieb Andreas Kemnade <andreas@kemnade.info>:
+> >>  
+> >>> Am Mon, 11 Nov 2024 17:09:53 +0200
+> >>> schrieb Tony Lindgren <tony@atomide.com>:
+> >>>     
+> >>>> * Andreas Kemnade <andreas@kemnade.info> [241108 17:41]:      
+> >>>>> They are not used, if they are just disabled, kernel does not touch
+> >>>>> them, so if it is there, the kernel can handle
+> >>>>> pm. At least as long as it is not under ti,sysc.
+> >>>>>
+> >>>>> There are probably cleaner solutions for this, but for a CC: stable I
+> >>>>> would prefer something less invasive.        
+> >>>>
+> >>>> For unused devices, it's best to configure things to use ti-sysc, and
+> >>>> then set status disabled (or reserved) for the child devices only. This
+> >>>> way the parent interconnect target module is PM runtime managed by
+> >>>> Linux, and it's power domain gets properly idled for the unused devices
+> >>>> too.
+> >>>>       
+> >>> Hmm, we also have omap_hwmod_setup_all() which is still called if
+> >>> without device nodes being available.
+> >>>
+> >>> Converting mcspi to ti-sysc is more than 100 lines. So it does not
+> >>> qualify for stable.
+> >>>     
+> >>>>> I can try a ti-sysc based fix in parallel.        
+> >>>>
+> >>>> Yeah that should be trivial hopefully :)
+> >>>>       
+> >>> I played around, got pm issues too, tried to force-enable things (via
+> >>> power/control),
+> >>> watched CM_IDLEST1_CORE and CM_FCLKEN1_CORE, they behave. Bits are set
+> >>> or reset.
+> >>>
+> >>> but not CM_IDLEST_CKGEN, it is 0x209 instead of 0x1.
+> >>>
+> >>> I test from initramfs, so no mmc activity involved
+> >>>
+> >>> removing status = "disabled" from mcspi3 solves things.
+> >>> With and without ti-sysc conversion. removing status = "disabled" from
+> >>> mcspi4 seems not to help.
+> >>>
+> >>> That all cannot be... I will retry tomorrow.
+> >>>     
+> >> well, I tried a bit further:
+> >> I build the omap spi driver as module.
+> >> and booted With mcspi3 not disabled and no module autoload.
+> >>
+> >> without module loaded: pm bad, same as with mcspi3 disabled
+> >> with module loaded: core pm ok
+> >> with module loaded and unloaded: core pm ok.
+> >>
+> >> so at least a trace.
+> >>  
+> > ok, I am a bit further.
+> > mcspi is per default in slave mode, setting it to master solves issues.
+> > And that happens when the driver is probed because its default is
+> > master.
+> > Having the pins muxed as mode 7 also helps or selecting a pulldown for
+> > cs. (cs is active high per default!)
+> > switching to pullup does not harm once the spi module is off, but having
+> > active cs seems to prevent idling despite CM_IDLEST1_CORE
+> > not showing it.
+> > 
+> > History: u-boot muxes McSPI3, because it can be available on an
+> > optionally fitted pin header. But there is no user known (would need
+> > a dtb overlay anyways). So I will rather mux to mode 7.  
+> 
+> I'm sorry I didn't fully understand the problem.
+> 
+> So, u-boot configures pinmux for McSPI3 and enables McSPI3 as well
+> but fails to disable it properly?
 
-Symptom:
+At least it sets Pinmux.
+ 
+> And because McSPI3 is in slave mode and CS is active it fails to
+> transition to idle in Linux?
 
-[ BUG: Invalid wait context ]
-5.10.214
------------------------------
-swapper/1 is trying to lock:
-(enable_lock){....}-{3:3}, at: clk_enable_lock
-other info that might help us debug this:
-context-{5:5}
-2 locks held by swapper/1:
- #0: (&dev->mutex){....}-{4:4}, at: device_driver_attach
- #1: (&bank->lock){....}-{2:2}, at: omap_gpio_set_config
-stack backtrace:
-CPU: 0 PID: 1 Comm: swapper Not tainted 5.10.214
-Hardware name: Generic AM33XX (Flattened Device Tree)
-unwind_backtrace
-show_stack
-__lock_acquire
-lock_acquire.part.0
-_raw_spin_lock_irqsave
-clk_enable_lock
-clk_enable
-omap_gpio_set_config
-gpio_keys_setup_key
-gpio_keys_probe
-platform_drv_probe
-really_probe
-driver_probe_device
-device_driver_attach
-__driver_attach
-bus_for_each_dev
-bus_add_driver
-driver_register
-do_one_initcall
-do_initcalls
-kernel_init_freeable
-kernel_init
+yes, slave mode is default.
+> 
+> So isn't this a u-boot issue?
+> 
+Just telling u-boot to not mux McSPI3 helps. So, yes u-boot should not
+set it. But. I have no clear idea how bitrot the u-boot update process
+is. I would prefer setting the pinmux also in kernel back to the
+default.
 
-Reorder clk_enable()/clk_disable() calls in a way that they always happen
-outside of raw_spin_lock'ed sections.
-
-Cc: stable@vger.kernel.org
-Fixes: 4dbada2be460 ("gpio: omap: use raw locks for locking")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
----
-Changelog:
-v2: complete rework, I've totally missed the fact
-    clk_enable()/clk_disable() cannot avoid clk_enable_lock() even if the
-    clock is enabled; I had to extract all clk_*() calls out of
-    raw_spin_lock'ed sections
-
- drivers/gpio/gpio-omap.c | 114 +++++++++++++++++++++++++++++----------
- 1 file changed, 87 insertions(+), 27 deletions(-)
-
-diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
-index 7ad4534054962..3e6c8dec7cacc 100644
---- a/drivers/gpio/gpio-omap.c
-+++ b/drivers/gpio/gpio-omap.c
-@@ -140,18 +140,22 @@ static void omap_set_gpio_dataout_mask(struct gpio_bank *bank, unsigned offset,
- 					      BIT(offset), enable);
- }
- 
--static inline void omap_gpio_dbck_enable(struct gpio_bank *bank)
-+/* Returns true if debounce clock has to be enabled by the caller */
-+static inline bool omap_gpio_dbck_enable(struct gpio_bank *bank)
- {
- 	if (bank->dbck_enable_mask && !bank->dbck_enabled) {
--		clk_enable(bank->dbck);
- 		bank->dbck_enabled = true;
--
- 		writel_relaxed(bank->dbck_enable_mask,
- 			     bank->base + bank->regs->debounce_en);
-+
-+		return true;
- 	}
-+
-+	return false;
- }
- 
--static inline void omap_gpio_dbck_disable(struct gpio_bank *bank)
-+/* Returns true if debounce clock has to be disabled by the caller */
-+static inline bool omap_gpio_dbck_disable(struct gpio_bank *bank)
- {
- 	if (bank->dbck_enable_mask && bank->dbck_enabled) {
- 		/*
-@@ -160,10 +164,12 @@ static inline void omap_gpio_dbck_disable(struct gpio_bank *bank)
- 		 * to detect events and generate interrupts at least on OMAP3.
- 		 */
- 		writel_relaxed(0, bank->base + bank->regs->debounce_en);
--
--		clk_disable(bank->dbck);
- 		bank->dbck_enabled = false;
-+
-+		return true;
- 	}
-+
-+	return false;
- }
- 
- /**
-@@ -181,9 +187,11 @@ static inline void omap_gpio_dbck_disable(struct gpio_bank *bank)
- static int omap2_set_gpio_debounce(struct gpio_bank *bank, unsigned offset,
- 				   unsigned debounce)
- {
-+	unsigned long		flags;
- 	u32			val;
- 	u32			l;
- 	bool			enable = !!debounce;
-+	bool			enable_clk;
- 
- 	if (!bank->dbck_flag)
- 		return -ENOTSUPP;
-@@ -196,13 +204,18 @@ static int omap2_set_gpio_debounce(struct gpio_bank *bank, unsigned offset,
- 
- 	l = BIT(offset);
- 
-+	/*
-+	 * Ordering is important here: clk_enable() calls spin_lock_irqsave(),
-+	 * therefore it must be outside of the following raw_spin_lock_irqsave()
-+	 */
- 	clk_enable(bank->dbck);
-+	raw_spin_lock_irqsave(&bank->lock, flags);
-+
- 	writel_relaxed(debounce, bank->base + bank->regs->debounce);
- 
- 	val = omap_gpio_rmw(bank->base + bank->regs->debounce_en, l, enable);
- 	bank->dbck_enable_mask = val;
- 
--	clk_disable(bank->dbck);
- 	/*
- 	 * Enable debounce clock per module.
- 	 * This call is mandatory because in omap_gpio_request() when
-@@ -211,12 +224,16 @@ static int omap2_set_gpio_debounce(struct gpio_bank *bank, unsigned offset,
- 	 * used within _gpio_dbck_enable() is still not initialized at
- 	 * that point. Therefore we have to enable dbck here.
- 	 */
--	omap_gpio_dbck_enable(bank);
-+	enable_clk = omap_gpio_dbck_enable(bank);
- 	if (bank->dbck_enable_mask) {
- 		bank->context.debounce = debounce;
- 		bank->context.debounce_en = val;
- 	}
- 
-+	raw_spin_unlock_irqrestore(&bank->lock, flags);
-+	if (!enable_clk)
-+		clk_disable(bank->dbck);
-+
- 	return 0;
- }
- 
-@@ -229,16 +246,19 @@ static int omap2_set_gpio_debounce(struct gpio_bank *bank, unsigned offset,
-  * this is the only gpio in this bank using debounce, then clear the debounce
-  * time too. The debounce clock will also be disabled when calling this function
-  * if this is the only gpio in the bank using debounce.
-+ *
-+ * Return: true if bank->bdck clock has to be disabled by the caller,
-+ *         false otherwise
-  */
--static void omap_clear_gpio_debounce(struct gpio_bank *bank, unsigned offset)
-+static bool omap_clear_gpio_debounce(struct gpio_bank *bank, unsigned int offset)
- {
- 	u32 gpio_bit = BIT(offset);
- 
- 	if (!bank->dbck_flag)
--		return;
-+		return false;
- 
- 	if (!(bank->dbck_enable_mask & gpio_bit))
--		return;
-+		return false;
- 
- 	bank->dbck_enable_mask &= ~gpio_bit;
- 	bank->context.debounce_en &= ~gpio_bit;
-@@ -249,9 +269,12 @@ static void omap_clear_gpio_debounce(struct gpio_bank *bank, unsigned offset)
- 		bank->context.debounce = 0;
- 		writel_relaxed(bank->context.debounce, bank->base +
- 			     bank->regs->debounce);
--		clk_disable(bank->dbck);
- 		bank->dbck_enabled = false;
-+
-+		return true;
- 	}
-+
-+	return false;
- }
- 
- /*
-@@ -646,6 +669,7 @@ static void omap_gpio_irq_shutdown(struct irq_data *d)
- 	struct gpio_bank *bank = omap_irq_data_get_bank(d);
- 	unsigned long flags;
- 	unsigned offset = d->hwirq;
-+	bool disable_clk = false;
- 
- 	raw_spin_lock_irqsave(&bank->lock, flags);
- 	bank->irq_usage &= ~(BIT(offset));
-@@ -653,9 +677,17 @@ static void omap_gpio_irq_shutdown(struct irq_data *d)
- 	omap_clear_gpio_irqstatus(bank, offset);
- 	omap_set_gpio_irqenable(bank, offset, 0);
- 	if (!LINE_USED(bank->mod_usage, offset))
--		omap_clear_gpio_debounce(bank, offset);
-+		disable_clk = omap_clear_gpio_debounce(bank, offset);
- 	omap_disable_gpio_module(bank, offset);
- 	raw_spin_unlock_irqrestore(&bank->lock, flags);
-+
-+	/*
-+	 * This has to be done outside of bank->lock'ed section, because
-+	 * spin_lock_irqsave(&enable_lock, ...) <= clk_enable_lock()
-+	 * cannot be called from raw_spin_lock'ed section.
-+	 */
-+	if (disable_clk)
-+		clk_disable(bank->dbck);
- }
- 
- static void omap_gpio_irq_bus_lock(struct irq_data *data)
-@@ -825,17 +857,26 @@ static int omap_gpio_request(struct gpio_chip *chip, unsigned offset)
- static void omap_gpio_free(struct gpio_chip *chip, unsigned offset)
- {
- 	struct gpio_bank *bank = gpiochip_get_data(chip);
-+	bool disable_clk = false;
- 	unsigned long flags;
- 
- 	raw_spin_lock_irqsave(&bank->lock, flags);
- 	bank->mod_usage &= ~(BIT(offset));
- 	if (!LINE_USED(bank->irq_usage, offset)) {
- 		omap_set_gpio_direction(bank, offset, 1);
--		omap_clear_gpio_debounce(bank, offset);
-+		disable_clk = omap_clear_gpio_debounce(bank, offset);
- 	}
- 	omap_disable_gpio_module(bank, offset);
- 	raw_spin_unlock_irqrestore(&bank->lock, flags);
- 
-+	/*
-+	 * This has to be done outside of bank->lock'ed section, because
-+	 * spin_lock_irqsave(&enable_lock, ...) <= clk_enable_lock()
-+	 * cannot be called from raw_spin_lock'ed section.
-+	 */
-+	if (disable_clk)
-+		clk_disable(bank->dbck);
-+
- 	pm_runtime_put(chip->parent);
- }
- 
-@@ -913,15 +954,11 @@ static int omap_gpio_debounce(struct gpio_chip *chip, unsigned offset,
- 			      unsigned debounce)
- {
- 	struct gpio_bank *bank;
--	unsigned long flags;
- 	int ret;
- 
- 	bank = gpiochip_get_data(chip);
- 
--	raw_spin_lock_irqsave(&bank->lock, flags);
- 	ret = omap2_set_gpio_debounce(bank, offset, debounce);
--	raw_spin_unlock_irqrestore(&bank->lock, flags);
--
- 	if (ret)
- 		dev_info(chip->parent,
- 			 "Could not set line %u debounce to %u microseconds (%d)",
-@@ -1131,7 +1168,8 @@ static void omap_gpio_restore_context(struct gpio_bank *bank)
- 	writel_relaxed(bank->context.irqenable2, base + regs->irqenable2);
- }
- 
--static void omap_gpio_idle(struct gpio_bank *bank, bool may_lose_context)
-+/* Returns true if debounce clock has to be disabled by the caller */
-+static bool omap_gpio_idle(struct gpio_bank *bank, bool may_lose_context)
- {
- 	struct device *dev = bank->chip.parent;
- 	void __iomem *base = bank->base;
-@@ -1175,13 +1213,15 @@ static void omap_gpio_idle(struct gpio_bank *bank, bool may_lose_context)
- 		bank->context_loss_count =
- 				bank->get_context_loss_count(dev);
- 
--	omap_gpio_dbck_disable(bank);
-+	return omap_gpio_dbck_disable(bank);
- }
- 
--static void omap_gpio_unidle(struct gpio_bank *bank)
-+/* Returns true if debounce clock has to be enabled by the caller */
-+static bool omap_gpio_unidle(struct gpio_bank *bank)
- {
- 	struct device *dev = bank->chip.parent;
- 	u32 l = 0, gen, gen0, gen1;
-+	bool enable_clk;
- 	int c;
- 
- 	/*
-@@ -1197,7 +1237,7 @@ static void omap_gpio_unidle(struct gpio_bank *bank)
- 				bank->get_context_loss_count(dev);
- 	}
- 
--	omap_gpio_dbck_enable(bank);
-+	enable_clk = omap_gpio_dbck_enable(bank);
- 
- 	if (bank->loses_context) {
- 		if (!bank->get_context_loss_count) {
-@@ -1207,7 +1247,7 @@ static void omap_gpio_unidle(struct gpio_bank *bank)
- 			if (c != bank->context_loss_count) {
- 				omap_gpio_restore_context(bank);
- 			} else {
--				return;
-+				return enable_clk;
- 			}
- 		}
- 	} else {
-@@ -1267,6 +1307,8 @@ static void omap_gpio_unidle(struct gpio_bank *bank)
- 		writel_relaxed(old0, bank->base + bank->regs->leveldetect0);
- 		writel_relaxed(old1, bank->base + bank->regs->leveldetect1);
- 	}
-+
-+	return enable_clk;
- }
- 
- static int gpio_omap_cpu_notifier(struct notifier_block *nb,
-@@ -1276,6 +1318,8 @@ static int gpio_omap_cpu_notifier(struct notifier_block *nb,
- 	unsigned long flags;
- 	int ret = NOTIFY_OK;
- 	u32 isr, mask;
-+	bool enable_clk = false;
-+	bool disable_clk = false;
- 
- 	bank = container_of(nb, struct gpio_bank, nb);
- 
-@@ -1291,17 +1335,23 @@ static int gpio_omap_cpu_notifier(struct notifier_block *nb,
- 			ret = NOTIFY_BAD;
- 			break;
- 		}
--		omap_gpio_idle(bank, true);
-+		disable_clk = omap_gpio_idle(bank, true);
- 		break;
- 	case CPU_CLUSTER_PM_ENTER_FAILED:
- 	case CPU_CLUSTER_PM_EXIT:
--		omap_gpio_unidle(bank);
-+		enable_clk = omap_gpio_unidle(bank);
- 		break;
- 	}
- 
- out_unlock:
- 	raw_spin_unlock_irqrestore(&bank->lock, flags);
- 
-+	/* This has to happen outside of raw_spin_lock'ed section */
-+	if (enable_clk)
-+		clk_enable(bank->dbck);
-+	if (disable_clk)
-+		clk_disable(bank->dbck);
-+
- 	return ret;
- }
- 
-@@ -1503,12 +1553,17 @@ static int __maybe_unused omap_gpio_runtime_suspend(struct device *dev)
- {
- 	struct gpio_bank *bank = dev_get_drvdata(dev);
- 	unsigned long flags;
-+	bool disable_clk;
- 
- 	raw_spin_lock_irqsave(&bank->lock, flags);
--	omap_gpio_idle(bank, true);
-+	disable_clk = omap_gpio_idle(bank, true);
- 	bank->is_suspended = true;
- 	raw_spin_unlock_irqrestore(&bank->lock, flags);
- 
-+	/* This has to happen outside of raw_spin_lock'ed section */
-+	if (disable_clk)
-+		clk_disable(bank->dbck);
-+
- 	return 0;
- }
- 
-@@ -1516,12 +1571,17 @@ static int __maybe_unused omap_gpio_runtime_resume(struct device *dev)
- {
- 	struct gpio_bank *bank = dev_get_drvdata(dev);
- 	unsigned long flags;
-+	bool enable_clk;
- 
- 	raw_spin_lock_irqsave(&bank->lock, flags);
--	omap_gpio_unidle(bank);
-+	enable_clk = omap_gpio_unidle(bank);
- 	bank->is_suspended = false;
- 	raw_spin_unlock_irqrestore(&bank->lock, flags);
- 
-+	/* This has to happen outside of raw_spin_lock'ed section */
-+	if (enable_clk)
-+		clk_enable(bank->dbck);
-+
- 	return 0;
- }
- 
--- 
-2.47.0
-
+Regards,
+Andreas
 
