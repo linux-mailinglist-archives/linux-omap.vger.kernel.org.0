@@ -1,155 +1,193 @@
-Return-Path: <linux-omap+bounces-2734-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2735-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E8319D9F15
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Nov 2024 23:07:11 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7303166087
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Nov 2024 22:07:07 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27ADF1DF736;
-	Tue, 26 Nov 2024 22:07:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="MqxQ3LDq"
-X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0FD09DA4A4
+	for <lists+linux-omap@lfdr.de>; Wed, 27 Nov 2024 10:17:40 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252798831;
-	Tue, 26 Nov 2024 22:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37F0AB259E3
+	for <lists+linux-omap@lfdr.de>; Wed, 27 Nov 2024 09:17:38 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01FD4191F81;
+	Wed, 27 Nov 2024 09:17:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b="QS1Ga9rs"
+X-Original-To: linux-omap@vger.kernel.org
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE41047F69
+	for <linux-omap@vger.kernel.org>; Wed, 27 Nov 2024 09:17:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732658824; cv=none; b=CO28w+icTnyEMgGLPvvo2zbzN4LbFHV598rkpcbdu2Fgkvc63jx1ROex7N3JtDj++4g3YrMd8TiQKdfHzFtnIGlGRNOnXzvQfjA5dwQEjbU7iqga3ecfiyaFSzw0Ci+QTVruZSRc48rEvQf906lt6KzfgHPWYbY7TZ8/v4eCBYk=
+	t=1732699053; cv=none; b=J5Tkf31kIHI33GoumgOUXCznvY0bRgEvtTjJ+xAJzHq8MxE1gH8pN3a9cuFPEp2RG+ESOrYJHutKfd3WEiwGjgkZhPEGuXXVPnOpvPz5Fur5Kf863+vIhY+xgyVQs6DFggULZI6bxlami5ECjNo2EawrrQItqDoBzP3FY9tj46k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732658824; c=relaxed/simple;
-	bh=lOdQY8HxOsG9Q1TOzy4MizCth633tf7W9emmfvN9nSs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P+a/kyBOeLNTPPmCi69YNh73CDB2xRgr6iiwRq+2nDBHu78+1IdvDol8eF/vP1Yn9GKxuz+yg8PIqIEJv5Eky7Rgbb83c5aG9y1kzcO6ULbI/uGR2VKdI5TRTAJV6+zklaUo9l4EjAF0Qduk4T7FiQmohzW84Ze9kB/R+7FjWCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=MqxQ3LDq; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=QIMHlxhoyMIQp7pfAhf2ueBjuOVyLctWFnSGT0wKPJU=; b=MqxQ3LDq2GSOvuQY09ob0jSbHS
-	GzhvofMbs74j341caMw3giO54M0Tu0OQcGRjxhayyp8aC2VVZW69i29uES7269nFOKFZpZYd2CPxl
-	GlWsy1WW5lANSqXihbOlOkfWXQMX2nondCLdLKhubPjvmzEj4SXhnNjCFUpTtDJqFV10RY9zKe0zi
-	JFktDB2Uuu1/WHxWvElpRm365mrAC7c5veg0MGZMEWIabr0xGn/U1MjvAniEd5IKgbdeVRMFGQO6E
-	lJgemf5Va5/1OT0m0PT747lQAJTB6Vs69ZBkF+AVyfXDiUS53i7xvR7iHolGhRNOv24edtWZV0kot
-	+EY2bgXA==;
-Date: Tue, 26 Nov 2024 23:06:47 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Roger Quadros <rogerq@kernel.org>
-Cc: Karol Przybylski <karprzy7@gmail.com>, aaro.koskinen@iki.fi,
- khilman@baylibre.com, tony@atomide.com, lee@kernel.org,
- linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
- skhan@linuxfoundation.org
-Subject: Re: [PATCH] mfd: omap-usb-tll: check clk_prepare return code
-Message-ID: <20241126230647.68b20fcf@akair>
-In-Reply-To: <5d6ccb9f-a8f1-45eb-b54a-cd66e637a2cc@kernel.org>
-References: <20241113211614.518439-1-karprzy7@gmail.com>
-	<486d5734-aa02-4a5e-b2ee-fdbba65179a3@kernel.org>
-	<20241119145622.2f1f0342@akair>
-	<5d6ccb9f-a8f1-45eb-b54a-cd66e637a2cc@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1732699053; c=relaxed/simple;
+	bh=SnVhtZ1p4yeEVYL2tFjMBwc85AXYWLdsD6exlupbTuk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eWhIxO9l7NL5ojM+UQEsfXsCgTOVGoWa1HPmCJuOAZWN/aheFJxKI8muFv7qx1MNKHhVlNNMyaHsm082zr78hw6kegAxh2VI+H7QzrkIFCQbyOkg/x1k94Fent9c0yMo25ZbFTOA9GXo/peEaz/380vdOW8IrSu9zdc2YrQJ5tQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr; spf=pass smtp.mailfrom=smile.fr; dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b=QS1Ga9rs; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smile.fr
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-38248b810ffso4933964f8f.0
+        for <linux-omap@vger.kernel.org>; Wed, 27 Nov 2024 01:17:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smile.fr; s=google; t=1732699049; x=1733303849; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GAFheFVkotLm3wy7t+46i/2OSexrdWJFGKeEH7J88WI=;
+        b=QS1Ga9rs5VKMgOFNRL/DnihZIsAIkwO/u7P6iiSvmXNjoFUMGet4uITerRtVsCjTbf
+         ze6lIKpYoZ47ugyISmaKhcegN3EmRSTDbz0U69zt7rMp70fbz3cFFcii+/9xc+ZWZZWr
+         PbPZeg4/CWd8q3bdy2ZVLaH1T7lPwFnwGVNc0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732699049; x=1733303849;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GAFheFVkotLm3wy7t+46i/2OSexrdWJFGKeEH7J88WI=;
+        b=aJMISrp9/wi31srWxrtAbE61kjPb8ANSopxPIHJ0CmbwSQ8MoqC0kkZ2KjopLJPF4L
+         AvgXgqCtnRqqhf/W0M7WWbua1vTM+O3SOSwHWFUYonDRmrFNy6MGTr2EJiGXzOtCobM/
+         v7QYSA/kGG3cKF807vk6R2/kuHgbY1zlozB5TwW+K7e6AOPZT44lvCB0Mye5Ux7bg8iu
+         RAAceEkJVJaXECpvMohy9tPl6V2MjF/LDrmIzLBnYrWBzPttD2byvMn3b3MVbCAiHlgG
+         lVoeszutIycDITMPRQwxNpZRltMdGjMA42OdUQBhpjKa1Vobacb41G+EduBqxMtvDsGH
+         repA==
+X-Forwarded-Encrypted: i=1; AJvYcCWZMcGngVZla2CEfxXury9UwsyEimty2Dw9BWeLqvtG/obWSsVmWdWbZp+PpaGz24XXvNrxysT0PL3g@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDSqckHyWvPVffsoFxntwzZo7Z0Gm3OSDjLZloKsjupi33tEXL
+	TLqZ2IP22ps2XmPkNkuO3eYjtVuNMwojKGqMOVeimlLkGKHYgga3aQCKr/eRKEQ=
+X-Gm-Gg: ASbGnctnv+Q4fPJSfCjp61COW9pEpV6/QY2DaK0pnlKlDwCSEb/WO3huktnuS6qXIB5
+	u7vXqiADUkSFXqcJIc+GDlJfezH51is9Sw05p5oQHBD8wPmjRMcIfBRWMkd2iikq3yBRXvJ0sUr
+	CrHQhuou9wSc6h3VHaqqVajqTeXziOxYTWOhnltpuhglfn4Pwi954VIPyoL2myS7rFCYd5o/H9c
+	VEY9JpRnsKTBEjltXdnDg/Ck+VJ1N8wwmr21CEHFr8EO3mVxqhtO2Fb/ml0NACGg3yV0Hbb/hyW
+	ZTAXlOguvPbhB+mXWNb6kKFl+FEINZ6PgXct/w==
+X-Google-Smtp-Source: AGHT+IHMfWTM2iJ94uv0iDMqL2dLO7VcGnFqdboNj1Fdq2fH3veFKQ+TuqEWJS1JJOImhanrQYAJIw==
+X-Received: by 2002:a5d:47cb:0:b0:382:22c6:7bcb with SMTP id ffacd0b85a97d-385c6eb4c32mr1924315f8f.3.1732699049143;
+        Wed, 27 Nov 2024 01:17:29 -0800 (PST)
+Received: from [10.5.90.17] (static-css-ccs-204145.business.bouyguestelecom.com. [176.157.204.145])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3825fd04ef5sm15685520f8f.111.2024.11.27.01.17.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 Nov 2024 01:17:28 -0800 (PST)
+Message-ID: <32e81174-8a17-4f29-b338-0dbd0d7e498b@smile.fr>
+Date: Wed, 27 Nov 2024 10:17:28 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: ti: k3-j721e-beagleboneai64: Enable ACSPCIE
+ output for PCIe1
+To: Krzysztof Kozlowski <krzk@kernel.org>, devicetree@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+ conor+dt@kernel.org, krzk+dt@kernel.org, robh@kernel.org, kristo@kernel.org,
+ vigneshr@ti.com, nm@ti.com, Romain Naour <romain.naour@skf.com>
+References: <20241126173307.4054601-1-romain.naour@smile.fr>
+ <5e2d2174-44a7-4143-8562-4dcdb5ad6c94@kernel.org>
+Content-Language: fr
+From: Romain Naour <romain.naour@smile.fr>
+In-Reply-To: <5e2d2174-44a7-4143-8562-4dcdb5ad6c94@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Am Tue, 19 Nov 2024 16:16:42 +0200
-schrieb Roger Quadros <rogerq@kernel.org>:
+Hello,
 
-> On 19/11/2024 15:56, Andreas Kemnade wrote:
-> > Am Tue, 19 Nov 2024 15:10:23 +0200
-> > schrieb Roger Quadros <rogerq@kernel.org>:
-> >   
-> >> Hi,
-> >>
-> >> On 13/11/2024 23:16, Karol Przybylski wrote:  
-> >>> clk_prepare() is called in usbtll_omap_probe to fill clk array.
-> >>> Return code is not checked, leaving possible error condition unhandled.
-> >>>
-> >>> Added variable to hold return value from clk_prepare() and dev_dbg statement
-> >>> when it's not successful.
-> >>>
-> >>> Found in coverity scan, CID 1594680
-> >>>
-> >>> Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
-> >>> ---
-> >>>  drivers/mfd/omap-usb-tll.c | 11 +++++++----
-> >>>  1 file changed, 7 insertions(+), 4 deletions(-)
-> >>>
-> >>> diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
-> >>> index 0f7fdb99c809..2e9319ee1b74 100644
-> >>> --- a/drivers/mfd/omap-usb-tll.c
-> >>> +++ b/drivers/mfd/omap-usb-tll.c
-> >>> @@ -202,7 +202,7 @@ static int usbtll_omap_probe(struct platform_device *pdev)
-> >>>  	struct device				*dev =  &pdev->dev;
-> >>>  	struct usbtll_omap			*tll;
-> >>>  	void __iomem				*base;
-> >>> -	int					i, nch, ver;
-> >>> +	int					i, nch, ver, err;
-> >>>  
-> >>>  	dev_dbg(dev, "starting TI HSUSB TLL Controller\n");
-> >>>  
-> >>> @@ -248,10 +248,13 @@ static int usbtll_omap_probe(struct platform_device *pdev)
-> >>>  					"usb_tll_hs_usb_ch%d_clk", i);
-> >>>  		tll->ch_clk[i] = clk_get(dev, clkname);
-> >>>  
-> >>> -		if (IS_ERR(tll->ch_clk[i]))
-> >>> +		if (IS_ERR(tll->ch_clk[i])) {
-> >>>  			dev_dbg(dev, "can't get clock : %s\n", clkname);  
-> > 
-> > if you want dev_err() later, then why not here?  
+Le 26/11/2024 à 20:04, Krzysztof Kozlowski a écrit :
+> On 26/11/2024 18:33, Romain Naour wrote:
+>> From: Romain Naour <romain.naour@skf.com>
+>>
+>> Unlike the SK-TDA4VM (k3-j721e-sk) board, there is no clock generator
+>> (CDCI6214RGET) on the BeagleBone AI-64 (k3-j721e-beagleboneai64) to
+>> provide PCIe refclk signal to PCIe Endponts. So the ACSPCIE module must
+>> provide refclk through PCIe_REFCLK pins.
+>>
+>> Use the new "ti,syscon-acspcie-proxy-ctrl" property to enable ACSPCIE
+>> module's PAD IO Buffers.
+>>
+>> Signed-off-by: Romain Naour <romain.naour@skf.com>
+>> ---
+>> With this patch, we can remove "HACK: Sierra: Drive clock out" patch
+>> applied on vendor kernel for BeagleBone AI-64:
+>> https://openbeagle.org/beagleboard/linux/-/commit/ad65d7ef675966cdbc5d75f2bd545fad1914ba9b
+>> ---
+>>  arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts |  4 ++++
+>>  arch/arm64/boot/dts/ti/k3-j721e-main.dtsi          | 10 ++++++++--
+>>  2 files changed, 12 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts b/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
+>> index fb899c99753e..681e3af7ce6e 100644
+>> --- a/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
+>> +++ b/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
+>> @@ -859,6 +859,10 @@ &pcie1_rc {
+>>  	num-lanes = <2>;
+>>  	max-link-speed = <3>;
+>>  	reset-gpios = <&main_gpio0 22 GPIO_ACTIVE_HIGH>;
+>> +	/* There is no on-board or external reference clock generators,
 > 
-> Because clk is optional. If it is not there then we should not complain.
-> But if it is there then it needs to be enabled successfully.
-> 
-I guess you mean *prepared*, the clock is enabled later (with error
-checking). But your reasoning makes sense.
+> Please use generic style comments, not netdev.
 
-> >   
-> >>> -		else
-> >>> -			clk_prepare(tll->ch_clk[i]);
-> >>> +		} else {
-> >>> +			err = clk_prepare(tll->ch_clk[i]);
-> >>> +			if (err)
-> >>> +				dev_dbg(dev, "clock prepare error for: %s\n", clkname);    
-> >>
-> >> dev_err()?
-> >>  
-> > So why do you want a different return handling here? (I doubt there is
-> > any clock having a real prepare() involved here)
-> > 
-> > As said in an earlier incarnation of this patch, the real question is
-> > whether having partial clocks available is a valid operating scenario.
-> > If yes, then the error should be ignored. If no, then bailing out early
-> > is a good idea.  
-> 
-> In the DT binding, clocks is optional. So if it doesn't exist it is not
-> an error condition.
-> 
-> > 
-> > clk_prepare() errors are catched by failing clk_enable() later,
-> > ch_clk[i] is checked later, too.
-> >   
-> >> I think we should return the error in this case.
-> >> (after unpreparing the prepared clocks and clk_put())
-> >>  
-> > and pm_runtime_put_sync(dev) 
+Fixed.
 
-which can probably be done before dealing with the clocks. It is only
-needed for the register access. 
+> 
+>> +	 * use refclk from the ACSPCIE module's PAD IO Buffers.
+>> +	 */
+>> +	ti,syscon-acspcie-proxy-ctrl = <&acspcie0_proxy_ctrl 0x3>;
+>>  };
+>>  
+>>  &ufs_wrapper {
+>> diff --git a/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi b/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
+>> index 0da785be80ff..9f47e7672922 100644
+>> --- a/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
+>> +++ b/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
+>> @@ -5,6 +5,7 @@
+>>   * Copyright (C) 2016-2024 Texas Instruments Incorporated - https://www.ti.com/
+>>   */
+>>  #include <dt-bindings/phy/phy.h>
+>> +#include <dt-bindings/phy/phy-cadence.h>
+>>  #include <dt-bindings/phy/phy-ti.h>
+>>  #include <dt-bindings/mux/mux.h>
+>>  
+>> @@ -82,6 +83,11 @@ ehrpwm_tbclk: clock-controller@4140 {
+>>  			reg = <0x4140 0x18>;
+>>  			#clock-cells = <1>;
+>>  		};
+>> +
+>> +		acspcie0_proxy_ctrl: acspcie0-ctrl@18090 {
+> 
+> Node names should be generic. See also an explanation and list of
+> examples (not exhaustive) in DT specification:
+> https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
 
-Regards,
-Andreas
+I updated to: "acspcie0_proxy_ctrl: acspcie-ctrl@18090"
+
+> 
+> 
+>> +			compatible = "ti,j784s4-acspcie-proxy-ctrl", "syscon";
+> 
+> I am not familiar with naming, so is this j784s4 or j721e or K3 SoC?
+> Compatible should be SoC specific.
+
+Me neither.
+
+"ti,j784s4-acspcie-proxy-ctrl" compatible is the only one available in the
+syscon devicetree binding. Should we add a new "ti,j721e-acspcie-proxy-ctrl"?
+
+This patch is adapted from a recent commit on the TI's kernel for the j784s4 Soc:
+https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel/commit/?h=ti-rt-linux-6.6.y&id=bb4442cd523d6e34c5db43fd78c9f579d6937f6a
+
+There is another example with "ti,j784s4-pcie-ctrl" compatible used from
+k3-j722s-main.dtsi:
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi?h=v6.12.1#n240
+
+Though?
+
+Best regards,
+Romain
+
+> 
+> Best regards,
+> Krzysztof
+
 
