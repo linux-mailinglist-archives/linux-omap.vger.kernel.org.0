@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-2751-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2753-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98E449E074B
-	for <lists+linux-omap@lfdr.de>; Mon,  2 Dec 2024 16:41:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF3209E07A9
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Dec 2024 16:55:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31EC6BA6E7D
-	for <lists+linux-omap@lfdr.de>; Mon,  2 Dec 2024 15:16:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4A5E2814E2
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Dec 2024 15:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48738209671;
-	Mon,  2 Dec 2024 15:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0762E13C9C4;
+	Mon,  2 Dec 2024 15:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MNlH33vp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bc3EEuOq"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4E8207A32;
-	Mon,  2 Dec 2024 15:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995167E107;
+	Mon,  2 Dec 2024 15:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733152199; cv=none; b=W2JCIDaZMLKmRMcEj5bm9yRtpbWR1vU9seqhT+3K6gccOWGu3WBnfzB50uBOLksLsNo3XcMXQg9nNU8kcusB7tYlNSD/QBgHOp8veIrKF10YkXfAB9Z1yBRJd5GUGEgci1hEzTMqyD1SYzz3KIRroxIkB5uHHoMQ1nWlGa7fNcA=
+	t=1733154905; cv=none; b=Tea8L8ReYxXaXg4eQ2cfuSudIVnTtJ5GHjmfO2jYoOMzRvdvm2w3ekUUhywPhLVqHVDUYIYC+Lb4Ek76jvhdhSg3jB2WjYfGYJVTPgJKK6Z7/n92yVIqKgbiHACZcXwyFkMKFuo9ZPLNbC54W1zLCC0/tjlpgbJBavpTHT44xB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733152199; c=relaxed/simple;
-	bh=A3Lo9lFCeqF/GPYFe1Yj2juaBqvLzmCWQzlTAPTwBss=;
+	s=arc-20240116; t=1733154905; c=relaxed/simple;
+	bh=9wQ89Q5JLop4nCESxKGCFrCO8u8oY0ND2CvEKSdoUys=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=skknOg5U5ewFRKjzTqXa+ygpI0u+pX7/1qBldWGjMEKtkedLTaXg2bfFAA9LuXChtJKbBzojTJdp3yTrWYgiSH1Gx+4SRB4XOHj7lY51ZKgq3W0lnEuny+DqRs7aE5F9RpH6+uWqi26onG3F+JwzcO7Oh7s4TYj2hbNU39zrnIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MNlH33vp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC11C4CED2;
-	Mon,  2 Dec 2024 15:09:53 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=ow6g3/KDIVGc3OpEosFhrxDcsl6iVYgu0cl5/Rxzuwma66LYVLf8VatmsS4ItiOqCnZT/Dtt/D3JqF4EldxOfVdK3qnbx0FvFr8uAJ9pbnOevI4ROzzkiCL0PyayKzhiKYHWsQe+DTgbdbGaFL91A9KAqC+DnfVpk/8NE5rWY1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bc3EEuOq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51FD4C4CED2;
+	Mon,  2 Dec 2024 15:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733152198;
-	bh=A3Lo9lFCeqF/GPYFe1Yj2juaBqvLzmCWQzlTAPTwBss=;
+	s=k20201202; t=1733154905;
+	bh=9wQ89Q5JLop4nCESxKGCFrCO8u8oY0ND2CvEKSdoUys=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MNlH33vpyXvutISj4rwQxl2mp3YpKB7QTLGmp7sGfh2us5dZK/yoHL5kidtgMXE+V
-	 ZtOHwCPySAW2C5GdRaGXY09g4vrZVo+gnOaG9f9HMmEskgqb9B6pVPE6szOwjTH/3/
-	 JZcIA8mpAp6kbna+pvfiuk2iYT0VBD7K+Ygp/dLXahw8ex1kZ5SKi3JjPz7WUjJJ3a
-	 OFB4AQ0PrYUCZu2mJ27d+liaqUxPLYwL5BXvytUjmTlKb8H+f77XyOEbigqTYWnjLs
-	 q3zLYaHIAkyoZhDWLVFznS1XeQOZCOWScSvg4Ezd7GhqVrdvK/JNtD0PZCsBz3+ZtB
-	 ps9Hw+aLbDwuA==
-Message-ID: <f332947a-d7b5-4f68-84d8-3ecce118c24c@kernel.org>
-Date: Mon, 2 Dec 2024 16:09:51 +0100
+	b=bc3EEuOquLGwSd6rRDhjH2vCeSO6pMpgam8LdBNxrULqvDJQRiyuE9lhS3qd1DHlX
+	 pcImSgXxzzwphdruQbaoPM+a5JydW/GGDoiluxWFYQ6XqnL2smvEXNnfDR1lU54b0h
+	 3kyDgCufWdAiXcmg5b/rKSBjv+HQwCsBHZq2uy7GXM8aWh/aU4+vUuEOtwvRhBPc/h
+	 sWr2DANueGC6z/HR9OrlTyWL9NZI4HHIQKg+sT4K1INswX6WJ9nrO/E7NSBAbN4YR4
+	 hQgq6JHA19OLt05PIP4vlBI+i4ilAYYePi1odbu1FUh2wkRMsT83PkRNwq5eXQ6ZZ+
+	 SQ0PrDCmMqRCw==
+Message-ID: <1bfdf1f1-7542-4149-a85d-2ac4b659b26b@kernel.org>
+Date: Mon, 2 Dec 2024 16:54:59 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -62,6 +62,8 @@ References: <20241202101140.48778-1-romain.naour@smile.fr>
  <k7udgqugqseweckb7hjniz3aops4kn35ttju2ju7f2pcbmndrg@dau5nr4leish>
  <abeb632b-9efc-48e5-a28a-a9d7c02e0a6e@kernel.org>
  <cndc3fopwhwkotfikul2jtzfczpdpwlrs5uhuqq76ck36ndtfs@gvxavxt5tgd5>
+ <f332947a-d7b5-4f68-84d8-3ecce118c24c@kernel.org>
+ <rjecpmr4bsedbfhu74sdlzmdz2mh2shsr5myawb3qveooawa3j@i2ysnnyf7hio>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -107,84 +109,31 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <cndc3fopwhwkotfikul2jtzfczpdpwlrs5uhuqq76ck36ndtfs@gvxavxt5tgd5>
+In-Reply-To: <rjecpmr4bsedbfhu74sdlzmdz2mh2shsr5myawb3qveooawa3j@i2ysnnyf7hio>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 02/12/2024 15:53, Siddharth Vadapalli wrote:
-> On Mon, Dec 02, 2024 at 12:07:17PM +0100, Krzysztof Kozlowski wrote:
-> 
-> Hello Krzysztof,
-> 
->> On 02/12/2024 11:58, Siddharth Vadapalli wrote:
->>> On Mon, Dec 02, 2024 at 11:14:46AM +0100, Krzysztof Kozlowski wrote:
->>>
->>> Hello Krzysztof,
->>>
->>>> On 02/12/2024 11:11, Romain Naour wrote:
->>>>> From: Romain Naour <romain.naour@skf.com>
->>>>>
->>>>> Unlike the SK-TDA4VM (k3-j721e-sk) board, there is no clock generator
->>>>> (CDCI6214RGET) on the BeagleBone AI-64 (k3-j721e-beagleboneai64) to
->>>>> provide PCIe refclk signal to PCIe Endponts. So the ACSPCIE module must
->>>>> provide refclk through PCIe_REFCLK pins.
->>>>>
->>>>> Use the new "ti,syscon-acspcie-proxy-ctrl" property to enable ACSPCIE
->>>>> module's PAD IO Buffers.
->>>>>
->>>>> Reuse the compatible "ti,j784s4-acspcie-proxy-ctrl" since the ACSPCIE
->>>>> buffer and its functionality is the same across all K3 SoCs.
->>>>>
->>>>> Cc: Siddharth Vadapalli <s-vadapalli@ti.com>
->>>>> Signed-off-by: Romain Naour <romain.naour@skf.com>
->>>>> ---
->>>>> With this patch, we can remove "HACK: Sierra: Drive clock out" patch
->>>>> applied on vendor kernel for BeagleBone AI-64:
->>>>> https://openbeagle.org/beagleboard/linux/-/commit/ad65d7ef675966cdbc5d75f2bd545fad1914ba9b
->>>>>
->>>>> v2:
->>>>>  - use generic style comments
->>>>>  - use "syscon" as generic node name for "acspcie0_proxy_ctrl" node
->>>>>  - Keep the compatible "ti,j784s4-acspcie-proxy-ctrl" since the
->>>>>    ACSPCIE buffer and its functionality is the same across all K3 SoCs.
->>>>>    (Siddharth Vadapalli)
->>>>>
->>>>>    "The compatible "ti,j784s4-acspcie-pcie-ctrl" should be reused for
->>>>>    J721E and all other K3 SoCs.
->>>>
->>>> No, it shouldn't and you got comment on this. You always need specific
->>>> compatible, see writing bindings doc.
->>>
->>> Could you please clarify in which cases reusing the compatible is
->>> permissible? The list of compatibles at:
+On 02/12/2024 16:45, Siddharth Vadapalli wrote:
+>>> the feature to be enabled/disabled via the ACSPCIE block are the same as
+>>> well i.e. "register layout can be inferred". The same goes for the
+>>> compatibles listed below in my previous reply i.e. they aren't bugs.
+>>> Same IP and integration across SoCs and hence reused in the sense of
+>>> Hardware and not Software. I hope this clarifies the rationale for the
+>>> "reuse".
 >>
->> Never? You always need specific compatible. Did you read the writing
->> bindings document?
+>>
+>> You mix re-use with fallback. These are almost never the same blocks,
+>> which you imply here.
 > 
-> I went through the bindings document again at:
-> https://www.kernel.org/doc/Documentation/devicetree/bindings/writing-bindings.rst
-> It mentions:
-> - DON'T use 'syscon' alone without a specific compatible string. A 'syscon'
->   hardware block should have a compatible string unique enough to infer the
->   register layout of the entire block (at a minimum).
-> 
-> The ACSCPCIE Block as well as its integration across all of TI's K3 SoCs
-> is the same i.e. same Hardware/IP. The register bits corresponding to
+> I know that the IP is the same, the bits are the same and those bits enable
+> the same functionality of the IP across the SoCs. If you still insist that
+> they are not same, I don't know what to say anymore.
 
 
-And first rule for compatible property? DT bindings maintainers keep
-repeating it over and over - specific means soc as front compatible.
-
-> the feature to be enabled/disabled via the ACSPCIE block are the same as
-> well i.e. "register layout can be inferred". The same goes for the
-> compatibles listed below in my previous reply i.e. they aren't bugs.
-> Same IP and integration across SoCs and hence reused in the sense of
-> Hardware and not Software. I hope this clarifies the rationale for the
-> "reuse".
-
-
-You mix re-use with fallback. These are almost never the same blocks,
-which you imply here.
+You can say what we have been saying on mailing lists all the time:
+hardware datasheets lie and sometimes you find one, tiny tiny
+difference. If you are uncertain, please consult your SoC maintainer on
+this matter.
 
 Best regards,
 Krzysztof
