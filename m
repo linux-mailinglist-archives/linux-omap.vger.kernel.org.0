@@ -1,172 +1,193 @@
-Return-Path: <linux-omap+bounces-2750-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2749-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54A189E05B5
-	for <lists+linux-omap@lfdr.de>; Mon,  2 Dec 2024 15:58:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 775969E07EB
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Dec 2024 17:06:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A66528E669
-	for <lists+linux-omap@lfdr.de>; Mon,  2 Dec 2024 14:58:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD6DFB83D26
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Dec 2024 14:46:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4B720B1E9;
-	Mon,  2 Dec 2024 14:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1489621C183;
+	Mon,  2 Dec 2024 14:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="OymWRgeA"
+	dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b="av1JCfeT"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75171FDE12;
-	Mon,  2 Dec 2024 14:53:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D482194BE
+	for <linux-omap@vger.kernel.org>; Mon,  2 Dec 2024 14:33:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733151229; cv=none; b=q2kUkEMO9Lnk05uBWkqUIUBvN0jmFAtv4y9kkEg0wHk+YUoSKeyZPXUZj8Naf/pEW/P1ekQ0vY5r4UCcu4HG1D37jaq8dY3MgrI/XF0B4jFqExfY8gnqCgH9zssBd6wlGrGnJuXRI/AfQcu5bMpeKi1R1mJO6/MyZtk/A2nQhKw=
+	t=1733150021; cv=none; b=J1+1poNWDR8Fva7VZQBA3sdYPEaDfgdhX5Lx+xjobWhaf46fouSUFuaWElN+9aETguRnGgBEGNs0A/dSpnkczFBSLfvBl0OImjeZW0xF88523QINNjQ9fBS4v0zN664diV85TkwriFzZRQM/jaJjImeteA3GruDoFtiMZdEy7oM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733151229; c=relaxed/simple;
-	bh=hAo+oTaHyXTPvLFhlWpGXS879T4NV38YbPfQ7W0EEWU=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q/fxztgmVlF97Y78+CZ+EQoUvR8+w6QeMpbgnAZFvzfH43ayORJrTUykU/nAVOzUWMhBhtuczpwneB2QNAA6MxX0QxnU/M9A8VnQ6TzYkDAQETW0jce40owW/g/E5qOwvlmtZNPExNH6z5QFME0QDZXiA66I2WiAde2d5lLxJSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=OymWRgeA; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4B2ErOi6100552;
-	Mon, 2 Dec 2024 08:53:24 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1733151205;
-	bh=OmFjZuNAgGTFfhzOSSMRVfAUqblcSCURT6l6+QVX0Vk=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=OymWRgeAimwNUhkGahYXNsnuwFC70DhGFS6hvIAYEDZwpAyUndhVbP3teAkktpVQ2
-	 pphJI30On5xQUsZyJBNDPZTHmdOuiL35U9qjCjbzt6a+/r+rqDqdaktMpgg7/wqf0d
-	 GJCLS6KclxI+HCuDImGl0sd1Xx1W/lKrGmGshqTU=
-Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4B2ErOle060138
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 2 Dec 2024 08:53:24 -0600
-Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 2
- Dec 2024 08:53:24 -0600
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 2 Dec 2024 08:53:24 -0600
-Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.81])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4B2ErNcH070705;
-	Mon, 2 Dec 2024 08:53:24 -0600
-Date: Mon, 2 Dec 2024 20:23:22 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-CC: Siddharth Vadapalli <s-vadapalli@ti.com>,
-        Romain Naour
-	<romain.naour@smile.fr>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-omap@vger.kernel.org>,
-        <conor+dt@kernel.org>, <krzk+dt@kernel.org>, <robh@kernel.org>,
-        <kristo@kernel.org>, <vigneshr@ti.com>, <nm@ti.com>,
-        Romain Naour
-	<romain.naour@skf.com>
-Subject: Re: [PATCHv2] arm64: dts: ti: k3-j721e-beagleboneai64: Enable
- ACSPCIE output for PCIe1
-Message-ID: <cndc3fopwhwkotfikul2jtzfczpdpwlrs5uhuqq76ck36ndtfs@gvxavxt5tgd5>
-References: <20241202101140.48778-1-romain.naour@smile.fr>
- <dabbad2b-f8a6-4ed7-86da-ec696cf67461@kernel.org>
- <k7udgqugqseweckb7hjniz3aops4kn35ttju2ju7f2pcbmndrg@dau5nr4leish>
- <abeb632b-9efc-48e5-a28a-a9d7c02e0a6e@kernel.org>
+	s=arc-20240116; t=1733150021; c=relaxed/simple;
+	bh=hcnvZNIn9mD/rvmfANePOJ3+hvdxq601+qI3ubhZ3SI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oX4VYj8dpBldZdlbiPkCltWZtpZ1UGR6IUDx6cPOOZizWx8TVDeZiMW8FI6esqoreH9m9RSBEVSBzcMCZZniz+9Cib9HGWq7h2kVqCr9LF7FfNK8bnecvkyDyjoFTGJ4JxvZEfYZTv8D4Nyv06NptMZVjsLKYYz8li1NyAGm73U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr; spf=pass smtp.mailfrom=smile.fr; dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b=av1JCfeT; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smile.fr
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-385f07cd1a4so1094907f8f.1
+        for <linux-omap@vger.kernel.org>; Mon, 02 Dec 2024 06:33:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smile.fr; s=google; t=1733150017; x=1733754817; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9OcRP67UkWqEX1kfwylj4ZfjPBj6iFSQEtH2rLKeSLI=;
+        b=av1JCfeTg5qo1JerzK/cBIP5b8oWQw/xBNPMt29zNKtS0YfcaySo4aLc4NtMGC3nih
+         vk8jSbsM4+7p8uzwPM9wgwvJBpbH4hXVP75oyiyYPAac18hCGZLZR/WGLYGV/mJ4E83D
+         rZmWPQZSu83pS3aIXF6160gZaEV0lDUZa7Yco=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733150017; x=1733754817;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9OcRP67UkWqEX1kfwylj4ZfjPBj6iFSQEtH2rLKeSLI=;
+        b=ZWlBxPb9/t6B3wFgavrr2ndiUQRkqvVDDRe5gLMV2AeUpdNQlgHLbHEykRC1i9sJ2t
+         P5OcEZ9icvxd1bWbnX7zUV6L/SYbQ0v85x3pq4iTXTaZXmz9LVsPMP1YglYF1ZRbKrBq
+         MPSWgaO85ZUKIei+HW5OKm+hW8G2e5VPA4GxTLM013jyAm0RvOLJsgLMhWBbW9M23W8x
+         ozbh4wtFMUpTmpH5Z90Y8PHvuBpAO8v/HrA8jdj/1dkXKivy0kNULZX9GCu27yT061ei
+         /YSsm4NzE2c3cy39gdX+/o26uZLNuyHSHwiGfAEzEGaaWlcgWyYf6z79igicuLw6m6Ix
+         pJNA==
+X-Forwarded-Encrypted: i=1; AJvYcCVYldEE6Wgh5dIz0HAljcR9xHBGv7wsvj7Z2fuWuIWj+JX0zI1JfrVzfd3UN4b/VMcO5pHEb4WaRLqm@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZow9ZzGWL1lAUPDexIfFATRnbTAEmOX5vJW6/pf4Cc5NOtfxP
+	UDZ5geLLksqzTOJCneIzmtz2gsc6wcotFW+k7c4aP510TiDAuDXaWlpVTzN0WDI=
+X-Gm-Gg: ASbGnctTqF1KVQxbt7KPvG7XzTvuMXLvYQO1qe509k1w37Ad0e550P6rCIZBxfLUS4I
+	tNs7vadxiJBovlCqfdBwVscQTQHWetGCLCmwAfD4SFaU61k5HOU8HmaxRxNwazT1pH1Ni4qFsdJ
+	u2kbIJmvY58sbejK0Aq1MSEcdJXiI3LbImcFL9klLkGh2EJ9Z8L7y6hm05FPVD1BO7M/h/2037e
+	F7+cbD53GW0pKoh0I956zQ2bhNuM2kc4UYhvpl3UznKC6iZFoj8IGcYUWHQiu2OadwOxBiiXHNb
+	BIu0B2do38WvfcW55FaIT22bWOpu1+l8OgRWLptAS8TT/ik=
+X-Google-Smtp-Source: AGHT+IHIRiUC7pSf2CvIWjZMDX19I1R/wO3AhDavAhcZNTvCN4vMWcNnrOsyDB3TFGYdPtnX4ejb3g==
+X-Received: by 2002:a5d:59ab:0:b0:385:f23a:2fe1 with SMTP id ffacd0b85a97d-385f23a32e6mr4087650f8f.26.1733150017155;
+        Mon, 02 Dec 2024 06:33:37 -0800 (PST)
+Received: from P-NTS-Evian.home (2a01cb05949d5800e3ef2d7a4131071f.ipv6.abo.wanadoo.fr. [2a01:cb05:949d:5800:e3ef:2d7a:4131:71f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385eed2510esm4312569f8f.69.2024.12.02.06.33.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Dec 2024 06:33:36 -0800 (PST)
+From: Romain Naour <romain.naour@smile.fr>
+To: devicetree@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-omap@vger.kernel.org,
+	conor+dt@kernel.org,
+	krzk+dt@kernel.org,
+	robh@kernel.org,
+	kristo@kernel.org,
+	vigneshr@ti.com,
+	nm@ti.com,
+	Romain Naour <romain.naour@skf.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>
+Subject: [PATCHv3 2/2] arm64: dts: ti: k3-j721e-beagleboneai64: Enable ACSPCIE output for PCIe1
+Date: Mon,  2 Dec 2024 15:33:31 +0100
+Message-ID: <20241202143331.126800-2-romain.naour@smile.fr>
+X-Mailer: git-send-email 2.45.0
+In-Reply-To: <20241202143331.126800-1-romain.naour@smile.fr>
+References: <20241202143331.126800-1-romain.naour@smile.fr>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <abeb632b-9efc-48e5-a28a-a9d7c02e0a6e@kernel.org>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 02, 2024 at 12:07:17PM +0100, Krzysztof Kozlowski wrote:
+From: Romain Naour <romain.naour@skf.com>
 
-Hello Krzysztof,
+Unlike the SK-TDA4VM (k3-j721e-sk) board, there is no clock generator
+(CDCI6214RGET) on the BeagleBone AI-64 (k3-j721e-beagleboneai64) to
+provide PCIe refclk signal to PCIe Endponts. So the ACSPCIE module must
+provide refclk through PCIe_REFCLK pins.
 
-> On 02/12/2024 11:58, Siddharth Vadapalli wrote:
-> > On Mon, Dec 02, 2024 at 11:14:46AM +0100, Krzysztof Kozlowski wrote:
-> > 
-> > Hello Krzysztof,
-> > 
-> >> On 02/12/2024 11:11, Romain Naour wrote:
-> >>> From: Romain Naour <romain.naour@skf.com>
-> >>>
-> >>> Unlike the SK-TDA4VM (k3-j721e-sk) board, there is no clock generator
-> >>> (CDCI6214RGET) on the BeagleBone AI-64 (k3-j721e-beagleboneai64) to
-> >>> provide PCIe refclk signal to PCIe Endponts. So the ACSPCIE module must
-> >>> provide refclk through PCIe_REFCLK pins.
-> >>>
-> >>> Use the new "ti,syscon-acspcie-proxy-ctrl" property to enable ACSPCIE
-> >>> module's PAD IO Buffers.
-> >>>
-> >>> Reuse the compatible "ti,j784s4-acspcie-proxy-ctrl" since the ACSPCIE
-> >>> buffer and its functionality is the same across all K3 SoCs.
-> >>>
-> >>> Cc: Siddharth Vadapalli <s-vadapalli@ti.com>
-> >>> Signed-off-by: Romain Naour <romain.naour@skf.com>
-> >>> ---
-> >>> With this patch, we can remove "HACK: Sierra: Drive clock out" patch
-> >>> applied on vendor kernel for BeagleBone AI-64:
-> >>> https://openbeagle.org/beagleboard/linux/-/commit/ad65d7ef675966cdbc5d75f2bd545fad1914ba9b
-> >>>
-> >>> v2:
-> >>>  - use generic style comments
-> >>>  - use "syscon" as generic node name for "acspcie0_proxy_ctrl" node
-> >>>  - Keep the compatible "ti,j784s4-acspcie-proxy-ctrl" since the
-> >>>    ACSPCIE buffer and its functionality is the same across all K3 SoCs.
-> >>>    (Siddharth Vadapalli)
-> >>>
-> >>>    "The compatible "ti,j784s4-acspcie-pcie-ctrl" should be reused for
-> >>>    J721E and all other K3 SoCs.
-> >>
-> >> No, it shouldn't and you got comment on this. You always need specific
-> >> compatible, see writing bindings doc.
-> > 
-> > Could you please clarify in which cases reusing the compatible is
-> > permissible? The list of compatibles at:
-> 
-> Never? You always need specific compatible. Did you read the writing
-> bindings document?
+Use the new "ti,syscon-acspcie-proxy-ctrl" property to enable ACSPCIE
+module's PAD IO Buffers.
 
-I went through the bindings document again at:
-https://www.kernel.org/doc/Documentation/devicetree/bindings/writing-bindings.rst
-It mentions:
-- DON'T use 'syscon' alone without a specific compatible string. A 'syscon'
-  hardware block should have a compatible string unique enough to infer the
-  register layout of the entire block (at a minimum).
+Cc: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: Romain Naour <romain.naour@skf.com>
+---
+With this patch, we can remove "HACK: Sierra: Drive clock out" patch
+applied on vendor kernel for BeagleBone AI-64:
+https://openbeagle.org/beagleboard/linux/-/commit/ad65d7ef675966cdbc5d75f2bd545fad1914ba9b
 
-The ACSCPCIE Block as well as its integration across all of TI's K3 SoCs
-is the same i.e. same Hardware/IP. The register bits corresponding to
-the feature to be enabled/disabled via the ACSPCIE block are the same as
-well i.e. "register layout can be inferred". The same goes for the
-compatibles listed below in my previous reply i.e. they aren't bugs.
-Same IP and integration across SoCs and hence reused in the sense of
-Hardware and not Software. I hope this clarifies the rationale for the
-"reuse".
+v3:
+ - update "acspcie0_proxy_ctrl" compatible to "ti,j721e-acspcie-proxy-ctrl"
+   since this property is specific to j721e variant.
 
-> 
-> > https://github.com/torvalds/linux/blob/v6.12/Documentation/devicetree/bindings/mfd/syscon.yaml#L112
-> > namely,
-> >           - ti,am62-opp-efuse-table
-> >           - ti,am62-usb-phy-ctrl
-> >           - ti,am625-dss-oldi-io-ctrl
-> >           - ti,am62p-cpsw-mac-efuse
-> >           - ti,am654-dss-oldi-io-ctrl
-> >           - ti,j784s4-pcie-ctrl
-> > have all been reused for different TI SoCs since they all correspond to the
-> > device functionality enabled via the CTRL_MMR System Controller registers.
-> 
-> If you find a bug, does it mean you can send new patch introducing the
-> same bug?
+v2:
+ - use generic style comments
+ - use "syscon" as generic node name for "acspcie0_proxy_ctrl" node
+ - Keep the compatible "ti,j784s4-acspcie-proxy-ctrl" since the
+   ACSPCIE buffer and its functionality is the same across all K3 SoCs.
+   (Siddharth Vadapalli)
 
-[...]
+   "The compatible "ti,j784s4-acspcie-pcie-ctrl" should be reused for
+   J721E and all other K3 SoCs.
+   For example, see:
+   https://lore.kernel.org/r/20240402105708.4114146-1-s-vadapalli@ti.com/
+   which introduced "ti,am62p-cpsw-mac-efuse" compatible.
 
-Regards,
-Siddharth.
+   The same compatible is reused across all K3 SoCs:
+   https://lore.kernel.org/r/20240628151518.40100-1-afd@ti.com/ "
+---
+ arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts |  5 +++++
+ arch/arm64/boot/dts/ti/k3-j721e-main.dtsi          | 10 ++++++++--
+ 2 files changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts b/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
+index fb899c99753e..741ad2ba6fdb 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
++++ b/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
+@@ -859,6 +859,11 @@ &pcie1_rc {
+ 	num-lanes = <2>;
+ 	max-link-speed = <3>;
+ 	reset-gpios = <&main_gpio0 22 GPIO_ACTIVE_HIGH>;
++	/*
++	 * There is no on-board or external reference clock generators,
++	 * use refclk from the ACSPCIE module's PAD IO Buffers.
++	 */
++	ti,syscon-acspcie-proxy-ctrl = <&acspcie0_proxy_ctrl 0x3>;
+ };
+ 
+ &ufs_wrapper {
+diff --git a/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi b/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
+index af3d730154ac..32a232a90100 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
+@@ -5,6 +5,7 @@
+  * Copyright (C) 2016-2024 Texas Instruments Incorporated - https://www.ti.com/
+  */
+ #include <dt-bindings/phy/phy.h>
++#include <dt-bindings/phy/phy-cadence.h>
+ #include <dt-bindings/phy/phy-ti.h>
+ #include <dt-bindings/mux/mux.h>
+ 
+@@ -82,6 +83,11 @@ ehrpwm_tbclk: clock-controller@4140 {
+ 			reg = <0x4140 0x18>;
+ 			#clock-cells = <1>;
+ 		};
++
++		acspcie0_proxy_ctrl: syscon@18090 {
++			compatible = "ti,j721e-acspcie-proxy-ctrl", "syscon";
++			reg = <0x18090 0x4>;
++		};
+ 	};
+ 
+ 	main_ehrpwm0: pwm@3000000 {
+@@ -979,8 +985,8 @@ pcie1_rc: pcie@2910000 {
+ 		max-link-speed = <3>;
+ 		num-lanes = <2>;
+ 		power-domains = <&k3_pds 240 TI_SCI_PD_EXCLUSIVE>;
+-		clocks = <&k3_clks 240 1>;
+-		clock-names = "fck";
++		clocks = <&k3_clks 240 1>, <&serdes1 CDNS_SIERRA_DERIVED_REFCLK>;
++		clock-names = "fck", "pcie_refclk";
+ 		#address-cells = <3>;
+ 		#size-cells = <2>;
+ 		bus-range = <0x0 0xff>;
+-- 
+2.45.0
+
 
