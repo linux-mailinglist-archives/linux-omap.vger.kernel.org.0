@@ -1,87 +1,97 @@
-Return-Path: <linux-omap+bounces-2757-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2758-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5DFF9E1456
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Dec 2024 08:35:16 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B90C81623F3
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Dec 2024 07:35:13 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D118B189F45;
-	Tue,  3 Dec 2024 07:35:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bOdwXzQ2"
-X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E43229E145D
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Dec 2024 08:36:18 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC882500BD;
-	Tue,  3 Dec 2024 07:35:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA5D7282A59
+	for <lists+linux-omap@lfdr.de>; Tue,  3 Dec 2024 07:36:17 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C5B1199948;
+	Tue,  3 Dec 2024 07:36:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="kdOWa0vj"
+X-Original-To: linux-omap@vger.kernel.org
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6978518BC0F;
+	Tue,  3 Dec 2024 07:36:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733211311; cv=none; b=emCfWUrMDigXtNDyxTLrY+f2n4rooVCkjxEpkhGAOr3IhVZahYdPG5sIr4VZ0EMHIg1tyG03D5VkP40v7gGAkU6DfrQLbc/bUkRFtYKGzSCtd+VRx2aRm+rCj8NRVHw8L4f8K/oPjNfo30Y5Yj0uUqHPQzuP/xPeXxTBlGX19K8=
+	t=1733211365; cv=none; b=nJ5UJRtXHHCVXAm8qWew0yHg23uQjBLS/1/gpvdr/4fIEb15O5NdVesMQbZkskx14ItKUmU6gUNVC55TyXSmU/Pb5MJcKABJTmSzlnk4C6BfBXatV1a9ky4+6Ia4Um18a/5ZOg+MBjLivYQQ+OtlBjbP/HSz1D75H1PDfZMDaUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733211311; c=relaxed/simple;
-	bh=ypnPxAFE2fhbzwzfe1LjgidD7AjC20QK8t5DD9iGi8Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KxeI8BaClFfIPadc/wuJH5ZBaNwm7PG2lS1Q2uVcEqDmjjje9wEKrKWMBE1GHeXat6RjX2ZEP1plmEdJrjnOaZBuHuz1wuOb9dZeUbC51owPGSgcd4Qzhe3LNzQ4aNFujSmRZr32SoGO37RQKMyzurPaoIGuQPBRPh5eGmeO+ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bOdwXzQ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61661C4CECF;
-	Tue,  3 Dec 2024 07:35:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733211311;
-	bh=ypnPxAFE2fhbzwzfe1LjgidD7AjC20QK8t5DD9iGi8Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bOdwXzQ2yFb70zgcAsTxHKDF674yjrz/bxd3oNv3NHcFW39DUbCTOV4Bh3oaFNL/u
-	 1xLH6G+pcwcHuFybzsJ8PR5+7tbfLW7XmHOnemZP6eLQ2wGnZ5jIuuYeBlO3xUXM5/
-	 bFbDlgYNUjeHXobKQS5PnG7wIWH98dd224HcoVKyio4JNd3EfUC2y7+emNYVO4ItMF
-	 +UzTqXKNqj+80N7XabwENPPMA4LqheN3DVgfKs2AKzl0yDKhkYTItuMy18aDPNihUE
-	 apmT8ksG/lxG9T5TgFGQjcrO42c25FsUd6DZm7NkeAqEvVtYGywm/jfGlqA4p7LIWL
-	 QLq6MnsPeyYYA==
-Date: Tue, 3 Dec 2024 08:35:07 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Romain Naour <romain.naour@smile.fr>
-Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-omap@vger.kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org, robh@kernel.org, 
-	kristo@kernel.org, vigneshr@ti.com, nm@ti.com, Romain Naour <romain.naour@skf.com>
-Subject: Re: [PATCHv3 1/2] dt-bindings: mfd: syscon: Add
- ti,j721e-acspcie-proxy-ctrl compatible
-Message-ID: <douamjn7udsmbcouplhgg4i3drq5ayltraorgr43sb4lxwy2sj@gd4t3oy4rg5f>
-References: <20241202143331.126800-1-romain.naour@smile.fr>
+	s=arc-20240116; t=1733211365; c=relaxed/simple;
+	bh=06O9/zZRYttR11kZy2/cRV8/acnRe2eTNvTWILeYkZ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Gly1awlisbgL31kvSKCaXiq2XVkrYyX6ygeIPlQtGc2Z9qHYLiOkYOBXZWNcGVReZFDlg+ltLlOdrD5GssxTdKIgyGxmoKEzaufl3itz0hsPafeYjhgTxmeQYmyD7HOBkFEDykgYm6YnWSazA0F7ByVvTqkrnbko0KRTin6L6mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=kdOWa0vj; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=+Ez4NGr47887lNpGpj5/BuTnIxrkZh4EALx8t+V3VYk=; b=kdOWa0vjAYRf7EghvfzFTA4pEc
+	v3ChYnt4diE9jo+gG/rGlYGmJAGalUwetgyibmrk7CW2iTQNGjRxPfhKXbJI4NxKPXWtZfiK8BkRU
+	6XkVSxIZyh7wsHtPVK/DZS6HO2pSMcHGTnlqKCQ2Nx/tulyvf9EBX4oCH6KW3q1R6zutgxQKp2gUI
+	6VCnTBtD9GXmZBzQml5Sr07VBK/YZpGe0t96cWGg3Fpxypv1BQCnE3sBwHx5RdhK0lGQ8tgqPDjWN
+	2UH2mmws96F+2AIyLOTsQaVYFvdjDLGWW/CIU5szxpH/yBYSln1IzRxT+aUHwDwQymG0bhAuhXKUZ
+	pb9JyI6w==;
+Date: Tue, 3 Dec 2024 08:35:47 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: Dhruv Menon <dhruvmenon1104@gmail.com>, vigneshr@ti.com,
+ andi.shyti@kernel.org, jmkrzyszt@gmail.com, tony@atomide.com,
+ khilman@baylibre.com, rogerq@kernel.org, linux-omap@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] i2c: omap: Cleaned up coding style and parameters
+Message-ID: <20241203083547.0213c054@akair>
+In-Reply-To: <Z04faeJUgZTydiMb@darkstar.musicnaut.iki.fi>
+References: <Z04CA8fGCC-nyZIY@melbuntu>
+	<Z04faeJUgZTydiMb@darkstar.musicnaut.iki.fi>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241202143331.126800-1-romain.naour@smile.fr>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Dec 02, 2024 at 03:33:30PM +0100, Romain Naour wrote:
-> From: Romain Naour <romain.naour@skf.com>
+Am Mon, 2 Dec 2024 22:58:17 +0200
+schrieb Aaro Koskinen <aaro.koskinen@iki.fi>:
+
+> On Tue, Dec 03, 2024 at 12:22:51AM +0530, Dhruv Menon wrote:
+> > This commit addresses the coding style issues present in i2c-omap.c,
+> > identified by checkpatch.pl and removes unused parameters present in
+> > two functions.
+> > 
+> > 1. Coding style issues includes Macro Utilization, alignnment
+> >    correction, updating ms_sleep() < 20 to usleep_range().
+> > 2. Removed unused parameters from omap_i2c_receive_data()
+> >    and omap_i2c_transmit_data().
+> > 
+> > No functional changes have been introduced in this commit.  
 > 
-> The ACSPCIE_PROXY_CTRL registers within the CTRL_MMR space of TI's J721e
-> SoC are used to drive the reference clock to the PCIe Endpoint device via
-> the PAD IO Buffers. Add the compatible for allowing the PCIe driver to
-> obtain the regmap for the ACSPCIE_CTRL register within the System
-> Controller device-tree node in order to enable the PAD IO Buffers.
+> Not sure if that is correct as sleeps can be now shorter? I wouldn't
+> touch them unless you can show some real benefit (checkpatch.pl warning
+> isn't one for old driver code).
 > 
-> The Technical Reference Manual for J721e SoC with details of the
-> ASCPCIE_CTRL registers is available at:
-> https://www.ti.com/lit/zip/spruil1
+The sleeps are not shorter, instead possibly longer. I do not think
+that is an issue, AFAIK the idea with sleep range is to bundle wakeups
+and reduce power consumption.
+
+> Maybe also changes should be split into separate patches for easier
+> review.
 > 
-> Signed-off-by: Romain Naour <romain.naour@skf.com>
-> ---
->  Documentation/devicetree/bindings/mfd/syscon.yaml | 1 +
->  1 file changed, 1 insertion(+)
+I would leave out omap_i2c_*data() parameter stuff until the i2c irq
+regressions are fixed, maybe that parameter is needed.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
-
+Regards,
+Andreas
 
