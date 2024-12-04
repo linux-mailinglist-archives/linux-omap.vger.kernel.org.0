@@ -1,96 +1,131 @@
-Return-Path: <linux-omap+bounces-2771-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2772-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA4059E2E99
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Dec 2024 23:05:17 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B22259E42BB
+	for <lists+linux-omap@lfdr.de>; Wed,  4 Dec 2024 19:01:45 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81F38162431
-	for <lists+linux-omap@lfdr.de>; Tue,  3 Dec 2024 22:05:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D15E2828DE
+	for <lists+linux-omap@lfdr.de>; Wed,  4 Dec 2024 18:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2BC41DFE32;
-	Tue,  3 Dec 2024 22:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740DD1C3C0C;
+	Wed,  4 Dec 2024 17:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="zW5PY7r4"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="41PxPg18"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC7D1A7270;
-	Tue,  3 Dec 2024 22:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436B9152E12;
+	Wed,  4 Dec 2024 17:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733263512; cv=none; b=Bj/mU7+Es/uG6tpgkLpxi33lCob0jaUQCK4inokaUbeYfBdk338xuiLPEv9s1WBYxSfqPKj7JqtE7qLOb8HgbuRQjMy1VC050zh3S5jp+n9AnKRT75syhtnux3Az0Yjw25oy9f3qrGRXy1tp1aoDd61FrvfNeK7fO3Ld9o/TKrc=
+	t=1733334130; cv=none; b=EafJVFWl97lYf0KNuqaph9IvZFS1Sj7e2bk5cg5mQx5Um0nALTYibxJ3+iWCzL4XsVGN007lZ/F8TxIURRae3UFRRm7rnjggj50+1sq9aBrbQuATij8UPrkrB3Egq/3VeSSLF0HsViKGrXHziZ5NiLBYkcg1hEFkwMwkSQ+/Pgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733263512; c=relaxed/simple;
-	bh=bAc2oP9B4rgxmltREiEdFwBZLcwQ4F9LGSQzlJdGHpY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UGV/niBlvziqmty4fT7XtA+7savC4seNBH4bDGgYNb4XafwKgiC4oo1RR0HKmpT+alV2TdJdKOZaNdCqtEbAhk9f6/GjUTNVmtuw+qljRDYbbLjEwqPjjA1l7zLoYmPdNAL0Ilp3Jw2xNh4903HKyc+7dVQBn1q5cmNL/s9GDes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=zW5PY7r4; arc=none smtp.client-ip=178.238.236.174
+	s=arc-20240116; t=1733334130; c=relaxed/simple;
+	bh=3L9eOiR18IaXDUf8McGC7rXg/jOof5o0S5IiQTTr9Yc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gebGl+CZ74utE8FsPiz/kdDeP98xPRr568n+zj3Vd+FEXkJ9b82yVD56toP2fJ0GmuMVFW+PJ/5xa+TIgluFzTBg7ZbYyU2WDByqOzmACZQWgu9DQrxZmKl+LkcqmJ05uG6EcGAwsqUTs+FQcMiJSbofnMSqlGEIUxZWr2OYWlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=41PxPg18; arc=none smtp.client-ip=178.238.236.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=0/L6VXGAlKb7mq+RJNJyJiLpYSOLdt7nLJfN1dgJNnU=; b=zW5PY7r47JHfG3w+uv4dCtuH36
-	o+CFHHM9ALeZLThfF9KosbA4bYdvKeIGMiffFMT5PSA3owyzLCLAqg8sWutPcYaDKXaNd6RZ7KW47
-	FfeiFrTm9WrHOdHjFexGtq33g89wQkttJdVyMXf0FqWHML9k6Tq4coGyYcxd9E8DDfZ7Z2LJu2+/R
-	5TWeNy6Osixf58WSTh3xTvSsNTF+zcDtOq9tP+z1fb1c/XkONlS1JPXQd1b2MKf7akQjsLUx/7EsY
-	vt1Rn/+t04iV5TMtog2rQv70wzX/xefV9nsgeH+7BWHNUXZVJ1JaXsFF5lwmzn4XTnMuuHo+VsRO9
-	oIWDm41A==;
-Date: Tue, 3 Dec 2024 23:04:53 +0100
+	d=kemnade.info; s=20220719; h=Cc:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=3dmzYk0uh63gJxP2aLsDAmg9xvUtfWv6FeOCSsbtOSw=; b=41PxPg1845mHrLLARQxHghNZ+/
+	a3oODHuaDCzeV6Aag4pMNvkymxiqFOzkHJnZchoGMNECBEtbMEFfbRQ/7QPUFLnCDFoqqK+6HXXlC
+	xC+QRbLp2Enn0iLABBRw74sXmoliaALlRXUY8P4owXDbYFAfP1EdrA5fJf6GyEeG13GopnXTPZnNU
+	LWiDt/at8yJPQd1UmQlFBvLbCWThLYNc7E9AWlTMjYF9m472jgRxOovr4LRLBHyO5sMU+5a0tu6U2
+	Cv4j0jeUcZlPHKStlBWHWEAZMHo2dO9frRNhq1/vX9t5AihZy61ykTpkzN0TRuiBTRQgrY9OgSuC8
+	TuTLz5GQ==;
 From: Andreas Kemnade <andreas@kemnade.info>
-To: Dhruv Menon <dhruvmenon1104@gmail.com>
-Cc: "H. Nikolaus Schaller" <hns@goldelico.com>, Aaro Koskinen
- <aaro.koskinen@iki.fi>, "Raghavendra, Vignesh" <vigneshr@ti.com>,
- andi.shyti@kernel.org, Janusz Krzysztofik <jmkrzyszt@gmail.com>, tony
- Lindgren <tony@atomide.com>, Kevin Hilman <khilman@baylibre.com>, Roger
- Quadros <rogerq@kernel.org>, Linux-OMAP <linux-omap@vger.kernel.org>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] i2c: omap: Cleaned up coding style and parameters
-Message-ID: <20241203230453.1280ed4a@akair>
-In-Reply-To: <Z07QLveHUQlvDfIt@melbuntu>
-References: <Z04CA8fGCC-nyZIY@melbuntu>
-	<Z04faeJUgZTydiMb@darkstar.musicnaut.iki.fi>
-	<Z06zxM3pREgrOvQA@melbuntu>
-	<7B167CB3-EC8E-41C6-8A91-123167579475@goldelico.com>
-	<Z07QLveHUQlvDfIt@melbuntu>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+To: tony@atomide.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	andreas@kemnade.info,
+	hns@goldelico.com,
+	linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	aaro.koskinen@iki.fi,
+	khilman@baylibre.com,
+	rogerq@kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH v3] ARM: dts: ti/omap: gta04: fix pm issues caused by spi module
+Date: Wed,  4 Dec 2024 18:41:52 +0100
+Message-Id: <20241204174152.2360431-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Am Tue, 3 Dec 2024 15:02:30 +0530
-schrieb Dhruv Menon <dhruvmenon1104@gmail.com>:
+Despite CM_IDLEST1_CORE and CM_FCLKEN1_CORE behaving normal,
+disabling SPI leads to messages like when suspending:
+Powerdomain (core_pwrdm) didn't enter target state 0
+and according to /sys/kernel/debug/pm_debug/count off state is not
+entered. That was not connected to SPI during the discussion
+of disabling SPI. See:
+https://lore.kernel.org/linux-omap/20230122100852.32ae082c@aktux/
 
-> This patch has been splitted into two parts,
-> 
->         1. [PATCH v2 1/2] i2c: omap: Clean up coding style
->         2. [PATCH v2 2/2] i2c: omap: Removed unused parameter
-> 
-> The patchset also removed the changes regarding msleep as the 
-> adjustment was relatively minor which was added earlier. The 
-> change was initially considered based on "Timer's howto" 
-> documentation which recommends to change any msleep(x) < 10ms
-> to usleep_range(x*1000, x*2000) for better precision.
-> 
-> Thank you for the time and review. I look forward to your feedback
-> 
-send the output inline, see
-Documentation/process/submitting-patches.rst:
-No MIME, no links, no compression, no attachments.  Just plain text
+The reason is that SPI is per default in slave mode. Linux driver
+will turn it to master per default. It slave mode, the powerdomain seems to
+be kept active if active chip select input is sensed.
 
-Also we want imperative mood in the patches.
-There is also a lot of automated processing of these patch emails.
+Fix that by explicitly disabling the SPI3 pins which used to be muxed by
+the bootloader since they are available on an optionally fitted header
+which would require dtb overlays anyways.
 
-Regards,
-Andreas
+Fixes: a622310f7f01 ("ARM: dts: gta04: fix excess dma channel usage")
+CC: stable@vger.kernel.org
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+---
+Changes in V3:
+- use gpio mode instead of mode7 which is not safe mode in this special
+  case
+
+Changes in V2:
+- instead of reenabling mcspi, do a fix more near the root of the
+  problem
+
+ arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi b/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
+index 2ee3ddd640209..536070e80b2c6 100644
+--- a/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
++++ b/arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi
+@@ -446,6 +446,7 @@ &omap3_pmx_core2 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <
+ 			&hsusb2_2_pins
++			&mcspi3hog_pins
+ 	>;
+ 
+ 	hsusb2_2_pins: hsusb2-2-pins {
+@@ -459,6 +460,15 @@ OMAP3630_CORE2_IOPAD(0x25fa, PIN_INPUT_PULLDOWN | MUX_MODE3)	/* etk_d15.hsusb2_d
+ 		>;
+ 	};
+ 
++	mcspi3hog_pins: mcspi3hog-pins {
++		pinctrl-single,pins = <
++			OMAP3630_CORE2_IOPAD(0x25dc, PIN_OUTPUT_PULLDOWN | MUX_MODE4)	/* etk_d0 */
++			OMAP3630_CORE2_IOPAD(0x25de, PIN_OUTPUT_PULLDOWN | MUX_MODE4)	/* etk_d1 */
++			OMAP3630_CORE2_IOPAD(0x25e0, PIN_OUTPUT_PULLDOWN | MUX_MODE4)	/* etk_d2 */
++			OMAP3630_CORE2_IOPAD(0x25e2, PIN_OUTPUT_PULLDOWN | MUX_MODE4)	/* etk_d3 */
++		>;
++	};
++
+ 	spi_gpio_pins: spi-gpio-pinmux-pins {
+ 		pinctrl-single,pins = <
+ 			OMAP3630_CORE2_IOPAD(0x25d8, PIN_OUTPUT | MUX_MODE4) /* clk */
+-- 
+2.39.2
+
 
