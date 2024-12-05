@@ -1,89 +1,86 @@
-Return-Path: <linux-omap+bounces-2784-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2785-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EA629E610F
-	for <lists+linux-omap@lfdr.de>; Fri,  6 Dec 2024 00:07:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BEF09E6114
+	for <lists+linux-omap@lfdr.de>; Fri,  6 Dec 2024 00:07:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C5BF18857BA
-	for <lists+linux-omap@lfdr.de>; Thu,  5 Dec 2024 23:07:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FE40164DFA
+	for <lists+linux-omap@lfdr.de>; Thu,  5 Dec 2024 23:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D65C1D5159;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA761D5CEE;
 	Thu,  5 Dec 2024 23:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="cVPp2XKe"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="gmp4PH7h"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D61B1B87F5
-	for <linux-omap@vger.kernel.org>; Thu,  5 Dec 2024 23:07:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5FF81CD208
+	for <linux-omap@vger.kernel.org>; Thu,  5 Dec 2024 23:07:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733440023; cv=none; b=SJjvxzkgtWk6uya3DiB6gvfVISH+zBcGYeXZ8DObgfnaeG+LyHA5vwtP8DQr8qdFfm59osAZUmHaF1zXYqN4VYYDqAGItLW73EFe29CwbUM+YTD8Pt5Oqms202D2hetk2Z0OghNanAchFqt9zuqUXBGTXFNTf3yRqK2FXU7f7Eo=
+	t=1733440024; cv=none; b=kG89Lje+PUBuCqJerSBeK8+Vvo1n49E1kR+mcD40lCiAxjGKnMswLq4e952b3ZYCYMxb0gNCQCKKcQ+EB1LThTuD9rV/bf9XgRKk60G7rGc5A1X2EeDMq02rDUHrG4+bEfuRVj9KgkWbokAwwTjNrrl+HXoNGcieFBo6YMlP03E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733440023; c=relaxed/simple;
-	bh=UciXj6R8kmj7F1nkPNLftcUuWn2zjjonY7XeTsiisyQ=;
+	s=arc-20240116; t=1733440024; c=relaxed/simple;
+	bh=Zly0najbB8AlaTv0i7Gtty/UzwP5HuEtlSJYD2C3VlQ=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=dWb/GGrKA/PQVZUza8GTyczMyv3HDInCS+/s+wWKUoDBjfydUoVIFDxt42qlfMP/iZnjd5MqrfF8uhPsQaATLaW7N2A1MdAjvdP2Tcd3SZTmV/y+y0ImnRd8eQ+gnO5kvC6V2E7YnaTbiqkYYd6xsw+bvBAHdDNZY4vIqsT4dDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=cVPp2XKe; arc=none smtp.client-ip=209.85.216.48
+	 MIME-Version:Content-Type; b=qE7FesFpT0zVoa71joOsqBY9qy876o84L+XeOSCWao3x11l8ieB/AzA4Xq5MQ067L1mVbbXBfKyev4dOAl4ZaZ+w7ms4DD5IfjvCCukmLjke16T5kPvsNXSVuV9mLY+biMtY9Yr8HKe9XWgBmkJ/PTflhNloU6FZNPQWxGqFVWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=gmp4PH7h; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2ee67e9287fso1267881a91.0
-        for <linux-omap@vger.kernel.org>; Thu, 05 Dec 2024 15:07:01 -0800 (PST)
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2ee3737d2b5so1177612a91.1
+        for <linux-omap@vger.kernel.org>; Thu, 05 Dec 2024 15:07:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1733440021; x=1734044821; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1733440022; x=1734044822; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:date:message-id:subject
          :references:in-reply-to:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2cfmId59vxiNvq6eQ30QkQNn6nuXdIqcNwMG9TRCwVI=;
-        b=cVPp2XKesf4ltGnkcHkA+JjCxU88rJTYqOXLX/RrkGqP1gISqUyPdwdPvIihg026XK
-         u5LOC8eRJ0fGtGxo8/Ij6UHDnrS4svhMGZmVAxezXsQ5ISYn5XePWtOMeU04EGpvh8r1
-         dUs9XTsD/zkWGXqDnNzPTU1gqvG2wiwCgavoYlFG8U/myvrZjdFmpr0KZAISfHeuKD7S
-         dstr4mHMITuc/45nnoFkiz01SFVLkq8wesE1K6HIzRoxDb6aE5tmlSen2qRtwjWlRT/u
-         64wNQTTm8kjMXtGIlbhxRubAFd4DC/HMM3A1Av4kj8QJON2PjA2A1OzSZkhvd9/sP9tr
-         mbRw==
+        bh=1kawVqvMX0D9VNq2FtIGkZW2XMQ02ABccxhfk1LIoQA=;
+        b=gmp4PH7h32Iv9x8paYaVG3WwdTwMG7JHlNlf03FcxI9/aUcc6TpiAhZI3Li4gStMxG
+         9zEP2/5tEg/x42DDy6zdrpHOf3n984Wv7YfP1GQL78b5Y25IxRS3furtct2bVpeCGWd7
+         qhhRWN35W0h8swjJsu5s5tom3hTiNkHxD9SDlU66/HGWAa4vQPEtO5HGg2qLQ5LxTWJ9
+         hKZv1YSLm6Rsq2fgDpg5mKG0dQoKJX6nr7SnBtxJpfrpY/PAseJtoRgVAtzlkXHikjZR
+         l91qvx5JMBrl5GTsCgVya/54CiifjcFT7gPUjPWg0tPDT77yB2x1by5m+R960YFMJCoK
+         Vqcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733440021; x=1734044821;
+        d=1e100.net; s=20230601; t=1733440022; x=1734044822;
         h=content-transfer-encoding:mime-version:date:message-id:subject
          :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2cfmId59vxiNvq6eQ30QkQNn6nuXdIqcNwMG9TRCwVI=;
-        b=qURV26YHwd0Pu5NBz6TnA+VxIlAL8CLjwrUuNFd0+Irvj3pALLawup+1D4dXJIJMLz
-         zdyb9g7C2JCe8plpPgN2mAOgJXZbtsr531c7plobM8MGaN+IwAuT3k7PFWxeFX/y+yqs
-         ypoJn4IFui/BShEIvzkS6E1oDN5guPfpN0acw3M+lVbqyUAG3dHOnWx7EFWzMHBthQni
-         M5uvmAKMgRBxBgOjtFfzkKlpQAI1DecyU8Xopbudvrkt1I7b3lIRpqKEIQPrjfKsXKR3
-         sP6rU3HEHZ5dzbbbgFVXUP4qt36CYIP/ovfG3TdfKgxlOhG5+C5d7xHzf2h1EJzTDrtN
-         QnLw==
-X-Forwarded-Encrypted: i=1; AJvYcCWADycu/zFQMXxUtc/+CNvM590Ly6MHoN+ldzZEnx79dIHjNGfxwLdOvD3s3zdtFLSJNwbZdk7ztno1@vger.kernel.org
-X-Gm-Message-State: AOJu0YwerJa5QNwCof0ipzREqcQ39i+rh9jsCorLzGVs6Z9LY7WVbYGN
-	stNTNTVm2jKqs7LccxaNBA5ufcZg/CVXpdzqpzd364OR/JyQX0aB7qD/kEBMcnsFWgS1K0zODL1
-	QlP4=
-X-Gm-Gg: ASbGnctK5KG2GmqXoZiWJQE8wjGLkyf6F4jdOPln+0mQv3ytO9cBTlGR/GVcIdsD15a
-	zhFUEC8Gp5IZPDw6D2BxE46o5GlEDrLbxpg/Cur7fvHqoA7fPtCz5SVM+8EvFUKIFXA4cdyIcs6
-	JPw0bVhu+XGr5kMc3yOurtjBTUpGTTnd3rkkZxwGfGtnbiUXCRicNOWqe4YfStj7gwAjr6lWAN7
-	a7MyZgWj4I3864nRV3x/+2Sd4N8aXMfAjTiZFV6N1LSb2fI
-X-Google-Smtp-Source: AGHT+IF0lJnHZZwx5qW89pY3JM7PmU56DWfppWtG1IiiileeHZLO1SZtL+I4lEvD0dwQNQWcZ0pTbg==
-X-Received: by 2002:a17:90b:520e:b0:2ee:fa0c:cebc with SMTP id 98e67ed59e1d1-2ef6a6c112cmr1324606a91.20.1733440021483;
-        Thu, 05 Dec 2024 15:07:01 -0800 (PST)
+        bh=1kawVqvMX0D9VNq2FtIGkZW2XMQ02ABccxhfk1LIoQA=;
+        b=gPWiZ6tDZucTdWUO6Q2pOHgWl2rCIwd3uaNc7MD/W3uwndnlkkocmgyJtWMMWNy38+
+         n2ia5opOsuswQpc4nq1+iPanM3VJJcNagQG8BUBb1Dde2qnzTRx25RnnWDaLLgdfDu2c
+         nzmlwFEkXbofDFf1Vt2fK+W3kuP/KZPT3gb+62yTysg0y/zRQdvfpvtYWPrdM8h8wqb2
+         yt0CrIQtApYsog9qrXFe+dSCnJYjyaHdYzfbtX/LgEcZWcEJKSnL929AASah4Ouzzzw/
+         gQTw+kPx5d0LjmoeR6V+zZXRQV6FxhX/gmls0i2q090WjD9dDge18xOHPw9SYEwc/NAM
+         QFuA==
+X-Gm-Message-State: AOJu0YycM9RxXXzrzIGsR3hBX6sM+ruPfVAe9GBwh2h73PhoKFHNHW6P
+	qNcl7bkpfNkTM3zpMRVS5ZqR+0T6ms79c2M8qohCujRccv6AmExODmTUY1GkTYc=
+X-Gm-Gg: ASbGncs3NnC5mTEXfBPdbulYZN2cGyap5iVzFApMf7n0rostI2qBHHmjVV4wIrmRo9L
+	NcwOsU4+Y5Hzuy5oycJapIlQ6TrW7XaXWVTIR/qRh4nexC+Dz0BxIxHJEmgqMyjG0mjFWNXJef4
+	JoeecH9m9boSPpNhOY3xDw2Urc05P894gpknMMgjNLUrkw2uxXe2zfCmiiAtLUVf2GziN5847wt
+	naab8IE7khU4OZcRHSuxNzFR3BYRB/5mOHEWOnVG6VvuMbo
+X-Google-Smtp-Source: AGHT+IFwPmiX90gheQv9w6qawAlgtXeoPQ0CLjB5wPsG0TNidZ75wnmEAYurgATES+m8Lyvjbc3gGA==
+X-Received: by 2002:a17:90a:e7c6:b0:2ee:7c65:ae8e with SMTP id 98e67ed59e1d1-2ef69f0b06cmr1206303a91.11.1733440022328;
+        Thu, 05 Dec 2024 15:07:02 -0800 (PST)
 Received: from localhost ([97.126.182.119])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ef45f7d804sm1938792a91.1.2024.12.05.15.07.00
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ef45f958eesm1939311a91.13.2024.12.05.15.07.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Dec 2024 15:07:00 -0800 (PST)
+        Thu, 05 Dec 2024 15:07:01 -0800 (PST)
 From: Kevin Hilman <khilman@baylibre.com>
-To: Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Andreas Kemnade <andreas@kemnade.info>, Roger Quadros <rogerq@kernel.org>, 
- Tony Lindgren <tony@atomide.com>, Russell King <linux@armlinux.org.uk>, 
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-In-Reply-To: <ec20fd5c347bf74963532e95282f850d209d84d5.1730539664.git.christophe.jaillet@wanadoo.fr>
-References: <ec20fd5c347bf74963532e95282f850d209d84d5.1730539664.git.christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH] ARM: OMAP2+: Fix a typo
-Message-Id: <173344002056.407600.10771943462992727832.b4-ty@baylibre.com>
-Date: Thu, 05 Dec 2024 15:07:00 -0800
+To: tony@atomide.com, robh@kernel.org, krzk+dt@kernel.org, 
+ conor+dt@kernel.org, Romain Naour <romain.naour@smile.fr>
+Cc: linux-omap@vger.kernel.org, devicetree@vger.kernel.org, 
+ stable@kernel.org, Romain Naour <romain.naour@skf.com>, 
+ stable@vger.kernel.org
+In-Reply-To: <20241115102537.1330300-1-romain.naour@smile.fr>
+References: <20241115102537.1330300-1-romain.naour@smile.fr>
+Subject: Re: [PATCH v2] ARM: dts: dra7: Add bus_dma_limit for l4 cfg bus
+Message-Id: <173344002165.407600.61895002978409261.b4-ty@baylibre.com>
+Date: Thu, 05 Dec 2024 15:07:01 -0800
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -95,16 +92,22 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-cb14d
 
 
-On Sat, 02 Nov 2024 10:27:51 +0100, Christophe JAILLET wrote:
-> A 'a' is missing in "powerdomin".
-> Add it.
+On Fri, 15 Nov 2024 11:25:37 +0100, Romain Naour wrote:
+> A bus_dma_limit was added for l3 bus by commit cfb5d65f2595
+> ("ARM: dts: dra7: Add bus_dma_limit for L3 bus") to fix an issue
+> observed only with SATA on DRA7-EVM with 4GB RAM and CONFIG_ARM_LPAE
+> enabled.
 > 
+> Since kernel 5.13, the SATA issue can be reproduced again following
+> the SATA node move from L3 bus to L4_cfg in commit 8af15365a368
+> ("ARM: dts: Configure interconnect target module for dra7 sata").
 > 
+> [...]
 
 Applied, thanks!
 
-[1/1] ARM: OMAP2+: Fix a typo
-      (no commit info)
+[1/1] ARM: dts: dra7: Add bus_dma_limit for l4 cfg bus
+      commit: 08272ce1de633bc99342ac1b7a1bb69172058dc0
 
 Best regards,
 -- 
