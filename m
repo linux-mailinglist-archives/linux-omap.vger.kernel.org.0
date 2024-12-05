@@ -1,173 +1,123 @@
-Return-Path: <linux-omap+bounces-2782-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2783-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF8889E60E0
-	for <lists+linux-omap@lfdr.de>; Thu,  5 Dec 2024 23:51:22 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93F5516628D
-	for <lists+linux-omap@lfdr.de>; Thu,  5 Dec 2024 22:51:19 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1DC41CC89D;
-	Thu,  5 Dec 2024 22:51:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="X8c3LChe"
-X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E829C9E610D
+	for <lists+linux-omap@lfdr.de>; Fri,  6 Dec 2024 00:06:09 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A743719D8B2;
-	Thu,  5 Dec 2024 22:51:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9962D283D3F
+	for <lists+linux-omap@lfdr.de>; Thu,  5 Dec 2024 23:06:08 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24EBF1D5144;
+	Thu,  5 Dec 2024 23:06:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="035i0Ejl"
+X-Original-To: linux-omap@vger.kernel.org
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2B41CBEA4
+	for <linux-omap@vger.kernel.org>; Thu,  5 Dec 2024 23:05:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733439077; cv=none; b=ps8GxcrmO1ns7wHoCbRJck3i0lfNK/6qvEEWC41BimcT78mtPPg81aFje1N7aPcbs7jIWLiU1yR6LcLbZ2Bg9Z0OCHoEh4HKEDGgsh3dachIzksJ6hs5wOSEI5O94sPhlX9gBh8wxqMox+ikanc9sWiGA5bguW9jU840/YpyNsg=
+	t=1733439961; cv=none; b=Zy4Z8g3VhUJyuDteHEpXX4Mr6KmJThFQjoRqEj29Ohgjx2zYiz+yu2S7W/V4Z4BO4e2UWDsJhNpXfW/vnNkAzU5d0x+jl9qp3qdMa7dDhWtRB4SPGCnIQG+MeedOdU+Tu5+kuQnKmIxH5jnMcB9oHOb46s8JPSjMEP47efUGuAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733439077; c=relaxed/simple;
-	bh=8ijS+ITobv+GsRKbZX8Z7wGLSJ4uPcgfXMWIQEL5lVU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q5RxBod6tfXG3Mo86AjojP88cMMlpdk8NsMYQITgh+mNmm56RhecWDQzdQvplM3+MWEuGCLOKZoBWME1RNA35l7XbvToG5jigexgKM0YP0Hu2N7iRBoXw97NjdaYPVzJDaEHSjQjV7q5AhR2jNyqAFQthCVEIKb/peLRyUwBqMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=X8c3LChe; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=LXgCfiKDJI0BTBlEwF4kcyyFHf2VWkOpvnbNBhqvwxQ=; b=X8c3LCheM4dStTinHAGLMMF9ra
-	hdAig9828TLDWimJUA3DMIJLJlEYjKgCCj+k6s44jqRDCLcd+u8UO5xliEzye3j293GefmenAfDOc
-	ZZHpCL6U7bd9lwzOCoWM2r4qW4c6olkLnnD1rXPoTjChR7HR8F2K4Ke/K9G8jB41PsUWQ3K3b4GZX
-	TSWAOC6i1NeG147kb/BZXBWMB2HUt9eUq40VLMs2e19aOYlt282gLpNAChbaQAol+7Adb8NMniKBq
-	pPHleXYNH1Djk3Oyv33b3U8+/cljpsOx7jmL47mXPfKOYgEThPeUnuZJs6wufxWuqRw5q0DlS9KWV
-	niNiVjiA==;
-Date: Thu, 5 Dec 2024 23:50:56 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Karol P <karprzy7@gmail.com>
-Cc: Roger Quadros <rogerq@kernel.org>, aaro.koskinen@iki.fi,
- khilman@baylibre.com, tony@atomide.com, lee@kernel.org,
- linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
- skhan@linuxfoundation.org
-Subject: Re: [PATCH] mfd: omap-usb-tll: check clk_prepare return code
-Message-ID: <20241205235056.44b6c980@akair>
-In-Reply-To: <CAKwoAfrvqUxPat9a+4LjRKYx2LZ=n6Q2H+ir3KYkBBj+Rv_HWQ@mail.gmail.com>
-References: <20241113211614.518439-1-karprzy7@gmail.com>
-	<486d5734-aa02-4a5e-b2ee-fdbba65179a3@kernel.org>
-	<20241119145622.2f1f0342@akair>
-	<5d6ccb9f-a8f1-45eb-b54a-cd66e637a2cc@kernel.org>
-	<20241126230647.68b20fcf@akair>
-	<CAKwoAfrvqUxPat9a+4LjRKYx2LZ=n6Q2H+ir3KYkBBj+Rv_HWQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1733439961; c=relaxed/simple;
+	bh=KtxXe4kgB0BnW3MsFzYn465Cqu75ZgmvR8VczHsk0ts=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=XrBc+hCDnIfWxiw9JBmYlaU4NADO3TnVa8Lme8KiT44P7Mqxq6xd5noMsaqjXaojxnElmjmwNEykgs6mQk0vqp+wy0Kw3soE2JCfEWGnx9n6Mo8+DBGqe4D0UOmqKBfRao8TgUu3ZhDizI3UYczuVBM2akwB7PkD3FtM6hvEpsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=035i0Ejl; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-215c54e5f24so13890145ad.2
+        for <linux-omap@vger.kernel.org>; Thu, 05 Dec 2024 15:05:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1733439958; x=1734044758; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JF86DSQKrbpE7zkN2nZ2brMlp1Djxw82gJt7o2CQPAc=;
+        b=035i0EjlumNK2kL3E73CEI22yu/W3Cz+/ySlvV5hxJbhYCOgWW9u52L25pH4xHOElp
+         DMc1vnF3jDAKd08M9sUEU/pLHYHIwfVxi1ICfyhq4mSjojGIZ344IT8x7l6tblc7ASxX
+         cT0sz2k/id7+3R2u1I8gPgCPDfDKUa6FBTCdgNuHgto2SBSloQSWCBg80IVofiZwii+y
+         gDDnrAwv9/ud4gjlJZ08D0d3CIEtcVe7qeB7fc1ORMCuK7NOGOFNUYyfYRv3kslhAihU
+         AQan1aaDS9oDNO8ujM+qrWv/AqL7JCcVREnNjgx6EPMnVFI6OUPYe69MgKe9A/mFuV7R
+         gFjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733439958; x=1734044758;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JF86DSQKrbpE7zkN2nZ2brMlp1Djxw82gJt7o2CQPAc=;
+        b=j1oTRO7QlKlLtAwAl5xf1GpGcK+TQsp3c2lHWRcKRfY+1QYcGGgM6BHoYmiWwEFJ21
+         NnKiXsBXw3+VY8DOTu/X8qHoUaIeO8WCX0VU56pSiWbEC0uXmDHg5V7gOOhrzOE0C+Gm
+         bBL2fpwC9s9xxxhZfbXW5mmzPzFSwzTPVfWDvGGskX4s7+6NFWfpg1nuNoT2HTCQclLp
+         9NSM94xazHg00lgJHOLGhxKP+H/qPyIh0O2VSDuYUwfb138CzKUx7lE/vhWTgj3JU05d
+         U4ALp6cvGsbTNIopCN8nafX7SN6OKQn3j6z/NqkWxAdkFc6uzK+BISmH3pVjEGPW+V4p
+         YD5A==
+X-Forwarded-Encrypted: i=1; AJvYcCVPBLOPr/LhvWhg7CWB3RTKcp7bgJeG76OVDvMY2uF27JdkA9RHQX0inFtktMjD41l/FbZAfP4//J1Y@vger.kernel.org
+X-Gm-Message-State: AOJu0YybwaJSB7EFATXbHejBCaUFnSwbqDlZMC9cWAg2RyrpPS/hyeQV
+	k+QkVgOKaJtstWSFHNGpzhONNBNAEGCRmaWAfgINuauMd60GSbc2idfg/6MlqYk=
+X-Gm-Gg: ASbGncvbylJnuWJhyylUiMnoRydZn1DoENrWbriCqOFgho2Ep5XTahpFlU9dXQfE9Wz
+	Kc0mGOqQa8LfC5ilAxlCJneyl22eVOnOpo8M2qYRnbJhBclBXcAMDNgBhRxTlEuHDsaW3FHcF66
+	lU35f2td7O24AIcvGXOB4/0mna0M6JEa8LtEXzDLfDFWcITL8mR8gbfN/aYd/6zT/cHfP/L8VEY
+	SHfblQSSieuABawbfxzpb+l5zs3MXTta21F29VdpTq3S7aM
+X-Google-Smtp-Source: AGHT+IH2vKnwRVJfKJzkSGh5FdTz/wRZJhZsXQWgmQ3KNajlOo7D+P5OBQ8tqAAXIc8fvqH0d73N5g==
+X-Received: by 2002:a17:903:1103:b0:215:acb3:3786 with SMTP id d9443c01a7336-21614d445d7mr8493235ad.19.1733439958591;
+        Thu, 05 Dec 2024 15:05:58 -0800 (PST)
+Received: from localhost ([97.126.182.119])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215f8ef9df9sm17546475ad.148.2024.12.05.15.05.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Dec 2024 15:05:58 -0800 (PST)
+From: Kevin Hilman <khilman@baylibre.com>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Andreas Kemnade <akemnade@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Andreas Kemnade
+ <andreas@kemnade.info>, Tony Lindgren <tony@atomide.com>, Conor Dooley
+ <conor+dt@kernel.org>, linux-omap@vger.kernel.org,
+  devicetree@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RESEND 0/2] ARM: ti/omap: gta04: properly specify GTA04
+ touchscreen properties
+In-Reply-To: <20241205204413.2466775-1-akemnade@kernel.org>
+References: <20241205204413.2466775-1-akemnade@kernel.org>
+Date: Thu, 05 Dec 2024 15:05:57 -0800
+Message-ID: <7hldwthgru.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-Am Thu, 5 Dec 2024 22:54:05 +0100
-schrieb Karol P <karprzy7@gmail.com>:
+Dmitry,
 
-> On Tue, 26 Nov 2024 at 23:06, Andreas Kemnade <andreas@kemnade.info> wrote:
-> >
-> > Am Tue, 19 Nov 2024 16:16:42 +0200
-> > schrieb Roger Quadros <rogerq@kernel.org>:
-> >  
-> > > On 19/11/2024 15:56, Andreas Kemnade wrote:  
-> > > > Am Tue, 19 Nov 2024 15:10:23 +0200
-> > > > schrieb Roger Quadros <rogerq@kernel.org>:
-> > > >  
-> > > >> Hi,
-> > > >>
-> > > >> On 13/11/2024 23:16, Karol Przybylski wrote:  
-> > > >>> clk_prepare() is called in usbtll_omap_probe to fill clk array.
-> > > >>> Return code is not checked, leaving possible error condition unhandled.
-> > > >>>
-> > > >>> Added variable to hold return value from clk_prepare() and dev_dbg statement
-> > > >>> when it's not successful.
-> > > >>>
-> > > >>> Found in coverity scan, CID 1594680
-> > > >>>
-> > > >>> Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
-> > > >>> ---
-> > > >>>  drivers/mfd/omap-usb-tll.c | 11 +++++++----
-> > > >>>  1 file changed, 7 insertions(+), 4 deletions(-)
-> > > >>>
-> > > >>> diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
-> > > >>> index 0f7fdb99c809..2e9319ee1b74 100644
-> > > >>> --- a/drivers/mfd/omap-usb-tll.c
-> > > >>> +++ b/drivers/mfd/omap-usb-tll.c
-> > > >>> @@ -202,7 +202,7 @@ static int usbtll_omap_probe(struct platform_device *pdev)
-> > > >>>   struct device                           *dev =  &pdev->dev;
-> > > >>>   struct usbtll_omap                      *tll;
-> > > >>>   void __iomem                            *base;
-> > > >>> - int                                     i, nch, ver;
-> > > >>> + int                                     i, nch, ver, err;
-> > > >>>
-> > > >>>   dev_dbg(dev, "starting TI HSUSB TLL Controller\n");
-> > > >>>
-> > > >>> @@ -248,10 +248,13 @@ static int usbtll_omap_probe(struct platform_device *pdev)
-> > > >>>                                   "usb_tll_hs_usb_ch%d_clk", i);
-> > > >>>           tll->ch_clk[i] = clk_get(dev, clkname);
-> > > >>>
-> > > >>> -         if (IS_ERR(tll->ch_clk[i]))
-> > > >>> +         if (IS_ERR(tll->ch_clk[i])) {
-> > > >>>                   dev_dbg(dev, "can't get clock : %s\n", clkname);  
-> > > >
-> > > > if you want dev_err() later, then why not here?  
-> > >
-> > > Because clk is optional. If it is not there then we should not complain.
-> > > But if it is there then it needs to be enabled successfully.
-> > >  
-> > I guess you mean *prepared*, the clock is enabled later (with error
-> > checking). But your reasoning makes sense.
-> >  
-> > > >  
-> > > >>> -         else
-> > > >>> -                 clk_prepare(tll->ch_clk[i]);
-> > > >>> +         } else {
-> > > >>> +                 err = clk_prepare(tll->ch_clk[i]);
-> > > >>> +                 if (err)
-> > > >>> +                         dev_dbg(dev, "clock prepare error for: %s\n", clkname);  
-> > > >>
-> > > >> dev_err()?
-> > > >>  
-> > > > So why do you want a different return handling here? (I doubt there is
-> > > > any clock having a real prepare() involved here)
-> > > >
-> > > > As said in an earlier incarnation of this patch, the real question is
-> > > > whether having partial clocks available is a valid operating scenario.
-> > > > If yes, then the error should be ignored. If no, then bailing out early
-> > > > is a good idea.  
-> > >
-> > > In the DT binding, clocks is optional. So if it doesn't exist it is not
-> > > an error condition.
-> > >  
-> > > >
-> > > > clk_prepare() errors are catched by failing clk_enable() later,
-> > > > ch_clk[i] is checked later, too.
-> > > >  
-> > > >> I think we should return the error in this case.
-> > > >> (after unpreparing the prepared clocks and clk_put())
-> > > >>  
-> > > > and pm_runtime_put_sync(dev)  
-> >
-> > which can probably be done before dealing with the clocks. It is only
-> > needed for the register access.  
-> 
-> I'm fairly new to this subsystem and I'm trying to understand the
-> conclusion. In the end, we should add dev_err() here after
-> clk_prepare() with appropriate handling?
-> 
-we must make sure pm_runtime_put/get are paired and _put is called in
-any case. Looking around a bit:
-I think a good solution would be along this lines:
-https://lore.kernel.org/linux-omap/34ab5f0b78c2869cc43797a72d6a2f40d9b246f3.camel@siemens.com/T/#u
+akemnade@kernel.org writes:
 
-using devm_clk_get_prepared() things can be simplified.
+> From: Andreas Kemnade <akemnade@kernel.org>
+>
+> Specify touchscreen in a way that no userspace configuration is needed.
+>
+> Note: if the devicetree patch is in without the input patch, things
+> will be broken in a different way.
 
-Regards,
-Andreas
+Due to this dependency, I can queue this driver patch in my tree along
+with the DT patch so things go in together.  Let me know your
+preference.
+
+Kevin
+
+
+> Andreas Kemnade (2):
+>   Input: tsc2007 - accept standard properties
+>   ARM: dts: ti/omap: omap3-gta04: use proper touchscreen properties
+>
+>  arch/arm/boot/dts/ti/omap/omap3-gta04.dtsi | 6 ++++--
+>  drivers/input/touchscreen/tsc2007.h        | 2 ++
+>  drivers/input/touchscreen/tsc2007_core.c   | 5 ++---
+>  3 files changed, 8 insertions(+), 5 deletions(-)
+>
+> -- 
+> 2.39.2
 
