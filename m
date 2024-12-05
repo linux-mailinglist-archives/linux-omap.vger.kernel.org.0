@@ -1,87 +1,89 @@
-Return-Path: <linux-omap+bounces-2786-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2787-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B709E6116
-	for <lists+linux-omap@lfdr.de>; Fri,  6 Dec 2024 00:07:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 056089E6119
+	for <lists+linux-omap@lfdr.de>; Fri,  6 Dec 2024 00:07:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC1EF1653E4
-	for <lists+linux-omap@lfdr.de>; Thu,  5 Dec 2024 23:07:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1A0518856EA
+	for <lists+linux-omap@lfdr.de>; Thu,  5 Dec 2024 23:07:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95781D47BB;
-	Thu,  5 Dec 2024 23:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE59C1DD872;
+	Thu,  5 Dec 2024 23:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="wu0M+LSE"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="u0Eem8cN"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CC11D5144
-	for <linux-omap@vger.kernel.org>; Thu,  5 Dec 2024 23:07:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9FE1CD210
+	for <linux-omap@vger.kernel.org>; Thu,  5 Dec 2024 23:07:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733440025; cv=none; b=KqWFZy+9w+lh3YMiR3lJ9dQHVUL1XUevSXQpzR4I1hLTJRBo8RIeRiIUt5pzT6LZ+WjbR6eh4Cf48i0d+rTdGuTbsxhrpx691IQCVneRbE336NqNd9QCwWCYXeAGS+ow2H6ABSxUyZCE7mCTe7Ik6xMCtbsvRBFvdnInE8be5ps=
+	t=1733440026; cv=none; b=DioAO4LFRkOrOmHnmqbFz7iMFolfJRQpf1oKiQrQRa5SyTYJaU8hl9V/GmguQEymcRB9Zy//PvWtdH64Vip/jp6j0n9fERYMLfgex5UvQqoh4rKHL01TBKMFgSqfDdZSeZxyx/YgKE7GFceZ/eMpc+O+JnMYbhJ1dPbreGusrRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733440025; c=relaxed/simple;
-	bh=2HsTzA1w0YfwwqEx3xzfdl7kS22hPDUqbkpVscfFTV0=;
+	s=arc-20240116; t=1733440026; c=relaxed/simple;
+	bh=CCO50Zue0Xdj/fk+qKD58FhQn3S/oqKwUZ1sNgA60vw=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=X0YepvZYRGbkgRRXVu1wQK3mUyWBUv1R/abgL52oGVQmHYgHgRnNoLhjlPJdMOttpU6a68YsBbtDRl4Asjh3yhxdV3E1RkfEx6yOKaOyMQWu6TuE32wOo7qsOy+UHZ605onBKRNm8iJra3/m7GHPGvV3umuZYD0cw/XWXAetayg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=wu0M+LSE; arc=none smtp.client-ip=209.85.214.178
+	 MIME-Version:Content-Type; b=J9nARnoXJ3QI8a6OMukJIRBau4LK1hrMCtzEWtqVMw8MM7FS9NPOnYb83yI/js7mH5mNaN7F9lm1rHO8Vu3EwFE5Omnw4NdoxRdSRq+lQjebAjqz5eTtOhsapwndlAwG6szZhUUxLemU7Q1afRjPM8otakvB2z+jEQTsdAH1+Go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=u0Eem8cN; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-215666ea06aso21570705ad.0
-        for <linux-omap@vger.kernel.org>; Thu, 05 Dec 2024 15:07:03 -0800 (PST)
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7252b7326f4so1283517b3a.2
+        for <linux-omap@vger.kernel.org>; Thu, 05 Dec 2024 15:07:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1733440023; x=1734044823; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1733440024; x=1734044824; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:date:message-id:subject
          :references:in-reply-to:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6kle5zEPMtEhuui3Ww/DJjS4eRs1ij9eEcdmb0zWS6M=;
-        b=wu0M+LSEgAHWfcfizfyp+h+JrNHpKUySIvkckofHOf5qBHdf7K424PK/EmEp2635xx
-         3bupIqpWUjWl6bDf542o80orKpuO/IZsReYNJqXb+lGQd0sj+jYXpQexQJeoU08pVpRG
-         pnmoxSK6FBGQ3BxggWvaZip/ldB5fKSb/098iuy0jfrjSHN1YX8RqLzx4fnVrgOiktfS
-         NP1yOrCSD1K+zJwtSoptq/TEokGg9WphCPASlGGP6tZ/Quu2vYuNvnMAAAuApmquv9wm
-         treHp93BWCRYBVdG/zvovqRG0susXXyvL83n+y252x/Pt088RUBXlMH0OYW+xkLMdQPg
-         IAvQ==
+        bh=rHr0wvrqV9j93xPxdFahGVGm+ykMuChm+8HToI4FbxQ=;
+        b=u0Eem8cNfp+rCylX4VakoxayCb9KQX4oJ2bsZahWkA8MhpShPSb524Rgiz3Q7SbZnM
+         GDNk2HtXQjnH7/LYh6w/6HQCaCOxI2pLcFpRdQVrS5bpT6+zRVcf5zJAAAt/alypz+ac
+         mHCxRDRfiEfZMhp9z2QCyBvzB5RxQpQm6tSVskWOr1VweJHLq7gsenMrAbfZ3j5a3mIp
+         gXq4sgKREkvSisXdD0UNM+DFVzWU9nJ5JlPtMNj88GBOV/NAlxPsEIc7hLHOdt0jhvsn
+         qsAO7NOQr1DR6x2l2zsRqECumpOfR2XmfdbtPoonTgFhhhROevhdsaRLQ7FTJ0B00IvV
+         BMlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733440023; x=1734044823;
+        d=1e100.net; s=20230601; t=1733440024; x=1734044824;
         h=content-transfer-encoding:mime-version:date:message-id:subject
          :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6kle5zEPMtEhuui3Ww/DJjS4eRs1ij9eEcdmb0zWS6M=;
-        b=Ployrr2+IOUX/WwfbzwYrGBiy8wlXXZ1jxTMxmajffUBI73fkipzvXjRJKJ2Q7g0Zp
-         T2G2/7FTGfrR92e5pD2Nn9aHHixrVqCU0nXYzGZX1LMfMDR39Wgfp5Rq/8z8TQ3N83LK
-         KIIUllK9qyv/5lIh1DxV7L0c42x1wAsMmttYpOXfhx/tf1EmaIqVNsUlmrYPQvFwIdC9
-         VrUgvcRMgilZ5dNQnhf+Hvvb0DOOf0RE+awbk3DPQewhUqrC1DHsu8Y0CeL2NspWMiUU
-         2gBe5g4GHmE/aKfHSepPh4Lc+HVDyww2ahKMgHt1KWMmW9ddIyBfOrTlkCxwSF/MKxJl
-         JMOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWrnHei5cFgT/BFU6GiS0rsgppu5SP+2Omb07qmJaZksjDAVkOcshr75/z26uEEeOsIZ/mwzImRZe6F@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRYv2vUokVgCYEYaBwpyLGOChzLqIniKKL2RdFFxSMe6WYX2IP
-	diaaQFDc5ixzTDsb3gL5/h1HNDVjvu9C3gmGHggusisGtbAbkhliAFsdT09AcSk=
-X-Gm-Gg: ASbGncsPMxz5/bXtsuaPX34cyTOG92oLGjFecHG6Q45jXIq7us0yUsmeDksTzV9SjCp
-	Rietx8Muuv3pgItEPF2GlLqtTwkRKcKMLRTsRedQyZPL2rxGujI7EC8obMB6BbiSHSPufQVEvF9
-	wjFIH2NG6dpofNiGlkPSi/g3DlLWdw5A1jjpOjk1GPv7wEWCxbtvwb3xBSBoJmf3DrpJhGPndKF
-	KdM+MGSbH+Lw4Ik6qkQILkh6+SYsFJPybSX1UfR4plZLIAG
-X-Google-Smtp-Source: AGHT+IHGIUGWc0kWhwreBCBvD1jXL3mC+VTLShhIdZHR+xTCtRjLfF4NDAE2iMiB0kRfqmx1ivCo5g==
-X-Received: by 2002:a17:902:da8f:b0:215:8847:4377 with SMTP id d9443c01a7336-216112fb5e7mr15166295ad.15.1733440023266;
-        Thu, 05 Dec 2024 15:07:03 -0800 (PST)
+        bh=rHr0wvrqV9j93xPxdFahGVGm+ykMuChm+8HToI4FbxQ=;
+        b=BdnjfdlZcOSw5iiCgi6pOlegjYodGZauRCJn8RHHIvzr7s9wORKPBJY0SMTTkEKl+t
+         6h6UFNTRwyDMLFvVKX3D9nfXZ7lLSUzfv3s6whf+K8mDJGzLZQC2A1omAFNMw/FuWmXx
+         ZSUkdQl2bdHq6GtLjjp1MzjfDY01ls9y1vFeQVGWudrEoGMr/Xn3iPVYFaWnZ5bXoj2W
+         G2Bp7np5X88TXG/wBoTw7ZeL6fpyRISX61Tj/NEkq4DTdqIe3yjjCfaJo8mRURpr0ej/
+         0Ajk/BOSvI5VvdCQ472WGlOypjTR1/a9FiXBVjo4sCwoeXwcbCqdahr6uJBtbday0Bdo
+         oXZg==
+X-Forwarded-Encrypted: i=1; AJvYcCUipqrWHSP3JiZY6NroUC9FKrbfPvjii8xXBYfFKb5JgiCw0QE6cUp1vuyCmsoIAxNyz2KLO6NTKOvc@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIrhkqC+N0omIBtpRfsk4rS8QP6AWeTFj91NdIsLEcn8cRLG6j
+	La9v2P6UoIDJyYnr9DB8t/Dw4VUXrgzPoWjkUGSUNaUt9BzN8Li8jQeGkTiC7SE=
+X-Gm-Gg: ASbGncvEMMDsUUDZMmYXUdsNv7CXNAoqzABuwp/CeMvdThUMYoyOJvJoNszdasjxmV+
+	0WE8gBen8KCL4u34UQ8q+gKBZCG/ZM151HBBRlG3tZEbzk2QEmz5GcIbdoBLJN5PtN7Ne8CCOav
+	nLF6omD6VikM/U9TFblx4TMhyNd58slb0Y6G7yVO09NuFUA6TwyoxsMFMRIZzif/qBr9uLhaKj9
+	DEZUxKssIZ211BDPAZpHWVS6nYvd3iChbLLikgS30C6SN11
+X-Google-Smtp-Source: AGHT+IFa/tMdzlYgmSpyyWIuzMHOlTyyH5aaxdzqWaBNMPhD6FY5xDPdWjyhOGetFe7TxDwBl+cLKA==
+X-Received: by 2002:a17:90b:4f46:b0:2ee:eb5b:6e06 with SMTP id 98e67ed59e1d1-2ef6aaf3a46mr1402911a91.36.1733440024409;
+        Thu, 05 Dec 2024 15:07:04 -0800 (PST)
 Received: from localhost ([97.126.182.119])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215f8ef9f66sm17568485ad.115.2024.12.05.15.07.02
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ef45f7eaf8sm1937864a91.11.2024.12.05.15.07.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Dec 2024 15:07:02 -0800 (PST)
+        Thu, 05 Dec 2024 15:07:03 -0800 (PST)
 From: Kevin Hilman <khilman@baylibre.com>
-To: devicetree@vger.kernel.org, Romain Naour <romain.naour@smile.fr>
-Cc: linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org, 
- conor+dt@kernel.org, krzk+dt@kernel.org, robh@kernel.org, kristo@kernel.org, 
- vigneshr@ti.com, nm@ti.com, Romain Naour <romain.naour@skf.com>
-In-Reply-To: <20241202143331.126800-1-romain.naour@smile.fr>
-References: <20241202143331.126800-1-romain.naour@smile.fr>
-Subject: Re: [PATCHv3 1/2] dt-bindings: mfd: syscon: Add
- ti,j721e-acspcie-proxy-ctrl compatible
-Message-Id: <173344002250.407600.8303166891165540615.b4-ty@baylibre.com>
-Date: Thu, 05 Dec 2024 15:07:02 -0800
+To: tony@atomide.com, robh@kernel.org, krzk+dt@kernel.org, 
+ conor+dt@kernel.org, hns@goldelico.com, linux-omap@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ aaro.koskinen@iki.fi, rogerq@kernel.org, 
+ Andreas Kemnade <andreas@kemnade.info>
+Cc: stable@vger.kernel.org
+In-Reply-To: <20241204174152.2360431-1-andreas@kemnade.info>
+References: <20241204174152.2360431-1-andreas@kemnade.info>
+Subject: Re: [PATCH v3] ARM: dts: ti/omap: gta04: fix pm issues caused by
+ spi module
+Message-Id: <173344002345.407600.12027474109362942288.b4-ty@baylibre.com>
+Date: Thu, 05 Dec 2024 15:07:03 -0800
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -93,25 +95,21 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-cb14d
 
 
-On Mon, 02 Dec 2024 15:33:30 +0100, Romain Naour wrote:
-> The ACSPCIE_PROXY_CTRL registers within the CTRL_MMR space of TI's J721e
-> SoC are used to drive the reference clock to the PCIe Endpoint device via
-> the PAD IO Buffers. Add the compatible for allowing the PCIe driver to
-> obtain the regmap for the ACSPCIE_CTRL register within the System
-> Controller device-tree node in order to enable the PAD IO Buffers.
-> 
-> The Technical Reference Manual for J721e SoC with details of the
-> ASCPCIE_CTRL registers is available at:
-> https://www.ti.com/lit/zip/spruil1
+On Wed, 04 Dec 2024 18:41:52 +0100, Andreas Kemnade wrote:
+> Despite CM_IDLEST1_CORE and CM_FCLKEN1_CORE behaving normal,
+> disabling SPI leads to messages like when suspending:
+> Powerdomain (core_pwrdm) didn't enter target state 0
+> and according to /sys/kernel/debug/pm_debug/count off state is not
+> entered. That was not connected to SPI during the discussion
+> of disabling SPI. See:
+> https://lore.kernel.org/linux-omap/20230122100852.32ae082c@aktux/
 > 
 > [...]
 
 Applied, thanks!
 
-[1/2] dt-bindings: mfd: syscon: Add ti,j721e-acspcie-proxy-ctrl compatible
-      commit: d8efc0b428856137608ffcbb6994da6041c9fe2a
-[2/2] arm64: dts: ti: k3-j721e-beagleboneai64: Enable ACSPCIE output for PCIe1
-      commit: 1d5e14a20dc60b440c60bec8489acfd45cdf7508
+[1/1] ARM: dts: ti/omap: gta04: fix pm issues caused by spi module
+      commit: 93dadbfbd19fa45405e7ef04014c100b4f7a94ca
 
 Best regards,
 -- 
