@@ -1,162 +1,133 @@
-Return-Path: <linux-omap+bounces-2774-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2775-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F5F9E523A
-	for <lists+linux-omap@lfdr.de>; Thu,  5 Dec 2024 11:27:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDFFE9E54F6
+	for <lists+linux-omap@lfdr.de>; Thu,  5 Dec 2024 13:06:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D0AE164533
-	for <lists+linux-omap@lfdr.de>; Thu,  5 Dec 2024 10:27:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 769AE18825EC
+	for <lists+linux-omap@lfdr.de>; Thu,  5 Dec 2024 12:06:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290371D5AD1;
-	Thu,  5 Dec 2024 10:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA1E2217F31;
+	Thu,  5 Dec 2024 12:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="JofWgZfK"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="Q6zSpAwA"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C1042A8F
-	for <linux-omap@vger.kernel.org>; Thu,  5 Dec 2024 10:27:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE4A21772F
+	for <linux-omap@vger.kernel.org>; Thu,  5 Dec 2024 12:06:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733394438; cv=none; b=a1kUfJNU5MVOM+X49Ggn13oKEi8MHKjN8Ar2DkTkbntVa0mvEBUheb09lasrdyYJ2z/4qvpMmxyDbRPQoDOppHQ9eIZgg1kdBTqr5u7Uek3VaxKFXmSBCZrSO57x80m4/bZ+VZWj21ymlZ8WpU9PxA/BhJEpCy5eyw8lgr+N4Wc=
+	t=1733400382; cv=none; b=RyOdKy7mAr9GXF4YKMVDVWwikNRGOxfbQXKkW9eeskzsDqNVTAaZhlbY+hjfqMJCnVZNh7D2yslDOTk8Tvi1uanJxafHgZe6chJ+Sr6XOQ2GiyTycZpPD+Ar1HXGQ67G/VvxK92czi5idMSotEkqTUSN+EVw1+ujOJM7YPt2Rl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733394438; c=relaxed/simple;
-	bh=8q46dqRV1v2ND/3kJc778fBE2wfFmek/CR405bLPtMc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i1k7LhkfuQH15M/ejGXQHJ1GZytzSVjb/gqJV+5RMBwPE3DsCOVNUVpd/jqQcFMA3xtuTCBrQKe0bXvCa+IB6aXcxA8X9MowYikrRX3aVpw0f5x6I443Bx4O7HjcNuOHFOPpCoJcb6wHlUgWVZYSYpo1mQ6LlfLNzJ3+4mtxrHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=JofWgZfK; arc=none smtp.client-ip=209.85.167.50
+	s=arc-20240116; t=1733400382; c=relaxed/simple;
+	bh=EHhGcMmIPZQlHvSzckeuvpUvnt/z4uItzGTV+aTrF4k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jysRl0irtUJNxsFcASeDHlHIHMqfNMUkmm49ZZ9mM8vlaHDPBVAeVt6oRmdiTL43+Bdm4e5+FpaGdGJmzmEywYYlElVeeVL0FhWAc9arx7hVWgNgCCFmdPROO3gRsKWuRw677ep7OwOozue95GQPURxyh9rM4z6J9VAv6KjMFMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=Q6zSpAwA; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-53e1be0ec84so943969e87.1
-        for <linux-omap@vger.kernel.org>; Thu, 05 Dec 2024 02:27:16 -0800 (PST)
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-385e1fcb0e1so432159f8f.2
+        for <linux-omap@vger.kernel.org>; Thu, 05 Dec 2024 04:06:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1733394435; x=1733999235; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kWr2sPdmT358XoDKa9V480ufmwo78bf7Tj2jfcCUPKQ=;
-        b=JofWgZfKJr/hMvKcIYz1asdNoppYTpgCstHlvRTRmAsIdRmkvoNUUXKuL6sziGiLfv
-         KSnUvmXpULP/UT1w9wfxFw5HtCHW49Sw8EGzRt8HDOWhwXaFcn4Tpzb4Wz6Q6JZTugds
-         rQ0Fh5x7/5XwZw9JFIvYseRJRM8rm7ifdSOBHeKWvoitWq/DxqqSqVOC2B6cLSVHMWCZ
-         SIycHzQmuLvfqQILRRkJi77BhYWO75ydVxAIFfb9HvSEfBhl74FIlBbpysvnG2iAVgvV
-         +SccNVaRWPtpoDYxx1Z2lpGuw5v7tH85GLhhVGV8cwIYFcK9tJoRSE2M7rO02Y4u9RTi
-         7aVA==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1733400379; x=1734005179; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1IMlCojeP5q6YL2cpETJ1hIUJSlb4xwiIMaEqu2JuuU=;
+        b=Q6zSpAwAVLkaZ0CB2Y8LfaPJymkU3+uj+LTIDJe0eqK0JB3k1oeLlxpEaELZ6sGeVn
+         FwDQ5FmsHt61p7ENCDHyiKGYxnr1WDAMINMTJD0wJAQvPjbb2HCtx99dfjTN+7HIC/L6
+         PoEuvrXQH+xvJnV9r5fLTpkabaiNaMOcIStf5MpWjLOasmQSUPaMbts4Ouh2k/CPAjdX
+         H3D1jhu9gVqeLkohSAA9pkFwHbb9bJCgsgtRU2B9mcBac9FtNXtQ25kHyxjeShQM3QcL
+         PzWmsD2wnxjf7g3pHj9tym/T9QRljINXHloRNg5TqHQAyroq70HNMb7/GDSroklbZIuE
+         Df6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733394435; x=1733999235;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kWr2sPdmT358XoDKa9V480ufmwo78bf7Tj2jfcCUPKQ=;
-        b=xBduvvFGoKTLw4904RORMHqPtRSnZctfvrdpjuMRByMDhuRmZ6Xfp8PuHfybFM3Q9X
-         9/6d9nDxuYDvJxsbz6qn+WqZA2h1ZcgsHY8XeWe4BTOaGbngv7QAweKAE15+otzLsz+T
-         /J6PmMmr1spD9+LbyZ7mbHiQBc/UkFz8m9++OVR9IOlbsJ9dYdd0u+x7SfDQ2NWqUX6m
-         9VgZFD4s5nHRUV/aP9yCjz1hpt7PB9E6elPQxxv+cRu8QoApVnqVtX6w/gFKtgp6Tany
-         +9is/+egHqmd3UbtJKacWv9ybd7D5GfiagSqGfpNkOvW2jtK3378TtoNBwxvp25sRgH5
-         mDrg==
-X-Forwarded-Encrypted: i=1; AJvYcCXJcCPzMHvzatGvK6b6SNdmdMpY3YPqtSlKC6C4zBxV9XdcpMM/Rg/fyUZ4ofNKf15eUcJqu9mRfUgj@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3lwtG+JBEEyak38LqhRbP67ZC70YlkQIIXeK4V91Siy4pPWx0
-	sOGosJDIB6UtzJYP8VbSUzYXdTPvnra6QgWaW+h8F82VJ29WQ/Kg9mPW35xRNmLxR8ds22B3N+2
-	IeeoRdnorYI8kZwcpJUuYqxX2I0WwNw4NY+rfwQ==
-X-Gm-Gg: ASbGnctg9k/c2f0Y7OkdjqwS24nQYOllHfz19+S2yAFDSpiU8fha0csmg5b7I6KkVCO
-	vKTWqSQOUUDDMb4IkMu6SbF4oYlyvCn6nNlXgUN8o3f1CUZU4oXpdihTNhGVgOg==
-X-Google-Smtp-Source: AGHT+IGUNiZ2Zr0AGmSGs2mdBuCRnV4lKq45/HGJjBiaJ21c71eSWgLHkCTxlmAm2wmJM4o2z+eKzX5aHRxBC7VjXr8=
-X-Received: by 2002:a05:6512:39d2:b0:53d:cefe:ffbd with SMTP id
- 2adb3069b0e04-53e12a34417mr5547500e87.55.1733394434644; Thu, 05 Dec 2024
- 02:27:14 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733400379; x=1734005179;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1IMlCojeP5q6YL2cpETJ1hIUJSlb4xwiIMaEqu2JuuU=;
+        b=A6dC8G6gI0C4TO42FM7lvWQ9ZVozrdXrFV7ZfXjn0CHukaIdSTJmISpMlTUKM5+OqL
+         q7+MC9SNrqYV5lpRfCyr3l1qxhM5OIHwiaeefWF3ODG7mZ/0oNLU3RYHLAVCmfJLnddP
+         yOOkpK48gZkKUe0VR25KJmhDWsu89UNgXWj9voVCqppTmY1JUa/ObTrY/xhWdevCPUZJ
+         MvnzdDheTpO1IAilwAWQfdMzGqrXW6b51OjEJAwstPKYhRZaE54Gk2Wx1XBlGY4yjGCY
+         /asIcWX7TznY+R5y4D7zGoYxnOtsD+wHBkN9+Io2dHz5iI0fjOIYe65sNlsF2fsW8Iui
+         cTFg==
+X-Forwarded-Encrypted: i=1; AJvYcCWaIPGDtV6gqCgXIICmY6EjsXwyPyyqvOG5HajnJigMWhemkodoWbQv1TL9Cgg643otC2yCsIfoaex2@vger.kernel.org
+X-Gm-Message-State: AOJu0YxB/vXlE/7FeqP2qkFo0cAIrw+Gu0bM+FEfCS3KuplEMUlny+ZN
+	PDcioC/35cVGQvTPogGFOGKsI0umRbaj3RtygPT9oUoJxMMk8TxU9zviKK6kp78=
+X-Gm-Gg: ASbGncuWv0GVmmg/xceJV5Djpoz1A5DySDU18D+2e4aa8TJ6ObY4GTtYFyijGHHV4iQ
+	xYhdOqDKVH0Hdh6uyD3UYmUOX9aoU1I41EciOsLChH57tTBExNK5FdrPqo1snXzYman0Txifj4R
+	AhXxQhkHWF5LbFg2dk/eHXcNkqGV3ZblFHoDagvvhuwxmOo+cRS7jcTrFcS/CJb1pOVMFgJDYOr
+	mTu1bVYKmoO53XW5KOZBGDXkrzh8rLrJyEbf4YfmmnRwr+u
+X-Google-Smtp-Source: AGHT+IF+ZO5Y2Gp4nFlsAx+6No4w7F187R8MDxdYO39Sc8nWC0dgPyV0mOjPzWTk8+ryT1t9Q6houg==
+X-Received: by 2002:a05:6000:20ca:b0:385:fc32:1ec3 with SMTP id ffacd0b85a97d-38607ac4f0emr4407515f8f.20.1733400378815;
+        Thu, 05 Dec 2024 04:06:18 -0800 (PST)
+Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:b496:c2c8:33f:e860])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434da113508sm21934095e9.35.2024.12.05.04.06.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Dec 2024 04:06:18 -0800 (PST)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Andrew Davis <afd@ti.com>,
+	Grygorii Strashko <grygorii.strashko@ti.com>,
+	Santosh Shilimkar <ssantosh@kernel.org>,
+	Kevin Hilman <khilman@kernel.org>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Cc: linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Subject: [PATCH v2 1/2] gpio: omap: allow building the module with COMPILE_TEST=y
+Date: Thu,  5 Dec 2024 13:06:09 +0100
+Message-ID: <20241205120610.40644-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241203164143.29852-1-brgl@bgdev.pl> <213de4bc-3706-4bb0-a827-06c63bfe0294@ti.com>
- <CAMRc=Md_u3YmseW5kV5VH4F99_0P=tc4pWty_fB3dVfv_JDxWQ@mail.gmail.com> <37f90519-48e9-4caa-80c6-9f6ae61aae0a@ti.com>
-In-Reply-To: <37f90519-48e9-4caa-80c6-9f6ae61aae0a@ti.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Thu, 5 Dec 2024 11:27:03 +0100
-Message-ID: <CAMRc=MdMiYE6xmmPqvZcx7MRjzppWkdWerxTiqn6Z9kmiUruwg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] gpio: omap: allow building the module with COMPILE_TEST=y
-To: Andrew Davis <afd@ti.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Santosh Shilimkar <ssantosh@kernel.org>, 
-	Kevin Hilman <khilman@kernel.org>, Alexander Sverdlin <alexander.sverdlin@siemens.com>, 
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-omap@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 3, 2024 at 10:54=E2=80=AFPM Andrew Davis <afd@ti.com> wrote:
->
-> On 12/3/24 2:36 PM, Bartosz Golaszewski wrote:
-> > On Tue, Dec 3, 2024 at 7:41=E2=80=AFPM Andrew Davis <afd@ti.com> wrote:
-> >>
-> >> On 12/3/24 10:41 AM, Bartosz Golaszewski wrote:
-> >>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >>>
-> >>> For better build coverage, allow building the gpio-omap driver with
-> >>> COMPILE_TEST Kconfig option enabled.
-> >>>
-> >>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >>> ---
-> >>>    drivers/gpio/Kconfig | 2 +-
-> >>>    1 file changed, 1 insertion(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-> >>> index 56fee58e281e7..fb923ccd79028 100644
-> >>> --- a/drivers/gpio/Kconfig
-> >>> +++ b/drivers/gpio/Kconfig
-> >>> @@ -530,7 +530,7 @@ config GPIO_OCTEON
-> >>>    config GPIO_OMAP
-> >>>        tristate "TI OMAP GPIO support" if ARCH_OMAP2PLUS || COMPILE_T=
-EST
-> >>>        default y if ARCH_OMAP
-> >>> -     depends on ARM
-> >>> +     depends on ARM || COMPILE_TEST
-> >>
-> >> Why do we have this depends on ARM at all? It already has that conditi=
-on
-> >> above on ARCH_OMAP2PLUS which limits to ARM outside of compile testing=
-.
-> >>
-> >> And anything that selects ARCH_OMAP2PLUS also selects ARCH_OMAP, so we
-> >> could just do this:
-> >>
-> >
-> > I agree we can drop that bit.
-> >
-> >> --- a/drivers/gpio/Kconfig
-> >> +++ b/drivers/gpio/Kconfig
-> >> @@ -528,9 +528,9 @@ config GPIO_OCTEON
-> >>             family of SOCs.
-> >>
-> >>    config GPIO_OMAP
-> >> -       tristate "TI OMAP GPIO support" if ARCH_OMAP2PLUS || COMPILE_T=
-EST
-> >> -       default y if ARCH_OMAP
-> >> -       depends on ARM
-> >> +       tristate "TI OMAP GPIO support"
-> >> +       default y
-> >> +       depends on ARCH_OMAP2PLUS || COMPILE_TEST
-> >
-> > This would default to y with COMPILE_TEST. We definitely don't want
-> > that. IMO it should be:
-> >
-> > tristate "TI OMAP GPIO support"
-> > depends on ARCH_OMAP2PLUS || COMPILE_TEST
-> > default y if ARCH_OMAP2PLUS
-> >
->
-> Looks good to me
->
-> Andrew
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-Nah, this is incorrect, it doesn't build gpio-omap for
-omap1_defconfig. I has to depend on ARCH_OMAP under which all omap
-platforms fall and they all use this driver.
+For better build coverage, allow building the gpio-omap driver with
+COMPILE_TEST Kconfig option enabled.
 
-Bart
+While at it: simplify the dependencies and drop the dependency on ARM as
+it's already implied by ARCH_OMAP.
+
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+---
+Changes in v2:
+- rework Kconfig dependencies
+
+ drivers/gpio/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index 56fee58e281e7..d87b3d99f8f7a 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -528,9 +528,9 @@ config GPIO_OCTEON
+ 	  family of SOCs.
+ 
+ config GPIO_OMAP
+-	tristate "TI OMAP GPIO support" if ARCH_OMAP2PLUS || COMPILE_TEST
++	tristate "TI OMAP GPIO support"
++	depends on ARCH_OMAP || COMPILE_TEST
+ 	default y if ARCH_OMAP
+-	depends on ARM
+ 	select GENERIC_IRQ_CHIP
+ 	select GPIOLIB_IRQCHIP
+ 	help
+-- 
+2.45.2
+
 
