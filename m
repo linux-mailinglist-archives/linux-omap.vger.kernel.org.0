@@ -1,91 +1,90 @@
-Return-Path: <linux-omap+bounces-2789-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2790-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 423769E7E26
-	for <lists+linux-omap@lfdr.de>; Sat,  7 Dec 2024 05:03:51 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F21CF9E7FE6
+	for <lists+linux-omap@lfdr.de>; Sat,  7 Dec 2024 13:44:43 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E6051885893
-	for <lists+linux-omap@lfdr.de>; Sat,  7 Dec 2024 04:03:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1A8D2821C8
+	for <lists+linux-omap@lfdr.de>; Sat,  7 Dec 2024 12:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43D082B9A6;
-	Sat,  7 Dec 2024 04:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B71C1474D3;
+	Sat,  7 Dec 2024 12:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b3zPHHx5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V4/TgPP2"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F01A48;
-	Sat,  7 Dec 2024 04:03:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D96C4E1CA;
+	Sat,  7 Dec 2024 12:44:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733544224; cv=none; b=jLT59/n/f/pPv5yTEWFOgV4oshuTjnW95Njt8CigeNpmPmaG1UBL2ZsP5uAqdn7fCY2mPbuuVir1HC42ct30xa/BSFPjW78cMl+HZuBbS08rVKJ6Geg8EbqAeR/B596quAJLjD7ULKUKtrB9N9JnFGoKKLJM8/yIy/5H+qUr32o=
+	t=1733575478; cv=none; b=JP5gmyB2CjYHg9hExrkzHH4Xk/hO2J2WF0OVJDiLLvelsRFGpy+1XTxsEYojowYzez2lGyjvENwMj/ahG1UZxDEU9xjgBS0RiauzIwBNlN1OohO+dG7g3M6Q4ET6YpGqsd4dQb7RNOAb6vNuxwzFqUWNnUDqw/Al4KO3d+RaNsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733544224; c=relaxed/simple;
-	bh=4RlvqMTU9HOz51t+4LuZNogBP/7G9XL+0b7859+52rE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WCga5sIr1OOCfdmOKy1W8gluQLC2Na0z7IUjW+6q10HjepcV78Mj5txvhVd4XOgyVFkvdrapeGgHpvPvBCJteqRKKZeRpWjsoy6OWY20oEYkRcODwzzK3xztgFqiHrOHQCoP6flVWBXWAO5oRWpT9o0ZNEGpzwaL45+CJdtHEbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b3zPHHx5; arc=none smtp.client-ip=209.85.219.44
+	s=arc-20240116; t=1733575478; c=relaxed/simple;
+	bh=mWAipSee6dJNe1XbDgYVM3k9SMzVbdxqa8PSFsoUKlc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qY/EDQctU+9M2VKoN34DxguUmFeYmvqziMUiIXOib0dSFAPbR7JzpGn1HgwwtXv+4IOSdLGd1d3eAj/5ozcDEpgMIbfZFk4WvcI2HG1rrrhlP1t9wFK6OIjpUpz6IuEj/YOXb4bDv5YAAlKyZLchE9jk5Y1a76WDg1gF80MpuA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V4/TgPP2; arc=none smtp.client-ip=209.85.210.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6d8a3e99e32so23236116d6.2;
-        Fri, 06 Dec 2024 20:03:43 -0800 (PST)
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-724d23df764so2917652b3a.1;
+        Sat, 07 Dec 2024 04:44:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733544222; x=1734149022; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1733575476; x=1734180276; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=02lDdtpT/lKjI8tL6uwlMK+INEuKJZDy985KEGjX8WU=;
-        b=b3zPHHx56hmwYpNq9pgILz8k+G/7yTUWB1ri+H85R+IiR7OpD/q18qZEZO+fEW0U7o
-         j69VUbE4AvBiIz2w1CpT7uWbekaff2ASbkle1HF6x95CsRMgSB2p/HDVCJfgXB6Szw17
-         /CK42mb88AU84tMdZQ1Q5R539gesQaFcQnNhN7iBqaceapdjmrYpxKb74CprRkf19Wy2
-         JoZV1nlVtVJqVSoRK8WFIfMnSg7VywnIzgZk3EZiNYM9/ZLrFwlx3H2zRaewWEV7T3MM
-         +p39i5/th/cXgXTcpAdGh9BEQbRdhyxhAhiD9Z8CLP6IsrNfaEprtlSmuIqmAbDo8yiI
-         2RFw==
+        bh=lXDYeaPIYjwmgZstndoNxUxCayVMTNi77ONF54lCqnM=;
+        b=V4/TgPP203gkRsIoxujxRv3xJUU8uipg3YgpenTmENAruXhBZMqmfnymcusYlh/g9o
+         +ZfC1gdACfkRj7QNLbQOK2GvQ48MZdBHWeSuy5UBQpGdQpP9p8+JMPTBO8zeQzEf6xWx
+         uwoi8/3mE43wqBQpYQ6NH0kVbHo+oaittAldCe7qi52l0cqdgAcfXAX1DfpLCRZw445T
+         gtcK9uUTvrAsgQBYRBWhS6/QuwN1UXANgRJqa7G+7zMlmiSWMyaNcj4vy0fxdgFcoVHd
+         N0Ykp3+y1KsGruw1IcRwoMNeA23x/vu5eaa70sc5g3kCyXZvMZ9tB4a1DefNjl0Sjw3u
+         YiOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733544222; x=1734149022;
+        d=1e100.net; s=20230601; t=1733575476; x=1734180276;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=02lDdtpT/lKjI8tL6uwlMK+INEuKJZDy985KEGjX8WU=;
-        b=EBCb8TO4O6ml+ucvVo4MZzWuu6LGlwJ5JF6b9CVT/8wBSYlZtO/VCV9v6hqQJYw6Jt
-         ZA5Qima7HYwa4tEEUTHaK8os0/ckkStoDv1mvu1vwZtPoofdma3wQ4Qp6qoiuU6+fGWx
-         vae7ODp+K5o2+55p2uyjchWVKwwZTbq4SxeJ39lVpCoX9PBG4+uvje3CfslIIAYVnQ7s
-         VNWK6I/W7gP4OlwsJiD7b5iurOBLiKtumEO+HAJe5O53v1bToJ5jKzXEEEuyW+50g2uU
-         y6/SmIlVouKNKMA10M/sXdCirLvxhZE3QuGeCRSG87o8mzBVwDLnwQ4r3pQUdceyaOHZ
-         Oy5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUHSC7AjT+IjOZgvds9AI8ySFCmiFSz4TlhdjroCvazXI2/4RW7y45OX8U+CrPSxndzDoA7jq0u3THG9Q==@vger.kernel.org, AJvYcCVs/3ocK/8cqr1p4JEwa65RJTxQ43piRVqwGe8flDjEJIRcFPKs6FumLwz8miZDuzQiWq/0/4vBN555k9Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzG3ZDzKzcOKCzAzdcE2oT+S4F+o7CLn/rs3JWx0IrsAHcGigAI
-	k8335z3fQZJt5ZRWkafQqRZV8TWOMrZaat3MzBVAcl0fbIaBPUNQ
-X-Gm-Gg: ASbGncsJ/GLJt7HdTwcFQ2N7567G0oHaHbVK/m+z9+C2uup/XIVPEnn3GkKg9gp0DTt
-	Sc50UFwxxs4Nprz/LzIyhJjeDSsaZXQIY6l7d6dD1xTIyLpehzDHR9mTz6tBBtt/vaCWSGigPpN
-	khzu15yQQmUbRRBhprA5pWpwlQ2+mWRehIRC+GJx+ZWH0TiJe1RSdIe9kGVmMi2K8B+NVF7TiX2
-	8P1U6hGIVr9ISkSL0FnVoiB8CyYsJ5wfDoyycTRKvn+103+FkGFAgPvF1FReg==
-X-Google-Smtp-Source: AGHT+IHFEkPerHwP6yCxf3ANfLes1TowE4jo7/D+KJYqa58QiNfj2wWA5MuV3T84faKmInh/rlO2KQ==
-X-Received: by 2002:a05:6214:b6a:b0:6d8:aa52:74a3 with SMTP id 6a1803df08f44-6d8e71ad674mr83014906d6.28.1733544222419;
-        Fri, 06 Dec 2024 20:03:42 -0800 (PST)
-Received: from localhost.localdomain ([128.10.127.250])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d8ff0231c0sm168556d6.65.2024.12.06.20.03.40
+        bh=lXDYeaPIYjwmgZstndoNxUxCayVMTNi77ONF54lCqnM=;
+        b=HHqNiWcmQMhTvks8iPwXiyZajF31Qpqnzt4GpdoKg4nJ0fZaEtRx0VaJ+5p9jTTkXt
+         eIlRVMSn+JNjNBz/OzktUpSV3aJUDNq6BsHKWVSEFYUhQ2O4wsm5TdEjg+UnujznRdJG
+         AgAzMY/FlcDHmmJTq7ToJ5yHLVQwJLVmQ/3XZhaXHKGSzANO71qUUUOZOZGTSKEfcHob
+         KtFjuOeABi/sWpid4FbxZk2Yiws2FY3c05p7xez4zegmrW4FbJ8F22d2vFciX6BUT9eS
+         rbalfTHxQu4t8g12Ya7sQctID9oNj2+/un+hHBE5EzDeDZlMkTOkxSA7AwfEP+vyTSt8
+         dE4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUgsH/wdwZciA4sLzlby+5BOX8ia5OqcW8WUs8JkMC5NgrkTr4cOX0+pQsbYZj5m+ZgNATBKQFsMPE=@vger.kernel.org, AJvYcCXKsI1x2+MdP03oMIADvRpDX2GC3DFhDpPqt5WXzy+UXIRl4c0abK8W9QhzkimMJIRCTyZcd2tfFeo4yQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjCXPyN2PnsrbfFN+7T6bW8w48O1Kazn1W7E87TEcyrgHLpFWT
+	b4LaYzmmh7fCclQfM9vaQZb5NzbOM7lMZK3eGPP+r7fTKOTAuFth
+X-Gm-Gg: ASbGncvM21VPEhKYiNwtiiP6rkq65COgXlKaXd7T6/67T/WK355ZKV3e4cYmc1UeBI3
+	Cn+lstzEOJLeoVFUElRNU2Mq9ncaRNfBZOBE3iuUCC6H/HyN2yw8UURJP8NzFRWKIEIJ3Tr+8Dt
+	0ngkiJw4bDE0uJSCpfDNL0S/77PW+IaxdBYbDn7FAEu9/feHt/Nb38dfbOBN25RC+HyipUTrWsP
+	6VNlQp1nOYbnZmjrdW87u2qkSz2/A+XJ+N+eqUe1SOWONlg2YeJAlU=
+X-Google-Smtp-Source: AGHT+IEVFy08AW3DD7z6NKC8twNkuYVJRs3aIqJBl8Q7R7OtCjobG7pDgGR5EFaQT+W30hj8l4UD1Q==
+X-Received: by 2002:a05:6a20:6a0d:b0:1e1:161a:fac7 with SMTP id adf61e73a8af0-1e1870aecebmr9858960637.4.1733575475767;
+        Sat, 07 Dec 2024 04:44:35 -0800 (PST)
+Received: from melbuntu.. ([122.171.22.181])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-725c82b4852sm1700850b3a.135.2024.12.07.04.44.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Dec 2024 20:03:42 -0800 (PST)
-From: Mingwei Zheng <zmw12306@gmail.com>
-To: edubezval@gmail.com,
-	j-keerthy@ti.com,
-	rafael@kernel.org,
-	daniel.lezcano@linaro.org,
-	rui.zhang@intel.com,
-	lukasz.luba@arm.com,
-	aford173@gmail.com
-Cc: linux-pm@vger.kernel.org,
+        Sat, 07 Dec 2024 04:44:35 -0800 (PST)
+From: Dhruv Menon <dhruvmenon1104@gmail.com>
+To: aaro.koskinen@iki.fi,
+	andreas@kemnade.info,
+	vigneshr@ti.com,
+	andi.shyti@kernel.org
+Cc: jmkrzyszt@gmail.com,
+	tony@atomide.com,
+	khilman@baylibre.com,
+	rogerq@kernel.org,
 	linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mingwei Zheng <zmw12306@gmail.com>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Subject: [PATCH] thermal: ti-soc-thermal: Add check for clk_enable()
-Date: Fri,  6 Dec 2024 23:07:02 -0500
-Message-Id: <20241207040702.4075128-1-zmw12306@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	linux-i2c@vger.kernel.org,
+	Dhruv Menon <dhruvmenon1104@gmail.com>
+Subject: [PATCH v3 0/2] i2c: omap: trivial code cleanups
+Date: Sat,  7 Dec 2024 18:12:01 +0530
+Message-ID: <cover.1733217877.git.dhruvmenon1104@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -94,43 +93,24 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add check for the return value of clk_enable() to catch the potential
-error.
+This patch series cleans up the coding style based on different 
+kinds of checkpatch complains for i2c-omap and removes unused 
+parameters.
 
-Fixes: 5093402e5b44 ("thermal: ti-soc-thermal: Enable addition power management")
-Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
----
- drivers/thermal/ti-soc-thermal/ti-bandgap.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Changes in v2:
+      1. Improve language / grammar for the patch descriptions.
+      2. Removed changes related to ms_sleep(). 
+      3. split the patch into two patches.
+      4. Sending it inlined instead of as an attachment.
 
-diff --git a/drivers/thermal/ti-soc-thermal/ti-bandgap.c b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-index ba43399d0b38..da3e5dec8709 100644
---- a/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-+++ b/drivers/thermal/ti-soc-thermal/ti-bandgap.c
-@@ -1189,6 +1189,7 @@ static int bandgap_omap_cpu_notifier(struct notifier_block *nb,
- 				  unsigned long cmd, void *v)
- {
- 	struct ti_bandgap *bgp;
-+	int ret;
- 
- 	bgp = container_of(nb, struct ti_bandgap, nb);
- 
-@@ -1206,8 +1207,11 @@ static int bandgap_omap_cpu_notifier(struct notifier_block *nb,
- 	case CPU_CLUSTER_PM_EXIT:
- 		if (bgp->is_suspended)
- 			break;
--		if (TI_BANDGAP_HAS(bgp, CLK_CTRL))
--			clk_enable(bgp->fclock);
-+		if (TI_BANDGAP_HAS(bgp, CLK_CTRL)) {
-+			ret = clk_enable(bgp->fclock);
-+			if (ret)
-+				return NOTIFY_BAD;
-+		}
- 		ti_bandgap_power(bgp, true);
- 		ti_bandgap_restore_ctxt(bgp);
- 		break;
+Dhruv Menon (2):
+  i2c: omap: Clean up coding style
+  i2c: omap: remove unused parameter
+
+ drivers/i2c/busses/i2c-omap.c | 203 ++++++++++++++++------------------
+ 1 file changed, 98 insertions(+), 105 deletions(-)
+
 -- 
-2.34.1
+2.43.0
 
 
