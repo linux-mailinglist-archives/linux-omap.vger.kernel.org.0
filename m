@@ -1,145 +1,127 @@
-Return-Path: <linux-omap+bounces-2804-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2805-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E9A9EC89A
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2024 10:14:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D6AF9ECB25
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2024 12:28:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E12E18886F5
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2024 09:14:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63D6F165B0C
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2024 11:27:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89614205E06;
-	Wed, 11 Dec 2024 09:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 464B7238E13;
+	Wed, 11 Dec 2024 11:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dAG2KN3n"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hQvA1hC/"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64D92036E1
-	for <linux-omap@vger.kernel.org>; Wed, 11 Dec 2024 09:14:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06044238E0A;
+	Wed, 11 Dec 2024 11:27:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733908482; cv=none; b=cksHeWjMGrvLiD9FuWuXMwLlKdkIJte0HMGS4XKWO67PX5qLdWUg9Brd4so1FNJmSD5TztjvX36Wz3oGSdo/EhNjXVWk0dFk6UjodxhFVm309eAOUjKt/F8UcMTV4t7ZVoJRmQfo1FNbDkyn1wtMLGsBrvygg0piRENiVdHhGxQ=
+	t=1733916476; cv=none; b=fbPk9ypKDjD6+oZiHgiZy2QlfKRdGV0OLpyKK5ERkunuZ7BDDCOnaQByxNIFB2Am88ZvFwTiHANFmGN/zXvy79mzvrd+xFoJIyJfGHWSo5XTvfuKQfjKcXUQzfD7ZuUVfe2Sh77tMYAVF0z8L0vkngXLUPL0PJow4jsdy6P7dDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733908482; c=relaxed/simple;
-	bh=Ox+dvyXza+TX7ZDpJ8HAcztROBmWclSerpmh0X86Alk=;
+	s=arc-20240116; t=1733916476; c=relaxed/simple;
+	bh=2Us4bfzXojhF/mgxJqkNu/slsDJ35ZxLUJBErG+LNGc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aNk7hI8v7DTJs09WFAkEcfoWy5rwBN1nry7a4mjptUzJXLYMXpyWs1tNEL4c6PnhYXLKFqsgKoNgPBxKgcUc2+7V0Iy92Cl2DtXTSvAJoN5sNjYhv7a1HhBDpEImsMFlc4wlOQuwKqp7VKvuZLPTZiGIl2mSHQ0244yuP3h28CI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dAG2KN3n; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2166651f752so25956565ad.3
-        for <linux-omap@vger.kernel.org>; Wed, 11 Dec 2024 01:14:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733908478; x=1734513278; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=oUFybBHAtKBg9XAbRfnlqLJtUAS0jaNbKaZp0A764TQ=;
-        b=dAG2KN3nE4vO8Wbzja222Y0MPHoVAEgTLJHUKvG7m+ikMGr334rMGU2cf4OpRmZuDe
-         xwzNcRgN7NNhOgkhz2Rt1WhX+NUhiv2ezU8RUw0eT9oIKmzU5vokUyCeEYGiuYRGUIEY
-         aFo0Vgags/f/+mgxCsD3lpjNiJ6aj6RbqDJ2mFkjPYvfuuReCN4S5BX7IZCNPuZgOPsl
-         rEL9fkHDoOHpE5B73TVeS+p9zUOHoVeG3HzOBevdLUrUzfYErYy2i5grYTlBhBoGj2ET
-         N37JXnGPAIA7fROGRq/FaJq4a74Xza7X+rvHftrmIoG77yZBu82l5VeL7F9IX4byK1jR
-         grxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733908478; x=1734513278;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oUFybBHAtKBg9XAbRfnlqLJtUAS0jaNbKaZp0A764TQ=;
-        b=vvN7DkA638U6GI7Xz0nfnyjOo7sdABRfXzUgg9xqFNz4Dwctws8idTbb2LexnMLu8W
-         5ivAblDfLV5yx2gLJQS4dbBn7xAGbplDgQojnZpJae0ZvM6rIXrDoehqavVMwJEPTwLl
-         oUO+2R8TdYv5B6hOQaflkUA3Wh2zqEES30ZCv/IcO2afPXDqLDASNIVKV0d/6K7Bd8ZV
-         u5Nxpb06ArkksQ9xdpNjmqkUnPiWkaTMMEWBbXSONulfINtnMA3qJAtlpCzsvCMY75C8
-         ex/NZTMboZyjXmsbkl8EM2Iw5THhkqmY0N7/vxFTYqsf7ArSS6AW098IiEGDvecCzQvw
-         OpsA==
-X-Forwarded-Encrypted: i=1; AJvYcCV+arLpHCtKG3gbkZZDg7CX67RkdtIgVRClveJi8q0GzUlyLnlKgjtZXimmnKorXPynvFpEyFS+Zj/I@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOmVNa8gcsPdckvy8wd3myKIny3WH8GZtKU89wjGBVLXAFARXk
-	mzNVC8HNXdMZ/0xRUlwKZHWM7zL6Yz1uC467Yy0J4oqfdVDNSQhv4Xk+I+N28g==
-X-Gm-Gg: ASbGncsQlULWItBBmtiFbMxkqcAYdrhLfQAjhjNkXXKaC49cqf6afBEw6Z9YIl1T0Fe
-	alsVODPUrO6QtWLAH01WX8LfDGQb+QCADxRhVtkB4T3dPXC0Vvy6f2T7RcUu7m5I1LSngBJ4Wlc
-	b994qc6cie0Gjzz46XUZyhTZLZpBBd4PpyJgrlNOhMhvdvwC3dYCetLx48MrNzag8y3IKoD1hKP
-	uC8oJGs7aB4gbKh0C72trKJfur2xMRTLj6Vmxy+v8pHxzjN4YVW8ecjIZ+8P3Q=
-X-Google-Smtp-Source: AGHT+IE7knwn48LdhJslFzK1Zi2TZQ4t5PfbLv5V67ShOU5zUeOc6EVVuqUeQ7tRigEaD2ORk66xQw==
-X-Received: by 2002:a17:903:1d2:b0:20c:9936:f0ab with SMTP id d9443c01a7336-21778696456mr33767495ad.47.1733908477842;
-        Wed, 11 Dec 2024 01:14:37 -0800 (PST)
-Received: from thinkpad ([120.60.55.53])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2164252350dsm54976385ad.43.2024.12.11.01.14.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Dec 2024 01:14:37 -0800 (PST)
-Date: Wed, 11 Dec 2024 14:44:21 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Thomas Richard <thomas.richard@bootlin.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, vigneshr@ti.com, s-vadapalli@ti.com,
-	lpieralisi@kernel.org, kw@linux.com, robh@kernel.org,
-	bhelgaas@google.com, theo.lebrun@bootlin.com,
-	thomas.petazzoni@bootlin.com, kwilczynski@kernel.org,
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	gregory.clement@bootlin.com, u-kumar1@ti.com
-Subject: Re: [PATCH] PCI: j721e: In j721e_pcie_suspend_noirq() check
- reset_gpio before to use it
-Message-ID: <20241211091421.4empou7mbm35ynxq@thinkpad>
-References: <20241210154256.GA3242512@bhelgaas>
- <6c7cb07c-af9e-4f69-84df-2b59a57e4182@bootlin.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=CUbf8eXLGXZCn3Oez+Un+QauQJnwT57T4XKjnEOSuZU2QbgqlsEQeEzsNfy0RCgB6kgIyzuS/T7OL/BAeQv/Pcgi3+JH8xylRU7tFWbPN1tb0TSZI05AejV6lwoQhvFtUJPIaUKnxU/8tLtsbXM9XsldaH7aoQXCLQDLuKtsU4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hQvA1hC/; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733916475; x=1765452475;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2Us4bfzXojhF/mgxJqkNu/slsDJ35ZxLUJBErG+LNGc=;
+  b=hQvA1hC/LZV8NJTnSDaOaXe5m3iIIjuYC21eI6IdkTwO+ZgbKSARhPG9
+   GQR2lXkXNxGBem2N4VTUIM4vY8waHuxkFyljVUmF4MMctxb20dqtU13hI
+   kbJfJNd9kxAw6yO07mBQWPsn34NmQEV1j5/S+2OEFwYgXqU9eONMZdEaV
+   63/lx6m/hgE45Mhe7Y5kF4a5fSNG5KHqMwhuGpnyqBk1Sn2QRclhtig8o
+   UhTOKOpDlcPO7zWLEPykfhW5SDLU2Vqd6GzDSaQnSkuG7rmljogP9CBwI
+   u3CVXTXKfSftjnwRz1XKM7oBIaOmLAT0li5Go4EpAI9CL7e0neYLR0krT
+   Q==;
+X-CSE-ConnectionGUID: jrEsPT7GTuOrWBV8YxYP3g==
+X-CSE-MsgGUID: VpUICRRCTW+lmWjl9QG+aw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="37978594"
+X-IronPort-AV: E=Sophos;i="6.12,225,1728975600"; 
+   d="scan'208";a="37978594"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2024 03:27:55 -0800
+X-CSE-ConnectionGUID: HBhJwqgPSC+bcp6DswDgZw==
+X-CSE-MsgGUID: Y9GNGIj1RuSv2t7nsGCMDg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="100716109"
+Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 11 Dec 2024 03:27:53 -0800
+Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tLKsg-0006av-0a;
+	Wed, 11 Dec 2024 11:27:50 +0000
+Date: Wed, 11 Dec 2024 19:26:47 +0800
+From: kernel test robot <lkp@intel.com>
+To: linux@treblig.org, rogerq@kernel.org, tony@atomide.com, krzk@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"Dr. David Alan Gilbert" <linux@treblig.org>
+Subject: Re: [PATCH] memory: omap-gpmc: deadcode a pair of functions
+Message-ID: <202412111932.lp8jHbeT-lkp@intel.com>
+References: <20241210220628.237604-1-linux@treblig.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6c7cb07c-af9e-4f69-84df-2b59a57e4182@bootlin.com>
+In-Reply-To: <20241210220628.237604-1-linux@treblig.org>
 
-On Wed, Dec 11, 2024 at 09:59:30AM +0100, Thomas Richard wrote:
-> On 12/10/24 16:42, Bjorn Helgaas wrote:
-> > On Mon, Dec 09, 2024 at 12:23:21PM +0100, Thomas Richard wrote:
-> >> The reset_gpio is optional, so in j721e_pcie_suspend_noirq() check if it is
-> >> not NULL before to use it.
-> > 
-> > If you have occasion to post a v2, update subject to:
-> > 
-> >   PCI: j721e: Check reset_gpio for NULL before using it
-> > 
-> > s/before to use it/before using it/
-> > 
-> > Did you trip over a NULL pointer dereference here?  Or maybe found via
-> > inspection?
-> 
-> By inspection
-> 
-> > 
-> > It looks like gpiod_set_value_cansleep(desc) *should* be a no-op if
-> > desc is NULL, based on this comment [1]:
-> > 
-> >  * This descriptor validation needs to be inserted verbatim into each
-> >  * function taking a descriptor, so we need to use a preprocessor
-> >  * macro to avoid endless duplication. If the desc is NULL it is an
-> >  * optional GPIO and calls should just bail out.
-> > 
-> > and the fact that the VALIDATE_DESC_VOID() macro looks like it would
-> > return early in that case.
-> > 
-> > [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpio/gpiolib.c?id=v6.12#n2316
-> 
-> Oh yes you're right.
-> In fact, the if statement in probe() and resume_noirq() is for msleep(),
-> not really for gpiod_set_value_cansleep().
-> 
-> So this patch is useless.
-> 
+Hi,
 
-Yes. Almost all of the GPIO APIs accepting desc (except few) use VALIDATE_DESC()
-to check for NULL descriptor. So explicit check is not needed.
+kernel test robot noticed the following build warnings:
 
-- Mani
+[auto build test WARNING on krzk-mem-ctrl/for-next]
+[also build test WARNING on linus/master v6.13-rc2 next-20241211]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/linux-treblig-org/memory-omap-gpmc-deadcode-a-pair-of-functions/20241211-062027
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/krzk/linux-mem-ctrl.git for-next
+patch link:    https://lore.kernel.org/r/20241210220628.237604-1-linux%40treblig.org
+patch subject: [PATCH] memory: omap-gpmc: deadcode a pair of functions
+config: i386-buildonly-randconfig-002-20241211 (https://download.01.org/0day-ci/archive/20241211/202412111932.lp8jHbeT-lkp@intel.com/config)
+compiler: gcc-11 (Debian 11.3.0-12) 11.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241211/202412111932.lp8jHbeT-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202412111932.lp8jHbeT-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/memory/omap-gpmc.c:361:21: warning: 'gpmc_clk_ticks_to_ns' defined but not used [-Wunused-function]
+     361 | static unsigned int gpmc_clk_ticks_to_ns(unsigned int ticks, int cs,
+         |                     ^~~~~~~~~~~~~~~~~~~~
+
+
+vim +/gpmc_clk_ticks_to_ns +361 drivers/memory/omap-gpmc.c
+
+a3551f5b0c3ca7a arch/arm/mach-omap2/gpmc.c Adrian Hunter 2010-12-09  360  
+3950fffdf0c088d drivers/memory/omap-gpmc.c Baoyou Xie    2016-08-28 @361  static unsigned int gpmc_clk_ticks_to_ns(unsigned int ticks, int cs,
+7f2e8c58ae9e352 drivers/memory/omap-gpmc.c Robert ABEL   2015-02-27  362  					 enum gpmc_clk_domain cd)
+7f2e8c58ae9e352 drivers/memory/omap-gpmc.c Robert ABEL   2015-02-27  363  {
+7f2e8c58ae9e352 drivers/memory/omap-gpmc.c Robert ABEL   2015-02-27  364  	return ticks * gpmc_get_clk_period(cs, cd) / 1000;
+7f2e8c58ae9e352 drivers/memory/omap-gpmc.c Robert ABEL   2015-02-27  365  }
+7f2e8c58ae9e352 drivers/memory/omap-gpmc.c Robert ABEL   2015-02-27  366  
 
 -- 
-மணிவண்ணன் சதாசிவம்
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
