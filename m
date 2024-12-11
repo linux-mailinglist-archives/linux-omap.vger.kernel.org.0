@@ -1,126 +1,113 @@
-Return-Path: <linux-omap+bounces-2806-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2807-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B6D29ECBB8
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2024 13:05:21 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D1E116834E
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2024 12:05:18 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3434A2163A7;
-	Wed, 11 Dec 2024 12:05:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="LcijISB4"
-X-Original-To: linux-omap@vger.kernel.org
-Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E4E99ED730
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2024 21:24:19 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26490238E2A;
-	Wed, 11 Dec 2024 12:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 630472835B6
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Dec 2024 20:24:17 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E1D20A5EF;
+	Wed, 11 Dec 2024 20:24:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cx2r9xO8"
+X-Original-To: linux-omap@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7373B1C4A36;
+	Wed, 11 Dec 2024 20:24:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733918715; cv=none; b=Nv1lwIjWSkhOo2DP9fOF6fldWeQBc24OfKGUgBDcArPxzjyrvrgrf1ARgil+wbICOVR5QyZGMQHXknHDW+8gL+Sc+O/bUVG/SpeO2Bpy/2k189KBQtwUGlY3I8kUhQxpvuts9nBM9gZx3uhmyU95WWCjI4Zya9AKGi1o4UxyXEI=
+	t=1733948651; cv=none; b=GB/367GEDqBbpNT2tklxGY/KVW/vcqbFBtfex7J7xj066NiuDc7xowC4b1Uyy89lvolXYZvKpmn3LqBzGgL8Vq+iGF0D9hvTj38vscKma8BqhWuRtqg+3ax/YswHuaNf69Q2esKXGpuweb+GGgSkPSif9tH88PWHs4cQ26ThnxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733918715; c=relaxed/simple;
-	bh=u4XWX926mDyaQJxp4ycS42AhC/tMjf4h0McUvfYw+GQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DjJVH2FRwZ6m2Iqe157D5Ilg98ZQk6QhWO+XfpWqRUONL2tCnAZ/sLTzr32VxPsDake50q8ir6DNRB3ZDmV4aNMtLNUbxcFjsKXVamhRIHYtBe8Dhk5I8kQVtEKuzffS8c10NFAOQwPz5PHnXGK2X9ZzXDgwQesGFx23Pi3frYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=LcijISB4; arc=none smtp.client-ip=46.235.229.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
-	:Subject; bh=2pRZ/eXShbUq1MO5oovE7csxNQQTAqDIDmPLX+j1Ssk=; b=LcijISB4joU+uEFF
-	66gZmz/W13GKmAnDF30NXP7irkoyxCrALJtUK6FBaEVQC73liZR2rokWB+0swelpTGErRYdq59r9S
-	DKbdOPR6a3uuf7+9lFoTj7MEkKjEZkR9SZSRJvkbOewCaWnntVVbMNKgDn5nxQ/W1Ic0+EV/fms+i
-	+L6daAOrQM7zcJbkiwbr0kFgndyDh3QozgprqoiD2TZaBzrF8QclH5sijmTmrZqEv3MMXlqKoFDme
-	gRmwcqRvItnl/shOG4PPPXnau9+c4On15jQUUSMsK0+9W4jDnctgtG5O7Uh6t7DFbjeW5TIv7KBtp
-	fkMVd9hwuqAgWPhjHA==;
-Received: from dg by mx.treblig.org with local (Exim 4.96)
-	(envelope-from <dg@treblig.org>)
-	id 1tLLSl-004jUW-2W;
-	Wed, 11 Dec 2024 12:05:07 +0000
-Date: Wed, 11 Dec 2024 12:05:07 +0000
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
-To: rogerq@kernel.org, tony@atomide.com, krzk@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] memory: omap-gpmc: deadcode a pair of functions
-Message-ID: <Z1l_85Cq10KbRWl2@gallifrey>
-References: <20241210220628.237604-1-linux@treblig.org>
- <202412111932.lp8jHbeT-lkp@intel.com>
+	s=arc-20240116; t=1733948651; c=relaxed/simple;
+	bh=yOVE+KCLnL0G/rxLAXTZ9ej8maw36A8IfDnAQICINJI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=hfkP/rB83YDHp4NkgCDcMnZ/Pusg2wDGjiCXrE7vbymykVwl8t3aswBHQbKrqzPQk5E9i9M8QB33VVE+l9SDvsccf62bHr8OCC2RyEWmqV3x5gqXVV6MdPZhImcA5I0acssXXtUmm3yFBWkEeBFROwOuHkRJ1gBuD+oVsLWzgtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cx2r9xO8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC91C4CED2;
+	Wed, 11 Dec 2024 20:24:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733948651;
+	bh=yOVE+KCLnL0G/rxLAXTZ9ej8maw36A8IfDnAQICINJI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=Cx2r9xO8BA+5R3kqdtPbHgKc0SB+T8twQUdgeeilcmsRt3ODTEfboCsRxO+qRbWA0
+	 ZBgzobKuPR0r7SGnjNNQhdt9mZ0Tb4eTkBAkDrSWtbjQQhUIV3EhINgYoUK3aqV3Wi
+	 OOTZgU8ulJhEWbXIpQBDymEbR1Yu5TKJhTdp6kG4yZRc1XuIZGbOKpSDx/R7QDFK1R
+	 IgjhIwV96L4AsNBCw6FzNgDp3xEwi8KEbXyiENt7HHQQ0Oj0UMd+fl/VjgBUnE22qN
+	 3ER2inDG3/8ORfjHmnFu5HM2TkP8f/uMKBuZN3yTh7NxCxuY1ylnhHggM8g0XRJeFX
+	 bX229EITTmyGw==
+Date: Wed, 11 Dec 2024 14:24:09 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Thomas Richard <thomas.richard@bootlin.com>, vigneshr@ti.com,
+	s-vadapalli@ti.com, lpieralisi@kernel.org, kw@linux.com,
+	robh@kernel.org, bhelgaas@google.com, theo.lebrun@bootlin.com,
+	thomas.petazzoni@bootlin.com, kwilczynski@kernel.org,
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	gregory.clement@bootlin.com, u-kumar1@ti.com,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org
+Subject: Re: [PATCH] PCI: j721e: In j721e_pcie_suspend_noirq() check
+ reset_gpio before to use it
+Message-ID: <20241211202409.GA3305505@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <202412111932.lp8jHbeT-lkp@intel.com>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.1.0-21-amd64 (x86_64)
-X-Uptime: 12:04:29 up 216 days, 23:18,  1 user,  load average: 0.02, 0.02,
- 0.00
-User-Agent: Mutt/2.2.12 (2023-09-09)
+In-Reply-To: <20241211091421.4empou7mbm35ynxq@thinkpad>
 
-* kernel test robot (lkp@intel.com) wrote:
-> Hi,
-> 
-> kernel test robot noticed the following build warnings:
+[+cc GPIO folks in case they think it's worthwhile to document that
+it's safe to pass NULL pointers to gpiod_*() interfaces]
 
-Good bot!
+On Wed, Dec 11, 2024 at 02:44:21PM +0530, Manivannan Sadhasivam wrote:
+> On Wed, Dec 11, 2024 at 09:59:30AM +0100, Thomas Richard wrote:
+> > On 12/10/24 16:42, Bjorn Helgaas wrote:
+> > > On Mon, Dec 09, 2024 at 12:23:21PM +0100, Thomas Richard wrote:
+> > >> The reset_gpio is optional, so in j721e_pcie_suspend_noirq()
+> > >> check if it is not NULL before to use it.
 
-> [auto build test WARNING on krzk-mem-ctrl/for-next]
-> [also build test WARNING on linus/master v6.13-rc2 next-20241211]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
-> 
-> url:    https://github.com/intel-lab-lkp/linux/commits/linux-treblig-org/memory-omap-gpmc-deadcode-a-pair-of-functions/20241211-062027
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/krzk/linux-mem-ctrl.git for-next
-> patch link:    https://lore.kernel.org/r/20241210220628.237604-1-linux%40treblig.org
-> patch subject: [PATCH] memory: omap-gpmc: deadcode a pair of functions
-> config: i386-buildonly-randconfig-002-20241211 (https://download.01.org/0day-ci/archive/20241211/202412111932.lp8jHbeT-lkp@intel.com/config)
-> compiler: gcc-11 (Debian 11.3.0-12) 11.3.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241211/202412111932.lp8jHbeT-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202412111932.lp8jHbeT-lkp@intel.com/
-> 
-> All warnings (new ones prefixed by >>):
-> 
-> >> drivers/memory/omap-gpmc.c:361:21: warning: 'gpmc_clk_ticks_to_ns' defined but not used [-Wunused-function]
->      361 | static unsigned int gpmc_clk_ticks_to_ns(unsigned int ticks, int cs,
->          |                     ^~~~~~~~~~~~~~~~~~~~
+> > >> +++ b/drivers/pci/controller/cadence/pci-j721e.c
+> > >> @@ -644,7 +644,9 @@ static int j721e_pcie_suspend_noirq(struct device *dev)
+> > >>         struct j721e_pcie *pcie = dev_get_drvdata(dev);
+> > >> 
+> > >>         if (pcie->mode == PCI_MODE_RC) {
+> > >> -               gpiod_set_value_cansleep(pcie->reset_gpio, 0);
+> > >> +               if (pcie->reset_gpio)
+> > >> +                       gpiod_set_value_cansleep(pcie->reset_gpio, 0);
+> > >> +
+> > >>                 clk_disable_unprepare(pcie->refclk);
+> > >>         }
 
-Ooh, right, I'll clean that out as well and send a v2.
+> > > It looks like gpiod_set_value_cansleep(desc) *should* be a no-op if
+> > > desc is NULL, based on this comment [1]:
+> > > 
+> > >  * This descriptor validation needs to be inserted verbatim into each
+> > >  * function taking a descriptor, so we need to use a preprocessor
+> > >  * macro to avoid endless duplication. If the desc is NULL it is an
+> > >  * optional GPIO and calls should just bail out.
+> > > 
+> > > and the fact that the VALIDATE_DESC_VOID() macro looks like it would
+> > > return early in that case.
+> > > 
+> > > [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpio/gpiolib.c?id=v6.12#n2316
 
-Dave
+> Yes. Almost all of the GPIO APIs accepting desc (except few) use
+> VALIDATE_DESC() to check for NULL descriptor. So explicit check is
+> not needed.
 
-> 
-> 
-> vim +/gpmc_clk_ticks_to_ns +361 drivers/memory/omap-gpmc.c
-> 
-> a3551f5b0c3ca7a arch/arm/mach-omap2/gpmc.c Adrian Hunter 2010-12-09  360  
-> 3950fffdf0c088d drivers/memory/omap-gpmc.c Baoyou Xie    2016-08-28 @361  static unsigned int gpmc_clk_ticks_to_ns(unsigned int ticks, int cs,
-> 7f2e8c58ae9e352 drivers/memory/omap-gpmc.c Robert ABEL   2015-02-27  362  					 enum gpmc_clk_domain cd)
-> 7f2e8c58ae9e352 drivers/memory/omap-gpmc.c Robert ABEL   2015-02-27  363  {
-> 7f2e8c58ae9e352 drivers/memory/omap-gpmc.c Robert ABEL   2015-02-27  364  	return ticks * gpmc_get_clk_period(cs, cd) / 1000;
-> 7f2e8c58ae9e352 drivers/memory/omap-gpmc.c Robert ABEL   2015-02-27  365  }
-> 7f2e8c58ae9e352 drivers/memory/omap-gpmc.c Robert ABEL   2015-02-27  366  
-> 
-> -- 
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+I think it would be nice if the kernel-doc for these functions
+mentioned this somewhere.  It's kind of a pain for every user to have
+to deduce this.
+
+Bjorn
 
