@@ -1,211 +1,264 @@
-Return-Path: <linux-omap+bounces-2816-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2817-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE3679F0D27
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2024 14:17:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A19D9F0D3B
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2024 14:23:52 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A82116089C
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2024 13:23:49 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211951E009B;
+	Fri, 13 Dec 2024 13:23:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="taDX7bcz"
+X-Original-To: linux-omap@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A90C42834B5
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2024 13:17:35 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0468C1E00A0;
-	Fri, 13 Dec 2024 13:17:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="PwCmUpYZ"
-X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5E21DFE1B
-	for <linux-omap@vger.kernel.org>; Fri, 13 Dec 2024 13:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A8B1DFE3A;
+	Fri, 13 Dec 2024 13:23:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734095849; cv=none; b=TRP7DxpoOPc45s3SAYKyyl1T9TVe7OvjzHbbyASqkKwianJa2fZ01O0wHrcxRSzlUtT5nJdqOAky5VY7mQeV58TaofXzLyNTs2B3Yoi87v76/gmDhcLKzFHhKU1My2yY7zhxNWNynW+CfCvon1BVJYLK/5T22mpWX+kVDMMQ3hg=
+	t=1734096226; cv=none; b=L1cyu5VPvOlcqi01KUVmF88K22Fa5f4eqea9QEwboyGPTn1AvOt6c1gINt4wVLxfTxE7zhmXPhuvow7vgZiAtmcftmByZB/MwRCJPTTt/ezS8weevRGMdWNGvy7yh1xHDKoNAmI0nvRrrRpRah2Bp/VzWVXVA7SsBH7wbUMVNhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734095849; c=relaxed/simple;
-	bh=jzXamyCacjql8seUWwmQyq+hh31ewDVu3Uztr4N6UDo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iaTUs/U3fqFBtE0SO4Jnf4rzXL9eO+ZuJvFyRjb98q8lTtnGx1Cbv8EKV02g7Z8Ium0C9j40YrlgT467QLeliEk2r09CsCQgWLaHOcfqtm3K556nEjMXQy7wkE+f3eXezIfTBQm9Rvh0c4Rj5/LM8zBTH0X2MgXlPR7hH5dvIgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=PwCmUpYZ; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-30033e07ef3so18425771fa.0
-        for <linux-omap@vger.kernel.org>; Fri, 13 Dec 2024 05:17:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1734095846; x=1734700646; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kgfxhiEwi1cxcUkP5/sckSbEkt4/qnqpeXa6lzm7zoQ=;
-        b=PwCmUpYZplBNRx8pdLNV/3YCd3gyb1OKfl/UBixOOGPaR5kDM/8kU4JUNNqGVSGK8J
-         yfMQ6ktiik7buoVh2sD8BwT2wyOuGueTRXLegSntrMnFDqFnpyb8SLxbMwNow839cxho
-         GvjWWe7v1EQDew3wT02e0p5UNj2NWBnQIojYTsQfQSYtuiCZMOOoguUiwIyr7MWUfvKL
-         xSNS9vTxuZowH5H8CkrUvAVtToz2ZrRRRYonzlaRShtZaQgrD5l4EFsmV7Y9WiMJqmMy
-         27x0uB3i9BYGp9WCjxke5Mou4GlLcW1c4WP/cDG76w589Jz6lP6XD1exTTDIGvwZ/GKB
-         9LNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734095846; x=1734700646;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kgfxhiEwi1cxcUkP5/sckSbEkt4/qnqpeXa6lzm7zoQ=;
-        b=R4hNIEb8aEjbgOqkRSqGAPIIfr6PFGx+mKSItS73U9av28W+RaeRnISEN6hi3zGFtB
-         hipW9ZxcxPVScf2l+G6S8QKWZdZw6IGRW91s98v4Sb8J7ECRhl9Oz0CI32nlfeLWV6i+
-         FDl5n+rN6PrEScbC2G5C9cyba6n6/kWYH/FOVVc00ShQKlaNCPik4DBU+/uUQoCG8WF3
-         p8T1bxeeG74wGHEDqfB+/9nIy0d24PXhro8j+T9YzVUSfpUgwY1KWmFW7kk57SJFhwh8
-         i5jMMU80ZZ5rDfhZ415d2ZQN1HHyH63kzwkHh5i1J2KClTDOu7xkCzkEvMljiZ21assy
-         1YGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW1u4AZpbPFMFMGg2Yo/Eb2KTvHQLAaQ/O+4YcHuKtUXFR4yIKDggPwVz6C7LdwU0Trd1HysDF2fCTB@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMc9oWF6heVrgfCvb5bBVcupr31jiiXCIuHh/XOr3Cot6rgwLV
-	Fx0G7lEopvKEDVypKYZATsASlzi6n0ZPUE8WVVhTeY0RVC17lEpnlZGerhKSYt5ScoVcmmNK0og
-	+tO821I1AAzQe5Jgp/xl4flaOPxVCSInkW2XjoQ==
-X-Gm-Gg: ASbGncuwTz3h52AogUvwaz3b5GLkrOAOKxkNG8T0aCtDZyvvolQWXxD42KFGxrdRLPo
-	N8SR3V+bMwI4l2qbyv82oq0zFkdk5Axxfally3SEhlVWalqlHW44Pnh4P3Lpzn5VP2M+6ww==
-X-Google-Smtp-Source: AGHT+IFD+cWs2BeD+CZKF6WLjrcPv8hv1W4g0yJ0jXtSvC4zMCMbE1iMhIopREMmzZUrLgp/+/KFKlgUS1yUXRhrU0U=
-X-Received: by 2002:a2e:a99f:0:b0:300:17a3:7af9 with SMTP id
- 38308e7fff4ca-302a9e8d0e3mr8398931fa.19.1734095844123; Fri, 13 Dec 2024
- 05:17:24 -0800 (PST)
+	s=arc-20240116; t=1734096226; c=relaxed/simple;
+	bh=1EaPPBSw8SwzoJoo4tB8Jv6iIScsKRwkT98iNlANf8s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q6x6FOVRlMHl91NhG4dXZOGNAxo6yQ2hoAxediSAlRRY/aKUuDh8HXmof9UWuBiylva+ef3IMVWBbP28+rRLqaNtDy0pBTjnCoRySPi5quiRwzaI8vqbRhWLm+gOawugduoG4/uXBqah3mRPlLrSYOkF0mB9fjIPD8znew1GAkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=taDX7bcz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CA45C4CED0;
+	Fri, 13 Dec 2024 13:23:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734096226;
+	bh=1EaPPBSw8SwzoJoo4tB8Jv6iIScsKRwkT98iNlANf8s=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=taDX7bczBkOhBarSfnClG75+F1WNp++CycTJtaaMiDU3YDf1j1EE/sUJBIQPIgShp
+	 maFFyehxIpm/oEK94d2PQfXVjxUYqnHRYxshVhlUv39sA7CbsQHvtr2X17rG9+inhP
+	 C7jlZS090Tat7gCvwcRsLu+r3CfotONwY/eS5rcs+UZgUhlsBmC/zR2wv1QUrlzNqK
+	 GR9VG2MmLJhAq+whh8DVCTkjiGtZcrMzO4QGJ7RweslCv3rOJXkm4RGmDq2+dG2yC1
+	 hF+03S6M6fBB0h21W5Kn7PeJ/AUQ5oJRlonyBSMYjtaFwodZIOpUWf00nKJ4EKUCV4
+	 Vid6VaJ8iUsXw==
+Message-ID: <9422b770-9fa7-452e-b6d1-fcd6d1ea7acb@kernel.org>
+Date: Fri, 13 Dec 2024 14:23:38 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241203164143.29852-1-brgl@bgdev.pl> <20241203164143.29852-2-brgl@bgdev.pl>
- <a21531a7-13ae-45f5-a60d-dd80b3ef9834@gmail.com> <0bf97a477f1c547b960c63607395b82d92986ef3.camel@siemens.com>
-In-Reply-To: <0bf97a477f1c547b960c63607395b82d92986ef3.camel@siemens.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Fri, 13 Dec 2024 14:17:13 +0100
-Message-ID: <CAMRc=Mf-2=eiwNdx=5n8a3Bm7-gKPeVRGiPzXJPsqzgxtem6yQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] gpio: omap: save two lines by using devm_clk_get_prepared()
-To: "Sverdlin, Alexander" <alexander.sverdlin@siemens.com>
-Cc: "mazziesaccount@gmail.com" <mazziesaccount@gmail.com>, "ssantosh@kernel.org" <ssantosh@kernel.org>, 
-	"khilman@kernel.org" <khilman@kernel.org>, "linus.walleij@linaro.org" <linus.walleij@linaro.org>, 
-	"grygorii.strashko@ti.com" <grygorii.strashko@ti.com>, 
-	"bartosz.golaszewski@linaro.org" <bartosz.golaszewski@linaro.org>, 
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>, "tony@atomide.com" <tony@atomide.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"geert+renesas@glider.be" <geert+renesas@glider.be>, 
-	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv2] dt-bindings: mfd: omap-usb-tll: convert to YAML
+To: Karol Przybylski <karprzy7@gmail.com>, andreas@kemnade.info,
+ rogerq@kernel.org, lee@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org
+Cc: linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+ skhan@linuxfoundation.org
+References: <20241212153138.368086-1-karprzy7@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20241212153138.368086-1-karprzy7@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Dec 13, 2024 at 1:29=E2=80=AFPM Sverdlin, Alexander
-<alexander.sverdlin@siemens.com> wrote:
->
-> Hey Matti, how are you?
->
-> On Fri, 2024-12-13 at 14:16 +0200, Matti Vaittinen wrote:
-> > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > >
-> > > We can drop the else branch if we get the clock already prepared usin=
-g
-> > > the relevant helper.
-> > >
-> > > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > > ---
-> >
-> > Booting a beaglebone black with the linux-next from Today fails
-> > (next-20241213). Enabling earlycon + debug yields below splat to be
-> > printed to the console:
-> >
-> > [    2.628019] ------------[ cut here ]------------
-> > [    2.632793] WARNING: CPU: 0 PID: 34 at drivers/clk/clk.c:1254
-> > clk_core_enable+0xb4/0x1b0
-> > [    2.641156] Enabling unprepared l4-wkup-clkctrl:0008:18
-> > [    2.646530] Modules linked in:
-> > [    2.649688] CPU: 0 UID: 0 PID: 34 Comm: kworker/u4:3 Not tainted
-> > 6.13.0-rc2-next-20241213-00002-gf2d4b29c8330 #15
-> > [    2.660256] Hardware name: Generic AM33XX (Flattened Device Tree)
-> > [    2.666531] Workqueue: events_unbound deferred_probe_work_func
-> > [    2.672553] Call trace:
-> > [    2.672570]  unwind_backtrace from show_stack+0x10/0x14
-> > [    2.680578]  show_stack from dump_stack_lvl+0x50/0x64
-> > [  7 2.685788]  dump_stack_lvl from __warn+0xc0/0x130
-> > [    2.690734]  __warn from warn_slowpath_fmt+0x80/0x1a0
-> > [    2.695944]  warn_slowpath_fmt from clk_core_enable+0xb4/0x1b0
-> > [    2.701963]  clk_core_enable from clk_core_enable_lock+0x18/0x2c
-> > [    2.708159]  clk_core_enable_lock from
-> > sysc_enable_opt_clocks.part.9+0x28/0x84
-> > [    2.715611]  sysc_enable_opt_clocks.part.9 from
-> > sysc_enable_module+0x254/0x2dc
-> > [    2.723052]  sysc_enable_module from sysc_runtime_resume+0x17c/0x1c0
-> > [    2.729599]  sysc_runtime_resume from __rpm_callback+0x4c/0x130
-> > [    2.735709]  __rpm_callback from rpm_callback+0x50/0x54
-> > [    2.741096]  rpm_callback from rpm_resume+0x614/0x660
-> > [    2.746304]  rpm_resume from __pm_runtime_resume+0x4c/0x64
-> > [    2.751960]  __pm_runtime_resume from __device_attach+0xd0/0x188
-> > [    2.758155]  __device_attach from bus_probe_device+0x88/0x8c
-> > or_thread from kthread+0x188/0x24c
-> > [    2.789476]  kthread from ret_from_fork+0x14/0x20
-> > [    2.794327] Exception stack(0xe0091fb0 to 0xe0091ff8)
-> > [    2.799528] 1fa0:                                     00000000
-> > 00000000 00000000 00000000
-> > [    2.807947] 1fc0: 00000000 00000000 00000000 00000000 00000000
-> > 00000000 00000000 00000000
-> > [    2.816365] 1fe0: 00000000 00000000 00000000 00000000 00000013 00000=
-000
-> > [    2.823173] ---[ end trace 0000000000000000 ]---
-> > [    2.828070] ti-sysc 44e07000.target-module: Optional clocks failed
-> > for enable: -108
-> > [    2.835998] ------------[ cut here ]------------
-> >
-> > reverting
-> > b7bbaff8c1bc ("gpio: omap: save two lines by using devm_clk_get_prepare=
-d()")
-> >
-> > fixes the boot for me.
-> >
-> >
-> > >    drivers/gpio/gpio-omap.c | 4 +---
-> > >    1 file changed, 1 insertion(+), 3 deletions(-)
-> > >
-> > > diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
-> > > index 54c4bfdccf568..57d299d5d0b16 100644
-> > > --- a/drivers/gpio/gpio-omap.c
-> > > +++ b/drivers/gpio/gpio-omap.c
-> > > @@ -1449,13 +1449,11 @@ static int omap_gpio_probe(struct platform_de=
-vice *pdev)
-> > >     }
-> > >
-> > >     if (bank->dbck_flag) {
-> > > -           bank->dbck =3D devm_clk_get(dev, "dbclk");
-> > > +           bank->dbck =3D devm_clk_get_prepared(dev, "dbclk");
-> > >             if (IS_ERR(bank->dbck)) {
-> > >                     dev_err(dev,
-> > >                             "Could not get gpio dbck. Disable debounc=
-e\n");
-> > >                     bank->dbck_flag =3D false;
-> > > -           } else {
-> > > -                   clk_prepare(bank->dbck);
-> > >             }
-> > >     }
-> > >
-> >
-> > I can only spot a minor functional change. The code prior this commit
-> > does not check the result of clk_prepare(), and does neither set
-> > bank->dbck_flag =3D false; nor call clk_put();
-> >
-> > Other than that, timing is likely to be changed. Not sure what is the
-> > thing here.
->
-> The new code looks more correct, with the return code check from clk_prep=
-are().
-> Could it be that two problems eliminated themselves in your case before? =
-;-)
-> Would it be possible for you to provide the logs with "initcall_debug" wi=
-th
-> and without the patch in question?
->
-> --
-> Alexander Sverdlin
-> Siemens AG
-> www.siemens.com
+On 12/12/2024 16:31, Karol Przybylski wrote:
+> Conversion of omap-usb-tll.txt into yaml format, inspired by discussion in [1]
+> 
 
-This commit was the tip of my for-next branch so I just dropped it to
-fix next. Thanks for the heads-up.
+Please wrap commit message according to Linux coding style / submission
+process (neither too early nor over the limit):
+https://elixir.bootlin.com/linux/v6.4-rc1/source/Documentation/process/submitting-patches.rst#L597
 
-Bart
+Also, your commit msg should explain changes made to the binding during
+conversion.
+
+> Changes after v1:
+> Added Roger Quadros as maintainer
+> Removed deprecated property 'ti,hwmod'
+> Renamed .yaml file
+
+Changelog goes after ---.
+
+> 
+> 1 - https://lore.kernel.org/all/cd915c18-7230-4c38-a860-d2a777223147@kernel.org/
+> 
+> Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
+> ---
+
+<form letter>
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC. It might happen, that command when run on an older
+kernel, gives you outdated entries. Therefore please be sure you base
+your patches on recent Linux kernel.
+
+Tools like b4 or scripts/get_maintainer.pl provide you proper list of
+people, so fix your workflow. Tools might also fail if you work on some
+ancient tree (don't, instead use mainline) or work on fork of kernel
+(don't, instead use mainline). Just use b4 and everything should be
+fine, although remember about `b4 prep --auto-to-cc` if you added new
+patches to the patchset.
+
+You missed at least devicetree list (maybe more), so this won't be
+tested by automated tooling. Performing review on untested code might be
+a waste of time.
+
+Please kindly resend and include all necessary To/Cc entries.
+</form letter>
+
+This wasn't tested, so just brief review:
+
+>  .../devicetree/bindings/mfd/omap-usb-tll.txt  | 27 -----------
+>  .../devicetree/bindings/mfd/ti,usbhs-tll.yaml | 46 +++++++++++++++++++
+>  2 files changed, 46 insertions(+), 27 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/mfd/omap-usb-tll.txt
+>  create mode 100644 Documentation/devicetree/bindings/mfd/ti,usbhs-tll.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/mfd/omap-usb-tll.txt b/Documentation/devicetree/bindings/mfd/omap-usb-tll.txt
+> deleted file mode 100644
+> index c58d70437..000000000
+> --- a/Documentation/devicetree/bindings/mfd/omap-usb-tll.txt
+> +++ /dev/null
+> @@ -1,27 +0,0 @@
+> -OMAP HS USB Host TLL (Transceiver-Less Interface)
+> -
+> -Required properties:
+> -
+> -- compatible : should be "ti,usbhs-tll"
+> -- reg : should contain one register range i.e. start and length
+> -- interrupts : should contain the TLL module's interrupt
+> -- ti,hwmod : must contain "usb_tll_hs"
+> -
+> -Optional properties:
+> -
+> -- clocks: a list of phandles and clock-specifier pairs, one for each entry in
+> -  clock-names.
+> -
+> -- clock-names: should include:
+> -  * "usb_tll_hs_usb_ch0_clk" - USB TLL channel 0 clock
+> -  * "usb_tll_hs_usb_ch1_clk" - USB TLL channel 1 clock
+> -  * "usb_tll_hs_usb_ch2_clk" - USB TLL channel 2 clock
+> -
+> -Example:
+> -
+> -	usbhstll: usbhstll@4a062000 {
+> -		compatible = "ti,usbhs-tll";
+> -		reg = <0x4a062000 0x1000>;
+> -		interrupts = <78>;
+> -		ti,hwmods = "usb_tll_hs";
+> -	  };
+> diff --git a/Documentation/devicetree/bindings/mfd/ti,usbhs-tll.yaml b/Documentation/devicetree/bindings/mfd/ti,usbhs-tll.yaml
+> new file mode 100644
+> index 000000000..d666d3e23
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mfd/ti,usbhs-tll.yaml
+> @@ -0,0 +1,46 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/mfd/ti,usbhs-tll.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: OMAP HS USB Host TLL (Transceiver-Less Interface)
+> +
+> +maintainers:
+> +  - <rogerq@kernel.org>
+
+Use full name from the maintainers.
+
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - ti,usbhs-tll
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    minItems: 1
+
+missing maxItems.
+
+minItems incorrect - below you have two.
+
+> +
+> +  clock-names:
+> +    items:
+> +      - const: usb_tll_hs_usb_ch0_clk
+> +      - const: usb_tll_hs_usb_ch1_clk
+> +      - const: usb_tll_hs_usb_ch2_clk
+> +    minItems: 2
+
+Nut anyway, why is this flexible?
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    usbhstll@4a062000 {
+> +      compatible = "ti,usbhs-tll";
+> +      reg = <0x4a062000 0x1000>;
+> +      interrupts = <78>;
+
+Make example complete.
+
+> +    };
+
+
+Best regards,
+Krzysztof
 
