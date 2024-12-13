@@ -1,112 +1,129 @@
-Return-Path: <linux-omap+bounces-2819-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2820-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36AB29F1274
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2024 17:45:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 601739F12BD
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2024 17:50:08 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75B8E1636F5
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2024 16:50:05 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF971EE028;
+	Fri, 13 Dec 2024 16:47:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Obc22KRF"
+X-Original-To: linux-omap@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBA202838E8
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Dec 2024 16:45:13 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A97251E4106;
-	Fri, 13 Dec 2024 16:45:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="y+901lgb"
-X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC7E1E32A2
-	for <linux-omap@vger.kernel.org>; Fri, 13 Dec 2024 16:45:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181161EE01A;
+	Fri, 13 Dec 2024 16:47:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734108308; cv=none; b=OYnbBLlqv1GBBCfNo86IXDsSRz6lmGBfFMZT5gEyijEXhnKkEdfMST5vjcGzblrHtIZERsmhEXfY+ejZ93t7TeCbJD4ZjEDFYKe3fVRp49iucp8InNAxdy5WTx/VDuAr+VPUaP2Hb6FNRNN9fTmwzeVKa0ljZucRF+bbI4XR53A=
+	t=1734108477; cv=none; b=pcl0oE5F3GVcV3sFe6v+I0j8zo1EaH+IVXPzn+NZ+JFPJadvx/EKI0TcFg4qoiDmSS3Go2tUIobEgvoayoi9CI1vN67q8JtmiPnP7rKKIyZ3ZGsQscuql+arzwLMkE1Ce1JY4iA2nyfv6E3Ng+OgC6y5ouv1r2k3UywHV0kPWU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734108308; c=relaxed/simple;
-	bh=T/GytS+4PmeDHSc8Yokbu88dnVT2T9R2mcNeRjKO2XE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=EJtGGhPV8i7SED0+GADH8ulBuYVrXKjnWckWEMI9sUNN6CdwGwE7oSCsoXVeITurQiuBKaAsqHuzhUYL7v8vWysyFmprOQQHyRlwrBejADApnaZGtU5n4Ic9VjRmKRRUY7mNtqjQlBwaR40dMFePndYLRNe7gSqkHwNpQNrSr50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=y+901lgb; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-21683192bf9so19917125ad.3
-        for <linux-omap@vger.kernel.org>; Fri, 13 Dec 2024 08:45:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1734108304; x=1734713104; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qj059QNAy2kL/ZdSBcjvPNmyNAKgw00EKL6UseZCU10=;
-        b=y+901lgb5DHirR39aO7fApA0QGWWCrOo8H8j6VM9MMpuHAjy/4j3jyZpzc2gr0ab9m
-         h5Nl97z23MjomrSGidluvszuPpfpcgXQY+u60zZiWxOq0H3AFv/B45+9JHcPIHJe4+fQ
-         cBM4xqFxAHO/S3vYWIrJXtEMdsH1kaRWKZIQ5colXqFH1aQWu/J8pyY25Mbl+iXFAZ4z
-         ZT1no3zxGuhmCWIE4lQxOA4VH8Sp8P9cI3Xvzwg7zYVhh5sFlDU9IoIxjFZjjcyqEg/e
-         MvTFrngDECyWUjTzsH1vYhxz0wmFqtSemMw3diyryBessbnlK41aFerY/DshDiYSrwQO
-         2PMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734108304; x=1734713104;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qj059QNAy2kL/ZdSBcjvPNmyNAKgw00EKL6UseZCU10=;
-        b=vLXgkcr6qH57TiGfda59OxVomUpJ1OL28K5TYlQ2qBH9FiUM6f0o8udXee7ziLbx3N
-         GIw+1lor+BPfc3d1vTEtOKWqM/7m4pOEqv94qWtHs60Y7JOtnHDBixsX0OypKq3oKkEa
-         fq7qUvuBEqRZ06WxQ2ExqjKS69fNytJjHDzNFCgq0AhtTn7naqOQU8sw9vN3+4ItbZeb
-         xXf/09sBUgFnBke2v9221WQrEF/2KG00AF4iaZtp6WeK0qLbHgFqNNECTonKHZ92ePp+
-         Eb8GMRff6PEDrOovy/AtV9r4x8NLC0sJQ7M7ec7DL9QVihv5EVUfTZYID2Y7W0mAoVa8
-         l5+g==
-X-Gm-Message-State: AOJu0Yy2A3QkDKehoZYi48x56yACGnUsTIdQ5rOAx/94yKYEJkn2euHq
-	JA8jGMLz+uuYG8F355Tn2Xe7uG73I7SNXkAzZMcAvuOlEJU5NcS6x1Pz50IPYDs=
-X-Gm-Gg: ASbGncs9SmLsjMJ2YZXC4VfDxCC0jzlnRzXcHbhual2l/6XP/Ekw0KFpNPDGHjT4HWi
-	7ujIVRxn1lwZhVfRDZelihkbHDsRamZF8HrO+ZAiZr2IJQYcDHDEo68xxMhapYV51075lwpunlQ
-	ti4z6aZbHzjV2Fl/hyukmpcqy3aZLgryFfvaMHCSFM8HFkOO0+P9VGiigcFj2DK25MFv9a3qH16
-	llnPN0X7/ct/rGXor4gyoRHkxDTrz39hMquE7fXu9zqiUcfYMVcQy8=
-X-Google-Smtp-Source: AGHT+IGnLdKdpE/QYD952czjZlkXlMjWgso2ZS4RMAZDJZtkXDd4A3mxRp2mElniWLwu/q4tdGMNaQ==
-X-Received: by 2002:a17:903:2445:b0:216:5e6e:68ae with SMTP id d9443c01a7336-21892a028a8mr48630185ad.31.1734108303961;
-        Fri, 13 Dec 2024 08:45:03 -0800 (PST)
-Received: from localhost ([97.126.182.119])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21653b0d4f5sm85404995ad.70.2024.12.13.08.45.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Dec 2024 08:45:03 -0800 (PST)
-From: Kevin Hilman <khilman@baylibre.com>
-To: rogerq@kernel.org, tony@atomide.com, krzk@kernel.org, linux@treblig.org
-Cc: linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20241211214227.107980-1-linux@treblig.org>
-References: <20241211214227.107980-1-linux@treblig.org>
-Subject: Re: [PATCH v2] memory: omap-gpmc: deadcode a pair of functions
-Message-Id: <173410830317.3067997.3764368773601763146.b4-ty@baylibre.com>
-Date: Fri, 13 Dec 2024 08:45:03 -0800
+	s=arc-20240116; t=1734108477; c=relaxed/simple;
+	bh=uWEdNHIMgEICLx/219NN4IpI9tlWutXVpHbjkmMSr1M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=no9y1mpiN1OlzduU9KFYQXHGzgmI5aGmAZWyO8/eQSr/jGVsOdreE/JcnglyX53k8j3jNwXopIvtkvwp2MW4x2RZDYU24mfXY/zd0p3KOIyZD1vpP18mH50sLxl6o3RTFwqxVSsIDE2x4qcQLKkpfgPrr4l2dUFO0W+e/YCd4a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Obc22KRF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A05BC4CED0;
+	Fri, 13 Dec 2024 16:47:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734108476;
+	bh=uWEdNHIMgEICLx/219NN4IpI9tlWutXVpHbjkmMSr1M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Obc22KRFmveaPB6dYBAYlmKZYE5pL65KzrqRslSjP1z4MXCE7I6xTYA8PhhCZkYt8
+	 +m3jS+IwTCGpROYrfmMGVNqDNQb96uoE87AEzreAUJ+PN1X9yVt5c+ulfH59ZozCuz
+	 aSM93yYIs3E0EOQ77xfitx1l0B4or6YACThlSTeIx4bcQ0d3l/kW/FcVTDTm1IVtOO
+	 jJ5yPiqWkotSNv/HIUDs/U0dZKa66FmHtsnqiyQ9ebi7y86JzBuZxQ9tpWGDIks+09
+	 p2g1cmDFd+fF9iCn3IRbSkjZH74PwJhx33YjcHPnq35vTU97Sm9kop5HcYJVWuEP3M
+	 JMG9NZgNFyXxA==
+Message-ID: <76a403e0-f801-4d68-830c-370e0291efe1@kernel.org>
+Date: Fri, 13 Dec 2024 17:47:52 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] memory: omap-gpmc: deadcode a pair of functions
+To: Kevin Hilman <khilman@baylibre.com>, rogerq@kernel.org, tony@atomide.com,
+ linux@treblig.org
+Cc: linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20241211214227.107980-1-linux@treblig.org>
+ <173410830317.3067997.3764368773601763146.b4-ty@baylibre.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <173410830317.3067997.3764368773601763146.b4-ty@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-355e8
 
-
-On Wed, 11 Dec 2024 21:42:27 +0000, linux@treblig.org wrote:
-> gpmc_get_client_irq() last use was removed by
-> commit ac28e47ccc3f ("ARM: OMAP2+: Remove legacy gpmc-nand.c")
+On 13/12/2024 17:45, Kevin Hilman wrote:
 > 
-> gpmc_ticks_to_ns() last use was removed by
-> commit 2514830b8b8c ("ARM: OMAP2+: Remove gpmc-onenand")
+> On Wed, 11 Dec 2024 21:42:27 +0000, linux@treblig.org wrote:
+>> gpmc_get_client_irq() last use was removed by
+>> commit ac28e47ccc3f ("ARM: OMAP2+: Remove legacy gpmc-nand.c")
+>>
+>> gpmc_ticks_to_ns() last use was removed by
+>> commit 2514830b8b8c ("ARM: OMAP2+: Remove gpmc-onenand")
+>>
+>> Remove them.
+>>
+>> [...]
 > 
-> Remove them.
+> Applied, thanks!
 > 
-> [...]
-
-Applied, thanks!
-
-[1/1] memory: omap-gpmc: deadcode a pair of functions
-      commit: 56d96fc5539003a95b8ab631a4ebb5d1b0a24885
+> [1/1] memory: omap-gpmc: deadcode a pair of functions
+>       commit: 56d96fc5539003a95b8ab631a4ebb5d1b0a24885
+This should not go via soc tree, it's memory.
 
 Best regards,
--- 
-Kevin Hilman <khilman@baylibre.com>
-
+Krzysztof
 
