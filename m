@@ -1,112 +1,201 @@
-Return-Path: <linux-omap+bounces-2822-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2823-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10F169F1E23
-	for <lists+linux-omap@lfdr.de>; Sat, 14 Dec 2024 11:50:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 488C79F210D
+	for <lists+linux-omap@lfdr.de>; Sat, 14 Dec 2024 22:52:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 848FB1888CBE
-	for <lists+linux-omap@lfdr.de>; Sat, 14 Dec 2024 10:50:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABA01188752E
+	for <lists+linux-omap@lfdr.de>; Sat, 14 Dec 2024 21:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B7618EFCC;
-	Sat, 14 Dec 2024 10:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F287F1B0F29;
+	Sat, 14 Dec 2024 21:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cjJI0uiN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jc7+slfL"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9546C133987
-	for <linux-omap@vger.kernel.org>; Sat, 14 Dec 2024 10:50:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78D1137E;
+	Sat, 14 Dec 2024 21:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734173405; cv=none; b=awEt16gdWG5Xl4ah+SMG1UBdNr9febHPchzWONthdp+CAY1v/GFhhAZAAxYYX+pQh90spnIrVBm0TEHrKRvTJlI0uNInTomfOKB84iNWj06+Pfl7DUcfYndGs+C8EgjhImReCZ9tuW2QAeBf5c9fQA9mmvEb7JEYwuJsRKAyXJQ=
+	t=1734213134; cv=none; b=BSgtwLZXAEHx6Gt163eOoyPr7fAR4/9Uyt0w2uPiDAgV2AHFqM7HuliYOC5a78D6UlWb+LztWmwIkExNTRMdXQ41x23Jg4TgKc+okDKTGTJVquoq3qdtG08spsc9oPMadryEtshC/Oe0AXIh6/8goH/FNHdJgHqADOTyjKP9zlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734173405; c=relaxed/simple;
-	bh=WgLZ4Sqpo845875rVbQWeq2Ll+Yen4xIdn1IlHpXYyE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=MVEPjskTYYpc5Gox/qC4zFylw5tMv3/fuqHrpJII9D+sp1z8WAwgnrUMfqOQ3pnQs1/HHvTOAOmxx3wHaLGWxnIS+dHwDkt6Fv1sr/tkJ6LKbM28NL3NWhs7XaP0ut25Oh0gfr9bk/pDpPPNVbdz4D6oc1RKydUwtr9d4+Ua6oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cjJI0uiN; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-38636875da4so200248f8f.2
-        for <linux-omap@vger.kernel.org>; Sat, 14 Dec 2024 02:50:03 -0800 (PST)
+	s=arc-20240116; t=1734213134; c=relaxed/simple;
+	bh=WEERpUugMIVF+RpGbGa3aJw6AHnRLtvfpjRFt8LA5fc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nvGysrkBnudhaqd2+11Skr9APCtyhBbj0fx2XClbDp/lxpT/+N1Rmx7/FblXQoCmA2P14GlXjq1BKgvEiFmVpnY3K31Ixf2NCza69+BMsGxdOfKftSrxF8yvltRGnfbvgZGhFGgKkrPht910mt1Wsn1PlfqGH6Cx8bTHq0tBu+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jc7+slfL; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-aa6c0d1833eso489005666b.1;
+        Sat, 14 Dec 2024 13:52:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1734173402; x=1734778202; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dFeeaOwVLNJyk8KG2PAdcvU43PbcoLuXwqtb4WTqOv8=;
-        b=cjJI0uiNjz7O/fYdAgBrv9ECxsSbgvy+VWaJNIhb4+tgxxoutRIWkLRCQ56V6YQaDA
-         phHZx6T/RcIqIYp9BB6mVzdyqEw6sqIgd12qtOBFYodQ1kLg5D+gULmhJ6NvsTTlARk2
-         jqGv/3fe7+yhkPWmLnJh6jI12hGiskK/XD8Tl/n5IVAdx9kitqdEm0xAed9dSTJLxVAz
-         D9dR9wvkVY46/7eE2IS58PljGEBBv1ue1CcnHSXnieEBehuU3wqL8ap2kEv3YjVaDjQZ
-         MRLnmKhvwycsi0e4KNt05pc72CzNzYPXsEW+BwWnxVDEq5BQU2nwJi7Syu5ZLLUrZDht
-         zdlg==
+        d=gmail.com; s=20230601; t=1734213131; x=1734817931; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3/YC7qsZQDqPwi0DSerU+A2lmpctu8Ls9iP33kzH6HQ=;
+        b=Jc7+slfL9agMGNYhIf/pjQ2/X8pIU3Y2CTuDquqFmfOQe9vpVveJatcTXDFJoQgjRs
+         b72mHIngZpfachnjVM9xj1zkhTPi9ZmTW4+FLOBYYNhun3M4ifJdey/+CTyGdVXIw6FY
+         DV2ceakCk72c2BYWezx6BNoyukOEHnHoQjPC0K6QZfANYtkIVIu9XYs1x1QXcACersc8
+         uNrm8dE1ACFyKkh94i2xHSKVnws8hrDamnwmGnd7X/KCt9HMUhyKDvrlUpLlm8OoDYJj
+         cxZIid0qjN4U2GviHNLduxbUeS/Dlo+/oXh+ikW4vjejeVVS1MGkrp2NuWAbFQDHnfV7
+         Nq+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734173402; x=1734778202;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dFeeaOwVLNJyk8KG2PAdcvU43PbcoLuXwqtb4WTqOv8=;
-        b=lB6t5XJcmboGmlloguK7rh4KXya+1AI6rKUJRX932ECbpsipNZwVTWAsEU/QovCC5x
-         VeBwAfTAVxZ/zl3yo7eUOvBvz987Clfjr1eS7+yOp9E3BaRCadiSuSihhK+GZ8R4csCA
-         LRmBOnknsqKO0/miEma3KtbiAIoLJlWmhBw3dFOYa+j9BXx86bHNf/xhD4pboE1YgAJC
-         65AQTEyXt6zpwPdmKpO4jKg6MXW2W3GsAG0AJ/Iw9l02VF5fp9LP1L5t74fydUmXxy4Z
-         Sw3F3lpIasWvIMyUizK8q10sSkdU4VzAzJINC7+ofRxuOWwf/esvDwT9qLLTS6LMvpHl
-         Z9eg==
-X-Gm-Message-State: AOJu0YxN5zh6gV0xZB1BYqNyTmIa1eUyHFLM2DWsw8ZRnmBKTeUhmzdE
-	DFkpOmgXv3bql8uiGkZE7tAVNnuXUFjFrSk5baSvWUor3gH8mZ/xmkMNWdM7p2k=
-X-Gm-Gg: ASbGncv1aSXFK9SLxcznMjfqgXwLH5vxEANVl8Ml5REea5xO8uXtA7HTKC3sp4Bq6fj
-	S6er5FErRNtqth0G/9uiVLruAP8GR3NuIf6a8Mc8sf2LzClxO3oErMw0ik9dtztzSEgVYW2a1Ic
-	hsLMqydpSVGRkKaCpjaT7IKod5lEVmwcZY4kAugpBK+GPbxyFH7KTOauZKSckHKRngQ98zDSSa8
-	BIezB8y4Ifn3uurq2CsGB9aTQjeUC1tGEn5knP22ZW/4Ibk7wAXc54sIuKeUuESLsaR4zoH
-X-Google-Smtp-Source: AGHT+IEBLZqoOYrW6nHUXJ7egvcj+Es2bL8Vmn9thwbGb2lLB155RAHbaFGiiw3uqE/wHQ/4XmtxzQ==
-X-Received: by 2002:a05:6000:4b0e:b0:385:ef39:6ce3 with SMTP id ffacd0b85a97d-38875fc35f2mr2104047f8f.0.1734173402032;
-        Sat, 14 Dec 2024 02:50:02 -0800 (PST)
-Received: from [127.0.1.1] ([178.197.223.165])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-388c8060848sm2209905f8f.106.2024.12.14.02.50.00
+        d=1e100.net; s=20230601; t=1734213131; x=1734817931;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3/YC7qsZQDqPwi0DSerU+A2lmpctu8Ls9iP33kzH6HQ=;
+        b=Sg+2sr23JiHK+2cRoYAApd/vAWzQm7uSVhJhr93+C6XWrFkEXlsmGkiuGnY9a8RNwv
+         aEYRnr7gUBWKKSQ6HGPvh0Fx3t5669N013/zKRw4CFgEC9BpFTIq7JUhFrEQZdvMAnBh
+         TEL1ERs9kbvy3AcS0S+9jvzq/5BGsCynjL2JQ9sjNmyzXVwxF/nID+tlNK8oOVkSof8p
+         mhXbO0phN8QVdHPQ0qUGl+inWjqBMi2zx4Rd9opApXu1UfWQ7lu0N3XfEozs773DlxTY
+         nyKcKDnJAtIvVS+lauwnlDl4lJBKo+o3xsz4saA6rT1vDfE6h8bh01UTPIyiYA/JorOC
+         bXTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUNQU0IJhpi2U+/T9tS8zxPlgVRKemRzVeIJvjslt0WEyflJyQv/VvUoyi2q/Hlw6vwKHiW7W+fl83uqyE=@vger.kernel.org, AJvYcCWMxxRU71VtElyoEgKWG8G1UYrMoxIFSLOUe693zL5sy3T+jjmEE8e4sbt7PZs38z7RzfLVyGOFvl83Jw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+3w2yxCHmQ8v9fsq+JdiGOSaGspXLEU75v0uFDCbWjSm66CeF
+	cU57WFdEtMWFXpYNJED3iTuM5n4GjpHUUXks068mFIobVB5PexIi
+X-Gm-Gg: ASbGnctZrMDnNdPZxZL5+WIuiUJMuYT4by9SFt0TEEiNtBBo8gbwmdrmVdC6LvBtA7n
+	uBFLFz9IvCPFzcG2pjpnwtoeuHV6boku3ovFYVnph+LWkQBrPI/3D/gGbYGosJAomYnuVlcdrBW
+	jUmTx+jKP1xuI9tLLUfgx8LFTDL3U+hcccTAc/JY3dXUd7nB07SeYmfHTqDB8O0VwC0J3Jw/vRQ
+	H7c2Lq3JxcNA3/BXgnGt9f9r/qEh33WJNDDK6oQVZKy76Lj56CGVSz1NKhWoaF57Vk=
+X-Google-Smtp-Source: AGHT+IHRglX6dcJH31gxHa/6wW1mMpn14tLgw9bFgX7WVXdACNj1C6kigUNQFnSR4vD5o8uj+wrjog==
+X-Received: by 2002:a17:907:c24:b0:aa6:7662:c56e with SMTP id a640c23a62f3a-aab77ec4181mr832539766b.55.1734213130370;
+        Sat, 14 Dec 2024 13:52:10 -0800 (PST)
+Received: from localhost.localdomain ([83.168.79.145])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aab9606839csm139090266b.61.2024.12.14.13.52.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Dec 2024 02:50:01 -0800 (PST)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: rogerq@kernel.org, tony@atomide.com, krzk@kernel.org, linux@treblig.org
-Cc: linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20241211214227.107980-1-linux@treblig.org>
-References: <20241211214227.107980-1-linux@treblig.org>
-Subject: Re: [PATCH v2] memory: omap-gpmc: deadcode a pair of functions
-Message-Id: <173417340096.24704.14642309670774788266.b4-ty@linaro.org>
-Date: Sat, 14 Dec 2024 11:50:00 +0100
+        Sat, 14 Dec 2024 13:52:10 -0800 (PST)
+From: Karol Przybylski <karprzy7@gmail.com>
+To: andreas@kemnade.info,
+	rogerq@kernel.org,
+	karprzy7@gmail.com,
+	lee@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org
+Cc: devicetree@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	skhan@linuxfoundation.org
+Subject: [PATCHv3] dt-bindings: mfd: omap-usb-tll: convert to YAML
+Date: Sat, 14 Dec 2024 22:52:07 +0100
+Message-Id: <20241214215207.842765-1-karprzy7@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 
+Conversion of omap-usb-tll.txt into yaml format, inspired by discussion in
+lore.kernel.org/all/cd915c18-7230-4c38-a860-d2a777223147@kernel.org/
 
-On Wed, 11 Dec 2024 21:42:27 +0000, linux@treblig.org wrote:
-> gpmc_get_client_irq() last use was removed by
-> commit ac28e47ccc3f ("ARM: OMAP2+: Remove legacy gpmc-nand.c")
-> 
-> gpmc_ticks_to_ns() last use was removed by
-> commit 2514830b8b8c ("ARM: OMAP2+: Remove gpmc-onenand")
-> 
-> Remove them.
-> 
-> [...]
+Changes made to the binding during conversion:
+- Added Roger Quadros as maintainer
+- Removed deprecated ti,hwmod
+- Renamed .yaml file to ti,usbhs-tll.yaml
 
-Applied, thanks!
+Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
+---
+ .../devicetree/bindings/mfd/omap-usb-tll.txt  | 27 -----------
+ .../devicetree/bindings/mfd/ti,usbhs-tll.yaml | 47 +++++++++++++++++++
+ 2 files changed, 47 insertions(+), 27 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/mfd/omap-usb-tll.txt
+ create mode 100644 Documentation/devicetree/bindings/mfd/ti,usbhs-tll.yaml
 
-[1/1] memory: omap-gpmc: deadcode a pair of functions
-      https://git.kernel.org/krzk/linux-mem-ctrl/c/5119e6b44f8ada5f5cea19935a7f005fee062aef
-
-Best regards,
+diff --git a/Documentation/devicetree/bindings/mfd/omap-usb-tll.txt b/Documentation/devicetree/bindings/mfd/omap-usb-tll.txt
+deleted file mode 100644
+index c58d70437..000000000
+--- a/Documentation/devicetree/bindings/mfd/omap-usb-tll.txt
++++ /dev/null
+@@ -1,27 +0,0 @@
+-OMAP HS USB Host TLL (Transceiver-Less Interface)
+-
+-Required properties:
+-
+-- compatible : should be "ti,usbhs-tll"
+-- reg : should contain one register range i.e. start and length
+-- interrupts : should contain the TLL module's interrupt
+-- ti,hwmod : must contain "usb_tll_hs"
+-
+-Optional properties:
+-
+-- clocks: a list of phandles and clock-specifier pairs, one for each entry in
+-  clock-names.
+-
+-- clock-names: should include:
+-  * "usb_tll_hs_usb_ch0_clk" - USB TLL channel 0 clock
+-  * "usb_tll_hs_usb_ch1_clk" - USB TLL channel 1 clock
+-  * "usb_tll_hs_usb_ch2_clk" - USB TLL channel 2 clock
+-
+-Example:
+-
+-	usbhstll: usbhstll@4a062000 {
+-		compatible = "ti,usbhs-tll";
+-		reg = <0x4a062000 0x1000>;
+-		interrupts = <78>;
+-		ti,hwmods = "usb_tll_hs";
+-	  };
+diff --git a/Documentation/devicetree/bindings/mfd/ti,usbhs-tll.yaml b/Documentation/devicetree/bindings/mfd/ti,usbhs-tll.yaml
+new file mode 100644
+index 000000000..aa4edc51d
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mfd/ti,usbhs-tll.yaml
+@@ -0,0 +1,47 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/mfd/ti,usbhs-tll.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: OMAP HS USB Host TLL (Transceiver-Less Interface)
++
++maintainers:
++  - Roger Quadros <rogerq@kernel.org>
++
++properties:
++  compatible:
++    enum:
++      - ti,usbhs-tll
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    minItems: 1
++    maxItems: 3
++
++  clock-names:
++    items:
++      - const: usb_tll_hs_usb_ch0_clk
++      - const: usb_tll_hs_usb_ch1_clk
++      - const: usb_tll_hs_usb_ch2_clk
++    minItems: 1
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++additionalProperties: false
++
++examples:
++  - |
++    usbhstll@4a062000 {
++      compatible = "ti,usbhs-tll";
++      reg = <0x4a062000 0x1000>;
++      interrupts = <78>;
++    };
 -- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+2.34.1
 
 
