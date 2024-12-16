@@ -1,81 +1,81 @@
-Return-Path: <linux-omap+bounces-2830-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2831-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6869F3CDA
-	for <lists+linux-omap@lfdr.de>; Mon, 16 Dec 2024 22:32:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ABE19F3CDD
+	for <lists+linux-omap@lfdr.de>; Mon, 16 Dec 2024 22:33:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F14E916B284
-	for <lists+linux-omap@lfdr.de>; Mon, 16 Dec 2024 21:32:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F89A16B489
+	for <lists+linux-omap@lfdr.de>; Mon, 16 Dec 2024 21:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 213CA1D516A;
-	Mon, 16 Dec 2024 21:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77CD71D54C0;
+	Mon, 16 Dec 2024 21:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RJpi1Jz8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h+vSgEKw"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7711D4169;
-	Mon, 16 Dec 2024 21:32:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8169313211A;
+	Mon, 16 Dec 2024 21:33:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734384751; cv=none; b=IgMlc5iVgPvuh5AbKXoqarM0qa3uq/W2/LGZ1wG6UPY7RTXNYyOkD8Mafg4pPRseurwKc2KQYIraDzeyx57m+tKBF3OgNBnrKi7Ed2ObXcTR0Ww8W09fTR4kM8/IyIR21oazMsnpu/vDbfmyeFVucai0gYMKzo54A/Mi+A2pOeE=
+	t=1734384807; cv=none; b=EEfa4m/e/gJQwRcPRmcXe/neU8l4Vsed7WuMfGGPN0zoNi5Fk1dcWwIboV4bJenA2KpDwd5tHxRAt0c/KqAbW0g1yhGEHIRZ4p6TEQmUQel5C1QqZKDVB0eMKyroLttSMMyr+vcgwqVPR2u0woCk0SjyDAVy0gbIHtya7ohh15E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734384751; c=relaxed/simple;
-	bh=U/zST6JYUxGJKL7jJGXlS1cIYnJzygZ4YGA+dYLdzME=;
+	s=arc-20240116; t=1734384807; c=relaxed/simple;
+	bh=WeSJYYEJamXFZuAp5NptMjVCmKp6AIv7xjF54IzOwbI=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=btR7FAAbk7NXh1S4v0+XjX7hj2s1/wjCl5Zgx1B0APQh+zPnyf+UAr4Nbv4VmrqB2ZwrwKMAyPtA1gn3Op5+VkJCNjuRLAs0s0tAkkVRSQe/Vle13Z5VHA89Q6kUdzYRqkEuCP3aNqiWNCqSouvPnrhqvTi8prthxKqRhlMbyf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RJpi1Jz8; arc=none smtp.client-ip=209.85.218.49
+	 In-Reply-To:Content-Type; b=uPilhiTVwTtpb2HAni3PL2V8fhXjO5D1RuDbLSbNXHU1tHQYGCey8u1LVLzXpS5O9fVg6tGIKwwK/WggGB9wVhC0sdORfIUgH/KkYPf6lI7wpF0bDEIo8zbt0g19T8Ytbu4KV4kgN4eZtsXGILkOntjbKVTl2aDqKteo9jTlKKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h+vSgEKw; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-aab9e281bc0so411035466b.3;
-        Mon, 16 Dec 2024 13:32:29 -0800 (PST)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-aa66c1345caso175085466b.3;
+        Mon, 16 Dec 2024 13:33:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734384748; x=1734989548; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1734384804; x=1734989604; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=bwO9tdXr1idXR/uXrFQHcSjvfE+8jcO756dXKibbGSI=;
-        b=RJpi1Jz8klOjmLRnddGIJVqvIYOgDCWld7qojeLU7VUEyqctXiSShYgkdWxMXaupd/
-         4G6kKH9Qg7r7rMHMlBuHoq8hUU80neUfEnKV0qJ1ttwzmbYApolfKrcmod8/CEU/CzZ5
-         jGPUxF5J1xQXBXzmRaiUOka71Tb0Jy0A0zJrUqqpp5Yy7n4JhGlVgzI+QqlKsrPqlaww
-         jScxoAROBIQ5LRoTSAskb3ToY49T5vQZE+x+7F300rgOlWoTmcWjypkHL6VmeQmOVwcj
-         RXUclspCJxJTMxP+VoNFztloIEdMskb1GZ9061HA9TVUfck1Jl/XIHsg6icfwCs64h1k
-         uAEg==
+        bh=U7e10MhhpCSq1BTGXAoLHau/IyiGxwYN2adRjiojyEc=;
+        b=h+vSgEKwpb8Fi0uUYccHCzr0jd0UKhT7S9+ruocgFuFhA1gGUBwIupKI6K22d1oZb4
+         UG2KUS+j5TItQnJmNQgl6Q5NWx6ArTlFTpTAtumPdyDAd3rxyn10IVciM5h4aY5WctAQ
+         uTm8FT5tMEMZab2FKu4Pw7+yHHCL1THKh04py1wW5DDA8jm3b4gEeXQwkGEjh4ER4PZo
+         GApt8cyLM5DfLoRoX5jg5XTRDqX+lnW/Ei1Ueafkks2z4vRc6YmMSl/dJD14aFg+HW00
+         0aaAzo2zSVhGRwxbQDk0i+nGjlRo7psRrN29Ne7fzlq+Q1x8aQnwrC48Yuwu6NwlqBBZ
+         6yZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734384748; x=1734989548;
+        d=1e100.net; s=20230601; t=1734384804; x=1734989604;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=bwO9tdXr1idXR/uXrFQHcSjvfE+8jcO756dXKibbGSI=;
-        b=GNkKMqrMq1QZKNfY+IxwiqndzOM/utkBHjoXUD+6z6AD8B604/Cvjx8U9qAUxrmxyU
-         6UZcCD1wnVpOcJUMf9Y9Qq9b4haMeF51hva4IXgKNq4k598rSHwT1cyOXxQeKTmgB4tm
-         Hpw3Sfgsw4ZcrD4W0JAf5M2JDxSUVAkJ4UtOi7Cp/H1WRmfU5C3ewSZHdyz7PR0mwIrc
-         ATw1ZM2GFcn2Qdzqs89m5SLeUrOZhN8wmhgvlWQzG0ruKAyOJRIEIE/lUQV17JCofJML
-         18qCKr3e92+37txLDmOyMUhn/CoCxbYTpRr62IcaJrE1nv++V/KyHtqJGwxfMFoCXMaf
-         Am/w==
-X-Forwarded-Encrypted: i=1; AJvYcCUMLE07pSHdNMA7gaCns7osHlWyLdfhuv4/Ldinbb3SaJx/BL/sCqjmQQeJkopBgGkrWJi8ADqYJNCN@vger.kernel.org, AJvYcCV37LH4YYK6ceIIu292QS+5/E4263nR5VB0hp1fJknapPSRZruUb6yBQcpScIz8qz5NSNlfC6rO@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNsjwImq0m6IeTmq++uP7lj/aT5U+lWy6Ova91uFrH5TayYbna
-	Ww9pNQE6UMc9RWxV9X1AsmvR8aJxQ9tLMfWLUV+WBKOLkYczTCzU
-X-Gm-Gg: ASbGncuLCvxXvGYaSgDu3gD3GxyUYV+OaqQKIjDlFL2qm9hkJ1e3komF6F1M9QJ20SM
-	MtGnKubXTLP0VDUk+Y7xUm4Fb2XrLQtTx5QmUXgWQq9wr+7emsJOPbPpHQByExI8nLfRrws6bd1
-	NKzliiAKRaBQw6UO1Cu9qTg7JhGLVZsTJdZKL9jmQ9BkSvigeT/rpTfahYCQ7rG9ynOLb9KYXZs
-	o/jr7NeD6SIiVosWEh8RAc4/l3GN4NTxa6q7OXKsmh2SS8EinPQaJMIqO7nWzTyur8qpm7Sihpk
-	m5nDySJxqKtEUsCFfGweQaTE0LtRBVl36Sw22NOz+eLTk7ExTJLRQVVeoMAcGCoibw0DiQwEnhg
-	JF3CoP7W80bew6lWEJoBt7GBCFoqRD7i7Zo2p81AqgXwspf3z
-X-Google-Smtp-Source: AGHT+IFZUS23FzRZht7cuplHlJEZRhxkQmibWhek8xaIMlbolLo+B4tiDpuhK8gB9W/MnnihjBEBgg==
-X-Received: by 2002:a17:907:94cf:b0:aa6:b473:ea49 with SMTP id a640c23a62f3a-aab7795860emr1101458866b.19.1734384748025;
-        Mon, 16 Dec 2024 13:32:28 -0800 (PST)
+        bh=U7e10MhhpCSq1BTGXAoLHau/IyiGxwYN2adRjiojyEc=;
+        b=e8Un98OavdN+7CtseOusxptvw9NGbSgZ/k+6dkZTqlZDiYN8SOFpYE4BNKDeWmi6Oi
+         3m8uKvXhVTkq5WMO83vznAO4YRd51JGYagS+gloj7SjBfJj+KiPq6mVmulwllxIwWinD
+         1GhJ3J7P/mcmgTtYB3Y7UcOCs91RZkXdZ9sBs99hH2Uz8hciAYIh9Vw394Q3+jyjqg6k
+         f9xbIkWLbppZfQEqx/dTCnndUjqn80TS0ri+rabj2iAEEDyw/perZecCx96gkITBV1bP
+         is0k8Igi7cHXJDHMlZ3qjcTPiZHNwwybAvAIEJb7XWynJGrpYvbe8T0u03bFQUx25/N5
+         kbyA==
+X-Forwarded-Encrypted: i=1; AJvYcCVjAzMQ0e4rBaKYlopxZDFFSEEUc21QjoN0YWhBJ5r2UXL+Rph+LfnJpASKIdHAhBinjysnYUmv@vger.kernel.org, AJvYcCX6Nv2NPOY+7EFQeViyd6NM+Fv+O0w9kZ/4Sa/evQyE4q+2OmVsP0xHIiSwaSBKTD9GBFsvYgMprYOk@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOEVHz2/z6aRIJulj72IdW3I6zLy/8zRqkGFVGZPfCeK3zqeEL
+	5mzQXlDXKOhlNT1Oo0H2auOW2UWhQ7CaqI6F9q6fIOgqJcrolf89
+X-Gm-Gg: ASbGncva069AJvU6Go5EF6+DO2ovyqMz+G74SDvammEutUITVhZLNzWu8IwVFDiOOvb
+	WYMOTqQBK6SSxHGid+DTVSkvW1z7nt3UXRKHgk980N2mlFOBurknkbeB0EhYtpJ37PotYd15TNq
+	tPgzlynU2Q/cagWkThq/A4I0jBDWNIrrTNzUvTuwgd0aqVKbPiUThmMda1MzCeoF/0I3VRK15vh
+	iBRZ7chWo2xzdT4GQXvmMDoDDH9ZGLoGKGSMjCKD0z89Gwyj5ko3rHTEPerFu9zuQ6on0vmHd7l
+	LbBt7Y1ZhnR6hNsQpm4Tq5uXjzPdBsF2RjsCJG83VljHqNdxfYTiM7KaahQj8LIIPPdbHPT1eO2
+	82JjJJAS1Szs2+RPaQa3uvNHrCxvbEZ+9Oqnq7xq+HCCzCDvG
+X-Google-Smtp-Source: AGHT+IHFu+toXmaFZ5AkIdQ/2qGfvYOWXKiO1658/O4ok9zvAvIeRqr7Z8J9NCYGc6e6ZeQWmudOhg==
+X-Received: by 2002:a17:907:3d8f:b0:aa6:3223:19e6 with SMTP id a640c23a62f3a-aab77eda8e7mr1468655266b.60.1734384803708;
+        Mon, 16 Dec 2024 13:33:23 -0800 (PST)
 Received: from ?IPV6:2a02:3100:a874:3500:f430:df67:6714:d87b? (dynamic-2a02-3100-a874-3500-f430-df67-6714-d87b.310.pool.telefonica.de. [2a02:3100:a874:3500:f430:df67:6714:d87b])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-aab96005f73sm371424666b.4.2024.12.16.13.32.25
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-aab9608834fsm370708766b.86.2024.12.16.13.33.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Dec 2024 13:32:26 -0800 (PST)
-Message-ID: <d08a798e-8565-422c-b2ed-121794db077f@gmail.com>
-Date: Mon, 16 Dec 2024 22:32:25 +0100
+        Mon, 16 Dec 2024 13:33:22 -0800 (PST)
+Message-ID: <4a3f337e-cb76-46cc-bacb-c2ed8160619c@gmail.com>
+Date: Mon, 16 Dec 2024 22:33:21 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -83,8 +83,7 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH net-next 2/3] net: ethernet: ti: cpsw: disable PHY EEE
- advertisement
+Subject: [PATCH net-next 3/3] ARM: dts: ti/omap: remove eee-broken properties
 From: Heiner Kallweit <hkallweit1@gmail.com>
 To: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
@@ -145,101 +144,54 @@ In-Reply-To: <5139374e-7151-4d0d-8ba9-9ec3d9b52f67@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-It seems the cpsw MAC doesn't support EEE. See e.g. the commit message of
-ce2899428ec0 ("ARM: dts: am335x-baltos: disable EEE for Atheros 8035 PHY").
-There are cases where this causes issues if the PHY's on both sides have
-negotiated EEE. As a workaround EEE modes of the PHY are marked broken
-in DT, effectively disabling EEE advertisement.
-Improve this by using new function phy_disable_eee() in the MAC driver.
-This properly disables EEE advertisement, and allows to remove the
-eee-broken-xxx properties from DT. As EEE is disabled anyway, we can
-remove also the set_eee ethtool op.
+Now that the cpsw(-new) MAC driver disables PHY EEE advertisement,
+we can remove the eee-broken-xxx workaround.
 
 Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 ---
- drivers/net/ethernet/ti/cpsw.c         |  3 ++-
- drivers/net/ethernet/ti/cpsw_ethtool.c | 12 ------------
- drivers/net/ethernet/ti/cpsw_new.c     |  3 ++-
- drivers/net/ethernet/ti/cpsw_priv.h    |  1 -
- 4 files changed, 4 insertions(+), 15 deletions(-)
+ arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi      | 2 --
+ arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts | 1 -
+ arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts | 2 --
+ 3 files changed, 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
-index 4ef8cf6ea..1e290ee8e 100644
---- a/drivers/net/ethernet/ti/cpsw.c
-+++ b/drivers/net/ethernet/ti/cpsw.c
-@@ -635,6 +635,8 @@ static void cpsw_slave_open(struct cpsw_slave *slave, struct cpsw_priv *priv)
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi b/arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi
+index ae2e8dffb..e69e5e817 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi
++++ b/arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi
+@@ -354,8 +354,6 @@ &davinci_mdio_sw {
  
- 	slave->phy = phy;
+ 	phy1: ethernet-phy@1 {
+ 		reg = <7>;
+-		eee-broken-100tx;
+-		eee-broken-1000t;
+ 	};
+ };
  
-+	phy_disable_eee(slave->phy);
-+
- 	phy_attached_info(slave->phy);
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts b/arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts
+index fd91a3c01..8b86918bd 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts
++++ b/arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts
+@@ -96,7 +96,6 @@ &cpsw_port2 {
+ &davinci_mdio_sw {
+ 	phy1: ethernet-phy@6 {
+ 		reg = <6>;
+-		eee-broken-1000t;
+ 	};
+ };
  
- 	phy_start(slave->phy);
-@@ -1225,7 +1227,6 @@ static const struct ethtool_ops cpsw_ethtool_ops = {
- 	.get_link_ksettings	= cpsw_get_link_ksettings,
- 	.set_link_ksettings	= cpsw_set_link_ksettings,
- 	.get_eee	= cpsw_get_eee,
--	.set_eee	= cpsw_set_eee,
- 	.nway_reset	= cpsw_nway_reset,
- 	.get_ringparam = cpsw_get_ringparam,
- 	.set_ringparam = cpsw_set_ringparam,
-diff --git a/drivers/net/ethernet/ti/cpsw_ethtool.c b/drivers/net/ethernet/ti/cpsw_ethtool.c
-index 21d55a180..bdc4db0d1 100644
---- a/drivers/net/ethernet/ti/cpsw_ethtool.c
-+++ b/drivers/net/ethernet/ti/cpsw_ethtool.c
-@@ -434,18 +434,6 @@ int cpsw_get_eee(struct net_device *ndev, struct ethtool_keee *edata)
- 		return -EOPNOTSUPP;
- }
+diff --git a/arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts b/arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts
+index e6a18954e..e8007a8fd 100644
+--- a/arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts
++++ b/arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts
+@@ -492,8 +492,6 @@ &davinci_mdio_sw {
  
--int cpsw_set_eee(struct net_device *ndev, struct ethtool_keee *edata)
--{
--	struct cpsw_priv *priv = netdev_priv(ndev);
--	struct cpsw_common *cpsw = priv->cpsw;
--	int slave_no = cpsw_slave_index(cpsw, priv);
--
--	if (cpsw->slaves[slave_no].phy)
--		return phy_ethtool_set_eee(cpsw->slaves[slave_no].phy, edata);
--	else
--		return -EOPNOTSUPP;
--}
--
- int cpsw_nway_reset(struct net_device *ndev)
- {
- 	struct cpsw_priv *priv = netdev_priv(ndev);
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index a98bcc5eb..be4d90c1c 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -778,6 +778,8 @@ static void cpsw_slave_open(struct cpsw_slave *slave, struct cpsw_priv *priv)
+ 	phy0: ethernet-phy@4 {
+ 		reg = <4>;
+-		eee-broken-100tx;
+-		eee-broken-1000t;
+ 	};
+ };
  
- 	slave->phy = phy;
- 
-+	phy_disable_eee(slave->phy);
-+
- 	phy_attached_info(slave->phy);
- 
- 	phy_start(slave->phy);
-@@ -1209,7 +1211,6 @@ static const struct ethtool_ops cpsw_ethtool_ops = {
- 	.get_link_ksettings	= cpsw_get_link_ksettings,
- 	.set_link_ksettings	= cpsw_set_link_ksettings,
- 	.get_eee		= cpsw_get_eee,
--	.set_eee		= cpsw_set_eee,
- 	.nway_reset		= cpsw_nway_reset,
- 	.get_ringparam		= cpsw_get_ringparam,
- 	.set_ringparam		= cpsw_set_ringparam,
-diff --git a/drivers/net/ethernet/ti/cpsw_priv.h b/drivers/net/ethernet/ti/cpsw_priv.h
-index 1f448290b..f2fc55d92 100644
---- a/drivers/net/ethernet/ti/cpsw_priv.h
-+++ b/drivers/net/ethernet/ti/cpsw_priv.h
-@@ -497,7 +497,6 @@ int cpsw_get_link_ksettings(struct net_device *ndev,
- int cpsw_set_link_ksettings(struct net_device *ndev,
- 			    const struct ethtool_link_ksettings *ecmd);
- int cpsw_get_eee(struct net_device *ndev, struct ethtool_keee *edata);
--int cpsw_set_eee(struct net_device *ndev, struct ethtool_keee *edata);
- int cpsw_nway_reset(struct net_device *ndev);
- void cpsw_get_ringparam(struct net_device *ndev,
- 			struct ethtool_ringparam *ering,
 -- 
 2.47.1
 
