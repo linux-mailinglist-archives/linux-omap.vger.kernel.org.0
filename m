@@ -1,81 +1,81 @@
-Return-Path: <linux-omap+bounces-2829-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2830-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06DD49F3CD5
-	for <lists+linux-omap@lfdr.de>; Mon, 16 Dec 2024 22:31:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC6869F3CDA
+	for <lists+linux-omap@lfdr.de>; Mon, 16 Dec 2024 22:32:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B4DD16A0DC
-	for <lists+linux-omap@lfdr.de>; Mon, 16 Dec 2024 21:31:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F14E916B284
+	for <lists+linux-omap@lfdr.de>; Mon, 16 Dec 2024 21:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5ADD1D47C7;
-	Mon, 16 Dec 2024 21:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 213CA1D516A;
+	Mon, 16 Dec 2024 21:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FVIPFWgW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RJpi1Jz8"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D827A13211A;
-	Mon, 16 Dec 2024 21:31:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7711D4169;
+	Mon, 16 Dec 2024 21:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734384684; cv=none; b=peSF/AlTgZYOxzZdNdNBKhtapt1gOyUJjtm3dTXXdciuWRtpks1CsZNuue7yJ/YUKFuW+VIRrq22i6wfX/3nAwy+OSxR3z1JBgEipkx9b5pdNqnPpU07wotIsPSWKEEGwc/6guk7EHhhh5XmYI+v7nQ46oXNNe0b4+DzLwP+4cM=
+	t=1734384751; cv=none; b=IgMlc5iVgPvuh5AbKXoqarM0qa3uq/W2/LGZ1wG6UPY7RTXNYyOkD8Mafg4pPRseurwKc2KQYIraDzeyx57m+tKBF3OgNBnrKi7Ed2ObXcTR0Ww8W09fTR4kM8/IyIR21oazMsnpu/vDbfmyeFVucai0gYMKzo54A/Mi+A2pOeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734384684; c=relaxed/simple;
-	bh=1heIaVjafuMRqv060qHM95xO2Q28LnAICpMZWVwfRbA=;
+	s=arc-20240116; t=1734384751; c=relaxed/simple;
+	bh=U/zST6JYUxGJKL7jJGXlS1cIYnJzygZ4YGA+dYLdzME=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=pYB+ak8Z9bZoGIvVlXYp1LP55T+q5E1I79bzM9Rc+mHPEOYzzIBeWdNpHBpQRLWEkLfX8w8JAzbXKXHtDzgveK+afPvIhYDNxq9PV6Er6w/f4eGK9eof+Wt4YN0ELnd9eHG5gbT6McX3R1g6GJWy5pr1DxjiTzbA0iN+dXMBG6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FVIPFWgW; arc=none smtp.client-ip=209.85.218.50
+	 In-Reply-To:Content-Type; b=btR7FAAbk7NXh1S4v0+XjX7hj2s1/wjCl5Zgx1B0APQh+zPnyf+UAr4Nbv4VmrqB2ZwrwKMAyPtA1gn3Op5+VkJCNjuRLAs0s0tAkkVRSQe/Vle13Z5VHA89Q6kUdzYRqkEuCP3aNqiWNCqSouvPnrhqvTi8prthxKqRhlMbyf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RJpi1Jz8; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-aa670ffe302so860488566b.2;
-        Mon, 16 Dec 2024 13:31:22 -0800 (PST)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-aab9e281bc0so411035466b.3;
+        Mon, 16 Dec 2024 13:32:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734384681; x=1734989481; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1734384748; x=1734989548; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=kSuXfROTVbyuayO3u4H6FBZFuoCVmqEGrg9mDm0Xbqo=;
-        b=FVIPFWgWRuC5j+ROJUfPkr18K2cz+mGrHR3DjVOkTMZ+khsZMSS7UCOr8r3alf10gN
-         DaYVQRImK8FuAP/UzzL1zOxnLH6w29FL0TqqOddURzxh0ytfZTG3mfiLoitoHisHS6K8
-         QCnXNrobXzhuIRuUliNqSjLQX1mNNmpFK+YsJEtiSxi0yMU2ibwEGwqEv4Fl2H1MKxDE
-         JNBEtbsYrbst8nmxTtY8/UvQDrJKWM5rCZMbWPuEjwdVQkWauHngklPuXFGpCWEWUYFK
-         tcNWxaT5oOi6ntZ3gjR955Q2oq30lWgmt9msaF73kR613x2kczMP2Tjpkbhtpq7OXpxH
-         R0hw==
+        bh=bwO9tdXr1idXR/uXrFQHcSjvfE+8jcO756dXKibbGSI=;
+        b=RJpi1Jz8klOjmLRnddGIJVqvIYOgDCWld7qojeLU7VUEyqctXiSShYgkdWxMXaupd/
+         4G6kKH9Qg7r7rMHMlBuHoq8hUU80neUfEnKV0qJ1ttwzmbYApolfKrcmod8/CEU/CzZ5
+         jGPUxF5J1xQXBXzmRaiUOka71Tb0Jy0A0zJrUqqpp5Yy7n4JhGlVgzI+QqlKsrPqlaww
+         jScxoAROBIQ5LRoTSAskb3ToY49T5vQZE+x+7F300rgOlWoTmcWjypkHL6VmeQmOVwcj
+         RXUclspCJxJTMxP+VoNFztloIEdMskb1GZ9061HA9TVUfck1Jl/XIHsg6icfwCs64h1k
+         uAEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734384681; x=1734989481;
+        d=1e100.net; s=20230601; t=1734384748; x=1734989548;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=kSuXfROTVbyuayO3u4H6FBZFuoCVmqEGrg9mDm0Xbqo=;
-        b=j7qDEchmVKI8MOYlGgKN9NgduW0WRXWhniWmGAyCMViR/n0zygRaW7L07JnCi94bu5
-         x/ikgaSMZtf9ye12vgnYZhbS9UM7vdCjXSUm0vMHokFACn5pqdHCz1rjK5t8dDO7lnj7
-         /rOs0vwkJ8yzaFPUlxNVY6/LXBwjgvEYFEjDDL+BR01t+tYAEWA0aRSqy+twVzkTrfV/
-         WyLPK+nwcsIWzV+bm/fhlbEoKOM2IU0SbxrtAadBIyUpomId2w3rfGbtg0nuCvVEExKp
-         VyHsTWpDzDjCNvZgAT3gF3RXUoK3yV3WMkyOBIdUZbidA01iEKw05QzZiO6evOr7HSg+
-         1RyA==
-X-Forwarded-Encrypted: i=1; AJvYcCWj8bGNWzoKEGfHonNi3J2n+ocyNWVQpmtRLdZDCxVoi8mB7JdL2epqqOQyV/DHZQBcK3n//lJj@vger.kernel.org, AJvYcCXSyBRxjalOjaY+lEcnW6Dals1adY6bghFa4OR987JROyzNuLgvZQAGSprKmhcwZn2Me1nW3BGN+xti@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAduGk/go7DzNAhD6pqgBHo75y75FBL4NYboDMAOxX72nMpjv+
-	cuHZL1opgFGf9kTdXiAicLIY5JmwlMnTZ8GEG+NCSJsB01OTwM8I
-X-Gm-Gg: ASbGncvKyBdhDlNBgiRiliXSxUUVL3DlLKxa0emUqSfOs2XLdQxcW2GOjGQ8aFt8VLj
-	Fti9diJujAnYhjkbuB6Osq4VJQv5Fcau0q/NQvaFRABWziQWum8PK1sBTneK6kiupVJwtt0HNOo
-	rnHOPnQi8fi2cEAss2VaZTzkDCGdG0UkUI9EWg2etV7uExh4flPpuqvPbGvTuV+j0jqu6vwhrMY
-	5/xDUhe9G/5873u2BH39yWwuYTp8uGKM05krHkDdmHJqEJ8Ara3ei5OpX7PsI+L6E0nAJ+bO4DO
-	VWYepKG3I7KiKK0OVyHqVF8iiyVS/yl13d6gl87QPohED9UEkMH1REhtaRPNM6P+aziUWLm1SYo
-	SnwRtSXuSXUMaSMyLYHDOVdkOt3b+HsRThg0FMd6EoQlQGDSS
-X-Google-Smtp-Source: AGHT+IF5Nh+RdAeNHqBQ9BCQXNhrhQGj0Nk6GRgYN4kWHLkIsrnFi3YNTsib14QN+Y9p6bw9Y/5OGA==
-X-Received: by 2002:a17:906:2932:b0:aa6:ab70:4a7d with SMTP id a640c23a62f3a-aab77ee9adbmr1253487666b.58.1734384680811;
-        Mon, 16 Dec 2024 13:31:20 -0800 (PST)
+        bh=bwO9tdXr1idXR/uXrFQHcSjvfE+8jcO756dXKibbGSI=;
+        b=GNkKMqrMq1QZKNfY+IxwiqndzOM/utkBHjoXUD+6z6AD8B604/Cvjx8U9qAUxrmxyU
+         6UZcCD1wnVpOcJUMf9Y9Qq9b4haMeF51hva4IXgKNq4k598rSHwT1cyOXxQeKTmgB4tm
+         Hpw3Sfgsw4ZcrD4W0JAf5M2JDxSUVAkJ4UtOi7Cp/H1WRmfU5C3ewSZHdyz7PR0mwIrc
+         ATw1ZM2GFcn2Qdzqs89m5SLeUrOZhN8wmhgvlWQzG0ruKAyOJRIEIE/lUQV17JCofJML
+         18qCKr3e92+37txLDmOyMUhn/CoCxbYTpRr62IcaJrE1nv++V/KyHtqJGwxfMFoCXMaf
+         Am/w==
+X-Forwarded-Encrypted: i=1; AJvYcCUMLE07pSHdNMA7gaCns7osHlWyLdfhuv4/Ldinbb3SaJx/BL/sCqjmQQeJkopBgGkrWJi8ADqYJNCN@vger.kernel.org, AJvYcCV37LH4YYK6ceIIu292QS+5/E4263nR5VB0hp1fJknapPSRZruUb6yBQcpScIz8qz5NSNlfC6rO@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNsjwImq0m6IeTmq++uP7lj/aT5U+lWy6Ova91uFrH5TayYbna
+	Ww9pNQE6UMc9RWxV9X1AsmvR8aJxQ9tLMfWLUV+WBKOLkYczTCzU
+X-Gm-Gg: ASbGncuLCvxXvGYaSgDu3gD3GxyUYV+OaqQKIjDlFL2qm9hkJ1e3komF6F1M9QJ20SM
+	MtGnKubXTLP0VDUk+Y7xUm4Fb2XrLQtTx5QmUXgWQq9wr+7emsJOPbPpHQByExI8nLfRrws6bd1
+	NKzliiAKRaBQw6UO1Cu9qTg7JhGLVZsTJdZKL9jmQ9BkSvigeT/rpTfahYCQ7rG9ynOLb9KYXZs
+	o/jr7NeD6SIiVosWEh8RAc4/l3GN4NTxa6q7OXKsmh2SS8EinPQaJMIqO7nWzTyur8qpm7Sihpk
+	m5nDySJxqKtEUsCFfGweQaTE0LtRBVl36Sw22NOz+eLTk7ExTJLRQVVeoMAcGCoibw0DiQwEnhg
+	JF3CoP7W80bew6lWEJoBt7GBCFoqRD7i7Zo2p81AqgXwspf3z
+X-Google-Smtp-Source: AGHT+IFZUS23FzRZht7cuplHlJEZRhxkQmibWhek8xaIMlbolLo+B4tiDpuhK8gB9W/MnnihjBEBgg==
+X-Received: by 2002:a17:907:94cf:b0:aa6:b473:ea49 with SMTP id a640c23a62f3a-aab7795860emr1101458866b.19.1734384748025;
+        Mon, 16 Dec 2024 13:32:28 -0800 (PST)
 Received: from ?IPV6:2a02:3100:a874:3500:f430:df67:6714:d87b? (dynamic-2a02-3100-a874-3500-f430-df67-6714-d87b.310.pool.telefonica.de. [2a02:3100:a874:3500:f430:df67:6714:d87b])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-aab963c54c7sm368743066b.195.2024.12.16.13.31.18
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-aab96005f73sm371424666b.4.2024.12.16.13.32.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Dec 2024 13:31:19 -0800 (PST)
-Message-ID: <fd51738c-dcd6-4d61-b8c5-faa6ac0f1026@gmail.com>
-Date: Mon, 16 Dec 2024 22:31:18 +0100
+        Mon, 16 Dec 2024 13:32:26 -0800 (PST)
+Message-ID: <d08a798e-8565-422c-b2ed-121794db077f@gmail.com>
+Date: Mon, 16 Dec 2024 22:32:25 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -83,7 +83,8 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH net-next 1/3] net: phy: add phy_disable_eee
+Subject: [PATCH net-next 2/3] net: ethernet: ti: cpsw: disable PHY EEE
+ advertisement
 From: Heiner Kallweit <hkallweit1@gmail.com>
 To: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
@@ -144,54 +145,101 @@ In-Reply-To: <5139374e-7151-4d0d-8ba9-9ec3d9b52f67@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-If a MAC driver doesn't support EEE, then the PHY shouldn't advertise it.
-Add phy_disable_eee() for this purpose.
+It seems the cpsw MAC doesn't support EEE. See e.g. the commit message of
+ce2899428ec0 ("ARM: dts: am335x-baltos: disable EEE for Atheros 8035 PHY").
+There are cases where this causes issues if the PHY's on both sides have
+negotiated EEE. As a workaround EEE modes of the PHY are marked broken
+in DT, effectively disabling EEE advertisement.
+Improve this by using new function phy_disable_eee() in the MAC driver.
+This properly disables EEE advertisement, and allows to remove the
+eee-broken-xxx properties from DT. As EEE is disabled anyway, we can
+remove also the set_eee ethtool op.
 
 Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 ---
- drivers/net/phy/phy_device.c | 16 ++++++++++++++++
- include/linux/phy.h          |  1 +
- 2 files changed, 17 insertions(+)
+ drivers/net/ethernet/ti/cpsw.c         |  3 ++-
+ drivers/net/ethernet/ti/cpsw_ethtool.c | 12 ------------
+ drivers/net/ethernet/ti/cpsw_new.c     |  3 ++-
+ drivers/net/ethernet/ti/cpsw_priv.h    |  1 -
+ 4 files changed, 4 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index b26bb33cd..fe18a12c4 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -2993,6 +2993,22 @@ void phy_support_eee(struct phy_device *phydev)
- }
- EXPORT_SYMBOL(phy_support_eee);
+diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
+index 4ef8cf6ea..1e290ee8e 100644
+--- a/drivers/net/ethernet/ti/cpsw.c
++++ b/drivers/net/ethernet/ti/cpsw.c
+@@ -635,6 +635,8 @@ static void cpsw_slave_open(struct cpsw_slave *slave, struct cpsw_priv *priv)
  
-+/**
-+ * phy_disable_eee - Disable EEE for the PHY
-+ * @phydev: Target phy_device struct
-+ *
-+ * This function is used by MAC drivers for MAC's which don't support EEE.
-+ * It disables EEE on the PHY layer.
-+ */
-+void phy_disable_eee(struct phy_device *phydev)
-+{
-+	linkmode_zero(phydev->supported_eee);
-+	linkmode_zero(phydev->advertising_eee);
-+	phydev->eee_cfg.tx_lpi_enabled = false;
-+	phydev->eee_cfg.eee_enabled = false;
-+}
-+EXPORT_SYMBOL_GPL(phy_disable_eee);
+ 	slave->phy = phy;
+ 
++	phy_disable_eee(slave->phy);
 +
- /**
-  * phy_support_sym_pause - Enable support of symmetrical pause
-  * @phydev: target phy_device struct
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index e597a32cc..5bc71d599 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -2071,6 +2071,7 @@ void phy_advertise_eee_all(struct phy_device *phydev);
- void phy_support_sym_pause(struct phy_device *phydev);
- void phy_support_asym_pause(struct phy_device *phydev);
- void phy_support_eee(struct phy_device *phydev);
-+void phy_disable_eee(struct phy_device *phydev);
- void phy_set_sym_pause(struct phy_device *phydev, bool rx, bool tx,
- 		       bool autoneg);
- void phy_set_asym_pause(struct phy_device *phydev, bool rx, bool tx);
+ 	phy_attached_info(slave->phy);
+ 
+ 	phy_start(slave->phy);
+@@ -1225,7 +1227,6 @@ static const struct ethtool_ops cpsw_ethtool_ops = {
+ 	.get_link_ksettings	= cpsw_get_link_ksettings,
+ 	.set_link_ksettings	= cpsw_set_link_ksettings,
+ 	.get_eee	= cpsw_get_eee,
+-	.set_eee	= cpsw_set_eee,
+ 	.nway_reset	= cpsw_nway_reset,
+ 	.get_ringparam = cpsw_get_ringparam,
+ 	.set_ringparam = cpsw_set_ringparam,
+diff --git a/drivers/net/ethernet/ti/cpsw_ethtool.c b/drivers/net/ethernet/ti/cpsw_ethtool.c
+index 21d55a180..bdc4db0d1 100644
+--- a/drivers/net/ethernet/ti/cpsw_ethtool.c
++++ b/drivers/net/ethernet/ti/cpsw_ethtool.c
+@@ -434,18 +434,6 @@ int cpsw_get_eee(struct net_device *ndev, struct ethtool_keee *edata)
+ 		return -EOPNOTSUPP;
+ }
+ 
+-int cpsw_set_eee(struct net_device *ndev, struct ethtool_keee *edata)
+-{
+-	struct cpsw_priv *priv = netdev_priv(ndev);
+-	struct cpsw_common *cpsw = priv->cpsw;
+-	int slave_no = cpsw_slave_index(cpsw, priv);
+-
+-	if (cpsw->slaves[slave_no].phy)
+-		return phy_ethtool_set_eee(cpsw->slaves[slave_no].phy, edata);
+-	else
+-		return -EOPNOTSUPP;
+-}
+-
+ int cpsw_nway_reset(struct net_device *ndev)
+ {
+ 	struct cpsw_priv *priv = netdev_priv(ndev);
+diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
+index a98bcc5eb..be4d90c1c 100644
+--- a/drivers/net/ethernet/ti/cpsw_new.c
++++ b/drivers/net/ethernet/ti/cpsw_new.c
+@@ -778,6 +778,8 @@ static void cpsw_slave_open(struct cpsw_slave *slave, struct cpsw_priv *priv)
+ 
+ 	slave->phy = phy;
+ 
++	phy_disable_eee(slave->phy);
++
+ 	phy_attached_info(slave->phy);
+ 
+ 	phy_start(slave->phy);
+@@ -1209,7 +1211,6 @@ static const struct ethtool_ops cpsw_ethtool_ops = {
+ 	.get_link_ksettings	= cpsw_get_link_ksettings,
+ 	.set_link_ksettings	= cpsw_set_link_ksettings,
+ 	.get_eee		= cpsw_get_eee,
+-	.set_eee		= cpsw_set_eee,
+ 	.nway_reset		= cpsw_nway_reset,
+ 	.get_ringparam		= cpsw_get_ringparam,
+ 	.set_ringparam		= cpsw_set_ringparam,
+diff --git a/drivers/net/ethernet/ti/cpsw_priv.h b/drivers/net/ethernet/ti/cpsw_priv.h
+index 1f448290b..f2fc55d92 100644
+--- a/drivers/net/ethernet/ti/cpsw_priv.h
++++ b/drivers/net/ethernet/ti/cpsw_priv.h
+@@ -497,7 +497,6 @@ int cpsw_get_link_ksettings(struct net_device *ndev,
+ int cpsw_set_link_ksettings(struct net_device *ndev,
+ 			    const struct ethtool_link_ksettings *ecmd);
+ int cpsw_get_eee(struct net_device *ndev, struct ethtool_keee *edata);
+-int cpsw_set_eee(struct net_device *ndev, struct ethtool_keee *edata);
+ int cpsw_nway_reset(struct net_device *ndev);
+ void cpsw_get_ringparam(struct net_device *ndev,
+ 			struct ethtool_ringparam *ering,
 -- 
 2.47.1
 
