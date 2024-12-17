@@ -1,60 +1,60 @@
-Return-Path: <linux-omap+bounces-2841-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2837-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFB039F580C
-	for <lists+linux-omap@lfdr.de>; Tue, 17 Dec 2024 21:47:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1B6C9F57FC
+	for <lists+linux-omap@lfdr.de>; Tue, 17 Dec 2024 21:45:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3BEE188DDBC
-	for <lists+linux-omap@lfdr.de>; Tue, 17 Dec 2024 20:47:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E16E4188B259
+	for <lists+linux-omap@lfdr.de>; Tue, 17 Dec 2024 20:45:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ACE91F9EB1;
-	Tue, 17 Dec 2024 20:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755681DB363;
+	Tue, 17 Dec 2024 20:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="rakZ/KAx"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="wAvMk859"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FA41F9AAD;
-	Tue, 17 Dec 2024 20:46:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5403C38DFC;
+	Tue, 17 Dec 2024 20:45:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734468363; cv=none; b=ne7eOR0O3WpDGzHN0fP03c2/Qy0TN9tUbU+K3kQ6yuYKVB7k1YOq2Vrg/qfXZAeDD3g3rWFHD1YkgQx/sogenVcUCV36DMfd+tNnllqMeaPyL3jxjZ2LaI+TW75H7U6kozQ9DxbhkujRhRPVYskNGe643AbxouhN3g2d6G3xaSM=
+	t=1734468346; cv=none; b=a7PQBsHNsV9sA44BWb79ncEo2K9QOO3p5GssQ1e2RoxSIGxadJHz4x2QFjzoqBU/HQMJ/LpZLJWkvDoNeS9FQST6v+prn/CJvQvfXhNU4NkJBsDN71/y7BZhKwPkSSZFy4jV3yk+Zn24Yht9ekMc2mZG3oNx6XDkYLezb9rz//Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734468363; c=relaxed/simple;
-	bh=YOI6h8XUIB/90wiMiXASh+OZXUQzf7Ce6dLej9RDjWM=;
+	s=arc-20240116; t=1734468346; c=relaxed/simple;
+	bh=cNXRFtyTRJf7SaLbQYiA/Y3vgc+vWLsRr65qFvH17Fo=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BwOF7eMlzr9Z2Yn7XPmSPBsfLO3pPxzxjIsIJlxF5Mizm9bJHU7PcxoRAVOBEhMT/8mw+fVBXxpZT02csEj40o+f+oHowan8m0hfleyd5QIDBCs4lnvUBkZg2j7TEYEVxmHQ6LuRz1cWzQ4yHja4eB2KQuP/KLuXG5k5f05+VLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=rakZ/KAx; arc=none smtp.client-ip=198.47.19.141
+	 MIME-Version:Content-Type; b=AMlWTzMha3YTJcLIonRskGdfejZFVRD/+RPp4Ggf/CPP6qFl7HZH9DWHlecKJNxB0tzHm3ly0fIuFvPoNeVFYEmoF+X8BmuaXaRToN/Pl60BY6MMM42uFmn9DENWKVOpUTSIHYFbo55GBW+0T98HiMSOLGEAV7ZRLtrplYi7ly4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=wAvMk859; arc=none smtp.client-ip=198.47.23.235
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4BHKjRJK038606;
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 4BHKjRQe056652
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
 	Tue, 17 Dec 2024 14:45:27 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
 	s=ti-com-17Q1; t=1734468327;
-	bh=CIZma+nxV4y+meHOQX9kEBGIzHgsRLLP2aNuGZUN7Zs=;
+	bh=n1ZMyHRLZgw0n68nTZPSThSj5mXsTB9oMwUSDIld2Q8=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=rakZ/KAxRJ2VJp9ROCGfJJpVW58vD7MUqL3szgHBVlbc9ya1+b6dBmjs2zV+Pt9Of
-	 3gTEFQRBGelJcjW0kJZ5xAfTuGnCzpJjv9taVcrtQe2GXlJ8TKjb497GSMFmz4tL+V
-	 bVLjUWAWzLMfcg2nbzxr+9QZQKe62PrCdqHb3FUE=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4BHKjR49020477
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	b=wAvMk859RFrGC3AGm+EmtC6bvm7llHmo7ojtJY3EjeHzc/R/Dzl1nQcwvQVXFKDq7
+	 oVaPXLsE9qeQ7jp3q9ez2jF3gM+CgQVsx/HsG+QEySb7MCXAtQi5noKvGMpLGVKxVQ
+	 BlRmI8HLdX2nix01+yiH1Lq1ZFMxqS8pBbhOWdVk=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4BHKjRYm011336;
 	Tue, 17 Dec 2024 14:45:27 -0600
-Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 17
  Dec 2024 14:45:26 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
  Frontend Transport; Tue, 17 Dec 2024 14:45:26 -0600
 Received: from DMZ007XYY.dhcp.ti.com (dmz007xyy.dhcp.ti.com [128.247.29.8])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4BHKjQj2023682;
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4BHKjQj3023682;
 	Tue, 17 Dec 2024 14:45:26 -0600
 From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
 To: <aaro.koskinen@iki.fi>, <andreas@kemnade.info>, <khilman@baylibre.com>,
@@ -62,9 +62,9 @@ To: <aaro.koskinen@iki.fi>, <andreas@kemnade.info>, <khilman@baylibre.com>,
         <broonie@kernel.org>, <linux-omap@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
 CC: <m-leonard@ti.com>, <praneeth@ti.com>
-Subject: [PATCH v1 2/4] regulator: tps65219: Update driver name
-Date: Tue, 17 Dec 2024 14:45:24 -0600
-Message-ID: <20241217204526.1010989-3-s-ramamoorthy@ti.com>
+Subject: [PATCH v1 3/4] regulator: tps65219: Remove MODULE_ALIAS
+Date: Tue, 17 Dec 2024 14:45:25 -0600
+Message-ID: <20241217204526.1010989-4-s-ramamoorthy@ti.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241217204526.1010989-1-s-ramamoorthy@ti.com>
 References: <20241217204526.1010989-1-s-ramamoorthy@ti.com>
@@ -78,27 +78,24 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Follow the same naming convention in tps6594-regulator.c with
-tpsxxx-regulator instead of tpsxxx-pmic.
+Remove MODULE_ALIAS because the same module alias is already generated by
+MODULE_DEVICE_TABLE.
 
 Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
 ---
- drivers/regulator/tps65219-regulator.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/regulator/tps65219-regulator.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
-index 14d843a99d0f..5decf69f327a 100644
+index 5decf69f327a..f57a046f9dea 100644
 --- a/drivers/regulator/tps65219-regulator.c
 +++ b/drivers/regulator/tps65219-regulator.c
-@@ -379,7 +379,7 @@ MODULE_DEVICE_TABLE(platform, tps65219_regulator_id_table);
+@@ -390,5 +390,4 @@ module_platform_driver(tps65219_regulator_driver);
  
- static struct platform_driver tps65219_regulator_driver = {
- 	.driver = {
--		.name = "tps65219-pmic",
-+		.name = "tps65219-regulator",
- 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
- 	},
- 	.probe = tps65219_regulator_probe,
+ MODULE_AUTHOR("Jerome Neanne <j-neanne@baylibre.com>");
+ MODULE_DESCRIPTION("TPS65219 voltage regulator driver");
+-MODULE_ALIAS("platform:tps65219-pmic");
+ MODULE_LICENSE("GPL");
 -- 
 2.34.1
 
