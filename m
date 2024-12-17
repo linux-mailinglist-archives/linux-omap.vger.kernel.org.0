@@ -1,108 +1,103 @@
-Return-Path: <linux-omap+bounces-2849-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2850-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9210E9F5897
-	for <lists+linux-omap@lfdr.de>; Tue, 17 Dec 2024 22:18:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99A4D9F589D
+	for <lists+linux-omap@lfdr.de>; Tue, 17 Dec 2024 22:19:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2192166563
-	for <lists+linux-omap@lfdr.de>; Tue, 17 Dec 2024 21:17:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 871097A2CF9
+	for <lists+linux-omap@lfdr.de>; Tue, 17 Dec 2024 21:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25DBF1F9AAE;
-	Tue, 17 Dec 2024 21:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8201F9EDA;
+	Tue, 17 Dec 2024 21:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="UAdrKaHI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ol2zlekT"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3131D192D69;
-	Tue, 17 Dec 2024 21:17:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE431DA61D;
+	Tue, 17 Dec 2024 21:19:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734470229; cv=none; b=aS66kX6F/qgax/w0ST44uzvprp0WOdtP7vBieNChRzOGiCrLYizl0tG+gxnN+h8o3ny3peGxBdNDwPzdnfFs7VHXDvJJPxaBjMIrPQDlMLs6ibaMr82ogvxEIt/Kwt3ezKhmEZze0cYM8WrdmbYbPsp4KyjL3IgUS11+4UZ+FDk=
+	t=1734470363; cv=none; b=bf/nbn6EZI/theIlOfd4s37NkID19TKXaoUf3rT5ucDqgYFTIZA4Iqxa2uAvfy/WndZq0+x12VuBfhlU7KzXMHFbB0M0DoCqNwTebaG5DKCrahLQ22p75nj0llDVjsSg7lHNCDvnO6hUKbiLoYrs1yzcjRTczBiJogzk1UTK4QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734470229; c=relaxed/simple;
-	bh=rRuqQWHCRh/L2HMMYesVvKdsrU626UbHdu7OsM0npT0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=qQCZXiRHNXhr7gMASsJJ2ofnOYom62vJYCLdj6mq6DcYM+0/ilu2BIYPO9BRPfJ45n+QijgwF9497i+O7PM8pTUxf3kUudInpn75sj76cXCFhmIXrE5nUOmcHx6oVNlJ/nZR+orevGVQencv+lZNFNwsmE719h++IAZQAoZC2XM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=UAdrKaHI; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 4BHLGjoD058263
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Dec 2024 15:16:45 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1734470205;
-	bh=AWyN1W0khLp3wZTvJXUm8eER3uSe9m0A8SxumxnNAy4=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=UAdrKaHIfVGFiAAUxjV/c2RbMiQHaR6oYUdHwiwzvDuu19jV5BrfW0uSpx/DonQpn
-	 9xy5UtnTGEF6xV9e/Kj9LXOWPjdfpRG+ImJW7M8ok/VxiJhD9RKHYZvqIqlmEs48VT
-	 qyDbjTBXT/+hs/n8Ot1ybOoGWDuUsUzP+UWWMfsc=
-Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4BHLGjL5005367
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 17 Dec 2024 15:16:45 -0600
-Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 17
- Dec 2024 15:16:45 -0600
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 17 Dec 2024 15:16:44 -0600
-Received: from [10.249.42.149] ([10.249.42.149])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4BHLGit0127738;
-	Tue, 17 Dec 2024 15:16:44 -0600
-Message-ID: <2fdf8fd0-b764-4720-8f7b-71b5d63d2541@ti.com>
-Date: Tue, 17 Dec 2024 15:16:44 -0600
+	s=arc-20240116; t=1734470363; c=relaxed/simple;
+	bh=jrc3lY75xHWJSSzKDhwHm1denSyOJLkP2xgW2pqkhag=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KTPD4gFH1w/qq9P9hQIijmTTWst+fZ4mh4UMXDjg5C9++P8dF5rVsRM7ZI6hxDdYxTAro3lrqsnMyR87BGKDDWrmx3asHODICaho4lZewBnqaDXjGq9QcaZ5ipF8YpPfb+R0qfeE4nqlwzNGDHV53JIyw3tRhmF4zzpZ/Y9l8U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ol2zlekT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E1BC4CED3;
+	Tue, 17 Dec 2024 21:19:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734470362;
+	bh=jrc3lY75xHWJSSzKDhwHm1denSyOJLkP2xgW2pqkhag=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ol2zlekTlcUlX42G6Y9JWMcaF4pKnf6xFOzNzkclzDB35apI0xnTEazu7c91I9hq6
+	 M7f+Xl3OzjIzCuJD3qs+PCuioRvGk4icTQas53Kip11pdM43aj6WnYEd7oQW2eNiCK
+	 t4V438NIE4HW3fB7tJaSKyFDXqDz7p7ctQf3tjRnbLl2C/Swyq3rVXJz7y4CgTGWrD
+	 VuJKpHLKX7rVYLA/bXEYc6XnBrI/gKR6Gi35EUtApLJLKdDpC5xyqBixyeZmt9UqNP
+	 O30vxDbupuSKPCUmKhKisxvX0GuWoEDQCZ5Hx+ZC3UIFaymbiq2DoWPDGujWC4mF9Z
+	 kKZNe/uTL6WzQ==
+Date: Tue, 17 Dec 2024 21:19:17 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Andrew Davis <afd@ti.com>
+Cc: Shree Ramamoorthy <s-ramamoorthy@ti.com>, aaro.koskinen@iki.fi,
+	andreas@kemnade.info, khilman@baylibre.com, rogerq@kernel.org,
+	tony@atomide.com, lgirdwood@gmail.com, linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org, m-leonard@ti.com, praneeth@ti.com
+Subject: Re: [PATCH v1 2/4] regulator: tps65219: Update driver name
+Message-ID: <59e004d7-7e46-4141-bf61-f01a6e5296e2@sirena.org.uk>
+References: <20241217204526.1010989-1-s-ramamoorthy@ti.com>
+ <20241217204526.1010989-3-s-ramamoorthy@ti.com>
+ <23dd1912-31cf-4e99-8fb0-0fbd68eee8e2@sirena.org.uk>
+ <2fdf8fd0-b764-4720-8f7b-71b5d63d2541@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/4] regulator: tps65219: Update driver name
-To: Mark Brown <broonie@kernel.org>, Shree Ramamoorthy <s-ramamoorthy@ti.com>
-CC: <aaro.koskinen@iki.fi>, <andreas@kemnade.info>, <khilman@baylibre.com>,
-        <rogerq@kernel.org>, <tony@atomide.com>, <lgirdwood@gmail.com>,
-        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <m-leonard@ti.com>, <praneeth@ti.com>
-References: <20241217204526.1010989-1-s-ramamoorthy@ti.com>
- <20241217204526.1010989-3-s-ramamoorthy@ti.com>
- <23dd1912-31cf-4e99-8fb0-0fbd68eee8e2@sirena.org.uk>
-Content-Language: en-US
-From: Andrew Davis <afd@ti.com>
-In-Reply-To: <23dd1912-31cf-4e99-8fb0-0fbd68eee8e2@sirena.org.uk>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="CYPEFqoeyAgL+0Ji"
+Content-Disposition: inline
+In-Reply-To: <2fdf8fd0-b764-4720-8f7b-71b5d63d2541@ti.com>
+X-Cookie: The sum of the Universe is zero.
 
-On 12/17/24 3:01 PM, Mark Brown wrote:
-> On Tue, Dec 17, 2024 at 02:45:24PM -0600, Shree Ramamoorthy wrote:
-> 
->> Follow the same naming convention in tps6594-regulator.c with
->> tpsxxx-regulator instead of tpsxxx-pmic.
-> 
->>   static struct platform_driver tps65219_regulator_driver = {
->>   	.driver = {
->> -		.name = "tps65219-pmic",
->> +		.name = "tps65219-regulator",
->>   		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
-> 
-> This isn't just a naming convention thing AFACIT, the MFD registers the
-> new name so the driver wouldn't previously have loaded.  How did this
-> ever work?
 
-It matches based on the platform device .id_table[0] which does have
-"tps65219-regulator" listed, the driver .name itself is only used
-as a last fallback when there is no .id_table.
+--CYPEFqoeyAgL+0Ji
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-[0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/base/platform.c#n1352
+On Tue, Dec 17, 2024 at 03:16:44PM -0600, Andrew Davis wrote:
+> On 12/17/24 3:01 PM, Mark Brown wrote:
 
-Andrew
+> > This isn't just a naming convention thing AFACIT, the MFD registers the
+> > new name so the driver wouldn't previously have loaded.  How did this
+> > ever work?
+
+> It matches based on the platform device .id_table[0] which does have
+> "tps65219-regulator" listed, the driver .name itself is only used
+> as a last fallback when there is no .id_table.
+
+Ah, there's not enough context in the diff to show the ID table.
+
+--CYPEFqoeyAgL+0Ji
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmdh6tQACgkQJNaLcl1U
+h9ByzAf7Bc/PZDfMPtI9KxJCA6hCXGpfdjWES8E2VVongW5g6QXFNq7pYdHbRP+i
+DaEanNv4FztvVbVNHRNdcL4HPnUuVtK3/mU+Apm0Hkl8DjlJ22UKrgTtxb/qvxyT
+UHpJguD6lQauiFG5Skac4dGI/Nhh4cGTRJ4LKDK3vP/xAeVy2A8EPgaKsw3bRTVq
+ETeluEiwFxisxjLuasbWL1E3USy2EuFuilk9yMqeeBDfc+tU4FLUA8JjynrQy+Db
+Q/sLC8nzdkKUeuF7SlnsKbIdbXje703U+TF12B2MyRuaprRiN4QpNhS+der4caK5
+16WXZ46xpdD7a+zeCcYT8yE0z9AVbA==
+=acoK
+-----END PGP SIGNATURE-----
+
+--CYPEFqoeyAgL+0Ji--
 
