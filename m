@@ -1,34 +1,34 @@
-Return-Path: <linux-omap+bounces-2859-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2860-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E3539F775D
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Dec 2024 09:34:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 971F29F7764
+	for <lists+linux-omap@lfdr.de>; Thu, 19 Dec 2024 09:35:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1C6B167C51
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Dec 2024 08:34:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08EDE1893A55
+	for <lists+linux-omap@lfdr.de>; Thu, 19 Dec 2024 08:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC16922146A;
-	Thu, 19 Dec 2024 08:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8D221770B;
+	Thu, 19 Dec 2024 08:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="XBJMxU0u"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="I4uiIuB7"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B3515E5BB;
-	Thu, 19 Dec 2024 08:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D7738F9C;
+	Thu, 19 Dec 2024 08:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734597252; cv=none; b=FQvdEUiyJ4TcMjsWDNhZl2eo8W27hK1lQll+RZATBiISOzhOhqkUU96/b3hIn4XcopxxoXhIClKqb6NMohoF4t/pcEDPurhmd02+gwZjb6DGTHmTBOhJUY5GXYANb9naWT1bNP+ti5bKEd8DLrUSwcMZ/vbb93MfMJzyCe+C6jo=
+	t=1734597307; cv=none; b=ANMIZZVuYIb9TKsZTJRfH2SOwekreqDfDjAXGTZrTW9SpoEeGKxW1ad6CNmY8VfBveiO6vpcYZFGO2CxkQ5JonU2dUI5pZFOosUErrItkzuTvlY+n9Xk4B+N8znQTQLgTkcMHaufS5K5GlvE4rgIqIo8ex3LJse7wcRZMbT2T9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734597252; c=relaxed/simple;
-	bh=ZDNPTus+pl0pyyVdBneRJIycZqkl5M4AmC4zHYoInrM=;
+	s=arc-20240116; t=1734597307; c=relaxed/simple;
+	bh=IlULEW6CU1yyixZ3R+dQ+GB/FPBKJ83g8wU5BMmhDWo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CO7SdhpH8aC5zuFOKwf+1PE2op2B9y1BIycHIdM/5XmZ2EYGPbhv4V0xUtjZNgylNXq2sipnE/vNv5MnfkS5Zt0jjEJkpbSTNZV4Ax4bgQKnN7bctQcTFP+mKNILkpUre5HB7PjL6szIcImUis8PLnETz0V4xROzDDVoZ0gONhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=XBJMxU0u; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=WqPTKqDFTiQYpL/xHBeCes0MVz2QryjVr6vC7b8g7yxBSZqu19wY5Y5G2KkHKWxPnQO6jkOcMbar7r+JRostXpg5D197UOKOFxHSaCXgGW4rCpEJud5YLVaEOaH0r1qzObs3DTxrXTkfNo4AlcxTvfM91eQOVhYKkG0EZCFjFrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=I4uiIuB7; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
@@ -36,13 +36,13 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Q9Vo7EMgyx3gITUSk3Rz41lLOoXpLKhtDG+rDzbzpi8=; b=XBJMxU0uF7+eYTjPPt201hkgq4
-	sgiSRCCTJ/Ry26Hdxk2uPJVACMT0B7RWk3vahniFyLZeg2Qy8F+aN9fe+2px8Nr1P+rnNFG3heVY2
-	AMOU1xhWVyY2P9nURy+H8oQa348iGN6yZDRIIi6AehBkQhV7qXvTZw3OLleKpaZbYJY0=;
+	bh=/BYLrICp9x+JYyEpqanBXgVDeHhnlhnaH+bHyihcbew=; b=I4uiIuB7vc0YXL7NZrUwKeYzDI
+	6e3U4/cLWrFA/MxaKF3Cruz5uwQ4jwvejDpEyOPt6uL+KgzG6lhW6upDgOdBlpJC4Gt4PQpM3BdCa
+	aQG6W3c8FzzsvMyRSIsf5eMPlBnJSiPTDbEScVe0sZ/pwNOGg8/scOoOhlyMQSAaNH+E=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1tOByq-001Y0i-No; Thu, 19 Dec 2024 09:34:00 +0100
-Date: Thu, 19 Dec 2024 09:34:00 +0100
+	id 1tOBzm-001Y2J-3s; Thu, 19 Dec 2024 09:34:58 +0100
+Date: Thu, 19 Dec 2024 09:34:58 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: Heiner Kallweit <hkallweit1@gmail.com>
 Cc: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
@@ -56,10 +56,11 @@ Cc: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
 	linux-omap@vger.kernel.org,
 	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
 	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH net-next 1/3] net: phy: add phy_disable_eee
-Message-ID: <2397ac08-8cb7-4158-bc0c-48fc4a2e0c2c@lunn.ch>
+Subject: Re: [PATCH net-next 2/3] net: ethernet: ti: cpsw: disable PHY EEE
+ advertisement
+Message-ID: <270e31cf-7d91-45c1-bc3d-c5d171545fd3@lunn.ch>
 References: <5139374e-7151-4d0d-8ba9-9ec3d9b52f67@gmail.com>
- <fd51738c-dcd6-4d61-b8c5-faa6ac0f1026@gmail.com>
+ <d08a798e-8565-422c-b2ed-121794db077f@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -68,11 +69,18 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fd51738c-dcd6-4d61-b8c5-faa6ac0f1026@gmail.com>
+In-Reply-To: <d08a798e-8565-422c-b2ed-121794db077f@gmail.com>
 
-On Mon, Dec 16, 2024 at 10:31:18PM +0100, Heiner Kallweit wrote:
-> If a MAC driver doesn't support EEE, then the PHY shouldn't advertise it.
-> Add phy_disable_eee() for this purpose.
+On Mon, Dec 16, 2024 at 10:32:25PM +0100, Heiner Kallweit wrote:
+> It seems the cpsw MAC doesn't support EEE. See e.g. the commit message of
+> ce2899428ec0 ("ARM: dts: am335x-baltos: disable EEE for Atheros 8035 PHY").
+> There are cases where this causes issues if the PHY's on both sides have
+> negotiated EEE. As a workaround EEE modes of the PHY are marked broken
+> in DT, effectively disabling EEE advertisement.
+> Improve this by using new function phy_disable_eee() in the MAC driver.
+> This properly disables EEE advertisement, and allows to remove the
+> eee-broken-xxx properties from DT. As EEE is disabled anyway, we can
+> remove also the set_eee ethtool op.
 > 
 > Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 
