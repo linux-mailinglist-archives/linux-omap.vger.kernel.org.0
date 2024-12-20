@@ -1,155 +1,157 @@
-Return-Path: <linux-omap+bounces-2871-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2872-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FCBD9F9CC4
-	for <lists+linux-omap@lfdr.de>; Fri, 20 Dec 2024 23:35:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7BDB9F9D07
+	for <lists+linux-omap@lfdr.de>; Sat, 21 Dec 2024 00:06:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2BFF16CC8B
-	for <lists+linux-omap@lfdr.de>; Fri, 20 Dec 2024 22:35:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6A687A2DAD
+	for <lists+linux-omap@lfdr.de>; Fri, 20 Dec 2024 23:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 384441C1F08;
-	Fri, 20 Dec 2024 22:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA04227B8C;
+	Fri, 20 Dec 2024 23:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="LEawztcS"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ko0NoC85"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A131A9B27;
-	Fri, 20 Dec 2024 22:35:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF9531AAA00;
+	Fri, 20 Dec 2024 23:06:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734734137; cv=none; b=BUeunSF+kldoebkhOfBjjNBHWB60PoeUJ4wue+oW40gMkiJbuTf6LRtQwQDgeL7tH//n2RBSoFaq0qo9GCQD+ocWIV4HcgrsaVyJDDBCLs7ajbodxKCQB1AI7+vHjgNwcITO7AZymalYSvHA3TWIYJd3frSxQVkxB9UdlikR/GU=
+	t=1734735989; cv=none; b=AEEhS997a/E77qiLD4RxVb7iX70rD009DOEiC1QndK4tleHmYBiaDGj8LLb9mO8BCmvAuni+KmNFGGk7heWDNa/Yx6gnZ2qF/d1YXj4Rn5K7sMFCNlZ3+rpXutqSFFey59rLjZruDKHGZmAEZBG9KGtXGe4RR12ACpsJ2BrPMOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734734137; c=relaxed/simple;
-	bh=hCrPLBGKXul9fIWu9qcpnA6H6FZUmgnLsyZii4L7flw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WBweazDb1sgYsgypK8QeGL5sOT40wgd91Ad/NcIqqZBp7Pz/6UC9WKPDN6euU410tQx80iEMk9Vv2cF/RzUCQ3stjGE6PxRh7MbPqg3pDAEPi/raZwbxPHkOjIvGMzv0hyyBQ7egWgINp2jHdNwMi5ifUEoyuwPn8hERXC8CJXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=LEawztcS; arc=none smtp.client-ip=198.47.19.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4BKMZOnq072626;
-	Fri, 20 Dec 2024 16:35:24 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1734734124;
-	bh=E0h3P4N9j75w7+HF6CeZ/8OdGu2MqcdwPSKxnMEMrkk=;
-	h=From:To:CC:Subject:Date;
-	b=LEawztcSSn2ZsUfgpUtFFS/uCt7JYhPEaLBNXTyrtsKX58MrRw2p4q2LvXKzORYSN
-	 eZAKNVQtwsDfVqM7vBnaXaxGmaRwdpzUI1fux84lJ9/Ai2I6If8OkcmUr0TtLTOVg0
-	 av1Thnn77Pi+4f9Vv/u/nEForI/Sd8aegzbygw1k=
-Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4BKMZOqB120869;
-	Fri, 20 Dec 2024 16:35:24 -0600
-Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 20
- Dec 2024 16:35:23 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 20 Dec 2024 16:35:23 -0600
-Received: from judy-hp.dhcp.ti.com (judy-hp.dhcp.ti.com [128.247.81.105])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4BKMZNm6095687;
-	Fri, 20 Dec 2024 16:35:23 -0600
-From: Judith Mendez <jm@ti.com>
-To: Tony Lindgren <tony@atomide.com>, Kevin Hilman <khilman@ti.com>
-CC: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, <linux-omap@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Sukrut Bellary
-	<sbellary@baylibre.com>, Bin Liu <b-liu@ti.com>
-Subject: [PATCH] ARM: dts: ti: am437x-l4: remove autoidle for UART
-Date: Fri, 20 Dec 2024 16:35:23 -0600
-Message-ID: <20241220223523.2125278-1-jm@ti.com>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1734735989; c=relaxed/simple;
+	bh=rDnT4CiiEQHDei+WTY8t89wAldSK7/wzy9hzuNQ2FY0=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=mR9kqnewnuKbl4Z6HKX782zc6ZZY4ffOkl8y89IwF3ijfVzjD0RbX27USRLC159FaDuSuyd7NUSOJE8/OXSOBBawVmJms95i9/qtPJtetAe58F47wxu7KZXAN7QgK8e4bcHWohEozn+w06AOc3PBkG39JKGUGyQJBhltZ0C3u5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ko0NoC85; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D4DC4CECD;
+	Fri, 20 Dec 2024 23:06:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1734735987;
+	bh=rDnT4CiiEQHDei+WTY8t89wAldSK7/wzy9hzuNQ2FY0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ko0NoC85TGcP1IppTBQ7r5GFZyBBTG2SpQ0tFrc/AJkG+/T9Itx2K+hPhmLUjOFT3
+	 W/JopMsDfKdWQ+Sgte/CaZu5u4oCC9X7AhqHTGt1/QNG5SKrdk/OmLPnondMcorXOq
+	 YK2sRjfqtNIqcRTWYGNAXSYWTaR7HQTBx80wOGXo=
+Date: Fri, 20 Dec 2024 15:06:23 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Guo Weikang <guoweikang.kernel@gmail.com>
+Cc: Mike Rapoport <rppt@kernel.org>, Dennis Zhou <dennis@kernel.org>, Tejun
+ Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, Thomas Bogendoerfer
+ <tsbogend@alpha.franken.de>, Sam Creasey <sammy@sammy.net>, Geert
+ Uytterhoeven <geert@linux-m68k.org>, Huacai Chen <chenhuacai@kernel.org>,
+ Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Oreoluwa Babatunde <quic_obabatun@quicinc.com>, rafael.j.wysocki@intel.com,
+ Palmer Dabbelt <palmer@rivosinc.com>, Hanjun Guo <guohanjun@huawei.com>,
+ Easwar Hariharan <eahariha@linux.microsoft.com>, Johannes Berg
+ <johannes.berg@intel.com>, Ingo Molnar <mingo@kernel.org>, Dave Hansen
+ <dave.hansen@intel.com>, Christian Brauner <brauner@kernel.org>, KP Singh
+ <kpsingh@kernel.org>, Richard Henderson <richard.henderson@linaro.org>,
+ Matt Turner <mattst88@gmail.com>, Russell King <linux@armlinux.org.uk>,
+ WANG Xuerui <kernel@xen0n.name>, Michael Ellerman <mpe@ellerman.id.au>,
+ Jonas Bonn <jonas@southpole.se>, Stefan Kristiansson
+ <stefan.kristiansson@saunalahti.fi>, Stafford Horne <shorne@gmail.com>,
+ Helge Deller <deller@gmx.de>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao
+ <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Geoff
+ Levand <geoff@infradead.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko
+ <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov
+ <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Heiko
+ Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Alexander
+ Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Yoshinori
+ Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, John Paul
+ Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Andreas Larsson
+ <andreas@gaisler.com>, Richard Weinberger <richard@nod.at>, Anton Ivanov
+ <anton.ivanov@cambridgegreys.com>, Johannes Berg
+ <johannes@sipsolutions.net>, Thomas Gleixner <tglx@linutronix.de>, Ingo
+ Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, Len Brown <lenb@kernel.org>,
+ Juergen Gross <jgross@suse.com>, Boris Ostrovsky
+ <boris.ostrovsky@oracle.com>, Chris Zankel <chris@zankel.net>, Max Filippov
+ <jcmvbkbc@gmail.com>, Tero Kristo <kristo@kernel.org>, Michael Turquette
+ <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Rob Herring
+ <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, Pavel Machek
+ <pavel@ucw.cz>, Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes
+ <linux@rasmusvillemoes.dk>, Marco Elver <elver@google.com>, Al Viro
+ <viro@zeniv.linux.org.uk>, Arnd Bergmann <arnd@arndb.de>,
+ linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ kasan-dev@googlegroups.com, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-um@lists.infradead.org, linux-acpi@vger.kernel.org,
+ xen-devel@lists.xenproject.org, linux-omap@vger.kernel.org,
+ linux-clk@vger.kernel.org, devicetree@vger.kernel.org, linux-mm@kvack.org,
+ linux-pm@vger.kernel.org
+Subject: Re: [PATCH] mm/memblock: Add memblock_alloc_or_panic interface
+Message-Id: <20241220150623.278e8fa9f073b66dc81edfe6@linux-foundation.org>
+In-Reply-To: <20241220092638.2611414-1-guoweikang.kernel@gmail.com>
+References: <20241220092638.2611414-1-guoweikang.kernel@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-According to the TRM [0] in 21.5.1.42 UART_SYSC Register,
-the autoidle bit should not be set for UART, so remove the
-appropriate SYSC_OMAP2_AUTOIDLE flag.
+On Fri, 20 Dec 2024 17:26:38 +0800 Guo Weikang <guoweikang.kernel@gmail.com> wrote:
 
-[0] https://www.ti.com/lit/ug/spruhl7i/spruhl7i.pdf
-Signed-off-by: Judith Mendez <jm@ti.com>
----
- arch/arm/boot/dts/ti/omap/am437x-l4.dtsi | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+> Before SLUB initialization, various subsystems used memblock_alloc to
+> allocate memory. In most cases, when memory allocation fails, an immediate
+> panic is required. To simplify this behavior and reduce repetitive checks,
+> introduce `memblock_alloc_or_panic`. This function ensures that memory
+> allocation failures result in a panic automatically, improving code
+> readability and consistency across subsystems that require this behavior.
+> 
 
-diff --git a/arch/arm/boot/dts/ti/omap/am437x-l4.dtsi b/arch/arm/boot/dts/ti/omap/am437x-l4.dtsi
-index 824b9415ebbe9..fd4634f8c6293 100644
---- a/arch/arm/boot/dts/ti/omap/am437x-l4.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/am437x-l4.dtsi
-@@ -180,8 +180,7 @@ target-module@9000 {			/* 0x44e09000, ap 16 04.0 */
- 			      <0x9058 0x4>;
- 			reg-names = "rev", "sysc", "syss";
- 			ti,sysc-mask = <(SYSC_OMAP2_ENAWAKEUP |
--					 SYSC_OMAP2_SOFTRESET |
--					 SYSC_OMAP2_AUTOIDLE)>;
-+					 SYSC_OMAP2_SOFTRESET)>;
- 			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
- 					<SYSC_IDLE_NO>,
- 					<SYSC_IDLE_SMART>,
-@@ -698,8 +697,7 @@ target-module@22000 {			/* 0x48022000, ap 8 0a.0 */
- 			      <0x22058 0x4>;
- 			reg-names = "rev", "sysc", "syss";
- 			ti,sysc-mask = <(SYSC_OMAP2_ENAWAKEUP |
--					 SYSC_OMAP2_SOFTRESET |
--					 SYSC_OMAP2_AUTOIDLE)>;
-+					 SYSC_OMAP2_SOFTRESET)>;
- 			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
- 					<SYSC_IDLE_NO>,
- 					<SYSC_IDLE_SMART>,
-@@ -726,8 +724,7 @@ target-module@24000 {			/* 0x48024000, ap 10 1c.0 */
- 			      <0x24058 0x4>;
- 			reg-names = "rev", "sysc", "syss";
- 			ti,sysc-mask = <(SYSC_OMAP2_ENAWAKEUP |
--					 SYSC_OMAP2_SOFTRESET |
--					 SYSC_OMAP2_AUTOIDLE)>;
-+					 SYSC_OMAP2_SOFTRESET)>;
- 			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
- 					<SYSC_IDLE_NO>,
- 					<SYSC_IDLE_SMART>,
-@@ -1385,8 +1382,7 @@ target-module@a6000 {			/* 0x481a6000, ap 40 16.0 */
- 			      <0xa6058 0x4>;
- 			reg-names = "rev", "sysc", "syss";
- 			ti,sysc-mask = <(SYSC_OMAP2_ENAWAKEUP |
--					 SYSC_OMAP2_SOFTRESET |
--					 SYSC_OMAP2_AUTOIDLE)>;
-+					 SYSC_OMAP2_SOFTRESET)>;
- 			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
- 					<SYSC_IDLE_NO>,
- 					<SYSC_IDLE_SMART>,
-@@ -1413,8 +1409,7 @@ target-module@a8000 {			/* 0x481a8000, ap 42 20.0 */
- 			      <0xa8058 0x4>;
- 			reg-names = "rev", "sysc", "syss";
- 			ti,sysc-mask = <(SYSC_OMAP2_ENAWAKEUP |
--					 SYSC_OMAP2_SOFTRESET |
--					 SYSC_OMAP2_AUTOIDLE)>;
-+					 SYSC_OMAP2_SOFTRESET)>;
- 			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
- 					<SYSC_IDLE_NO>,
- 					<SYSC_IDLE_SMART>,
-@@ -1441,8 +1436,7 @@ target-module@aa000 {			/* 0x481aa000, ap 44 12.0 */
- 			      <0xaa058 0x4>;
- 			reg-names = "rev", "sysc", "syss";
- 			ti,sysc-mask = <(SYSC_OMAP2_ENAWAKEUP |
--					 SYSC_OMAP2_SOFTRESET |
--					 SYSC_OMAP2_AUTOIDLE)>;
-+					 SYSC_OMAP2_SOFTRESET)>;
- 			ti,sysc-sidle = <SYSC_IDLE_FORCE>,
- 					<SYSC_IDLE_NO>,
- 					<SYSC_IDLE_SMART>,
--- 
-2.47.1
+Seems nice.
+
+> ...
+>
+> --- a/include/linux/memblock.h
+> +++ b/include/linux/memblock.h
+> @@ -417,6 +417,19 @@ static __always_inline void *memblock_alloc(phys_addr_t size, phys_addr_t align)
+>  				      MEMBLOCK_ALLOC_ACCESSIBLE, NUMA_NO_NODE);
+>  }
+>  
+> +static __always_inline void *memblock_alloc_or_panic(phys_addr_t size, phys_addr_t align)
+
+We lost the printing of the function name, but it's easy to retain with
+something like
+
+#define memblock_alloc_or_panic(size, align)	\
+		__memblock_alloc_or_panic(size, align, __func__)
+
+> +{
+> +	void *addr = memblock_alloc(size, align);
+> +
+> +	if (unlikely(!addr))
+> +#ifdef CONFIG_PHYS_ADDR_T_64BIT
+> +		panic("%s: Failed to allocate %llu bytes\n", __func__, size);
+
+Won't this always print "memblock_alloc_or_panic: Failed ..."?  Not
+very useful.
+
+> +#else
+> +		panic("%s: Failed to allocate %u bytes\n", __func__, size);
+> +#endif
+
+We can avoid the ifdef with printk's "%pap"?
+
+> +	return addr;
+> +}
 
 
