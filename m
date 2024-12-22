@@ -1,155 +1,163 @@
-Return-Path: <linux-omap+bounces-2885-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2886-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E4569FA449
-	for <lists+linux-omap@lfdr.de>; Sun, 22 Dec 2024 07:08:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE2FA9FA525
+	for <lists+linux-omap@lfdr.de>; Sun, 22 Dec 2024 11:07:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CFF4165577
-	for <lists+linux-omap@lfdr.de>; Sun, 22 Dec 2024 06:08:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52CC21888BD1
+	for <lists+linux-omap@lfdr.de>; Sun, 22 Dec 2024 10:07:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296C5154C05;
-	Sun, 22 Dec 2024 06:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB9418A95A;
+	Sun, 22 Dec 2024 10:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="JHOHhvFV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s3+eZLw2"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1525674E;
-	Sun, 22 Dec 2024 06:08:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BD1846F;
+	Sun, 22 Dec 2024 10:06:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734847683; cv=none; b=l7r41DqrVrA8TswJ60oLenzLl7dZvZb75JCIWCz4brU3UzWmEBd1dsqIAPdvhoe4/qtDoLHlxnzPXMwgkjsR5MMjF+o0aQdf0hd1aUr44KJWMkgrEVbZp0XhpmzjjGvBXbxKJi3qWWeAWAzOzK4r7HriuCCk1DIGwjFE6g2j8QQ=
+	t=1734862018; cv=none; b=hx+MA92VCokCi+g7Q0JgtBwxhPmwqbE4czGuhC/rn5+PnwhRtJkPwHJ6Lw5/ARHAqiFpooBnkZXppISlVaqG1MXS42QCu8CFj/drhuQ+iSLVh622/DnfCIPHjHyZ3oeRq6Db8C9v5S+XICXdgjBJBJgaBiUp97dOQmju4rhm2y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734847683; c=relaxed/simple;
-	bh=wRR36Ib8RHTsYg/iyiL5jdUzLAACKgQ337CJ6dnWRbU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iKNE1DS6qnYenW/DhlwbLLtNXaJfoe8MEgOmh1mLyYC0u+MpEekf/J+JVLSD2Uy2byk96ytzOFeknuGfClCfxmnyZuOI6ZbmVjMYp+NlF5DHb6WsgzAWv05ry/M6SAnVssMFVfHpJIlbH+Qf8eP7hXFVlGVy9X9O2KrfseNIu8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=JHOHhvFV; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1734847677; x=1735452477; i=deller@gmx.de;
-	bh=g7AGUZ1WZGlxSeuOE65nf1fN8bWjHi+egXxKLgU/v30=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=JHOHhvFVBgGsGQAnZBAwJX1xFyoDuzBukMCzb1q+ptKhvbkoqst4W8azsWUbDs1K
-	 BsarvdF4XYAnT2pgASe95LffEjpnIEK/DQiu+rAr+uXuEYzoJAvQvqgJ7YkPOcl5y
-	 El3LD7+BG7C0ZW4RydZ0TXuJ7x/GGYElLhG9VU4SO0+mh/Z/TstlRlnkFwT9iMYm3
-	 gVZ+Hc0NDaFV37O5ZnNFrKtUwQzzy4CAywNyWWj3NL4zl2Ie95YUjiJ/Rg679kJFu
-	 hWhONmNLx6uMxEBUEOrQII4MJB/alipBhQt/QuaFRA0S67yFDx/9obWBnOy9dz7v2
-	 NOvMqU3X5YbdUi5Rag==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.172] ([109.250.63.155]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M59GA-1tO8fR0oDM-00EzRr; Sun, 22
- Dec 2024 07:07:57 +0100
-Message-ID: <b47d7d6c-68c9-46ae-ae7e-21289e943183@gmx.de>
-Date: Sun, 22 Dec 2024 07:07:56 +0100
+	s=arc-20240116; t=1734862018; c=relaxed/simple;
+	bh=sHCtg4von/olng1R4HlYChWVtzpfTivVlSvduFQtli4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a50+JPbNJAI3bk4/q3jWIul6AA9xfDxPRFOIsZvvwvQ85pFZgIkRqpRxuiq0ZbFyeJc/vx1V6a/vHYVvEyTQAKL5fxX00nKu01gMIJKg52JZOZUDk9aKaRUJ9NjbgkQldXrPcSjjV8uYhkb1OLV5waWbQAAzXwgAr2afudiDXpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s3+eZLw2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7832C4CECD;
+	Sun, 22 Dec 2024 10:06:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734862017;
+	bh=sHCtg4von/olng1R4HlYChWVtzpfTivVlSvduFQtli4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s3+eZLw2H4fsTfYy7R26AMbxlUMiT45Y42thwzbQ7PzYcjCMV+xxnbiGc5SjcS8ee
+	 N/pq6zKrdaTkA0THA/ohfrCjL8qwibt1MJ2o6NoUYUPkl8EkNQJF5tSH+SY+J1fE/8
+	 Cvqm19I8xARPjWukujUbLNF0kg/VQ2JYfhr7BGGUm+m05r04yTqUEGCkxSjPDtezqD
+	 tVCjBp4QZY5na1pptfRr8OCkrj7c6+qsi21cr2LJfacf2iXQzPcBvoG6AX6jq7P+Mk
+	 T1nS6fK7nO7+rovxDAahs2X2IJBNreAhQtCCLuO9qzEwhrWBjbRlWnWXYxS/hWfdIV
+	 u6Jyj1v1mllWg==
+Date: Sun, 22 Dec 2024 12:06:22 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Guo Weikang <guoweikang.kernel@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sam Creasey <sammy@sammy.net>, Huacai Chen <chenhuacai@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Oreoluwa Babatunde <quic_obabatun@quicinc.com>,
+	rafael.j.wysocki@intel.com, Palmer Dabbelt <palmer@rivosinc.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Easwar Hariharan <eahariha@linux.microsoft.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Ingo Molnar <mingo@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
+	Christian Brauner <brauner@kernel.org>,
+	KP Singh <kpsingh@kernel.org>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Stafford Horne <shorne@gmail.com>, Helge Deller <deller@gmx.de>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Geoff Levand <geoff@infradead.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	kasan-dev@googlegroups.com, linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+	linux-um@lists.infradead.org, linux-acpi@vger.kernel.org,
+	xen-devel@lists.xenproject.org, linux-omap@vger.kernel.org,
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-mm@kvack.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH v6] mm/memblock: Add memblock_alloc_or_panic interface
+Message-ID: <Z2fknmnNtiZbCc7x@kernel.org>
+References: <20241222054331.2705948-1-guoweikang.kernel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fbdev: omapfb: Remove unused hdmi5_core_handle_irqs
-To: linux@treblig.org, linux-omap@vger.kernel.org
-Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org
-References: <20241218015937.278817-1-linux@treblig.org>
-Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <20241218015937.278817-1-linux@treblig.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:xDy9KOT19I/v4JQLjrsOykhhwWsgvprgXtVKYP94WxyEuvjzlg8
- t5yigYPmJqBFSUqLpzipZpmzKqNOrSUklxg2owaOAbcyAMfufPKLS7psjEpBE6lGdzjGe4q
- 2cptNqGKzoM57POhgbT+N1VJpHeeQEN8dtjixySmlDDS6EgaQvPd3wMiEskrdBhdtTmVm/v
- WuxB9R+0aOqhN6RhZPj8g==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:SQqzZ2fdyNM=;l8Q8gTIKx5Iu0Hy76+5IldpFWMP
- fecHrCSY1hFdRRQkXoGylmpsQrWBF53cp3o8nAym8C/vWoYG74B4ccumQaNQ+P58kzUktD45q
- ydFKa/7Q/SapQFGBRT1bzNymWck6J5bHTaJZgHhEwOsjszvC0F84YiV7RlDnJTqiZK1HnPuo8
- 21qgKc6aB9XCrLzx8GwHe/hhfr2vOk6yMX3Q6FfQXK7mdAooST4zaIGuaxeF/Ovwmb+h3pVUN
- i+yhotVbzxR7epwL3AEYutV+G1/SgWwUwL1hzj0FSsomFlvsbAjtvQLLQWASOniQA64EKdr1V
- m/e/c1/TzuyGBTeV7yS0wWTnKyLUayplHglsHXBFQw/fdan1KlypMIzCAYxcLrA+MoapLq34r
- X++1oInvlZ2SCD2tQXEIa5RNzLNlFVUJgfqzG7Xhbjiqr8PaoMJ7sWBtbQHL/HjlZlWoFcr5f
- TN4fLxLVesDWs/zcBwVWruWqouIjijEl+ig5IfG3bUP1D+gV4QarDm6oSnog2u748/NimRNKK
- IOQQXAiaCX4p1OdGRMeJHbJYSkwrfk/m1TMxm/z/V7KCwtyybuYXXbt6Ee4cl+7i/+p6965jB
- J5lovt+bMGYOiRtwqHP+8b7JtMq1M2WbyH7ea+LGqYaVhB6q8Lw9HrZ9q8Uxp0sN/b8Dnvf2l
- gSxee6TtBYx5rf42ld+CXkZtmAyPyBeymOTyTE8ODx1/s4Ob2d5BLlNel2O8c51pPdvozAgZJ
- LbqM0RbKZUri1zSedpFGIzw9MZHE87Zj97fkkKjgwffYxtEnewIyotxwKh4KpnD9skVrrLzSt
- gopw9w0lZtTYedHkASDS7Z8XDq6UmIwk+xRMYQLTS1s+4FKrSm3ImCNYV2FlUeBJEB/nSfqxC
- JLRbM5dq9reM9cvMjEP1QyPxMWMjjQ2C8nN1rbbcbEnI1WhYUrUksbMwTL9hKWTpkVplBb2u3
- tk9sHpGg3DcE6zjD7Tgh0Cmk/JJjfeEzsKgaPxKJp2myzslEjpsJp2hxtw/B/zpnVapp3H/ZH
- E5HFA5tzlFHeEzqwUnTl2fGwDgt7eSNMaMrrO/IW5gh925cxnYDjPPViVG1rNeRnXaxiB0DQ6
- Mj51zfD92IIXwtd5a45FiTWWDOJqiX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241222054331.2705948-1-guoweikang.kernel@gmail.com>
 
-On 12/18/24 02:59, linux@treblig.org wrote:
-> From: "Dr. David Alan Gilbert" <linux@treblig.org>
->
-> hdmi5_core_handle_irqs() has been unused since
-> commit f5bab2229190 ("OMAPDSS: HDMI: Add OMAP5 HDMI support")
->
-> Remove it.
->
-> Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+On Sun, Dec 22, 2024 at 01:43:31PM +0800, Guo Weikang wrote:
+> Before SLUB initialization, various subsystems used memblock_alloc to
+> allocate memory. In most cases, when memory allocation fails, an immediate
+> panic is required. To simplify this behavior and reduce repetitive checks,
+> introduce `memblock_alloc_or_panic`. This function ensures that memory
+> allocation failures result in a panic automatically, improving code
+> readability and consistency across subsystems that require this behavior.
+> 
+> Signed-off-by: Guo Weikang <guoweikang.kernel@gmail.com>
 > ---
->   .../video/fbdev/omap2/omapfb/dss/hdmi5_core.c   | 17 -----------------
->   .../video/fbdev/omap2/omapfb/dss/hdmi5_core.h   |  1 -
->   2 files changed, 18 deletions(-)
 
-applied.
+...
 
-Thanks!
-Helge
+> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+> index 673d5cae7c81..73af7ca3fa1c 100644
+> --- a/include/linux/memblock.h
+> +++ b/include/linux/memblock.h
+> @@ -417,6 +417,12 @@ static __always_inline void *memblock_alloc(phys_addr_t size, phys_addr_t align)
+>  				      MEMBLOCK_ALLOC_ACCESSIBLE, NUMA_NO_NODE);
+>  }
+>  
+> +void *__memblock_alloc_or_panic(phys_addr_t size, phys_addr_t align,
+> +				       const char *func);
+
+Please align this line with the first parameter to the function.
+Other than that
+
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+> +
+> +#define memblock_alloc_or_panic(size, align)    \
+> +	 __memblock_alloc_or_panic(size, align, __func__)
+> +
+>  static inline void *memblock_alloc_raw(phys_addr_t size,
+>  					       phys_addr_t align)
+>  {
+
+
+-- 
+Sincerely yours,
+Mike.
 
