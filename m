@@ -1,88 +1,109 @@
-Return-Path: <linux-omap+bounces-2918-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2919-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB489FDF97
-	for <lists+linux-omap@lfdr.de>; Sun, 29 Dec 2024 16:12:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFFE29FDFB8
+	for <lists+linux-omap@lfdr.de>; Sun, 29 Dec 2024 16:31:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E286C3A17F4
-	for <lists+linux-omap@lfdr.de>; Sun, 29 Dec 2024 15:12:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3AFF188245C
+	for <lists+linux-omap@lfdr.de>; Sun, 29 Dec 2024 15:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34AC172BD5;
-	Sun, 29 Dec 2024 15:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33FDC18BC3F;
+	Sun, 29 Dec 2024 15:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="qRt7JLU1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LEtiZzPG"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8B6249EB;
-	Sun, 29 Dec 2024 15:12:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23817083A;
+	Sun, 29 Dec 2024 15:31:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735485149; cv=none; b=Orqlsv4+/WyAGF6S/8CE3c4yLF0h2TAWzok7fZg2uSQ/laJVLHuWXU0Wu6yOOkfe37Mdd95Lsf4ZUKRVw2zVNWVxKDGB8ENUzJXBART8oHbsZ9uTWxIUnwa9brLaO+85qDehCoYRXfinmqMUW7Qo3qmq1ZMryNuzehUc3FIvweE=
+	t=1735486260; cv=none; b=KwOQU29FPi/1Ib9pDqsnPYbjSLRt82rtxk+iiWmE2FXxlNXQ+E1v/17flJQbmL5R33oZAVq4GM/iQNY9aXKW3fHw39YUdxqcd/QMhgozyLszOeq8E2i3SxRwkZM2wAU1iBD/lKbXu6pamiKCURrpVfHSjY40aNojZOkq2WzSgto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735485149; c=relaxed/simple;
-	bh=jMUvCmzIWihQZsPHOscr7iGLS0raJCPkYk9ha8ouP1U=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=dgKl8gB5LHokHsc8uIIXVuAssxMOMBKuABze2Xw0KurUND9pkjCc3vsVgkqz+Ui1T24CEnMsaCPhaqsMuy9fmNGYsEvY/fz+W4dsE69y1RMTzzbKg5f1fGDXLG5XeJ3eHQan07Enf2WqW57oszsZ4feks0ZjnPUESJCRDlW1xEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=qRt7JLU1; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=From:Sender:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=x0YNPUa/QyNmpUUdhtbFeSWJj7vTaV8GXi1D2/pwFZI=; b=qRt7JLU1UCBRXf834lEY5Pnete
-	j6Ya2+RJ7NDyAazQc9evv3OWG92bwDoLMX2Y5h61qj9eZdCAtQHBlLNspbkq0j6E74+bo39tVG/Uz
-	+mnvaw4lAOQv5ytvj0ebp1/NJq2RBxUSPMdjNe+3Ral+2rF8PYXvAwO3tRzLLc+eCE7WiUNKEY4NA
-	X0jDIxHRAei4xeq9V08tVuUcTQ4n+iInf9FcMi9TQbYS3iBExfwNRoKb1Vp7pmdCIyFTbK48lXXMZ
-	lv73Exv3KjcMn5odbQon5Fkzp+CVG2lDwanDsXLpBAlpxHCI0ZftLPgTIDWUfm46aOghlvVNAhCI1
-	GtL9BshA==;
-From: Andreas Kemnade <andreas@kemnade.info>
-To: aaro.koskinen@iki.fi,
-	andreas@kemnade.info,
-	khilman@baylibre.com,
-	rogerq@kernel.org,
-	tony@atomide.com,
-	linux@armlinux.org.uk,
-	linux-omap@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: omap2plus_defconfig: enable charger of TWL603X
-Date: Sun, 29 Dec 2024 15:44:59 +0100
-Message-Id: <20241229144459.9742-1-andreas@kemnade.info>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1735486260; c=relaxed/simple;
+	bh=gx4ySKcacwUc3HORUH8zTWHyXS9kDPTmEK7EdeNVu2U=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=LE2QJBWn77AyIJZoaTFSmb9A9QMvrsuzcynX/WaMbEkzRHdSkQM6TCNilToXE1xZLeyNzs8RTBFAlyQoZR7OnOReLT9t9j/goZhm+zlXOCcB5SeA/jlMLFnPMd1TRT+K+FM/s1xRT6A9OO2Vyc642fC19wp17eSU8ZZUv1zexHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LEtiZzPG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C86D4C4CED1;
+	Sun, 29 Dec 2024 15:30:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735486260;
+	bh=gx4ySKcacwUc3HORUH8zTWHyXS9kDPTmEK7EdeNVu2U=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=LEtiZzPGgR6cl5DdZzDLfDheSm7BOo9JPhEQAo4yMYRqvhAIxJuEha7nbk+UJ1t3s
+	 etu6emXNzY0FkCKDG8z+9Ok+h6N6t+cx2/+AVuOi2Ov+TpKXEeoaKabrAAdDdNEp7H
+	 Iy43Mj66V3R5pBobIRHMC/br9ZlbxO/mTTnLY3gAmTp06buNr6Zn3t3e5XnbRQyltD
+	 T00LyH96RWv4Fsu/2HOYYw0U2cKw9Iv63Edmh3z2TIhKKDWrts2Anl0PGi7W/cUu37
+	 d/bRqzk4MsqPAVaI682LvOJiRLcXTw0xMzU935rwc9wajgZKmI0Ub0RPB2v1O2yNVa
+	 5EMLF247xSMnw==
+Date: Sun, 29 Dec 2024 09:30:58 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-omap@vger.kernel.org, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+ linux-clk@vger.kernel.org, Tero Kristo <kristo@kernel.org>, 
+ Andreas Kemnade <andreas@kemnade.info>, Conor Dooley <conor+dt@kernel.org>
+To: akemnade@kernel.org
+In-Reply-To: <20241229135351.5014-3-akemnade@kernel.org>
+References: <20241229135351.5014-1-akemnade@kernel.org>
+ <20241229135351.5014-3-akemnade@kernel.org>
+Message-Id: <173548625834.3975164.12604542224025301344.robh@kernel.org>
+Subject: Re: [PATCH 2/2] dt-bindings: clock: ti: Convert composite.txt to
+ json-schema
 
-Enable the newly-added charger of TWL603X in the defconfig since it is
-used by the Epson Moverio BT200.
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
----
- arch/arm/configs/omap2plus_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+On Sun, 29 Dec 2024 14:53:51 +0100, akemnade@kernel.org wrote:
+> From: Andreas Kemnade <andreas@kemnade.info>
+> 
+> Convert the OMAP gate clock device tree binding to json-schema.
+> Specify the creator of the original binding as a maintainer.
+> Choose GPL-only license because original binding was also GPL.
+> 
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> ---
+>  .../bindings/clock/ti/composite.txt           | 55 -------------
+>  .../bindings/clock/ti/ti,composite-clock.yaml | 80 +++++++++++++++++++
+>  2 files changed, 80 insertions(+), 55 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/clock/ti/composite.txt
+>  create mode 100644 Documentation/devicetree/bindings/clock/ti/ti,composite-clock.yaml
+> 
 
-diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-index 3a166c2f02bd..6de45d7f6078 100644
---- a/arch/arm/configs/omap2plus_defconfig
-+++ b/arch/arm/configs/omap2plus_defconfig
-@@ -428,6 +428,7 @@ CONFIG_POWER_RESET_GPIO=y
- CONFIG_BATTERY_BQ27XXX=m
- CONFIG_CHARGER_ISP1704=m
- CONFIG_CHARGER_TWL4030=m
-+CONFIG_CHARGER_TWL6030=m
- CONFIG_CHARGER_BQ2415X=m
- CONFIG_CHARGER_BQ24190=m
- CONFIG_CHARGER_BQ24735=m
--- 
-2.39.5
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+Documentation/devicetree/bindings/clock/ti/ti,composite-clock.example.dtb: /example-0/bus/clock-controller@a10: failed to match any schema with compatible: ['ti,composite-interface-clock']
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20241229135351.5014-3-akemnade@kernel.org
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
 
