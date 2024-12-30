@@ -1,108 +1,240 @@
-Return-Path: <linux-omap+bounces-2924-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2925-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 507119FE9C0
-	for <lists+linux-omap@lfdr.de>; Mon, 30 Dec 2024 19:17:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAA3A9FEA74
+	for <lists+linux-omap@lfdr.de>; Mon, 30 Dec 2024 20:46:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A91718805CA
-	for <lists+linux-omap@lfdr.de>; Mon, 30 Dec 2024 18:17:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A4471883A5C
+	for <lists+linux-omap@lfdr.de>; Mon, 30 Dec 2024 19:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C901B0439;
-	Mon, 30 Dec 2024 18:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3421993A3;
+	Mon, 30 Dec 2024 19:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VKhoTF+0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H2syL2h7"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4EC1B042A;
-	Mon, 30 Dec 2024 18:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608FF1DA3D;
+	Mon, 30 Dec 2024 19:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735582633; cv=none; b=KDZ3r3WMto1heUcVGYnx8AnEWOr/lGW1Zuk0bmlqZr0qoyyXjW2FLYEYdyYT8R6JU9U2OcIWjMU0Aqpi5+e2bP+BWjSb9MPOKtZFbQJ2K3VtcacjbBGuVWyDGs2KRCKebm8gI1g1ErtDYD8aIs+lCAMEFvL2oh6QSQDua+SJvWs=
+	t=1735587976; cv=none; b=oFYjd601dZix+OobPVKc3UxB3KThy/3GtC49ABd4J+Zo7GHtC+Gyh4xrFdkOfcRLxH8q78h7clUSP46e54QgnCZ1REfAQSWVIiKA05PMTZPb8b+oezhmn5zzi/DvMk/DfXXB5IPuMmFye/XBbKUWf3xz6YwCvVtmHco1bTEpPb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735582633; c=relaxed/simple;
-	bh=M+8ODu+NcsSasBWUDQnE0IOpS+zNhHlJ4SvGTpQo2E4=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=scaFnrR2XD9H/TXFRzsvDZKU+hmBVNEHMqdyGxGdZ49W8js4xg1oFuqOZRB/rhfEIc9wgczupqVZ22j0c+qoWiK6F63r2ECYy4bL4wpHg2qFk+OCtHWAc+VNa3WAzRCx1ezmpfeNRKK/M+Ojgo+4sfQPN+R5RKmdr3CNKWh0RVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VKhoTF+0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2FF0C4CED2;
-	Mon, 30 Dec 2024 18:17:12 +0000 (UTC)
+	s=arc-20240116; t=1735587976; c=relaxed/simple;
+	bh=pwrekhb6iM83fDn68y5eSWMedNMkXIUJlXGtlqvUncU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uD7hr+PKvkeazF+tqmGH8F6eFOgObb0YRX/pjF4pWg34rcWLjsPJlLmtskr7km0WyVvj52cH3+BfWKphsXbyoCfmtkwlkGiv/2ZAH+rqFRhr4pH8eLsO3gW0qiMeFRM/l4GZmsi2GqehQAlIQwaCqEqBgCCe7B/Js61bepxoIu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H2syL2h7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B389EC4CED0;
+	Mon, 30 Dec 2024 19:46:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735582633;
-	bh=M+8ODu+NcsSasBWUDQnE0IOpS+zNhHlJ4SvGTpQo2E4=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=VKhoTF+0ceP75HwwI+JSuNptbO5hJwu222OEAbR+tQUAaI7ZylJgszSPYy8BJZKwg
-	 rn7/P4y8vEGc5C0qwM6lVdZokOusn7uGd06PYuNuV+WRnc8GdO9NmYH3HIykUIJfIh
-	 HC8OS8Sn8CcdUC9aFdeDSg2AVW4xHb2iX2FrcgHJjmWPqExcbc9gpdWmQi1D2vSU2m
-	 1ytsvxa/3L0tA17TjovM4Y/YY5aujDcc7KuivKQxyli5iF7W6qz/UA1eK3bv5ZR6F7
-	 5GI4iu44OyjvnxOm3b7vMlkIOErjG4xphLpETyUKFIugcftmR/HP42T1FxEuLGzaee
-	 fh3GM1x3+1irA==
-Date: Mon, 30 Dec 2024 12:17:11 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1735587976;
+	bh=pwrekhb6iM83fDn68y5eSWMedNMkXIUJlXGtlqvUncU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=H2syL2h7c1H/BozWL16h/OzfOBlnIRu8dh7Z//BI3m7p9XHEnHDF4+x3DYhy80AUa
+	 3WEOy3DgqaTWajuNRF5YAG37O257V96k59NmVRl1UUUc41NLre13BInqbIDT+Ik0aq
+	 truXv+6jZQD3QCmVb+K25WCDScDro3Gs3gDzNqyW4cBa8q/Ci1S9+Scv2hag9KL+iC
+	 M5nIJHZ5Qj3z0xeARPKFSFzlIqApFjO4cZmJ76KNEfBsnRvpi/HPl6YYM85xukxKUh
+	 3pJ0m2DTUdUCTR+SvY2HDRenZt3m7F3bY1gYuGwVjTCQ/89JEonOvvm28YIplfsyWa
+	 kD555Nw0ltMRw==
+Date: Mon, 30 Dec 2024 13:46:14 -0600
+From: Rob Herring <robh@kernel.org>
+To: akemnade@kernel.org
+Cc: Tero Kristo <kristo@kernel.org>, Andreas Kemnade <andreas@kemnade.info>,
+	Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org,
+	Stephen Boyd <sboyd@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	linux-clk@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH 2/2] dt-bindings: clock: ti: Convert composite.txt to
+ json-schema
+Message-ID: <20241230194614.GA2255009-robh@kernel.org>
+References: <20241229135351.5014-1-akemnade@kernel.org>
+ <20241229135351.5014-3-akemnade@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>, 
- devicetree@vger.kernel.org, Kevin Hilman <khilman@baylibre.com>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Tony Lindgren <tony@atomide.com>, 
- Roger Quadros <rogerq@kernel.org>, linux-omap@vger.kernel.org, 
- Conor Dooley <conor+dt@kernel.org>
-To: Andreas Kemnade <andreas@kemnade.info>
-In-Reply-To: <20241229230125.85787-1-andreas@kemnade.info>
-References: <20241229230125.85787-1-andreas@kemnade.info>
-Message-Id: <173558214240.2262575.18233884215338168789.robh@kernel.org>
-Subject: Re: [PATCH 0/2] ARM: dts: omap4: panda: TiWilink improvements
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241229135351.5014-3-akemnade@kernel.org>
 
+On Sun, Dec 29, 2024 at 02:53:51PM +0100, akemnade@kernel.org wrote:
+> From: Andreas Kemnade <andreas@kemnade.info>
+> 
+> Convert the OMAP gate clock device tree binding to json-schema.
+> Specify the creator of the original binding as a maintainer.
+> Choose GPL-only license because original binding was also GPL.
+> 
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> ---
+>  .../bindings/clock/ti/composite.txt           | 55 -------------
+>  .../bindings/clock/ti/ti,composite-clock.yaml | 80 +++++++++++++++++++
+>  2 files changed, 80 insertions(+), 55 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/clock/ti/composite.txt
+>  create mode 100644 Documentation/devicetree/bindings/clock/ti/ti,composite-clock.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/clock/ti/composite.txt b/Documentation/devicetree/bindings/clock/ti/composite.txt
+> deleted file mode 100644
+> index 238e6f7d74f8..000000000000
+> --- a/Documentation/devicetree/bindings/clock/ti/composite.txt
+> +++ /dev/null
+> @@ -1,55 +0,0 @@
+> -Binding for TI composite clock.
+> -
+> -This binding uses the common clock binding[1]. It assumes a
+> -register-mapped composite clock with multiple different sub-types;
+> -
+> -a multiplexer clock with multiple input clock signals or parents, one
+> -of which can be selected as output, this behaves exactly as [2]
+> -
+> -an adjustable clock rate divider, this behaves exactly as [3]
+> -
+> -a gating function which can be used to enable and disable the output
+> -clock, this behaves exactly as [4]
+> -
+> -The binding must provide a list of the component clocks that shall be
+> -merged to this clock. The component clocks shall be of one of the
+> -"ti,*composite*-clock" types.
+> -
+> -[1] Documentation/devicetree/bindings/clock/clock-bindings.txt
+> -[2] Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml
+> -[3] Documentation/devicetree/bindings/clock/ti/ti,divider-clock.yaml
+> -[4] Documentation/devicetree/bindings/clock/ti/gate.txt
+> -
+> -Required properties:
+> -- compatible : shall be: "ti,composite-clock"
+> -- clocks : link phandles of component clocks
+> -- #clock-cells : from common clock binding; shall be set to 0.
+> -
+> -Optional properties:
+> -- clock-output-names : from common clock binding.
+> -
+> -Examples:
+> -
+> -usb_l4_gate_ick: usb_l4_gate_ick {
+> -	#clock-cells = <0>;
+> -	compatible = "ti,composite-interface-clock";
+> -	clocks = <&l4_ick>;
+> -	ti,bit-shift = <5>;
+> -	reg = <0x0a10>;
+> -};
+> -
+> -usb_l4_div_ick: usb_l4_div_ick {
+> -	#clock-cells = <0>;
+> -	compatible = "ti,composite-divider-clock";
+> -	clocks = <&l4_ick>;
+> -	ti,bit-shift = <4>;
+> -	ti,max-div = <1>;
+> -	reg = <0x0a40>;
+> -	ti,index-starts-at-one;
+> -};
+> -
+> -usb_l4_ick: usb_l4_ick {
+> -	#clock-cells = <0>;
+> -	compatible = "ti,composite-clock";
+> -	clocks = <&usb_l4_gate_ick>, <&usb_l4_div_ick>;
+> -};
+> diff --git a/Documentation/devicetree/bindings/clock/ti/ti,composite-clock.yaml b/Documentation/devicetree/bindings/clock/ti/ti,composite-clock.yaml
+> new file mode 100644
+> index 000000000000..b7063764bc0a
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/clock/ti/ti,composite-clock.yaml
+> @@ -0,0 +1,80 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/clock/ti/ti,composite-clock.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Texas Instruments composite clock
+> +
+> +maintainers:
+> +  - Tero Kristo <kristo@kernel.org>
+> +
+> +description: |
+> +  This binding assumes a register-mapped composite clock with multiple
+> +  different sub-types;
 
-On Mon, 30 Dec 2024 00:01:23 +0100, Andreas Kemnade wrote:
-> Add proper definitions for 32k clock and enable bluetooth
-> everywhere.
-> 
-> Andreas Kemnade (2):
->   ARM: dts: omap4: panda: fix resources needed for Panda
->   ARM: dts: omap4: panda: cleanup bluetooth
-> 
->  .../boot/dts/ti/omap/omap4-panda-common.dtsi  | 38 ++++++++++++++++++-
->  arch/arm/boot/dts/ti/omap/omap4-panda-es.dts  | 32 ----------------
->  2 files changed, 36 insertions(+), 34 deletions(-)
-> 
-> --
+s/;/:/
+
+> +
+> +  a multiplexer clock with multiple input clock signals or parents, one
+> +  of which can be selected as output, this behaves exactly as [1].
+> +
+> +  an adjustable clock rate divider, this behaves exactly as [2].
+> +
+> +  a gating function which can be used to enable and disable the output
+> +  clock, this behaves exactly as [3].
+
+Indent these 3 paragraphs more since they are a list.
+
+> +
+> +  The binding must provide a list of the component clocks that shall be
+> +  merged to this clock. The component clocks shall be of one of the
+> +  "ti,*composite*-clock" types.
+> +
+> +  [1] Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml
+> +  [2] Documentation/devicetree/bindings/clock/ti/ti,divider-clock.yaml
+> +  [3] Documentation/devicetree/bindings/clock/ti/ti,gate-clock.yaml
+> +
+> +properties:
+> +  compatible:
+> +    const: ti,composite-clock
+> +
+> +  "#clock-cells":
+> +    const: 0
+> +
+> +  clocks: true
+> +
+> +  clock-output-names:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - "#clock-cells"
+> +  - clocks
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    bus {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      usb_l4_gate_ick: clock-controller@a10 {
+> +        #clock-cells = <0>;
+> +        compatible = "ti,composite-interface-clock";
+> +        clocks = <&l4_ick>;
+> +        ti,bit-shift = <5>;
+> +        reg = <0x0a10>;
+> +      };
+> +
+> +      usb_l4_div_ick: clock-controller@a40 {
+> +        #clock-cells = <0>;
+> +        compatible = "ti,composite-divider-clock";
+> +        clocks = <&l4_ick>;
+> +        ti,bit-shift = <4>;
+> +        ti,max-div = <1>;
+> +        reg = <0x0a40>;
+> +        ti,index-starts-at-one;
+> +      };
+> +    };
+> +
+> +    clock-controller {
+> +      #clock-cells = <0>;
+> +      compatible = "ti,composite-clock";
+> +      clocks = <&usb_l4_gate_ick>, <&usb_l4_div_ick>;
+> +    };
+> -- 
 > 2.39.5
 > 
-> 
-> 
-
-
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
-
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-New warnings running 'make CHECK_DTBS=y ti/omap/omap4-panda-es.dtb' for 20241229230125.85787-1-andreas@kemnade.info:
-
-arch/arm/boot/dts/ti/omap/omap4-panda-es.dtb: serial@0: {'compatible': ['ti,omap4-uart'], 'reg': [[0, 256]], 'interrupts': [[0, 73, 4]], 'clock-frequency': 48000000, 'pinctrl-names': ['default'], 'pinctrl-0': [[119]], 'interrupts-extended': [[1, 0, 73, 4], [117, 220]], 'bluetooth': {'compatible': ['ti,wl1271-st'], 'pinctrl-names': ['default'], 'pinctrl-0': [[120]], 'enable-gpios': [[121, 14, 0]], 'clocks': [[122, 0]], 'clock-names': ['ext_clock']}, '$nodename': ['serial@0']} is valid under each of {'required': ['interrupts-extended']}, {'required': ['interrupts']}
-	from schema $id: http://devicetree.org/schemas/serial/8250_omap.yaml#
-
-
-
-
-
 
