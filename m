@@ -1,88 +1,108 @@
-Return-Path: <linux-omap+bounces-2923-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2924-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D39849FE2A5
-	for <lists+linux-omap@lfdr.de>; Mon, 30 Dec 2024 06:29:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 507119FE9C0
+	for <lists+linux-omap@lfdr.de>; Mon, 30 Dec 2024 19:17:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29E053A19EF
-	for <lists+linux-omap@lfdr.de>; Mon, 30 Dec 2024 05:29:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A91718805CA
+	for <lists+linux-omap@lfdr.de>; Mon, 30 Dec 2024 18:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33E316F288;
-	Mon, 30 Dec 2024 05:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C901B0439;
+	Mon, 30 Dec 2024 18:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=ethancedwards.com header.i=@ethancedwards.com header.b="Zz+OiCX2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VKhoTF+0"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-4018.proton.ch (mail-4018.proton.ch [185.70.40.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D7D817;
-	Mon, 30 Dec 2024 05:29:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4EC1B042A;
+	Mon, 30 Dec 2024 18:17:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735536553; cv=none; b=P5j+3FedHYdjJ6ToVnK22TAYqe9jLgKMzn4zlsSFLJfQpo/TJLBzhLufyVvIDPmacR9I2Hhf+B3zWX8ct3SMWblzb6St3Nsy7uGNs/EJS1Tz1zir642J8De26T7IfelVmPHfWSufKWxAHk/49J8V4SZ6GYpGIEKKIQBIM0MQwDs=
+	t=1735582633; cv=none; b=KDZ3r3WMto1heUcVGYnx8AnEWOr/lGW1Zuk0bmlqZr0qoyyXjW2FLYEYdyYT8R6JU9U2OcIWjMU0Aqpi5+e2bP+BWjSb9MPOKtZFbQJ2K3VtcacjbBGuVWyDGs2KRCKebm8gI1g1ErtDYD8aIs+lCAMEFvL2oh6QSQDua+SJvWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735536553; c=relaxed/simple;
-	bh=z1tbn6LI4vl+YBo18LDIWQRtOtRiBFMCb910mSXG7cw=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=dJ6889bJUWgE+3qrYl3kxKW10hs3p1UP+9ukzDAXN+J3Pa9U9jV/5wVqjEhoMya3YvQpa7rajKD7xTo95lEDcAHxs0GblfGQYYCsMmDZn7L5KytqVvUNL5D/yz7wom6zYynOX3Dwtn46Oev8FqZYqpzhTBSXb27n26OlEKt0CiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ethancedwards.com; spf=pass smtp.mailfrom=ethancedwards.com; dkim=pass (2048-bit key) header.d=ethancedwards.com header.i=@ethancedwards.com header.b=Zz+OiCX2; arc=none smtp.client-ip=185.70.40.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ethancedwards.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ethancedwards.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ethancedwards.com;
-	s=protonmail3; t=1735536542; x=1735795742;
-	bh=z1tbn6LI4vl+YBo18LDIWQRtOtRiBFMCb910mSXG7cw=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=Zz+OiCX2Xx5bWEmeK5nnR0zJicm4mDJY2qP8WXWcGEm4CJRfBzyhIk5nUpHMlrAiy
-	 qACymolqPfeQ0oRmKFgNO83NaaKuLDi6eMm49luMd7Ox4WN3V97Rk7yuVqUHRQpWmu
-	 qFb0V3RTJsYHfyKb2yN4J6APE/odc9bHOO5O9r1JVwIvQH7m2Dp0p3e6e/gSL49dQZ
-	 qqgXjR0AB0Fg8UrxUnEBN+eYQ5gAtRPnI6ahDrEhIP7lJ22DASd65oZK7F7nCy00aV
-	 sPYOx3QD+SphcicQgA1RTvrwznPwidKQWxc1ech84w/SmBarlzbETAxM8Ug5JDu8yQ
-	 w2yS26kefmBZQ==
-Date: Mon, 30 Dec 2024 05:28:58 +0000
-To: kristo@kernel.org
-From: Ethan Carter Edwards <ethan@ethancedwards.com>
-Cc: mturquette@baylibre.com, sboyd@kernel.org, linux-omap@vger.kernel.org, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, kernel-hardening@lists.openwall.com
-Subject: [PATCH] clk: ti: use kcalloc() instead of kzalloc()
-Message-ID: <xfjn4wqrhukvi45dkgkbulamq3242eijn7567vxwaxznh4ebdr@waat7u3l2mhi>
-Feedback-ID: 28410670:user:proton
-X-Pm-Message-ID: b630a1367cff86984b54c694637490e109da7999
+	s=arc-20240116; t=1735582633; c=relaxed/simple;
+	bh=M+8ODu+NcsSasBWUDQnE0IOpS+zNhHlJ4SvGTpQo2E4=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=scaFnrR2XD9H/TXFRzsvDZKU+hmBVNEHMqdyGxGdZ49W8js4xg1oFuqOZRB/rhfEIc9wgczupqVZ22j0c+qoWiK6F63r2ECYy4bL4wpHg2qFk+OCtHWAc+VNa3WAzRCx1ezmpfeNRKK/M+Ojgo+4sfQPN+R5RKmdr3CNKWh0RVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VKhoTF+0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2FF0C4CED2;
+	Mon, 30 Dec 2024 18:17:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735582633;
+	bh=M+8ODu+NcsSasBWUDQnE0IOpS+zNhHlJ4SvGTpQo2E4=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=VKhoTF+0ceP75HwwI+JSuNptbO5hJwu222OEAbR+tQUAaI7ZylJgszSPYy8BJZKwg
+	 rn7/P4y8vEGc5C0qwM6lVdZokOusn7uGd06PYuNuV+WRnc8GdO9NmYH3HIykUIJfIh
+	 HC8OS8Sn8CcdUC9aFdeDSg2AVW4xHb2iX2FrcgHJjmWPqExcbc9gpdWmQi1D2vSU2m
+	 1ytsvxa/3L0tA17TjovM4Y/YY5aujDcc7KuivKQxyli5iF7W6qz/UA1eK3bv5ZR6F7
+	 5GI4iu44OyjvnxOm3b7vMlkIOErjG4xphLpETyUKFIugcftmR/HP42T1FxEuLGzaee
+	 fh3GM1x3+1irA==
+Date: Mon, 30 Dec 2024 12:17:11 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ devicetree@vger.kernel.org, Kevin Hilman <khilman@baylibre.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+ Roger Quadros <rogerq@kernel.org>, linux-omap@vger.kernel.org, 
+ Conor Dooley <conor+dt@kernel.org>
+To: Andreas Kemnade <andreas@kemnade.info>
+In-Reply-To: <20241229230125.85787-1-andreas@kemnade.info>
+References: <20241229230125.85787-1-andreas@kemnade.info>
+Message-Id: <173558214240.2262575.18233884215338168789.robh@kernel.org>
+Subject: Re: [PATCH 0/2] ARM: dts: omap4: panda: TiWilink improvements
 
-Use 2-factor multiplication argument form kcalloc() instead
-of kzalloc().
 
-Link: https://github.com/KSPP/linux/issues/162
+On Mon, 30 Dec 2024 00:01:23 +0100, Andreas Kemnade wrote:
+> Add proper definitions for 32k clock and enable bluetooth
+> everywhere.
+> 
+> Andreas Kemnade (2):
+>   ARM: dts: omap4: panda: fix resources needed for Panda
+>   ARM: dts: omap4: panda: cleanup bluetooth
+> 
+>  .../boot/dts/ti/omap/omap4-panda-common.dtsi  | 38 ++++++++++++++++++-
+>  arch/arm/boot/dts/ti/omap/omap4-panda-es.dts  | 32 ----------------
+>  2 files changed, 36 insertions(+), 34 deletions(-)
+> 
+> --
+> 2.39.5
+> 
+> 
+> 
 
-Signed-off-by: Ethan Carter Edwards <ethan@ethancedwards.com>
----
- drivers/clk/ti/mux.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/ti/mux.c b/drivers/clk/ti/mux.c
-index 216d85d6aac6..f684fc306ecc 100644
---- a/drivers/clk/ti/mux.c
-+++ b/drivers/clk/ti/mux.c
-@@ -180,7 +180,7 @@ static void of_mux_clk_setup(struct device_node *node)
- =09=09pr_err("mux-clock %pOFn must have parents\n", node);
- =09=09return;
- =09}
--=09parent_names =3D kzalloc((sizeof(char *) * num_parents), GFP_KERNEL);
-+=09parent_names =3D kcalloc(num_parents, sizeof(char *), GFP_KERNEL);
- =09if (!parent_names)
- =09=09goto cleanup;
-=20
---=20
-2.47.1
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y ti/omap/omap4-panda-es.dtb' for 20241229230125.85787-1-andreas@kemnade.info:
+
+arch/arm/boot/dts/ti/omap/omap4-panda-es.dtb: serial@0: {'compatible': ['ti,omap4-uart'], 'reg': [[0, 256]], 'interrupts': [[0, 73, 4]], 'clock-frequency': 48000000, 'pinctrl-names': ['default'], 'pinctrl-0': [[119]], 'interrupts-extended': [[1, 0, 73, 4], [117, 220]], 'bluetooth': {'compatible': ['ti,wl1271-st'], 'pinctrl-names': ['default'], 'pinctrl-0': [[120]], 'enable-gpios': [[121, 14, 0]], 'clocks': [[122, 0]], 'clock-names': ['ext_clock']}, '$nodename': ['serial@0']} is valid under each of {'required': ['interrupts-extended']}, {'required': ['interrupts']}
+	from schema $id: http://devicetree.org/schemas/serial/8250_omap.yaml#
+
+
+
+
 
 
