@@ -1,128 +1,108 @@
-Return-Path: <linux-omap+bounces-2928-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2929-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC0D39FEE04
-	for <lists+linux-omap@lfdr.de>; Tue, 31 Dec 2024 09:41:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B28419FF0BF
+	for <lists+linux-omap@lfdr.de>; Tue, 31 Dec 2024 17:45:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF036188240F
-	for <lists+linux-omap@lfdr.de>; Tue, 31 Dec 2024 08:41:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 968EE7A1394
+	for <lists+linux-omap@lfdr.de>; Tue, 31 Dec 2024 16:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3DE18FC8C;
-	Tue, 31 Dec 2024 08:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901DC19A2A2;
+	Tue, 31 Dec 2024 16:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DMBUYSIG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ObqeFPM2"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084BA188714;
-	Tue, 31 Dec 2024 08:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2382F381C4;
+	Tue, 31 Dec 2024 16:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735634497; cv=none; b=obnLirUj3+y8MzciESVBf5GbPbwMWIWtWjGYKBrHdfX7B3o4mIarfivw+F/27kG+7FK8iOcZ6ZISbGIvRk+x46zjSwa2ncaBU94EOJC4hx0i8Gqrf6gkAzt2qVwqrPYF8NFwoJ97wthGJVWfXmtIOdG8SEqSBuOLp8QJeIsG6EQ=
+	t=1735663532; cv=none; b=IEKY+jKuJ41PSDQbkg8To7NwhvBrtPXEjo63j1KxZNZHh6sdRC5GjeM7WKDNoCHAcLInMO9AtazZQDfChxLI5TQAtnygVuxz4Vg+ay93usDwNTaMQoSIai+iUk7I6C3yzLXOgmzgUaQG8p+Nc5HKO39BDqeNcCWtf+vT02vgeKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735634497; c=relaxed/simple;
-	bh=7K2vQxlK6gRcoCLTuXRbokQfJ4tzE9XGRr86hbTZHHA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FX9KsDJmgn9Zz6UQPOElHoK1nTcCIRzjahfPnsxMNW/Z9utf+kKg/2yjNubqCXnr3lDqDvzb7W9wGhd5G/9lwJsLUoHCd1E8XfCCZjleMqRUbf2WfXiYLymmS27Fy3n/ZCa1zHEjFiApx1uJ5XQsZBo+D8T3hBLo9HYBwScTug0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DMBUYSIG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083FBC4CED6;
-	Tue, 31 Dec 2024 08:41:35 +0000 (UTC)
+	s=arc-20240116; t=1735663532; c=relaxed/simple;
+	bh=8NnqnWytKG3r22OyhJdUIwAsQP/nguK3WAknLIs4u6k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l4c9uwtgBfjO+FZzzy43pXaKXIhbfchQ41XyRMxzmndhQaLI30fUp0Fh35foYOm4uxXPj9vwnq8UJjlGKsRbwJeuycrIXHfsaTWUqPPDKSVBRZ0ICdGiH+bbWKaWHFyRxfed1k2Ufv2yN8EC9l0hxc6fpDzIMWj+e4/rIebwRTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ObqeFPM2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDC6C4CED2;
+	Tue, 31 Dec 2024 16:45:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735634496;
-	bh=7K2vQxlK6gRcoCLTuXRbokQfJ4tzE9XGRr86hbTZHHA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DMBUYSIGJ6UnfMq+e8WGlih9vtdw+alyvWkYXHnfraot+1ukAV/A9ZgSwxh9odex9
-	 CZVRM/NXILEpQrza5V2Deu9KgRGJySHjsGQc+qP/bC+s0DGpU8KGit6CT9JrEdIe2k
-	 DIaWGpmW7v4KpseF8I/Uie5oN12KJP6o0TVvkimbECQc/yxHj/gkH2/TTO9I/FYDkS
-	 Xnces+p6OwCYO9WHxBc3Kn7XbkbT+1YbUZGXUPxXHkCCMmXIem7Da5V8xKCdEAgk6F
-	 l1CqjaFHjOiH4jg+7/h94Ifp+HEZ7CoG/KEj0uHa5msJavOHThBvBOyDSnluB8hqjx
-	 avcg1cq/4bRIQ==
-Date: Tue, 31 Dec 2024 09:41:33 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Tony Lindgren <tony@atomide.com>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-omap@vger.kernel.org, linux-sound@vger.kernel.org
-Subject: Re: [PATCH 3/5] dt-bindings: mfd: motorola-cpcap: Document
- audio-codec interrupts
-Message-ID: <34ratvyiosxtphzliv6jxcjsddk4op5745jummklumd7fyzoe4@lq4ylmrlokmr>
-References: <20241228114514.91594-1-ivo.g.dimitrov.75@gmail.com>
- <20241228114514.91594-4-ivo.g.dimitrov.75@gmail.com>
+	s=k20201202; t=1735663531;
+	bh=8NnqnWytKG3r22OyhJdUIwAsQP/nguK3WAknLIs4u6k=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ObqeFPM23XooO1Oeeljm58y4d9RzR54rEZ/BVpPCm7etT1Z3fiTx8V+UEtwI2ZQaC
+	 GFZmrHJ3FVNiitg1yqXvloodGAl5hRhMdS7AQRdbLcTqQIaOPu3q15zLE8dmEqhHrd
+	 xgL8cMHyJxaOgyQamCx43Kvwh9ngiHhKGdBNd62nX/cwXO7wmBTQqylm3foVCP2m4m
+	 hMTMaCMQsroMgI8HA16GBr3rpiVvLq/IAMvjZnPvVcWWccW0cPUQereWTOptMmGInm
+	 ScdTXpXnr7BPhCwo3XfaKjgiE4TH/++poNKu5qjgvRjlScaLqqKzuM/lj134fzflNy
+	 wLhkFOsNWDuYQ==
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Cc: linux-usb@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] usb: dwc3: omap: Use devm_regulator_get_optional()
+Date: Tue, 31 Dec 2024 10:44:56 -0600
+Message-ID: <20241231164456.262581-1-robh@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241228114514.91594-4-ivo.g.dimitrov.75@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Dec 28, 2024 at 01:45:12PM +0200, Ivaylo Dimitrov wrote:
-> This adds the DT binding for the audio-codec headset detection interrupts
+The 'vbus-supply' regulator is optional, so use
+devm_regulator_get_optional() instead of checking for property presence
+first.
 
+While here, rework the error handling to use dev_err_probe() which
+handles deferred probe correctly without an error message.
 
-Please do not use "This commit/patch/change", but imperative mood. See
-longer explanation here:
-https://elixir.bootlin.com/linux/v5.17.1/source/Documentation/process/submitting-patches.rst#L95
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+---
+ drivers/usb/dwc3/dwc3-omap.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-Also, missing full stop.
-
-> 
-> Signed-off-by: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-> ---
->  Documentation/devicetree/bindings/mfd/motorola-cpcap.txt | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/mfd/motorola-cpcap.txt b/Documentation/devicetree/bindings/mfd/motorola-cpcap.txt
-> index 190230216de8..3ad809e119ff 100644
-> --- a/Documentation/devicetree/bindings/mfd/motorola-cpcap.txt
-> +++ b/Documentation/devicetree/bindings/mfd/motorola-cpcap.txt
-> @@ -31,10 +31,15 @@ node must be named "audio-codec".
->  Required properties for the audio-codec subnode:
->  
->  - #sound-dai-cells = <1>;
-> +- interrupts-extended = <&cpcap 9 0>, <&cpcap 10 0>;
-
-Instead: interrupts and say which interrupt is where.
-
-Anyway this should be converted to DT schema.
-
-> +- interrupt-names = "hs", "mb2";
->  
->  The audio-codec provides two DAIs. The first one is connected to the
->  Stereo HiFi DAC and the second one is connected to the Voice DAC.
->  
-> +audio-codec interrupts are required for jack detection, "hs" one is headset
-> +detect and "mb2" is microphone bias 2 detect.
-
-This goes to the interrupts description.
-
-> +
->  Example:
->  
->  &mcspi1 {
-> @@ -52,6 +57,10 @@ Example:
->  
->  		audio-codec {
->  			#sound-dai-cells = <1>;
-> +			interrupts-extended =
-> +				<&cpcap 9 0>,
-> +				<&cpcap 10 0>;
-
-Fix alignment.
-
-Same for your DTS patches.
-
-
-Best regards,
-Krzysztof
+diff --git a/drivers/usb/dwc3/dwc3-omap.c b/drivers/usb/dwc3/dwc3-omap.c
+index b261c46124c6..9b1d10ac33c1 100644
+--- a/drivers/usb/dwc3/dwc3-omap.c
++++ b/drivers/usb/dwc3/dwc3-omap.c
+@@ -457,7 +457,7 @@ static int dwc3_omap_probe(struct platform_device *pdev)
+ 
+ 	struct dwc3_omap	*omap;
+ 	struct device		*dev = &pdev->dev;
+-	struct regulator	*vbus_reg = NULL;
++	struct regulator	*vbus_reg;
+ 
+ 	int			ret;
+ 	int			irq;
+@@ -483,13 +483,9 @@ static int dwc3_omap_probe(struct platform_device *pdev)
+ 	if (IS_ERR(base))
+ 		return PTR_ERR(base);
+ 
+-	if (of_property_read_bool(node, "vbus-supply")) {
+-		vbus_reg = devm_regulator_get(dev, "vbus");
+-		if (IS_ERR(vbus_reg)) {
+-			dev_err(dev, "vbus init failed\n");
+-			return PTR_ERR(vbus_reg);
+-		}
+-	}
++	vbus_reg = devm_regulator_get_optional(dev, "vbus");
++	if (IS_ERR(vbus_reg))
++		return dev_err_probe(dev, PTR_ERR(vbus_reg), "vbus init failed\n");
+ 
+ 	omap->dev	= dev;
+ 	omap->irq	= irq;
+-- 
+2.45.2
 
 
