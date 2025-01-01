@@ -1,181 +1,124 @@
-Return-Path: <linux-omap+bounces-2934-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2935-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B28E9FF3CB
-	for <lists+linux-omap@lfdr.de>; Wed,  1 Jan 2025 12:04:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 199959FF400
+	for <lists+linux-omap@lfdr.de>; Wed,  1 Jan 2025 13:19:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 530607A1365
-	for <lists+linux-omap@lfdr.de>; Wed,  1 Jan 2025 11:04:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 282153A28F1
+	for <lists+linux-omap@lfdr.de>; Wed,  1 Jan 2025 12:19:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDF031E0DF6;
-	Wed,  1 Jan 2025 11:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93121C5F2A;
+	Wed,  1 Jan 2025 12:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="sum1eKt/"
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="WRk1bsjL";
+	dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b="EudnyMcg"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-79.smtpout.orange.fr [80.12.242.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666AB42A92;
-	Wed,  1 Jan 2025 11:04:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.79
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735729463; cv=none; b=O6KHGN8KQZSZyLIUx16PjbiPb+P6XnMYkuQ+YzZ969B0TXYt/tSbLKXcnubtGfQ1l28IDyahK7Dym5GntGg6u9XY5dGnrm26FaO7ISdAiLKn1ZfqpiwehKabiRGk6tVvob9KDuIlCxEQXALT7KGjROmvbQBk0lGCkPly0dHvS5k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735729463; c=relaxed/simple;
-	bh=2bYPwaLHawQcrvBJkAQF9Ba7nnlltwmghQSyFBSZSvo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cr8MCVdWrUaNdT7bw0Li5ZCLoevSkNEq6swgq3dSso3qKBQYEnd+s9XMLh9owJRoomuQ+UL4Fy5ENZYcWppUK4RKutl70SIG9K/2hsgT+V9gyPS5LaQFX38lTA3FUHRW0PFsWDIhg/gak0Sa+sQ0ai+DoRqfX1EfYMESxIu+14U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=sum1eKt/; arc=none smtp.client-ip=80.12.242.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id SwWNtt8yaC9fHSwWRtDzut; Wed, 01 Jan 2025 12:04:19 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1735729459;
-	bh=dMmPd2aCjUwrlIOP3MWgspkLEgl4mCuWfAhh36Qeqwg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=sum1eKt/9w3zKwCtRWEJKKR2J8R+TXx1hGrGkEzIu4ELAONxEIvybn0Wmq7wsbfF7
-	 6xpH68ZRKfLurcfJsvEylqiRaB4dkKvCuNUJdj/+3NS4Xx0aKJFhXMkEUG7vF6XB5n
-	 t8W4E02wepeY59issPufTl3bExqAOQ72+6zf567MggiyjrrS/P2h/7uFa+cBvrC2Yy
-	 /w5y9t8Xnt9iqrTXbrQvyPiuGpcmmsv4gASuUKSRKTsVdxdWuJFCJGAxRqR1tt59Nc
-	 Q/eZ4F8GU8Fruj6NIw7JCt9kZ3Wa1jpqZa3LZ0fiu39dWUi7YhXm7/SH00zgDcLc8Q
-	 uLlWCjn+v2elg==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Wed, 01 Jan 2025 12:04:19 +0100
-X-ME-IP: 90.11.132.44
-Message-ID: <54b3e39a-c22f-4255-a56c-7e521c6affee@wanadoo.fr>
-Date: Wed, 1 Jan 2025 12:04:15 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A6917543;
+	Wed,  1 Jan 2025 12:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1735733956; cv=pass; b=aqvxCP2rFb/pZkIiunivkYuJ14vBnVPSOre6csPYHFIKHWhYGbv/+zRy/klpKihNZXYw0vCkEPG3Tsd9kOvfaA3P/fR+tgxL2Xyv+XGXAWU4NutKhQCxhPCNwe2LkWJKaPp9bZZZ3CN8NfrLDXMqkBk8GKnVLqNL5Kl7/nOJxWE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1735733956; c=relaxed/simple;
+	bh=MTBX2RYCkx0iHZv49acRx/Duu4Y/mDelJkCckAZe4/0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=RFMWg/vDxYCOG7AmIDru/VwgADL7KDrkw0NgF4hwDdFy9rXntq6Czj0fN65HjEHffhZaqrRqXBkNjntvFKLTKpDwLUpuUp4UJEa0PZIegZ8swwrlaDNC0R6TLuTRdO1HfSCV7qMgMV3KDWE7H22/CoW6raD2vU3/1O0kl3ekI+U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=WRk1bsjL; dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b=EudnyMcg; arc=pass smtp.client-ip=185.185.170.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+Received: from meesny.iki.fi (meesny.iki.fi [IPv6:2001:67c:2b0:1c1::201])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPS id 4YNTHJ5rlmz49Pyt;
+	Wed,  1 Jan 2025 14:12:28 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+	t=1735733548;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=p+QcDoxis5JV4EA1Ucztgu1StoLe88duA0WfWrb5V+g=;
+	b=WRk1bsjLO4UAwAmdOfRMsxD5MXL9lCkJRM2aQoOkm+1md/lYap3s+7oCAddzsLlH4f9EL0
+	iFzskWOo0HM6TVi020YUkB6VGOnWOgDO/l85gfyq6epTouCfj3oVTixgYZPzfDkzZaSTwb
+	IiyvAn3dZ4zUUIBvvyAsQpkKByUZhGi9nHJ04mebnsg3ghKwlrom0OwzeZH3KlSYUqHz0o
+	EztQ8iZYZtIGFHz0WZxaHWQRXxEkU8B+EPOSAJnp4jh7/FQ+Ik3nF9CQ+m1OqiT0OkxZDQ
+	8tGvaMguIbsMhW1FE8Laa7jQq6uqpEQl2lYSM+VwayNDqBUfJKrc0VLw/65mmg==
+Received: from darkstar.musicnaut.iki.fi (85-76-116-195-nat.elisa-mobile.fi [85.76.116.195])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: aaro.koskinen)
+	by meesny.iki.fi (Postfix) with ESMTPSA id 4YNTH53thszyVQ;
+	Wed,  1 Jan 2025 14:12:17 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
+	t=1735733540;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=p+QcDoxis5JV4EA1Ucztgu1StoLe88duA0WfWrb5V+g=;
+	b=EudnyMcg1iQcq8/ZEjhKmchdAPzlfM3cdj36jVGhDUvaTLLxAfYmdWJ4ca/R94pTAUIe6G
+	1utTBYxucBtu/o0Bf2Gpe1f9IL9pbtguIUsRB0A4y4HKwxw+cuaymYuOlKd/pnTuy6Xujj
+	Aia8wzvhUB62TeEPapgXby+4xz5+x7I=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=meesny; t=1735733540;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=p+QcDoxis5JV4EA1Ucztgu1StoLe88duA0WfWrb5V+g=;
+	b=qZ82c404DqARVAuSM6CpuHBLoU1MTfqvthsQKlUV4S5YtYAN3p+r3qtV9GbSzWDOuAg57o
+	ur0U9cIWmDxTlFTpIGvx01WHfs59Bxpl20+m4URJEKXUFaGIHacNVpmU5gPKR2NhxClkpb
+	3DlMiU7gB06j4FnZtLSMLAmycwa50Lw=
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
+ARC-Seal: i=1; s=meesny; d=iki.fi; t=1735733540; a=rsa-sha256; cv=none;
+	b=yBfjHO49fQMOaiVUon7Yo9JINkjs65izR+TOKUK6XUzD57y+WqslKPQmiDZzXtcNGTpASm
+	g7KtWhlEdphRsOMbQHb5sSV9guk/9VfIS6rlqCjJzk5KgtvGkX0qtok4mcSeKfauZnv1Pt
+	8VzaiNEoo47StTQPPsaya0B5JVrB2yI=
+Date: Wed, 1 Jan 2025 14:12:15 +0200
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
+To: linux-omap@vger.kernel.org, Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ARM: omap1: Fix up the Retu IRQ on Nokia 770
+Message-ID: <Z3UxH_fOzuftjnuX@darkstar.musicnaut.iki.fi>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 7/7] regulator: tps65215: Restructure probe() for
- multi-PMIC support
-To: Shree Ramamoorthy <s-ramamoorthy@ti.com>, lgirdwood@gmail.com,
- broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, aaro.koskinen@iki.fi, andreas@kemnade.info,
- khilman@baylibre.com, rogerq@kernel.org, tony@atomide.com,
- jerome.neanne@baylibre.com, linux-omap@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Cc: m-leonard@ti.com, praneeth@ti.com
-References: <20241226215412.395822-1-s-ramamoorthy@ti.com>
- <20241226215412.395822-8-s-ramamoorthy@ti.com>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20241226215412.395822-8-s-ramamoorthy@ti.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Le 26/12/2024 à 22:54, Shree Ramamoorthy a écrit :
-> The probe() function will now utilize the register_regulators() and
-> request_irqs() helper functions defined in the previous patch. Probe() will
-> cycle through common (overlapping) regulators and irqs first, and then
-> handle device-specific resources identified using the chip_data struct.
-> 
-> Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-> ---
->   drivers/regulator/tps65219-regulator.c | 66 +++++++++++---------------
->   1 file changed, 27 insertions(+), 39 deletions(-)
-> 
-> diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
-> index 8469ee89802c..b27888fd1fa8 100644
-> --- a/drivers/regulator/tps65219-regulator.c
-> +++ b/drivers/regulator/tps65219-regulator.c
-> @@ -413,54 +413,42 @@ static int tps65219_request_irqs(struct tps65219_regulator_irq_type *irq_types,
->   static int tps65219_regulator_probe(struct platform_device *pdev)
->   {
->   	struct tps65219 *tps = dev_get_drvdata(pdev->dev.parent);
-> -	struct regulator_dev *rdev;
->   	struct regulator_config config = { };
-> -	int i;
->   	int error;
-> -	int irq;
->   	struct tps65219_regulator_irq_data *irq_data;
-> -	struct tps65219_regulator_irq_type *irq_type;
-> +	struct chip_data *pmic;
->   
-> -	config.dev = tps->dev;
-> -	config.driver_data = tps;
-> -	config.regmap = tps->regmap;
->   
-> -	for (i = 0; i < ARRAY_SIZE(regulators); i++) {
-> -		rdev = devm_regulator_register(&pdev->dev, &regulators[i],
-> -					       &config);
-> -		if (IS_ERR(rdev))
-> -			return dev_err_probe(tps->dev, PTR_ERR(rdev),
-> -					"Failed to register %s regulator\n",
-> -					regulators[i].name);
-> -	}
-> -
-> -	irq_data = devm_kmalloc(tps->dev,
-> -				ARRAY_SIZE(tps65219_regulator_irq_types) *
-> -				sizeof(struct tps65219_regulator_irq_data),
-> -				GFP_KERNEL);
-> -	if (!irq_data)
-> -		return -ENOMEM;
-> -
-> -	for (i = 0; i < ARRAY_SIZE(tps65219_regulator_irq_types); ++i) {
-> -		irq_type = &tps65219_regulator_irq_types[i];
-> +	enum pmic_id chip = platform_get_device_id(pdev)->driver_data;
->   
-> -		irq = platform_get_irq_byname(pdev, irq_type->irq_name);
-> -		if (irq < 0)
-> -			return -EINVAL;
-> +	pmic = &chip_info_table[chip];
->   
-> -		irq_data[i].dev = tps->dev;
-> -		irq_data[i].type = irq_type;
-> +	config.dev = tps->dev;
-> +	config.driver_data = tps;
-> +	config.regmap = tps->regmap;
->   
-> -		error = devm_request_threaded_irq(tps->dev, irq, NULL,
-> -						  tps65219_regulator_irq_handler,
-> -						  IRQF_ONESHOT,
-> -						  irq_type->irq_name,
-> -						  &irq_data[i]);
-> -		if (error) {
-> -			dev_err(tps->dev, "failed to request %s IRQ %d: %d\n",
-> -				irq_type->irq_name, irq, error);
-> +	error = tps65219_register_regulators(pmic->common_rdesc, tps,
-> +						&pdev->dev, config, pmic->common_rdesc_size);
-> +	if (error)
-> +		return error;
-> +
-> +	error = tps65219_register_regulators(pmic->rdesc, tps, &pdev->dev,
-> +						config, pmic->rdesc_size);
-> +	if (error)
-> +		return error;
-> +
-> +	irq_data = devm_kmalloc(tps->dev, pmic->common_irq_size, GFP_KERNEL);
+The Retu IRQ is off by one, as a result the power button does not work.
+Fix it.
 
-Error handling, as done previously?
+Fixes: 084b6f216778 ("ARM: omap1: Fix up the Nokia 770 board device IRQs")
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+---
+ arch/arm/mach-omap1/board-nokia770.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> +	error = tps65219_request_irqs(pmic->common_irq_types, tps, pdev,
-> +					irq_data, pmic->common_irq_size);
-> +	if (error)
-> +		return error;
-> +
-> +	if (chip == TPS65219) {
-> +		irq_data = devm_kmalloc(tps->dev, pmic->dev_irq_size, GFP_KERNEL);
-
-Error handling?
-
-> +		error = tps65219_request_irqs(pmic->irq_types, tps, pdev,
-> +						irq_data, pmic->dev_irq_size);
-> +		if (error)
->   			return error;
-> -		}
->   	}
->   
->   	return 0;
+diff --git a/arch/arm/mach-omap1/board-nokia770.c b/arch/arm/mach-omap1/board-nokia770.c
+index 3312ef93355d..a5bf5554800f 100644
+--- a/arch/arm/mach-omap1/board-nokia770.c
++++ b/arch/arm/mach-omap1/board-nokia770.c
+@@ -289,7 +289,7 @@ static struct gpiod_lookup_table nokia770_irq_gpio_table = {
+ 		GPIO_LOOKUP("gpio-0-15", 15, "ads7846_irq",
+ 			    GPIO_ACTIVE_HIGH),
+ 		/* GPIO used for retu IRQ */
+-		GPIO_LOOKUP("gpio-48-63", 15, "retu_irq",
++		GPIO_LOOKUP("gpio-48-63", 14, "retu_irq",
+ 			    GPIO_ACTIVE_HIGH),
+ 		/* GPIO used for tahvo IRQ */
+ 		GPIO_LOOKUP("gpio-32-47", 8, "tahvo_irq",
+-- 
+2.39.2
 
 
