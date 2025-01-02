@@ -1,327 +1,153 @@
-Return-Path: <linux-omap+bounces-2943-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2944-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B919FFDEE
-	for <lists+linux-omap@lfdr.de>; Thu,  2 Jan 2025 19:21:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13206A000AC
+	for <lists+linux-omap@lfdr.de>; Thu,  2 Jan 2025 22:31:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C31531629EF
-	for <lists+linux-omap@lfdr.de>; Thu,  2 Jan 2025 18:21:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D90E43A3407
+	for <lists+linux-omap@lfdr.de>; Thu,  2 Jan 2025 21:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E8141B423B;
-	Thu,  2 Jan 2025 18:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944431BD9C2;
+	Thu,  2 Jan 2025 21:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b="KvGCYsV3"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vhbZpQIw"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from meesny.iki.fi (meesny.iki.fi [195.140.195.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF66118B483;
-	Thu,  2 Jan 2025 18:20:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=195.140.195.201
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735842015; cv=pass; b=jE+Dre7T+ty4TrUaMRXlQsxWdU1zKEetKM4fzbSH9IYvV8GHB7OMVYYHRPY1yzY46HjPgMMTjE8oilIKeAcYtNCDbfO71yrOhMwniaZhNL2tP8xa9a1nQDrizb1tJaLliYDR+UPMnarRW11WiGjanMjbl1XWVUUyVjDJxtf8OaQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735842015; c=relaxed/simple;
-	bh=tblwxUmb7AHbvm2rXCcFi2dcrO58Ntrn2JL7FcJPt2U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kKtgaG3k80AgAJTZrmvwl0s6Sx/UxSMCGagbz/9HK2bP9Skhg+3gPIL1qzWm9E0KEstaeV/keu/rowmerjdAd3MC6xsygO/CT+JJMWkSy/+GtK4dbkKvfNoa49F3qobcw8fVR/KPMTyaGwvGvbrmIiOfMpiAk97FCljZWirXeeM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b=KvGCYsV3; arc=pass smtp.client-ip=195.140.195.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
-Received: from darkstar.. (85-76-116-195-nat.elisa-mobile.fi [85.76.116.195])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: aaro.koskinen)
-	by meesny.iki.fi (Postfix) with ESMTPSA id 4YPFNz4VnHz10DH;
-	Thu,  2 Jan 2025 20:20:03 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
-	t=1735842004;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cw9JrGu+z6+Ep7xC+G+Ho+ahkF7zCarWeKEmRTbUS1o=;
-	b=KvGCYsV3L2xQvPWmwOnGBJruUa9+YzS2owa6RCg1C9+S6SwYk2f8jax/bedccYydTEuUrN
-	Ce91hS3TdZ/QFCem+keUPdPIdVFqcwbeR2cUO3wpb8axPX5ovYof22Zn67T7dVEht4GZ4s
-	foNUtTD0F5yOWisYLLZAp1QWE5Ho1Rw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=meesny; t=1735842004;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cw9JrGu+z6+Ep7xC+G+Ho+ahkF7zCarWeKEmRTbUS1o=;
-	b=s8CG/2DWOW4EiOFbi/lvnsoPaXmplpJ4KATo4bAzy8bm/XusjOoqm5LrGb6IlBa9990Kv4
-	9/qPqiteeMnzJ+n1Odeb4POgIqSuKEx4FWhk8D8m4Z7oaqfk0dDAkS8raN0hYG1A4XYQ1o
-	9CGCkPNhRPOGIhKO1IHMU2zE7VR5mio=
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
-ARC-Seal: i=1; s=meesny; d=iki.fi; t=1735842004; a=rsa-sha256; cv=none;
-	b=t3RNzQPy/LdIXctE8N7Z1qDukCxAGXfLLBR91K9JvXxTxYF6ighIeb8sgYdxLR1cuNqbpx
-	+7kTRyrCA/CMuPgxG4L2rhDqPcHt+CWZNp69Jj1tjK9FKCBOBMcDXy0UowUl9ukgMdeXVG
-	obP5JvYeOo3Q3Wdbx1u3oDj0MLDmBG0=
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Helge Deller <deller@gmx.de>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	linux-fbdev@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-input@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: [PATCH 3/3] Input: ads7846 - restore half-duplex support
-Date: Thu,  2 Jan 2025 20:19:53 +0200
-Message-ID: <20250102181953.1020878-4-aaro.koskinen@iki.fi>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250102181953.1020878-1-aaro.koskinen@iki.fi>
-References: <20250102181953.1020878-1-aaro.koskinen@iki.fi>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478751BC061
+	for <linux-omap@vger.kernel.org>; Thu,  2 Jan 2025 21:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1735853494; cv=none; b=ZJVbam5rfknhB+5uQqjXcj5YX13o/gVCX+tWBL1DVhMh2HpB6Oz+NtA8Lhr3FtRvxXWRW6cnwth7+LjX0WElxx6iUP0SgjOjFjjjiE2PNpRXzZnqsrPqH+vaX4I+m4loqFDs5qU0oH/JjMZA2xZzobZDFIMcubVCz3J9WxAr5x4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1735853494; c=relaxed/simple;
+	bh=NnzBHzwJl1oNYm0MW1+GIWbuimntCPGF17uTfgGopJw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lthde3LXBG9s4zJRJEm1Q2M6A4f4OxOu43phZSHSMuLtRit9Ro5nPTiW1SWvSx9lFDcqgyk2ZbkLu9hOaYfGag8nxQ/5yb7bmob8rpWYucWfXL4QZtyS3t1e7ACgIpaNfCnYU4B4qblZMCgykY9wPs6whWO8vOlTfSr7Vov9xd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vhbZpQIw; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-53ffaaeeb76so12867453e87.0
+        for <linux-omap@vger.kernel.org>; Thu, 02 Jan 2025 13:31:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1735853489; x=1736458289; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=usBhbRysbrNPNt+dCknWS9a6GgYpIUw/Jl5XkjavJKY=;
+        b=vhbZpQIw/bLF/xOXzHbnkMB2K8Yg0wRHcVdL7yqaOfee0TdPbVwroRLJqJ0tyOgjX2
+         d/AV2QJC6rGQtYevd41ZnnRhxHhB3sh+wKcfudu4ste9zBQp8jjStrojEOYF2riXp2hD
+         3YKoo+YHJvvWMLr4k/C6A7rzutyk5rXi8+x7fL7dwo8tqIWhZzoJpJfqnbMsig3CtV0U
+         vzCabq91YHQgsgVhrEpLN7iHw4UJnoE60RebD1PdPeNs6zX67PRh3bftmtZzAzZ2PRb2
+         2Gf2/cGm8HdH8/ImxnI6nkPZ2e8oZsuTo8HLnZ1I5X/x2dq/A30yFoxmk9Fn15aFxLNe
+         twlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735853489; x=1736458289;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=usBhbRysbrNPNt+dCknWS9a6GgYpIUw/Jl5XkjavJKY=;
+        b=spY+OY0+WF3joHwH1BoF3y9XlChsWRRxQB7mZBVQahtAPeu/1HVMzcFUjArLjxlVX9
+         lZj7QEk/3GgC2CvMvMtsFCRK51+K4H4IJrfs3uRfo1pJKdAcFY6Im3bA+oD8Jq62ehPk
+         VKqY2Tlh7B+qN/Nxi4B6ht7GCENXypuWH+kIH30fBSioaLziK4FOKw1Pqruxvgkxjk+A
+         EKOVP91lgYvWONI1gSIzMM/1L38RatmvaNVFrATHb6iJNL+/KzQnSBOs0DXwGPVlSrKn
+         m7lY47veTHhfzI21FYiEi311Grf5HXYuZbyJHDZAdJ/F3RqrIy1PZXXzf5B/4H54TLL9
+         8yaw==
+X-Forwarded-Encrypted: i=1; AJvYcCV1r0FnkqNlWGf9QiYIxSVMm/WBTKjBnzgaVjh9fPEtKSnL/0kbtzh70VTBJw8DFaP/fX0xiY75R63n@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyhy9I+nlgpf5+HyWpdQoMjP1+Beq3uM3IxuIjqOxRGV/Vb+A12
+	xdJv+jZCAWHkmROFvXJqQlMlyxPLwDH87tzfT/RkpDki24RMGiN6XUntQJ7MnuJqJFry27tsAP4
+	/QdmxqkjrO1xV8sTVF67Efma62AoBDff7oA1wrA==
+X-Gm-Gg: ASbGncu6f+6Y4sSvVnUjl1oEDSEnwQ5v2nRhiPbxhVQB/LCwveeJsQ1cMwJJKJFEiNO
+	S/Am/u5u2kEfQqIsQHIoUIVru5ySWTI1Z+U+K
+X-Google-Smtp-Source: AGHT+IEfQcmpt4yo78zeyiW21woV39R54BV3/zwpN1Hk/I+z3wEi50BsJMs8YPoW7H7kJj4xx3h+r/iHcsMhpVtWva4=
+X-Received: by 2002:a05:6512:3f0d:b0:53e:2f9d:6a73 with SMTP id
+ 2adb3069b0e04-542294aeacbmr14066905e87.0.1735853488948; Thu, 02 Jan 2025
+ 13:31:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250102181953.1020878-1-aaro.koskinen@iki.fi> <20250102181953.1020878-2-aaro.koskinen@iki.fi>
+In-Reply-To: <20250102181953.1020878-2-aaro.koskinen@iki.fi>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Thu, 2 Jan 2025 22:31:18 +0100
+Message-ID: <CACRpkdZP_KnRRUO2J9a6jWCCBs8wzX=ct8rRW4jnFATJ2hZh5Q@mail.gmail.com>
+Subject: Re: [PATCH 1/3] fbdev: omap: use threaded IRQ for LCD DMA
+To: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, Helge Deller <deller@gmx.de>, 
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>, linux-fbdev@vger.kernel.org, 
+	linux-omap@vger.kernel.org, linux-input@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On some boards, the SPI controller is limited to half-duplex and the driver
-is just spamming "ads7846 spi2.0: spi_sync --> -22". Restore half-duplex
-support using multiple SPI transfers.
+On Thu, Jan 2, 2025 at 7:20=E2=80=AFPM Aaro Koskinen <aaro.koskinen@iki.fi>=
+ wrote:
 
-Fixes: 9c9509717b53 ("Input: ads7846 - convert to full duplex")
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
----
- drivers/input/touchscreen/ads7846.c | 168 +++++++++++++++++++++++++++-
- 1 file changed, 166 insertions(+), 2 deletions(-)
+> When using touchscreen and framebuffer, Nokia 770 crashes easily with:
+>
+>     BUG: scheduling while atomic: irq/144-ads7846/82/0x00010000
+>     Modules linked in: usb_f_ecm g_ether usb_f_rndis u_ether libcomposite=
+ configfs omap_udc ohci_omap ohci_hcd
+>     CPU: 0 UID: 0 PID: 82 Comm: irq/144-ads7846 Not tainted 6.12.7-770 #2
+>     Hardware name: Nokia 770
+>     Call trace:
+>      unwind_backtrace from show_stack+0x10/0x14
+>      show_stack from dump_stack_lvl+0x54/0x5c
+>      dump_stack_lvl from __schedule_bug+0x50/0x70
+>      __schedule_bug from __schedule+0x4d4/0x5bc
+>      __schedule from schedule+0x34/0xa0
+>      schedule from schedule_preempt_disabled+0xc/0x10
+>      schedule_preempt_disabled from __mutex_lock.constprop.0+0x218/0x3b4
+>      __mutex_lock.constprop.0 from clk_prepare_lock+0x38/0xe4
+>      clk_prepare_lock from clk_set_rate+0x18/0x154
+>      clk_set_rate from sossi_read_data+0x4c/0x168
+>      sossi_read_data from hwa742_read_reg+0x5c/0x8c
+>      hwa742_read_reg from send_frame_handler+0xfc/0x300
+>      send_frame_handler from process_pending_requests+0x74/0xd0
+>      process_pending_requests from lcd_dma_irq_handler+0x50/0x74
+>      lcd_dma_irq_handler from __handle_irq_event_percpu+0x44/0x130
+>      __handle_irq_event_percpu from handle_irq_event+0x28/0x68
+>      handle_irq_event from handle_level_irq+0x9c/0x170
+>      handle_level_irq from generic_handle_domain_irq+0x2c/0x3c
+>      generic_handle_domain_irq from omap1_handle_irq+0x40/0x8c
+>      omap1_handle_irq from generic_handle_arch_irq+0x28/0x3c
+>      generic_handle_arch_irq from call_with_stack+0x1c/0x24
+>      call_with_stack from __irq_svc+0x94/0xa8
+>     Exception stack(0xc5255da0 to 0xc5255de8)
+>     5da0: 00000001 c22fc620 00000000 00000000 c08384a8 c106fc00 00000000 =
+c240c248
+>     5dc0: c113a600 c3f6ec30 00000001 00000000 c22fc620 c5255df0 c22fc620 =
+c0279a94
+>     5de0: 60000013 ffffffff
+>      __irq_svc from clk_prepare_lock+0x4c/0xe4
+>      clk_prepare_lock from clk_get_rate+0x10/0x74
+>      clk_get_rate from uwire_setup_transfer+0x40/0x180
+>      uwire_setup_transfer from spi_bitbang_transfer_one+0x2c/0x9c
+>      spi_bitbang_transfer_one from spi_transfer_one_message+0x2d0/0x664
+>      spi_transfer_one_message from __spi_pump_transfer_message+0x29c/0x49=
+8
+>      __spi_pump_transfer_message from __spi_sync+0x1f8/0x2e8
+>      __spi_sync from spi_sync+0x24/0x40
+>      spi_sync from ads7846_halfd_read_state+0x5c/0x1c0
+>      ads7846_halfd_read_state from ads7846_irq+0x58/0x348
+>      ads7846_irq from irq_thread_fn+0x1c/0x78
+>      irq_thread_fn from irq_thread+0x120/0x228
+>      irq_thread from kthread+0xc8/0xe8
+>      kthread from ret_from_fork+0x14/0x28
+>
+> As a quick fix, switch to a threaded IRQ which provides a stable system.
+>
+> Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
-index 54280ecca0a7..276591c682ad 100644
---- a/drivers/input/touchscreen/ads7846.c
-+++ b/drivers/input/touchscreen/ads7846.c
-@@ -134,6 +134,9 @@ struct ads7846 {
- 	bool			disabled;	/* P: lock */
- 	bool			suspended;	/* P: lock */
- 
-+	int			(*setup_spi_msg)(struct ads7846 *ts,
-+					const struct ads7846_platform_data *pdata);
-+	void			(*read_state)(struct ads7846 *ts);
- 	int			(*filter)(void *data, int data_idx, int *val);
- 	void			*filter_data;
- 	int			(*get_pendown_state)(void);
-@@ -797,6 +800,22 @@ static int ads7846_filter(struct ads7846 *ts)
- 	return 0;
- }
- 
-+static int ads7846_filter_one(struct ads7846 *ts, unsigned int cmd_idx)
-+{
-+	struct ads7846_packet *packet = ts->packet;
-+	struct ads7846_buf_layout *l = &packet->l[cmd_idx];
-+	int action, val;
-+
-+	val = ads7846_get_value(&packet->rx[l->offset + l->count - 1]);
-+	action = ts->filter(ts->filter_data, cmd_idx, &val);
-+	if (action == ADS7846_FILTER_REPEAT)
-+		return -EAGAIN;
-+	else if (action != ADS7846_FILTER_OK)
-+		return -EIO;
-+	ads7846_set_cmd_val(ts, cmd_idx, val);
-+	return 0;
-+}
-+
- static void ads7846_wait_for_hsync(struct ads7846 *ts)
- {
- 	if (ts->wait_for_sync) {
-@@ -819,6 +838,45 @@ static void ads7846_wait_for_hsync(struct ads7846 *ts)
- 		cpu_relax();
- }
- 
-+static void ads7846_halfd_read_state(struct ads7846 *ts)
-+{
-+	struct ads7846_packet *packet = ts->packet;
-+	int msg_idx = 0;
-+
-+	packet->ignore = false;
-+
-+	while (msg_idx < ts->msg_count) {
-+		int error;
-+
-+		ads7846_wait_for_hsync(ts);
-+
-+		error = spi_sync(ts->spi, &ts->msg[msg_idx]);
-+		if (error) {
-+			dev_err_ratelimited(&ts->spi->dev, "spi_sync --> %d\n",
-+					    error);
-+			packet->ignore = true;
-+			return;
-+		}
-+
-+		/*
-+		 * Last message is power down request, no need to convert
-+		 * or filter the value.
-+		 */
-+		if (msg_idx == ts->msg_count - 1)
-+			break;
-+
-+		error = ads7846_filter_one(ts, msg_idx);
-+		if (error == -EAGAIN) {
-+			continue;
-+		} else if (error) {
-+			packet->ignore = true;
-+			msg_idx = ts->msg_count - 1;
-+		} else {
-+			msg_idx++;
-+		}
-+	}
-+}
-+
- static void ads7846_read_state(struct ads7846 *ts)
- {
- 	struct ads7846_packet *packet = ts->packet;
-@@ -947,7 +1005,7 @@ static irqreturn_t ads7846_irq(int irq, void *handle)
- 	while (!ts->stopped && get_pendown_state(ts)) {
- 
- 		/* pen is down, continue with the measurement */
--		ads7846_read_state(ts);
-+		ts->read_state(ts);
- 
- 		if (!ts->stopped)
- 			ads7846_report_state(ts);
-@@ -1035,6 +1093,102 @@ static int ads7846_setup_pendown(struct spi_device *spi,
- 	return 0;
- }
- 
-+/*
-+ * Set up the transfers to read touchscreen state; this assumes we
-+ * use formula #2 for pressure, not #3.
-+ */
-+static int ads7846_halfd_spi_msg(struct ads7846 *ts,
-+				 const struct ads7846_platform_data *pdata)
-+{
-+	struct spi_message *m = ts->msg;
-+	struct spi_transfer *x = ts->xfer;
-+	struct ads7846_packet *packet = ts->packet;
-+	int vref = pdata->keep_vref_on;
-+	unsigned int offset = 0;
-+	unsigned int cmd_idx, b;
-+	size_t size = 0;
-+
-+	if (pdata->settle_delay_usecs)
-+		packet->count = 2;
-+	else
-+		packet->count = 1;
-+
-+	if (ts->model == 7846)
-+		packet->cmds = 5; /* x, y, z1, z2, pwdown */
-+	else
-+		packet->cmds = 3; /* x, y, pwdown */
-+
-+	for (cmd_idx = 0; cmd_idx < packet->cmds; cmd_idx++) {
-+		struct ads7846_buf_layout *l = &packet->l[cmd_idx];
-+		unsigned int max_count;
-+
-+		if (cmd_idx == packet->cmds - 1) {
-+			cmd_idx = ADS7846_PWDOWN;
-+			max_count = 1;
-+		} else {
-+			max_count = packet->count;
-+		}
-+
-+		l->offset = offset;
-+		offset += max_count;
-+		l->count = max_count;
-+		l->skip = 0;
-+		size += sizeof(*packet->rx) * max_count;
-+	}
-+
-+	/* We use two transfers per command. */
-+	if (ARRAY_SIZE(ts->xfer) < offset * 2)
-+		return -ENOMEM;
-+
-+	packet->rx = devm_kzalloc(&ts->spi->dev, size, GFP_KERNEL);
-+	if (!packet->rx)
-+		return -ENOMEM;
-+
-+	if (ts->model == 7873) {
-+		/*
-+		 * The AD7873 is almost identical to the ADS7846
-+		 * keep VREF off during differential/ratiometric
-+		 * conversion modes.
-+		 */
-+		ts->model = 7846;
-+		vref = 0;
-+	}
-+
-+	ts->msg_count = 0;
-+
-+	for (cmd_idx = 0; cmd_idx < packet->cmds; cmd_idx++) {
-+		struct ads7846_buf_layout *l = &packet->l[cmd_idx];
-+		u8 cmd;
-+
-+		ts->msg_count++;
-+		spi_message_init(m);
-+		m->context = ts;
-+
-+		if (cmd_idx == packet->cmds - 1)
-+			cmd_idx = ADS7846_PWDOWN;
-+
-+		cmd = ads7846_get_cmd(cmd_idx, vref);
-+
-+		for (b = 0; b < l->count; b++) {
-+			packet->rx[l->offset + b].cmd = cmd;
-+			x->tx_buf = &packet->rx[l->offset + b].cmd;
-+			x->len = 1;
-+			spi_message_add_tail(x, m);
-+			x++;
-+			x->rx_buf = &packet->rx[l->offset + b].data;
-+			x->len = 2;
-+			if (b < l->count - 1 && l->count > 1) {
-+				x->delay.value = pdata->settle_delay_usecs;
-+				x->delay.unit = SPI_DELAY_UNIT_USECS;
-+			}
-+			spi_message_add_tail(x, m);
-+			x++;
-+		}
-+		m++;
-+	}
-+	return 0;
-+}
-+
- /*
-  * Set up the transfers to read touchscreen state; this assumes we
-  * use formula #2 for pressure, not #3.
-@@ -1249,6 +1403,14 @@ static int ads7846_probe(struct spi_device *spi)
- 	if (!ts)
- 		return -ENOMEM;
- 
-+	if (spi->controller->flags & SPI_CONTROLLER_HALF_DUPLEX) {
-+		ts->setup_spi_msg = ads7846_halfd_spi_msg;
-+		ts->read_state    = ads7846_halfd_read_state;
-+	} else {
-+		ts->setup_spi_msg = ads7846_setup_spi_msg;
-+		ts->read_state    = ads7846_read_state;
-+	}
-+
- 	packet = devm_kzalloc(dev, sizeof(struct ads7846_packet), GFP_KERNEL);
- 	if (!packet)
- 		return -ENOMEM;
-@@ -1343,7 +1505,9 @@ static int ads7846_probe(struct spi_device *spi)
- 		ts->core_prop.swap_x_y = true;
- 	}
- 
--	ads7846_setup_spi_msg(ts, pdata);
-+	err = ts->setup_spi_msg(ts, pdata);
-+	if (err)
-+		return err;
- 
- 	ts->reg = devm_regulator_get(dev, "vcc");
- 	if (IS_ERR(ts->reg)) {
--- 
-2.39.2
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
+Yours,
+Linus Walleij
 
