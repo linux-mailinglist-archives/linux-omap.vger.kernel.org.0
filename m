@@ -1,203 +1,164 @@
-Return-Path: <linux-omap+bounces-2951-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2952-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E5BCA009C2
-	for <lists+linux-omap@lfdr.de>; Fri,  3 Jan 2025 14:10:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41493A00FD5
+	for <lists+linux-omap@lfdr.de>; Fri,  3 Jan 2025 22:26:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17E583A3649
-	for <lists+linux-omap@lfdr.de>; Fri,  3 Jan 2025 13:10:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27623160EC1
+	for <lists+linux-omap@lfdr.de>; Fri,  3 Jan 2025 21:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC339199938;
-	Fri,  3 Jan 2025 13:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329AA1C07C5;
+	Fri,  3 Jan 2025 21:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="aDbbSNeY"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="bP2nhUXm"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-79.smtpout.orange.fr [80.12.242.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349F2147C96;
-	Fri,  3 Jan 2025 13:10:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AA31BEF89;
+	Fri,  3 Jan 2025 21:25:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735909832; cv=none; b=ePB5kz68Uo7T0B1GtnjYJecFXw4KtNEvGW4U0W/TBLDxUwTVbMrN4uAwIPHyNIB2fkK0Rl3OqbKWqDZHuiE0k+4vNM0t+sLfP5K818m/IF54OLRXHm2g0dP9iWWFLjuAFNGJki9SaqE4U6a8p2X6F6GJeeco40JrutuG1EDbpE4=
+	t=1735939543; cv=none; b=UROPtVUQAJhdOPT8DW3KOdwyHx/dc2ajbaGabt976vi+JKBmzv3eW9+bm/R/afXXVHdgR5tEAlJKPW/Df3SWBt2J+YntQSl2R0IO29robDX1Wup0W5v1HsATjC1X+0kpVWp25TzfyCa0ocALrh7R/8X35TRBXwsAxAfgnHGuoH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735909832; c=relaxed/simple;
-	bh=1Ii0O86ce8+wbARPg96FuS/HKpfxIaT6CP8UPO1xJRQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Sy9wB+qffDdkT0tPylOh5KSiihupugSohJYQ+D9gbsSoo9Zf0NrTW6YdPIDQ2lbciss34eabaQH1MpoXVydGM+XcC/fvPlawC6wyOZ6i6El7Xq+JqONN3x1c2zSOT2rRPu2EdVOeiyBfXlmVB8EPlFtsbAHuy8FonKLiSQlCbck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=aDbbSNeY; arc=none smtp.client-ip=80.12.242.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id ThRMt0PN8XLq1ThRQtAAQg; Fri, 03 Jan 2025 14:10:19 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1735909820;
-	bh=G8A/Tq7WcwPQCTgC7qBYwu6NS49Ek0XKCXhJZSvjFyg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=aDbbSNeY6+qLeKyQp4rMfL0guiHXCpZqHN0KXVfJ1cQ0jYYFml8QvQpsploNNpklK
-	 IT3XqtfIZykbb1YsGbF6b7aP29uGU80xtZpe+AxUea0Zm9riMFoFsLvooq5j0oYGbL
-	 QW+vZbAUD/NGEnUJCk6zEiFCo544XWpSTRefsWiNTsNsMrqRmQExaFjoA6GGqrJZnR
-	 s3027dVelnyuDBOfr1jcmYPMvN1yAp5lQb8DJWp9kCDhuQant7JUR8/6OIjZOiRolI
-	 HCgpCQVFKCd6qat8jwJDealKFxcnFuPsKStVNuCR3MtQiSTkXdax/SMqw0+JCrci6f
-	 m1ISyGxbvI8cg==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Fri, 03 Jan 2025 14:10:20 +0100
-X-ME-IP: 90.11.132.44
-Message-ID: <fb684d79-ca6b-4071-9f5c-d89218dd8f81@wanadoo.fr>
-Date: Fri, 3 Jan 2025 14:10:12 +0100
+	s=arc-20240116; t=1735939543; c=relaxed/simple;
+	bh=4hL4JPIwOkhizFkkaEYRUjkV5LVZTiLgkT63bP1bSwE=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o9k3/asoSHFdgsa6gHkX7Vl1SeRGOtDUgFl2qz8Wuhi802wBUh/vqVr8lVvchweEHqs0OAd36QqmfjS6LiMeZ5/yKCVozeAp8RHBmGC4yGaOEosIczo205phzCOMizVs8CuIDGLkHpD3/oQWtZ8aCWewpoKoz51k/+qG4AsA01s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=bP2nhUXm; arc=none smtp.client-ip=198.47.23.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 503LPSbt2448245
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Fri, 3 Jan 2025 15:25:28 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1735939528;
+	bh=YZznWuB1FraRGFyZglxWAosBnpPgLA03XkIoE8efXcA=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=bP2nhUXm4ZvP5A/Ogp+ULktqfTiKWvl5cIOouWNWOdTs31HFtamfdMWnbW5xvzxKc
+	 JYSygimS1kNkpVKx5+NFFi6nnDE9eDe8B0PSkBDrlVe5+pYSWltlCa3riTkqLwHENP
+	 3+Pq+YReZJ8KOxQzALnVPJtmMwxW6L51rWNaejDo=
+Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 503LPSL4011213;
+	Fri, 3 Jan 2025 15:25:28 -0600
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 3
+ Jan 2025 15:25:27 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 3 Jan 2025 15:25:28 -0600
+Received: from localhost (uda0133052.dhcp.ti.com [128.247.81.232])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 503LPStc016571;
+	Fri, 3 Jan 2025 15:25:28 -0600
+Date: Fri, 3 Jan 2025 15:25:28 -0600
+From: Nishanth Menon <nm@ti.com>
+To: Kevin Hilman <khilman@baylibre.com>
+CC: <devicetree@vger.kernel.org>, Romain Naour <romain.naour@smile.fr>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-omap@vger.kernel.org>,
+        <conor+dt@kernel.org>, <krzk+dt@kernel.org>, <robh@kernel.org>,
+        <kristo@kernel.org>, <vigneshr@ti.com>,
+        Romain Naour <romain.naour@skf.com>, <afd@ti.com>,
+        <s-vadapalli@ti.com>
+Subject: Re: [PATCHv3 1/2] dt-bindings: mfd: syscon: Add
+ ti,j721e-acspcie-proxy-ctrl compatible
+Message-ID: <20250103212528.enq4ur5afxhwzh7n@outdoors>
+References: <20241202143331.126800-1-romain.naour@smile.fr>
+ <173344002250.407600.8303166891165540615.b4-ty@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 6/7] regulator: tps65215: Define probe() helper
- functions
-To: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-Cc: m-leonard@ti.com, praneeth@ti.com, lgirdwood@gmail.com,
- broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, aaro.koskinen@iki.fi, andreas@kemnade.info,
- khilman@baylibre.com, rogerq@kernel.org, tony@atomide.com,
- jerome.neanne@baylibre.com, linux-omap@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20241226215412.395822-1-s-ramamoorthy@ti.com>
- <20241226215412.395822-7-s-ramamoorthy@ti.com>
- <01c571c5-b4c9-418c-9c14-5b7b16c88409@wanadoo.fr>
- <2f32750e-18cb-4e68-8331-c0f8e0987c4b@ti.com>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <2f32750e-18cb-4e68-8331-c0f8e0987c4b@ti.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <173344002250.407600.8303166891165540615.b4-ty@baylibre.com>
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Le 03/01/2025 à 00:41, Shree Ramamoorthy a écrit :
-> Hi,
+On 15:07-20241205, Kevin Hilman wrote:
 > 
-> On 1/1/25 5:01 AM, Christophe JAILLET wrote:
->> Le 26/12/2024 à 22:54, Shree Ramamoorthy a écrit :
->>> Factor register_regulators() and request_irqs() out into smaller 
->>> functions.
->>> These 2 helper functions are used in the next restructure probe() 
->>> patch to
->>> go through the common (overlapping) regulators and irqs first, then the
->>> device-specific structs identifed in the chip_data struct.
->>>
->>> Signed-off-by: Shree Ramamoorthy <s-ramamoorthy- 
->>> l0cyMroinI0@public.gmane.org>
->>> ---
->>>   drivers/regulator/tps65219-regulator.c | 64 ++++++++++++++++++++++++++
->>>   1 file changed, 64 insertions(+)
->>>
->>> diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/ 
->>> regulator/tps65219-regulator.c
->>> index 13f0e68d8e85..8469ee89802c 100644
->>> --- a/drivers/regulator/tps65219-regulator.c
->>> +++ b/drivers/regulator/tps65219-regulator.c
->>> @@ -346,6 +346,70 @@ static struct chip_data chip_info_table[] = {
->>>       },
->>>   };
->>>   +static int tps65219_register_regulators(const struct 
->>> regulator_desc *regulators,
->>> +                    struct tps65219 *tps,
->>> +                    struct device *dev,
->>> +                    struct regulator_config config,
->>> +                    unsigned int arr_size)
->>> +{
->>> +    int i;
->>> +    struct regulator_dev *rdev;
->>> +
->>> +    config.driver_data = tps;
->>> +    config.dev = tps->dev;
->>> +    config.regmap = tps->regmap;
->>> +
->>> +    for (i = 0; i < arr_size; i++) {
->>> +        rdev = devm_regulator_register(dev, &regulators[i],
->>> +                        &config);
->>> +        if (IS_ERR(rdev)) {
->>> +            dev_err(tps->dev,
->>> +                "Failed to register %s regulator\n",
->>> +                regulators[i].name);
->>
->> This will be called from probe in 7/7.
->> So this could be return dev_err_probe()
->>
-> I left these as dev_err(), since dev_err_probe() is used when there is a 
-> chance
-> -EPROBE_DEFER is returned. For both functions using dev_err() here, - 
-> ENOMEM is returned.
-> Should I still switch these 2 instances to dev_err_probe()?
+> On Mon, 02 Dec 2024 15:33:30 +0100, Romain Naour wrote:
+> > The ACSPCIE_PROXY_CTRL registers within the CTRL_MMR space of TI's J721e
+> > SoC are used to drive the reference clock to the PCIe Endpoint device via
+> > the PAD IO Buffers. Add the compatible for allowing the PCIe driver to
+> > obtain the regmap for the ACSPCIE_CTRL register within the System
+> > Controller device-tree node in order to enable the PAD IO Buffers.
+> > 
+> > The Technical Reference Manual for J721e SoC with details of the
+> > ASCPCIE_CTRL registers is available at:
+> > https://www.ti.com/lit/zip/spruil1
+> > 
+> > [...]
 > 
-> Thank you for your help!
+> Applied, thanks!
 > 
->>> +
->>> +            return PTR_ERR(rdev);
->>> +        }
->>> +    }
->>> +
->>> +    return 0;
->>> +}
->>> +
->>> +static int tps65219_request_irqs(struct tps65219_regulator_irq_type 
->>> *irq_types,
->>> +                 struct tps65219 *tps, struct platform_device *pdev,
->>> +                 struct tps65219_regulator_irq_data *irq_data,
->>> +                 unsigned int arr_size)
->>> +{
->>> +    int i;
->>> +    int irq;
->>> +    int error;
->>> +    struct tps65219_regulator_irq_type *irq_type;
->>> +
->>> +    for (i = 0; i < arr_size; ++i) {
->>> +        irq_type = &irq_types[i];
->>> +
->>> +        irq = platform_get_irq_byname(pdev, irq_type->irq_name);
->>> +        if (irq < 0)
->>> +            return -EINVAL;
->>> +
->>> +        irq_data[i].dev = tps->dev;
->>> +        irq_data[i].type = irq_type;
->>> +
->>> +        error = devm_request_threaded_irq(tps->dev, irq, NULL,
->>> +                          tps65219_regulator_irq_handler,
->>> +                          IRQF_ONESHOT,
->>> +                          irq_type->irq_name,
->>> +                          &irq_data[i]);
->>> +        if (error) {
->>> +            dev_err(tps->dev,
->>> +                "Failed to request %s IRQ %d: %d\n",
->>> +                irq_type->irq_name, irq, error);
->>
->> This will be called from probe in 7/7.
->> So this could be return dev_err_probe()
-
-Up to you to choose one or the other.
-
-The other advantages of using dev_err_probe() are:
-   - log the error code in a human readable format
-   - combined with return, it usually saves a few LoC, because some { } 
-can be removed most of the time.
-
-CJ
-
->>
->>> +            return error;
->>> +        }
->>> +    }
->>> +
->>> +    return 0;
->>> +}
->>> +
->>>   static int tps65219_regulator_probe(struct platform_device *pdev)
->>>   {
->>>       struct tps65219 *tps = dev_get_drvdata(pdev->dev.parent);
->>
+> [1/2] dt-bindings: mfd: syscon: Add ti,j721e-acspcie-proxy-ctrl compatible
+>       commit: d8efc0b428856137608ffcbb6994da6041c9fe2a
+> [2/2] arm64: dts: ti: k3-j721e-beagleboneai64: Enable ACSPCIE output for PCIe1
+>       commit: 1d5e14a20dc60b440c60bec8489acfd45cdf7508
 > 
+> Best regards,
+> -- 
+> Kevin Hilman <khilman@baylibre.com>
+> 
+This will need a bit of fixup - See along the lines of the following.
+Additionally, we should be a bit careful about the dependency of dts
+mix up from two trees.
 
+https://lore.kernel.org/all/20250103174524.28768-1-afd@ti.com/T/#m15dcfa786fc430d54cf96475afc10648372f8589
+
+From Andrew Davis:
+
+diff --git a/Documentation/devicetree/bindings/soc/ti/ti,j721e-system-controller.yaml b/Documentation/devicetree/bindings/soc/ti/ti,j721e-system-controller.yaml
+index 378e9cc5fac2a..3323f3bc976e0 100644
+--- a/Documentation/devicetree/bindings/soc/ti/ti,j721e-system-controller.yaml
++++ b/Documentation/devicetree/bindings/soc/ti/ti,j721e-system-controller.yaml
+@@ -68,6 +68,12 @@ patternProperties:
+     description:
+       The node corresponding to SoC chip identification.
+ 
++  "^aspcie-ctrl@[0-9a-f]+$":
++    type: object
++    $ref: /schemas/mfd/syscon.yaml#
++    description:
++      This is the ASPCIe control region.
++
+ required:
+   - compatible
+   - reg
+@@ -110,5 +116,10 @@ examples:
+             compatible = "ti,am654-chipid";
+             reg = <0x14 0x4>;
+         };
++
++        acspcie0_proxy_ctrl: aspcie-ctrl@18090 {
++            compatible = "ti,j721e-acspcie-proxy-ctrl", "syscon";
++            reg = <0x18090 0x4>;
++        };
+     };
+ ...
+diff --git a/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi b/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
+index 32a232a90100e..4b2101e90fb51 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
+@@ -84,7 +84,7 @@ ehrpwm_tbclk: clock-controller@4140 {
+                        #clock-cells = <1>;
+                };
+ 
+-               acspcie0_proxy_ctrl: syscon@18090 {
++               acspcie0_proxy_ctrl: aspcie-ctrl@18090 {
+                        compatible = "ti,j721e-acspcie-proxy-ctrl", "syscon";
+                        reg = <0x18090 0x4>;
+                };
+
+-- 
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
 
