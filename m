@@ -1,55 +1,48 @@
-Return-Path: <linux-omap+bounces-2973-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2974-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 689A2A0141E
-	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 12:31:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAAF1A01604
+	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 17:58:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46D7D163AC3
-	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 11:31:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A01D03A406A
+	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 16:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6DA1B78E7;
-	Sat,  4 Jan 2025 11:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38D71B5EB5;
+	Sat,  4 Jan 2025 16:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="G3WJ5jZn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OR1jBao0"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-65.smtpout.orange.fr [80.12.242.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB7D1B21BE;
-	Sat,  4 Jan 2025 11:30:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804D14409;
+	Sat,  4 Jan 2025 16:58:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735990261; cv=none; b=Zdjpv8cFmTY6pvjNL7xA19Rn3bqWrreqmdQOgcEQ2obE2TD5xnWLGi+9jqE4gHJZHdhb2JUTgkHTESG6a7yizLQLDriwxMp0efyRKMIbpggK69xbUpPLmHAWeE3oz+wynn1GXoAtLMBnQx2muWscNfzeYs+JLeUDgtBA+ruG5fY=
+	t=1736009930; cv=none; b=LgahI90mdJPSfLpPEM4aDU0GcFsNOJDC5OT8zmqUhqD6WjkVA8yMe3tZmatvdlLjnmvDUjus3dtAFcrlDRKjkJwS0s5TpL+gXJEZMX5OJJCL6fCN+913eZnF4LD4og+rz9xhRRD2fJdkXAHSWa3+8eLSbwfamMmKF+t+zhglAMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735990261; c=relaxed/simple;
-	bh=jp5DbNGB7VU8/cV084Cjf2AmTNJoQn83gcQe0puMdoI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ojIiVqW0O89/v5krrZ0IazBqSdcIG2x2clq/oh4TlvrqVeZsMaLiEnpHMPkXeslCqEnfc8jSVIhL4lC/lghuGmVNYv+5QzewbV3kSumVOwLiMuHXnw+seOESj68DcGm4ff5j8J1nqjjzPasrjg3hMeRaCLYwI5gofIlghHPYmSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=G3WJ5jZn; arc=none smtp.client-ip=80.12.242.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id U2MktPfnNGcOqU2Mot6e0m; Sat, 04 Jan 2025 12:30:56 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1735990256;
-	bh=52Gp5iyiBpq5a61zTgxlnpRpN401oOytpM3ynwVq9JQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=G3WJ5jZnyO50NkSVnVWmRwNQADaU6SQ0CzV/xKC3f1neVJkqzsrmayZ/74fi/AV3C
-	 2GkqsnzTh0ZvfDGZBaaUOgoDpBeNfvxYLtiFBnR8Z0/IYiGtz10NWl2KjkQQKr6L+F
-	 x/ot4fpRk0496pYNvGk+TmHKAyAgFrkkLYB98YifpTK9636nimCMqppuv9Wp1v4wzo
-	 1nbS+5dYfJDqV7ElPq+vpV3BSKICLUX/4oz1Ju5d2zLxhzDmQZpZNzRZLvq+v3SQj5
-	 NFODye/Ur4GO4lyTnwMYmALvGohJmiYOlkcLr3dzoiMZnFziyL6v/zXFiBWo+f+5Ag
-	 ly3jBrIcJOgeQ==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Sat, 04 Jan 2025 12:30:56 +0100
-X-ME-IP: 90.11.132.44
-Message-ID: <58e4118c-f705-4565-842e-2baca4ea5abd@wanadoo.fr>
-Date: Sat, 4 Jan 2025 12:30:50 +0100
+	s=arc-20240116; t=1736009930; c=relaxed/simple;
+	bh=vl0ZkWIa06zvoaPX2y0xapu7SDRBC4ztJWKFUQYgh8Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=WWMC/J/Dz6a8U1YfXOdkigoJvv3gPAgdWRI8gLmAbcUboZAZFYp1Jxgi5KSbMWnQ9EjAy7c5X93FFGxZgNR0pCOJCK+qgitKHULcKvecwJs/avuR/YUwJrtM66iTGKF++slLZ9iw5FKH9HK5pkoDP/8mNrEXnEvH+J0ZQPRY/3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OR1jBao0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830C3C4CED1;
+	Sat,  4 Jan 2025 16:58:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736009929;
+	bh=vl0ZkWIa06zvoaPX2y0xapu7SDRBC4ztJWKFUQYgh8Q=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=OR1jBao0T8t8+1k+Hci/YBEM3h9W1FvbSx6cdCY3Jf41xy7E2nqYT+40Dj0c0g+IE
+	 0KjqQPOK50JKjfLe1fn7/PvUa0iU87+DjjlZ/IFK0qHJd+45EDd8yHvBV7axzcYZs2
+	 2BV7aZFejsrxF7iW/jbRBkYR61V/lKJ/xMXzsx0KQskTWar72NcVTuvJot+/sM54e2
+	 k5WrcEFKBmIL6WtPTfPPvBurs6QCxswzfoLq57hIJCkcktiQShbMGGGZMmSinByWV9
+	 MdW5SFLbfUpNuj3Tse6+SZezOmlxTFCvNQ5hPIjQwYTKaEqwuVmcRFhLBWPBzNWYgj
+	 liIfpoKNp5hIQ==
+Message-ID: <675d0e83-6764-4d25-bb86-a1078b991fcc@kernel.org>
+Date: Sat, 4 Jan 2025 18:58:44 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -57,75 +50,26 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mfd: tps65215: Add support for TI TPS65215 PMIC
-To: Shree Ramamoorthy <s-ramamoorthy@ti.com>, aaro.koskinen@iki.fi,
- andreas@kemnade.info, khilman@baylibre.com, rogerq@kernel.org,
- tony@atomide.com, lee@kernel.org, linux-omap@vger.kernel.org,
+Subject: Re: [PATCH] ARM: omap2plus_defconfig: enable charger of TWL603X
+To: Andreas Kemnade <andreas@kemnade.info>, aaro.koskinen@iki.fi,
+ khilman@baylibre.com, tony@atomide.com, linux@armlinux.org.uk,
+ linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org
-Cc: m-leonard@ti.com, praneeth@ti.com
-References: <20250103225732.196636-1-s-ramamoorthy@ti.com>
- <20250103225732.196636-2-s-ramamoorthy@ti.com>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20250103225732.196636-2-s-ramamoorthy@ti.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20241229144459.9742-1-andreas@kemnade.info>
+Content-Language: en-US
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20241229144459.9742-1-andreas@kemnade.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Le 03/01/2025 à 23:57, Shree Ramamoorthy a écrit :
-> Use chip ID and chip_data struct to differentiate between devices in
-> probe(). Add TPS65215 resource information. Update descriptions and
-> copyright information to reflect the driver supports 2 PMIC devices.
+
+
+On 29/12/2024 16:44, Andreas Kemnade wrote:
+> Enable the newly-added charger of TWL603X in the defconfig since it is
+> used by the Epson Moverio BT200.
 > 
-> Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
 
-...
-
-> @@ -218,10 +333,29 @@ static const struct regmap_irq_chip tps65219_irq_chip = {
->   	.sub_reg_offsets = tps65219_sub_irq_offsets,
->   };
->   
-> +struct tps65219_chip_data {
-
-Maybe tps6521x_chip_data?
-(and if so, same for gpio-tps65219.c)
-
-> +	const struct regmap_irq_chip *irq_chip;
-> +	const struct mfd_cell *cells;
-> +	int n_cells;
-> +};
-> +
-> +static struct tps65219_chip_data chip_info_table[] = {
-> +	[TPS65215] = {
-> +		.irq_chip = &tps65215_irq_chip,
-> +		.cells = tps65215_cells,
-> +		.n_cells = ARRAY_SIZE(tps65215_cells),
-> +	},
-> +	[TPS65219] = {
-> +		.irq_chip = &tps65219_irq_chip,
-> +		.cells = tps65219_cells,
-> +		.n_cells = ARRAY_SIZE(tps65219_cells),
-> +	},
-> +};
-
-...
-
-> @@ -291,7 +427,10 @@ static int tps65219_probe(struct i2c_client *client)
->   }
->   
->   static const struct of_device_id of_tps65219_match_table[] = {
-> -	{ .compatible = "ti,tps65219", },
-> +	{ .compatible = "ti,tps65215", .data = (void *)TPS65215, },
-> +	{ .compatible = "ti,tps65219", .data = (void *)TPS65219, },
-> +	{ .compatible = "ti,tps65219", .data = (void *)TPS65219, },
-> +	{ .compatible = "ti,tps65215", .data = (void *)TPS65215, },
->   	{}
-
-Entries look duplicated.
-
->   };
-
-...
-
-CJ
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
 
 
