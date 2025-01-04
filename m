@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-2982-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2983-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26EB1A0164E
-	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 19:27:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A400A01652
+	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 19:28:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D39F43A3DA7
-	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 18:27:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F3BE163088
+	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 18:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162541D5151;
-	Sat,  4 Jan 2025 18:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A761D515A;
+	Sat,  4 Jan 2025 18:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jMp3zMV8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YhfKJAeY"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12A011CA0;
-	Sat,  4 Jan 2025 18:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51FA1D0E36;
+	Sat,  4 Jan 2025 18:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736015239; cv=none; b=T/LcaoPGBo0XAsfWwuLBYqPddAZrfS4+vmGtG5N6Fmqf2tSdCiVawMHA+hwEecT3AXkIWaFVl6a8KuBCiQVCI2F/0GKnIDeIR7AOM/aordzgVDiciROFG3FR4z9RPRdysdX0nN7/DMEsY5bAdknrHXL6lIC75oX4VXIDgP08Xp8=
+	t=1736015307; cv=none; b=EUX1w/5dCDjHXNSGRw+zHb9SrdbwahCOcXEBYFage36rseCvyuRtzEv1HLiMCsh2e0h1HMH3MZVlyX9espp7EiPmrbk/UI1IkpPYTGBgwe4UxobEHaWO8mdzMH8IlkGVZhaggHPJubsDrJn65kn7ZhDmdswM0quDgJG0qm/QoBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736015239; c=relaxed/simple;
-	bh=BH66K8lXTf9eqFuEkzO0oGIOGGi90rxH6n9eHL+ullk=;
+	s=arc-20240116; t=1736015307; c=relaxed/simple;
+	bh=bnQtjgjcXihxa9NPB+PZW+R6Wg31Ew/O3Xdqpjs8GfY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZWQt5kodtR/4Pb/ijFqaAIBWOZHsjKOHVCvoubNRkKMWiD1dVHDHIwa1BEletbTg5O8CYtvyzqVJcaHn8Is2ts9zxbL1WmnRQyzvFTDKp+onSkQur88NMKzeV7ts78IW2nlypVQHFciTOvAjXpJcUBiiuggNPl+58gg9KYa5qyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jMp3zMV8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B75C4CED1;
-	Sat,  4 Jan 2025 18:27:16 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=iP4kE84RFV18bhZEctZS+36JzNwoXYnAOZjx/FmobXWAiVQISwPOuFfO/x6i60FeiMN3pcyOcd0a9imImU2J+5hFLgyJGvlpTXnSOMjCMqeSVjX5LbFWdL2gLad4X9cAnJBgV0lQL3ofAKQLDuEMe1ELUr6KJVnlJSL4rUzACg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YhfKJAeY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F861C4CED1;
+	Sat,  4 Jan 2025 18:28:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736015239;
-	bh=BH66K8lXTf9eqFuEkzO0oGIOGGi90rxH6n9eHL+ullk=;
+	s=k20201202; t=1736015306;
+	bh=bnQtjgjcXihxa9NPB+PZW+R6Wg31Ew/O3Xdqpjs8GfY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jMp3zMV8uzDg0JaqO9RTj1mAlUTL8m1Y2gDiIXTpvKD+ABwvDwX6F6IE/jh67ybtc
-	 dapzHoHtFEmrVsKz0gozdKKRmKgGD9HPtP7LN+vLGHzjSYujFPm/QRqhtx2kbUbqHr
-	 yBzsOCS1HcTzLuCO4XWXVYSAkdy99+LzeIUF7/JPNI2IHadVMS1s4JJxtrQ+g8IqFv
-	 vvanmRu7Hh15Gm5vtkfd0WvMKGkgUiXbwfz2rRN9IuVEzjiC7uC9l1d1aXL0kGQvoE
-	 RscsX0+MBFGKVTki0lpDzsNzkp8gzgADEJXsBskkogaVsgRS2/+GWN6Vsd42hjlimJ
-	 FxaTaQkf+jt1w==
-Message-ID: <a34f42fb-30e0-426b-8efe-9be0c0494fe7@kernel.org>
-Date: Sat, 4 Jan 2025 20:27:13 +0200
+	b=YhfKJAeYrRNoyMQMN9hw1pjH1qW0QHuTFtfHY6CpcqEEiPDXJhS3fdy3hw+B8Aqsa
+	 mpPjCj8nXL97EGUDr6JWmJoyn9aIu7+QBXj4hi1ODCau609KDi29vmCm3gHWpEuErc
+	 LD1oRCfxUIESX6ksDcjIZkFS+lk3fn7TMvM4ihBzOrzD2d0E3/u2lPzwSSgubzNoK9
+	 lBWsbBYe1wo7BHkvF2iatMj+u8JRqhkP/McVlH5FRYeyJnCduFmU1qZ6M0ZQUwC10T
+	 TIhRmdYStCzO531pj93CRxwRigua+QF8IHdMV9XpOQ5RKF0wwlgwBFFgfhqUn8MGQK
+	 3PPlaxwgh3dWA==
+Message-ID: <918d3b67-9bb3-4da2-a779-69ae9e9c4f6b@kernel.org>
+Date: Sat, 4 Jan 2025 20:28:19 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -50,116 +50,70 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] gpio tps65215: Add support for varying gpio/offset
- values
-To: Shree Ramamoorthy <s-ramamoorthy@ti.com>, aaro.koskinen@iki.fi,
- andreas@kemnade.info, khilman@baylibre.com, tony@atomide.com,
- linus.walleij@linaro.org, brgl@bgdev.pl, linux-omap@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org
-Cc: m-leonard@ti.com, praneeth@ti.com, christophe.jaillet@wanadoo.fr
-References: <20250103225407.196068-1-s-ramamoorthy@ti.com>
- <20250103225407.196068-4-s-ramamoorthy@ti.com>
+Subject: Re: [PATCH v1 1/7] regulator: dt-bindings: Add TI TPS65215 PMIC
+ bindings
+To: Shree Ramamoorthy <s-ramamoorthy@ti.com>, lgirdwood@gmail.com,
+ broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, aaro.koskinen@iki.fi, andreas@kemnade.info,
+ khilman@baylibre.com, tony@atomide.com, jerome.neanne@baylibre.com,
+ linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+Cc: m-leonard@ti.com, praneeth@ti.com
+References: <20241226215412.395822-1-s-ramamoorthy@ti.com>
+ <20241226215412.395822-2-s-ramamoorthy@ti.com>
 Content-Language: en-US
 From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20250103225407.196068-4-s-ramamoorthy@ti.com>
+In-Reply-To: <20241226215412.395822-2-s-ramamoorthy@ti.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
-On 04/01/2025 00:54, Shree Ramamoorthy wrote:
-> Add device-specific structs to select the different PMIC .npgio and .offset
-> values. With the chip_data struct values selected based on the match data,
-> having a separate GPIO0_OFFSET macro is no longer needed.
+On 26/12/2024 23:54, Shree Ramamoorthy wrote:
+> TPS65215 is a Power Management IC with 3 Buck regulators and 2 LDOs.
+> 
+> TPS65215 has 2 LDOS and 1 GPO, whereas TPS65219 has 4 LDOs and 2 GPOs. The
+> remaining features for both devices are the same.
 > 
 > Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
 > ---
->  drivers/gpio/gpio-tps65219.c | 27 ++++++++++++++++++++++++---
->  1 file changed, 24 insertions(+), 3 deletions(-)
+>  .../devicetree/bindings/regulator/ti,tps65219.yaml       | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/gpio/gpio-tps65219.c b/drivers/gpio/gpio-tps65219.c
-> index 70a4410c473a..14286dd5fdfb 100644
-> --- a/drivers/gpio/gpio-tps65219.c
-> +++ b/drivers/gpio/gpio-tps65219.c
-> @@ -13,7 +13,6 @@
->  #include <linux/regmap.h>
+> diff --git a/Documentation/devicetree/bindings/regulator/ti,tps65219.yaml b/Documentation/devicetree/bindings/regulator/ti,tps65219.yaml
+> index 78e64521d401..ba5f6fcf5219 100644
+> --- a/Documentation/devicetree/bindings/regulator/ti,tps65219.yaml
+> +++ b/Documentation/devicetree/bindings/regulator/ti,tps65219.yaml
+> @@ -4,7 +4,7 @@
+>  $id: http://devicetree.org/schemas/regulator/ti,tps65219.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
 >  
->  #define TPS65219_GPIO0_DIR_MASK		BIT(3)
-> -#define TPS65219_GPIO0_OFFSET		2
->  #define TPS6521X_GPIO0_IDX			0
+> -title: TI tps65219 Power Management Integrated Circuit regulators
+> +title: TI TPS65215/TPS65219 Power Management Integrated Circuit
 >  
->  struct tps65219_gpio {
-> @@ -21,6 +20,11 @@ struct tps65219_gpio {
->  	struct tps65219 *tps;
->  };
+>  maintainers:
+>    - Jerome Neanne <jerome.neanne@baylibre.com>
+> @@ -12,10 +12,17 @@ maintainers:
+>  description: |
+>    Regulator nodes should be named to buck<number> and ldo<number>.
 >  
-> +struct tps65219_chip_data {
-> +	int ngpio;
-> +	int offset;
-> +};
+> +  TI TPS65219 is a Power Management IC with 3 Buck regulators, 4 Low
+> +  Drop-out Regulators (LDOs), 1 GPIO, 2 GPOs, and power-button.
 > +
->  static int tps65219_gpio_get_direction(struct gpio_chip *gc, unsigned int offset)
->  {
->  	struct tps65219_gpio *gpio = gpiochip_get_data(gc);
-> @@ -71,7 +75,7 @@ static void tps65219_gpio_set(struct gpio_chip *gc, unsigned int offset, int val
->  	struct device *dev = gpio->tps->dev;
->  	int v, mask, bit;
->  
-> -	bit = (offset == TPS6521X_GPIO0_IDX) ? TPS65219_GPIO0_OFFSET : offset - 1;
-> +	bit = (offset == TPS6521X_GPIO0_IDX) ? (gpio->gpio_chip.ngpio - 1) : offset - 1;
-
-shouldn't this be
-	bit = (offset == TPS6521X_GPIO0_IDX) ? (gpio->gpio_chip.offset - 1) : offset - 1;
-
->  
->  	mask = BIT(bit);
->  	v = value ? mask : 0;
-> @@ -148,14 +152,29 @@ static const struct gpio_chip tps65219_template_chip = {
->  	.get			= tps65219_gpio_get,
->  	.set			= tps65219_gpio_set,
->  	.base			= -1,
-> -	.ngpio			= 3,
->  	.can_sleep		= true,
->  };
->  
-> +static const struct tps65219_chip_data chip_info_table[] = {
-> +	[TPS65215] = {
-> +		.ngpio = 2,
-> +		.offset = 1,
-> +	},
-> +	[TPS65219] = {
-> +		.ngpio = 3,
-> +		.offset = 2,
-> +	},
-> +};
+> +  TI TPS65215 is a derivative of TPS65219 with 3 Buck regulators, 2 Low
+> +  Drop-out Regulators (LDOs), 1 GPIO, 1 GPO, and power-button.
 > +
->  static int tps65219_gpio_probe(struct platform_device *pdev)
->  {
->  	struct tps65219 *tps = dev_get_drvdata(pdev->dev.parent);
->  	struct tps65219_gpio *gpio;
-> +	const struct tps65219_chip_data *pmic;
-> +
-> +	enum pmic_id chip = platform_get_device_id(pdev)->driver_data;
-> +
+>  properties:
+>    compatible:
+>      enum:
+>        - ti,tps65219
+> +      - ti,tps65215
 
-unnecessary newline?
+Could be sorted alphanumerically.
 
-> +	pmic = &chip_info_table[chip];
->
-
-here too?
-  
->  	gpio = devm_kzalloc(&pdev->dev, sizeof(*gpio), GFP_KERNEL);
->  	if (!gpio)
-> @@ -164,6 +183,8 @@ static int tps65219_gpio_probe(struct platform_device *pdev)
->  	gpio->tps = tps;
->  	gpio->gpio_chip = tps65219_template_chip;
->  	gpio->gpio_chip.label = dev_name(&pdev->dev);
-> +	gpio->gpio_chip.ngpio =  pmic->ngpio;
-> +	gpio->gpio_chip.offset = pmic->offset;
->  	gpio->gpio_chip.parent = tps->dev;
 >  
->  	return devm_gpiochip_add_data(&pdev->dev, &gpio->gpio_chip, gpio);
+>    reg:
+>      maxItems: 1
 
 -- 
 cheers,
