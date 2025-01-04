@@ -1,129 +1,193 @@
-Return-Path: <linux-omap+bounces-2985-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2986-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F292FA01666
-	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 19:42:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41FDFA01669
+	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 19:42:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEB15162E91
-	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 18:42:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BFCE1881A77
+	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 18:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC791D5175;
-	Sat,  4 Jan 2025 18:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA161D0F46;
+	Sat,  4 Jan 2025 18:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="IhckhlhS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JD1/ZKQm"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF4B1A8F61;
-	Sat,  4 Jan 2025 18:42:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F571A8F61;
+	Sat,  4 Jan 2025 18:42:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736016123; cv=none; b=uXkgAiROqWcqN6330B70Q/A1rOJ6KOVFWYqI73Y91rA/UTDEVpez03J2qBIwp1zt2WdxGu7pPs2RM668HVuQ2FsDv1yaUMiy5oaMvikt07kf384HRyYFy5ZEryXysncYohvvAahus9/Fc9J7Y3goGUv7IuCXtxTROtLczPIH6Zk=
+	t=1736016130; cv=none; b=Yy46fOIzBVPDjImDwrJVHloRjt14y+UW1AhgFLeKGTrww/BhrY40HfKc2Yd9+8s+MjT5APn7PpAY4IqRpL1JRzlwG3EDEpbRt6Xub8/KgZJ8PdNWQbm8exdjCpXzRoA/ioQt5C1En31gcn7r5O6jshnj06QY/98u1+rxIPkiwvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736016123; c=relaxed/simple;
-	bh=ELeAXpMaYjpRLd9Lf9P1VuOtJgktNupxVZPH5LB7T3s=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pB3vH1kzOSjDYsw3/ySf2P8LNk9DPJoMncVeh80QRbrO0VqCMb/z1CbN6wlFfVut33d9h9vsI4is1jToeimsEFaIbYx2mOMCFWWbGbm164xbLBqyMDB0f7rzPIBTIbPTKZ+oOKbs/hywv6ypdbiRE5I7gJbXDiIrzGcoA0+wons=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=IhckhlhS; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=7t2bi2cuevs3+uhIVFRPC0UTtPS4aHzUdCMVqB/75DY=; b=IhckhlhSP+fzopgUmnFpe29nXG
-	mRMFyQya3brEh29rVQM51MOws87UeaWTsq2IbUWL0jdhntXt+6uG5mlJ+tlzhy7qEADaZNOwyE/i8
-	SXLFN+bv3Gp7xrlWHsDNg/1rwBiX4Jyl0NvioMjvsX9qd7cYOU5UtgeRMsewrDUPmVmCiWNl1YoiF
-	uQgOfxDcZPMMbPwoAM/sjrB1lnlsow49odusglnY2ZK8O8+nGw7lx4TJU5T+D4RTOMCLc6AZTA2ZC
-	mZenmZDcmHfsbcqV2r+ks83JP01gMmpM5Fkifx5V9+YLqpAqH3GXkErOJvGAdSW1Xry33DD6M4M4J
-	Ax3tu8mw==;
-Date: Sat, 4 Jan 2025 19:41:58 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Roger Quadros <rogerq@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, Aaro Koskinen
- <aaro.koskinen@iki.fi>, Kevin Hilman <khilman@baylibre.com>,
- devicetree@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, Tony
- Lindgren <tony@atomide.com>
-Subject: Re: [PATCH 2/2] ARM: dts: omap4: panda: cleanup bluetooth
-Message-ID: <20250104194158.06449a3e@akair>
-In-Reply-To: <64d14e8f-a1d5-4e04-afa7-c129cee29dc2@kernel.org>
-References: <20241229230125.85787-1-andreas@kemnade.info>
-	<20241229230125.85787-3-andreas@kemnade.info>
-	<64d14e8f-a1d5-4e04-afa7-c129cee29dc2@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1736016130; c=relaxed/simple;
+	bh=hyzdf8RsgmuRzvH7pMNW3kzbBEFo5PTnn06VU0bcJ7U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sD93rNLUv0cePr2sGrRwjNq7/ypFqphuLND1Tflp0PtHYErzIj3UV6fmBgZ1MtqAOKtnXT4/ZV83zg4aowGJarQOJ4pL5bP7Z3vTzMvvwWO0ph5+eyvo4LjuxV/qnoux/12JBlqbI5HPc8PaHyBcxJ7u6yyCQf+93FfqD3bSD3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JD1/ZKQm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD2AC4CED1;
+	Sat,  4 Jan 2025 18:42:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736016130;
+	bh=hyzdf8RsgmuRzvH7pMNW3kzbBEFo5PTnn06VU0bcJ7U=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=JD1/ZKQmoQV0XF6k7/aNz0NoGOCqmO+eav7pNzdQpc1RNNHvNftASMEVIXbuPxbpK
+	 0TbeKHu98ICT+V5kz8jRdRUATV2Gp1Ufm1opoFFOxLGXX1Lo6y79qnH9YbNrEV0VYD
+	 /SEKq577FJENfOEfTDNB7xg240yVbefSHS/Rq4iu1ZlDeMsMG4gN3oQtmVNEZD4v2f
+	 1h3FunshDPwwivlDXMTOVpzK/ipDY3m/jcu1hYVEjr1V8bC+85HpSEPvDpBbBZhhYa
+	 TWE6scvdhSxVqEiXx5BQrTiQi1sr3/tDsBn3gms69IG7q1plTs4+vy3CJGcJKHKDKG
+	 TTgN5B1dqaeHQ==
+Message-ID: <33e5d002-d109-4563-a1fb-197528c39ec3@kernel.org>
+Date: Sat, 4 Jan 2025 20:42:04 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 6/7] regulator: tps65215: Define probe() helper
+ functions
+To: Shree Ramamoorthy <s-ramamoorthy@ti.com>,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: m-leonard@ti.com, praneeth@ti.com, lgirdwood@gmail.com,
+ broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, aaro.koskinen@iki.fi, andreas@kemnade.info,
+ khilman@baylibre.com, tony@atomide.com, jerome.neanne@baylibre.com,
+ linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+References: <20241226215412.395822-1-s-ramamoorthy@ti.com>
+ <20241226215412.395822-7-s-ramamoorthy@ti.com>
+ <01c571c5-b4c9-418c-9c14-5b7b16c88409@wanadoo.fr>
+ <2f32750e-18cb-4e68-8331-c0f8e0987c4b@ti.com>
+Content-Language: en-US
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <2f32750e-18cb-4e68-8331-c0f8e0987c4b@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hello Roger,
 
-Am Sat, 4 Jan 2025 19:29:44 +0200
-schrieb Roger Quadros <rogerq@kernel.org>:
 
-> Hello Andreas,
+On 03/01/2025 01:41, Shree Ramamoorthy wrote:
+> Hi,
 > 
-> On 30/12/2024 01:01, Andreas Kemnade wrote:
-> > Bluetooth is available on the other Panda board versions, too, so move
-> > stuff to common and specify the needed clock properly.
-> > 
-> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> > ---
-> >  .../boot/dts/ti/omap/omap4-panda-common.dtsi  | 30 +++++++++++++++--
-> >  arch/arm/boot/dts/ti/omap/omap4-panda-es.dts  | 32 -------------------
-> >  2 files changed, 28 insertions(+), 34 deletions(-)
-> > 
-> > diff --git a/arch/arm/boot/dts/ti/omap/omap4-panda-common.dtsi b/arch/arm/boot/dts/ti/omap/omap4-panda-common.dtsi
-> > index c860b590142a..c048ab9af053 100644
-> > --- a/arch/arm/boot/dts/ti/omap/omap4-panda-common.dtsi
-> > +++ b/arch/arm/boot/dts/ti/omap/omap4-panda-common.dtsi
-> > @@ -368,9 +368,7 @@ OMAP4_IOPAD(0x130, PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c4_sda */
-> >  	wl12xx_gpio: wl12xx-gpio-pins {
-> >  		pinctrl-single,pins = <
-> >  			OMAP4_IOPAD(0x066, PIN_OUTPUT | MUX_MODE3)		/* gpmc_a19.gpio_43 */  
+> On 1/1/25 5:01 AM, Christophe JAILLET wrote:
+>> Le 26/12/2024 à 22:54, Shree Ramamoorthy a écrit :
+>>> Factor register_regulators() and request_irqs() out into smaller functions.
+>>> These 2 helper functions are used in the next restructure probe() patch to
+>>> go through the common (overlapping) regulators and irqs first, then the
+>>> device-specific structs identifed in the chip_data struct.
+>>>
+>>> Signed-off-by: Shree Ramamoorthy <s-ramamoorthy-l0cyMroinI0@public.gmane.org>
+>>> ---
+>>>   drivers/regulator/tps65219-regulator.c | 64 ++++++++++++++++++++++++++
+>>>   1 file changed, 64 insertions(+)
+>>>
+>>> diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
+>>> index 13f0e68d8e85..8469ee89802c 100644
+>>> --- a/drivers/regulator/tps65219-regulator.c
+>>> +++ b/drivers/regulator/tps65219-regulator.c
+>>> @@ -346,6 +346,70 @@ static struct chip_data chip_info_table[] = {
+>>>       },
+>>>   };
+>>>   +static int tps65219_register_regulators(const struct regulator_desc *regulators,
+>>> +                    struct tps65219 *tps,
+>>> +                    struct device *dev,
+>>> +                    struct regulator_config config,
+>>> +                    unsigned int arr_size)
+>>> +{
+>>> +    int i;
+>>> +    struct regulator_dev *rdev;
+>>> +
+>>> +    config.driver_data = tps;
+>>> +    config.dev = tps->dev;
+>>> +    config.regmap = tps->regmap;
+>>> +
+>>> +    for (i = 0; i < arr_size; i++) {
+>>> +        rdev = devm_regulator_register(dev, &regulators[i],
+>>> +                        &config);
+>>> +        if (IS_ERR(rdev)) {
+>>> +            dev_err(tps->dev,
+>>> +                "Failed to register %s regulator\n",
+>>> +                regulators[i].name);
+>>
+>> This will be called from probe in 7/7.
+>> So this could be return dev_err_probe()
+>>
+> I left these as dev_err(), since dev_err_probe() is used when there is a chance
+> -EPROBE_DEFER is returned. For both functions using dev_err() here, -ENOMEM is returned.
+> Should I still switch these 2 instances to dev_err_probe()?
 > 
-> We could add function name in comment? e.g. /* gpmc_a19.gpio_43 - WLAN_EN */
-> 
-This is about existing code, there is still a lot of room to cleanup
-other stuff. 
+> Thank you for your help!
 
-> > -			OMAP4_IOPAD(0x06c, PIN_OUTPUT | MUX_MODE3)		/* gpmc_a22.gpio_46 */
-> >  			OMAP4_IOPAD(0x070, PIN_OUTPUT_PULLUP | MUX_MODE3)	/* gpmc_a24.gpio_48 */  
-> 
-> This one is FM_EN and has nothing to do with WLAN.
-> 
-same here.
-> > -			OMAP4_IOPAD(0x072, PIN_OUTPUT_PULLUP | MUX_MODE3)	/* gpmc_a25.gpio_49 */  
-> >  		>;  
-> >  	};
-> >  
-> > @@ -393,6 +391,22 @@ button_pins: button-pins {
-> >  			OMAP4_IOPAD(0x114, PIN_INPUT_PULLUP | MUX_MODE3)	/* gpio_121 */  
-> >  		>;  
-> >  	};
-> > +
-> > +	bt_pins: bt-pins {
-> > +		pinctrl-single,pins = <
-> > +			OMAP4_IOPAD(0x06c, PIN_OUTPUT | MUX_MODE3)	  /* BTEN */
-> > +			OMAP4_IOPAD(0x072, PIN_OUTPUT_PULLUP | MUX_MODE3) /* BTWAKEUP */  
-> 
-> Could we please use comment style <pin name>.<pinmux name> - Function
-> 			OMAP4_IOPAD(0x06c, PIN_OUTPUT | MUX_MODE3)		/* gpmc_a22.gpio_46 - BTEN */
-> 			OMAP4_IOPAD(0x072, PIN_OUTPUT_PULLUP | MUX_MODE3)	/* gpmc_a25.gpio_49 - BTWAKEUP */
->
-I was a bit lazy with checkpatch.pl. Your proposal generates a lot of
-noise there, so I was too lazy to filter that noise, so I disabled that
-noise. I had it first that way.
+What you coudld to is simply return error here and
+add the dev_err_probe() in the probe function.
 
-Regards,
-Andreas
+> 
+>>> +
+>>> +            return PTR_ERR(rdev);
+>>> +        }
+>>> +    }
+>>> +
+>>> +    return 0;
+>>> +}
+>>> +
+>>> +static int tps65219_request_irqs(struct tps65219_regulator_irq_type *irq_types,
+>>> +                 struct tps65219 *tps, struct platform_device *pdev,
+>>> +                 struct tps65219_regulator_irq_data *irq_data,
+>>> +                 unsigned int arr_size)
+>>> +{
+>>> +    int i;
+>>> +    int irq;
+>>> +    int error;
+>>> +    struct tps65219_regulator_irq_type *irq_type;
+>>> +
+>>> +    for (i = 0; i < arr_size; ++i) {
+>>> +        irq_type = &irq_types[i];
+>>> +
+>>> +        irq = platform_get_irq_byname(pdev, irq_type->irq_name);
+>>> +        if (irq < 0)
+>>> +            return -EINVAL;
+>>> +
+>>> +        irq_data[i].dev = tps->dev;
+>>> +        irq_data[i].type = irq_type;
+>>> +
+>>> +        error = devm_request_threaded_irq(tps->dev, irq, NULL,
+>>> +                          tps65219_regulator_irq_handler,
+>>> +                          IRQF_ONESHOT,
+>>> +                          irq_type->irq_name,
+>>> +                          &irq_data[i]);
+>>> +        if (error) {
+>>> +            dev_err(tps->dev,
+>>> +                "Failed to request %s IRQ %d: %d\n",
+>>> +                irq_type->irq_name, irq, error);
+>>
+>> This will be called from probe in 7/7.
+>> So this could be return dev_err_probe()
+
+Same here, just return error here and leave the error printing
+job for the probe function.
+
+>>
+>>> +            return error;
+>>> +        }
+>>> +    }
+>>> +
+>>> +    return 0;
+>>> +}
+>>> +
+>>>   static int tps65219_regulator_probe(struct platform_device *pdev)
+>>>   {
+>>>       struct tps65219 *tps = dev_get_drvdata(pdev->dev.parent);
+>>
+> 
+
+-- 
+cheers,
+-roger
+
 
