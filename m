@@ -1,165 +1,191 @@
-Return-Path: <linux-omap+bounces-2964-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2968-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61C34A010A6
-	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 00:06:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EFECA0134F
+	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 09:39:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0A4D164BF6
-	for <lists+linux-omap@lfdr.de>; Fri,  3 Jan 2025 23:05:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 218A81884A19
+	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 08:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022F81C5F24;
-	Fri,  3 Jan 2025 23:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A349916ABC6;
+	Sat,  4 Jan 2025 08:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="KYgDX70p"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SAFRsc/3"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C251C5498;
-	Fri,  3 Jan 2025 23:05:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD75156F2B;
+	Sat,  4 Jan 2025 08:39:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735945505; cv=none; b=GMm5XOvXlCbOOkMWJ46xhfaXiyhJNiUfUCMkl+q9lDiU3rkFab4BQW/7xMvXmm0jHihTjNi1B9zaEBv787iJ9bsi53RNjquxOB2It/o7HxKhyIY26RxlnS+W51Px4Z/B4DzhPvsvsAfqb2L3wYPB9p7c5Vo5GgLz0L8VZ64uTXA=
+	t=1735979965; cv=none; b=Co+B21eh+kCWwLVSSOcHpCplQCTBoITfZ8SlZy554YnkYdQjNk6AXzp6WSpIM0KXzxeqTaBLb6/FAEO5wrVON6Wha25lKOQNsoGCycCNkb3QzqZktBGGDOnVE0JB+jb2wGw6h5nFRd44gMtfoZXSi+nvtzqJZnJZHiOnlYFQWuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735945505; c=relaxed/simple;
-	bh=fKglM1lGIST2Yy/b4W2+O6RKmVxMCm8B4hiU5R/uRNo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cqmbUy8yUzz/0JC0MTq0KynI8tFhxjbTK/h56A79KTqR6I5Nej2r9oiAbwTokoobOwgYlpGridrZ+HbgeT+UpdTcjvodWNL//nUopezHXjVXwzcXGsEDVxYUjnam8D3v9YgsYXA87/HPIPTV/KTzAS+qt4un0Cb867awKpq9Q84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=KYgDX70p; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 503N4kTc080772;
-	Fri, 3 Jan 2025 17:04:46 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1735945486;
-	bh=L5XoQlnFaWOJMh2tSTz5T9Yv4gdxEW//9FpSLsJo0T4=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=KYgDX70pNU2d2+WNvBe7FXze9lffU7z3sGhEPuw5YNyRTDyBlZXiS1K5t65ukk7LQ
-	 28tTXMeYdl6eqxlkBU24ea/FL6quu/Y35uPCe1gN+sIzEOHYXNXh4x4DXVyhjSKfxm
-	 ZSa8Ucs+N5L+LbJxiSBIVcRPOdVHxf5xOBr0r1+E=
-Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 503N4kxY067457;
-	Fri, 3 Jan 2025 17:04:46 -0600
-Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 3
- Jan 2025 17:04:46 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 3 Jan 2025 17:04:46 -0600
-Received: from DMZ007XYY.dhcp.ti.com (dmz007xyy.dhcp.ti.com [128.247.29.228])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 503N4k0O121736;
-	Fri, 3 Jan 2025 17:04:46 -0600
-From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-To: <lgirdwood@gmail.com>, <broonie@kernel.org>, <robh@kernel.org>,
-        <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <aaro.koskinen@iki.fi>,
-        <andreas@kemnade.info>, <khilman@baylibre.com>, <rogerq@kernel.org>,
-        <tony@atomide.com>, <jerome.neanne@baylibre.com>,
-        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-CC: <m-leonard@ti.com>, <praneeth@ti.com>, <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH v2 6/7] regulator: tps65215: Define probe() helper functions
-Date: Fri, 3 Jan 2025 17:04:45 -0600
-Message-ID: <20250103230446.197597-7-s-ramamoorthy@ti.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250103230446.197597-1-s-ramamoorthy@ti.com>
-References: <20250103230446.197597-1-s-ramamoorthy@ti.com>
+	s=arc-20240116; t=1735979965; c=relaxed/simple;
+	bh=rFBnzSQ4rK5w/x0CPH/EAzDZ6VubNpuVUGmGvhtpRtg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eytq8QMFSTgzFHrj5JM67ME7qkU4PsktGXNvpilHykCLUaqhMK7PFHzuW/uofoKVi8HDRiFvbnqs9b8+S7kDNNEsvA64R8ZmjzlDq8vxUw6w7xmqx5gBevJ/HYJUo2VtU5ZKyi+4QOsapjQaii/H4aNK9NvEMqdFd31Lu389iXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SAFRsc/3; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1735979963; x=1767515963;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rFBnzSQ4rK5w/x0CPH/EAzDZ6VubNpuVUGmGvhtpRtg=;
+  b=SAFRsc/3nPmfkIxK5ij2QTitWlHSHRutVawZun3hdE/4V0YtnC3PoDOy
+   l4sgqeLqqrDh3LAG9yAF/ttiDV5f6Aen7N9sill3vEVm1Ct7KgfgtI/7N
+   nND5zhSMZT1MXkM12Qop76QJuNx+WTK8JzVD0O1FZIGabvxuwTbX0uc9g
+   nfJOanc+cGJvQF8XX3wfcG+XfpBCISFLjNPbMe+Kur3b0QVuV4Oqp+YR2
+   1ji0isL1qt4nQgVinJd9fCeARqYY+ovJ4/uQDX5vfcxsdD77EaI4ZGLZE
+   V9EN53zXzN0NANw+vkQjT98syKxHDVsbsEjfA3Om0/NYxTHuu13wCx+gm
+   A==;
+X-CSE-ConnectionGUID: 2EepHB9AQsOApIdogaN4Uw==
+X-CSE-MsgGUID: XO+eU/1+RvCwXYZUITOnlw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11304"; a="36109713"
+X-IronPort-AV: E=Sophos;i="6.12,288,1728975600"; 
+   d="scan'208";a="36109713"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2025 00:39:22 -0800
+X-CSE-ConnectionGUID: Tnk0+16tTl2lpglMqFg4xA==
+X-CSE-MsgGUID: FMDfiChcSbSzsT9k1Mcndw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,288,1728975600"; 
+   d="scan'208";a="102491781"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 04 Jan 2025 00:39:18 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tTzgi-000Alz-0m;
+	Sat, 04 Jan 2025 08:39:16 +0000
+Date: Sat, 4 Jan 2025 16:38:41 +0800
+From: kernel test robot <lkp@intel.com>
+To: Shree Ramamoorthy <s-ramamoorthy@ti.com>, lgirdwood@gmail.com,
+	broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, aaro.koskinen@iki.fi, andreas@kemnade.info,
+	khilman@baylibre.com, rogerq@kernel.org, tony@atomide.com,
+	jerome.neanne@baylibre.com, linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, m-leonard@ti.com, praneeth@ti.com,
+	christophe.jaillet@wanadoo.fr
+Subject: Re: [PATCH v2 2/7] regulator: tps65215: Update function & struct
+ names
+Message-ID: <202501041639.sIGy7REE-lkp@intel.com>
+References: <20250103230446.197597-3-s-ramamoorthy@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250103230446.197597-3-s-ramamoorthy@ti.com>
 
-Factor register_regulators() and request_irqs() out into smaller functions.
-These 2 helper functions are used in the next restructure probe() patch to
-go through the common (overlapping) regulators and irqs first, then the
-device-specific structs identifed in the chip_data struct.
+Hi Shree,
 
-Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
----
- drivers/regulator/tps65219-regulator.c | 59 ++++++++++++++++++++++++++
- 1 file changed, 59 insertions(+)
+kernel test robot noticed the following build errors:
 
-diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
-index 6dc0829cf29a..31d76706bfc0 100644
---- a/drivers/regulator/tps65219-regulator.c
-+++ b/drivers/regulator/tps65219-regulator.c
-@@ -347,6 +347,65 @@ static struct tps65219_chip_data chip_info_table[] = {
- 	},
- };
- 
-+static int tps65219_register_regulators(const struct regulator_desc *regulators,
-+					struct tps65219 *tps,
-+					struct device *dev,
-+					struct regulator_config config,
-+					unsigned int arr_size)
-+{
-+	int i;
-+	struct regulator_dev *rdev;
-+
-+	config.driver_data = tps;
-+	config.dev = tps->dev;
-+	config.regmap = tps->regmap;
-+
-+	for (i = 0; i < arr_size; i++) {
-+		rdev = devm_regulator_register(dev, &regulators[i],
-+						&config);
-+		if (IS_ERR(rdev))
-+			return dev_err_probe(tps->dev, PTR_ERR(rdev),
-+				"Failed to register %s regulator\n",
-+				regulators[i].name);
-+	}
-+
-+	return 0;
-+}
-+
-+static int tps65219_request_irqs(struct tps65219_regulator_irq_type *irq_types,
-+				 struct tps65219 *tps, struct platform_device *pdev,
-+				 struct tps65219_regulator_irq_data *irq_data,
-+				 unsigned int arr_size)
-+{
-+	int i;
-+	int irq;
-+	int error;
-+	struct tps65219_regulator_irq_type *irq_type;
-+
-+	for (i = 0; i < arr_size; ++i) {
-+		irq_type = &irq_types[i];
-+
-+		irq = platform_get_irq_byname(pdev, irq_type->irq_name);
-+		if (irq < 0)
-+			return -EINVAL;
-+
-+		irq_data[i].dev = tps->dev;
-+		irq_data[i].type = irq_type;
-+
-+		error = devm_request_threaded_irq(tps->dev, irq, NULL,
-+						  tps65219_regulator_irq_handler,
-+						  IRQF_ONESHOT,
-+						  irq_type->irq_name,
-+						  &irq_data[i]);
-+		if (error)
-+			return dev_err_probe(tps->dev, error,
-+				"Failed to request %s IRQ %d\n",
-+				irq_type->irq_name, irq);
-+	}
-+
-+	return 0;
-+}
-+
- static int tps65219_regulator_probe(struct platform_device *pdev)
- {
- 	struct tps65219 *tps = dev_get_drvdata(pdev->dev.parent);
+[auto build test ERROR on broonie-regulator/for-next]
+[also build test ERROR on next-20241220]
+[cannot apply to robh/for-next tmlind-omap/for-next linus/master v6.13-rc5]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Shree-Ramamoorthy/regulator-dt-bindings-Add-TI-TPS65215-PMIC-bindings/20250104-070914
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
+patch link:    https://lore.kernel.org/r/20250103230446.197597-3-s-ramamoorthy%40ti.com
+patch subject: [PATCH v2 2/7] regulator: tps65215: Update function & struct names
+config: i386-buildonly-randconfig-004-20250104 (https://download.01.org/0day-ci/archive/20250104/202501041639.sIGy7REE-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250104/202501041639.sIGy7REE-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501041639.sIGy7REE-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/regulator/tps65219-regulator.c:261:44: error: 'TPS65215_LDO_2' undeclared here (not in a function); did you mean 'TPS65219_LDO_2'?
+     261 |         TPS65219_REGULATOR("LDO2", "ldo2", TPS65215_LDO_2,
+         |                                            ^~~~~~~~~~~~~~
+   drivers/regulator/tps65219-regulator.c:99:43: note: in definition of macro 'TPS65219_REGULATOR'
+      99 |                 .id                     = _id,                          \
+         |                                           ^~~
+>> drivers/regulator/tps65219-regulator.c:263:28: error: 'TPS65215_REG_LDO2_VOUT' undeclared here (not in a function); did you mean 'TPS65219_REG_LDO2_VOUT'?
+     263 |                            TPS65215_REG_LDO2_VOUT,
+         |                            ^~~~~~~~~~~~~~~~~~~~~~
+   drivers/regulator/tps65219-regulator.c:104:43: note: in definition of macro 'TPS65219_REGULATOR'
+     104 |                 .vsel_reg               = _vr,                          \
+         |                                           ^~~
+>> drivers/regulator/tps65219-regulator.c:266:28: error: 'TPS65215_ENABLE_LDO2_EN_MASK' undeclared here (not in a function); did you mean 'TPS65219_ENABLE_LDO2_EN_MASK'?
+     266 |                            TPS65215_ENABLE_LDO2_EN_MASK, 0, 0, tps65215_ldo_2_range,
+         |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/regulator/tps65219-regulator.c:111:43: note: in definition of macro 'TPS65219_REGULATOR'
+     111 |                 .enable_mask            = _em,                          \
+         |                                           ^~~
+   In file included from include/linux/kernel.h:16,
+                    from drivers/regulator/tps65219-regulator.c:12:
+   drivers/regulator/tps65219-regulator.c: In function 'tps65219_regulator_probe':
+   drivers/regulator/tps65219-regulator.c:328:36: error: 'regulators' undeclared (first use in this function); did you mean 'regulator'?
+     328 |         for (i = 0; i < ARRAY_SIZE(regulators); i++) {
+         |                                    ^~~~~~~~~~
+   include/linux/array_size.h:11:33: note: in definition of macro 'ARRAY_SIZE'
+      11 | #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
+         |                                 ^~~
+   drivers/regulator/tps65219-regulator.c:328:36: note: each undeclared identifier is reported only once for each function it appears in
+     328 |         for (i = 0; i < ARRAY_SIZE(regulators); i++) {
+         |                                    ^~~~~~~~~~
+   include/linux/array_size.h:11:33: note: in definition of macro 'ARRAY_SIZE'
+      11 | #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
+         |                                 ^~~
+   In file included from include/linux/array_size.h:5:
+   include/linux/compiler.h:245:77: error: expression in static assertion is not an integer
+     245 | #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Static_assert(!(e), msg);}))
+         |                                                                             ^
+   include/linux/compiler.h:249:33: note: in expansion of macro '__BUILD_BUG_ON_ZERO_MSG'
+     249 | #define __must_be_array(a)      __BUILD_BUG_ON_ZERO_MSG(__same_type((a), &(a)[0]), "must be array")
+         |                                 ^~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/array_size.h:11:59: note: in expansion of macro '__must_be_array'
+      11 | #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
+         |                                                           ^~~~~~~~~~~~~~~
+   drivers/regulator/tps65219-regulator.c:328:25: note: in expansion of macro 'ARRAY_SIZE'
+     328 |         for (i = 0; i < ARRAY_SIZE(regulators); i++) {
+         |                         ^~~~~~~~~~
+   drivers/regulator/tps65219-regulator.c: At top level:
+   drivers/regulator/tps65219-regulator.c:270:36: warning: 'tps65219_regs' defined but not used [-Wunused-const-variable=]
+     270 | static const struct regulator_desc tps65219_regs[] = {
+         |                                    ^~~~~~~~~~~~~
+   drivers/regulator/tps65219-regulator.c:259:36: warning: 'tps65215_regs' defined but not used [-Wunused-const-variable=]
+     259 | static const struct regulator_desc tps65215_regs[] = {
+         |                                    ^~~~~~~~~~~~~
+   drivers/regulator/tps65219-regulator.c:228:36: warning: 'common_regs' defined but not used [-Wunused-const-variable=]
+     228 | static const struct regulator_desc common_regs[] = {
+         |                                    ^~~~~~~~~~~
+
+
+vim +261 drivers/regulator/tps65219-regulator.c
+
+   258	
+   259	static const struct regulator_desc tps65215_regs[] = {
+   260		// TPS65215's LDO2 is the same as TPS65219's LDO3
+ > 261		TPS65219_REGULATOR("LDO2", "ldo2", TPS65215_LDO_2,
+   262				   REGULATOR_VOLTAGE, ldos_3_4_ops, 64,
+ > 263				   TPS65215_REG_LDO2_VOUT,
+   264				   TPS65219_BUCKS_LDOS_VOUT_VSET_MASK,
+   265				   TPS65219_REG_ENABLE_CTRL,
+ > 266				   TPS65215_ENABLE_LDO2_EN_MASK, 0, 0, tps65215_ldo_2_range,
+   267				   3, 0, 0, NULL, 0, 0),
+   268	};
+   269	
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
