@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-2983-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2984-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A400A01652
-	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 19:28:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93F99A0165D
+	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 19:35:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F3BE163088
-	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 18:28:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 538573A3D18
+	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 18:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A761D515A;
-	Sat,  4 Jan 2025 18:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 609011CEAD0;
+	Sat,  4 Jan 2025 18:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YhfKJAeY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UA6LqtMi"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51FA1D0E36;
-	Sat,  4 Jan 2025 18:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC2E23CB;
+	Sat,  4 Jan 2025 18:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736015307; cv=none; b=EUX1w/5dCDjHXNSGRw+zHb9SrdbwahCOcXEBYFage36rseCvyuRtzEv1HLiMCsh2e0h1HMH3MZVlyX9espp7EiPmrbk/UI1IkpPYTGBgwe4UxobEHaWO8mdzMH8IlkGVZhaggHPJubsDrJn65kn7ZhDmdswM0quDgJG0qm/QoBg=
+	t=1736015725; cv=none; b=FvRihTfYeoQEcrlHrOA1i7ryj5wP7KPHNnMcMqCxjKer15cWFQ7MzhAZm2DNmL2d7kx5QwlF+joSVUCQZqDk3MHLLFg+NMLeaQra/0kS1TuqCSH0HhA0VBWOVz4WVtLM1UjfAl6euANlD/v7h7Jen4IRzPoqlSl7Weyw8qFNaGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736015307; c=relaxed/simple;
-	bh=bnQtjgjcXihxa9NPB+PZW+R6Wg31Ew/O3Xdqpjs8GfY=;
+	s=arc-20240116; t=1736015725; c=relaxed/simple;
+	bh=G2NnpuOfL80tkAdpKPJLb6KOns3yN+ZhPx4khycTzWk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iP4kE84RFV18bhZEctZS+36JzNwoXYnAOZjx/FmobXWAiVQISwPOuFfO/x6i60FeiMN3pcyOcd0a9imImU2J+5hFLgyJGvlpTXnSOMjCMqeSVjX5LbFWdL2gLad4X9cAnJBgV0lQL3ofAKQLDuEMe1ELUr6KJVnlJSL4rUzACg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YhfKJAeY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F861C4CED1;
-	Sat,  4 Jan 2025 18:28:22 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=rAMr8wpyyoYcoTghZF1jLVmVfHIZuUS3Dp464lyDHsMHkZtCHFCs3XBDcsqYi6v4NmYJNpvIu02KpK0jpVqnBYbAZisRWJ06OhuD1UG6dHlGsYN4UQTTjUitcYJJOx2shM+bSopweYc6EEuMd82ukW68BFsEOn7QZDiheJcWOLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UA6LqtMi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E06BAC4CED1;
+	Sat,  4 Jan 2025 18:35:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736015306;
-	bh=bnQtjgjcXihxa9NPB+PZW+R6Wg31Ew/O3Xdqpjs8GfY=;
+	s=k20201202; t=1736015724;
+	bh=G2NnpuOfL80tkAdpKPJLb6KOns3yN+ZhPx4khycTzWk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YhfKJAeYrRNoyMQMN9hw1pjH1qW0QHuTFtfHY6CpcqEEiPDXJhS3fdy3hw+B8Aqsa
-	 mpPjCj8nXL97EGUDr6JWmJoyn9aIu7+QBXj4hi1ODCau609KDi29vmCm3gHWpEuErc
-	 LD1oRCfxUIESX6ksDcjIZkFS+lk3fn7TMvM4ihBzOrzD2d0E3/u2lPzwSSgubzNoK9
-	 lBWsbBYe1wo7BHkvF2iatMj+u8JRqhkP/McVlH5FRYeyJnCduFmU1qZ6M0ZQUwC10T
-	 TIhRmdYStCzO531pj93CRxwRigua+QF8IHdMV9XpOQ5RKF0wwlgwBFFgfhqUn8MGQK
-	 3PPlaxwgh3dWA==
-Message-ID: <918d3b67-9bb3-4da2-a779-69ae9e9c4f6b@kernel.org>
-Date: Sat, 4 Jan 2025 20:28:19 +0200
+	b=UA6LqtMii9VFGZY5gxUM1ylUpCMiUINcFhqz3xc8qRc4DnYrKG3iAFKYbs3vzXAHO
+	 JvzRmTS/ToWU5WjlkEnaaSe/NKpxLWJ+74anUXzUWr4uhZUO/IGXP94yO+B0qmnf3h
+	 uW9JykhTQhUF1827yEhCSsZQAyiN8XXRE0j2vLOZyUL9EvEONDkg8i54sDJaZbbgBK
+	 aDMHLh+lH/BP12+IjwNDIKuSx1snjFb4q8h9iSqtQSkyRHiG40WGOZutrq9kxv72IK
+	 hMSILhMIlVl81gBNJRRGqsqN+LbrsNwG/fZs0iklOT0gXDTP3iQHMAB4po1zrgKQVW
+	 78gzcW4TCfEBw==
+Message-ID: <62b0955c-2213-409f-9899-82be05cf7f58@kernel.org>
+Date: Sat, 4 Jan 2025 20:35:18 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -50,8 +50,8 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/7] regulator: dt-bindings: Add TI TPS65215 PMIC
- bindings
+Subject: Re: [PATCH v1 3/7] regulator: tps65215: Update function & struct
+ names
 To: Shree Ramamoorthy <s-ramamoorthy@ti.com>, lgirdwood@gmail.com,
  broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
  conor+dt@kernel.org, aaro.koskinen@iki.fi, andreas@kemnade.info,
@@ -60,60 +60,209 @@ To: Shree Ramamoorthy <s-ramamoorthy@ti.com>, lgirdwood@gmail.com,
  devicetree@vger.kernel.org
 Cc: m-leonard@ti.com, praneeth@ti.com
 References: <20241226215412.395822-1-s-ramamoorthy@ti.com>
- <20241226215412.395822-2-s-ramamoorthy@ti.com>
+ <20241226215412.395822-4-s-ramamoorthy@ti.com>
 Content-Language: en-US
 From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20241226215412.395822-2-s-ramamoorthy@ti.com>
+In-Reply-To: <20241226215412.395822-4-s-ramamoorthy@ti.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
 On 26/12/2024 23:54, Shree Ramamoorthy wrote:
-> TPS65215 is a Power Management IC with 3 Buck regulators and 2 LDOs.
-> 
-> TPS65215 has 2 LDOS and 1 GPO, whereas TPS65219 has 4 LDOs and 2 GPOs. The
-> remaining features for both devices are the same.
+> Update struct and function names to indicate if it supports TPS65219 and/or
+> TPS65215. The 'common' prefix is added to indicate the resource applies
+> to both PMICs.
 > 
 > Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
 > ---
->  .../devicetree/bindings/regulator/ti,tps65219.yaml       | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
+>  drivers/regulator/Kconfig              |  7 +--
+>  drivers/regulator/tps65219-regulator.c | 65 +++++++++++++++++---------
+>  2 files changed, 48 insertions(+), 24 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/regulator/ti,tps65219.yaml b/Documentation/devicetree/bindings/regulator/ti,tps65219.yaml
-> index 78e64521d401..ba5f6fcf5219 100644
-> --- a/Documentation/devicetree/bindings/regulator/ti,tps65219.yaml
-> +++ b/Documentation/devicetree/bindings/regulator/ti,tps65219.yaml
-> @@ -4,7 +4,7 @@
->  $id: http://devicetree.org/schemas/regulator/ti,tps65219.yaml#
->  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> diff --git a/drivers/regulator/Kconfig b/drivers/regulator/Kconfig
+> index 39297f7d8177..6cd87443f9bb 100644
+> --- a/drivers/regulator/Kconfig
+> +++ b/drivers/regulator/Kconfig
+> @@ -1579,10 +1579,11 @@ config REGULATOR_TPS65219
+>  	tristate "TI TPS65219 Power regulators"
+>  	depends on MFD_TPS65219 && OF
+>  	help
+> -	  This driver supports TPS65219 voltage regulator chips.
+> +	  This driver supports TPS65219 series and TPS65215 voltage regulator chips.
+>  	  TPS65219 series of PMICs have 3 single phase BUCKs & 4 LDOs
+> -	  voltage regulators. It supports software based voltage control
+> -	  for different voltage domains.
+> +	  voltage regulators.
+> +	  TPS65215 PMIC has 3 single phase BUCKs & 2 LDOs.
+> +	  Both PMICs support software based voltage control for different voltage domains.
 >  
-> -title: TI tps65219 Power Management Integrated Circuit regulators
-> +title: TI TPS65215/TPS65219 Power Management Integrated Circuit
+>  config REGULATOR_TPS6594
+>  	tristate "TI TPS6594 Power regulators"
+> diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
+> index b8a178ae6b42..188a988e3bbe 100644
+> --- a/drivers/regulator/tps65219-regulator.c
+> +++ b/drivers/regulator/tps65219-regulator.c
+> @@ -1,10 +1,9 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  //
+> -// tps65219-regulator.c
+> -//
+> -// Regulator driver for TPS65219 PMIC
+> +// Regulator driver for TPS65215/TPS65219 PMIC
+>  //
+>  // Copyright (C) 2022 BayLibre Incorporated - https://www.baylibre.com/
+> +// Copyright (C) 2024 Texas Instruments Incorporated - https://www.ti.com/
+>  //
+>  // This implementation derived from tps65218 authored by
+>  // "J Keerthy <j-keerthy@ti.com>"
+> @@ -125,12 +124,22 @@ static const struct linear_range bucks_ranges[] = {
+>  	REGULATOR_LINEAR_RANGE(3400000, 0x34, 0x3f, 0),
+>  };
 >  
->  maintainers:
->    - Jerome Neanne <jerome.neanne@baylibre.com>
-> @@ -12,10 +12,17 @@ maintainers:
->  description: |
->    Regulator nodes should be named to buck<number> and ldo<number>.
->  
-> +  TI TPS65219 is a Power Management IC with 3 Buck regulators, 4 Low
-> +  Drop-out Regulators (LDOs), 1 GPIO, 2 GPOs, and power-button.
+> -static const struct linear_range ldos_1_2_ranges[] = {
+> +static const struct linear_range ldo_1_range[] = {
+> +	REGULATOR_LINEAR_RANGE(600000, 0x0, 0x37, 50000),
+> +	REGULATOR_LINEAR_RANGE(3400000, 0x38, 0x3f, 0),
+> +};
 > +
-> +  TI TPS65215 is a derivative of TPS65219 with 3 Buck regulators, 2 Low
-> +  Drop-out Regulators (LDOs), 1 GPIO, 1 GPO, and power-button.
+> +static const struct linear_range tps65215_ldo_2_range[] = {
+> +	REGULATOR_LINEAR_RANGE(1200000, 0x0, 0xC, 50000),
+> +	REGULATOR_LINEAR_RANGE(3300000, 0x36, 0x3F, 0),
+> +};
 > +
->  properties:
->    compatible:
->      enum:
->        - ti,tps65219
-> +      - ti,tps65215
-
-Could be sorted alphanumerically.
-
+> +static const struct linear_range tps65219_ldo_2_range[] = {
+>  	REGULATOR_LINEAR_RANGE(600000, 0x0, 0x37, 50000),
+>  	REGULATOR_LINEAR_RANGE(3400000, 0x38, 0x3f, 0),
+>  };
 >  
->    reg:
->      maxItems: 1
+> -static const struct linear_range ldos_3_4_ranges[] = {
+> +static const struct linear_range tps65219_ldos_3_4_range[] = {
+>  	REGULATOR_LINEAR_RANGE(1200000, 0x0, 0xC, 0),
+>  	REGULATOR_LINEAR_RANGE(1250000, 0xD, 0x35, 50000),
+>  	REGULATOR_LINEAR_RANGE(3300000, 0x36, 0x3F, 0),
+> @@ -174,7 +183,7 @@ static unsigned int tps65219_get_mode(struct regulator_dev *dev)
+>  }
+>  
+>  /* Operations permitted on BUCK1/2/3 */
+> -static const struct regulator_ops tps65219_bucks_ops = {
+> +static const struct regulator_ops bucks_ops = {
+>  	.is_enabled		= regulator_is_enabled_regmap,
+>  	.enable			= regulator_enable_regmap,
+>  	.disable		= regulator_disable_regmap,
+> @@ -189,7 +198,7 @@ static const struct regulator_ops tps65219_bucks_ops = {
+>  };
+>  
+>  /* Operations permitted on LDO1/2 */
+> -static const struct regulator_ops tps65219_ldos_1_2_ops = {
+> +static const struct regulator_ops ldos_1_2_ops = {
+>  	.is_enabled		= regulator_is_enabled_regmap,
+>  	.enable			= regulator_enable_regmap,
+>  	.disable		= regulator_disable_regmap,
+> @@ -204,7 +213,7 @@ static const struct regulator_ops tps65219_ldos_1_2_ops = {
+>  };
+>  
+>  /* Operations permitted on LDO3/4 */
+> -static const struct regulator_ops tps65219_ldos_3_4_ops = {
+> +static const struct regulator_ops ldos_3_4_ops = {
+>  	.is_enabled		= regulator_is_enabled_regmap,
+>  	.enable			= regulator_enable_regmap,
+>  	.disable		= regulator_disable_regmap,
+> @@ -216,55 +225,69 @@ static const struct regulator_ops tps65219_ldos_3_4_ops = {
+>  	.map_voltage		= regulator_map_voltage_linear_range,
+>  };
+>  
+> -static const struct regulator_desc regulators[] = {
+> +static const struct regulator_desc common_regs[] = {
+>  	TPS65219_REGULATOR("BUCK1", "buck1", TPS65219_BUCK_1,
+> -			   REGULATOR_VOLTAGE, tps65219_bucks_ops, 64,
+> +			   REGULATOR_VOLTAGE, bucks_ops, 64,
+>  			   TPS65219_REG_BUCK1_VOUT,
+>  			   TPS65219_BUCKS_LDOS_VOUT_VSET_MASK,
+>  			   TPS65219_REG_ENABLE_CTRL,
+>  			   TPS65219_ENABLE_BUCK1_EN_MASK, 0, 0, bucks_ranges,
+>  			   3, 4000, 0, NULL, 0, 0),
+>  	TPS65219_REGULATOR("BUCK2", "buck2", TPS65219_BUCK_2,
+> -			   REGULATOR_VOLTAGE, tps65219_bucks_ops, 64,
+> +			   REGULATOR_VOLTAGE, bucks_ops, 64,
+>  			   TPS65219_REG_BUCK2_VOUT,
+>  			   TPS65219_BUCKS_LDOS_VOUT_VSET_MASK,
+>  			   TPS65219_REG_ENABLE_CTRL,
+>  			   TPS65219_ENABLE_BUCK2_EN_MASK, 0, 0, bucks_ranges,
+>  			   3, 4000, 0, NULL, 0, 0),
+>  	TPS65219_REGULATOR("BUCK3", "buck3", TPS65219_BUCK_3,
+> -			   REGULATOR_VOLTAGE, tps65219_bucks_ops, 64,
+> +			   REGULATOR_VOLTAGE, bucks_ops, 64,
+>  			   TPS65219_REG_BUCK3_VOUT,
+>  			   TPS65219_BUCKS_LDOS_VOUT_VSET_MASK,
+>  			   TPS65219_REG_ENABLE_CTRL,
+>  			   TPS65219_ENABLE_BUCK3_EN_MASK, 0, 0, bucks_ranges,
+>  			   3, 0, 0, NULL, 0, 0),
+>  	TPS65219_REGULATOR("LDO1", "ldo1", TPS65219_LDO_1,
+
+Could we update macro TPS65219_REGULATOR to TPS6521X_REGULATOR?
+
+> -			   REGULATOR_VOLTAGE, tps65219_ldos_1_2_ops, 64,
+> +			   REGULATOR_VOLTAGE, ldos_1_2_ops, 64,
+>  			   TPS65219_REG_LDO1_VOUT,
+>  			   TPS65219_BUCKS_LDOS_VOUT_VSET_MASK,
+>  			   TPS65219_REG_ENABLE_CTRL,
+> -			   TPS65219_ENABLE_LDO1_EN_MASK, 0, 0, ldos_1_2_ranges,
+> +			   TPS65219_ENABLE_LDO1_EN_MASK, 0, 0, ldo_1_range,
+>  			   2, 0, 0, NULL, 0, TPS65219_LDOS_BYP_CONFIG_MASK),
+> +};
+> +
+> +static const struct regulator_desc tps65215_regs[] = {
+> +	// TPS65215's LDO2 is the same as TPS65219's LDO3
+> +	TPS65219_REGULATOR("LDO2", "ldo2", TPS65215_LDO_2,
+> +			   REGULATOR_VOLTAGE, ldos_3_4_ops, 64,
+> +			   TPS65215_REG_LDO2_VOUT,
+> +			   TPS65219_BUCKS_LDOS_VOUT_VSET_MASK,
+> +			   TPS65219_REG_ENABLE_CTRL,
+> +			   TPS65215_ENABLE_LDO2_EN_MASK, 0, 0, tps65215_ldo_2_range,
+> +			   3, 0, 0, NULL, 0, 0),
+> +};
+> +
+> +static const struct regulator_desc tps65219_regs[] = {
+>  	TPS65219_REGULATOR("LDO2", "ldo2", TPS65219_LDO_2,
+> -			   REGULATOR_VOLTAGE, tps65219_ldos_1_2_ops, 64,
+> +			   REGULATOR_VOLTAGE, ldos_1_2_ops, 64,
+>  			   TPS65219_REG_LDO2_VOUT,
+>  			   TPS65219_BUCKS_LDOS_VOUT_VSET_MASK,
+>  			   TPS65219_REG_ENABLE_CTRL,
+> -			   TPS65219_ENABLE_LDO2_EN_MASK, 0, 0, ldos_1_2_ranges,
+> +			   TPS65219_ENABLE_LDO2_EN_MASK, 0, 0, tps65219_ldo_2_range,
+>  			   2, 0, 0, NULL, 0, TPS65219_LDOS_BYP_CONFIG_MASK),
+>  	TPS65219_REGULATOR("LDO3", "ldo3", TPS65219_LDO_3,
+> -			   REGULATOR_VOLTAGE, tps65219_ldos_3_4_ops, 64,
+> +			   REGULATOR_VOLTAGE, ldos_3_4_ops, 64,
+>  			   TPS65219_REG_LDO3_VOUT,
+>  			   TPS65219_BUCKS_LDOS_VOUT_VSET_MASK,
+>  			   TPS65219_REG_ENABLE_CTRL,
+> -			   TPS65219_ENABLE_LDO3_EN_MASK, 0, 0, ldos_3_4_ranges,
+> +			   TPS65219_ENABLE_LDO3_EN_MASK, 0, 0, tps65219_ldos_3_4_range,
+>  			   3, 0, 0, NULL, 0, 0),
+>  	TPS65219_REGULATOR("LDO4", "ldo4", TPS65219_LDO_4,
+> -			   REGULATOR_VOLTAGE, tps65219_ldos_3_4_ops, 64,
+> +			   REGULATOR_VOLTAGE, ldos_3_4_ops, 64,
+>  			   TPS65219_REG_LDO4_VOUT,
+>  			   TPS65219_BUCKS_LDOS_VOUT_VSET_MASK,
+>  			   TPS65219_REG_ENABLE_CTRL,
+> -			   TPS65219_ENABLE_LDO4_EN_MASK, 0, 0, ldos_3_4_ranges,
+> +			   TPS65219_ENABLE_LDO4_EN_MASK, 0, 0, tps65219_ldos_3_4_range,
+>  			   3, 0, 0, NULL, 0, 0),
+>  };
+>  
+> @@ -362,5 +385,5 @@ static struct platform_driver tps65219_regulator_driver = {
+>  module_platform_driver(tps65219_regulator_driver);
+>  
+>  MODULE_AUTHOR("Jerome Neanne <j-neanne@baylibre.com>");
+> -MODULE_DESCRIPTION("TPS65219 voltage regulator driver");
+> +MODULE_DESCRIPTION("TPS65215/TPS65219 voltage regulator driver");
+
+"TPS65215X Voltage Regulator Driver"
+
+>  MODULE_LICENSE("GPL");
 
 -- 
 cheers,
