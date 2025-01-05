@@ -1,184 +1,93 @@
-Return-Path: <linux-omap+bounces-2988-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2989-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D645A0166F
-	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 19:47:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA4A1A01AC2
+	for <lists+linux-omap@lfdr.de>; Sun,  5 Jan 2025 18:09:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E40C61631A0
-	for <lists+linux-omap@lfdr.de>; Sat,  4 Jan 2025 18:47:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A668916191D
+	for <lists+linux-omap@lfdr.de>; Sun,  5 Jan 2025 17:09:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4DD1C3021;
-	Sat,  4 Jan 2025 18:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B2015ECD7;
+	Sun,  5 Jan 2025 17:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XUClqqRZ"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="n26Dy9sG"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E69A29;
-	Sat,  4 Jan 2025 18:47:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1BC514B955;
+	Sun,  5 Jan 2025 17:09:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736016467; cv=none; b=PpPWb3T8NmQk70xRvNh3swJP6DBc7AQneEFstiqGDbTfTchpDf24Kisf3JLa21jtrGGfcz1sAkUbvqu1n7/47KMfJ6zebqIrYgG0VPNcorcohpIAv2GGo2GTiBnPW58LoJwHKGKDOZ57rXp2GdO/je0+HYN3vFfg2ZhZiZXhfcw=
+	t=1736096948; cv=none; b=orV74xZ4/35vR4ZdaN0pckC+HCTtPfZ1yAUGYPDZiP83OJwjFarOqyDCYJKpX9ATnKMAGBkK8t35KcVmQMassxxR72LcRRxhnqVlm7aVW896L6mK3pVE05TPeXgmK8/iZO0iLJi42NgFfW7URBzNx50uDmG1bRHmZHid6y+uMpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736016467; c=relaxed/simple;
-	bh=fb1ULS8HlV9zgo+6d4lPQRfzVkb6OUdocDr1QyNU/+Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PU/LonM3mJNyNmnRuCylMPFrg5c0jRlpy3SVJqJysW21MK75CsqbZQ42yUzzm1tKSka7E2dwZYYw9dU/HZAjKJRnwnq6e1KLt4lBXvI2aCLTUOC+xLEMzZ1aOmLsIi8UckTt72rVp1bXS1vwPl8J3/NgCaUBQdY5+byl5IR8MQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XUClqqRZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52FA6C4CED1;
-	Sat,  4 Jan 2025 18:47:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736016466;
-	bh=fb1ULS8HlV9zgo+6d4lPQRfzVkb6OUdocDr1QyNU/+Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XUClqqRZ7CvlzQwjPNKtpZRa+4Ybezj5ij4irT6F90QoQMMqCWwoLjTFq9QYPML8Q
-	 RdUDuHMVcG5qAhH07/CdQbOGCVzrxW3wAGEKwt5g4WzuL8+b+Vn6hZ2KRiq4IFRBXF
-	 4j7WgGIJifLqbUsULsYzvYD5hW+hD6R9kzo15nNnc7ZWZe5yCTNhJ1EaJ0VibV6uAt
-	 iAi+ILoMyMWaxs5aXhoWOlKwat9Brh1YFTQxz+WSX4ZcB0GTVijeEGzTBK63vd1pKq
-	 TwnS+nyNBNN/B5OUoB0v6UWqQLRGxzNnUefXLC1vczW9Gh/Weg/gMKUt6EE2g0kwCj
-	 g7EWJOQdemlTQ==
-Message-ID: <b3a49df1-372c-46c3-869b-205ddfd18cad@kernel.org>
-Date: Sat, 4 Jan 2025 20:47:40 +0200
+	s=arc-20240116; t=1736096948; c=relaxed/simple;
+	bh=NIKllt68xjnihHqTzhRz0Lr78zysa0CIQZSH7xr4Vro=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=q9zpoNjOGRcoH7MA15llTjdm7EANV/O4xB625pj4H0+F98GmywTNVjwunhDYiJclaoC0hB6XGjW6BPeANE8cumDCV28TH3b6u82GGjLy9AHGLaQZOO1rwK95havdJgGuEHBBR95MPZMOKx81lC+zQl+AY88RplbvJXTJLYIgSIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=n26Dy9sG; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=From:Sender:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=J6Fv4Vv6fK6uR3quq9YmN7vL6K1RuS5zWkg1sJW1LqU=; b=n26Dy9sG8R/9EB3Hi08BlSxYvJ
+	PPytCFP4ewy1deHElKfI+HNYmOpJtAeP9ZgPC0ggaIUVT200dyRzFiZWsiprHMk2Z/qwiJxVJ7iTU
+	foXfPKoveWOGLyVrpqsL3u9Qjjy8idgQ80T4zqDnyBsIsWfFiGQNPYd4e8nNG+D+8vb/0tTuKjmKt
+	xDGolKRCHa4H55DL8UjqyiL3H1cpTyEWHaCVrtmNQK+vHx9oIOyhJm1rNEUi2lmcKhm+90wHIjbft
+	a1aJNSSWjWiGcEL+FAFXHHNvOMTzZRppp+gPjoH1Leas/p77XKVKHmozXeU2nCimWt1547GSnFF+2
+	/AY0omuw==;
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Stephen Boyd <sboyd@kernel.org>,
+	linux-clk@vger.kernel.org,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Tony Lindgren <tony@atomide.com>,
+	Tero Kristo <kristo@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	devicetree@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-omap@vger.kernel.org,
+	Rob Herring <robh@kernel.org>
+Subject: [PATCH v2 0/2] dt-bindings: clocks: ti: Next round of conversion
+Date: Sun,  5 Jan 2025 18:08:52 +0100
+Message-Id: <20250105170854.408875-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.5
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 7/7] regulator: tps65215: Restructure probe() for
- multi-PMIC support
-To: Shree Ramamoorthy <s-ramamoorthy@ti.com>, lgirdwood@gmail.com,
- broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, aaro.koskinen@iki.fi, andreas@kemnade.info,
- khilman@baylibre.com, tony@atomide.com, jerome.neanne@baylibre.com,
- linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org
-Cc: m-leonard@ti.com, praneeth@ti.com
-References: <20241226215412.395822-1-s-ramamoorthy@ti.com>
- <20241226215412.395822-8-s-ramamoorthy@ti.com>
-Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20241226215412.395822-8-s-ramamoorthy@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+Convert more TI clock bindings to json-schema.
 
+Changes in v2:
+- comment about design pattern
+- fix example to use an existing compatible
+- some formatting
 
-On 26/12/2024 23:54, Shree Ramamoorthy wrote:
-> The probe() function will now utilize the register_regulators() and
-> request_irqs() helper functions defined in the previous patch. Probe() will
-> cycle through common (overlapping) regulators and irqs first, and then
-> handle device-specific resources identified using the chip_data struct.
-> 
-> Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-> ---
->  drivers/regulator/tps65219-regulator.c | 66 +++++++++++---------------
->  1 file changed, 27 insertions(+), 39 deletions(-)
-> 
-> diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
-> index 8469ee89802c..b27888fd1fa8 100644
-> --- a/drivers/regulator/tps65219-regulator.c
-> +++ b/drivers/regulator/tps65219-regulator.c
-> @@ -413,54 +413,42 @@ static int tps65219_request_irqs(struct tps65219_regulator_irq_type *irq_types,
->  static int tps65219_regulator_probe(struct platform_device *pdev)
->  {
->  	struct tps65219 *tps = dev_get_drvdata(pdev->dev.parent);
-> -	struct regulator_dev *rdev;
->  	struct regulator_config config = { };
-> -	int i;
->  	int error;
-> -	int irq;
->  	struct tps65219_regulator_irq_data *irq_data;
-> -	struct tps65219_regulator_irq_type *irq_type;
-> +	struct chip_data *pmic;
+Andreas Kemnade (2):
+  dt-bindings: clock: ti: Convert gate.txt to json-schema
+  dt-bindings: clock: ti: Convert composite.txt to json-schema
 
-reverse xmas tree.
-
->  
-> -	config.dev = tps->dev;
-> -	config.driver_data = tps;
-> -	config.regmap = tps->regmap;
->  
-> -	for (i = 0; i < ARRAY_SIZE(regulators); i++) {
-> -		rdev = devm_regulator_register(&pdev->dev, &regulators[i],
-> -					       &config);
-> -		if (IS_ERR(rdev))
-> -			return dev_err_probe(tps->dev, PTR_ERR(rdev),
-> -					"Failed to register %s regulator\n",
-> -					regulators[i].name);
-> -	}
-> -
-> -	irq_data = devm_kmalloc(tps->dev,
-> -				ARRAY_SIZE(tps65219_regulator_irq_types) *
-> -				sizeof(struct tps65219_regulator_irq_data),
-> -				GFP_KERNEL);
-> -	if (!irq_data)
-> -		return -ENOMEM;
-> -
-> -	for (i = 0; i < ARRAY_SIZE(tps65219_regulator_irq_types); ++i) {
-> -		irq_type = &tps65219_regulator_irq_types[i];
-> +	enum pmic_id chip = platform_get_device_id(pdev)->driver_data;
->  
-> -		irq = platform_get_irq_byname(pdev, irq_type->irq_name);
-> -		if (irq < 0)
-> -			return -EINVAL;
-
-need a new line after declarations.
-
-> +	pmic = &chip_info_table[chip];
->  
-> -		irq_data[i].dev = tps->dev;
-> -		irq_data[i].type = irq_type;
-> +	config.dev = tps->dev;
-> +	config.driver_data = tps;
-> +	config.regmap = tps->regmap;
->  
-> -		error = devm_request_threaded_irq(tps->dev, irq, NULL,
-> -						  tps65219_regulator_irq_handler,
-> -						  IRQF_ONESHOT,
-> -						  irq_type->irq_name,
-> -						  &irq_data[i]);
-> -		if (error) {
-> -			dev_err(tps->dev, "failed to request %s IRQ %d: %d\n",
-> -				irq_type->irq_name, irq, error);
-> +	error = tps65219_register_regulators(pmic->common_rdesc, tps,
-> +						&pdev->dev, config, pmic->common_rdesc_size);
-> +	if (error)
-
-maybe you could use goto and do any cleanup
-and in the end use dev_err_probe().
-
-> +		return error;
-> +
-> +	error = tps65219_register_regulators(pmic->rdesc, tps, &pdev->dev,
-> +						config, pmic->rdesc_size);
-> +	if (error)
-> +		return error;
-> +
-> +	irq_data = devm_kmalloc(tps->dev, pmic->common_irq_size, GFP_KERNEL);
-> +	error = tps65219_request_irqs(pmic->common_irq_types, tps, pdev,
-> +					irq_data, pmic->common_irq_size);
-> +	if (error)
-> +		return error;
-> +
-> +	if (chip == TPS65219) {
-> +		irq_data = devm_kmalloc(tps->dev, pmic->dev_irq_size, GFP_KERNEL);
-> +		error = tps65219_request_irqs(pmic->irq_types, tps, pdev,
-> +						irq_data, pmic->dev_irq_size);
-> +		if (error)
->  			return error;
-> -		}
->  	}
->  
->  	return 0;
+ .../bindings/clock/ti/composite.txt           |  55 --------
+ .../devicetree/bindings/clock/ti/gate.txt     | 105 ---------------
+ .../bindings/clock/ti/ti,composite-clock.yaml |  82 ++++++++++++
+ .../bindings/clock/ti/ti,gate-clock.yaml      | 125 ++++++++++++++++++
+ 4 files changed, 207 insertions(+), 160 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/clock/ti/composite.txt
+ delete mode 100644 Documentation/devicetree/bindings/clock/ti/gate.txt
+ create mode 100644 Documentation/devicetree/bindings/clock/ti/ti,composite-clock.yaml
+ create mode 100644 Documentation/devicetree/bindings/clock/ti/ti,gate-clock.yaml
 
 -- 
-cheers,
--roger
+2.39.5
 
 
