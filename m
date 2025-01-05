@@ -1,46 +1,46 @@
-Return-Path: <linux-omap+bounces-2991-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2990-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D05D9A01AC8
-	for <lists+linux-omap@lfdr.de>; Sun,  5 Jan 2025 18:09:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E5FA01AC5
+	for <lists+linux-omap@lfdr.de>; Sun,  5 Jan 2025 18:09:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06C37188323F
-	for <lists+linux-omap@lfdr.de>; Sun,  5 Jan 2025 17:09:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5FDF7A1695
+	for <lists+linux-omap@lfdr.de>; Sun,  5 Jan 2025 17:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC541922C0;
-	Sun,  5 Jan 2025 17:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA180165F13;
+	Sun,  5 Jan 2025 17:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="kygtfAaR"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="t8ftkCCW"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B37614D44D;
-	Sun,  5 Jan 2025 17:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B735336D;
+	Sun,  5 Jan 2025 17:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736096949; cv=none; b=qe+FHlk9SXHZd6zTy6j1T7wEnTFmz+kbcLaWUaQ+YZEPU8J3fVdlN/1X8QpEo+vYsXibLgREf+l34UZKobVHGSKy5d9q59sNL7VOM7mdsXpzNqhUur2OCxbig+SeT6/qztnlMlh4aUrmIvN/HTfT5pasSj1oXeVh32SEbIGXoeg=
+	t=1736096948; cv=none; b=uriULr4dq/nwQPg9NfJVnbfH/l9t6RFEZuNvRcdldJenCfBaJJOXkvJ1DvlS78SNvdft/quyKH4w+zr5IrTPeDHbjkBI8H3OSpuxK5HZjN4lHAjBWWhfWv7ZxP3qg31Lxzv4QgXFbqFelMLqqgiUxUFYryYGDCco4Qguje96488=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736096949; c=relaxed/simple;
-	bh=FFVRSI9xYD3g9SweNGZa964KQWVtX9yAVrCRElRuWlw=;
+	s=arc-20240116; t=1736096948; c=relaxed/simple;
+	bh=GyXX1xgwxDQnJTtFfSH0NCj6dbOlZdD+P4lPF1azVGw=;
 	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=frXejgvypYlFvocEgAh0F1twvs/EtX32KmLsYPd0u7sYaATQ1jET3pVO1svDIPpZkX8SXNbiaZwxa90pEVVUIJStZbvfEJ/gQ/uQJeY/+FziG08/S0AMOqvfTNi+SpioVrdFtgeyqEpjyelV67wf07AYrHmjJdsEaV5bg/w5LiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=kygtfAaR; arc=none smtp.client-ip=178.238.236.174
+	 MIME-Version; b=by2umiIbuOBXm68QuDUiBDdrydCKndOWfc1OC6EM/O4RFYFUG74TiuojI3YUjN7htkWtlWhEjL8PLETiohHSzXQokS7NcbT7p/bAarnIXZ1wB7Y39A5WYAUmRoyfaPPGUhpZGBCc4K2IEahkyfzSMs6ZD0w5zQArfRdXDyBA+fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=t8ftkCCW; arc=none smtp.client-ip=178.238.236.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=kemnade.info; s=20220719; h=References:In-Reply-To:From:Sender:Reply-To:Cc:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=Z9oVUYKGT1xg9Xl7f1QIQquhd2zA3tfKAmTmGuRCsvA=; b=kygtfAaRQUf1OLgoZSxtTO1Pih
-	Ou+TdGzZ5A0RB7d9eTNZDSa4SiJDBFZD24wD8/54l3T3gnuefafSFF09Jmb0ZqIko8h2Flg3ewggf
-	l58IzrJW21RzLMZ2e1dt6IvgJdsNNcng8ybkpIXukaz2KcSsuCcPDP8fxVLO+yBIIS7PTrkG0lQCg
-	0w9IAKrW15V9Tfs9F1vzitbWo3BR+rkeZJQIZs5rq0psn8UlYP51SWLhYBHmf2EqNIAuyfzXZB2C2
-	Td5tACtIVvB5v+r5v1zcGfqZWjSjwIImR4CrT2zdMgOFw6od0UpvGNo1YTlyR4xSEo+RyTZaS2M/w
-	h+pc4i0w==;
+	bh=f5CUdA3v1pvk6RnXG4q/EtVFObfrYNfr/RDS/iTtu6s=; b=t8ftkCCWdPH6VYdx5QDz+lGzWR
+	cWmp8/82tu5IceUUjFroayZXy26WCQF5Ei/n7fL/3MDMsHSN2TAPWfTAgzC8p8xVOFlTAOuC4ULrK
+	AQa+RHWj+qVYo0U02RCh4+Yw2Y6ofGHAcmIzrSkFPuITIMqUWHtKUXfxt3y67cDQuCIDQyO2egkYx
+	lZvOgm1NZrLyvzNE1+lqB6dXjxn9vB1MaxtdnxEuXWuo+49eHbqy2KBye6S735GE1MqYWLFh6qiGt
+	Epq5IjIqP4B1Qx+wQgOW2jzOdpBKvb9e8wfRjYG77rFGusiXlFZ80w7cdwQwSqBB0FCn1oVBC4WyG
+	byeu4gQA==;
 From: Andreas Kemnade <andreas@kemnade.info>
 To: Stephen Boyd <sboyd@kernel.org>,
 	linux-clk@vger.kernel.org,
@@ -54,9 +54,9 @@ To: Stephen Boyd <sboyd@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	linux-omap@vger.kernel.org,
 	Rob Herring <robh@kernel.org>
-Subject: [PATCH v2 1/2] dt-bindings: clock: ti: Convert gate.txt to json-schema
-Date: Sun,  5 Jan 2025 18:08:53 +0100
-Message-Id: <20250105170854.408875-2-andreas@kemnade.info>
+Subject: [PATCH v2 2/2] dt-bindings: clock: ti: Convert composite.txt to json-schema
+Date: Sun,  5 Jan 2025 18:08:54 +0100
+Message-Id: <20250105170854.408875-3-andreas@kemnade.info>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250105170854.408875-1-andreas@kemnade.info>
 References: <20250105170854.408875-1-andreas@kemnade.info>
@@ -71,143 +71,89 @@ Content-Transfer-Encoding: 8bit
 Convert the OMAP gate clock device tree binding to json-schema.
 Specify the creator of the original binding as a maintainer.
 Choose GPL-only license because original binding was also GPL.
-Clean up the examples during conversion to meet modern standards and
-remove examples with no additional value.
-Due to usage in code and existing devicetree binding, add the
-ti,set-rate-parent property.
 
 Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
 ---
- .../devicetree/bindings/clock/ti/gate.txt     | 105 ---------------
- .../bindings/clock/ti/ti,gate-clock.yaml      | 125 ++++++++++++++++++
- 2 files changed, 125 insertions(+), 105 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/clock/ti/gate.txt
- create mode 100644 Documentation/devicetree/bindings/clock/ti/ti,gate-clock.yaml
+ .../bindings/clock/ti/composite.txt           | 55 -------------
+ .../bindings/clock/ti/ti,composite-clock.yaml | 82 +++++++++++++++++++
+ 2 files changed, 82 insertions(+), 55 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/clock/ti/composite.txt
+ create mode 100644 Documentation/devicetree/bindings/clock/ti/ti,composite-clock.yaml
 
-diff --git a/Documentation/devicetree/bindings/clock/ti/gate.txt b/Documentation/devicetree/bindings/clock/ti/gate.txt
+diff --git a/Documentation/devicetree/bindings/clock/ti/composite.txt b/Documentation/devicetree/bindings/clock/ti/composite.txt
 deleted file mode 100644
-index a8e0335b006a..000000000000
---- a/Documentation/devicetree/bindings/clock/ti/gate.txt
+index 238e6f7d74f8..000000000000
+--- a/Documentation/devicetree/bindings/clock/ti/composite.txt
 +++ /dev/null
-@@ -1,105 +0,0 @@
--Binding for Texas Instruments gate clock.
+@@ -1,55 +0,0 @@
+-Binding for TI composite clock.
 -
--This binding uses the common clock binding[1]. This clock is
--quite much similar to the basic gate-clock [2], however,
--it supports a number of additional features. If no register
--is provided for this clock, the code assumes that a clockdomain
--will be controlled instead and the corresponding hw-ops for
--that is used.
+-This binding uses the common clock binding[1]. It assumes a
+-register-mapped composite clock with multiple different sub-types;
+-
+-a multiplexer clock with multiple input clock signals or parents, one
+-of which can be selected as output, this behaves exactly as [2]
+-
+-an adjustable clock rate divider, this behaves exactly as [3]
+-
+-a gating function which can be used to enable and disable the output
+-clock, this behaves exactly as [4]
+-
+-The binding must provide a list of the component clocks that shall be
+-merged to this clock. The component clocks shall be of one of the
+-"ti,*composite*-clock" types.
 -
 -[1] Documentation/devicetree/bindings/clock/clock-bindings.txt
--[2] Documentation/devicetree/bindings/clock/gpio-gate-clock.yaml
--[3] Documentation/devicetree/bindings/clock/ti/clockdomain.txt
+-[2] Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml
+-[3] Documentation/devicetree/bindings/clock/ti/ti,divider-clock.yaml
+-[4] Documentation/devicetree/bindings/clock/ti/gate.txt
 -
 -Required properties:
--- compatible : shall be one of:
--  "ti,gate-clock" - basic gate clock
--  "ti,wait-gate-clock" - gate clock which waits until clock is active before
--			 returning from clk_enable()
--  "ti,dss-gate-clock" - gate clock with DSS specific hardware handling
--  "ti,am35xx-gate-clock" - gate clock with AM35xx specific hardware handling
--  "ti,clkdm-gate-clock" - clockdomain gate clock, which derives its functional
--			  clock directly from a clockdomain, see [3] how
--			  to map clockdomains properly
--  "ti,hsdiv-gate-clock" - gate clock with OMAP36xx specific hardware handling,
--			  required for a hardware errata
--  "ti,composite-gate-clock" - composite gate clock, to be part of composite
--			      clock
--  "ti,composite-no-wait-gate-clock" - composite gate clock that does not wait
--				      for clock to be active before returning
--				      from clk_enable()
--- #clock-cells : from common clock binding; shall be set to 0
--- clocks : link to phandle of parent clock
--- reg : offset for register controlling adjustable gate, not needed for
--	ti,clkdm-gate-clock type
+-- compatible : shall be: "ti,composite-clock"
+-- clocks : link phandles of component clocks
+-- #clock-cells : from common clock binding; shall be set to 0.
 -
 -Optional properties:
 -- clock-output-names : from common clock binding.
--- ti,bit-shift : bit shift for programming the clock gate, invalid for
--		 ti,clkdm-gate-clock type
--- ti,set-bit-to-disable : inverts default gate programming. Setting the bit
--  gates the clock and clearing the bit ungates the clock.
 -
 -Examples:
--	mmchs2_fck: mmchs2_fck@48004a00 {
--		#clock-cells = <0>;
--		compatible = "ti,gate-clock";
--		clocks = <&core_96m_fck>;
--		reg = <0x0a00>;
--		ti,bit-shift = <25>;
--	};
 -
--	uart4_fck_am35xx: uart4_fck_am35xx {
--		#clock-cells = <0>;
--		compatible = "ti,wait-gate-clock";
--		clocks = <&core_48m_fck>;
--		reg = <0x0a00>;
--		ti,bit-shift = <23>;
--	};
+-usb_l4_gate_ick: usb_l4_gate_ick {
+-	#clock-cells = <0>;
+-	compatible = "ti,composite-interface-clock";
+-	clocks = <&l4_ick>;
+-	ti,bit-shift = <5>;
+-	reg = <0x0a10>;
+-};
 -
--	dss1_alwon_fck_3430es2: dss1_alwon_fck_3430es2@48004e00 {
--		#clock-cells = <0>;
--		compatible = "ti,dss-gate-clock";
--		clocks = <&dpll4_m4x2_ck>;
--		reg = <0x0e00>;
--		ti,bit-shift = <0>;
--	};
+-usb_l4_div_ick: usb_l4_div_ick {
+-	#clock-cells = <0>;
+-	compatible = "ti,composite-divider-clock";
+-	clocks = <&l4_ick>;
+-	ti,bit-shift = <4>;
+-	ti,max-div = <1>;
+-	reg = <0x0a40>;
+-	ti,index-starts-at-one;
+-};
 -
--	emac_ick: emac_ick@4800259c {
--		#clock-cells = <0>;
--		compatible = "ti,am35xx-gate-clock";
--		clocks = <&ipss_ick>;
--		reg = <0x059c>;
--		ti,bit-shift = <1>;
--	};
--
--	emu_src_ck: emu_src_ck {
--		#clock-cells = <0>;
--		compatible = "ti,clkdm-gate-clock";
--		clocks = <&emu_src_mux_ck>;
--	};
--
--	dpll4_m2x2_ck: dpll4_m2x2_ck@48004d00 {
--		#clock-cells = <0>;
--		compatible = "ti,hsdiv-gate-clock";
--		clocks = <&dpll4_m2x2_mul_ck>;
--		ti,bit-shift = <0x1b>;
--		reg = <0x0d00>;
--		ti,set-bit-to-disable;
--	};
--
--	vlynq_gate_fck: vlynq_gate_fck {
--		#clock-cells = <0>;
--		compatible = "ti,composite-gate-clock";
--		clocks = <&core_ck>;
--		ti,bit-shift = <3>;
--		reg = <0x0200>;
--	};
--
--	sys_clkout2_src_gate: sys_clkout2_src_gate {
--		#clock-cells = <0>;
--		compatible = "ti,composite-no-wait-gate-clock";
--		clocks = <&core_ck>;
--		ti,bit-shift = <15>;
--		reg = <0x0070>;
--	};
-diff --git a/Documentation/devicetree/bindings/clock/ti/ti,gate-clock.yaml b/Documentation/devicetree/bindings/clock/ti/ti,gate-clock.yaml
+-usb_l4_ick: usb_l4_ick {
+-	#clock-cells = <0>;
+-	compatible = "ti,composite-clock";
+-	clocks = <&usb_l4_gate_ick>, <&usb_l4_div_ick>;
+-};
+diff --git a/Documentation/devicetree/bindings/clock/ti/ti,composite-clock.yaml b/Documentation/devicetree/bindings/clock/ti/ti,composite-clock.yaml
 new file mode 100644
-index 000000000000..2eb1d1929c39
+index 000000000000..2ab64dd129fa
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/clock/ti/ti,gate-clock.yaml
-@@ -0,0 +1,125 @@
++++ b/Documentation/devicetree/bindings/clock/ti/ti,composite-clock.yaml
+@@ -0,0 +1,82 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/clock/ti/ti,gate-clock.yaml#
++$id: http://devicetree.org/schemas/clock/ti/ti,composite-clock.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Texas Instruments gate clock
++title: Texas Instruments composite clock
 +
 +maintainers:
 +  - Tero Kristo <kristo@kernel.org>
@@ -215,36 +161,29 @@ index 000000000000..2eb1d1929c39
 +description: |
 +  *Depcrecated design pattern: one node per clock*
 +
-+  This clock is quite much similar to the basic gate-clock [1], however,
-+  it supports a number of additional features. If no register
-+  is provided for this clock, the code assumes that a clockdomain
-+  will be controlled instead and the corresponding hw-ops for
-+  that is used.
++  This binding assumes a register-mapped composite clock with multiple
++  different sub-types:
 +
-+  [1] Documentation/devicetree/bindings/clock/gpio-gate-clock.yaml
-+  [2] Documentation/devicetree/bindings/clock/ti/clockdomain.txt
++    a multiplexer clock with multiple input clock signals or parents, one
++    of which can be selected as output, this behaves exactly as [1].
++
++    an adjustable clock rate divider, this behaves exactly as [2].
++
++    a gating function which can be used to enable and disable the output
++    clock, this behaves exactly as [3].
++
++  The binding must provide a list of the component clocks that shall be
++  merged to this clock. The component clocks shall be of one of the
++  "ti,*composite*-clock" types.
++
++  [1] Documentation/devicetree/bindings/clock/ti/ti,mux-clock.yaml
++  [2] Documentation/devicetree/bindings/clock/ti/ti,divider-clock.yaml
++  [3] Documentation/devicetree/bindings/clock/ti/ti,gate-clock.yaml
 +
 +properties:
 +  compatible:
-+    enum:
-+      - ti,gate-clock           # basic gate clock
-+      - ti,wait-gate-clock      # gate clock which waits until clock is
-+                                # active before returning from clk_enable()
-+      - ti,dss-gate-clock       # gate clock with DSS specific hardware
-+                                # handling
-+      - ti,am35xx-gate-clock    # gate clock with AM35xx specific hardware
-+                                # handling
-+      - ti,clkdm-gate-clock     # clockdomain gate clock, which derives its
-+                                # functional clock directly from a
-+                                # clockdomain, see [2] how to map
-+                                # clockdomains properly
-+      - ti,hsdiv-gate-clock     # gate clock with OMAP36xx specific hardware
-+                                # handling, required for a hardware errata
-+      - ti,composite-gate-clock # composite gate clock, to be part of
-+                                # composite clock
-+      - ti,composite-no-wait-gate-clock # composite gate clock that does not
-+                                        # wait for clock to be active before
-+                                        # returning from clk_enable()
++    const: ti,composite-clock
++
 +  "#clock-cells":
 +    const: 0
 +
@@ -253,45 +192,10 @@ index 000000000000..2eb1d1929c39
 +  clock-output-names:
 +    maxItems: 1
 +
-+  reg:
-+    maxItems: 1
-+
-+  ti,bit-shift:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Number of bits to shift the bit-mask
-+    maximum: 31
-+    default: 0
-+
-+  ti,set-bit-to-disable:
-+    type: boolean
-+    description:
-+      Inverts default gate programming. Setting the bit
-+      gates the clock and clearing the bit ungates the clock.
-+
-+  ti,set-rate-parent:
-+    type: boolean
-+    description:
-+      clk_set_rate is propagated to parent clock,
-+
-+if:
-+  properties:
-+    compatible:
-+      contains:
-+        const: ti,clkdm-gate-clock
-+then:
-+  properties:
-+    reg: false
-+  required:
-+    - compatible
-+    - "#clock-cells"
-+    - clocks
-+else:
-+  required:
-+    - compatible
-+    - "#clock-cells"
-+    - clocks
-+    - reg
++required:
++  - compatible
++  - "#clock-cells"
++  - clocks
 +
 +additionalProperties: false
 +
@@ -301,31 +205,30 @@ index 000000000000..2eb1d1929c39
 +      #address-cells = <1>;
 +      #size-cells = <0>;
 +
-+      clock-controller@a00 {
++      usb_l4_gate_ick: clock-controller@a10 {
 +        #clock-cells = <0>;
-+        compatible = "ti,gate-clock";
-+        clocks = <&core_96m_fck>;
-+        reg = <0x0a00>;
-+        ti,bit-shift = <25>;
++        compatible = "ti,composite-gate-clock";
++        clocks = <&l4_ick>;
++        ti,bit-shift = <5>;
++        reg = <0x0a10>;
 +      };
 +
-+      clock-controller@d00 {
-+        compatible = "ti,hsdiv-gate-clock";
-+        reg = <0x0d00>;
++      usb_l4_div_ick: clock-controller@a40 {
 +        #clock-cells = <0>;
-+        clocks = <&dpll4_m2x2_mul_ck>;
-+        ti,bit-shift = <0x1b>;
-+        ti,set-bit-to-disable;
++        compatible = "ti,composite-divider-clock";
++        clocks = <&l4_ick>;
++        ti,bit-shift = <4>;
++        ti,max-div = <1>;
++        reg = <0x0a40>;
++        ti,index-starts-at-one;
 +      };
 +    };
 +
-+  - |
 +    clock-controller {
 +      #clock-cells = <0>;
-+      compatible = "ti,clkdm-gate-clock";
-+      clocks = <&emu_src_mux_ck>;
++      compatible = "ti,composite-clock";
++      clocks = <&usb_l4_gate_ick>, <&usb_l4_div_ick>;
 +    };
-+
 -- 
 2.39.5
 
