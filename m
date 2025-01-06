@@ -1,144 +1,89 @@
-Return-Path: <linux-omap+bounces-2995-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2996-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740EBA030E6
-	for <lists+linux-omap@lfdr.de>; Mon,  6 Jan 2025 20:50:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 090E1A031F0
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Jan 2025 22:17:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1A903A3BF1
-	for <lists+linux-omap@lfdr.de>; Mon,  6 Jan 2025 19:50:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 874C818849C7
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Jan 2025 21:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3593D1D799D;
-	Mon,  6 Jan 2025 19:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5EF1DF738;
+	Mon,  6 Jan 2025 21:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="T07Ep/6w"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sQQb4oC/"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF56F360;
-	Mon,  6 Jan 2025 19:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9021E048B;
+	Mon,  6 Jan 2025 21:17:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736193049; cv=none; b=N0wQh7O/LUNvHKAIvTm2vnXBAaad6lITdGGurowBnmP9BlqrCSZTqG8IP0ASGRjeX0J6v5xpJXY/k4oZuTxEkCpzOELH81g29ENSQShCD+v+frYWAO3Y2+UpmK2Ul+0641I0HXjO/9kHyYmweeN5GdKuvyN9/One0xAhKbGr/gA=
+	t=1736198226; cv=none; b=FGYSW6T0Amihw2BvMMPnPRzbdZ6yQjUuGLAOSM2kW2B1zG6r7w7KebPvreBOgitOb2USwZglRFLWPaAWmyGa2QT4p651yNR5WIXigRBMBMNXw1Elcz4jj72kyhbisvjUXyiNDb0Z3X37ROO3OGrhvSgkJg1oE8ZLSWbr7Q/XnoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736193049; c=relaxed/simple;
-	bh=EgC/Z7k7Grc9e4Ks/Ril7tMe8+6QxsHGPDbnzNI0utA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=UT3PHlCNZzRLgHj9A2+eg9noAX19lS8ROEZF6E8i0y+UeV6kyXHjsUnNSHmRusjwLKQEx0pfo2iDwXDfnGX3HNL4SHX44G4Lwb88fx1seSTkxmX6vkeJjb3B6J7QGeeQi6FN8tOFIL4+cPO8wkfOeJAjXOExlHlQmfviOcowE2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=T07Ep/6w; arc=none smtp.client-ip=198.47.23.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 506JoN592837882
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 6 Jan 2025 13:50:23 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1736193023;
-	bh=9Kt8ScPVLK6tYBQ0wEeE9yjWjm7iORURj74R0zFPyj0=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=T07Ep/6wX/tSN7qwakv/ttD/uyYYraPQv/eK/oqGQNhJ4Yll8jB/Gl8BzBMMIJE4s
-	 GdCzyIA2n+lFWG89/s4JbPvOVcjPOlPLDagPmcUtJLVtrPFUHXWm3j4r3H8VevCvZC
-	 qZI/oIMHLadJ4R9+CW1fON2CEEwdnz/UvEWJculA=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 506JoNBp028795
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 6 Jan 2025 13:50:23 -0600
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 6
- Jan 2025 13:50:22 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 6 Jan 2025 13:50:22 -0600
-Received: from [10.250.35.198] ([10.250.35.198])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 506JoMKV069843;
-	Mon, 6 Jan 2025 13:50:22 -0600
-Message-ID: <bb27a9d5-af4c-440b-972c-a50582333d0b@ti.com>
-Date: Mon, 6 Jan 2025 13:50:22 -0600
+	s=arc-20240116; t=1736198226; c=relaxed/simple;
+	bh=TS8uKhqtSpQt21DTQ274Jqexn9C+zEdpEx6yQlWw9as=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IKJX3jW0+TV8O0pAUZDNiwDVq1hjcV3IQrOPiinXK+EKD35TFcS9FS8sTYXe2XOOwl62ZB4DGb9ryTXmgQE6MADIF/Jc814tniKxLeob5D/WhZ97oP7Q9LKq2+nI9J2Y6otN6GCxfOzks5lv70sZAi5nSvqvUS4XCUA0X4V/mss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sQQb4oC/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B6F4C4CED2;
+	Mon,  6 Jan 2025 21:17:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736198225;
+	bh=TS8uKhqtSpQt21DTQ274Jqexn9C+zEdpEx6yQlWw9as=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sQQb4oC/z0V4JfGEs+YY2XUQLiAvcFOm+nmjAp9BtwWyWtyuJOty7AXKMt6H7FYTX
+	 IgY+IcTbsvNMp4zuKpNBKd4pB9CGoCCA4YAR3WfcwYo7jZl9wPz1B8IAlNRgP710Cs
+	 JrA+j/XEWHFZRRX1vjr4PEjtFuVmSqVoJfnV6dSIR5bCoxcTE4m1j9GwCWC5Rh8Ou9
+	 ntGousK/PBmBFuufJvy6hc+Y00G/ZxzYksHDdSqPStZf0KlqoxbCNXR/jiz4Fp+d4D
+	 c9vAKfQs4JwUUghKefb8BgBvyul4/5tE6gmtO83cLUTLJMUQj2WH3vr5qu//Z8tyUN
+	 oZscdMhRmGRag==
+Date: Mon, 6 Jan 2025 15:17:04 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, devicetree@vger.kernel.org,
+	linux-clk@vger.kernel.org, linux-omap@vger.kernel.org,
+	Tero Kristo <kristo@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	linux-kernel@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Michael Turquette <mturquette@baylibre.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: clock: ti: Convert gate.txt to
+ json-schema
+Message-ID: <173619822400.1023574.1184381985229490776.robh@kernel.org>
+References: <20250105170854.408875-1-andreas@kemnade.info>
+ <20250105170854.408875-2-andreas@kemnade.info>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/7] regulator: dt-bindings: Add TI TPS65215 PMIC
- bindings
-To: Krzysztof Kozlowski <krzk@kernel.org>
-CC: <lgirdwood@gmail.com>, <broonie@kernel.org>, <robh@kernel.org>,
-        <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <aaro.koskinen@iki.fi>,
-        <andreas@kemnade.info>, <khilman@baylibre.com>, <rogerq@kernel.org>,
-        <tony@atomide.com>, <jerome.neanne@baylibre.com>,
-        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <m-leonard@ti.com>, <praneeth@ti.com>,
-        <christophe.jaillet@wanadoo.fr>
-References: <20250103230446.197597-1-s-ramamoorthy@ti.com>
- <20250103230446.197597-2-s-ramamoorthy@ti.com>
- <f7wlc35b3tdonu3k34v64evnh3zypfpb42t7ixumkwjminw53r@odkwfpuru6e6>
-Content-Language: en-US
-From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-In-Reply-To: <f7wlc35b3tdonu3k34v64evnh3zypfpb42t7ixumkwjminw53r@odkwfpuru6e6>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250105170854.408875-2-andreas@kemnade.info>
 
-Hi,
 
-On 1/4/2025 4:13 AM, Krzysztof Kozlowski wrote:
-> On Fri, Jan 03, 2025 at 05:04:40PM -0600, Shree Ramamoorthy wrote:
->> TPS65215 is a Power Management IC with 3 Buck regulators and 2 LDOs.
->>
->> TPS65215 has 2 LDOS and 1 GPO, whereas TPS65219 has 4 LDOs and 2 GPOs. The
->> remaining features for both devices are the same.
->>
->> Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
->> Acked-by: Conor Dooley <conor.dooley@microchip.com>
->> ---
->>  .../devicetree/bindings/regulator/ti,tps65219.yaml       | 9 ++++++++-
->>  1 file changed, 8 insertions(+), 1 deletion(-)
->>
->> diff --git a/Documentation/devicetree/bindings/regulator/ti,tps65219.yaml b/Documentation/devicetree/bindings/regulator/ti,tps65219.yaml
->> index 78e64521d401..ba5f6fcf5219 100644
->> --- a/Documentation/devicetree/bindings/regulator/ti,tps65219.yaml
->> +++ b/Documentation/devicetree/bindings/regulator/ti,tps65219.yaml
->> @@ -4,7 +4,7 @@
->>  $id: http://devicetree.org/schemas/regulator/ti,tps65219.yaml#
->>  $schema: http://devicetree.org/meta-schemas/core.yaml#
->>  
->> -title: TI tps65219 Power Management Integrated Circuit regulators
->> +title: TI TPS65215/TPS65219 Power Management Integrated Circuit
->>  
->>  maintainers:
->>    - Jerome Neanne <jerome.neanne@baylibre.com>
->> @@ -12,10 +12,17 @@ maintainers:
->>  description: |
->>    Regulator nodes should be named to buck<number> and ldo<number>.
->>  
->> +  TI TPS65219 is a Power Management IC with 3 Buck regulators, 4 Low
->> +  Drop-out Regulators (LDOs), 1 GPIO, 2 GPOs, and power-button.
->> +
->> +  TI TPS65215 is a derivative of TPS65219 with 3 Buck regulators, 2 Low
->> +  Drop-out Regulators (LDOs), 1 GPIO, 1 GPO, and power-button.
-> Then you need allOf:if:then: which will disallow :false two LDOs and
-> their supplies.
+On Sun, 05 Jan 2025 18:08:53 +0100, Andreas Kemnade wrote:
+> Convert the OMAP gate clock device tree binding to json-schema.
+> Specify the creator of the original binding as a maintainer.
+> Choose GPL-only license because original binding was also GPL.
+> Clean up the examples during conversion to meet modern standards and
+> remove examples with no additional value.
+> Due to usage in code and existing devicetree binding, add the
+> ti,set-rate-parent property.
+> 
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> ---
+>  .../devicetree/bindings/clock/ti/gate.txt     | 105 ---------------
+>  .../bindings/clock/ti/ti,gate-clock.yaml      | 125 ++++++++++++++++++
+>  2 files changed, 125 insertions(+), 105 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/clock/ti/gate.txt
+>  create mode 100644 Documentation/devicetree/bindings/clock/ti/ti,gate-clock.yaml
+> 
 
-Thank you for your feedback! I did not know about this & will add it in.
-
->> +
->>  properties:
->>    compatible:
->>      enum:
->>        - ti,tps65219
->> +      - ti,tps65215
-> Keep things ordered, don't add whatever you add to the end of the lists.
->
-> Best regards,
-> Krzysztof
-
-Noted, will make this change for the next version. Thanks!
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
 
