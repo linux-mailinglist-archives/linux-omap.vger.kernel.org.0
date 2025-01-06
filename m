@@ -1,64 +1,64 @@
-Return-Path: <linux-omap+bounces-2994-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-2995-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A6F0A02EFD
-	for <lists+linux-omap@lfdr.de>; Mon,  6 Jan 2025 18:31:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 740EBA030E6
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Jan 2025 20:50:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E8A71632DC
-	for <lists+linux-omap@lfdr.de>; Mon,  6 Jan 2025 17:30:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1A903A3BF1
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Jan 2025 19:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE23C1DEFE9;
-	Mon,  6 Jan 2025 17:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3593D1D799D;
+	Mon,  6 Jan 2025 19:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="yLBX9tmX"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="T07Ep/6w"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D311547F3;
-	Mon,  6 Jan 2025 17:30:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF56F360;
+	Mon,  6 Jan 2025 19:50:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736184655; cv=none; b=Lb+w3iq4bjY4hak6UKuEQi0st80DMvGMFGtMjJFd7ljUFxNnE7NGetM7naiLE4xOzpHWd6tE3ZawVGp5QIKIwUBbgQvDDmrT/tUWBRPWb/QF9eRB5edPVq/SX+P5mXOvS+r6VhdxAvlwVA+wG8lgR/VseZg3WOEC8zmpooQJNHU=
+	t=1736193049; cv=none; b=N0wQh7O/LUNvHKAIvTm2vnXBAaad6lITdGGurowBnmP9BlqrCSZTqG8IP0ASGRjeX0J6v5xpJXY/k4oZuTxEkCpzOELH81g29ENSQShCD+v+frYWAO3Y2+UpmK2Ul+0641I0HXjO/9kHyYmweeN5GdKuvyN9/One0xAhKbGr/gA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736184655; c=relaxed/simple;
-	bh=KaukF65UEMxAuZYUcY6U0PzBhJcP+/JFuwNB+HihAT4=;
+	s=arc-20240116; t=1736193049; c=relaxed/simple;
+	bh=EgC/Z7k7Grc9e4Ks/Ril7tMe8+6QxsHGPDbnzNI0utA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=JyTsLXwjf/Oa8GqM8ezU8yCPzUjPCWuqV8UCkOdXwqZLnfvT53vktBB4Jtcf3LK3207glJ6jboqStOw9LhDvTkUkbK4ymmpLXCM0mdz8Erw3//ZD1cLkMH+fS+Un3L5bBWaCu/KOlBI4hfcVAgPG94wI4ELagSs32VOfYWI6u64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=yLBX9tmX; arc=none smtp.client-ip=198.47.23.234
+	 In-Reply-To:Content-Type; b=UT3PHlCNZzRLgHj9A2+eg9noAX19lS8ROEZF6E8i0y+UeV6kyXHjsUnNSHmRusjwLKQEx0pfo2iDwXDfnGX3HNL4SHX44G4Lwb88fx1seSTkxmX6vkeJjb3B6J7QGeeQi6FN8tOFIL4+cPO8wkfOeJAjXOExlHlQmfviOcowE2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=T07Ep/6w; arc=none smtp.client-ip=198.47.23.235
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 506HUShI2518076
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 506JoN592837882
 	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 6 Jan 2025 11:30:28 -0600
+	Mon, 6 Jan 2025 13:50:23 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1736184628;
-	bh=+ADsFbmXzYhXfwhFh120dXVuucmxz048jM6qEiJ7Cbw=;
+	s=ti-com-17Q1; t=1736193023;
+	bh=9Kt8ScPVLK6tYBQ0wEeE9yjWjm7iORURj74R0zFPyj0=;
 	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=yLBX9tmXzumsfuB+DuhDzR8Y8rVecEZ8GaXHKDpfhPpEfXCb5+R8F4/KAqtKceiKx
-	 118J8DRBsGEzGGrhCtDsaiPYtxVv+VZQNLvc+so8dz6xLb6BZ9hcmplrPPJBI41b2N
-	 rBfLn0RoA+RdvEavnss5WbnThqCY7f5rhu7v937A=
-Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 506HUSSt002820
+	b=T07Ep/6wX/tSN7qwakv/ttD/uyYYraPQv/eK/oqGQNhJ4Yll8jB/Gl8BzBMMIJE4s
+	 GdCzyIA2n+lFWG89/s4JbPvOVcjPOlPLDagPmcUtJLVtrPFUHXWm3j4r3H8VevCvZC
+	 qZI/oIMHLadJ4R9+CW1fON2CEEwdnz/UvEWJculA=
+Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 506JoNBp028795
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 6 Jan 2025 11:30:28 -0600
-Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+	Mon, 6 Jan 2025 13:50:23 -0600
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 6
- Jan 2025 11:30:28 -0600
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ Jan 2025 13:50:22 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 6 Jan 2025 11:30:27 -0600
-Received: from [10.249.42.149] ([10.249.42.149])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 506HURa0028759;
-	Mon, 6 Jan 2025 11:30:27 -0600
-Message-ID: <eddc0ba3-1023-4bad-88df-de17c28877e4@ti.com>
-Date: Mon, 6 Jan 2025 11:30:27 -0600
+ Frontend Transport; Mon, 6 Jan 2025 13:50:22 -0600
+Received: from [10.250.35.198] ([10.250.35.198])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 506JoMKV069843;
+	Mon, 6 Jan 2025 13:50:22 -0600
+Message-ID: <bb27a9d5-af4c-440b-972c-a50582333d0b@ti.com>
+Date: Mon, 6 Jan 2025 13:50:22 -0600
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -66,115 +66,79 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] gpio: tps65215: Add TPS65215 to platform_device_id
- table
-To: Roger Quadros <rogerq@kernel.org>,
-        Shree Ramamoorthy
-	<s-ramamoorthy@ti.com>, <aaro.koskinen@iki.fi>,
-        <andreas@kemnade.info>, <khilman@baylibre.com>, <tony@atomide.com>,
-        <linus.walleij@linaro.org>, <brgl@bgdev.pl>,
+Subject: Re: [PATCH v2 1/7] regulator: dt-bindings: Add TI TPS65215 PMIC
+ bindings
+To: Krzysztof Kozlowski <krzk@kernel.org>
+CC: <lgirdwood@gmail.com>, <broonie@kernel.org>, <robh@kernel.org>,
+        <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <aaro.koskinen@iki.fi>,
+        <andreas@kemnade.info>, <khilman@baylibre.com>, <rogerq@kernel.org>,
+        <tony@atomide.com>, <jerome.neanne@baylibre.com>,
         <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-gpio@vger.kernel.org>
-CC: <m-leonard@ti.com>, <praneeth@ti.com>, <christophe.jaillet@wanadoo.fr>
-References: <20250103225407.196068-1-s-ramamoorthy@ti.com>
- <20250103225407.196068-2-s-ramamoorthy@ti.com>
- <707925ce-b76e-470a-921f-7ac165a04d69@kernel.org>
+        <devicetree@vger.kernel.org>, <m-leonard@ti.com>, <praneeth@ti.com>,
+        <christophe.jaillet@wanadoo.fr>
+References: <20250103230446.197597-1-s-ramamoorthy@ti.com>
+ <20250103230446.197597-2-s-ramamoorthy@ti.com>
+ <f7wlc35b3tdonu3k34v64evnh3zypfpb42t7ixumkwjminw53r@odkwfpuru6e6>
 Content-Language: en-US
-From: Andrew Davis <afd@ti.com>
-In-Reply-To: <707925ce-b76e-470a-921f-7ac165a04d69@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+In-Reply-To: <f7wlc35b3tdonu3k34v64evnh3zypfpb42t7ixumkwjminw53r@odkwfpuru6e6>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On 1/4/25 12:21 PM, Roger Quadros wrote:
-> 
-> 
-> On 04/01/2025 00:54, Shree Ramamoorthy wrote:
->> Add platform_device_id struct and use the platform_get_device_id() output
->> to match which PMIC device is in use. With new name options, the gpio_chip
->> .label field is now assigned to the platform_device name match.
+Hi,
+
+On 1/4/2025 4:13 AM, Krzysztof Kozlowski wrote:
+> On Fri, Jan 03, 2025 at 05:04:40PM -0600, Shree Ramamoorthy wrote:
+>> TPS65215 is a Power Management IC with 3 Buck regulators and 2 LDOs.
 >>
->> Remove MODULE_ALIAS since it is now generated by MODULE_DEVICE_TABLE.
+>> TPS65215 has 2 LDOS and 1 GPO, whereas TPS65219 has 4 LDOs and 2 GPOs. The
+>> remaining features for both devices are the same.
 >>
 >> Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+>> Acked-by: Conor Dooley <conor.dooley@microchip.com>
 >> ---
->>   drivers/gpio/gpio-tps65219.c | 17 ++++++++++++-----
->>   1 file changed, 12 insertions(+), 5 deletions(-)
+>>  .../devicetree/bindings/regulator/ti,tps65219.yaml       | 9 ++++++++-
+>>  1 file changed, 8 insertions(+), 1 deletion(-)
 >>
->> diff --git a/drivers/gpio/gpio-tps65219.c b/drivers/gpio/gpio-tps65219.c
->> index 526640c39a11..7e03be0c7c92 100644
->> --- a/drivers/gpio/gpio-tps65219.c
->> +++ b/drivers/gpio/gpio-tps65219.c
->> @@ -1,8 +1,8 @@
->>   // SPDX-License-Identifier: GPL-2.0
->>   /*
->> - * GPIO driver for TI TPS65219 PMICs
->> + * GPIO driver for TI TPS65215/TPS65219 PMICs
->>    *
->> - * Copyright (C) 2022 Texas Instruments Incorporated - http://www.ti.com/
->> + * Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
->>    */
->>   
->>   #include <linux/bits.h>
->> @@ -141,7 +141,6 @@ static int tps65219_gpio_direction_output(struct gpio_chip *gc, unsigned int off
->>   }
->>   
->>   static const struct gpio_chip tps65219_template_chip = {
->> -	.label			= "tps65219-gpio",
->>   	.owner			= THIS_MODULE,
->>   	.get_direction		= tps65219_gpio_get_direction,
->>   	.direction_input	= tps65219_gpio_direction_input,
->> @@ -164,20 +163,28 @@ static int tps65219_gpio_probe(struct platform_device *pdev)
->>   
->>   	gpio->tps = tps;
->>   	gpio->gpio_chip = tps65219_template_chip;
->> +	gpio->gpio_chip.label = dev_name(&pdev->dev);
->>   	gpio->gpio_chip.parent = tps->dev;
->>   
->>   	return devm_gpiochip_add_data(&pdev->dev, &gpio->gpio_chip, gpio);
->>   }
->>   
->> +static const struct platform_device_id tps6521x_gpio_id_table[] = {
->> +	{ "tps65215-gpio", TPS65215 },
->> +	{ "tps65219-gpio", TPS65219 },
->> +	{ }
->> +};
->> +MODULE_DEVICE_TABLE(platform, tps6521x_gpio_id_table);
+>> diff --git a/Documentation/devicetree/bindings/regulator/ti,tps65219.yaml b/Documentation/devicetree/bindings/regulator/ti,tps65219.yaml
+>> index 78e64521d401..ba5f6fcf5219 100644
+>> --- a/Documentation/devicetree/bindings/regulator/ti,tps65219.yaml
+>> +++ b/Documentation/devicetree/bindings/regulator/ti,tps65219.yaml
+>> @@ -4,7 +4,7 @@
+>>  $id: http://devicetree.org/schemas/regulator/ti,tps65219.yaml#
+>>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+>>  
+>> -title: TI tps65219 Power Management Integrated Circuit regulators
+>> +title: TI TPS65215/TPS65219 Power Management Integrated Circuit
+>>  
+>>  maintainers:
+>>    - Jerome Neanne <jerome.neanne@baylibre.com>
+>> @@ -12,10 +12,17 @@ maintainers:
+>>  description: |
+>>    Regulator nodes should be named to buck<number> and ldo<number>.
+>>  
+>> +  TI TPS65219 is a Power Management IC with 3 Buck regulators, 4 Low
+>> +  Drop-out Regulators (LDOs), 1 GPIO, 2 GPOs, and power-button.
 >> +
->>   static struct platform_driver tps65219_gpio_driver = {
->>   	.driver = {
->>   		.name = "tps65219-gpio",
->>   	},
->>   	.probe = tps65219_gpio_probe,
->> +	.id_table = tps6521x_gpio_id_table,
->>   };
->>   module_platform_driver(tps65219_gpio_driver);
->>   
->> -MODULE_ALIAS("platform:tps65219-gpio");
-> 
-> Why do you drop the MODULE_ALIAS?
-> You can add multiple MODULE_ALIASES if needed.
-> 
+>> +  TI TPS65215 is a derivative of TPS65219 with 3 Buck regulators, 2 Low
+>> +  Drop-out Regulators (LDOs), 1 GPIO, 1 GPO, and power-button.
+> Then you need allOf:if:then: which will disallow :false two LDOs and
+> their supplies.
 
-The new MODULE_DEVICE_TABLE() above causes all the needed
-module aliases to be made for us automatically.
+Thank you for your feedback! I did not know about this & will add it in.
 
->>   MODULE_AUTHOR("Jonathan Cormier <jcormier@criticallink.com>");
->> -MODULE_DESCRIPTION("TPS65219 GPIO driver");
->> +MODULE_DESCRIPTION("TPS65215/TPS65219 GPIO driver");
-> 
-> "TPS6521x GPIO driver"?
-> 
-> I also see a product named TPS65216.
-> By any chance can that be also supported by this driver?
-> 
+>> +
+>>  properties:
+>>    compatible:
+>>      enum:
+>>        - ti,tps65219
+>> +      - ti,tps65215
+> Keep things ordered, don't add whatever you add to the end of the lists.
+>
+> Best regards,
+> Krzysztof
 
-That is kinda the issue with "x" in the name, TPS65216 might
-need a different driver, in which case the x here would mislead
-folks into thinking this driver covers the whole family.
+Noted, will make this change for the next version. Thanks!
 
-Andrew
-
->>   MODULE_LICENSE("GPL");
-> 
 
