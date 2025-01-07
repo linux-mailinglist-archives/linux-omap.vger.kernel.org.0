@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-3014-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3015-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48938A03F3F
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Jan 2025 13:34:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C63B2A03F7D
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Jan 2025 13:41:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55E901886ED3
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Jan 2025 12:34:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39E3E3A22C5
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Jan 2025 12:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF1928E37;
-	Tue,  7 Jan 2025 12:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F6FA1E885C;
+	Tue,  7 Jan 2025 12:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sIGxY6+C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FPEPU4pB"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A3922612;
-	Tue,  7 Jan 2025 12:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A919D6136;
+	Tue,  7 Jan 2025 12:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736253240; cv=none; b=f/0/VMNO2MqvwiovKgSU0DHZBqwJVDMzYAk+zmOtLE6lrvWUszETNIGEFtNgJlLfpcI0tL670+t5QpXBT6IAwj5uXyHdE5oqH5UZ7O9XltjHw0UtJAh7PsGpA/2sbxKCy4GcQQGT3vcuBlPdrNWqKAc1gfpb7nzce4Ml7/eL8k4=
+	t=1736253669; cv=none; b=C0yk4aDe5AmLQK8/zaYB5WVH5ZPjAAd/o+lzHXk0YfxvkxEwzpfHWQmvXJ91sAhKQRIadpEJ9L6qOnA9834zKIqb98U7G8Y7x6D8YnoCn3f2umYPiKb7nh1nZBu1vU4Cquv7s7irtcKlhMSyV98DbJz0j5gjd30u8ldyoBpF8Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736253240; c=relaxed/simple;
-	bh=HIQ6c6qfRvziQSfwzBzxaTbD8VlHnhlibiO7BADeb/k=;
+	s=arc-20240116; t=1736253669; c=relaxed/simple;
+	bh=evf3VwYTDSmuPtcbDp8le7uiUBejQKMOWJd23ZtaCnY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s8XOp7C34veZDzDGI6w/OvfV2pJ2ILwK/ZApa9+vU0JkDgBWLRejvEF0a0M56rXn9JUiBYO9YL3w3wmXulhDMl50xGYgT1+rkrQzmL4DgsEO39HtvCGgn/qXUgxPY5CpCel2Cc3Dn5kPFoI098AJCZOoaV5HE6VxNUGV9YhnbTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sIGxY6+C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6E4C4CED6;
-	Tue,  7 Jan 2025 12:33:57 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=R1XizkyxApgZYLb2RVPyNOdXpLUcoDOtcVTUxeAt9mlz2EDPODN5sGxRwBy/xuzAJaXUXhIHOSNRwr3Z+/gdtCKsjDWRpZ3uUdrVcR0Ei5pnuBYo3Ezc1Gxb+VtL0UX8lO0Z4Ar2AbiYkde/oztbDOJs2nnB1kfmiNC3J94iLdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FPEPU4pB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F3AC4CED6;
+	Tue,  7 Jan 2025 12:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736253240;
-	bh=HIQ6c6qfRvziQSfwzBzxaTbD8VlHnhlibiO7BADeb/k=;
+	s=k20201202; t=1736253669;
+	bh=evf3VwYTDSmuPtcbDp8le7uiUBejQKMOWJd23ZtaCnY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sIGxY6+CenUYM72MHwPzsD6FYAMl6nnu9WfTYDIr6znpumgJcIiNxy176czvRo9I0
-	 W8Q33pBN0MEoRmjFrpg1jMH1bTZK3+1L+2L0ZjoXB/AgH1//JPsZhE/Ebci8I3FfsP
-	 876u+UaWZ0TipoX4niHfhegpHCvaUpdJL4QqtO9tGh3uxa+kbGqXEP1CbI5POxTt+N
-	 FfcqR3Av9MLEJ+JumAdu3U/348VgFf29jVZi7ojaZWNflIBAFjLOMsGhJcp6SXxA+u
-	 vLp2r2eXQYwaL2J5wb5DrxzYrszW1/m+9wb62AvESj1rxT4M8clzdUakFr3wiqJR7J
-	 XZT9af6VV1ECw==
-Message-ID: <4e2312b8-78d2-4dec-9911-8fd513eeef25@kernel.org>
-Date: Tue, 7 Jan 2025 14:33:55 +0200
+	b=FPEPU4pBu0w8eZXbkiGuLozhY/+J3efXGQhQaUB6lwyzEBPnlVRLnm5aSv9cES6dR
+	 TXP3HlaE5+7ohA0Y2afC33tFvoT8zL0Vr4NUf77djo4za0f953yPnnsdoKnTQZ/hll
+	 PRyjbUe6c0IGXCqtITCJIG/v7PJnuUFqopTcNdSK+FZImGc4SMd+tKM/qdWWewXsF8
+	 mM6yF6OaW4IBK4GMtGV5B9mwwsjX5DBddwug/B5XWuGKRpWgxSihQWErJA6SScSl1x
+	 A/ZAEzDRhSmBw6lIz9RQtgbQSbwJB1iJnsy82dBL+8pLTo4ETob+zrJ57cr4dHvXNU
+	 DupbDPwazQzEQ==
+Message-ID: <f3c956eb-6345-49c3-b85b-04ff5bfab7a4@kernel.org>
+Date: Tue, 7 Jan 2025 14:41:03 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -50,87 +50,118 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] ARM: dts: omap4: panda: cleanup bluetooth
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+Subject: Re: [PATCH v2 1/3] gpio: tps65215: Add TPS65215 to platform_device_id
+ table
+To: Andrew Davis <afd@ti.com>, Shree Ramamoorthy <s-ramamoorthy@ti.com>,
+ aaro.koskinen@iki.fi, andreas@kemnade.info, khilman@baylibre.com,
+ tony@atomide.com, linus.walleij@linaro.org, brgl@bgdev.pl,
  linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
- Aaro Koskinen <aaro.koskinen@iki.fi>, Kevin Hilman <khilman@baylibre.com>,
- devicetree@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Tony Lindgren <tony@atomide.com>
-References: <20241229230125.85787-1-andreas@kemnade.info>
- <20241229230125.85787-3-andreas@kemnade.info>
- <64d14e8f-a1d5-4e04-afa7-c129cee29dc2@kernel.org>
- <20250104194158.06449a3e@akair>
+ linux-gpio@vger.kernel.org
+Cc: m-leonard@ti.com, praneeth@ti.com, christophe.jaillet@wanadoo.fr
+References: <20250103225407.196068-1-s-ramamoorthy@ti.com>
+ <20250103225407.196068-2-s-ramamoorthy@ti.com>
+ <707925ce-b76e-470a-921f-7ac165a04d69@kernel.org>
+ <eddc0ba3-1023-4bad-88df-de17c28877e4@ti.com>
 Content-Language: en-US
 From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20250104194158.06449a3e@akair>
+In-Reply-To: <eddc0ba3-1023-4bad-88df-de17c28877e4@ti.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
 
 
-On 04/01/2025 20:41, Andreas Kemnade wrote:
-> Hello Roger,
-> 
-> Am Sat, 4 Jan 2025 19:29:44 +0200
-> schrieb Roger Quadros <rogerq@kernel.org>:
-> 
->> Hello Andreas,
+On 06/01/2025 19:30, Andrew Davis wrote:
+> On 1/4/25 12:21 PM, Roger Quadros wrote:
 >>
->> On 30/12/2024 01:01, Andreas Kemnade wrote:
->>> Bluetooth is available on the other Panda board versions, too, so move
->>> stuff to common and specify the needed clock properly.
+>>
+>> On 04/01/2025 00:54, Shree Ramamoorthy wrote:
+>>> Add platform_device_id struct and use the platform_get_device_id() output
+>>> to match which PMIC device is in use. With new name options, the gpio_chip
+>>> .label field is now assigned to the platform_device name match.
 >>>
->>> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+>>> Remove MODULE_ALIAS since it is now generated by MODULE_DEVICE_TABLE.
+>>>
+>>> Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
 >>> ---
->>>  .../boot/dts/ti/omap/omap4-panda-common.dtsi  | 30 +++++++++++++++--
->>>  arch/arm/boot/dts/ti/omap/omap4-panda-es.dts  | 32 -------------------
->>>  2 files changed, 28 insertions(+), 34 deletions(-)
+>>>   drivers/gpio/gpio-tps65219.c | 17 ++++++++++++-----
+>>>   1 file changed, 12 insertions(+), 5 deletions(-)
 >>>
->>> diff --git a/arch/arm/boot/dts/ti/omap/omap4-panda-common.dtsi b/arch/arm/boot/dts/ti/omap/omap4-panda-common.dtsi
->>> index c860b590142a..c048ab9af053 100644
->>> --- a/arch/arm/boot/dts/ti/omap/omap4-panda-common.dtsi
->>> +++ b/arch/arm/boot/dts/ti/omap/omap4-panda-common.dtsi
->>> @@ -368,9 +368,7 @@ OMAP4_IOPAD(0x130, PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c4_sda */
->>>  	wl12xx_gpio: wl12xx-gpio-pins {
->>>  		pinctrl-single,pins = <
->>>  			OMAP4_IOPAD(0x066, PIN_OUTPUT | MUX_MODE3)		/* gpmc_a19.gpio_43 */  
->>
->> We could add function name in comment? e.g. /* gpmc_a19.gpio_43 - WLAN_EN */
->>
-> This is about existing code, there is still a lot of room to cleanup
-> other stuff. 
-> 
->>> -			OMAP4_IOPAD(0x06c, PIN_OUTPUT | MUX_MODE3)		/* gpmc_a22.gpio_46 */
->>>  			OMAP4_IOPAD(0x070, PIN_OUTPUT_PULLUP | MUX_MODE3)	/* gpmc_a24.gpio_48 */  
->>
->> This one is FM_EN and has nothing to do with WLAN.
->>
-> same here.
->>> -			OMAP4_IOPAD(0x072, PIN_OUTPUT_PULLUP | MUX_MODE3)	/* gpmc_a25.gpio_49 */  
->>>  		>;  
->>>  	};
->>>  
->>> @@ -393,6 +391,22 @@ button_pins: button-pins {
->>>  			OMAP4_IOPAD(0x114, PIN_INPUT_PULLUP | MUX_MODE3)	/* gpio_121 */  
->>>  		>;  
->>>  	};
+>>> diff --git a/drivers/gpio/gpio-tps65219.c b/drivers/gpio/gpio-tps65219.c
+>>> index 526640c39a11..7e03be0c7c92 100644
+>>> --- a/drivers/gpio/gpio-tps65219.c
+>>> +++ b/drivers/gpio/gpio-tps65219.c
+>>> @@ -1,8 +1,8 @@
+>>>   // SPDX-License-Identifier: GPL-2.0
+>>>   /*
+>>> - * GPIO driver for TI TPS65219 PMICs
+>>> + * GPIO driver for TI TPS65215/TPS65219 PMICs
+>>>    *
+>>> - * Copyright (C) 2022 Texas Instruments Incorporated - http://www.ti.com/
+>>> + * Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
+>>>    */
+>>>     #include <linux/bits.h>
+>>> @@ -141,7 +141,6 @@ static int tps65219_gpio_direction_output(struct gpio_chip *gc, unsigned int off
+>>>   }
+>>>     static const struct gpio_chip tps65219_template_chip = {
+>>> -    .label            = "tps65219-gpio",
+>>>       .owner            = THIS_MODULE,
+>>>       .get_direction        = tps65219_gpio_get_direction,
+>>>       .direction_input    = tps65219_gpio_direction_input,
+>>> @@ -164,20 +163,28 @@ static int tps65219_gpio_probe(struct platform_device *pdev)
+>>>         gpio->tps = tps;
+>>>       gpio->gpio_chip = tps65219_template_chip;
+>>> +    gpio->gpio_chip.label = dev_name(&pdev->dev);
+>>>       gpio->gpio_chip.parent = tps->dev;
+>>>         return devm_gpiochip_add_data(&pdev->dev, &gpio->gpio_chip, gpio);
+>>>   }
+>>>   +static const struct platform_device_id tps6521x_gpio_id_table[] = {
+>>> +    { "tps65215-gpio", TPS65215 },
+>>> +    { "tps65219-gpio", TPS65219 },
+>>> +    { }
+>>> +};
+>>> +MODULE_DEVICE_TABLE(platform, tps6521x_gpio_id_table);
 >>> +
->>> +	bt_pins: bt-pins {
->>> +		pinctrl-single,pins = <
->>> +			OMAP4_IOPAD(0x06c, PIN_OUTPUT | MUX_MODE3)	  /* BTEN */
->>> +			OMAP4_IOPAD(0x072, PIN_OUTPUT_PULLUP | MUX_MODE3) /* BTWAKEUP */  
+>>>   static struct platform_driver tps65219_gpio_driver = {
+>>>       .driver = {
+>>>           .name = "tps65219-gpio",
+>>>       },
+>>>       .probe = tps65219_gpio_probe,
+>>> +    .id_table = tps6521x_gpio_id_table,
+>>>   };
+>>>   module_platform_driver(tps65219_gpio_driver);
+>>>   -MODULE_ALIAS("platform:tps65219-gpio");
 >>
->> Could we please use comment style <pin name>.<pinmux name> - Function
->> 			OMAP4_IOPAD(0x06c, PIN_OUTPUT | MUX_MODE3)		/* gpmc_a22.gpio_46 - BTEN */
->> 			OMAP4_IOPAD(0x072, PIN_OUTPUT_PULLUP | MUX_MODE3)	/* gpmc_a25.gpio_49 - BTWAKEUP */
+>> Why do you drop the MODULE_ALIAS?
+>> You can add multiple MODULE_ALIASES if needed.
 >>
-> I was a bit lazy with checkpatch.pl. Your proposal generates a lot of
-> noise there, so I was too lazy to filter that noise, so I disabled that
-> noise. I had it first that way.
+> 
+> The new MODULE_DEVICE_TABLE() above causes all the needed
+> module aliases to be made for us automatically.
 
-What noise? line length exceeded warnings? Those are harmless.
-I'd prefer not to loose the pinmux/function information in the comment.
+Thanks!
+
+> 
+>>>   MODULE_AUTHOR("Jonathan Cormier <jcormier@criticallink.com>");
+>>> -MODULE_DESCRIPTION("TPS65219 GPIO driver");
+>>> +MODULE_DESCRIPTION("TPS65215/TPS65219 GPIO driver");
+>>
+>> "TPS6521x GPIO driver"?
+>>
+>> I also see a product named TPS65216.
+>> By any chance can that be also supported by this driver?
+>>
+> 
+> That is kinda the issue with "x" in the name, TPS65216 might
+> need a different driver, in which case the x here would mislead
+> folks into thinking this driver covers the whole family.
+
+Agreed.
+
+> 
+> Andrew
+> 
+>>>   MODULE_LICENSE("GPL");
+>>
 
 -- 
 cheers,
