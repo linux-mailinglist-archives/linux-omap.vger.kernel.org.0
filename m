@@ -1,113 +1,132 @@
-Return-Path: <linux-omap+bounces-3022-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3023-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C028A04C1A
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Jan 2025 23:16:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E780A04CA0
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Jan 2025 23:47:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D34A3A2463
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Jan 2025 22:16:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87D18163BF9
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Jan 2025 22:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6483D19EED3;
-	Tue,  7 Jan 2025 22:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965761DB34E;
+	Tue,  7 Jan 2025 22:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="AJT/0EwA"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="kObDAehc"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA27732C8E;
-	Tue,  7 Jan 2025 22:16:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D92C16DEB1
+	for <linux-omap@vger.kernel.org>; Tue,  7 Jan 2025 22:46:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736288165; cv=none; b=IJx+Byz78GCx6+fFHYjR7g5m+tv1MUNL5ftZ3pAW7jwWlPqTdWNq79sR5CNEjn9Y3jJ5e9TeJnYvfvyWk6kjWkKv1v4oBqLwa/tDMwSYX0aOqW/v6HcYufLLJGfDFnicABUnfi7sJ6mL14C2Zy2aIXqjND8JGzBFTf+HnRzh8Gw=
+	t=1736290022; cv=none; b=Dc/+qHyQRIY//oQGfXgehP9EqVMpOTs0o0aO5bDDfinoMvTTIezoDvWn6dDG4lDP8SZmJ8eqnZuHGxK6Of+zutDZaJPZ2IdnoPEI3hBNnGfeSsizRpiloQI74sDu3Z2SWGg1QdZJS2i9iYxmXmFZeuGCh0shu9s1NhyA/pCvIVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736288165; c=relaxed/simple;
-	bh=kuEEjphSxErraNhn1mWari0QwOGtGfIGYC9PFyVGtPA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Ot4oqtK90bhyYfJKvOkxc83Xa6Lz7iPo4JxJXNrGlPR+RClzTLPBK+NRnrGVB71KPz+r8kiMTCrf7Q95h7/vTKAr0CpgWBU5RsnElx1l0XwI0goUnU093Pku4HgG0bXqNTp/drmIGmdQz0XyL+sUPiD1k6fCnjmyPYl6raRJEzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=AJT/0EwA; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 507MFXT9065415;
-	Tue, 7 Jan 2025 16:15:33 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1736288133;
-	bh=7jXV7H+K5NqHYckCa00pL9iCLkeia5AVvR8TPe5J2t0=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=AJT/0EwAs0uGltOfBCL21zJLHDmxT9UQuDYvR9k7I90S8PhJwjDLUHbchsHp8ptmS
-	 uQBulswFlUeScIT4M+GUCHaXSbuDtZ/bQq/4WCBGGnTkWV7y/zYcazEudA7nPBF5Rl
-	 uFNF3TVN2BfLoT0xSeYJ2cJcwneUTV7iWp8jdKtg=
-Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 507MFXrG093325
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 7 Jan 2025 16:15:33 -0600
-Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 7
- Jan 2025 16:15:32 -0600
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 7 Jan 2025 16:15:32 -0600
-Received: from [128.247.29.228] (dmz007xyy.dhcp.ti.com [128.247.29.228])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 507MFWba079968;
-	Tue, 7 Jan 2025 16:15:32 -0600
-Message-ID: <46a2804b-4dd6-4ece-9cf2-b05dd47a4c19@ti.com>
-Date: Tue, 7 Jan 2025 16:15:32 -0600
+	s=arc-20240116; t=1736290022; c=relaxed/simple;
+	bh=HiKSV+qYlrcxWm34gNMXj+pXauBB7CRb/Gor0TsVzh0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=KmQmXI54CvET6IpLF1GskwaCW7HWNiVcbacZG1oqzHDbPmQ+wn2KHmqiTruq9NRS0nkLqPQOLU3qbooyFkOmOGxmzVS7JNfe1iD5V0nzbvpgZNBIFEisacjUCgJ5/M452/HjvVEy9qYDSaoTk6l+bPy6jvOSJ5oOnVQDzHHF95I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=kObDAehc; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2ee8aa26415so23628049a91.1
+        for <linux-omap@vger.kernel.org>; Tue, 07 Jan 2025 14:46:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736290019; x=1736894819; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VhhOsxIrAZXRQSyguOLlB0hClyT00aHuDw3Nc1/4jp8=;
+        b=kObDAehc8KBDx4nAhuC0Q0fTT+xNiXN/zOjSqARo2lOIJat14ZdMT6zyIOFPXeThdd
+         v+KfUb3/UtoNe9f93lyihak0+HrVB+Om6nE/7xj7PfE9wPOZ04Wn5cbKKrcLNbyk3RL9
+         7zqAm2i/iNvtwapci9L1DcdyGM2dy/9FJJ8yHbpR1ZSSb9YULoLT0QBvvTIoN8iaE6+K
+         +KiCWtq5sI3AoFsPtMzP3hwC/Y808tOqofz5E0TESUatbbqoQ+spQTirHvYnK1EUJA0y
+         W7cJK+7mQ+vuufnJOlvQuiPy9P9E9ruFAGQgudtOmYkTrax6fvLwGPUmclldrFwuQ0mV
+         jdFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736290019; x=1736894819;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VhhOsxIrAZXRQSyguOLlB0hClyT00aHuDw3Nc1/4jp8=;
+        b=j8ZzxJ6Zb6T4O1HgIe7fgSaRUgD0E03jTg3/TgrccFCC40PRbVuOfWO0NvWbhFfds3
+         Kyz+uXG+laQwb3QtkkLdKM8LENUS/apFkunLow3OsDw6XUbI8auB8c2KrxlpdGRdpCl4
+         MeSaHgYKyDQeGhTkCvw1gMctybUWaMksAf0P73JrRxn6ENM2Uv+o5wyb8kInVB84SzDk
+         mNLQlScCJLjiDfZtB7Nxf4Z9dI4E85I217kmQ5epRMdnXzyOl9d89o9WaQZumekL9BMX
+         +gkKu5P6IcE7N6Xni4HehVdcw13Wyh8w0I+j9/o5RItLq5OzgaryXeDKaeE2Fet0B7T4
+         4+pg==
+X-Forwarded-Encrypted: i=1; AJvYcCV9O6VGcPxkf9njcj8Kw9GjMwoPOQAXO6HyMC9SXpCNuLHOBYFqfv4tcbYV+2M5oHU7UWYrY9KX+JhX@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOftwdHI39wdV2T16KZnexwLa6GjZ+SDfEYDLko07ozUwpp4Tt
+	auALVnkhBNPH7uuNAl0hDGUFnVyJr1wnXxHhVuK9zB167oaYPEVQhsF5xm6T56o=
+X-Gm-Gg: ASbGncvMw/xdkrYtCCzp1iSaCBr42G27QUCufSRCQxhvqSdLOTRUTYCTeMrr+rQ025d
+	T7alQM8yIEM7MSYCO8dg/QOY1cv8ZViL8jchs94jNZP2guZqT9w5BgWvKpvhfzdKfLf/sKqiLqB
+	6NArsbfvliaGE5EWm7+VaOpaHPnH54bXHTYQwvbovP6NcslA97/2FmbLj7zJqwalw44GkR/bHhy
+	vKJ7BHRqWn21kEk0BWKk+wmDOUh5zDRmcYD4VVbLMEdFIIWW3HbUJ8=
+X-Google-Smtp-Source: AGHT+IEWLZ0aAO0tFLvsOPBDQKKeuyqMuH4W0nT1NxPlNJruhvsUZ/Ykoi06+2HvkLi5ZyYOcU4+/g==
+X-Received: by 2002:a17:90b:4c8d:b0:2ee:5edc:489 with SMTP id 98e67ed59e1d1-2f548f5ed6cmr824480a91.26.1736290019527;
+        Tue, 07 Jan 2025 14:46:59 -0800 (PST)
+Received: from localhost ([97.126.182.119])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f54a2df0b3sm49805a91.42.2025.01.07.14.46.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jan 2025 14:46:59 -0800 (PST)
+From: Kevin Hilman <khilman@baylibre.com>
+To: Nishanth Menon <nm@ti.com>
+Cc: devicetree@vger.kernel.org, Romain Naour <romain.naour@smile.fr>,
+ linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+ conor+dt@kernel.org, krzk+dt@kernel.org, robh@kernel.org,
+ kristo@kernel.org, vigneshr@ti.com, Romain Naour <romain.naour@skf.com>,
+ afd@ti.com, s-vadapalli@ti.com
+Subject: Re: [PATCHv3 1/2] dt-bindings: mfd: syscon: Add
+ ti,j721e-acspcie-proxy-ctrl compatible
+In-Reply-To: <20250103212528.enq4ur5afxhwzh7n@outdoors>
+References: <20241202143331.126800-1-romain.naour@smile.fr>
+ <173344002250.407600.8303166891165540615.b4-ty@baylibre.com>
+ <20250103212528.enq4ur5afxhwzh7n@outdoors>
+Date: Tue, 07 Jan 2025 14:46:58 -0800
+Message-ID: <7hr05eb5st.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/7] regulator: tps65215: Update platform_device_id
- table
-To: Krzysztof Kozlowski <krzk@kernel.org>
-CC: <lgirdwood@gmail.com>, <broonie@kernel.org>, <robh@kernel.org>,
-        <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <aaro.koskinen@iki.fi>,
-        <andreas@kemnade.info>, <khilman@baylibre.com>, <rogerq@kernel.org>,
-        <tony@atomide.com>, <jerome.neanne@baylibre.com>,
-        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <m-leonard@ti.com>, <praneeth@ti.com>,
-        <christophe.jaillet@wanadoo.fr>
-References: <20250103230446.197597-1-s-ramamoorthy@ti.com>
- <20250103230446.197597-6-s-ramamoorthy@ti.com>
- <rnqlswgkn2gl4yprxu4h4a3fp3ajelf2ksinjjq72f73bqzxsl@icxg7v5ujzbs>
-Content-Language: en-US
-From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-Organization: PMIC
-In-Reply-To: <rnqlswgkn2gl4yprxu4h4a3fp3ajelf2ksinjjq72f73bqzxsl@icxg7v5ujzbs>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain
 
-Hi,
+Nishanth Menon <nm@ti.com> writes:
 
+> On 15:07-20241205, Kevin Hilman wrote:
+>> 
+>> On Mon, 02 Dec 2024 15:33:30 +0100, Romain Naour wrote:
+>> > The ACSPCIE_PROXY_CTRL registers within the CTRL_MMR space of TI's J721e
+>> > SoC are used to drive the reference clock to the PCIe Endpoint device via
+>> > the PAD IO Buffers. Add the compatible for allowing the PCIe driver to
+>> > obtain the regmap for the ACSPCIE_CTRL register within the System
+>> > Controller device-tree node in order to enable the PAD IO Buffers.
+>> > 
+>> > The Technical Reference Manual for J721e SoC with details of the
+>> > ASCPCIE_CTRL registers is available at:
+>> > https://www.ti.com/lit/zip/spruil1
+>> > 
+>> > [...]
+>> 
+>> Applied, thanks!
+>> 
+>> [1/2] dt-bindings: mfd: syscon: Add ti,j721e-acspcie-proxy-ctrl compatible
+>>       commit: d8efc0b428856137608ffcbb6994da6041c9fe2a
+>> [2/2] arm64: dts: ti: k3-j721e-beagleboneai64: Enable ACSPCIE output for PCIe1
+>>       commit: 1d5e14a20dc60b440c60bec8489acfd45cdf7508
+>> 
+>> Best regards,
+>> -- 
+>> Kevin Hilman <khilman@baylibre.com>
+>> 
+> This will need a bit of fixup - See along the lines of the following.
+> Additionally, we should be a bit careful about the dependency of dts
+> mix up from two trees.
 
-On 1/4/25 4:14 AM, Krzysztof Kozlowski wrote:
-> On Fri, Jan 03, 2025 at 05:04:44PM -0600, Shree Ramamoorthy wrote:
->> Add TI TPS65215 PMIC to the existing platform_device_id struct, so the
->> regulator probe() can match which PMIC chip_data information.
-> Why is this a separate commit? Adding new device support is one commit -
-> so the tables, regulator definition and the quirks/ID table.
->
-> The next commit will be adding new entry to of_device_id?
->
-> Best regards,
-> Krzysztof
+sorry, these should be going through your tree in the first place.  They
+are now dropped from my tree, please go ahead and take them along with
+Andrews fixup.  Sorry for complicating things.
 
-I'll reorganize the commits to define and use the new resources &
-functions within the same patch.
-
-
--- 
-Best,
-Shree Ramamoorthy
-PMIC Software Engineer
-
+Kevin
 
