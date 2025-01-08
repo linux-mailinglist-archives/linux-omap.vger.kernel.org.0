@@ -1,84 +1,71 @@
-Return-Path: <linux-omap+bounces-3027-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3028-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 438E8A04E93
-	for <lists+linux-omap@lfdr.de>; Wed,  8 Jan 2025 02:15:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E08C1A054DB
+	for <lists+linux-omap@lfdr.de>; Wed,  8 Jan 2025 08:57:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C136163312
-	for <lists+linux-omap@lfdr.de>; Wed,  8 Jan 2025 01:15:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 424083A2955
+	for <lists+linux-omap@lfdr.de>; Wed,  8 Jan 2025 07:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7EF22611;
-	Wed,  8 Jan 2025 01:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68EFA1B0420;
+	Wed,  8 Jan 2025 07:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b="N4443kDS"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="XIWzUywA"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B28D2594B0
-	for <linux-omap@vger.kernel.org>; Wed,  8 Jan 2025 01:15:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9DB1A83F9;
+	Wed,  8 Jan 2025 07:56:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736298947; cv=none; b=MGald5Jb/xiAWOPJGmGpUT6dqtJMxHyVZiMl0xLF1u4iZWpExjgBCrorVHXkYCgz/LgjsZVWfH8tW6OoPM2488FE4hGScNskMbg/vuftS7Whb2xU5m2lKv9Q1e2X/A/FMU+eZGLEx8Gc9Wt/s0LzVTHXoocGDtXx0Gmmn/OAhkY=
+	t=1736323015; cv=none; b=B5ZVPjYgpIyb6Y4LXifdpHAPAz5Ao3xYhPHfFl7+k67g6qiBbF54pvWdiUMmbbWtjNUPnDGyKvB1fPMuwdNnKYSqlc7L1amtgzFhKkMEidBugwW6Z5Wvi8oYX5tOnr7yrLGulJPBIK71nQPWC8oI7KOlvFymuRoaShRoHbBCYTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736298947; c=relaxed/simple;
-	bh=wC0KvLZixctolVzUbRPpj3ROClenpjGmskrwoo1/vhY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ApmSkjve7GRrtOxD8P6s3502kuivW9T6BXqkT6J0Zlj8jNUEM+Tb9lBx/GxZWKx0h2UE6+FCPyfcEKxxhJuXM9ISpShCOMr2B541pT6c96eQaiXJa0uW2eap+g5j+ws72lqwbQkNaECwZN1kBdpkc4q8Eqgk4TwANA3OVOThzlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b=N4443kDS; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2ee67e9287fso23793235a91.0
-        for <linux-omap@vger.kernel.org>; Tue, 07 Jan 2025 17:15:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com; s=20230601; t=1736298945; x=1736903745; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bgoGy2K2Bju6ucVEvJ1q/0zc2bILGu4t4131+qTB0T0=;
-        b=N4443kDSW/UTCy6qMf3TmxHhkcqJ+rIh8AA2RinDvncZSdqel2q8nYWgotwhGBqlAp
-         EwIe43m3IrmQHzbV960Pv9Yv7bvQIxp9VGAnPPHiRuHrgtZJLAlx7n4VyEzN6bhQXX5R
-         aVAu8nc4/9nVU9Ru7gfEaA7NjZ58vvLNzsH8PJgYK0jYaWNkqAgGFZIpICHiHKhfr846
-         s9uZPdaDR7snBlWZ9Oz9DzGLmeBw7STFn2D+hODXNqpdDNEK/Zzjhh+YPJMfohqnzogy
-         CSY1LSwMefIbNNA0IM8hoi75u97Q/TVmETyfEycJBoMlbglMfyARjz0Mh24xtXzFPe6s
-         HPoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736298945; x=1736903745;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bgoGy2K2Bju6ucVEvJ1q/0zc2bILGu4t4131+qTB0T0=;
-        b=cAHQ7J92sHF1r9EbR2RUP4YSet7psV68euREJCEbu9Vxi7/HrK2oOdBdJcFCuGtl32
-         Y0KouA9HUW2CxO1UkbTP6G+yAcY8a1d2AjLE9yxxoa0OVeO6AcU6CTnyskGV0Q+VfxHA
-         eUPuTIxg4WMFlSt79cYzqrbePnyBIVndbyVoFIihpZRvR6MSGb1LzYv1Bmejy1snoBL+
-         I0Z8PHXIUsHTnWdOIskYmW+qiCZZQj9tr6ChpykShCvn4uPR65qrtfv0+HTd7ZlzBccv
-         xcoIEFAf+UzhHN4Si4Eymk5VrcDG4Al9DtYCSeOLeNAuyM3ZpBolEgdDG9l5pzhku2nq
-         2hzw==
-X-Gm-Message-State: AOJu0YyIWYJOPVBEwlcZjlOGdY4jzUrFLCY5br/etdKXMNXk06xWlpPO
-	1asG5Ya9gg9bsK+x1qwbjS8trWLp7QUEty+9Yney9OA4KrQhpE1ad8sA3mbNG4w=
-X-Gm-Gg: ASbGnctlHZ2V+ZUu70IQwlZ0G42yRIi/46C1W4DCyyMsa1M68umeolfJ/QH73U97MWK
-	OCNHYeorT+mG6/tqQoLNh7wN61G6+iPVmjQJ/RkRD2MPjVeV9Lf2RQtsaAhh7RezByT7g1jzPrg
-	NCJqX3CfNaka329+n5FJ8LUiGNI0hmNsKcFxeI3Npg332wWTmQgVYn0N5IYwbJtwDTxZ8oeEH1b
-	+sHz5faTyOG047RM8ih3TScjhNTS1OUvtiIHHBwXXHEgcjlu+uRhXPyBDO4hM8eg+VsL74eiKfa
-	tztnunJiONbU8Ntrk8CliJlfRQO26gfXa09o5A4dLxo=
-X-Google-Smtp-Source: AGHT+IHU1ZkIsfiNx+EPzdk8izZaT5ZVBeEmenKlyuYU53DxxcX8+dv8iEMxhG2CPmD/jXJSYh75Jw==
-X-Received: by 2002:a17:90b:3d47:b0:2ee:aed6:9ec2 with SMTP id 98e67ed59e1d1-2f548eae904mr1561645a91.14.1736298944698;
-        Tue, 07 Jan 2025 17:15:44 -0800 (PST)
-Received: from localhost.localdomain (133-32-227-190.east.xps.vectant.ne.jp. [133.32.227.190])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f54a34dbb6sm203658a91.42.2025.01.07.17.15.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2025 17:15:44 -0800 (PST)
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-To: deller@gmx.de,
-	kuninori.morimoto.gx@renesas.com,
-	laurent.pinchart+renesas@ideasonboard.com,
-	elfring@users.sourceforge.net
-Cc: linux-omap@vger.kernel.org,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Subject: [PATCH] fbdev: omapfb: Fix an OF node leak in dss_of_port_get_parent_device()
-Date: Wed,  8 Jan 2025 10:15:37 +0900
-Message-Id: <20250108011537.2748127-1-joe@pf.is.s.u-tokyo.ac.jp>
+	s=arc-20240116; t=1736323015; c=relaxed/simple;
+	bh=e+ZlfikMJCRvQ+FiB+A8F4gr5P1SbR6gcxHqXQ60rFU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VCg4FH6L28wxI6i5qiAIeQUUks7VqHuDM18VDK+RwWVBJbUR4OAIcP7D+RUd5MGSePPasgW+NOkRr1zQluBR6Jr6ynI+j37ZSb8awmwxmrRdN9RS3XfPir6l+MjI6teVTNhZrXAKKC8RrJmCbg6YkzeHlOmBBIUvawhvAp/baYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=XIWzUywA; arc=none smtp.client-ip=198.47.23.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 5087uZXD3072777
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 8 Jan 2025 01:56:35 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1736322996;
+	bh=KOm+I1ztjs3NUKlqS45RCXVTmE0Fa8kZnCWTvoq5xP0=;
+	h=From:To:CC:Subject:Date;
+	b=XIWzUywAKrBu5ROPlQCGHGtOXXQbtpeHDUcEjNGdXM2xui/Lkpcf8kVTRUitlaeiL
+	 ewARfmQ7m83vuiqZKGuKZRhnD+XvMLEfKZICqrWBiq5GUIt3UiQENc+tuvflt8T2A/
+	 6THxL3TSfh5MzvQce6JfgxRRgWNyzlyxBrkM009g=
+Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 5087uZe8047240
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 8 Jan 2025 01:56:35 -0600
+Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 8
+ Jan 2025 01:56:35 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Wed, 8 Jan 2025 01:56:35 -0600
+Received: from sudheertest-HP-Z2-Tower-G5-Workstation.dhcp.ti.com (sudheertest-hp-z2-tower-g5-workstation.dhcp.ti.com [172.24.227.182])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 5087uV5M065620;
+	Wed, 8 Jan 2025 01:56:31 -0600
+From: Sudheer Kumar Doredla <s-doredla@ti.com>
+To: <s-vadapalli@ti.com>, <rogerq@kernel.org>, <andrew+netdev@lunn.ch>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <horms@kernel.org>, <gnault@redhat.com>,
+        <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC: <s-doredla@ti.com>, <t-patil@ti.com>, <j-keerthy@ti.com>
+Subject: [PATCH net]
+Date: Wed, 8 Jan 2025 13:43:03 +0530
+Message-ID: <20250108081303.228653-1-s-doredla@ti.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -87,34 +74,72 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-dss_of_port_get_parent_device() leaks an OF node reference when i >= 2
-and struct device_node *np is present. Since of_get_next_parent()
-obtains a reference of the returned OF node, call of_node_put() before
-returning NULL.
+cpsw_ale_get_field was returning incorrect data when requesting higher
+word fields. Additionally, cpsw_ale_set_field was writing incorrect 
+data into the ALE entry while updating.
 
-This was found by an experimental verifier that I am developing, and no
-runtime test was able to be performed due to that lack of actual
-devices.
+For example, while reading word2, word3 fields (62 to 64 bits), the word3
+data was shifted to an incorrect position after reading. The same issue
+occurred when setting an ALE entry.
 
-Fixes: f76ee892a99e ("omapfb: copy omapdss & displays for omapfb")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+This patch fixes the shifting of the word3 data by aligning it with the
+required fileds, ensuring the correct value is returned from
+cpsw_ale_get_field, even for higher words.
+It also ensures the correct vlaue is written into ALE entry using
+cpsw_ale_set_field.
+
+Signed-off-by: Sudheer Kumar Doredla <s-doredla@ti.com>
 ---
- drivers/video/fbdev/omap2/omapfb/dss/dss-of.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/ti/cpsw_ale.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c b/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
-index c04cbe0ef173..7c636db79882 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
-@@ -36,6 +36,7 @@ struct device_node *dss_of_port_get_parent_device(struct device_node *port)
- 		np = of_get_next_parent(np);
+diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+index 64bf22cd860c..9eccc7064c2b 100644
+--- a/drivers/net/ethernet/ti/cpsw_ale.c
++++ b/drivers/net/ethernet/ti/cpsw_ale.c
+@@ -106,15 +106,15 @@ struct cpsw_ale_dev_id {
+ 
+ static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
+ {
+-	int idx, idx2;
++	int idx, idx2, index;
+ 	u32 hi_val = 0;
+ 
+ 	idx    = start / 32;
+ 	idx2 = (start + bits - 1) / 32;
+ 	/* Check if bits to be fetched exceed a word */
+ 	if (idx != idx2) {
+-		idx2 = 2 - idx2; /* flip */
+-		hi_val = ale_entry[idx2] << ((idx2 * 32) - start);
++		index = 2 - idx2; /* flip */
++		hi_val = ale_entry[index] << ((idx2 * 32) - start);
  	}
+ 	start -= idx * 32;
+ 	idx    = 2 - idx; /* flip */
+@@ -124,16 +124,16 @@ static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
+ static inline void cpsw_ale_set_field(u32 *ale_entry, u32 start, u32 bits,
+ 				      u32 value)
+ {
+-	int idx, idx2;
++	int idx, idx2, index;
  
-+	of_node_put(np);
- 	return NULL;
- }
- 
+ 	value &= BITMASK(bits);
+ 	idx = start / 32;
+ 	idx2 = (start + bits - 1) / 32;
+ 	/* Check if bits to be set exceed a word */
+ 	if (idx != idx2) {
+-		idx2 = 2 - idx2; /* flip */
+-		ale_entry[idx2] &= ~(BITMASK(bits + start - (idx2 * 32)));
+-		ale_entry[idx2] |= (value >> ((idx2 * 32) - start));
++		index = 2 - idx2; /* flip */
++		ale_entry[index] &= ~(BITMASK(bits + start - (idx2 * 32)));
++		ale_entry[index] |= (value >> ((idx2 * 32) - start));
+ 	}
+ 	start -= idx * 32;
+ 	idx = 2 - idx; /* flip */
 -- 
 2.34.1
 
