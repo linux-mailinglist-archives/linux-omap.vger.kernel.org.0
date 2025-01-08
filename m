@@ -1,106 +1,121 @@
-Return-Path: <linux-omap+bounces-3026-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3027-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3151BA04D80
-	for <lists+linux-omap@lfdr.de>; Wed,  8 Jan 2025 00:27:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 438E8A04E93
+	for <lists+linux-omap@lfdr.de>; Wed,  8 Jan 2025 02:15:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D54E7A2878
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Jan 2025 23:26:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C136163312
+	for <lists+linux-omap@lfdr.de>; Wed,  8 Jan 2025 01:15:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E34F1E5729;
-	Tue,  7 Jan 2025 23:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7EF22611;
+	Wed,  8 Jan 2025 01:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ZilWOCta"
+	dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b="N4443kDS"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D95194A45
-	for <linux-omap@vger.kernel.org>; Tue,  7 Jan 2025 23:26:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B28D2594B0
+	for <linux-omap@vger.kernel.org>; Wed,  8 Jan 2025 01:15:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736292408; cv=none; b=P/aUouyeLJKzepmYDKlzTFFTD8HTHcjHtk/y3VfX7qlz2zDG81BEacoIVSIUTcprFUcCkiPsvw/5kMm7rLotxQHigw2JMcTQXROwWt+Gul3xQKPsperLEqME9scixN5j3+iTpTc0dZ92TVGh+yQsJZIExOFFrMFJ0gmDg8oFCyU=
+	t=1736298947; cv=none; b=MGald5Jb/xiAWOPJGmGpUT6dqtJMxHyVZiMl0xLF1u4iZWpExjgBCrorVHXkYCgz/LgjsZVWfH8tW6OoPM2488FE4hGScNskMbg/vuftS7Whb2xU5m2lKv9Q1e2X/A/FMU+eZGLEx8Gc9Wt/s0LzVTHXoocGDtXx0Gmmn/OAhkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736292408; c=relaxed/simple;
-	bh=70NJicN4lkWN0R/+p/7ByCJUNzbiu8Ks9I2Mhg8PY4U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XYpHGVtTzXn8PZu+rk4mat4vI5KTOGWBoQ1rRt1iJpGtOACXkYT0MTJ1RLfU+1R+FBvbP3VmNzeAS6ApKe2Cd7XYyjawCH7olAULqlO1pYN2a6X5/uIjQC43xm3+3b3TY85Jw744Bz1G0Hm5HjU8Qs7ntaQgsKWcIKSQ3Edvo9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ZilWOCta; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2ee67e9287fso23679303a91.0
-        for <linux-omap@vger.kernel.org>; Tue, 07 Jan 2025 15:26:46 -0800 (PST)
+	s=arc-20240116; t=1736298947; c=relaxed/simple;
+	bh=wC0KvLZixctolVzUbRPpj3ROClenpjGmskrwoo1/vhY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ApmSkjve7GRrtOxD8P6s3502kuivW9T6BXqkT6J0Zlj8jNUEM+Tb9lBx/GxZWKx0h2UE6+FCPyfcEKxxhJuXM9ISpShCOMr2B541pT6c96eQaiXJa0uW2eap+g5j+ws72lqwbQkNaECwZN1kBdpkc4q8Eqgk4TwANA3OVOThzlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b=N4443kDS; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2ee67e9287fso23793235a91.0
+        for <linux-omap@vger.kernel.org>; Tue, 07 Jan 2025 17:15:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736292406; x=1736897206; darn=vger.kernel.org;
-        h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=2QDdyedWsqG+v2AZi3H9QCS2GE53jTZNmzxpEDi/sDw=;
-        b=ZilWOCtanNQGgzAcgg99Mtjt81VEvQ65X/7NlNqS/3j+tCMSNpwdf5qHZ8z/dbdbNn
-         im1D14hGtKZk33ADR6R2tctl5yMlmYBo1HowgbYHoAFTdHd7pk2/XEqhGFxCu++OVjyE
-         Qri6bdqsz6hs+RkF44l+DeI5w67uW6/70KX/+ucjSiWUdWwkeP+qr0cVnLoMNNCS4XyO
-         MvYRWIsheSruK7nHNEy1aPiHsjr3RhJDZYXxNc42CUBZl1K3JJ3luuFEIrGU2j5+6TGv
-         1+NenVKCu3msPFcEgajLFbwYtMWaiVj8Diy+m7efAqUdMtjPPzVPpDt3r/APzoDzUYaJ
-         OAYw==
+        d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com; s=20230601; t=1736298945; x=1736903745; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bgoGy2K2Bju6ucVEvJ1q/0zc2bILGu4t4131+qTB0T0=;
+        b=N4443kDSW/UTCy6qMf3TmxHhkcqJ+rIh8AA2RinDvncZSdqel2q8nYWgotwhGBqlAp
+         EwIe43m3IrmQHzbV960Pv9Yv7bvQIxp9VGAnPPHiRuHrgtZJLAlx7n4VyEzN6bhQXX5R
+         aVAu8nc4/9nVU9Ru7gfEaA7NjZ58vvLNzsH8PJgYK0jYaWNkqAgGFZIpICHiHKhfr846
+         s9uZPdaDR7snBlWZ9Oz9DzGLmeBw7STFn2D+hODXNqpdDNEK/Zzjhh+YPJMfohqnzogy
+         CSY1LSwMefIbNNA0IM8hoi75u97Q/TVmETyfEycJBoMlbglMfyARjz0Mh24xtXzFPe6s
+         HPoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736292406; x=1736897206;
-        h=mime-version:message-id:date:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2QDdyedWsqG+v2AZi3H9QCS2GE53jTZNmzxpEDi/sDw=;
-        b=NBCU0f0qWWyIKOOAS49IHobSfZLj3q5YQjFfh9kVZk3t6qMzQ7LF2ZDRQsk87t2v3K
-         AYGzC0T6puyoA6cClhdbEBDpxLg0+Hf9rFrVSU3NHsuk5Prs0i2F1d7PxYSW6HZIx1fJ
-         HkSULGyrvkYKeUwDw9u578CXhC2m03bsJu7iMz/tsXEeuWK3GpLIjAlMzo2Juev/f15n
-         WN7JAmgeXAQbvQ2CzJLGq5SCYjpS/RnVVDkU/n7gxwkndoO1nx78lnuEMdSpjuFiuVoq
-         QUF+melcou1+ztWc2xPN5HdW5r10pDKEPk0oQXWUtxH3Cks3ArijXYD6jhN2tDgfUxXP
-         wNJg==
-X-Gm-Message-State: AOJu0YyOaHLAxJYd+/qJSzQ8qPpwdfeS0bQYgk6+Fa1ocXG6Ok84vEcn
-	0QQ94Rftb7+JhzEm5zDgXzE0O31xUjEWuosrjesYQ6u0vQHX3+Fscp9x7RiSQp8=
-X-Gm-Gg: ASbGncsp33n69B4OF8gOBsxZM+4Eqmgn5gJPfKIiKo+HcAEpcHOcb9uV0hvETjOdtYf
-	v8btsq1Z+BrqSrC6GOcqyTlPh4LHJom5Y5y/MUOqlW08ndjTbb88V/bwHS51SenK/Wrd44v9w3l
-	e0GmyjmMdrkVr3WS7DYTKEK/qJeCbh/eQRv5efp+IO3oU8+0xcCY77gic2llE9H1Ma5EgeN/zlp
-	JHA33W+KBzfD14ENlm5ZKfYNi3d8FBuEknDImbmcjq8JZDn+DrqzmA=
-X-Google-Smtp-Source: AGHT+IEkqXBuXNblGZ518IQhUFeptLk1bmMCSYZHXrxvLRxYePl8DdoRBjuLuVKBAlEE9rwoMDaFyg==
-X-Received: by 2002:a17:90b:2d44:b0:2f4:432d:250d with SMTP id 98e67ed59e1d1-2f548eceda2mr957257a91.21.1736292405710;
-        Tue, 07 Jan 2025 15:26:45 -0800 (PST)
-Received: from localhost ([97.126.182.119])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f54a26acc3sm87438a91.4.2025.01.07.15.26.45
+        d=1e100.net; s=20230601; t=1736298945; x=1736903745;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bgoGy2K2Bju6ucVEvJ1q/0zc2bILGu4t4131+qTB0T0=;
+        b=cAHQ7J92sHF1r9EbR2RUP4YSet7psV68euREJCEbu9Vxi7/HrK2oOdBdJcFCuGtl32
+         Y0KouA9HUW2CxO1UkbTP6G+yAcY8a1d2AjLE9yxxoa0OVeO6AcU6CTnyskGV0Q+VfxHA
+         eUPuTIxg4WMFlSt79cYzqrbePnyBIVndbyVoFIihpZRvR6MSGb1LzYv1Bmejy1snoBL+
+         I0Z8PHXIUsHTnWdOIskYmW+qiCZZQj9tr6ChpykShCvn4uPR65qrtfv0+HTd7ZlzBccv
+         xcoIEFAf+UzhHN4Si4Eymk5VrcDG4Al9DtYCSeOLeNAuyM3ZpBolEgdDG9l5pzhku2nq
+         2hzw==
+X-Gm-Message-State: AOJu0YyIWYJOPVBEwlcZjlOGdY4jzUrFLCY5br/etdKXMNXk06xWlpPO
+	1asG5Ya9gg9bsK+x1qwbjS8trWLp7QUEty+9Yney9OA4KrQhpE1ad8sA3mbNG4w=
+X-Gm-Gg: ASbGnctlHZ2V+ZUu70IQwlZ0G42yRIi/46C1W4DCyyMsa1M68umeolfJ/QH73U97MWK
+	OCNHYeorT+mG6/tqQoLNh7wN61G6+iPVmjQJ/RkRD2MPjVeV9Lf2RQtsaAhh7RezByT7g1jzPrg
+	NCJqX3CfNaka329+n5FJ8LUiGNI0hmNsKcFxeI3Npg332wWTmQgVYn0N5IYwbJtwDTxZ8oeEH1b
+	+sHz5faTyOG047RM8ih3TScjhNTS1OUvtiIHHBwXXHEgcjlu+uRhXPyBDO4hM8eg+VsL74eiKfa
+	tztnunJiONbU8Ntrk8CliJlfRQO26gfXa09o5A4dLxo=
+X-Google-Smtp-Source: AGHT+IHU1ZkIsfiNx+EPzdk8izZaT5ZVBeEmenKlyuYU53DxxcX8+dv8iEMxhG2CPmD/jXJSYh75Jw==
+X-Received: by 2002:a17:90b:3d47:b0:2ee:aed6:9ec2 with SMTP id 98e67ed59e1d1-2f548eae904mr1561645a91.14.1736298944698;
+        Tue, 07 Jan 2025 17:15:44 -0800 (PST)
+Received: from localhost.localdomain (133-32-227-190.east.xps.vectant.ne.jp. [133.32.227.190])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f54a34dbb6sm203658a91.42.2025.01.07.17.15.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2025 15:26:45 -0800 (PST)
-From: Kevin Hilman <khilman@baylibre.com>
-To: soc@kernel.org
-Cc: linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [GIT PULL] arm/omap: drivers: updates for v6.14
-Date: Tue, 07 Jan 2025 15:26:45 -0800
-Message-ID: <7hcygyb3yi.fsf@baylibre.com>
+        Tue, 07 Jan 2025 17:15:44 -0800 (PST)
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+To: deller@gmx.de,
+	kuninori.morimoto.gx@renesas.com,
+	laurent.pinchart+renesas@ideasonboard.com,
+	elfring@users.sourceforge.net
+Cc: linux-omap@vger.kernel.org,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Subject: [PATCH] fbdev: omapfb: Fix an OF node leak in dss_of_port_get_parent_device()
+Date: Wed,  8 Jan 2025 10:15:37 +0900
+Message-Id: <20250108011537.2748127-1-joe@pf.is.s.u-tokyo.ac.jp>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-The following changes since commit 40384c840ea1944d7c5a392e8975ed088ecf0b37:
+dss_of_port_get_parent_device() leaks an OF node reference when i >= 2
+and struct device_node *np is present. Since of_get_next_parent()
+obtains a reference of the returned OF node, call of_node_put() before
+returning NULL.
 
-  Linux 6.13-rc1 (2024-12-01 14:28:56 -0800)
+This was found by an experimental verifier that I am developing, and no
+runtime test was able to be performed due to that lack of actual
+devices.
 
-are available in the Git repository at:
+Fixes: f76ee892a99e ("omapfb: copy omapdss & displays for omapfb")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+---
+ drivers/video/fbdev/omap2/omapfb/dss/dss-of.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/khilman/linux-omap.git tags/omap-for-v6.14/drivers-signed
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c b/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
+index c04cbe0ef173..7c636db79882 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
+@@ -36,6 +36,7 @@ struct device_node *dss_of_port_get_parent_device(struct device_node *port)
+ 		np = of_get_next_parent(np);
+ 	}
+ 
++	of_node_put(np);
+ 	return NULL;
+ }
+ 
+-- 
+2.34.1
 
-for you to fetch changes up to 6ef4ea3c944b9fc5d78317d1172cdcd10f9724f1:
-
-  Input: tsc2007 - accept standard properties (2024-12-10 16:17:30 -0800)
-
-----------------------------------------------------------------
-arm/omap: drivers: updates for v6.14
-
-----------------------------------------------------------------
-Andreas Kemnade (1):
-      Input: tsc2007 - accept standard properties
-
- drivers/input/touchscreen/tsc2007.h      | 2 ++
- drivers/input/touchscreen/tsc2007_core.c | 5 ++---
- 2 files changed, 4 insertions(+), 3 deletions(-)
 
