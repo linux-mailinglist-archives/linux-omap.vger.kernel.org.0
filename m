@@ -1,99 +1,103 @@
-Return-Path: <linux-omap+bounces-3035-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3036-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D7C9A06728
-	for <lists+linux-omap@lfdr.de>; Wed,  8 Jan 2025 22:24:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7EACA06932
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 00:04:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B8473A6442
-	for <lists+linux-omap@lfdr.de>; Wed,  8 Jan 2025 21:24:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8A99166762
+	for <lists+linux-omap@lfdr.de>; Wed,  8 Jan 2025 23:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7023B204695;
-	Wed,  8 Jan 2025 21:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4BB204C11;
+	Wed,  8 Jan 2025 23:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VR8nZPyt"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="TJUjuIwF"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0991C2040AD;
-	Wed,  8 Jan 2025 21:24:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9061A204C06
+	for <linux-omap@vger.kernel.org>; Wed,  8 Jan 2025 23:04:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736371450; cv=none; b=gjrhuK2rE3e6xT+RUUQLXbVFXXaBYdZht2akaEFUXUd7K33qHZrrZDMXyy/WyPA+YaKAivoe/MKbST91yoVKlc4TlLy9Nmy0ibtkA1dCdi/bZq5aY1Wjp1UkTL0zzwxV7Gg1ugPi8f7qQ1aJL6xxP9K8r0CF+CpYFnNbROGFoQ0=
+	t=1736377449; cv=none; b=EK8HoQRk2Hey+AoiO2DzThDmg6wJknrBOgmiKyCTSj0pFxuBduT7kbycm6XqzViP3I8VXGCr7UC6UIodOPM0x4e1vMtLIQs1qWCEOSNVeIHq4OtorIKVjZdnugU9HcHTbmiV8fq8GYiI+KrTQfioF2ecH59ojT4RMdCT9XqK0Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736371450; c=relaxed/simple;
-	bh=99O1W4A/KkPlmC0u3XNovrq+7OUjFL40eD6RAj2PfP8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JuXFE0fzSDrOjf1TMJ0DlPFKXwFAfNWsZGoCZAqHu46JdGNCH2zlJHHBCR/QjYhlR7Bamv+G+VhwSlw3OI5HJD5JfR5hQXm4WHTA6NTsKD5X/dgZaBoCuH2esFW+9lRr+ks4otGi2adK00Nb71qxlqvLJNbuu/Sflu3dxsuh/FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VR8nZPyt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8268EC4CEE2;
-	Wed,  8 Jan 2025 21:24:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736371449;
-	bh=99O1W4A/KkPlmC0u3XNovrq+7OUjFL40eD6RAj2PfP8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VR8nZPytqkUwgu8On7AWRZ24Ro2iw4gaWjNtBT8lAvdPCwteoBNyOiMay1yT6yd8N
-	 hEXYPeg6/kQ1m4pNuxIKcK+Sd3olKV9lB3TxNpEYmPLRH6aQpo6dh3YfMSydV3CwC8
-	 4h9jD0Jh0I1dc/++K6rrPaz5CV398UbjBrrk+niuUTacWA8vcNoTbyIbYgwbPJfqRD
-	 drPzm+ATo+b8Sq0fqYFsN7x5Jscw2d7Nx2bAzNU/A0KkWYxiWazqjKOzQWqmsY3/VQ
-	 NMaX0ONsYrdRNysz1E4rl1Cdnwi0aFCvJYziNPpkgEyqSYhQdCusZM+oeD0AExQNO6
-	 sirDQomyqaTkw==
-Message-ID: <9bb10095-2209-40e6-a000-d98ac11e215c@kernel.org>
-Date: Wed, 8 Jan 2025 23:24:03 +0200
+	s=arc-20240116; t=1736377449; c=relaxed/simple;
+	bh=IuogZTVK1CzdlgsrSMy5Hk7uz2L2g1g2l0NeJ7ZfwiQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DFhh3cR48OrGrG8ovPthmJAuPYLLOYfgPJYmGzLSjfwXmpimCicLY7y6cfTE+fPtvbUMwyP58Y0bY3PZy4fz67OJBwqjzbomaSZ60uHCenL6hqAcGAzJo3T2yckDJ+TeJkEXjk0xnKlWbORCz3NiY+pMKx41zwBDxBxlGZC4sxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=TJUjuIwF; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 08A4F6F3;
+	Thu,  9 Jan 2025 00:03:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1736377386;
+	bh=IuogZTVK1CzdlgsrSMy5Hk7uz2L2g1g2l0NeJ7ZfwiQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TJUjuIwFBZqPb3G+QaK+12qyOUxckM8DHZALcre1wzCkNOMYS4RjxGQWzEunH2LqR
+	 VAlE8+SV1w1/UmeMrqems4DhOQGvWhQAtNH2lcVFnSv9KfKfG3Q601xahe6Q0NKrLm
+	 ICLEPyiXAQpbDqPzPTdq1GFn9UqQiWPOSQ/Um5pw=
+Date: Thu, 9 Jan 2025 01:03:36 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Cc: deller@gmx.de, kuninori.morimoto.gx@renesas.com,
+	elfring@users.sourceforge.net, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] fbdev: omapfb: Fix an OF node leak in
+ dss_of_port_get_parent_device()
+Message-ID: <20250108230336.GI32541@pendragon.ideasonboard.com>
+References: <20250108011537.2748127-1-joe@pf.is.s.u-tokyo.ac.jp>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 net] net: ethernet: ti: cpsw_ale: Fix
- cpsw_ale_get_field()
-To: Sudheer Kumar Doredla <s-doredla@ti.com>, s-vadapalli@ti.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, gnault@redhat.com,
- linux-omap@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: t-patil@ti.com, j-keerthy@ti.com
-References: <20250108172433.311694-1-s-doredla@ti.com>
-Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20250108172433.311694-1-s-doredla@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250108011537.2748127-1-joe@pf.is.s.u-tokyo.ac.jp>
 
+Hi Joe,
 
+Thank you for the patch.
 
-On 08/01/2025 19:24, Sudheer Kumar Doredla wrote:
-> CPSW ALE has 75-bit ALE entries stored across three 32-bit words.
-> The cpsw_ale_get_field() and cpsw_ale_set_field() functions support
-> ALE field entries spanning up to two words at the most.
+On Wed, Jan 08, 2025 at 10:15:37AM +0900, Joe Hattori wrote:
+> dss_of_port_get_parent_device() leaks an OF node reference when i >= 2
+> and struct device_node *np is present. Since of_get_next_parent()
+> obtains a reference of the returned OF node, call of_node_put() before
+> returning NULL.
 > 
-> The cpsw_ale_get_field() and cpsw_ale_set_field() functions work as
-> expected when ALE field spanned across word1 and word2, but fails when
-> ALE field spanned across word2 and word3.
+> This was found by an experimental verifier that I am developing, and no
+> runtime test was able to be performed due to that lack of actual
+> devices.
 > 
-> For example, while reading the ALE field spanned across word2 and word3
-> (i.e. bits 62 to 64), the word3 data shifted to an incorrect position
-> due to the index becoming zero while flipping.
-> The same issue occurred when setting an ALE entry.
-> 
-> This issue has not been seen in practice but will be an issue in the future
-> if the driver supports accessing ALE fields spanning word2 and word3
-> 
-> Fix the methods to handle getting/setting fields spanning up to two words.
-> 
-> Fixes: b685f1a58956 ("net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()/cpsw_ale_set_field()")
-> Signed-off-by: Sudheer Kumar Doredla <s-doredla@ti.com>
-> Reviewed-by: Simon Horman <horms@kernel.org> 
+> Fixes: f76ee892a99e ("omapfb: copy omapdss & displays for omapfb")
+> Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+> ---
+>  drivers/video/fbdev/omap2/omapfb/dss/dss-of.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c b/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
+> index c04cbe0ef173..7c636db79882 100644
+> --- a/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
+> +++ b/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
+> @@ -36,6 +36,7 @@ struct device_node *dss_of_port_get_parent_device(struct device_node *port)
+>  		np = of_get_next_parent(np);
+>  	}
+>  
+> +	of_node_put(np);
+>  	return NULL;
+>  }
+>  
 
 -- 
-cheers,
--roger
+Regards,
 
+Laurent Pinchart
 
