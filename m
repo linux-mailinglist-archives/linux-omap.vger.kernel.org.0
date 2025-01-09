@@ -1,128 +1,131 @@
-Return-Path: <linux-omap+bounces-3065-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3066-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F75A0825B
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 22:44:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31D83A0839A
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Jan 2025 00:37:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 386A03A633E
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 21:44:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 385B9165295
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 23:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67AC5204C2C;
-	Thu,  9 Jan 2025 21:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 186432063D4;
+	Thu,  9 Jan 2025 23:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="tviYwSZI"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="HaxFR3JR"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mta-65-227.siemens.flowmailer.net (mta-65-227.siemens.flowmailer.net [185.136.65.227])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41198204F84
-	for <linux-omap@vger.kernel.org>; Thu,  9 Jan 2025 21:43:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEC31FF7DA
+	for <linux-omap@vger.kernel.org>; Thu,  9 Jan 2025 23:37:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736459038; cv=none; b=k7x5MV+lPjcxr6BB68T7YJci0xoXn4lddsJCUlxXBag7Q+rtnF37Fq/56zMOgUWs0zu1NFRqGSW8/fXB94BmaLDjsxEVxyYRwXWALJwAdaPZlNIHQ1U9+ImaTWuBHS7OvNRxzq9FvvamJxj7D9BlRjZOEzPNl38sRcXVThu4Z0c=
+	t=1736465869; cv=none; b=vDste3/dTgQBFS6AgR0mgpCG1zIDXDLiLPvctoDXT4IWHq2/lfg+cA81dokmYL66IyIE9kElNvVerFdje3UL+vbfH2I0Um2sgMpO0NLluy3OmDGL8cyiHgMfDKMUgY0B0N3s1r3ZQwPjkLM+1gkMynCw4weGQrWxx1MhVVRvB4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736459038; c=relaxed/simple;
-	bh=PUtS4415at1bVZMOMPuBrjF3Irk089p14E+kYCzEQHs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hZt7DR/rjNmjp6G21I0p5raTSkED1l2B0bs6NSxj2HD0LI+boA1Oz+O+jis1/gvZqIRUKT1F2uHHlfo0LxmR/2NH6CwoXOA8hRqdHf93qjIJxvGZ/qVCi07mOGbgcxUFUV7dTDy645DAVldmOttCxmngofFGWvmM+4Q1aqdWijs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=tviYwSZI; arc=none smtp.client-ip=185.136.65.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-65-227.siemens.flowmailer.net with ESMTPSA id 20250109214345f807471ab8a8c795ea
-        for <linux-omap@vger.kernel.org>;
-        Thu, 09 Jan 2025 22:43:45 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=alexander.sverdlin@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
- bh=fi4iuQ5f8HPWWG3cDnQw1vo80NGv7cxak5PbTsLHZQY=;
- b=tviYwSZIKiqpBYowf3RnryqGvvNqs2cd/E3KGT7ES83TG9ZvCJnSKXiMrU3Vw8EwKLKkKe
- 8I2hG1jZedVe59Wc7InvbXLrHDz4fSKEIvJKCzIxQUxCOiQkLOUtBqmsUsBBYPIbNjxZdmv7
- XiFkjGOprq81oU4WbVHIvw6q2fhwaP+/RZ+aFWfhEUFeFIcbtlrV4kEbuLQM30L4Xw/1TueC
- gAy6wT8HqNf0qcwIM9dOEF3gt7YTJgTcrO891IJPfQfTAIN3SaydLofEPGqxpcT+/HLc/sSO
- TbJ5t90d+NerqfllC64BBXzvS5+127EOtx2Pn24Cz90zgwWzZ7Bf4a3w==;
-From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-To: Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Grygorii Strashko <grygorii.strashko@ti.com>,
-	Mugunthan V N <mugunthanvnm@ti.com>,
-	netdev@vger.kernel.org
-Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Chintan Vankar <c-vankar@ti.com>,
-	Sinthu Raja <sinthu.raja@ti.com>,
-	linux-omap@vger.kernel.org
-Subject: [PATCH net-next] net: ethernet: ti: cpsw: fix the comment regarding VLAN-aware ALE
-Date: Thu,  9 Jan 2025 22:42:13 +0100
-Message-ID: <20250109214219.123767-1-alexander.sverdlin@siemens.com>
+	s=arc-20240116; t=1736465869; c=relaxed/simple;
+	bh=pLAZdElQQ+Klq45pGY/ZtKByOFB1tdiPuTmXgIET2nY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=X09BvXeq7nHF7Info+smeYP+0et/KBtoYNA133feohJn/+TS4Q1kgpBDR0/ndBNc0xlstIj3Do3d4X7pcq6ncx1/df0fwu7eOn683DV4xR/HfTO7GTRajVYMtrf/rt5IqZ3gnreugBPq/63s7JV/BQ2D60PTvKYklzQdPognIW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=HaxFR3JR; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-21675fd60feso31760795ad.2
+        for <linux-omap@vger.kernel.org>; Thu, 09 Jan 2025 15:37:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736465866; x=1737070666; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=w9XPKCT8QhEaC9tNgTUGx1mSYdmp6MzCOvuxEB6mhcY=;
+        b=HaxFR3JR0XZUywXT3vosy/oqAMUZzgV+mUFwC4IYYB1FE5QlsSV9BYZbxJIgGhChiX
+         X/xvIO+7cWL4hYQe1nfHSUHjjThIJMSZG7FotIeC5m1KNWLQ33MCl3lJmGuFTsArmsXs
+         YPcb2x4j2HyfSIsO/lsQNLfWRLPERnHak5pbow4iZLMCskxHeAmXr6rlelXS78/v+7o4
+         UxwMl3ScO8BzcOXs46ni4A6IdiGf0ct79Md29TtF/Ck/2UsLOkJzJeX45wxtEFP+VAGC
+         unV2DLxKJpkr3xwPGGrSEQG4gLdfpz3BkzpRYscQo7bju4mNogpQwRiArrGbmTyoK0Xb
+         8VnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736465866; x=1737070666;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=w9XPKCT8QhEaC9tNgTUGx1mSYdmp6MzCOvuxEB6mhcY=;
+        b=F/AQwW+YnVpg+2d+d8f2f1qW9ZpBqQRhAVWh/jctpb/Enpp3KY4SwxEYEksoFsObEg
+         wruDWnVytP3ssxziLHD46raFfCAasrN+0w/JuJrjMID4GXUVEaRcc3o3Y6HgiaFVbtgz
+         l7/BgN5NUlQTcRuBWFDiyY2BMD7DvSQFGGk0DCiCWeOoQgLelttrgqRh2adKC5g8jZI4
+         VpFT1E6NrNeXfDf1EzVoqw5+Zw/UQHoaAyeVnD1QojzxiSYNhEoqX/zFedKqU2CyhgD7
+         lSEHfRJlgM/9iqSxYVMh2XWhGRebvxM7cmYlBa04KKBuWW+DLYQGZE+fyDABy0AbFQ04
+         xv3w==
+X-Forwarded-Encrypted: i=1; AJvYcCUUaS/5ES76tJuTdpQHPiG+rkXEq7P82RLgXN7KXHVBIoZzEu7tNq6Ke+dGwjq0aL6U9bFTg9F8SsGM@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWli33ubCQOAe8V9tuRBinsKrP6NLi3H+hU73A6RSYkmOVuhzn
+	GpoaQj61L7ofxltP33WlwrxulWDyT5eI1QiJO539e2OA94ayWpfDST+bo0NF64o=
+X-Gm-Gg: ASbGnctGKVTIWvP/+sSAEhSlzCBbyPev1Aubiqc/KWQ/3V+WvwqViRJdYBb0hgjVIt3
+	nv5ynxRGFj4dE8NXDm4DbaHEDYA10DE8ET8BAmXLc9Niy/GgH6CvVUDJCD56fUHltVYFCdDAxr4
+	5dA8su0GR4mWN74uyLSW+kCjSHbseNjs8AYbtr0NSVeOxS7oxtVSAKNigdOe6WowDyPcYiM1tOq
+	PZcWyNkPVmk2AfwVx+VFbcKbljeDpVYb4+wblmDw/9SF2cO6JHF4E8=
+X-Google-Smtp-Source: AGHT+IEfEBVr03htPuKk7GnouY1uEKaeksFavfal49FWtSio2uOLv2gDake8CxsSp5RKbe2PLBGoTA==
+X-Received: by 2002:a17:902:ce11:b0:216:49b1:fadc with SMTP id d9443c01a7336-21a83fe4b7amr134857165ad.42.1736465866394;
+        Thu, 09 Jan 2025 15:37:46 -0800 (PST)
+Received: from localhost ([97.126.182.119])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f219330sm3186745ad.132.2025.01.09.15.37.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jan 2025 15:37:45 -0800 (PST)
+From: Kevin Hilman <khilman@baylibre.com>
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: soc@kernel.org, linux-omap@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+Subject: Re: [GIT PULL] arm/omap: drivers: updates for v6.14
+In-Reply-To: <20250108091348.46f71e35@akair>
+References: <7hcygyb3yi.fsf@baylibre.com> <20250108091348.46f71e35@akair>
+Date: Thu, 09 Jan 2025 15:37:45 -0800
+Message-ID: <7hldvj8som.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-456497:519-21489:flowmailer
+Content-Type: text/plain
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Andreas Kemnade <andreas@kemnade.info> writes:
 
-In all 3 cases (cpsw, cpsw-new, am65-cpsw) ALE is being configured in
-VLAN-aware mode, while the comment states the opposite. Seems to be a typo
-copy-pasted from one driver to another. Fix the commend which has been
-puzzling some people (including me) for at least a decade.
+> Am Tue, 07 Jan 2025 15:26:45 -0800
+> schrieb Kevin Hilman <khilman@baylibre.com>:
+>
+>> The following changes since commit 40384c840ea1944d7c5a392e8975ed088ecf0b37:
+>> 
+>>   Linux 6.13-rc1 (2024-12-01 14:28:56 -0800)
+>> 
+>> are available in the Git repository at:
+>> 
+>>   git://git.kernel.org/pub/scm/linux/kernel/git/khilman/linux-omap.git tags/omap-for-v6.14/drivers-signed
+>> 
+>> for you to fetch changes up to 6ef4ea3c944b9fc5d78317d1172cdcd10f9724f1:
+>> 
+>>   Input: tsc2007 - accept standard properties (2024-12-10 16:17:30 -0800)
+>> 
+>> ----------------------------------------------------------------
+>> arm/omap: drivers: updates for v6.14
+>> 
+>> ----------------------------------------------------------------
+>> Andreas Kemnade (1):
+>>       Input: tsc2007 - accept standard properties
+>> 
+>>  drivers/input/touchscreen/tsc2007.h      | 2 ++
+>>  drivers/input/touchscreen/tsc2007_core.c | 5 ++---
+>>  2 files changed, 4 insertions(+), 3 deletions(-)
+>> 
+> This is input, the only reason that is goes via soc to keep that
+> togother with
+> ARM: dts: ti/omap: omap3-gta04: use proper touchscreen properties
 
-Link: https://lore.kernel.org/linux-arm-kernel/4699400.vD3TdgH1nR@localhost/
-Link: https://lore.kernel.org/netdev/0106ce78-c83f-4552-a234-1bf7a33f1ed1@kernel.org/
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
----
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 2 +-
- drivers/net/ethernet/ti/cpsw.c           | 2 +-
- drivers/net/ethernet/ti/cpsw_new.c       | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+Correct, it's going through my tree after agreement with input
+maintainer, Dmitry.
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index 5465bf872734..dcb6662b473d 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -762,7 +762,7 @@ static int am65_cpsw_nuss_common_open(struct am65_cpsw_common *common)
- 			     ALE_DEFAULT_THREAD_ID, 0);
- 	cpsw_ale_control_set(common->ale, HOST_PORT_NUM,
- 			     ALE_DEFAULT_THREAD_ENABLE, 1);
--	/* switch to vlan unaware mode */
-+	/* switch to vlan aware mode */
- 	cpsw_ale_control_set(common->ale, HOST_PORT_NUM, ALE_VLAN_AWARE, 1);
- 	cpsw_ale_control_set(common->ale, HOST_PORT_NUM,
- 			     ALE_PORT_STATE, ALE_PORT_STATE_FORWARD);
-diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
-index 1e290ee8edfd..0cb6fa6e5b7d 100644
---- a/drivers/net/ethernet/ti/cpsw.c
-+++ b/drivers/net/ethernet/ti/cpsw.c
-@@ -686,7 +686,7 @@ static void cpsw_init_host_port(struct cpsw_priv *priv)
- 	soft_reset("cpsw", &cpsw->regs->soft_reset);
- 	cpsw_ale_start(cpsw->ale);
- 
--	/* switch to vlan unaware mode */
-+	/* switch to vlan aware mode */
- 	cpsw_ale_control_set(cpsw->ale, HOST_PORT_NUM, ALE_VLAN_AWARE,
- 			     CPSW_ALE_VLAN_AWARE);
- 	control_reg = readl(&cpsw->regs->control);
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index be4d90c1cbe7..cec0a90659d9 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -554,7 +554,7 @@ static void cpsw_init_host_port(struct cpsw_priv *priv)
- 	soft_reset("cpsw", &cpsw->regs->soft_reset);
- 	cpsw_ale_start(cpsw->ale);
- 
--	/* switch to vlan unaware mode */
-+	/* switch to vlan aware mode */
- 	cpsw_ale_control_set(cpsw->ale, HOST_PORT_NUM, ALE_VLAN_AWARE,
- 			     CPSW_ALE_VLAN_AWARE);
- 	control_reg = readl(&cpsw->regs->control);
--- 
-2.47.1
+> So shouln't it go via your dt branch?
 
+Since the dependency is not a strict build dependency, I separated into
+dt and drivers like I normally do.  They will both land in the same
+upstream release, so should not cause any problems.
+
+Kevin
 
