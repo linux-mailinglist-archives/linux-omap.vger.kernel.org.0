@@ -1,180 +1,93 @@
-Return-Path: <linux-omap+bounces-3052-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3053-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E8EEA0782C
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 14:51:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00494A078BC
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 15:12:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAA0C18890AF
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 13:51:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DC921661FF
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 14:11:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76AB5217F41;
-	Thu,  9 Jan 2025 13:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA825219EAD;
+	Thu,  9 Jan 2025 14:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b="SQNeILdH"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="vKnDRRcF"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5E11FFC4E
-	for <linux-omap@vger.kernel.org>; Thu,  9 Jan 2025 13:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFF921764D;
+	Thu,  9 Jan 2025 14:11:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736430689; cv=none; b=kpU+P3C0lcJ/RhlX8ejiGdtYgmXhrORfMzvxUxuWdkP7dQvBRX+p5pQjuG3D+6J3yPNDhB6RvJ177vAWyPiqmuFZLywu0hbMiKnEHmjF4DwMxeI/wno5KiiFTzPMu58XJEYcdSw2dGRNE+0nILjnKve6KvgJ7ElSB1Pdsb1OjNc=
+	t=1736431913; cv=none; b=ef+XEx0ADicpWptIZW+ZHOeLGcKRAivJwQICevxOayUE9AQDl3jHIBGCx9j3NmohuK4xAA5PulL0mM9mOau5jgERYmPtI9mGOQWUU7QuvNNj+g5+TItbB3reGqfTu2IqDwR0C0yl/iXGZgJ5giklv++m0qDCeWF2sAzEkeDmPJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736430689; c=relaxed/simple;
-	bh=nPPGU/5i0/4rNcuCnNSlIB/B0EGtcfFTfauQ9U1+gFc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aBOi4PtCsj7e1BDC6Y7uvtlrbqEt5mj3tjYWa6ELDz1w+KlAjKZm0xBgi1XPNCg+b6B5icQdoJdXDpiti48wzDCzlsEVYbXU10TOmYLrUt3uVdH88JEh/YJSSJtNT/bpXp9aMdUp0Q7D11ux+zMDBg1r+DxikVBf4kgP8XPS+tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr; spf=pass smtp.mailfrom=smile.fr; dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b=SQNeILdH; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smile.fr
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4362f61757fso9925705e9.2
-        for <linux-omap@vger.kernel.org>; Thu, 09 Jan 2025 05:51:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1736430684; x=1737035484; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QqXsToV0HiRvEsZnF5hoveg3aYzeGpkKlIECOe2VD8g=;
-        b=SQNeILdH1JpkQ4jbPX0rCNfwsW7egxtJqMZYCHxxfnI8JyVE1vT+BCusXDs6S1yrC5
-         Iib27BOp0TdkycfknITzCa0IGs2c4k16zuoIa3qmcUjXI4ntu/Cs9wG4ogluHF3V1mZk
-         xPIM3wk+Hnybozdz5jRcTd4OkEb7eTeEe9SIE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736430684; x=1737035484;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QqXsToV0HiRvEsZnF5hoveg3aYzeGpkKlIECOe2VD8g=;
-        b=XBWMAd6O2mrlh0iqMVoQUv4sSK8IgPDx12/F1i/IPeyl1PrPnNAQ3jpLF4162jdgW8
-         EPPd5PzLWQy13sCKXts9rimueC8OWhFU8+eTpgFwCHqtAn6WSkqsuzvIEZ/Bgzen3JGP
-         7kCweuRM1KpL1E+ajE75hHNvVoXDw1IidiWW7N69azOXWeLz+tNrKHnnPOg3Cf6uX6wO
-         8zd1znF3n037oSzxxJrXmvw4ZcUuBpTf5DErjZjBViFlLXrpW4gnM0DyaX9OrKuWJILi
-         X/xiNgqMTbRED4yMe42Rmur2BUEM09bf6pMwOqemroo3a+JboVE/m31lRBhFIHoLmu8X
-         saxA==
-X-Forwarded-Encrypted: i=1; AJvYcCXbft4NuFwBOehXIOldW19l1RVwIXP9dsclxsevmxTdfrNOusxDfJ/1AbzCeIkthx2rG85bJWM3bSXI@vger.kernel.org
-X-Gm-Message-State: AOJu0YyeOmv5krdaH/I/jBGGnAuMrOclq7OUU5VHPkFt85n1nWbn+Bkr
-	zMY32vP0+mgXyuNNUKsG5fnBntR2nSpPQVmS8QnA1mWbv/aLv8csLuf5pdBJcxBqB/UdIkEeE3V
-	J
-X-Gm-Gg: ASbGncu5PZtFzBw5HmVdRF9ay04Wc9VOf/NlrPAoqo245Y0mbD3sMEA2v+eeBIr7pHI
-	nndiv6Aslt1Q7FgthoUSR7NKWHH8VXbqmojTob8uwUWjeVvXKBbYngClqVTaF/ebbyztO94VUVb
-	Ixc2kTOahJ7sEqVq1GSBkwL8aULQl+wHVfnfQdX4dHTsu3HjJa4QS5nFQpQvWeEfX0hQtykfQ3U
-	CxCht24fGwbAvAUoNDV1cb9JFVqAtGMiNZoS66QxqCDm1/tLsWT8Cgf0KdEx5zbTzQg/h4fpc0I
-	KMVY2dSWldnc+ovBUMKjwC4cm2OBHDRnNLVD+3pG98WMPY/40VQERgb7drZ9OEdAdUZWuicavT/
-	Sk0lG8QCLRO16SAB7
-X-Google-Smtp-Source: AGHT+IGCwLti8xz/uAXqjvFyEfZu8OW3NVEiOzPgOAaQKlMAAsxOUKHoSy2tGbVe3mXX1vMem7j5oQ==
-X-Received: by 2002:a05:600c:1d1f:b0:434:f99e:a5b5 with SMTP id 5b1f17b1804b1-436e271cf4amr47062045e9.28.1736430684252;
-        Thu, 09 Jan 2025 05:51:24 -0800 (PST)
-Received: from ?IPV6:2a01:cb05:949d:5800:e3ef:2d7a:4131:71f? (2a01cb05949d5800e3ef2d7a4131071f.ipv6.abo.wanadoo.fr. [2a01:cb05:949d:5800:e3ef:2d7a:4131:71f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e2dc0f69sm55525035e9.13.2025.01.09.05.51.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Jan 2025 05:51:23 -0800 (PST)
-Message-ID: <8ff7ca4f-227d-40c5-867d-497e03bef72a@smile.fr>
-Date: Thu, 9 Jan 2025 14:51:23 +0100
+	s=arc-20240116; t=1736431913; c=relaxed/simple;
+	bh=/oLYBdeqAYZ93lQ4dBkYr/2nv+qCGKWjw4hYhSEUm+A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FRw0sT2k1t6qyH9rz93od0gK2Vxc1wNSaakHqoxxXAqKHZYrvkaLpr1aCEItCndg52YQ/1ya21lGRi2huWuwHcCvNbjELLrolQoUDf9k8+0Owjc6vmWIoKTll+mRNm0qCXV7XB3GbHapwU3KVZc9qqUJSyMnqpP09UEr0h0Lopk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=vKnDRRcF; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=vNh7DueZ0ROhGXSoVao0r4XYvV32aPWQzqAogsGA9pE=; b=vKnDRRcF0Gff8rhBV3+joaGp0z
+	QB/FUdZLbjzRvbvftL0QBE9Jed2l6xIG4FfwIpMGgxT0s0ux9rgALc94CQDJhXzJt+ZjgF0VuAI8k
+	QUBxaqp2Q72CTK3UXbTpS56Xut3Jy2W9sUADpgrbMJm0TenBa2Z0nXgwLnuyshETkN1I=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tVtG1-002uSH-NK; Thu, 09 Jan 2025 15:11:33 +0100
+Date: Thu, 9 Jan 2025 15:11:33 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Basharath Hussain Khaja <basharath@couthit.com>
+Cc: danishanwar@ti.com, rogerq@kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, nm@ti.com, ssantosh@kernel.org,
+	tony@atomide.com, richardcochran@gmail.com, parvathi@couthit.com,
+	schnelle@linux.ibm.com, rdunlap@infradead.org,
+	diogo.ivo@siemens.com, m-karicheri2@ti.com, horms@kernel.org,
+	jacob.e.keller@intel.com, m-malladi@ti.com,
+	javier.carrasco.cruz@gmail.com, afd@ti.com, s-anna@ti.com,
+	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org, pratheesh@ti.com, prajith@ti.com,
+	vigneshr@ti.com, praneeth@ti.com, srk@ti.com, rogerq@ti.com,
+	krishna@couthit.com, pmohan@couthit.com, mohan@couthit.com
+Subject: Re: [RFC PATCH 00/10] PRU-ICSSM Ethernet Driver
+Message-ID: <2e82fb20-c6f9-4cc3-a700-fce049295f58@lunn.ch>
+References: <20250109105600.41297-1-basharath@couthit.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] arm64: dts: ti: k3-j721e-beagleboneai64: Enable
- ACSPCIE output for PCIe1
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-omap@vger.kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org,
- robh@kernel.org, kristo@kernel.org, vigneshr@ti.com, nm@ti.com, afd@ti.com,
- Romain Naour <romain.naour@skf.com>
-References: <20250109102627.1366753-1-romain.naour@smile.fr>
- <20250109102627.1366753-2-romain.naour@smile.fr>
- <eu5xmihnffmqas2x2ioleuzzvyfbffl5eqlwuqfe4mh6qa2rzy@7mmuxsbkmz4o>
-Content-Language: en-US
-From: Romain Naour <romain.naour@smile.fr>
-In-Reply-To: <eu5xmihnffmqas2x2ioleuzzvyfbffl5eqlwuqfe4mh6qa2rzy@7mmuxsbkmz4o>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250109105600.41297-1-basharath@couthit.com>
 
-Hello Siddharth, All,
-
-Le 09/01/2025 à 12:49, Siddharth Vadapalli a écrit :
-> On Thu, Jan 09, 2025 at 11:26:27AM +0100, Romain Naour wrote:
+On Thu, Jan 09, 2025 at 04:25:50PM +0530, Basharath Hussain Khaja wrote:
+> Hi,
 > 
-> Hello Romain,
+> The Programmable Real-Time Unit Industrial Communication Sub-system (PRU-ICSS)
+> is available on the TI SOCs in two flavors: Gigabit ICSS (ICSSG) and the older
+> Megabit ICSS (ICSSM).
 > 
->> From: Romain Naour <romain.naour@skf.com>
->>
->> Unlike the SK-TDA4VM (k3-j721e-sk) board, there is no clock generator
->> (CDCI6214RGET) on the BeagleBone AI-64 (k3-j721e-beagleboneai64) to
->> provide PCIe refclk signal to PCIe Endponts. So the ACSPCIE module must
->> provide refclk through PCIe_REFCLK pins.
->>
->> Use the new "ti,syscon-acspcie-proxy-ctrl" property to enable ACSPCIE
->> module's PAD IO Buffers.
->>
->> Cc: Siddharth Vadapalli <s-vadapalli@ti.com>
->> Signed-off-by: Romain Naour <romain.naour@skf.com>
->> ---
->> With this patch, we can remove "HACK: Sierra: Drive clock out" patch
->> applied on vendor kernel for BeagleBone AI-64:
->> https://openbeagle.org/beagleboard/linux/-/commit/ad65d7ef675966cdbc5d75f2bd545fad1914ba9b
-> 
-> [trimmed]
-> 
->> diff --git a/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi b/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
->> index af3d730154ac..32a232a90100 100644
->> --- a/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
->> +++ b/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
->> @@ -5,6 +5,7 @@
->>   * Copyright (C) 2016-2024 Texas Instruments Incorporated - https://www.ti.com/
->>   */
->>  #include <dt-bindings/phy/phy.h>
->> +#include <dt-bindings/phy/phy-cadence.h>
->>  #include <dt-bindings/phy/phy-ti.h>
->>  #include <dt-bindings/mux/mux.h>
->>  
->> @@ -82,6 +83,11 @@ ehrpwm_tbclk: clock-controller@4140 {
->>  			reg = <0x4140 0x18>;
->>  			#clock-cells = <1>;
->>  		};
->> +
->> +		acspcie0_proxy_ctrl: syscon@18090 {
->> +			compatible = "ti,j721e-acspcie-proxy-ctrl", "syscon";
->> +			reg = <0x18090 0x4>;
-> 
-> 0x_0011_8090 is probably *not* the "PROXY" register i.e. it could be
-> locked with the help of "CTRLMMR_LOCK0_KICK0" and "CTRLMMR_LOCK0_KICK1"
-> registers, in which case the CTRL_MMR region needs to be unlocked to write
-> to that register. On J784S4, that happens to be true, which is why the
-> proxy register 0x_0011_a090 was used at [0]. Please test with 0x_0011_a090
-> which is the "PROXY" register on J721E as well, i.e. it can be written to
-> unconditionally.
-> 
-> [0]:
-> https://lore.kernel.org/r/20240930111505.3101047-1-s-vadapalli@ti.com/
+> Support for ICSSG Dual-EMAC mode has already been mainlined [1] and the
+> fundamental components/drivers such as PRUSS driver, Remoteproc driver,
+> PRU-ICSS INTC, and PRU-ICSS IEP drivers are already available in the mainline
+> Linux kernel. The current RFC patch series builds on top of these components
+> and introduces changes to support the Dual-EMAC mode on ICSSM, especially on
+> the TI AM57xx devices.
+ 
+I guess this version also has the horrible architecture of multiple
+firmware's you need to swap between at runtime?
 
-Thanks for the review!
-
-Actually the Proxy0 vs Proxy1 choice is not really clear for me. We have two
-proxy to reach the same register:
-
-  CTRLMMR_ACSPCIE0_CTRL Register (Proxy0 Offset = 18090h; Proxy1 Offset = 1A090h)
-
-From my testing both addresses works (maybe since my SoC is a general purpose one).
-
-When and why Proxy1 must be used?
-
-Otherwise I'm fine to use  0x_0011_a090.
-
-Best regards,
-Romain
-
-
-> 
-> [trimmed]
-> 
-> Regards,
-> Siddharth.
-
+	Andrew
 
