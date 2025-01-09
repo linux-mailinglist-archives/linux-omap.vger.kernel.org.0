@@ -1,34 +1,34 @@
-Return-Path: <linux-omap+bounces-3058-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3059-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C067A07CC8
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 17:03:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEB0EA07D04
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 17:11:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C203188BEEF
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 16:03:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B408160F58
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 16:11:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D46B21E088;
-	Thu,  9 Jan 2025 16:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B28642206AE;
+	Thu,  9 Jan 2025 16:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="tr/v0lRn"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="3enGU/Uz"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3985539AEB;
-	Thu,  9 Jan 2025 16:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70B721A453;
+	Thu,  9 Jan 2025 16:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736438589; cv=none; b=feNU9SYcM7KppH9imk4Lb1cFnBsemEA2qBVuEFWRZWFrMmL5CAY/RffSRlOuop5T86xvh74iPk9Spyddx1dIfYYL+G2rxILUEccsAFXVJ7y8VlUnVOocl5kCOP39MiEyd664xCtK9nc8oM3ZA1mXATVLG9AyjtSHq1nbUpIeuFc=
+	t=1736439062; cv=none; b=TSXXA4Dn/01DlE1z1In+awMV/C/Rj9ef88MVtmtXKLEB1NXG9n6Gf5CgUMFwJPvlAKPtv+Gb8I2QmswQfvcbTp58ZXATAFCw7NeRirivw7Okk4mu4xNt5A3sM2y1jP1eD+0Cd/EhNAfbI1XJiIBeuuFPuP2vllkrsBszlkTdOyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736438589; c=relaxed/simple;
-	bh=WTG2peeOI7n3WBwKLXT/zRr4OviIoCYbtBgGIqhl6l8=;
+	s=arc-20240116; t=1736439062; c=relaxed/simple;
+	bh=L9hLpenY62TwChFRiiUYsGC+VeI+Y0A4VGPsVVjoD6g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i0HVDAFhdSE5E2wkcMhbd5TkyeBIjI7hhcxPEGP90K4NAMtfxy1D9ZSrHmHFRSxhWNws2IqVXb1gzIcvMFDzPVhi/H7PaNd/Q9GXKtc6XPjp0pjS0BreUYz2uK3xamKqtXi+e3iHihus0FZbbtcpHG4t9W1YgSHX86+NR0Zpbss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=tr/v0lRn; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=EiWvhIPqSspIhMpIAkilqiVlC/ZFyWotnvX6ZmYjvVPsQGCbjWkjDhH19giWpbz2phNGtmymJ4mOfGvd2clv1y67lJGAgwuAypvOcsQ86qOY9NkiJaGQEhA3Ut+JdmerwcHNfoSRZeRWfws6bo2GrvQftruQ7cShPKGnoBCzMZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=3enGU/Uz; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
@@ -36,13 +36,13 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=6QZA/dEpZHfPL8zII3z7jZ3rXZOBU2nqF4/JSK9phR0=; b=tr/v0lRnaWVK4k2LzTbgwXG5mD
-	sPhRggilSwCGvIgEtd922ZzitNqgUQhOWlXekmVxn48AX4kPmFJSFLsLiSMLb4oLVqwP08eemOawU
-	IqO6vTGTLxRxUipFB064IWqfYK3vkOpV09LA+AvHdGTX9NDxnCbv8R/SgU6SH80bkwrk=;
+	bh=m+VSPD28TfRDmVd100m2sowp0pegmPTa+/H6mPRZWuE=; b=3enGU/Uzg1m3dnVEok1h2JgQ9T
+	2tR84bYfIEmU/WUPcqhmHmlKFx21W9c/gzlnY1JfOsScjOHUSWQnD48GGS6rR3feveeqG6rFhx3yH
+	9GH4R340aOQAqTxsUwBPEZFLsBobt2NGNPQ2++dZTR5Othiais6yplXT/nWsTEI0lxOw=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1tVuzh-002wSD-Hk; Thu, 09 Jan 2025 17:02:49 +0100
-Date: Thu, 9 Jan 2025 17:02:49 +0100
+	id 1tVv7N-002wi2-Tl; Thu, 09 Jan 2025 17:10:45 +0100
+Date: Thu, 9 Jan 2025 17:10:45 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: Basharath Hussain Khaja <basharath@couthit.com>
 Cc: danishanwar@ti.com, rogerq@kernel.org, andrew+netdev@lunn.ch,
@@ -59,11 +59,11 @@ Cc: danishanwar@ti.com, rogerq@kernel.org, andrew+netdev@lunn.ch,
 	linux-omap@vger.kernel.org, pratheesh@ti.com, prajith@ti.com,
 	vigneshr@ti.com, praneeth@ti.com, srk@ti.com, rogerq@ti.com,
 	krishna@couthit.com, pmohan@couthit.com, mohan@couthit.com
-Subject: Re: [RFC PATCH 01/10] dt-bindings: net: ti: Adds device tree binding
- for DUAL-EMAC mode support on PRU-ICSS2 for AM57xx SOCs
-Message-ID: <7870d1e4-074f-4dc5-aae5-ac5fc725cc43@lunn.ch>
+Subject: Re: [RFC PATCH 03/10] net: ti: prueth: Adds PRUETH HW and SW
+ configuration
+Message-ID: <2f02964f-d143-4340-8284-790b5aa2901e@lunn.ch>
 References: <20250109105600.41297-1-basharath@couthit.com>
- <20250109105600.41297-2-basharath@couthit.com>
+ <20250109105600.41297-4-basharath@couthit.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -72,17 +72,23 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250109105600.41297-2-basharath@couthit.com>
+In-Reply-To: <20250109105600.41297-4-basharath@couthit.com>
 
-> +          ti,no-half-duplex:
-> +            type: boolean
-> +            description:
-> +              Disable half duplex operation on ICSSM MII port.
+> +/* Below macro is for 1528 Byte Frame support, to Allow even with
+> + * Redundancy tag
+> + */
+> +#define PRUSS_MII_RT_RX_FRMS_MAX_SUPPORT_EMAC	(VLAN_ETH_FRAME_LEN + \
+> +							ETH_FCS_LEN + 6)
 
-I already asked this in the next patch, but why have this property? Is
-it because the hardware is broken? Or is this some sort of policy?
-Policy should not be in DT, DT describes the hardware, not the policy
-of how you use the hardware.
+Is 6 for the redundancy tag? Is the redundancy tag defined somewhere?
+Could this 6 be replaced by a #define, which is maybe a sizeof()?
+
+> +	dev_info(dev, "TI PRU ethernet driver initialized: %s EMAC mode\n",
+> +		 (!eth0_node || !eth1_node) ? "single" : "dual");
+> +
+
+Is that really true? Is it not in dual mode, but only one interface is
+in use? I also wounder at the value of spamming the log like this.
 
 	Andrew
 
