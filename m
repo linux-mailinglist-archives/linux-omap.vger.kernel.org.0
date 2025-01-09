@@ -1,126 +1,95 @@
-Return-Path: <linux-omap+bounces-3061-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3062-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7E5A07DEF
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 17:45:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC7C7A07E58
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 18:08:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C0431883F8B
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 16:45:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD9FB18877EF
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 17:08:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6879D13D24D;
-	Thu,  9 Jan 2025 16:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE3E18A6AD;
+	Thu,  9 Jan 2025 17:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aFmsFSDB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OhBtdoar"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C714A2D;
-	Thu,  9 Jan 2025 16:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0B4F510;
+	Thu,  9 Jan 2025 17:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736441115; cv=none; b=PppanYKs1NvaWneLSCuKbOOs06Zgr80I2pRdD7NS6ioR2NoXxgdYchMz/8C2UebiKkIw8WcEOkL2lh7K7pF8uFCFGqGlNYia0Uz+sGlvQMDS3jV/Yr9oGuxN3VF7muIYA3LxHjaFFOmOEL/9jk53y1loJdORID3BNgHi+qsJsVA=
+	t=1736442478; cv=none; b=NdDgz9Eab19sSwrzoEv0aiYsm/qhPEMakw31hW///K05+1RzBsmJJC5rzu3a+cuiyPCklAci0410yMDful2iTlwQhSWooGq9IaFVqFMSRER/1YiibCPG3Vh4K7fEydWgfMSB5+utuQuLcT+CTYnTHWSHJaKcqqVPINgo7e+WJc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736441115; c=relaxed/simple;
-	bh=siYNbh3R41Aj3NLh15bp9tVkj973fVMnpC9J0cj2lMw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AIdycCUEzE9/fvK9DhvZcP7MUieWrlEfMCK9iFjEC4uCV4maM9BoaZfnKnWTFFnv9DhfAiUS6NvHO/Huzw3lntiQeOhi70MtzzyzdLDsfERVBNlCPc1OoAWS1KVO5hXCpKwyeeVU012ssgUf23zhkZ6Z8Zi1LIvYzgCG1/emz+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aFmsFSDB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72ED0C4CED2;
-	Thu,  9 Jan 2025 16:45:15 +0000 (UTC)
+	s=arc-20240116; t=1736442478; c=relaxed/simple;
+	bh=Alqyd2iwsoCD0Oj/gAXfcn7AATkiQdOhl45eWdofVdk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cXp1um6USRyMvKsCbnsAiB5H/bhSVj0jum7C18Jpu1S9b2ZBCIGPbjDZZfbwz5jOtIc4ridSrBbjviYlCVp1xQM2RUFOQ5L3FASySVZ/C4+rQ5sx7u+0gxxWMKbo1RaS+IAhr0ZE+HrJFm8PWWQyFHKDz36h+6z4cCjyiS2aNc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OhBtdoar; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A485C4CED2;
+	Thu,  9 Jan 2025 17:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736441115;
-	bh=siYNbh3R41Aj3NLh15bp9tVkj973fVMnpC9J0cj2lMw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=aFmsFSDBOIacLxJiXmc0AvJl+wNsvaequYO/nUg9qBzKwz1RnYCIQ3NTV6J1Prdae
-	 5prao8QEAJUpxCrI1ukj8uQut/mLaVM/JQwwOSr6G12/HnIW8SyCeYHhZIZ7UDvCFw
-	 qcRQ0TRyQhDJWD7cwIDVF/kkRw2N/rFrzKs0jVhAPIj1FfnbkrsOB0RFz5palqe8zW
-	 Lrf7fGDBx7Ypl4MewHn8vdeEbtdlwmGCLMsrJAw/7jp1t6EigymZKMzY3EqnDklYuK
-	 bGhx7SR3oCYHcDdUUF5l8LwrSkX4j4RBTKzyjvd0WWImAbY5gZhx9yTBY3wDjA1+eh
-	 yHdVjg99icb8w==
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e54bd61e793so1829836276.2;
-        Thu, 09 Jan 2025 08:45:15 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUbAQVK8wiDc639fuBybM5mq/V/xemc/enyRBRozdqAXXJ6MUlM/tk94qRuQRfmpT+/oT+Ki2bkShosMQ==@vger.kernel.org, AJvYcCVzjUo8ijUgl3X+YkdlCmXFDxYE1JLsfptCIz+hhGHbqxIt/26pD8qoZ5nYMNjVHKmjdTFTG6G1Lh9TRho=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHfj0YSlwp3CxVe6WhhctknNt4C7xKCVnYQ5AZGYcaQjdeDFpA
-	hBkbDlKiJt5bOrvfJs8UsE2k0bxgn3WBCsPYuiYVYQ98fUhSF17RQQ73wNTh0Aeqx07p11Uvo3z
-	xHsd01INV4U2uEnBI60qLpPXrmw==
-X-Google-Smtp-Source: AGHT+IHuSx9VbaKgN88/WlrGSFOeqa3n33tsaEDavhvS2xcLD9ig9TJ19azNWzEvH6mwi4KBVEhHgGHzg1ILsR8qILs=
-X-Received: by 2002:a05:6902:220a:b0:e47:f4e3:87f4 with SMTP id
- 3f1490d57ef6-e54ee15ed4dmr7230853276.12.1736441114722; Thu, 09 Jan 2025
- 08:45:14 -0800 (PST)
+	s=k20201202; t=1736442478;
+	bh=Alqyd2iwsoCD0Oj/gAXfcn7AATkiQdOhl45eWdofVdk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=OhBtdoarIfU5AQKrPGqRSFu4j96VjQyGT3lIFkJyvfbgVHGNlef3YThbc/rYz3lxL
+	 dUtN67k90W+Vl5SgSa0sUq654tijcNe5NdSMjNuleOorfQSdWI+p3y1Ch5yqaJClkJ
+	 /iZOcTJK6mcZ9UTckmRC6Q7sxIQu2dXlUY2srMPaD7jgyziWVHKCa8uWBya9bC+hAu
+	 FHcnWIbK0oGYMNdsQ9kjxP3tShIl8KeVr+ES5z/xphHYpqEGUjzDjH7W1Z2DH7/gTv
+	 gpx+rGDX4rMlQ4g1cLmMS1dHLE1TrG+N6w6NdVoB0z6YrWACQ4Hw6kvw0lMYHN0k4K
+	 CANNLw5uVAkLg==
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Cc: linux-usb@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] usb: dwc3: omap: Fix devm_regulator_get_optional() error handling
+Date: Thu,  9 Jan 2025 11:07:47 -0600
+Message-ID: <20250109170748.3852439-1-robh@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241231164456.262581-1-robh@kernel.org>
-In-Reply-To: <20241231164456.262581-1-robh@kernel.org>
-From: Rob Herring <robh@kernel.org>
-Date: Thu, 9 Jan 2025 10:45:03 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqKHzPfrn4A_21qxqyJdGq5U55htiEwyp1zfa5yCAZhUEQ@mail.gmail.com>
-X-Gm-Features: AbW1kvZ-caMZ74AUaqZ-1Wz2XxGGZ5QIFf-fdzb2X5XpvMuCLCXW0SJz251FYZY
-Message-ID: <CAL_JsqKHzPfrn4A_21qxqyJdGq5U55htiEwyp1zfa5yCAZhUEQ@mail.gmail.com>
-Subject: Re: [PATCH] usb: dwc3: omap: Use devm_regulator_get_optional()
-To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Mark Brown <broonie@kernel.org>
-Cc: linux-usb@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 31, 2024 at 10:45=E2=80=AFAM Rob Herring (Arm) <robh@kernel.org=
-> wrote:
->
-> The 'vbus-supply' regulator is optional, so use
-> devm_regulator_get_optional() instead of checking for property presence
-> first.
->
-> While here, rework the error handling to use dev_err_probe() which
-> handles deferred probe correctly without an error message.
->
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
->  drivers/usb/dwc3/dwc3-omap.c | 12 ++++--------
->  1 file changed, 4 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/usb/dwc3/dwc3-omap.c b/drivers/usb/dwc3/dwc3-omap.c
-> index b261c46124c6..9b1d10ac33c1 100644
-> --- a/drivers/usb/dwc3/dwc3-omap.c
-> +++ b/drivers/usb/dwc3/dwc3-omap.c
-> @@ -457,7 +457,7 @@ static int dwc3_omap_probe(struct platform_device *pd=
-ev)
->
->         struct dwc3_omap        *omap;
->         struct device           *dev =3D &pdev->dev;
-> -       struct regulator        *vbus_reg =3D NULL;
-> +       struct regulator        *vbus_reg;
->
->         int                     ret;
->         int                     irq;
-> @@ -483,13 +483,9 @@ static int dwc3_omap_probe(struct platform_device *p=
-dev)
->         if (IS_ERR(base))
->                 return PTR_ERR(base);
->
-> -       if (of_property_read_bool(node, "vbus-supply")) {
-> -               vbus_reg =3D devm_regulator_get(dev, "vbus");
-> -               if (IS_ERR(vbus_reg)) {
-> -                       dev_err(dev, "vbus init failed\n");
-> -                       return PTR_ERR(vbus_reg);
-> -               }
-> -       }
-> +       vbus_reg =3D devm_regulator_get_optional(dev, "vbus");
-> +       if (IS_ERR(vbus_reg))
-> +               return dev_err_probe(dev, PTR_ERR(vbus_reg), "vbus init f=
-ailed\n");
+Commit 533561a8aad5 ("usb: dwc3: omap: Use
+devm_regulator_get_optional()") assumed NULL was returned, but
+devm_regulator_get_optional() returns -ENODEV rather than NULL like
+other *_get_optional() functions.
 
-This is wrong because devm_regulator_get_optional() returns -ENODEV
-rather than NULL like all the other _get_optional() functions...
+Fixes: 533561a8aad5 ("usb: dwc3: omap: Use devm_regulator_get_optional()")
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+---
+ drivers/usb/dwc3/dwc3-omap.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Rob
+diff --git a/drivers/usb/dwc3/dwc3-omap.c b/drivers/usb/dwc3/dwc3-omap.c
+index 9b1d10ac33c1..fe74d11bb629 100644
+--- a/drivers/usb/dwc3/dwc3-omap.c
++++ b/drivers/usb/dwc3/dwc3-omap.c
+@@ -484,8 +484,11 @@ static int dwc3_omap_probe(struct platform_device *pdev)
+ 		return PTR_ERR(base);
+ 
+ 	vbus_reg = devm_regulator_get_optional(dev, "vbus");
+-	if (IS_ERR(vbus_reg))
+-		return dev_err_probe(dev, PTR_ERR(vbus_reg), "vbus init failed\n");
++	if (IS_ERR(vbus_reg)) {
++		if (PTR_ERR(vbus_reg) != -ENODEV)
++			return dev_err_probe(dev, PTR_ERR(vbus_reg), "vbus init failed\n");
++		vbus_reg = NULL;
++	}
+ 
+ 	omap->dev	= dev;
+ 	omap->irq	= irq;
+-- 
+2.45.2
+
 
