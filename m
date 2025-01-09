@@ -1,34 +1,34 @@
-Return-Path: <linux-omap+bounces-3059-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3060-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEB0EA07D04
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 17:11:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33421A07D68
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 17:25:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B408160F58
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 16:11:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F14A1188B3F3
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 16:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B28642206AE;
-	Thu,  9 Jan 2025 16:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D3F221DB3;
+	Thu,  9 Jan 2025 16:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="3enGU/Uz"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="mv7JKCcr"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70B721A453;
-	Thu,  9 Jan 2025 16:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EC82206AE;
+	Thu,  9 Jan 2025 16:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736439062; cv=none; b=TSXXA4Dn/01DlE1z1In+awMV/C/Rj9ef88MVtmtXKLEB1NXG9n6Gf5CgUMFwJPvlAKPtv+Gb8I2QmswQfvcbTp58ZXATAFCw7NeRirivw7Okk4mu4xNt5A3sM2y1jP1eD+0Cd/EhNAfbI1XJiIBeuuFPuP2vllkrsBszlkTdOyk=
+	t=1736439922; cv=none; b=jtSUlZMNXuaEdDIXm/RWQ29mII3LpAzwtNHIpYCQcJVwrYEiRuFaokQoK3ADxkXpKfJw1bDBvXRAruZag/V84+pVZLllhUzbRH4UxP6kgfU/9oqlz7hPul+tPft7WjHZC2/3vRuizo2Q2mmykwOQCRzYDWr0rkBCeSMcn4jBr9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736439062; c=relaxed/simple;
-	bh=L9hLpenY62TwChFRiiUYsGC+VeI+Y0A4VGPsVVjoD6g=;
+	s=arc-20240116; t=1736439922; c=relaxed/simple;
+	bh=l+rXxODw+VS9BSJrzGpfyM9tNsZ0dhwPA/7+8v0Fzs4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EiWvhIPqSspIhMpIAkilqiVlC/ZFyWotnvX6ZmYjvVPsQGCbjWkjDhH19giWpbz2phNGtmymJ4mOfGvd2clv1y67lJGAgwuAypvOcsQ86qOY9NkiJaGQEhA3Ut+JdmerwcHNfoSRZeRWfws6bo2GrvQftruQ7cShPKGnoBCzMZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=3enGU/Uz; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=NpVTMC+bSh+Eor3LS1SjXV8/3cBTxCoJL+7Hc5T4y/giJqsupIskiMBmKxb9kfDoVZ8lxtmMsAIMoLiAfwUfb8SM71sv5vAEwgpRBD0vmvPiGscFV8WBMgOd019gr2WUZQqybp+EtCD8vvPOvjBvT3Xkqhh+rJZWRrQuQ/qSNdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=mv7JKCcr; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
@@ -36,13 +36,13 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=m+VSPD28TfRDmVd100m2sowp0pegmPTa+/H6mPRZWuE=; b=3enGU/Uzg1m3dnVEok1h2JgQ9T
-	2tR84bYfIEmU/WUPcqhmHmlKFx21W9c/gzlnY1JfOsScjOHUSWQnD48GGS6rR3feveeqG6rFhx3yH
-	9GH4R340aOQAqTxsUwBPEZFLsBobt2NGNPQ2++dZTR5Othiais6yplXT/nWsTEI0lxOw=;
+	bh=TTXini+czMs1unGWfy+9RDBWtdxNH7Ox1uD++fpTx/0=; b=mv7JKCcr1Vdbzmm78Cb8yDIma2
+	KvWR974hzYEBNpvuEPDgEKZPrL4Y28RUqK0390pXSfABbnf8X0Q501h5s9MAW6asQgLZdd0jPB8gk
+	/ndpidG2eAMuZX2FV2ktO5JdhBglJmtuTui7VkmSIhLXTO7iVf4uzoW8asKW9YIfxiK4=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1tVv7N-002wi2-Tl; Thu, 09 Jan 2025 17:10:45 +0100
-Date: Thu, 9 Jan 2025 17:10:45 +0100
+	id 1tVvL9-002wx8-Ey; Thu, 09 Jan 2025 17:24:59 +0100
+Date: Thu, 9 Jan 2025 17:24:59 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: Basharath Hussain Khaja <basharath@couthit.com>
 Cc: danishanwar@ti.com, rogerq@kernel.org, andrew+netdev@lunn.ch,
@@ -59,11 +59,11 @@ Cc: danishanwar@ti.com, rogerq@kernel.org, andrew+netdev@lunn.ch,
 	linux-omap@vger.kernel.org, pratheesh@ti.com, prajith@ti.com,
 	vigneshr@ti.com, praneeth@ti.com, srk@ti.com, rogerq@ti.com,
 	krishna@couthit.com, pmohan@couthit.com, mohan@couthit.com
-Subject: Re: [RFC PATCH 03/10] net: ti: prueth: Adds PRUETH HW and SW
- configuration
-Message-ID: <2f02964f-d143-4340-8284-790b5aa2901e@lunn.ch>
+Subject: Re: [RFC PATCH 04/10] net: ti: prueth: Adds link detection, RX and
+ TX support.
+Message-ID: <fce8d698-2ae2-460c-a288-3d70d61dbf9e@lunn.ch>
 References: <20250109105600.41297-1-basharath@couthit.com>
- <20250109105600.41297-4-basharath@couthit.com>
+ <20250109105600.41297-5-basharath@couthit.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -72,23 +72,63 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250109105600.41297-4-basharath@couthit.com>
+In-Reply-To: <20250109105600.41297-5-basharath@couthit.com>
 
+> +/* update phy/port status information for firmware */
+> +static void icssm_emac_update_phystatus(struct prueth_emac *emac)
+> +{
+> +	struct prueth *prueth = emac->prueth;
+> +	u32 phy_speed, port_status = 0;
+> +	enum prueth_mem region;
+> +	u32 delay;
+> +
+> +	region = emac->dram;
+> +	phy_speed = emac->speed;
+> +	icssm_prueth_write_reg(prueth, region, PHY_SPEED_OFFSET, phy_speed);
+> +
+> +	if (phy_speed == SPEED_10)
+> +		delay = TX_CLK_DELAY_10M;
+
+How can speed to 10? You removed those link modes?
+
+> +/**
+> + * icssm_emac_ndo_start_xmit - EMAC Transmit function
+> + * @skb: SKB pointer
+> + * @ndev: EMAC network adapter
+> + *
+> + * Called by the system to transmit a packet  - we queue the packet in
+> + * EMAC hardware transmit queue
+> + *
+> + * Return: success(NETDEV_TX_OK) or error code (typically out of desc's)
+> + */
+> +static int icssm_emac_ndo_start_xmit(struct sk_buff *skb,
+> +				     struct net_device *ndev)
+> +{
+> +	struct prueth_emac *emac = netdev_priv(ndev);
+> +	int ret = 0;
+> +	u16 qid;
+> +
+> +	if (unlikely(!emac->link)) {
+> +		if (netif_msg_tx_err(emac) && net_ratelimit())
+> +			netdev_err(ndev, "No link to transmit");
+> +		goto fail_tx;
+> +	}
+
+Do many other MAC drivers have this test?
+
+> --- a/drivers/net/ethernet/ti/icssm/icssm_prueth.h
+> +++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
+> @@ -17,6 +17,11 @@
+>  
+>  /* PRUSS local memory map */
+>  #define ICSS_LOCAL_SHARED_RAM	0x00010000
+> +#define EMAC_MAX_PKTLEN		(ETH_HLEN + VLAN_HLEN + ETH_DATA_LEN)
 > +/* Below macro is for 1528 Byte Frame support, to Allow even with
 > + * Redundancy tag
 > + */
-> +#define PRUSS_MII_RT_RX_FRMS_MAX_SUPPORT_EMAC	(VLAN_ETH_FRAME_LEN + \
-> +							ETH_FCS_LEN + 6)
+> +#define EMAC_MAX_FRM_SUPPORT (ETH_HLEN + VLAN_HLEN + ETH_DATA_LEN + 6)
 
-Is 6 for the redundancy tag? Is the redundancy tag defined somewhere?
-Could this 6 be replaced by a #define, which is maybe a sizeof()?
-
-> +	dev_info(dev, "TI PRU ethernet driver initialized: %s EMAC mode\n",
-> +		 (!eth0_node || !eth1_node) ? "single" : "dual");
-> +
-
-Is that really true? Is it not in dual mode, but only one interface is
-in use? I also wounder at the value of spamming the log like this.
+This looks familiar....
 
 	Andrew
 
