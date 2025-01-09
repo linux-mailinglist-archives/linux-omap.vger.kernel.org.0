@@ -1,134 +1,126 @@
-Return-Path: <linux-omap+bounces-3060-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3061-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33421A07D68
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 17:25:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A7E5A07DEF
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 17:45:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F14A1188B3F3
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 16:25:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C0431883F8B
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 16:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D3F221DB3;
-	Thu,  9 Jan 2025 16:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6879D13D24D;
+	Thu,  9 Jan 2025 16:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="mv7JKCcr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aFmsFSDB"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EC82206AE;
-	Thu,  9 Jan 2025 16:25:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C714A2D;
+	Thu,  9 Jan 2025 16:45:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736439922; cv=none; b=jtSUlZMNXuaEdDIXm/RWQ29mII3LpAzwtNHIpYCQcJVwrYEiRuFaokQoK3ADxkXpKfJw1bDBvXRAruZag/V84+pVZLllhUzbRH4UxP6kgfU/9oqlz7hPul+tPft7WjHZC2/3vRuizo2Q2mmykwOQCRzYDWr0rkBCeSMcn4jBr9E=
+	t=1736441115; cv=none; b=PppanYKs1NvaWneLSCuKbOOs06Zgr80I2pRdD7NS6ioR2NoXxgdYchMz/8C2UebiKkIw8WcEOkL2lh7K7pF8uFCFGqGlNYia0Uz+sGlvQMDS3jV/Yr9oGuxN3VF7muIYA3LxHjaFFOmOEL/9jk53y1loJdORID3BNgHi+qsJsVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736439922; c=relaxed/simple;
-	bh=l+rXxODw+VS9BSJrzGpfyM9tNsZ0dhwPA/7+8v0Fzs4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NpVTMC+bSh+Eor3LS1SjXV8/3cBTxCoJL+7Hc5T4y/giJqsupIskiMBmKxb9kfDoVZ8lxtmMsAIMoLiAfwUfb8SM71sv5vAEwgpRBD0vmvPiGscFV8WBMgOd019gr2WUZQqybp+EtCD8vvPOvjBvT3Xkqhh+rJZWRrQuQ/qSNdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=mv7JKCcr; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=TTXini+czMs1unGWfy+9RDBWtdxNH7Ox1uD++fpTx/0=; b=mv7JKCcr1Vdbzmm78Cb8yDIma2
-	KvWR974hzYEBNpvuEPDgEKZPrL4Y28RUqK0390pXSfABbnf8X0Q501h5s9MAW6asQgLZdd0jPB8gk
-	/ndpidG2eAMuZX2FV2ktO5JdhBglJmtuTui7VkmSIhLXTO7iVf4uzoW8asKW9YIfxiK4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tVvL9-002wx8-Ey; Thu, 09 Jan 2025 17:24:59 +0100
-Date: Thu, 9 Jan 2025 17:24:59 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Basharath Hussain Khaja <basharath@couthit.com>
-Cc: danishanwar@ti.com, rogerq@kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, nm@ti.com, ssantosh@kernel.org,
-	tony@atomide.com, richardcochran@gmail.com, parvathi@couthit.com,
-	schnelle@linux.ibm.com, rdunlap@infradead.org,
-	diogo.ivo@siemens.com, m-karicheri2@ti.com, horms@kernel.org,
-	jacob.e.keller@intel.com, m-malladi@ti.com,
-	javier.carrasco.cruz@gmail.com, afd@ti.com, s-anna@ti.com,
-	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org, pratheesh@ti.com, prajith@ti.com,
-	vigneshr@ti.com, praneeth@ti.com, srk@ti.com, rogerq@ti.com,
-	krishna@couthit.com, pmohan@couthit.com, mohan@couthit.com
-Subject: Re: [RFC PATCH 04/10] net: ti: prueth: Adds link detection, RX and
- TX support.
-Message-ID: <fce8d698-2ae2-460c-a288-3d70d61dbf9e@lunn.ch>
-References: <20250109105600.41297-1-basharath@couthit.com>
- <20250109105600.41297-5-basharath@couthit.com>
+	s=arc-20240116; t=1736441115; c=relaxed/simple;
+	bh=siYNbh3R41Aj3NLh15bp9tVkj973fVMnpC9J0cj2lMw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AIdycCUEzE9/fvK9DhvZcP7MUieWrlEfMCK9iFjEC4uCV4maM9BoaZfnKnWTFFnv9DhfAiUS6NvHO/Huzw3lntiQeOhi70MtzzyzdLDsfERVBNlCPc1OoAWS1KVO5hXCpKwyeeVU012ssgUf23zhkZ6Z8Zi1LIvYzgCG1/emz+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aFmsFSDB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72ED0C4CED2;
+	Thu,  9 Jan 2025 16:45:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736441115;
+	bh=siYNbh3R41Aj3NLh15bp9tVkj973fVMnpC9J0cj2lMw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=aFmsFSDBOIacLxJiXmc0AvJl+wNsvaequYO/nUg9qBzKwz1RnYCIQ3NTV6J1Prdae
+	 5prao8QEAJUpxCrI1ukj8uQut/mLaVM/JQwwOSr6G12/HnIW8SyCeYHhZIZ7UDvCFw
+	 qcRQ0TRyQhDJWD7cwIDVF/kkRw2N/rFrzKs0jVhAPIj1FfnbkrsOB0RFz5palqe8zW
+	 Lrf7fGDBx7Ypl4MewHn8vdeEbtdlwmGCLMsrJAw/7jp1t6EigymZKMzY3EqnDklYuK
+	 bGhx7SR3oCYHcDdUUF5l8LwrSkX4j4RBTKzyjvd0WWImAbY5gZhx9yTBY3wDjA1+eh
+	 yHdVjg99icb8w==
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e54bd61e793so1829836276.2;
+        Thu, 09 Jan 2025 08:45:15 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUbAQVK8wiDc639fuBybM5mq/V/xemc/enyRBRozdqAXXJ6MUlM/tk94qRuQRfmpT+/oT+Ki2bkShosMQ==@vger.kernel.org, AJvYcCVzjUo8ijUgl3X+YkdlCmXFDxYE1JLsfptCIz+hhGHbqxIt/26pD8qoZ5nYMNjVHKmjdTFTG6G1Lh9TRho=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHfj0YSlwp3CxVe6WhhctknNt4C7xKCVnYQ5AZGYcaQjdeDFpA
+	hBkbDlKiJt5bOrvfJs8UsE2k0bxgn3WBCsPYuiYVYQ98fUhSF17RQQ73wNTh0Aeqx07p11Uvo3z
+	xHsd01INV4U2uEnBI60qLpPXrmw==
+X-Google-Smtp-Source: AGHT+IHuSx9VbaKgN88/WlrGSFOeqa3n33tsaEDavhvS2xcLD9ig9TJ19azNWzEvH6mwi4KBVEhHgGHzg1ILsR8qILs=
+X-Received: by 2002:a05:6902:220a:b0:e47:f4e3:87f4 with SMTP id
+ 3f1490d57ef6-e54ee15ed4dmr7230853276.12.1736441114722; Thu, 09 Jan 2025
+ 08:45:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250109105600.41297-5-basharath@couthit.com>
+References: <20241231164456.262581-1-robh@kernel.org>
+In-Reply-To: <20241231164456.262581-1-robh@kernel.org>
+From: Rob Herring <robh@kernel.org>
+Date: Thu, 9 Jan 2025 10:45:03 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqKHzPfrn4A_21qxqyJdGq5U55htiEwyp1zfa5yCAZhUEQ@mail.gmail.com>
+X-Gm-Features: AbW1kvZ-caMZ74AUaqZ-1Wz2XxGGZ5QIFf-fdzb2X5XpvMuCLCXW0SJz251FYZY
+Message-ID: <CAL_JsqKHzPfrn4A_21qxqyJdGq5U55htiEwyp1zfa5yCAZhUEQ@mail.gmail.com>
+Subject: Re: [PATCH] usb: dwc3: omap: Use devm_regulator_get_optional()
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>
+Cc: linux-usb@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> +/* update phy/port status information for firmware */
-> +static void icssm_emac_update_phystatus(struct prueth_emac *emac)
-> +{
-> +	struct prueth *prueth = emac->prueth;
-> +	u32 phy_speed, port_status = 0;
-> +	enum prueth_mem region;
-> +	u32 delay;
-> +
-> +	region = emac->dram;
-> +	phy_speed = emac->speed;
-> +	icssm_prueth_write_reg(prueth, region, PHY_SPEED_OFFSET, phy_speed);
-> +
-> +	if (phy_speed == SPEED_10)
-> +		delay = TX_CLK_DELAY_10M;
+On Tue, Dec 31, 2024 at 10:45=E2=80=AFAM Rob Herring (Arm) <robh@kernel.org=
+> wrote:
+>
+> The 'vbus-supply' regulator is optional, so use
+> devm_regulator_get_optional() instead of checking for property presence
+> first.
+>
+> While here, rework the error handling to use dev_err_probe() which
+> handles deferred probe correctly without an error message.
+>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+>  drivers/usb/dwc3/dwc3-omap.c | 12 ++++--------
+>  1 file changed, 4 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/usb/dwc3/dwc3-omap.c b/drivers/usb/dwc3/dwc3-omap.c
+> index b261c46124c6..9b1d10ac33c1 100644
+> --- a/drivers/usb/dwc3/dwc3-omap.c
+> +++ b/drivers/usb/dwc3/dwc3-omap.c
+> @@ -457,7 +457,7 @@ static int dwc3_omap_probe(struct platform_device *pd=
+ev)
+>
+>         struct dwc3_omap        *omap;
+>         struct device           *dev =3D &pdev->dev;
+> -       struct regulator        *vbus_reg =3D NULL;
+> +       struct regulator        *vbus_reg;
+>
+>         int                     ret;
+>         int                     irq;
+> @@ -483,13 +483,9 @@ static int dwc3_omap_probe(struct platform_device *p=
+dev)
+>         if (IS_ERR(base))
+>                 return PTR_ERR(base);
+>
+> -       if (of_property_read_bool(node, "vbus-supply")) {
+> -               vbus_reg =3D devm_regulator_get(dev, "vbus");
+> -               if (IS_ERR(vbus_reg)) {
+> -                       dev_err(dev, "vbus init failed\n");
+> -                       return PTR_ERR(vbus_reg);
+> -               }
+> -       }
+> +       vbus_reg =3D devm_regulator_get_optional(dev, "vbus");
+> +       if (IS_ERR(vbus_reg))
+> +               return dev_err_probe(dev, PTR_ERR(vbus_reg), "vbus init f=
+ailed\n");
 
-How can speed to 10? You removed those link modes?
+This is wrong because devm_regulator_get_optional() returns -ENODEV
+rather than NULL like all the other _get_optional() functions...
 
-> +/**
-> + * icssm_emac_ndo_start_xmit - EMAC Transmit function
-> + * @skb: SKB pointer
-> + * @ndev: EMAC network adapter
-> + *
-> + * Called by the system to transmit a packet  - we queue the packet in
-> + * EMAC hardware transmit queue
-> + *
-> + * Return: success(NETDEV_TX_OK) or error code (typically out of desc's)
-> + */
-> +static int icssm_emac_ndo_start_xmit(struct sk_buff *skb,
-> +				     struct net_device *ndev)
-> +{
-> +	struct prueth_emac *emac = netdev_priv(ndev);
-> +	int ret = 0;
-> +	u16 qid;
-> +
-> +	if (unlikely(!emac->link)) {
-> +		if (netif_msg_tx_err(emac) && net_ratelimit())
-> +			netdev_err(ndev, "No link to transmit");
-> +		goto fail_tx;
-> +	}
-
-Do many other MAC drivers have this test?
-
-> --- a/drivers/net/ethernet/ti/icssm/icssm_prueth.h
-> +++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
-> @@ -17,6 +17,11 @@
->  
->  /* PRUSS local memory map */
->  #define ICSS_LOCAL_SHARED_RAM	0x00010000
-> +#define EMAC_MAX_PKTLEN		(ETH_HLEN + VLAN_HLEN + ETH_DATA_LEN)
-> +/* Below macro is for 1528 Byte Frame support, to Allow even with
-> + * Redundancy tag
-> + */
-> +#define EMAC_MAX_FRM_SUPPORT (ETH_HLEN + VLAN_HLEN + ETH_DATA_LEN + 6)
-
-This looks familiar....
-
-	Andrew
+Rob
 
