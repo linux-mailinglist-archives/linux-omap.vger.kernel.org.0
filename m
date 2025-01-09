@@ -1,88 +1,141 @@
-Return-Path: <linux-omap+bounces-3042-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3043-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC266A07241
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 10:56:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A13CA07324
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 11:28:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 989611887E51
-	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 09:56:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48D61168CD1
+	for <lists+linux-omap@lfdr.de>; Thu,  9 Jan 2025 10:28:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FB72215F4F;
-	Thu,  9 Jan 2025 09:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D867B2163AE;
+	Thu,  9 Jan 2025 10:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rc/UxQE1"
+	dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b="jLd4bilF"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24CC5215789;
-	Thu,  9 Jan 2025 09:55:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E389215F64
+	for <linux-omap@vger.kernel.org>; Thu,  9 Jan 2025 10:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736416552; cv=none; b=Vq5e2wUuB2tE4nt3VJdnNevpne78dqulRZWP7E0EVVmUgk6ezqgu2Tk8/ceQ8jYv/vSKP7lwND81fUwzlJREY1ZFkO1iOfreQZXYmIPOuU/gMBMevMCpVS3GFFlYEov8hKK1v95vqPIilvs7WqE4Z0ZqHBeH1y8K7i5rdo32C5o=
+	t=1736418395; cv=none; b=JS7I7YyuLCvP2AWjX/al6h39Yh0t2hwWvQrur9tjAjmDbjh6Iyo7055kU8CToyws3+MPFzlvVWmF6NL0za7KKBU2XZ8tGZXC6z79WD4P/j+gsA7kyY52LTmGEyEoNqtI4sI6dzG9evkWBh2VwNrnfU5ryRT7fK7+zyK/hRvX+js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736416552; c=relaxed/simple;
-	bh=OhTMSj3gzbDHwnNCPJcBL9l44FTqEPTH1u0WLgvpEeg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=n/F3gEJcZryo6JAbbeIgrEc3IH1SADjBfDpxmNZ/f/fen7wpD9Mmuh1c2buT+GO7E04WUlHnMreL7/x5/Pvu+zl0uyQJcXl8o5Eg7N/VSkOOp46sPFIwjP4OQIax0LBymgiI+tHgxRGuHNGTCMBiY1+ZRjINXr1PzEobZLSmGUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rc/UxQE1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84E15C4CEE1;
-	Thu,  9 Jan 2025 09:55:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736416551;
-	bh=OhTMSj3gzbDHwnNCPJcBL9l44FTqEPTH1u0WLgvpEeg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Rc/UxQE1dBhGwKItP2NInEXcNceCx4XlCU5j1coQleHIb7JUdCakWPlL7sFEpEpGD
-	 U1wGE86BXLcN1EZGQu3tFFb7GsZTwP3+CpUdj+2eBwfXTKDSS9N/ZrrCMf8z5aOSvi
-	 QapeORbj4us49QhNZz/CA4ABWfn+qgF68UM8vkfXYFS1jQ8oKcG86rh76sI0g2hmTd
-	 1I0T5S6QmCYWzUdqO4tMrY5Hm9+ig0dI5m87sxb27/1HHbtFP+TlM0UlFr+Bzq03HZ
-	 l2EfKbLeBVnlsMqKpy0g4wbxkh3LJQXjhWgMzkLJUBKydPRahrUvItaGP11IpkIBsx
-	 zMtGsqtTPk7Og==
-From: Lee Jones <lee@kernel.org>
-To: aaro.koskinen@iki.fi, andreas@kemnade.info, khilman@baylibre.com, 
- rogerq@kernel.org, tony@atomide.com, lee@kernel.org, brgl@bgdev.pl, 
- linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Shree Ramamoorthy <s-ramamoorthy@ti.com>
-Cc: m-leonard@ti.com, praneeth@ti.com
-In-Reply-To: <20241217204935.1012106-1-s-ramamoorthy@ti.com>
-References: <20241217204935.1012106-1-s-ramamoorthy@ti.com>
-Subject: Re: [PATCH v1 0/2] TPS65219 MFD Driver Cleanup Series
-Message-Id: <173641654929.2549594.4293850372429117827.b4-ty@kernel.org>
-Date: Thu, 09 Jan 2025 09:55:49 +0000
+	s=arc-20240116; t=1736418395; c=relaxed/simple;
+	bh=s1Vp0vE+JZuIfFByjDarMB20Md4OazyQnGOq1VFGBRw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bspUSjPi0gDGJDv9iPXGBCGjAeh3c3LH4+3JbGwMnLEnXtr6n3noMLX+uVxWX4Gt8QSucZQvOSUYBs3Ooef7StrT08HWHneFAyGsLISdylhHpuAVfudtUNg0ZS1NnZebNYmMOThO+VW0BxGZ7uEkI2F/ecqee8oMjSUckHCcorg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr; spf=pass smtp.mailfrom=smile.fr; dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b=jLd4bilF; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smile.fr
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-385deda28b3so463825f8f.0
+        for <linux-omap@vger.kernel.org>; Thu, 09 Jan 2025 02:26:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smile.fr; s=google; t=1736418392; x=1737023192; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+OViREEuGAiMfB4rZqhC91yfl47kcGwQZ64TnKipNok=;
+        b=jLd4bilFG18Rtmmnc3A6A72pRSbpfxHqA5jDdhRduhZeQvP0JKplq98fVtEAQDE6Xv
+         DF8UOnmtw9v2I5Lkzyjxk54dAR1ox0J3HoEodFozxJ90QXHM8PnzXqHEu4mC6/57rlYZ
+         rITxHp2aJY9Y9HeuYxItw8HZTR9s69CA+UIls=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736418392; x=1737023192;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+OViREEuGAiMfB4rZqhC91yfl47kcGwQZ64TnKipNok=;
+        b=e0C4J2xX7Gc65hCEjwVqDpXHlPokVitC1JqH65p7exZ9Q2+Wqp0ggPHJIreNhd0uw9
+         KMP6jnIv9e0w71N1e+5e77onsdt59QCn9JwsbwFYj7xAjhH0yp3ByYxawp8ABWXREyAO
+         4WAmACrK0D2xmUGrnqgNxHqqDKqaulT/AyY48briuHwLdzLt9sOuIdB7h2fyRJNro+XP
+         Oivemj9WqF0Nor0ph8WN2kbapt/OCBpMDMtJHF6OlFNES5Hwt/CCcHXQaLHlikyDTPIN
+         CCTy3YcAIpkmtMHIcd5Mba/yNGKFI/jGDSiPBox5y1k3Xq0g5aH5IlT9dXZU3UdenO2G
+         AwrA==
+X-Forwarded-Encrypted: i=1; AJvYcCUVFBV9XR2ru1kL/LjG31SnzreiuUjF3ER+T7sNm18rN4VnFM0U/PdEIRbcu/qPkiT8TN/+mX+hUYIO@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcxTiyVS93eTOn+4k4Gh7sttCavIl+cuBk/weGVysjTY3EID5i
+	JA8SmBBM0t+gzQuwjneK3e0ww5NCmGgfsEFlUWr+5ncXmIvkD+8lNTCBKsDpJqI=
+X-Gm-Gg: ASbGncsUq9K7juyNmY/YXkpEZvaDmL2pJPtb8hgarKIb2ZorpqQkdQdfWeixzneJuty
+	Ve8jBVtPq67qrZnULf05FEIpSu2sgDuqSVBOUTtbCwiYhlVQLfgdWKWdjWMlvxObkiFV/WLpcL/
+	d/sjqpa3bkUHjCH+am79QzujoA2GMlD+RVNNS/Yrvhkn71snLufe1YvGxoKBKkns9e7vJ+02M4i
+	StPI3Gt5TMoV9rAmS7EcHFIt7Dv1SwaAPnX9zqMd62p+QZGBhgTcvLXpfdAiYOn2p+LfHLPNGdF
+	dLS2I1EZ8na0+49BhiCAjoq+7QNPU5y4oVu/9R8KBoZaJml9o5zsag==
+X-Google-Smtp-Source: AGHT+IGaEL7/48iU7IgiC7jE7AFgeQlcCSooxUQXpvnoV1/pZwI5FcyPuiKT2LVnasDagT56K+Pa0w==
+X-Received: by 2002:a5d:5f82:0:b0:385:e1a8:e28e with SMTP id ffacd0b85a97d-38a872faed5mr5844671f8f.10.1736418391609;
+        Thu, 09 Jan 2025 02:26:31 -0800 (PST)
+Received: from P-NTS-Evian.home (2a01cb05949d5800e3ef2d7a4131071f.ipv6.abo.wanadoo.fr. [2a01:cb05:949d:5800:e3ef:2d7a:4131:71f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e38d013sm1435595f8f.58.2025.01.09.02.26.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jan 2025 02:26:31 -0800 (PST)
+From: Romain Naour <romain.naour@smile.fr>
+To: devicetree@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-omap@vger.kernel.org,
+	conor+dt@kernel.org,
+	krzk+dt@kernel.org,
+	robh@kernel.org,
+	kristo@kernel.org,
+	vigneshr@ti.com,
+	nm@ti.com,
+	afd@ti.com,
+	Romain Naour <romain.naour@skf.com>
+Subject: [PATCH v4 1/2] dt-bindings: mfd: syscon: Add ti,j721e-acspcie-proxy-ctrl compatible
+Date: Thu,  9 Jan 2025 11:26:26 +0100
+Message-ID: <20250109102627.1366753-1-romain.naour@smile.fr>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.13.0
 
-On Tue, 17 Dec 2024 14:49:33 -0600, Shree Ramamoorthy wrote:
-> This series is in preparation to add 2 PMIC devices to the TPS65219 driver.
-> 
-> The changes involve using existing helper macros and removing unused macros
-> to simplify code. The intention is to remove unnecessary noise from the new
-> PMIC device patches adding support to this driver.
-> 
-> Shree Ramamoorthy (2):
->   mfd: tps65219: Use MFD_CELL macros
->   mfd: tps65219: Remove unused macros & add regmap.h
-> 
-> [...]
+From: Romain Naour <romain.naour@skf.com>
 
-Applied, thanks!
+The ACSPCIE_PROXY_CTRL registers within the CTRL_MMR space of TI's J721e
+SoC are used to drive the reference clock to the PCIe Endpoint device via
+the PAD IO Buffers. Add the compatible for allowing the PCIe driver to
+obtain the regmap for the ACSPCIE_CTRL register within the System
+Controller device-tree node in order to enable the PAD IO Buffers.
 
-[1/2] mfd: tps65219: Use MFD_CELL macros
-      commit: 6891e88dfbbcd897b381dbc464211bf31a854509
-[2/2] mfd: tps65219: Remove unused macros & add regmap.h
-      commit: 09a897432637aa0b99545ce13d57760cf0cb09d1
+The Technical Reference Manual for J721e SoC with details of the
+ASCPCIE_CTRL registers is available at:
+https://www.ti.com/lit/zip/spruil1
 
---
-Lee Jones [李琼斯]
+Signed-off-by: Romain Naour <romain.naour@skf.com>
+---
+v4: Add missing change in the second list (From Andrew Davis) [1]
+  Rebase after the ti,j784s4-acspcie-proxy-ctrl compatible fix [2]
+  [1] https://lore.kernel.org/linux-devicetree/20250103174524.28768-1-afd@ti.com/
+  [2] https://lore.kernel.org/linux-devicetree/20250103174524.28768-2-afd@ti.com/
+
+v3: new commit
+---
+ Documentation/devicetree/bindings/mfd/syscon.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/mfd/syscon.yaml b/Documentation/devicetree/bindings/mfd/syscon.yaml
+index 0e68c69e7bc9..1f3e67f432e7 100644
+--- a/Documentation/devicetree/bindings/mfd/syscon.yaml
++++ b/Documentation/devicetree/bindings/mfd/syscon.yaml
+@@ -115,6 +115,7 @@ select:
+           - ti,am625-dss-oldi-io-ctrl
+           - ti,am62p-cpsw-mac-efuse
+           - ti,am654-dss-oldi-io-ctrl
++          - ti,j721e-acspcie-proxy-ctrl
+           - ti,j784s4-acspcie-proxy-ctrl
+           - ti,j784s4-pcie-ctrl
+           - ti,keystone-pllctrl
+@@ -213,6 +214,7 @@ properties:
+           - ti,am625-dss-oldi-io-ctrl
+           - ti,am62p-cpsw-mac-efuse
+           - ti,am654-dss-oldi-io-ctrl
++          - ti,j721e-acspcie-proxy-ctrl
+           - ti,j784s4-acspcie-proxy-ctrl
+           - ti,j784s4-pcie-ctrl
+           - ti,keystone-pllctrl
+-- 
+2.47.1
 
 
