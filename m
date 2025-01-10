@@ -1,313 +1,177 @@
-Return-Path: <linux-omap+bounces-3074-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3075-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E69EA088DC
-	for <lists+linux-omap@lfdr.de>; Fri, 10 Jan 2025 08:15:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F12CA089A4
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Jan 2025 09:16:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D95B83A9123
-	for <lists+linux-omap@lfdr.de>; Fri, 10 Jan 2025 07:15:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A1C7168DB5
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Jan 2025 08:16:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A756D206F3D;
-	Fri, 10 Jan 2025 07:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4B5207A2B;
+	Fri, 10 Jan 2025 08:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="1vWaqtnZ"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="GGUkiL3m"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from server.wki.vra.mybluehostin.me (server.wki.vra.mybluehostin.me [162.240.238.73])
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC46D188714;
-	Fri, 10 Jan 2025 07:15:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.238.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA18257D;
+	Fri, 10 Jan 2025 08:16:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736493326; cv=none; b=nA9imSGxvhQSZIjbeH1tsJh8/wGRUNuPoKUDWQbuc6hPVDvOuhSdZo2Bz7BR/oOVPjMogDhEoc5g+lLr1ZssiOWh7h7ZEsrpM/hJx6Nq9hLbW9yYkXei9p/2BS+s6zRmrOR23ozXIuNveZxzZNqYxCp3oc28nZixehmZwX0Ih2Q=
+	t=1736496962; cv=none; b=IkJcCF8c0FG7PrKOuC5eouFM8vhIfP6A16W9tfWoasUREdKq3dUC7J5+DoQbIK8nQnXxjuW7u51xxXqbWth7Db+ZG3fCJBqOGRGYpfFth4hh3p8aRn7HImMZMTOwu6v+SelyChZdScvrxRHzXP51w3WQ+mqsB3LZxxBNc425hCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736493326; c=relaxed/simple;
-	bh=1DUdhbNHwf7Ihdy3qxNIg0dZKQEOY3tk5u6LH7jQ6h8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cEriDFxcBBwIWqmCwDVc68UAYhQrySS4gdaOp4tKC+/QZ9Ls3kWFZuS6UUaw/BBUfjdrlA5FGOOfxm/P3YkuLY5XqlQPTujJdFtrT2JDCuzeqEZpq5zfljZnzdNfiNksGTU6U24lhDW2RwD0ZC2VghEULH16bOU8Jupo/zm0i6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=1vWaqtnZ; arc=none smtp.client-ip=162.240.238.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=13OJ8FEoXvsyKmdayUPqlnZCqEb78KeiDL7hDUKSu38=; b=1vWaqtnZpP4/MxtW3PrUtnBuWk
-	rjNlapGGrHsUss3n5ly54PBe/AsILvLOWgbuWVf77/HEVN3jzyKIl/ggS0M7uLxx7gVuHtBCpoBmc
-	axguzQ3lncK6uJdsTvRLljHFeQsxg1A62t5GmyPx0+gpznGKvjrQLXLCi1A8TY4+04p0MZq/IeAcA
-	jovSYEqmpPsHP54Mk38PTvPTOqGcbPnUW5xM3eM5dIJRhpxBBiZXeAume/+RqqpEaXoZa+9Bq9Mvi
-	gYno8ksvvSLFM0WSywzRpg3lTev78Wkt9K/KLHuCuWGrgJGIzGjmXVFFTNxc1oDMirwls7Im9lvX3
-	8c9mQdVw==;
-Received: from [122.175.9.182] (port=50142 helo=cypher.couthit.local)
-	by server.wki.vra.mybluehostin.me with esmtpa (Exim 4.96.2)
-	(envelope-from <basharath@couthit.com>)
-	id 1tW9El-0002S5-0z;
-	Fri, 10 Jan 2025 12:45:19 +0530
-From: Basharath Hussain Khaja <basharath@couthit.com>
-To: danishanwar@ti.com,
-	rogerq@kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	nm@ti.com,
-	ssantosh@kernel.org,
-	tony@atomide.com,
-	richardcochran@gmail.com,
-	parvathi@couthit.com,
-	basharath@couthit.com,
-	schnelle@linux.ibm.com,
-	rdunlap@infradead.org,
-	diogo.ivo@siemens.com,
-	m-karicheri2@ti.com,
-	horms@kernel.org,
-	jacob.e.keller@intel.com,
-	m-malladi@ti.com,
-	javier.carrasco.cruz@gmail.com,
-	afd@ti.com,
-	s-anna@ti.com
-Cc: linux-arm-kernel@lists.infradead.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	pratheesh@ti.com,
-	prajith@ti.com,
-	vigneshr@ti.com,
-	praneeth@ti.com,
-	srk@ti.com,
-	rogerq@ti.com,
-	krishna@couthit.com,
-	pmohan@couthit.com,
-	mohan@couthit.com
-Subject: [RFC PATCH 10/10] arm: dts: ti: Adds device tree nodes for PRU Cores, IEP and eCAP modules of PRU-ICSS2 Instance.
-Date: Fri, 10 Jan 2025 12:43:51 +0530
-Message-Id: <20250110071351.66888-11-basharath@couthit.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250109105600.41297-1-basharath@couthit.com>
-References: <20250109105600.41297-1-basharath@couthit.com>
+	s=arc-20240116; t=1736496962; c=relaxed/simple;
+	bh=GHdmJza7OGRMere4DeQbKiImIAOXz9GQNUwhg1aoNOk=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OBd4ivqVG0XQaK1c1mMIYdkk99BjoU+VDJOv6Bc50cNhoiNDmBNGhxpySXtQ5EDpKPabzrUbwUUqwPNleGmUCywY0Qi4Fp3oDKDYavW75PNbgCURvntWuR+ITKUqGtS3qPRnCwp4xQhXNNZzGMQqldXcbZTnr91u5vouSnvqTaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=GGUkiL3m; arc=none smtp.client-ip=198.47.23.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 50A8FgJ03388909
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 10 Jan 2025 02:15:42 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1736496942;
+	bh=F6cUrTX5Q8/qLyjIBBgLzoKHKRO/z/Z5bORJ6yC/hEU=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=GGUkiL3mLBFk2uBzUGEGk5QbpuoVLy4rs4PMwPIIr6GiNKrnIrTQlMj7M0F572fcI
+	 YCnHo92ahTF6r/h899tTjkuCQ/nKLusQYy1s+lgs3GsMTrpFF/A1NaTn4k5pIjHBvf
+	 oOAO5dYUa5m9u6vRH8JysaaYOaE3vLtd8g+htCrE=
+Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 50A8FgRk015538
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 10 Jan 2025 02:15:42 -0600
+Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 10
+ Jan 2025 02:15:42 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 10 Jan 2025 02:15:42 -0600
+Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.104])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 50A8Ff7O043640;
+	Fri, 10 Jan 2025 02:15:41 -0600
+Date: Fri, 10 Jan 2025 13:45:40 +0530
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: Romain Naour <romain.naour@smile.fr>
+CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-omap@vger.kernel.org>,
+        <conor+dt@kernel.org>, <krzk+dt@kernel.org>, <robh@kernel.org>,
+        <kristo@kernel.org>, <vigneshr@ti.com>, <nm@ti.com>, <afd@ti.com>,
+        Romain
+ Naour <romain.naour@skf.com>
+Subject: Re: [PATCH v4 2/2] arm64: dts: ti: k3-j721e-beagleboneai64: Enable
+ ACSPCIE output for PCIe1
+Message-ID: <begojbvvrpyjfr3pye7mqwiw73ucw5ynepdfujssr4jx4vs33a@pwahnph3qesl>
+References: <20250109102627.1366753-1-romain.naour@smile.fr>
+ <20250109102627.1366753-2-romain.naour@smile.fr>
+ <eu5xmihnffmqas2x2ioleuzzvyfbffl5eqlwuqfe4mh6qa2rzy@7mmuxsbkmz4o>
+ <8ff7ca4f-227d-40c5-867d-497e03bef72a@smile.fr>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.wki.vra.mybluehostin.me
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.wki.vra.mybluehostin.me: authenticated_id: basharath@couthit.com
-X-Authenticated-Sender: server.wki.vra.mybluehostin.me: basharath@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+In-Reply-To: <8ff7ca4f-227d-40c5-867d-497e03bef72a@smile.fr>
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-From: Roger Quadros <rogerq@ti.com>
+On Thu, Jan 09, 2025 at 02:51:23PM +0100, Romain Naour wrote:
+> Hello Siddharth, All,
 
-The TI Sitara AM57xx series of devices consists of 2 PRU-ICSS instances
-(PRU-ICSS1 and PRU-ICSS2). This patch adds the device tree nodes for the
-PRU-ICSS2 instance to support DUAL-MAC mode of operation.
+Hello Romain,
 
-Each PRU-ICSS instance consists of two PRU cores along with various
-peripherals such as the Interrupt Controller (PRU_INTC), the Industrial
-Ethernet Peripheral(IEP), the Real Time Media Independent Interface
-controller (MII_RT), and the Enhanced Capture (eCAP) event module.
+> 
+> Le 09/01/2025 à 12:49, Siddharth Vadapalli a écrit :
+> > On Thu, Jan 09, 2025 at 11:26:27AM +0100, Romain Naour wrote:
+> > 
+> > Hello Romain,
+> > 
+> >> From: Romain Naour <romain.naour@skf.com>
+> >>
+> >> Unlike the SK-TDA4VM (k3-j721e-sk) board, there is no clock generator
+> >> (CDCI6214RGET) on the BeagleBone AI-64 (k3-j721e-beagleboneai64) to
+> >> provide PCIe refclk signal to PCIe Endponts. So the ACSPCIE module must
+> >> provide refclk through PCIe_REFCLK pins.
+> >>
+> >> Use the new "ti,syscon-acspcie-proxy-ctrl" property to enable ACSPCIE
+> >> module's PAD IO Buffers.
+> >>
+> >> Cc: Siddharth Vadapalli <s-vadapalli@ti.com>
+> >> Signed-off-by: Romain Naour <romain.naour@skf.com>
+> >> ---
+> >> With this patch, we can remove "HACK: Sierra: Drive clock out" patch
+> >> applied on vendor kernel for BeagleBone AI-64:
+> >> https://openbeagle.org/beagleboard/linux/-/commit/ad65d7ef675966cdbc5d75f2bd545fad1914ba9b
+> > 
+> > [trimmed]
+> > 
+> >> diff --git a/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi b/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
+> >> index af3d730154ac..32a232a90100 100644
+> >> --- a/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
+> >> +++ b/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
+> >> @@ -5,6 +5,7 @@
+> >>   * Copyright (C) 2016-2024 Texas Instruments Incorporated - https://www.ti.com/
+> >>   */
+> >>  #include <dt-bindings/phy/phy.h>
+> >> +#include <dt-bindings/phy/phy-cadence.h>
+> >>  #include <dt-bindings/phy/phy-ti.h>
+> >>  #include <dt-bindings/mux/mux.h>
+> >>  
+> >> @@ -82,6 +83,11 @@ ehrpwm_tbclk: clock-controller@4140 {
+> >>  			reg = <0x4140 0x18>;
+> >>  			#clock-cells = <1>;
+> >>  		};
+> >> +
+> >> +		acspcie0_proxy_ctrl: syscon@18090 {
+> >> +			compatible = "ti,j721e-acspcie-proxy-ctrl", "syscon";
+> >> +			reg = <0x18090 0x4>;
+> > 
+> > 0x_0011_8090 is probably *not* the "PROXY" register i.e. it could be
+> > locked with the help of "CTRLMMR_LOCK0_KICK0" and "CTRLMMR_LOCK0_KICK1"
+> > registers, in which case the CTRL_MMR region needs to be unlocked to write
+> > to that register. On J784S4, that happens to be true, which is why the
+> > proxy register 0x_0011_a090 was used at [0]. Please test with 0x_0011_a090
+> > which is the "PROXY" register on J721E as well, i.e. it can be written to
+> > unconditionally.
+> > 
+> > [0]:
+> > https://lore.kernel.org/r/20240930111505.3101047-1-s-vadapalli@ti.com/
+> 
+> Thanks for the review!
+> 
+> Actually the Proxy0 vs Proxy1 choice is not really clear for me. We have two
+> proxy to reach the same register:
+> 
+>   CTRLMMR_ACSPCIE0_CTRL Register (Proxy0 Offset = 18090h; Proxy1 Offset = 1A090h)
+> 
+> From my testing both addresses works (maybe since my SoC is a general purpose one).
+> 
+> When and why Proxy1 must be used?
 
-am57-pruss.dtsi - Adds IEP and eCAP peripheral as child nodes of
-the PRUSS subsystem node.
+Yes, both Proxy0 and Proxy1 work, but Proxy0 is the default access path
+when we look at it in the context of J784S4. On J784S4, instead of
+calling out Proxy0, the register is called ACSPCIE0_CTRL when it falls
+in the Proxy0 range, while it is called ACSPCIE0_PROXY_CTRL when it
+falls in the Proxy1 range. Therefore, from the perspective of the naming
+convention followed on J784S4 for which a compatible was first introduced,
+Proxy1 address would correspond to the ACSPCIE0_PROXY_CTRL register.
 
-am57xx-idk-common.dtsi - Adds PRU-ICSS2 instance node along with
-PRU eth port information and corresponding port configuration. It includes
-interrupt mapping for packet reception, HW timestamp collection, and
-PRU Ethernet ports in MII mode.
+> 
+> Otherwise I'm fine to use  0x_0011_a090.
+> 
+> Best regards,
+> Romain
 
-am571x-idk.dts, am572x-idk.dts and am574x-idk.dts - GPIO configuration
-along with delay configuration for individual PRU Ethernet port.
-
-Signed-off-by: Roger Quadros <rogerq@ti.com>
-Signed-off-by: Andrew F. Davis <afd@ti.com>
-Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
-Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
-Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
----
- arch/arm/boot/dts/ti/omap/am57-pruss.dtsi     | 11 ++++
- arch/arm/boot/dts/ti/omap/am571x-idk.dts      |  8 ++-
- arch/arm/boot/dts/ti/omap/am572x-idk.dts      | 10 +--
- arch/arm/boot/dts/ti/omap/am574x-idk.dts      | 10 +--
- .../boot/dts/ti/omap/am57xx-idk-common.dtsi   | 63 +++++++++++++++++++
- 5 files changed, 93 insertions(+), 9 deletions(-)
-
-diff --git a/arch/arm/boot/dts/ti/omap/am57-pruss.dtsi b/arch/arm/boot/dts/ti/omap/am57-pruss.dtsi
-index 46c5383f0eee..f73316625608 100644
---- a/arch/arm/boot/dts/ti/omap/am57-pruss.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/am57-pruss.dtsi
-@@ -170,6 +170,17 @@ pruss2_iepclk_mux: iepclk-mux@30 {
- 				};
- 			};
- 
-+			pruss2_iep: iep@2e000 {
-+				compatible = "ti,am5728-icss-iep";
-+				reg = <0x2e000 0x31c>;
-+				clocks = <&pruss2_iepclk_mux>;
-+			};
-+
-+			pruss2_ecap: ecap@30000 {
-+				compatible = "ti,pruss-ecap";
-+				reg = <0x30000 0x60>;
-+			};
-+
- 			pruss2_mii_rt: mii-rt@32000 {
- 				compatible = "ti,pruss-mii", "syscon";
- 				reg = <0x32000 0x58>;
-diff --git a/arch/arm/boot/dts/ti/omap/am571x-idk.dts b/arch/arm/boot/dts/ti/omap/am571x-idk.dts
-index 322cf79d22e9..02653b440585 100644
---- a/arch/arm/boot/dts/ti/omap/am571x-idk.dts
-+++ b/arch/arm/boot/dts/ti/omap/am571x-idk.dts
-@@ -214,5 +214,11 @@ &pruss1_mdio {
- };
- 
- &pruss2_mdio {
--	status = "disabled";
-+	reset-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
-+	reset-delay-us = <2>;   /* PHY datasheet states 1uS min */
-+};
-+
-+&pruss2_eth {
-+	ti,pruss-gp-mux-sel = <4>,      /* MII2, needed for PRUSS1_MII0 */
-+			      <4>;      /* MII2, needed for PRUSS1_MII1 */
- };
-diff --git a/arch/arm/boot/dts/ti/omap/am572x-idk.dts b/arch/arm/boot/dts/ti/omap/am572x-idk.dts
-index 94a738cb0a4d..54a8ccb9ca14 100644
---- a/arch/arm/boot/dts/ti/omap/am572x-idk.dts
-+++ b/arch/arm/boot/dts/ti/omap/am572x-idk.dts
-@@ -28,10 +28,12 @@ &mmc2 {
- 	pinctrl-2 = <&mmc2_pins_ddr_rev20>;
- };
- 
--&pruss1_mdio {
--	status = "disabled";
-+&pruss2_eth0_phy {
-+	reset-gpios = <&gpio5 8 GPIO_ACTIVE_LOW>;
-+	reset-assert-us = <2>;   /* PHY datasheet states 1uS min */
- };
- 
--&pruss2_mdio {
--	status = "disabled";
-+&pruss2_eth1_phy {
-+	reset-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
-+	reset-assert-us = <2>;   /* PHY datasheet states 1uS min */
- };
-diff --git a/arch/arm/boot/dts/ti/omap/am574x-idk.dts b/arch/arm/boot/dts/ti/omap/am574x-idk.dts
-index 47b9174d2353..47b6c6cb210c 100644
---- a/arch/arm/boot/dts/ti/omap/am574x-idk.dts
-+++ b/arch/arm/boot/dts/ti/omap/am574x-idk.dts
-@@ -40,10 +40,12 @@ &emif1 {
- 	status = "okay";
- };
- 
--&pruss1_mdio {
--	status = "disabled";
-+&pruss2_eth0_phy {
-+	reset-gpios = <&gpio5 8 GPIO_ACTIVE_LOW>;
-+	reset-assert-us = <2>;   /* PHY datasheet states 1uS min */
- };
- 
--&pruss2_mdio {
--	status = "disabled";
-+&pruss2_eth1_phy {
-+	reset-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
-+	reset-assert-us = <2>;   /* PHY datasheet states 1uS min */
- };
-diff --git a/arch/arm/boot/dts/ti/omap/am57xx-idk-common.dtsi b/arch/arm/boot/dts/ti/omap/am57xx-idk-common.dtsi
-index 43e3623f079c..da94984f47b8 100644
---- a/arch/arm/boot/dts/ti/omap/am57xx-idk-common.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/am57xx-idk-common.dtsi
-@@ -155,6 +155,54 @@ src_clk_x1: src_clk_x1 {
- 		compatible = "fixed-clock";
- 		clock-frequency = <20000000>;
- 	};
-+
-+	/* Dual-MAC Ethernet application node on PRU-ICSS2 */
-+	pruss2_eth: pruss2-eth {
-+		compatible = "ti,am57-prueth";
-+		ti,prus = <&pru2_0>, <&pru2_1>;
-+		sram = <&ocmcram1>;
-+		ti,mii-rt = <&pruss2_mii_rt>;
-+		ti,iep = <&pruss2_iep>;
-+		ecap = <&pruss2_ecap>;
-+		interrupts = <20 2 2>, <21 3 3>;
-+		interrupt-names = "rx_lre_hp", "rx_lre_lp";
-+		interrupt-parent = <&pruss2_intc>;
-+
-+		ethernet-ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			pruss2_emac0: port@0 {
-+				reg = <0>;
-+				phy-handle = <&pruss2_eth0_phy>;
-+				phy-mode = "mii";
-+				interrupts = <20 2 2>, <26 6 6>, <23 6 6>;
-+				interrupt-names = "rx", "emac_ptp_tx",
-+								"hsr_ptp_tx";
-+				ti,no-half-duplex;
-+				/* Filled in by bootloader */
-+				local-mac-address = [00 00 00 00 00 00];
-+			};
-+
-+			pruss2_emac1: port@1 {
-+				reg = <1>;
-+				phy-handle = <&pruss2_eth1_phy>;
-+				phy-mode = "mii";
-+				interrupts = <21 3 3>, <27 9 7>, <24 9 7>;
-+				interrupt-names = "rx", "emac_ptp_tx",
-+								"hsr_ptp_tx";
-+				ti,no-half-duplex;
-+				/* Filled in by bootloader */
-+				local-mac-address = [00 00 00 00 00 00];
-+			};
-+		};
-+	};
-+
-+};
-+
-+&pruss2_iep {
-+	interrupt-parent = <&pruss2_intc>;
-+	interrupts = <7 7 8>;
-+	interrupt-names = "iep_cap_cmp";
- };
- 
- &dra7_pmx_core {
-@@ -606,3 +654,18 @@ dpi_out: endpoint {
- 		};
- 	};
- };
-+
-+&pruss2_mdio {
-+	status = "okay";
-+	pruss2_eth0_phy: ethernet-phy@0 {
-+		reg = <0>;
-+		interrupt-parent = <&gpio3>;
-+		interrupts = <30 IRQ_TYPE_EDGE_FALLING>;
-+	};
-+
-+	pruss2_eth1_phy: ethernet-phy@1 {
-+		reg = <1>;
-+		interrupt-parent = <&gpio3>;
-+		interrupts = <31 IRQ_TYPE_EDGE_FALLING>;
-+	};
-+};
--- 
-2.34.1
-
+Regards,
+Siddharth.
 
