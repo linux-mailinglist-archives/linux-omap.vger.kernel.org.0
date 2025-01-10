@@ -1,77 +1,48 @@
-Return-Path: <linux-omap+bounces-3077-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3078-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E6BDA08A91
-	for <lists+linux-omap@lfdr.de>; Fri, 10 Jan 2025 09:41:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9FAA08AEF
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Jan 2025 10:09:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A50F17A14D6
-	for <lists+linux-omap@lfdr.de>; Fri, 10 Jan 2025 08:41:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C44E18844DC
+	for <lists+linux-omap@lfdr.de>; Fri, 10 Jan 2025 09:09:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A5F2080F3;
-	Fri, 10 Jan 2025 08:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1E0209F23;
+	Fri, 10 Jan 2025 09:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b="MZVG++2k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KKGSw/ro"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F358206F35
-	for <linux-omap@vger.kernel.org>; Fri, 10 Jan 2025 08:41:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB4E207A1D;
+	Fri, 10 Jan 2025 09:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736498494; cv=none; b=oMAYJFbs58Ehxwl+XL8FUzc5fzD5FMOZ/nxyISrrQffbJeHg8HtWwUUNdZFl6aJKMIdrPhPwaUKfGKt8OhgGcj8xtCZE+SN+w1t+2MZ9zdFtQwdpT9qCA4uSbNlL00Qwft1+1lwlfxSCe9DBRE0Pj0XyX0Xe4r2VpZeri0D/gYc=
+	t=1736500132; cv=none; b=m9F7eR5eOEHiYvUZZckN0PwoDa2ua6S4BwLKQMCIQj1nU3WIAiqLEwWuuX1JQAR1v0lq6dENB4S8rnbWwkSU4xE7GpBF1LZii4neQUjRf2Sy+ZqVF2VV3g+kGHrzNN7y75cVKds/LQGQadRdrTMjpsHn28mpkGQXjhvG5BLnwkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736498494; c=relaxed/simple;
-	bh=0IqeVllaUh7ThBSBQLFk9YO6SPPXXAdKGTa3syPvMHs=;
+	s=arc-20240116; t=1736500132; c=relaxed/simple;
+	bh=BKCABSVpALUA1ywTn1GIpy2XS4PyMNAw2s550w+Mlh4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MkvRX1CYs5u14N5QlsDtpcFpFcxpU64G/YoJmf7+0C4hJBTXEL6Ndr15X5pZChu8gMpNm1CZWMfwJFeoYXq5yEyQg1KA4+T1kIW43aaqsh/u2qb1vJ9kzYaWaz2ZLwe5YWf+qS6QPu0Jsfrno4+Ev9q8XwrZUC7YiDl7S3QWB9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr; spf=pass smtp.mailfrom=smile.fr; dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b=MZVG++2k; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smile.fr
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-436345cc17bso13468295e9.0
-        for <linux-omap@vger.kernel.org>; Fri, 10 Jan 2025 00:41:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1736498490; x=1737103290; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LTAxuGuX2HjIb+J0nINSN6pIxAxGSTuzZRb6v1F8YcU=;
-        b=MZVG++2kcVZw6PqaSGKmpWxj5lzj0ussqxNwUV/fdBRmz4uyhV/i5PZThUSNnpyh4Y
-         gw0l1nNLSoDjaFi4sG1EDHpp95sFtmPqpZbXEibmkiLxxGKWSjR+p+nlshVxAWqZOul/
-         KhRhDmSqSZKMxvIyzUHHygE8L6P+f8GmFTYQ0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736498490; x=1737103290;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LTAxuGuX2HjIb+J0nINSN6pIxAxGSTuzZRb6v1F8YcU=;
-        b=XY4G3sJK3pDjhmg5MU9/J8Bk5gBNFnNmvX9y+mVeggUr4WXkYYYcdM+lWitvUM0Jyc
-         c+5Sju97oHk4QIgurLUH39IqJHokL8gkSd6olJ4OwrA4lU54/k7J0T9zU6bSFv+ANyqX
-         SkGaiYbgv3gY6eI64R0BczsRXgZkaYehRap7DNCwaeF+IYI/MlgxfSBwk4av3pVwmAvy
-         txb3WeIq3x8EWY7GBRPGDQ/OfsNBoc14wkyvyHe8CWF0DtUMZPLw67f64Fs0uqbts+vy
-         07oXs6n6e+9szaNXIm/0rvwJCBr9kKiSPDIJ9EWNSmY/u/KZd8Wbe8RJBymq+9XBCb+5
-         Ai1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUylFtDugbk5G0XXrr6JhyXVNULllMXbzIJCoedISMHt6XWFLBxXMvpRFmydmSI8JV2B2lirTHMTxYA@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzug+G5IsIDNqqjakhL1VUCGme5HjK8Vq2wRE3DL1kEOgnXeMF7
-	tvr2ruDKjLrsLHEgzFEy9p2lSBimjKqjx+NhZqnYwA88NpQCAnnCyZYWeFvbn8g=
-X-Gm-Gg: ASbGncuyQiBmXPysvzAXUDmaO+K/qn3rFyyo34EQemGn77i3JQEljCaksJ3KpBa/XVH
-	hkAJPYdbBb1dJrq+KJ/FNHFZKBFf8G/3JWm4oTijniG5Luax7IMBTC/eqRxuluUXmHwHbAssbeb
-	eN2K+lsOkC3JyQlzmkOPzX6PpLQGUwb40cEMmodJcuIaGunndrC/+s9wQ0iQKID5ABAB/AHjFFu
-	WOl/b25vjC+VGDhr/HcdFPLkcVDk/QeI5iBzUJhBwzno3Q1GoimOs56ROOe2BIAey4ZIWu+dhhl
-	0yWgG2azRlHINdnQWQxaMS/3Lr0jxpZoWx0/ftVy3H1iKY22VDqQjd+p2SSK2xH6+dNdc+xrB9J
-	C4aOMlmjN7MytajKC
-X-Google-Smtp-Source: AGHT+IHdAZINf3kifHqwtZwu3U7P3daEmJ6BNIfnwadkS9VZOq9RloQ0s4HchXw0ErbNx4rkN2q6NA==
-X-Received: by 2002:a5d:64eb:0:b0:385:ec89:2f07 with SMTP id ffacd0b85a97d-38a87312d2emr8481678f8f.32.1736498490553;
-        Fri, 10 Jan 2025 00:41:30 -0800 (PST)
-Received: from ?IPV6:2a01:cb05:949d:5800:e3ef:2d7a:4131:71f? (2a01cb05949d5800e3ef2d7a4131071f.ipv6.abo.wanadoo.fr. [2a01:cb05:949d:5800:e3ef:2d7a:4131:71f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436dd11ddfdsm68561515e9.1.2025.01.10.00.41.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Jan 2025 00:41:30 -0800 (PST)
-Message-ID: <d788bec1-f0e1-4fbd-8d4b-480d811de990@smile.fr>
-Date: Fri, 10 Jan 2025 09:41:29 +0100
+	 In-Reply-To:Content-Type; b=OrzKLWExPhDCTA1UuObAUM9AzjUA+MbJtSkHyB4cnT4VUvo/RNJZgbAgP1aM628rwjbSOixytJ4DclAQDhjgzg3xdSg4IsB1lF0mnCuStDfVwhyZkdKwuCqrvQIPI/pdloF4vQGRKXYfsGn8b8XHjnApq/o8I4zoROdbADllXqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KKGSw/ro; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6295C4CED6;
+	Fri, 10 Jan 2025 09:08:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736500131;
+	bh=BKCABSVpALUA1ywTn1GIpy2XS4PyMNAw2s550w+Mlh4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KKGSw/roQS77bAIRuETTVgVVurDhFlU8CvGHrXc80sbWfcZYlMwqdsRjI5ZDaHMr0
+	 TtgBX6DA4m2aSgf5656SxXb4L0KdhcaUQhedrvz1sEsF/GxWy2ImM7tdNuIHrMoy/E
+	 lmTKdyDkTbWqYlkI9KjBJcMYAUEBGp2fY+EidrQosbivtiGMhtyWvwSUgOpFBN0f8k
+	 ZNEzt+w4Brr0ewm4SUrpxwz+oPxu/OPMJEPdKd0sGltACnkrNK7r9oQFAjU7+0P5ER
+	 zZy5dd0YI/W2n/lG/ycVra5nujdUx5fCY1qdkWZ2Gb0E811gWfNXRVbtFlXHfGtphB
+	 7R6I31n2nfSmQ==
+Message-ID: <75ead807-4ad1-4f82-8ce1-dea68ef9d9ab@kernel.org>
+Date: Fri, 10 Jan 2025 11:08:47 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -79,135 +50,71 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] arm64: dts: ti: k3-j721e-beagleboneai64: Enable
- ACSPCIE output for PCIe1
-To: Andrew Davis <afd@ti.com>, devicetree@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
- conor+dt@kernel.org, krzk+dt@kernel.org, robh@kernel.org, kristo@kernel.org,
- vigneshr@ti.com, nm@ti.com, Romain Naour <romain.naour@skf.com>,
- Siddharth Vadapalli <s-vadapalli@ti.com>
-References: <20250109102627.1366753-1-romain.naour@smile.fr>
- <20250109102627.1366753-2-romain.naour@smile.fr>
- <90f47fae-a493-471d-8fe6-e7df741161be@ti.com>
-Content-Language: fr
-From: Romain Naour <romain.naour@smile.fr>
-In-Reply-To: <90f47fae-a493-471d-8fe6-e7df741161be@ti.com>
+Subject: Re: [PATCH] memory: omap-gpmc: Use of_property_present() for
+ non-boolean properties
+To: "Rob Herring (Arm)" <robh@kernel.org>, Tony Lindgren <tony@atomide.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250109182110.3970894-1-robh@kernel.org>
+Content-Language: en-US
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20250109182110.3970894-1-robh@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Hello Andrew, All,
+Hi Rob,
 
-Le 09/01/2025 à 16:58, Andrew Davis a écrit :
-> On 1/9/25 4:26 AM, Romain Naour wrote:
->> From: Romain Naour <romain.naour@skf.com>
->>
->> Unlike the SK-TDA4VM (k3-j721e-sk) board, there is no clock generator
->> (CDCI6214RGET) on the BeagleBone AI-64 (k3-j721e-beagleboneai64) to
->> provide PCIe refclk signal to PCIe Endponts. So the ACSPCIE module must
->> provide refclk through PCIe_REFCLK pins.
->>
->> Use the new "ti,syscon-acspcie-proxy-ctrl" property to enable ACSPCIE
->> module's PAD IO Buffers.
->>
->> Cc: Siddharth Vadapalli <s-vadapalli@ti.com>
->> Signed-off-by: Romain Naour <romain.naour@skf.com>
->> ---
-
-[...]
-
->> ---
->>   arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts |  5 +++++
->>   arch/arm64/boot/dts/ti/k3-j721e-main.dtsi          | 10 ++++++++--
->>   2 files changed, 13 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts b/arch/arm64/
->> boot/dts/ti/k3-j721e-beagleboneai64.dts
->> index fb899c99753e..741ad2ba6fdb 100644
->> --- a/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
->> +++ b/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
->> @@ -859,6 +859,11 @@ &pcie1_rc {
->>       num-lanes = <2>;
->>       max-link-speed = <3>;
->>       reset-gpios = <&main_gpio0 22 GPIO_ACTIVE_HIGH>;
->> +    /*
->> +     * There is no on-board or external reference clock generators,
->> +     * use refclk from the ACSPCIE module's PAD IO Buffers.
->> +     */
->> +    ti,syscon-acspcie-proxy-ctrl = <&acspcie0_proxy_ctrl 0x3>;
->>   };
->>     &ufs_wrapper {
->> diff --git a/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi b/arch/arm64/boot/dts/
->> ti/k3-j721e-main.dtsi
->> index af3d730154ac..32a232a90100 100644
->> --- a/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
->> +++ b/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
->> @@ -5,6 +5,7 @@
->>    * Copyright (C) 2016-2024 Texas Instruments Incorporated - https://www.ti.com/
->>    */
->>   #include <dt-bindings/phy/phy.h>
->> +#include <dt-bindings/phy/phy-cadence.h>
->>   #include <dt-bindings/phy/phy-ti.h>
->>   #include <dt-bindings/mux/mux.h>
->>   @@ -82,6 +83,11 @@ ehrpwm_tbclk: clock-controller@4140 {
->>               reg = <0x4140 0x18>;
->>               #clock-cells = <1>;
->>           };
->> +
->> +        acspcie0_proxy_ctrl: syscon@18090 {
->> +            compatible = "ti,j721e-acspcie-proxy-ctrl", "syscon";
->> +            reg = <0x18090 0x4>;
->> +        };
+On 09/01/2025 20:21, Rob Herring (Arm) wrote:
+> The use of of_property_read_bool() for non-boolean properties is
+> deprecated in favor of of_property_present() when testing for property
+> presence.
 > 
-> You'll still need to add to the J721e system controller binding or this
-> will throw a DT check warning, something like this:
+> While we're here, simplify the 2 checks into a single check as they
+> only differ in printing "NAND" vs "OneNAND" in the warning.
 > 
-> diff --git a/Documentation/devicetree/bindings/soc/ti/ti,j721e-system-
-> controller.yaml b/Documentation/devicetree/bindings/soc/ti/ti,j721e-system-
-> controller.yaml
-> index 378e9cc5fac2a..3323f3bc976e0 100644
-> --- a/Documentation/devicetree/bindings/soc/ti/ti,j721e-system-controller.yaml
-> +++ b/Documentation/devicetree/bindings/soc/ti/ti,j721e-system-controller.yaml
-> @@ -68,6 +68,12 @@ patternProperties:
->      description:
->        The node corresponding to SoC chip identification.
->  
-> +  "^acspcie-ctrl@[0-9a-f]+$":
-> +    type: object
-> +    $ref: /schemas/mfd/syscon.yaml#
-> +    description:
-> +      This is the ASPCIe control region.
-> +
->  required:
->    - compatible
->    - reg
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+> Possibly this check could just be removed altogether?
 
-Thanks!
+Yes, I agree it is better to just drop these checks.
+Let me know if you want me to prepare the path. Thanks.
 
-To fix the warning I had to use "^syscon@[0-9a-f]+$" instead.
-During the review, "syscon@" was recommended instead of "acspcie-ctrl@" [1]
-
-  acspcie0_proxy_ctrl: syscon@18090 {
-
-[1]
-https://lore.kernel.org/linux-devicetree/5e2d2174-44a7-4143-8562-4dcdb5ad6c94@kernel.org/
-
-Best regards,
-Romain
-
-
+> ---
+>  drivers/memory/omap-gpmc.c | 16 +++-------------
+>  1 file changed, 3 insertions(+), 13 deletions(-)
 > 
->>       };
->>         main_ehrpwm0: pwm@3000000 {
->> @@ -979,8 +985,8 @@ pcie1_rc: pcie@2910000 {
->>           max-link-speed = <3>;
->>           num-lanes = <2>;
->>           power-domains = <&k3_pds 240 TI_SCI_PD_EXCLUSIVE>;
->> -        clocks = <&k3_clks 240 1>;
->> -        clock-names = "fck";
->> +        clocks = <&k3_clks 240 1>, <&serdes1 CDNS_SIERRA_DERIVED_REFCLK>;
->> +        clock-names = "fck", "pcie_refclk";
->>           #address-cells = <3>;
->>           #size-cells = <2>;
->>           bus-range = <0x0 0xff>;
+> diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
+> index e2a75a52563f..329bad46065c 100644
+> --- a/drivers/memory/omap-gpmc.c
+> +++ b/drivers/memory/omap-gpmc.c
+> @@ -2226,21 +2226,11 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
+>  		goto err;
+>  	}
+>  
+> -	if (of_node_name_eq(child, "nand")) {
+> +	if (of_node_name_eq(child, "nand") || of_node_name_eq(child, "onenand")) {
+>  		/* Warn about older DT blobs with no compatible property */
+> -		if (!of_property_read_bool(child, "compatible")) {
+> +		if (!of_property_present(child, "compatible")) {
+>  			dev_warn(&pdev->dev,
+> -				 "Incompatible NAND node: missing compatible");
+> -			ret = -EINVAL;
+> -			goto err;
+> -		}
+> -	}
+> -
+> -	if (of_node_name_eq(child, "onenand")) {
+> -		/* Warn about older DT blobs with no compatible property */
+> -		if (!of_property_read_bool(child, "compatible")) {
+> -			dev_warn(&pdev->dev,
+> -				 "Incompatible OneNAND node: missing compatible");
+> +				 "Incompatible '%pOFn' node: missing compatible", child);
+>  			ret = -EINVAL;
+>  			goto err;
+>  		}
+
+-- 
+cheers,
+-roger
 
 
