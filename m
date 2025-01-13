@@ -1,120 +1,128 @@
-Return-Path: <linux-omap+bounces-3101-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3104-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11B5CA0BF95
-	for <lists+linux-omap@lfdr.de>; Mon, 13 Jan 2025 19:08:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34433A0C4EF
+	for <lists+linux-omap@lfdr.de>; Mon, 13 Jan 2025 23:56:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FB9B1680D0
-	for <lists+linux-omap@lfdr.de>; Mon, 13 Jan 2025 18:08:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 095031885237
+	for <lists+linux-omap@lfdr.de>; Mon, 13 Jan 2025 22:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489CD1C1F27;
-	Mon, 13 Jan 2025 18:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132861FA140;
+	Mon, 13 Jan 2025 22:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FcIfX37/"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="TOe6Hncq"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF18A189F20
-	for <linux-omap@vger.kernel.org>; Mon, 13 Jan 2025 18:08:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9CD1F9F69;
+	Mon, 13 Jan 2025 22:56:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736791729; cv=none; b=Wd/Kog8CAMe5WVvAIb5bYE5SOO6fOrfWklgoepfaktKuJQwLwzytEDWbYgXT7vTa8/q6l2T9aPW/ipdIi/Vk4dR+WeACqPdS28l6JKWVVBwUZg+jke5/SMV2Mw5EDzXFtiSsHUcxVEELBD0D7F6P6fQT+7eCcUedEUsgtZrs/aU=
+	t=1736808966; cv=none; b=MUAY6hbk5KjX+ibhKdNHEigTVvX+sLUbWZ8hD0ZhBa4PyrEzq6J3Jif7FaYusBepEt9y50DSN+7WrS4CQURL+n4FkcgovkMW4Xr6D2MJpR7J8YQfVOfz6cHWeZ7BZ7DULGZl5+4TaFYQC9/NL/mS/DtERVg78F+/abc2iqlM+Kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736791729; c=relaxed/simple;
-	bh=fjGnrnA+PJF3XUTyX0tLFDsfny9iP/CBBSsHZyVzpV0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ccb/YzMz90lKHhkcqu6bjXeWpdtCb6jbosDD9tqI4Umgpc4lbpmC37TSt1cs6hl10jY89t8L4Nlrl8+emSfhyhgXoz7wkvMOJY17lComIesVeT9JSOQNdHQkg81+5EsXAzR/wJUIF0KKnKLGXE7qbqgQiUBKrTioGX7X8F18nbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FcIfX37/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351CAC4CED6;
-	Mon, 13 Jan 2025 18:08:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736791728;
-	bh=fjGnrnA+PJF3XUTyX0tLFDsfny9iP/CBBSsHZyVzpV0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FcIfX37/Onopt1lbvQfIy/DUix1JOl6bHWYb93Ec3aDDjmARJcqb+rX0nUsH5PVac
-	 ITECje3zkGppJqSvblCbLOZH1SYC8UlSu2bUt1c+594jsxjkUDrskG2LSQAXDe/TqP
-	 JIr0TZFVXfaxXfZh+WbfnGGqEXQXe6e4RugP45BSrGNLBPMOuTRs23P4ydr8eKKOrz
-	 Z6rLtqI81U0H7Uw7V6W69uzLHhG8meRPOttkIdJke9hF2PcDZtdHaOHaWdvVu/V+6u
-	 P3OMOUPUQBnFkxWZo3tQN7ZKTPKB7rrYNmYKF9Mdtg7FdfpNCiAYxN0NBO4TNqN18n
-	 jM0rQOoYdAPcw==
-Message-ID: <25491f79-323b-421f-8053-36d5655e5323@kernel.org>
-Date: Mon, 13 Jan 2025 20:08:43 +0200
+	s=arc-20240116; t=1736808966; c=relaxed/simple;
+	bh=9b++gyDGyApMqv36bHYcg4dH8/jfrHn01weu+NGF730=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=I6V7X8QS7eUVnYqN/95gYXhS2FqI5v8yjg6QJFrLs+FnG4RxS4NxT31rW+08dDlUJEFSj6nwkmOr9JHyu92kZC7PEXBQCX+5wgsdgnJenoeTcCu8ZZb2EUKgsMvQJvGGGKyanqWVQKToM3ic6tLR2Mc3go2n9C9747LAGeqVlsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=TOe6Hncq; arc=none smtp.client-ip=198.47.23.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 50DMtVrh3586287
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 13 Jan 2025 16:55:31 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1736808931;
+	bh=4kVod4nx9bYafYmN8pduPv731rkOBHnpAS3W1IfCqBA=;
+	h=From:To:CC:Subject:Date;
+	b=TOe6HncqG/GEtf8C8CcBY0tgdIezsvBk/WZeU7lxCZk52U3OAvlfVKAHu0Wyf7dog
+	 GRTQa9jtlqDGVZRqZA+ibtD5pUNjTWvEWWyZwVJ8d4CjX6HoTBBG+og6oN1DdO/oxb
+	 ioQQ4OuCznWLE8ie1PxLr0CMn6LvxOlpu3y4PfFk=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 50DMtVJp037814
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 13 Jan 2025 16:55:31 -0600
+Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 13
+ Jan 2025 16:55:30 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 13 Jan 2025 16:55:30 -0600
+Received: from DMZ007XYY.dhcp.ti.com (dmz007xyy.dhcp.ti.com [128.247.29.11])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 50DMtU54047817;
+	Mon, 13 Jan 2025 16:55:30 -0600
+From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+To: <aaro.koskinen@iki.fi>, <andreas@kemnade.info>, <khilman@baylibre.com>,
+        <rogerq@kernel.org>, <tony@atomide.com>, <linus.walleij@linaro.org>,
+        <brgl@bgdev.pl>, <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-gpio@vger.kernel.org>
+CC: <m-leonard@ti.com>, <praneeth@ti.com>, <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH v3 0/3] Add TI TPS65215 PMIC GPIO Support
+Date: Mon, 13 Jan 2025 16:55:27 -0600
+Message-ID: <20250113225530.124213-1-s-ramamoorthy@ti.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] bus: ti-sysc: mark AM62 wkup_uart0 as non deferrable
-To: Francesco Valla <francesco@valla.it>, Nishanth Menon <nm@ti.com>,
- Vignesh Raghavendra <vigneshr@ti.com>, Tero Kristo <kristo@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, Tony Lindgren <tony@atomide.com>,
- Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade
- <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>,
- linux-omap@vger.kernel.org
-References: <20250109175211.113945-2-francesco@valla.it>
-Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20250109175211.113945-2-francesco@valla.it>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
+TPS65215 is a Power Management Integrated Circuit (PMIC) that has
+significant register map overlap with TPS65219. The series introduces
+TPS65215 and restructures the existing driver to support multiple devices.
 
+This follow-up series is dependent on:
+Commit f84464ec8190 ("regulator: dt-bindings: Add TI TPS65215 PMIC bindings")
+Commit 8206c20f4c82 ("mfd: tps65215: Add support for TI TPS65215 PMIC")
+Commit 0e0b7f00c111 ("mfd: tps65215: Remove regmap_read check")
 
-On 09/01/2025 19:52, Francesco Valla wrote:
-> The ti-sysc driver implements a probe deferral logic to be sure to probe
-> the parent interconnects before their children, postponing the probe of
-> interconnects not marked as "early" instances until one of these is
-> found.
-> 
-> Since the driver is alse used for the wkup_uart0 block found on the AM62
+TPS65219 Cleanup Series:
+GPIO: https://lore.kernel.org/all/20241217204755.1011731-1-s-ramamoorthy@ti.com/
+MFD: https://lore.kernel.org/all/20241217204935.1012106-1-s-ramamoorthy@ti.com/
+Reg: https://lore.kernel.org/all/20241217204526.1010989-1-s-ramamoorthy@ti.com/
 
-alse/also
+- Both TPS65215 and TPS65219 have 3 Buck regulators.
+- TPS65215 has 2 LDOs, whereas TPS65219 has 4 LDOs.
+- TPS65215 and TPS65219's LDO1 are the same.
+- TPS65215's LDO2 maps to TPS65219's LDO3.
+- TPS65215 has 1 GPO, whereas TPS65219 has 2 GPOs.
+- The remaining features are the same.
 
-> SoC, but not for other devices on the same platform, this logic forces
-> the probe for it to be artificially deferred 10 times and can lead to
-> the device not being probed at all. The missed probe was seen on a
-> BeaglePlay with the kernel configuration stripped to bare minimum and
-> no module support.
-> 
-> Add the ranges for wkup_uart0 to the list of "early" interconnect
-> instances, forcing the driver to skip the defer logic entirely for this
-> device.
-> 
-> Signed-off-by: Francesco Valla <francesco@valla.it>
-> ---
->  drivers/bus/ti-sysc.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-> index f67b927ae4ca..917b7168fbd0 100644
-> --- a/drivers/bus/ti-sysc.c
-> +++ b/drivers/bus/ti-sysc.c
-> @@ -687,6 +687,8 @@ static struct resource early_bus_ranges[] = {
->  	{ .start = 0x4a300000, .end = 0x4a300000 + 0x30000,  },
->  	/* omap5 and dra7 l4_wkup without dra7 dcan segment */
->  	{ .start = 0x4ae00000, .end = 0x4ae00000 + 0x30000,  },
-> +	/* am62 wkup_uart0 */
-> +	{ .start = 0x2b300000, .end = 0x2b300000 + 0x100000, },
->  };
->  
->  static atomic_t sysc_defer = ATOMIC_INIT(10);
+TPS65215 TRM: https://www.ti.com/lit/pdf/slvucw5/
 
-While this is probably OK for now, we need to ensure that sysc_defer_non_critical()
-is not called for such devices that don't have an interconnect managed by
-the sysc driver (i.e. non OMAP based systems).
+AM62L + TPS65215 Test Logs:
+https://gist.github.com/ramamoorthyhs/7560eca6110fafc77b51894fa2c0fd22
 
-Maybe this calls for a new compatible for AM62 sysc?
+---
+Change Log:
+v2 -> v3:
+- Correct gpio_chip.ngpio line to use .offset field
+- Remove unnecessary newlines
 
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
+v1 -> v2:
+- have any PMIC lists be in alpha-numeric order: TPS65215, then TPS65219
+- remove comma after terminator
+- Add driver prefix to chip_data struct
+---
+
+Shree Ramamoorthy (3):
+  gpio: tps65215: Add TPS65215 to platform_device_id table
+  gpio: tps65215: Update GPIO0_IDX macro prefix
+  gpio tps65215: Add support for varying gpio/offset values
+
+ drivers/gpio/gpio-tps65219.c | 55 +++++++++++++++++++++++++++---------
+ 1 file changed, 41 insertions(+), 14 deletions(-)
 
 -- 
-cheers,
--roger
+2.43.0
 
 
