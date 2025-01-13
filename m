@@ -1,99 +1,103 @@
-Return-Path: <linux-omap+bounces-3098-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3099-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B6DFA0B915
-	for <lists+linux-omap@lfdr.de>; Mon, 13 Jan 2025 15:08:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08AFFA0B956
+	for <lists+linux-omap@lfdr.de>; Mon, 13 Jan 2025 15:22:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E9533A643D
-	for <lists+linux-omap@lfdr.de>; Mon, 13 Jan 2025 14:08:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4062D3A262C
+	for <lists+linux-omap@lfdr.de>; Mon, 13 Jan 2025 14:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705EE23ED61;
-	Mon, 13 Jan 2025 14:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383A023ED75;
+	Mon, 13 Jan 2025 14:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="spJ39n2L"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="l0w7TXha"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1084923ED4D;
-	Mon, 13 Jan 2025 14:08:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C26A235BFC
+	for <linux-omap@vger.kernel.org>; Mon, 13 Jan 2025 14:22:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736777303; cv=none; b=JSGBIas4n62gXukihGOGYPJ0eitnaxINBVW3d/Qxa3g8M/absfwJKxL3Ry5WDl5rMrttRdj4QD9VJQ0ZjwsoLZrT3xcsmxu8/GPAGmLhfgeqT60plS30IgqJjOERVyuPUxtbVqhXtVTFgig6KGQQ61xEbhaT4WJLHbZqXs2rr5w=
+	t=1736778148; cv=none; b=oxNjz1F0AtzQFQxgVbAGxeyU6J9AMkxIJ89UlcFaV+rjIvzx5+XgteOyNbB513JMySAybFM2J/vF8TpZ03ufuEkAUzv6Uzg+U1XmkAHvZnAalCzwP9L6pWwOEe7bcz3xY4EEqRaakikZIoeROUPVYl7tcfxCns2vMhQWqTmBYEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736777303; c=relaxed/simple;
-	bh=PQEifYdxBu8qJTvMcQwP4XiBVXlaPfExmJUXZK2bsCk=;
+	s=arc-20240116; t=1736778148; c=relaxed/simple;
+	bh=hVM6Q6nl2z8cXwAn+C0EVV/4XZBLyo2kPcFo1oLs52M=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EEoPh313AG3GKCQda4K/hoTv0Kc9l0/kXIXNn8fkvODdBtrNW8yVW79XZWNguKCpOLfLxH/CV7rBXf7qQtAXvYOUIq+jQSO9k5X5Wu1WkCx+b5BgU+3+OeFcUgr93BH+WH+cKi4xw8TVTMKeQal/Pvi9KQzTayUsyVMSjiTP5Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=spJ39n2L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E672DC4AF09;
-	Mon, 13 Jan 2025 14:08:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736777302;
-	bh=PQEifYdxBu8qJTvMcQwP4XiBVXlaPfExmJUXZK2bsCk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=spJ39n2LKWZcyX7jOhCgcDl8aFaabMbGPXbrJNxYFJjRsUWBSZOC4l60fRd2Kgd0N
-	 CrQg7wFO5HAcKB/8sI2dEmqBCU1NUeVBf/qBHfViYjpwSOFvn3gHHV022Q4UI5Z6pM
-	 S49HI6Ld6SW0STYCJMkymdfq+Rdp8k4fkpi7kyByw0PETsMQQOoAXpuBYHI1DZ3KUa
-	 +/aDaOneJ8Pnm1vsRBC1noxEmPe/JGsJfurXZNeUprRLEKMJxKO1wpk51cCaJITKFk
-	 IX4XHdTCzbvclFtM9PBURerZZxjmcw9dVS76bx5uTSRnoAaFVgWq27aAet9JglmkAA
-	 kF1tqJ74xkO4w==
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-540201cfedbso3915658e87.3;
-        Mon, 13 Jan 2025 06:08:22 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWaBBKLIL7nCU7rgqQFFQhzcDVnUNMq9/XTmRHLqdv3YtkNmI94tsY3AedXAL5xljSwTNTxE/epW7Zj+g==@vger.kernel.org, AJvYcCXSuJBGyUJUL6SVNjN8sgREqgeLzP3XYKko0tFkqOYSqDzTvBl2Xv1GIzFv0ajWJbZrvJn4lnII1D0CeNo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbqsmeL/dCu2eTlosaTY0nhQx7UD10EV9oVsL1bq/o0skMjQYs
-	Y6DD5jCG0S/OtjBmGxuF9YCu2Oq559Wz05F+PoqXKTr560sQ8kmcLEKQOw1F52pJenz8GNVRiO8
-	NIgg8jTe7xcstr7iZiUO1CiEb1A==
-X-Google-Smtp-Source: AGHT+IE1H1bRSKQjFQlMjB6ysyK+qdUHVM5FjfDzirriJkMZ+yIiNrTsn69jxVI2VSdD9HH/Hb7WTwx3KV/NVt1Ekpo=
-X-Received: by 2002:a05:6512:3ba2:b0:53e:39ed:85e6 with SMTP id
- 2adb3069b0e04-54284546fb5mr6399578e87.32.1736777301179; Mon, 13 Jan 2025
- 06:08:21 -0800 (PST)
+	 To:Cc:Content-Type; b=n8zPYN9onVO2wmWxIJPJ8/9zoPo8KZSa+BJfA3t2ImhrUvivPk8jLQqrMiDRRs+EUyTyFh0vImukUiuAGYIwETNFcBKmSwQ0PCLDA+f0royutypQMIeCyTx+iyLBYqU/3Dsgrq2ZXXdYZkEghkFqGFft5QquMFqO1IPOYJXhvPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=l0w7TXha; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3003d7ca01cso39829521fa.0
+        for <linux-omap@vger.kernel.org>; Mon, 13 Jan 2025 06:22:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1736778144; x=1737382944; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hVM6Q6nl2z8cXwAn+C0EVV/4XZBLyo2kPcFo1oLs52M=;
+        b=l0w7TXhaa8QL3ybpFYu/gIbRQ3FnFPB2YmSIf2Bi47P3KzJdxN8LZwCHNX0ZawYLIh
+         TQaDsQsvkQG0DsXyyr1KQEUx44yUI1moPwy4+cvbg5iSUBx6yFe0/ySzQ6Eb4780wqTn
+         l4KmtdRzjT0qrZ+z0bDJPPeW2fgeGyTTTlKk50hXVxGecfVbwlWRk6QBsFVIdjk9kAx5
+         pjUGX9g4gjpfUKYFQnbk3mHcSdYilYacFjpfH2gekCW0MdWzsewLkBhIrufc2+9ARZnc
+         0FdGQzrkID9fsi6cHKSSMdWxPOCFIpHLJxn/Icahlm6F4BkNctB309oXCh/dGw8Yow7S
+         d0Ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736778144; x=1737382944;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hVM6Q6nl2z8cXwAn+C0EVV/4XZBLyo2kPcFo1oLs52M=;
+        b=jboqXggZkHfXGdXS6RvlY82uh8lWaLxqZtIk0CzrSPsLRcWz6fx1kV8SGChOTpww5x
+         Ki88tRflGNFF9VqVTDhf/2zW0Pj5B/937hGja6HOhyB0nxMaahAW5oX7vHIsPWgT69Dm
+         GsH2F5/fNH/JD9/td03mGk7INu7mPrfCi8un/NrrUcIZOYS1RL9BT2+Oerznt9+J25PX
+         /obekcvNdie3hHkR8DP97HQywz7aVwbNY/KuCtKeitq23gp+N0Idb3aOsjzdlySiqrAO
+         FFDLfY2q9WFCOj52RWEWug475kHzCDZdLdcMieuJJzx8YI6ymqw/9vEc1OKKFUYXHYvm
+         Zfiw==
+X-Forwarded-Encrypted: i=1; AJvYcCVY+OWaSvamwsTKr153xJ8axM0rGv+HM5Ickj7kAsiZH35cs2ykHF4fWawzR2AaieHmBNkKfdgHuBRw@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzj7KkSkgH8qkjtfjXrfJsRN2AZ04usc+BljmiXIAgFFu8HBXFV
+	pOM6i9+vb6GDpiFDKMzMddeHDADkuFomkXhqzAO3jk2s/1yi4oMUfdmL/dy3aOa7niFa+d0+fQv
+	iYddrGA3aCf6I/JlZLZKniDYHcNQZ91ro0Kev7A==
+X-Gm-Gg: ASbGncurLyG2LFfbLDWX6jtVWKnZHr8ZhrrjjeIbyw0nCOUmQXarViwdcisJRuFVU+X
+	FlxOm3gFPXZ3QPaDZ8jHgMr+hNpzmUmX/PuoK
+X-Google-Smtp-Source: AGHT+IGrIp/YeFWUqkZp4mq1epwojwJuO2MFV6BwKUJrwVosj2W4wO5hjnuQkHxGYcHx/sm+Sao3K5qAIcHXELaE4mc=
+X-Received: by 2002:a05:651c:a0b:b0:302:40ec:a1b3 with SMTP id
+ 38308e7fff4ca-305f45a0a29mr66505751fa.21.1736778144142; Mon, 13 Jan 2025
+ 06:22:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250109182110.3970894-1-robh@kernel.org> <75ead807-4ad1-4f82-8ce1-dea68ef9d9ab@kernel.org>
-In-Reply-To: <75ead807-4ad1-4f82-8ce1-dea68ef9d9ab@kernel.org>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 13 Jan 2025 08:08:09 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqKHanejGiUhc78M7xCUPaqvvXojben0-m83HrzrRogpYw@mail.gmail.com>
-X-Gm-Features: AbW1kvbSfBXVqq0Amz-MOSQfrpKTdN592CKsgn3i4xk9q_8fSxO3YmUbcTZi2cM
-Message-ID: <CAL_JsqKHanejGiUhc78M7xCUPaqvvXojben0-m83HrzrRogpYw@mail.gmail.com>
-Subject: Re: [PATCH] memory: omap-gpmc: Use of_property_present() for
- non-boolean properties
-To: Roger Quadros <rogerq@kernel.org>
-Cc: Tony Lindgren <tony@atomide.com>, Krzysztof Kozlowski <krzk@kernel.org>, linux-omap@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20241226215858.397054-1-s-ramamoorthy@ti.com> <20241226215858.397054-3-s-ramamoorthy@ti.com>
+In-Reply-To: <20241226215858.397054-3-s-ramamoorthy@ti.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Mon, 13 Jan 2025 15:22:13 +0100
+X-Gm-Features: AbW1kvZw-J9T2lbOIdvQTsvnzzUUNu5FkxOd4XaIzoaWKdeSjEblgmM_5TWT_0M
+Message-ID: <CACRpkdaszNc-wLj7eztFhhsZi=K3bUqSN=m-ET4sdVdi6ufM7w@mail.gmail.com>
+Subject: Re: [PATCH v1 2/3] gpio: tps65215: Update GPIO0_IDX macro prefix
+To: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+Cc: aaro.koskinen@iki.fi, andreas@kemnade.info, khilman@baylibre.com, 
+	rogerq@kernel.org, tony@atomide.com, brgl@bgdev.pl, 
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, m-leonard@ti.com, praneeth@ti.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 10, 2025 at 3:08=E2=80=AFAM Roger Quadros <rogerq@kernel.org> w=
-rote:
->
-> Hi Rob,
->
-> On 09/01/2025 20:21, Rob Herring (Arm) wrote:
-> > The use of of_property_read_bool() for non-boolean properties is
-> > deprecated in favor of of_property_present() when testing for property
-> > presence.
-> >
-> > While we're here, simplify the 2 checks into a single check as they
-> > only differ in printing "NAND" vs "OneNAND" in the warning.
-> >
-> > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> > ---
-> > Possibly this check could just be removed altogether?
->
-> Yes, I agree it is better to just drop these checks.
-> Let me know if you want me to prepare the path. Thanks.
+On Thu, Dec 26, 2024 at 10:59=E2=80=AFPM Shree Ramamoorthy <s-ramamoorthy@t=
+i.com> wrote:
 
-Please do. You would know better than me on the details of why it
-would be fine to remove.
+> Updating the macro name to TPS6521X_GPIO0_IDX is meant to indicate this
+> macro applies to both PMIC devices.
+>
+> Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
 
-Rob
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+
+Yours,
+Linus Walleij
 
