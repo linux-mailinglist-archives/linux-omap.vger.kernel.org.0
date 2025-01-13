@@ -1,50 +1,50 @@
-Return-Path: <linux-omap+bounces-3110-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3111-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A10FEA0C545
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Jan 2025 00:11:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8387A0C546
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Jan 2025 00:11:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78C4D7A03E2
-	for <lists+linux-omap@lfdr.de>; Mon, 13 Jan 2025 23:10:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D59BC165FB1
+	for <lists+linux-omap@lfdr.de>; Mon, 13 Jan 2025 23:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF711FA150;
-	Mon, 13 Jan 2025 23:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA141FA245;
+	Mon, 13 Jan 2025 23:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="H2ncouGZ"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Uo63VPsr"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480591F9EDC;
-	Mon, 13 Jan 2025 23:10:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38E91FA17D;
+	Mon, 13 Jan 2025 23:10:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736809838; cv=none; b=NfZ0f3AKhxQ49rpW65wcWWB5qrJXo14kRptWWW4/V+sPBwn0qdWrwNcpJ5dKd6u7wvQj9UOu+gtyUTGfdIUPNQy4eitD6VtNvPpCUkpZL4qw9fz/gqZ4waHdRRk0UzK8jG/6DPtxBlY60uMBG9VbnjqPT6TENrac52KEX9XNTlw=
+	t=1736809842; cv=none; b=q+VoB8ubAKBU0+K3bzWP4+9cO+lIIDyvnHbgVwJJ4OeSekt1ndBsH+zAbO94CgUvt/zu94RpQx0GXY5vnjmmTxyGJRNmkBitCkYFD10KuAwzuG1F4oPoPxUFO1X752QACSlR9UrRz0D81mgrhp8oejg4aMUa3DWpe7sPZeTmzDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736809838; c=relaxed/simple;
-	bh=hqxdz3xMnfqi6DswrpfL1Son2ONYGQE5KL/6wdxyTP8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Kcio0vJqgrpXWzEQamojEqJ5GhlonyvFR0p+wSuPbgHsS0hmjOSnDabBV2ZQmIZ4MHeEFErQjtd+bX/5m6IyxRIV6lQr0UWCvZABK/BBRDU7wM34YWe2FNVo7d8EAU3+BIf/q6z0n5F72S5CIfzZpB/gysq6budRZdPJbuPL5AY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=H2ncouGZ; arc=none smtp.client-ip=198.47.19.246
+	s=arc-20240116; t=1736809842; c=relaxed/simple;
+	bh=5HmqIEwQDhT/fPTDXezmwn7sgoPKX2ZaErjBJGsoO2c=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Kqmu8NN259osCXUCh664WIOSv4KgQWVeWiX1qjDoR0wI6ldawOD/D6McMYmaMGiYWOOIOV6BX1P5SdHM6tOBY6bhN30Y/QzJ0fiymmZhcdvBtgoHslIO0szEx5Iw69aAmH1gs1T54ybUlaY56e84K434d5wR9bLKLBfDsS3IQYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Uo63VPsr; arc=none smtp.client-ip=198.47.23.249
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 50DNAJNr3762057
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 50DNAJPd110778;
 	Mon, 13 Jan 2025 17:10:19 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
 	s=ti-com-17Q1; t=1736809819;
-	bh=X2ibNLMuL9jD+RQ2YdfCDeZ0sh4YZKzO/lG3VEoyxeQ=;
-	h=From:To:CC:Subject:Date;
-	b=H2ncouGZ8WzkuNvOG+Iw9i20FpkLFDSeTR3i905sJlxXpemXv+nWa9TeECFOCmGk4
-	 lCycjL2OJSEmuKBNoAdM7ZPSeJXT3VHOIEv53NCngzOMfBwcxZ82Iaazdk+InKL1F/
-	 dCdCD/9/owvi0o0fEscUBtX+ae8PU1LYnhJerVHk=
+	bh=OzMsMYzvtNOv2sPu1fDjqFwOigJbJ6LKyg1WBI7ZwQ4=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=Uo63VPsrSMBURwUzLN+Xc+nrWNoSv9aCCkrdnMHT9jcdew3f3u2idRkF+2E0W17a1
+	 KuYZ/EsocjixGGmoivITc9VVYQgVeJiIwcNjP6WDDsOK6sPdUc/SwZwKIlopf5FqsZ
+	 po72bRUcm4TihG1CNiCHdeLdPkPDFGUf4oR/aXSQ=
 Received: from DLEE110.ent.ti.com (dlee110.ent.ti.com [157.170.170.21])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 50DNAID5046951
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 50DNAJYf046954
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 13 Jan 2025 17:10:18 -0600
+	Mon, 13 Jan 2025 17:10:19 -0600
 Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE110.ent.ti.com
  (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 13
@@ -54,7 +54,7 @@ Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE111.ent.ti.com
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
  Frontend Transport; Mon, 13 Jan 2025 17:10:18 -0600
 Received: from DMZ007XYY.dhcp.ti.com (dmz007xyy.dhcp.ti.com [128.247.29.11])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 50DNAILx067169;
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 50DNAIM0067169;
 	Mon, 13 Jan 2025 17:10:18 -0600
 From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
 To: <lgirdwood@gmail.com>, <broonie@kernel.org>, <robh@kernel.org>,
@@ -64,10 +64,12 @@ To: <lgirdwood@gmail.com>, <broonie@kernel.org>, <robh@kernel.org>,
         <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <devicetree@vger.kernel.org>
 CC: <m-leonard@ti.com>, <praneeth@ti.com>, <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH v3 0/4] Add TI TPS65215 PMIC Regulator Support
-Date: Mon, 13 Jan 2025 17:10:14 -0600
-Message-ID: <20250113231018.125426-1-s-ramamoorthy@ti.com>
+Subject: [PATCH v3 1/4] regulator: tps65215: Update struct names
+Date: Mon, 13 Jan 2025 17:10:15 -0600
+Message-ID: <20250113231018.125426-2-s-ramamoorthy@ti.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250113231018.125426-1-s-ramamoorthy@ti.com>
+References: <20250113231018.125426-1-s-ramamoorthy@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -78,66 +80,131 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-TPS65215 is a Power Management Integrated Circuit (PMIC) that has
-significant register map overlap with TPS65219. The series introduces
-TPS65215 and restructures the existing driver to support multiple devices.
+Isolate changes that involve renaming to indicate this resource is only for
+TPS65219 or if it will be common for both devices. The renames are in
+preparation for adding TPS65215 support.
 
-This follow-up series is dependent on the TPS65215 MFD Driver Series:
-Commit 8206c20f4c82 ("mfd: tps65215: Add support for TI TPS65215 PMIC")
-Commit 0e0b7f00c111 ("mfd: tps65215: Remove regmap_read check")
-
-TPS65219 Cleanup Series:
-GPIO: https://lore.kernel.org/all/20241217204755.1011731-1-s-ramamoorthy@ti.com/
-MFD: https://lore.kernel.org/all/20241217204935.1012106-1-s-ramamoorthy@ti.com/
-Reg: https://lore.kernel.org/all/20241217204526.1010989-1-s-ramamoorthy@ti.com/
-
-- Both TPS65215 and TPS65219 have 3 Buck regulators.
-- TPS65215 has 2 LDOs, whereas TPS65219 has 4 LDOs.
-- TPS65215 and TPS65219's LDO1 are the same.
-- TPS65215's LDO2 maps to TPS65219's LDO3.
-- TPS65215 has 1 GPO, whereas TPS65219 has 2 GPOs.
-- The remaining features are the same.
-
-TPS65215 TRM: https://www.ti.com/lit/pdf/slvucw5/
-
-AM62L + TPS65215 Test Logs:
-https://gist.github.com/ramamoorthyhs/7560eca6110fafc77b51894fa2c0fd22
-
+Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
 ---
-Change Log:
-v2 -> v3:
-dt-bindings: 
-- Alphanumeric order for PMIC list
-- add allOf:if:then: which will disallow :false two LDOs and their supplies
+ drivers/regulator/tps65219-regulator.c | 37 +++++++++++++++-----------
+ 1 file changed, 21 insertions(+), 16 deletions(-)
 
-regulator.c:
-- Revert addition of 2 probe helper functions
-- Add empty tps65215_regulator_irq_types struct to minimize loops in probe
-- Consolidate patches to define and use func/structs in the same patches to
-  prevent build error due to no users of the defined functions
-- Apply reverse xmas tree style to variable defintions in functions
-- Remove unnecessary new lines & add new line after declarations
-
-v1 -> v2:
-- have any PMIC lists be in alpha-numeric order: TPS65215, then TPS65219
-- Add driver prefix to chip_data struct
-- Have probe() helper functions use dev_err_probe instead of dev_err() to 
-  log the error code in a human readable format & combined with return, it 
-  saves a few LoC since { } can be removed.
-- Add error handling of 'irq_data' in probe() as previously done.
----
-
-Shree Ramamoorthy (4):
-  regulator: tps65215: Update struct names
-  regulator: dt-bindings: Add TI TPS65215 PMIC bindings
-  regulator: tps65215: Add support for TPS65215 regulator resources
-  regulator: tps65215: Add support for TPS65215 Regulator IRQs
-
- .../bindings/regulator/ti,tps65219.yaml       |  21 +-
- drivers/regulator/Kconfig                     |   7 +-
- drivers/regulator/tps65219-regulator.c        | 188 +++++++++++++-----
- 3 files changed, 165 insertions(+), 51 deletions(-)
-
+diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
+index aa65077f9d41..3c7c3a6d4c15 100644
+--- a/drivers/regulator/tps65219-regulator.c
++++ b/drivers/regulator/tps65219-regulator.c
+@@ -125,12 +125,17 @@ static const struct linear_range bucks_ranges[] = {
+ 	REGULATOR_LINEAR_RANGE(3400000, 0x34, 0x3f, 0),
+ };
+ 
+-static const struct linear_range ldos_1_2_ranges[] = {
++static const struct linear_range ldo_1_range[] = {
+ 	REGULATOR_LINEAR_RANGE(600000, 0x0, 0x37, 50000),
+ 	REGULATOR_LINEAR_RANGE(3400000, 0x38, 0x3f, 0),
+ };
+ 
+-static const struct linear_range ldos_3_4_ranges[] = {
++static const struct linear_range tps65219_ldo_2_range[] = {
++	REGULATOR_LINEAR_RANGE(600000, 0x0, 0x37, 50000),
++	REGULATOR_LINEAR_RANGE(3400000, 0x38, 0x3f, 0),
++};
++
++static const struct linear_range tps65219_ldos_3_4_range[] = {
+ 	REGULATOR_LINEAR_RANGE(1200000, 0x0, 0xC, 0),
+ 	REGULATOR_LINEAR_RANGE(1250000, 0xD, 0x35, 50000),
+ 	REGULATOR_LINEAR_RANGE(3300000, 0x36, 0x3F, 0),
+@@ -174,7 +179,7 @@ static unsigned int tps65219_get_mode(struct regulator_dev *dev)
+ }
+ 
+ /* Operations permitted on BUCK1/2/3 */
+-static const struct regulator_ops tps65219_bucks_ops = {
++static const struct regulator_ops bucks_ops = {
+ 	.is_enabled		= regulator_is_enabled_regmap,
+ 	.enable			= regulator_enable_regmap,
+ 	.disable		= regulator_disable_regmap,
+@@ -189,7 +194,7 @@ static const struct regulator_ops tps65219_bucks_ops = {
+ };
+ 
+ /* Operations permitted on LDO1/2 */
+-static const struct regulator_ops tps65219_ldos_1_2_ops = {
++static const struct regulator_ops ldos_1_2_ops = {
+ 	.is_enabled		= regulator_is_enabled_regmap,
+ 	.enable			= regulator_enable_regmap,
+ 	.disable		= regulator_disable_regmap,
+@@ -204,7 +209,7 @@ static const struct regulator_ops tps65219_ldos_1_2_ops = {
+ };
+ 
+ /* Operations permitted on LDO3/4 */
+-static const struct regulator_ops tps65219_ldos_3_4_ops = {
++static const struct regulator_ops ldos_3_4_ops = {
+ 	.is_enabled		= regulator_is_enabled_regmap,
+ 	.enable			= regulator_enable_regmap,
+ 	.disable		= regulator_disable_regmap,
+@@ -218,53 +223,53 @@ static const struct regulator_ops tps65219_ldos_3_4_ops = {
+ 
+ static const struct regulator_desc regulators[] = {
+ 	TPS65219_REGULATOR("BUCK1", "buck1", TPS65219_BUCK_1,
+-			   REGULATOR_VOLTAGE, tps65219_bucks_ops, 64,
++			   REGULATOR_VOLTAGE, bucks_ops, 64,
+ 			   TPS65219_REG_BUCK1_VOUT,
+ 			   TPS65219_BUCKS_LDOS_VOUT_VSET_MASK,
+ 			   TPS65219_REG_ENABLE_CTRL,
+ 			   TPS65219_ENABLE_BUCK1_EN_MASK, 0, 0, bucks_ranges,
+ 			   3, 4000, 0, NULL, 0, 0),
+ 	TPS65219_REGULATOR("BUCK2", "buck2", TPS65219_BUCK_2,
+-			   REGULATOR_VOLTAGE, tps65219_bucks_ops, 64,
++			   REGULATOR_VOLTAGE, bucks_ops, 64,
+ 			   TPS65219_REG_BUCK2_VOUT,
+ 			   TPS65219_BUCKS_LDOS_VOUT_VSET_MASK,
+ 			   TPS65219_REG_ENABLE_CTRL,
+ 			   TPS65219_ENABLE_BUCK2_EN_MASK, 0, 0, bucks_ranges,
+ 			   3, 4000, 0, NULL, 0, 0),
+ 	TPS65219_REGULATOR("BUCK3", "buck3", TPS65219_BUCK_3,
+-			   REGULATOR_VOLTAGE, tps65219_bucks_ops, 64,
++			   REGULATOR_VOLTAGE, bucks_ops, 64,
+ 			   TPS65219_REG_BUCK3_VOUT,
+ 			   TPS65219_BUCKS_LDOS_VOUT_VSET_MASK,
+ 			   TPS65219_REG_ENABLE_CTRL,
+ 			   TPS65219_ENABLE_BUCK3_EN_MASK, 0, 0, bucks_ranges,
+ 			   3, 0, 0, NULL, 0, 0),
+ 	TPS65219_REGULATOR("LDO1", "ldo1", TPS65219_LDO_1,
+-			   REGULATOR_VOLTAGE, tps65219_ldos_1_2_ops, 64,
++			   REGULATOR_VOLTAGE, ldos_1_2_ops, 64,
+ 			   TPS65219_REG_LDO1_VOUT,
+ 			   TPS65219_BUCKS_LDOS_VOUT_VSET_MASK,
+ 			   TPS65219_REG_ENABLE_CTRL,
+-			   TPS65219_ENABLE_LDO1_EN_MASK, 0, 0, ldos_1_2_ranges,
++			   TPS65219_ENABLE_LDO1_EN_MASK, 0, 0, ldo_1_range,
+ 			   2, 0, 0, NULL, 0, TPS65219_LDOS_BYP_CONFIG_MASK),
+ 	TPS65219_REGULATOR("LDO2", "ldo2", TPS65219_LDO_2,
+-			   REGULATOR_VOLTAGE, tps65219_ldos_1_2_ops, 64,
++			   REGULATOR_VOLTAGE, ldos_1_2_ops, 64,
+ 			   TPS65219_REG_LDO2_VOUT,
+ 			   TPS65219_BUCKS_LDOS_VOUT_VSET_MASK,
+ 			   TPS65219_REG_ENABLE_CTRL,
+-			   TPS65219_ENABLE_LDO2_EN_MASK, 0, 0, ldos_1_2_ranges,
++			   TPS65219_ENABLE_LDO2_EN_MASK, 0, 0, tps65219_ldo_2_range,
+ 			   2, 0, 0, NULL, 0, TPS65219_LDOS_BYP_CONFIG_MASK),
+ 	TPS65219_REGULATOR("LDO3", "ldo3", TPS65219_LDO_3,
+-			   REGULATOR_VOLTAGE, tps65219_ldos_3_4_ops, 64,
++			   REGULATOR_VOLTAGE, ldos_3_4_ops, 64,
+ 			   TPS65219_REG_LDO3_VOUT,
+ 			   TPS65219_BUCKS_LDOS_VOUT_VSET_MASK,
+ 			   TPS65219_REG_ENABLE_CTRL,
+-			   TPS65219_ENABLE_LDO3_EN_MASK, 0, 0, ldos_3_4_ranges,
++			   TPS65219_ENABLE_LDO3_EN_MASK, 0, 0, tps65219_ldos_3_4_range,
+ 			   3, 0, 0, NULL, 0, 0),
+ 	TPS65219_REGULATOR("LDO4", "ldo4", TPS65219_LDO_4,
+-			   REGULATOR_VOLTAGE, tps65219_ldos_3_4_ops, 64,
++			   REGULATOR_VOLTAGE, ldos_3_4_ops, 64,
+ 			   TPS65219_REG_LDO4_VOUT,
+ 			   TPS65219_BUCKS_LDOS_VOUT_VSET_MASK,
+ 			   TPS65219_REG_ENABLE_CTRL,
+-			   TPS65219_ENABLE_LDO4_EN_MASK, 0, 0, ldos_3_4_ranges,
++			   TPS65219_ENABLE_LDO4_EN_MASK, 0, 0, tps65219_ldos_3_4_range,
+ 			   3, 0, 0, NULL, 0, 0),
+ };
+ 
 -- 
 2.43.0
 
