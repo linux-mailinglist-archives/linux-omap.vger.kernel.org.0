@@ -1,70 +1,70 @@
-Return-Path: <linux-omap+bounces-3120-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3121-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51A63A1124E
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Jan 2025 21:43:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B640A1124C
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Jan 2025 21:43:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC3903AAFDE
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Jan 2025 20:42:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B6957A4640
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Jan 2025 20:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C04211A3A;
-	Tue, 14 Jan 2025 20:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76561212D6B;
+	Tue, 14 Jan 2025 20:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b="IAKGZc3a";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IiUpBfIS"
+	dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b="L8UK+qNt";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Tj/+nmxT"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49F220CCEB;
-	Tue, 14 Jan 2025 20:42:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8148F212B34;
+	Tue, 14 Jan 2025 20:42:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736887334; cv=none; b=el4cR2rkflJtK9bI3UFf26aEllOqRv4M1oSb4+QUDm48sIpQguzr5UFuGI+RHrdX0GUqS8zEJDd0fn/Di4uRM4nwCC/SWaghk46BEEyopvca0SRcqY/322JLD6il8NMMZ8Z5mdaKAgXvovtTanAg0pedE1ueLd7qphU4lwThEJI=
+	t=1736887340; cv=none; b=tg5ITLsRI3nDPyjJY6LxLgDyuqqf4s91gm43sYlxhrBjNEAkv91KOA9p7DWYgCLOl/HzqAtWZoy/FA8QxczgJwODn+Ry0SSWIViwonPFJzH0CCshwui8EohwQCygSJxcdF9mZn4xWhT5CVGYxlhI2CH2Qz/s3XxomU5MbsbKS2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736887334; c=relaxed/simple;
-	bh=faYQjbUe+IZ6IbLVoFWLES94wJ4yKdbIyLHK1P3reTU=;
+	s=arc-20240116; t=1736887340; c=relaxed/simple;
+	bh=BhZXBD4LrwRi3kBTuqWLXE3VKHJ0GCDQScQEjxdA+cU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iUukpBKixbBq/92Q2NbtMpaW39QCBOh2CwOq9c1go1/L+4WW19OciOve+jZsEQQLoTNVz2436NNwL6VWyioQ1sEiHKMw6evAsncs4v4jVJ1IujsYHGQMqex2LnhUReXL0fGjL+aXYahcraIU9VUUCLrlCvp8+fHrejnwyAxVzdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name; spf=pass smtp.mailfrom=coelacanthus.name; dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b=IAKGZc3a; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IiUpBfIS; arc=none smtp.client-ip=202.12.124.156
+	 In-Reply-To:To:Cc; b=JPPBXZmD7XzL+sIRd806b+C6nXA8MwoQqIbsSvrnsSceCWFFHFPYoM/QG8KDB+GRLno5PCyMIQzvgFngbQVDwErWKSKxF+8jqi6ubZLjYhCNW+9zMPeVR+MQnr4QaGlfMt0PtBb287P0Jp5zTWD+y9pU0HOurQEJRRxiGrIJ+zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name; spf=pass smtp.mailfrom=coelacanthus.name; dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b=L8UK+qNt; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Tj/+nmxT; arc=none smtp.client-ip=202.12.124.149
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=coelacanthus.name
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 3E80D25400FF;
-	Tue, 14 Jan 2025 15:42:11 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Tue, 14 Jan 2025 15:42:12 -0500
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfout.stl.internal (Postfix) with ESMTP id D7F9611400D1;
+	Tue, 14 Jan 2025 15:42:16 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Tue, 14 Jan 2025 15:42:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	coelacanthus.name; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:from:from:in-reply-to
 	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1736887331; x=1736973731; bh=SoZljfqV8Y
-	76xmxQUUDqkab4/v2p6BHdmrbK5iG/0+g=; b=IAKGZc3athbt3hkSGEEWqMY7ze
-	mRmr7xsvi+z5vfd4Dyr0vRzQ2GGlYCcw84PUlMvxW8DaNNmw3wBRor1f0F53qaQd
-	tHeAPBUuBZcY6Y6STHHI/kGkIAgzqTorwThm7bTMErrdXttKRKmafSTbyk/nl6py
-	FBoaTwMT584P+XAj9Q5jdiiaRhcVU1i18N4MMf+sh1G68koVQop8MIe7fhJe9MEk
-	OzlMBI2QDety9Jrwp17pPArOswDD6duSaRN2bzUVOima8JIx7fjsbH5mVT8vQCeX
-	dB8cW7+ZHZIqPoxRL8CZshzdpehthwupK+h67nIAag0mRbyhtW8PWsuTosGQ==
+	:subject:to:to; s=fm3; t=1736887336; x=1736973736; bh=l/AGE8pJh7
+	GgNRDEtM0gaQGj3X0ZPhDFL8vEdG1DJNQ=; b=L8UK+qNtsmAFZQ+3hTNYAXZIpB
+	Qr13KJDajs03XLtUJ5I+ZEH0mOVmXZ3rsNRiNEWx+547dJ8K30+6aOuZYIoPAofL
+	VXNFcJEUV/fPhXRue16Yqgb+VhoM8VJXH3JovgIFMPL0Mg6euHE6Pog9n8jt8Vtm
+	DO1sLrPvlNBFeXEWZ5HnPzd/ZjjAtQBMRaOfBfS9lNLtG53P3uKB2ur4rXTOKn6X
+	qrdjomrCEeY0zr9E5TB9wNEFjEW3CTWE2fUZWHXlj8SREE9Uhnt9JrJEdR/Yc8DQ
+	1FXmCuryCrUZTv4NbBmVFP728Vht4AwZ6pcOfuJYckNrpFhpHy2Bz8sBXl+A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1736887331; x=
-	1736973731; bh=SoZljfqV8Y76xmxQUUDqkab4/v2p6BHdmrbK5iG/0+g=; b=I
-	iUpBfISPzKBT9yT6zKuwlNp0GG58m7pSzuKPBqLqZajDBABVXrnH5Ej7rfNVibxS
-	pTdzrR0R0sdoKDWOiNUXhAq9KWKByoCFXzsp9+y9lQ/zIqsZoeNQ7nCesgLzfjba
-	DdzMIThDLkz5tzQzl2M0TqL/SVBVLCG5EmqDC9XdOhD7YgnMeSVA4MecxFIyP3md
-	5sHqSjtVuO+22UKXeUlmSTU2R1MwetSUHCLv6A/dWNrZGQQT3BRsFrBcOGMn7i5/
-	+0/vM1GFLMlc7rGJ0G4J5WxgFAIfCPWOp+Ya9pkHS5R3ZpjUFoJVi/hXD7ypKipx
-	lfQbCq/pVe2nDY9sO9DSQ==
-X-ME-Sender: <xms:IsyGZ1t3Yn6qnH04zPLAsVx000nqjRNfc3f5-430jHs1ZFLNvN6BSg>
-    <xme:IsyGZ-evAoE-ou6IJQWvHR2XLisQXzveprsua1AWjVD5kDnLVFs6OC9d057HsC8A3
-    TlWL7cYohqB6YawfEU>
-X-ME-Received: <xmr:IsyGZ4zHgsprho57NuJk5bkjPslGOoc638dlfvw6LGi9Y29u84mB6SXHglIA0Q>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1736887336; x=
+	1736973736; bh=l/AGE8pJh7GgNRDEtM0gaQGj3X0ZPhDFL8vEdG1DJNQ=; b=T
+	j/+nmxTF/xg51kX7Zt5H8xXFAixMs0vIuoGDDzf0bNzFF6QfwPx+wyhEPb8qBqKk
+	3YnAbrOPq6rK5uSYl7oCtB6bcPSvYdPf8L8ooOYw4PwkM8WkVhrdo2qElr1ieXIQ
+	hrWUWrbBLyjeqyrqhf6zQVG703aUCfLIrR5yLC/rq7suim71bS5nuB+wLT3KL7En
+	QnhgBBgDLBXugDc4uX2KFSZXk73Slme9IVDBdrj01GJcFy4NtzExpdcR+LnAPZ0r
+	0ZoQWHyegmG8vP1dXTDxG9kUw/jFQiWJvP4h/MQ10mc2XO5UXIPeeT1W7fJ//EWx
+	gYSxKSBmJzRmxTfMSFyOw==
+X-ME-Sender: <xms:J8yGZ8BPPFyZZgY0VeFT-K8Rx8m5zEuE-L_GQ1ekgVmyDV9lJPEe4g>
+    <xme:J8yGZ-iQSsLljrFuX004ql6q_iYcQmCNBy4qY7A9oQjLKdjTzgveI6ldAVbi4kWIL
+    GxoocCjxxGxa4VILUY>
+X-ME-Received: <xmr:J8yGZ_l6MHXkb7K75Z56YeaGrBFnBWYk76l1XLPeq7OzzcUCbNtsaRMkI0pnNw>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudehiedgudefkecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
     uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
@@ -74,7 +74,7 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudehiedgudefkecutefuodetgg
     hffghfetveejtdetffeugeejkeduieehveenucffohhmrghinheprhgvughhrghtrdgtoh
     hmpdhgihhthhhusgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhep
     mhgrihhlfhhrohhmpehufihusegtohgvlhgrtggrnhhthhhushdrnhgrmhgvpdhnsggprh
-    gtphhtthhopeefgedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepghhlrghusghi
+    gtphhtthhopeeffedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepghhlrghusghi
     thiisehphhihshhikhdrfhhuqdgsvghrlhhinhdruggvpdhrtghpthhtohepuhifuhestg
     hovghlrggtrghnthhhuhhsrdhnrghmvgdprhgtphhtthhopehjohhnrghthhgrnhhhsehn
     vhhiughirgdrtghomhdprhgtphhtthhopehflhhorhhirghnrdhfrghinhgvlhhlihessg
@@ -83,17 +83,18 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudehiedgudefkecutefuodetgg
     guvgdrtghomhdprhgtphhtthhopehlihhnuhigqdhrihhstghvsehlihhsthhsrdhinhhf
     rhgruggvrggurdhorhhgpdhrtghpthhtoheprghnuhhpsegsrhgrihhnfhgruhhlthdroh
     hrghdprhgtphhtthhopegthhgvnhhhuhgrtggriheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:IsyGZ8Mq6lokQUjMTkf5-oN1B3OjLrif_hdRo8RWedxw9y2gQ0zNSw>
-    <xmx:IsyGZ18rJ9o3HDa-BLd2mBSJkEgf9Vct2BQnF-I4X2lQEp6DFaoDRQ>
-    <xmx:IsyGZ8VtH_K_PNRI-CBYupcKeQBpkiXGpfeJRrvxKzwkocRIYmQ39w>
-    <xmx:IsyGZ2dMOs59DD0HY4fv4nk5vTi9e65KEo-dFcTw6QYTVuC4HDqciw>
-    <xmx:I8yGZ0dcWMV8HEOX3jZUxo-Yz2Htf9bMhBbuTGkwnP730D5XQQGCshfI>
+X-ME-Proxy: <xmx:J8yGZyx-jwTVnE98BQslgJg8IrgRLe5mRexsgAKl1tAJ7E9KF1neTg>
+    <xmx:J8yGZxQFSJHuHrvDQgcIU0QdGyxN72lQs_rbOfnjKaEPPLYWf8DSSw>
+    <xmx:J8yGZ9a9kBdXKWM1jziJfYU9oBLUfJqBmsvOGi5t--0b2D-bHzClvQ>
+    <xmx:J8yGZ6SpFBu2WG9M-nypt5XZ6tUIG0k0NSfomO7CG8db-W-VP9KAHw>
+    <xmx:KMyGZxDHF630JI_6GPEE2KCHBUT1BPaXfGKINgDCuD-5LBjG06KoahJM>
 Feedback-ID: i95c648bc:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Jan 2025 15:42:09 -0500 (EST)
+ 14 Jan 2025 15:42:14 -0500 (EST)
 From: Celeste Liu <uwu@coelacanthus.name>
-Date: Wed, 15 Jan 2025 04:41:21 +0800
-Subject: [PATCH v4 2/4] loongarch: defconfig: drop RT_GROUP_SCHED=y
+Date: Wed, 15 Jan 2025 04:41:22 +0800
+Subject: [PATCH v4 3/4] sh: defconfig: drop RT_GROUP_SCHED=y from
+ sdk7786/urquell
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -102,7 +103,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250115-fix-riscv-rt_group_sched-v4-2-607606fe73a5@coelacanthus.name>
+Message-Id: <20250115-fix-riscv-rt_group_sched-v4-3-607606fe73a5@coelacanthus.name>
 References: <20250115-fix-riscv-rt_group_sched-v4-0-607606fe73a5@coelacanthus.name>
 In-Reply-To: <20250115-fix-riscv-rt_group_sched-v4-0-607606fe73a5@coelacanthus.name>
 To: Paul Walmsley <paul.walmsley@sifive.com>, 
@@ -125,15 +126,14 @@ Cc: Palmer Dabbelt <palmer@rivosinc.com>, linux-riscv@lists.infradead.org,
  linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
  linux-sh@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
  linux-rpi-kernel@lists.infradead.org, linux-omap@vger.kernel.org, 
- linux-tegra@vger.kernel.org, Xi Ruoyao <xry111@xry111.site>, 
- Celeste Liu <uwu@coelacanthus.name>
+ linux-tegra@vger.kernel.org, Celeste Liu <uwu@coelacanthus.name>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1728; i=uwu@coelacanthus.name;
- h=from:subject:message-id; bh=faYQjbUe+IZ6IbLVoFWLES94wJ4yKdbIyLHK1P3reTU=;
- b=owJ4nJvAy8zAJeafov85RWVtBeNptSSG9LYzHNpGz3RdNkcq+138urdnco6HmLJOMKeQx8/dB
- x+9M/n57GhHKQuDGBeDrJgiS14Jy0/OS2e793Zs74KZw8oEMoSBi1MAJnIth5HhTFFkrOksz5Be
- jqCyI7OyWK2EubUnagjfyV8kYSe7ROMtw3+f+83SDSq+R6Y+//vmimFTUov/35ffOJ3jLvsv+PF
- vwT8+AA0oSNQ=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2139; i=uwu@coelacanthus.name;
+ h=from:subject:message-id; bh=BhZXBD4LrwRi3kBTuqWLXE3VKHJ0GCDQScQEjxdA+cU=;
+ b=owJ4nJvAy8zAJeafov85RWVtBeNptSSG9LYznD2fd8RwHNpoculb9K0DbSGum9JK0po6eNP3r
+ XvhzbsqR62jlIVBjItBVkyRJa+E5SfnpbPdezu2d8HMYWUCGcLAxSkAE4mXYPjFdGNfLecKz3NZ
+ c/l+va5WTKo7y3prwpVfJ46wr578m4stjOGf0c+3AjpK3ydda3l2lrmxVG7ynlsv1Z/xT9xxwKV
+ oxbfTPACIpk1T
 X-Developer-Key: i=uwu@coelacanthus.name; a=openpgp;
  fpr=892EBC7DC392DFF9C9C03F1D15F4180E73787863
 
@@ -155,24 +155,36 @@ support it.[2]
 [1]: https://bugzilla.redhat.com/show_bug.cgi?id=1229700
 [2]: https://github.com/systemd/systemd/issues/13781#issuecomment-549164383
 
-Reviewed-by: Xi Ruoyao <xry111@xry111.site>
 Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
 ---
- arch/loongarch/configs/loongson3_defconfig | 1 -
- 1 file changed, 1 deletion(-)
+ arch/sh/configs/sdk7786_defconfig | 1 -
+ arch/sh/configs/urquell_defconfig | 1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/arch/loongarch/configs/loongson3_defconfig b/arch/loongarch/configs/loongson3_defconfig
-index 4dffc90192f7816074c3bd4b55c12159d5757676..4387bcec8f484173e5367456a69f6a7f03595d46 100644
---- a/arch/loongarch/configs/loongson3_defconfig
-+++ b/arch/loongarch/configs/loongson3_defconfig
-@@ -24,7 +24,6 @@ CONFIG_NUMA_BALANCING=y
- CONFIG_MEMCG=y
- CONFIG_BLK_CGROUP=y
- CONFIG_CFS_BANDWIDTH=y
+diff --git a/arch/sh/configs/sdk7786_defconfig b/arch/sh/configs/sdk7786_defconfig
+index 07894f13441ef622c3af8d8f4b5770c2ab66bcd8..7a6efd5b4a62463381005072a679a8ce022a2ef9 100644
+--- a/arch/sh/configs/sdk7786_defconfig
++++ b/arch/sh/configs/sdk7786_defconfig
+@@ -17,7 +17,6 @@ CONFIG_CPUSETS=y
+ CONFIG_CGROUP_CPUACCT=y
+ CONFIG_CGROUP_MEMCG=y
+ CONFIG_CGROUP_SCHED=y
 -CONFIG_RT_GROUP_SCHED=y
- CONFIG_CGROUP_PIDS=y
- CONFIG_CGROUP_RDMA=y
- CONFIG_CGROUP_FREEZER=y
+ CONFIG_BLK_CGROUP=y
+ CONFIG_RELAY=y
+ CONFIG_NAMESPACES=y
+diff --git a/arch/sh/configs/urquell_defconfig b/arch/sh/configs/urquell_defconfig
+index 00ef62133b04ded8d0b4221f11e0adafde99d386..9cf4a719001ea5ef4b031c1bbbf8098e8af5a2b2 100644
+--- a/arch/sh/configs/urquell_defconfig
++++ b/arch/sh/configs/urquell_defconfig
+@@ -15,7 +15,6 @@ CONFIG_CPUSETS=y
+ CONFIG_CGROUP_CPUACCT=y
+ CONFIG_CGROUP_MEMCG=y
+ CONFIG_CGROUP_SCHED=y
+-CONFIG_RT_GROUP_SCHED=y
+ CONFIG_BLK_DEV_INITRD=y
+ CONFIG_PROFILING=y
+ CONFIG_MODULES=y
 
 -- 
 2.48.0
