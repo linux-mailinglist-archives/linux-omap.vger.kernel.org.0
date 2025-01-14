@@ -1,213 +1,152 @@
-Return-Path: <linux-omap+bounces-3122-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3123-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B59AEA11255
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Jan 2025 21:43:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3BB6A1136E
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Jan 2025 22:51:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAC9016AD3E
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Jan 2025 20:43:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 464D17A3A97
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Jan 2025 21:51:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8AE120C48C;
-	Tue, 14 Jan 2025 20:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6228D212B3E;
+	Tue, 14 Jan 2025 21:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b="QZ6xuLkN";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="a8OTIr7E"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="icOnZjLl"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A2C20DD79;
-	Tue, 14 Jan 2025 20:42:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8046C1CDFC1;
+	Tue, 14 Jan 2025 21:51:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736887346; cv=none; b=XpXWOn6WqlYdOhqVpYpnXKEBIHnUCzi1Ajd4ax8lQbA1eP5ckodNMXXqAmqVd44ui/U9bRUcodKQujudIVMGiGBHhpKxdEtDx6jI0LkqtYz/5ScMId733DB5cRFgwsrSg0HQmjc0M2YA1qpDF0GdNx7vYDlk712xRcOMVKhfwwU=
+	t=1736891494; cv=none; b=gxmLITa2mUXItQNJb9xBDCCP7093ymYIB8v96d6OnRQMZdSZFimo92v2/rgyR8iidNN8SBhQNOPxVHDPrWZjxXzdBrg7GynnpCK6zWQ9IICtESKPA8cyel7ssRm2jqPH/d2phtmqKANVcOm2gD9O5ieSHV+h4DRvUDaamhutes0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736887346; c=relaxed/simple;
-	bh=FD1/1Qa4M60bWS/VL5WGmaGZ5+Z9xkiSLJsG1Uy3KWw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sMP9bVqz0FysUC/FS0cPLm6K2Yfk3neUGWel1yGMPsBlCJ8vqLT4kz1FQeG3rOaJJiBGPeJExwAgnD26E2m0Chd4v8r+OOHw9WhFZzw0vHw4Ic5J4IheoUc0XtkivBhpl2np3h+Qso98wUEmebPoFLWNFciP6Tkk5eIMiaL97s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name; spf=pass smtp.mailfrom=coelacanthus.name; dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b=QZ6xuLkN; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=a8OTIr7E; arc=none smtp.client-ip=202.12.124.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=coelacanthus.name
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id E302325400D3;
-	Tue, 14 Jan 2025 15:42:21 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Tue, 14 Jan 2025 15:42:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	coelacanthus.name; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1736887341; x=1736973741; bh=0iZWF2p7Dd
-	Tt4UZs/drcsgp85LST9ju/nBZkrLmrFzQ=; b=QZ6xuLkN5pAT1+cm6wn4ZjfgK3
-	UcJKqYc//8mwUoEKYybP4yc3M0ybRXdRyzfZE9EdygfzSlmC9XERU531YCz/jtVR
-	bJnjScooSlL+FEnTpuyc4AqUISgDLwxfF3fkMhSM8e6Df4hwNPg4YFx2lcjrhoMA
-	MHwgG0gGf5BQWFQ/PqdjoUb+ZlEbYZ2j1x4HV392HkT6xG764FjdBfULRFPHcUjA
-	jV+x0iXjY8LCQxBxM7dGeC1qRu1/+hMZVKYqw9EAgDMHIp7+Rl1XzfldAQlymh6S
-	FhrnjzSyZ/tD0l5CV9x/euilBRAU3BzJJLiyWOS1lRodC162G6pgo41ipGbQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1736887341; x=
-	1736973741; bh=0iZWF2p7DdTt4UZs/drcsgp85LST9ju/nBZkrLmrFzQ=; b=a
-	8OTIr7E7G+oQlzNO5rrrZuEG1cg66538u+UhaLh3M7zG3axbN3rD8j4UvpLnY09C
-	H/sHWpt1f1PeucUUU5zFLMf8PZsY2liCwXjWGjHyhzxXkhf10w6ui6sqp/Fk8tWf
-	y6WgNfif6rXUZDJHBhbU1/g0W0ztcrf3ulcTQTRB0fHjy5drfGK0YOPhiag23YrR
-	ewR9kBZE0NAZNu2zTWgl/gIuXNxnNv6ydm6G5bajT0C/Dj3xUQv/3NLpvVoyjU6D
-	6YOeMsFgq6RsTkacxLS06QQSJNBdFMjIXcFCIK7PdSqOItXG+3c28G482i5eC0eq
-	drroWxZqPJzHfvsyyJ0HQ==
-X-ME-Sender: <xms:LcyGZ4dSpGBhUsLcU27nD2aA8I5uT1GPkMjXRxmtefl4An69AzXfgA>
-    <xme:LcyGZ6OJhjb-vZrhUWy-1msAjflrXrfA5IHzxIW97IahUV6XdOXor1hFsGO0cehjT
-    y6rjsqCFBT_b5Sxank>
-X-ME-Received: <xmr:LcyGZ5hklUqMjovwqjSeo1U37rCpSnh_fR3QBoZjW2uLqHfIIQfRA_iEukS_-g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudehiedgudefkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredt
-    jeenucfhrhhomhepvegvlhgvshhtvgcunfhiuhcuoehufihusegtohgvlhgrtggrnhhthh
-    hushdrnhgrmhgvqeenucggtffrrghtthgvrhhnpeegfeekfeelteeufeekleeukeegffef
-    keetveffffethfevheevjeektdelueegteenucffohhmrghinhepghhithhhuhgsrdgtoh
-    hmpdhrvgguhhgrthdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhep
-    mhgrihhlfhhrohhmpehufihusegtohgvlhgrtggrnhhthhhushdrnhgrmhgvpdhnsggprh
-    gtphhtthhopeefhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepghhlrghusghi
-    thiisehphhihshhikhdrfhhuqdgsvghrlhhinhdruggvpdhrtghpthhtohepuhifuhestg
-    hovghlrggtrghnthhhuhhsrdhnrghmvgdprhgtphhtthhopehjohhnrghthhgrnhhhsehn
-    vhhiughirgdrtghomhdprhgtphhtthhopehflhhorhhirghnrdhfrghinhgvlhhlihessg
-    hrohgruggtohhmrdgtohhmpdhrtghpthhtohephhgvihhnrhhitghhrdhstghhuhgthhgr
-    rhguthestggrnhhonhhitggrlhdrtghomhdprhgtphhtthhopehtohhnhiesrghtohhmih
-    guvgdrtghomhdprhgtphhtthhopehlihhnuhigqdhrihhstghvsehlihhsthhsrdhinhhf
-    rhgruggvrggurdhorhhgpdhrtghpthhtohepthhrvgguihhnghesnhhvihguihgrrdgtoh
-    hmpdhrtghpthhtoheprghnuhhpsegsrhgrihhnfhgruhhlthdrohhrgh
-X-ME-Proxy: <xmx:LcyGZ9_Q_8qzTjPMhOKcejGlvHlTIMC_6qZgGAFnYV5yO6xLViwfjA>
-    <xmx:LcyGZ0sNbHCXXfpj1x7cHlCIRnVvwqXFemfY6wlpXQ3qrV9vxePNug>
-    <xmx:LcyGZ0Gn_b0OU2q5vplJKUr_nOD0e2oWDI-E7zGNfUCObukIi2ficQ>
-    <xmx:LcyGZzMuzskXX7cDrhQPOc_JIWq1xnJNh0krIgzGLMIdtQJRUrUOdQ>
-    <xmx:LcyGZziLCuWeY3Ks6N51TPcevuBObLJX5fbtXXFZpc7HWnumn7K7qoWY>
-Feedback-ID: i95c648bc:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Jan 2025 15:42:20 -0500 (EST)
-From: Celeste Liu <uwu@coelacanthus.name>
-Date: Wed, 15 Jan 2025 04:41:23 +0800
-Subject: [PATCH v4 4/4] arm: defconfig: drop RT_GROUP_SCHED=y from
- bcm2835/tegra/omap2plus
+	s=arc-20240116; t=1736891494; c=relaxed/simple;
+	bh=J0Y0wf0alXAG3eiHrlkOle1Tn2kEBIOSJ+71wMMFBic=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SkKrOky3HLrPvJPo0uvd63UrH3c60Tw5wkhfErFL1IPgnnIgwLC0UG9nljyveb1u32FcX1t/Y4aAoiG9agwFjQeF3vENoLEtFK4Yywc+k70o98Qh45YlHeNvbTBzvKqwLMyKFNESFhlODhsLzRK8B+ksyTLHDGJeGGaXTFVinfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=icOnZjLl; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-21649a7bcdcso103211565ad.1;
+        Tue, 14 Jan 2025 13:51:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736891491; x=1737496291; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=lVbV5ac+2VYXiTrtVXv7VKO5c0GRCJbX3LZtQlOWK8o=;
+        b=icOnZjLlo6AtIr/ym+nMIoWOPkI+kaU1vyPjzEo5zgeeB7iYlD7kVb78b+ZqJaYUWq
+         ma+pAQFFcGNLyejpm8/qTOvgEKeIDGeEVQ9sZqYqTGBJc+5OOkBaoNBIVTDtYw/GPvHG
+         vJhnr9hIfRk4XhpXFQUehmRYHiP1UG+1VpN5LMxPPn8RS0YzcVRKg4BNP8k6Fi6MIE5J
+         eNUHwthJgBCjUeduyKrOsN2I6iKbm56A3kaoH7ZfXDXFWGP8NXb+RYcbQkdh4ozLQj8+
+         i5+Ss+xG4Fh/VahOP8CqNs/93uj0vzSK6z+g4OUCXUXTW5V8pGrYxoXlrpMJMVyklmNG
+         inzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736891491; x=1737496291;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lVbV5ac+2VYXiTrtVXv7VKO5c0GRCJbX3LZtQlOWK8o=;
+        b=WXljvfQSrI0f2bScoGNGlopcxeI8+W2/X9EVUL+6alvD+d2X0m+1hEuf1k8v3aTQhv
+         K7ziG/Kxeanh7h+IatvVMvB87y9nfPUROV4s2/QQKmp3ViW3VQCJUmdlXO63+8GL7tK+
+         AaD34slFBEoRboLJzCyVUebybFovONUm8VgcDMpoYbBfKRDz2OK1lIxp0OjNUyj9Z5XM
+         9nfEPwUGgQa8NaS4RfNKXDEnh5nXBcPmYb/qqoZGM0uv58Lz0kiWDHFtkTlH24NH098S
+         Sl1a02h/yvpUyzZG3/WKn0mZWji+xBG4Jnr84O3tjUg63LRjrnKST9oj8BIM3v2u7AKG
+         1Ihg==
+X-Forwarded-Encrypted: i=1; AJvYcCUOhzqGvxcmYshcYoqg/TI9Hhr/EBXWp5mfBqAWpWXWbZXIbqH9K80uRPmS5+fEAG/dY/CtqoPtA2nsJBo=@vger.kernel.org, AJvYcCVrvOtFCKImZxAaWaKN8HRUXNhE4aKSSwEHR4LCfZt3q92gG+ZHyIvXJln95OonyxSoP733UrCfty6P7nqZ@vger.kernel.org, AJvYcCWuBzm+Bxb/esGD30IJOLu+XhigXU3nPshrRrGgJh0FzFLvM83LvfTltYy+H9d1VlqEfTlB72JQiVAl5Q==@vger.kernel.org, AJvYcCX7L1vUD2RmbOLCvPMZApMruoSX2+zJm7qjDG89s66GMAl/gXJ352ew0W4kxrbwlWOmmDyn9PHsEAdv6A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzvo/0T3LzgKSf7StgKJ0GtjBauw/h3HL1+oKYmD9Wx55bxqtw1
+	LCOqNtKTz7WwQ7urFd6ZGx0jnOEqK2uNuE3OMmX4xaI+PmjWBNPO
+X-Gm-Gg: ASbGnctQRGcWJJhAbUFKh2TGwUAQGF+TRLNc2lGaatFaIEb24lKkjacTuyehda+4TFT
+	h8XEFlrP5caeUx18nJGbZr8iMr8lCoKFSRqLboCKhcski1i/jW4ZBoLkxaz5/ZMJpvK4L6ypY1g
+	hXPcKLmjIVI3Wg1wjmFWJslEug/LBIS74FPCHB7aL218Ua9n6jQT5uZYR8NrVB++EItR2YWOT8q
+	AX8ZOoCPgTGJZtW1XxYOCnQyFinvrBYwHNZ9IvatV2AJ2KTay4s2IXwFg==
+X-Google-Smtp-Source: AGHT+IGsinN9xLrXzbeyr/Uj/+vG17kfUGp3+SuaRvurihjuSLHfaWbr31VKDrFVS4ZaASDbZ9hRvw==
+X-Received: by 2002:a17:902:f551:b0:216:2dc4:50ab with SMTP id d9443c01a7336-21a83f42821mr366923345ad.2.1736891490750;
+        Tue, 14 Jan 2025 13:51:30 -0800 (PST)
+Received: from google.com ([2620:15c:9d:2:e152:4a95:d7ea:84d5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f10f4d7sm70670275ad.10.2025.01.14.13.51.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jan 2025 13:51:30 -0800 (PST)
+Date: Tue, 14 Jan 2025 13:51:27 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>, Helge Deller <deller@gmx.de>,
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+	Tony Lindgren <tony@atomide.com>, linux-fbdev@vger.kernel.org,
+	linux-omap@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] Input: ads7846 - fix up the pendown GPIO setup on
+ Nokia 770
+Message-ID: <Z4bcXx9LjmHQ0EuP@google.com>
+References: <20250102181953.1020878-1-aaro.koskinen@iki.fi>
+ <20250102181953.1020878-3-aaro.koskinen@iki.fi>
+ <CACRpkdbfuQuTQ028=hZgRhOPiw5AbPLyoZTbRCbvNDQ-e8UajQ@mail.gmail.com>
+ <Z3uAAy5vF2ezUS2c@google.com>
+ <CACRpkdYbtCODxWU8F48qGGBJoTL54R5Dj6iYLB6Z2MRwsDqYzw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250115-fix-riscv-rt_group_sched-v4-4-607606fe73a5@coelacanthus.name>
-References: <20250115-fix-riscv-rt_group_sched-v4-0-607606fe73a5@coelacanthus.name>
-In-Reply-To: <20250115-fix-riscv-rt_group_sched-v4-0-607606fe73a5@coelacanthus.name>
-To: Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Guo Ren <guoren@kernel.org>, Anup Patel <anup@brainfault.org>, 
- Heinrich Schuchardt <heinrich.schuchardt@canonical.com>, 
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
- Russell King <linux@armlinux.org.uk>, 
- Florian Fainelli <florian.fainelli@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
- Tony Lindgren <tony@atomide.com>, Thierry Reding <thierry.reding@gmail.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>, 
- Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
- Roger Quadros <rogerq@kernel.org>
-Cc: Palmer Dabbelt <palmer@rivosinc.com>, linux-riscv@lists.infradead.org, 
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
- linux-sh@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-rpi-kernel@lists.infradead.org, linux-omap@vger.kernel.org, 
- linux-tegra@vger.kernel.org, Stefan Wahren <wahrenst@gmx.net>, 
- Thierry Reding <treding@nvidia.com>, Celeste Liu <uwu@coelacanthus.name>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3034; i=uwu@coelacanthus.name;
- h=from:subject:message-id; bh=FD1/1Qa4M60bWS/VL5WGmaGZ5+Z9xkiSLJsG1Uy3KWw=;
- b=owJ4nJvAy8zAJeafov85RWVtBeNptSSG9LYzXHLFi27K+J2ZHz412+f0Dang54s+PZiXrRvfZ
- Mzq7eFZld5RysIgxsUgK6bIklfC8pPz0tnuvR3bu2DmsDKBDGHg4hSAiZwKYPgftqP47j7Xd8HJ
- nxstvriK7bd9n/3oW4KK9qknWza/vBH1hOF/NJsix3WlLcsedN04JFMQH3F0/rRIpYj0J/MeWk4
- 6tv8qCwAph01E
-X-Developer-Key: i=uwu@coelacanthus.name; a=openpgp;
- fpr=892EBC7DC392DFF9C9C03F1D15F4180E73787863
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACRpkdYbtCODxWU8F48qGGBJoTL54R5Dj6iYLB6Z2MRwsDqYzw@mail.gmail.com>
 
-Commit 673ce00c5d6c ("ARM: omap2plus_defconfig: Add support for distros
-with systemd") said it's because of recommendation from systemd. But
-systemd changed their recommendation later.[1]
+On Tue, Jan 14, 2025 at 01:28:32PM +0100, Linus Walleij wrote:
+> On Mon, Jan 6, 2025 at 8:02 AM Dmitry Torokhov
+> <dmitry.torokhov@gmail.com> wrote:
+> > On Thu, Jan 02, 2025 at 10:32:00PM +0100, Linus Walleij wrote:
+> > > On Thu, Jan 2, 2025 at 7:20 PM Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
+> > >
+> > > > The GPIO is set up as an IRQ, so request it as non-exclusive. Otherwise the
+> > > > probe fails on Nokia 770 with:
+> > > >
+> > > >     ads7846 spi2.0: failed to request pendown GPIO
+> > > >     ads7846: probe of spi2.0 failed with error -16
+> > > >
+> > > > Also the polarity is wrong. Fix it.
+> > > >
+> > > > Fixes: 767d83361aaa ("Input: ads7846 - Convert to use software nodes")
+> > > > Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+> > >
+> > > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> >
+> > Do we need to have this knowledge in the driver or can it be handled
+> > in GPIO subsystem or affected board support? Requesting a GPIO with "in"
+> > direction when it is also an interrupt source should be pretty common.
+> 
+> Hm I don't know exactly the question here but I try to answer
+> anyway :)
+> 
+> The patch makes the boardfile describe the polarity but the
+> boardfile (or device tree) cannot define directions, consumers
+> must specify this. The main reason is that actual users exist that
+> switch the direction of GPIOs at runtime so this has been designed
+> as a (runtime) consumer duty.
+> 
+> As for GPIOD_FLAGS_BIT_NONEXCLUSIVE, this enables the
+> GPIO subsystem to read the GPIO while the irqchip subsystem
+> can also handle the same GPIO line as an interrupt source, so
+> it's not exclusive to either subsystem.
 
-For cgroup v1, if turned on, and there's any cgroup in the "cpu" hierarchy it
-needs an RT budget assigned, otherwise the processes in it will not be able to
-get RT at all. The problem with RT group scheduling is that it requires the
-budget assigned but there's no way we could assign a default budget, since the
-values to assign are both upper and lower time limits, are absolute, and need to
-be sum up to < 1 for each individal cgroup. That means we cannot really come up
-with values that would work by default in the general case.[2]
+But isn't this something that should work by default, without specifying
+any additional flags? I understand that using GPIO as an interrupt
+source and at the same time as an output line is not possible (without
+reconfiguration "on the fly"), but reading state if an input GPIO line
+that is also an interrupt should be OK? I am pretty sure there are
+systems/boards/arches that allow this.
 
-For cgroup v2, it's almost unusable as well. If it turned on, the cpu controller
-can only be enabled when all RT processes are in the root cgroup. But it will
-lose the benefits of cgroup v2 if all RT process were placed in the same cgroup.
+This is my objection - we have to add a flag to a driver that is used on
+multiple systems to tweak behavior of one particular board.
 
-Red Hat, Gentoo, Arch Linux and Debian all disable it. systemd also doesn't
-support it.
-
-[1]: https://github.com/systemd/systemd/commit/f4e74be1856b3ac058acbf1be321c31d5299f69f
-[2]: https://bugzilla.redhat.com/show_bug.cgi?id=1229700
-
-Tested-by: Stefan Wahren <wahrenst@gmx.net>
-Acked-by: Kevin Hilman <khilman@baylibre.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
----
- arch/arm/configs/bcm2835_defconfig   | 1 -
- arch/arm/configs/omap2plus_defconfig | 1 -
- arch/arm/configs/tegra_defconfig     | 1 -
- 3 files changed, 3 deletions(-)
-
-diff --git a/arch/arm/configs/bcm2835_defconfig b/arch/arm/configs/bcm2835_defconfig
-index b5f0bd8dd536990a0726e73a6855d25c1286a768..27dc3bf6b124c2012b7a1a768f2f900f49903cd1 100644
---- a/arch/arm/configs/bcm2835_defconfig
-+++ b/arch/arm/configs/bcm2835_defconfig
-@@ -7,7 +7,6 @@ CONFIG_BSD_PROCESS_ACCT=y
- CONFIG_BSD_PROCESS_ACCT_V3=y
- CONFIG_LOG_BUF_SHIFT=18
- CONFIG_CFS_BANDWIDTH=y
--CONFIG_RT_GROUP_SCHED=y
- CONFIG_CGROUP_FREEZER=y
- CONFIG_CPUSETS=y
- CONFIG_CGROUP_DEVICE=y
-diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-index 3a166c2f02bd80634fee3bd8c4579fdbad84ccfa..9cb265c8d4144ea9a41f02640dbc8a06b710323b 100644
---- a/arch/arm/configs/omap2plus_defconfig
-+++ b/arch/arm/configs/omap2plus_defconfig
-@@ -13,7 +13,6 @@ CONFIG_MEMCG=y
- CONFIG_BLK_CGROUP=y
- CONFIG_CGROUP_SCHED=y
- CONFIG_CFS_BANDWIDTH=y
--CONFIG_RT_GROUP_SCHED=y
- CONFIG_CGROUP_FREEZER=y
- CONFIG_CPUSETS=y
- CONFIG_CGROUP_DEVICE=y
-diff --git a/arch/arm/configs/tegra_defconfig b/arch/arm/configs/tegra_defconfig
-index d2a094ad360cefefbc3bd35226c5d23eadce42c1..3a9bda2bf422b14085c60b39a2c3df86fe0994bb 100644
---- a/arch/arm/configs/tegra_defconfig
-+++ b/arch/arm/configs/tegra_defconfig
-@@ -6,7 +6,6 @@ CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_CGROUPS=y
- CONFIG_CGROUP_SCHED=y
--CONFIG_RT_GROUP_SCHED=y
- CONFIG_CGROUP_FREEZER=y
- CONFIG_CGROUP_CPUACCT=y
- CONFIG_CGROUP_DEBUG=y
+Thanks.
 
 -- 
-2.48.0
-
+Dmitry
 
