@@ -1,133 +1,157 @@
-Return-Path: <linux-omap+bounces-3127-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3128-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A886A12D88
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Jan 2025 22:17:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D381A12EF9
+	for <lists+linux-omap@lfdr.de>; Thu, 16 Jan 2025 00:04:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D92F916487F
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Jan 2025 21:17:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E721B3A1298
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Jan 2025 23:04:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5FC1DA62E;
-	Wed, 15 Jan 2025 21:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1741A1DDA14;
+	Wed, 15 Jan 2025 23:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Wz5AGtSp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ndMSRS4a"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECBF91D90C9
-	for <linux-omap@vger.kernel.org>; Wed, 15 Jan 2025 21:17:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E20D1DD9A6;
+	Wed, 15 Jan 2025 23:04:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736975825; cv=none; b=LxU8i3hC2ihCr/im1Opf8DZNIcmPshWOHBUQMXloGe1dYJhFfRNwaMMSdSiqlVUQYEA21A987BGvFI4b9lGSEhvaQX4mTJAKY+R00ssupq8OFmuI9TNgAqck6zL7flgTeN1wGANLc/Fki93+AgJtVlZ/TIkkQ1Xhmr+4n9MoS68=
+	t=1736982272; cv=none; b=gqKzne3WTxVui4vOU0LgUtxG1uYQY9HMJUP8GXqjCi0C3ddg9AAXv502zB7tBXPinfw2yaB6fhdNHZDH54nl7cTXIRywC2aemj2hu35yapSlrGLHf76AGVAF8Grygsim/VKoREvlo+RDygXW4jAmDQpkbO/Du+LLGWqhIVlOQR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736975825; c=relaxed/simple;
-	bh=etyTNWsyTNBPviuHWvJvwZsCImk9N7fZ8OOQlJn4ck8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bbS8ZnTKSWyfG/63jY10K5Y+AtNJe4hgML5+O1et92adMgPjbutubw98hmZ4DQTz8E9t4aJAr7HXCp9D6s2ghQbEvid05brz4tOh2cqbu9eR7oW3eGL9FuoJ1fNbAroaHKRGW2Ey2FFC9+Fkca/1NGGUvjMTbwiqQFcc+nrO/uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Wz5AGtSp; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-434f398a171so192185e9.2
-        for <linux-omap@vger.kernel.org>; Wed, 15 Jan 2025 13:17:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736975822; x=1737580622; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ms9IEBzpyk/XVKoMAGsaOzSpnjjWL2vmcBPCCTvooQ0=;
-        b=Wz5AGtSpPZZLMsGyGIXnKJip09EqIcrhVTHVaen0Lw/tP1eD6JCojJEILLEeHzvOmc
-         6AQ7j0jj5UO7j3S/vl45cCOmN3f1lB3RHEKhPsiVDezSUs9140rMFa8gQ/LQct7MFVkp
-         GpMiZan2kBRvy/JGLORtnd66Hqa0ZyAHEP4FvS5yn69rEuCXSoJX/CbDg/Wgptu++oDa
-         H7nTNzh66njFgcYWjvcrgbEmEQWdnvWeaEwk91e1ZD70YRcCpHDhfpZyvtXWZF2QMyl5
-         DnxXCnVoT2hsGYiXbsRMZWt8QSPCPjjhdQwTEH1YJppDsPwx/YS29j5j6jhJWP/ZW/nR
-         +8YA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736975822; x=1737580622;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ms9IEBzpyk/XVKoMAGsaOzSpnjjWL2vmcBPCCTvooQ0=;
-        b=ilcs7Difavf7zpd+IsToyRMTET96pNlmpJMqeINEHg4wuTxuzyudk5uxd+CB27MFZD
-         jYsGANY3yDZHf9OmtIAFc8iS7qKF0R7aZll2+JUVgDz+3U1E/MgcB4GcmcRin6Cv2CFu
-         Z6T55ljh92FNfu2/IXZvGgWGhbQOQ4KLSbDyv1ps9QViRRN++QMzyBaY901KXL/2u9Kg
-         GaIZ7JK4U6WfDXLUMGQNT7rFpoyWdY5ptma3zWtnBJS/CZm6dZGjdRBU2YFnZyfbwhWM
-         Y6xfXu9ZHHy/xXSz6InQvV9HAUEilxGfLbIZCXxrXECP0gInrw8eQC8tUJFEEoLnDnE9
-         t3OQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW3WmH2ZtIEm7ElFVUISWI3nYXjO0Xdl/WAI6k9RoY+2Nl7BRJV0r2tWvoEoT2UnK+owYzSj6uodsVR@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDjDttvGWLLiLUQ2fTGkWYGH/n7JDHo7vY4vEsGuyu/pQ6M94y
-	dC5dOujk5mCkfZmsIDWDZQjg1dP4IGdxn2mmEOpMTdBl0CGAafGI5jmOj8GcY4c=
-X-Gm-Gg: ASbGncuuwAgifSLA1XPb0GkzEowh6GzftAelpRwS/G19Hi9+LaWtRbL/EPrWThk5IWK
-	XPUck/VW/KntOKqP9y0NqomSBobg/iE1BBnPOiguSbJd4yEQh9J95EpZfZdpe5qGcCS+jUxP3dx
-	lUTipipIbpSwK8YNP2LqT/+OGCgS1PL/J5GYW73H4TvPFIqnJ/l5o8lzcuMEiCRF0vsrfCys/4Y
-	vKl6IDEHkYMhGTtCY40SZrv1wStVqQgaL8fiZo3V3pKqI4/e3n4QiFBkSnKlXhZxGsW+wg=
-X-Google-Smtp-Source: AGHT+IG5sxlfm93ZZqieB+RkF9UShh5QqNGMEBcIF5ekOU9Z+J040z2Zi857k3ycfhveU6zzpgKNFQ==
-X-Received: by 2002:a5d:588a:0:b0:385:de67:229e with SMTP id ffacd0b85a97d-38a87308e30mr10527783f8f.11.1736975822395;
-        Wed, 15 Jan 2025 13:17:02 -0800 (PST)
-Received: from krzk-bin.. ([178.197.223.165])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e38c6a2sm18693379f8f.54.2025.01.15.13.17.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jan 2025 13:17:01 -0800 (PST)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Stefan Agner <stefan@agner.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH] ARM: dts: nxp: vf: Align GPIO hog name with bindings
-Date: Wed, 15 Jan 2025 22:16:58 +0100
-Message-ID: <20250115211659.194072-1-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1736982272; c=relaxed/simple;
+	bh=wXuBoyyk9ETcMFkcjs1CAzvucCe5P+ktEzNq56RKFKc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=No/NU1gruIXVQkKC8VFhv5m1hLXq0OyIZEGJJL0hUWEUhshUrhtozO8nGunHLoFCE70WzaF9sYC1NxP4AMwBl7wNT24vyXCkIVvLJvzY8ly2HxRkRGh5GbgXlx5xOjyCNdLls+J1zADsbV6Pmz6EhlV3no+nA00jC/nAzN2k+3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ndMSRS4a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EF6C4CED1;
+	Wed, 15 Jan 2025 23:04:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736982272;
+	bh=wXuBoyyk9ETcMFkcjs1CAzvucCe5P+ktEzNq56RKFKc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=ndMSRS4aPOQkcBRM8NZ8koAU62dLa6PMuBifPbWPnqACBtNUs7AkyKfx3Ng/ZaVHa
+	 b/TPH3VpMkqnRFVnjBO9OfxflS9K7ZA9gYYrMy8V0YbO4mTbrf6x8whUPSok08TE64
+	 E1qG2kySB8p3WLmzqXPakm9gS4SF6cI3x1FRKAxd4z6ovPSwnsh1ZHoTo2Kw67J/U9
+	 UWHXiZBMXR/buiJsuaNEWw3/vRb/KFCKk/XbzAMDL3YN4eFDGZTYjPP8pdAahioTw1
+	 8KzQdBlCVlpgm83ybNQPfdNWrjE147p9LYRlSPmZXEa3pKZsjTq74/r3ZYZfZJgSJ6
+	 4e3/DcgTV8OkQ==
+Date: Wed, 15 Jan 2025 17:04:30 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev
+Subject: Re: [PATCH 1/2] PCI: dwc: dra7xx: Use
+ syscon_regmap_lookup_by_phandle_args
+Message-ID: <20250115230430.GA560547@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250112-syscon-phandle-args-pci-v1-1-fcb6ebcc0afc@linaro.org>
 
-Bindings expect GPIO hog names to end with 'hog' suffix, so correct it
-to fix dtbs_check warning:
+On Sun, Jan 12, 2025 at 02:39:02PM +0100, Krzysztof Kozlowski wrote:
+> Use syscon_regmap_lookup_by_phandle_args() which is a wrapper over
+> syscon_regmap_lookup_by_phandle() combined with getting the syscon
+> argument.  Except simpler code this annotates within one line that given
+> phandle has arguments, so grepping for code would be easier.
+> 
+> There is also no real benefit in printing errors on missing syscon
+> argument, because this is done just too late: runtime check on
+> static/build-time data.  Dtschema and Devicetree bindings offer the
+> static/build-time check for this already.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
+>  drivers/pci/controller/dwc/pci-dra7xx.c | 27 ++++++---------------------
+>  1 file changed, 6 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+> index 5c62e1a3ba52919afe96fbcbc6edaf70775a69cb..33d6bf460ffe5bb724a061558dd93ec7bdadc336 100644
+> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
+> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+> @@ -635,30 +635,20 @@ static int dra7xx_pcie_unaligned_memaccess(struct device *dev)
+>  {
+>  	int ret;
+>  	struct device_node *np = dev->of_node;
+> -	struct of_phandle_args args;
+> +	unsigned int args[2];
+>  	struct regmap *regmap;
+>  
+> -	regmap = syscon_regmap_lookup_by_phandle(np,
+> -						 "ti,syscon-unaligned-access");
+> +	regmap = syscon_regmap_lookup_by_phandle_args(np, "ti,syscon-unaligned-access",
+> +						      2, args);
+>  	if (IS_ERR(regmap)) {
+>  		dev_dbg(dev, "can't get ti,syscon-unaligned-access\n");
+>  		return -EINVAL;
+>  	}
+>  
+> -	ret = of_parse_phandle_with_fixed_args(np, "ti,syscon-unaligned-access",
+> -					       2, 0, &args);
+> -	if (ret) {
+> -		dev_err(dev, "failed to parse ti,syscon-unaligned-access\n");
+> -		return ret;
+> -	}
+> -
+> -	ret = regmap_update_bits(regmap, args.args[0], args.args[1],
+> -				 args.args[1]);
+> +	ret = regmap_update_bits(regmap, args[0], args[1], args[1]);
+>  	if (ret)
+>  		dev_err(dev, "failed to enable unaligned access\n");
+>  
+> -	of_node_put(args.np);
+> -
+>  	return ret;
+>  }
+>  
+> @@ -671,18 +661,13 @@ static int dra7xx_pcie_configure_two_lane(struct device *dev,
+>  	u32 mask;
+>  	u32 val;
+>  
+> -	pcie_syscon = syscon_regmap_lookup_by_phandle(np, "ti,syscon-lane-sel");
+> +	pcie_syscon = syscon_regmap_lookup_by_phandle_args(np, "ti,syscon-lane-sel",
+> +							   1, &pcie_reg);
+>  	if (IS_ERR(pcie_syscon)) {
+>  		dev_err(dev, "unable to get ti,syscon-lane-sel\n");
+>  		return -EINVAL;
+>  	}
+>  
+> -	if (of_property_read_u32_index(np, "ti,syscon-lane-sel", 1,
+> -				       &pcie_reg)) {
+> -		dev_err(dev, "couldn't get lane selection reg offset\n");
+> -		return -EINVAL;
+> -	}
 
-  vf610-zii-dev-rev-c.dtb: eth0_intrp: $nodename:0: 'eth0_intrp' does not match '^.+-hog(-[0-9]+)?$'
+Wow.  I believe you that syscon_regmap_lookup_by_phandle_args() is
+equivalent to both:
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- arch/arm/boot/dts/nxp/vf/vf610-zii-dev-rev-c.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+  - syscon_regmap_lookup_by_phandle() followed by
+    of_parse_phandle_with_fixed_args(), and
 
-diff --git a/arch/arm/boot/dts/nxp/vf/vf610-zii-dev-rev-c.dts b/arch/arm/boot/dts/nxp/vf/vf610-zii-dev-rev-c.dts
-index 6f9878f124c4..4f99044837f8 100644
---- a/arch/arm/boot/dts/nxp/vf/vf610-zii-dev-rev-c.dts
-+++ b/arch/arm/boot/dts/nxp/vf/vf610-zii-dev-rev-c.dts
-@@ -392,7 +392,7 @@ &uart3 {
- };
- 
- &gpio0 {
--	eth0_intrp {
-+	eth0-intrp-hog {
- 		gpio-hog;
- 		gpios = <23 GPIO_ACTIVE_HIGH>;
- 		input;
-@@ -401,7 +401,7 @@ eth0_intrp {
- };
- 
- &gpio3 {
--	eth0_intrp {
-+	eth0-intrp-hog {
- 		gpio-hog;
- 		gpios = <2 GPIO_ACTIVE_HIGH>;
- 		input;
--- 
-2.43.0
+  - syscon_regmap_lookup_by_phandle() followed by
+    of_property_read_u32_index()
 
+but I can't say it's obvious to this syscon- and OF-naive reviewer,
+even after tracing a few layers in :)
+
+Bjorn
 
