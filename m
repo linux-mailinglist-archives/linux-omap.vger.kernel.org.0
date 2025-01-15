@@ -1,95 +1,119 @@
-Return-Path: <linux-omap+bounces-3125-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3126-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C91CFA1236D
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Jan 2025 13:04:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF1CA12D85
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Jan 2025 22:17:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35D787A21F0
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Jan 2025 12:03:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E03611888F53
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Jan 2025 21:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E74E1E98F5;
-	Wed, 15 Jan 2025 12:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664801DAC8C;
+	Wed, 15 Jan 2025 21:16:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EJqWxZ/O"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00712475E5;
-	Wed, 15 Jan 2025 12:03:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408F41D90C8
+	for <linux-omap@vger.kernel.org>; Wed, 15 Jan 2025 21:16:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736942636; cv=none; b=gP63IkrLW3oW8AGLZzQerYL/8Ce1nySCSOMF3Zzu4FDaIpXm94fOIwQwO9EDR4pV0TuhKlU7hT1c09CxWfkA8RJDowFqibGCXTL0ZBdDAHv50TMO4mAuvmUSuJyrIoDsAA+wPcjJE0c7iJ+ynBT2AHzeIe1ITVwj1jbWpt441X0=
+	t=1736975816; cv=none; b=NPQP5rNcuJPZvjaYkd2ck0rhRsbLPQyAR+KjP+3yEBAi5fs7mIPvaKSwG1mlRWwR+uyYXXOok9UFNkSqhrB0kDO2pWV9RuwxQu+Ac76nY0VLiTMf9H2VIYu9iksWi4xWon2kBSPjHZ4Ij1e7CF09zZgedaXzbQIGrqnMUp+vm2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736942636; c=relaxed/simple;
-	bh=rYv21w1TNpX166jyKbxCBTg2z1ftliDbp6nskXQ9CbU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O1fPLwSrcOXCJn+dn5/nf6tYzgq2TOmynhcs4C5YI8FmrhPxNssS5oZ/pTiLvYcLqDqwZz/4s3LtqQfgkjOw1oWg6Nbeb0nkamJ5jgnEf080n1YgK3sJS80LVj3ix4u4sXRG0oWjHAZqKzyMMVRmPa7eOepho06qGw+ABZLC9Q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-21bc1512a63so53806565ad.1;
-        Wed, 15 Jan 2025 04:03:54 -0800 (PST)
+	s=arc-20240116; t=1736975816; c=relaxed/simple;
+	bh=e6eUaMB8aPRTzS7gkwN9UDYKMht2OBUHjnRw8q//rWw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OfAooPQyb2uHvt6Y9Rd26+x3xOvhe2eC4+3i8cW4FL6/gidR74zLfbWtOPQtk/6mBdz53Z8GFlL/ZmNlOEJnyUpyqprgIWmIwRr3rkjvQ8clbq0YqxPqMT3J9I1JsY8Xt4ZFHFGdvv/nf5vwimfeze1MLOKtMU6ahMBI75PIPBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EJqWxZ/O; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-436284cdbe0so215785e9.3
+        for <linux-omap@vger.kernel.org>; Wed, 15 Jan 2025 13:16:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1736975812; x=1737580612; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NsnPZoz0kKjrB9ffP+P4GUuJA4/6fco/c0/24GKI/n4=;
+        b=EJqWxZ/OnbiqyIyj3c7eZ7G6ysRmyk0q2/PDpNAMChjIfCbhpfw7w5REf03XXgSzhO
+         B4sxUIkm8X8YT81rbYO1vy4S8uxbEqk/sY5W1ZBNwECVoR4WhP7mjJE53Zgy2eHGoieV
+         /MrvI6k0vQ9Ihpo1QTDQsHJ3wL1/2nPhp6mgB9IoDoRRyI/GbYsVY/AYtc1tjg1IpUCy
+         0qvVpX+j47IXY6zUJ2ToqEzYMt/dv0LQn18I4DpXPKPtj4T3E1xDDuNIg+9UlTdh2wdN
+         QKE7smdwapXpPLe14iEpSynQj+lyTp1IcoPhiFiIKtgDP6Wtngyg0o4rGdo1NknnuJJ3
+         mjtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736942634; x=1737547434;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nn2m3YvPKxsHqucofUHRKBClV54hrr7dyawjs31YpmM=;
-        b=JETC3Wn0cGVGuqdyVkr4uOGheYxkwXyQRlUFleA47ma3pR2laeZnuEOymktNkceMGV
-         Tsvcc0mmo25k2lSt8i11A5I2826U2e1i2NCkJC8/rXBQgx3H1oIpdKBQHH04dql/rWUN
-         e42kHQrhQvaDpqUSPM44XYBXCIWRrvnH5ilzzbCohFMuDpOYTKJlgHqgYmcSTNUjN4je
-         rLpivBYDJ2qajt1+Smgi1G2T8ouWgNv+eadI6Mcw2AltRiWj1KiJIEB9NPS5bYrpcKhX
-         a/F++Rr4kOWivweaA87v5gbGMz0IJu3iKFNi1aH2VyIXNZJojztFB4rgq8/nFJkOp3Yq
-         02tw==
-X-Forwarded-Encrypted: i=1; AJvYcCVS4XohB4b9QvVgjxLmO8VKF6dJ2lgeDy4HXyB+o+SEauh9M78so52IDdBI+qmSwPFE2WOQuCmQkqTnz00=@vger.kernel.org, AJvYcCW14Ry/wtbn6xAqZQkPpthDWHDlHER8AH2SfOKJCVrVNEc0R3qzxC5W/ObuqRfU66MZgOPRoxDyNDU8Dw==@vger.kernel.org, AJvYcCX0Vv8p8Gt10B24FmLPF/0b7m38UMlPzZBk3eFhcaknWy5y225Bo46zVk1mD651lUnAfZmfhpu5GhnG@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFeJiZnhy8VoH7IRSHaobnaHioPsqUxtZgl+9hHrN1gvQiw170
-	i7cp0hc1xKalnZeYfmvtxuoieTjrGacxqDp6o+NCbOjs5SwyEyI4
-X-Gm-Gg: ASbGncvHm93Yb7IVXC20aOCuYaeJie25vuNFyRaKVVQLvNQCSISBirdQLW5HQlRrLoA
-	gDUlk46QhVh8RHQR7tLR2adgDKXgml+8HokvyASyCQp3i12Cy4yoMsaWhVt2R/pKhzwpF9CxO73
-	3fj/TGX0tWyy1XkNzBVbzTOAcu2LIwvsWRV7YJchrjiqKtgzbVBRNa4k7A2XPXzXJp/G98ADyyY
-	B6sdDNADm9Q+n138Om3aqJBP/vx0Q4p3pCkyofQWVf0TRCS4sfabPpNZKE+HpYJpbBIWraJlztU
-	Ghwunu5ix8A7JIk=
-X-Google-Smtp-Source: AGHT+IEYVToacHIhaLiuPZMNMw8ey/7WGb5On7+yKJ58yY4usQG65tLlT774MHHUh//xwlxvNtx6eA==
-X-Received: by 2002:a17:902:e888:b0:215:94eb:adb6 with SMTP id d9443c01a7336-21a83fc3886mr482072125ad.40.1736942634229;
-        Wed, 15 Jan 2025 04:03:54 -0800 (PST)
-Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f10f520sm81190325ad.7.2025.01.15.04.03.53
+        d=1e100.net; s=20230601; t=1736975812; x=1737580612;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NsnPZoz0kKjrB9ffP+P4GUuJA4/6fco/c0/24GKI/n4=;
+        b=F0tVd87rPs5jkq+1uoA3QWLXAJiLQCR1dH+hLSRjhFzlKyF/DP5ijao88Qx+Ktk6Kf
+         7EYaNcAJhj2YZEeS572jjYYZPW8D5Z0SWDSMZGxj/f4VsS0bQq8liabJ7Ai8Uysl/GED
+         6xFs8+ZDA9ZKA9HNU5DibXbTjr/Z4JxwnHF6I3A/HyLYpcq9pL25lPUUEQaKX3LDXrME
+         3KKRM1A83sfU6aN2xM/NoCz0BsYYiChsv9qx5ownEQa7WjgB6TnQPKaJDEUNvJ2M1wN8
+         QkHSjGrS4x6trawwdd+rHnsIqdkmiB3Ff1iLpinsmV5Mpv+60AcYhbu28rDunmgPmpk2
+         cWIA==
+X-Forwarded-Encrypted: i=1; AJvYcCW999fehpJTonkcD9yLoO4IEOwlOQt6Atn8agZkw8wozyak9dhSQgrcSYyKhuVrlKlGy0ZKQIa/g9h1@vger.kernel.org
+X-Gm-Message-State: AOJu0YzafSvY0Z2hGVhOwL8Us93LBgYx9hjh2VpWZ46znyI76VwOlxs7
+	OfBpL3ZwGxkozDvEvlTf+dJYwFYBoNy9RhGCEZTtmAt4wBm4ZL85xht3uYi/Uvw=
+X-Gm-Gg: ASbGncv1n9XuhdVI6qoAmluQ+tj6IO1KgoAue8uWOP2IYCdYd6ij50eju2SqZwPFefw
+	64pwskimLQQhMWyIwgWwOtZ7SJrUe6KLx/yd5qX3l1qaXzSCwj7x7SAdGiCrIYJs6DvNEDWR2wR
+	yXXp1RFpvJLVaZUEjxRMeTEX8b4h43Ub4+69Ej2KTxmVaDwcvFcTQDmnbnTpxKMUJOP2Yk8/3Uj
+	Jv+Dr7eoR/bYrmBSkjNCuSMikWPTFW9jklFEf1ueZQPEY7gwqktMcZNjCGqKJjVWz/+g94=
+X-Google-Smtp-Source: AGHT+IFZU0fqytlQ1fVIsSgz83C2pBbEdAy8FNPafokDdGF9ctrc4yCGCcH68JxwD6L7jiw3VqsxOg==
+X-Received: by 2002:a05:6000:4618:b0:385:ed78:e188 with SMTP id ffacd0b85a97d-38a872d9f27mr10701277f8f.5.1736975812036;
+        Wed, 15 Jan 2025 13:16:52 -0800 (PST)
+Received: from krzk-bin.. ([178.197.223.165])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e4b80c9sm18435707f8f.84.2025.01.15.13.16.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jan 2025 04:03:53 -0800 (PST)
-Date: Wed, 15 Jan 2025 21:03:52 +0900
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Minghuan Lian <minghuan.Lian@nxp.com>,
-	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev
-Subject: Re: [PATCH 0/2] PCI: Simplify few things
-Message-ID: <20250115120352.GR4176564@rocinante>
-References: <20250112-syscon-phandle-args-pci-v1-0-fcb6ebcc0afc@linaro.org>
+        Wed, 15 Jan 2025 13:16:51 -0800 (PST)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Tony Lindgren <tony@atomide.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH] ARM: dts: ti: omap: Align GPIO hog name with bindings
+Date: Wed, 15 Jan 2025 22:16:48 +0100
+Message-ID: <20250115211648.194016-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250112-syscon-phandle-args-pci-v1-0-fcb6ebcc0afc@linaro.org>
+Content-Transfer-Encoding: 8bit
 
-Hello,
+Bindings expect GPIO hog names to end with 'hog' suffix, so correct it
+to fix dtbs_check warning:
 
-> Few code simplifications without functional impact.  Not tested on
-> hardware.
+  omap3-evm.dtb: en_on_board_gpio_61: $nodename:0: 'en_on_board_gpio_61' does not match '^.+-hog(-[0-9]+)?$'
 
-Applied to controller/dwc for v6.14, thank you!
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ arch/arm/boot/dts/ti/omap/omap3-evm-processor-common.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-	Krzysztof
+diff --git a/arch/arm/boot/dts/ti/omap/omap3-evm-processor-common.dtsi b/arch/arm/boot/dts/ti/omap/omap3-evm-processor-common.dtsi
+index e27837093e43..70e33cdd519a 100644
+--- a/arch/arm/boot/dts/ti/omap/omap3-evm-processor-common.dtsi
++++ b/arch/arm/boot/dts/ti/omap/omap3-evm-processor-common.dtsi
+@@ -205,7 +205,7 @@ en-usb2-port-hog {
+ 
+ /* T2_GPIO_2 low to route GPIO_61 to on-board devices */
+ &twl_gpio {
+-	en_on_board_gpio_61 {
++	en-on-board-gpio-61-hog {
+ 		gpio-hog;
+ 		gpios = <2 GPIO_ACTIVE_HIGH>;
+ 		output-low;
+-- 
+2.43.0
+
 
