@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-3139-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3140-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0437BA14C0C
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Jan 2025 10:20:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED890A14C0E
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Jan 2025 10:22:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27B32165BE6
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Jan 2025 09:20:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5475E3A3033
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Jan 2025 09:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCD21F9418;
-	Fri, 17 Jan 2025 09:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDBF1F91DA;
+	Fri, 17 Jan 2025 09:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MdWLgbm7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J/GH3/Mx"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9CA35960;
-	Fri, 17 Jan 2025 09:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B280535960;
+	Fri, 17 Jan 2025 09:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737105624; cv=none; b=QFv1BRbzAhWwOJUQMAo+7+6q/ue3NeUA1JNNWnEQRpN591AV0g1KqBjkgOXlFWy+nK0It6iSklJDBCx4eF3ZTX4nEOO3iVnUBysrY/xfR8skP9SRTLUpbIIFiB5Ob/uoOwNwmzraZM455Lp70lvdIVrh8T68yTXJF6TeLQld4so=
+	t=1737105733; cv=none; b=cGo6YWPXlJcSq4bnq4ojLx6Q32CuJvlaHco7EdLojT4OW1dlbi8sEx20JBSnYgX/GfBnTEliAdZWqHE13f62gQiNU92jre46wgw4U7GiIg4L5e3a4pEvJgeEh6tgWRgGLDQpSvpuEaa4byU/QA1BOZl1+I9aVaWRGRVflAm8NMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737105624; c=relaxed/simple;
-	bh=v1lBerWuLk7lY7gtxfvuLcLqAKznHvDiColw8oG/82Q=;
+	s=arc-20240116; t=1737105733; c=relaxed/simple;
+	bh=WQxyDMLTLvTtprIjBxHF+lYm58WWpqt+7Z3u4U/6wJM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dWyPpKauPApEBJ1Pqe3966cB9YL3LzQasIAJJL/pp8KfIc3xsCYQLZIZP3jZ4TAyH+J9U8pfhb2/DPIlDuescADIyWRtdONjWFnjApDjUVYF/odAqqeYc8TaeQdjl3zSfnMA/rA8poZOQoBjEU7Ytj067dKXY9MKWqET41sguwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MdWLgbm7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51355C4CEDD;
-	Fri, 17 Jan 2025 09:20:00 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=Ve+JfA5p+Vbf/JCrZHN8vX9ME6y+k6OR+al3ltCYEeNWDnhNhyK3rKPJ0moDQZuLuFuurgrsRpKN8HF9InGMqYujOfdGhiJoORCQmJsMpal+MNtXz6hHW5YuJq1toRrISSE2HCk0OwMLvC4gAnYVk7SwBafF2TeedYXKpmeBMcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J/GH3/Mx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD93C4CEDD;
+	Fri, 17 Jan 2025 09:22:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737105624;
-	bh=v1lBerWuLk7lY7gtxfvuLcLqAKznHvDiColw8oG/82Q=;
+	s=k20201202; t=1737105733;
+	bh=WQxyDMLTLvTtprIjBxHF+lYm58WWpqt+7Z3u4U/6wJM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MdWLgbm7N6hHRzmt3H25pERDSDst2t84XbiLU5LQSH16n2kZzSXQWDXh1UewE/LGz
-	 no/9cu/gjgiBdREWLjpwznP7h1QcbaNPtbkb+iBfZt/CeAdKOP2kprVLpzuR8ffr+J
-	 /oKvLHiL7zTc+pFz2BQz0yGKxyva8vu/Vbo+cyBRvCWOQMwBYmbatbkCMB7hr5/jPF
-	 LCt1kR4OQu+4soDdc0ehJbdpmBRDTCunigNEKt9opgLTTomLHJXIBJ/R/xtSY9kcnY
-	 4w6ZcvHxdkmB0kxfs6F2HQ3tVL0qzkTtNbTzky6ZLXgrI7trupfBbQuC+1fQ6KpinV
-	 2ndaEOyyD5YCA==
-Message-ID: <f6f3acb2-62b8-4073-b560-b7ce4ef52b31@kernel.org>
-Date: Fri, 17 Jan 2025 10:19:57 +0100
+	b=J/GH3/MxYO2lZrWRzicTVu28PJX8W3XlxI3pvRxIPotqR6LEWaVEIxvQkznxc5XPj
+	 oJQja2truQK0sWtHXZb2wezwPIw2cT/MD6nD6EAqUYIi1cHMG5UTFlHC2kxl3wQdTb
+	 EtqhvcQSw4hiBG61SBhV9ELHzpq8/VrKpptwH0c5CJsMCEoSlzPBOakEJ3j9lNSZ4T
+	 aTu4PIcI4McQD26eQa4lYcXxK60P6XIpKukmBXnL+RvAR/TcJDbS3vFdbaMyrEdyO6
+	 mTLdG8dZA4QyZpSQzZl2jXkkB90raRP/J9lUkVYF3LoVHJGVJPFOtpb1vlaZLiC/LU
+	 CPgJqg7H45V4g==
+Message-ID: <33852928-c4df-4966-8fab-b6638fef2486@kernel.org>
+Date: Fri, 17 Jan 2025 10:22:08 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -50,15 +50,14 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/2] Add TI TPS65214 PMIC Regulator Support
-To: Shree Ramamoorthy <s-ramamoorthy@ti.com>, lgirdwood@gmail.com,
- broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, aaro.koskinen@iki.fi, andreas@kemnade.info,
- khilman@baylibre.com, rogerq@kernel.org, tony@atomide.com,
- jerome.neanne@baylibre.com, linux-omap@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v1 1/1] mfd: tps65214: Add support for TI TPS65214 PMIC
+To: Shree Ramamoorthy <s-ramamoorthy@ti.com>, aaro.koskinen@iki.fi,
+ andreas@kemnade.info, khilman@baylibre.com, rogerq@kernel.org,
+ tony@atomide.com, lee@kernel.org, linux-omap@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Cc: m-leonard@ti.com, praneeth@ti.com, christophe.jaillet@wanadoo.fr
-References: <20250116223740.429515-1-s-ramamoorthy@ti.com>
+References: <20250116223915.430263-1-s-ramamoorthy@ti.com>
+ <20250116223915.430263-2-s-ramamoorthy@ti.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -104,43 +103,38 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250116223740.429515-1-s-ramamoorthy@ti.com>
+In-Reply-To: <20250116223915.430263-2-s-ramamoorthy@ti.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 16/01/2025 23:37, Shree Ramamoorthy wrote:
-> TPS65214 is a Power Management Integrated Circuit (PMIC) that has
-> significant register map overlap with TPS65215 and TPS65219. The series 
-> introduces TPS65214 and adds the device to the multi-PMIC support driver.
+On 16/01/2025 23:39, Shree Ramamoorthy wrote:
+> Use chip ID and chip_data struct to differentiate between 3 PMIC devices in
+> probe(). Add TPS65214 resource information. Update descriptions and
+> copyright information to reflect the driver supports 3 PMIC devices.
 > 
-> This follow-up series is dependent on:
-> Commit 2c4fd76d13ec ("mfd: tps65214: Add support for TI TPS65214 PMIC")
+> Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+> ---
 
-Hm? How so? Where is this commit?
+>  static struct tps65219_chip_data chip_info_table[] = {
+> +	[TPS65214] = {
+> +		.irq_chip = &tps65214_irq_chip,
+> +		.cells = tps65214_cells,
+> +		.n_cells = ARRAY_SIZE(tps65214_cells),
+> +	},
+>  	[TPS65215] = {
+>  		.irq_chip = &tps65215_irq_chip,
+>  		.cells = tps65215_cells,
+> @@ -421,6 +542,7 @@ static int tps65219_probe(struct i2c_client *client)
+>  }
+>  
+>  static const struct of_device_id of_tps65219_match_table[] = {
+> +	{ .compatible = "ti,tps65214", .data = (void *)TPS65214, },
 
-This:
-https://lore.kernel.org/all/20250116223915.430263-1-s-ramamoorthy@ti.com/
-tells me that it is depending on this patchset.
+Where is the binding patch? It cannot be sent separately.
 
-> 
-> TPS65215 Driver Series:
-
-65215 or 65214?
-
-> GPIO: https://lore.kernel.org/all/20250113225530.124213-1-s-ramamoorthy@ti.com/
-> MFD: https://lore.kernel.org/all/20250113230750.124843-1-s-ramamoorthy@ti.com/
-> Reg: https://lore.kernel.org/all/20250113231018.125426-1-s-ramamoorthy@ti.com/
-> Input: https://lore.kernel.org/all/20241226220049.398794-1-s-ramamoorthy@ti.com/
-> 
-> TPS65219 Cleanup Series:
-> GPIO: https://lore.kernel.org/all/20241217204755.1011731-1-s-ramamoorthy@ti.com/
-> MFD: https://lore.kernel.org/all/20241217204935.1012106-1-s-ramamoorthy@ti.com/
-> Reg: https://lore.kernel.org/all/20241217204526.1010989-1-s-ramamoorthy@ti.com/
-
-Are these all dependencies or just reference?
-
-
-
+>  	{ .compatible = "ti,tps65215", .data = (void *)TPS65215, },
+>  	{ .compatible = "ti,tps65219", .data = (void *)TPS65219, },
 Best regards,
 Krzysztof
+
 
