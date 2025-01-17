@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-3141-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3142-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C300DA14C11
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Jan 2025 10:23:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D38D7A14C1C
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Jan 2025 10:24:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CA56188A73C
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Jan 2025 09:23:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E8DE3A29F7
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Jan 2025 09:24:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74EE1F91DA;
-	Fri, 17 Jan 2025 09:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30661F9418;
+	Fri, 17 Jan 2025 09:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fNG52R2N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PDvEAbN+"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D7E35960;
-	Fri, 17 Jan 2025 09:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8C41F76D6;
+	Fri, 17 Jan 2025 09:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737105814; cv=none; b=arPtnLnyN6UCGEqZkHFgE7zXm1uTq+pPCNznoYUw0r62N4ZK14PHyykjyGfukfiPP33jlryk7vmxunKeGC42aKyN8DC8VpsS/KzbihugnsBgwj3O3vDgmVgoH8xU307Qn/TZ612IjJ2Rp4LGcbNt8GdRlfcFSefbZy7n+kJ+iiw=
+	t=1737105884; cv=none; b=rGMRORw0c3SDcZN05pAKJSXDPctcdqnSJYHExu9Dcy8I9nh2HVZQhSZBAlYjjNqOBzGniyqeTZk8Qr8c83uiW2mw9jyd3+Um4hRgtGXjLKR1EvD3WJDTWbLACCf9n2RtxDJNFH+yrKdsxvlfd5VjVWDVd8EqXbjNQS602yzHPaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737105814; c=relaxed/simple;
-	bh=/aREyA48iEpcjj2FnCvXn81BVyRdFse2C4BGSzPoRnY=;
+	s=arc-20240116; t=1737105884; c=relaxed/simple;
+	bh=+9Apofhm5UFFIReOh8BvE5n0LXMV1iXpR4+VwqrkN+I=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TYu7Sr4MUcNdHinmKVc9FNTcpjdloC60y4I+UnkgsUZ3p+L/Vme4hLDn6gFi4G3paMT3HdVIwMfzT+tohCb5/SPWBuoUW9xCJ4uMc2UKN3DbiaqS0V/U5y2ROFqQeDt1TlC0AhcrYeJ56hwyMt63L5P1VDmCboMTQ+KQBov5I9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fNG52R2N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E35ABC4CEDD;
-	Fri, 17 Jan 2025 09:23:30 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=K66o4xA372MbS/j77xS/cuGJ5fhfRjUNG0wcVvGa5Ih+EsgAuYQ7Of9xN5YzwzGGQ/Dh3acOkFr7iKNxkLYHOL1q9eDt7SO2kNztsd34ObTg9248kIRGSDt7mAh+7Yu7j6AuPzJeWFAy1MM0iIeNWzBC4azBfNNGstjbOb5DlJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PDvEAbN+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09AE8C4CEDD;
+	Fri, 17 Jan 2025 09:24:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737105813;
-	bh=/aREyA48iEpcjj2FnCvXn81BVyRdFse2C4BGSzPoRnY=;
+	s=k20201202; t=1737105883;
+	bh=+9Apofhm5UFFIReOh8BvE5n0LXMV1iXpR4+VwqrkN+I=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fNG52R2NkGFWX7Gy9+aeje3D2Ild3fljTBAU9jUSypVAamez9QnKcV/2XiQ7VB8Ld
-	 Zo8qNoYVhPcfuHi6Vyzu019EfA5mXEqUMoc6WKG6ZdOk0UmifbukW70Jys94pZdvTp
-	 1J7iXcA2R/j1tQsKYstRQs826bTgArI9hl/Si+Rk03JE57EhmsfJLAj+x/kiXiMBZa
-	 a1fy11GICW1vC5wHyUIGp6vBZF/Yu4zrdLAAQ75M47kYo6hW/EzkWeeZGQ6yPPYd5B
-	 cghpT7Mui7OFwBCpklEmSmgaoMDEwStC80evjupxkdgYyBbkLpn/prRiCtw+JdrLzT
-	 dt+CQOB2AFKxA==
-Message-ID: <85cfecd0-644d-4035-96bb-5b7752aecb04@kernel.org>
-Date: Fri, 17 Jan 2025 10:23:28 +0100
+	b=PDvEAbN+qVgsfG0+V8tszaIl+LBBqxFEYbYFnzndYnwsxHx6PUwNtZMJtzGJirGS2
+	 Wcw0li6qGGs51mA+l+4hHU/Q7kxV+Kk/84/VH/Tqd1UP0cy1DAlE+FrofZyz8tVOv2
+	 tbjtcdTKh17BAdvW8pBGGKtcjFePmTeyTybiprTbd5pdxdjG8+Hoon+KOKYWi27o5Y
+	 OfoKdiwM8XmrvSc9CUe3cnrPEskoedh9HR2/iUDVrs6ij5npt6nIHmO6ZbB7ufMhGM
+	 Uq0gY1Hvt9XERIq/M+nrYnSFpxhc/DfReMSDL8A56bVlzPlbtNtd09mG/wit4xzsBE
+	 V8aqdEhQjUS9w==
+Message-ID: <d00288c7-2f9e-409d-82e3-92b5a0d4de99@kernel.org>
+Date: Fri, 17 Jan 2025 10:24:38 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -50,13 +50,14 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/1] Add TI TPS65214 PMIC MFD Support
+Subject: Re: [PATCH v1 0/1] Add TI TPS65215 PMIC GPIO Support
 To: Shree Ramamoorthy <s-ramamoorthy@ti.com>, aaro.koskinen@iki.fi,
  andreas@kemnade.info, khilman@baylibre.com, rogerq@kernel.org,
- tony@atomide.com, lee@kernel.org, linux-omap@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ tony@atomide.com, linus.walleij@linaro.org, brgl@bgdev.pl,
+ linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-gpio@vger.kernel.org
 Cc: m-leonard@ti.com, praneeth@ti.com, christophe.jaillet@wanadoo.fr
-References: <20250116223915.430263-1-s-ramamoorthy@ti.com>
+References: <20250116223840.430054-1-s-ramamoorthy@ti.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -102,23 +103,20 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250116223915.430263-1-s-ramamoorthy@ti.com>
+In-Reply-To: <20250116223840.430054-1-s-ramamoorthy@ti.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 16/01/2025 23:39, Shree Ramamoorthy wrote:
-> TPS65214 is a Power Management Integrated Circuit (PMIC) that has 
+On 16/01/2025 23:38, Shree Ramamoorthy wrote:
+> TPS65214 is a Power Management Integrated Circuit (PMIC) that has
 > significant register map overlap with TPS65215 and TPS65219. The series 
 > introduces TPS65214 and adds the device to the multi-PMIC support driver.
 > 
 > This follow-up series is dependent on:
+> Commit 2c4fd76d13ec ("mfd: tps65214: Add support for TI TPS65214 PMIC")
 > Commit d23b7176df4a ("regulator: dt-bindings: Add TI TPS65214 PMIC bindings")
-What is this commit? Which tree? Recent next does not have it.
-
-The other thread said it depends on this patch, so how do you see it
-being merged? A depends on B, B depends on A. If A gets merged first:
-broken kernel. If B gets merged first: broken kernel? So what does this
-dependency and commit even mean?
+> 
+So this now depends on everything? That's total mess.
 Best regards,
 Krzysztof
 
