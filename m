@@ -1,136 +1,143 @@
-Return-Path: <linux-omap+bounces-3143-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3144-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0A62A14C22
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Jan 2025 10:27:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF853A155EE
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Jan 2025 18:47:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E2C73A5538
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Jan 2025 09:27:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43551188DA04
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Jan 2025 17:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA141F942E;
-	Fri, 17 Jan 2025 09:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6849E19E99C;
+	Fri, 17 Jan 2025 17:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tj+wVGH4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ihuj+vLT"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6571F76D6;
-	Fri, 17 Jan 2025 09:27:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6036C19EEC0;
+	Fri, 17 Jan 2025 17:47:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737106071; cv=none; b=ikPJuPARItoFxiKjt7JouCHxfRMoadochbASEc3rQr0Iatc67etAX/WJjhuPIi1bismwfW06pJadI//Kp37T7TB5nMmmf5nteKy4tGCdbH1VxhOGTcXQowY4N/r61zSsPHPseXLsFynHfRXAC+1jRAoJDOMI+o9rotLjMl3ECyw=
+	t=1737136041; cv=none; b=pGEAGgo2VmSw13Sf8aZQFtpf1DUscMyH6e/BbIjegNj2TgISMizQuY/v8HM+3DhiRwoqA7DubijMMMcM4bnt1PdRv0Lw7kq2NwpcKmM8qou98+o7qTfgZdHiPBBETgudCPOwsKS2QI2tl55YZ0lYGLCUv8DTFVpn50vCqI0shiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737106071; c=relaxed/simple;
-	bh=RrUxrO345g59oRvZNIyxm+rbtlh8VwSdlYvwpo+1YOg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ne5kAB32kmfrNC0T1lBJCXOXetE2z3GJey/Usz/UsFQumf0M/CfI8sQ6tYhhzNDhNofFOI1uIkmJdKrgWX3HvnBcsQgKpVEA0gYacw1v5flOLNShDmfkMH/Bs1IXFUBopkysYWSOCk8g6tEyQ/Rg0Dgcu7tO/ki3ZnTsFZQsBTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tj+wVGH4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29206C4CEE6;
-	Fri, 17 Jan 2025 09:27:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737106071;
-	bh=RrUxrO345g59oRvZNIyxm+rbtlh8VwSdlYvwpo+1YOg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Tj+wVGH4n29VBhBO23ugwTXJRqUcqTI54iU1e6rQcp6DIB4q2NexNn6rTQ6EXtP/q
-	 P3yyZw/XlESkc3ykin/VQMIixI3r/5coUHvBhhav1NEgrE4XgBY73zttGXb9Jw/6Ds
-	 dlJ1BtCS9MotJxykMSASgoICHAQZxMb3i6YB9A4k/TXniO4wJc7ww1zJzKtZV2FmT/
-	 xBM/X7OPmZ82e6zNEkjz6w/v0KhZoebiTJh+g7BC0pArqF+fW3/m05URjoK4K0BMHG
-	 xrmHBQ0Wb9rnHFWuX2PJt4Vq7wZM9WmE7oQoc6DLhoI7gzFzmkVLERHU4G3WrvhyuW
-	 E/iXzkZD/1Iaw==
-Message-ID: <08ecd393-d5c9-4426-a488-d4fea7067358@kernel.org>
-Date: Fri, 17 Jan 2025 10:27:45 +0100
+	s=arc-20240116; t=1737136041; c=relaxed/simple;
+	bh=eRP1jBCa4I9W05NTuQlOCzeDAgnWgcjSg5ryuvhjbqw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IpduqKGXRl9u48M53JQQ4QTdEf0h2ZMzTA5syJEoDC4lhkosd5y6iFG7Ir0F6lhK2/4QZKSAYENdr0VJSD/UaID7Na2nyYb8Zz5zes+tGK6zfcM7adebCfr4fzB3BVcmXtEUSHipV7fqTHqbR4yNxSDgqWzD/MAqnAp0FAQ2Z24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ihuj+vLT; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737136039; x=1768672039;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=eRP1jBCa4I9W05NTuQlOCzeDAgnWgcjSg5ryuvhjbqw=;
+  b=Ihuj+vLTVLpkH9urC19jC5xYepUWZyvo3PqszTxNtaZ4/sqAss1RUR5o
+   mURSpSOiOOTElTrYBp5tlyNSpmVQdBHpyTZQ/ORIqbjusP8sAb67YNKgr
+   5LjFPtzByitUdVNcQ6xnfCMD+9AYrMl2dwm9HtE3XjjU89Eu0T0olWqtA
+   b8jW0PLKJftj5yN6Oi/cOiLHpBnh84bkclh9PjkFTPvXzyx5PQ0cbeA4X
+   IKaCTKFppX/GW32DtIincFA6Jetxm0h8krxwDfEKpyR8tILIU677JAzpt
+   fnnhk4GmFFROkzsVNl+lGmVmAt+MG0MBiLPpEGarhM2tF5n0CTTwGMrhb
+   A==;
+X-CSE-ConnectionGUID: UJvE3c/pRzOimkUFsWd8pg==
+X-CSE-MsgGUID: HDWBft3hRYOghHWMcppnCg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11318"; a="36786665"
+X-IronPort-AV: E=Sophos;i="6.13,212,1732608000"; 
+   d="scan'208";a="36786665"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2025 09:47:18 -0800
+X-CSE-ConnectionGUID: B0+WehJbS1GfiAMDiJFPoQ==
+X-CSE-MsgGUID: xcYSeKIhR6GOgvOePao0ug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,212,1732608000"; 
+   d="scan'208";a="105912316"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 17 Jan 2025 09:47:15 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tYqR6-000TXb-2I;
+	Fri, 17 Jan 2025 17:47:12 +0000
+Date: Sat, 18 Jan 2025 01:46:36 +0800
+From: kernel test robot <lkp@intel.com>
+To: Shree Ramamoorthy <s-ramamoorthy@ti.com>, aaro.koskinen@iki.fi,
+	andreas@kemnade.info, khilman@baylibre.com, rogerq@kernel.org,
+	tony@atomide.com, linus.walleij@linaro.org, brgl@bgdev.pl,
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, m-leonard@ti.com,
+	praneeth@ti.com, christophe.jaillet@wanadoo.fr
+Subject: Re: [PATCH v3 1/3] gpio: tps65215: Add TPS65215 to
+ platform_device_id table
+Message-ID: <202501180129.Eu47rQjQ-lkp@intel.com>
+References: <20250113225530.124213-2-s-ramamoorthy@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/1] gpio: tps65214: Add support for TI TPS65214 PMIC
-To: Shree Ramamoorthy <s-ramamoorthy@ti.com>, aaro.koskinen@iki.fi,
- andreas@kemnade.info, khilman@baylibre.com, rogerq@kernel.org,
- tony@atomide.com, linus.walleij@linaro.org, brgl@bgdev.pl,
- linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-gpio@vger.kernel.org
-Cc: m-leonard@ti.com, praneeth@ti.com, christophe.jaillet@wanadoo.fr
-References: <20250116223840.430054-1-s-ramamoorthy@ti.com>
- <20250116223840.430054-2-s-ramamoorthy@ti.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250116223840.430054-2-s-ramamoorthy@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250113225530.124213-2-s-ramamoorthy@ti.com>
 
-On 16/01/2025 23:38, Shree Ramamoorthy wrote:
->  /*
-> - * GPIO driver for TI TPS65215/TPS65219 PMICs
-> + * TI TPS65214/TPS65215/TPS65219 PMIC GPIO Driver
->   *
->   * Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
->   */
-> @@ -156,6 +156,10 @@ static const struct gpio_chip tps65219_template_chip = {
->  };
->  
->  static const struct tps65219_chip_data chip_info_table[] = {
-> +	[TPS65214] = {
-> +		.ngpio = 2,
-> +		.offset = 1,
+Hi Shree,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on next-20250113]
+[also build test ERROR on linus/master v6.13-rc7]
+[cannot apply to tmlind-omap/for-next v6.13-rc7 v6.13-rc6 v6.13-rc5]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Shree-Ramamoorthy/gpio-tps65215-Add-TPS65215-to-platform_device_id-table/20250114-065813
+base:   next-20250113
+patch link:    https://lore.kernel.org/r/20250113225530.124213-2-s-ramamoorthy%40ti.com
+patch subject: [PATCH v3 1/3] gpio: tps65215: Add TPS65215 to platform_device_id table
+config: i386-randconfig-004-20250117 (https://download.01.org/0day-ci/archive/20250118/202501180129.Eu47rQjQ-lkp@intel.com/config)
+compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250118/202501180129.Eu47rQjQ-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501180129.Eu47rQjQ-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/gpio/gpio-tps65219.c:173:21: error: use of undeclared identifier 'TPS65215'
+     173 |         { "tps65215-gpio", TPS65215 },
+         |                            ^
+>> drivers/gpio/gpio-tps65219.c:177:1: error: definition of variable with array type needs an explicit size or an initializer
+     177 | MODULE_DEVICE_TABLE(platform, tps6521x_gpio_id_table);
+         | ^
+   include/linux/module.h:250:21: note: expanded from macro 'MODULE_DEVICE_TABLE'
+     250 | extern typeof(name) __mod_device_table__##type##__##name                \
+         |                     ^
+   <scratch space>:249:1: note: expanded from here
+     249 | __mod_device_table__platform__tps6521x_gpio_id_table
+         | ^
+   2 errors generated.
 
 
-So that's the same as TPS65215? Why do you keep duplicating entries?
+vim +/TPS65215 +173 drivers/gpio/gpio-tps65219.c
 
-> +	},
->  	[TPS65215] = {
->  		.ngpio = 2,
->  		.offset = 1,
+   171	
+   172	static const struct platform_device_id tps6521x_gpio_id_table[] = {
+ > 173		{ "tps65215-gpio", TPS65215 },
+   174		{ "tps65219-gpio", TPS65219 },
+   175		{ }
+   176	};
+ > 177	MODULE_DEVICE_TABLE(platform, tps6521x_gpio_id_table);
+   178	
 
-Best regards,
-Krzysztof
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
