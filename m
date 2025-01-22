@@ -1,184 +1,189 @@
-Return-Path: <linux-omap+bounces-3185-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3186-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6049A19ADC
-	for <lists+linux-omap@lfdr.de>; Wed, 22 Jan 2025 23:25:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A1F0A19AF7
+	for <lists+linux-omap@lfdr.de>; Wed, 22 Jan 2025 23:37:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A17E83AA998
-	for <lists+linux-omap@lfdr.de>; Wed, 22 Jan 2025 22:25:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A34116AE1E
+	for <lists+linux-omap@lfdr.de>; Wed, 22 Jan 2025 22:36:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C15221C9B9B;
-	Wed, 22 Jan 2025 22:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0DDE1C9EAA;
+	Wed, 22 Jan 2025 22:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NCayYKfS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OvmP44j0"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8373149E17;
-	Wed, 22 Jan 2025 22:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BC61C4A06;
+	Wed, 22 Jan 2025 22:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737584733; cv=none; b=LHIJydvLfZa1BiycER3jtLfoWzhR8FSys0FYbG4HXBopzV0qIut4g5ZvfsFV/3anmjfOKegHO6hh2ZtEJZPm8kzkpmfRBthHwRkx4M8Fl3n4FZeFk6QAN3l3R6zt0ZtVt0tP70I0+yYKJ3nWapiDnMSWr/GG9ijta4nu255EEEQ=
+	t=1737585414; cv=none; b=oViAf9zo76/3LImXdg+v20IOD71qNa64FjE/iajEy9TjiKBhCtQ9inAHGCLAH6B9Osmrmz4bk8l8QZuRsijIfLTtnZmsXXwteTRcvrsI7WBMdzKIdXq90xAe/miFa/ZlcuZ17f4ePAuBylqpBVG5utuQLC/+K5Qg7Si6FrmCdv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737584733; c=relaxed/simple;
-	bh=GR2THKDwTfJ4gBArKaU6aNNMiLh/ATnjyTpsFnzEELc=;
+	s=arc-20240116; t=1737585414; c=relaxed/simple;
+	bh=SsrOaIloqeFcG2s8OyPYHeqIUA8VV6q9XB+ml53my3I=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TtZF3vT78qoUrj+/ohagcfH3IuNc/EQj1vEFMcTdhtLQ5/3peH/FzWUUg13lkOpSVvs28TpO3ITtK0z7bM34EAgZ6i1CRawGiWdX8B8QuEGi1/YDzrArAYdN2wztF2Eibyl/0/goJW5Uz2BFxaCJNvSZEw77vx0Foc3FcS+0YOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NCayYKfS; arc=none smtp.client-ip=209.85.219.177
+	 To:Cc:Content-Type; b=aiHEKfsESzuxIVRmb6m6GnyPSHQ1Xt1fAG0wbz5ivyrDtvoqedYoNsOtMChtXz4G67uk0O2UnIgBniPuUV3Wybicd/dFFYEgAqGbRv93HHcvSwOnDFJp1XbH8R3U0xX3WmD/e9cNNWQWy119EFTF53H7vBky4FNr2+QzpQGhJCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OvmP44j0; arc=none smtp.client-ip=209.85.219.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e545c1e8a15so450402276.1;
-        Wed, 22 Jan 2025 14:25:31 -0800 (PST)
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e3a0acba5feso395250276.2;
+        Wed, 22 Jan 2025 14:36:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737584731; x=1738189531; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1737585411; x=1738190211; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fMuRflUxJX+wACGngqPnQ6rKVLbXyG4uOiCV4CkUZ+s=;
-        b=NCayYKfSzOKiwYs6bxQtKLYA948uvhTmPzOtvnRf2N4Pt3wuY4L+VtgAD8gRjqEovC
-         qAdi0FVsUg688bQ9O4RoxERb2rOCQBxK61/KnOSf4fLn3yc3DiAQcW2pYL74nnT0rquX
-         dYrrQmXrRPP7eUWlBAC7W07i7QrzrtNhGfrW79AegLLyntt+SWEN+L88F2xpYdi7VKAh
-         nSScQ/xhKbPPvetZ2CvECgw2kNizdtbjCuenybLsljBMCDv0h9bzeiKGTGAqMXDNKQfW
-         Bm2LPr8syDEvmz6xEZcuAmRnHNYVs6u5+qP74qNYwtkWH02+qcFxfm+Mr3dyvmch7uXk
-         92FA==
+        bh=qRIYMPfZ8j+79b6vhX+XsIXEOJ5ZV42s2D7LLOGgGJA=;
+        b=OvmP44j0SRB9KaZjWqsGwTriXoPmAF0CCorzv9lT/Ic4WVL8llD8pmf9N6IwfEFCNL
+         mnNJBrSxalEISHLvtx26RqDxX6iCFHLojgXhbDlxBnHtAHQlDnHHH8umOUuYILoz23dX
+         kfY1rENc13Q8WTbeb2AeokQ0IU9ckosbarhK57EpC5wHM3njHmhk70gnj99If2F4OGXW
+         z9LaRlFoPPJ19gdtDlGYL3SUqYN74qA2GipgjcRhp4cC14rk9P21DDCzIc48yv1Mkxps
+         Aheyg7NEooyOFedNA4DAan56cEks05keJPC3R3qnEo8lTHeoxjxYCd+tFcLBzVOnp2+S
+         PfFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737584731; x=1738189531;
+        d=1e100.net; s=20230601; t=1737585411; x=1738190211;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fMuRflUxJX+wACGngqPnQ6rKVLbXyG4uOiCV4CkUZ+s=;
-        b=mB39/lyB+OE14pOz9CAnqgWIzqhT+9ajaUOX9JDGAib4k3m/LdJ3FhHAwOVjimW4tv
-         DtCXZqHXxhho/En1JjOFsk1T1Sa+qIlgLIy2stcQ5OPinjN5rbDsBFiacsmjg2Ai0oF+
-         TkmIc8EJEKCFbhQm3EzUDiuFZ7JSbqqnmnKqY0dgyDGY9PUjQsg+ZhWj3T2gCU2dUKpO
-         1sHGpIutyZpF791/F35/LpN73zhdOc4K4g6PuV6AHM7w5V5gkp60T9kIefdurJVrakER
-         gwlaUlZvEdsYIzCtW62mVAeSGt17EN5HLMdL5ylF+0Iiq+uQLmVUT/YzcUfMPFoXQ0ag
-         C3zg==
-X-Forwarded-Encrypted: i=1; AJvYcCUpoOVSRcSwFUDmhxr1GZCK3k9MTpu8QHdO28IH8LD9kOkVzT665rCmaw0k5eyY+XA766LjHC0YzNvUeiZW@vger.kernel.org, AJvYcCVz/WOV2zzrgqiTFyBMaE/9kljXiL9nPfoda96odRe0juzEkKduOQHjmHf3ZDNAPINiszpP/63qYzMuaA==@vger.kernel.org, AJvYcCWMkh7xDBLaYUxpNtZpQKjxhOpbgpnsoWDo6jJnvmOSkTgyy6mkYZ7cT3mu8Ddu5n09Gyu9rHTi6cNY@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQ/67wPLOjrrdUObIBo/TbIlD2QB2XGSuwXEWpS0cUd63wnUzN
-	8pojtNc0Kh6jPnL6w4NTf0gP2t7/40T7UT0WbKgwy89w7MXTGv4r43p2JzKlLNNOTaULcuseotA
-	OoszsiU3ItgCscYc7xqku85qwmFw=
-X-Gm-Gg: ASbGncs5RP1VikyQ4L//kQFiSsH5MUmtW9Iovbotq4wObxCREs+Hz/xzJ9AS2hGYj/F
-	A5Y+Kte+7gkfeLEHN4yObifgnrGSOLNd2cZLuEXsQ0jpLCsOM+e/t
-X-Google-Smtp-Source: AGHT+IHwZQM+MfFTd7aBSHgxQ4+Ver/hLL8FMdPegBV//u5SryelVLsuydVDnMtEU1Sno+2WmpS7lHFuExqKneaC16M=
-X-Received: by 2002:a05:690c:d94:b0:6ef:7312:d06c with SMTP id
- 00721157ae682-6f6eb68b506mr170975957b3.21.1737584730724; Wed, 22 Jan 2025
- 14:25:30 -0800 (PST)
+        bh=qRIYMPfZ8j+79b6vhX+XsIXEOJ5ZV42s2D7LLOGgGJA=;
+        b=h7RKGsx9HNVnEqFLdPhcQP2V2CXpJMWdHGzlK186ByrcsIZ3X3OvDvcRI8hWrhjwGi
+         6mg8AIlEnJ1MYbDIFpf8gqd83jnmvUxPte0ckc3RYD5Xsthm9S2fL/ioRxxcInqCxie4
+         P73wfh++d8MjiTr8jfMOS9wgfr0+S7DIFmyLIDgEFHJV82JzbKCtQEHfmhhSv/u9R37L
+         qTcnBHvGTA8bkDdJPTuiMw5mOcRzdmJdt75hIQJiA1ks6uWVf+gxv+RpoiAVEbRqfZPX
+         i70WkTj+57rp1sz8VZhOTNsmAZ/ZAYuMv96MOdVWp2SWnTG1CMA8pf68gEgzOonBJs72
+         I4fg==
+X-Forwarded-Encrypted: i=1; AJvYcCVXgwZUUcOANENnCPdsrIMAC/RaIvZGJ7m4fgYmXfoK9X0Wt2uVCwxxImj+fAw4JrpN8KzhahdZ2ali/Q==@vger.kernel.org, AJvYcCX7Fq3X9VpXhCCk048bZ9piLAwqGkgMvCsE+sAoXWbVrLTSitPPJkkPYQOxP+3FIcLTvWkwby8yMo7E@vger.kernel.org, AJvYcCXJ1TIyp90SC1ldvUasXJC5XejpN5aeChs3iA8/p6DKeRolCvzuEFqwN9SsK+Xq1DR9WBd2i6CnSCgKyrsl@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZyliPx6yoD4ZpY43Jp4LZSmPvbVngtOvCha/bvSqHo+Rq0Hil
+	IsKWHOSRev9LsG3w80MHbCoDC4XL/DKeq+7JVoD2oCL8/9aGigAQEZq3KPsb5Fkr8Pt+6WpQ19X
+	6oIh7e7o/LXfRfbhRtqS3O1wSZMo=
+X-Gm-Gg: ASbGncvGp6++2cI3qOjwQD1xNAY4MYSuCZvb0J31BQhKx13Gj+SqP0Pu1JyWPOp1//v
+	X0yhcVYt80Xm8X3ndMTRuIAa01mVqzQzW0VXBlsey8i20D7/CeZ7z
+X-Google-Smtp-Source: AGHT+IEs0t0eySQJ2q+y7GEGMKKw6cHcK5BlIy2g2kXQBJauyBB4sR0P+jQ1AGofR+buRPyDxYAI+z2FacRSScGKKaM=
+X-Received: by 2002:a05:690c:968b:b0:6f6:d149:d64a with SMTP id
+ 00721157ae682-6f6eb908ca1mr186504857b3.27.1737585411295; Wed, 22 Jan 2025
+ 14:36:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250121200749.4131923-1-trini@konsulko.com> <7hmsfjn5mm.fsf@baylibre.com>
- <20250122000824.GJ3476@bill-the-cat> <20250122214604.79e1e829@akair>
- <CAOCHtYj3LumO4pViSOyTwjNxvG1E-DX=JA0-m4Usi1qL+jw21g@mail.gmail.com>
- <20250122211014.GB60249@bill-the-cat> <CAOCHtYjQtPvun-YTf6KT3Pw+jn3PS0tKM5uz1to3C6+Usjcq5Q@mail.gmail.com>
- <20250122221843.GE60249@bill-the-cat>
-In-Reply-To: <20250122221843.GE60249@bill-the-cat>
+References: <20250122001240.4166460-1-trini@konsulko.com> <20250122093236.6152c56c@akair>
+ <20250122142058.GM3476@bill-the-cat> <20250122232010.1a5a0525@akair>
+In-Reply-To: <20250122232010.1a5a0525@akair>
 From: Robert Nelson <robertcnelson@gmail.com>
-Date: Wed, 22 Jan 2025 16:25:04 -0600
-X-Gm-Features: AWEUYZn7CUSeWDwdPXOBkICWrNj84I-jQWAEoVfUugIlnDaUkvQIEIFR23RGa78
-Message-ID: <CAOCHtYi_AKq3Y5BxzTs9GL8UuU6SkS6hpankGK60SVXzCGkDMw@mail.gmail.com>
-Subject: Re: [PATCH] ARM: dts: omap4-panda-a4: Add missing model and
- compatible properties
-To: Tom Rini <trini@konsulko.com>
-Cc: Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@kernel.org>, 
-	linux-kernel@vger.kernel.org, Nishanth Menon <nm@ti.com>, Tony Lindgren <tony@atomide.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-omap@vger.kernel.org, devicetree@vger.kernel.org
+Date: Wed, 22 Jan 2025 16:36:24 -0600
+X-Gm-Features: AWEUYZlQLNY2kE2F-j7-0O2gr9I4QkAgpDcfm-N1Dey0X4zBD9qgZuPllRLkhnI
+Message-ID: <CAOCHtYgJr_KK+ww9KhVinPwmNHpR_gCiPFNUnL8+tex9rbKXoQ@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: omap: Add TI Pandaboard A4 variant
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: Tom Rini <trini@konsulko.com>, linux-kernel@vger.kernel.org, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Kevin Hilman <khilman@baylibre.com>, 
+	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-omap@vger.kernel.org, 
+	devicetree@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 22, 2025 at 4:18=E2=80=AFPM Tom Rini <trini@konsulko.com> wrote=
-:
+On Wed, Jan 22, 2025 at 4:20=E2=80=AFPM Andreas Kemnade <andreas@kemnade.in=
+fo> wrote:
 >
-> On Wed, Jan 22, 2025 at 03:52:47PM -0600, Robert Nelson wrote:
-> > On Wed, Jan 22, 2025 at 3:10=E2=80=AFPM Tom Rini <trini@konsulko.com> w=
-rote:
+> Am Wed, 22 Jan 2025 08:20:58 -0600
+> schrieb Tom Rini <trini@konsulko.com>:
+>
+> > On Wed, Jan 22, 2025 at 09:32:36AM +0100, Andreas Kemnade wrote:
+> > > Am Tue, 21 Jan 2025 18:12:40 -0600
+> > > schrieb Tom Rini <trini@konsulko.com>:
 > > >
-> > > On Wed, Jan 22, 2025 at 02:56:19PM -0600, Robert Nelson wrote:
-> > > > On Wed, Jan 22, 2025 at 2:46=E2=80=AFPM Andreas Kemnade <andreas@ke=
-mnade.info> wrote:
-> > > > >
-> > > > > Hi,
-> > > > >
-> > > > > Am Tue, 21 Jan 2025 18:08:24 -0600
-> > > > > schrieb Tom Rini <trini@konsulko.com>:
-> > > > >
-> > > > > > > If keeping it is just this binding update, then I'd say we ke=
-ep it, but
-> > > > > > > if it gets any more paninful to maintain, I'm also not going =
-to argue
-> > > > > > > very hard to keep it.
-> > > > > >
-> > > > > > I'm not in the position to see if any of the Pandaboards work a=
-t this
-> > > > > > point, so I don't know if they're otherwise functional or a hug=
-e pile of
-> > > > > > problems.
-> > > > >
-> > > > > I am still testing stuff with pandaboards. But I do not have the =
-a4
-> > > > > one. So yes they are functional. Compared with other devices stil=
-l in
-> > > > > use using the same SoC, here you can play around with everything,=
- know
-> > > > > the device. so it is a reference for keeping the really interesti=
-ng
-> > > > > devices working.
-> > > > >
-> > > > > Regarding the a4: I think it is better to keep that one in, just =
-that
-> > > > > nobody gets confused if he/she digs out his panda board for some
-> > > > > comparison test and uses a wrong board revision.
+> > > > Document the ti,omap4-panda-a4 compatible string in the appropriate
+> > > > place within the omap family binding file.
 > > > >
-> > > > Do you want an a4? I could dig one or two out! ;)
+> > > > Signed-off-by: Tom Rini <trini@konsulko.com>
+> > > > ---
+> > > > Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+> > > > Cc: Andreas Kemnade <andreas@kemnade.info>
+> > > > Cc: Kevin Hilman <khilman@baylibre.com>
+> > > > Cc: Roger Quadros <rogerq@kernel.org>
+> > > > Cc: Tony Lindgren <tony@atomide.com>
+> > > > Cc: Rob Herring <robh@kernel.org>
+> > > > Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> > > > Cc: Conor Dooley <conor+dt@kernel.org>
+> > > > Cc: linux-omap@vger.kernel.org
+> > > > Cc: devicetree@vger.kernel.org
+> > > > Cc: linux-kernel@vger.kernel.org
+> > > > ---
+> > > >  Documentation/devicetree/bindings/arm/ti/omap.yaml | 1 +
+> > > >  1 file changed, 1 insertion(+)
+> > > >
+> > > > diff --git a/Documentation/devicetree/bindings/arm/ti/omap.yaml b/D=
+ocumentation/devicetree/bindings/arm/ti/omap.yaml
+> > > > index 93e04a109a12..28e23ca766b4 100644
+> > > > --- a/Documentation/devicetree/bindings/arm/ti/omap.yaml
+> > > > +++ b/Documentation/devicetree/bindings/arm/ti/omap.yaml
+> > > > @@ -137,6 +137,7 @@ properties:
+> > > >                - motorola,xyboard-mz609
+> > > >                - motorola,xyboard-mz617
+> > > >                - ti,omap4-panda
+> > > > +              - ti,omap4-panda-a4
+> > > >                - ti,omap4-sdp
+> > > >            - const: ti,omap4430
+> > > >            - const: ti,omap4
 > > >
-> > > Unless I'm missing something, the a4 hasn't been bootable by upstream=
- in
-> > > about 10 years now... There's no top-level compatible, so there's no
-> > > match in the generic board code. I can't recall if the A4 versions we=
-re
-> > > available to anyone other than maintainers and beagleboard.org folks
-> > > themselves as part of bring-up/testing. I know I had one and ewasted =
-it
-> > > a while ago.
+> > > This allows compatible =3D "ti,omap4-panda-a4", "ti,omap4430", "ti,om=
+ap4"
+> > >
+> > > According to your other patch, you want
+> > > compatible =3D "ti,omap4-panda-a4", "ti,omap4-panda", "ti,omap4430",
+> > > "ti,omap4"
+> > >
+> > > so you need a construction similar to the "ti,omap3-beagle-ab4"
 > >
-> > PandaBoard EA1->A3  =3D omap4-panda.dtb
-> > PandaBoard A4->+ (non ES) =3D omap4-panda-a4.dtb
+> > Do you mean the order should change, or it should be an enum? I'm not
+> > sure where this is documented (the $id and $schema values in the file
+> > are just 404s so I guess not something to read directly?).
 > >
-> > A4 was the final production version of the non ES Panda..
+> you would need a block like this:
 >
-> Oh! My memory sucks here, sorry for the confusion. But it's also still
-> the case that omap4-panda-a4.dtb hasn't had a top-level compatible
-> string, so can it even be functionally used?
+>       - description: Early Pandaboard revision A4
+>         items:
+>           - const: ti,omap4-panda-a4
+>           - const: ti,omap4-panda
+>           - const: ti,omap4430
+>           - const: ti,omap4
 
-Looking back, I moved from PandaBoard -> WandBoard for
-BeagleBoard.org's build infacature..  Dual A9/USB vs Quad A9/SATA...
-yeah.. sata was more stable then USB..  I think it was around v5.4 lts
-I gave up on Panda's...  SO 5.4.x would have been the last time I
-personally used the panda's on mainline..
+Here's a good table:
 
-Digging more, yay for omappedia! ;)
-https://omappedia.com/wiki/PandaBoard_Revisions
+https://omappedia.com/wiki/PandaBoard_Revisions#PandaBoard_Revision_History=
+:
 
-I never personally saw the A5 or A6 rev's in my hand..
+The A4 was actually 'late' in the Pandaboard life, sadly the
+PandaBoard.org domain went down years ago with no real backup..
 
-What's scary, teh A4's changed the hdmi pins:
+The biggest A4 change i've been able to dig up was a change of the i2c
+pull ups on the hdmi bus:
+
 https://git.ti.com/gitweb?p=3Dti-linux-kernel/ti-linux-kernel.git;a=3Dblob;=
 f=3Darch/arm/boot/dts/omap4-panda-a4.dts;h=3Df1a6476af3716489007c12141d06f2=
 08ec2ebc94;hb=3Drefs/heads/ti-linux-4.14.y
 
-Yet no gpio id change..
+I don't believe I ever saw an A5/A6 in my hands.
 
+Since Panda pre-dates device-tree's normally these would have been named:
+
+ti,omap4-panda-a2 (first production)
+ti,omap4-panda-a4
+
+But with this new thing called "device-tree" the A2 got
+`ti,omap4-panda` and the newer A4 got `ti,omap4-panda-a4`...
 
 Regards,
 
---
+--=20
 Robert Nelson
 https://rcn-ee.com/
 
