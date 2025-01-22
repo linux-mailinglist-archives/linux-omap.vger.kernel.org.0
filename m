@@ -1,161 +1,130 @@
-Return-Path: <linux-omap+bounces-3153-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3154-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BC4AA188BA
-	for <lists+linux-omap@lfdr.de>; Wed, 22 Jan 2025 01:08:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01654A188BF
+	for <lists+linux-omap@lfdr.de>; Wed, 22 Jan 2025 01:12:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AB3A188B583
-	for <lists+linux-omap@lfdr.de>; Wed, 22 Jan 2025 00:08:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9E137A33EA
+	for <lists+linux-omap@lfdr.de>; Wed, 22 Jan 2025 00:12:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E28186A;
-	Wed, 22 Jan 2025 00:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA5C186A;
+	Wed, 22 Jan 2025 00:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b="mQkA+V4L"
+	dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b="sEKFiZS2"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3088310E0
-	for <linux-omap@vger.kernel.org>; Wed, 22 Jan 2025 00:08:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC17139E
+	for <linux-omap@vger.kernel.org>; Wed, 22 Jan 2025 00:12:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737504511; cv=none; b=Mj+XeJ/uoxHDOcXD4Pm8/YbF9XIkSPXPq9sXr5El/ZWvh0VZR8K2KGIyed//HRZBqIZvgEZ8fMw4ciw89iK8kD+bTXyFdw4ed+tfu3uK9cgPYFplt2yFJdP5BqobBM1zUwUW3apJV/y2X6ZPohdwj069C7xymjToTlWplIXDgHA=
+	t=1737504766; cv=none; b=avj32FjFf1bZ0RyXgMqOHl1i9L+Yy6TmoeiElR9+oUnL7Z4ejEvuQO91ZEojwNeN3WX/2eG8v6dYdOjFnGnUtXVxxB6psPdy/I7YW+7Ty3DgZdi+TgfiqEINCKDl7Ueg/dlkFaIrQkMDKvlbK/K4uSD8szZImeRReN9kjIVaddA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737504511; c=relaxed/simple;
-	bh=+ZC5sXaNDLr05BnhSvh2Hwr095nazmaxT/b8OpYJ8q4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q77pmX3T+9IOPXZArB0hDduryIkxaCM0ykgf/+bSKGqbrVsRQr0XYLg9PrFCtMCFFegRaWp3lybEE8a3lhmjD+jHLSmVM5hRCM2IorLDKNHHbaZBSp/EzXuHRK6c8KomGacr+jbkh83wVOl+BGyhOPZf9lHGog4gZKIbDd1AJl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com; spf=pass smtp.mailfrom=konsulko.com; dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b=mQkA+V4L; arc=none smtp.client-ip=209.85.222.179
+	s=arc-20240116; t=1737504766; c=relaxed/simple;
+	bh=zki0NDt+u+V1WcCaj88mFx68pC7AfO2UaZCB6rbYELc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k+tmKzi1OAcYqlUew+7BxwVz6dvGxK7zMO4/VkiC+wIaTfA/FHmwgBRqJ9Yq4GiVhBoUwGwYwL0zgrPyC1gPB0aDK9uKEZjHOYa4mEiM0xhep8fVBl5jMvWhQlUOLfoXfdbDCRIH/tYDTS7744R+QiVLTc+xFeTAyCx0SQIzpZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com; spf=pass smtp.mailfrom=konsulko.com; dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b=sEKFiZS2; arc=none smtp.client-ip=209.85.219.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=konsulko.com
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7b6f53c12adso571289185a.1
-        for <linux-omap@vger.kernel.org>; Tue, 21 Jan 2025 16:08:29 -0800 (PST)
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6dd0d09215aso55929546d6.2
+        for <linux-omap@vger.kernel.org>; Tue, 21 Jan 2025 16:12:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google; t=1737504509; x=1738109309; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DFtEywxzwLn/5hY1Yp58SHzzolHb4GO9rJXvLL/rCW4=;
-        b=mQkA+V4L2FqabpphhfEZVuROveXfEergecwomloGKG94mE3nX2eKNfPBZh4DPVk1gM
-         cVXWz8JZRoda1iSjUQ0aDHnXaAC6hcklFc6RnhT5o4iQCcTLdOWQ6qwjkIexVNeMnbQR
-         /Dy45WDfSGU8U516wzbrSr+wczJhV1GTLvkTU=
+        d=konsulko.com; s=google; t=1737504764; x=1738109564; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9xQAzgK0Ogi26D6sZWQIofoTNpuYU4aGotfpEsuIEtk=;
+        b=sEKFiZS2WPxiCIDuhM01a97eZmNLaSxUtWNNWqbcgEUJMuQlxdpsjdY+bYUe2jWtOE
+         GclakN0/Rw9eWbuxDzZyUHJ7gFF+7fVruQflAs1qDbOxhVeHncwmn0S8KPa2ovYeRO/k
+         2weVSxAAp1cKW9+/N9vmB0N3m6t1V8T4YFwpo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737504509; x=1738109309;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DFtEywxzwLn/5hY1Yp58SHzzolHb4GO9rJXvLL/rCW4=;
-        b=PzjFmqmOQvAqa8IGpRT0NZ7GrlgO3rQNLkdGAh6LqWAR/yP+m0ZkqUJ7DzuVy4v1FA
-         Pr/oWBXZQNQMvAOhjYtSZrQS0mR361jZfNT8SJvVIPu6W71VQXQ0l3GkRQ9BrNxEDJN7
-         E+uz8emkzdWy4KHri7ctjJSY/fhKRc5uNibJ68ofLw7u3D13hCIaZ5sirEo+bdiyxXxP
-         xiGg0WdS9caHvvR93oKNd7TJbnAFi6qv4lmkN3CC5hNljf1bYoxe2YFtEjHUXvLmMpSu
-         YAc+lLJkz/Q6aTyka4H/TsNd8k49aCqDG8QYxbGo+WM6Lpbt3Qv33AwthyVHGI0xP5Gn
-         pL9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUxdXaDmhu0H9I+bBivNH1mKZk/I1HYRa+HR8ZgzwIzIIGZyXxBi7sfOMYaelZrThM5oL6zLQQ8QuEf@vger.kernel.org
-X-Gm-Message-State: AOJu0YxrURVXpsXFuOqZHM3vrnLIN8TUJWKFJolP82ukhJIC8Q039N/H
-	ARxSrZVwEJShheI0VlOee9PDjCnp6LiGf6GiERj+SYw53M4euQyBoRjyVxmAkIc=
-X-Gm-Gg: ASbGncv1/9dD7ADurO7YpaBFO5PCSZVvErP1U6HlWhmDq2rtV8yJvS4opi/YeVlX1nA
-	PIeG3xL7PJjt5DHl/aoproQ01R/ZwRb74y/uxR9PxaxrZeJ4qI76e649Twn6sQuBtYmPe0Y1DQy
-	62jsOHVMhobiP8gY8t/gAp/b4IUAtxIT0tQpeSig7asVakjJ9OxwTlCxcAm91yTNi15Zqb6U1/H
-	SnCfFwp6cOk4W+hNvcEm+ow7vXrTM2QSZijJ+iutcQOd4aZi+JnOLpirR/VxwrcNi0=
-X-Google-Smtp-Source: AGHT+IFCOLUgFwqrCBgadGAInk+tW1W40iTqcVVVuwmHUvEcBdGhd7yiaD9Mxpuotd0LXZxxSMwvdw==
-X-Received: by 2002:a05:620a:400d:b0:7b7:1118:907e with SMTP id af79cd13be357-7be632761aamr2908732885a.52.1737504508895;
-        Tue, 21 Jan 2025 16:08:28 -0800 (PST)
-Received: from bill-the-cat ([187.144.16.9])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7be614ef2d7sm606517885a.96.2025.01.21.16.08.26
+        d=1e100.net; s=20230601; t=1737504764; x=1738109564;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9xQAzgK0Ogi26D6sZWQIofoTNpuYU4aGotfpEsuIEtk=;
+        b=KMcmyi/0gNzqAs0TDR66G4i8iBsKZxBdd3YI5W0+jSMz69oddJIeJn4ZlUp622bNXW
+         RBBYSGxCBwUFV+HXg8Ij7TtRWjKlz/nZ60BTQcfWiCN1BTnPa1twLjGOHwcoC7c5BDli
+         SpPU60yR1+j/0pMTurI5rkWPkIhtX/tM7723hjl040OTzwa8N0/WHvRPjcrjru/TYZyt
+         FkvCQirp3ECoYr6Kx7a/yBkjkcb/Gn8jxC0x4BsJ0EGkWiiTPUsbufK7XdnLwWaObTiT
+         7XNr1plkYUPGd9QBpel3gBycCFhJ6NUeifVcR9DSqhiRo4RwToXO3yb/ZbiEiJfhkKCM
+         ZNPw==
+X-Forwarded-Encrypted: i=1; AJvYcCXKTqN6qA7nkLd9TsBjCumhbrxfOvBc9LZ3+DG+79wrH3bke+eVP7E3wdMFAQOGuSLVk8xtrf8GnFc3@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSeTvhKLsJbFLESI8NFj/rZNCrlBhn/PEMjAfUjRgtkBF6rNbK
+	a4zR6FH3wToB8kVSvW8+DaF1XHqPuOZyC3TXh0yuxic+m81L1zWljpb3YdfFLP8FV9Be5u2N+JX
+	Q
+X-Gm-Gg: ASbGncv8OFKDx9enAohii3HYgDRl6trQwo22XtG3IvfnZTLMCm4T565bZXvp2DjyipL
+	960tH4V0p2fRHXpUxsjLA8LfOanYq46W3oVToHb/eKbl+HN8rpafJOKGSozMeTuEbZ1FWSbWo5J
+	vuEl6821EFAgjgCrvpO6hDTXfppHUSg07Zjvk1mHCpOYT2gx0OfOqKNSd1lnARy3j1NAbqLObjW
+	dZSrz1D35g+TfudSpRgrdfXnCmDVS/FNia90Fbf+Ru/iNSJR3/GoTFerniPx/q1xe5Fo0U1Fy7z
+	Ic50MORdVPOdfw==
+X-Google-Smtp-Source: AGHT+IHlqHCOtWWIu6jeCjXsNFo7V1/c1NMKUJkpfavLRNRlnwek8Hj/DAESzcWFpktf/pzsuw1N/Q==
+X-Received: by 2002:a05:6214:408:b0:6d8:7fe2:8b31 with SMTP id 6a1803df08f44-6e1b216da9fmr340577116d6.23.1737504763471;
+        Tue, 21 Jan 2025 16:12:43 -0800 (PST)
+Received: from bill-the-cat.tail58a08.ts.net ([187.144.16.9])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e1afcf6d29sm55855746d6.119.2025.01.21.16.12.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jan 2025 16:08:27 -0800 (PST)
-Date: Tue, 21 Jan 2025 18:08:24 -0600
+        Tue, 21 Jan 2025 16:12:42 -0800 (PST)
 From: Tom Rini <trini@konsulko.com>
-To: Kevin Hilman <khilman@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Nishanth Menon <nm@ti.com>,
-	Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
+To: linux-kernel@vger.kernel.org
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-omap@vger.kernel.org,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-omap@vger.kernel.org,
 	devicetree@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: omap4-panda-a4: Add missing model and
- compatible properties
-Message-ID: <20250122000824.GJ3476@bill-the-cat>
-References: <20250121200749.4131923-1-trini@konsulko.com>
- <7hmsfjn5mm.fsf@baylibre.com>
+Subject: [PATCH] dt-bindings: omap: Add TI Pandaboard A4 variant
+Date: Tue, 21 Jan 2025 18:12:40 -0600
+Message-ID: <20250122001240.4166460-1-trini@konsulko.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="bPCTNTKKZLjl67oG"
-Content-Disposition: inline
-In-Reply-To: <7hmsfjn5mm.fsf@baylibre.com>
-X-Clacks-Overhead: GNU Terry Pratchett
+Content-Transfer-Encoding: 8bit
 
+Document the ti,omap4-panda-a4 compatible string in the appropriate
+place within the omap family binding file.
 
---bPCTNTKKZLjl67oG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Tom Rini <trini@konsulko.com>
+---
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: Andreas Kemnade <andreas@kemnade.info>
+Cc: Kevin Hilman <khilman@baylibre.com>
+Cc: Roger Quadros <rogerq@kernel.org>
+Cc: Tony Lindgren <tony@atomide.com>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: linux-omap@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+---
+ Documentation/devicetree/bindings/arm/ti/omap.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-On Tue, Jan 21, 2025 at 02:50:41PM -0800, Kevin Hilman wrote:
-> Hi Tom,
->=20
-> Tom Rini <trini@konsulko.com> writes:
->=20
-> > When moving the model and compatible properties out of the common
-> > Pandaboard files and in to the specific boards, the omap4-panda-a4
-> > file wasn't updated as well and so has lacked a model and compatible
-> > entry ever since.
-> >
-> > Fixes: a1a57abaaf82 ("ARM: dts: omap4-panda: Fix model and SoC family d=
-etails")
-> > Signed-off-by: Tom Rini <trini@konsulko.com>
-> > ---
->=20
-> Checkpatch tells me:
->=20
->  WARNING: DT compatible string "ti,omap4-panda-a4" appears un-documented
->=20
-> So I think Documentation/devicetree/bindings/arm/ti/omap.yaml needs an
-> update too.  (and note the binding update should be a separate patch[1])
+diff --git a/Documentation/devicetree/bindings/arm/ti/omap.yaml b/Documentation/devicetree/bindings/arm/ti/omap.yaml
+index 93e04a109a12..28e23ca766b4 100644
+--- a/Documentation/devicetree/bindings/arm/ti/omap.yaml
++++ b/Documentation/devicetree/bindings/arm/ti/omap.yaml
+@@ -137,6 +137,7 @@ properties:
+               - motorola,xyboard-mz609
+               - motorola,xyboard-mz617
+               - ti,omap4-panda
++              - ti,omap4-panda-a4
+               - ti,omap4-sdp
+           - const: ti,omap4430
+           - const: ti,omap4
+-- 
+2.43.0
 
-Regular panda is there, so yeah, it's easy enough to add the a4 variant.
-I assume if I post that they'll get merged in the right order?
-
-> > Given how long this has been broken it's entirely plausible no a4
-> > hardware even exists anymore and so dropping this file instead makes
-> > sense. I only found this because scripts/make_fit.py crashed on these
-> > properties being missing.
->=20
-> If keeping it is just this binding update, then I'd say we keep it, but
-> if it gets any more paninful to maintain, I'm also not going to argue
-> very hard to keep it.
-
-I'm not in the position to see if any of the Pandaboards work at this
-point, so I don't know if they're otherwise functional or a huge pile of
-problems.
-
---=20
-Tom
-
---bPCTNTKKZLjl67oG
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCgAdFiEEGjx/cOCPqxcHgJu/FHw5/5Y0tywFAmeQNvQACgkQFHw5/5Y0
-tyyBbgv/brHvHtQZc6qTgaRbq45kaXrC87/5zJZKBVuwIVeXNLBk6dl6Rp+o8ZtM
-Tru0I5MxrhF/jRAlwnLhRu+aT4/H9F853EOWbxEn2zxl+jI4h6qHNovprQNFMuDg
-KygD/OKzgRwRizuXmS6BPtXSAa0MSDOSAG136iAGC9IEBmAzIrtqJR5XTo+mZGwV
-iwoI+KvxZBqErWGT89Q5Fbczv/M59rFVaNyOAv6Rhpx0Dr+gzc+M564Z/L9fwpLV
-LJ0jfvV12cRNA67iAzmXYVmSn4vudR77NyqsdCAHEhTFxem57tqkzHiv9VACGJgh
-NLGXxd5tTqdqaaxvyb4jjfFUgysTJlN+QOulncpx4SR0uB7FFaWzPpotsNK60kHB
-iQf3LPDSDmldS0Ue21Mb+Sl9M2DV6gMQo7Cnrw/Y6+PnpEuXiEItgvRA38wrZQt5
-/IfUY5BRy4MQHmZnngrCIPK+U5ri41WZLnZP0eVvGfk0o/Y1wYvgvducEzaJe2Qo
-wt/at/Oz
-=Tq/Z
------END PGP SIGNATURE-----
-
---bPCTNTKKZLjl67oG--
 
