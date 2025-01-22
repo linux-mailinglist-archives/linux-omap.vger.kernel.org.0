@@ -1,152 +1,132 @@
-Return-Path: <linux-omap+bounces-3182-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3183-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF919A19AC7
-	for <lists+linux-omap@lfdr.de>; Wed, 22 Jan 2025 23:18:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E23FCA19ACD
+	for <lists+linux-omap@lfdr.de>; Wed, 22 Jan 2025 23:20:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A2C9160666
-	for <lists+linux-omap@lfdr.de>; Wed, 22 Jan 2025 22:18:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE4BB7A2214
+	for <lists+linux-omap@lfdr.de>; Wed, 22 Jan 2025 22:20:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489D21C5F32;
-	Wed, 22 Jan 2025 22:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA92C1C5F32;
+	Wed, 22 Jan 2025 22:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b="ZCBIDOyC"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="KOQEIMfa"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E171C461F
-	for <linux-omap@vger.kernel.org>; Wed, 22 Jan 2025 22:18:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45841C5D58;
+	Wed, 22 Jan 2025 22:20:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737584330; cv=none; b=KYVBeKxw7Occ+CMZ2yu664KkRPQC9UoKllC46V9iZhnCXQ1a4tML7S+IF7HiB7dJ/weYHS2RSfBraBhzc2h5IdA5YIvDXM1TepDqLmLjivHfEzMzGmqJqjaaKRP0V81zNxsenmpG6miRSPR5N7FE+d/9wGhjR8bp0+pcK1aj7f8=
+	t=1737584421; cv=none; b=ta2vPT/qnFel5MXD09J92mOiNZgLxYfITrOYarMrxtCZW7gc4mkXwUO4cG93OMCHML/k6kWG9Tq7joq2ouY20IhxXwnC1dnFfFSefg1IvFWrj5SYCFM5C7YEm2ByJtOmgEYW8oePtsJHxuv2kHY8QlRlLje5FLDczRmdUgAltRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737584330; c=relaxed/simple;
-	bh=+PvMhmm+LFDYWeVPl+BIyyw68mqFF2dqNqhlskC4uOU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZYR8wobgUjwE4dYlZvXi72fy/gJUFIXZsrevfF9eV2N4xhxH9DmZsHszVMQp3WMtYjCWvDmfMUfB4noeT8XBbSlrH+uKpdIaegIBrBC4xymE7f1zekwU96vtPXYMNcql6P9qujnDheQ+JzhVQ6wPpow0LGMgU60+OEUXqMENPsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com; spf=pass smtp.mailfrom=konsulko.com; dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b=ZCBIDOyC; arc=none smtp.client-ip=209.85.219.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=konsulko.com
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6dd15d03eacso3778846d6.0
-        for <linux-omap@vger.kernel.org>; Wed, 22 Jan 2025 14:18:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google; t=1737584328; x=1738189128; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=M6eR1JyYqLS6mujuzbCER0T9AmeRtRFma/AqjlQJ+ag=;
-        b=ZCBIDOyCk9xh6/YqDekm+Rm382JuFT1AnuESfmYv2GEq16aNS6DgTBpDvu0yBaYc3y
-         5YXhv++dn6kukTikK7OwN8IIvr1NwCwpZfVmWfGyQPvyAmmC0LQ7QEg9Ylsud7+tuuLL
-         9S1kKXtmCksVFldBih3gBUtYmB5JI6x01x//g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737584328; x=1738189128;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=M6eR1JyYqLS6mujuzbCER0T9AmeRtRFma/AqjlQJ+ag=;
-        b=nkBKHY+8E5SBqVU7nYW3jK3+iak1zwMjCsiEs+AnibMXdbhRFDJk7MaiIXrsg4qpIF
-         T1bNAhrDnOrVQ77EgPq7/Pm/pEF1iZG/ydtx732tbTi+Gpwd9Y7Cv7f8aEzpVPUcE1qs
-         jcUynHlKXiTfFJvJQwKYf6q8NF3n6ZdHqLq8sXer4quwmQwVzhb3z/EU610CxkCbTPB8
-         0Q4cxUBsDrZ0upOJjR1mt7fBKytZo1El/s3uppacGdEemwszCc/47wnZE6fzFLZBqhF1
-         hlaB1DdhGXIMPJ5Igp1hKn7YcHkxVnqcD5LIGTm7Wf+QQFjN8Reo65/0v7tpq/3twZrL
-         mA5g==
-X-Forwarded-Encrypted: i=1; AJvYcCXe5Eu1aecRqVnvcQ4Xdfqx+0nFkK3B2CDZ5B1ORL9LmkH2W/AfW51cqOzXMnlASRiG/doirkLDT/3n@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSRtJeknmHtFiP3erxhpGuVLnmStHPoZgAHqX0ApIaIICERJjo
-	YwLhw7pv8i3rHtS/ZmlmqiGk9/pWI4FMzCoXd88PwX4Wx07nVKc/PPjBspkTEjA=
-X-Gm-Gg: ASbGnct6JgNW3pbRjPMOhFvSk2UI/FxeGZkp90lLdSg1kI/MMToGNzxq7ryuy9WebxQ
-	UIvGa0ikgfttLepluf8jKmR8kj4OqgZVjE8IOohId7WcQrqE7vbtGo57d4FqTlWNXvCoCdtyLJi
-	SLGTMfyRbx1+FltAwqzYUuXmIwjvkc2txrjxnhQXCT/b9q6UIbiJcjfBuIJKYhcKTQ7YHvwEH/A
-	WGwEL67o0Iy8b1uX1WVFrHjQgfUXB7wK8oPsThQdyzkAmVX4TsNJBfnNAOg/YP08HJVLA==
-X-Google-Smtp-Source: AGHT+IGSP5+iXsqblGNjAiGGk1yqYbXiU+WH0BmzN+XBmxBaH952fYla6YyRtqjYctbkF5j47FJypA==
-X-Received: by 2002:a0c:f201:0:b0:6d8:98a0:23b6 with SMTP id 6a1803df08f44-6e1f9f9278bmr14999296d6.4.1737584328284;
-        Wed, 22 Jan 2025 14:18:48 -0800 (PST)
-Received: from bill-the-cat ([189.177.145.20])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e1afcd37f6sm65238856d6.91.2025.01.22.14.18.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jan 2025 14:18:47 -0800 (PST)
-Date: Wed, 22 Jan 2025 16:18:43 -0600
-From: Tom Rini <trini@konsulko.com>
-To: Robert Nelson <robertcnelson@gmail.com>
-Cc: Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@kernel.org>, linux-kernel@vger.kernel.org,
-	Nishanth Menon <nm@ti.com>, Tony Lindgren <tony@atomide.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-omap@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: omap4-panda-a4: Add missing model and
- compatible properties
-Message-ID: <20250122221843.GE60249@bill-the-cat>
-References: <20250121200749.4131923-1-trini@konsulko.com>
- <7hmsfjn5mm.fsf@baylibre.com>
- <20250122000824.GJ3476@bill-the-cat>
- <20250122214604.79e1e829@akair>
- <CAOCHtYj3LumO4pViSOyTwjNxvG1E-DX=JA0-m4Usi1qL+jw21g@mail.gmail.com>
- <20250122211014.GB60249@bill-the-cat>
- <CAOCHtYjQtPvun-YTf6KT3Pw+jn3PS0tKM5uz1to3C6+Usjcq5Q@mail.gmail.com>
+	s=arc-20240116; t=1737584421; c=relaxed/simple;
+	bh=nvrrx8/PtkLuZZfdtUoyq5DSXbUigWwuz3bTnqFVjV0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=p33Bc199n+nXjhpY3VVmvGx9/rN64lsLKHBjET8SA97zoQE376mU+IXHjnTVCs61jSuvnwOyjKPNVS2JZSLO/m0pa+CUKJN007yDyDW4cUcCH7/+wB2YVXuTeNDQANtqMVZj2GEldVtHtEU/mnlvQn/o/IaYo4LwBIZD2rohDJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=KOQEIMfa; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=+Lrd7gBEeXZfZSsPu6hPDLZMANOAYM06iYiKU5AwnPg=; b=KOQEIMfaFXAPya7pLSmRCD/Elq
+	fxjyTi3TP4+ZwZXm5Y4u9A7gY8+PuaPgZsaLnTHfuBhnStwPgkp5nJNzmwVDXQl5qgWUV0LbUrnFv
+	FeMPUUINwazdT0BEn8dnK8hdoHOP7zzecPkf4chMbJ56unO30+fq8bcK53lkfC3jW6E570HshDDk0
+	fjft+4DpsQmiVjp0C3jPxjdmePMd3eOBNO3Q53HjSGan/YpPE/vaNlei8JkGmmBqeAVKx4xAGlGrS
+	cuP1pmXzuCGD6u5o2BF5KSdhGRcUQ5kUKNHVxkL/lNuT9WBhQo88diS56qhgqXET3qhjrUdCnvEP+
+	ja5x+DWw==;
+Date: Wed, 22 Jan 2025 23:20:10 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Tom Rini <trini@konsulko.com>
+Cc: linux-kernel@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>,
+ Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>,
+ Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ linux-omap@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: omap: Add TI Pandaboard A4 variant
+Message-ID: <20250122232010.1a5a0525@akair>
+In-Reply-To: <20250122142058.GM3476@bill-the-cat>
+References: <20250122001240.4166460-1-trini@konsulko.com>
+	<20250122093236.6152c56c@akair>
+	<20250122142058.GM3476@bill-the-cat>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOCHtYjQtPvun-YTf6KT3Pw+jn3PS0tKM5uz1to3C6+Usjcq5Q@mail.gmail.com>
-X-Clacks-Overhead: GNU Terry Pratchett
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 22, 2025 at 03:52:47PM -0600, Robert Nelson wrote:
-> On Wed, Jan 22, 2025 at 3:10 PM Tom Rini <trini@konsulko.com> wrote:
-> >
-> > On Wed, Jan 22, 2025 at 02:56:19PM -0600, Robert Nelson wrote:
-> > > On Wed, Jan 22, 2025 at 2:46 PM Andreas Kemnade <andreas@kemnade.info> wrote:
-> > > >
-> > > > Hi,
-> > > >
-> > > > Am Tue, 21 Jan 2025 18:08:24 -0600
-> > > > schrieb Tom Rini <trini@konsulko.com>:
-> > > >
-> > > > > > If keeping it is just this binding update, then I'd say we keep it, but
-> > > > > > if it gets any more paninful to maintain, I'm also not going to argue
-> > > > > > very hard to keep it.
-> > > > >
-> > > > > I'm not in the position to see if any of the Pandaboards work at this
-> > > > > point, so I don't know if they're otherwise functional or a huge pile of
-> > > > > problems.
-> > > >
-> > > > I am still testing stuff with pandaboards. But I do not have the a4
-> > > > one. So yes they are functional. Compared with other devices still in
-> > > > use using the same SoC, here you can play around with everything, know
-> > > > the device. so it is a reference for keeping the really interesting
-> > > > devices working.
-> > > >
-> > > > Regarding the a4: I think it is better to keep that one in, just that
-> > > > nobody gets confused if he/she digs out his panda board for some
-> > > > comparison test and uses a wrong board revision.
-> > >
-> > > Do you want an a4? I could dig one or two out! ;)
-> >
-> > Unless I'm missing something, the a4 hasn't been bootable by upstream in
-> > about 10 years now... There's no top-level compatible, so there's no
-> > match in the generic board code. I can't recall if the A4 versions were
-> > available to anyone other than maintainers and beagleboard.org folks
-> > themselves as part of bring-up/testing. I know I had one and ewasted it
-> > a while ago.
+Am Wed, 22 Jan 2025 08:20:58 -0600
+schrieb Tom Rini <trini@konsulko.com>:
+
+> On Wed, Jan 22, 2025 at 09:32:36AM +0100, Andreas Kemnade wrote:
+> > Am Tue, 21 Jan 2025 18:12:40 -0600
+> > schrieb Tom Rini <trini@konsulko.com>:
+> >   
+> > > Document the ti,omap4-panda-a4 compatible string in the appropriate
+> > > place within the omap family binding file.
+> > > 
+> > > Signed-off-by: Tom Rini <trini@konsulko.com>
+> > > ---
+> > > Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+> > > Cc: Andreas Kemnade <andreas@kemnade.info>
+> > > Cc: Kevin Hilman <khilman@baylibre.com>
+> > > Cc: Roger Quadros <rogerq@kernel.org>
+> > > Cc: Tony Lindgren <tony@atomide.com>
+> > > Cc: Rob Herring <robh@kernel.org>
+> > > Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> > > Cc: Conor Dooley <conor+dt@kernel.org>
+> > > Cc: linux-omap@vger.kernel.org
+> > > Cc: devicetree@vger.kernel.org
+> > > Cc: linux-kernel@vger.kernel.org
+> > > ---
+> > >  Documentation/devicetree/bindings/arm/ti/omap.yaml | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > > 
+> > > diff --git a/Documentation/devicetree/bindings/arm/ti/omap.yaml b/Documentation/devicetree/bindings/arm/ti/omap.yaml
+> > > index 93e04a109a12..28e23ca766b4 100644
+> > > --- a/Documentation/devicetree/bindings/arm/ti/omap.yaml
+> > > +++ b/Documentation/devicetree/bindings/arm/ti/omap.yaml
+> > > @@ -137,6 +137,7 @@ properties:
+> > >                - motorola,xyboard-mz609
+> > >                - motorola,xyboard-mz617
+> > >                - ti,omap4-panda
+> > > +              - ti,omap4-panda-a4
+> > >                - ti,omap4-sdp
+> > >            - const: ti,omap4430
+> > >            - const: ti,omap4  
+> > 
+> > This allows compatible = "ti,omap4-panda-a4", "ti,omap4430", "ti,omap4"
+> > 
+> > According to your other patch, you want
+> > compatible = "ti,omap4-panda-a4", "ti,omap4-panda", "ti,omap4430",
+> > "ti,omap4"
+> > 
+> > so you need a construction similar to the "ti,omap3-beagle-ab4"  
 > 
-> PandaBoard EA1->A3  = omap4-panda.dtb
-> PandaBoard A4->+ (non ES) = omap4-panda-a4.dtb
+> Do you mean the order should change, or it should be an enum? I'm not
+> sure where this is documented (the $id and $schema values in the file
+> are just 404s so I guess not something to read directly?).
 > 
-> A4 was the final production version of the non ES Panda..
+you would need a block like this:
 
-Oh! My memory sucks here, sorry for the confusion. But it's also still
-the case that omap4-panda-a4.dtb hasn't had a top-level compatible
-string, so can it even be functionally used?
+      - description: Early Pandaboard revision A4
+        items:
+          - const: ti,omap4-panda-a4
+          - const: ti,omap4-panda
+          - const: ti,omap4430
+          - const: ti,omap4
 
--- 
-Tom
+
+Regards,
+Andreas
 
