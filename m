@@ -1,99 +1,144 @@
-Return-Path: <linux-omap+bounces-3194-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3195-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ACE8A1A38F
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Jan 2025 12:49:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A97CBA1A3FB
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Jan 2025 13:12:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 897C2188C51E
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Jan 2025 11:50:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 771B33A3FF5
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Jan 2025 12:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC81520F070;
-	Thu, 23 Jan 2025 11:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FEE920E70B;
+	Thu, 23 Jan 2025 12:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N+MNMNGx"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="gjc/OILp"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB3720E70C;
-	Thu, 23 Jan 2025 11:49:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD6F20DD72
+	for <linux-omap@vger.kernel.org>; Thu, 23 Jan 2025 12:12:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737632983; cv=none; b=gUhwy1TkXwbO2utkCE4HOF73wEPxjuxo1uXyhlKq5kjW9jZVNuqCch5YqZntlzq5UuQzp2Buf8NSqnuBCGmKWz0WJDO3a4a3jAWL4CBS2ZoK4+tUeznldy8fGIb73XE9jsXSTaNpJJnaVhfMy3ePtC8QymlztY2EHYE9YI+OSAI=
+	t=1737634374; cv=none; b=ebxyuX9p+cd271zRuuOzFNvPRisdwoY9OIZyPdD/ldFEETETEyiMqCeUDjbRYblh3AMwafmTSVcvKndInilB/5QJ1t4fCkwJs9bEWbVM8snkPjTKE9DOs1tdcFERSyQFn/vrAdDmXDtoT7/W4+fjd/LUaBHiFfknG4KvAla5BHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737632983; c=relaxed/simple;
-	bh=JQpnWSLvcUXnxcIEbk5HWSRN1U80GEye+47kmsw6z+Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cj1zZdE0CFxs/zfDId9QCzlUQEQWqqvTg7Pghq1ME3HlL+DERPvkD/Ojlx9I7AXi25mFuTOXmyTkq0vxO/LpMjJobE9GMc9FHp/KCtceELBgY/e0t72ek5Ron76FnblDNSmFzt65Qejnn+is1sXHS30qOvEjMH7dxRg3RCFUedc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+MNMNGx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9982EC4CED3;
-	Thu, 23 Jan 2025 11:49:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737632983;
-	bh=JQpnWSLvcUXnxcIEbk5HWSRN1U80GEye+47kmsw6z+Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N+MNMNGxx4WKYcZpjxKTcKjw9NW6Ss9W5x1oCfzdpZCfjD5EtQYN0CzHUsx3jR3rc
-	 EXZ0bKcWIgM677Q1HSPE3ZaCAq8GayOZBj/6upWIbpIMX56Cl8PVNu1aPP+71AJgFN
-	 1NTBUSy79WGs9HXNrkPxnuwXAJ5oz7qujHwmrRH0vWDOnsF9ez4SiPVUrNwbivSt8d
-	 8Su5FvbhY/4qDe5i+uGYqWuqdKbLLaHktLrEvkPh0fXwD+MJjQc7FgDfAz21aBtYgR
-	 HC5fUYtzMMAxc++noRbLAZ+4NM8NhK4ZG1PaMUYXaQFDJo/oIOq4UkwSvmlnEp46Oq
-	 avIx8vZfj+OkA==
-Date: Thu, 23 Jan 2025 11:49:38 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org, linux-sound@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] dt-bindings: mfd: motorola-cpcap: Document
- audio-codec interrupts
-Message-ID: <a60f468e-857a-4f4c-b3d9-3ee8faf6602a@sirena.org.uk>
-References: <20250122164129.807247-1-ivo.g.dimitrov.75@gmail.com>
- <20250122164129.807247-4-ivo.g.dimitrov.75@gmail.com>
+	s=arc-20240116; t=1737634374; c=relaxed/simple;
+	bh=mtFgcK5d5vU+0BEr2cMeO/rvLdDdCsqETnlBl0Uv0a4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Fflc66c5yMJEw+KuWveTD2UcqZqQfVQrSb8bTCvteYfZCFZMaJx2CXCHdiyWtVaki7nK3BTn0UK9sbampcPESgI3PQBAEkLxvqr5rmcAlnHq303pxw9h3fpi9gFjc0FWOer77UUieqyVKmKO2j80/IqPDiaPaa3T9aJ5d3gbcOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=gjc/OILp; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4368a293339so9321335e9.3
+        for <linux-omap@vger.kernel.org>; Thu, 23 Jan 2025 04:12:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1737634370; x=1738239170; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZRxUqDQtYMNJ04dpHaJOBq0JBHfXv3aaDgKYPS3OL04=;
+        b=gjc/OILpiYhmIG742Au89SsYsOYymUqdXSubdr72zxwvCvAJSDExSI2FIiY/b2ivE2
+         fJLzLfbcawzjA7nk0CmO132pF+7OJKKsyTflWVbGRFG3iwfV7qcSDhrR92TIap1YDeL6
+         Qwg/hAOGAefKsBv+VuoETZ/pggIkL1M2s3RcspW0zUFDm1PCzClAI8ffISAcnxO6ICOB
+         +TkcqSeec5jLpAjmzcP+TZU89uQuyYrwCdt/Ar2gTKJClMjBu/K0oopKAi4+4iyTOA/m
+         6Xdr30opiDPzNv5y1mm6+VvkegPLMXHzyMSzX1FEy9i+8YOHS7NH8Gd/aOwEMIr4RKtr
+         HxQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737634370; x=1738239170;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZRxUqDQtYMNJ04dpHaJOBq0JBHfXv3aaDgKYPS3OL04=;
+        b=KHsGu26z+jDplXDs/wAO3LdPbyuGBLNTwC82RfcJGnpJeODIby/LG1ftnllFdK9SmJ
+         zilf8EVIMl42Z8nQdsh0wnioAVAo+xbGHiDIDQWVRM5Z4Van7BZvgFfYvHTI1zhXJuT9
+         TEEkwojeqA098lhfhyhDDn7Ysfg/IiVvDvsdKf1ekIZq/kHFqkmCMzFkvxOhMIcZ9Vxa
+         wgiY5iufYtBMb0MZE4HnNCIvPbXsOtic+WlBFjwOjVml+SSUsAA/jkOl95QZT8FNVWTM
+         4580swz0Qf53twXvb+76GO6E5Ia6vrprBKghDEEPjj18nPPLn2X+7IWH4BdB9t8a1Pft
+         /o8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWxfAulh/UaaxuizhB3UH8YSNzRiPd/TOWyhiOqE8kNev5jIK+fIPVfsFQomr13bIf7OeP2zkuH7CJ2@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+0TGGHIgGknpJuPN4NE58WycBHWgYxAdbA0bcozrMCdlxcTol
+	zbWRtvO+w9tf7EADEDqR+G7x9/giIXgzFWyvyVoK1xXSR7f/rqMrK4R7K1HuYmk=
+X-Gm-Gg: ASbGncvBqZXtypAtm7BPfqTOD+VSYxG6ndZ5M8x8VLRo7kbz9X1FuFqFaiP5tPcukkO
+	skCpDJh30qYgaEkMaCFVCORbYdD6VycVkab2PKi4Gxfew2mcDlJR/7dHbELtVAhUDQeQtdZRc49
+	4pONYr/65tEN00YaP7rhPqVIXtBD7hhWFSoKNsLlVon/1UNAR7VcaQGyRKih2N0jpTB7MW9P7+l
+	9ZngCcnRh7MSgHlbm7c/5uyg2oj5bOwAZZS1pu8+3CtVfELL/rmALh+qBWt5OvH8W56YhD30pEd
+	xTeW/zMIfATi0ALwCGE=
+X-Google-Smtp-Source: AGHT+IHC7AaB8nrR3oGShOfXmCEVPdPVczCK1GzN9+qsELRO7/8LMNivLw27uw09FDLlr5i8rOIA4w==
+X-Received: by 2002:a05:600c:4e93:b0:436:1b81:b65c with SMTP id 5b1f17b1804b1-438913df89fmr238758825e9.15.1737634369568;
+        Thu, 23 Jan 2025 04:12:49 -0800 (PST)
+Received: from [127.0.1.1] ([2001:861:d40:ed60:2a79:1cf5:e6a6:b1a8])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438b31de036sm59344435e9.33.2025.01.23.04.12.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jan 2025 04:12:49 -0800 (PST)
+From: Guillaume La Roque <glaroque@baylibre.com>
+Date: Thu, 23 Jan 2025 13:12:48 +0100
+Subject: [PATCH v4] arm64: arch_k3: Replace select with imply for TI
+ mailbox and TI SCI
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="EDn2e2kTBvOtiq5X"
-Content-Disposition: inline
-In-Reply-To: <20250122164129.807247-4-ivo.g.dimitrov.75@gmail.com>
-X-Cookie: Never kick a man, unless he's down.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250123-timodulemailboxsci-v4-1-b1a31b56f162@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAD8ykmcC/32NQQ6DIBBFr2JmXRpBCm1XvUfjAmGsk6g0YInGc
+ PdSD9Dle8l/f4eIgTDCvdohYKJIfi4gTxXYwcwvZOQKg6iF5DVXbKHJu8+Ik6Gx82u0xCQXKIy
+ Sl2tvoQzfAXtaj+izLTxQXHzYjo/U/OzfXGoYZzXqXhvl8KbdozPbSF3As/UTtDnnL7btH6S3A
+ AAA
+To: Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>, nm@ti.com, afd@ti.com
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-omap@vger.kernel.org, khilman@baylibre.com, 
+ Mattijs Korpershoek <mkorpershoek@baylibre.com>, vishalm@ti.com, 
+ Nicolas Frayer <nfrayer@baylibre.com>, 
+ Guillaume La Roque <glaroque@baylibre.com>
+X-Mailer: b4 0.14.1
 
+In order to build TI mailbox and TI SCI as modules, replace
+select with imply.
 
---EDn2e2kTBvOtiq5X
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Nicolas Frayer <nfrayer@baylibre.com>
+Signed-off-by: Guillaume La Roque <glaroque@baylibre.com>
+---
+Changes in v4:
+- rebase on master branch 
+- Link to v3: https://lore.kernel.org/r/20241016-timodulemailboxsci-v3-1-0e7f7a6de97d@baylibre.com
 
-On Wed, Jan 22, 2025 at 06:41:27PM +0200, Ivaylo Dimitrov wrote:
-> Add DT binding for the audio-codec headset detection interrupts.
+Changes in v3:
+- rebase with master
 
-Lee, would it be OK to merge this via ASoC?
+Changes in v2:
+- Use imply instead of removing select altogether and dropped
+patches 2/3 and 3/3 from previous series as using imply makes
+them redundant
+---
+ arch/arm64/Kconfig.platforms | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---EDn2e2kTBvOtiq5X
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/arch/arm64/Kconfig.platforms b/arch/arm64/Kconfig.platforms
+index 02007256709e..a6e4bfffc09d 100644
+--- a/arch/arm64/Kconfig.platforms
++++ b/arch/arm64/Kconfig.platforms
+@@ -133,8 +133,8 @@ config ARCH_K3
+ 	select PM_GENERIC_DOMAINS if PM
+ 	select MAILBOX
+ 	select SOC_TI
+-	select TI_MESSAGE_MANAGER
+-	select TI_SCI_PROTOCOL
++	imply TI_MESSAGE_MANAGER
++	imply TI_SCI_PROTOCOL
+ 	select TI_K3_SOCINFO
+ 	help
+ 	  This enables support for Texas Instruments' K3 multicore SoC
 
------BEGIN PGP SIGNATURE-----
+---
+base-commit: 21266b8df5224c4f677acf9f353eecc9094731f0
+change-id: 20241016-timodulemailboxsci-412e2a6458fc
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmeSLNEACgkQJNaLcl1U
-h9AS4Af+L81zQkihJtGBHw8Au0C8XQRrOZOe8juBJ56PEl5NxhhkEqS6HgplRhob
-o+7XRa9xQFRyI1JNbHDRVU2N46CeSk6/3PTsC/wZU7HRX8ziy4j4y7oYn7lNES6l
-EQSvN9A3UN9uBF26Q1kT0ZlRp0OmZHUJskKuTl8e4J+kQomL8HyWx6FhAzQ8PcEY
-RR5FIdYkOWyoGSR4sfCvxNiGLoDmKuvrj4963uLGzzmDHgh7IlArDLLujcP5gleE
-MmipntedI2q37O+cSOOa3B+RrsejYtukQUCVYn5X8LpSNMZdnpJq/DFBfS09ees8
-vxyLp1OWEuuPq24mKwZaSAga7Ua0NQ==
-=HQCu
------END PGP SIGNATURE-----
+Best regards,
+-- 
+Guillaume La Roque <glaroque@baylibre.com>
 
---EDn2e2kTBvOtiq5X--
 
