@@ -1,263 +1,229 @@
-Return-Path: <linux-omap+bounces-3191-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3192-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 696F5A19EE8
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Jan 2025 08:26:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7143A1A318
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Jan 2025 12:38:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3692D3A4B3F
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Jan 2025 07:26:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9E2D188C24F
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Jan 2025 11:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBA520B7F3;
-	Thu, 23 Jan 2025 07:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1341220E6F2;
+	Thu, 23 Jan 2025 11:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="sClbXXEv"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="m1XJP3g8"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from server.wki.vra.mybluehostin.me (server.wki.vra.mybluehostin.me [162.240.238.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980B220B21B;
-	Thu, 23 Jan 2025 07:26:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.238.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AAAC20E336
+	for <linux-omap@vger.kernel.org>; Thu, 23 Jan 2025 11:38:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737617163; cv=none; b=Sa1SXKZuBr19moHJ/KqghYU5LukWZQWvSYi6dzDwGAO9ImKWan0vN+41mRqErzj0fDLN3OlKCa1+mEZ6fVstdp7Xf3C2akpGGeEg+Hau4IiUfGt+pBIg9RhgZNSK9fjyvdrb5rguo6BL//n5gO9WExx+WkVTPxwKjmHtWjJO7Bw=
+	t=1737632283; cv=none; b=tu5YokAH6OHFybsnqzfemMjqTiUqyGsP5Vv+ybsTVrZnIPQPdYTSfG/p1opAA3TgB5WBT9C4pFYC9eMMz23MsR5jukcpJkv+qlXMBoikAU9JV4023AoWsLs3RdnwGD2yxlCvkhhyVS2lqqGCpYykvtKflRgKJ66LHYGRZDQGbAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737617163; c=relaxed/simple;
-	bh=+oTU2f7QVgMPnI5TDOFIx60vS3POz6R+KAMidl+5BuU=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=qqL4aHeBL7b/9b1XOm1HD1+/G3IMPe2FzuKbhHjb8d8s1Y3hFGJENgYcEvw0SZtvc87rrfwEAjS6o6f/26JvbwByUXa6lhhCK90eh5wLm6FZfGWwH4qAbXYULOrH8Js5iFup9zW6qW1+ZN+hkKeSebPW62dLbZHOkYU1w9dTR98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=sClbXXEv; arc=none smtp.client-ip=162.240.238.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
-	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=veVVuKJ87/rWDfKKk1AslmxtqJaSaNITyAxbJjSZqBs=; b=sClbXXEvBxiDWOPpHjgna2Gr/r
-	y7v1+u6od2V3kWR5Nd3lCCR2kHu5jhH6cUl4U9+h//cIsVEFI3Gyiba6S9Q82ZyoN4iwE2FIsqS3W
-	DsxNnFTErn3b2PRzsPP0aO1xORwztmfTzvrZan4K5x7E1Y0CAPiBY4UJljzuJNZUzVxXW7Rbb6pdR
-	zFlvVbaokqMzbs96DSwagskLz3Km6HfJXaGxuzfEcM2jKKTtiijosYTR6xjXZ6hlBV8jb4jL3W9SA
-	r7PzG6sPpqv/jKYGPQ3jXs3ARB9GfbCtT8gfF15l/jQ2WFZPzE5ki1LeF45zlZ870NkaxDng6OGoV
-	+UMB5CsA==;
-Received: from [122.175.9.182] (port=20914 helo=zimbra.couthit.local)
-	by server.wki.vra.mybluehostin.me with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <basharath@couthit.com>)
-	id 1tarb9-0008NK-2D;
-	Thu, 23 Jan 2025 12:55:56 +0530
-Received: from zimbra.couthit.local (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTPS id 81E7F1781A7D;
-	Thu, 23 Jan 2025 12:55:49 +0530 (IST)
-Received: from localhost (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTP id 623C21782495;
-	Thu, 23 Jan 2025 12:55:49 +0530 (IST)
-Received: from zimbra.couthit.local ([127.0.0.1])
-	by localhost (zimbra.couthit.local [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id CgdwGL9ompX1; Thu, 23 Jan 2025 12:55:49 +0530 (IST)
-Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
-	by zimbra.couthit.local (Postfix) with ESMTP id 1E2E41781A7D;
-	Thu, 23 Jan 2025 12:55:49 +0530 (IST)
-Date: Thu, 23 Jan 2025 12:55:48 +0530 (IST)
-From: Basharath Hussain Khaja <basharath@couthit.com>
-To: Jason Xing <kerneljasonxing@gmail.com>
-Cc: basharath <basharath@couthit.com>, danishanwar <danishanwar@ti.com>, 
-	rogerq <rogerq@kernel.org>, andrew+netdev <andrew+netdev@lunn.ch>, 
-	davem <davem@davemloft.net>, edumazet <edumazet@google.com>, 
-	kuba <kuba@kernel.org>, pabeni <pabeni@redhat.com>, 
-	Rob Herring <robh@kernel.org>, krzk+dt <krzk+dt@kernel.org>, 
-	conor+dt <conor+dt@kernel.org>, nm <nm@ti.com>, 
-	ssantosh <ssantosh@kernel.org>, tony <tony@atomide.com>, 
-	richardcochran <richardcochran@gmail.com>, 
-	parvathi <parvathi@couthit.com>, schnelle <schnelle@linux.ibm.com>, 
-	rdunlap <rdunlap@infradead.org>, diogo ivo <diogo.ivo@siemens.com>, 
-	m-karicheri2 <m-karicheri2@ti.com>, horms <horms@kernel.org>, 
-	jacob e keller <jacob.e.keller@intel.com>, 
-	m-malladi <m-malladi@ti.com>, 
-	javier carrasco cruz <javier.carrasco.cruz@gmail.com>, 
-	afd <afd@ti.com>, s-anna <s-anna@ti.com>, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
-	netdev <netdev@vger.kernel.org>, 
-	devicetree <devicetree@vger.kernel.org>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	linux-omap <linux-omap@vger.kernel.org>, 
-	pratheesh <pratheesh@ti.com>, prajith <prajith@ti.com>, 
-	vigneshr <vigneshr@ti.com>, praneeth <praneeth@ti.com>, 
-	srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
-	krishna <krishna@couthit.com>, pmohan <pmohan@couthit.com>, 
-	mohan <mohan@couthit.com>
-Message-ID: <507763040.391350.1737617148913.JavaMail.zimbra@couthit.local>
-In-Reply-To: <CAL+tcoD6WuJH6yXaEGvuz_s3sROPXtEMeZw1hBNQvb6wnKKr-w@mail.gmail.com>
-References: <20250109105600.41297-1-basharath@couthit.com> <20250110055906.65086-7-basharath@couthit.com> <CAL+tcoD6WuJH6yXaEGvuz_s3sROPXtEMeZw1hBNQvb6wnKKr-w@mail.gmail.com>
-Subject: Re: [RFC PATCH 06/10] net: ti: prueth: Adds HW timestamping support
- for PTP using PRU-ICSS IEP module
+	s=arc-20240116; t=1737632283; c=relaxed/simple;
+	bh=1elHtZeKz6sg8Ec3OUJiSdayZG26nY1iLQravuemXyc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kFoDXUDd7ajqavycH0qeirzRrAoUC+VsndgOXNs9XkbZFlIJued20cDGtP+yPFQ9HaJkBuZhRh07oz4VdQp6zsbdtAr62Zqzotji5696izZqWAynWAGlNmXNblZmdN++4B3HJhcWlbBcRNVyfqw8a/qiF5INafKuODN1e/Yy2oM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=m1XJP3g8; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2efded08c79so1225099a91.0
+        for <linux-omap@vger.kernel.org>; Thu, 23 Jan 2025 03:38:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1737632281; x=1738237081; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=G5e0D4ceKro9Yb8N26UgxQagAkkEg3LLRP/2T93ftQc=;
+        b=m1XJP3g8AzZ+JeuIq516eVik7b+vYL/DqXlz1JIXdBftZgozqxIxxIdWj4ASSnF3KB
+         12OlgDhHktPFBSdLAL0l0hIBNIl126IlS8f4I3hg3nvZa5h5fOKB9yUxN+pNHtDZgqDB
+         0d6kRXrxqDWoUY4YoWL95lElfifjOAdRCDB2W6XTB8DAy3PGVFQ2N/zY3LYnu7/GlVSw
+         wJSbrxeCkPpJIyTPuvjx8W8mznwaexFyvMKg6Ueg9f4KSur9/RYXg8oas4g7YM55wYIb
+         rB5ZgyOuohcQ4oevLgyTJS/VZ1/dQ7cMFOBOaNR0TrsuiteCCdTMv/QeXduRLpOWhgtd
+         /W0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737632281; x=1738237081;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=G5e0D4ceKro9Yb8N26UgxQagAkkEg3LLRP/2T93ftQc=;
+        b=iDfsQyNvvTXPQ/M0npmgaiGjsKDf/fQLZsr1SWD57SiRovotFqVdpYhHeX6kyIQlWq
+         PcrcYX59opV6HxxVvBie8mNxCnubgG3bCwUAyazu2MFnVFTo9t3AIa7uFt3MIApSnJM4
+         2Y+2aNsLOG4d7rZ2ldtrWFus3POsveDuqiHAZPqg2Bu8QrFzftr35LnrP7472aIjyFK1
+         UdmNgImfkOvA8D2JYPPxkgTfKGKuz0plAUcAL+eutsyOA0RycQmSfGgy8/+cYyZiIOAw
+         jvFliLo3NKx1TcXv78XhbPdBF51xgFFNPSem1eA8YD+ngPQDQCzoC0w4iG+IjCoSLmx7
+         VXVg==
+X-Forwarded-Encrypted: i=1; AJvYcCWhBL0fuEWluMvjcQuZKok+PKe+W1A2PThoCy5lGKAwTGWINRB8oq0jHeuceuLfjsWtFQV5HboNZ79v@vger.kernel.org
+X-Gm-Message-State: AOJu0YzH45EVQS2MPt7fM+/tFT0Mmla1a25ccInTcJ2E38j6NG1W/Vsd
+	fMXp0CTQDnfW79Is7P7jmrQLY7OAxGxDXSoqxZ6JR2v5VSL8DeGKVhVCQpFP7V0=
+X-Gm-Gg: ASbGncuA/IlftqtgcXuLhlkp3W8h4QdwjjcGFf3kwKnVFHBCtNrfqx3IF3P2kmV2p8t
+	iFOy2/RCkQPow0jvfHKw4J5Mr7SXBPnbOVX4kQqdc+THWIFBnxWs2KxUOkJejX7EUcoRiQyX3hk
+	MSUkscGRLh7+rHxDqw4ar3OqgaSdH/r6nYjRBlH41EFJKbsQ6sM0oAVfn5d0BE20yzgGl31cJ2T
+	vxLYETgtFQQ45tHdjO9mX1I70SHr0v9ydo+nTXWKsl5eaFqIh0csaSCPiU7/RTyHPoH3UeoVy+m
+	hTQu0/8=
+X-Google-Smtp-Source: AGHT+IGtsIzzGfAcKL/PEpiuES32TcQcp9F7OLmJOeJMP9wYjML8Ng6LAzORWCaFKdsDKOmTsmrEHA==
+X-Received: by 2002:a17:90b:5206:b0:2f4:f7f8:fc8b with SMTP id 98e67ed59e1d1-2f782d4ed77mr37302192a91.27.1737632280204;
+        Thu, 23 Jan 2025 03:38:00 -0800 (PST)
+Received: from localhost ([122.172.84.139])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f7e6a5e2b2sm3705966a91.3.2025.01.23.03.37.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jan 2025 03:37:59 -0800 (PST)
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Hector Martin <marcan@marcan.st>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kevin Hilman <khilman@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Markus Mayer <mmayer@broadcom.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Sven Peter <sven@svenpeter.dev>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	WANG Xuerui <kernel@xen0n.name>
+Cc: linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	arm-scmi@vger.kernel.org,
+	asahi@lists.linux.dev,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-mips@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-tegra@vger.kernel.org,
+	loongarch@lists.linux.dev
+Subject: [PATCH 00/33] cpufreq: manage common sysfs attributes from core
+Date: Thu, 23 Jan 2025 17:05:36 +0530
+Message-Id: <cover.1737631669.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Zimbra 8.8.15_GA_3968 (ZimbraWebClient - FF113 (Linux)/8.8.15_GA_3968)
-Thread-Topic: prueth: Adds HW timestamping support for PTP using PRU-ICSS IEP module
-Thread-Index: wTJ8No/eSvZZY8f30NQgDnaEMvdq2w==
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.wki.vra.mybluehostin.me
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.wki.vra.mybluehostin.me: authenticated_id: smtp@couthit.com
-X-Authenticated-Sender: server.wki.vra.mybluehostin.me: smtp@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Transfer-Encoding: 8bit
 
-> On Fri, Jan 10, 2025 at 2:01=E2=80=AFPM Basharath Hussain Khaja
-> <basharath@couthit.com> wrote:
->>
->> From: Roger Quadros <rogerq@ti.com>
->>
->> PRU-ICSS IEP module, which is capable of timestamping RX and
->> TX packets at HW level, is used for time synchronization by PTP4L.
->>
->> This change includes interaction between firmware and user space
->> application (ptp4l) with required packet timestamps. The driver
->> initializes the PRU firmware with appropriate mode and configuration
->> flags. Firmware updates local registers with the flags set by driver
->> and uses for further operation. RX SOF timestamp comes along with
->> packet and firmware will rise interrupt with TX SOF timestamp after
->> pushing the packet on to the wire.
->>
->> IEP driver is available in upstream and we are reusing for hardware
->> configuration for ICSSM as well. On top of that we have extended it
->> with the changes for AM57xx SoC.
->>
->> Extended ethtool for reading HW timestamping capability of the PRU
->> interfaces.
->>
->> Currently ordinary clock (OC) configuration has been validated with
->> Linux ptp4l.
->>
->> Signed-off-by: Roger Quadros <rogerq@ti.com>
->> Signed-off-by: Andrew F. Davis <afd@ti.com>
->> Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
->> Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
->> ---
->>  drivers/net/ethernet/ti/icssg/icss_iep.c      |  42 ++
->>  drivers/net/ethernet/ti/icssm/icssm_ethtool.c |  26 +
->>  drivers/net/ethernet/ti/icssm/icssm_prueth.c  | 443 +++++++++++++++++-
->>  drivers/net/ethernet/ti/icssm/icssm_prueth.h  |  11 +
->>  .../net/ethernet/ti/icssm/icssm_prueth_ptp.h  |  85 ++++
->>  5 files changed, 605 insertions(+), 2 deletions(-)
->>  create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_ptp.h
->>
->> diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c
->> b/drivers/net/ethernet/ti/icssg/icss_iep.c
->> index 768578c0d958..9a2ea13703d8 100644
->> --- a/drivers/net/ethernet/ti/icssg/icss_iep.c
->> +++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
->> @@ -937,11 +937,53 @@ static const struct icss_iep_plat_data
->> am654_icss_iep_plat_data =3D {
->>         .config =3D &am654_icss_iep_regmap_config,
->>  };
->>
->> +static const struct icss_iep_plat_data am57xx_icss_iep_plat_data =3D {
->> +       .flags =3D ICSS_IEP_64BIT_COUNTER_SUPPORT |
->> +                ICSS_IEP_SLOW_COMPEN_REG_SUPPORT,
->> +       .reg_offs =3D {
->> +               [ICSS_IEP_GLOBAL_CFG_REG] =3D 0x00,
->> +               [ICSS_IEP_COMPEN_REG] =3D 0x08,
->> +               [ICSS_IEP_SLOW_COMPEN_REG] =3D 0x0C,
->> +               [ICSS_IEP_COUNT_REG0] =3D 0x10,
->> +               [ICSS_IEP_COUNT_REG1] =3D 0x14,
->> +               [ICSS_IEP_CAPTURE_CFG_REG] =3D 0x18,
->> +               [ICSS_IEP_CAPTURE_STAT_REG] =3D 0x1c,
->> +
->> +               [ICSS_IEP_CAP6_RISE_REG0] =3D 0x50,
->> +               [ICSS_IEP_CAP6_RISE_REG1] =3D 0x54,
->> +
->> +               [ICSS_IEP_CAP7_RISE_REG0] =3D 0x60,
->> +               [ICSS_IEP_CAP7_RISE_REG1] =3D 0x64,
->> +
->> +               [ICSS_IEP_CMP_CFG_REG] =3D 0x70,
->> +               [ICSS_IEP_CMP_STAT_REG] =3D 0x74,
->> +               [ICSS_IEP_CMP0_REG0] =3D 0x78,
->> +               [ICSS_IEP_CMP0_REG1] =3D 0x7c,
->> +               [ICSS_IEP_CMP1_REG0] =3D 0x80,
->> +               [ICSS_IEP_CMP1_REG1] =3D 0x84,
->> +
->> +               [ICSS_IEP_CMP8_REG0] =3D 0xc0,
->> +               [ICSS_IEP_CMP8_REG1] =3D 0xc4,
->> +               [ICSS_IEP_SYNC_CTRL_REG] =3D 0x180,
->> +               [ICSS_IEP_SYNC0_STAT_REG] =3D 0x188,
->> +               [ICSS_IEP_SYNC1_STAT_REG] =3D 0x18c,
->> +               [ICSS_IEP_SYNC_PWIDTH_REG] =3D 0x190,
->> +               [ICSS_IEP_SYNC0_PERIOD_REG] =3D 0x194,
->> +               [ICSS_IEP_SYNC1_DELAY_REG] =3D 0x198,
->> +               [ICSS_IEP_SYNC_START_REG] =3D 0x19c,
->> +       },
->> +       .config =3D &am654_icss_iep_regmap_config,
->> +};
->> +
->>  static const struct of_device_id icss_iep_of_match[] =3D {
->>         {
->>                 .compatible =3D "ti,am654-icss-iep",
->>                 .data =3D &am654_icss_iep_plat_data,
->>         },
->> +       {
->> +               .compatible =3D "ti,am5728-icss-iep",
->> +               .data =3D &am57xx_icss_iep_plat_data,
->> +       },
->>         {},
->>  };
->>  MODULE_DEVICE_TABLE(of, icss_iep_of_match);
->> diff --git a/drivers/net/ethernet/ti/icssm/icssm_ethtool.c
->> b/drivers/net/ethernet/ti/icssm/icssm_ethtool.c
->> index cce3276d5565..86d62d64dc4d 100644
->> --- a/drivers/net/ethernet/ti/icssm/icssm_ethtool.c
->> +++ b/drivers/net/ethernet/ti/icssm/icssm_ethtool.c
->> @@ -7,6 +7,7 @@
->>
->>  #include <linux/if_bridge.h>
->>  #include "icssm_prueth.h"
->> +#include "../icssg/icss_iep.h"
->>
->>  #define PRUETH_MODULE_VERSION "0.2"
->>  #define PRUETH_MODULE_DESCRIPTION "PRUSS Ethernet driver"
->> @@ -189,12 +190,37 @@ static void icssm_emac_get_regs(struct net_device =
-*ndev,
->>         regs->version =3D PRUETH_REG_DUMP_GET_VER(prueth);
->>  }
->>
->> +static int icssm_emac_get_ts_info(struct net_device *ndev,
->> +                                 struct kernel_ethtool_ts_info *info)
->> +{
->> +       struct prueth_emac *emac =3D netdev_priv(ndev);
->> +
->> +       if ((PRUETH_IS_EMAC(emac->prueth) && !emac->emac_ptp_tx_irq))
->> +               return ethtool_op_get_ts_info(ndev, info);
->> +
->> +       info->so_timestamping =3D
->> +               SOF_TIMESTAMPING_TX_HARDWARE |
->> +               SOF_TIMESTAMPING_TX_SOFTWARE |
->> +               SOF_TIMESTAMPING_RX_HARDWARE |
->> +               SOF_TIMESTAMPING_RX_SOFTWARE |
->> +               SOF_TIMESTAMPING_SOFTWARE |
->> +               SOF_TIMESTAMPING_RAW_HARDWARE;
->=20
-> In addtion to what Richard suggested, there is no need to re-mark the
-> following flags "SOF_TIMESTAMPING_RX_SOFTWARE" and
-> "SOF_TIMESTAMPING_SOFTWARE", please see __ethtool_get_ts_info().
->=20
+Hello,
 
-Yes. This module always uses IEP HW timestamping both on RX side and TX sid=
-e=20
-for better precision. We will clean this in the next version.
+Most of the drivers add available and boost frequencies related attributes. This
+patch series tries to avoid duplication and simplify driver's code by managing
+these from core code.
 
-Thanks & Best Regards,
-Basharath
+A quick search revealed that only the drivers that set the
+policy->freq_table field, enable these attributes. Which makes sense as
+well, since the show_available_freqs() helper works only if the
+freq_table is present.
+
+In order to simplify drivers, create the relevant sysfs files forcefully
+from cpufreq core.
+
+Pushed here:
+
+git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm.git cpufreq/core-attr
+
+--
+Viresh
+
+Viresh Kumar (33):
+  cpufreq: Always create freq-table related sysfs file
+  cpufreq: dt: Stop setting cpufreq_driver->attr field
+  cpufreq: acpi: Stop setting common freq attributes
+  cpufreq: apple: Stop setting cpufreq_driver->attr field
+  cpufreq: bmips: Stop setting cpufreq_driver->attr field
+  cpufreq: brcmstb: Stop setting common freq attributes
+  cpufreq: davinci: Stop setting cpufreq_driver->attr field
+  cpufreq: e_powersaver: Stop setting cpufreq_driver->attr field
+  cpufreq: elanfreq: Stop setting cpufreq_driver->attr field
+  cpufreq: imx6q: Stop setting cpufreq_driver->attr field
+  cpufreq: kirkwood: Stop setting cpufreq_driver->attr field
+  cpufreq: longhaul: Stop setting cpufreq_driver->attr field
+  cpufreq: loongson: Stop setting cpufreq_driver->attr field
+  cpufreq: mediatek: Stop setting cpufreq_driver->attr field
+  cpufreq: omap: Stop setting cpufreq_driver->attr field
+  cpufreq: p4: Stop setting cpufreq_driver->attr field
+  cpufreq: pasemi: Stop setting cpufreq_driver->attr field
+  cpufreq: pmac: Stop setting cpufreq_driver->attr field
+  cpufreq: powernow: Stop setting cpufreq_driver->attr field
+  cpufreq: powernv: Stop setting common freq attributes
+  cpufreq: qcom: Stop setting cpufreq_driver->attr field
+  cpufreq: qoriq: Stop setting cpufreq_driver->attr field
+  cpufreq: sc520_freq: Stop setting cpufreq_driver->attr field
+  cpufreq: scmi: Stop setting cpufreq_driver->attr field
+  cpufreq: scpi: Stop setting cpufreq_driver->attr field
+  cpufreq: sh: Stop setting cpufreq_driver->attr field
+  cpufreq: spear: Stop setting cpufreq_driver->attr field
+  cpufreq: speedstep: Stop setting cpufreq_driver->attr field
+  cpufreq: tegra: Stop setting cpufreq_driver->attr field
+  cpufreq: vexpress: Stop setting cpufreq_driver->attr field
+  cpufreq: virtual: Stop setting cpufreq_driver->attr field
+  cpufreq: Remove cpufreq_generic_attrs
+  cpufreq: Stop checking for duplicate available/boost freq attributes
+
+ drivers/cpufreq/acpi-cpufreq.c         |  1 -
+ drivers/cpufreq/apple-soc-cpufreq.c    |  8 --------
+ drivers/cpufreq/bmips-cpufreq.c        |  1 -
+ drivers/cpufreq/brcmstb-avs-cpufreq.c  |  1 -
+ drivers/cpufreq/cpufreq-dt.c           |  8 --------
+ drivers/cpufreq/cpufreq.c              | 15 +++++++++++++++
+ drivers/cpufreq/davinci-cpufreq.c      |  1 -
+ drivers/cpufreq/e_powersaver.c         |  1 -
+ drivers/cpufreq/elanfreq.c             |  1 -
+ drivers/cpufreq/freq_table.c           |  8 --------
+ drivers/cpufreq/imx6q-cpufreq.c        |  1 -
+ drivers/cpufreq/kirkwood-cpufreq.c     |  1 -
+ drivers/cpufreq/longhaul.c             |  1 -
+ drivers/cpufreq/loongson2_cpufreq.c    |  1 -
+ drivers/cpufreq/loongson3_cpufreq.c    |  1 -
+ drivers/cpufreq/mediatek-cpufreq-hw.c  |  1 -
+ drivers/cpufreq/mediatek-cpufreq.c     |  1 -
+ drivers/cpufreq/omap-cpufreq.c         |  1 -
+ drivers/cpufreq/p4-clockmod.c          |  1 -
+ drivers/cpufreq/pasemi-cpufreq.c       |  1 -
+ drivers/cpufreq/pmac32-cpufreq.c       |  1 -
+ drivers/cpufreq/pmac64-cpufreq.c       |  1 -
+ drivers/cpufreq/powernow-k6.c          |  1 -
+ drivers/cpufreq/powernow-k7.c          |  1 -
+ drivers/cpufreq/powernow-k8.c          |  1 -
+ drivers/cpufreq/powernv-cpufreq.c      |  2 --
+ drivers/cpufreq/qcom-cpufreq-hw.c      |  7 -------
+ drivers/cpufreq/qoriq-cpufreq.c        |  1 -
+ drivers/cpufreq/sc520_freq.c           |  1 -
+ drivers/cpufreq/scmi-cpufreq.c         |  8 --------
+ drivers/cpufreq/scpi-cpufreq.c         |  1 -
+ drivers/cpufreq/sh-cpufreq.c           |  1 -
+ drivers/cpufreq/spear-cpufreq.c        |  1 -
+ drivers/cpufreq/speedstep-centrino.c   |  1 -
+ drivers/cpufreq/speedstep-ich.c        |  1 -
+ drivers/cpufreq/speedstep-smi.c        |  1 -
+ drivers/cpufreq/tegra186-cpufreq.c     |  1 -
+ drivers/cpufreq/tegra194-cpufreq.c     |  1 -
+ drivers/cpufreq/vexpress-spc-cpufreq.c |  1 -
+ drivers/cpufreq/virtual-cpufreq.c      |  1 -
+ include/linux/cpufreq.h                |  1 -
+ 41 files changed, 15 insertions(+), 75 deletions(-)
+
+-- 
+2.31.1.272.g89b43f80a514
+
 
