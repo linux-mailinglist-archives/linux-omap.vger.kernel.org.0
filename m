@@ -1,143 +1,116 @@
-Return-Path: <linux-omap+bounces-3197-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3198-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10BA9A1A716
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Jan 2025 16:29:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB725A1A769
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Jan 2025 16:58:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD6BE3AAC89
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Jan 2025 15:29:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A2703A2D59
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Jan 2025 15:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE34213252;
-	Thu, 23 Jan 2025 15:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE5E2135CB;
+	Thu, 23 Jan 2025 15:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="kssc1V+c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UzktvbAy"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E3A212FAD;
-	Thu, 23 Jan 2025 15:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CDC2135A6;
+	Thu, 23 Jan 2025 15:57:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737646172; cv=none; b=Rw13CB5MJIN9QNVZGIgL0e47r0i+7DjdAyGMgkV2Y3bHX3dQRfz4p3zHuzS1HeNDwNgF7194VW6mLAkCYJHaZaAFYvN02XMDx3chjEcb4nwKFUdFqjRl2UdFagIZdFYroi8kXIScsSSwD1bK0yQFX2jqqav2Wxr1zEnaPb1dOsk=
+	t=1737647867; cv=none; b=rBlKwtW283ygD/rh3iRtmAmQuRO9pWQH51yNI6Xkp5gfh+mK7DCO7Md7mRAqyLf83MXd4DPRnREJPwF1CgEDyQQzhd5uE37hSn90dC+kbZTRBr0skp6nPLsgBAsKbf5GA6rfo1UkvO8dneuZBHjfmk4Yn6kWPRsKyEp3Hgfu4ZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737646172; c=relaxed/simple;
-	bh=CT3cLcnuTc1g2DiNQyJkYqxPz5U05+lBbGrNRmKtXJA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=s5cCwfk0cIzn0JS9JsaTk0p1OLXV++e2sj2iNKOHtnZVC2kO7PdIybNyMRjy6R4mfEshrbK9SfHF9QG0bqw+Avz9YxZuk5e1P5lS+wp0/Cnu7DMA/iZbMfeGXG1LCaNB6Sf+4Hz5GJogTbGBdv1lVvlkVJns4xcGo15ewg2e7Ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=kssc1V+c; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 50NFT4Ug390550
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Jan 2025 09:29:04 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1737646144;
-	bh=CRkGB3GceLUeejR3dcVm7Hu3nWcnMD2L4Z0M3mLfQKE=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=kssc1V+cCJobwWgTufYIHAO98RyROnvVXJj0+kdQJYYqCKhfS1QJHXQJpauS3jOIO
-	 69jx9Oz//RrEoH75a0KwnweVDXWohmJZK3reXvanhDJ/5jMu+wGTfqIS+A7xWH5AFy
-	 L0ct/JcVukcUOfyBUdzSpjO+PX469wXAmp26n2JA=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 50NFT4ko004948
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 23 Jan 2025 09:29:04 -0600
-Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 23
- Jan 2025 09:29:04 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 23 Jan 2025 09:29:04 -0600
-Received: from [10.249.42.149] ([10.249.42.149])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 50NFT3qU084061;
-	Thu, 23 Jan 2025 09:29:03 -0600
-Message-ID: <f1e6f49c-71e2-4c6f-b78f-7608739530c9@ti.com>
-Date: Thu, 23 Jan 2025 09:29:03 -0600
+	s=arc-20240116; t=1737647867; c=relaxed/simple;
+	bh=GUvLO3EyPNRiEJwMh2o6ziaZ7spo5fOgcMs1C7CHn/k=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=C4JXNG8t8AEV+1XnMFmPQe7AVMAMIupPgKaAYu5+jfa7XixRLSa7BSf8iWQrGNN++wlIbOJOj4r+54MEeRXLsh9NoFjhmuTtbfRRopVTmzRcfz5zrTndgRN6S15A5lQwQRPxJZGSWBOhJUdF9pE8o0lSF/tU+LZ1ti4N8MskixY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UzktvbAy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9B5C4CEDD;
+	Thu, 23 Jan 2025 15:57:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737647867;
+	bh=GUvLO3EyPNRiEJwMh2o6ziaZ7spo5fOgcMs1C7CHn/k=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=UzktvbAyd/DF8F4TEzkyQuh4J2X8DTiOLClDGP9VVOY/MiQL+CST0pmlkZowuZBc4
+	 LtJ0DgQhHFbpLM3tNau6rFGnbcJx2+iI1b2Z2AuHcAKR8xFCqo0b2js3CYbeBlcoBB
+	 umV8TlRCVhc6RWuGaR5fagEGtbb6w//IQFQIzkf2b/goaLyc+ZK1SNirX1veUBLEpX
+	 P/aiGFaHY0BCCo4dIdUDPF4B/1hsKeVCHY9QuLSk+Bh2zsditUzKIcVpdt0mLqgQGW
+	 n+4jLbRTJiS1uOW7MKoKrDh3lpxxpSf4+gGza/i8RmKrpwdsmHbcO2p5OfP2zofv6d
+	 uL8b8k1rHM5Wg==
+Date: Thu, 23 Jan 2025 09:57:46 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] arm64: arch_k3: Replace select with imply for TI
- mailbox and TI SCI
-To: Guillaume La Roque <glaroque@baylibre.com>,
-        Catalin Marinas
-	<catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, <nm@ti.com>
-CC: <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>, <khilman@baylibre.com>,
-        Mattijs Korpershoek
-	<mkorpershoek@baylibre.com>, <vishalm@ti.com>,
-        Nicolas Frayer
-	<nfrayer@baylibre.com>
-References: <20250123-timodulemailboxsci-v4-1-b1a31b56f162@baylibre.com>
-Content-Language: en-US
-From: Andrew Davis <afd@ti.com>
-In-Reply-To: <20250123-timodulemailboxsci-v4-1-b1a31b56f162@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Nishanth Menon <nm@ti.com>, Conor Dooley <conor+dt@kernel.org>, 
+ devicetree@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, 
+ Tony Lindgren <tony@atomide.com>
+To: Tom Rini <trini@konsulko.com>
+In-Reply-To: <20250121200749.4131923-1-trini@konsulko.com>
+References: <20250121200749.4131923-1-trini@konsulko.com>
+Message-Id: <173764775069.3793491.1320038672918259827.robh@kernel.org>
+Subject: Re: [PATCH] ARM: dts: omap4-panda-a4: Add missing model and
+ compatible properties
 
-On 1/23/25 6:12 AM, Guillaume La Roque wrote:
-> In order to build TI mailbox and TI SCI as modules, replace
-> select with imply.
+
+On Tue, 21 Jan 2025 14:07:49 -0600, Tom Rini wrote:
+> When moving the model and compatible properties out of the common
+> Pandaboard files and in to the specific boards, the omap4-panda-a4
+> file wasn't updated as well and so has lacked a model and compatible
+> entry ever since.
 > 
-> Signed-off-by: Nicolas Frayer <nfrayer@baylibre.com>
-> Signed-off-by: Guillaume La Roque <glaroque@baylibre.com>
+> Fixes: a1a57abaaf82 ("ARM: dts: omap4-panda: Fix model and SoC family details")
+> Signed-off-by: Tom Rini <trini@konsulko.com>
 > ---
-> Changes in v4:
-> - rebase on master branch
-> - Link to v3: https://lore.kernel.org/r/20241016-timodulemailboxsci-v3-1-0e7f7a6de97d@baylibre.com
+> Given how long this has been broken it's entirely plausible no a4
+> hardware even exists anymore and so dropping this file instead makes
+> sense. I only found this because scripts/make_fit.py crashed on these
+> properties being missing.
 > 
-> Changes in v3:
-> - rebase with master
-> 
-> Changes in v2:
-> - Use imply instead of removing select altogether and dropped
-> patches 2/3 and 3/3 from previous series as using imply makes
-> them redundant
+> Cc: Nishanth Menon <nm@ti.com>
+> Cc: Tony Lindgren <tony@atomide.com>
+> Cc: Rob Herring <robh@kernel.org>
+> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> Cc: Conor Dooley <conor+dt@kernel.org>
+> Cc: linux-omap@vger.kernel.org
+> Cc: devicetree@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
 > ---
->   arch/arm64/Kconfig.platforms | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+>  arch/arm/boot/dts/ti/omap/omap4-panda-a4.dts | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/arch/arm64/Kconfig.platforms b/arch/arm64/Kconfig.platforms
-> index 02007256709e..a6e4bfffc09d 100644
-> --- a/arch/arm64/Kconfig.platforms
-> +++ b/arch/arm64/Kconfig.platforms
-> @@ -133,8 +133,8 @@ config ARCH_K3
->   	select PM_GENERIC_DOMAINS if PM
->   	select MAILBOX
->   	select SOC_TI
-> -	select TI_MESSAGE_MANAGER
-> -	select TI_SCI_PROTOCOL
-> +	imply TI_MESSAGE_MANAGER
-> +	imply TI_SCI_PROTOCOL
 
-I really don't like "imply" in general, and this will be the only
-instance of it now in the whole file..
 
-Your v1 of this series was the right way to do this IMHO. The only
-issue was patches 2/3 and 3/3 should have been first in the series to
-prevent bisect issues. And they had to go to two different maintainers
-so it shouldn't have been a single series in the first place.
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-Andrew
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
->   	select TI_K3_SOCINFO
->   	help
->   	  This enables support for Texas Instruments' K3 multicore SoC
-> 
-> ---
-> base-commit: 21266b8df5224c4f677acf9f353eecc9094731f0
-> change-id: 20241016-timodulemailboxsci-412e2a6458fc
-> 
-> Best regards,
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y for arch/arm/boot/dts/ti/' for 20250121200749.4131923-1-trini@konsulko.com:
+
+arch/arm/boot/dts/ti/omap/omap4-panda-a4.dtb: /: failed to match any schema with compatible: ['ti,omap4-panda-a4', 'ti,omap4-panda', 'ti,omap4430', 'ti,omap4']
+
+
+
+
+
 
