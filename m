@@ -1,144 +1,219 @@
-Return-Path: <linux-omap+bounces-3195-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3196-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A97CBA1A3FB
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Jan 2025 13:12:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85417A1A449
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Jan 2025 13:30:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 771B33A3FF5
-	for <lists+linux-omap@lfdr.de>; Thu, 23 Jan 2025 12:12:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7329167D3C
+	for <lists+linux-omap@lfdr.de>; Thu, 23 Jan 2025 12:30:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FEE920E70B;
-	Thu, 23 Jan 2025 12:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234A420F064;
+	Thu, 23 Jan 2025 12:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="gjc/OILp"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="atGtDdFA"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from server.wki.vra.mybluehostin.me (server.wki.vra.mybluehostin.me [162.240.238.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD6F20DD72
-	for <linux-omap@vger.kernel.org>; Thu, 23 Jan 2025 12:12:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE331C1F0C;
+	Thu, 23 Jan 2025 12:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.238.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737634374; cv=none; b=ebxyuX9p+cd271zRuuOzFNvPRisdwoY9OIZyPdD/ldFEETETEyiMqCeUDjbRYblh3AMwafmTSVcvKndInilB/5QJ1t4fCkwJs9bEWbVM8snkPjTKE9DOs1tdcFERSyQFn/vrAdDmXDtoT7/W4+fjd/LUaBHiFfknG4KvAla5BHg=
+	t=1737635431; cv=none; b=G91CW+uZDsWhD3uJYINf7n6WXoec3HJ8/5HuyBmXiMd1Jj5x4oBRZQvYCO3MKEohIK/QzrjbiiK9m6CHaNZXZPVRNsaOtLFa5P3nDt1pW5TE0L9VVeMi+UHOHT3g847D9Bzer4OPf/WrG71jIOR9BlLB442bAJ7vTZ/vHPeGbak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737634374; c=relaxed/simple;
-	bh=mtFgcK5d5vU+0BEr2cMeO/rvLdDdCsqETnlBl0Uv0a4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Fflc66c5yMJEw+KuWveTD2UcqZqQfVQrSb8bTCvteYfZCFZMaJx2CXCHdiyWtVaki7nK3BTn0UK9sbampcPESgI3PQBAEkLxvqr5rmcAlnHq303pxw9h3fpi9gFjc0FWOer77UUieqyVKmKO2j80/IqPDiaPaa3T9aJ5d3gbcOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=gjc/OILp; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4368a293339so9321335e9.3
-        for <linux-omap@vger.kernel.org>; Thu, 23 Jan 2025 04:12:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1737634370; x=1738239170; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZRxUqDQtYMNJ04dpHaJOBq0JBHfXv3aaDgKYPS3OL04=;
-        b=gjc/OILpiYhmIG742Au89SsYsOYymUqdXSubdr72zxwvCvAJSDExSI2FIiY/b2ivE2
-         fJLzLfbcawzjA7nk0CmO132pF+7OJKKsyTflWVbGRFG3iwfV7qcSDhrR92TIap1YDeL6
-         Qwg/hAOGAefKsBv+VuoETZ/pggIkL1M2s3RcspW0zUFDm1PCzClAI8ffISAcnxO6ICOB
-         +TkcqSeec5jLpAjmzcP+TZU89uQuyYrwCdt/Ar2gTKJClMjBu/K0oopKAi4+4iyTOA/m
-         6Xdr30opiDPzNv5y1mm6+VvkegPLMXHzyMSzX1FEy9i+8YOHS7NH8Gd/aOwEMIr4RKtr
-         HxQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737634370; x=1738239170;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZRxUqDQtYMNJ04dpHaJOBq0JBHfXv3aaDgKYPS3OL04=;
-        b=KHsGu26z+jDplXDs/wAO3LdPbyuGBLNTwC82RfcJGnpJeODIby/LG1ftnllFdK9SmJ
-         zilf8EVIMl42Z8nQdsh0wnioAVAo+xbGHiDIDQWVRM5Z4Van7BZvgFfYvHTI1zhXJuT9
-         TEEkwojeqA098lhfhyhDDn7Ysfg/IiVvDvsdKf1ekIZq/kHFqkmCMzFkvxOhMIcZ9Vxa
-         wgiY5iufYtBMb0MZE4HnNCIvPbXsOtic+WlBFjwOjVml+SSUsAA/jkOl95QZT8FNVWTM
-         4580swz0Qf53twXvb+76GO6E5Ia6vrprBKghDEEPjj18nPPLn2X+7IWH4BdB9t8a1Pft
-         /o8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWxfAulh/UaaxuizhB3UH8YSNzRiPd/TOWyhiOqE8kNev5jIK+fIPVfsFQomr13bIf7OeP2zkuH7CJ2@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+0TGGHIgGknpJuPN4NE58WycBHWgYxAdbA0bcozrMCdlxcTol
-	zbWRtvO+w9tf7EADEDqR+G7x9/giIXgzFWyvyVoK1xXSR7f/rqMrK4R7K1HuYmk=
-X-Gm-Gg: ASbGncvBqZXtypAtm7BPfqTOD+VSYxG6ndZ5M8x8VLRo7kbz9X1FuFqFaiP5tPcukkO
-	skCpDJh30qYgaEkMaCFVCORbYdD6VycVkab2PKi4Gxfew2mcDlJR/7dHbELtVAhUDQeQtdZRc49
-	4pONYr/65tEN00YaP7rhPqVIXtBD7hhWFSoKNsLlVon/1UNAR7VcaQGyRKih2N0jpTB7MW9P7+l
-	9ZngCcnRh7MSgHlbm7c/5uyg2oj5bOwAZZS1pu8+3CtVfELL/rmALh+qBWt5OvH8W56YhD30pEd
-	xTeW/zMIfATi0ALwCGE=
-X-Google-Smtp-Source: AGHT+IHC7AaB8nrR3oGShOfXmCEVPdPVczCK1GzN9+qsELRO7/8LMNivLw27uw09FDLlr5i8rOIA4w==
-X-Received: by 2002:a05:600c:4e93:b0:436:1b81:b65c with SMTP id 5b1f17b1804b1-438913df89fmr238758825e9.15.1737634369568;
-        Thu, 23 Jan 2025 04:12:49 -0800 (PST)
-Received: from [127.0.1.1] ([2001:861:d40:ed60:2a79:1cf5:e6a6:b1a8])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438b31de036sm59344435e9.33.2025.01.23.04.12.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jan 2025 04:12:49 -0800 (PST)
-From: Guillaume La Roque <glaroque@baylibre.com>
-Date: Thu, 23 Jan 2025 13:12:48 +0100
-Subject: [PATCH v4] arm64: arch_k3: Replace select with imply for TI
- mailbox and TI SCI
+	s=arc-20240116; t=1737635431; c=relaxed/simple;
+	bh=1rGZAYv2pSYn8yxsvmPAt9l//t1iayRE4F3Et4UrMgI=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=fRPwwCSg36DL1b1u+Jp0FUd1+5g2XjFPNuHcl/oVwJr1p8f/hFWDn+2N80Iy855HPOpYdjUMxewl9rW5+jeYMh15/nbLXzOy12aJeOX27pnRqf7sGv+bIbj1pGBmUdt2Cxjsh7p8xCHRewPZ7u++VqfQ09s2i0+z3UYSnqNusoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=atGtDdFA; arc=none smtp.client-ip=162.240.238.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
+	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=39CuZZZdjSJEJPQMh+OB3G3RFMPggoTrQcp5t75nl8Y=; b=atGtDdFA/e4szMovQBwMFwgXZn
+	co6f+Ko4J890WcGUnR27tQkv47WQotAMgVeGUpdhIHs0P2Ay6ftyu4fzFvUfxjY4gJXetCJDuQPVF
+	TtvHLm8RmrsIztBJvjDPjdUo1rAYIKT0D+YzQ7UWKKjTGTUbxUSoHnI6m7EreB+hqZdtGl3u7i3jK
+	jdFp5M9z4gv7koNlNHcYAhghg/IUdc18Qj+WBrSOsb4jrB8OUSqc7QEeMiOVafkvItxkP9cg1eYCO
+	j17SlYjKKx1cM+3yFH74+WkQuyZmN8tWggp4l2iWs5idkuwdGvVJWIMAnAnxKfD8R3OFlpkkcyyER
+	g0jaFJug==;
+Received: from [122.175.9.182] (port=45111 helo=zimbra.couthit.local)
+	by server.wki.vra.mybluehostin.me with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <basharath@couthit.com>)
+	id 1tawLl-0005TL-35;
+	Thu, 23 Jan 2025 18:00:22 +0530
+Received: from zimbra.couthit.local (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTPS id 5FE1A1781C63;
+	Thu, 23 Jan 2025 18:00:13 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTP id 395D61782495;
+	Thu, 23 Jan 2025 18:00:13 +0530 (IST)
+Received: from zimbra.couthit.local ([127.0.0.1])
+	by localhost (zimbra.couthit.local [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 2df9ieE3WTUM; Thu, 23 Jan 2025 18:00:13 +0530 (IST)
+Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
+	by zimbra.couthit.local (Postfix) with ESMTP id D9E111781C63;
+	Thu, 23 Jan 2025 18:00:12 +0530 (IST)
+Date: Thu, 23 Jan 2025 18:00:12 +0530 (IST)
+From: Basharath Hussain Khaja <basharath@couthit.com>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: basharath <basharath@couthit.com>, danishanwar <danishanwar@ti.com>, 
+	rogerq <rogerq@kernel.org>, andrew+netdev <andrew+netdev@lunn.ch>, 
+	davem <davem@davemloft.net>, edumazet <edumazet@google.com>, 
+	kuba <kuba@kernel.org>, pabeni <pabeni@redhat.com>, 
+	Rob Herring <robh@kernel.org>, krzk+dt <krzk+dt@kernel.org>, 
+	conor+dt <conor+dt@kernel.org>, nm <nm@ti.com>, 
+	ssantosh <ssantosh@kernel.org>, tony <tony@atomide.com>, 
+	richardcochran <richardcochran@gmail.com>, 
+	parvathi <parvathi@couthit.com>, schnelle <schnelle@linux.ibm.com>, 
+	rdunlap <rdunlap@infradead.org>, diogo ivo <diogo.ivo@siemens.com>, 
+	m-karicheri2 <m-karicheri2@ti.com>, horms <horms@kernel.org>, 
+	jacob e keller <jacob.e.keller@intel.com>, 
+	m-malladi <m-malladi@ti.com>, 
+	javier carrasco cruz <javier.carrasco.cruz@gmail.com>, 
+	afd <afd@ti.com>, s-anna <s-anna@ti.com>, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
+	netdev <netdev@vger.kernel.org>, 
+	devicetree <devicetree@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	linux-omap <linux-omap@vger.kernel.org>, 
+	pratheesh <pratheesh@ti.com>, prajith <prajith@ti.com>, 
+	vigneshr <vigneshr@ti.com>, praneeth <praneeth@ti.com>, 
+	srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
+	krishna <krishna@couthit.com>, pmohan <pmohan@couthit.com>, 
+	mohan <mohan@couthit.com>
+Message-ID: <1333946741.395386.1737635412707.JavaMail.zimbra@couthit.local>
+In-Reply-To: <6ac6161b-373a-47ce-801d-9e4ff1ef258c@wanadoo.fr>
+References: <20250109105600.41297-1-basharath@couthit.com> <20250109105600.41297-5-basharath@couthit.com> <6ac6161b-373a-47ce-801d-9e4ff1ef258c@wanadoo.fr>
+Subject: Re: [RFC PATCH 04/10] net: ti: prueth: Adds link detection, RX and
+ TX support.
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250123-timodulemailboxsci-v4-1-b1a31b56f162@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAD8ykmcC/32NQQ6DIBBFr2JmXRpBCm1XvUfjAmGsk6g0YInGc
- PdSD9Dle8l/f4eIgTDCvdohYKJIfi4gTxXYwcwvZOQKg6iF5DVXbKHJu8+Ik6Gx82u0xCQXKIy
- Sl2tvoQzfAXtaj+izLTxQXHzYjo/U/OzfXGoYZzXqXhvl8KbdozPbSF3As/UTtDnnL7btH6S3A
- AAA
-To: Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>, nm@ti.com, afd@ti.com
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-omap@vger.kernel.org, khilman@baylibre.com, 
- Mattijs Korpershoek <mkorpershoek@baylibre.com>, vishalm@ti.com, 
- Nicolas Frayer <nfrayer@baylibre.com>, 
- Guillaume La Roque <glaroque@baylibre.com>
-X-Mailer: b4 0.14.1
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Zimbra 8.8.15_GA_3968 (ZimbraWebClient - FF113 (Linux)/8.8.15_GA_3968)
+Thread-Topic: prueth: Adds link detection, RX and TX support.
+Thread-Index: wMpv7fMC/ugczbeFyu6r0nphcnNI/g==
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.wki.vra.mybluehostin.me
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.wki.vra.mybluehostin.me: authenticated_id: smtp@couthit.com
+X-Authenticated-Sender: server.wki.vra.mybluehostin.me: smtp@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-In order to build TI mailbox and TI SCI as modules, replace
-select with imply.
 
-Signed-off-by: Nicolas Frayer <nfrayer@baylibre.com>
-Signed-off-by: Guillaume La Roque <glaroque@baylibre.com>
----
-Changes in v4:
-- rebase on master branch 
-- Link to v3: https://lore.kernel.org/r/20241016-timodulemailboxsci-v3-1-0e7f7a6de97d@baylibre.com
+> Le 09/01/2025 =C3=A0 11:55, Basharath Hussain Khaja a =C3=A9crit=C2=A0:
+>> From: Roger Quadros <rogerq@ti.com>
+>>=20
+>> Changes corresponding to link configuration such as speed and duplexity.
+>> IRQ and handler initializations are performed for packet reception.Firmw=
+are
+>> receives the packet from the wire and stores it into OCMC queue. Next, i=
+t
+>> notifies the CPU via interrupt. Upon receiving the interrupt CPU will
+>> service the IRQ and packet will be processed by pushing the newly alloca=
+ted
+>> SKB to upper layers.
+>>=20
+>> When the user application want to transmit a packet, it will invoke
+>> sys_send() which will inturn invoke the PRUETH driver, then it will writ=
+e
+>> the packet into OCMC queues. PRU firmware will pick up the packet and
+>> transmit it on to the wire.
+>=20
+> Hi,
+> a few nitpicks.
+>=20
+> ...
+>=20
+>> +static int icssm_prueth_tx_enqueue(struct prueth_emac *emac,
+>> +=09=09=09=09   struct sk_buff *skb,
+>> +=09=09=09=09   enum prueth_queue_id queue_id)
+>> +{
+>> +=09struct prueth_queue_desc __iomem *queue_desc;
+>> +=09const struct prueth_queue_info *txqueue;
+>> +=09u16 bd_rd_ptr, bd_wr_ptr, update_wr_ptr;
+>> +=09struct net_device *ndev =3D emac->ndev;
+>> +=09unsigned int buffer_desc_count;
+>> +=09int free_blocks, update_block;
+>> +=09bool buffer_wrapped =3D false;
+>> +=09int write_block, read_block;
+>> +=09void *src_addr, *dst_addr;
+>> +=09int pkt_block_size;
+>> +=09void __iomem *dram;
+>> +=09int txport, pktlen;
+>> +=09u32 wr_buf_desc;
+>> +=09void *ocmc_ram;
+>> +
+>> +=09dram =3D emac->prueth->mem[emac->dram].va;
+>> +=09if (eth_skb_pad(skb)) {
+>> +=09=09if (netif_msg_tx_err(emac) && net_ratelimit())
+>> +=09=09=09netdev_err(ndev, "packet pad failed");
+>=20
+> Missing trailing \n.
+>=20
+>> +=09=09return -ENOMEM;
+>> +=09}
+>> +
+>> +=09/* which port to tx: MII0 or MII1 */
+>> +=09txport =3D emac->tx_port_queue;
+>=20
+> ...
+>=20
+>> +static int icssm_emac_request_irqs(struct prueth_emac *emac)
+>> +{
+>> +=09struct net_device *ndev =3D emac->ndev;
+>> +=09int ret =3D 0;
+>=20
+> No need to init.
+>=20
+>> +
+>> +=09ret =3D request_threaded_irq(emac->rx_irq, NULL, icssm_emac_rx_threa=
+d,
+>> +=09=09=09=09   IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
+>> +=09=09=09=09   ndev->name, ndev);
+>> +=09if (ret) {
+>> +=09=09netdev_err(ndev, "unable to request RX IRQ\n");
+>> +=09=09return ret;
+>> +=09}
+>=20
+> ...
+>=20
+>> +static int icssm_emac_ndo_start_xmit(struct sk_buff *skb,
+>> +=09=09=09=09     struct net_device *ndev)
+>> +{
+>> +=09struct prueth_emac *emac =3D netdev_priv(ndev);
+>> +=09int ret =3D 0;
+>> +=09u16 qid;
+>> +
+>> +=09if (unlikely(!emac->link)) {
+>> +=09=09if (netif_msg_tx_err(emac) && net_ratelimit())
+>> +=09=09=09netdev_err(ndev, "No link to transmit");
+>=20
+> \n
+>=20
+>> +=09=09goto fail_tx;
+>> +=09}
+>> +
+>> +=09qid =3D icssm_prueth_get_tx_queue_id(emac->prueth, skb);...
 
-Changes in v3:
-- rebase with master
+We will handle all comments in the next version.
 
-Changes in v2:
-- Use imply instead of removing select altogether and dropped
-patches 2/3 and 3/3 from previous series as using imply makes
-them redundant
----
- arch/arm64/Kconfig.platforms | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm64/Kconfig.platforms b/arch/arm64/Kconfig.platforms
-index 02007256709e..a6e4bfffc09d 100644
---- a/arch/arm64/Kconfig.platforms
-+++ b/arch/arm64/Kconfig.platforms
-@@ -133,8 +133,8 @@ config ARCH_K3
- 	select PM_GENERIC_DOMAINS if PM
- 	select MAILBOX
- 	select SOC_TI
--	select TI_MESSAGE_MANAGER
--	select TI_SCI_PROTOCOL
-+	imply TI_MESSAGE_MANAGER
-+	imply TI_SCI_PROTOCOL
- 	select TI_K3_SOCINFO
- 	help
- 	  This enables support for Texas Instruments' K3 multicore SoC
-
----
-base-commit: 21266b8df5224c4f677acf9f353eecc9094731f0
-change-id: 20241016-timodulemailboxsci-412e2a6458fc
-
-Best regards,
--- 
-Guillaume La Roque <glaroque@baylibre.com>
-
+Thanks & Best Regards,
+Basharath
 
