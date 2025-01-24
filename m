@@ -1,79 +1,94 @@
-Return-Path: <linux-omap+bounces-3221-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3222-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09626A1BDAB
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2025 21:54:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA531A1BDDA
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2025 22:27:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCE02188EDF9
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2025 20:54:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03F9516C5DB
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2025 21:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7D71DC19E;
-	Fri, 24 Jan 2025 20:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF271DD520;
+	Fri, 24 Jan 2025 21:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="JfSel7QF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VgQhInCw"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275001DB366;
-	Fri, 24 Jan 2025 20:54:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D251DC070;
+	Fri, 24 Jan 2025 21:27:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737752085; cv=none; b=aByiYOHbzPu8Uf1TfMu/uOGAZJUrEtQAqAQP0D5uN6LS2nw6QmlRiJqB4kRvPCVn1MAyUEcQeqQv2r0rDnOHG3if66SgTILQoEas5raBzbouR38dCL9AZJIqayagzm1KVn7ZQHANsa5BLUgvnnsIlxxJL/vOmSs3jkrSDg/UC/c=
+	t=1737754049; cv=none; b=hNKjh7u4gkKofBhkD6I4/pNuBwTkwilnPE3cZIhVw7erZZd3htzkoPnnBXGh2aZivri0mQla+F2RyQXNXuEpUsElTPWeGzRDtdrMSd0uVRO0LCf4tSrhCU267rVWKD3kreFO62zvmb6an+qYohISA76TffKd5XVvpconnjHp328=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737752085; c=relaxed/simple;
-	bh=bhQXCVw1bvBBSpezG1XHNPUGaH1nj1sWk1Dg2F/Qdyw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YfwAvhDIVQylx+2OuOoBnR4Yt3jtHoyBqCyQ4Tp0UvV8bxJ9VUY6u8Uq/eKphDzoGWPTjnqT8nMeakKFiy1sEFLU5Yy2gGubTMrzteXLcWgewziVB1PAgTak2Q9BiUHANxPwdZKuA63JFPYGVQB/BwgTEeIEkF/rsb46gQRfNvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=JfSel7QF; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=Q6hbJURnMhCnEYKFjyF2DAG0VF2IxqR5JLxyc6m2pzk=; b=JfSel7QFOgeb/SN0o63V6jFU4d
-	7prmsnXLwMeifqTGK/Jqzppbq9ci1TWLyXvoO913LkExA2SKT5qDF9K4J2ULQ3o7OJygO0F4z5WhM
-	cEdmzq6W36TktdLerKEoOZvOrjA4Rd67UMNGIi9mekEYt86jxzeLz0G/xXdo1tyR3nQ/syF3PImv9
-	ggCbok2OfX5/Y6qFcBDT8ZPTCgpXsGD5a5kmCD7AqgOu1YyJG1a158vVb9vS2mx7FIOF4zHmiQge6
-	33hz4lJsBRSenA7FoSjIUHkHKVD/R+lQpn5ZBqnRgvmHeRtps0+iyL7AzHd9ccdcgS45h0axBSKJy
-	0rLJTguA==;
-Date: Fri, 24 Jan 2025 21:54:09 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Tom Rini <trini@konsulko.com>
-Cc: linux-kernel@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>,
- Conor Dooley <conor+dt@kernel.org>, Kevin Hilman <khilman@baylibre.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>,
- Robert Nelson <robertcnelson@gmail.com>, Roger Quadros <rogerq@kernel.org>,
- Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org,
- linux-omap@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: omap: Add TI Pandaboard A4 variant
-Message-ID: <20250124215409.1d5cc5aa@akair>
-In-Reply-To: <20250123174901.1182176-1-trini@konsulko.com>
-References: <20250123174901.1182176-1-trini@konsulko.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1737754049; c=relaxed/simple;
+	bh=4Kg0Z4qQjxl+GPQXErSffUOIng9BmYVVDbQjGNtcf0k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=huEy8qwHM0IjoTlnGb8NaU2UDP/CpKEgGD9sajqvxswzn63D35ho3sP3VBQ674luBVbLovwg0q04C8Ac6KoSEn9zd3FuXHL+x0+oTVkUX1edlD5GdTt+c89odOLPQsrfEvdgmiVyqh07MThGknf0lIEHs3l2m3tlhv+C9KKxNWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VgQhInCw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E51C4CEDF;
+	Fri, 24 Jan 2025 21:27:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737754049;
+	bh=4Kg0Z4qQjxl+GPQXErSffUOIng9BmYVVDbQjGNtcf0k=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=VgQhInCwcIIfiW1Y2lFQbyffPGRVhNlAQcfMEdTQj9iChAxh3EYHbg/ndIT0g6eti
+	 yKMpgGemdTvuERes9BoELGuicPmVWtCc9aNfMbNRS7qWb0qlO8+9gqv93BvWTvrMmX
+	 5gCeCNfER3BVkB6B/6k3fDLLwIoV4UOAbSTih6uyQollLfocC8/QLr+aId7nQjom47
+	 AnHDCnrb4y7hqVsrRY5au9Xpv5MXgf292zrFTrSai25f9zXLwnZ91y6fx3hz1RJmUx
+	 xHXU6hkfbIgENx35RsQgoCfiye4k3YkvHt5Qx1lNZ2DGz/lR7IYDItDe17NlYTvgMJ
+	 rAW1ZDzmj7Yvw==
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-53e3778bffdso2777252e87.0;
+        Fri, 24 Jan 2025 13:27:28 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVPF0IB+ZHa77RVMDNtsRGbNoBpORkr1vIo3LXIFT+CzSTpBrzMvt8mpSNsouY9ODNVLyvtY/mtAT4PQA==@vger.kernel.org, AJvYcCWuRMnqwGsIOtqbV5P6g2W4JkKa3eNil85DAqMKj7hcig/7djR06Y1NLJezxzTVhR8yOnYUrHaFTr4Gwzc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzkwu3zNekQP+UTjM0eR1qto1oiezMz9oe7VIZ5v7ewvtPhgzOR
+	v/NgZw3DuUhyZCnYsH3lLDEhB6bIPmI8Nxs4DVIqwsIMQhLjAH7kuAt4ehuABIyqhg1ogJDb7hr
+	R4m7uUjF36eI/kiOnciekLCF/Cw==
+X-Google-Smtp-Source: AGHT+IEVLKpwtAeY8CFtUlWhbfiqMY3UWRySzIhFHhUhOwoOExUhPZJGh1YVLT+dyfycqIzQ3V27mZQsYhDymtXxBJk=
+X-Received: by 2002:ac2:5f19:0:b0:543:bb21:4256 with SMTP id
+ 2adb3069b0e04-543cf53b610mr143184e87.25.1737754047316; Fri, 24 Jan 2025
+ 13:27:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20250114-omap-gpmc-drop-no-compatible-check-v1-1-262c8d549732@kernel.org>
+In-Reply-To: <20250114-omap-gpmc-drop-no-compatible-check-v1-1-262c8d549732@kernel.org>
+From: Rob Herring <robh@kernel.org>
+Date: Fri, 24 Jan 2025 15:27:14 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJ_qP1ZNOzG+r+WC1O4CRM+Qd5G0J7SSJvDvtp+KntNpg@mail.gmail.com>
+X-Gm-Features: AWEUYZlGtQBlaWYGZRnnF2NlEk9HJlJnY1psL2FB4thPSuxWsCXrcWxu8FJNUJg
+Message-ID: <CAL_JsqJ_qP1ZNOzG+r+WC1O4CRM+Qd5G0J7SSJvDvtp+KntNpg@mail.gmail.com>
+Subject: Re: [PATCH] memory: omap-gpmc: drop no compatible check
+To: Roger Quadros <rogerq@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Am Thu, 23 Jan 2025 11:49:00 -0600
-schrieb Tom Rini <trini@konsulko.com>:
+On Tue, Jan 14, 2025 at 10:36=E2=80=AFAM Roger Quadros <rogerq@kernel.org> =
+wrote:
+>
+> We are no longer depending on legacy device trees so
+> drop the no compatible check for NAND and OneNAND
+> nodes.
+>
+> Suggested-by: Rob Herring (Arm) <robh@kernel.org>
+> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+> ---
+>  drivers/memory/omap-gpmc.c | 20 --------------------
+>  1 file changed, 20 deletions(-)
 
-> Document the ti,omap4-panda-a4 compatible string in the appropriate
-> place within the omap family binding file.
-> 
-> Signed-off-by: Tom Rini <trini@konsulko.com>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
+Ideally this can be picked up for 6.14 because the
+of_property_read_bool() calls will generate a warning reading non-bool
+property.
 
-Regards,
-Andreas
+Rob
 
