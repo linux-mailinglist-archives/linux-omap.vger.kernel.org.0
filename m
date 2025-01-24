@@ -1,34 +1,34 @@
-Return-Path: <linux-omap+bounces-3210-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3211-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0E6FA1B628
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2025 13:38:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6950A1B741
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2025 14:43:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F2533AB2E1
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2025 12:37:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22A023AD582
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2025 13:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56A821B1BF;
-	Fri, 24 Jan 2025 12:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8717080D;
+	Fri, 24 Jan 2025 13:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="GW0ENSsG"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="OgKNeU3I"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from server.wki.vra.mybluehostin.me (server.wki.vra.mybluehostin.me [162.240.238.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518D621A422;
-	Fri, 24 Jan 2025 12:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE3B83CD2;
+	Fri, 24 Jan 2025 13:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.238.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737722271; cv=none; b=LQi/qzxP738hkROu0k8NyCVHJ3h60GtP5ojlsDCIDOKGe/m25fyjETyTxCijYzabIkVdsj5s0sspjUPRNSQTneBmzMFUmyIyl1YG73JH1pdcsWYIqbz/tlFw5eVvn/9OlBoc0ADN2IO0W6ELnLpf+bc3NfhzuPES87q8JUTWn4w=
+	t=1737726101; cv=none; b=JsVY6ouJh3CVS1M7Lo2RkFU3mZk/ihusCvP0IQg5tykJ3v7M9A2VooZ5Zq9yoWxPVO2Hp911ALtPpfsyWJGaf+MmpZ3Rx3oGQfdy1KtOfEovz4BfdKDuH8UERnqdgT0kIO8fUP5W/SufZxQ6J2rg5wsPSLAcwMqzX4AlPKzhV+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737722271; c=relaxed/simple;
+	s=arc-20240116; t=1737726101; c=relaxed/simple;
 	bh=IEdqGpWBlO7BcdWmpHM6s/ypUwbyRvrlgR5CxA2anIY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sokXIcV+9jQtsor6Id0t91WL7GYZQG339ta1r9KhPfi6orYRF8e/0bRvXirAHe6XsDB66b0ptGM9HTKy5WQQml+5a1yi9F6M6KDhwvJng7JnATVotGobptWhvh+k9DOlJHPAJITLK0XK4WqFQrga6ThN90KAVNPrp5PWlxzk0XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=GW0ENSsG; arc=none smtp.client-ip=162.240.238.73
+	 MIME-Version; b=Ksj6OCX/i6t31ewihVk3JTOgflC4r4d5CE/QqHfan19yjgq12YNFoNNONgf6VNAx9yZQ9h2NRjpv5OK9WKnBeT7wIrBwKVWiCOIqUAMjIWvWDB1NcRmOUpImxk0xhpEyVtDrl/7+LR2fBUYP2q08RNak9ePECn7QmxzBMkpmhho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=OgKNeU3I; arc=none smtp.client-ip=162.240.238.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
@@ -37,17 +37,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=BKd69uRZUc8HDskr4h8ath83MaEEYQm7FQWqxS7CABk=; b=GW0ENSsG5ov/uD20URKbCKydaE
-	4lpRtZ/K1Y1k9x7bpimdR3UxdqPLcNHc6fN9iFvsDS1ohjtzfQYd2pM8jhlqrJgNXXPuwdfFM1sHp
-	WThOSsO3gKs2VV7u6DE2kJe+ZAeKGcFPnkdGvXMPsPIGHRr5Juf+F6mmOHcuC1W9S4UUKc1KpstYP
-	gGtvdkVcoHg0miWRBxh4x3rmoLwRutjbRkq0eur8FtgU5nKRtVQSQULI0Eam2eBQHnOqK2WvOlJa5
-	ue/dpSuURNnebuRbgOr+opticXB6to2iLy+mKeD8KdvsqsninU5LUGGEJSZf87HCd0uxoRZenhkMB
-	6d7JbP8w==;
-Received: from [122.175.9.182] (port=52302 helo=cypher.couthit.local)
+	bh=BKd69uRZUc8HDskr4h8ath83MaEEYQm7FQWqxS7CABk=; b=OgKNeU3IUOeLRbzf2BzU9rU0SD
+	+h0HJuxVBkwhm1EItd+AHXB0g1wtXFrju+uY7ysKm2dG/RZO9YGRLJF0NXT32hskJApCLuyJh691O
+	xp54f7LuHYprPhCEImije9sjLAeXyVeP4WvFZdHNrrdXzSMVT+oCe/g95nL7s+sYCpx1TrFqE3VVy
+	xh+9D7oR/nsSXGn6B2/dwqXhzoMvkeqAl3rUqpiDhftU4yf/cGpJTf9BkVVLAKJ1dynyRSBuT7abg
+	PfRMxagVzxwymbpReD9LJXKNbUoOWssxDzr1eZxFjs48JVb+sOdZn3djnhXbeHhM3hIXluYvlTe1H
+	KQ73GRrQ==;
+Received: from [122.175.9.182] (port=2665 helo=cypher.couthit.local)
 	by server.wki.vra.mybluehostin.me with esmtpa (Exim 4.96.2)
 	(envelope-from <basharath@couthit.com>)
-	id 1tbIwR-0004SM-2T;
-	Fri, 24 Jan 2025 18:07:44 +0530
+	id 1tbJwB-0005Y4-2K;
+	Fri, 24 Jan 2025 19:11:32 +0530
 From: Basharath Hussain Khaja <basharath@couthit.com>
 To: danishanwar@ti.com,
 	rogerq@kernel.org,
@@ -90,8 +90,8 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	pmohan@couthit.com,
 	mohan@couthit.com
 Subject: [RFC v2 PATCH 04/10] net: ti: prueth: Adds link detection, RX and TX support.
-Date: Fri, 24 Jan 2025 18:07:01 +0530
-Message-Id: <20250124123707.1457639-5-basharath@couthit.com>
+Date: Fri, 24 Jan 2025 19:10:50 +0530
+Message-Id: <20250124134056.1459060-5-basharath@couthit.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250124122353.1457174-1-basharath@couthit.com>
 References: <20250124122353.1457174-1-basharath@couthit.com>
