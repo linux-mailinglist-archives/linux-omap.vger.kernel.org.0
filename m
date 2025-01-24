@@ -1,34 +1,34 @@
-Return-Path: <linux-omap+bounces-3214-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3215-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61ECFA1B74B
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2025 14:43:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A7BA1B81C
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2025 15:47:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D98A9188C137
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2025 13:43:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29E46188B400
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2025 14:47:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E8870808;
-	Fri, 24 Jan 2025 13:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB6F13C81B;
+	Fri, 24 Jan 2025 14:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="X/scI3jO"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="Aebtnn60"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from server.wki.vra.mybluehostin.me (server.wki.vra.mybluehostin.me [162.240.238.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0320938DC8;
-	Fri, 24 Jan 2025 13:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2484EB48;
+	Fri, 24 Jan 2025 14:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.238.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737726181; cv=none; b=pGvKiqpat5XwRKCrTBNY/McTRromRdudWK0IsQ5eDaXJapC2OamwTED7xOPaeyyBaFJ1NUnqnjELd1bToxR7Ty6I/QpQ/R12yFuN7q0AESP1mjkSmvWpeA1sEmnYvRkHy1bWRlptTkdBPPayZc5LuW78rsCRABkExC5j7qy6YH8=
+	t=1737730014; cv=none; b=PxXSwmZYN+TzplZ6/wjx+n/i73A2eUkuKCkuSNvgiJphtMeF+lLbl0ekMDXnm5RnSGQ4/s3GwWpkWgIMpKXUpnWFm9fRf6/bA+eJ8I0MJDB1YUyxEuYs678jpfWy783x3SZ5MrXACdV1kTkP0NVqTTqadrD9iFEedn5JBEA63w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737726181; c=relaxed/simple;
-	bh=A25a+k3ZXigxQ5/CRVuoUzGbAn51f2PIKKDfb1WJUL4=;
+	s=arc-20240116; t=1737730014; c=relaxed/simple;
+	bh=VrSE7bXyTTyqajbrtvOn/J8N42Ua04nMhlm39AGzGeM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=R6NeTov+5svPo91PkOlc3rqihJv9/NnOpAlIqLkzCzRmfkTSsXxOfPgsg0uHDh2yhtGU9N6lTvAZ1xWUvGcVpBiA62RyeuRYBKRN80LMhNFv7nB4+RfIADi1Nuo7QjrAc/a5VDxmKxaiSFXsNr8rvuwOoO9n1WSPFlz8ptn0waA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=X/scI3jO; arc=none smtp.client-ip=162.240.238.73
+	 MIME-Version; b=OIouIEcagTG+3oxhzR0sPon7SwXYhCcZH3AR83cB3ovNGKeO2O0OuIGPazdb+w4g53cusgw+OccVOp9rcOwy84EuCMYtg31aIVkvjJd6HdhQ5fSu5jB5w9GfchGdUlJBEI7Sck6X9NAWPpUoxl32wua6xzYVbFu4PXv50U6FYCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=Aebtnn60; arc=none smtp.client-ip=162.240.238.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
@@ -37,17 +37,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=gSgtEK5ojmqZPpAo5KUYmJ1HkRKHWt6Os+pubsNh5dc=; b=X/scI3jOnJyv2tnKv3tBl2NgqP
-	fuBpUDUOOOykdmCdJ0ABNCUPoSGBJys/b50bomBlC7Ofmr9U7uvhEcHG77HwP9aGvCMashpgMSdch
-	g2y6SDkIxuVZ5zhkqBsFpfZCQHGM7oKCBaCjNcgIiYuyMMtUDV4pcoAknZjifGOxn70t3EzYPv4As
-	FcQMGAgkO5H85s4Mz/TWq6M1tKOBndK1uBwzoF9jr7zP1J916DdNCqgSMlcLDIBvV+4gg14Qzc/aX
-	gjYFnC/b5Bl4H3FXNdAU0hDy8dz/l2hb2S/SB/n290QjyRw65hvtY4PR646tQbVKdAtcP0MK2Hz4C
-	9NsOOSOg==;
-Received: from [122.175.9.182] (port=2665 helo=cypher.couthit.local)
+	bh=rXX3RF+3S0d0gNZNDC+3wDoIQt3Yb0nBLJHQvQwxsqI=; b=Aebtnn60zUvEQjpD2PIfwtrWVR
+	gDCuDFF8lsK9F53E/TSWtrb3Rh3fMFu/dpe1VcF7bLiN2F6IOEDSeBPNTfiBt3hXTdurmkw7YOmaa
+	3gxv2vlXnHe0bGtVqiVprhbBFXmC3SRwW7Xiqrmpg8pTymo4YmAr5WKKgj//BBrGm52c+xqQ8IHRZ
+	CV1U2iL+EDUmAe+YwoyZjzS8zL0JIazWN0X5TlnTM7GljyetWPSbj8pWy7yRN3XPplZWsofqGGXIX
+	oNRPVuc5fNuAuK+agml+Jb9cj0bt3jdcIpfyv2lHg093GDeUdWcatO4C0AUJ5saYISQQRaedC+je9
+	XPj2VScw==;
+Received: from [122.175.9.182] (port=38494 helo=cypher.couthit.local)
 	by server.wki.vra.mybluehostin.me with esmtpa (Exim 4.96.2)
 	(envelope-from <basharath@couthit.com>)
-	id 1tbJxV-0005Y4-1M;
-	Fri, 24 Jan 2025 19:12:53 +0530
+	id 1tbKxJ-0006Wf-2I;
+	Fri, 24 Jan 2025 20:16:46 +0530
 From: Basharath Hussain Khaja <basharath@couthit.com>
 To: danishanwar@ti.com,
 	rogerq@kernel.org,
@@ -89,9 +89,9 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	krishna@couthit.com,
 	pmohan@couthit.com,
 	mohan@couthit.com
-Subject: [RFC v2 PATCH 07/10] net: ti: prueth: Adds support for network filters for traffic control supported by PRU-ICSS
-Date: Fri, 24 Jan 2025 19:10:53 +0530
-Message-Id: <20250124134056.1459060-8-basharath@couthit.com>
+Subject: [RFC v2 PATCH 08/10] net: ti: prueth: Adds support for RX interrupt coalescing/pacing
+Date: Fri, 24 Jan 2025 20:15:53 +0530
+Message-Id: <20250124144555.1462044-9-basharath@couthit.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250124122353.1457174-1-basharath@couthit.com>
 References: <20250124122353.1457174-1-basharath@couthit.com>
@@ -113,1014 +113,639 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-From: Roger Quadros <rogerq@ti.com>
+From: Murali Karicheri <m-karicheri2@ti.com>
 
-Driver updates to enable/disable network filters and traffic control
-features supported by the firmware running on PRU-ICSS.
+Changes for supporting RX interrupt pacing feature using eCAP peripheral
+available in PRU-ICSS.
 
-Control of the following features are now supported:
-1. Promiscuous mode
-2. Network Storm prevention
-3. Multicast filtering and
-4. VLAN filtering
+Instead of interrupting the CPU for every packet received, the firmware
+running on the PRU-ICSS will interrupt the CPU based on the configured
+time period, if interrupt pacing is enabled.
 
-Firmware running on PRU-ICSS will go through all these filter checks
-prior to sending the rx packets to the host.
+The time period can be configured using ethtool.
 
-Ethtool or dev ioctl can be used to enable/disable these features from
-the user space.
+RX pacing/coalescing is implemented Using eCAP timer events to give CPU
+breathing space from ISR to perform other critical tasks.
 
-Signed-off-by: Roger Quadros <rogerq@ti.com>
-Signed-off-by: Andrew F. Davis <afd@ti.com>
+The changes include new eCAP driver module which will initialization and
+configures the ICSS eCAP HW.
+
+Makefile and Kernel config has been updated to compile the eCAP driver
+and to insert the module.
+
+Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
 Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
 Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
 ---
- drivers/net/ethernet/ti/Makefile              |   2 +-
- drivers/net/ethernet/ti/icssm/icssm_ethtool.c |  39 +++
- drivers/net/ethernet/ti/icssm/icssm_prueth.c  | 310 +++++++++++++++++-
- drivers/net/ethernet/ti/icssm/icssm_prueth.h  |  49 ++-
- .../net/ethernet/ti/icssm/icssm_prueth_dos.c  | 225 +++++++++++++
- drivers/net/ethernet/ti/icssm/icssm_switch.h  |   5 +
- .../ti/icssm/icssm_vlan_mcast_filter_mmap.h   | 120 +++++++
- 7 files changed, 747 insertions(+), 3 deletions(-)
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_dos.c
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_vlan_mcast_filter_mmap.h
+ drivers/net/ethernet/ti/Kconfig               |  12 +
+ drivers/net/ethernet/ti/Makefile              |   2 +
+ drivers/net/ethernet/ti/icssm/icssm_ethtool.c |  38 +++
+ drivers/net/ethernet/ti/icssm/icssm_prueth.c  |  25 +-
+ drivers/net/ethernet/ti/icssm/icssm_prueth.h  |   3 +
+ .../net/ethernet/ti/icssm/icssm_prueth_ecap.c | 312 ++++++++++++++++++
+ .../net/ethernet/ti/icssm/icssm_prueth_ecap.h |  47 +++
+ drivers/net/ethernet/ti/icssm/icssm_switch.h  |  23 ++
+ 8 files changed, 461 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_ecap.c
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_ecap.h
 
+diff --git a/drivers/net/ethernet/ti/Kconfig b/drivers/net/ethernet/ti/Kconfig
+index 96ad084f1dce..b0fc6d348151 100644
+--- a/drivers/net/ethernet/ti/Kconfig
++++ b/drivers/net/ethernet/ti/Kconfig
+@@ -227,6 +227,18 @@ config TI_ICSS_IEP
+ 	  To compile this driver as a module, choose M here. The module
+ 	  will be called icss_iep.
+ 
++config TI_PRUETH_ECAP
++	tristate "TI PRUETH ECAP driver"
++	depends on TI_PRUSS
++	default TI_PRUSS
++	help
++	  This enables support for the PRU-ICSS Enhanced Capture (eCAP) driver
++	  used for rx interrupt pacing support in PRU Driver/firmwares
++	  (Dual EMAC, HSR, PRP).
++
++	  To compile this driver as a module, choose M here. The module
++	  will be called prueth_ecap.
++
+ config TI_PRUETH
+ 	tristate "TI PRU Ethernet EMAC driver"
+ 	depends on PRU_REMOTEPROC
 diff --git a/drivers/net/ethernet/ti/Makefile b/drivers/net/ethernet/ti/Makefile
-index f21dd11118ab..852640ce2b15 100644
+index 852640ce2b15..dce14a30d4ac 100644
 --- a/drivers/net/ethernet/ti/Makefile
 +++ b/drivers/net/ethernet/ti/Makefile
-@@ -4,7 +4,7 @@
- #
+@@ -49,3 +49,5 @@ icssg-y := icssg/icssg_common.o \
+ 	   icssg/icssg_ethtool.o
  
- obj-$(CONFIG_TI_PRUETH) += icssm-prueth.o
--icssm-prueth-y := icssm/icssm_prueth.o icssm/icssm_ethtool.o
-+icssm-prueth-y := icssm/icssm_prueth.o icssm/icssm_ethtool.o icssm/icssm_prueth_dos.o
- 
- obj-$(CONFIG_TI_CPSW) += cpsw-common.o
- obj-$(CONFIG_TI_DAVINCI_EMAC) += cpsw-common.o
+ obj-$(CONFIG_TI_ICSS_IEP) += icssg/icss_iep.o
++
++obj-$(CONFIG_TI_PRUETH_ECAP) += icssm/icssm_prueth_ecap.o
 diff --git a/drivers/net/ethernet/ti/icssm/icssm_ethtool.c b/drivers/net/ethernet/ti/icssm/icssm_ethtool.c
-index ff9faaef9f9e..bf7d508aecaf 100644
+index bf7d508aecaf..b8df41014d4d 100644
 --- a/drivers/net/ethernet/ti/icssm/icssm_ethtool.c
 +++ b/drivers/net/ethernet/ti/icssm/icssm_ethtool.c
 @@ -7,6 +7,7 @@
  
  #include <linux/if_bridge.h>
  #include "icssm_prueth.h"
-+#include "icssm_vlan_mcast_filter_mmap.h"
++#include "icssm_prueth_ecap.h"
+ #include "icssm_vlan_mcast_filter_mmap.h"
  #include "../icssg/icss_iep.h"
  
- #define PRUETH_MODULE_VERSION "0.2"
-@@ -20,6 +21,11 @@ void icssm_emac_set_stats(struct prueth_emac *emac,
- 
- 	dram = emac->prueth->mem[emac->dram].va;
- 	memcpy_toio(dram + STATISTICS_OFFSET, pstats, STAT_SIZE);
-+
-+	writel(pstats->vlan_dropped, dram +
-+			ICSS_EMAC_FW_VLAN_FILTER_DROP_CNT_OFFSET);
-+	writel(pstats->multicast_dropped, dram +
-+			ICSS_EMAC_FW_MULTICAST_FILTER_DROP_CNT_OFFSET);
+@@ -249,6 +250,40 @@ static int icssm_emac_get_ts_info(struct net_device *ndev,
+ 	return 0;
  }
  
- /* get statistics maintained by the PRU firmware into @pstats */
-@@ -30,6 +36,11 @@ void icssm_emac_get_stats(struct prueth_emac *emac,
- 
- 	dram = emac->prueth->mem[emac->dram].va;
- 	memcpy_fromio(pstats, dram + STATISTICS_OFFSET, STAT_SIZE);
-+
-+	pstats->vlan_dropped =
-+		readl(dram + ICSS_EMAC_FW_VLAN_FILTER_DROP_CNT_OFFSET);
-+	pstats->multicast_dropped =
-+		readl(dram + ICSS_EMAC_FW_MULTICAST_FILTER_DROP_CNT_OFFSET);
- }
- 
- /**
-@@ -181,13 +192,40 @@ static void icssm_emac_get_ethtool_stats(struct net_device *ndev,
- 	}
- }
- 
-+static int icssm_emac_get_regs_len(struct net_device *ndev)
++static int icssm_emac_get_coalesce(struct net_device *ndev,
++				   struct ethtool_coalesce *coal,
++				   struct kernel_ethtool_coalesce *kernel_coal,
++				   struct netlink_ext_ack *extack)
 +{
 +	struct prueth_emac *emac = netdev_priv(ndev);
 +	struct prueth *prueth = emac->prueth;
++	struct prueth_ecap *ecap;
 +
-+	/* VLAN Table at the end of the memory map, after MultiCast
-+	 * filter region. So VLAN table base +
-+	 * size will give the entire size of reg dump in case of
-+	 * Dual-EMAC firmware.
-+	 */
-+	if (PRUETH_IS_EMAC(prueth)) {
-+		return ICSS_EMAC_FW_VLAN_FLTR_TBL_BASE_ADDR +
-+		       ICSS_EMAC_FW_VLAN_FILTER_TABLE_SIZE_BYTES;
-+	}
++	ecap = prueth->ecap;
++	if (IS_ERR(ecap))
++		return -EOPNOTSUPP;
 +
-+	return 0;
++	return ecap->get_coalesce(emac, &coal->use_adaptive_rx_coalesce,
++				  &coal->rx_coalesce_usecs);
 +}
 +
- static void icssm_emac_get_regs(struct net_device *ndev,
- 				struct ethtool_regs *regs, void *p)
- {
- 	struct prueth_emac *emac = netdev_priv(ndev);
- 	struct prueth *prueth = emac->prueth;
-+	void __iomem *ram;
-+	u8 *reg = p;
- 
- 	regs->version = PRUETH_REG_DUMP_GET_VER(prueth);
++static int icssm_emac_set_coalesce(struct net_device *ndev,
++				   struct ethtool_coalesce *coal,
++				   struct kernel_ethtool_coalesce *kernel_coal,
++				   struct netlink_ext_ack *extack)
++{
++	struct prueth_emac *emac = netdev_priv(ndev);
++	struct prueth *prueth = emac->prueth;
++	struct prueth_ecap *ecap;
 +
-+	/* Dump firmware's VLAN and MC tables */
-+	if (PRUETH_IS_EMAC(prueth)) {
-+		ram = prueth->mem[emac->dram].va;
-+		memcpy_fromio(reg, ram, icssm_emac_get_regs_len(ndev));
-+		return;
-+	}
- }
- 
- static int icssm_emac_get_ts_info(struct net_device *ndev,
-@@ -222,5 +260,6 @@ const struct ethtool_ops emac_ethtool_ops = {
- 	.get_strings = icssm_emac_get_strings,
++	ecap = prueth->ecap;
++	if (IS_ERR(ecap))
++		return -EOPNOTSUPP;
++
++	return ecap->set_coalesce(emac, coal->use_adaptive_rx_coalesce,
++				  coal->rx_coalesce_usecs);
++}
++
+ /* Ethtool support for EMAC adapter */
+ const struct ethtool_ops emac_ethtool_ops = {
+ 	.get_drvinfo = icssm_emac_get_drvinfo,
+@@ -261,5 +296,8 @@ const struct ethtool_ops emac_ethtool_ops = {
  	.get_ethtool_stats = icssm_emac_get_ethtool_stats,
  	.get_regs = icssm_emac_get_regs,
-+	.get_regs_len = icssm_emac_get_regs_len,
+ 	.get_regs_len = icssm_emac_get_regs_len,
++	.supported_coalesce_params = ETHTOOL_COALESCE_RX_USECS,
++	.get_coalesce = icssm_emac_get_coalesce,
++	.set_coalesce = icssm_emac_set_coalesce,
  };
  EXPORT_SYMBOL_GPL(emac_ethtool_ops);
 diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-index 7311366dac93..1b2571773d53 100644
+index 1b2571773d53..fdc97ed9c1fb 100644
 --- a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
 +++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-@@ -29,6 +29,7 @@
- #include <net/pkt_cls.h>
+@@ -30,6 +30,7 @@
  
  #include "icssm_prueth.h"
-+#include "icssm_vlan_mcast_filter_mmap.h"
+ #include "icssm_vlan_mcast_filter_mmap.h"
++#include "icssm_prueth_ecap.h"
  #include "../icssg/icssg_mii_rt.h"
  #include "../icssg/icss_iep.h"
  
-@@ -37,6 +38,26 @@
- #define TX_START_DELAY		0x40
- #define TX_CLK_DELAY_100M	0x6
- 
-+static struct prueth_fw_offsets fw_offsets_v2_1;
-+
-+static void icssm_prueth_set_fw_offsets(struct prueth *prueth)
-+{
-+	/* Set VLAN/Multicast filter control and table offsets */
-+	if (PRUETH_IS_EMAC(prueth)) {
-+		prueth->fw_offsets->vlan_ctrl_byte  =
-+			ICSS_EMAC_FW_VLAN_FILTER_CTRL_BITMAP_OFFSET;
-+		prueth->fw_offsets->vlan_filter_tbl =
-+			ICSS_EMAC_FW_VLAN_FLTR_TBL_BASE_ADDR;
-+
-+		prueth->fw_offsets->mc_ctrl_byte  =
-+			ICSS_EMAC_FW_MULTICAST_FILTER_CTRL_OFFSET;
-+		prueth->fw_offsets->mc_filter_mask =
-+			ICSS_EMAC_FW_MULTICAST_FILTER_MASK_OFFSET;
-+		prueth->fw_offsets->mc_filter_tbl =
-+			ICSS_EMAC_FW_MULTICAST_FILTER_TABLE;
-+	}
-+}
-+
- static inline void icssm_prueth_write_reg(struct prueth *prueth,
- 					  enum prueth_mem region,
- 					  unsigned int reg, u32 val)
-@@ -343,18 +364,25 @@ static void icssm_prueth_hostinit(struct prueth *prueth)
-  */
- static void icssm_prueth_init_ethernet_mode(struct prueth *prueth)
+@@ -1183,8 +1184,10 @@ static int icssm_emac_ndo_open(struct net_device *ndev)
  {
-+	icssm_prueth_set_fw_offsets(prueth);
- 	icssm_prueth_hostinit(prueth);
- }
- 
- static void icssm_prueth_port_enable(struct prueth_emac *emac, bool enable)
- {
+ 	struct prueth_emac *emac = netdev_priv(ndev);
  	struct prueth *prueth = emac->prueth;
--	void __iomem *port_ctrl;
-+	void __iomem *port_ctrl, *vlan_ctrl;
-+	u32 vlan_ctrl_offset;
- 	void __iomem *ram;
++	struct prueth_ecap *ecap;
+ 	int ret;
  
-+	vlan_ctrl_offset = prueth->fw_offsets->vlan_ctrl_byte;
-+
- 	ram = prueth->mem[emac->dram].va;
- 	port_ctrl = ram + PORT_CONTROL_ADDR;
- 	writeb(!!enable, port_ctrl);
-+
-+	vlan_ctrl = ram + vlan_ctrl_offset;
-+	writeb(!!enable, vlan_ctrl);
- }
++	ecap = prueth->ecap;
+ 	/* set h/w MAC as user might have re-configured */
+ 	ether_addr_copy(emac->mac_addr, ndev->dev_addr);
  
- static int icssm_prueth_emac_config(struct prueth_emac *emac)
-@@ -1403,6 +1431,174 @@ static struct net_device_stats
- 	return stats;
- }
+@@ -1194,6 +1197,9 @@ static int icssm_emac_ndo_open(struct net_device *ndev)
+ 	icssm_prueth_emac_config(emac);
  
-+/* enable/disable MC filter */
-+static void icssm_emac_mc_filter_ctrl(struct prueth_emac *emac, bool enable)
-+{
-+	struct prueth *prueth = emac->prueth;
-+	void __iomem *mc_filter_ctrl;
-+	void __iomem *ram;
-+	u32 mc_ctrl_byte;
-+	u32 reg;
-+
-+	ram = prueth->mem[emac->dram].va;
-+	mc_ctrl_byte = prueth->fw_offsets->mc_ctrl_byte;
-+	mc_filter_ctrl = ram + mc_ctrl_byte;
-+
-+	if (enable)
-+		reg = ICSS_EMAC_FW_MULTICAST_FILTER_CTRL_ENABLED;
-+	else
-+		reg = ICSS_EMAC_FW_MULTICAST_FILTER_CTRL_DISABLED;
-+
-+	writeb(reg, mc_filter_ctrl);
-+}
-+
-+/* reset MC filter bins */
-+static void icssm_emac_mc_filter_reset(struct prueth_emac *emac)
-+{
-+	struct prueth *prueth = emac->prueth;
-+	void __iomem *mc_filter_tbl;
-+	u32 mc_filter_tbl_base;
-+	void __iomem *ram;
-+
-+	ram = prueth->mem[emac->dram].va;
-+	mc_filter_tbl_base = prueth->fw_offsets->mc_filter_tbl;
-+
-+	mc_filter_tbl = ram + mc_filter_tbl_base;
-+	memset_io(mc_filter_tbl, 0, ICSS_EMAC_FW_MULTICAST_TABLE_SIZE_BYTES);
-+}
-+
-+/* set MC filter hashmask */
-+static void icssm_emac_mc_filter_hashmask
-+		(struct prueth_emac *emac,
-+		 u8 mask[ICSS_EMAC_FW_MULTICAST_FILTER_MASK_SIZE_BYTES])
-+{
-+	struct prueth *prueth = emac->prueth;
-+	void __iomem *mc_filter_mask;
-+	u32 mc_filter_mask_base;
-+	void __iomem *ram;
-+
-+	ram = prueth->mem[emac->dram].va;
-+	mc_filter_mask_base = prueth->fw_offsets->mc_filter_mask;
-+
-+	mc_filter_mask = ram + mc_filter_mask_base;
-+	memcpy_toio(mc_filter_mask, mask,
-+		    ICSS_EMAC_FW_MULTICAST_FILTER_MASK_SIZE_BYTES);
-+}
-+
-+static void icssm_emac_mc_filter_bin_update(struct prueth_emac *emac, u8 hash,
-+					    u8 val)
-+{
-+	struct prueth *prueth = emac->prueth;
-+	void __iomem *mc_filter_tbl;
-+	u32 mc_filter_tbl_base;
-+	void __iomem *ram;
-+
-+	ram = prueth->mem[emac->dram].va;
-+	mc_filter_tbl_base = prueth->fw_offsets->mc_filter_tbl;
-+
-+	mc_filter_tbl = ram + mc_filter_tbl_base;
-+	writeb(val, mc_filter_tbl + hash);
-+}
-+
-+void icssm_emac_mc_filter_bin_allow(struct prueth_emac *emac, u8 hash)
-+{
-+	icssm_emac_mc_filter_bin_update
-+		(emac, hash,
-+		 ICSS_EMAC_FW_MULTICAST_FILTER_HOST_RCV_ALLOWED);
-+}
-+
-+void icssm_emac_mc_filter_bin_disallow(struct prueth_emac *emac, u8 hash)
-+{
-+	icssm_emac_mc_filter_bin_update
-+		(emac, hash,
-+		 ICSS_EMAC_FW_MULTICAST_FILTER_HOST_RCV_NOT_ALLOWED);
-+}
-+
-+u8 icssm_emac_get_mc_hash(u8 *mac, u8 *mask)
-+{
-+	u8 hash;
-+	int j;
-+
-+	for (j = 0, hash = 0; j < ETH_ALEN; j++)
-+		hash ^= (mac[j] & mask[j]);
-+
-+	return hash;
-+}
-+
-+/**
-+ * icssm_emac_ndo_set_rx_mode - EMAC set receive mode function
-+ * @ndev: The EMAC network adapter
-+ *
-+ * Called when system wants to set the receive mode of the device.
-+ *
-+ */
-+static void icssm_emac_ndo_set_rx_mode(struct net_device *ndev)
-+{
-+	struct prueth_emac *emac = netdev_priv(ndev);
-+	bool promisc = ndev->flags & IFF_PROMISC;
-+	struct netdev_hw_addr *ha;
-+	struct prueth *prueth;
-+	unsigned long flags;
-+	void __iomem *sram;
-+	u32 mask, reg;
-+	u8 hash;
-+
-+	prueth = emac->prueth;
-+	sram = prueth->mem[PRUETH_MEM_SHARED_RAM].va;
-+	reg = readl(sram + EMAC_PROMISCUOUS_MODE_OFFSET);
-+
-+	/* for LRE, it is a shared table. So lock the access */
-+	spin_lock_irqsave(&emac->addr_lock, flags);
-+
-+	/* Disable and reset multicast filter, allows allmulti */
-+	icssm_emac_mc_filter_ctrl(emac, false);
-+	icssm_emac_mc_filter_reset(emac);
-+	icssm_emac_mc_filter_hashmask(emac, emac->mc_filter_mask);
-+
-+	if (PRUETH_IS_EMAC(prueth)) {
-+		switch (emac->port_id) {
-+		case PRUETH_PORT_MII0:
-+			mask = EMAC_P1_PROMISCUOUS_BIT;
-+			break;
-+		case PRUETH_PORT_MII1:
-+			mask = EMAC_P2_PROMISCUOUS_BIT;
-+			break;
-+		default:
-+			netdev_err(ndev, "%s: invalid port\n", __func__);
-+			goto unlock;
-+		}
-+
-+		if (promisc) {
-+			/* Enable promiscuous mode */
-+			reg |= mask;
-+		} else {
-+			/* Disable promiscuous mode */
-+			reg &= ~mask;
-+		}
-+
-+		writel(reg, sram + EMAC_PROMISCUOUS_MODE_OFFSET);
-+
-+		if (promisc)
-+			goto unlock;
-+	}
-+
-+	if (ndev->flags & IFF_ALLMULTI && !PRUETH_IS_SWITCH(prueth))
-+		goto unlock;
-+
-+	icssm_emac_mc_filter_ctrl(emac, true);	/* all multicast blocked */
-+
-+	if (netdev_mc_empty(ndev))
-+		goto unlock;
-+
-+	netdev_for_each_mc_addr(ha, ndev) {
-+		hash = icssm_emac_get_mc_hash(ha->addr, emac->mc_filter_mask);
-+		icssm_emac_mc_filter_bin_allow(emac, hash);
-+	}
-+
-+unlock:
-+	spin_unlock_irqrestore(&emac->addr_lock, flags);
-+}
-+
- static int icssm_emac_hwtstamp_config_set(struct net_device *ndev,
- 					  struct ifreq *ifr)
- {
-@@ -1476,13 +1672,115 @@ static int icssm_emac_ndo_ioctl(struct net_device *ndev, struct ifreq *ifr,
- 	return phy_do_ioctl(ndev, ifr, cmd);
- }
+ 	icssm_emac_set_stats(emac, &emac->stats);
++	/* initialize ecap for interrupt pacing */
++	if (!IS_ERR(ecap))
++		ecap->init(emac);
  
-+int icssm_emac_add_del_vid(struct prueth_emac *emac,
-+			   bool add, __be16 proto, u16 vid)
-+{
-+	struct prueth *prueth = emac->prueth;
-+	u32 vlan_filter_tbl;
-+	unsigned long flags;
-+	void __iomem *ram;
-+	u8 bit_index, val;
-+	u16 byte_index;
-+
-+	vlan_filter_tbl = prueth->fw_offsets->vlan_filter_tbl;
-+	ram = prueth->mem[emac->dram].va;
-+
-+	if (proto != htons(ETH_P_8021Q))
-+		return -EINVAL;
-+
-+	if (vid >= ICSS_EMAC_FW_VLAN_FILTER_VID_MAX)
-+		return -EINVAL;
-+
-+	/* By default, VLAN ID 0 (priority tagged packets) is routed to
-+	 * host, so nothing to be done if vid = 0
-+	 */
-+	if (!vid)
-+		return 0;
-+
-+	/* for LRE, it is a shared table. So lock the access */
-+	spin_lock_irqsave(&emac->addr_lock, flags);
-+
-+	/* VLAN filter table is 512 bytes (4096 bit) bitmap.
-+	 * Each bit controls enabling or disabling corresponding
-+	 * VID. Therefore byte index that controls a given VID is
-+	 * can calculated as vid / 8 and the bit within that byte
-+	 * that controls VID is given by vid % 8. Allow untagged
-+	 * frames to host by default.
-+	 */
-+	byte_index = vid / BITS_PER_BYTE;
-+	bit_index = vid % BITS_PER_BYTE;
-+	val = readb(ram + vlan_filter_tbl + byte_index);
-+	if (add)
-+		val |= BIT(bit_index);
-+	else
-+		val &= ~BIT(bit_index);
-+	writeb(val, ram + vlan_filter_tbl + byte_index);
-+
-+	spin_unlock_irqrestore(&emac->addr_lock, flags);
-+
-+	netdev_dbg(emac->ndev, "%s VID bit at index %d and bit %d\n",
-+		   add ? "Setting" : "Clearing", byte_index, bit_index);
-+
-+	return 0;
-+}
-+
-+static int icssm_emac_ndo_vlan_rx_add_vid(struct net_device *dev,
-+					  __be16 proto, u16 vid)
-+{
-+	struct prueth_emac *emac = netdev_priv(dev);
-+
-+	return icssm_emac_add_del_vid(emac, true, proto, vid);
-+}
-+
-+static int icssm_emac_ndo_vlan_rx_kill_vid(struct net_device *dev,
-+					   __be16 proto, u16 vid)
-+{
-+	struct prueth_emac *emac = netdev_priv(dev);
-+
-+	return icssm_emac_add_del_vid(emac, false, proto, vid);
-+}
-+
-+static int icssm_emac_get_port_parent_id(struct net_device *dev,
-+					 struct netdev_phys_item_id *ppid)
-+{
-+	struct prueth_emac *emac = netdev_priv(dev);
-+	struct prueth *prueth = emac->prueth;
-+
-+	ppid->id_len = sizeof(prueth->base_mac);
-+	memcpy(&ppid->id, &prueth->base_mac, ppid->id_len);
-+
-+	return 0;
-+}
-+
-+static int icssm_emac_ndo_get_phys_port_name(struct net_device *ndev,
-+					     char *name, size_t len)
-+{
-+	struct prueth_emac *emac = netdev_priv(ndev);
-+	int err;
-+
-+	err = snprintf(name, len, "p%d", emac->port_id);
-+
-+	if (err >= len)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
- static const struct net_device_ops emac_netdev_ops = {
- 	.ndo_open = icssm_emac_ndo_open,
- 	.ndo_stop = icssm_emac_ndo_stop,
- 	.ndo_start_xmit = icssm_emac_ndo_start_xmit,
-+	.ndo_set_mac_address = eth_mac_addr,
-+	.ndo_validate_addr = eth_validate_addr,
- 	.ndo_tx_timeout = icssm_emac_ndo_tx_timeout,
- 	.ndo_get_stats = icssm_emac_ndo_get_stats,
-+	.ndo_set_rx_mode = icssm_emac_ndo_set_rx_mode,
- 	.ndo_eth_ioctl = icssm_emac_ndo_ioctl,
-+	.ndo_vlan_rx_add_vid = icssm_emac_ndo_vlan_rx_add_vid,
-+	.ndo_vlan_rx_kill_vid = icssm_emac_ndo_vlan_rx_kill_vid,
-+	.ndo_setup_tc = icssm_emac_ndo_setup_tc,
-+	.ndo_get_port_parent_id = icssm_emac_get_port_parent_id,
-+	.ndo_get_phys_port_name = icssm_emac_ndo_get_phys_port_name,
- };
- 
- /* get emac_port corresponding to eth_node name */
-@@ -1548,6 +1846,7 @@ static int icssm_prueth_netdev_init(struct prueth *prueth,
- 	emac->prueth = prueth;
- 	emac->ndev = ndev;
- 	emac->port_id = port;
-+	memset(&emac->mc_filter_mask[0], 0xff, ETH_ALEN); /* default mask */
- 
- 	/* by default eth_type is EMAC */
- 	switch (port) {
-@@ -1594,7 +1893,9 @@ static int icssm_prueth_netdev_init(struct prueth *prueth,
- 		dev_err(prueth->dev, "could not get ptp tx irq. Skipping PTP support\n");
+ 	if (!prueth->emac_configured) {
+ 		icssm_iptp_dram_init(emac);
+@@ -2152,12 +2158,25 @@ static int icssm_prueth_probe(struct platform_device *pdev)
+ 		goto netdev_exit;
  	}
  
-+	spin_lock_init(&emac->lock);
- 	spin_lock_init(&emac->ptp_skb_lock);
-+	spin_lock_init(&emac->addr_lock);
- 
- 	/* get mac address from DT and set private and netdev addr */
- 	ret = of_get_ethdev_address(eth_node, ndev);
-@@ -1623,6 +1924,10 @@ static int icssm_prueth_netdev_init(struct prueth *prueth,
- 	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_Pause_BIT);
- 	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_Asym_Pause_BIT);
- 
-+	ndev->features |= NETIF_F_HW_VLAN_CTAG_FILTER | NETIF_F_HW_TC;
++	/* Make rx interrupt pacing optional so that users can use ECAP for
++	 * other use cases if needed
++	 */
++	prueth->ecap = icssm_prueth_ecap_get(np);
++	if (IS_ERR(prueth->ecap)) {
++		ret = PTR_ERR(prueth->ecap);
++		if (ret != -EPROBE_DEFER)
++			dev_info(dev,
++				 "No ECAP. Rx interrupt pacing disabled\n");
++		else
++			goto iep_put;
++	}
 +
-+	ndev->hw_features |= NETIF_F_HW_VLAN_CTAG_FILTER;
-+
- 	ndev->netdev_ops = &emac_netdev_ops;
- 	ndev->ethtool_ops = &emac_ethtool_ops;
+ 	/* register the network devices */
+ 	if (eth0_node) {
+ 		ret = register_netdev(prueth->emac[PRUETH_MAC0]->ndev);
+ 		if (ret) {
+ 			dev_err(dev, "can't register netdev for port MII0");
+-			goto iep_put;
++			goto ecap_put;
+ 		}
  
-@@ -1674,6 +1979,7 @@ static int icssm_prueth_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, prueth);
- 	prueth->dev = dev;
- 	prueth->fw_data = device_get_match_data(dev);
-+	prueth->fw_offsets = &fw_offsets_v2_1;
- 
- 	eth_ports_node = of_get_child_by_name(np, "ethernet-ports");
- 	if (!eth_ports_node)
-@@ -1869,6 +2175,8 @@ static int icssm_prueth_probe(struct platform_device *pdev)
- 			prueth->emac[PRUETH_MAC1]->ndev;
+ 		prueth->registered_netdevs[PRUETH_MAC0] =
+@@ -2193,6 +2212,10 @@ static int icssm_prueth_probe(struct platform_device *pdev)
+ 		unregister_netdev(prueth->registered_netdevs[i]);
  	}
  
-+	eth_random_addr(prueth->base_mac);
++ecap_put:
++	if (!IS_ERR(prueth->ecap))
++		icssm_prueth_ecap_put(prueth->ecap);
 +
- 	dev_info(dev, "TI PRU ethernet driver initialized: %s EMAC mode\n",
- 		 (!eth0_node || !eth1_node) ? "single" : "dual");
+ iep_put:
+ 	icss_iep_put(prueth->iep);
  
 diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.h b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
-index bd7ad8318544..4eac7f9f8496 100644
+index 4eac7f9f8496..43fc382cd0e6 100644
 --- a/drivers/net/ethernet/ti/icssm/icssm_prueth.h
 +++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
-@@ -28,6 +28,9 @@
- #define EMAC_MAX_FRM_SUPPORT (ETH_HLEN + VLAN_HLEN + ETH_DATA_LEN + \
- 			      ICSSM_LRE_TAG_SIZE)
+@@ -12,6 +12,7 @@
+ #include <linux/types.h>
+ #include <linux/pruss_driver.h>
+ #include <linux/remoteproc/pruss.h>
++#include <linux/netdevice.h>
  
-+/* default timer for NSP and HSR/PRP */
-+#define PRUETH_NSP_TIMER_MS	(100) /* Refresh NSP counters every 100ms */
-+
- #define PRUETH_REG_DUMP_VER		1
+ #include "icssm_switch.h"
+ #include "icssm_prueth_ptp.h"
+@@ -388,6 +389,7 @@ struct prueth {
+ 	struct regmap *mii_rt;
+ 	struct icss_iep *iep;
  
- /* Encoding: 32-16: Reserved, 16-8: Reg dump version, 8-0: Ethertype  */
-@@ -293,6 +296,29 @@ enum prueth_mem {
- 	PRUETH_MEM_MAX,
- };
++	struct prueth_ecap *ecap;
+ 	const struct prueth_private_data *fw_data;
+ 	struct prueth_fw_offsets *fw_offsets;
  
-+/* Firmware offsets/size information */
-+struct prueth_fw_offsets {
-+	u32 index_array_offset;
-+	u32 bin_array_offset;
-+	u32 nt_array_offset;
-+	u32 index_array_loc;
-+	u32 bin_array_loc;
-+	u32 nt_array_loc;
-+	u32 index_array_max_entries;
-+	u32 bin_array_max_entries;
-+	u32 nt_array_max_entries;
-+	u32 vlan_ctrl_byte;
-+	u32 vlan_filter_tbl;
-+	u32 mc_ctrl_byte;
-+	u32 mc_filter_mask;
-+	u32 mc_filter_tbl;
-+	/* IEP wrap is used in the rx packet ordering logic and
-+	 * is different for ICSSM v1.0 vs 2.1
-+	 */
-+	u32 iep_wrap;
-+	u16 hash_mask;
-+};
-+
- /**
-  * struct prueth_private_data - PRU Ethernet private data
-  * @fw_pru: firmware names to be used for PRUSS ethernet usecases
-@@ -305,6 +331,11 @@ struct prueth_private_data {
- 	bool support_switch;
- };
- 
-+struct nsp_counter {
-+	unsigned long cookie;
-+	u16 credit;
-+};
-+
- /* data for each emac port */
- struct prueth_emac {
- 	struct prueth *prueth;
-@@ -330,8 +361,16 @@ struct prueth_emac {
- 	const char *phy_id;
- 	u32 msg_enable;
- 	u8 mac_addr[6];
-+	unsigned char mc_filter_mask[ETH_ALEN];	/* for multicast filtering */
- 	phy_interface_t phy_if;
-+
- 	spinlock_t lock;	/* serialize access */
-+	spinlock_t addr_lock;	/* serialize access to VLAN/MC filter table */
-+
-+	struct nsp_counter nsp_bc;
-+	struct nsp_counter nsp_mc;
-+	struct nsp_counter nsp_uc;
-+	bool nsp_enabled;
- 
- 	struct sk_buff *ptp_skb[PRUETH_PTP_TS_EVENTS];
- 	spinlock_t ptp_skb_lock;	/* serialize access */
-@@ -358,19 +397,27 @@ struct prueth {
+@@ -396,6 +398,7 @@ struct prueth {
+ 	struct net_device *registered_netdevs[PRUETH_NUM_MACS];
  
  	unsigned int eth_type;
++	struct mutex mlock; /* serialize access */
  	u8 emac_configured;
-+	u8 base_mac[ETH_ALEN];
+ 	u8 base_mac[ETH_ALEN];
  };
- 
- extern const struct ethtool_ops emac_ethtool_ops;
- 
-+int icssm_emac_ndo_setup_tc(struct net_device *dev, enum tc_setup_type type,
-+			    void *type_data);
- void icssm_parse_packet_info(struct prueth *prueth, u32 buffer_descriptor,
- 			     struct prueth_packet_info *pkt_info);
- int icssm_emac_rx_packet(struct prueth_emac *emac, u16 *bd_rd_ptr,
- 			 struct prueth_packet_info *pkt_info,
- 			 const struct prueth_queue_info *rxqueue);
--
-+int icssm_emac_add_del_vid(struct prueth_emac *emac,
-+			   bool add, __be16 proto, u16 vid);
- irqreturn_t icssm_prueth_ptp_tx_irq_handle(int irq, void *dev);
- irqreturn_t icssm_prueth_ptp_tx_irq_work(int irq, void *dev);
- 
-+void icssm_emac_mc_filter_bin_allow(struct prueth_emac *emac, u8 hash);
-+void icssm_emac_mc_filter_bin_disallow(struct prueth_emac *emac, u8 hash);
-+u8 icssm_emac_get_mc_hash(u8 *mac, u8 *mask);
-+
- void icssm_emac_set_stats(struct prueth_emac *emac,
- 			  struct port_statistics *pstats);
- void icssm_emac_get_stats(struct prueth_emac *emac,
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth_dos.c b/drivers/net/ethernet/ti/icssm/icssm_prueth_dos.c
+diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth_ecap.c b/drivers/net/ethernet/ti/icssm/icssm_prueth_ecap.c
 new file mode 100644
-index 000000000000..8382bd8cab7c
+index 000000000000..ac0f227473b4
 --- /dev/null
-+++ b/drivers/net/ethernet/ti/icssm/icssm_prueth_dos.c
-@@ -0,0 +1,225 @@
++++ b/drivers/net/ethernet/ti/icssm/icssm_prueth_ecap.c
+@@ -0,0 +1,312 @@
 +// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (C) 2020-2021 Texas Instruments Incorporated - https://www.ti.com
++
++/* PRUETH Ecap driver for Interrupt pacing support. eCAP is used by
++ * firmware to implement Rx Interrupt pacing for PRUETH driver using
++ * ECAP1 and ECAP2.  Firmware uses ECAP as a timer to implement
++ * interrupt pacing logic. For HSR/PRP, the interrupt pacing can
++ * be enabled/disabled for both ports together as there is a common
++ * control for both ports, where as for Dual EMAC, interrupt pacing
++ * can be enabled or disabled independently for both Ethernet ports.
++ * SRAM memory location stores the configuration for interrupt pacing
++ * such as enable/disable flag and timeout values.
++ *
++ * TODO: This is marked as a HACK driver since the correct solution
++ * is to move the initialization of the ECAP registers to firmware.
++ * Driver has nothing to do ECAP as it is used by firmware and it
++ * is expected that firmware does the initialization.
++ *
++ * Copyright (C) 2018-2020 Texas Instruments Incorporated - https://www.ti.com
++ *	Murali Karicheri <m-karicheri2@ti.com>
 + */
 +
-+#include <linux/kernel.h>
-+#include <linux/remoteproc/pruss.h>
-+#include <linux/regmap.h>
-+#include <linux/remoteproc.h>
-+#include <net/pkt_cls.h>
++#include <linux/err.h>
++#include <linux/io.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/of_platform.h>
++#include <linux/platform_device.h>
 +
-+#include "../icssg/icssg_mii_rt.h"
-+#include "icssm_vlan_mcast_filter_mmap.h"
-+#include "icssm_prueth.h"
++#include "icssm_switch.h"
++#include "icssm_prueth_ecap.h"
 +
-+static void icssm_emac_nsp_enable(void __iomem *counter, u16 credit)
++/* ECAP registers */
++#define ECAP_CAP1			8
++#define ECAP_CAP2			0xC
++#define ECAP_ECCTL2			0x2A
++
++#define ECAP_ECCTL2_TSCTRSTOP_MASK	BIT(4)
++#define ECAP_ECCTL2_CAP_APWM_MASK	BIT(9)
++
++#define ECAP_ECCTL2_INIT_VAL		(ECAP_ECCTL2_TSCTRSTOP_MASK | \
++					 ECAP_ECCTL2_CAP_APWM_MASK)
++#define ECAP_CAP2_MAX_COUNT		0xFFFFFFFF
++
++/* TODO: Driver assumes that ECAP runs at 200Mhz clock. But on some
++ * platforms, PRU ICSS clock rate may be changed by user in which case
++ * the pacing logic will not work as expected. Update the driver and
++ * firmware if ECAP/PRUSS clock rate is ever changed. Based on this
++ * assumption each tick is 5 nsec. i.e 1000/200
++ */
++#define ECAP_TICK_NSEC			5
++
++/* in usec */
++/* Duration of 3 frames of 1528 bytes each. If we go beyond this,
++ * receive buffer overflow may happen assuming 4 MTU buffer. So
++ * set this as the limit
++ */
++#define MAX_RX_TIMEOUT_USEC		(123 * 3)
++
++/* Dual EMAC defaults */
++static struct rx_int_pacing_offsets pacing_offsets_defaults[PRUETH_NUM_MACS] = {
++	{ INTR_PAC_STATUS_OFFSET_PRU0, INTR_PAC_TMR_EXP_OFFSET_PRU0,
++	  INTR_PAC_PREV_TS_OFFSET_PRU0 },
++	{ INTR_PAC_STATUS_OFFSET_PRU1, INTR_PAC_TMR_EXP_OFFSET_PRU1,
++	  INTR_PAC_PREV_TS_OFFSET_PRU1 },
++};
++
++static int icssm_prueth_ecap_config_pacing(struct prueth_emac *emac,
++					   u32 use_adaptive,
++					   u32 new_timeout_val)
 +{
-+	writel((credit << PRUETH_NSP_CREDIT_SHIFT) | PRUETH_NSP_ENABLE,
-+	       counter);
++	struct rx_int_pacing_offsets *offsets;
++	struct prueth *prueth = emac->prueth;
++	u8 val = INTR_PAC_DIS_ADP_LGC_DIS;
++	struct prueth_ecap *ecap;
++	void __iomem *sram;
++	u32 pacing_ctrl;
++	int port;
++
++	ecap = prueth->ecap;
++	sram = prueth->mem[PRUETH_MEM_SHARED_RAM].va;
++	port = (emac->port_id == PRUETH_PORT_MII0) ?
++				PRUETH_MAC0 : PRUETH_MAC1;
++	offsets = &ecap->int_pacing_offsets[port];
++	pacing_ctrl = offsets->rx_int_pacing_ctrl;
++
++	if (!new_timeout_val) {
++		/* disable pacing */
++		writeb_relaxed(val, sram + pacing_ctrl);
++		/* Timeout separate */
++		ecap->timeout[port] = new_timeout_val;
++		return 0;
++	}
++
++	if (use_adaptive)
++		val = INTR_PAC_ENA_ADP_LGC_ENA;
++	else
++		val = INTR_PAC_ENA_ADP_LGC_DIS;
++
++	if (!ecap->timeout[port]) {
++		/* disable to enable transition */
++		writeb_relaxed(INTR_PAC_DIS_ADP_LGC_DIS, sram + pacing_ctrl);
++		/* For EMAC set timeout for specific port and for
++		 * LRE for both ports
++		 */
++		if (PRUETH_IS_EMAC(prueth)) {
++			if (!port) {
++				offsets =
++					&ecap->int_pacing_offsets[PRUETH_MAC0];
++				writel_relaxed(new_timeout_val *
++						NSEC_PER_USEC / ECAP_TICK_NSEC,
++						sram +
++						offsets->rx_int_pacing_exp);
++				writel_relaxed(INTR_PAC_PREV_TS_RESET_VAL,
++					       sram +
++					       offsets->rx_int_pacing_prev);
++				ecap->timeout[PRUETH_MAC0] = new_timeout_val;
++			} else {
++				offsets =
++					&ecap->int_pacing_offsets[PRUETH_MAC1];
++				writel_relaxed(new_timeout_val *
++						NSEC_PER_USEC / ECAP_TICK_NSEC,
++						sram +
++						offsets->rx_int_pacing_exp);
++				writel_relaxed(INTR_PAC_PREV_TS_RESET_VAL,
++					       sram +
++					       offsets->rx_int_pacing_prev);
++				ecap->timeout[PRUETH_MAC1] = new_timeout_val;
++			}
++		}
++	} else {
++		/* update */
++		if (PRUETH_IS_EMAC(prueth)) {
++			if (!port) {
++				offsets =
++					&ecap->int_pacing_offsets[PRUETH_MAC0];
++				writel_relaxed(new_timeout_val *
++						NSEC_PER_USEC / ECAP_TICK_NSEC,
++						sram +
++						offsets->rx_int_pacing_exp);
++				ecap->timeout[PRUETH_MAC0] = new_timeout_val;
++			} else {
++				offsets =
++					&ecap->int_pacing_offsets[PRUETH_MAC1];
++				writel_relaxed(new_timeout_val *
++						NSEC_PER_USEC / ECAP_TICK_NSEC,
++						sram +
++						offsets->rx_int_pacing_exp);
++				ecap->timeout[PRUETH_MAC1] = new_timeout_val;
++			}
++		}
++	}
++
++	writeb_relaxed(val, sram + pacing_ctrl);
++
++	return 0;
 +}
 +
 +/**
-+ * icssm_prueth_enable_nsp - enable nsp
++ * icssm_prueth_ecap_init - ecap driver init
 + *
 + * @emac: EMAC data structure
 + *
 + */
-+static void icssm_prueth_enable_nsp(struct prueth_emac *emac)
++static void icssm_prueth_ecap_init(struct prueth_emac *emac)
 +{
 +	struct prueth *prueth = emac->prueth;
-+	void __iomem *dram;
 +
-+	dram = prueth->mem[emac->dram].va;
-+
-+	if (emac->nsp_bc.cookie)
-+		icssm_emac_nsp_enable(dram + STORM_PREVENTION_OFFSET_BC,
-+				      emac->nsp_bc.credit);
-+	if (emac->nsp_mc.cookie)
-+		icssm_emac_nsp_enable(dram + STORM_PREVENTION_OFFSET_MC,
-+				      emac->nsp_mc.credit);
-+	if (emac->nsp_uc.cookie)
-+		icssm_emac_nsp_enable(dram + STORM_PREVENTION_OFFSET_UC,
-+				      emac->nsp_uc.credit);
++	if (!prueth->emac_configured || PRUETH_IS_EMAC(prueth))
++		icssm_prueth_ecap_config_pacing(emac, 0, 0);
 +}
 +
-+static int icssm_emac_flower_parse_policer(struct prueth_emac *emac,
-+					   struct netlink_ext_ack *extack,
-+					   struct flow_cls_offload *cls,
-+					   u64 rate_bytes_per_sec)
++static int icssm_prueth_ecap_get_coalesce(struct prueth_emac *emac,
++					  u32 *use_adaptive_rx_coalesce,
++					  u32 *rx_coalesce_usecs)
 +{
-+	struct flow_rule *rule = flow_cls_offload_flow_rule(cls);
-+	struct flow_dissector *dissector = rule->match.dissector;
-+	u8 null_mac[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-+	u8 bc_mac[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
-+	u8 mc_mac[] = {0x01, 0x00, 0x00, 0x00, 0x00, 0x00};
-+	struct flow_match_eth_addrs match;
-+	struct nsp_counter *nsp = NULL;
-+	char *str;
-+	u32 pps;
++	struct rx_int_pacing_offsets *pacing_offsets;
++	struct prueth *prueth = emac->prueth;
++	struct prueth_ecap *ecap;
++	void __iomem *sram;
++	int port;
++	u32 val;
 +
-+	if (dissector->used_keys &
-+	    ~(BIT(FLOW_DISSECTOR_KEY_BASIC) |
-+	      BIT(FLOW_DISSECTOR_KEY_CONTROL) |
-+	      BIT(FLOW_DISSECTOR_KEY_ETH_ADDRS))) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Unsupported keys used");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (!flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_ETH_ADDRS)) {
-+		NL_SET_ERR_MSG_MOD(extack, "Not matching on eth address");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	flow_rule_match_eth_addrs(rule, &match);
-+
-+	if (!ether_addr_equal_masked(match.key->src, null_mac,
-+				     match.mask->src)) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Matching on source MAC not supported");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (ether_addr_equal(match.key->dst, bc_mac)) {
-+		if (!emac->nsp_bc.cookie ||
-+		    emac->nsp_bc.cookie == cls->cookie)
-+			nsp = &emac->nsp_bc;
-+		else
-+			NL_SET_ERR_MSG_MOD(extack, "BC Filter already set");
-+		str = "Broad";
-+	} else if (ether_addr_equal_masked(match.key->dst, mc_mac, mc_mac)) {
-+		if (!emac->nsp_mc.cookie ||
-+		    emac->nsp_mc.cookie == cls->cookie)
-+			nsp = &emac->nsp_mc;
-+		else
-+			NL_SET_ERR_MSG_MOD(extack, "MC Filter already set");
-+		str = "Multi";
-+	} else {
-+		if (!emac->nsp_uc.cookie ||
-+		    emac->nsp_uc.cookie == cls->cookie)
-+			nsp = &emac->nsp_uc;
-+		else
-+			NL_SET_ERR_MSG_MOD(extack, "UC Filter already set");
-+		str = "Uni";
-+	}
-+
-+	if (!nsp)
-+		return -EOPNOTSUPP;
-+
-+	/* Calculate number of packets per second for given bps
-+	 * assuming min ethernet packet size
-+	 */
-+	pps = div_u64(rate_bytes_per_sec, ETH_ZLEN);
-+	/* Convert that to packets per 100ms */
-+	pps /= MSEC_PER_SEC / PRUETH_NSP_TIMER_MS;
-+
-+	nsp->cookie = cls->cookie;
-+	nsp->credit = pps;
-+	emac->nsp_enabled = emac->nsp_bc.cookie | emac->nsp_mc.cookie |
-+			    emac->nsp_uc.cookie;
-+
-+	icssm_prueth_enable_nsp(emac);
-+
-+	netdev_dbg(emac->ndev,
-+		   "%scast filter set to %d packets per %dms\n", str,
-+		   nsp->credit, PRUETH_NSP_TIMER_MS);
++	ecap = prueth->ecap;
++	sram = prueth->mem[PRUETH_MEM_SHARED_RAM].va;
++	port = (emac->port_id == PRUETH_PORT_MII0) ?
++			PRUETH_MAC0 : PRUETH_MAC1;
++	pacing_offsets = &ecap->int_pacing_offsets[port];
++	val = readb_relaxed(sram + pacing_offsets->rx_int_pacing_ctrl);
++	*use_adaptive_rx_coalesce = (val == INTR_PAC_ENA_ADP_LGC_ENA);
++	*rx_coalesce_usecs = ecap->timeout[port];
 +
 +	return 0;
 +}
 +
-+static int icssm_emac_configure_clsflower(struct prueth_emac *emac,
-+					  struct flow_cls_offload *cls)
++static int icssm_prueth_ecap_set_coalesce(struct prueth_emac *emac,
++					  u32 use_adaptive_rx_coalesce,
++					  u32 rx_coalesce_usecs)
 +{
-+	struct flow_rule *rule = flow_cls_offload_flow_rule(cls);
-+	struct netlink_ext_ack *extack = cls->common.extack;
-+	const struct flow_action_entry *act;
++	struct prueth *prueth = emac->prueth;
++	int ret;
++
++	if (rx_coalesce_usecs  > MAX_RX_TIMEOUT_USEC)
++		return -EINVAL;
++
++	mutex_lock(&prueth->mlock);
++	/* Start or restart the pacing timer. */
++	ret = icssm_prueth_ecap_config_pacing(emac, use_adaptive_rx_coalesce,
++					      rx_coalesce_usecs);
++	mutex_unlock(&prueth->mlock);
++
++	return ret;
++}
++
++void icssm_prueth_ecap_put(struct prueth_ecap *ecap)
++{
++	device_lock(ecap->dev);
++	ecap->client_np = NULL;
++	device_unlock(ecap->dev);
++	put_device(ecap->dev);
++}
++EXPORT_SYMBOL_GPL(icssm_prueth_ecap_put);
++
++struct prueth_ecap *icssm_prueth_ecap_get(struct device_node *np)
++{
++	struct platform_device *pdev;
++	struct device_node *ecap_np;
++	struct prueth_ecap *ecap;
++
++	ecap_np = of_parse_phandle(np, "ecap", 0);
++	if (!ecap_np || !of_device_is_available(ecap_np))
++		return ERR_PTR(-ENODEV);
++
++	pdev = of_find_device_by_node(ecap_np);
++	of_node_put(ecap_np);
++
++	if (!pdev)
++		/* probably IEP not yet probed */
++		return ERR_PTR(-EPROBE_DEFER);
++
++	ecap = platform_get_drvdata(pdev);
++	if (!ecap)
++		return ERR_PTR(-EPROBE_DEFER);
++
++	device_lock(ecap->dev);
++	if (ecap->client_np) {
++		device_unlock(ecap->dev);
++		dev_err(ecap->dev, "ECAP is already acquired by %s",
++			ecap->client_np->name);
++		return ERR_PTR(-EBUSY);
++	}
++	ecap->client_np = np;
++	device_unlock(ecap->dev);
++	get_device(ecap->dev);
++
++	return ecap;
++}
++EXPORT_SYMBOL_GPL(icssm_prueth_ecap_get);
++
++static int icssm_prueth_ecap_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct prueth_ecap *ecap;
++	struct resource *res;
 +	int i;
 +
-+	flow_action_for_each(i, act, &rule->action) {
-+		switch (act->id) {
-+		case FLOW_ACTION_POLICE:
-+			return icssm_emac_flower_parse_policer
-+				(emac, extack, cls,
-+				 act->police.rate_bytes_ps);
-+		default:
-+			NL_SET_ERR_MSG_MOD(extack,
-+					   "Action not supported");
-+			return -EOPNOTSUPP;
-+		}
-+	}
-+	return -EOPNOTSUPP;
-+}
++	ecap = devm_kzalloc(dev, sizeof(*ecap), GFP_KERNEL);
++	if (!ecap)
++		return -ENOMEM;
 +
-+static int icssm_emac_delete_clsflower(struct prueth_emac *emac,
-+				       struct flow_cls_offload *cls)
-+{
-+	struct prueth *prueth = emac->prueth;
-+	void __iomem *dram;
++	ecap->dev = dev;
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	ecap->base = devm_ioremap_resource(dev, res);
++	if (IS_ERR(ecap->base))
++		return -ENODEV;
 +
-+	dram = prueth->mem[emac->dram].va;
++	/* Initialize the ECAP timer. It is a common timer used
++	 * by firmware for rx interrupt pacing.
++	 */
++	writew_relaxed(ECAP_ECCTL2_INIT_VAL, ecap->base + ECAP_ECCTL2);
++	writel_relaxed(ECAP_CAP2_MAX_COUNT, ecap->base + ECAP_CAP1);
++	writel_relaxed(ECAP_CAP2_MAX_COUNT, ecap->base + ECAP_CAP2);
 +
-+	if (cls->cookie == emac->nsp_bc.cookie) {
-+		emac->nsp_bc.cookie = 0;
-+		emac->nsp_bc.credit = 0;
-+		writel(0, dram + STORM_PREVENTION_OFFSET_BC);
-+	} else if (cls->cookie == emac->nsp_mc.cookie) {
-+		emac->nsp_mc.cookie = 0;
-+		emac->nsp_mc.credit = 0;
-+		writel(0, dram + STORM_PREVENTION_OFFSET_MC);
-+	} else if (cls->cookie == emac->nsp_uc.cookie) {
-+		emac->nsp_uc.cookie = 0;
-+		emac->nsp_uc.credit = 0;
-+		writel(0, dram + STORM_PREVENTION_OFFSET_UC);
-+	}
++	/* initialize SRAM memory offsets for rx pace time control */
++	for (i = 0; i < PRUETH_NUM_MACS; i++)
++		ecap->int_pacing_offsets[i] = pacing_offsets_defaults[i];
++	ecap->get_coalesce = icssm_prueth_ecap_get_coalesce;
++	ecap->set_coalesce = icssm_prueth_ecap_set_coalesce;
++	ecap->init = icssm_prueth_ecap_init;
 +
-+	emac->nsp_enabled = emac->nsp_bc.cookie | emac->nsp_mc.cookie |
-+			    emac->nsp_uc.cookie;
++	dev_set_drvdata(dev, ecap);
 +
 +	return 0;
 +}
 +
-+static int icssm_emac_setup_tc_cls_flower(struct prueth_emac *emac,
-+					  struct flow_cls_offload *cls_flower)
++static const struct of_device_id prueth_ecap_of_match[] = {
++	{ .compatible = "ti,pruss-ecap", },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, prueth_ecap_of_match);
++
++static struct platform_driver prueth_ecap_driver = {
++	.driver = {
++		.name = "prueth-ecap",
++		.of_match_table = prueth_ecap_of_match,
++	},
++	.probe = icssm_prueth_ecap_probe,
++};
++module_platform_driver(prueth_ecap_driver);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("TI PRUETH ECAP driver for Rx Interrupt pacing");
++MODULE_AUTHOR("Murali Karicheri <m-karicheri2@ti.com>");
+diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth_ecap.h b/drivers/net/ethernet/ti/icssm/icssm_prueth_ecap.h
+new file mode 100644
+index 000000000000..d422756bc27f
+--- /dev/null
++++ b/drivers/net/ethernet/ti/icssm/icssm_prueth_ecap.h
+@@ -0,0 +1,47 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Texas Instruments ICSS Enhanced Capture (eCAP) Driver
++ *
++ * Copyright (C) 2020 Texas Instruments Incorporated - http://www.ti.com/
++ *
++ */
++#ifndef __NET_TI_PRUETH_ECAP_H
++#define __NET_TI_PRUETH_ECAP_H
++
++#include "icssm_prueth.h"
++
++/* SRAM offsets for firmware pacing timer configuration */
++struct rx_int_pacing_offsets {
++	u32 rx_int_pacing_ctrl;
++	u32 rx_int_pacing_exp;
++	u32 rx_int_pacing_prev;
++};
++
++struct prueth_ecap {
++	struct device *dev;
++	void __iomem *base;
++	struct device_node *client_np;
++	struct rx_int_pacing_offsets int_pacing_offsets[PRUETH_NUM_MACS];
++	u32 timeout[PRUETH_NUM_MACS];
++	void (*init)(struct prueth_emac *emac);
++	int (*get_coalesce)(struct prueth_emac *emac,
++			    u32 *use_adaptive_rx_coalesce,
++			    u32 *rx_coalesce_usecs);
++	int (*set_coalesce)(struct prueth_emac *emac,
++			    u32 use_adaptive_rx_coalesce,
++			    u32 rx_coalesce_usecs);
++};
++
++#if IS_ENABLED(CONFIG_TI_PRUETH_ECAP)
++struct prueth_ecap *icssm_prueth_ecap_get(struct device_node *np);
++void icssm_prueth_ecap_put(struct prueth_ecap *ecap);
++#else
++static inline struct prueth_ecap *icssm_prueth_ecap_get(struct device_node *np)
 +{
-+	switch (cls_flower->command) {
-+	case FLOW_CLS_REPLACE:
-+		return icssm_emac_configure_clsflower(emac, cls_flower);
-+	case FLOW_CLS_DESTROY:
-+		return icssm_emac_delete_clsflower(emac, cls_flower);
-+	default:
-+		return -EOPNOTSUPP;
-+	}
++	return ERR_PTR(-ENODEV);
 +}
 +
-+static int icssm_emac_setup_tc_block_cb(enum tc_setup_type type,
-+					void *type_data, void *cb_priv)
-+{
-+	struct prueth_emac *emac = cb_priv;
++static inline void icssm_prueth_ecap_put(struct prueth_ecap *ecap)
++{};
++#endif
 +
-+	if (!tc_cls_can_offload_and_chain0(emac->ndev, type_data))
-+		return -EOPNOTSUPP;
-+
-+	switch (type) {
-+	case TC_SETUP_CLSFLOWER:
-+		return icssm_emac_setup_tc_cls_flower(emac, type_data);
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static LIST_HEAD(emac_block_cb_list);
-+
-+int icssm_emac_ndo_setup_tc(struct net_device *dev, enum tc_setup_type type,
-+			    void *type_data)
-+{
-+	struct prueth_emac *emac = netdev_priv(dev);
-+
-+	if (type == TC_SETUP_BLOCK) {
-+		return flow_block_cb_setup_simple(type_data,
-+						  &emac_block_cb_list,
-+						  icssm_emac_setup_tc_block_cb,
-+						  emac, emac, true);
-+	}
-+
-+	return -EOPNOTSUPP;
-+}
++#endif /* __NET_TI_PRUETH_ECAP_H */
 diff --git a/drivers/net/ethernet/ti/icssm/icssm_switch.h b/drivers/net/ethernet/ti/icssm/icssm_switch.h
-index b13e0706ccec..0053191380b7 100644
+index 0053191380b7..cb5ddd536747 100644
 --- a/drivers/net/ethernet/ti/icssm/icssm_switch.h
 +++ b/drivers/net/ethernet/ti/icssm/icssm_switch.h
-@@ -146,6 +146,11 @@
- /* 4 bytes ? */
- #define STP_INVALID_STATE_OFFSET	(STATISTICS_OFFSET + STAT_SIZE + 33)
+@@ -259,4 +259,27 @@
+ #define P0_COL_BUFFER_OFFSET	0xEE00
+ #define P0_Q1_BUFFER_OFFSET	0x0000
  
-+/* Shared RAM Offsets for Switch */
-+/* NSP (Network Storm Prevention) timer re-uses NT timer */
-+#define PRUETH_NSP_CREDIT_SHIFT       8
-+#define PRUETH_NSP_ENABLE            BIT(0)
++/* Below Rx Interrupt pacing defines. */
++/* shared RAM */
++/* 1 byte for pace control */
++#define INTR_PAC_STATUS_OFFSET                       0x1FAF
++#define INTR_PAC_STATUS_OFFSET_PRU1                  0x1FAE
++#define INTR_PAC_STATUS_OFFSET_PRU0                  0x1FAF
++/* Interrupt Pacing disabled, Adaptive logic disabled */
++#define INTR_PAC_DIS_ADP_LGC_DIS                     0x0
++/* Interrupt Pacing enabled, Adaptive logic disabled */
++#define INTR_PAC_ENA_ADP_LGC_DIS                     0x1
++/* Interrupt Pacing enabled, Adaptive logic enabled */
++#define INTR_PAC_ENA_ADP_LGC_ENA                     0x2
 +
- /* DRAM Offsets for EMAC
-  * Present on Both DRAM0 and DRAM1
-  */
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_vlan_mcast_filter_mmap.h b/drivers/net/ethernet/ti/icssm/icssm_vlan_mcast_filter_mmap.h
-new file mode 100644
-index 000000000000..32b5c228c5fb
---- /dev/null
-+++ b/drivers/net/ethernet/ti/icssm/icssm_vlan_mcast_filter_mmap.h
-@@ -0,0 +1,120 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
++/* 4 bytes | previous TS from eCAP TSCNT for PRU 0 */
++#define INTR_PAC_PREV_TS_OFFSET_PRU0                 0x1FB0
++/* 4 bytes | timer expiration value for PRU 0 */
++#define INTR_PAC_TMR_EXP_OFFSET_PRU0                 0x1FB4
++/* 4 bytes | previous TS from eCAP TSCNT for PRU 1 */
++#define INTR_PAC_PREV_TS_OFFSET_PRU1                 0x1FB8
++/* 4 bytes | timer expiration value for PRU 1 */
++#define INTR_PAC_TMR_EXP_OFFSET_PRU1                 0x1FBC
++#define INTR_PAC_PREV_TS_RESET_VAL                   0x0
 +
-+/* Copyright (C) 2015-2021 Texas Instruments Incorporated - https://www.ti.com
-+ *
-+ * This file contains VLAN/Multicast filtering feature memory map
-+ *
-+ */
-+
-+#ifndef ICSS_VLAN_MULTICAST_FILTER_MM_H
-+#define ICSS_VLAN_MULTICAST_FILTER_MM_H
-+
-+/*  VLAN/Multicast filter defines & offsets,
-+ *  present on both PRU0 and PRU1 DRAM
-+ */
-+
-+/* Feature enable/disable values for multicast filtering */
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_CTRL_DISABLED		0x00
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_CTRL_ENABLED		0x01
-+
-+/* Feature enable/disable values  for VLAN filtering */
-+#define ICSS_EMAC_FW_VLAN_FILTER_CTRL_DISABLED			0x00
-+#define ICSS_EMAC_FW_VLAN_FILTER_CTRL_ENABLED			0x01
-+
-+/* Add/remove multicast mac id for filtering bin */
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_HOST_RCV_ALLOWED		0x01
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_HOST_RCV_NOT_ALLOWED	0x00
-+
-+/* Default HASH value for the multicast filtering Mask */
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_INIT_VAL			0xFF
-+
-+/* Size requirements for Multicast filtering feature */
-+#define ICSS_EMAC_FW_MULTICAST_TABLE_SIZE_BYTES			       256
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_MASK_SIZE_BYTES			 6
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_CTRL_SIZE_BYTES			 1
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_MASK_OVERRIDE_STATUS_SIZE_BYTES	 1
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_DROP_CNT_SIZE_BYTES		 4
-+
-+/* Size requirements for VLAN filtering feature : 4096 bits = 512 bytes */
-+#define ICSS_EMAC_FW_VLAN_FILTER_TABLE_SIZE_BYTES		       512
-+#define ICSS_EMAC_FW_VLAN_FILTER_CTRL_SIZE_BYTES			 1
-+#define ICSS_EMAC_FW_VLAN_FILTER_DROP_CNT_SIZE_BYTES			 4
-+
-+/* Mask override set status */
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_MASK_OVERRIDE_SET			 1
-+/* Mask override not set status */
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_MASK_OVERRIDE_NOT_SET		 0
-+/* 6 bytes HASH Mask for the MAC */
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_MASK_OFFSET	  0xF4
-+/* 0 -> multicast filtering disabled | 1 -> multicast filtering enabled */
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_CTRL_OFFSET	\
-+	(ICSS_EMAC_FW_MULTICAST_FILTER_MASK_OFFSET +	\
-+	 ICSS_EMAC_FW_MULTICAST_FILTER_MASK_SIZE_BYTES)
-+/* Status indicating if the HASH override is done or not: 0: no, 1: yes */
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_OVERRIDE_STATUS	\
-+	(ICSS_EMAC_FW_MULTICAST_FILTER_CTRL_OFFSET +	\
-+	 ICSS_EMAC_FW_MULTICAST_FILTER_CTRL_SIZE_BYTES)
-+/* Multicast drop statistics */
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_DROP_CNT_OFFSET	\
-+	(ICSS_EMAC_FW_MULTICAST_FILTER_OVERRIDE_STATUS +\
-+	 ICSS_EMAC_FW_MULTICAST_FILTER_MASK_OVERRIDE_STATUS_SIZE_BYTES)
-+/* Multicast table */
-+#define ICSS_EMAC_FW_MULTICAST_FILTER_TABLE		\
-+	(ICSS_EMAC_FW_MULTICAST_FILTER_DROP_CNT_OFFSET +\
-+	 ICSS_EMAC_FW_MULTICAST_FILTER_DROP_CNT_SIZE_BYTES)
-+
-+/* Multicast filter defines & offsets for LRE
-+ */
-+#define ICSS_LRE_FW_MULTICAST_TABLE_SEARCH_OP_CONTROL_BIT	0xE0
-+/* one byte field :
-+ * 0 -> multicast filtering disabled
-+ * 1 -> multicast filtering enabled
-+ */
-+#define ICSS_LRE_FW_MULTICAST_FILTER_MASK			 0xE4
-+#define ICSS_LRE_FW_MULTICAST_FILTER_TABLE			 0x100
-+
-+/* VLAN table Offsets */
-+#define ICSS_EMAC_FW_VLAN_FLTR_TBL_BASE_ADDR		 0x200
-+#define ICSS_EMAC_FW_VLAN_FILTER_CTRL_BITMAP_OFFSET	 0xEF
-+#define ICSS_EMAC_FW_VLAN_FILTER_DROP_CNT_OFFSET	\
-+	(ICSS_EMAC_FW_VLAN_FILTER_CTRL_BITMAP_OFFSET +	\
-+	 ICSS_EMAC_FW_VLAN_FILTER_CTRL_SIZE_BYTES)
-+
-+/* VLAN filter Control Bit maps */
-+/* one bit field, bit 0: | 0 : VLAN filter disabled (default),
-+ * 1: VLAN filter enabled
-+ */
-+#define ICSS_EMAC_FW_VLAN_FILTER_CTRL_ENABLE_BIT		       0
-+/* one bit field, bit 1: | 0 : untagged host rcv allowed (default),
-+ * 1: untagged host rcv not allowed
-+ */
-+#define ICSS_EMAC_FW_VLAN_FILTER_UNTAG_HOST_RCV_ALLOW_CTRL_BIT	       1
-+/* one bit field, bit 1: | 0 : priotag host rcv allowed (default),
-+ * 1: priotag host rcv not allowed
-+ */
-+#define ICSS_EMAC_FW_VLAN_FILTER_PRIOTAG_HOST_RCV_ALLOW_CTRL_BIT       2
-+/* one bit field, bit 1: | 0 : skip sv vlan flow
-+ * :1 : take sv vlan flow  (not applicable for dual emac )
-+ */
-+#define ICSS_EMAC_FW_VLAN_FILTER_SV_VLAN_FLOW_HOST_RCV_ALLOW_CTRL_BIT  3
-+
-+/* VLAN IDs */
-+#define ICSS_EMAC_FW_VLAN_FILTER_PRIOTAG_VID			       0
-+#define ICSS_EMAC_FW_VLAN_FILTER_VID_MIN			       0x0000
-+#define ICSS_EMAC_FW_VLAN_FILTER_VID_MAX			       0x0FFF
-+
-+/* VLAN Filtering Commands */
-+#define ICSS_EMAC_FW_VLAN_FILTER_ADD_VLAN_VID_CMD		       0x00
-+#define ICSS_EMAC_FW_VLAN_FILTER_REMOVE_VLAN_VID_CMD		       0x01
-+
-+/* Switch defines for VLAN/MC filtering */
-+/* SRAM
-+ * VLAN filter defines & offsets
-+ */
-+#define ICSS_LRE_FW_VLAN_FLTR_CTRL_BYTE				 0x1FE
-+/* one bit field | 0 : VLAN filter disabled
-+ *		 | 1 : VLAN filter enabled
-+ */
-+#define ICSS_LRE_FW_VLAN_FLTR_TBL_BASE_ADDR			 0x200
-+
-+#endif /* ICSS_MULTICAST_FILTER_MM_H */
+ #endif /* __ICSS_SWITCH_H */
 -- 
 2.34.1
 
