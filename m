@@ -1,143 +1,151 @@
-Return-Path: <linux-omap+bounces-3224-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3225-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 139C6A1BF01
-	for <lists+linux-omap@lfdr.de>; Sat, 25 Jan 2025 00:21:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9350BA1CD0D
+	for <lists+linux-omap@lfdr.de>; Sun, 26 Jan 2025 17:46:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A55243AF250
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Jan 2025 23:21:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 554ED163CF0
+	for <lists+linux-omap@lfdr.de>; Sun, 26 Jan 2025 16:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3791EE02F;
-	Fri, 24 Jan 2025 23:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6181C18CBE8;
+	Sun, 26 Jan 2025 16:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="cwH55OIm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gAei/ssO"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-io1-f48.google.com (mail-io1-f48.google.com [209.85.166.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6962D1DB155
-	for <linux-omap@vger.kernel.org>; Fri, 24 Jan 2025 23:21:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E835D15747D;
+	Sun, 26 Jan 2025 16:45:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737760862; cv=none; b=sDlSEZ/1vGyyEjSfF4epIQ0OwjGOyEQBqJR5SmxQ1tKyh0HoqCcm+kIXRLW+BIML+K/+X43BOZWdzrF/JPWm5EiqzqggAXqQsF0eCLlbuLm11sVO0APzX+gJUny79toANv9e2iimAs4Ay7FiVepZEweEo5gRBxdemPH+CCkFBwM=
+	t=1737909935; cv=none; b=fSO0GsDU+vTUVgNe37Ug1ku+r8glNgp9o/Lh1B6pPE8r1GUq4PL5/0IKEXxgwduvtK2qCd4NcFUq9MkzOZrP0iGg2h4fLNNnGSgDIWq5twTGcT3lp0bdeXvVEKdiX4BJKu7K0HnKmqF6ren8fqTvctqTqjb+DZcHIcGPLcv57eI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737760862; c=relaxed/simple;
-	bh=8lx8vgHE1m6Y5baU2XpMoUndgpmc9nAWajXS/JsK2e0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K++sU9ndk6CwskqKoHRe32rCxk+JwbECuduFm5dT1Ha/kAF4U7/JC8Y70AiL/Glo9MwfIAoCjbjYXRCcXM2Bdh4vEUB0sNo4muclYvQ5SrJcS9WX00gX9xU8imoEiuN1UvqBwAiifZbjSbbSBVyrO22Jv/SdFHHEhaVnh2vgVgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=cwH55OIm; arc=none smtp.client-ip=209.85.166.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
-Received: by mail-io1-f48.google.com with SMTP id ca18e2360f4ac-844e161a957so191595939f.0
-        for <linux-omap@vger.kernel.org>; Fri, 24 Jan 2025 15:21:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fastly.com; s=google; t=1737760860; x=1738365660; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=H7/eMVpXx+68IbocBkX45wzxl6Oa4llA1O2i3334KXs=;
-        b=cwH55OImNlayLgk0OlzeR13avNMqwJ3qAD3stRXcX6zdvr5za4qtLjI9Zx6jY+UERF
-         KSpH6r7m3YXhYlGN9fR8Svo4a7FPaWoosfl07g/8g9WsFOtRbSAhoK4n2vb4uje7/NeU
-         ztLtsXL/AGzQ0j5jQk7+VGvz0GiMloMkmilWo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737760860; x=1738365660;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=H7/eMVpXx+68IbocBkX45wzxl6Oa4llA1O2i3334KXs=;
-        b=JI2/uuUPSQS6lHqbDS5CMurdPAsvyRZkeBnCAm4xJ+h2W+pb3UarvWe/uj4QeTZllV
-         noMU2NJr+bBRSvzCXTJO4gHSXUR1c/DdQzmPkcycZifjMw0jIRq40orMvr24SEffsj6M
-         5yv1HTCZIzbORXbkVhn82J9H/Z/sa3rHOn6D/okCpDpDDC0baqqysF7vu8EabASz6JNF
-         9q00TY0h7kziWPqRyMdM9pT18jo7xA4zavOKWwZkcd0Frq0D5lqew4nRHK/jxerLP6PH
-         +DbltEXirLtbOtTdbhk8SS091Z1zEegcsMP+Drt6Zt5ywFSWN3z+PSDlN2tvxAhPZDLm
-         P5VA==
-X-Forwarded-Encrypted: i=1; AJvYcCXlnl2cXhuydGBC0aMLBJm0hyNPI7/MiaXkOsYPzs5oL2JUf6ZIAh7066UlfH2JPszpGagTWNTOftaG@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywl16MWkWm4Dme8UYMimoK8vWBes4w/kmF/mxMOHJioMI7M8uOL
-	sbh/84B1zV+8t+QjD3F9ZW1dtVpY7TQuhc4j4x+MmC8JJr4yEQXS57dg0liKA88=
-X-Gm-Gg: ASbGncuUBtIhXqSlhWG2jrdL6L5ynmSmd1smPixmKVsNFFvoJfLFQ7Btd+PyJVCqpVs
-	cCKmmWSW744n2ku3w/MLzGESYpNeL2hk0+eal92xYI83n5AR/Q8LWISxTKy/lLlYXKPH3bmp8za
-	NgrtNGC/AVTLdlW7QQNbMsZ1LsFx6b4XaAV0C6v6JxikKFkRjLLNGpKNwlLaNk2N98pkffRcNrv
-	e7OOA7GiuEoXLInBI7LP9NH5B1KNgGhldM6c0BIKMuF03s=
-X-Google-Smtp-Source: AGHT+IECMWc7yThU7l9WdvRzNr4eg6ummfBBXVEJMmSq56k2ixzMFXtpxeH39Pu9mIfQVrYnbtfDtg==
-X-Received: by 2002:a05:6602:6d13:b0:83a:9488:154c with SMTP id ca18e2360f4ac-851b619f80dmr3126811239f.3.1737760860423;
-        Fri, 24 Jan 2025 15:21:00 -0800 (PST)
-Received: from LQ3V64L9R2 ([75.104.111.203])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-8521e01abb7sm97948739f.36.2025.01.24.15.20.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jan 2025 15:20:59 -0800 (PST)
-Date: Fri, 24 Jan 2025 15:20:22 -0800
-From: Joe Damato <jdamato@fastly.com>
-To: Basharath Hussain Khaja <basharath@couthit.com>
-Cc: danishanwar@ti.com, rogerq@kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, nm@ti.com, ssantosh@kernel.org,
-	tony@atomide.com, richardcochran@gmail.com, parvathi@couthit.com,
-	schnelle@linux.ibm.com, rdunlap@infradead.org,
-	diogo.ivo@siemens.com, m-karicheri2@ti.com, horms@kernel.org,
-	jacob.e.keller@intel.com, m-malladi@ti.com,
-	javier.carrasco.cruz@gmail.com, afd@ti.com, s-anna@ti.com,
-	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org, pratheesh@ti.com, prajith@ti.com,
-	vigneshr@ti.com, praneeth@ti.com, srk@ti.com, rogerq@ti.com,
-	krishna@couthit.com, pmohan@couthit.com, mohan@couthit.com
-Subject: Re: [RFC v2 PATCH 04/10] net: ti: prueth: Adds link detection, RX
- and TX support.
-Message-ID: <Z5QgNu9AOzRre91J@LQ3V64L9R2>
-Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
-	Basharath Hussain Khaja <basharath@couthit.com>, danishanwar@ti.com,
-	rogerq@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, nm@ti.com,
-	ssantosh@kernel.org, tony@atomide.com, richardcochran@gmail.com,
-	parvathi@couthit.com, schnelle@linux.ibm.com, rdunlap@infradead.org,
-	diogo.ivo@siemens.com, m-karicheri2@ti.com, horms@kernel.org,
-	jacob.e.keller@intel.com, m-malladi@ti.com,
-	javier.carrasco.cruz@gmail.com, afd@ti.com, s-anna@ti.com,
-	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org, pratheesh@ti.com, prajith@ti.com,
-	vigneshr@ti.com, praneeth@ti.com, srk@ti.com, rogerq@ti.com,
-	krishna@couthit.com, pmohan@couthit.com, mohan@couthit.com
-References: <20250124122353.1457174-1-basharath@couthit.com>
- <20250124134056.1459060-5-basharath@couthit.com>
+	s=arc-20240116; t=1737909935; c=relaxed/simple;
+	bh=MEe2oo2YjYf2lKVsyVv7MzPAyJxoyZAgPw92+aRPQfc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=oRpDJqZqLCkOS4WYCzu3mVRWP1Kh8JiUiNBIDpjxzVmJ8x+b+Nenu2LxZYgphGcv5LXcscQKtbtnuKExGnaQORJMZBuNSyujy2djDua+B4NJaXuxDkf06zXsm0BgTsoM4ucqORvNMdAtKV0Q6tkEgBCsksssGtLcfsreoWLBOHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gAei/ssO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531B6C4CED3;
+	Sun, 26 Jan 2025 16:45:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737909934;
+	bh=MEe2oo2YjYf2lKVsyVv7MzPAyJxoyZAgPw92+aRPQfc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gAei/ssOrjB4EvHcjK5VKofX3FAO8FOGCjIha8GrB6pKML8Sf6j5St4PKTrYpT2Re
+	 DtqTqxC79NKaUXYTNlnFfWrJeCaDbDvFKO3HaKAYCGfLXoGxElK0ZkuvBhei8A21/M
+	 dBBN4lfKLT8G/DycErV8NIHmcdEn+7uLmqXUzn5CZVcYVV66U7GZdZyy4XDLidyTRQ
+	 GAdciXo4DqFklr4O+Uby3rvegOrSfw/J0jLe1YobJfR4z1Dchajk/kdupBbCKneubO
+	 9jJwaUdPTgmSvUuwSjc3wsijHiuG/UpEzNb9YUjyAmvPD3RlXeCyuL58/h+5JZybZ0
+	 XU/8jB0dwRr5Q==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-fbdev@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.13 5/8] fbdev: omap: use threaded IRQ for LCD DMA
+Date: Sun, 26 Jan 2025 11:45:20 -0500
+Message-Id: <20250126164523.963930-5-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250126164523.963930-1-sashal@kernel.org>
+References: <20250126164523.963930-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250124134056.1459060-5-basharath@couthit.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.13
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jan 24, 2025 at 07:10:50PM +0530, Basharath Hussain Khaja wrote:
-> From: Roger Quadros <rogerq@ti.com>
-> 
-> Changes corresponding to link configuration such as speed and duplexity.
-> IRQ and handler initializations are performed for packet reception.Firmware
-> receives the packet from the wire and stores it into OCMC queue. Next, it
-> notifies the CPU via interrupt. Upon receiving the interrupt CPU will
-> service the IRQ and packet will be processed by pushing the newly allocated
-> SKB to upper layers.
-> 
-> When the user application want to transmit a packet, it will invoke
-> sys_send() which will inturn invoke the PRUETH driver, then it will write
-> the packet into OCMC queues. PRU firmware will pick up the packet and
-> transmit it on to the wire.
-> 
-> Signed-off-by: Roger Quadros <rogerq@ti.com>
-> Signed-off-by: Andrew F. Davis <afd@ti.com>
-> Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
-> Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
-> ---
->  drivers/net/ethernet/ti/icssm/icssm_prueth.c | 599 ++++++++++++++++++-
->  drivers/net/ethernet/ti/icssm/icssm_prueth.h |  46 ++
->  2 files changed, 640 insertions(+), 5 deletions(-)
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-Looks like this patch was duplicated and posted twice ?
+[ Upstream commit e4b6b665df815b4841e71b72f06446884e8aad40 ]
+
+When using touchscreen and framebuffer, Nokia 770 crashes easily with:
+
+    BUG: scheduling while atomic: irq/144-ads7846/82/0x00010000
+    Modules linked in: usb_f_ecm g_ether usb_f_rndis u_ether libcomposite configfs omap_udc ohci_omap ohci_hcd
+    CPU: 0 UID: 0 PID: 82 Comm: irq/144-ads7846 Not tainted 6.12.7-770 #2
+    Hardware name: Nokia 770
+    Call trace:
+     unwind_backtrace from show_stack+0x10/0x14
+     show_stack from dump_stack_lvl+0x54/0x5c
+     dump_stack_lvl from __schedule_bug+0x50/0x70
+     __schedule_bug from __schedule+0x4d4/0x5bc
+     __schedule from schedule+0x34/0xa0
+     schedule from schedule_preempt_disabled+0xc/0x10
+     schedule_preempt_disabled from __mutex_lock.constprop.0+0x218/0x3b4
+     __mutex_lock.constprop.0 from clk_prepare_lock+0x38/0xe4
+     clk_prepare_lock from clk_set_rate+0x18/0x154
+     clk_set_rate from sossi_read_data+0x4c/0x168
+     sossi_read_data from hwa742_read_reg+0x5c/0x8c
+     hwa742_read_reg from send_frame_handler+0xfc/0x300
+     send_frame_handler from process_pending_requests+0x74/0xd0
+     process_pending_requests from lcd_dma_irq_handler+0x50/0x74
+     lcd_dma_irq_handler from __handle_irq_event_percpu+0x44/0x130
+     __handle_irq_event_percpu from handle_irq_event+0x28/0x68
+     handle_irq_event from handle_level_irq+0x9c/0x170
+     handle_level_irq from generic_handle_domain_irq+0x2c/0x3c
+     generic_handle_domain_irq from omap1_handle_irq+0x40/0x8c
+     omap1_handle_irq from generic_handle_arch_irq+0x28/0x3c
+     generic_handle_arch_irq from call_with_stack+0x1c/0x24
+     call_with_stack from __irq_svc+0x94/0xa8
+    Exception stack(0xc5255da0 to 0xc5255de8)
+    5da0: 00000001 c22fc620 00000000 00000000 c08384a8 c106fc00 00000000 c240c248
+    5dc0: c113a600 c3f6ec30 00000001 00000000 c22fc620 c5255df0 c22fc620 c0279a94
+    5de0: 60000013 ffffffff
+     __irq_svc from clk_prepare_lock+0x4c/0xe4
+     clk_prepare_lock from clk_get_rate+0x10/0x74
+     clk_get_rate from uwire_setup_transfer+0x40/0x180
+     uwire_setup_transfer from spi_bitbang_transfer_one+0x2c/0x9c
+     spi_bitbang_transfer_one from spi_transfer_one_message+0x2d0/0x664
+     spi_transfer_one_message from __spi_pump_transfer_message+0x29c/0x498
+     __spi_pump_transfer_message from __spi_sync+0x1f8/0x2e8
+     __spi_sync from spi_sync+0x24/0x40
+     spi_sync from ads7846_halfd_read_state+0x5c/0x1c0
+     ads7846_halfd_read_state from ads7846_irq+0x58/0x348
+     ads7846_irq from irq_thread_fn+0x1c/0x78
+     irq_thread_fn from irq_thread+0x120/0x228
+     irq_thread from kthread+0xc8/0xe8
+     kthread from ret_from_fork+0x14/0x28
+
+As a quick fix, switch to a threaded IRQ which provides a stable system.
+
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/video/fbdev/omap/lcd_dma.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/video/fbdev/omap/lcd_dma.c b/drivers/video/fbdev/omap/lcd_dma.c
+index f85817635a8c2..0da23c57e4757 100644
+--- a/drivers/video/fbdev/omap/lcd_dma.c
++++ b/drivers/video/fbdev/omap/lcd_dma.c
+@@ -432,8 +432,8 @@ static int __init omap_init_lcd_dma(void)
+ 
+ 	spin_lock_init(&lcd_dma.lock);
+ 
+-	r = request_irq(INT_DMA_LCD, lcd_dma_irq_handler, 0,
+-			"LCD DMA", NULL);
++	r = request_threaded_irq(INT_DMA_LCD, NULL, lcd_dma_irq_handler,
++				 IRQF_ONESHOT, "LCD DMA", NULL);
+ 	if (r != 0)
+ 		pr_err("unable to request IRQ for LCD DMA (error %d)\n", r);
+ 
+-- 
+2.39.5
+
 
