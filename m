@@ -1,46 +1,46 @@
-Return-Path: <linux-omap+bounces-3227-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3228-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A9D6A1CD31
-	for <lists+linux-omap@lfdr.de>; Sun, 26 Jan 2025 17:49:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43704A1CD3B
+	for <lists+linux-omap@lfdr.de>; Sun, 26 Jan 2025 17:49:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E5A11885FD8
-	for <lists+linux-omap@lfdr.de>; Sun, 26 Jan 2025 16:49:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C45C33A7F49
+	for <lists+linux-omap@lfdr.de>; Sun, 26 Jan 2025 16:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B4919993B;
-	Sun, 26 Jan 2025 16:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B0419F42F;
+	Sun, 26 Jan 2025 16:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MmrfVfmP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DkW8gUVF"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9B018A943;
-	Sun, 26 Jan 2025 16:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A1919F104;
+	Sun, 26 Jan 2025 16:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737909975; cv=none; b=ccwZMFpe1o8bXiFh0lTJ890RYtgB8KRuCxBuDJkWt79Sa8gryJiKLWG5yyvOIH4vFcPpue3dgq6Ue6IQPk9v1u/VdIC4Prdh9FgMUbUnCqNJyhT2awDx4kSKHgAWGPBkmDgf+mY5mGwClVfbxT1a4mzeGEDIhcP675rCpu1FAQk=
+	t=1737909983; cv=none; b=kjk4sg6L92WhVK+AyHtPU0jGRKdOyJdLo2R6X0KGOWo5BQqmlI2+4d6qX9Veu/fgCug8RQcAFDVfrawCXNOwfMbkFyxhSotlbVZzZzShOCg18lLuZiIFvI+18KA/aIjYNZYxIIEzUg3WWzV7AEEdySueKcSxBQogGrKe17v/G8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737909975; c=relaxed/simple;
+	s=arc-20240116; t=1737909983; c=relaxed/simple;
 	bh=MEe2oo2YjYf2lKVsyVv7MzPAyJxoyZAgPw92+aRPQfc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NUQBk77BYBklDrGlZv4ZPRlCbeq4zvqwKWkYH9FdiDuPWcKWoELMHF7JY9qiBgEJu+yV7dbDhPNjPsmZ+JLUuNP9xLmylrXEqu/V2jkn/xoehSFgEivv7ANvypWbwjHtcIM3iw6Z5bspUc5o521iFOIyjMWMSA9lEy4ADt+6wMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MmrfVfmP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 013FDC4CEE2;
-	Sun, 26 Jan 2025 16:46:13 +0000 (UTC)
+	 MIME-Version; b=Dz/g/EjTKjB4ER/W/2PmIUUJWtuECW4zHCakTWGPSeUmb3SM1U0NfC/Mmp0YTIFVDxf8a0o+IDXgvjwWZ2TNKIOvijVl6ln5viRVGVfYndlHAK04lPCiavlBv5SpusFuTmwKcXfuqTyqYpyMcl24p3FGuJ28hPUukOMpWFxXMIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DkW8gUVF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 263D0C4CEE2;
+	Sun, 26 Jan 2025 16:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737909975;
+	s=k20201202; t=1737909983;
 	bh=MEe2oo2YjYf2lKVsyVv7MzPAyJxoyZAgPw92+aRPQfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MmrfVfmPiVBKz1aIH3NA+L8Smt5aed/u7vGOq8sA0kgcnDk5PlvxrswwZh9AkmFLB
-	 Hlg7meEzOugfOvHkG8WhT8axplZl6PMMwL0lIXsDfJBi4k9zviq3Oz1NZd4R6vRc0z
-	 vvHWPKT5wbYd1ZLMr8xx+o6k0ZkmFwt5I4oX+yErEITL8zkQ3P/RIXm8t0jUsgpgSP
-	 /BMqoq/15LZeTDlaAdsLEed4Kl+sp+m8E9HF6J7ofQJCOZuvqezN38uVy1tzZvH2Xj
-	 GWbGR2COnNURJWLnWZAHyg7MH9ZZIltQa++IdUovNaLJcRzXyBtBq/xAK72ZyXQzv7
-	 7B0rTX4a8VymA==
+	b=DkW8gUVFafTu/MC0pAg4/0QvAfrgelXtr4Tg4n0z4Nm0Iew9BDcCbR++dXrVh3Eoy
+	 DHc9YhuOx5eDCv4tIb5t4nX9v2ta1fbH/TOJbDuatoZ2RJkeLPlB2NVF7GQcCd/rpm
+	 GLCnrIX81f9Gys3++HKqe52G0xP9+C7HAIeBROtS6xex2sKdaOZG94YTXG70ntm0m8
+	 wv0oqVKvYI6clR75exlJcXyYx7rj5N3+910c0D217Y525I46uXqq6OhGZ/GQRgXN3L
+	 bOST7DNAmlYDdXlb8Ql7CCvw0Hg91XC+pN5oxr9zKO8MLq1AM9/8pY7SaKL7U623hq
+	 H2gXkxaErXpHQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -51,12 +51,12 @@ Cc: Aaro Koskinen <aaro.koskinen@iki.fi>,
 	linux-fbdev@vger.kernel.org,
 	linux-omap@vger.kernel.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 2/3] fbdev: omap: use threaded IRQ for LCD DMA
-Date: Sun, 26 Jan 2025 11:46:08 -0500
-Message-Id: <20250126164609.964170-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 2/2] fbdev: omap: use threaded IRQ for LCD DMA
+Date: Sun, 26 Jan 2025 11:46:18 -0500
+Message-Id: <20250126164618.964225-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250126164609.964170-1-sashal@kernel.org>
-References: <20250126164609.964170-1-sashal@kernel.org>
+In-Reply-To: <20250126164618.964225-1-sashal@kernel.org>
+References: <20250126164618.964225-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.74
+X-stable-base: Linux 6.1.127
 Content-Transfer-Encoding: 8bit
 
 From: Aaro Koskinen <aaro.koskinen@iki.fi>
