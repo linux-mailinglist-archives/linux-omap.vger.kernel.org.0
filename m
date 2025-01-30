@@ -1,257 +1,257 @@
-Return-Path: <linux-omap+bounces-3238-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3239-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90DE1A22356
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Jan 2025 18:49:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A859A22CA6
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Jan 2025 12:42:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5512618827EE
-	for <lists+linux-omap@lfdr.de>; Wed, 29 Jan 2025 17:49:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58AE93A4BCB
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Jan 2025 11:41:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0128D1E0DCC;
-	Wed, 29 Jan 2025 17:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF5E1DE8BA;
+	Thu, 30 Jan 2025 11:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HmkrBs4t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DVeS/PJ5"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A69D19066B;
-	Wed, 29 Jan 2025 17:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D77C1AB507;
+	Thu, 30 Jan 2025 11:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738172934; cv=none; b=MK1+I/QoBhl27EfBmvDx3qICOgfBckdHy++lopZiN1NFEoYBq0K0Wqy+o0fI0x5H+WJQ4u3F+ietLv9WwKUvulsZFcGfD/xFwjSrFIKeLyUTh9INntfZE3S0ogbaNlIyAAhCRE7Agi/bWkLeZzxydPDPndoZncPC2XTbqRGQUvw=
+	t=1738237315; cv=none; b=Gpzytzci/wMSqd4HOHulElY1vDo8ZGXJNjRHUDmftDsSJBKeV2f2QmY5OdD7eha7QYQcF8jsBCnFoUj+BrCFlTbVu5yHmJEmZz2FS5EuXa55mmSQ0UTuk83s+JxvJbra3724XBMF7jmv6II1XoS57jKDJ8zKAyNk7kYld255T48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738172934; c=relaxed/simple;
-	bh=0mZICetq1ltZupJqnsMYF9aRp1+EuIM+7AJJ0xhWLcc=;
+	s=arc-20240116; t=1738237315; c=relaxed/simple;
+	bh=zGGDx72jO5SaCwxhGo8Hf3CSZMZACAKlKE/UujYgRPU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UUB3FWtaB0/Nkj39pZUHsIdoDAj2VGoKfKRbnO+OqnDpmOfI1UAqAbHavEfH4e8zoI5JUriG/IJT4OVWah8oRsiyGFXLoVSKu7xpSeRzOiyIRHlDOmExhWXOyFvCQASILENbADSX/UohauRazdT/tJfBAyeZEJTXiEi3Mlxkmnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HmkrBs4t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 042FFC4CED1;
-	Wed, 29 Jan 2025 17:48:46 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=lwhP4ScffAz0sJ/AHehAASKZwKuoh4dHBE6lHx2FISAqzX3iq6Z+2pJ3XQ4geBIvwH9TjHjlV7vOtPG2+adPJgrf+mhCcfvGuASqrwmb5RP8s/kEny/Hl+9vfUM3D1f6O7wisaJ+UezaDuPR600J+EGeIVX/fmQ5AIcZpZZkzuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DVeS/PJ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA076C4CED2;
+	Thu, 30 Jan 2025 11:41:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738172933;
-	bh=0mZICetq1ltZupJqnsMYF9aRp1+EuIM+7AJJ0xhWLcc=;
+	s=k20201202; t=1738237314;
+	bh=zGGDx72jO5SaCwxhGo8Hf3CSZMZACAKlKE/UujYgRPU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HmkrBs4tG5uJa6hwyPpvaVotnf8N0VRhPwtJ3ohE52yAXNMk2Iw5JzfpenDYEFMe7
-	 ISsnDpGGu8V8ATfjwqdrXYuj/ZZvjgZy7GEiuM6ZmeOrcmWUQpyv2ozQ+S9JP7EDmA
-	 OE9N4rcRKwqwT3HJZo0ITJeGoSUucA1nh3Cj2WBJ/BQZiWQAD66ftYNsspaiDSXlTZ
-	 qPjhCgBcZQQcGC47W4PkjxSqhA1PrQzxJTitJ5yuLSioUS5pmMKRvzvyuKGFbCFEnG
-	 ThmlHwpv2MhArFedU7xHyMFQf7NrZw1uZ5Y/zoblJvGfxemZmypCIY++mLxBi1NZGz
-	 wU2AC3qoaiosA==
-Date: Wed, 29 Jan 2025 17:48:44 +0000
-From: Conor Dooley <conor@kernel.org>
+	b=DVeS/PJ55W7IvF7P3tKbosmE6FOorkc/HwVcjgBKE4RcehzsLYuFEEyhFjAjOfEk+
+	 oUKNhRM7zYp5izAXKmJUjv75tJFPy1TY9pDc1Vys0MhJpf/j3lMvEytBz5+/fpjqiB
+	 kMPTGT/slnYOqvCvAciwcdpFNK/phdbPXTQYX61PrAQBqREcwO96j67r0P56dB9HcH
+	 qWdGIY9lpZDpPY+ZRhIu1N2GaeGEKA2G89E4dQUovpHs+54lzsLNL5m1sXqLm8Eg88
+	 1BxQngOUNnhBo+iAXFBUnJ8DC6hmPbUcWLLTiPsUnKYl/NoPF2hFnOB8TmSLQOzxdW
+	 ONG2Y1kM3Thgw==
+Date: Thu, 30 Jan 2025 11:41:45 +0000
+From: Simon Horman <horms@kernel.org>
 To: Basharath Hussain Khaja <basharath@couthit.com>
-Cc: danishanwar <danishanwar@ti.com>, rogerq <rogerq@kernel.org>,
-	andrew+netdev <andrew+netdev@lunn.ch>, davem <davem@davemloft.net>,
-	edumazet <edumazet@google.com>, kuba <kuba@kernel.org>,
-	pabeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-	krzk+dt <krzk+dt@kernel.org>, conor+dt <conor+dt@kernel.org>,
-	nm <nm@ti.com>, ssantosh <ssantosh@kernel.org>,
-	tony <tony@atomide.com>, richardcochran <richardcochran@gmail.com>,
-	parvathi <parvathi@couthit.com>, schnelle <schnelle@linux.ibm.com>,
-	rdunlap <rdunlap@infradead.org>, diogo ivo <diogo.ivo@siemens.com>,
-	m-karicheri2 <m-karicheri2@ti.com>, horms <horms@kernel.org>,
-	jacob e keller <jacob.e.keller@intel.com>,
-	m-malladi <m-malladi@ti.com>,
-	javier carrasco cruz <javier.carrasco.cruz@gmail.com>,
-	afd <afd@ti.com>, s-anna <s-anna@ti.com>,
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-	netdev <netdev@vger.kernel.org>,
-	devicetree <devicetree@vger.kernel.org>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	linux-omap <linux-omap@vger.kernel.org>,
-	pratheesh <pratheesh@ti.com>, prajith <prajith@ti.com>,
-	vigneshr <vigneshr@ti.com>, praneeth <praneeth@ti.com>,
-	srk <srk@ti.com>, rogerq <rogerq@ti.com>,
-	krishna <krishna@couthit.com>, pmohan <pmohan@couthit.com>,
-	mohan <mohan@couthit.com>
-Subject: Re: [RFC v2 PATCH 01/10] dt-bindings: net: ti: Adds DUAL-EMAC mode
- support on PRU-ICSS2 for AM57xx SOCs
-Message-ID: <20250129-vowed-dingbat-cfb5c5b8ede4@spud>
+Cc: danishanwar@ti.com, rogerq@kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, nm@ti.com, ssantosh@kernel.org,
+	tony@atomide.com, richardcochran@gmail.com, parvathi@couthit.com,
+	schnelle@linux.ibm.com, rdunlap@infradead.org,
+	diogo.ivo@siemens.com, m-karicheri2@ti.com,
+	jacob.e.keller@intel.com, m-malladi@ti.com,
+	javier.carrasco.cruz@gmail.com, afd@ti.com, s-anna@ti.com,
+	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org, pratheesh@ti.com, prajith@ti.com,
+	vigneshr@ti.com, praneeth@ti.com, srk@ti.com, rogerq@ti.com,
+	krishna@couthit.com, pmohan@couthit.com, mohan@couthit.com
+Subject: Re: [RFC v2 PATCH 02/10] net: ti: prueth: Adds ICSSM Ethernet driver
+Message-ID: <20250130114145.GM113107@kernel.org>
 References: <20250124122353.1457174-1-basharath@couthit.com>
- <20250124122353.1457174-2-basharath@couthit.com>
- <20250124-reoccupy-music-3803c753f8af@spud>
- <504387436.449923.1738127812232.JavaMail.zimbra@couthit.local>
+ <20250124122353.1457174-3-basharath@couthit.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="A1ip/677/ZYHkwQO"
-Content-Disposition: inline
-In-Reply-To: <504387436.449923.1738127812232.JavaMail.zimbra@couthit.local>
-
-
---A1ip/677/ZYHkwQO
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250124122353.1457174-3-basharath@couthit.com>
 
-On Wed, Jan 29, 2025 at 10:46:52AM +0530, Basharath Hussain Khaja wrote:
-> > On Fri, Jan 24, 2025 at 05:53:44PM +0530, Basharath Hussain Khaja wrote:
-> >> From: Parvathi Pudi <parvathi@couthit.com>
-> >>=20
-> >> Documentation update for the newly added "pruss2_eth" device tree
-> >> node and its dependencies along with compatibility for PRU-ICSS
-> >> Industrial Ethernet Peripheral (IEP), PRU-ICSS Enhanced Capture
-> >> (eCAP) peripheral and using YAML binding document for AM57xx SoCs.
-> >>=20
-> >> Signed-off-by: Roger Quadros <rogerq@ti.com>
-> >> Signed-off-by: Andrew F. Davis <afd@ti.com>
-> >> Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
-> >> Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
-> >> Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
-> >=20
-> > I find this hard to believe. If all these people handled the patch, the
-> > signoff from Parvathi would be first, no? Should some of these people be
-> > co-developers?
-> >=20
->=20
-> Changes are about multiple modules. We have added our sign-off followed b=
-y original module authors.
+On Fri, Jan 24, 2025 at 05:53:45PM +0530, Basharath Hussain Khaja wrote:
+> From: Roger Quadros <rogerq@ti.com>
+> 
+> Updates Kernel configuration to enable PRUETH driver and its dependencies
+> along with makefile changes to add the new PRUETH driver.
+> 
+> Changes includes init and deinit of ICSSM PRU Ethernet driver including
+> net dev registration and firmware loading for DUAL-MAC mode running on
+> PRU-ICSS2 instance.
+> 
+> Changes also includes link handling, PRU booting, default firmware loading
+> and PRU stopping using existing remoteproc driver APIs.
+> 
+> Signed-off-by: Roger Quadros <rogerq@ti.com>
+> Signed-off-by: Andrew F. Davis <afd@ti.com>
+> Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
+> Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
 
-I think what you're trying to say is that these people are
-co-developers? Anyone that contributed to the content of this patch
-needs to get a co-developed-by. If they're not co-developers, and you
-just want to put them in the maintainers section, they don't get
-sign-offs.
+...
 
-> >> ---
-> >>  .../devicetree/bindings/net/ti,icss-iep.yaml  |   5 +
-> >>  .../bindings/net/ti,icssm-prueth.yaml         | 147 ++++++++++++++++++
-> >>  .../bindings/net/ti,pruss-ecap.yaml           |  32 ++++
-> >>  .../devicetree/bindings/soc/ti/ti,pruss.yaml  |   9 ++
-> >>  4 files changed, 193 insertions(+)
-> >>  create mode 100644 Documentation/devicetree/bindings/net/ti,icssm-pru=
-eth.yaml
-> >>  create mode 100644 Documentation/devicetree/bindings/net/ti,pruss-eca=
-p.yaml
-> >>=20
-> >> diff --git a/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
-> >> b/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
-> >> index e36e3a622904..aad7d37fb47e 100644
-> >> --- a/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
-> >> +++ b/Documentation/devicetree/bindings/net/ti,icss-iep.yaml
-> >> @@ -8,6 +8,8 @@ title: Texas Instruments ICSS Industrial Ethernet Peri=
-pheral
-> >> (IEP) module
-> >> =20
-> >>  maintainers:
-> >>    - Md Danish Anwar <danishanwar@ti.com>
-> >> +  - Parvathi Pudi <parvathi@couthit.com>
-> >> +  - Basharath Hussain Khaja <basharath@couthit.com>
-> >> =20
-> >>  properties:
-> >>    compatible:
-> >> @@ -20,6 +22,9 @@ properties:
-> >> =20
-> >>        - const: ti,am654-icss-iep
-> >> =20
-> >> +      - items:
-> >> +          - enum:
-> >> +              - ti,am5728-icss-iep
-> >=20
-> > "items: - enum: <one item>" is the same as const.
-> >=20
->=20
-> Sure, we will modify as below.
->=20
->       - const: ti,am5728-icss-iep
->=20
-> >> =20
-> >>    reg:
-> >>      maxItems: 1
-> >> diff --git a/Documentation/devicetree/bindings/net/ti,icssm-prueth.yaml
-> >> b/Documentation/devicetree/bindings/net/ti,icssm-prueth.yaml
-> >> new file mode 100644
-> >> index 000000000000..51e99beb5f5f
-> >> --- /dev/null
-> >> +++ b/Documentation/devicetree/bindings/net/ti,icssm-prueth.yaml
-> >> @@ -0,0 +1,147 @@
-> >> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> >> +%YAML 1.2
-> >> +---
-> >> +$id: http://devicetree.org/schemas/net/ti,icssm-prueth.yaml#
-> >> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> >> +
-> >> +title: Texas Instruments ICSSM PRUSS Ethernet
-> >> +
-> >> +maintainers:
-> >> +  - Roger Quadros <rogerq@ti.com>
-> >> +  - Andrew F. Davis <afd@ti.com>
-> >> +  - Parvathi Pudi <parvathi@couthit.com>
-> >> +  - Basharath Hussain Khaja <basharath@couthit.com>
-> >> +
-> >> +description:
-> >> +  Ethernet based on the Programmable Real-Time Unit and Industrial
-> >> +  Communication Subsystem.
-> >> +
-> >> +properties:
-> >> +  compatible:
-> >> +    enum:
-> >> +      - ti,am57-prueth     # for AM57x SoC family
-> >> +
-> >> +  sram:
-> >> +    $ref: /schemas/types.yaml#/definitions/phandle
-> >> +    description:
-> >> +      phandle to OCMC SRAM node
-> >> +
-> >> +  ti,mii-rt:
-> >> +    $ref: /schemas/types.yaml#/definitions/phandle
-> >> +    description:
-> >> +      phandle to MII_RT module's syscon regmap
-> >> +
-> >> +  ti,iep:
-> >> +    $ref: /schemas/types.yaml#/definitions/phandle
-> >> +    description:
-> >> +      phandle to IEP (Industrial Ethernet Peripheral) for ICSS
-> >> +
-> >> +  ecap:
-> >=20
-> > Why's this one not got a ti prefix?
-> >=20
->=20
-> We will add "ti" prefix to ecap as "ti,ecap" in the next version.
->=20
-> >> +    $ref: /schemas/types.yaml#/definitions/phandle
-> >> +    description:
-> >> +      phandle to Enhanced Capture (eCAP) event for ICSS
-> >=20
-> > Why do you need phandles for these things, can they not be looked up by
-> > compatible? (e.g. multiple devices on one SoC).
-> >=20
->=20
-> ecap is another peripheral similar to IEP in ICSSM/ICSSG. We have created=
- a separate driver for possible reuse with ICSSG in future.
+> diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
 
-That's not an answer to my question.
+...
 
->=20
-> >> +
-> >> +  interrupts:
-> >> +    items:
-> >> +      - description: High priority Rx Interrupt specifier.
-> > > +      - description: Low priority Rx Interrupt specifier.
->=20
->=20
-> Thanks & Best Regards,
-> Basharath
+> +static int icssm_emac_set_boot_pru(struct prueth_emac *emac,
+> +				   struct net_device *ndev)
+> +{
+> +	const struct prueth_firmware *pru_firmwares;
+> +	struct prueth *prueth = emac->prueth;
+> +	const char *fw_name;
+> +	int ret;
+> +
+> +	pru_firmwares = &prueth->fw_data->fw_pru[emac->port_id - 1];
+> +	fw_name = pru_firmwares->fw_name[prueth->eth_type];
+> +	if (!fw_name) {
+> +		netdev_err(ndev, "eth_type %d not supported\n",
+> +			   prueth->eth_type);
+> +		return -ENODEV;
+> +	}
+> +
+> +	ret = rproc_set_firmware(emac->pru, fw_name);
+> +	if (ret) {
+> +		netdev_err(ndev, "failed to set PRU0 firmware %s: %d\n",
+> +			   fw_name, ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = rproc_boot(emac->pru);
+> +	if (ret) {
+> +		netdev_err(ndev, "failed to boot PRU0: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +/**
+> + * icssm_emac_ndo_open - EMAC device open
+> + * @ndev: network adapter device
+> + *
+> + * Called when system wants to start the interface.
+> + *
+> + * Return: 0 for a successful open, or appropriate error code
+> + */
+> +static int icssm_emac_ndo_open(struct net_device *ndev)
+> +{
+> +	struct prueth_emac *emac = netdev_priv(ndev);
+> +	int ret;
+> +
+> +	ret = icssm_emac_set_boot_pru(emac, ndev);
+> +	if (ret)
+> +		netdev_err(ndev, "failed to boot PRU: %d\n", ret);
 
---A1ip/677/ZYHkwQO
-Content-Type: application/pgp-signature; name="signature.asc"
+Hi Roger, Basharath, all,
 
------BEGIN PGP SIGNATURE-----
+icssm_emac_set_boot_pru() already logs errors, including the one above.
+So this log seems unnecessary to me.
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ5pp/AAKCRB4tDGHoIJi
-0j1XAQDUL9qTPiwK0zX2laAS1VtLc/BPBORTGaY0J9aaaWzQzQEA3B7TIVYm6bzB
-4hBCMr4G0YOuHuOpH2AJFTavyt3K/ws=
-=od+I
------END PGP SIGNATURE-----
+Also, should an error be returned here?  If so, it looks like
+icssm_emac_set_boot_pru() should release resources allocated by
+rproc_set_firmware() if rproc_boot() fails.
 
---A1ip/677/ZYHkwQO--
+> +
+> +	/* start PHY */
+> +	phy_start(emac->phydev);
+> +
+> +	return 0;
+> +}
+
+...
+
+> +static int icssm_prueth_netdev_init(struct prueth *prueth,
+> +				    struct device_node *eth_node)
+> +{
+> +	struct prueth_emac *emac;
+> +	struct net_device *ndev;
+> +	enum prueth_port port;
+> +	enum prueth_mac mac;
+> +	int ret;
+> +
+> +	port = icssm_prueth_node_port(eth_node);
+> +	if (port == PRUETH_PORT_INVALID)
+> +		return -EINVAL;
+> +
+> +	mac = icssm_prueth_node_mac(eth_node);
+> +	if (mac == PRUETH_MAC_INVALID)
+> +		return -EINVAL;
+> +
+> +	ndev = devm_alloc_etherdev(prueth->dev, sizeof(*emac));
+> +	if (!ndev)
+> +		return -ENOMEM;
+> +
+> +	SET_NETDEV_DEV(ndev, prueth->dev);
+> +	emac = netdev_priv(ndev);
+> +	prueth->emac[mac] = emac;
+> +	emac->prueth = prueth;
+> +	emac->ndev = ndev;
+> +	emac->port_id = port;
+> +
+> +	/* by default eth_type is EMAC */
+> +	switch (port) {
+> +	case PRUETH_PORT_MII0:
+> +		emac->pru = prueth->pru0;
+> +		break;
+> +	case PRUETH_PORT_MII1:
+> +		emac->pru = prueth->pru1;
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +	/* get mac address from DT and set private and netdev addr */
+> +	ret = of_get_ethdev_address(eth_node, ndev);
+> +	if (!is_valid_ether_addr(ndev->dev_addr)) {
+> +		eth_hw_addr_random(ndev);
+> +		dev_warn(prueth->dev, "port %d: using random MAC addr: %pM\n",
+> +			 port, ndev->dev_addr);
+> +	}
+> +	ether_addr_copy(emac->mac_addr, ndev->dev_addr);
+> +
+> +	/* connect PHY */
+> +	emac->phydev = of_phy_get_and_connect(ndev, eth_node,
+> +					      icssm_emac_adjust_link);
+> +	if (!emac->phydev) {
+> +		dev_dbg(prueth->dev, "PHY connection failed\n");
+> +		ret = -EPROBE_DEFER;
+
+Perhaps I misunderstand things, but if this occurs then
+presumably icssm_prueth_netdev_init() will be called again.
+And for each time this occirs another ndev will be allocated
+by devm_alloc_etherdev(), each of which will only be freed
+once the device is eventually torn-down.
+
+I wonder if it would be better to free ndev here.
+Which I think would imply using a non-mdev allocation for symmetry.
+
+Similarly for resources allocated in the caller icssm_prueth_probe().
+
+> +		goto free;
+> +	}
+> +
+> +	/* remove unsupported modes */
+> +	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_10baseT_Full_BIT);
+> +
+> +	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_10baseT_Half_BIT);
+> +	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_100baseT_Half_BIT);
+> +
+> +	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_Pause_BIT);
+> +	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_Asym_Pause_BIT);
+> +
+> +	ndev->netdev_ops = &emac_netdev_ops;
+> +
+> +	return 0;
+> +free:
+
+nit: This doesn't free anything.
+
+> +	prueth->emac[mac] = NULL;
+> +
+> +	return ret;
+> +}
+
+...
 
