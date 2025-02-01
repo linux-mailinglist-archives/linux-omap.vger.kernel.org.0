@@ -1,136 +1,316 @@
-Return-Path: <linux-omap+bounces-3251-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3252-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E7D5A248C0
-	for <lists+linux-omap@lfdr.de>; Sat,  1 Feb 2025 12:43:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE8BA24960
+	for <lists+linux-omap@lfdr.de>; Sat,  1 Feb 2025 14:26:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9213165460
-	for <lists+linux-omap@lfdr.de>; Sat,  1 Feb 2025 11:43:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D71B3165D87
+	for <lists+linux-omap@lfdr.de>; Sat,  1 Feb 2025 13:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6510D16EBE8;
-	Sat,  1 Feb 2025 11:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113B31B422D;
+	Sat,  1 Feb 2025 13:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oCPx6Lsh"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="SkVy7t4i"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from server.wki.vra.mybluehostin.me (server.wki.vra.mybluehostin.me [162.240.238.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFABCEC5;
-	Sat,  1 Feb 2025 11:42:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFA91ADC86;
+	Sat,  1 Feb 2025 13:26:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.238.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738410176; cv=none; b=bJHjGDyJGIscqbPZ+4RBhZm+C9Bo+wiPbM5+6ngIEYw+XIiLQshy9XTMJ9iPk4L8gVJjgn84EBU5NvSktg/mvNyJWvwgAGu+wrntpgRIUUy164AcN/+fGRYqxwY1ZhP1CiBrfqBg73ySIhC/qA/6/nOKf/27uSm17FxVoktT34U=
+	t=1738416374; cv=none; b=h86Evzp++7cFWBe/28uL4L64EPvEUbqeur0uSrr4IFutaIOvSO2BBXkxLsRNtZyvBf4vU3k36j4V6r6vtBfv2IEKYIZnRTUIjd5f3qTAcUX0Hs2v3CgaHzwhc+9waTpITTDHduBnp1RAUni3uuLB/7HSdN366r/kbFIvq8WzWeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738410176; c=relaxed/simple;
-	bh=GQmHvNG8FX7x2z3AZKQ0b01Kv5JfX9wJUfG58fr4nJw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dLwodfWF0mN2GR1jGzcr6YVArxUTgZO/4iBPWACKm6fWGZGYsv0cvV7c8I0m4Mv6gwGZFsIasb3hsWdkdLMMDbxaBWG31zrBev/OCqteHeK1kIYhIBzDRX3teD9jmMQHKxN5Msw8gCIw+20OEPjIPyrBFFWrAA7pc1RcaQsNwHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oCPx6Lsh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD19C4CED3;
-	Sat,  1 Feb 2025 11:42:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738410175;
-	bh=GQmHvNG8FX7x2z3AZKQ0b01Kv5JfX9wJUfG58fr4nJw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oCPx6LshaCGgRMzK3iJsErKAY3Yo3OQzsCxI+vpcjnU45BtdBEPSoFiSVu5wcM+3V
-	 UDNFGuXjcCk8xZRxgXqFVUZlBzekn5s2hQQAxK2LALl7VsGxEgm8KW/nKPCEBB4xDY
-	 WFDHN6NwsJslNRe6b9sSkWU8rWOfSeURBjC1fZfbnvbfMSQHmcaMTTIcqrkInIV7qz
-	 cDmAa/gM/N9n30kN1BlukLGgSDr+VeLQIyVLRjGsZbGHNbxybT1evWzMgkoBA0YZCy
-	 +wxgPU0Et5wBr9qy7lsyMSII7UDhEAHZop0ZCu4dhR/c70HasipxIrphPZhWy3wV5P
-	 mR5vadyBn5cgQ==
-Message-ID: <746798a0-1a35-4a3f-aa9b-6edfd724bf10@kernel.org>
-Date: Sat, 1 Feb 2025 12:42:46 +0100
+	s=arc-20240116; t=1738416374; c=relaxed/simple;
+	bh=b3O/qSbqNNQ28t3nk7RjAgzIrSwggCwl7A5uBoO1iaY=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=aczAN1ekFkISO4QvCCNspVX1A1EzzKOiJwxJiqOpOfXHZwAaaFtAGghCC6ZPiqTz+fr9BYC7ESTT24olreEGZiqzio7UoVqn5BzoNSPw6u7/kwVvNc+wCcGpydJ0Vi6Upb9PJNeDV+VMTGCV24AfSmMBynsvfzNIlKEwhuTqjwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=SkVy7t4i; arc=none smtp.client-ip=162.240.238.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
+	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=T7G3hSUc9bTIrJebJihtbB+qLlY0pl3Vs5vlzJrMpIE=; b=SkVy7t4imij8wKcsbqYb3ZTVaV
+	9cxy5eHu5FDYeZm1TR4XgWapoNjlIwZ8sSAw7vJ93fj2H7bdk5LkyXojq2Eimi1eBq6low1x4aaFS
+	y5s+YY+WOsRnssN7ApakP0rDbalVYdWBerukgeqb1ILe10CCQ7iM2+TmZxvm7zLQtx8Imcqc+OgtZ
+	JNmVTNedPgt90+eaQ6GR3C8PTxqRtKYbKI5DLb+8P+Y6e88SasGx0bSsI+TtO7TsUZw3wCv8NWN8C
+	edt2B+WFOZ01jf6wP/Ew9fBNOEC10DDambnM5cSS4TAfmjmuC64aTA1yC+1+l+avJFz3LGs9baf9v
+	k2RBrTZw==;
+Received: from [122.175.9.182] (port=63123 helo=zimbra.couthit.local)
+	by server.wki.vra.mybluehostin.me with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <basharath@couthit.com>)
+	id 1teDVW-0003sY-2y;
+	Sat, 01 Feb 2025 18:55:59 +0530
+Received: from zimbra.couthit.local (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTPS id 71F301781C56;
+	Sat,  1 Feb 2025 18:55:47 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTP id 4A67A1782035;
+	Sat,  1 Feb 2025 18:55:47 +0530 (IST)
+Received: from zimbra.couthit.local ([127.0.0.1])
+	by localhost (zimbra.couthit.local [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id bv297qfT9IZd; Sat,  1 Feb 2025 18:55:47 +0530 (IST)
+Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
+	by zimbra.couthit.local (Postfix) with ESMTP id 02E011781C56;
+	Sat,  1 Feb 2025 18:55:47 +0530 (IST)
+Date: Sat, 1 Feb 2025 18:55:46 +0530 (IST)
+From: Basharath Hussain Khaja <basharath@couthit.com>
+To: horms <horms@kernel.org>
+Cc: basharath <basharath@couthit.com>, danishanwar <danishanwar@ti.com>, 
+	rogerq <rogerq@kernel.org>, andrew+netdev <andrew+netdev@lunn.ch>, 
+	davem <davem@davemloft.net>, edumazet <edumazet@google.com>, 
+	kuba <kuba@kernel.org>, pabeni <pabeni@redhat.com>, 
+	Rob Herring <robh@kernel.org>, krzk+dt <krzk+dt@kernel.org>, 
+	conor+dt <conor+dt@kernel.org>, nm <nm@ti.com>, 
+	ssantosh <ssantosh@kernel.org>, tony <tony@atomide.com>, 
+	richardcochran <richardcochran@gmail.com>, 
+	parvathi <parvathi@couthit.com>, schnelle <schnelle@linux.ibm.com>, 
+	rdunlap <rdunlap@infradead.org>, diogo ivo <diogo.ivo@siemens.com>, 
+	m-karicheri2 <m-karicheri2@ti.com>, 
+	jacob e keller <jacob.e.keller@intel.com>, 
+	m-malladi <m-malladi@ti.com>, 
+	javier carrasco cruz <javier.carrasco.cruz@gmail.com>, 
+	afd <afd@ti.com>, s-anna <s-anna@ti.com>, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
+	netdev <netdev@vger.kernel.org>, 
+	devicetree <devicetree@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	linux-omap <linux-omap@vger.kernel.org>, 
+	pratheesh <pratheesh@ti.com>, prajith <prajith@ti.com>, 
+	vigneshr <vigneshr@ti.com>, praneeth <praneeth@ti.com>, 
+	srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
+	krishna <krishna@couthit.com>, pmohan <pmohan@couthit.com>, 
+	mohan <mohan@couthit.com>
+Message-ID: <269561652.481649.1738416346650.JavaMail.zimbra@couthit.local>
+In-Reply-To: <20250130114145.GM113107@kernel.org>
+References: <20250124122353.1457174-1-basharath@couthit.com> <20250124122353.1457174-3-basharath@couthit.com> <20250130114145.GM113107@kernel.org>
+Subject: Re: [RFC v2 PATCH 02/10] net: ti: prueth: Adds ICSSM Ethernet
+ driver
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/5] regulator: dt-bindings: Add TI TPS65214 PMIC
- bindings
-To: Shree Ramamoorthy <s-ramamoorthy@ti.com>, lgirdwood@gmail.com,
- broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, aaro.koskinen@iki.fi, andreas@kemnade.info,
- khilman@baylibre.com, rogerq@kernel.org, tony@atomide.com, lee@kernel.org,
- linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org
-Cc: m-leonard@ti.com, praneeth@ti.com
-References: <20250131221139.342967-1-s-ramamoorthy@ti.com>
- <20250131221139.342967-3-s-ramamoorthy@ti.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
- QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
- gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
- /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
- iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
- VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
- 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
- xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
- eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
- AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
- MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
- Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
- ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
- vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
- oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
- lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
- t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
- uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
- 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
- 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250131221139.342967-3-s-ramamoorthy@ti.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 8.8.15_GA_3968 (ZimbraWebClient - FF113 (Linux)/8.8.15_GA_3968)
+Thread-Topic: prueth: Adds ICSSM Ethernet driver
+Thread-Index: iTYs9GBoUdW9vbTht5x/pdwNyAgDdQ==
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.wki.vra.mybluehostin.me
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.wki.vra.mybluehostin.me: authenticated_id: smtp@couthit.com
+X-Authenticated-Sender: server.wki.vra.mybluehostin.me: smtp@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On 31/01/2025 23:11, Shree Ramamoorthy wrote:
->  
-> @@ -98,6 +102,16 @@ required:
->  additionalProperties: false
->  
->  allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: ti,tps65214
-> +    then:
-> +      properties:
-> +        regulators:
-> +          patternProperties:
-> +            "^ldo[3-4]$": false
 
-So now, when you combined these patches, you can easily see that you are
-duplicating your other "then:" from patch #1. Just combine these into
-enum. Don't duplicate.
+> On Fri, Jan 24, 2025 at 05:53:45PM +0530, Basharath Hussain Khaja wrote:
+>> From: Roger Quadros <rogerq@ti.com>
+>> 
+>> Updates Kernel configuration to enable PRUETH driver and its dependencies
+>> along with makefile changes to add the new PRUETH driver.
+>> 
+>> Changes includes init and deinit of ICSSM PRU Ethernet driver including
+>> net dev registration and firmware loading for DUAL-MAC mode running on
+>> PRU-ICSS2 instance.
+>> 
+>> Changes also includes link handling, PRU booting, default firmware loading
+>> and PRU stopping using existing remoteproc driver APIs.
+>> 
+>> Signed-off-by: Roger Quadros <rogerq@ti.com>
+>> Signed-off-by: Andrew F. Davis <afd@ti.com>
+>> Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
+>> Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
+> 
+> ...
+> 
+>> diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
+>> b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
+> 
+> ...
+> 
+>> +static int icssm_emac_set_boot_pru(struct prueth_emac *emac,
+>> +				   struct net_device *ndev)
+>> +{
+>> +	const struct prueth_firmware *pru_firmwares;
+>> +	struct prueth *prueth = emac->prueth;
+>> +	const char *fw_name;
+>> +	int ret;
+>> +
+>> +	pru_firmwares = &prueth->fw_data->fw_pru[emac->port_id - 1];
+>> +	fw_name = pru_firmwares->fw_name[prueth->eth_type];
+>> +	if (!fw_name) {
+>> +		netdev_err(ndev, "eth_type %d not supported\n",
+>> +			   prueth->eth_type);
+>> +		return -ENODEV;
+>> +	}
+>> +
+>> +	ret = rproc_set_firmware(emac->pru, fw_name);
+>> +	if (ret) {
+>> +		netdev_err(ndev, "failed to set PRU0 firmware %s: %d\n",
+>> +			   fw_name, ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	ret = rproc_boot(emac->pru);
+>> +	if (ret) {
+>> +		netdev_err(ndev, "failed to boot PRU0: %d\n", ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +/**
+>> + * icssm_emac_ndo_open - EMAC device open
+>> + * @ndev: network adapter device
+>> + *
+>> + * Called when system wants to start the interface.
+>> + *
+>> + * Return: 0 for a successful open, or appropriate error code
+>> + */
+>> +static int icssm_emac_ndo_open(struct net_device *ndev)
+>> +{
+>> +	struct prueth_emac *emac = netdev_priv(ndev);
+>> +	int ret;
+>> +
+>> +	ret = icssm_emac_set_boot_pru(emac, ndev);
+>> +	if (ret)
+>> +		netdev_err(ndev, "failed to boot PRU: %d\n", ret);
+> 
+> Hi Roger, Basharath, all,
+> 
+> icssm_emac_set_boot_pru() already logs errors, including the one above.
+> So this log seems unnecessary to me.
+> 
+> Also, should an error be returned here?  If so, it looks like
+> icssm_emac_set_boot_pru() should release resources allocated by
+> rproc_set_firmware() if rproc_boot() fails.
+> 
 
-Best regards,
-Krzysztof
+Agreed. We will remove the extra print and make sure allocated resources
+are released appropriately in the next version.
+
+>> +
+>> +	/* start PHY */
+>> +	phy_start(emac->phydev);
+>> +
+>> +	return 0;
+>> +}
+> 
+> ...
+> 
+>> +static int icssm_prueth_netdev_init(struct prueth *prueth,
+>> +				    struct device_node *eth_node)
+>> +{
+>> +	struct prueth_emac *emac;
+>> +	struct net_device *ndev;
+>> +	enum prueth_port port;
+>> +	enum prueth_mac mac;
+>> +	int ret;
+>> +
+>> +	port = icssm_prueth_node_port(eth_node);
+>> +	if (port == PRUETH_PORT_INVALID)
+>> +		return -EINVAL;
+>> +
+>> +	mac = icssm_prueth_node_mac(eth_node);
+>> +	if (mac == PRUETH_MAC_INVALID)
+>> +		return -EINVAL;
+>> +
+>> +	ndev = devm_alloc_etherdev(prueth->dev, sizeof(*emac));
+>> +	if (!ndev)
+>> +		return -ENOMEM;
+>> +
+>> +	SET_NETDEV_DEV(ndev, prueth->dev);
+>> +	emac = netdev_priv(ndev);
+>> +	prueth->emac[mac] = emac;
+>> +	emac->prueth = prueth;
+>> +	emac->ndev = ndev;
+>> +	emac->port_id = port;
+>> +
+>> +	/* by default eth_type is EMAC */
+>> +	switch (port) {
+>> +	case PRUETH_PORT_MII0:
+>> +		emac->pru = prueth->pru0;
+>> +		break;
+>> +	case PRUETH_PORT_MII1:
+>> +		emac->pru = prueth->pru1;
+>> +		break;
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+>> +	/* get mac address from DT and set private and netdev addr */
+>> +	ret = of_get_ethdev_address(eth_node, ndev);
+>> +	if (!is_valid_ether_addr(ndev->dev_addr)) {
+>> +		eth_hw_addr_random(ndev);
+>> +		dev_warn(prueth->dev, "port %d: using random MAC addr: %pM\n",
+>> +			 port, ndev->dev_addr);
+>> +	}
+>> +	ether_addr_copy(emac->mac_addr, ndev->dev_addr);
+>> +
+>> +	/* connect PHY */
+>> +	emac->phydev = of_phy_get_and_connect(ndev, eth_node,
+>> +					      icssm_emac_adjust_link);
+>> +	if (!emac->phydev) {
+>> +		dev_dbg(prueth->dev, "PHY connection failed\n");
+>> +		ret = -EPROBE_DEFER;
+> 
+> Perhaps I misunderstand things, but if this occurs then
+> presumably icssm_prueth_netdev_init() will be called again.
+> And for each time this occirs another ndev will be allocated
+> by devm_alloc_etherdev(), each of which will only be freed
+> once the device is eventually torn-down.
+> 
+> I wonder if it would be better to free ndev here.
+> Which I think would imply using a non-mdev allocation for symmetry.
+> 
+> Similarly for resources allocated in the caller icssm_prueth_probe().
+> 
+
+Agreed, we will address this error case and free the resources appropriately.
+
+>> +		goto free;
+>> +	}
+>> +
+>> +	/* remove unsupported modes */
+>> +	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_10baseT_Full_BIT);
+>> +
+>> +	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_10baseT_Half_BIT);
+>> +	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_100baseT_Half_BIT);
+>> +
+>> +	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_Pause_BIT);
+>> +	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_Asym_Pause_BIT);
+>> +
+>> +	ndev->netdev_ops = &emac_netdev_ops;
+>> +
+>> +	return 0;
+>> +free:
+> 
+> nit: This doesn't free anything.
+> 
+
+Sure. We will address in the next version.
+
+>> +	prueth->emac[mac] = NULL;
+>> +
+>> +	return ret;
+>> +}
+> 
+> ...
+
+Thanks & Best Regards,
+Basharath
 
