@@ -1,34 +1,34 @@
-Return-Path: <linux-omap+bounces-3253-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3254-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FFDFA24968
-	for <lists+linux-omap@lfdr.de>; Sat,  1 Feb 2025 14:34:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 342D3A2496C
+	for <lists+linux-omap@lfdr.de>; Sat,  1 Feb 2025 14:37:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 770C07A345D
-	for <lists+linux-omap@lfdr.de>; Sat,  1 Feb 2025 13:33:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACEFE1886588
+	for <lists+linux-omap@lfdr.de>; Sat,  1 Feb 2025 13:37:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA931B6D1F;
-	Sat,  1 Feb 2025 13:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC381B86E9;
+	Sat,  1 Feb 2025 13:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="DWilZUHe"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="ez3DHy4K"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from server.wki.vra.mybluehostin.me (server.wki.vra.mybluehostin.me [162.240.238.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5901DFE8;
-	Sat,  1 Feb 2025 13:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948811E884;
+	Sat,  1 Feb 2025 13:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.238.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738416878; cv=none; b=VE3u36KGcIW6xmzOIfp0mVBUNfKRvsbHV69tU5ftWSXpvpSQyD7CdKj1YW6MQzW/NdbCRnpdxzHT/kQK2PbYaTnVKJucibt7FgvAiJLAR1XtnWPFpoWfpzZggu2rGMgNK9C7qBGw+NauF5vgoN+BezU8/tLNqZ5jhkLFfJbEiUM=
+	t=1738417049; cv=none; b=r+UHuhjxU5XmXaIECQeIvr+9qGRebp5BJ8skvL2CutYdbDuazg+e7eIiNUs3FCcIaEIGFlO69nV+5zQDCVtHB/waz57+P4NJ48WlIynu4d6lLvQRdcNOraBhAPwCsiBYoTAMQSSAp2i2PQYIXdxOm6zsQTLoavR83UJNjIXA2R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738416878; c=relaxed/simple;
-	bh=wVUEdq+cZBCGi6YfBLorwgC/44y1mdBqVILwdx1VEMo=;
+	s=arc-20240116; t=1738417049; c=relaxed/simple;
+	bh=+ms2TInxv6RfeEj6kJAPYmRbOXY4R2k6+wUFE/LWYKk=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=pE7gExzg4yy3DsCURTDzEQJsgQHUFKMXdYr2Ne9KmLu7onAyNgGOMbr/73yYaawKkoaXq939LYoDGJOpBdnBRYI7qcoE4yeGiHdIXfubghIXwpy4Qy10tl/6aDfMskLNRnV99B1J0Djv3fyoKYaFoAUIDTRkxjpAU3V+A3MIqtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=DWilZUHe; arc=none smtp.client-ip=162.240.238.73
+	 MIME-Version:Content-Type; b=J4bWcdIk/aY0XgW5r+slAXNrQZGrPe8AbibgpfnYRovLuJ/Ex8yLJQ5ioMRgHoiZt1wyAnwH3G7DOHrFEWytRhcyTT3NV3g39qqR+h99a+9WIQMZa9pQUmJdIyh3pQWBtvgEu52i1w560gmUBb05P0st+ivBfiwQpCiIneaUCPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=ez3DHy4K; arc=none smtp.client-ip=162.240.238.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
@@ -37,31 +37,31 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=zo3/A9st5oSX6NUjs1CyD3LM/r/HgObAUaSlHXW6a08=; b=DWilZUHesdU0Z/Bam98oNtEVj0
-	89K+1OQeXa/ISF7g0aKRBag0fCsYJuOFHPyVZ5PyKVKihFrAdSd44G3kjR9MQyimPFLcR8yJXGGYh
-	pOxpIJsY0EQywws1Z8OlQAUnVckvjhKXECGph3C96pR7oQ6aooWTku5ts0x6/zxOFqrA/hAxRVJPg
-	7y1Jug1r3WlIxMB3Q1QY4hr1zt5I6SPWGcS2XKEH0o66ohQyvI5A85QrHNr61oxV9svY6SVIG8CIy
-	PleR5oRWoJQ+BJy95eyPJXT6pm3KFOW97YDlm7Qk4S9ZKZloxEsxGAQbq/3oU8VDhAaVcTT6vaq/E
-	26gGNXow==;
-Received: from [122.175.9.182] (port=55603 helo=zimbra.couthit.local)
+	bh=ignVEcjhumkNWLSzWdrUkiSSRf394BaswWlvkQv+aUo=; b=ez3DHy4KvAJgkV+spv6PnEQj+K
+	It4gQV8SxJehtWK+a30RStICulPGttI43KrRK448pYZDZ0cay1MwVVUuq7khFC9XGMOVjwMZn87P0
+	jlRT3PEOH1Y9EH2eEaTE74mAg7iMmocBn0Gqxc+mxyOkNA43B0uaFuT9WhxfuEkNDz7JUQ099wkfG
+	Fa0pPPtDYCb32OWn58HSrhK/F2eYqYpN8/j7uvgNIWk1KFCop24G2f2ZQuNgX4cwq6DfzyHVp/673
+	KP8LFfJd74Vn41Sg2QYoYn4wkc++OQQv60vliyDCoUWmwY237/+veog2/6YS2v3VLiSDjDSnCHbrF
+	+sgDYoLw==;
+Received: from [122.175.9.182] (port=53335 helo=zimbra.couthit.local)
 	by server.wki.vra.mybluehostin.me with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <basharath@couthit.com>)
-	id 1teDdm-000408-2Y;
-	Sat, 01 Feb 2025 19:04:31 +0530
+	id 1teDgX-000449-16;
+	Sat, 01 Feb 2025 19:07:21 +0530
 Received: from zimbra.couthit.local (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTPS id ABA701781C56;
-	Sat,  1 Feb 2025 19:04:24 +0530 (IST)
+	by zimbra.couthit.local (Postfix) with ESMTPS id 8BBA31781C56;
+	Sat,  1 Feb 2025 19:07:14 +0530 (IST)
 Received: from localhost (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTP id 89B451782035;
-	Sat,  1 Feb 2025 19:04:24 +0530 (IST)
+	by zimbra.couthit.local (Postfix) with ESMTP id 6680D1782035;
+	Sat,  1 Feb 2025 19:07:14 +0530 (IST)
 Received: from zimbra.couthit.local ([127.0.0.1])
 	by localhost (zimbra.couthit.local [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id jZ8z6HCOusIZ; Sat,  1 Feb 2025 19:04:24 +0530 (IST)
+	with ESMTP id vcwGzKvUinVz; Sat,  1 Feb 2025 19:07:14 +0530 (IST)
 Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
-	by zimbra.couthit.local (Postfix) with ESMTP id 2FBA81781C56;
-	Sat,  1 Feb 2025 19:04:24 +0530 (IST)
-Date: Sat, 1 Feb 2025 19:04:23 +0530 (IST)
+	by zimbra.couthit.local (Postfix) with ESMTP id 244AA1781C56;
+	Sat,  1 Feb 2025 19:07:14 +0530 (IST)
+Date: Sat, 1 Feb 2025 19:07:14 +0530 (IST)
 From: Basharath Hussain Khaja <basharath@couthit.com>
 To: horms <horms@kernel.org>
 Cc: basharath <basharath@couthit.com>, danishanwar <danishanwar@ti.com>, 
@@ -89,11 +89,11 @@ Cc: basharath <basharath@couthit.com>, danishanwar <danishanwar@ti.com>,
 	srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
 	krishna <krishna@couthit.com>, pmohan <pmohan@couthit.com>, 
 	mohan <mohan@couthit.com>
-Message-ID: <1286353335.481759.1738416863757.JavaMail.zimbra@couthit.local>
-In-Reply-To: <20250130154719.GB13457@kernel.org>
-References: <20250124122353.1457174-1-basharath@couthit.com> <20250124122353.1457174-4-basharath@couthit.com> <20250130154719.GB13457@kernel.org>
-Subject: Re: [RFC v2 PATCH 03/10] net: ti: prueth: Adds PRUETH HW and SW
- configuration
+Message-ID: <1490509701.481776.1738417034035.JavaMail.zimbra@couthit.local>
+In-Reply-To: <20250130164515.GC13457@kernel.org>
+References: <20250124122353.1457174-1-basharath@couthit.com> <20250124123707.1457639-5-basharath@couthit.com> <20250130164515.GC13457@kernel.org>
+Subject: Re: [RFC v2 PATCH 04/10] net: ti: prueth: Adds link detection, RX
+ and TX support.
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -103,8 +103,8 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 X-Mailer: Zimbra 8.8.15_GA_3968 (ZimbraWebClient - FF113 (Linux)/8.8.15_GA_3968)
-Thread-Topic: prueth: Adds PRUETH HW and SW configuration
-Thread-Index: n2HoAXM84Klo9Mhl6VoWMj4Ct565vg==
+Thread-Topic: prueth: Adds link detection, RX and TX support.
+Thread-Index: epeD2E8g/Zc/D2XENrr3GLP0/2oqEg==
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
 X-AntiAbuse: Primary Hostname - server.wki.vra.mybluehostin.me
 X-AntiAbuse: Original Domain - vger.kernel.org
@@ -116,171 +116,111 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-> On Fri, Jan 24, 2025 at 05:53:46PM +0530, Basharath Hussain Khaja wrote:
+
+> On Fri, Jan 24, 2025 at 06:07:01PM +0530, Basharath Hussain Khaja wrote:
 >> From: Roger Quadros <rogerq@ti.com>
 >> 
->> Updates for MII_RT hardware peripheral configuration such as RX and TX
->> configuration for PRU0 and PRU1, frame sizes, and MUX config.
+>> Changes corresponding to link configuration such as speed and duplexity.
+>> IRQ and handler initializations are performed for packet reception.Firmware
+>> receives the packet from the wire and stores it into OCMC queue. Next, it
+>> notifies the CPU via interrupt. Upon receiving the interrupt CPU will
+>> service the IRQ and packet will be processed by pushing the newly allocated
+>> SKB to upper layers.
 >> 
->> Updates for PRU-ICSS firmware register configuration and DRAM, SRAM and
->> OCMC memory initialization, which will be used in the runtime for packet
->> reception and transmission.
->> 
->> DUAL-EMAC memory allocation for software queues and its supporting
->> components such as the buffer descriptors and queue discriptors. These
-> 
-> nit: descriptors
-> 
-
-Sure. We will change in the next version.
-
->> software queues are placed in OCMC memory and are shared with CPU by
->> PRU-ICSS for packet receive and transmit.
->> 
->> All declarations and macros are being used from common header file
->> for various protocols.
+>> When the user application want to transmit a packet, it will invoke
+>> sys_send() which will inturn invoke the PRUETH driver, then it will write
+>> the packet into OCMC queues. PRU firmware will pick up the packet and
+>> transmit it on to the wire.
 >> 
 >> Signed-off-by: Roger Quadros <rogerq@ti.com>
 >> Signed-off-by: Andrew F. Davis <afd@ti.com>
 >> Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
 >> Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
-> 
-> ...
-> 
+>> ---
+>>  drivers/net/ethernet/ti/icssm/icssm_prueth.c | 599 ++++++++++++++++++-
+>>  drivers/net/ethernet/ti/icssm/icssm_prueth.h |  46 ++
+>>  2 files changed, 640 insertions(+), 5 deletions(-)
+>> 
 >> diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
 >> b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
 > 
 > ...
 > 
->> +static void icssm_prueth_mii_init(struct prueth *prueth)
->> +{
->> +	struct regmap *mii_rt;
->> +	u32 rxcfg_reg, rxcfg;
->> +	u32 txcfg_reg, txcfg;
->> +
->> +	mii_rt = prueth->mii_rt;
->> +
->> +	rxcfg = PRUSS_MII_RT_RXCFG_RX_ENABLE |
->> +		PRUSS_MII_RT_RXCFG_RX_DATA_RDY_MODE_DIS |
->> +		PRUSS_MII_RT_RXCFG_RX_L2_EN |
->> +		PRUSS_MII_RT_RXCFG_RX_CUT_PREAMBLE |
->> +		PRUSS_MII_RT_RXCFG_RX_L2_EOF_SCLR_DIS;
->> +
->> +	/* Configuration of Port 0 Rx */
->> +	rxcfg_reg = PRUSS_MII_RT_RXCFG0;
->> +
->> +	regmap_write(mii_rt, rxcfg_reg, rxcfg);
->> +
->> +	/* Configuration of Port 1 Rx */
->> +	rxcfg_reg = PRUSS_MII_RT_RXCFG1;
->> +
->> +	rxcfg |= PRUSS_MII_RT_RXCFG_RX_MUX_SEL;
->> +
->> +	regmap_write(mii_rt, rxcfg_reg, rxcfg);
->> +
->> +	txcfg = PRUSS_MII_RT_TXCFG_TX_ENABLE |
->> +		PRUSS_MII_RT_TXCFG_TX_AUTO_PREAMBLE |
->> +		PRUSS_MII_RT_TXCFG_TX_32_MODE_EN |
->> +		(TX_START_DELAY << PRUSS_MII_RT_TXCFG_TX_START_DELAY_SHIFT) |
->> +		(TX_CLK_DELAY_100M << PRUSS_MII_RT_TXCFG_TX_CLK_DELAY_SHIFT);
->> +
->> +	/* Configuration of Port 0 Tx */
->> +	txcfg_reg = PRUSS_MII_RT_TXCFG0;
->> +
->> +	regmap_write(mii_rt, txcfg_reg, txcfg);
->> +
->> +	txcfg	|= PRUSS_MII_RT_TXCFG_TX_MUX_SEL;
+>> +/**
+>> + * icssm_emac_ndo_start_xmit - EMAC Transmit function
+>> + * @skb: SKB pointer
+>> + * @ndev: EMAC network adapter
+>> + *
+>> + * Called by the system to transmit a packet  - we queue the packet in
+>> + * EMAC hardware transmit queue
+>> + *
+>> + * Return: success(NETDEV_TX_OK) or error code (typically out of desc's)
+>> + */
+>> +static int icssm_emac_ndo_start_xmit(struct sk_buff *skb,
+>> +				     struct net_device *ndev)
 > 
-> nit: a space seems more appropriate than a tab before '|='
+> I think the return type of this function should be netdev_tx_t
+> rather than int to match the signature of ndo_start_xmit
+> in struct net_device_ops.
+> 
+> Flagged by W=1 build with clang-19
+> (-Wincompatible-function-pointer-types-strict).
 > 
 
-Sure. We will remove extra spaces in the next version.
+We will change the return type in the next version.
 
->> +
->> +	/* Configuration of Port 1 Tx */
->> +	txcfg_reg = PRUSS_MII_RT_TXCFG1;
->> +
->> +	regmap_write(mii_rt, txcfg_reg, txcfg);
->> +
->> +	txcfg_reg = PRUSS_MII_RT_RX_FRMS0;
->> +
->> +	/* Min frame length should be set to 64 to allow receive of standard
->> +	 * Ethernet frames such as PTP, LLDP that will not have the tag/rct.
->> +	 * Actual size written to register is size - 1 per TRM. This also
->> +	 * includes CRC/FCS.
->> +	 */
->> +	txcfg = (((PRUSS_MII_RT_RX_FRMS_MIN_FRM - 1) <<
->> +			PRUSS_MII_RT_RX_FRMS_MIN_FRM_SHIFT) &
->> +			PRUSS_MII_RT_RX_FRMS_MIN_FRM_MASK);
->> +
->> +	/* For EMAC, set Max frame size to 1528 i.e size with VLAN.
->> +	 * Actual size written to register is size - 1 as per TRM.
->> +	 * Since driver support run time change of protocol, driver
->> +	 * must overwrite the values based on Ethernet type.
->> +	 */
->> +	txcfg |= (((PRUSS_MII_RT_RX_FRMS_MAX_SUPPORT_EMAC - 1) <<
->> +			   PRUSS_MII_RT_RX_FRMS_MAX_FRM_SHIFT)	&
->> +			   PRUSS_MII_RT_RX_FRMS_MAX_FRM_MASK);
->> +
->> +	regmap_write(mii_rt, txcfg_reg, txcfg);
->> +
->> +	txcfg_reg = PRUSS_MII_RT_RX_FRMS1;
->> +
->> +	regmap_write(mii_rt, txcfg_reg, txcfg);
->> +}
-> 
 > ...
 > 
->> @@ -377,6 +705,70 @@ static int icssm_prueth_probe(struct platform_device *pdev)
->>  		}
->>  	}
+>>  static const struct net_device_ops emac_netdev_ops = {
+>>  	.ndo_open = icssm_emac_ndo_open,
+>>  	.ndo_stop = icssm_emac_ndo_stop,
+>> +	.ndo_start_xmit = icssm_emac_ndo_start_xmit,
+>>  };
 >>  
->> +	pruss = pruss_get(prueth->pru0 ? prueth->pru0 : prueth->pru1);
->> +	if (IS_ERR(pruss)) {
->> +		ret = PTR_ERR(pruss);
->> +		dev_err(dev, "unable to get pruss handle\n");
->> +		goto put_pru;
->> +	}
->> +	prueth->pruss = pruss;
->> +
->> +	ret = pruss_cfg_ocp_master_ports(prueth->pruss, 1);
->> +	if (ret) {
->> +		dev_err(dev, "couldn't enabled ocp master port: %d\n", ret);
->> +		goto put_pruss;
->> +	}
+>>  /* get emac_port corresponding to eth_node name */
 > 
-> FTR, I applied this patch set on top of the patch at the link below
-> so that pruss_cfg_ocp_master_ports() is present.
-> 
-> - [PATCH v2 1/1] soc: ti: PRUSS OCP configuration
->  https://lore.kernel.org/all/20250108125937.10604-2-basharath@couthit.com/
-> 
->  ...
+> ...
 > 
 >> diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.h
 >> b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
 > 
 > ...
 > 
+>> @@ -76,6 +82,32 @@ struct prueth_queue_info {
+>>  	u16 buffer_desc_end;
+>>  } __packed;
+>>  
 >> +/**
->> + * struct prueth_queue - Information about a queue in memory
+>> + * struct prueth_packet_info - Info about a packet in buffer
+>> + * @start_offset: start offset of the frame in the buffer for HSR/PRP
+>> + * @shadow: this packet is stored in the collision queue
+>> + * @port: port packet is on
+>> + * @length: length of packet
+>> + * @broadcast: this packet is a broadcast packet
+>> + * @error: this packet has an error
+>> + * @sv_frame: indicate if the frame is a SV frame for HSR/PRP
+>> + * @lookup_success: src mac found in FDB
+>> + * @flood: packet is to be flooded
+>> + * @timstamp: Specifies if timestamp is appended to the packet
 > 
-> struct prueth_queue_info
+> nit: @timestamp
 > 
 
 We will address this in the next version.
 
->> + * @buffer_offset: buffer offset in OCMC RAM
->> + * @queue_desc_offset: queue descriptor offset in Shared RAM
->> + * @buffer_desc_offset: buffer descriptors offset in Shared RAM
->> + * @buffer_desc_end: end address of buffer descriptors in Shared RAM
 >> + */
->> +struct prueth_queue_info {
->> +	u16 buffer_offset;
->> +	u16 queue_desc_offset;
->> +	u16 buffer_desc_offset;
->> +	u16 buffer_desc_end;
->> +} __packed;
+>> +struct prueth_packet_info {
+>> +	bool start_offset;
+>> +	bool shadow;
+>> +	unsigned int port;
+>> +	unsigned int length;
+>> +	bool broadcast;
+>> +	bool error;
+>> +	bool sv_frame;
+>> +	bool lookup_success;
+>> +	bool flood;
+>> +	bool timestamp;
+>> +};
 > 
 > ...
 
