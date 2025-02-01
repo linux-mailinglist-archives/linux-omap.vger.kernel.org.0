@@ -1,34 +1,34 @@
-Return-Path: <linux-omap+bounces-3252-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3253-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BE8BA24960
-	for <lists+linux-omap@lfdr.de>; Sat,  1 Feb 2025 14:26:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FFDFA24968
+	for <lists+linux-omap@lfdr.de>; Sat,  1 Feb 2025 14:34:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D71B3165D87
-	for <lists+linux-omap@lfdr.de>; Sat,  1 Feb 2025 13:26:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 770C07A345D
+	for <lists+linux-omap@lfdr.de>; Sat,  1 Feb 2025 13:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113B31B422D;
-	Sat,  1 Feb 2025 13:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA931B6D1F;
+	Sat,  1 Feb 2025 13:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="SkVy7t4i"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="DWilZUHe"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from server.wki.vra.mybluehostin.me (server.wki.vra.mybluehostin.me [162.240.238.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFA91ADC86;
-	Sat,  1 Feb 2025 13:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5901DFE8;
+	Sat,  1 Feb 2025 13:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.238.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738416374; cv=none; b=h86Evzp++7cFWBe/28uL4L64EPvEUbqeur0uSrr4IFutaIOvSO2BBXkxLsRNtZyvBf4vU3k36j4V6r6vtBfv2IEKYIZnRTUIjd5f3qTAcUX0Hs2v3CgaHzwhc+9waTpITTDHduBnp1RAUni3uuLB/7HSdN366r/kbFIvq8WzWeQ=
+	t=1738416878; cv=none; b=VE3u36KGcIW6xmzOIfp0mVBUNfKRvsbHV69tU5ftWSXpvpSQyD7CdKj1YW6MQzW/NdbCRnpdxzHT/kQK2PbYaTnVKJucibt7FgvAiJLAR1XtnWPFpoWfpzZggu2rGMgNK9C7qBGw+NauF5vgoN+BezU8/tLNqZ5jhkLFfJbEiUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738416374; c=relaxed/simple;
-	bh=b3O/qSbqNNQ28t3nk7RjAgzIrSwggCwl7A5uBoO1iaY=;
+	s=arc-20240116; t=1738416878; c=relaxed/simple;
+	bh=wVUEdq+cZBCGi6YfBLorwgC/44y1mdBqVILwdx1VEMo=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=aczAN1ekFkISO4QvCCNspVX1A1EzzKOiJwxJiqOpOfXHZwAaaFtAGghCC6ZPiqTz+fr9BYC7ESTT24olreEGZiqzio7UoVqn5BzoNSPw6u7/kwVvNc+wCcGpydJ0Vi6Upb9PJNeDV+VMTGCV24AfSmMBynsvfzNIlKEwhuTqjwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=SkVy7t4i; arc=none smtp.client-ip=162.240.238.73
+	 MIME-Version:Content-Type; b=pE7gExzg4yy3DsCURTDzEQJsgQHUFKMXdYr2Ne9KmLu7onAyNgGOMbr/73yYaawKkoaXq939LYoDGJOpBdnBRYI7qcoE4yeGiHdIXfubghIXwpy4Qy10tl/6aDfMskLNRnV99B1J0Djv3fyoKYaFoAUIDTRkxjpAU3V+A3MIqtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=DWilZUHe; arc=none smtp.client-ip=162.240.238.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
@@ -37,31 +37,31 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=T7G3hSUc9bTIrJebJihtbB+qLlY0pl3Vs5vlzJrMpIE=; b=SkVy7t4imij8wKcsbqYb3ZTVaV
-	9cxy5eHu5FDYeZm1TR4XgWapoNjlIwZ8sSAw7vJ93fj2H7bdk5LkyXojq2Eimi1eBq6low1x4aaFS
-	y5s+YY+WOsRnssN7ApakP0rDbalVYdWBerukgeqb1ILe10CCQ7iM2+TmZxvm7zLQtx8Imcqc+OgtZ
-	JNmVTNedPgt90+eaQ6GR3C8PTxqRtKYbKI5DLb+8P+Y6e88SasGx0bSsI+TtO7TsUZw3wCv8NWN8C
-	edt2B+WFOZ01jf6wP/Ew9fBNOEC10DDambnM5cSS4TAfmjmuC64aTA1yC+1+l+avJFz3LGs9baf9v
-	k2RBrTZw==;
-Received: from [122.175.9.182] (port=63123 helo=zimbra.couthit.local)
+	bh=zo3/A9st5oSX6NUjs1CyD3LM/r/HgObAUaSlHXW6a08=; b=DWilZUHesdU0Z/Bam98oNtEVj0
+	89K+1OQeXa/ISF7g0aKRBag0fCsYJuOFHPyVZ5PyKVKihFrAdSd44G3kjR9MQyimPFLcR8yJXGGYh
+	pOxpIJsY0EQywws1Z8OlQAUnVckvjhKXECGph3C96pR7oQ6aooWTku5ts0x6/zxOFqrA/hAxRVJPg
+	7y1Jug1r3WlIxMB3Q1QY4hr1zt5I6SPWGcS2XKEH0o66ohQyvI5A85QrHNr61oxV9svY6SVIG8CIy
+	PleR5oRWoJQ+BJy95eyPJXT6pm3KFOW97YDlm7Qk4S9ZKZloxEsxGAQbq/3oU8VDhAaVcTT6vaq/E
+	26gGNXow==;
+Received: from [122.175.9.182] (port=55603 helo=zimbra.couthit.local)
 	by server.wki.vra.mybluehostin.me with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <basharath@couthit.com>)
-	id 1teDVW-0003sY-2y;
-	Sat, 01 Feb 2025 18:55:59 +0530
+	id 1teDdm-000408-2Y;
+	Sat, 01 Feb 2025 19:04:31 +0530
 Received: from zimbra.couthit.local (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTPS id 71F301781C56;
-	Sat,  1 Feb 2025 18:55:47 +0530 (IST)
+	by zimbra.couthit.local (Postfix) with ESMTPS id ABA701781C56;
+	Sat,  1 Feb 2025 19:04:24 +0530 (IST)
 Received: from localhost (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTP id 4A67A1782035;
-	Sat,  1 Feb 2025 18:55:47 +0530 (IST)
+	by zimbra.couthit.local (Postfix) with ESMTP id 89B451782035;
+	Sat,  1 Feb 2025 19:04:24 +0530 (IST)
 Received: from zimbra.couthit.local ([127.0.0.1])
 	by localhost (zimbra.couthit.local [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id bv297qfT9IZd; Sat,  1 Feb 2025 18:55:47 +0530 (IST)
+	with ESMTP id jZ8z6HCOusIZ; Sat,  1 Feb 2025 19:04:24 +0530 (IST)
 Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
-	by zimbra.couthit.local (Postfix) with ESMTP id 02E011781C56;
-	Sat,  1 Feb 2025 18:55:47 +0530 (IST)
-Date: Sat, 1 Feb 2025 18:55:46 +0530 (IST)
+	by zimbra.couthit.local (Postfix) with ESMTP id 2FBA81781C56;
+	Sat,  1 Feb 2025 19:04:24 +0530 (IST)
+Date: Sat, 1 Feb 2025 19:04:23 +0530 (IST)
 From: Basharath Hussain Khaja <basharath@couthit.com>
 To: horms <horms@kernel.org>
 Cc: basharath <basharath@couthit.com>, danishanwar <danishanwar@ti.com>, 
@@ -89,11 +89,11 @@ Cc: basharath <basharath@couthit.com>, danishanwar <danishanwar@ti.com>,
 	srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
 	krishna <krishna@couthit.com>, pmohan <pmohan@couthit.com>, 
 	mohan <mohan@couthit.com>
-Message-ID: <269561652.481649.1738416346650.JavaMail.zimbra@couthit.local>
-In-Reply-To: <20250130114145.GM113107@kernel.org>
-References: <20250124122353.1457174-1-basharath@couthit.com> <20250124122353.1457174-3-basharath@couthit.com> <20250130114145.GM113107@kernel.org>
-Subject: Re: [RFC v2 PATCH 02/10] net: ti: prueth: Adds ICSSM Ethernet
- driver
+Message-ID: <1286353335.481759.1738416863757.JavaMail.zimbra@couthit.local>
+In-Reply-To: <20250130154719.GB13457@kernel.org>
+References: <20250124122353.1457174-1-basharath@couthit.com> <20250124122353.1457174-4-basharath@couthit.com> <20250130154719.GB13457@kernel.org>
+Subject: Re: [RFC v2 PATCH 03/10] net: ti: prueth: Adds PRUETH HW and SW
+ configuration
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -103,8 +103,8 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 X-Mailer: Zimbra 8.8.15_GA_3968 (ZimbraWebClient - FF113 (Linux)/8.8.15_GA_3968)
-Thread-Topic: prueth: Adds ICSSM Ethernet driver
-Thread-Index: iTYs9GBoUdW9vbTht5x/pdwNyAgDdQ==
+Thread-Topic: prueth: Adds PRUETH HW and SW configuration
+Thread-Index: n2HoAXM84Klo9Mhl6VoWMj4Ct565vg==
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
 X-AntiAbuse: Primary Hostname - server.wki.vra.mybluehostin.me
 X-AntiAbuse: Original Domain - vger.kernel.org
@@ -116,19 +116,29 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-
-> On Fri, Jan 24, 2025 at 05:53:45PM +0530, Basharath Hussain Khaja wrote:
+> On Fri, Jan 24, 2025 at 05:53:46PM +0530, Basharath Hussain Khaja wrote:
 >> From: Roger Quadros <rogerq@ti.com>
 >> 
->> Updates Kernel configuration to enable PRUETH driver and its dependencies
->> along with makefile changes to add the new PRUETH driver.
+>> Updates for MII_RT hardware peripheral configuration such as RX and TX
+>> configuration for PRU0 and PRU1, frame sizes, and MUX config.
 >> 
->> Changes includes init and deinit of ICSSM PRU Ethernet driver including
->> net dev registration and firmware loading for DUAL-MAC mode running on
->> PRU-ICSS2 instance.
+>> Updates for PRU-ICSS firmware register configuration and DRAM, SRAM and
+>> OCMC memory initialization, which will be used in the runtime for packet
+>> reception and transmission.
 >> 
->> Changes also includes link handling, PRU booting, default firmware loading
->> and PRU stopping using existing remoteproc driver APIs.
+>> DUAL-EMAC memory allocation for software queues and its supporting
+>> components such as the buffer descriptors and queue discriptors. These
+> 
+> nit: descriptors
+> 
+
+Sure. We will change in the next version.
+
+>> software queues are placed in OCMC memory and are shared with CPU by
+>> PRU-ICSS for packet receive and transmit.
+>> 
+>> All declarations and macros are being used from common header file
+>> for various protocols.
 >> 
 >> Signed-off-by: Roger Quadros <rogerq@ti.com>
 >> Signed-off-by: Andrew F. Davis <afd@ti.com>
@@ -142,172 +152,135 @@ X-Source-Dir:
 > 
 > ...
 > 
->> +static int icssm_emac_set_boot_pru(struct prueth_emac *emac,
->> +				   struct net_device *ndev)
+>> +static void icssm_prueth_mii_init(struct prueth *prueth)
 >> +{
->> +	const struct prueth_firmware *pru_firmwares;
->> +	struct prueth *prueth = emac->prueth;
->> +	const char *fw_name;
->> +	int ret;
+>> +	struct regmap *mii_rt;
+>> +	u32 rxcfg_reg, rxcfg;
+>> +	u32 txcfg_reg, txcfg;
 >> +
->> +	pru_firmwares = &prueth->fw_data->fw_pru[emac->port_id - 1];
->> +	fw_name = pru_firmwares->fw_name[prueth->eth_type];
->> +	if (!fw_name) {
->> +		netdev_err(ndev, "eth_type %d not supported\n",
->> +			   prueth->eth_type);
->> +		return -ENODEV;
->> +	}
+>> +	mii_rt = prueth->mii_rt;
 >> +
->> +	ret = rproc_set_firmware(emac->pru, fw_name);
->> +	if (ret) {
->> +		netdev_err(ndev, "failed to set PRU0 firmware %s: %d\n",
->> +			   fw_name, ret);
->> +		return ret;
->> +	}
+>> +	rxcfg = PRUSS_MII_RT_RXCFG_RX_ENABLE |
+>> +		PRUSS_MII_RT_RXCFG_RX_DATA_RDY_MODE_DIS |
+>> +		PRUSS_MII_RT_RXCFG_RX_L2_EN |
+>> +		PRUSS_MII_RT_RXCFG_RX_CUT_PREAMBLE |
+>> +		PRUSS_MII_RT_RXCFG_RX_L2_EOF_SCLR_DIS;
 >> +
->> +	ret = rproc_boot(emac->pru);
->> +	if (ret) {
->> +		netdev_err(ndev, "failed to boot PRU0: %d\n", ret);
->> +		return ret;
->> +	}
+>> +	/* Configuration of Port 0 Rx */
+>> +	rxcfg_reg = PRUSS_MII_RT_RXCFG0;
 >> +
->> +	return ret;
->> +}
+>> +	regmap_write(mii_rt, rxcfg_reg, rxcfg);
 >> +
->> +/**
->> + * icssm_emac_ndo_open - EMAC device open
->> + * @ndev: network adapter device
->> + *
->> + * Called when system wants to start the interface.
->> + *
->> + * Return: 0 for a successful open, or appropriate error code
->> + */
->> +static int icssm_emac_ndo_open(struct net_device *ndev)
->> +{
->> +	struct prueth_emac *emac = netdev_priv(ndev);
->> +	int ret;
+>> +	/* Configuration of Port 1 Rx */
+>> +	rxcfg_reg = PRUSS_MII_RT_RXCFG1;
 >> +
->> +	ret = icssm_emac_set_boot_pru(emac, ndev);
->> +	if (ret)
->> +		netdev_err(ndev, "failed to boot PRU: %d\n", ret);
+>> +	rxcfg |= PRUSS_MII_RT_RXCFG_RX_MUX_SEL;
+>> +
+>> +	regmap_write(mii_rt, rxcfg_reg, rxcfg);
+>> +
+>> +	txcfg = PRUSS_MII_RT_TXCFG_TX_ENABLE |
+>> +		PRUSS_MII_RT_TXCFG_TX_AUTO_PREAMBLE |
+>> +		PRUSS_MII_RT_TXCFG_TX_32_MODE_EN |
+>> +		(TX_START_DELAY << PRUSS_MII_RT_TXCFG_TX_START_DELAY_SHIFT) |
+>> +		(TX_CLK_DELAY_100M << PRUSS_MII_RT_TXCFG_TX_CLK_DELAY_SHIFT);
+>> +
+>> +	/* Configuration of Port 0 Tx */
+>> +	txcfg_reg = PRUSS_MII_RT_TXCFG0;
+>> +
+>> +	regmap_write(mii_rt, txcfg_reg, txcfg);
+>> +
+>> +	txcfg	|= PRUSS_MII_RT_TXCFG_TX_MUX_SEL;
 > 
-> Hi Roger, Basharath, all,
-> 
-> icssm_emac_set_boot_pru() already logs errors, including the one above.
-> So this log seems unnecessary to me.
-> 
-> Also, should an error be returned here?  If so, it looks like
-> icssm_emac_set_boot_pru() should release resources allocated by
-> rproc_set_firmware() if rproc_boot() fails.
+> nit: a space seems more appropriate than a tab before '|='
 > 
 
-Agreed. We will remove the extra print and make sure allocated resources
-are released appropriately in the next version.
+Sure. We will remove extra spaces in the next version.
 
 >> +
->> +	/* start PHY */
->> +	phy_start(emac->phydev);
+>> +	/* Configuration of Port 1 Tx */
+>> +	txcfg_reg = PRUSS_MII_RT_TXCFG1;
 >> +
->> +	return 0;
+>> +	regmap_write(mii_rt, txcfg_reg, txcfg);
+>> +
+>> +	txcfg_reg = PRUSS_MII_RT_RX_FRMS0;
+>> +
+>> +	/* Min frame length should be set to 64 to allow receive of standard
+>> +	 * Ethernet frames such as PTP, LLDP that will not have the tag/rct.
+>> +	 * Actual size written to register is size - 1 per TRM. This also
+>> +	 * includes CRC/FCS.
+>> +	 */
+>> +	txcfg = (((PRUSS_MII_RT_RX_FRMS_MIN_FRM - 1) <<
+>> +			PRUSS_MII_RT_RX_FRMS_MIN_FRM_SHIFT) &
+>> +			PRUSS_MII_RT_RX_FRMS_MIN_FRM_MASK);
+>> +
+>> +	/* For EMAC, set Max frame size to 1528 i.e size with VLAN.
+>> +	 * Actual size written to register is size - 1 as per TRM.
+>> +	 * Since driver support run time change of protocol, driver
+>> +	 * must overwrite the values based on Ethernet type.
+>> +	 */
+>> +	txcfg |= (((PRUSS_MII_RT_RX_FRMS_MAX_SUPPORT_EMAC - 1) <<
+>> +			   PRUSS_MII_RT_RX_FRMS_MAX_FRM_SHIFT)	&
+>> +			   PRUSS_MII_RT_RX_FRMS_MAX_FRM_MASK);
+>> +
+>> +	regmap_write(mii_rt, txcfg_reg, txcfg);
+>> +
+>> +	txcfg_reg = PRUSS_MII_RT_RX_FRMS1;
+>> +
+>> +	regmap_write(mii_rt, txcfg_reg, txcfg);
 >> +}
 > 
 > ...
 > 
->> +static int icssm_prueth_netdev_init(struct prueth *prueth,
->> +				    struct device_node *eth_node)
->> +{
->> +	struct prueth_emac *emac;
->> +	struct net_device *ndev;
->> +	enum prueth_port port;
->> +	enum prueth_mac mac;
->> +	int ret;
->> +
->> +	port = icssm_prueth_node_port(eth_node);
->> +	if (port == PRUETH_PORT_INVALID)
->> +		return -EINVAL;
->> +
->> +	mac = icssm_prueth_node_mac(eth_node);
->> +	if (mac == PRUETH_MAC_INVALID)
->> +		return -EINVAL;
->> +
->> +	ndev = devm_alloc_etherdev(prueth->dev, sizeof(*emac));
->> +	if (!ndev)
->> +		return -ENOMEM;
->> +
->> +	SET_NETDEV_DEV(ndev, prueth->dev);
->> +	emac = netdev_priv(ndev);
->> +	prueth->emac[mac] = emac;
->> +	emac->prueth = prueth;
->> +	emac->ndev = ndev;
->> +	emac->port_id = port;
->> +
->> +	/* by default eth_type is EMAC */
->> +	switch (port) {
->> +	case PRUETH_PORT_MII0:
->> +		emac->pru = prueth->pru0;
->> +		break;
->> +	case PRUETH_PORT_MII1:
->> +		emac->pru = prueth->pru1;
->> +		break;
->> +	default:
->> +		return -EINVAL;
+>> @@ -377,6 +705,70 @@ static int icssm_prueth_probe(struct platform_device *pdev)
+>>  		}
+>>  	}
+>>  
+>> +	pruss = pruss_get(prueth->pru0 ? prueth->pru0 : prueth->pru1);
+>> +	if (IS_ERR(pruss)) {
+>> +		ret = PTR_ERR(pruss);
+>> +		dev_err(dev, "unable to get pruss handle\n");
+>> +		goto put_pru;
 >> +	}
->> +	/* get mac address from DT and set private and netdev addr */
->> +	ret = of_get_ethdev_address(eth_node, ndev);
->> +	if (!is_valid_ether_addr(ndev->dev_addr)) {
->> +		eth_hw_addr_random(ndev);
->> +		dev_warn(prueth->dev, "port %d: using random MAC addr: %pM\n",
->> +			 port, ndev->dev_addr);
+>> +	prueth->pruss = pruss;
+>> +
+>> +	ret = pruss_cfg_ocp_master_ports(prueth->pruss, 1);
+>> +	if (ret) {
+>> +		dev_err(dev, "couldn't enabled ocp master port: %d\n", ret);
+>> +		goto put_pruss;
 >> +	}
->> +	ether_addr_copy(emac->mac_addr, ndev->dev_addr);
->> +
->> +	/* connect PHY */
->> +	emac->phydev = of_phy_get_and_connect(ndev, eth_node,
->> +					      icssm_emac_adjust_link);
->> +	if (!emac->phydev) {
->> +		dev_dbg(prueth->dev, "PHY connection failed\n");
->> +		ret = -EPROBE_DEFER;
 > 
-> Perhaps I misunderstand things, but if this occurs then
-> presumably icssm_prueth_netdev_init() will be called again.
-> And for each time this occirs another ndev will be allocated
-> by devm_alloc_etherdev(), each of which will only be freed
-> once the device is eventually torn-down.
+> FTR, I applied this patch set on top of the patch at the link below
+> so that pruss_cfg_ocp_master_ports() is present.
 > 
-> I wonder if it would be better to free ndev here.
-> Which I think would imply using a non-mdev allocation for symmetry.
+> - [PATCH v2 1/1] soc: ti: PRUSS OCP configuration
+>  https://lore.kernel.org/all/20250108125937.10604-2-basharath@couthit.com/
 > 
-> Similarly for resources allocated in the caller icssm_prueth_probe().
+>  ...
 > 
-
-Agreed, we will address this error case and free the resources appropriately.
-
->> +		goto free;
->> +	}
->> +
->> +	/* remove unsupported modes */
->> +	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_10baseT_Full_BIT);
->> +
->> +	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_10baseT_Half_BIT);
->> +	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_100baseT_Half_BIT);
->> +
->> +	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_Pause_BIT);
->> +	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_Asym_Pause_BIT);
->> +
->> +	ndev->netdev_ops = &emac_netdev_ops;
->> +
->> +	return 0;
->> +free:
+>> diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.h
+>> b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
 > 
-> nit: This doesn't free anything.
+> ...
+> 
+>> +/**
+>> + * struct prueth_queue - Information about a queue in memory
+> 
+> struct prueth_queue_info
 > 
 
-Sure. We will address in the next version.
+We will address this in the next version.
 
->> +	prueth->emac[mac] = NULL;
->> +
->> +	return ret;
->> +}
+>> + * @buffer_offset: buffer offset in OCMC RAM
+>> + * @queue_desc_offset: queue descriptor offset in Shared RAM
+>> + * @buffer_desc_offset: buffer descriptors offset in Shared RAM
+>> + * @buffer_desc_end: end address of buffer descriptors in Shared RAM
+>> + */
+>> +struct prueth_queue_info {
+>> +	u16 buffer_offset;
+>> +	u16 queue_desc_offset;
+>> +	u16 buffer_desc_offset;
+>> +	u16 buffer_desc_end;
+>> +} __packed;
 > 
 > ...
 
