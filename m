@@ -1,103 +1,115 @@
-Return-Path: <linux-omap+bounces-3266-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3267-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51C92A28B3E
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Feb 2025 14:11:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A6AA29DE7
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Feb 2025 01:37:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A64103A717E
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Feb 2025 13:10:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD9D33A778F
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Feb 2025 00:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16AAB524B0;
-	Wed,  5 Feb 2025 13:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4EA814F98;
+	Thu,  6 Feb 2025 00:37:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Tgsh/zjS"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from albert.telenet-ops.be (albert.telenet-ops.be [195.130.137.90])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0696710A3E
-	for <linux-omap@vger.kernel.org>; Wed,  5 Feb 2025 13:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C01C2ED
+	for <linux-omap@vger.kernel.org>; Thu,  6 Feb 2025 00:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738761058; cv=none; b=g9dVBI2icvVUZ0FUw8/+9bINiP3POD+SJnt7C+DHowru6UQ3AdH0f0dLaQA8aB+kO+zPniniimkJ6EuynZdUZBVlAQg+d8JxrTKROIWVrRrM9/B9dU+V6ohb7KvjUpDqA8jKVrTPYiJmkRWD2gELIK24CKodekVwpD8UxBFX4kM=
+	t=1738802233; cv=none; b=AOotYmGaz6XSVd69LInGETUQQDcQEfKXAiSrwrTHRMD3Om/7bKlMliRnBFlFtx4ed8jJxZrCpf83jnhkI9G1KE5JtWMn9kPcBP7wYOEqJ5yFFntrBYydZyBDiT61w0G9KOU2tNy/F2aSxWh9Jqmwhkca12pwKpccnfJWHqJujPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738761058; c=relaxed/simple;
-	bh=UW4vifzm9dK7PfgtyUA+yHCYk90qPhir9yw0Dk0X//Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iaHObILxCe4KgdItOXfJk49HEyV56Brh4aP4JuKyxHNGMLH4eSc5lShwvy61bx6CqTVRMILxhglgAERuyipdkqbAbbzmMNENndW92hgBbXE7DPKkwV2hCSG1gKWccgxMEtvmoQNsOMvWHU//zKFBpuevujRv5sLDKSPfzFjAJEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:fa11:c14e:2df5:5273])
-	by albert.telenet-ops.be with cmsmtp
-	id 9pAn2E0063f221S06pAnbB; Wed, 05 Feb 2025 14:10:47 +0100
-Received: from rox.of.borg ([192.168.97.57])
-	by ramsan.of.borg with esmtp (Exim 4.97)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1tffAp-0000000Fva6-0B9f;
-	Wed, 05 Feb 2025 14:10:47 +0100
-Received: from geert by rox.of.borg with local (Exim 4.97)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1tffB1-00000006Q4S-0QzP;
-	Wed, 05 Feb 2025 14:10:47 +0100
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-To: Dominik Brodowski <linux@dominikbrodowski.net>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Tony Lindgren <tony@atomide.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Cc: linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2] pcmcia: omap_cf: Mark driver struct with __refdata to prevent section mismatch
-Date: Wed,  5 Feb 2025 14:10:44 +0100
-Message-ID: <06d57da75b583822a541b2eb9f28b172b3487183.1738760740.git.geert+renesas@glider.be>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1738802233; c=relaxed/simple;
+	bh=anb12FOBAqGcVLb5Az51960fmoes6Cw4isJ5CZ6Joqc=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=inibuexNyUKIyehHVtTJCPVxxi0SW1th6W+evnzPEAH7jZGyX6RCm9xIbvxOVWyAsWUiqJ3VdYHQof+LAIGGeM8Vk16wvq5mqGRRiJ9HDRK7EU8HILn+BIHQPx6DH4SIRxSTOfXiFjGCLfhaXTkfzeHQ4PvIF30ILW5XjIjqCcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Tgsh/zjS; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-21f200014f1so5521955ad.2
+        for <linux-omap@vger.kernel.org>; Wed, 05 Feb 2025 16:37:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738802231; x=1739407031; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9izPoeemfLEYBaxGdMdJG4p8441bu8sme8NZDVtqdAU=;
+        b=Tgsh/zjSVKsAd8c9x55OQh4nnAmFSSDzifYsm7kWuPXpiR67EJbgfEiyqE5AZYRgru
+         xBu2PASjD2b43tZmKgRsMBaHmZzVkVx6HSadVc4h8LJmhZIhksMhDev7VlmudrRwz4Y+
+         cUxAv95WBsC+slBzNkHRkAS7JkZUxf1CHVvZaXxNg9eksm5aZWlFjlhVtnrlLKGNjM2d
+         3UsPSr2lBW5g5LqiULrT6fqfDmtiQGDLOqqKxvZiZtP3ACwIHgldeghxPux14k7SqynY
+         80/f0oDx+6qTnDgQ3iXimg4HuKE7h5EBv9ZAv7AaGbqa9T8uAJCREBXuJCb3/UL3jhka
+         On9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738802231; x=1739407031;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9izPoeemfLEYBaxGdMdJG4p8441bu8sme8NZDVtqdAU=;
+        b=hPt6Qy0My+DcqF4qDC0dYuGJFvoSn6iolM1kqdJ80dJ4KSLIP1qhQs9p4zXLNeFFAp
+         QmnmY8Rjn4nk60ZRoOhPW2RjKZVUhEkBg+avuORnoKUbf3zHwAoAonSAorVkrMJ2g7op
+         JdZKGmc+9uEvbbuwRo+Gsg0kHcQegK8IVfXHidxre0oteZBjJCL7vjzc38X/I0QVhKtb
+         DX78ucMgMXpAvtdhmcN6vqnljf269/jiUtd3D9+GO9vVJ/Wg8tmVSCpkJefU8fTzHBtj
+         dEV2uz/Xf0yRtQl3mToguXkqBAwjFguvL03iDkau1gHxCJzua7J2UB2DvINIRXgc39VT
+         bIvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWgimh0Nd46L+H+p64HO42ZugIHzRjJFLzA7iJbbDy+IGY/Cl3aIsO4h5iyGFrhLFFssxgSly9oRuYk@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTLcfXWkrF6OQ6BA2kG8DJznfPnSucNs/yQy0TKJxuRGsiBsbZ
+	vDJNArBhjKtEeJZnNP2ee/+IIHaZjKDc1Ai2uJmhzC5KHLus69VlqpCLKQS3AIeGbhq5HkWee3I
+	K
+X-Gm-Gg: ASbGncsGRWu9wZGkhjSd73OWq+2ij9d2ee/fYSEsmecyq3dxfZgfe8bOG30IMTz5ak5
+	dnorQp6mi6WbBf5vmTWu7FCdwvoYyecxMTXWpkjd1+9JZcD7k0j3CNPK5YPdfFlzGJ/okjInLrD
+	KhMZB1Q+/cx8WkYi3bIFLmDfI7lqNDd2oNAtaq3neHIi9j6v5OMJ7btUcvWGE97PSKups0DPOO5
+	DJ5QsvmcmbWU37eyzLTlPCUXCKUT4pEl0dzuNbjEYT23c9FGc3nkUAnDpTl41fVholbuKX/IxYJ
+	FgSqnDzS8a1/Zw==
+X-Google-Smtp-Source: AGHT+IGSn53uXUdVxoPImTMW1Zc25hP9pmoBhFU5FbDj28SoJOJPEc2Twhblt5clw7+Lqm5iorPULg==
+X-Received: by 2002:a17:902:e74e:b0:216:7ee9:2227 with SMTP id d9443c01a7336-21f17ebbb5cmr82697035ad.36.1738802230802;
+        Wed, 05 Feb 2025 16:37:10 -0800 (PST)
+Received: from localhost ([97.126.182.119])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3683da71sm50165ad.115.2025.02.05.16.37.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Feb 2025 16:37:10 -0800 (PST)
+From: Kevin Hilman <khilman@baylibre.com>
+To: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, linux-omap@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20250115211648.194016-1-krzysztof.kozlowski@linaro.org>
+References: <20250115211648.194016-1-krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH] ARM: dts: ti: omap: Align GPIO hog name with bindings
+Message-Id: <173880222984.2488567.7281427251846547425.b4-ty@baylibre.com>
+Date: Wed, 05 Feb 2025 16:37:09 -0800
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3-dev-94c79
 
-As described in the added code comment, a reference to .exit.text is ok
-for drivers registered via platform_driver_probe().  Make this explicit
-to prevent the following section mismatch warning
 
-    WARNING: modpost: drivers/pcmcia/omap_cf: section mismatch in reference: omap_cf_driver+0x4 (section: .data) -> omap_cf_remove (section: .exit.text)
+On Wed, 15 Jan 2025 22:16:48 +0100, Krzysztof Kozlowski wrote:
+> Bindings expect GPIO hog names to end with 'hog' suffix, so correct it
+> to fix dtbs_check warning:
+> 
+>   omap3-evm.dtb: en_on_board_gpio_61: $nodename:0: 'en_on_board_gpio_61' does not match '^.+-hog(-[0-9]+)?$'
+> 
+> 
 
-that triggers on an omap1_defconfig + CONFIG_OMAP_CF=m build.
+Applied, thanks!
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
----
-v2:
-  - Add Acked-by.
----
- drivers/pcmcia/omap_cf.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+[1/1] ARM: dts: ti: omap: Align GPIO hog name with bindings
+      commit: 10a71ea103249d3aa800552595a90ad55932c781
 
-diff --git a/drivers/pcmcia/omap_cf.c b/drivers/pcmcia/omap_cf.c
-index f0ccf479f36e5223..9bb80b47f0c453fb 100644
---- a/drivers/pcmcia/omap_cf.c
-+++ b/drivers/pcmcia/omap_cf.c
-@@ -302,7 +302,13 @@ static void __exit omap_cf_remove(struct platform_device *pdev)
- 	kfree(cf);
- }
- 
--static struct platform_driver omap_cf_driver = {
-+/*
-+ * omap_cf_remove() lives in .exit.text. For drivers registered via
-+ * platform_driver_probe() this is ok because they cannot get unbound at
-+ * runtime. So mark the driver struct with __refdata to prevent modpost
-+ * triggering a section mismatch warning.
-+ */
-+static struct platform_driver omap_cf_driver __refdata = {
- 	.driver = {
- 		.name	= driver_name,
- 	},
+Best regards,
 -- 
-2.43.0
+Kevin Hilman <khilman@baylibre.com>
 
 
