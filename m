@@ -1,115 +1,109 @@
-Return-Path: <linux-omap+bounces-3279-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3280-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 016C6A2C49F
-	for <lists+linux-omap@lfdr.de>; Fri,  7 Feb 2025 15:09:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14ABFA2C9B6
+	for <lists+linux-omap@lfdr.de>; Fri,  7 Feb 2025 18:04:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11C0B3ADF41
-	for <lists+linux-omap@lfdr.de>; Fri,  7 Feb 2025 14:06:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46F9A7A7A0B
+	for <lists+linux-omap@lfdr.de>; Fri,  7 Feb 2025 17:02:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59AC6221D9C;
-	Fri,  7 Feb 2025 14:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1522A1922E1;
+	Fri,  7 Feb 2025 17:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YTO3fmSk"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="NKtv0DZX"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41842206BC;
-	Fri,  7 Feb 2025 14:02:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC30023C8DB;
+	Fri,  7 Feb 2025 17:03:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738936958; cv=none; b=EsQ/70TRU99As7OWunSxCSM/V4GpadzDQaddNW9YrZ2UB9aRfKm6hL6e0IvNMfiPplHRzx51i7pRqZPxmORnz5vqT5PnSrEdECswzToQY9BbdMinG3NQoJjbzeYBtEbPGiTxegAyfIkPU9L5RZxJ8yUCF4Tmbnk1yYTtJofWTJE=
+	t=1738947797; cv=none; b=h/0+Vu2U+9+4d4en6EuJu3kxWD+GwMpEETUZVkKLtDXlCZlhh/KH+wPX0oSMjy2yfxMAUEoNaSirEM6FqvoARAOxYg4gNDeAnTN4l6Vpaqc3jRBDEEHqSDksOdtxCmb66hC9OZdN/4XRo/JvuFjLeEhkut3XlUpoVoJ8MM83kKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738936958; c=relaxed/simple;
-	bh=pmfXU9Wsj09/R+t75sQ7ZBh1nlvJb+h+a5nQHQlBvH4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=pa7N1+VwoQ5JWPYDcBZpDPDe2nfd3W0RwmhPBIVQtnFPye4BiRbKFUOJ2B+xPLL11Fhqb1Xg7/BD4JeCiJDdeXTaDz1vOxztlkJFX1/2ptysGODvf7xuOgd25nSROfjdCt/Hi67pNv8EYngCafNJFnYhluebXUeZvJAVxW8+2+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YTO3fmSk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44BCC4CEE5;
-	Fri,  7 Feb 2025 14:02:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738936957;
-	bh=pmfXU9Wsj09/R+t75sQ7ZBh1nlvJb+h+a5nQHQlBvH4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=YTO3fmSkx5+FiwGCNcLVn1Sq99nOd9KIgtRZSbaC0UwBYEFga40XetPxhTmrnSRxw
-	 ZUalM7nCPGq8sWhRYNNQHG2xNRYsLtGqppjUqxLsei0y7pUXm6NKM1bDSRjNDM0yYf
-	 bIAmJ4aDi3a2sbQWBc/KPrW50GmHHTc7oCPdQXBgLgXbneFka2wMnnb16RLfnNA3aw
-	 j9eEyinVRmU/CTil1wEuYfWGMWx+mwpUfVzIE7thOhNoSZjncSmENeW818Vpr5D90t
-	 CoXEehMKtCMS4dWW1sCfrzmiXmnaVgT+o+0cO43DHCgytSFdPBi+vEGRJrORZ/Hf7s
-	 Rhd7d39wJffFQ==
-From: Mark Brown <broonie@kernel.org>
-To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Tony Lindgren <tony@atomide.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>, 
- Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-omap@vger.kernel.org, linux-sound@vger.kernel.org
-In-Reply-To: <20250122164129.807247-1-ivo.g.dimitrov.75@gmail.com>
-References: <20250122164129.807247-1-ivo.g.dimitrov.75@gmail.com>
-Subject: Re: (subset) [PATCH v2 0/5] ASoC: cpcap: Implement jack headset
- detection
-Message-Id: <173893695439.35212.2551382819515781818.b4-ty@kernel.org>
-Date: Fri, 07 Feb 2025 14:02:34 +0000
+	s=arc-20240116; t=1738947797; c=relaxed/simple;
+	bh=oNUYLYJ3cBbS2gYJzUrPZKysiTn8zeg+2VOsqprROM8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=cEcLurwf4uy0/mQXj9EmsgjpX2VSsLs7ho3Eq5moroBrJGnu5Kc29mrWAJOOiu4XsxN/fZVCBPZM5QSM1TZnpEDQEXzpaoQGvHdCuh1cwTbrQ3sVYE730n7/Y7kZZRVDHXtj8NrcRbIVYax3CZL9rOj0YuuxL+Fa/CuX1+rNqCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=NKtv0DZX; arc=none smtp.client-ip=198.47.23.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 517H2qbu3039421
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 7 Feb 2025 11:02:52 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1738947772;
+	bh=oNUYLYJ3cBbS2gYJzUrPZKysiTn8zeg+2VOsqprROM8=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=NKtv0DZXtokLgalUpTO60zr4Cf092BJfxuhfrDpxAUoUfsROwTrh3/q9n5mXPkjbH
+	 YgRW3VjP4wISo23vbD+PR4PjwilQoT/OWyZdPDmrWqWUHlttRLYxn+LPNKbd4OM5xL
+	 HF8yee3ax0+YOWrbnW163mVqy7vQzwiCiPmxPLqw=
+Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 517H2qI7040519
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 7 Feb 2025 11:02:52 -0600
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 7
+ Feb 2025 11:02:52 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 7 Feb 2025 11:02:52 -0600
+Received: from [10.247.30.175] (lt5cd3040qtn.dhcp.ti.com [10.247.30.175])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 517H2qv4105448;
+	Fri, 7 Feb 2025 11:02:52 -0600
+Message-ID: <0c5f962b-3264-49c8-a1c5-893b8eb41b63@ti.com>
+Date: Fri, 7 Feb 2025 11:02:52 -0600
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-1b0d6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/3] Add TI TPS65215 PMIC GPIO Support
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+CC: <aaro.koskinen@iki.fi>, <andreas@kemnade.info>, <khilman@baylibre.com>,
+        <rogerq@kernel.org>, <tony@atomide.com>, <linus.walleij@linaro.org>,
+        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-gpio@vger.kernel.org>, <m-leonard@ti.com>, <praneeth@ti.com>,
+        <christophe.jaillet@wanadoo.fr>
+References: <20250113225530.124213-1-s-ramamoorthy@ti.com>
+ <CAMRc=Meqjy+cqfueM_dQE8uP32zS0ib41qE+OPPWFkhoVTGc2w@mail.gmail.com>
+Content-Language: en-US
+From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+In-Reply-To: <CAMRc=Meqjy+cqfueM_dQE8uP32zS0ib41qE+OPPWFkhoVTGc2w@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Wed, 22 Jan 2025 18:41:24 +0200, Ivaylo Dimitrov wrote:
-> cpcap audio codec found on cpcap PMIC supports headset detection
-> and PTT button through its 3.5 mm jack. This series implements
-> support for those capabilities.
-> 
-> Changelog:
-> v2:
-> - cpcap.c: fix a typo
-> - dt-bindings: fix interrupts description and alignment
-> - motorola-cpcap-mapphone.dtsi: fix interrupts alignment
-> 
-> [...]
+Hi,
 
-Applied to
+On 2/7/2025 2:53 AM, Bartosz Golaszewski wrote:
+> On Mon, Jan 13, 2025 at 11:55 PM Shree Ramamoorthy <s-ramamoorthy@ti.com> wrote:
+>> TPS65215 is a Power Management Integrated Circuit (PMIC) that has
+>> significant register map overlap with TPS65219. The series introduces
+>> TPS65215 and restructures the existing driver to support multiple devices.
+>>
+>> This follow-up series is dependent on:
+>> Commit f84464ec8190 ("regulator: dt-bindings: Add TI TPS65215 PMIC bindings")
+>> Commit 8206c20f4c82 ("mfd: tps65215: Add support for TI TPS65215 PMIC")
+>> Commit 0e0b7f00c111 ("mfd: tps65215: Remove regmap_read check")
+>>
+> Did these go into v6.14?
+>
+> Bart
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+These didn't. I figured with the dependency feedback, it was easier to combine the series for TPS65215 and TPS65214 into 1 series.
 
-Thanks!
+I submitted the combined mfd + dt-binding series [0] first, and once that was ACK'd, I will follow up with the gpio series for both devices.
+Let me know if there's a different approach you would recommend!
 
-[2/5] ASoC: cpcap: Implement .set_bias_level
-      commit: 5b4288792ff246cf2bda0c81cebcc02d1f631ca3
-[3/5] dt-bindings: mfd: motorola-cpcap: Document audio-codec interrupts
-      commit: 02d4a97ce30c0494ce6a614cd54d583caa0f8016
-[5/5] ASoC: cpcap: Implement jack detection
-      commit: 7ed1b265021dd13ce5619501b388e489ddc8e204
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+[0]: https://lore.kernel.org/all/20250206173725.386720-1-s-ramamoorthy@ti.com/
 
 
