@@ -1,48 +1,64 @@
-Return-Path: <linux-omap+bounces-3289-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3290-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C7F5A330F2
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Feb 2025 21:43:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B3C4A3314F
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Feb 2025 22:13:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A72018853D3
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Feb 2025 20:44:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5D6F3AA0FC
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Feb 2025 21:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A42C20126C;
-	Wed, 12 Feb 2025 20:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B537D202F6D;
+	Wed, 12 Feb 2025 21:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GmGG0t/C"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="inJruE/z"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C9A1FBC81;
-	Wed, 12 Feb 2025 20:43:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB9D200B95;
+	Wed, 12 Feb 2025 21:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739393033; cv=none; b=oVdqG0rFsm3iWw4e23kl/4QEoiLGxh1WPmAmwzmHAcDpJAzBuRXFGrLKxm92BC6olGVvjfQjGc9EJCZYBsMe9ua/oMeURjPYMlZ8ZX7QHQmRI2hD/3ffzqE+FjtJpi6LPGVoF4XVCh/5Lpon8+I6OvbkWmFcWoC5/NJpFz7bv9Y=
+	t=1739394790; cv=none; b=OVB302x1fEEAUNf2+aCLXlpzPodv7Hvt0FD1bp/ly9nXnomPtsfFqyWpONDdz7ug1qbK4g9GEH83dDyeSDg5UMRWTg998LC0m3hLujTBJPqB7n3dj7mK1Vb2I9+/xistTd58NwPO9hwEavG0PK7/4inUyJgaYyr8m+X5WDWWc1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739393033; c=relaxed/simple;
-	bh=2Z2SgbECzYCEjtHn8nblF4n270WAOrT6/8nalVEvK1o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=AFBVWbO5oqvh6wxrL1yVY2iVFy6i+FPPr0sQvGPmGI3HYHH3QP8dLqAMF3G43OGZ/YMPS74TQaSY8AVASfM+HYR4HgVs/ClxQscJaVz+EAX8qE2Z4QZzhH7RiqYklbaIHyIIoFgiCiRpiUdNdy5d77G3/jxeyvTxr+7vNXs8FU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GmGG0t/C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44FD9C4CEDF;
-	Wed, 12 Feb 2025 20:43:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739393032;
-	bh=2Z2SgbECzYCEjtHn8nblF4n270WAOrT6/8nalVEvK1o=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=GmGG0t/C/TeZc/1f4Fc9SnxnvzjfRQfclnWpNa4eB69lbSGfgdyglM9wuTCiwN1es
-	 iR7uXrrWXPawpds3vUFUlazbZ1DwyDfwsNwdXV+4ghUY7/CG9rnjU2BxNg+XYv4s74
-	 dyhkXvUOGlqy0PYCFmUn2eereM7Iac1GEL8SD0xCt6h+gFU7TitBRtIBDK+8tuFxel
-	 Yn+9H4nEKXTKIZyWI7jRzs8KD+8oFMVWrH09ldvAT+Sju/dulwcSgbqg/qcdD1/bve
-	 9/uLlB88Tb65eMpeIrrVT0PykRQMMgqODqIgstLieQeh4Ou463DMyhW0ZYe9l0QTkJ
-	 wto6WCCFfJGrw==
-Message-ID: <643d8b81-d551-4263-9443-089c157d2c8d@kernel.org>
-Date: Wed, 12 Feb 2025 21:43:46 +0100
+	s=arc-20240116; t=1739394790; c=relaxed/simple;
+	bh=S2zA+V93rzV22fzbSTDU7gIlGOraXu55Diwx5MBdt/I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=FM85/bBlveR8Z3htEq+vmVWWR8/VaWaekHRt4GNZQ+8wrXjCrr6Duoog0s8+DgxL00lHC3s5Bj/Yl2f2dvAVAVQVrKgKK439o/w9FwNoFWTYW0assBAilF+3NcEFiGyq66QAVgNqzmNEVduFR/NXdY3788TFmU2md2Nm1aSKKi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=inJruE/z; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 51CLCiHO3875956
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Feb 2025 15:12:44 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1739394764;
+	bh=4z6w0bnAWvx2g2n+JlxwFqtCphZzu2LQDSbTYizfo20=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=inJruE/z/Cz3CUtyCgUvZXb6YZVumt7HRyJ4Xe0Qp8XRpk1ZD1nISbJI2m5gmy47N
+	 TGOcTxNOdxTYsWfxZjB/hB7bp1SzTLR1Trucqj4gAxCgKniohCK5S9Vltfo/pQErEU
+	 uGqK3rRsO5Zfvrt6zyjGdYBfWoRyh+RWsQuOAHX8=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 51CLCigr006188
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 12 Feb 2025 15:12:44 -0600
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 12
+ Feb 2025 15:12:43 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Wed, 12 Feb 2025 15:12:43 -0600
+Received: from [128.247.29.251] (dmz007xyy.dhcp.ti.com [128.247.29.251])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 51CLChvK105055;
+	Wed, 12 Feb 2025 15:12:43 -0600
+Message-ID: <065cdaca-cc37-4b1e-9c1e-e2dedbb2ffd5@ti.com>
+Date: Wed, 12 Feb 2025 15:12:43 -0600
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -50,76 +66,50 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ARM: dts: nxp: vf: Align GPIO hog name with bindings
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Stefan Agner <stefan@agner.ch>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Tony Lindgren <tony@atomide.com>,
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-References: <20250115211659.194072-1-krzysztof.kozlowski@linaro.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH v3 0/3] Add TI TPS65215 PMIC GPIO Support
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+CC: <aaro.koskinen@iki.fi>, <andreas@kemnade.info>, <khilman@baylibre.com>,
+        <rogerq@kernel.org>, <tony@atomide.com>, <linus.walleij@linaro.org>,
+        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-gpio@vger.kernel.org>, <m-leonard@ti.com>, <praneeth@ti.com>,
+        <christophe.jaillet@wanadoo.fr>
+References: <20250113225530.124213-1-s-ramamoorthy@ti.com>
+ <CAMRc=Meqjy+cqfueM_dQE8uP32zS0ib41qE+OPPWFkhoVTGc2w@mail.gmail.com>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250115211659.194072-1-krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+Organization: PMIC
+In-Reply-To: <CAMRc=Meqjy+cqfueM_dQE8uP32zS0ib41qE+OPPWFkhoVTGc2w@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On 15/01/2025 22:16, Krzysztof Kozlowski wrote:
-> Bindings expect GPIO hog names to end with 'hog' suffix, so correct it
-> to fix dtbs_check warning:
-> 
->   vf610-zii-dev-rev-c.dtb: eth0_intrp: $nodename:0: 'eth0_intrp' does not match '^.+-hog(-[0-9]+)?$'
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
+Hi,
 
-Any comments on the patch? Shawn, can you apply it?
 
-Best regards,
-Krzysztof
+On 2/7/25 2:53 AM, Bartosz Golaszewski wrote:
+> On Mon, Jan 13, 2025 at 11:55 PM Shree Ramamoorthy <s-ramamoorthy@ti.com> wrote:
+>> TPS65215 is a Power Management Integrated Circuit (PMIC) that has
+>> significant register map overlap with TPS65219. The series introduces
+>> TPS65215 and restructures the existing driver to support multiple devices.
+>>
+>> This follow-up series is dependent on:
+>> Commit f84464ec8190 ("regulator: dt-bindings: Add TI TPS65215 PMIC bindings")
+>> Commit 8206c20f4c82 ("mfd: tps65215: Add support for TI TPS65215 PMIC")
+>> Commit 0e0b7f00c111 ("mfd: tps65215: Remove regmap_read check")
+>>
+> Did these go into v6.14?
+>
+> Bart
+
+The dependencies listed in the cover letter were just applied by Lee Jones:
+https://lore.kernel.org/all/173928615760.2233464.12306998726512431222.b4-ty@kernel.org/
+
+The rest of this series still applies without a need for code modifications.
+
+
+-- 
+Best,
+Shree Ramamoorthy
+PMIC Software Engineer
+
 
