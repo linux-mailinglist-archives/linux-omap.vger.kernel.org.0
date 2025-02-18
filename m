@@ -1,168 +1,130 @@
-Return-Path: <linux-omap+bounces-3295-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3296-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6CEA373CD
-	for <lists+linux-omap@lfdr.de>; Sun, 16 Feb 2025 11:27:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 546CBA3A468
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Feb 2025 18:34:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCB8C7A362E
-	for <lists+linux-omap@lfdr.de>; Sun, 16 Feb 2025 10:26:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49C643A4245
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Feb 2025 17:34:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9BC18DB19;
-	Sun, 16 Feb 2025 10:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE89A26FA4A;
+	Tue, 18 Feb 2025 17:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="K+An97/r"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Sn83F6p0"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9B41487C8;
-	Sun, 16 Feb 2025 10:27:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739701658; cv=pass; b=X3gtZYkflRIX5jlP43ZHkasSopPMgHeg81XzWayjre6UFF6oqvCTWYVpwdfWIOdO+NEWw4pVkvcIMIY3dNiv0OlnGjKKQlUAEW43qPw6gml3Or7+G4q9m62psST8nLIlFfqWRyZ0nqQjUrLogWWj7drBvMTdiKQGPAW98xdXEb4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739701658; c=relaxed/simple;
-	bh=ZJVKciOgP7PmjbwdZRxbXiNIcAo73yiYS1lbDWwoIfY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D8kQ00jCNwypYdevGyiBb27/Xl5cShgfFfDcALMX3xPQLlYbdeQUsB3BwWT8o79Ct/2xufrUy5flnFavl+vkdfwf3Kt1P9fzrS/Q/9RLfg7/dHpbLqHjPDpQfsSVG0lpb+chApvSaI/oxJZP2DmlXZLhb6LZGM8TRWa0JBEXWro=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=K+An97/r; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
-Received: from hillosipuli.retiisi.eu (2a00-1190-d1dd-0-c641-1eff-feae-163c.v6.cust.suomicom.net [IPv6:2a00:1190:d1dd:0:c641:1eff:feae:163c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sailus)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4Ywhmz4Kyhz49Pwk;
-	Sun, 16 Feb 2025 12:27:31 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1739701653;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8UDdI7fW/FRxm0SJsuY4wz4Lj3XvYXPcwSHR/kIT/08=;
-	b=K+An97/rQeUnbTmrWPrvvfYWYEb0ba6S0P++RyswK5SuQfvgm3ptDEKeMwntqCAuCHjpEl
-	U17q8hUo8bRKpnVdbJqr+t3yq76iR+EpSg2kk0kEnbb4DM1gYLd+lRWs3ssHf7pUa+mQPT
-	xndl+4EeWuMmGCLN41AIzujd2Ds0DaSwvJG1Qk89L3TATKXW17W6NqGCsX/exoA+37rbgg
-	v4DiGTVcaDbqW36C/fBL0V31iCP98EESFsRzL/7g1ubE3ZQIstdC/9o42TIFbEd4cETOUQ
-	LTHyNXFiZXXdD/8d8GdF7cU7MzzF9ufSdxqpaXlzMd4kTcWEnuQRwWHZOmL5eQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1739701653;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8UDdI7fW/FRxm0SJsuY4wz4Lj3XvYXPcwSHR/kIT/08=;
-	b=VJOMQUOJqf5983pAmXgu3K/uH+noiSsRM2knVL/ON9EbWzS6A6hSQgNFK7l8e9+dvostFq
-	EPmfj7+Mz3OP+2dRWdfP3h0wcqqyXBPuq2w62LRQrFx4EKiGgVHcV290GYmPwsR1m/b+yJ
-	WAYgeO+of8dZ6Qc1ad5OwkFfdIdM79QQgSJGg+M/6JyD0kQ7ZiUtEs0Aw66WYiVUpolagY
-	TTrtRS5YCTrygiy3u9EhqEBWqc/dUbNglQsGvfTU/QGSyy8s506Dkffx/zFvGdH8R+m2uV
-	fylchr+47fBYNb72TEVe3fLxEaMTsBszCvph+JuHlsOSCMfwWP5hEUsrR/fjnQ==
-ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1739701653; a=rsa-sha256;
-	cv=none;
-	b=ZBJ56CB07Z+z1S8bIb+4rr4vRBy8w5OVBoISiy3QMAVjzbBtBLc5Y1soyYHWX8fOb6mCdY
-	jbiZ5urA6n9O3nnnQGXoNeLv8TR3PTkyEQA4rh0DZOZ3v0PQgKLzTOiThP7zB3sZ+nCeYk
-	Xa4cFZEijGV377BvPEslHroBqWnxDMsTLaqGhdsWkl3XJdX9Gr63F4Zq5WRHkjYKhUkJV8
-	KyZCnWKQsA2yN8oIm5dk2UP4KgYwtRJMG3Xq8f8MPnzc1zwww/bql+32zYq+jDnDRQUKFC
-	OLlM+FWzb9oIH6DLu6045YxYhnmbdl58TNcn/MbSxONjf06B1bw5MTRzyNAu/Q==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
-Received: from valkosipuli.retiisi.eu (valkosipuli.localdomain [192.168.4.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by hillosipuli.retiisi.eu (Postfix) with ESMTPS id 35F8A634C93;
-	Sun, 16 Feb 2025 12:27:30 +0200 (EET)
-Date: Sun, 16 Feb 2025 10:27:30 +0000
-From: Sakari Ailus <sakari.ailus@iki.fi>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Sicelo <absicsz@gmail.com>, Robin Murphy <robin.murphy@arm.com>,
-	joro@8bytes.org, will@kernel.org, mchehab@kernel.org,
-	andersson@kernel.org, mathieu.poirier@linaro.org, hns@goldelico.com,
-	b-padhi@ti.com, andreas@kemnade.info, iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-remoteproc@vger.kernel.org
-Subject: Re: [PATCH 2/4] media: omap3isp: Handle ARM dma_iommu_mapping
-Message-ID: <Z7G9kkYgvWQu2xPa@valkosipuli.retiisi.eu>
-References: <cover.1730136799.git.robin.murphy@arm.com>
- <34542c9552ce8cd12a5c292e79589acd964075d5.1730136799.git.robin.murphy@arm.com>
- <Z7A61N13dZpu53xI@tp440p.steeds.sam>
- <20250215194328.GF12632@pendragon.ideasonboard.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A762023497D;
+	Tue, 18 Feb 2025 17:34:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739900059; cv=none; b=PvUIathmnUiq5yfGsOj8GBn+JXK6fzmibdD84DGB5LY/q1wtvOjISCp5oGeXkZ9gijNTrCNEyrjbpBvNvX62k7ye1l/KbRarRoKDRXlWNWFZYCeFwIGdIpt97oZbM27sI4IGoYrKwvus+k6BV+WxskCwk7zn3FgaXkwd/JXLYFI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739900059; c=relaxed/simple;
+	bh=pxveCCd+0WuDtzslFIWMUmLkuSfXogvGgq1ZCpgIRTU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=JExUzikuWhPKAD1nwOFtkDbf/e4ci2ZUrKJpNvWM4HvNtj9Di+2PL322Rc0Xx5n7IoDaGUWVmKbyYx8pVV02ZFlgji9Kg5Da4Od1qtq5XDjLcx9AjAN6ZHXBMpD89292ywIfRzeM6PnPX6fqHXIuy5zpx5yB1tkA/c7mpTXzjTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Sn83F6p0; arc=none smtp.client-ip=198.47.23.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 51IHXhih1719889
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 18 Feb 2025 11:33:44 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1739900024;
+	bh=APPaTWCDnxYJLE0VYqIvhKqd5gtGQPP8bAgHzOeugXU=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=Sn83F6p0MCJsKg8Rbdis+Xu6V3a/WcTnbV2rN9T80EUPq7dnjRlL2q4HX127vvNgy
+	 VLZ84Y2+553DGxXdJ7UJAw+7sYlUf9u5iPlcB3d1VcMUWo+QSk9LlqeVbsZBNGtTZj
+	 5+bHPVgkpSdgU7QR1O5LadJkkzRVsGJmEm02MyyM=
+Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 51IHXhrs004385
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 18 Feb 2025 11:33:43 -0600
+Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 18
+ Feb 2025 11:33:43 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 18 Feb 2025 11:33:43 -0600
+Received: from [128.247.29.251] (dmz007xyy.dhcp.ti.com [128.247.29.251])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 51IHXhM5037290;
+	Tue, 18 Feb 2025 11:33:43 -0600
+Message-ID: <a7a2709b-f7ad-469e-86f3-6db4b4b3b37a@ti.com>
+Date: Tue, 18 Feb 2025 11:33:43 -0600
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250215194328.GF12632@pendragon.ideasonboard.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/3] Add TI TPS65215 PMIC GPIO Support
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+CC: <aaro.koskinen@iki.fi>, <andreas@kemnade.info>, <khilman@baylibre.com>,
+        <rogerq@kernel.org>, <tony@atomide.com>, <linus.walleij@linaro.org>,
+        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-gpio@vger.kernel.org>, <m-leonard@ti.com>, <praneeth@ti.com>,
+        <christophe.jaillet@wanadoo.fr>
+References: <20250113225530.124213-1-s-ramamoorthy@ti.com>
+ <CAMRc=Meqjy+cqfueM_dQE8uP32zS0ib41qE+OPPWFkhoVTGc2w@mail.gmail.com>
+ <065cdaca-cc37-4b1e-9c1e-e2dedbb2ffd5@ti.com>
+ <CAMRc=MfR2q8TTcEHtbX9HxyFikHP_nS+Mva3dTwmgu4tvkxJ1w@mail.gmail.com>
+Content-Language: en-US
+From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+Organization: PMIC
+In-Reply-To: <CAMRc=MfR2q8TTcEHtbX9HxyFikHP_nS+Mva3dTwmgu4tvkxJ1w@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Hi Laurent, others,
+Hi,
 
-On Sat, Feb 15, 2025 at 09:43:28PM +0200, Laurent Pinchart wrote:
-> CC'ing Sakari.
-> 
-> Sakari, would you pick this patch ?
 
-Thanks! I wonder what happened -- it wasn't visible in Linuxtv.org
-Patchwork but could be found via the message id.
+On 2/13/25 2:11 AM, Bartosz Golaszewski wrote:
+> On Wed, Feb 12, 2025 at 10:12 PM Shree Ramamoorthy <s-ramamoorthy@ti.com> wrote:
+>> Hi,
+>>
+>>
+>> On 2/7/25 2:53 AM, Bartosz Golaszewski wrote:
+>>> On Mon, Jan 13, 2025 at 11:55 PM Shree Ramamoorthy <s-ramamoorthy@ti.com> wrote:
+>>>> TPS65215 is a Power Management Integrated Circuit (PMIC) that has
+>>>> significant register map overlap with TPS65219. The series introduces
+>>>> TPS65215 and restructures the existing driver to support multiple devices.
+>>>>
+>>>> This follow-up series is dependent on:
+>>>> Commit f84464ec8190 ("regulator: dt-bindings: Add TI TPS65215 PMIC bindings")
+>>>> Commit 8206c20f4c82 ("mfd: tps65215: Add support for TI TPS65215 PMIC")
+>>>> Commit 0e0b7f00c111 ("mfd: tps65215: Remove regmap_read check")
+>>>>
+>>> Did these go into v6.14?
+>>>
+>>> Bart
+>> The dependencies listed in the cover letter were just applied by Lee Jones:
+>> https://lore.kernel.org/all/173928615760.2233464.12306998726512431222.b4-ty@kernel.org/
+>>
+>> The rest of this series still applies without a need for code modifications.
+>>
+> I'm not sure I'm following: should this series wait until v6.15-rc1 is
+> tagged? Or did you ask Lee to create an immutable branch? Or doesn't
+> this series depend on the MFD changes at all after all?
+>
+> Bart
 
-It's in my tree now.
+Sorry about the confusion. Lee didn't create an immutable branch and the series does depend on the MFD changes,
+so this GPIO series should wait till v6.15-rc1 is tagged. Thank you!
 
-> 
-> On Sat, Feb 15, 2025 at 08:57:24AM +0200, Sicelo wrote:
-> > On Mon, Oct 28, 2024 at 05:58:36PM +0000, Robin Murphy wrote:
-> > > It's no longer practical for the OMAP IOMMU driver to trick
-> > > arm_setup_iommu_dma_ops() into ignoring its presence, so let's use the
-> > > same tactic as other IOMMU API users on 32-bit ARM and explicitly kick
-> > > the arch code's dma_iommu_mapping out of the way to avoid problems.
-> > > 
-> > > Fixes: 4720287c7bf7 ("iommu: Remove struct iommu_ops *iommu from arch_setup_dma_ops()")
-> > > Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-> > > ---
-> > >  drivers/media/platform/ti/omap3isp/isp.c | 7 +++++++
-> > >  1 file changed, 7 insertions(+)
-> > > 
-> > > diff --git a/drivers/media/platform/ti/omap3isp/isp.c b/drivers/media/platform/ti/omap3isp/isp.c
-> > > index 91101ba88ef0..b2210841a320 100644
-> > > --- a/drivers/media/platform/ti/omap3isp/isp.c
-> > > +++ b/drivers/media/platform/ti/omap3isp/isp.c
-> > > @@ -1961,6 +1961,13 @@ static int isp_attach_iommu(struct isp_device *isp)
-> > >  	struct dma_iommu_mapping *mapping;
-> > >  	int ret;
-> > >  
-> > > +	/* We always want to replace any default mapping from the arch code */
-> > > +	mapping = to_dma_iommu_mapping(isp->dev);
-> > > +	if (mapping) {
-> > > +		arm_iommu_detach_device(isp->dev);
-> > > +		arm_iommu_release_mapping(mapping);
-> > > +	}
-> > > +
-> > >  	/*
-> > >  	 * Create the ARM mapping, used by the ARM DMA mapping core to allocate
-> > >  	 * VAs. This will allocate a corresponding IOMMU domain.
-> > > -- 
-> > > 2.39.2.101.g768bb238c484.dirty
-> > > 
-> > 
-> > I have finally found time to test this patch on the Nokia N900 and can
-> > confirm it is working fine.
-> > 
-> > I was wondering - is there a reason that it is not merged yet? I tested
-> > on 6.14-rc2, which did not have it, and notice it is also not in
-> > linux-next.
-> > 
-> > If it helps:
-> > 
-> > Tested-by: Sicelo A. Mhlongo <absicsz@gmail.com>
-> 
 
 -- 
-Regards,
+Best,
+Shree Ramamoorthy
+PMIC Software Engineer
 
-Sakari Ailus
 
