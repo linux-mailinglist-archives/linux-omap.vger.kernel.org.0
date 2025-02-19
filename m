@@ -1,130 +1,115 @@
-Return-Path: <linux-omap+bounces-3296-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3297-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 546CBA3A468
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Feb 2025 18:34:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9280EA3C88D
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Feb 2025 20:25:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49C643A4245
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Feb 2025 17:34:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D275177BB0
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Feb 2025 19:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE89A26FA4A;
-	Tue, 18 Feb 2025 17:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7F3D22B59A;
+	Wed, 19 Feb 2025 19:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Sn83F6p0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VC0GJR/z"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A762023497D;
-	Tue, 18 Feb 2025 17:34:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9F722ACC5;
+	Wed, 19 Feb 2025 19:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739900059; cv=none; b=PvUIathmnUiq5yfGsOj8GBn+JXK6fzmibdD84DGB5LY/q1wtvOjISCp5oGeXkZ9gijNTrCNEyrjbpBvNvX62k7ye1l/KbRarRoKDRXlWNWFZYCeFwIGdIpt97oZbM27sI4IGoYrKwvus+k6BV+WxskCwk7zn3FgaXkwd/JXLYFI=
+	t=1739992939; cv=none; b=iSvs4D3df/MAf4BjJENFs3to5VOGiBJAfcgbg2d3NAjA1lD8tTBwBMz3uyGETIGIqt1nJMVUUnjM1s5p1nVGAbBT4QWBLGaQbYQRuWAnHsMH0OS9U/D8Yz/k7xCxr5NKNIAX5VGlMLUDoggZ517rt9xpPK+SDGtDfjo6VWMDDKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739900059; c=relaxed/simple;
-	bh=pxveCCd+0WuDtzslFIWMUmLkuSfXogvGgq1ZCpgIRTU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=JExUzikuWhPKAD1nwOFtkDbf/e4ci2ZUrKJpNvWM4HvNtj9Di+2PL322Rc0Xx5n7IoDaGUWVmKbyYx8pVV02ZFlgji9Kg5Da4Od1qtq5XDjLcx9AjAN6ZHXBMpD89292ywIfRzeM6PnPX6fqHXIuy5zpx5yB1tkA/c7mpTXzjTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Sn83F6p0; arc=none smtp.client-ip=198.47.23.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 51IHXhih1719889
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Feb 2025 11:33:44 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1739900024;
-	bh=APPaTWCDnxYJLE0VYqIvhKqd5gtGQPP8bAgHzOeugXU=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=Sn83F6p0MCJsKg8Rbdis+Xu6V3a/WcTnbV2rN9T80EUPq7dnjRlL2q4HX127vvNgy
-	 VLZ84Y2+553DGxXdJ7UJAw+7sYlUf9u5iPlcB3d1VcMUWo+QSk9LlqeVbsZBNGtTZj
-	 5+bHPVgkpSdgU7QR1O5LadJkkzRVsGJmEm02MyyM=
-Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 51IHXhrs004385
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 18 Feb 2025 11:33:43 -0600
-Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 18
- Feb 2025 11:33:43 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 18 Feb 2025 11:33:43 -0600
-Received: from [128.247.29.251] (dmz007xyy.dhcp.ti.com [128.247.29.251])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 51IHXhM5037290;
-	Tue, 18 Feb 2025 11:33:43 -0600
-Message-ID: <a7a2709b-f7ad-469e-86f3-6db4b4b3b37a@ti.com>
-Date: Tue, 18 Feb 2025 11:33:43 -0600
+	s=arc-20240116; t=1739992939; c=relaxed/simple;
+	bh=La6YpO1quzw/PLTrDv6KYWGSnd+rPhsxECccWv9nqa0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LqAOPv49fPT7lwCAxBluKXWSXk3z5sjbH49adVGWOjp8gUqE+B+E5qn2dtG/SR+E4XITukBVf7pCNj8bJ7U3BkSMsHCsHM3YglFSUrMhsJU4XcSvR4ZLzR5eg9Vs3kA7Ta+CC5/A+liSSTt0yPO1TQlA4cKDqnwD2xHRRO7ryj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VC0GJR/z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8EBBC4CED1;
+	Wed, 19 Feb 2025 19:22:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739992938;
+	bh=La6YpO1quzw/PLTrDv6KYWGSnd+rPhsxECccWv9nqa0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VC0GJR/zH6HKyhpw5vHIdKm9LjePcxjRFfYB8b2TcZtQ95FVen8g0jWPJl3JTQ7FA
+	 Ikn8we5oMtT3QPFO5Bv4omRt/830AofvaCk1t20WKvkjoiSKkY+WWaQxt49kXP630D
+	 6dSln/zLQqd9tk/jnGSdUhBWXgpege5XIJe2Gho3eBACar6mv989kLx0mog3MOGU3N
+	 Qkbs5jZLYvcMqeZlL9FVCl2//CJgN3zTFR+NyOQv9zTLu6vqDeandpdB55nMZgmMyH
+	 7zM/3dX1epcTJmzjY4m+Oz30HFNBfe/9MRxjWfpoQVfsxNboP4lavzKXasMEbv2RBG
+	 UXPwMAA62QpZw==
+Date: Wed, 19 Feb 2025 20:22:13 +0100
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: vigneshr@ti.com, aaro.koskinen@iki.fi, khilman@baylibre.com, 
+	rogerq@kernel.org, tony@atomide.com, jmkrzyszt@gmail.com, reidt@ti.com, 
+	wsa@kernel.org, linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@kernel.org
+Subject: Re: [PATCH] i2c: omap: fix IRQ storms
+Message-ID: <c3bcusjbn23z5yd2a3xtm7swnfizkl7rb6ufhicdhn52epnjvb@5uqm3g6jcony>
+References: <20250207185435.751878-1-andreas@kemnade.info>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/3] Add TI TPS65215 PMIC GPIO Support
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-CC: <aaro.koskinen@iki.fi>, <andreas@kemnade.info>, <khilman@baylibre.com>,
-        <rogerq@kernel.org>, <tony@atomide.com>, <linus.walleij@linaro.org>,
-        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-gpio@vger.kernel.org>, <m-leonard@ti.com>, <praneeth@ti.com>,
-        <christophe.jaillet@wanadoo.fr>
-References: <20250113225530.124213-1-s-ramamoorthy@ti.com>
- <CAMRc=Meqjy+cqfueM_dQE8uP32zS0ib41qE+OPPWFkhoVTGc2w@mail.gmail.com>
- <065cdaca-cc37-4b1e-9c1e-e2dedbb2ffd5@ti.com>
- <CAMRc=MfR2q8TTcEHtbX9HxyFikHP_nS+Mva3dTwmgu4tvkxJ1w@mail.gmail.com>
-Content-Language: en-US
-From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-Organization: PMIC
-In-Reply-To: <CAMRc=MfR2q8TTcEHtbX9HxyFikHP_nS+Mva3dTwmgu4tvkxJ1w@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250207185435.751878-1-andreas@kemnade.info>
 
 Hi,
 
+On Fri, Feb 07, 2025 at 07:54:35PM +0100, Andreas Kemnade wrote:
+> On the GTA04A5 writing a reset command to the gyroscope causes IRQ
+> storms because NACK IRQs are enabled and therefore triggered but not
+> acked.
+> 
+> Sending a reset command to the gyroscope by
+> i2cset 1 0x69 0x14 0xb6
+> with an additional debug print in the ISR (not the thread) itself
+> causes
+> 
+> [ 363.353515] i2c i2c-1: ioctl, cmd=0x720, arg=0xbe801b00
+> [ 363.359039] omap_i2c 48072000.i2c: addr: 0x0069, len: 2, flags: 0x0, stop: 1
+> [ 363.366180] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x1110)
+> [ 363.371673] omap_i2c 48072000.i2c: IRQ (ISR = 0x0010)
+> [ 363.376892] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+> [ 363.382263] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+> [ 363.387664] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+> repeating till infinity
+> [...]
+> (0x2 = NACK, 0x100 = Bus free, which is not enabled)
+> Apparently no other IRQ bit gets set, so this stalls.
+> 
+> Do not ignore enabled interrupts and make sure they are acked.
+> If the NACK IRQ is not needed, it should simply not enabled, but
+> according to the above log, caring about it is necessary unless
+> the Bus free IRQ is enabled and handled. The assumption that is
+> will always come with a ARDY IRQ, which was the idea behind
+> ignoring it, proves wrong.
+> It is true for simple reads from an unused address.
+> 
+> So revert
+> commit c770657bd261 ("i2c: omap: Fix standard mode false ACK readings").
+> 
+> The offending commit was used to reduce the false detections in
+> i2cdetect. i2cdetect warns for confusing the I2C bus, so having some
+> rare false detections (I have never seen such on my systems) is the
+> lesser devil than having basically the system hanging completely.
+> 
+> No more details came to light in the corresponding email thread since
+> several months:
+> https://lore.kernel.org/linux-omap/20230426194956.689756-1-reidt@ti.com/
+> so no better fix to solve both problems can be developed right now.
 
-On 2/13/25 2:11 AM, Bartosz Golaszewski wrote:
-> On Wed, Feb 12, 2025 at 10:12 PM Shree Ramamoorthy <s-ramamoorthy@ti.com> wrote:
->> Hi,
->>
->>
->> On 2/7/25 2:53 AM, Bartosz Golaszewski wrote:
->>> On Mon, Jan 13, 2025 at 11:55 PM Shree Ramamoorthy <s-ramamoorthy@ti.com> wrote:
->>>> TPS65215 is a Power Management Integrated Circuit (PMIC) that has
->>>> significant register map overlap with TPS65219. The series introduces
->>>> TPS65215 and restructures the existing driver to support multiple devices.
->>>>
->>>> This follow-up series is dependent on:
->>>> Commit f84464ec8190 ("regulator: dt-bindings: Add TI TPS65215 PMIC bindings")
->>>> Commit 8206c20f4c82 ("mfd: tps65215: Add support for TI TPS65215 PMIC")
->>>> Commit 0e0b7f00c111 ("mfd: tps65215: Remove regmap_read check")
->>>>
->>> Did these go into v6.14?
->>>
->>> Bart
->> The dependencies listed in the cover letter were just applied by Lee Jones:
->> https://lore.kernel.org/all/173928615760.2233464.12306998726512431222.b4-ty@kernel.org/
->>
->> The rest of this series still applies without a need for code modifications.
->>
-> I'm not sure I'm following: should this series wait until v6.15-rc1 is
-> tagged? Or did you ask Lee to create an immutable branch? Or doesn't
-> this series depend on the MFD changes at all after all?
->
-> Bart
+I need someone from TI or someone who can test to ack here.
 
-Sorry about the confusion. Lee didn't create an immutable branch and the series does depend on the MFD changes,
-so this GPIO series should wait till v6.15-rc1 is tagged. Thank you!
+Can someone help?
 
-
--- 
-Best,
-Shree Ramamoorthy
-PMIC Software Engineer
-
+Thanks,
+Andi
 
