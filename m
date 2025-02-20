@@ -1,56 +1,57 @@
-Return-Path: <linux-omap+bounces-3297-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3298-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9280EA3C88D
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Feb 2025 20:25:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A8FBA3D231
+	for <lists+linux-omap@lfdr.de>; Thu, 20 Feb 2025 08:27:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D275177BB0
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Feb 2025 19:23:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 933BD3BE811
+	for <lists+linux-omap@lfdr.de>; Thu, 20 Feb 2025 07:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7F3D22B59A;
-	Wed, 19 Feb 2025 19:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642F81E98EB;
+	Thu, 20 Feb 2025 07:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VC0GJR/z"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="HtZulXJv"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9F722ACC5;
-	Wed, 19 Feb 2025 19:22:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBDE319AD8D;
+	Thu, 20 Feb 2025 07:23:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739992939; cv=none; b=iSvs4D3df/MAf4BjJENFs3to5VOGiBJAfcgbg2d3NAjA1lD8tTBwBMz3uyGETIGIqt1nJMVUUnjM1s5p1nVGAbBT4QWBLGaQbYQRuWAnHsMH0OS9U/D8Yz/k7xCxr5NKNIAX5VGlMLUDoggZ517rt9xpPK+SDGtDfjo6VWMDDKI=
+	t=1740036225; cv=none; b=YB3c6+x3GvbZnr6WoVxc7QsYBdniLB8Vk3gIFGMHCxMCETF31VXNXCLUv6Ut6DVXIGJTrnlIc7CnxJ4cqtlKOxnSMylZrAXZhKp6tiNDmpWrGSb9+0qNEMwTyfcRzxNhgSEw7qmjcBlXhKrmZOGjrfnDp1XP/NIlWWOOwi5jdxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739992939; c=relaxed/simple;
-	bh=La6YpO1quzw/PLTrDv6KYWGSnd+rPhsxECccWv9nqa0=;
+	s=arc-20240116; t=1740036225; c=relaxed/simple;
+	bh=coKTrJXRY5YJVty/ywvDgaPfSuPlIir5d4ohg0YS5i0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LqAOPv49fPT7lwCAxBluKXWSXk3z5sjbH49adVGWOjp8gUqE+B+E5qn2dtG/SR+E4XITukBVf7pCNj8bJ7U3BkSMsHCsHM3YglFSUrMhsJU4XcSvR4ZLzR5eg9Vs3kA7Ta+CC5/A+liSSTt0yPO1TQlA4cKDqnwD2xHRRO7ryj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VC0GJR/z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8EBBC4CED1;
-	Wed, 19 Feb 2025 19:22:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739992938;
-	bh=La6YpO1quzw/PLTrDv6KYWGSnd+rPhsxECccWv9nqa0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VC0GJR/zH6HKyhpw5vHIdKm9LjePcxjRFfYB8b2TcZtQ95FVen8g0jWPJl3JTQ7FA
-	 Ikn8we5oMtT3QPFO5Bv4omRt/830AofvaCk1t20WKvkjoiSKkY+WWaQxt49kXP630D
-	 6dSln/zLQqd9tk/jnGSdUhBWXgpege5XIJe2Gho3eBACar6mv989kLx0mog3MOGU3N
-	 Qkbs5jZLYvcMqeZlL9FVCl2//CJgN3zTFR+NyOQv9zTLu6vqDeandpdB55nMZgmMyH
-	 7zM/3dX1epcTJmzjY4m+Oz30HFNBfe/9MRxjWfpoQVfsxNboP4lavzKXasMEbv2RBG
-	 UXPwMAA62QpZw==
-Date: Wed, 19 Feb 2025 20:22:13 +0100
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: vigneshr@ti.com, aaro.koskinen@iki.fi, khilman@baylibre.com, 
-	rogerq@kernel.org, tony@atomide.com, jmkrzyszt@gmail.com, reidt@ti.com, 
-	wsa@kernel.org, linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@kernel.org
-Subject: Re: [PATCH] i2c: omap: fix IRQ storms
-Message-ID: <c3bcusjbn23z5yd2a3xtm7swnfizkl7rb6ufhicdhn52epnjvb@5uqm3g6jcony>
-References: <20250207185435.751878-1-andreas@kemnade.info>
+	 Content-Type:Content-Disposition:In-Reply-To; b=qaRgOqrkKZ0BBLEZuhK8jgyhAeYm2qwID1iiAR4oog3pBg60BaUecfMcQftyAgW+jApSBZD/4Cylgv14eIArbpUv+a5rOlgEYhIhFe43wdtpuaVWGrKivigeSibS6O5NcJNG010FE1lns1AI7fcJHtnseYrCLsGR99MeiDvaqWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=HtZulXJv; arc=none smtp.client-ip=1.95.21.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=eZakjKfpdd5q/kOY1YxjEFOCLh8Mn5U9WJBrLFqWMoU=;
+	b=HtZulXJvCYpp6bfr1Cb1q57qdDU/Er9FqWwOrtMwATooCFvidhbTNuZJX9gL7O
+	KXUV9PwUIrDoEOLYsQ2V/h7z2ntDNgBQewP+JB0TK50V2pS6Tpd/MMY5yLPrYLyt
+	evbjfJGlwDs5IBZkFZwkhijtRW95OeRGmq+2tn7D9JGk4=
+Received: from dragon (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgDHrBFK2LZnqKBgCQ--.19831S3;
+	Thu, 20 Feb 2025 15:22:52 +0800 (CST)
+Date: Thu, 20 Feb 2025 15:22:50 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Stefan Agner <stefan@agner.ch>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: nxp: vf: Align GPIO hog name with bindings
+Message-ID: <Z7bYShssqtqLusX0@dragon>
+References: <20250115211659.194072-1-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -59,57 +60,20 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250207185435.751878-1-andreas@kemnade.info>
+In-Reply-To: <20250115211659.194072-1-krzysztof.kozlowski@linaro.org>
+X-CM-TRANSID:Mc8vCgDHrBFK2LZnqKBgCQ--.19831S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVcTmUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEgr5ZWe202UXKgAAse
 
-Hi,
+On Wed, Jan 15, 2025 at 10:16:58PM +0100, Krzysztof Kozlowski wrote:
+> Bindings expect GPIO hog names to end with 'hog' suffix, so correct it
+> to fix dtbs_check warning:
+> 
+>   vf610-zii-dev-rev-c.dtb: eth0_intrp: $nodename:0: 'eth0_intrp' does not match '^.+-hog(-[0-9]+)?$'
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-On Fri, Feb 07, 2025 at 07:54:35PM +0100, Andreas Kemnade wrote:
-> On the GTA04A5 writing a reset command to the gyroscope causes IRQ
-> storms because NACK IRQs are enabled and therefore triggered but not
-> acked.
-> 
-> Sending a reset command to the gyroscope by
-> i2cset 1 0x69 0x14 0xb6
-> with an additional debug print in the ISR (not the thread) itself
-> causes
-> 
-> [ 363.353515] i2c i2c-1: ioctl, cmd=0x720, arg=0xbe801b00
-> [ 363.359039] omap_i2c 48072000.i2c: addr: 0x0069, len: 2, flags: 0x0, stop: 1
-> [ 363.366180] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x1110)
-> [ 363.371673] omap_i2c 48072000.i2c: IRQ (ISR = 0x0010)
-> [ 363.376892] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-> [ 363.382263] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-> [ 363.387664] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-> repeating till infinity
-> [...]
-> (0x2 = NACK, 0x100 = Bus free, which is not enabled)
-> Apparently no other IRQ bit gets set, so this stalls.
-> 
-> Do not ignore enabled interrupts and make sure they are acked.
-> If the NACK IRQ is not needed, it should simply not enabled, but
-> according to the above log, caring about it is necessary unless
-> the Bus free IRQ is enabled and handled. The assumption that is
-> will always come with a ARDY IRQ, which was the idea behind
-> ignoring it, proves wrong.
-> It is true for simple reads from an unused address.
-> 
-> So revert
-> commit c770657bd261 ("i2c: omap: Fix standard mode false ACK readings").
-> 
-> The offending commit was used to reduce the false detections in
-> i2cdetect. i2cdetect warns for confusing the I2C bus, so having some
-> rare false detections (I have never seen such on my systems) is the
-> lesser devil than having basically the system hanging completely.
-> 
-> No more details came to light in the corresponding email thread since
-> several months:
-> https://lore.kernel.org/linux-omap/20230426194956.689756-1-reidt@ti.com/
-> so no better fix to solve both problems can be developed right now.
+Applied, thanks!
 
-I need someone from TI or someone who can test to ack here.
-
-Can someone help?
-
-Thanks,
-Andi
 
