@@ -1,151 +1,114 @@
-Return-Path: <linux-omap+bounces-3312-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3313-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9D7FA496E3
-	for <lists+linux-omap@lfdr.de>; Fri, 28 Feb 2025 11:19:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE8BA4984E
+	for <lists+linux-omap@lfdr.de>; Fri, 28 Feb 2025 12:29:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A2FE172AD3
-	for <lists+linux-omap@lfdr.de>; Fri, 28 Feb 2025 10:18:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA5EB3B89DB
+	for <lists+linux-omap@lfdr.de>; Fri, 28 Feb 2025 11:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6391E25DCEF;
-	Fri, 28 Feb 2025 10:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC992620C3;
+	Fri, 28 Feb 2025 11:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="XxojHIRP"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="D/gvxBky"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8DC25DAF4;
-	Fri, 28 Feb 2025 10:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62195849C;
+	Fri, 28 Feb 2025 11:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740737840; cv=none; b=GVqBvwoIARoKLFFVsuIPZobYabjwJ80JSWab7IdfBS5KkJcaW7IpKQ0jj+ECqApUCmt8w6Guk/wzix3Jhb5TK85AYzzG+rP3aqfTcMVgbpl5WtHBV+tCkoqpKsKFCuwJ/6SxLk4gd+3+9TaiTxjecG8Ie0v2MAly6xZo9EWPcGo=
+	t=1740742146; cv=none; b=ZRH3RL/bc3JEt6tmDgawOWzCrox3UPgpQjhdBxJQ0C0Abn2uKcyCxaSi0EqYtOHW96YjkcIDbNwThgKZTj3dlyHNQxc3U61iMk/wcnKPB8EGbLJ96Td7vELxkTYNDAoo8RS0K424Dr6QCZVkfO6FRC7hWKeEUYElQE0aR1D1aQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740737840; c=relaxed/simple;
-	bh=fvbjrF3RFlitvr8uzEvx8ow4b31xsSTWcr8kpA4lx3A=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b89lqAkLb/x7dIWuaB+NXP9pjUrhEE54634UfU+gGKwCKcXvRG6SN941YatvWP68WMfzQUoQwCQiRmmkxuZTL9X/zsoihBaVYlkOIEM8UjRgzli+BhyKhETsVxMRFgGrjNpRe/+p00219xc2nHDkOmvBfJTsQc2BcmQpd7rqYNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=XxojHIRP; arc=none smtp.client-ip=178.238.236.174
+	s=arc-20240116; t=1740742146; c=relaxed/simple;
+	bh=Esl8+tCtDY0CJiVw8EehvFLirtiKZE38eHn9WD+1GZU=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=dOAXVD1b8vhazpo4C1xT3lmlKaXOtrAbOxaddWegvZ/j4QtxZUpQaHBgIVhUfeaWwiieNN14NASxBt+vW7Hhe3WJlU5thNp8wkPwpBy6Q5RaWfAdgbj6C6SYVI/Ihhfqj/s1kd9zgPaB28GLZDZzcORrrck+1hFqw9aWtynCWyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=D/gvxBky; arc=none smtp.client-ip=178.238.236.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=XM4FcO+7xezO5MBIOl4ah63+MR0NMozspQG+f2a2VZA=; b=XxojHIRPnmi/KnLTCn0pg9t8SF
-	435H+hao7/hsBjESMMsyzO52ehDz2U3BVZ7A2ss0o0DTAizrK/ksE+rjA03qdwmFe9y/E57r3KIXt
-	uncVANUBjTFZwy57BdErslKvidMkDf3ufAYGxBGm7V2Ygdl39DZZ1uc3xWt98keyYoETq9iWJMBCu
-	evGzAFalO1QN5Z2dv2L/ynJmE0RNg2k4Cot5mvee8Z4Gu1UvfUEbJSfFVwqVDrJUOroxeWAH9Sml9
-	XQup9aiE7vGTehfEJ3/V4bdRd3VM4MUlzJiBwMUy6BytytQhv6kdPM6Mu1dlCPy0t+uOyLhzBGzhX
-	bdTN0yJQ==;
-Date: Fri, 28 Feb 2025 11:17:07 +0100
+	d=kemnade.info; s=20220719; h=From:Sender:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=zNHptpbLXQ8swyWY9wfkxP0OcEEdiU/o4VafTsgVKzY=; b=D/gvxBkyHgUgFjNP31TQpXtqHa
+	5fYBULwlTR36eWlzN7e7Ud8N67vuvze555S8fALOQCoPbKfl2T/jRXdsczwy1s1uMM+MYiqyBhHW4
+	ExbsaslAai+b9rctDi2y2x8m23I+LFUgALKvn4hnQhR4LPvk2i0462OB4U7R1jzrIwpRD/NoX5EvU
+	x3XjkLIw/g8vWy3OVTmlkhC3/ge7/c0BCkQGyRx97CKPdVycj5J/ExTDjCI7uk6fJftQruJQHDqIs
+	mCk0jXzwEGMmtJAubB3FwBnlgV/Ay1EiDGgr+VB11YOOYdObW2x3PBSxGu3/cvTm0TDoQvKcmmxsC
+	Sc61pbTg==;
 From: Andreas Kemnade <andreas@kemnade.info>
-To: Nishanth Menon <nm@ti.com>
-Cc: Andi Shyti <andi.shyti@kernel.org>, <vigneshr@ti.com>,
- <aaro.koskinen@iki.fi>, <khilman@baylibre.com>, <rogerq@kernel.org>,
- <tony@atomide.com>, <jmkrzyszt@gmail.com>, <reidt@ti.com>,
- <wsa@kernel.org>, <linux-omap@vger.kernel.org>,
- <linux-i2c@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <stable@kernel.org>
-Subject: Re: [PATCH] i2c: omap: fix IRQ storms
-Message-ID: <20250228111707.6bf2b992@akair>
-In-Reply-To: <20250227142055.ndzavzysaenoducj@murky>
-References: <20250207185435.751878-1-andreas@kemnade.info>
-	<c3bcusjbn23z5yd2a3xtm7swnfizkl7rb6ufhicdhn52epnjvb@5uqm3g6jcony>
-	<20250220100745.05c0eff8@akair>
-	<20250227142055.ndzavzysaenoducj@murky>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+To: aaro.koskinen@iki.fi,
+	andreas@kemnade.info,
+	khilman@baylibre.com,
+	rogerq@kernel.org,
+	tony@atomide.com,
+	linux@armlinux.org.uk,
+	linux-omap@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] ARM: omap2plus_defconfig: enable I2C devices of GTA04
+Date: Fri, 28 Feb 2025 12:27:50 +0100
+Message-Id: <20250228112750.367251-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Am Thu, 27 Feb 2025 08:20:55 -0600
-schrieb Nishanth Menon <nm@ti.com>:
+Enable I2C devices of GTA04 to get better test coverage when using
+the defconfig. Until the I2C host driver is fixed, BMG160 module should be
+blacklisted when booting on the GTA04A5.
 
-> On 10:08-20250220, Andreas Kemnade wrote:
-> > Am Wed, 19 Feb 2025 20:22:13 +0100
-> > schrieb Andi Shyti <andi.shyti@kernel.org>:
-> >   
-> > > Hi,
-> > > 
-> > > On Fri, Feb 07, 2025 at 07:54:35PM +0100, Andreas Kemnade wrote:  
-> > > > On the GTA04A5 writing a reset command to the gyroscope causes IRQ
-> > > > storms because NACK IRQs are enabled and therefore triggered but not
-> > > > acked.
-> > > > 
-> > > > Sending a reset command to the gyroscope by
-> > > > i2cset 1 0x69 0x14 0xb6
-> > > > with an additional debug print in the ISR (not the thread) itself
-> > > > causes
-> > > > 
-> > > > [ 363.353515] i2c i2c-1: ioctl, cmd=0x720, arg=0xbe801b00
-> > > > [ 363.359039] omap_i2c 48072000.i2c: addr: 0x0069, len: 2, flags: 0x0, stop: 1
-> > > > [ 363.366180] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x1110)
-> > > > [ 363.371673] omap_i2c 48072000.i2c: IRQ (ISR = 0x0010)
-> > > > [ 363.376892] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-> > > > [ 363.382263] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-> > > > [ 363.387664] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-> > > > repeating till infinity
-> > > > [...]
-> > > > (0x2 = NACK, 0x100 = Bus free, which is not enabled)
-> > > > Apparently no other IRQ bit gets set, so this stalls.
-> > > > 
-> > > > Do not ignore enabled interrupts and make sure they are acked.
-> > > > If the NACK IRQ is not needed, it should simply not enabled, but
-> > > > according to the above log, caring about it is necessary unless
-> > > > the Bus free IRQ is enabled and handled. The assumption that is
-> > > > will always come with a ARDY IRQ, which was the idea behind
-> > > > ignoring it, proves wrong.
-> > > > It is true for simple reads from an unused address.
-> > > > 
-> > > > So revert
-> > > > commit c770657bd261 ("i2c: omap: Fix standard mode false ACK readings").
-> > > > 
-> > > > The offending commit was used to reduce the false detections in
-> > > > i2cdetect. i2cdetect warns for confusing the I2C bus, so having some
-> > > > rare false detections (I have never seen such on my systems) is the
-> > > > lesser devil than having basically the system hanging completely.
-> > > > 
-> > > > No more details came to light in the corresponding email thread since
-> > > > several months:
-> > > > https://lore.kernel.org/linux-omap/20230426194956.689756-1-reidt@ti.com/
-> > > > so no better fix to solve both problems can be developed right now.    
-> > > 
-> > > I need someone from TI or someone who can test to ack here.
-> > > 
-> > > Can someone help?
-> > >  
-> > The original (IMHO minor) problem which should be fixed by c770657bd261
-> > is hard to test, I have never seen that on any system (and as a
-> > platform maintainer have a bunch of them) I have access to.
-> > There is not much description anywhere about the system in which the
-> > original system occured, and no reaction since several months from the
-> > author, so I do not see anything which can be done.
-> > Maybe it was just faulty hardware.
-> > 
-> > As said in the commit message, reverting it should be the lesser devil.
-> > And that state was tested for many years.  
-> 
-> Can we not handle this slightly differently? leave the fix based on
-> compatible? we know that the i2c controller changed over time. the
-> i2cdetect bug fixed by c770657bd261 esp hard to find and fix.
-> 
-Looking again more deeply, I do not understand how c770657bd261
-should reliably prevent doing stuff without ARDY:
-omap_i2c_xfer_data() is called as a reaction the the IRQ but also in
-a polling loop. So it must deal with situations were only NACK is set
-there.
-So just disabling the IRQ cannot help. If that is just tested via
-i2cdetect, the polling mode is not tested.
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+---
+ arch/arm/configs/omap2plus_defconfig | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Regards,
-Andreas
+diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
+index 6de45d7f6078..84f334e94d5f 100644
+--- a/arch/arm/configs/omap2plus_defconfig
++++ b/arch/arm/configs/omap2plus_defconfig
+@@ -609,6 +609,7 @@ CONFIG_LEDS_LP5523=m
+ CONFIG_LEDS_PCA963X=m
+ CONFIG_LEDS_PWM=m
+ CONFIG_LEDS_BD2606MVV=m
++CONFIG_LEDS_TCA6507=m
+ CONFIG_LEDS_TRIGGERS=y
+ CONFIG_LEDS_TRIGGER_TIMER=m
+ CONFIG_LEDS_TRIGGER_ONESHOT=m
+@@ -643,6 +644,8 @@ CONFIG_TI_EMIF_SRAM=m
+ CONFIG_IIO=m
+ CONFIG_IIO_SW_DEVICE=m
+ CONFIG_IIO_SW_TRIGGER=m
++CONFIG_BMA180=m
++CONFIG_BMC150_ACCEL=m
+ CONFIG_IIO_ST_ACCEL_3AXIS=m
+ CONFIG_KXCJK1013=m
+ CONFIG_CPCAP_ADC=m
+@@ -650,10 +653,15 @@ CONFIG_INA2XX_ADC=m
+ CONFIG_TI_AM335X_ADC=m
+ CONFIG_TWL4030_MADC=m
+ CONFIG_TWL6030_GPADC=m
++CONFIG_BMG160=m
+ CONFIG_MPU3050_I2C=m
++CONFIG_ITG3200=m
++CONFIG_BOSCH_BNO055_I2C=m
+ CONFIG_INV_MPU6050_I2C=m
+ CONFIG_SENSORS_ISL29028=m
+ CONFIG_AK8975=m
++CONFIG_BMC150_MAGN_I2C=m
++CONFIG_SENSORS_HMC5843_I2C=m
+ CONFIG_BMP280=m
+ CONFIG_PWM=y
+ CONFIG_PWM_OMAP_DMTIMER=m
+-- 
+2.39.5
+
 
