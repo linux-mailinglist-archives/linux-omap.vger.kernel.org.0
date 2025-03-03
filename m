@@ -1,107 +1,101 @@
-Return-Path: <linux-omap+bounces-3316-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3317-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E37DEA4A5C5
-	for <lists+linux-omap@lfdr.de>; Fri, 28 Feb 2025 23:17:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F501A4B944
+	for <lists+linux-omap@lfdr.de>; Mon,  3 Mar 2025 09:28:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1CBE7A4DB2
-	for <lists+linux-omap@lfdr.de>; Fri, 28 Feb 2025 22:16:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1117167CAF
+	for <lists+linux-omap@lfdr.de>; Mon,  3 Mar 2025 08:27:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA2F1DE3C0;
-	Fri, 28 Feb 2025 22:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D441EF080;
+	Mon,  3 Mar 2025 08:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HIP8wc4q"
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="CYcVlL/P"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mta-65-227.siemens.flowmailer.net (mta-65-227.siemens.flowmailer.net [185.136.65.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27CD1C54AF;
-	Fri, 28 Feb 2025 22:17:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD511E1A31
+	for <linux-omap@vger.kernel.org>; Mon,  3 Mar 2025 08:27:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740781041; cv=none; b=nEQ7F23Gh5UrNvVrkns659eiwgjCyfeBn4f/BDkQe6PlbsU3JHlcDTzh/k2l9DiYI3zKhYjFi4aozMQskcWFjJk6iEXFmyT4zM10tpQeoVscxy0cRzMEwW9/BS/p3rCnSx2tUKnNO+lWjtiE3IOn1f3Q481z5FjkuK4OeJd/ZxU=
+	t=1740990451; cv=none; b=t085Ono5kjEl3WlBickq3IuoWN6cv9Gg1uWajG6kNNEFtv2FHyTbfj5A3Vi+UIvKTPr+/56MWLctAQzW8cC3/40NrgDk4reMkBdFHqDHdFnFzNSWi3PSZcrmL7X+Jw6QFi0RAkOajg41hC9dEpqbwZ5st+XcIwbmcS59ABh2L0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740781041; c=relaxed/simple;
-	bh=4EFoB0CA+7vj+2I0DEsWtzV0UBQGS9nt5xC07FC5Zv8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hb0N866+H9w2kUBuE9wAvva1ClQefA8TJwc/EFtNADT52iCd85JTWyjQ4AysRew2CCKjT71ziUjy6fAPaHmXHDY4swdXj3Mpu59JxjeFvTQU7jvbbJnphH0BDJvEZSrB6TGvDvpZW9ETvZQfy9gDMYq7I+AQ7kHwK41idQ6h13k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HIP8wc4q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0DBC4CED6;
-	Fri, 28 Feb 2025 22:17:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740781041;
-	bh=4EFoB0CA+7vj+2I0DEsWtzV0UBQGS9nt5xC07FC5Zv8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HIP8wc4qAsPbKgzrVI0afqnf2lypdyAp7w8gU1T3Xn0vxzNSnfYpnPE8ugL88cTDc
-	 /eyQEVQhmUpEkeGJZ6+FrOl/ziQaofpMttIYlieW/bEk4XUjfHYBgWbJ1MaqB1rGNx
-	 yFCldMvFXxG2HXDIdRgZ291fgeWxk2IFaIWP5PLAZpxATYGFgy2eACpYqjmsEx/X/D
-	 9mXC8GmqUUCmLloLIPVXONUcZyJw4nYpg8rR80QqwFmSnGTFkRSEuklT0dYPL7lTae
-	 /wicJz34gwb6vug1iDqGcC+YzsZRrER8YAT8n5rKlMKAHvdZ5WPCds/LYmpbqe4aAy
-	 MnXp2WiN5FWNg==
-Date: Fri, 28 Feb 2025 22:17:16 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-Cc: lgirdwood@gmail.com, aaro.koskinen@iki.fi, andreas@kemnade.info,
-	khilman@baylibre.com, rogerq@kernel.org, tony@atomide.com,
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-	m-leonard@ti.com, praneeth@ti.com
-Subject: Re: [PATCH v4 0/4] Add TI TPS65214 & TPS65215 Regulator Support
-Message-ID: <9051f3af-525b-4b97-be9a-b8f3e2af659b@sirena.org.uk>
-References: <20250212191129.467728-1-s-ramamoorthy@ti.com>
- <131466cc-dc54-4251-82f7-5ec9e9c20f26@sirena.org.uk>
- <40bd4297-ad4f-41e2-8bd3-e6c11dc40a17@ti.com>
+	s=arc-20240116; t=1740990451; c=relaxed/simple;
+	bh=dZjutVIqRkydhliHBlHKI06qmvIDPbtRY2hMGF3LUjc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s9BK5B6IbYoz4/w135K4u/u+rUP7U1+5v5UKtyo2bfjZSRywRrzwnzGOi8nIrtrQ3H4EU8AaiSpOvlBH49Z3GOdB0VKs6csXfPiba4EN+UkNlrVTYzXjjPjXYr8PyMSiP/7Zpu6uCq7LzfT414XV8Kq90Sb2OgZJTs26diYKDNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=CYcVlL/P; arc=none smtp.client-ip=185.136.65.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+Received: by mta-65-227.siemens.flowmailer.net with ESMTPSA id 20250303074707ffc31dae7b571673b7
+        for <linux-omap@vger.kernel.org>;
+        Mon, 03 Mar 2025 08:47:07 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=alexander.sverdlin@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=zrUY1LdFYD+ZIm9007t+7YM/d7JBcqpKOI6aIegZ2eU=;
+ b=CYcVlL/PjL68bJNlRASUCQFR3d/gIjvM8s4AWiorZd6ei35cbjWVNs6MczurZckPUN1Rcs
+ iHZ5t/HOJYIxhnroa7iKaNK1OChsV3p0HcM/IK+AJlqz/Bh0kPTHIBJ69rCl3Fe5g7U4F2JF
+ pIXIbZVy081/oEQpulGIusFY+b7+6j+EuKJfie3f2YKeQCiyaScowPbnyR6APxUWfNP7ES0z
+ MQuc2WdhLii8ZsqxFztRSOL+PjlwH2s2r6+Pcf4FCquunpcwJydjFZ+MhpDWQD2yNesOcYzP
+ ZTikariIq1dGzkrS1XGfgIM1tAB3A+rsx4vlwGVyua8NZ0jD3tVlUg0w==;
+From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+To: Roger Quadros <rogerq@kernel.org>,
+	netdev@vger.kernel.org
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Andrew Lunn <andrew@lunn.ch>
+Subject: [PATCH net-next v2] net: ethernet: ti: cpsw_new: populate netdev of_node
+Date: Mon,  3 Mar 2025 08:46:57 +0100
+Message-ID: <20250303074703.1758297-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="e/kUc2pMpBR1K8Nw"
-Content-Disposition: inline
-In-Reply-To: <40bd4297-ad4f-41e2-8bd3-e6c11dc40a17@ti.com>
-X-Cookie: Avoid gunfire in the bathroom tonight.
+Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-456497:519-21489:flowmailer
 
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
---e/kUc2pMpBR1K8Nw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+So that of_find_net_device_by_node() can find CPSW ports and other DSA
+switches can be stacked downstream. Tested in conjunction with KSZ8873.
 
-On Fri, Feb 28, 2025 at 11:30:43AM -0600, Shree Ramamoorthy wrote:
-> On 2/26/2025 4:40 PM, Mark Brown wrote:
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+---
+Changelog:
+v2: cpsw-nuss (am6x or K3 naming) -> CPSW (am33x naming) in commit message
 
-> > These all appear to be in the MFD tree without a tag to pull from or
-> > anything so I can't apply any of this stuff until after the merge
-> > window.  I'm not clear why they weren't sent as part of the MFD series?
-> > You should probably resend copying Lee.
+ drivers/net/ethernet/ti/cpsw_new.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> I wasn't sure if the MFD + entire regulator patches could be sent in the same series, so this is good to know!
+diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
+index cec0a90659d94..66713bc931741 100644
+--- a/drivers/net/ethernet/ti/cpsw_new.c
++++ b/drivers/net/ethernet/ti/cpsw_new.c
+@@ -1418,6 +1418,7 @@ static int cpsw_create_ports(struct cpsw_common *cpsw)
+ 		ndev->netdev_ops = &cpsw_netdev_ops;
+ 		ndev->ethtool_ops = &cpsw_ethtool_ops;
+ 		SET_NETDEV_DEV(ndev, dev);
++		ndev->dev.of_node = slave_data->slave_node;
+ 
+ 		if (!napi_ndev) {
+ 			/* CPSW Host port CPDMA interface is shared between
+-- 
+2.48.1
 
-In general if there's a build dependency it's OK to send things
-together, if the patches are just for the same board or something but
-don't actually interact at all then that's the time to split them up.
-
-> I will resend a v5 Regulator series with Lee cc'd asking if he can take the series if you give the patches an ACK when ready.
-
-OK.
-
---e/kUc2pMpBR1K8Nw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmfCNesACgkQJNaLcl1U
-h9C4WAf+KiHDSh+rwFSoFt83Sc3h2xFurY2TyCAH1ceRd6RckjQyiB5MCUoHg9+m
-yUaGy0DlRI6OUU76wtaUX3qUWypNY7Qp9JOj8k+fiYy1MSJGj1Y5ghBcqJ9fxBe6
-+XVVGvVt49yEyBeKrsdsezaWZ9pf0EnheJLRvRHZSGu9I5ua25jXcyHMZy754lz3
-NahaHf+hU0h6E4I/l9se1J+mOIS7APaYaOggPE1AtPqIwe/YMwmuBFBsJcXIKzpA
-89IIozfcCdlGZOXD5OWV0bobvsk0Rh6pPslki/PhPFxLJKgFsx8pEF0/hRQd7Vdh
-KOx1eYzvz6eVIUtPJrdUrRL5crrRPA==
-=Zbyv
------END PGP SIGNATURE-----
-
---e/kUc2pMpBR1K8Nw--
 
