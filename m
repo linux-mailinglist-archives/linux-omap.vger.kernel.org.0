@@ -1,134 +1,158 @@
-Return-Path: <linux-omap+bounces-3334-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3335-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 439D2A50D16
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Mar 2025 22:09:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8815A50F0A
+	for <lists+linux-omap@lfdr.de>; Wed,  5 Mar 2025 23:48:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C95A188988B
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Mar 2025 21:09:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C265B3A27C0
+	for <lists+linux-omap@lfdr.de>; Wed,  5 Mar 2025 22:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9204B255E54;
-	Wed,  5 Mar 2025 21:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C44D8205ABE;
+	Wed,  5 Mar 2025 22:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="pao3sR1c"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="h4ZCL+WE"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8545D1F8677;
-	Wed,  5 Mar 2025 21:09:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6F31EEA5D;
+	Wed,  5 Mar 2025 22:47:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741208984; cv=none; b=D8nGvSaKJCyb+xzq9tNWoOX0kHjLyMs8YOSrprA4LWtvRmu/p0Jr+Enw7uC07Tx4U8c9Wid4Q366p4It4zA2tf3DRIj6OeYkkQaav2Zt/AAPqGiw+ar+34/8/DxgNx1qhO/fkDWG+8V2ECpHKCHxhEZ72kxP44AVUmeNYDo70PE=
+	t=1741214880; cv=none; b=qboWZw4vaWIX+lpwWZ8UFdNw8iqCNM02LDAq/NuzVgJHuEcmlKPikYMm/u5cWIaar4loWYhZ++xWuJMNCwF2oFngjXwvYFpn1GECQJGLi2oTKRnSov/RgI7NwfM7DpeVAJOMFgfou6QtBjr3WRezKK00wBXP/ZZr7lDg7TIrzrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741208984; c=relaxed/simple;
-	bh=CIOoh9WtQkI04ypA5tVH6nPf6xdhdtwwPiodz3WceXs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=o2/E5PC91YPN45su5inKEOftmBJLUR1UPS0xdyscNUO5zBmkRdhrLxxRzdeGkQcQtLsiFyJATYqXxEsTeJgs3JKZEayNHiOve7oLo6j/7po1csM/4nWpXZ9pJ4ntgesieq+iD3mYdAtFYI/lTzlPorwT5aV5FARs08FVJdd6G38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=pao3sR1c; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 525L9EfE3970472
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Mar 2025 15:09:14 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1741208954;
-	bh=7CSdRozLrdWP+aapX+PEh2rvQZMTRVPuQI777U9QtZE=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=pao3sR1c1YQq57SMzEOcBGrscT5RunKLT+nXQ60TviocfXCKRhOtr8u9f1usqDkms
-	 +KO51Y3c54Fpf5HVhnIDhdUYv53d9wJ3UMt3EvWswVUH9qrjZ7M/KgiGAACgd6qvVg
-	 K6B7C3Bf7msfOZP30Mo2dSlEsh/X48iTTMkPZ7Zo=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 525L9EXh037326
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 5 Mar 2025 15:09:14 -0600
-Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 5
- Mar 2025 15:09:13 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 5 Mar 2025 15:09:13 -0600
-Received: from [128.247.29.251] (dmz007xyy.dhcp.ti.com [128.247.29.251])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 525L9Dd2130862;
-	Wed, 5 Mar 2025 15:09:13 -0600
-Message-ID: <7f33b5c7-b1a7-4db9-9e19-e30cbb0066ab@ti.com>
-Date: Wed, 5 Mar 2025 15:09:13 -0600
+	s=arc-20240116; t=1741214880; c=relaxed/simple;
+	bh=j690KMyiLxuuR24G6j9sZerB6/YuInfz3g49qZUsgvQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DvBSqmxuCq4BFdpy3nFIfx8BraHMt9blhmFRAkgHyOILrw/Smctd7/y5l1LYpRwdiml3s8c5jw2qJzyUmzcSvw5qSOcyJTIpFAkCFSpvsW7XaEPtySP3Ibg7vO5Ssw6S/Bhg9/02+GxeRfrGymmvEMWJpnfkD1W5MO6wVCgmZCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=h4ZCL+WE; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=Cc:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=7fAKyPcFLbipyj8e2+HaYX8ZN0IQD4FgvUWGz9wiNuY=; b=h4ZCL+WExFSPRI+oi7iGgFW+yy
+	gjmzS3Ki/r2yubN8dEfbBxkmDm69I0j96wpiL0X5wnLPU3+GwHBGdXQXci1MaRq8r8y42C+BSh8pM
+	Yh+dVJNI5dPat7hrnubUkrPOWJFtz5O3qs0+vSQwI8HgqFrw/l9uRubI4ZOu4Wqebnm3yFCGg6pld
+	dZ1UDrNkA8+5wUTuCsHLhyNbKL3DDORA8PQ1Hj96+xgvpLSGfYOf0cGObfdqpQUXRiV7t7TgL2eCE
+	oZnpAK84atGBwcgVaroU9Sumv60buX6pyc4yjlarRxvvwCLsiIXjGFX4QGoYpa3WXrdiTo7r9eoRH
+	ccfANGDA==;
+From: Andreas Kemnade <andreas@kemnade.info>
+To: mturquette@baylibre.com,
+	sboyd@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	tony@atomide.com,
+	linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org
+Cc: Andreas Kemnade <andreas@kemnade.info>
+Subject: [PATCH] dt-bindings: clock: ti: Convert ti-clkctrl.txt to json-schema
+Date: Wed,  5 Mar 2025 23:47:22 +0100
+Message-Id: <20250305224722.66360-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/5] Add TI TPS65214 & TPS65215 PMIC MFD Driver Support
-To: Lee Jones <lee@kernel.org>, <broonie@kernel.org>
-CC: <m-leonard@ti.com>, <praneeth@ti.com>, <conor+dt@kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <khilman@baylibre.com>, <rogerq@kernel.org>, <lgirdwood@gmail.com>,
-        <linux-omap@vger.kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-        <tony@atomide.com>, <andreas@kemnade.info>, <aaro.koskinen@iki.fi>
-References: <20250206173725.386720-1-s-ramamoorthy@ti.com>
- <173928615760.2233464.12306998726512431222.b4-ty@kernel.org>
-Content-Language: en-US
-From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-Organization: PMIC
-In-Reply-To: <173928615760.2233464.12306998726512431222.b4-ty@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Hi Lee,
+Convert the TI clkctrl clock device tree binding to json-schema.
+Specify the creator of the original binding as a maintainer.
 
+reg property is used mostly with one item, in am3xxx also with
+an arbitrary number of items, so divert from the original binding
+specifying two (probably meaning one address and one size).
+The consumer part of the example is left out because the full consumer
+node would be needed.
 
-On 2/11/25 9:02 AM, Lee Jones wrote:
-> On Thu, 06 Feb 2025 11:37:20 -0600, Shree Ramamoorthy wrote:
->> TPS65214 and TPS65215 are Power Management Integrated Circuits (PMICs) that
->> have significant register map overlap with TPS65219 and each other. The
->> series introduces the 2 new PMICs and restructures the existing driver to
->> support multiple devices.
->>
->> - TPS65214, TPS65215, and TPS65219 each have 3 Buck regulators
->> - TPS65214 has 2 LDOS and 1 GPO, whereas TPS65219 has 4 LDOs and 2 GPOs.
->> - TPS65214's LDO1 maps to TPS65219's LDO3.
->> - A key difference between TPS65215 & TPS65214 are the LDO current and
->>    voltage output ranges and the configurable options available.
->> - TPS65215 has 2 LDOs, whereas TPS65219 has 4 LDOs.
->> - TPS65215's LDO2 maps to TPS65219's LDO3.
->> - TPS65215 has 1 GPO, whereas TPS65219 has 2 GPOs.
->>
->> [...]
-> Applied, thanks!
->
-> [1/5] regulator: dt-bindings: Add TI TPS65215 PMIC bindings
->        commit: 85e7aef57a9e057545017d55b02073e3c4756b2c
-> [2/5] regulator: dt-bindings: Add TI TPS65214 PMIC bindings
->        commit: 34beb3c87cbb8747f521db5cf1b2a608833f3967
-> [3/5] mfd: tps65219: Remove regmap_read check
->        commit: 5342c8a9e04fc05f485a3886605b803a5180bd64
-> [4/5] mfd: tps65219: Add support for TI TPS65215 PMIC
->        commit: ebcbd21550853b16f307d7da8c846b862e138a98
-> [5/5] mfd: tps65219: Add support for TI TPS65214 PMIC
->        commit: c9878d8d9ac2ecfadfa4fa3543730026c66ad843
->
-> --
-> Lee Jones [李琼斯]
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+---
+@Tony: you seem to be the only contributor to the txt binding,
+so we could go with dual-licensing if you agree.
 
-Would you be able to remove this series from your branch & replace it with this v6 [0],
-so Mark Brown will be able to apply the dependent regulator series [1]? Thank you!
+ .../devicetree/bindings/clock/ti,clkctrl.yaml | 64 +++++++++++++++++++
+ 1 file changed, 64 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/clock/ti,clkctrl.yaml
 
-[0] https://lore.kernel.org/all/20250305210351.249811-1-s-ramamoorthy@ti.com/
-
-[1] https://lore.kernel.org/all/131466cc-dc54-4251-82f7-5ec9e9c20f26@sirena.org.uk/
-
+diff --git a/Documentation/devicetree/bindings/clock/ti,clkctrl.yaml b/Documentation/devicetree/bindings/clock/ti,clkctrl.yaml
+new file mode 100644
+index 0000000000000..bf4119c9c61fe
+--- /dev/null
++++ b/Documentation/devicetree/bindings/clock/ti,clkctrl.yaml
+@@ -0,0 +1,64 @@
++# SPDX-License-Identifier: GPL-2.0-only
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/clock/ti,clkctrl.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Texas Instruments clkctrl clock
++
++maintainers:
++  - Tony Lindgren <tony@atomide.com>
++
++description: |
++  Texas Instruments SoCs can have a clkctrl clock controller for each
++  interconnect target module. The clkctrl clock controller manages functional
++  and interface clocks for each module. Each clkctrl controller can also
++  gate one or more optional functional clocks for a module, and can have one
++  or more clock muxes. There is a clkctrl clock controller typically for each
++  interconnect target module on omap4 and later variants.
++
++  The clock consumers can specify the index of the clkctrl clock using
++  the hardware offset from the clkctrl instance register space. The optional
++  clocks can be specified by clkctrl hardware offset and the index of the
++  optional clock.
++
++properties:
++  compatible:
++    enum:
++      - ti,clkctrl
++      - ti,clkctrl-l4-cfg
++      - ti,clkctrl-l4-per
++      - ti,clkctrl-l4-secure
++      - ti,clkctrl-l4-wkup
++
++  "#clock-cells":
++    const: 2
++
++  clock-output-names:
++    maxItems: 1
++
++  reg:
++    minItems: 1
++    maxItems: 8 # arbitrary, should be enough
++
++required:
++  - compatible
++  - "#clock-cells"
++  - clock-output-names
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    bus {
++      #address-cells = <1>;
++      #size-cells = <1>;
++
++      clock@20 {
++        compatible = "ti,clkctrl";
++        clock-output-names = "l4_per";
++        reg = <0x20 0x1b0>;
++        #clock-cells = <2>;
++      };
++    };
 -- 
-Best,
-Shree Ramamoorthy
-PMIC Software Engineer
+2.39.5
 
 
