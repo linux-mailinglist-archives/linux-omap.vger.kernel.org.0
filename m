@@ -1,50 +1,73 @@
-Return-Path: <linux-omap+bounces-3319-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3320-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FD90A4F3B5
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Mar 2025 02:30:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49B70A5007B
+	for <lists+linux-omap@lfdr.de>; Wed,  5 Mar 2025 14:27:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00C28188F41A
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Mar 2025 01:30:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDF853AECBB
+	for <lists+linux-omap@lfdr.de>; Wed,  5 Mar 2025 13:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4497C1547E0;
-	Wed,  5 Mar 2025 01:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A324724887B;
+	Wed,  5 Mar 2025 13:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iLG9cOuI"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="TUrSuYzp"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D720E1EB3E;
-	Wed,  5 Mar 2025 01:30:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B40244EAB;
+	Wed,  5 Mar 2025 13:20:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741138200; cv=none; b=XmlCEsq6FXrA0MWAQl4GSeIWRWOmTUv+OgCbT47bXBUQuWlgCLjvzgwadYU8An5abSleMR7FVUHbJmcgBfykTMllOb8Yh/cLxmfudLsvrdMt+8qzVAj/giQplHebr2Fm885D/LgWKQN3dTR5deeBpQplvDOCIpdf8xkFiYq+sQ4=
+	t=1741180839; cv=none; b=djVUQetD74adR0eN7YMfsCTMt9LzW2aknqqWJbh4VHgRZWgHrTPqfNJvGM3N5N/KW7HvOSiUZrjxBN+t6HD4hqNVTWc5vdj8rZhCZC0CgBNo5Nvq58jAGCjGTu9x+/icK8N1E0NBQo1EE2d24D5ebcAHsUeZhSuXps0dwAZLBaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741138200; c=relaxed/simple;
-	bh=NUZjngEXeYxpimSSSAeNij0pHTgmJHmkCNjSjzSFNuQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pMU0O4HOdcDEV3AvI8zdaGTwnEAB9Jb1xrhmEXbWSiP6wr/Lrga5yn0yVwLRZgauiWXDDGtZ4vokOlKRjpPe5XRpfB/I8f1CT9pJGuP6BGVUYn3gaJiCM7oRGQgsolermTQNCPLqTZD9CCuR8j1+n60uCghQ28+fiWT1Gl6Rbpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iLG9cOuI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B783C4CEE5;
-	Wed,  5 Mar 2025 01:30:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741138200;
-	bh=NUZjngEXeYxpimSSSAeNij0pHTgmJHmkCNjSjzSFNuQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=iLG9cOuIaakOlu2hRE21qWRn/jJ3pmZMSM0Bfz+5sVDC7R1DqW7AqGxuHmVHFozTg
-	 dw0ol+06V34DiEAmIgpzOCuoQgRd2Wcaef7u5TJDIefX2+ZQlkCvm8dl2QO4ZrwUna
-	 20g0+w3VceCixzTboaveBmAzXtisl5aP1HT75B9b4ZxcgRt1ZqWk1VATxcVv9lISF8
-	 2xhyFZYx6pB+fuGxzcKvSIrO+Sxn4ucTGszeP+Ud/eDRs9dedMOW8UWatcUnLLefLe
-	 Xtzgh8fqvPLJpwgkHlSAzKMMm+oU2K1YWNq2vmPM5PYxLoDba6+tj/ncDMslqwiviF
-	 YRE62Vm7DZy5w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7109C380CFEB;
-	Wed,  5 Mar 2025 01:30:34 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1741180839; c=relaxed/simple;
+	bh=zH2/4JizMiAMVXhTiVjJB3Lhravh6eEMRHBsD4S9ULo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=W6WyTsMMK9NXNUhgOKWGm0RjYQCvF69UD/Tm3NU6pYvcPEyDpkwVJ46IDmad4bAsDHhruNsqXkA8J8DdBq7i5TuVIv1WTWPUUTnBu1LS4Ae/Auqu5/Ru1MX/8OvoykMMEU84vYIp2c0sXfjo17pfCv3tgZFYdhZRKurROUdiItg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=TUrSuYzp; arc=none smtp.client-ip=198.47.19.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 525DKOoI3317275
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 5 Mar 2025 07:20:24 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1741180824;
+	bh=P/KXpuyFB30i1d562EaQZDZEqM46LSzSTn8A8q72DM0=;
+	h=From:To:CC:Subject:Date;
+	b=TUrSuYzpfWMoOwbN9hfX5/dawgO/BL8WRpXonYkwgg8GT0pwL81tQtkLl0WFuQzD2
+	 KNbuvw0VhzDo2ie+L1F90YGar5MZ2AuWnmxvzbxWt3ilYf5Zr49Wm4hTJwHTL1kcKK
+	 WELP7VjjvREuBwKpnhTARTW7jI3gtCmF8Imj2OrU=
+Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 525DKOFq019757
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 5 Mar 2025 07:20:24 -0600
+Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 5
+ Mar 2025 07:20:23 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Wed, 5 Mar 2025 07:20:23 -0600
+Received: from uda0492258.dhcp.ti.com (uda0492258.dhcp.ti.com [10.24.72.113])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 525DKJ35105399;
+	Wed, 5 Mar 2025 07:20:19 -0600
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: <lpieralisi@kernel.org>, <kw@linux.com>, <vigneshr@ti.com>,
+        <manivannan.sadhasivam@linaro.org>, <robh@kernel.org>,
+        <bhelgaas@google.com>, <rogerq@kernel.org>
+CC: <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>,
+        <s-vadapalli@ti.com>
+Subject: [PATCH] PCI: j721e: Fix the value of linkdown_irq_regfield for J784S4
+Date: Wed, 5 Mar 2025 18:50:18 +0530
+Message-ID: <20250305132018.2260771-1-s-vadapalli@ti.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -52,45 +75,67 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] net: ethernet: ti: cpsw_new: populate netdev
- of_node
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174113823325.360063.2190869561934533102.git-patchwork-notify@kernel.org>
-Date: Wed, 05 Mar 2025 01:30:33 +0000
-References: <20250303074703.1758297-1-alexander.sverdlin@siemens.com>
-In-Reply-To: <20250303074703.1758297-1-alexander.sverdlin@siemens.com>
-To: A. Sverdlin <alexander.sverdlin@siemens.com>
-Cc: rogerq@kernel.org, netdev@vger.kernel.org, s-vadapalli@ti.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux-omap@vger.kernel.org,
- linux-kernel@vger.kernel.org, andrew@lunn.ch
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Hello:
+Commit under Fixes assigned the value of 'linkdown_irq_regfield' for the
+J784S4 SoC as 'LINK_DOWN' which corresponds to BIT(1). However, according
+to the Technical Reference Manual and Register Documentation for the J784S4
+SoC [0], BIT(1) corresponds to "ENABLE_SYS_EN_PCIE_DPA_1" which is __NOT__
+the field for the link-state interrupt. Instead, it is BIT(10) of the
+"PCIE_INTD_ENABLE_REG_SYS_2" register that corresponds to the link-state
+field named as "ENABLE_SYS_EN_PCIE_LINK_STATE".
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Hence, set 'linkdown_irq_regfield' to the macro 'J7200_LINK_DOWN' which
+expands to BIT(10) and was first defined for the J7200 SoC. Other SoCs
+already reuse this macro since it accurately represents the link-state
+field in their respective "PCIE_INTD_ENABLE_REG_SYS_2" register.
 
-On Mon,  3 Mar 2025 08:46:57 +0100 you wrote:
-> From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-> 
-> So that of_find_net_device_by_node() can find CPSW ports and other DSA
-> switches can be stacked downstream. Tested in conjunction with KSZ8873.
-> 
-> Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-> 
-> [...]
+[0]: https://www.ti.com/lit/zip/spruj52
+Fixes: e49ad667815d ("PCI: j721e: Add TI J784S4 PCIe configuration")
+Cc: stable@vger.kernel.org
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+---
 
-Here is the summary with links:
-  - [net-next,v2] net: ethernet: ti: cpsw_new: populate netdev of_node
-    https://git.kernel.org/netdev/net-next/c/7ff1c88fc896
+Hello,
 
-You are awesome, thank you!
+This patch is based on commit
+48a5eed9ad58 Merge tag 'devicetree-fixes-for-6.14-2' of git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux
+of the master branch of Linux.
+
+Patch has been tested on J784S4-EVM, validating that disconnecting an
+Endpoint Device connected to J784S4-EVM results in the following message
+on the J784S4-EVM:
+	j721e-pcie 2900000.pcie: LINK DOWN!
+which wasn't seen earlier.
+
+Regards,
+Siddharth.
+
+ drivers/pci/controller/cadence/pci-j721e.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+index 0341d51d6aed..1da9d9918d0d 100644
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -376,13 +376,13 @@ static const struct j721e_pcie_data j784s4_pcie_rc_data = {
+ 	.mode = PCI_MODE_RC,
+ 	.quirk_retrain_flag = true,
+ 	.byte_access_allowed = false,
+-	.linkdown_irq_regfield = LINK_DOWN,
++	.linkdown_irq_regfield = J7200_LINK_DOWN,
+ 	.max_lanes = 4,
+ };
+ 
+ static const struct j721e_pcie_data j784s4_pcie_ep_data = {
+ 	.mode = PCI_MODE_EP,
+-	.linkdown_irq_regfield = LINK_DOWN,
++	.linkdown_irq_regfield = J7200_LINK_DOWN,
+ 	.max_lanes = 4,
+ };
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 
 
