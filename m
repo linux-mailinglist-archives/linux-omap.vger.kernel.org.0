@@ -1,243 +1,496 @@
-Return-Path: <linux-omap+bounces-3323-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3325-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9B30A5047F
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Mar 2025 17:22:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9138A50CEF
+	for <lists+linux-omap@lfdr.de>; Wed,  5 Mar 2025 22:04:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34BF51895E12
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Mar 2025 16:21:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B31A188995E
+	for <lists+linux-omap@lfdr.de>; Wed,  5 Mar 2025 21:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0A2250C1B;
-	Wed,  5 Mar 2025 16:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4D94256C71;
+	Wed,  5 Mar 2025 21:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Waxv3JY6"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="uwJ2ayr5"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013021.outbound.protection.outlook.com [40.107.162.21])
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE3818A922;
-	Wed,  5 Mar 2025 16:20:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741191655; cv=fail; b=liAqa4FhNyUAlwiFFSSRQST2Opnb2z3LgMjOn9s9+4JFsoBFwFsiFrYDUwReMMxn04jqW03fsqPUo3YvOQm17SWO+EjY52/BKQqt6bb16ND0LlnE4ZDpI9XqiyAZEo5PJTd5oP+XVIkWkqaIzfYupNLJMb1XjA5oR6y7+W5QBbs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741191655; c=relaxed/simple;
-	bh=rMAwxY81r5cnoE5s4hqm3gUf7WOPOk2usevJ9Cbe3Fc=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=lRUIDtoOtjWII9MVEfj0TnpmMYDpzPb+ODQhifW6qB0x33XtSm3dWj0gv8k/qnf/Ox5AFUPE6A5ykHJ586oAsaLg6a8YxVbo+pne2YXL7p4JPYVWfcOHRQ+Nuem7u9rQbB9q3/8iPzBaz40uaRaWcF2JW/58DWn3OjVxyFHY7Dk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Waxv3JY6; arc=fail smtp.client-ip=40.107.162.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HBuTN83YIA6kJDP4EkBZ1ZoWDoG8qjQ7d3gFSrTZogp0vnRjpae56+DaRTPvHC8l2ONZe7E2IfSMJmb3XY0TqZ2XCymCVCenVz0MMnBpJ+y2hnnakStgxijQCBNvvhHzw4Gu6KC3Id8E3MZ9sMsYoamsRcm/FNPurHUk3euk2xI8NakeMYh5kG3/zcWv3OR65L112ARV5hDwRprjCWBa74e1Duz8m7SSk3RcIUTTg2Kn6p1EgxG5xBoJndVm62VZzu8xdUklgJI5lQqOWeaAaeyPdXWvGfRcyCXNK6gdTgVME2pVrasnm9nUb6xx7VOOc9uqtId/KlQPG3VogHIKzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JfmWP206WT+CurGk+Y3Bm4wIo+djFMkIPFjf+mtIKy8=;
- b=MDfRgymIsXWDRtTVXaCO7Vtg7DW1KsJ4SHHLjr8+6gttvBkCJ9DDrb/YgrmdbWI/Ll5HkpHm9jWzUSJUKLp6X43i4b2VqouvC2aA2XM+/F5e1G9S/OS5Z2l1PBiC2qUDmhuPQvehFjAeTYcqRvsyTJN3GT+A+L9N1tdJGp2eBBgjfllpWE7UW5YRmqjHjl0Kbj4PQoKTjco8aJiDvV/XmAu47wYzlS3Rs1fF4ezQt/zYbB+1f2A9myHa70MSNaHg20AhiTG91SwpD3rdkrW4e8nOwFSzIdWiKXRCxGq/gU7wNYVbDhCKisxNJ4j3VvutZ9jAH5XNBci2+n4Ld21p/A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JfmWP206WT+CurGk+Y3Bm4wIo+djFMkIPFjf+mtIKy8=;
- b=Waxv3JY6d6rtH0wC0uu9eMplRRrpo6G4z78CI0TxrFivLQxgijfbidjpm1L7ot2jNWWdeW/+ArLGzoGHX+OUdA2aRlEnZ1VizcDDSGocY8VgXxF5Z/UJ0fZiZz8BKTuMM93t4484hxm18i/CN9iwfWyYV+muQf7Ti82eo8G68jWAl2hKHP/fwP1iuf74RR7QQo3MAIj6wqbxGb7at3lpNtOB2YH5bIt5uIgwjWSIjIC7HX3R3qZdugzATUQo4OQzn9/zSQj7708Tz/7e8ozgAH9DnCX1hX/NtqbYbWmn+Be8VRtHzpZn165JTM2jsx4fL5Jkj2EvQYxonkmYOMzdUQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by DUZPR04MB10039.eurprd04.prod.outlook.com (2603:10a6:10:4d9::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.17; Wed, 5 Mar
- 2025 16:20:50 +0000
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::e81:b393:ebc5:bc3d%4]) with mapi id 15.20.8489.025; Wed, 5 Mar 2025
- 16:20:50 +0000
-From: Frank Li <Frank.Li@nxp.com>
-Date: Wed, 05 Mar 2025 11:20:23 -0500
-Subject: [PATCH PATCH RFC NOT TESTED 2/2] PCI: dra7xx: Use
- use_parent_dt_ranges and clean up dra7xx_pcie_cpu_addr_fixup()
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250305-dra-v1-2-8dc6d9a0e1c0@nxp.com>
-References: <20250305-dra-v1-0-8dc6d9a0e1c0@nxp.com>
-In-Reply-To: <20250305-dra-v1-0-8dc6d9a0e1c0@nxp.com>
-To: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Vignesh Raghavendra <vigneshr@ti.com>, 
- Siddharth Vadapalli <s-vadapalli@ti.com>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- Bjorn Helgaas <bhelgaas@google.com>
-Cc: linux-omap@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.13-dev-e586c
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1741191638; l=1775;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=rMAwxY81r5cnoE5s4hqm3gUf7WOPOk2usevJ9Cbe3Fc=;
- b=mVYiylEvT4CiDbtNNM8GwKGYWGNrPDwNAn3/WiYpy2srJ6Hqy8dXA9gQf9b2+IpcGeLRk6DsH
- Qt26IZy+PLyBb9rrBngxXFG1rFGWs99tYuhKQXOelOxavGZ5Yzs4pZ1
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: SJ0PR13CA0153.namprd13.prod.outlook.com
- (2603:10b6:a03:2c7::8) To DB9PR04MB9626.eurprd04.prod.outlook.com
- (2603:10a6:10:309::18)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515771547DE;
+	Wed,  5 Mar 2025 21:04:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741208651; cv=none; b=tI2Bo/AvFXZyY2gMpWQTIl/3CeYA47U61EFzriC/dyOHrNHe1sQzP8L8s5g8okawH1Wl6EqlmoHYHQFw3WxiUmXr0AuPudDzx0/9SCPxfVWSe8N9u3T5kBozN6VHw5XXmHfi0oAx76sdCS1kPQdGe89lhiOlWnswWSBeUVBizXc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741208651; c=relaxed/simple;
+	bh=+8Rct0RsdCgUq4vS6+y6HpqpgeXEYgqf+sinoXqiqF8=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DDAA/zcX372i46mGDk1K3aMFmMleEFTv4lJ9llOeQOtd5X7/k8dFyFqoRLEFv9lPmY2WD+Ry0+No+Cbo/N2iUV+ssPoWas4bR2AfF+PIA5qq2ChmA+WXBnsGQrZbie1ZiH5WNI9PF+cRq17paTYCCrmT4x4g1skiUwVCXuMhW9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=uwJ2ayr5; arc=none smtp.client-ip=198.47.23.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 525L3ql63513448
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 5 Mar 2025 15:03:52 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1741208632;
+	bh=JGYs3l5ZttJ9qr8uaBZ2156AlbstLBNFuYL0zJc/E0s=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=uwJ2ayr5B/b444TER9Byft3dPpmaMyhfrsQcHKMDirDlnok3oC1jOpWxodnmmxtGy
+	 +UXhawj4ms/x7GzqqKhIfMYmQoKNh3p6a3xeVwdYmuXMge4nknAKV/Yv4zKWHqftxH
+	 5Fj1/XHXTkPum6xsA458TCbXgP78tZH6GKkmmEhI=
+Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 525L3qMv080645
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 5 Mar 2025 15:03:52 -0600
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 5
+ Mar 2025 15:03:52 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Wed, 5 Mar 2025 15:03:52 -0600
+Received: from DMZ007XYY.dhcp.ti.com (dmz007xyy.dhcp.ti.com [128.247.29.251])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 525L3peF125160;
+	Wed, 5 Mar 2025 15:03:52 -0600
+From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+To: <lgirdwood@gmail.com>, <broonie@kernel.org>, <robh@kernel.org>,
+        <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <aaro.koskinen@iki.fi>,
+        <andreas@kemnade.info>, <khilman@baylibre.com>, <rogerq@kernel.org>,
+        <tony@atomide.com>, <lee@kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+CC: <m-leonard@ti.com>, <praneeth@ti.com>
+Subject: [PATCH v6 5/9] mfd: tps65219: Add support for TI TPS65214 PMIC
+Date: Wed, 5 Mar 2025 15:03:47 -0600
+Message-ID: <20250305210351.249811-6-s-ramamoorthy@ti.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250305210351.249811-1-s-ramamoorthy@ti.com>
+References: <20250305210351.249811-1-s-ramamoorthy@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|DUZPR04MB10039:EE_
-X-MS-Office365-Filtering-Correlation-Id: ef61f8d1-aa43-44da-a1ee-08dd5c01b1cb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|52116014|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?R09vMWV1ellRM1k1UGVDZFNDL2djUEF2RGQ5RWZRd1dOV0tIc0Fucmk4bDVu?=
- =?utf-8?B?aHo1aG53NzEybHo3SXY4WnpCN0tYdmVSaXJ4WnErMTU1ZHNpVUc3ak9MV2lz?=
- =?utf-8?B?c1M4Q1JhR3NLRjRSUnRnc3dWY3RHN011T2NEdk1lVk9rbUloUE11bm1PNE90?=
- =?utf-8?B?ZzFUOUF3SlZrZGk2NE0xUUM5T3Qva0k0c1BVbC9vTjgyUDhEMVYrckhMQ092?=
- =?utf-8?B?aUdLSnk4SE1zWVJIaFFSNnp5Vmt2VWVIRGxHa3Z6VTNJcjh1Tnd5aXlZbXlZ?=
- =?utf-8?B?MTIyK1VUUVhDOTNlSldscmdFcE9uV1dHM0hxSzlEbWU3eHhiTGVGNkMyU2hZ?=
- =?utf-8?B?aWphcjhSZ2UrdzJuRGs5b0pTbmlBTmI2OEhZeUhCc0Y4dU5FZmg5S2dQN1c1?=
- =?utf-8?B?K0M4WG9HaXpiVy9LVTlnamhNNUgyV0VzTkQyYjc3enhvbUg0L2ZFQ3NFM1Rm?=
- =?utf-8?B?MkRGRUdsY1BMS0NYYmxmb0d0cnUzTHprSHA2SnB3NXpFN3R2UGduMkhPWE1X?=
- =?utf-8?B?S3dmYTM4WUFraStCc3JTWEVIU1BPYmtod2dhRkpGcUhkL3ZlNHR6Sjg5alN4?=
- =?utf-8?B?V2pwL0N3YTNhajdLVmh3aXY1QjhyL01MWk5VUWhiZ3lSczFvQnJTMGZXYnFw?=
- =?utf-8?B?Q2JCeFU0N1QzZHB0RVRYamlRem5xWXBYcEc1dHo0ekZzcWVHcUwycDdjSU80?=
- =?utf-8?B?M0xsaTdOOGhyODhXeENlOGNwM1l3aXVMTk5jb0xSeXBoZ05ENWVtNWhTU3pq?=
- =?utf-8?B?VE1hNHp2Q1ZQSXdzVloveVNRUkFSUHpURHA4NDZYVnFnUExENkViV29sMlY0?=
- =?utf-8?B?QnVvZDRiOFlnQk42K1doaWxPek9ydmxFdkRacUFYbDEvL08yOXdLYWp5L05i?=
- =?utf-8?B?L0xsUEJxR2NLa3c2dTFyYndTNDZQUnRIRWlQc2F3dnplMG9Ebng4Q2JaZW9w?=
- =?utf-8?B?MjhpVVdCaWFoVFFMWHg5RE8xOEVSYlNiYUtWeEhQOGkzVnhyWWV0Q3o5R0ZO?=
- =?utf-8?B?QmVUQk8xcExBZXVsTDcxTzZhN1ROMnpDR3o4S2M4Y3d4anJCUVlYV2FDaHRJ?=
- =?utf-8?B?czdWbFRtZmZFS3YydktpVFkrYWY2ZllrcGpPNW5tMXlZOXptZElibHpUdUdL?=
- =?utf-8?B?MmZGVGx1TXl6MW45SHR6TjFLN2hzSjJ1Um95cE9qRU9EazNTLzkyZ1Q1N0ZS?=
- =?utf-8?B?TXNSYnZzN2tWaG1XSHM3VDNrQnkyT3lmMEx2TmxrME5sdFduL2ZRMzRHOWVX?=
- =?utf-8?B?N01WckFwLzNOM2tmdnAzZUVFTGhPVWdQQjMwdEhvcklCQzFtdGY5T3lleURk?=
- =?utf-8?B?L3pYWnVIRUZONzNEYjZkRGRYUXRIZ1o5VWJpRjB4YmpBSUdoM2R4QktNYmNt?=
- =?utf-8?B?bHJGRTBuWUdGb1RwMnUwOW9JdW1SakFJODdYaFBEdFZ0RHQ1N0c4WWt5dWVS?=
- =?utf-8?B?aEk3YkdoaGsxR1Q5ajFlS1lsUSs3eENNRUoraGxaNVU5THo4VTEzeFdwcmI2?=
- =?utf-8?B?Z3ZyUXdtZk0wZHVDbGVqR3dlQ0tqRUZnV0ljUjJ6aWtlV2FMRUFiWmVQeXpR?=
- =?utf-8?B?QVdWNlpLTStKSk5DLy9vczJLVW5hSUdSd2JLeXM2RVRCWDJFZDY1ZXVkWkFm?=
- =?utf-8?B?MkhoaXNmNmY2UGkxTFpYKzJCQW03a1h3TFRDb1k5aTF2UXpWKzBJQzZsZFVH?=
- =?utf-8?B?aEhlZzlHTmc2Z1NtZ2IwUlFtblZWUU00aG9kWkdTTlhHT0F6VWVpSTZtMnFt?=
- =?utf-8?B?VERzV3l2K0l6cWJWN0NQaXNxdnF6b2dYU0RXMVRjTk4rQnNwRHB3SG92bzBs?=
- =?utf-8?B?QXRINTBvdC9rUHZzdEhvdXBMeVFMK2Y1ek9jbGxodFcrVnl3VnhVQWtJL2lz?=
- =?utf-8?B?S3dBaDVvUGhKcFZ5cUZpaThTQ0hqbkJDblFYeGVsTUw0RGUwcGNYd0QySkRy?=
- =?utf-8?B?b1l0OEZmVEhUV0Q2Tk03ZkZJQnhBYnBCZm9KVGJSRUQ2STRleTJzY25lamdq?=
- =?utf-8?B?cVkzcWdHeUlRPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(52116014)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bXREYjlxa1c3VndDeWVIWTd6d0Z3QUtKNktRbzRTMGRlU0trZk8ySHJUZXZC?=
- =?utf-8?B?b21GYlJmOFBtMUdoeU9BSWdtbDYya2llU2V5eFQyODkrVk1sRkZXV3BSbzQy?=
- =?utf-8?B?RVg1SlVLWDRyQlRZakYyaVJKQkFJSGRxMXdING1EVXZ6MjF3TGlCVkNuTWth?=
- =?utf-8?B?UVk1bGFTTW9zQmgwdEFWeFRDTUlOMEprMXV5NjY4MmhXdkpVUnk2d0VBc00r?=
- =?utf-8?B?Skdhak94NlNsSlIvYUZ1dFF4cS9oK1IyNEhNZGJMWTZqakYzejVZOWtjU0Uv?=
- =?utf-8?B?alRWVnlEQ0xYVTF2dGZ4QTZMc1lXQjZDSDRXMjZyQ3VRRUZYQittZmFrTVdL?=
- =?utf-8?B?R2FiemU1NThpSHBnWFF4L2xOd00wZmJLSnlTck5ZTjJ3NGl5bnc1UFZJOEN6?=
- =?utf-8?B?ZnhBWHBBT3hkQldNRWRoQ1dCcm4yQVczN1NoblVxOUdJSGVJWDVIQ1c2dFUx?=
- =?utf-8?B?YjNVQXZHQzNIS0pZbnJQZ0tlVHl0UEVIaWVVRjF6czhmcEVuRlp2Qyt2b1NG?=
- =?utf-8?B?d3BNYWhraDk0cUdlUjM0cTNaUkdzblhmeEVpcGV4VXFXc2ZOZk9xbzQvSytt?=
- =?utf-8?B?RzlNVlg0L1RhVnpjY0JmV2E4d0tjdEY1K3JScFMxT1Z4S2s3UGhmb3lOVXJn?=
- =?utf-8?B?ODdOdHoxYjhzUkVlQjlGWWNET3g4RVV6NkYza0o4SGZwZytyVlV6YU1tMFFJ?=
- =?utf-8?B?aTlra3VkNEVZSndlMFd5MzVWUlR6V2FTWGdHOWtaOHhleDJQVXR6RjU0M21o?=
- =?utf-8?B?UERTVVQ4TWhTN3ZaWE5EdERRdndSZTFmTW9sb3QyY3BMSHFSTGhzWTdwMi9i?=
- =?utf-8?B?WFN5c1l5dkN2NUVPcXZEYzN3bDZVMEpsTHRKYWpuZTdxRUl3NDU0QmRnRjVL?=
- =?utf-8?B?aEhWOTdhd2RnY3BCc0FrR1RWazA3NGNUdjl6TVdWSFdBQkNpelVrQlF4RTB6?=
- =?utf-8?B?OUpyUHo4ekYyQWc4Wms1Z3ZJWEloMEU2anE1MW5pYmo0UTdpV0dIdlJHaFUz?=
- =?utf-8?B?d0o1OXVmUjJOU3V0YTl5TjVDLzBUQlFUemxpdlJodWN2eWFneXFRb0YvL0M4?=
- =?utf-8?B?YnNEOHVWMmd5NUNMVlFuTmtWUGVINVJITjd0SmtxbkhTVDVhNzNnMFY5RlpM?=
- =?utf-8?B?Uy9pS0JLZG9admNac1pvVU1OSVMzYkxZYmRNeklXdFpHQjlGVjlTWkdrNldy?=
- =?utf-8?B?KzBvTHRYY08rVWVjYWNya2pMWHdyT0RRSUI1R3EwM0ZWMkNCajhjaU1EK0Jt?=
- =?utf-8?B?M0k0R1NkSnYrdVRHdjBObzViNG5PRk1TNE1jeFFEbm5IRXU0VFRxMHgzaHVw?=
- =?utf-8?B?L0lPc1RjQjF3aTIvM3hBMUt5Wjl2eHpmM1dYU1VXaUFqNEtlMXo3enZJNjRJ?=
- =?utf-8?B?R0hWYUFHRktDUnExcVdOR1JiNnUyWTFXTW43ZFY2b1pUNUlCeFhxYTBrNUU3?=
- =?utf-8?B?MFBJWkVVdWZPemlkZGpPVk5qZ0RxbnM5dE50TFhYL21FWFg3VmE4cTFZZ3lT?=
- =?utf-8?B?NUxBcVpWT1l0b1k1VjY5WkpWK29Nc0RidXhiWFlyb01PSjMrN0ppVTBMMmFp?=
- =?utf-8?B?d0JmMWpQYlZ6UUIrMDhUSXlZaWZzVjBzK2VDaTlNb0loOC9rMWp6a05TaHEx?=
- =?utf-8?B?K0hRUlNnTVBPcUlTZFAwOGJPK3I4bWo5NXFIV0VuUVFEU2NSb3pnT08wVWQy?=
- =?utf-8?B?VU5CUjk5UUZZT2MvY1ZFRkFJbXhTYkV4SVl2dnc4VTNRNURmZ3Rjb1NSMVVr?=
- =?utf-8?B?RXNkVnFURHVGTThxQXVxdHJ1MWNyZ0ZuSk5vaGp6QjdjMm1qMWxhUnA1SGMz?=
- =?utf-8?B?WGNUcG9sa0JKODFTb1JqMTRMUUxoVUFWekRqRUlLZVdZNmV4cHZvQXplNzFo?=
- =?utf-8?B?c09LQU9GanVMbmNRTWptTUc2WEdPYWJtWWt3b01vSCtKWmcvY0s5WlNDKzlE?=
- =?utf-8?B?ZGpOblVoOTVMbUV1QWtTU2VOR2pPQWpCbklDNVRUVjR3QXR3VVoveEVJSzI1?=
- =?utf-8?B?YlV1RlVSV3BLS2ZzS0NVTG5OWEUyc1A0UERxdGk1SXhJVHNlM2lrMmNKSkMz?=
- =?utf-8?B?QThBdDUwMHNKVG51bGVtMGdFRi9TRWRUeDQrTjBWMUNzdDFSVTBGOHdRaDll?=
- =?utf-8?Q?KLe2vey2JFou0+RxoJWx0sy26?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef61f8d1-aa43-44da-a1ee-08dd5c01b1cb
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2025 16:20:50.6335
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gH5tiyH7DaLstIFzNUip/La2io+Zq2hpND7SyrQ7dXHpO+sgd2AqbijUZs09wVhaDG9iBEJ1hLWYq0QOyNK0jA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB10039
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Remove dra7xx_pcie_cpu_addr_fixup() as the DT bus fabric should provide correct
-address translation. Set use_parent_dt_ranges to allow the DWC core driver to
-fetch address translation from the device tree
+Use chip ID and chip_data struct to differentiate between 3 PMIC devices in
+probe(). Add TPS65214 resource information. Update descriptions and
+copyright information to reflect the driver supports 3 PMIC devices.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
 ---
- drivers/pci/controller/dwc/pci-dra7xx.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/mfd/tps65219.c       | 126 ++++++++++++++++++++++++++++++++++-
+ include/linux/mfd/tps65219.h |  65 ++++++++++++++++--
+ 2 files changed, 184 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-index 33d6bf460ffe5..d6e0bf67a07b3 100644
---- a/drivers/pci/controller/dwc/pci-dra7xx.c
-+++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-@@ -72,7 +72,6 @@
+diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c
+index d4788ebcb5c4..fd390600fbf0 100644
+--- a/drivers/mfd/tps65219.c
++++ b/drivers/mfd/tps65219.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ //
+-// Driver for TPS65215/TPS65219 Power Management Integrated Chips (PMIC)
++// Driver for TPS65214/TPS65215/TPS65219 Power Management Integrated Chips
+ //
+ // Copyright (C) 2022 BayLibre Incorporated - https://www.baylibre.com/
+ // Copyright (C) 2024 Texas Instruments Incorporated - https://www.ti.com/
+@@ -60,6 +60,44 @@ static const struct resource tps65219_pwrbutton_resources[] = {
+ 	DEFINE_RES_IRQ_NAMED(TPS65219_INT_PB_RISING_EDGE_DETECT, "rising"),
+ };
  
- #define	PCIECTRL_DRA7XX_CONF_PHY_CS			0x010C
- #define	LINK_UP						BIT(16)
--#define	DRA7XX_CPU_TO_BUS_ADDR				0x0FFFFFFF
++static const struct resource tps65214_regulator_resources[] = {
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_LDO1_SCG, "LDO1_SCG"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_LDO1_OC, "LDO1_OC"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_LDO1_UV, "LDO1_UV"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_LDO2_SCG, "LDO2_SCG"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_LDO2_OC, "LDO2_OC"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_LDO2_UV, "LDO2_UV"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_BUCK3_SCG, "BUCK3_SCG"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_BUCK3_OC, "BUCK3_OC"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_BUCK3_NEG_OC, "BUCK3_NEG_OC"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_BUCK3_UV, "BUCK3_UV"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_BUCK1_SCG, "BUCK1_SCG"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_BUCK1_OC, "BUCK1_OC"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_BUCK1_NEG_OC, "BUCK1_NEG_OC"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_BUCK1_UV, "BUCK1_UV"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_BUCK2_SCG, "BUCK2_SCG"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_BUCK2_OC, "BUCK2_OC"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_BUCK2_NEG_OC, "BUCK2_NEG_OC"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_BUCK2_UV, "BUCK2_UV"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_BUCK1_RV, "BUCK1_RV"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_BUCK2_RV, "BUCK2_RV"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_BUCK3_RV, "BUCK3_RV"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_LDO1_RV, "LDO1_RV"),
++	DEFINE_RES_IRQ_NAMED(TPS65214_INT_LDO2_RV, "LDO2_RV"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_BUCK1_RV_SD, "BUCK1_RV_SD"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_BUCK2_RV_SD, "BUCK2_RV_SD"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_BUCK3_RV_SD, "BUCK3_RV_SD"),
++	DEFINE_RES_IRQ_NAMED(TPS65214_INT_LDO1_RV_SD, "LDO1_RV_SD"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_LDO2_RV_SD, "LDO2_RV_SD"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_TIMEOUT, "TIMEOUT"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_SENSOR_2_WARM, "SENSOR_2_WARM"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_SENSOR_1_WARM, "SENSOR_1_WARM"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_SENSOR_0_WARM, "SENSOR_0_WARM"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_SENSOR_2_HOT, "SENSOR_2_HOT"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_SENSOR_1_HOT, "SENSOR_1_HOT"),
++	DEFINE_RES_IRQ_NAMED(TPS65219_INT_SENSOR_0_HOT, "SENSOR_0_HOT"),
++};
++
+ static const struct resource tps65215_regulator_resources[] = {
+ 	DEFINE_RES_IRQ_NAMED(TPS65215_INT_LDO1_SCG, "LDO1_SCG"),
+ 	DEFINE_RES_IRQ_NAMED(TPS65215_INT_LDO1_OC, "LDO1_OC"),
+@@ -150,6 +188,11 @@ static const struct resource tps65219_regulator_resources[] = {
+ 	DEFINE_RES_IRQ_NAMED(TPS65219_INT_SENSOR_0_HOT, "SENSOR_0_HOT"),
+ };
  
- #define	PCIECTRL_TI_CONF_INTX_ASSERT			0x0124
- #define	PCIECTRL_TI_CONF_INTX_DEASSERT			0x0128
-@@ -113,11 +112,6 @@ static inline void dra7xx_pcie_writel(struct dra7xx_pcie *pcie, u32 offset,
- 	writel(value, pcie->base + offset);
++static const struct mfd_cell tps65214_cells[] = {
++	MFD_CELL_RES("tps65214-regulator", tps65214_regulator_resources),
++	MFD_CELL_NAME("tps65215-gpio"),
++};
++
+ static const struct mfd_cell tps65215_cells[] = {
+ 	MFD_CELL_RES("tps65215-regulator", tps65215_regulator_resources),
+ 	MFD_CELL_NAME("tps65215-gpio"),
+@@ -186,6 +229,15 @@ static unsigned int tps65215_bit5_offsets[] = { TPS65215_REG_INT_LDO_1_POS };
+ static unsigned int tps65215_bit6_offsets[] = { TPS65215_REG_INT_LDO_2_POS };
+ static unsigned int bit7_offsets[] = { TPS65219_REG_INT_PB_POS };	/* Power Button */
+ 
++/* TPS65214 INT_SOURCE bit 6 is 'RESERVED'*/
++static unsigned int tps65214_bit0_offsets[] = { TPS65214_REG_INT_TO_RV_POS };
++static unsigned int tps65214_bit1_offsets[] = { TPS65214_REG_INT_RV_POS };
++static unsigned int tps65214_bit2_offsets[] = { TPS65214_REG_INT_SYS_POS };
++static unsigned int tps65214_bit3_offsets[] = { TPS65214_REG_INT_BUCK_1_2_POS };
++static unsigned int tps65214_bit4_offsets[] = { TPS65214_REG_INT_BUCK_3_POS };
++static unsigned int tps65214_bit5_offsets[] = { TPS65214_REG_INT_LDO_1_2_POS };
++static unsigned int tps65214_bit7_offsets[] = { TPS65214_REG_INT_PB_POS };
++
+ static struct regmap_irq_sub_irq_map tps65219_sub_irq_offsets[] = {
+ 	REGMAP_IRQ_MAIN_REG_OFFSET(bit0_offsets),
+ 	REGMAP_IRQ_MAIN_REG_OFFSET(bit1_offsets),
+@@ -208,9 +260,59 @@ static struct regmap_irq_sub_irq_map tps65215_sub_irq_offsets[] = {
+ 	REGMAP_IRQ_MAIN_REG_OFFSET(bit7_offsets),
+ };
+ 
++static struct regmap_irq_sub_irq_map tps65214_sub_irq_offsets[] = {
++	REGMAP_IRQ_MAIN_REG_OFFSET(tps65214_bit0_offsets),
++	REGMAP_IRQ_MAIN_REG_OFFSET(tps65214_bit1_offsets),
++	REGMAP_IRQ_MAIN_REG_OFFSET(tps65214_bit2_offsets),
++	REGMAP_IRQ_MAIN_REG_OFFSET(tps65214_bit3_offsets),
++	REGMAP_IRQ_MAIN_REG_OFFSET(tps65214_bit4_offsets),
++	REGMAP_IRQ_MAIN_REG_OFFSET(tps65214_bit5_offsets),
++	REGMAP_IRQ_MAIN_REG_OFFSET(tps65214_bit7_offsets),
++};
++
+ #define TPS65219_REGMAP_IRQ_REG(int_name, register_position) \
+ 	REGMAP_IRQ_REG(int_name, register_position, int_name##_MASK)
+ 
++static const struct regmap_irq tps65214_irqs[] = {
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO1_SCG, TPS65214_REG_INT_LDO_1_2_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO1_OC, TPS65214_REG_INT_LDO_1_2_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO1_UV, TPS65214_REG_INT_LDO_1_2_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO2_SCG, TPS65214_REG_INT_LDO_1_2_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO2_OC, TPS65214_REG_INT_LDO_1_2_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO2_UV, TPS65214_REG_INT_LDO_1_2_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK3_SCG, TPS65214_REG_INT_BUCK_3_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK3_OC, TPS65214_REG_INT_BUCK_3_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK3_NEG_OC, TPS65214_REG_INT_BUCK_3_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK3_UV, TPS65214_REG_INT_BUCK_3_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK2_SCG, TPS65214_REG_INT_BUCK_1_2_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK2_OC, TPS65214_REG_INT_BUCK_1_2_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK2_NEG_OC, TPS65214_REG_INT_BUCK_1_2_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK2_UV, TPS65214_REG_INT_BUCK_1_2_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK1_SCG, TPS65214_REG_INT_BUCK_1_2_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK1_OC, TPS65214_REG_INT_BUCK_1_2_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK1_NEG_OC, TPS65214_REG_INT_BUCK_1_2_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK1_UV, TPS65214_REG_INT_BUCK_1_2_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_2_WARM, TPS65214_REG_INT_SYS_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_1_WARM, TPS65214_REG_INT_SYS_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_0_WARM, TPS65214_REG_INT_SYS_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_2_HOT, TPS65214_REG_INT_SYS_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_1_HOT, TPS65214_REG_INT_SYS_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_SENSOR_0_HOT, TPS65214_REG_INT_SYS_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK1_RV, TPS65214_REG_INT_RV_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK2_RV, TPS65214_REG_INT_RV_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK3_RV, TPS65214_REG_INT_RV_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO1_RV, TPS65214_REG_INT_RV_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65214_INT_LDO2_RV, TPS65214_REG_INT_RV_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK1_RV_SD, TPS65214_REG_INT_TO_RV_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK2_RV_SD, TPS65214_REG_INT_TO_RV_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_BUCK3_RV_SD, TPS65214_REG_INT_TO_RV_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65214_INT_LDO1_RV_SD, TPS65214_REG_INT_TO_RV_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_LDO2_RV_SD, TPS65214_REG_INT_TO_RV_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_TIMEOUT, TPS65214_REG_INT_TO_RV_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_PB_FALLING_EDGE_DETECT, TPS65214_REG_INT_PB_POS),
++	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_PB_RISING_EDGE_DETECT, TPS65214_REG_INT_PB_POS),
++};
++
+ static const struct regmap_irq tps65215_irqs[] = {
+ 	TPS65219_REGMAP_IRQ_REG(TPS65215_INT_LDO1_SCG, TPS65215_REG_INT_LDO_1_POS),
+ 	TPS65219_REGMAP_IRQ_REG(TPS65215_INT_LDO1_OC, TPS65215_REG_INT_LDO_1_POS),
+@@ -305,6 +407,20 @@ static const struct regmap_irq tps65219_irqs[] = {
+ 	TPS65219_REGMAP_IRQ_REG(TPS65219_INT_PB_RISING_EDGE_DETECT, TPS65219_REG_INT_PB_POS),
+ };
+ 
++static const struct regmap_irq_chip tps65214_irq_chip = {
++	.name = "tps65214_irq",
++	.main_status = TPS65219_REG_INT_SOURCE,
++	.num_main_regs = 1,
++	.num_main_status_bits = 8,
++	.irqs = tps65214_irqs,
++	.num_irqs = ARRAY_SIZE(tps65214_irqs),
++	.status_base = TPS65214_REG_INT_LDO_1_2,
++	.ack_base = TPS65214_REG_INT_LDO_1_2,
++	.clear_ack = 1,
++	.num_regs = 8,
++	.sub_reg_offsets = tps65214_sub_irq_offsets,
++};
++
+ static const struct regmap_irq_chip tps65215_irq_chip = {
+ 	.name = "tps65215_irq",
+ 	.main_status = TPS65219_REG_INT_SOURCE,
+@@ -340,6 +456,11 @@ struct tps65219_chip_data {
+ };
+ 
+ static struct tps65219_chip_data chip_info_table[] = {
++	[TPS65214] = {
++		.irq_chip = &tps65214_irq_chip,
++		.cells = tps65214_cells,
++		.n_cells = ARRAY_SIZE(tps65214_cells),
++	},
+ 	[TPS65215] = {
+ 		.irq_chip = &tps65215_irq_chip,
+ 		.cells = tps65215_cells,
+@@ -421,6 +542,7 @@ static int tps65219_probe(struct i2c_client *client)
  }
  
--static u64 dra7xx_pcie_cpu_addr_fixup(struct dw_pcie *pci, u64 cpu_addr)
--{
--	return cpu_addr & DRA7XX_CPU_TO_BUS_ADDR;
--}
--
- static int dra7xx_pcie_link_up(struct dw_pcie *pci)
- {
- 	struct dra7xx_pcie *dra7xx = to_dra7xx_pcie(pci);
-@@ -514,7 +508,6 @@ static int dra7xx_add_pcie_port(struct dra7xx_pcie *dra7xx,
- }
+ static const struct of_device_id of_tps65219_match_table[] = {
++	{ .compatible = "ti,tps65214", .data = (void *)TPS65214, },
+ 	{ .compatible = "ti,tps65215", .data = (void *)TPS65215, },
+ 	{ .compatible = "ti,tps65219", .data = (void *)TPS65219, },
+ 	{}
+@@ -437,5 +559,5 @@ static struct i2c_driver tps65219_driver = {
+ module_i2c_driver(tps65219_driver);
  
- static const struct dw_pcie_ops dw_pcie_ops = {
--	.cpu_addr_fixup = dra7xx_pcie_cpu_addr_fixup,
- 	.start_link = dra7xx_pcie_establish_link,
- 	.stop_link = dra7xx_pcie_stop_link,
- 	.link_up = dra7xx_pcie_link_up,
-@@ -712,6 +705,7 @@ static int dra7xx_pcie_probe(struct platform_device *pdev)
+ MODULE_AUTHOR("Jerome Neanne <jneanne@baylibre.com>");
+-MODULE_DESCRIPTION("TPS65215/TPS65219 PMIC driver");
++MODULE_DESCRIPTION("TPS65214/TPS65215/TPS65219 PMIC driver");
+ MODULE_LICENSE("GPL");
+diff --git a/include/linux/mfd/tps65219.h b/include/linux/mfd/tps65219.h
+index 6047f92b367f..3e8d29189267 100644
+--- a/include/linux/mfd/tps65219.h
++++ b/include/linux/mfd/tps65219.h
+@@ -16,6 +16,7 @@
  
- 	pci->dev = dev;
- 	pci->ops = &dw_pcie_ops;
-+	pci->use_parent_dt_ranges = true;
+ /* Chip id list*/
+ enum pmic_id {
++	TPS65214,
+ 	TPS65215,
+ 	TPS65219,
+ };
+@@ -28,17 +29,23 @@ enum pmic_id {
+ #define TPS65219_REG_NVM_ID				0x01
+ #define TPS65219_REG_ENABLE_CTRL			0x02
+ #define TPS65219_REG_BUCKS_CONFIG			0x03
++#define TPS65214_REG_LOCK				0x03
+ #define TPS65219_REG_LDO4_VOUT				0x04
++#define TPS65214_REG_LDO1_VOUT_STBY			0x04
+ #define TPS65219_REG_LDO3_VOUT				0x05
+ #define TPS65215_REG_LDO2_VOUT                          0x05
++#define TPS65214_REG_LDO1_VOUT				0x05
+ #define TPS65219_REG_LDO2_VOUT				0x06
++#define TPS65214_REG_LDO2_VOUT				0x06
+ #define TPS65219_REG_LDO1_VOUT				0x07
++#define TPS65214_REG_LDO2_VOUT_STBY			0x07
+ #define TPS65219_REG_BUCK3_VOUT				0x8
+ #define TPS65219_REG_BUCK2_VOUT				0x9
+ #define TPS65219_REG_BUCK1_VOUT				0xA
+ #define TPS65219_REG_LDO4_SEQUENCE_SLOT			0xB
+ #define TPS65219_REG_LDO3_SEQUENCE_SLOT			0xC
+ #define TPS65215_REG_LDO2_SEQUENCE_SLOT                 0xC
++#define TPS65214_REG_LDO1_SEQUENCE_SLOT			0xC
+ #define TPS65219_REG_LDO2_SEQUENCE_SLOT			0xD
+ #define TPS65219_REG_LDO1_SEQUENCE_SLOT			0xE
+ #define TPS65219_REG_BUCK3_SEQUENCE_SLOT		0xF
+@@ -47,15 +54,21 @@ enum pmic_id {
+ #define TPS65219_REG_nRST_SEQUENCE_SLOT			0x12
+ #define TPS65219_REG_GPIO_SEQUENCE_SLOT			0x13
+ #define TPS65219_REG_GPO2_SEQUENCE_SLOT			0x14
++#define TPS65214_REG_GPIO_GPI_SEQUENCE_SLOT		0x14
+ #define TPS65219_REG_GPO1_SEQUENCE_SLOT			0x15
++#define TPS65214_REG_GPO_SEQUENCE_SLOT			0x15
+ #define TPS65219_REG_POWER_UP_SLOT_DURATION_1		0x16
+ #define TPS65219_REG_POWER_UP_SLOT_DURATION_2		0x17
++/* _SLOT_DURATION_3 doesn't apply to TPS65215*/
+ #define TPS65219_REG_POWER_UP_SLOT_DURATION_3		0x18
+ #define TPS65219_REG_POWER_UP_SLOT_DURATION_4		0x19
++#define TPS65214_REG_BUCK3_VOUT_STBY				0x19
+ #define TPS65219_REG_POWER_DOWN_SLOT_DURATION_1		0x1A
+ #define TPS65219_REG_POWER_DOWN_SLOT_DURATION_2		0x1B
+ #define TPS65219_REG_POWER_DOWN_SLOT_DURATION_3		0x1C
++#define TPS65214_REG_BUCK2_VOUT_STBY				0x1C
+ #define TPS65219_REG_POWER_DOWN_SLOT_DURATION_4		0x1D
++#define TPS65214_REG_BUCK1_VOUT_STBY				0x1D
+ #define TPS65219_REG_GENERAL_CONFIG			0x1E
+ #define TPS65219_REG_MFP_1_CONFIG			0x1F
+ #define TPS65219_REG_MFP_2_CONFIG			0x20
+@@ -82,6 +95,9 @@ enum pmic_id {
+ #define TPS65215_REG_INT_LDO_2				0x2C
+ #define TPS65215_REG_INT_LDO_1				0x2D
  
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0)
-
++/* TPS65214 specific 'sub irq' register */
++#define TPS65214_REG_INT_LDO_1_2			0x2D
++
+ /* Common TPS65215 & TPS65219 'sub irq' registers */
+ #define TPS65219_REG_INT_BUCK_3				0x2E
+ #define TPS65219_REG_INT_BUCK_1_2			0x2F
+@@ -102,6 +118,14 @@ enum pmic_id {
+ #define TPS65215_REG_INT_LDO_2_POS			0
+ #define TPS65215_REG_INT_LDO_1_POS			1
+ 
++#define TPS65214_REG_INT_LDO_1_2_POS		0
++#define TPS65214_REG_INT_BUCK_3_POS			1
++#define TPS65214_REG_INT_BUCK_1_2_POS			2
++#define TPS65214_REG_INT_SYS_POS			3
++#define TPS65214_REG_INT_RV_POS				4
++#define TPS65214_REG_INT_TO_RV_POS			5
++#define TPS65214_REG_INT_PB_POS				6
++
+ #define TPS65219_REG_USER_NVM_CMD			0x34
+ #define TPS65219_REG_POWER_UP_STATUS			0x35
+ #define TPS65219_REG_SPARE_2				0x36
+@@ -124,6 +148,7 @@ enum pmic_id {
+ #define TPS65219_ENABLE_LDO2_EN_MASK			BIT(4)
+ #define TPS65219_ENABLE_LDO3_EN_MASK			BIT(5)
+ #define TPS65215_ENABLE_LDO2_EN_MASK                    BIT(5)
++#define TPS65214_ENABLE_LDO1_EN_MASK			BIT(5)
+ #define TPS65219_ENABLE_LDO4_EN_MASK			BIT(6)
+ /* power ON-OFF sequence slot */
+ #define TPS65219_BUCKS_LDOS_SEQUENCE_OFF_SLOT_MASK	GENMASK(3, 0)
+@@ -175,14 +200,14 @@ enum pmic_id {
+ #define TPS65219_REG_MASK_EFFECT_MASK			GENMASK(2, 1)
+ #define TPS65219_REG_MASK_INT_FOR_PB_MASK		BIT(7)
+ /* UnderVoltage - Short to GND - OverCurrent*/
+-/* LDO3-4 */
++/* LDO3-4: only for TPS65219*/
+ #define TPS65219_INT_LDO3_SCG_MASK			BIT(0)
+ #define TPS65219_INT_LDO3_OC_MASK			BIT(1)
+ #define TPS65219_INT_LDO3_UV_MASK			BIT(2)
+ #define TPS65219_INT_LDO4_SCG_MASK			BIT(3)
+ #define TPS65219_INT_LDO4_OC_MASK			BIT(4)
+ #define TPS65219_INT_LDO4_UV_MASK			BIT(5)
+-/* LDO1-2 */
++/* LDO1-2: TPS65214 & TPS65219 */
+ #define TPS65219_INT_LDO1_SCG_MASK			BIT(0)
+ #define TPS65219_INT_LDO1_OC_MASK			BIT(1)
+ #define TPS65219_INT_LDO1_UV_MASK			BIT(2)
+@@ -210,12 +235,13 @@ enum pmic_id {
+ #define TPS65219_INT_BUCK2_OC_MASK			BIT(5)
+ #define TPS65219_INT_BUCK2_NEG_OC_MASK			BIT(6)
+ #define TPS65219_INT_BUCK2_UV_MASK			BIT(7)
+-/* Thermal Sensor  */
++/* Thermal Sensor: TPS65219/TPS65215 */
+ #define TPS65219_INT_SENSOR_3_WARM_MASK			BIT(0)
++#define TPS65219_INT_SENSOR_3_HOT_MASK			BIT(4)
++/* Thermal Sensor: TPS65219/TPS65215/TPS65214 */
+ #define TPS65219_INT_SENSOR_2_WARM_MASK			BIT(1)
+ #define TPS65219_INT_SENSOR_1_WARM_MASK			BIT(2)
+ #define TPS65219_INT_SENSOR_0_WARM_MASK			BIT(3)
+-#define TPS65219_INT_SENSOR_3_HOT_MASK			BIT(4)
+ #define TPS65219_INT_SENSOR_2_HOT_MASK			BIT(5)
+ #define TPS65219_INT_SENSOR_1_HOT_MASK			BIT(6)
+ #define TPS65219_INT_SENSOR_0_HOT_MASK			BIT(7)
+@@ -227,6 +253,7 @@ enum pmic_id {
+ #define TPS65219_INT_LDO2_RV_MASK			BIT(4)
+ #define TPS65219_INT_LDO3_RV_MASK			BIT(5)
+ #define TPS65215_INT_LDO2_RV_MASK			BIT(5)
++#define TPS65214_INT_LDO2_RV_MASK			BIT(5)
+ #define TPS65219_INT_LDO4_RV_MASK			BIT(6)
+ /* Residual Voltage ShutDown */
+ #define TPS65219_INT_BUCK1_RV_SD_MASK			BIT(0)
+@@ -236,6 +263,7 @@ enum pmic_id {
+ #define TPS65219_INT_LDO2_RV_SD_MASK			BIT(4)
+ #define TPS65219_INT_LDO3_RV_SD_MASK			BIT(5)
+ #define TPS65215_INT_LDO2_RV_SD_MASK			BIT(5)
++#define TPS65214_INT_LDO1_RV_SD_MASK			BIT(5)
+ #define TPS65219_INT_LDO4_RV_SD_MASK			BIT(6)
+ #define TPS65219_INT_TIMEOUT_MASK			BIT(7)
+ /* Power Button */
+@@ -269,7 +297,7 @@ enum {
+ 	TPS65215_INT_LDO2_SCG,
+ 	TPS65215_INT_LDO2_OC,
+ 	TPS65215_INT_LDO2_UV,
+-	/* LDO1-2 */
++	/* LDO1-2: TPS65219/TPS65214 */
+ 	TPS65219_INT_LDO1_SCG,
+ 	TPS65219_INT_LDO1_OC,
+ 	TPS65219_INT_LDO1_UV,
+@@ -306,6 +334,7 @@ enum {
+ 	TPS65219_INT_LDO1_RV,
+ 	TPS65219_INT_LDO2_RV,
+ 	TPS65215_INT_LDO2_RV,
++	TPS65214_INT_LDO2_RV,
+ 	TPS65219_INT_LDO3_RV,
+ 	TPS65219_INT_LDO4_RV,
+ 	/* Residual Voltage ShutDown */
+@@ -313,6 +342,7 @@ enum {
+ 	TPS65219_INT_BUCK2_RV_SD,
+ 	TPS65219_INT_BUCK3_RV_SD,
+ 	TPS65219_INT_LDO1_RV_SD,
++	TPS65214_INT_LDO1_RV_SD,
+ 	TPS65215_INT_LDO2_RV_SD,
+ 	TPS65219_INT_LDO2_RV_SD,
+ 	TPS65219_INT_LDO3_RV_SD,
+@@ -323,6 +353,17 @@ enum {
+ 	TPS65219_INT_PB_RISING_EDGE_DETECT,
+ };
+ 
++enum tps65214_regulator_id {
++	/*
++	 * DCDC's same as TPS65219
++	 * LDO1 maps to TPS65219's LDO3
++	 * LDO2 is the same as TPS65219
++	 *
++	 */
++	TPS65214_LDO_1 = 3,
++	TPS65214_LDO_2 = 4,
++};
++
+ enum tps65215_regulator_id {
+ 	/* DCDC's same as TPS65219 */
+ 	/* LDO1 is the same as TPS65219 */
+@@ -346,9 +387,23 @@ enum tps65219_regulator_id {
+ /* Number of LDO voltage regulators available */
+ #define TPS65219_NUM_LDO		4
+ #define TPS65215_NUM_LDO		2
++#define TPS65214_NUM_LDO		2
+ /* Number of total regulators available */
+ #define TPS65219_NUM_REGULATOR		(TPS6521X_NUM_BUCKS + TPS65219_NUM_LDO)
+ #define TPS65215_NUM_REGULATOR		(TPS6521X_NUM_BUCKS + TPS65215_NUM_LDO)
++#define TPS65214_NUM_REGULATOR		(TPS6521X_NUM_BUCKS + TPS65214_NUM_LDO)
++
++/* Define the TPS65214 IRQ numbers */
++enum tps65214_irqs {
++	/* INT source registers */
++	TPS65214_TO_RV_SD_SET_IRQ,
++	TPS65214_RV_SET_IRQ,
++	TPS65214_SYS_SET_IRQ,
++	TPS65214_BUCK_1_2_SET_IRQ,
++	TPS65214_BUCK_3_SET_IRQ,
++	TPS65214_LDO_1_2_SET_IRQ,
++	TPS65214_PB_SET_IRQ = 7,
++};
+ 
+ /* Define the TPS65215 IRQ numbers */
+ enum tps65215_irqs {
 -- 
-2.34.1
+2.43.0
 
 
