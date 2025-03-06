@@ -1,158 +1,128 @@
-Return-Path: <linux-omap+bounces-3335-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3336-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8815A50F0A
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Mar 2025 23:48:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74C46A543A2
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Mar 2025 08:25:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C265B3A27C0
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Mar 2025 22:47:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2E211894ADB
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Mar 2025 07:25:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C44D8205ABE;
-	Wed,  5 Mar 2025 22:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E741C862C;
+	Thu,  6 Mar 2025 07:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="h4ZCL+WE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RovJvzoc"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6F31EEA5D;
-	Wed,  5 Mar 2025 22:47:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F311C8602;
+	Thu,  6 Mar 2025 07:25:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741214880; cv=none; b=qboWZw4vaWIX+lpwWZ8UFdNw8iqCNM02LDAq/NuzVgJHuEcmlKPikYMm/u5cWIaar4loWYhZ++xWuJMNCwF2oFngjXwvYFpn1GECQJGLi2oTKRnSov/RgI7NwfM7DpeVAJOMFgfou6QtBjr3WRezKK00wBXP/ZZr7lDg7TIrzrA=
+	t=1741245935; cv=none; b=KuG1jmTOioB9mS6w0oR5CA5Ze5htaIOOu4bb4/kuLtvkzc5lZnVqUI2JipvghAiES2nMCCf0V6MIJMK59ckR+xKJCOcAcbO7+Ulb+uUEVhn9FsE5R0yFSLI9V+3RtPxhhv4EEMtxnPlDbXA9KNoEZEIvwXvB+LWxCgvzgxtpHqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741214880; c=relaxed/simple;
-	bh=j690KMyiLxuuR24G6j9sZerB6/YuInfz3g49qZUsgvQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DvBSqmxuCq4BFdpy3nFIfx8BraHMt9blhmFRAkgHyOILrw/Smctd7/y5l1LYpRwdiml3s8c5jw2qJzyUmzcSvw5qSOcyJTIpFAkCFSpvsW7XaEPtySP3Ibg7vO5Ssw6S/Bhg9/02+GxeRfrGymmvEMWJpnfkD1W5MO6wVCgmZCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=h4ZCL+WE; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=Cc:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=7fAKyPcFLbipyj8e2+HaYX8ZN0IQD4FgvUWGz9wiNuY=; b=h4ZCL+WExFSPRI+oi7iGgFW+yy
-	gjmzS3Ki/r2yubN8dEfbBxkmDm69I0j96wpiL0X5wnLPU3+GwHBGdXQXci1MaRq8r8y42C+BSh8pM
-	Yh+dVJNI5dPat7hrnubUkrPOWJFtz5O3qs0+vSQwI8HgqFrw/l9uRubI4ZOu4Wqebnm3yFCGg6pld
-	dZ1UDrNkA8+5wUTuCsHLhyNbKL3DDORA8PQ1Hj96+xgvpLSGfYOf0cGObfdqpQUXRiV7t7TgL2eCE
-	oZnpAK84atGBwcgVaroU9Sumv60buX6pyc4yjlarRxvvwCLsiIXjGFX4QGoYpa3WXrdiTo7r9eoRH
-	ccfANGDA==;
-From: Andreas Kemnade <andreas@kemnade.info>
-To: mturquette@baylibre.com,
-	sboyd@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	tony@atomide.com,
-	linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org
-Cc: Andreas Kemnade <andreas@kemnade.info>
-Subject: [PATCH] dt-bindings: clock: ti: Convert ti-clkctrl.txt to json-schema
-Date: Wed,  5 Mar 2025 23:47:22 +0100
-Message-Id: <20250305224722.66360-1-andreas@kemnade.info>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1741245935; c=relaxed/simple;
+	bh=T5qWqm2djeTcFnXRYxS12AAAMDmjV0lcdUINtVuEEhc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lklyah9hu0aKYK//0lZfQyO6ZTq57d/xpez0xwGjsnnAd9QXngby7Ax14dQG2nVhJemdR7jaFdxpNCLy3/eQy5IoSSG9MLbcFG3EwO+NyPMpQwPkQsOSR/j0Y+X/8gULEXYfdmsVmvuAxWi521BpQiLZ5GO/0fbd3AklvZHzc4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RovJvzoc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3142C4CEE4;
+	Thu,  6 Mar 2025 07:25:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741245934;
+	bh=T5qWqm2djeTcFnXRYxS12AAAMDmjV0lcdUINtVuEEhc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RovJvzocXm31/zUuGuVxKBBpweZJ+xKRslcOfNI80Vhgw4gCmc02bAPXE3DB/PQZ4
+	 cvIk0ubVDkgRpGqwUXtXONTZcNr92AUWx5lC/uJO4p7u7Qx/UwZ8dZaO+AdQdCQZJc
+	 tvFoaY7q4SZudwmR7akKJ50dlhLMHWPoK060aFMdeaSJWNaqYNvwswbDheJMZFjJG2
+	 Gx+dNR/EwXPVD2I6lxEgZQBT0NP8T6mv031hws0q+NJp4OSLdpsJNM/LEDgmCf3l6s
+	 VcEymhanPyJ36dO8Kskn4D0y5vVoheJtogv0FI3hK+hAU0n3KwQffPPDAlKOYEkaBt
+	 hb5BuT0dqf3oQ==
+Message-ID: <acea75f2-337e-4125-88d8-fbb07c8bf6c3@kernel.org>
+Date: Thu, 6 Mar 2025 08:25:26 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/9] regulator: dt-bindings: Add TI TPS65214 PMIC
+ bindings
+To: Shree Ramamoorthy <s-ramamoorthy@ti.com>, lgirdwood@gmail.com,
+ broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, aaro.koskinen@iki.fi, andreas@kemnade.info,
+ khilman@baylibre.com, rogerq@kernel.org, tony@atomide.com, lee@kernel.org,
+ linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+Cc: m-leonard@ti.com, praneeth@ti.com
+References: <20250305210351.249811-1-s-ramamoorthy@ti.com>
+ <20250305210351.249811-3-s-ramamoorthy@ti.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20250305210351.249811-3-s-ramamoorthy@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Convert the TI clkctrl clock device tree binding to json-schema.
-Specify the creator of the original binding as a maintainer.
+On 05/03/2025 22:03, Shree Ramamoorthy wrote:
+>  
+> @@ -102,7 +106,9 @@ allOf:
+>        properties:
+>          compatible:
+>            contains:
+> -            const: ti,tps65215
+> +            enum:
+> +              - ti,tps65214
+> +              - ti,tps65215
 
-reg property is used mostly with one item, in am3xxx also with
-an arbitrary number of items, so divert from the original binding
-specifying two (probably meaning one address and one size).
-The consumer part of the example is left out because the full consumer
-node would be needed.
+I do not see improvements and you did not respond to my comment.
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
----
-@Tony: you seem to be the only contributor to the txt binding,
-so we could go with dual-licensing if you agree.
-
- .../devicetree/bindings/clock/ti,clkctrl.yaml | 64 +++++++++++++++++++
- 1 file changed, 64 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/clock/ti,clkctrl.yaml
-
-diff --git a/Documentation/devicetree/bindings/clock/ti,clkctrl.yaml b/Documentation/devicetree/bindings/clock/ti,clkctrl.yaml
-new file mode 100644
-index 0000000000000..bf4119c9c61fe
---- /dev/null
-+++ b/Documentation/devicetree/bindings/clock/ti,clkctrl.yaml
-@@ -0,0 +1,64 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/clock/ti,clkctrl.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Texas Instruments clkctrl clock
-+
-+maintainers:
-+  - Tony Lindgren <tony@atomide.com>
-+
-+description: |
-+  Texas Instruments SoCs can have a clkctrl clock controller for each
-+  interconnect target module. The clkctrl clock controller manages functional
-+  and interface clocks for each module. Each clkctrl controller can also
-+  gate one or more optional functional clocks for a module, and can have one
-+  or more clock muxes. There is a clkctrl clock controller typically for each
-+  interconnect target module on omap4 and later variants.
-+
-+  The clock consumers can specify the index of the clkctrl clock using
-+  the hardware offset from the clkctrl instance register space. The optional
-+  clocks can be specified by clkctrl hardware offset and the index of the
-+  optional clock.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - ti,clkctrl
-+      - ti,clkctrl-l4-cfg
-+      - ti,clkctrl-l4-per
-+      - ti,clkctrl-l4-secure
-+      - ti,clkctrl-l4-wkup
-+
-+  "#clock-cells":
-+    const: 2
-+
-+  clock-output-names:
-+    maxItems: 1
-+
-+  reg:
-+    minItems: 1
-+    maxItems: 8 # arbitrary, should be enough
-+
-+required:
-+  - compatible
-+  - "#clock-cells"
-+  - clock-output-names
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    bus {
-+      #address-cells = <1>;
-+      #size-cells = <1>;
-+
-+      clock@20 {
-+        compatible = "ti,clkctrl";
-+        clock-output-names = "l4_per";
-+        reg = <0x20 0x1b0>;
-+        #clock-cells = <2>;
-+      };
-+    };
--- 
-2.39.5
-
+Best regards,
+Krzysztof
 
