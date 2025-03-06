@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-3337-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3338-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19A2DA543A7
-	for <lists+linux-omap@lfdr.de>; Thu,  6 Mar 2025 08:27:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81842A543AB
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Mar 2025 08:27:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 275C63AFCAD
-	for <lists+linux-omap@lfdr.de>; Thu,  6 Mar 2025 07:26:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C78C51894B01
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Mar 2025 07:27:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE3721C862C;
-	Thu,  6 Mar 2025 07:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24BEC1C8638;
+	Thu,  6 Mar 2025 07:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I4DO+slo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jW1hwAVa"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A04118DB04;
-	Thu,  6 Mar 2025 07:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A3FB661;
+	Thu,  6 Mar 2025 07:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741246021; cv=none; b=keX41MS0WeG/lYUKNHuHMbIR5SvJv5Q22bpoPsZZgAniE2NYIUsd2wXi3dG+VxDu/Uqs8/o97stSk8f78JsxyWWY6tCFoPNS3mVQ0D5Pj1a9ji5Pk3C0S98d0wgIcO9zQmNwkC+IYPPDFgLLlC/7dKYYz87/pAhpHUaJw2LJs9c=
+	t=1741246064; cv=none; b=b9vajL5WETKUALRfVYhEY0IZc1zheJMrdOYzhptqVGb+1FM16jtaYvZOM2cq7KmxmZM6zXV6ZwwqJyybgJ42IKeaQ7WzW5Khg35vUwpRSGsvKfWre7oumNML+Czsxia+bt15rr52SMoC754EYTTS4XGpiB9f2xj93bc34Ble62M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741246021; c=relaxed/simple;
-	bh=jToAWs5nOMoiD88j7gOuCaUM6iDoTB9eRniJXCnaMWw=;
+	s=arc-20240116; t=1741246064; c=relaxed/simple;
+	bh=yMJYAu2IKw5s118360bMsqyuFwq3Xwx+0xpCnG/i6Eg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BPff26S6BGNBJIJNk1Jp3C6NgQsaOjCQW9kiHEzdafqi9OoGWcryrq+gajdGa292bPk3DumTYd08+MuumCSo8Piy7uHl3o3IKjIQHiGnpS/WjWN5QASDjBSa4yhDHtQ2Or0dpl2pl9QCJrAbx8wrcw/n6y8ObwN8rFWbiHYcQMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I4DO+slo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B3B9C4CEE0;
-	Thu,  6 Mar 2025 07:26:54 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=C3V0GT61jVMMMhLR2ccd5oSyGvSg1aMnJxz6DgLXxmpnKeVR7XzTxfaKmfyC5S7mcjgUjdc41YJ+aenTONqEM+lahkMg1PT5nuLGq9r5dR2GkxBsI1O81TAaoSEM2NhawgeUr4C9FPKJNWiq3ruq+Ry3p9k/Tvz4Ei4Jy0Dq2VI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jW1hwAVa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B04FC4CEE0;
+	Thu,  6 Mar 2025 07:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741246021;
-	bh=jToAWs5nOMoiD88j7gOuCaUM6iDoTB9eRniJXCnaMWw=;
+	s=k20201202; t=1741246064;
+	bh=yMJYAu2IKw5s118360bMsqyuFwq3Xwx+0xpCnG/i6Eg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=I4DO+slo/acGu+CnTSq/7OPARxDhPpKe5Le0wof01DFfBkCDOA8qw2O+XV9DRcEpu
-	 SAEGveKDgkdVMSLdmyVggcbLMpyQLQiXZQhltFhNnPYspCwwvAY05gw1k1eQjHDbv0
-	 ESJkscX7TQiUHl+fwwxBM4OtLkOV8CYZVY4w8CM/uLseh9KqjahruxAvKP1bGHhOAJ
-	 uEfsqFHbwslfX7R9pM9xIVCAHNolSD0zYgQCHB+IJWjTWXZkNJPmrDW1uaPmTv1xI8
-	 Ld/Zn51T19PYU0Pcq8yq07YeXb3eCYfoGdJG8dimNOnCJZrXW0n2CYswKX6xDBWn0z
-	 cctTHUWstNowA==
-Message-ID: <471cdd13-3250-46b1-b7a0-a4f236a47773@kernel.org>
-Date: Thu, 6 Mar 2025 08:26:52 +0100
+	b=jW1hwAVaLloB3Yo2yoP5qMuSevMGN6Peaz5bOk66ptd9gmTwHUn9G4TMC48aD1g5z
+	 hUYYYrS+IubQXkOkgXEMDlvj+ZX2DJ+AH7xl2Lv2B5Lotb4cT1xIX2VSWwP5S1DTlC
+	 fa6luvre778cU/toDeckZR8DeboSiLWx94bH7Ha9UKI+ntBdwkF08O2M7EuZI0e6qc
+	 iGQmetysxoMbhsogRbvHtcnDalYbEYSO3094588MtEKojnqeEyPoTPPz3ySQ4O0Cy5
+	 T+PVXiwCgwXnxeyPMl6SA/YtCYwkrA0BpH09QOcTbtNLBgzl6PDDJRHXNtxAg/lzb+
+	 /oNUhHZNAD2rg==
+Message-ID: <b6b88442-92cb-401b-bca4-c7cf72212114@kernel.org>
+Date: Thu, 6 Mar 2025 08:27:36 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -50,17 +50,15 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/5] Add TI TPS65214 & TPS65215 PMIC MFD Driver Support
-To: Shree Ramamoorthy <s-ramamoorthy@ti.com>, Lee Jones <lee@kernel.org>,
- broonie@kernel.org
-Cc: m-leonard@ti.com, praneeth@ti.com, conor+dt@kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- khilman@baylibre.com, rogerq@kernel.org, lgirdwood@gmail.com,
- linux-omap@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- tony@atomide.com, andreas@kemnade.info, aaro.koskinen@iki.fi
-References: <20250206173725.386720-1-s-ramamoorthy@ti.com>
- <173928615760.2233464.12306998726512431222.b4-ty@kernel.org>
- <7f33b5c7-b1a7-4db9-9e19-e30cbb0066ab@ti.com>
+Subject: Re: [PATCH v6 0/9] Add TI TPS65214 & TPS65215 MFD & Regulator Support
+To: Shree Ramamoorthy <s-ramamoorthy@ti.com>, lgirdwood@gmail.com,
+ broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, aaro.koskinen@iki.fi, andreas@kemnade.info,
+ khilman@baylibre.com, rogerq@kernel.org, tony@atomide.com, lee@kernel.org,
+ linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+Cc: m-leonard@ti.com, praneeth@ti.com
+References: <20250305210351.249811-1-s-ramamoorthy@ti.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -106,54 +104,39 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <7f33b5c7-b1a7-4db9-9e19-e30cbb0066ab@ti.com>
+In-Reply-To: <20250305210351.249811-1-s-ramamoorthy@ti.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 05/03/2025 22:09, Shree Ramamoorthy wrote:
-> Hi Lee,
+On 05/03/2025 22:03, Shree Ramamoorthy wrote:
+> TPS65214 and TPS65215 are Power Management Integrated Circuits (PMICs) that
+> have significant register map overlap with TPS65219 and each other. The 
+> series introduces the 2 new PMICs and restructures the existing driver to 
+> support multiple devices.
 > 
+> - TPS65214, TPS65215, and TPS65219 each have 3 Buck regulators
+> - TPS65214 has 2 LDOS and 1 GPO, whereas TPS65219 has 4 LDOs and 2 GPOs.
+> - TPS65214's LDO1 maps to TPS65219's LDO3.
+> - A key difference between TPS65215 & TPS65214 are the LDO current and
+>   voltage output ranges and the configurable options available.
+> - TPS65215 has 2 LDOs, whereas TPS65219 has 4 LDOs.
+> - TPS65215's LDO2 maps to TPS65219's LDO3.
+> - TPS65215 has 1 GPO, whereas TPS65219 has 2 GPOs.
 > 
-> On 2/11/25 9:02 AM, Lee Jones wrote:
->> On Thu, 06 Feb 2025 11:37:20 -0600, Shree Ramamoorthy wrote:
->>> TPS65214 and TPS65215 are Power Management Integrated Circuits (PMICs) that
->>> have significant register map overlap with TPS65219 and each other. The
->>> series introduces the 2 new PMICs and restructures the existing driver to
->>> support multiple devices.
->>>
->>> - TPS65214, TPS65215, and TPS65219 each have 3 Buck regulators
->>> - TPS65214 has 2 LDOS and 1 GPO, whereas TPS65219 has 4 LDOs and 2 GPOs.
->>> - TPS65214's LDO1 maps to TPS65219's LDO3.
->>> - A key difference between TPS65215 & TPS65214 are the LDO current and
->>>    voltage output ranges and the configurable options available.
->>> - TPS65215 has 2 LDOs, whereas TPS65219 has 4 LDOs.
->>> - TPS65215's LDO2 maps to TPS65219's LDO3.
->>> - TPS65215 has 1 GPO, whereas TPS65219 has 2 GPOs.
->>>
->>> [...]
->> Applied, thanks!
->>
->> [1/5] regulator: dt-bindings: Add TI TPS65215 PMIC bindings
->>        commit: 85e7aef57a9e057545017d55b02073e3c4756b2c
->> [2/5] regulator: dt-bindings: Add TI TPS65214 PMIC bindings
->>        commit: 34beb3c87cbb8747f521db5cf1b2a608833f3967
->> [3/5] mfd: tps65219: Remove regmap_read check
->>        commit: 5342c8a9e04fc05f485a3886605b803a5180bd64
->> [4/5] mfd: tps65219: Add support for TI TPS65215 PMIC
->>        commit: ebcbd21550853b16f307d7da8c846b862e138a98
->> [5/5] mfd: tps65219: Add support for TI TPS65214 PMIC
->>        commit: c9878d8d9ac2ecfadfa4fa3543730026c66ad843
->>
->> --
->> Lee Jones [李琼斯]
+> TPS65214 TRM: https://www.ti.com/lit/pdf/slvud30
+> TPS65215 TRM: https://www.ti.com/lit/pdf/slvucw5/
 > 
-> Would you be able to remove this series from your branch & replace it with this v6 [0],
-> so Mark Brown will be able to apply the dependent regulator series [1]? Thank you!
+> AM62L + TPS65214 Test Logs:
+> https://gist.github.com/ramamoorthyhs/0793f7813332d94423ca1baee02f62c9
+> AM62L + TPS65215 Test Logs:
+> https://gist.github.com/ramamoorthyhs/7560eca6110fafc77b51894fa2c0fd22
+> 
+> ---
+> Change Log:
+> v5 -> v6:
 
-You replied 3 weeks later. If something was applied not as it should,
-you ought to reply IMMEDIATELY, not 3 weeks after.
-
-The trees are mostly immutable after publishing.
+All of this was applied and you already got message about it. Sending
+everything again is just noise and not helping us.
 
 Best regards,
 Krzysztof
