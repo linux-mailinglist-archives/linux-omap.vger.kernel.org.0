@@ -1,192 +1,139 @@
-Return-Path: <linux-omap+bounces-3340-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3341-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C631BA5566E
-	for <lists+linux-omap@lfdr.de>; Thu,  6 Mar 2025 20:20:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB7DA55A40
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Mar 2025 23:57:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0736175C81
-	for <lists+linux-omap@lfdr.de>; Thu,  6 Mar 2025 19:20:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FEAF3ADC5A
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Mar 2025 22:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B767326D5B8;
-	Thu,  6 Mar 2025 19:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F73B27CB33;
+	Thu,  6 Mar 2025 22:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gPva8+Y/"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="eK/2Vjt4"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BD520967A;
-	Thu,  6 Mar 2025 19:19:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2172E206F22;
+	Thu,  6 Mar 2025 22:57:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741288794; cv=none; b=ouy8rx0RiBY90zvYC8RXlApI6VU1NGQo888kaVTGtgu5LGUL7A+PSe6rGRy1x1a6d08YpDEdEUi3AHbS4BDLB33gZNKl/DVeuBPUYeyfNlWg0yaql5x0WpDW8VkUMcJwfHwlnXQuqG7h/KHJRljKtMuPVZYkVnoP09j/j+zMy+I=
+	t=1741301837; cv=none; b=N78yKz8dkJyq5dQdBlKY8OC6iZGr17D+mQlOoUkGu9RwBV5ByJQ++j0ggxj0JSQgTwS+03n6ZLPG3MaiAQgBSQX81T5Q1j3Ct0TNMRgIEQGhpdRDPG4c166gyBZnD3oXmgdMjLk2RNwyRbuKp1nSYHU4FiM3vYCCJjZ0uevooRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741288794; c=relaxed/simple;
-	bh=VCSeFIkK2OWdz1dEx4pV+Rw9hAHhlwzqN1Th+gTyRaM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aZ7uI01oIo09hCyrMRnHbOZcZey/eMUFz6PWx++VGCTulPQpiFfx1j6Efofo4qVZ+KuEUFZrwjmwyqG/6a6bPujRtdklxSr+Altm7BTfVp1qZiCWkh061zCpcz4YLS5bEaNPnSMBXCnH1+4KDdTdIgrx4fDsagyz+jsqdftbMgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gPva8+Y/; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43bc6a6aaf7so8384885e9.2;
-        Thu, 06 Mar 2025 11:19:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741288791; x=1741893591; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/eOCz6p5uyWrnGjfkKjBisd5HzVXiT1RDyr/H3ZddfA=;
-        b=gPva8+Y/HIbF9ckfctZAFHU+eQ43yTYmSyr9ncYhz9ZCHvsg6W5Y0xQ0Y8zB4zBK7S
-         RWcpSDkc7WqUQiu7TVNZZxC2ziJA7vBetoO8Nv896/dCL4/HQCahp6JBX5dSx8j1SyRS
-         MM8k5B0e47z1zQSNpMqViN/2ZiYDih+JjGtVunUj/oQkOLWviIMOJ567Va2gfeUaOEXn
-         PGCh+JMr6UHrk+ativKlNHnM4vXdjyT2Pf3zhbX9uk3yR8y/HF2A5tAbndpnGO1tM/Tm
-         scvqwpcGpli7SbL/lmT6vXLKB1h0CwusfQLIl8Zy1dbJH/tRhOxEbt6N5UkD/UjAFTCf
-         2sfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741288791; x=1741893591;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/eOCz6p5uyWrnGjfkKjBisd5HzVXiT1RDyr/H3ZddfA=;
-        b=PI67lrkTzv7ermuYVWEgNvyYw4gDuGgeknNLjgUpAf5ZKXBeu02EBBTxWUFG0tJqZG
-         ikfVSIWNqjv5cgOwOySvdvq8uwxDhhbq+8AYhY53Dpkb4IbYaGSoYEQ0XS69aFgPylCE
-         aVXwmghR6f6nth7CeQotTIcEmaU3ftS4R5Bjmjld0dnG6qZ8f4Zamtnb1wLKsixYM2lM
-         fASl+V1irHsVbMD4Mt6R2BcA0qhn6fffsWVmNDcxSMUfj52BW39IcoaShpK5hgU7k+ks
-         HHKlwSITwF6+1Ts6P+lm5h02kreYnEQqiNlCefN/mtGxTgRsWQ5GVtvO8zyhX3vbe4pD
-         oOiw==
-X-Forwarded-Encrypted: i=1; AJvYcCUAX2Ugqx1i2xDEttndz/In+rty5HgJBykwRNn7X6lkzpWQyKPsVMCXQvNJhUw+IDyqMYP4Umzocio=@vger.kernel.org, AJvYcCVVljmzJJPfRpZRF4fYzzr3O9jX+pnhXedczYDa5Otay5hMdDWllPfnWb2EMQrxMTUht71errnHi7dOug==@vger.kernel.org, AJvYcCVy10cOIV1UhHpgUUnQP0Fc/2PUMO+4/gEsdSEU3uoJ9KV65NSEPAR2MhJ9lB2JAcJP1OUw88LqBhvRn/8=@vger.kernel.org, AJvYcCXtbVhDYOfs4tM4xgOfHOC1U+TYz7TJ5cVBgJsTQnk9Dpud07aRcgmjKXR/jYnBEDIGgSQwHKgi05T8N0M=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy++M94SXdWFQOW7nF3e+i/Q1cDGlK/qbed5wjUMaXi4EHpCsye
-	ybrUHmGguAdRYUKwD0GIhFVMGAyZ5E6cp3IeBj7qCSuV6cds79i8
-X-Gm-Gg: ASbGnct9CKSoRkDxAl899uLkWyDXIawPB81G885CfI3ntdzkyP4llhATvFIXc819rJC
-	q5NKokZyJlKYsVjK5M6B707FMQBIvbj5JWWQ5xKROMLMC/t41AIisrXhYvII2o7bnsDzlmMTPnf
-	gRQ4IxkD46ylMbWsE48co9dboYgOMASnBCRjC+1+1cSHaAAbBgKB0Qq6hmfpaTaM6ZXZWZAXHff
-	cRcY3DOU3SQur5UiQT8u9H4nRFHprpqAqgkgSWncKJk/RpmCfrBq2JCe+e6XI34XyDrdRIkFwcD
-	Cj4FEw3Gwd34mdZKHGzHRwDm1nBcypypOo4+wJZhcbvbkcvxOcfHTm6sq7YSPlJQZz4PrI54WGo
-	FKLxFimQfwECN8imP8KNNxmnY3wtDoSg=
-X-Google-Smtp-Source: AGHT+IGlEvntMF2i7X6Axx8OQDb9BYfoARMqUag9hgvpN2gkfNJBXg+ADawzvsmbM+xjKyCC9YlPOA==
-X-Received: by 2002:a05:600c:8a8:b0:43b:ca39:a9ca with SMTP id 5b1f17b1804b1-43c5a60e07amr7077505e9.16.1741288790433;
-        Thu, 06 Mar 2025 11:19:50 -0800 (PST)
-Received: from orome (p200300e41f3a9f00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f3a:9f00:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bdd8b0461sm30190845e9.4.2025.03.06.11.19.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Mar 2025 11:19:49 -0800 (PST)
-Date: Thu, 6 Mar 2025 20:19:46 +0100
-From: Thierry Reding <thierry.reding@gmail.com>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Celeste Liu <uwu@coelacanthus.name>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Guo Ren <guoren@kernel.org>, Anup Patel <anup@brainfault.org>, 
-	Heinrich Schuchardt <heinrich.schuchardt@canonical.com>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
-	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-	Russell King <linux@armlinux.org.uk>, Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, Tony Lindgren <tony@atomide.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
-	Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
-	Roger Quadros <rogerq@kernel.org>, Palmer Dabbelt <palmer@rivosinc.com>, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-sh@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-rpi-kernel@lists.infradead.org, linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org, 
-	Stefan Wahren <wahrenst@gmx.net>, Thierry Reding <treding@nvidia.com>, soc@lists.linux.dev
-Subject: Re: [PATCH v4 4/4] arm: defconfig: drop RT_GROUP_SCHED=y from
- bcm2835/tegra/omap2plus
-Message-ID: <t2dustbykx2qd24wazjeiw5hch5nwr6z2ewmaf4srg6r2grwrf@rdw47chzkef2>
-References: <20250115-fix-riscv-rt_group_sched-v4-0-607606fe73a5@coelacanthus.name>
- <20250115-fix-riscv-rt_group_sched-v4-4-607606fe73a5@coelacanthus.name>
+	s=arc-20240116; t=1741301837; c=relaxed/simple;
+	bh=S+6FO9HIm+is6xlTUsl3PW1047Cte8SauuoCrskzDq8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=e+8qzSFblNYRT9aALQ1B0oVTaGgeKqKJX89SyWoI1CCtHrLjw2XCc1Weru3FjyaN67tBpYEEgCRdT/MrImwLwSuppSyYaB5xPphk8cysiaCh/WExkGtdCmlZgPtGloWGWEfkV7he2bRPq/mnlCpDMQnw096JatOZyHC3yZfWYoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=eK/2Vjt4; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 526Muve6088276
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Thu, 6 Mar 2025 16:56:57 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1741301817;
+	bh=bYwYTAQz3+wTUvn8VajZxAuhwOkXkPbWMk9F6b/kN40=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=eK/2Vjt4gR+V/nSonmyaHFI0HEDI1shBhipQegw2PhaC91ypL7qVhstLor+0DpfBW
+	 //4qgsyMRzqTafBabIkM4nadb+qxlJ6w+wPSe4I1x24lOOc8pOWHC28lTpQOB/Fhr2
+	 x476mBI1kequnrp+eAoTGOV8YFX/sCogs5ADcEN8=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 526Muv00116311;
+	Thu, 6 Mar 2025 16:56:57 -0600
+Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 6
+ Mar 2025 16:56:56 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 6 Mar 2025 16:56:56 -0600
+Received: from [10.247.26.234] (lt5cd3040qtn.dhcp.ti.com [10.247.26.234])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 526MuuOB130990;
+	Thu, 6 Mar 2025 16:56:56 -0600
+Message-ID: <c0f28cb1-d2a8-4583-937d-4908e4b70b4a@ti.com>
+Date: Thu, 6 Mar 2025 16:56:56 -0600
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="zlzxkvnluqa6wgik"
-Content-Disposition: inline
-In-Reply-To: <20250115-fix-riscv-rt_group_sched-v4-4-607606fe73a5@coelacanthus.name>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/5] Add TI TPS65214 & TPS65215 PMIC MFD Driver Support
+To: Krzysztof Kozlowski <krzk@kernel.org>
+CC: <m-leonard@ti.com>, <praneeth@ti.com>, <conor+dt@kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <khilman@baylibre.com>, <rogerq@kernel.org>, <lgirdwood@gmail.com>,
+        <linux-omap@vger.kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <tony@atomide.com>, <andreas@kemnade.info>, <aaro.koskinen@iki.fi>,
+        <broonie@kernel.org>, Lee Jones <lee@kernel.org>
+References: <20250206173725.386720-1-s-ramamoorthy@ti.com>
+ <173928615760.2233464.12306998726512431222.b4-ty@kernel.org>
+ <7f33b5c7-b1a7-4db9-9e19-e30cbb0066ab@ti.com>
+ <471cdd13-3250-46b1-b7a0-a4f236a47773@kernel.org>
+Content-Language: en-US
+From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+In-Reply-To: <471cdd13-3250-46b1-b7a0-a4f236a47773@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
+Hi,
 
---zlzxkvnluqa6wgik
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v4 4/4] arm: defconfig: drop RT_GROUP_SCHED=y from
- bcm2835/tegra/omap2plus
-MIME-Version: 1.0
+On 3/6/2025 1:26 AM, Krzysztof Kozlowski wrote:
+> On 05/03/2025 22:09, Shree Ramamoorthy wrote:
+>> Hi Lee,
+>>
+>>
+>> On 2/11/25 9:02 AM, Lee Jones wrote:
+>>> On Thu, 06 Feb 2025 11:37:20 -0600, Shree Ramamoorthy wrote:
+>>>> TPS65214 and TPS65215 are Power Management Integrated Circuits (PMICs) that
+>>>> have significant register map overlap with TPS65219 and each other. The
+>>>> series introduces the 2 new PMICs and restructures the existing driver to
+>>>> support multiple devices.
+>>>>
+>>>> - TPS65214, TPS65215, and TPS65219 each have 3 Buck regulators
+>>>> - TPS65214 has 2 LDOS and 1 GPO, whereas TPS65219 has 4 LDOs and 2 GPOs.
+>>>> - TPS65214's LDO1 maps to TPS65219's LDO3.
+>>>> - A key difference between TPS65215 & TPS65214 are the LDO current and
+>>>>    voltage output ranges and the configurable options available.
+>>>> - TPS65215 has 2 LDOs, whereas TPS65219 has 4 LDOs.
+>>>> - TPS65215's LDO2 maps to TPS65219's LDO3.
+>>>> - TPS65215 has 1 GPO, whereas TPS65219 has 2 GPOs.
+>>>>
+>>>> [...]
+>>> Applied, thanks!
+>>>
+>>> [1/5] regulator: dt-bindings: Add TI TPS65215 PMIC bindings
+>>>        commit: 85e7aef57a9e057545017d55b02073e3c4756b2c
+>>> [2/5] regulator: dt-bindings: Add TI TPS65214 PMIC bindings
+>>>        commit: 34beb3c87cbb8747f521db5cf1b2a608833f3967
+>>> [3/5] mfd: tps65219: Remove regmap_read check
+>>>        commit: 5342c8a9e04fc05f485a3886605b803a5180bd64
+>>> [4/5] mfd: tps65219: Add support for TI TPS65215 PMIC
+>>>        commit: ebcbd21550853b16f307d7da8c846b862e138a98
+>>> [5/5] mfd: tps65219: Add support for TI TPS65214 PMIC
+>>>        commit: c9878d8d9ac2ecfadfa4fa3543730026c66ad843
+>>>
+>>> --
+>>> Lee Jones [李琼斯]
+>> Would you be able to remove this series from your branch & replace it with this v6 [0],
+>> so Mark Brown will be able to apply the dependent regulator series [1]? Thank you!
+> You replied 3 weeks later. If something was applied not as it should,
+> you ought to reply IMMEDIATELY, not 3 weeks after.
+>
+> The trees are mostly immutable after publishing.
+>
+> Best regards,
+> Krzysztof
 
-On Wed, Jan 15, 2025 at 04:41:23AM +0800, Celeste Liu wrote:
-> Commit 673ce00c5d6c ("ARM: omap2plus_defconfig: Add support for distros
-> with systemd") said it's because of recommendation from systemd. But
-> systemd changed their recommendation later.[1]
->=20
-> For cgroup v1, if turned on, and there's any cgroup in the "cpu" hierarch=
-y it
-> needs an RT budget assigned, otherwise the processes in it will not be ab=
-le to
-> get RT at all. The problem with RT group scheduling is that it requires t=
-he
-> budget assigned but there's no way we could assign a default budget, sinc=
-e the
-> values to assign are both upper and lower time limits, are absolute, and =
-need to
-> be sum up to < 1 for each individal cgroup. That means we cannot really c=
-ome up
-> with values that would work by default in the general case.[2]
->=20
-> For cgroup v2, it's almost unusable as well. If it turned on, the cpu con=
-troller
-> can only be enabled when all RT processes are in the root cgroup. But it =
-will
-> lose the benefits of cgroup v2 if all RT process were placed in the same =
-cgroup.
->=20
-> Red Hat, Gentoo, Arch Linux and Debian all disable it. systemd also doesn=
-'t
-> support it.
->=20
-> [1]: https://github.com/systemd/systemd/commit/f4e74be1856b3ac058acbf1be3=
-21c31d5299f69f
-> [2]: https://bugzilla.redhat.com/show_bug.cgi?id=3D1229700
->=20
-> Tested-by: Stefan Wahren <wahrenst@gmx.net>
-> Acked-by: Kevin Hilman <khilman@baylibre.com>
-> Acked-by: Thierry Reding <treding@nvidia.com>
-> Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
-> ---
->  arch/arm/configs/bcm2835_defconfig   | 1 -
->  arch/arm/configs/omap2plus_defconfig | 1 -
->  arch/arm/configs/tegra_defconfig     | 1 -
->  3 files changed, 3 deletions(-)
+Completely understand, sorry for re-sending the first 5 patches that were already applied!
+I'll wait for the next merge window, so there won't be dependencies between the MFD and regulator tree then.
 
-Hi Arnd,
-
-is this something that you could pick up? I think so far only the RISC-V
-patch was picked up, but nobody seems to feel responsible for the ARM
-patch here.
-
-Thierry
-
---zlzxkvnluqa6wgik
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmfJ9VIACgkQ3SOs138+
-s6EV1hAAmmOA9bt5ezD7ZL1JWnDlfosEhXQikLJbSz+gAvX+YGSrCEY9u9RhonZS
-bc+6iwnvUoA0HbqdTecbWzifzHz/JqnPCAdrdoQwSspJ3onSZAnRPj1u8NRDv/gy
-54LG7uX7qWZhH9OF/MHqQbjHo01dXl8OmaRrAUgUK3h2AgyzJldR0uOaQ+tQ3F4o
-iPzt2JxJUBabJUImAV7wivSnMt3pPaGBS6BN203I26wIeGAY8ZuMKJrnQS/4Mmis
-5lxuMl8dTaQaJ+WaJeKwRpZgI22JnMKabnDwaQ6nDuLOMY5/KOeAv2DXGZOZ8qRn
-8LDhTlnir1RsuEbgf7b/CYHMNnZA4RSY6puetzCaAQ0WSb1ENMSyGcGM0HzZ49ps
-6rrPpo+yWldcHVDQzbiiXIs6pWMeVvmNufpR8D/FweKG0gyqZSiDCZXJdEZjYgbu
-gYp+qfQ9LiVjK1t2Z/MY0RkvaZBNhNfK29wX+oT4bPbhkV/Sep7wL1w8VCegqV/g
-BzXxAu5HjRDRtfMdOzqBh3EGJfT5hmsJyH5nKD7uT5B7a8gYwUjB0pcX8cOJyCI+
-oAd9Y7gS3IUWMLLOk7mFGWiIcPcO9so87NoMSlmNnVc/dZPpojNAvu/kcMgnpLSq
-0Ss2JFGPVzSn+zgNVsP3A8TK/8JR41YyK/M+QEH18WZuNXQcH5o=
-=P21d
------END PGP SIGNATURE-----
-
---zlzxkvnluqa6wgik--
 
