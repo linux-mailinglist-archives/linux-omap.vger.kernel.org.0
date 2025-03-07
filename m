@@ -1,198 +1,118 @@
-Return-Path: <linux-omap+bounces-3349-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3350-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C443BA5657D
-	for <lists+linux-omap@lfdr.de>; Fri,  7 Mar 2025 11:34:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE5D4A56AB4
+	for <lists+linux-omap@lfdr.de>; Fri,  7 Mar 2025 15:42:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09F323B5A38
-	for <lists+linux-omap@lfdr.de>; Fri,  7 Mar 2025 10:33:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD2EF7A366B
+	for <lists+linux-omap@lfdr.de>; Fri,  7 Mar 2025 14:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED73E211A29;
-	Fri,  7 Mar 2025 10:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2EBC21C9E4;
+	Fri,  7 Mar 2025 14:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="o/LtjNU6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fZB1FK4f"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB1F2116EC;
-	Fri,  7 Mar 2025 10:32:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26D921C19B;
+	Fri,  7 Mar 2025 14:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741343541; cv=none; b=jbMX5Zc8T4HkOeb4VihHyH8kjbEgYgs3KgEyi5iPLyBHVViJR7ts0jD/pUltWt3TwetvZZfRR84VbwQGj2bos0zi4t9TLSa12GsbT7ES9uyOKBavIykNvXc7Ga/RZNtjoKQL8PmjifQYo3Ikr2581wWoXah7OPNxT41dwELJKcY=
+	t=1741358553; cv=none; b=njJWNqeo43yZ67lB40TPKc9i5zx9VggoaNG7dE1iM7q5pU3GjLmrrLJXkTYoWxbDWj3Bh0rPEKG4VYKRzmwHWrgXyjNJYEzKHrIr8sB1F5FLkSalQzcQB/U+A4IYg4TRxTZD/Q4nr69FajsDok54FVUBoNh0kmEr2pJm3B+pdb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741343541; c=relaxed/simple;
-	bh=otfaJ0xMMeh/atsNLkGV1pQKe210EqmR07xww2LVZqg=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u+34muXwEFwkXMH6WjK7cN14tWeQ5aYHijTlPcenRk31I7ZcAIhLoyi5lleAb4erJ5Tw6AFBu4oGWdMXgdM6DLcF9/yo5LMsFR/8Zhjy2WX2hGvu3bl9/d1RxBdxa/5YxRkOhdERlaEXuRvuSPN+k00dJF/AWwbzbX9NfuAnRyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=o/LtjNU6; arc=none smtp.client-ip=198.47.23.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 527AVrsd343912
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Fri, 7 Mar 2025 04:31:53 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1741343513;
-	bh=gWdPIaObctAFLenCR68iVhRvFpVcjAdMR3Ra7YLkhsk=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=o/LtjNU6UtuYlYW3rP7wA4CE3z0/Bvfo/R1N3XIPoZ01XFeWHJdNsaEkuAiAFGwd9
-	 txuGJZj47kBuHmV5YRj6iXgZkeuAJt4wPouN51d5Lr5BuypRIHWT1+oNe2XI7h3+Fl
-	 s7ldFUKj8qirdYgM8kWfQc0mC5hO8U3EJgeHgy6U=
-Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 527AVrBY026836;
-	Fri, 7 Mar 2025 04:31:53 -0600
-Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 7
- Mar 2025 04:31:52 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 7 Mar 2025 04:31:52 -0600
-Received: from uda0492258.dhcp.ti.com (uda0492258.dhcp.ti.com [10.24.72.113])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 527AVSQ6016876;
-	Fri, 7 Mar 2025 04:31:48 -0600
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: <lpieralisi@kernel.org>, <kw@linux.com>,
-        <manivannan.sadhasivam@linaro.org>, <robh@kernel.org>,
-        <bhelgaas@google.com>, <vigneshr@ti.com>, <kishon@kernel.org>,
-        <cassel@kernel.org>, <wojciech.jasko-EXT@continental-corporation.com>,
-        <thomas.richard@bootlin.com>, <bwawrzyn@cisco.com>
-CC: <linux-pci@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <srk@ti.com>, <s-vadapalli@ti.com>
-Subject: [PATCH 4/4] PCI: j721e: Add support to build as a loadable module
-Date: Fri, 7 Mar 2025 16:01:28 +0530
-Message-ID: <20250307103128.3287497-5-s-vadapalli@ti.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250307103128.3287497-1-s-vadapalli@ti.com>
-References: <20250307103128.3287497-1-s-vadapalli@ti.com>
+	s=arc-20240116; t=1741358553; c=relaxed/simple;
+	bh=2ONhu40tkgP5kCh3XYIPkx0LVTZwXwewKchD/BE7ANY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XIPAl6K9WuHggXKN3JcjpBLs/CfSQHPz/qMG95LlPRwlKiGSqW9KCtxqKQKLa+MMDKMXRexQy4nJSn2HwECsiCsBFYLIWwsHhkOxsXLEMGI8JGKcG2LeFyxEWY1TbiEgd/MS1u0ZPC25lwWxWjZtzkJsEN8iDqY9MW3kJr1jZuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fZB1FK4f; arc=none smtp.client-ip=209.85.219.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e4419a47887so1529510276.0;
+        Fri, 07 Mar 2025 06:42:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741358551; x=1741963351; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V3rLgkeZyfmW+Ovwa/la/l4Bicayimylex/nXnrU7tE=;
+        b=fZB1FK4faH/87CLSdc/Q4U7TkaW5Oav1HfS4I+1TNMKCoZ5UCLtsU6jaXbsYd1DQyL
+         0acDtHrgr3abXiFkSyiEBtR2fWA4KLqRD3D1AVWnKmrE7qnm8gaeWEbyrDXlMmDDuDn+
+         tUT/2X0gK7PWqtbVHJbB1slvOqk+Gf3xDO8Nhl8jXqMBIpW8LZ8mQRWx3hFLSTi19Mlw
+         FJcym+8A8I7qsxNLbEIFX5aqiKeP5qWZ5TJ0VoqbzuPdlz+MCzgnxS59szF7Xdmn/5N4
+         rdGPwPqJ0xOhdA4BrsLnMsqzXar8zYFmfiox0Adp6NlK6Z+tgfQs/e8EriKPmhkxr/KT
+         U1oQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741358551; x=1741963351;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=V3rLgkeZyfmW+Ovwa/la/l4Bicayimylex/nXnrU7tE=;
+        b=qMb51CLK9/i3bJle/kYjMGZ/OsyO92aLAxjpA4UYpRYvPO7HxqRCfb7RC5IXMIXuGQ
+         madRSKqLaiBlTCUf/z56+Svn2J8kMnOR8BLB6RFNdgM1SEdPQV3Ls3JLhF6T2JIL8agS
+         dBo/uadTPM34tUYaZxsMO8bIrJXKRZy9s72C0cLSea4pRLrfGcbgRRXGkGDRX3oEWKrx
+         JJ9r1MGjWnIQkLhigrzu7MNcNp0hSoBAM8NhbuAtoVDHLVzAfnqFhkKVZCLvHOjajNAB
+         KRVtwEoheuVgk+gdp0j15tLHvIEezbE5dxQk4ySIqks+y/Bi0Uo833FBRWRX4sfhLYPD
+         LvXg==
+X-Forwarded-Encrypted: i=1; AJvYcCUyPLhdoLmpKFUy+c8XwCgamK1ixpcLn3Ge/lorfFPc/bQ3PFTo7jjo/Xw9+55EQB5g0Y0RNPiDuFwHtQ==@vger.kernel.org, AJvYcCVZlrPa1MlUZG6kguFPaNEVXfc05Xi8MiaJJK817FW4/QjVSjrtJzxDULqaIK26ZYjEVVD9Z9iA60w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjGbiwnaeA4pY65BmyUfrELi0SDUVK+w2hvaExlHLWa+pPDOnW
+	jyBniTa4bI+xoAuO0vhI3CZ2Wur941RL+i3R1vJbuwMI06uL2V8Sets6c3QnFwQFA+6qgEpWrQr
+	KRqAhoAkHKuiWuu7EhZrtTqMwW9k=
+X-Gm-Gg: ASbGncuZKqCurHc0LWqKtb8gBkacGJ5Kpwvp+tLZqEPZeSoY8U0cxnNs+XfMpugOeK4
+	A1b1kE5BKFZWdV7g/UvPf/wwaCUQXb0RRpqq0A5y8BvkkTHsOtjwfZfUauEMdlfcUlRUtGknieX
+	BoiPmYO/tMUYrxrzFsNTjgT7LyI0o=
+X-Google-Smtp-Source: AGHT+IEaLs2ec+ex4cnd8ccBvUs29cQQbBkwr2OsisvzLc8I2AJEHn7HNqvTV8pIy1Cd0IsNhGACtqYUV9uCHdzlk44=
+X-Received: by 2002:a05:6902:1107:b0:e63:4a36:4317 with SMTP id
+ 3f1490d57ef6-e635c18c0efmr4306756276.25.1741358550864; Fri, 07 Mar 2025
+ 06:42:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+References: <1c5f72c4-3d55-4d62-b690-8c68b76a15d2@gmail.com>
+ <f6732c49-a5b1-4a13-b9f6-c2d552b5e7e8@smile.fr> <31717d89-432c-4b77-a974-99f7e6b97f97@gmail.com>
+ <9168d127-06a7-46e6-a7a2-f2e60032a50e@gmail.com> <b1a369e2-938b-49ed-b743-6562f0bb46f9@smile.fr>
+ <CAOCHtYiBFNY9nFjtqsFFpqRKdxUif_fC7MVqZ7cffeD8rLSe2A@mail.gmail.com>
+ <CAOCHtYiujoMoPHfSmyTrv_48wUn3TfaoiPEcMFB=V++MZXvuuQ@mail.gmail.com>
+ <20250226170614.18a497f0@akair> <20250307042822.GE23206@atomide.com>
+In-Reply-To: <20250307042822.GE23206@atomide.com>
+From: Robert Nelson <robertcnelson@gmail.com>
+Date: Fri, 7 Mar 2025 08:42:02 -0600
+X-Gm-Features: AQ5f1JrHnQSsEsnURkPIFhS3CkXZbp7FzdhF3kzjb2B7KvbWlRM_opBWZ8aQXB0
+Message-ID: <CAOCHtYj-0KG2oMuyof1c35c=A8PaUfYPZFuLY_YDKmq-SV8h2g@mail.gmail.com>
+Subject: Re: sdhci-omap: additional PM issue since 5.16
+To: Tony Lindgren <tony@atomide.com>
+Cc: Andreas Kemnade <andreas@kemnade.info>, Romain Naour <romain.naour@smile.fr>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Kevin Hilman <khilman@baylibre.com>, 
+	Roger Quadros <rogerq@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
+	Jason Kridner <jkridner@beagleboard.org>, "Aldea, Andrei" <a-aldea@ti.com>, David <daowens01@gmail.com>, 
+	linux-omap@vger.kernel.org, linux-mmc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The 'pci-j721e.c' driver is the application/glue/wrapper driver for the
-Cadence PCIe Controllers on TI SoCs. Implement support for building it as a
-loadable module.
+On Thu, Mar 6, 2025 at 10:28=E2=80=AFPM Tony Lindgren <tony@atomide.com> wr=
+ote:
+>
+> Best to revert the patch first until the issue has been fixed.
+>
+> Based on the symptoms, it sounds like there might be a missing flush of
+> a posted write in the PM runtime suspend/resume path. This could cause
+> something in the sequence happen in the wrong order for some of the
+> related surrounding resources like power, clocks or interrupts.
+>
 
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
----
- drivers/pci/controller/cadence/Kconfig     |  6 ++--
- drivers/pci/controller/cadence/pci-j721e.c | 37 ++++++++++++++++++++--
- 2 files changed, 38 insertions(+), 5 deletions(-)
+Kington's hardware anaylizer said after CMD5/sleep in about 10us,
+instead of CMD5/wkup being called, it just resets the eMMC..  So
+someone deep within the sdhc/mmc layer might understand that. ;)
 
-diff --git a/drivers/pci/controller/cadence/Kconfig b/drivers/pci/controller/cadence/Kconfig
-index 82b58096eea0..72d7d264d6c3 100644
---- a/drivers/pci/controller/cadence/Kconfig
-+++ b/drivers/pci/controller/cadence/Kconfig
-@@ -43,10 +43,10 @@ config PCIE_CADENCE_PLAT_EP
- 	  different vendors SoCs.
- 
- config PCI_J721E
--	bool
-+	tristate
- 
- config PCI_J721E_HOST
--	bool "TI J721E PCIe controller (host mode)"
-+	tristate "TI J721E PCIe controller (host mode)"
- 	depends on ARCH_K3 || COMPILE_TEST
- 	depends on OF
- 	select PCIE_CADENCE_HOST
-@@ -57,7 +57,7 @@ config PCI_J721E_HOST
- 	  core.
- 
- config PCI_J721E_EP
--	bool "TI J721E PCIe controller (endpoint mode)"
-+	tristate "TI J721E PCIe controller (endpoint mode)"
- 	depends on ARCH_K3 || COMPILE_TEST
- 	depends on OF
- 	depends on PCI_ENDPOINT
-diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index 0341d51d6aed..0900e7dd6ac7 100644
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -15,6 +15,7 @@
- #include <linux/irqchip/chained_irq.h>
- #include <linux/irqdomain.h>
- #include <linux/mfd/syscon.h>
-+#include <linux/module.h>
- #include <linux/of.h>
- #include <linux/pci.h>
- #include <linux/platform_device.h>
-@@ -27,6 +28,7 @@
- #define cdns_pcie_to_rc(p) container_of(p, struct cdns_pcie_rc, pcie)
- 
- #define ENABLE_REG_SYS_2	0x108
-+#define ENABLE_CLR_REG_SYS_2	0x308
- #define STATUS_REG_SYS_2	0x508
- #define STATUS_CLR_REG_SYS_2	0x708
- #define LINK_DOWN		BIT(1)
-@@ -116,6 +118,15 @@ static irqreturn_t j721e_pcie_link_irq_handler(int irq, void *priv)
- 	return IRQ_HANDLED;
- }
- 
-+static void j721e_pcie_disable_link_irq(struct j721e_pcie *pcie)
-+{
-+	u32 reg;
-+
-+	reg = j721e_pcie_intd_readl(pcie, ENABLE_CLR_REG_SYS_2);
-+	reg |= pcie->linkdown_irq_regfield;
-+	j721e_pcie_intd_writel(pcie, ENABLE_CLR_REG_SYS_2, reg);
-+}
-+
- static void j721e_pcie_config_link_irq(struct j721e_pcie *pcie)
- {
- 	u32 reg;
-@@ -632,9 +643,27 @@ static void j721e_pcie_remove(struct platform_device *pdev)
- 	struct j721e_pcie *pcie = platform_get_drvdata(pdev);
- 	struct cdns_pcie *cdns_pcie = pcie->cdns_pcie;
- 	struct device *dev = &pdev->dev;
-+	struct cdns_pcie_ep *ep;
-+	struct cdns_pcie_rc *rc;
-+
-+	if (pcie->mode == PCI_MODE_RC) {
-+		rc = container_of(cdns_pcie, struct cdns_pcie_rc, pcie);
-+		cdns_pcie_host_disable(rc);
-+	} else {
-+		ep = container_of(cdns_pcie, struct cdns_pcie_ep, pcie);
-+		cdns_pcie_ep_disable(ep);
-+	}
-+
-+	if (pcie->reset_gpio) {
-+		msleep(PCIE_T_PVPERL_MS);
-+		gpiod_set_value_cansleep(pcie->reset_gpio, 1);
-+	}
-+
-+	if (pcie->refclk)
-+		clk_disable_unprepare(pcie->refclk);
- 
--	clk_disable_unprepare(pcie->refclk);
- 	cdns_pcie_disable_phy(cdns_pcie);
-+	j721e_pcie_disable_link_irq(pcie);
- 	pm_runtime_put(dev);
- 	pm_runtime_disable(dev);
- }
-@@ -729,4 +758,8 @@ static struct platform_driver j721e_pcie_driver = {
- 		.pm	= pm_sleep_ptr(&j721e_pcie_pm_ops),
- 	},
- };
--builtin_platform_driver(j721e_pcie_driver);
-+module_platform_driver(j721e_pcie_driver);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("PCIe controller driver for TI's J721E and related SoCs");
-+MODULE_AUTHOR("Kishon Vijay Abraham I <kishon@ti.com>");
--- 
-2.34.1
+Regards,
 
+--=20
+Robert Nelson
+https://rcn-ee.com/
 
