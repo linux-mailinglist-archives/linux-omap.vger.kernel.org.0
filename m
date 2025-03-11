@@ -1,111 +1,133 @@
-Return-Path: <linux-omap+bounces-3372-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3373-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E1E0A5D170
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Mar 2025 22:12:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD6FA5D280
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Mar 2025 23:26:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED34A3B7686
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Mar 2025 21:12:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA7D73B7B76
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Mar 2025 22:25:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9AA264A6D;
-	Tue, 11 Mar 2025 21:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE1AD265603;
+	Tue, 11 Mar 2025 22:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="JJoD4cs7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dvizajpk"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B18263F40
-	for <linux-omap@vger.kernel.org>; Tue, 11 Mar 2025 21:12:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64652229B18;
+	Tue, 11 Mar 2025 22:26:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741727566; cv=none; b=hvVyxSWfSElgZn0/ZIk9351e4BKKBYLLQrAYfldciPowiYPp7DYOPMlKq5WdBKtBMtOXqUbWv5rcyy/+6TKmpSabQODLNLxF+3GEKDdclm7yW2CV0vZISDBilPLx3QsmxY0Cu2Cf+RuLh9OcY4fXy1pwxkxm2Kdbeno6U85HVlw=
+	t=1741731962; cv=none; b=SrFYTZ6mi7GsA8R4vQ4lQpNgMaMwYBEEyWXsH7KnQhO8cOcnWvPDcmDcqx+mb9wZQvu7ArlC5l9JUyTOCYoFowm3ZxDyd01qbI9OgdeO38Z1YxtssuI1dS2RnlLakfkwjYAG+nuVKt9dJnMRusGuRUoNmZSpPXuTdWLEzJLbhuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741727566; c=relaxed/simple;
-	bh=lC6Y0QO5+K1XxRtRb92W3nce/JojG7rq0xhvK0oFL4k=;
+	s=arc-20240116; t=1741731962; c=relaxed/simple;
+	bh=Alj+56UiSeF6BBH3b7zGYm5FSbwhWwKw/aZtV+05RyY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XZwxcpOcpUVy4dIY+I48wYOtqBrBid/YSAor3B1RjcKHlc4aO/2h6h6w/qD1q1IgLfdL0X31mf9mbFShGWKvvrsJtEQPOUqhQVhJft1TCzXcYxcTIpw+4WcNpv/eVkcSCBrU+P8RhUhdCTs5YIQ2HyR9Zw6pFr7o9INsZXovTC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=JJoD4cs7; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=lC6Y
-	0QO5+K1XxRtRb92W3nce/JojG7rq0xhvK0oFL4k=; b=JJoD4cs7zvVvI4Jhk3ak
-	wSnKi0YSHoQaRfloIz+5C0hwaEUxdzQzgquq0PfvZa+qunhR8ag6YfMHtekxg4CK
-	uCgELVM9mniDhzywU6sFVwR3Bf56d9P9U5Uz/CduUPz4GBTQrgMHgRSVnPJu76Yd
-	IDddh//MPNZjvroL9vr35a3UEtG0LK4u+KGjLOK9nbh18S9BlBTAS+eCkw2+DGOa
-	+P125qgw+P9cgqzbMFN9PbVDd4byuL6urbsV+VKnqhqbEL9fkOS8EvsZ3bLgvZjY
-	D79B9hrsb86lG6yeP9+p/0fSRAHhF6MoybHvk8RXt/+znSBS9JrvREQlChU7ovaR
-	Ew==
-Received: (qmail 1011587 invoked from network); 11 Mar 2025 22:12:40 +0100
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 11 Mar 2025 22:12:40 +0100
-X-UD-Smtp-Session: l3s3148p1@31uFjBcwDOMgAQnoAEqwANClyB/R595S
-Date: Tue, 11 Mar 2025 22:12:39 +0100
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: vigneshr@ti.com, aaro.koskinen@iki.fi, khilman@baylibre.com,
-	rogerq@kernel.org, tony@atomide.com, jmkrzyszt@gmail.com,
-	andi.shyti@kernel.org, reidt@ti.com, wsa@kernel.org,
-	linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=XOkHAlaE4h20GseyaVmKUXVRENnK5tQS6wxyS+LROkqL+pwwHrSWQH05D1L4JCzvFjjehHs3o0bNkzymB9qSNpsB3s/NG1IIWLsByUk+F/S+ue1uiLV+vkMplbGnz0noq261KAU8DkjTHKLVY9UHNLeB0A3vk3OgPCMQPpvumlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dvizajpk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1531AC4CEEA;
+	Tue, 11 Mar 2025 22:25:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741731961;
+	bh=Alj+56UiSeF6BBH3b7zGYm5FSbwhWwKw/aZtV+05RyY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dvizajpkBggKTnFqNwp5b3ZLA0XJfYGT0cfrMBs+LvWypY9GljOA/6dKx69z84HRx
+	 GlKJPm3JTX5YvJdBFoG9IKElx2ns/muz71GB+GPNHL/fXMy0oWVoLwvJXWrpJ1faWe
+	 t1VQthkYu43HPce+9bKIYJ+ziGphN19K8D5fVZEDR2488GO1jLQshBdizB2sjmZF9F
+	 qOft1Izwp1bPC26Vz2E/DFseqFty9q7Qn1iKyIkxwM5mLoJJB3OHlPcoYUWuWc5osk
+	 xPRxg8xQTgEyIJROllTXS+CyPRWCYbz8gIldK9r/b7pcgJSKqrrsHIZqcrYaDXm1VC
+	 HCiIej/p0fQoQ==
+Date: Tue, 11 Mar 2025 23:25:48 +0100
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Nishanth Menon <nm@ti.com>
+Cc: Andreas Kemnade <andreas@kemnade.info>, vigneshr@ti.com, 
+	aaro.koskinen@iki.fi, khilman@baylibre.com, rogerq@kernel.org, tony@atomide.com, 
+	jmkrzyszt@gmail.com, reidt@ti.com, wsa@kernel.org, linux-omap@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, stable@kernel.org
 Subject: Re: [PATCH v2] i2c: omap: fix IRQ storms
-Message-ID: <Z9CnR2kFoTjUwy6M@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andreas Kemnade <andreas@kemnade.info>, vigneshr@ti.com,
-	aaro.koskinen@iki.fi, khilman@baylibre.com, rogerq@kernel.org,
-	tony@atomide.com, jmkrzyszt@gmail.com, andi.shyti@kernel.org,
-	reidt@ti.com, wsa@kernel.org, linux-omap@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@kernel.org
+Message-ID: <t43j7wmwsqvs5f6utld72enobqwkendgtpzfu3mth3bdgpxhsh@qeok5d2ujdm2>
 References: <20250228140420.379498-1-andreas@kemnade.info>
- <Z9CA8H2GAArdTRqI@shikoro>
- <20250311201450.61d48787@akair>
+ <20250311123947.jce4i5heeufzwmji@serotonin>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="sRASLUo3ObCMz+qA"
-Content-Disposition: inline
-In-Reply-To: <20250311201450.61d48787@akair>
-
-
---sRASLUo3ObCMz+qA
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20250311123947.jce4i5heeufzwmji@serotonin>
 
+Hi,
 
-> Exactly the tests which Nishanth did. So I would say with his Tested-By,
-> this patch is good to go.
+On Tue, Mar 11, 2025 at 07:39:47AM -0500, Nishanth Menon wrote:
+> On 15:04-20250228, Andreas Kemnade wrote:
+> > On the GTA04A5 writing a reset command to the gyroscope causes IRQ
+> > storms because NACK IRQs are enabled and therefore triggered but not
+> > acked.
+> > 
+> > Sending a reset command to the gyroscope by
+> > i2cset 1 0x69 0x14 0xb6
+> > with an additional debug print in the ISR (not the thread) itself
+> > causes
+> > 
+> > [ 363.353515] i2c i2c-1: ioctl, cmd=0x720, arg=0xbe801b00
+> > [ 363.359039] omap_i2c 48072000.i2c: addr: 0x0069, len: 2, flags: 0x0, stop: 1
+> > [ 363.366180] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x1110)
+> > [ 363.371673] omap_i2c 48072000.i2c: IRQ (ISR = 0x0010)
+> > [ 363.376892] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+> > [ 363.382263] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+> > [ 363.387664] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+> > repeating till infinity
+> > [...]
+> > (0x2 = NACK, 0x100 = Bus free, which is not enabled)
+> > Apparently no other IRQ bit gets set, so this stalls.
+> > 
+> > Do not ignore enabled interrupts and make sure they are acked.
+> > If the NACK IRQ is not needed, it should simply not enabled, but
+> > according to the above log, caring about it is necessary unless
+> > the Bus free IRQ is enabled and handled. The assumption that is
+> > will always come with a ARDY IRQ, which was the idea behind
+> > ignoring it, proves wrong.
+> > It is true for simple reads from an unused address.
+> > 
+> > To still avoid the i2cdetect trouble which is the reason for
+> > commit c770657bd261 ("i2c: omap: Fix standard mode false ACK readings"),
+> > avoid doing much about NACK in omap_i2c_xfer_data() which is used
+> > by both IRQ mode and polling mode, so also the false detection fix
+> > is extended to polling usage and IRQ storms are avoided.
+> > 
+> > By changing this, the hardirq handler is not needed anymore to filter
+> > stuff.
+> > 
+> > The mentioned gyro reset now just causes a -ETIMEDOUT instead of
+> > hanging the system.
+> > 
+> > Fixes: c770657bd261 ("i2c: omap: Fix standard mode false ACK readings").
+> > CC: <stable@kernel.org>
+> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> > ---
+> > This needs at least to be tested on systems where false acks were
+> > detected.
+> 
+> At least on BeaglePlay, I have not been able to reproduce the original
+> bug which was the trigger for commit c770657bd261
+> 
+> I also ran basic boot tests on other K3 platforms and none seem to show
+> regressions at the very least.
+> 
+> Tested-by: Nishanth Menon <nm@ti.com>
 
-This is what I wanted to know. Thanks for the heads up!
+Thanks for testing it! I asked some OMAP folks to check this
+patch, but no one took action. With Nishanth's test, I can now
+sleep soundly. :-)
 
+Merged to i2c/i2c-host-fixes.
 
---sRASLUo3ObCMz+qA
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmfQp0MACgkQFA3kzBSg
-Kba0GA//co82xU2jKLsT0M979EbwwKBaF0l41p/vh69x6qIuiF+R0AFxRV6ZJCYt
-z7dfGEJE7Av6nnV0Zuuv6u/EpwFWfmF32Q5ID5OnefkDUg5bS8P5rhRxcdWzon47
-V5drpAtgVlsf7wWUJgqr/i2AhJkPAbTZExhRia5cIu3BhfMBvdbjW9X21bizaBuS
-c4CHH0zERC55jnAtp7CNo6E03UsN1SIzZk/ZP/CVrY4+qcweIOWlNwiOB8KYgw2V
-LCIKh59aLLvXrqA4Gx9Pna5o8z+8e0JKXVSubuiJ+UnlIv6TfAGQ8tHE12NYU7mW
-nGy1GdJtFIh5xa/aQVYHV3XqA7a3gvsMFJG9yhG+ObdwghzNBl+URNykdWiDo4pl
-peWXnykrVwtJC71M+D9jSSSa44ESFdfA1NndF3AsPTc+haPA/7WQMgs9XSlCv8lc
-CWJJDM8YfBeY99xDGj0WSj+2n64kYAsbL8QQBECs7X/5Qz+EhQbmpS39YwAToQbA
-YzKLuviTlphAWVQW2bE2Ji5goawHSRd5RQD1QXPmjwL8A30h0leyHilDaW2rnA5P
-A89/I0ZmTKNq7/chq3Uz7EjLo84LwYP85oAr4BwtNInASj85Ae8wyX/RsSLnYdZE
-zzONLZlrIWkSflUG6auujGMwmuN5PwX/Xi2ai7JRUaRADGTKbak=
-=Du7U
------END PGP SIGNATURE-----
-
---sRASLUo3ObCMz+qA--
+Thanks,
+Andi
 
