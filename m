@@ -1,83 +1,111 @@
-Return-Path: <linux-omap+bounces-3371-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3372-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42BD8A5CF15
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Mar 2025 20:15:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E1E0A5D170
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Mar 2025 22:12:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F4207189E6A7
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Mar 2025 19:15:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED34A3B7686
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Mar 2025 21:12:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0961E263F46;
-	Tue, 11 Mar 2025 19:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9AA264A6D;
+	Tue, 11 Mar 2025 21:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="YrJKGCic"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="JJoD4cs7"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30152620DD;
-	Tue, 11 Mar 2025 19:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B18263F40
+	for <linux-omap@vger.kernel.org>; Tue, 11 Mar 2025 21:12:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741720499; cv=none; b=E10UiCxORadDpmRL8pHjKaaIR8+UR+mlPvN2M/R/g/v2K6AakE2QsIYf5fH7d7ZsM4J3fXd3cho86h3PEzxPvQX6At6QVgz13/ePJuMLF//IhN8cMyju8DZ4DCBbI1WTJD8o+4NXcUYzA8KtKcHtyks985YqskdaCUGAtIuqb9E=
+	t=1741727566; cv=none; b=hvVyxSWfSElgZn0/ZIk9351e4BKKBYLLQrAYfldciPowiYPp7DYOPMlKq5WdBKtBMtOXqUbWv5rcyy/+6TKmpSabQODLNLxF+3GEKDdclm7yW2CV0vZISDBilPLx3QsmxY0Cu2Cf+RuLh9OcY4fXy1pwxkxm2Kdbeno6U85HVlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741720499; c=relaxed/simple;
-	bh=+4FBym89tJ0UDJqFPTZuM50h9ll/UMyW63UxK5b942k=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N3be03tBpWi8oMxEB7QPsrS9VlcEB2bmLsbAwdcifN+bAmRvyuYNyFgcMfbqIOz3ql3Of2cwKp/OnkBybLtBdiKVYz5OXjDAQuxK+W2NwShabKBEk96kiLcLky//Fw4240ijDqVfI7Fnq9BIuM6C0ft3E9t2LwIQfvDIt+p8qLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=YrJKGCic; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=CBduAOkDSwxepXVq1C+G3BYIavodzVnFqo9RdkSAQlE=; b=YrJKGCicDK2subZPy1Kw3aiJMR
-	+b1PqcgLYekFehJvISmFny7yA1Rhuc9o6u6dUZpW2aNvY+RtCgFzWKKpun4e+7k/41ScUbYHtVFsU
-	4i5Pte6iRWMl4EYgYLa5uER1e/WRoUzVEyay5JqOaTfxggHzIcORNXh4aQBZc+q4R6zEa1aqt77XM
-	w4yy6N5pKPlr5JRdzwGVsXde1u6wosZGo3+RKeyiscOAMv3W5TE4jZ9hPO2QgNAcbIWQ6ERQFSeg2
-	LgalTWSfR+k930iQeLs/mjH2GXYO+QcZFx49/Gi0mhYAZ2wEB0ionmlcT6ri6mv50QfQ2Q8dKuTMj
-	m7IkY5sQ==;
-Date: Tue, 11 Mar 2025 20:14:50 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+	s=arc-20240116; t=1741727566; c=relaxed/simple;
+	bh=lC6Y0QO5+K1XxRtRb92W3nce/JojG7rq0xhvK0oFL4k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XZwxcpOcpUVy4dIY+I48wYOtqBrBid/YSAor3B1RjcKHlc4aO/2h6h6w/qD1q1IgLfdL0X31mf9mbFShGWKvvrsJtEQPOUqhQVhJft1TCzXcYxcTIpw+4WcNpv/eVkcSCBrU+P8RhUhdCTs5YIQ2HyR9Zw6pFr7o9INsZXovTC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=JJoD4cs7; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=lC6Y
+	0QO5+K1XxRtRb92W3nce/JojG7rq0xhvK0oFL4k=; b=JJoD4cs7zvVvI4Jhk3ak
+	wSnKi0YSHoQaRfloIz+5C0hwaEUxdzQzgquq0PfvZa+qunhR8ag6YfMHtekxg4CK
+	uCgELVM9mniDhzywU6sFVwR3Bf56d9P9U5Uz/CduUPz4GBTQrgMHgRSVnPJu76Yd
+	IDddh//MPNZjvroL9vr35a3UEtG0LK4u+KGjLOK9nbh18S9BlBTAS+eCkw2+DGOa
+	+P125qgw+P9cgqzbMFN9PbVDd4byuL6urbsV+VKnqhqbEL9fkOS8EvsZ3bLgvZjY
+	D79B9hrsb86lG6yeP9+p/0fSRAHhF6MoybHvk8RXt/+znSBS9JrvREQlChU7ovaR
+	Ew==
+Received: (qmail 1011587 invoked from network); 11 Mar 2025 22:12:40 +0100
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 11 Mar 2025 22:12:40 +0100
+X-UD-Smtp-Session: l3s3148p1@31uFjBcwDOMgAQnoAEqwANClyB/R595S
+Date: Tue, 11 Mar 2025 22:12:39 +0100
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Andreas Kemnade <andreas@kemnade.info>
 Cc: vigneshr@ti.com, aaro.koskinen@iki.fi, khilman@baylibre.com,
- rogerq@kernel.org, tony@atomide.com, jmkrzyszt@gmail.com,
- andi.shyti@kernel.org, reidt@ti.com, wsa@kernel.org,
- linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@kernel.org
+	rogerq@kernel.org, tony@atomide.com, jmkrzyszt@gmail.com,
+	andi.shyti@kernel.org, reidt@ti.com, wsa@kernel.org,
+	linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@kernel.org
 Subject: Re: [PATCH v2] i2c: omap: fix IRQ storms
-Message-ID: <20250311201450.61d48787@akair>
-In-Reply-To: <Z9CA8H2GAArdTRqI@shikoro>
+Message-ID: <Z9CnR2kFoTjUwy6M@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andreas Kemnade <andreas@kemnade.info>, vigneshr@ti.com,
+	aaro.koskinen@iki.fi, khilman@baylibre.com, rogerq@kernel.org,
+	tony@atomide.com, jmkrzyszt@gmail.com, andi.shyti@kernel.org,
+	reidt@ti.com, wsa@kernel.org, linux-omap@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@kernel.org
 References: <20250228140420.379498-1-andreas@kemnade.info>
-	<Z9CA8H2GAArdTRqI@shikoro>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+ <Z9CA8H2GAArdTRqI@shikoro>
+ <20250311201450.61d48787@akair>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="sRASLUo3ObCMz+qA"
+Content-Disposition: inline
+In-Reply-To: <20250311201450.61d48787@akair>
 
-Am Tue, 11 Mar 2025 19:29:04 +0100
-schrieb Wolfram Sang <wsa+renesas@sang-engineering.com>:
 
-> > This needs at least to be tested on systems where false acks were
-> > detected.  
-> 
-> Which do you mean? You did test this on GTA04A5, or?
-> 
-Exactly the tests which Nishanth did. So I would say with his Tested-By,
-this patch is good to go. I test on GTA04A5 but there and on any other
-system I have I did not observe the false acks but there I have the IRQ
-storm. And I want a solution which avoids the IRQ storm and also does
-not reintroduce the false acks.
+--sRASLUo3ObCMz+qA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Regards,
-Andreas
+
+> Exactly the tests which Nishanth did. So I would say with his Tested-By,
+> this patch is good to go.
+
+This is what I wanted to know. Thanks for the heads up!
+
+
+--sRASLUo3ObCMz+qA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmfQp0MACgkQFA3kzBSg
+Kba0GA//co82xU2jKLsT0M979EbwwKBaF0l41p/vh69x6qIuiF+R0AFxRV6ZJCYt
+z7dfGEJE7Av6nnV0Zuuv6u/EpwFWfmF32Q5ID5OnefkDUg5bS8P5rhRxcdWzon47
+V5drpAtgVlsf7wWUJgqr/i2AhJkPAbTZExhRia5cIu3BhfMBvdbjW9X21bizaBuS
+c4CHH0zERC55jnAtp7CNo6E03UsN1SIzZk/ZP/CVrY4+qcweIOWlNwiOB8KYgw2V
+LCIKh59aLLvXrqA4Gx9Pna5o8z+8e0JKXVSubuiJ+UnlIv6TfAGQ8tHE12NYU7mW
+nGy1GdJtFIh5xa/aQVYHV3XqA7a3gvsMFJG9yhG+ObdwghzNBl+URNykdWiDo4pl
+peWXnykrVwtJC71M+D9jSSSa44ESFdfA1NndF3AsPTc+haPA/7WQMgs9XSlCv8lc
+CWJJDM8YfBeY99xDGj0WSj+2n64kYAsbL8QQBECs7X/5Qz+EhQbmpS39YwAToQbA
+YzKLuviTlphAWVQW2bE2Ji5goawHSRd5RQD1QXPmjwL8A30h0leyHilDaW2rnA5P
+A89/I0ZmTKNq7/chq3Uz7EjLo84LwYP85oAr4BwtNInASj85Ae8wyX/RsSLnYdZE
+zzONLZlrIWkSflUG6auujGMwmuN5PwX/Xi2ai7JRUaRADGTKbak=
+=Du7U
+-----END PGP SIGNATURE-----
+
+--sRASLUo3ObCMz+qA--
 
