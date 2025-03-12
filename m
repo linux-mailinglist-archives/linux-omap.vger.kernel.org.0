@@ -1,133 +1,89 @@
-Return-Path: <linux-omap+bounces-3373-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3374-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD6FA5D280
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Mar 2025 23:26:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 289D0A5D862
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Mar 2025 09:40:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA7D73B7B76
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Mar 2025 22:25:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 478263B1106
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Mar 2025 08:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE1AD265603;
-	Tue, 11 Mar 2025 22:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD0A235C15;
+	Wed, 12 Mar 2025 08:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dvizajpk"
+	dkim=pass (2048-bit key) header.d=growora.pl header.i=@growora.pl header.b="MZn1lfkU"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.growora.pl (mail.growora.pl [217.61.97.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64652229B18;
-	Tue, 11 Mar 2025 22:26:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D561DB356
+	for <linux-omap@vger.kernel.org>; Wed, 12 Mar 2025 08:39:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.61.97.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741731962; cv=none; b=SrFYTZ6mi7GsA8R4vQ4lQpNgMaMwYBEEyWXsH7KnQhO8cOcnWvPDcmDcqx+mb9wZQvu7ArlC5l9JUyTOCYoFowm3ZxDyd01qbI9OgdeO38Z1YxtssuI1dS2RnlLakfkwjYAG+nuVKt9dJnMRusGuRUoNmZSpPXuTdWLEzJLbhuE=
+	t=1741768784; cv=none; b=oslb5qKfrglARAANdXbd6E3BBRMo/xFGR7rtZRJkewEVXAsrC10Ks787OwhVnMkeVXsupZ/ZsPbC1rhs625keuh6lIbRpvC27fEnSYEd9lcgklzXCF2V7kYyXl0usATsNCWhQiX3wn8eVVnFcI4bhHBtml0AcdXf93cCr0G/eRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741731962; c=relaxed/simple;
-	bh=Alj+56UiSeF6BBH3b7zGYm5FSbwhWwKw/aZtV+05RyY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XOkHAlaE4h20GseyaVmKUXVRENnK5tQS6wxyS+LROkqL+pwwHrSWQH05D1L4JCzvFjjehHs3o0bNkzymB9qSNpsB3s/NG1IIWLsByUk+F/S+ue1uiLV+vkMplbGnz0noq261KAU8DkjTHKLVY9UHNLeB0A3vk3OgPCMQPpvumlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dvizajpk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1531AC4CEEA;
-	Tue, 11 Mar 2025 22:25:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741731961;
-	bh=Alj+56UiSeF6BBH3b7zGYm5FSbwhWwKw/aZtV+05RyY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dvizajpkBggKTnFqNwp5b3ZLA0XJfYGT0cfrMBs+LvWypY9GljOA/6dKx69z84HRx
-	 GlKJPm3JTX5YvJdBFoG9IKElx2ns/muz71GB+GPNHL/fXMy0oWVoLwvJXWrpJ1faWe
-	 t1VQthkYu43HPce+9bKIYJ+ziGphN19K8D5fVZEDR2488GO1jLQshBdizB2sjmZF9F
-	 qOft1Izwp1bPC26Vz2E/DFseqFty9q7Qn1iKyIkxwM5mLoJJB3OHlPcoYUWuWc5osk
-	 xPRxg8xQTgEyIJROllTXS+CyPRWCYbz8gIldK9r/b7pcgJSKqrrsHIZqcrYaDXm1VC
-	 HCiIej/p0fQoQ==
-Date: Tue, 11 Mar 2025 23:25:48 +0100
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Nishanth Menon <nm@ti.com>
-Cc: Andreas Kemnade <andreas@kemnade.info>, vigneshr@ti.com, 
-	aaro.koskinen@iki.fi, khilman@baylibre.com, rogerq@kernel.org, tony@atomide.com, 
-	jmkrzyszt@gmail.com, reidt@ti.com, wsa@kernel.org, linux-omap@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, stable@kernel.org
-Subject: Re: [PATCH v2] i2c: omap: fix IRQ storms
-Message-ID: <t43j7wmwsqvs5f6utld72enobqwkendgtpzfu3mth3bdgpxhsh@qeok5d2ujdm2>
-References: <20250228140420.379498-1-andreas@kemnade.info>
- <20250311123947.jce4i5heeufzwmji@serotonin>
+	s=arc-20240116; t=1741768784; c=relaxed/simple;
+	bh=OoRKT7eSRXJ4W1UQucr73IPUqNC8CwSIrVMdwhYvPUM=;
+	h=Message-ID:Date:From:To:Subject:MIME-Version:Content-Type; b=lJndZ4ToZOTCbzeq3dZ7z1xbC8+h8SdLlZLsiwNtbBaaNSz89bt2ZLgi8MYq9p8evkZGrnI/V4pHeXIqehBJzYl9tZL7QfX3TukHgSezaoqdd7FIsC7VYRbcLpaeDnsbBukfqgGSoQW41QePvL5pwkEJtg1QVKEHgf9jQeaiL78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=growora.pl; spf=pass smtp.mailfrom=growora.pl; dkim=pass (2048-bit key) header.d=growora.pl header.i=@growora.pl header.b=MZn1lfkU; arc=none smtp.client-ip=217.61.97.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=growora.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=growora.pl
+Received: by mail.growora.pl (Postfix, from userid 1002)
+	id 5415482ED4; Wed, 12 Mar 2025 09:31:33 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=growora.pl; s=mail;
+	t=1741768305; bh=OoRKT7eSRXJ4W1UQucr73IPUqNC8CwSIrVMdwhYvPUM=;
+	h=Date:From:To:Subject:From;
+	b=MZn1lfkUzTpjBoOawAxIb8A+NWHOWPEhzMUSXHLqL4xNV44+qgC9smym+S7SlKzBV
+	 loks3CyNJecCPRgaP4hrqsnckrpql7XUP55Tbg8sgdFjJtSCT2KaZ9cEMnIHrLK7hv
+	 bEenNh95BPQNrma8J7PtqYeBROZKiRzJGm5utLy+qqrfae71tgPaLbIbkgm/7/D5bZ
+	 dRY5BmbMqUyaIGdtGHEduyENnVVqnZlTHWP9zEaDtD5ilqBm7KZNoOeh7Jhnznz013
+	 GN4juhzYXjwHS2RPZzXO+pRtMWgTDYK4rPRVhLC7tdxtmV0c1V1FEHpvGeK1H7iJOs
+	 gptjBRar0lXog==
+Received: by mail.growora.pl for <linux-omap@vger.kernel.org>; Wed, 12 Mar 2025 08:31:21 GMT
+Message-ID: <20250312084500-0.1.f.pia.0.c5pjvb6edo@growora.pl>
+Date: Wed, 12 Mar 2025 08:31:21 GMT
+From: "Wioleta Dymanowska" <wioleta.dymanowska@growora.pl>
+To: <linux-omap@vger.kernel.org>
+Subject: =?UTF-8?Q?15000%_wzrostu_widoczno=C5=9Bci=3F_To_mo=C5=BCliwe!?=
+X-Mailer: mail.growora.pl
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250311123947.jce4i5heeufzwmji@serotonin>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Dzie=C5=84 dobry!
 
-On Tue, Mar 11, 2025 at 07:39:47AM -0500, Nishanth Menon wrote:
-> On 15:04-20250228, Andreas Kemnade wrote:
-> > On the GTA04A5 writing a reset command to the gyroscope causes IRQ
-> > storms because NACK IRQs are enabled and therefore triggered but not
-> > acked.
-> > 
-> > Sending a reset command to the gyroscope by
-> > i2cset 1 0x69 0x14 0xb6
-> > with an additional debug print in the ISR (not the thread) itself
-> > causes
-> > 
-> > [ 363.353515] i2c i2c-1: ioctl, cmd=0x720, arg=0xbe801b00
-> > [ 363.359039] omap_i2c 48072000.i2c: addr: 0x0069, len: 2, flags: 0x0, stop: 1
-> > [ 363.366180] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x1110)
-> > [ 363.371673] omap_i2c 48072000.i2c: IRQ (ISR = 0x0010)
-> > [ 363.376892] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-> > [ 363.382263] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-> > [ 363.387664] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-> > repeating till infinity
-> > [...]
-> > (0x2 = NACK, 0x100 = Bus free, which is not enabled)
-> > Apparently no other IRQ bit gets set, so this stalls.
-> > 
-> > Do not ignore enabled interrupts and make sure they are acked.
-> > If the NACK IRQ is not needed, it should simply not enabled, but
-> > according to the above log, caring about it is necessary unless
-> > the Bus free IRQ is enabled and handled. The assumption that is
-> > will always come with a ARDY IRQ, which was the idea behind
-> > ignoring it, proves wrong.
-> > It is true for simple reads from an unused address.
-> > 
-> > To still avoid the i2cdetect trouble which is the reason for
-> > commit c770657bd261 ("i2c: omap: Fix standard mode false ACK readings"),
-> > avoid doing much about NACK in omap_i2c_xfer_data() which is used
-> > by both IRQ mode and polling mode, so also the false detection fix
-> > is extended to polling usage and IRQ storms are avoided.
-> > 
-> > By changing this, the hardirq handler is not needed anymore to filter
-> > stuff.
-> > 
-> > The mentioned gyro reset now just causes a -ETIMEDOUT instead of
-> > hanging the system.
-> > 
-> > Fixes: c770657bd261 ("i2c: omap: Fix standard mode false ACK readings").
-> > CC: <stable@kernel.org>
-> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> > ---
-> > This needs at least to be tested on systems where false acks were
-> > detected.
-> 
-> At least on BeaglePlay, I have not been able to reproduce the original
-> bug which was the trigger for commit c770657bd261
-> 
-> I also ran basic boot tests on other K3 platforms and none seem to show
-> regressions at the very least.
-> 
-> Tested-by: Nishanth Menon <nm@ti.com>
+Czy chc=C4=85 Pa=C5=84stwo dotrze=C4=87 ze swoj=C4=85 ofert=C4=85 do wi=C4=
+=99kszej liczby Klient=C3=B3w?
 
-Thanks for testing it! I asked some OMAP folks to check this
-patch, but no one took action. With Nishanth's test, I can now
-sleep soundly. :-)
+Znamy si=C4=99 na najlepszych technikach SEO, podejmujemy dla Pa=C5=84stw=
+a szereg dzia=C5=82a=C5=84, by w naturalny spos=C3=B3b strona pojawia=C5=82=
+a si=C4=99 wy=C5=BCej w wyszukiwarkach.
 
-Merged to i2c/i2c-host-fixes.
+Oferujemy elastyczne us=C5=82ugi SEO dostosowane do potrzeb biznesu, w mo=
+delu godzinowym.
 
-Thanks,
-Andi
+Na bie=C5=BC=C4=85co optymalizujemy dzia=C5=82ania, aby maksymalizowa=C4=87=
+ widoczno=C5=9B=C4=87 strony w wyszukiwarkach. W razie potrzeby mo=C5=BCe=
+my tak=C5=BCe rozszerzy=C4=87 wsp=C3=B3=C5=82prac=C4=99 o tworzenie tre=C5=
+=9Bci i optymalizacj=C4=99 konwersji, aby dzia=C5=82ania by=C5=82y efekty=
+wniejsze.
+
+Dla jednego z naszych klient=C3=B3w osi=C4=85gn=C4=99li=C5=9Bmy wzrost li=
+czby wy=C5=9Bwietle=C5=84 o 15000%, telefon=C3=B3w i zapyta=C5=84 od pote=
+ncjalnych klient=C3=B3w. Wzrost fraz w TOP 3 wyni=C3=B3s=C5=82 250%, a w =
+TOP 10 a=C5=BC 292%.
+
+Czy chcieliby Pa=C5=84stwo  zobaczy=C4=87 podobne efekty w swojej firmie?=
+ Zapraszam do kontaktu.
+
+
+Pozdrawiam
+Wioleta Dymanowska
 
