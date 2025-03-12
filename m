@@ -1,145 +1,142 @@
-Return-Path: <linux-omap+bounces-3380-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3381-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7225AA5E19A
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Mar 2025 17:16:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01286A5E1F0
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Mar 2025 17:43:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBAC63B6BDE
-	for <lists+linux-omap@lfdr.de>; Wed, 12 Mar 2025 16:15:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 440F51784C8
+	for <lists+linux-omap@lfdr.de>; Wed, 12 Mar 2025 16:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C48F1D2F53;
-	Wed, 12 Mar 2025 16:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F6141F4CB7;
+	Wed, 12 Mar 2025 16:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ltpF4bv2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sILim1Bn"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228DF78F29;
-	Wed, 12 Mar 2025 16:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386E41CDFCE;
+	Wed, 12 Mar 2025 16:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741796162; cv=none; b=FtPomc7+o2C8VuqqBqSP3kFSj2K+UL97qu78MCp/Ml5TaoVmmCnR+F5gYBSupCEeiCvHxmeiX+NlfMqx1cTeZ8QXX9D5z38yXXypvZpVWWWljaaKvkx9EuO/ymarA2uLloHJdDI1U+CZjDI2E30emb7gT31kCz/maSQu43XjLuo=
+	t=1741797816; cv=none; b=qdLuyUv1pCf0J2kAdPiHCgieM7t3NuLEaCEAzxhifsg2Hb4gTDuBr5MTITP7kPOL0NsMEAkCT0nNoqSOIjKZ+4VGNysdkP5Iec8Au51Wmm2yOMNyZFsgMU0KiERET7KNJ/oTz0/uXZMYzXHno3SkkKChcj4ilVR6u+W51Oi8tQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741796162; c=relaxed/simple;
-	bh=VsNryCp6Jdy8Cj9W96kO7ltsyTKRP2vUyvO8MTRIRCA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=K66pd0pgK5CrW+mor17LcAT4pXNe1HkKLqUDt5kApzHLxsbXY1aPJasRlx1wcPxX2xQ5s/ueiIrC4FC1hROdL4oDqjWl8MP7Lri1NzFm2Qta/1ZkkzRN0y+7wiz5yS28wgN6vsvGMnf9DBVs6+38fJ6bRfrr2IKaby5CZPInMFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ltpF4bv2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DDDC4CEEA;
-	Wed, 12 Mar 2025 16:16:01 +0000 (UTC)
+	s=arc-20240116; t=1741797816; c=relaxed/simple;
+	bh=6Nlfx24/5WyMWH+mVg/nVlAYQ94lGe7m8lLJJ4G7Slk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nf3+S1JfDfsr7Vou6JilYXtFrH2D+mowKRRk7QO+ApT1d3yMMWY4B7LSV5q6kuVKSJoD4yKVBnLU2bqSuu8IY3oCWOVFoE2GgyN6/iQxIDa3FHgsYvMA3eJEhPkOOiSU+mvnS2087WpVw0YPX46HjTlqrpzcEgGZHT4e8oPyr4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sILim1Bn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809CCC4CEDD;
+	Wed, 12 Mar 2025 16:43:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741796161;
-	bh=VsNryCp6Jdy8Cj9W96kO7ltsyTKRP2vUyvO8MTRIRCA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=ltpF4bv2tpgig/rLF/SWUcRuVcjvjoqZTAwgDD/ab0SRZVZNFMNz/pO2uKoKFdUZ3
-	 Efa7P5+PybmQOFHqmjcy+GO9MJyiAtGOYfr+mrGhlQpC7/AuJ9lGqOhXLihiXLnT/6
-	 Tr/U34cIicPdZye4F1wPbcYYZNmQi9jSuLORnyM8fsy/2kkE/iVqElEgCVK/Ffm8F7
-	 01PQdXAtnn/gCdy0zkV60RsSHtz2V4JgT6B5WM00VL29bZHnuFvCp8zH4ma+HBw7h6
-	 J8Vcp02yuuuib4zPHSES5zqgX+d2N3xlacNeY4YPx6wiOVy8l/3OSk4Xj1JX7VN1mf
-	 D+5gS6kD2oJ2Q==
-Date: Wed, 12 Mar 2025 11:16:00 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Matt Ranostay <mranostay@ti.com>
-Cc: lpieralisi@kernel.org, kw@linux.com, vigneshr@ti.com,
-	manivannan.sadhasivam@linaro.org, robh@kernel.org,
-	bhelgaas@google.com, rogerq@kernel.org, linux-omap@vger.kernel.org,
-	linux-pci@vger.kernel.org, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	srk@ti.com
-Subject: Re: [PATCH] PCI: j721e: Fix the value of linkdown_irq_regfield for
- J784S4
-Message-ID: <20250312161600.GA680640@bhelgaas>
+	s=k20201202; t=1741797815;
+	bh=6Nlfx24/5WyMWH+mVg/nVlAYQ94lGe7m8lLJJ4G7Slk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=sILim1BnZ9ITmiC6nb8CcNmG9QTkPLkeT5hpmzawAd9hQICLb7L6sGXuqAfgPqXHP
+	 H6ue/fML9DXKqFI/6DYvd/4mxgtBH8kYvj6uVdql+gWQJl7ssFdt3z6O6m/olh8eQ/
+	 v+dhGFeEYRF+aMSL3jytu3/pTWSOdqGNZs2mSLQMFL4mm+rBcRDDfot4xyL983+Ed8
+	 IPHK1qCntdz4S5kY9X3QtT3sjJaTlHCRNjP9BuD+JhJTJO4/g7E0qP1DfzGLcLwEzH
+	 Q9483bpienLKlDOyj0wTGPxbaXjzzpdOcZ32VxN5Lfa/YPsxPkRScq9dHo1svLDKby
+	 qSVRMOU2hNezA==
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Tero Kristo <kristo@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Cc: linux-omap@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] clk: ti: Simplify ti_find_clock_provider()
+Date: Wed, 12 Mar 2025 11:33:30 -0500
+Message-ID: <20250312163330.865573-2-robh@kernel.org>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250305132018.2260771-1-s-vadapalli@ti.com>
+Content-Transfer-Encoding: 8bit
 
-[+to Matt, author of e49ad667815d]
+Remove using for_each_of_allnodes_from() which is not safe to use
+without holding the DT spinlock. In reality that probably doesn't
+matter here. This is the only user in the whole tree, so it can be
+made private once removed here. The "from" argument is always NULL, so
+it can be dropped as well.
 
-On Wed, Mar 05, 2025 at 06:50:18PM +0530, Siddharth Vadapalli wrote:
-> Commit under Fixes assigned the value of 'linkdown_irq_regfield' for the
-> J784S4 SoC as 'LINK_DOWN' which corresponds to BIT(1). However, according
-> to the Technical Reference Manual and Register Documentation for the J784S4
-> SoC [0], BIT(1) corresponds to "ENABLE_SYS_EN_PCIE_DPA_1" which is __NOT__
-> the field for the link-state interrupt. Instead, it is BIT(10) of the
-> "PCIE_INTD_ENABLE_REG_SYS_2" register that corresponds to the link-state
-> field named as "ENABLE_SYS_EN_PCIE_LINK_STATE".
+There's a slight change in behavior in matching the "clock-output-names"
+value as the prior code would match if the node name matched the
+beginning of the value and the comparision was case insensitive. Now
+it must be an exact match.
 
-I guess the reason we want this is that on J784S4, we ignore actual
-link-down interrupts (and we don't write STATUS_CLR_REG_SYS_2 to clear
-the interrupt indication, so maybe there's an interrupt storm), and we
-think some other interrupt (DPA_1, whatever that is) is actually a
-link-down interrupt?
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+---
+Compiled only. I'm not sure if the the change in behavior is going to 
+matter. 
 
-> Hence, set 'linkdown_irq_regfield' to the macro 'J7200_LINK_DOWN' which
-> expands to BIT(10) and was first defined for the J7200 SoC. Other SoCs
-> already reuse this macro since it accurately represents the link-state
-> field in their respective "PCIE_INTD_ENABLE_REG_SYS_2" register.
-> 
-> [0]: https://www.ti.com/lit/zip/spruj52
+ drivers/clk/ti/clk.c | 27 ++++++---------------------
+ 1 file changed, 6 insertions(+), 21 deletions(-)
 
-Thanks for the spec URL.  Can you include a relevant section number?
-I searched for some of this stuff but couldn't find it.
+diff --git a/drivers/clk/ti/clk.c b/drivers/clk/ti/clk.c
+index 9c75dcc9a534..693a4459a01b 100644
+--- a/drivers/clk/ti/clk.c
++++ b/drivers/clk/ti/clk.c
+@@ -118,13 +118,10 @@ int ti_clk_setup_ll_ops(struct ti_clk_ll_ops *ops)
+  * Eventually we could standardize to using '_' for clk-*.c files to follow the
+  * TRM naming.
+  */
+-static struct device_node *ti_find_clock_provider(struct device_node *from,
+-						  const char *name)
++static struct device_node *ti_find_clock_provider(const char *name)
+ {
+ 	char *tmp __free(kfree) = NULL;
+ 	struct device_node *np;
+-	bool found = false;
+-	const char *n;
+ 	char *p;
+ 
+ 	tmp = kstrdup_and_replace(name, '-', '_', GFP_KERNEL);
+@@ -137,25 +134,13 @@ static struct device_node *ti_find_clock_provider(struct device_node *from,
+ 		*p = '\0';
+ 
+ 	/* Node named "clock" with "clock-output-names" */
+-	for_each_of_allnodes_from(from, np) {
+-		if (of_property_read_string_index(np, "clock-output-names",
+-						  0, &n))
+-			continue;
+-
+-		if (!strncmp(n, tmp, strlen(tmp))) {
+-			of_node_get(np);
+-			found = true;
+-			break;
+-		}
+-	}
+-
+-	if (found) {
+-		of_node_put(from);
+-		return np;
++	for_each_node_with_property(np, "clock-output-names") {
++		if (of_property_match_string(np, "clock-output-names", tmp) == 0)
++			return np;
+ 	}
+ 
+ 	/* Fall back to using old node name base provider name */
+-	return of_find_node_by_name(from, tmp);
++	return of_find_node_by_name(NULL, tmp);
+ }
+ 
+ /**
+@@ -208,7 +193,7 @@ void __init ti_dt_clocks_register(struct ti_dt_clk oclks[])
+ 		if (num_args && clkctrl_nodes_missing)
+ 			continue;
+ 
+-		node = ti_find_clock_provider(NULL, buf);
++		node = ti_find_clock_provider(buf);
+ 		if (num_args && compat_mode) {
+ 			parent = node;
+ 			child = of_get_child_by_name(parent, "clock");
+-- 
+2.47.2
 
-Since I have low confidence that the URL will be valid after a few
-years, I wish the spec also had a human-readable name and revision
-number.  But maybe the alphabet soup or "SPRUJ52D", "revised July
-2024" is all we can hope for.
-
-> Fixes: e49ad667815d ("PCI: j721e: Add TI J784S4 PCIe configuration")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-> ---
-> 
-> Hello,
-> 
-> This patch is based on commit
-> 48a5eed9ad58 Merge tag 'devicetree-fixes-for-6.14-2' of git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux
-> of the master branch of Linux.
-> 
-> Patch has been tested on J784S4-EVM, validating that disconnecting an
-> Endpoint Device connected to J784S4-EVM results in the following message
-> on the J784S4-EVM:
-> 	j721e-pcie 2900000.pcie: LINK DOWN!
-> which wasn't seen earlier.
-> 
-> Regards,
-> Siddharth.
-> 
->  drivers/pci/controller/cadence/pci-j721e.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-> index 0341d51d6aed..1da9d9918d0d 100644
-> --- a/drivers/pci/controller/cadence/pci-j721e.c
-> +++ b/drivers/pci/controller/cadence/pci-j721e.c
-> @@ -376,13 +376,13 @@ static const struct j721e_pcie_data j784s4_pcie_rc_data = {
->  	.mode = PCI_MODE_RC,
->  	.quirk_retrain_flag = true,
->  	.byte_access_allowed = false,
-> -	.linkdown_irq_regfield = LINK_DOWN,
-> +	.linkdown_irq_regfield = J7200_LINK_DOWN,
->  	.max_lanes = 4,
->  };
->  
->  static const struct j721e_pcie_data j784s4_pcie_ep_data = {
->  	.mode = PCI_MODE_EP,
-> -	.linkdown_irq_regfield = LINK_DOWN,
-> +	.linkdown_irq_regfield = J7200_LINK_DOWN,
->  	.max_lanes = 4,
->  };
->  
-> -- 
-> 2.34.1
-> 
 
