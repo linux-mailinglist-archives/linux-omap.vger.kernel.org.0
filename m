@@ -1,122 +1,163 @@
-Return-Path: <linux-omap+bounces-3383-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3384-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41B6CA5EB7B
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Mar 2025 07:05:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0353DA5EFE1
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Mar 2025 10:47:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E0DA7A60C5
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Mar 2025 06:04:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F8223AC6A9
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Mar 2025 09:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E4D71FBC86;
-	Thu, 13 Mar 2025 06:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85EBC1FBCAE;
+	Thu, 13 Mar 2025 09:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kED28Sjn"
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="OyGQ53mB"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mta-64-228.siemens.flowmailer.net (mta-64-228.siemens.flowmailer.net [185.136.64.228])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C311FAC4A
-	for <linux-omap@vger.kernel.org>; Thu, 13 Mar 2025 06:05:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B1E2641E6
+	for <linux-omap@vger.kernel.org>; Thu, 13 Mar 2025 09:47:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741845928; cv=none; b=epaRj7D09KDeZhWzm536fGvcC03cT9/HdZu4AZjMr9SbipM92hBVs8qzIPmqD8xUrkNwpb4lFPVXac22/YcrvnZMPy58Yq5FvgiDBCjhUPLGEhTr+68N6R4Eschc9uMLRh2EW+xMOTJR848gHvcF5+i82Gvy0Zv34yGNmfRJg80=
+	t=1741859242; cv=none; b=ULy1zx0RFBhiMJh0nikHLfVFMs5CWW+sFEe8ZC/zXR+Po2UQoWbxF3++WX1QNlkDHQdrbVrDg92Zx04GIfB6f9iBoHAIDnipmCsjJHMWjYi5GBWVe8cB9Fyf6+Eg6Jv/eiuTTpcJo4pxAt+9vYTkA7EWSNIeMyAUAxoRWk+BbVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741845928; c=relaxed/simple;
-	bh=xnjEUUt219szQVqS0FUbXn7jZKDT0VQ883gSiPYS0ZY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ljgS+mTXq5wOBe8hdCUpJqN2ORAG66+VW7nLdmQOHrSXPYbe52YMIh0c+NpVIJHPXMDP2xVHC7OGQUJOely5puXaQSsR69P7stIJCqxMfoA+28YdIFRKUBKtX7TllfEUh5Z3r/DHah/aLi/SBveqWVU+Za7TXQFL7tEAwALDEjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kED28Sjn; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-22355618fd9so11034315ad.3
-        for <linux-omap@vger.kernel.org>; Wed, 12 Mar 2025 23:05:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741845926; x=1742450726; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ECQXFTKYOwgoxNWOGHysFhcD6t84a8REZICN/4jtZ5M=;
-        b=kED28SjnwcZto2IkTRX7p74kNmvwWpgjG6u07C0SY5sCiPVDpwLSPgdVl90OutwA3e
-         tA1Fm8OwFXs7In07wqf3aVAAfdZOmvAS9CUsa+0U/kUm6sUgDJWg4tSrwKl65vpZ2x/D
-         z6Ok6f08iTefTmi5gyABqQNlvNhLVUFR/1n5BaPd2CZH3Ba4GO/VNmBTSAi63e6ddx2L
-         Zlkm6OUKq2fSOUtQZedR14BwP/toHrhOEmYl+OyIRTsdb9JLhWqq+XZ8pEWH9JCD3sk7
-         fzpNITsP9Wy71Go1ygTpeVV+/4kftKFS4mkB4TGusdxDVnkFMpINqZHpJP1WisrNeehs
-         BZKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741845926; x=1742450726;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ECQXFTKYOwgoxNWOGHysFhcD6t84a8REZICN/4jtZ5M=;
-        b=LSx31eIdJ/Vljzaf6Oy/bR59si9kglYpgMXtLRrYg4HOTe2Ydtxu8xrFruPqJb87JG
-         0hs690I6p4ucZaL0I7AR6RaO3Q4rlaFYPxs4cnTWFwdO843KEs6Rb0+qtYSL1XNxBw8X
-         qD7NtLZj51Q1L8YRKIslh9f3UxsPjT35V5IiyRoipaecn74j/mJ66RcnN8ts4B5ZDjmt
-         Z9K9zlz4oOGGZOCECm36QIG9g8g1V8e4OmbYpFhRw1gAJfYMQS2AnCiNJQhIW4Kr5S9q
-         6DcwvpnecQjQaOosH7D8/wEIlQgJ67AaXzv+PQIEuQ9S4A4NyreLnID/2OQBjo+HOIx9
-         kLfg==
-X-Forwarded-Encrypted: i=1; AJvYcCUMp9FJdHBZPZYtOQWBZiHt6IaU10igF/bvkiJa/fdJAgbrtY5VnrfeUWtJycxVKEXl0d5WmnR4wkq2@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzd/XiEo4SQ/HW0ypgdcdNvR8uqhyYr+Rn6Ijt8+9hqHvgyhQ/g
-	EzKtdNf5JxypcQm37T+Hb6JSMZBzrjxwsGtod4F/cq48wPB4VUGqsrtq9IH4IQ==
-X-Gm-Gg: ASbGncudSQppD3knzYNyQ0TFHmAXjBRsf3FxB6jxS0Lty5jzvbCraC+XyDjz2kIAZs1
-	lvzeUS9KR7Lj+xS9Bekh4NW4Zsf6GB86K3FsPKv6F0TTw+R9f93WDXylqXZv4ZKIj7GKaZCGacV
-	nyJ8nTdI5x0BtvLBd3NflMu9DtxlkWIR0Jobjfj3qmO6JbrldJW7CCEaDH1HxVFjEhQ9vrnjJBu
-	KPfuegco919YFjw5jt3qjU6IuMYM24ay81UihnQRC737NCB1A9sTRCFgW0Ea+bu7ZKhKwoWdsWs
-	rtPQ3IEaSQmQhhvOXZJlxN5boKC+cx6ZKQybEUsQddBv10iVSHSxyQ==
-X-Google-Smtp-Source: AGHT+IHNYbI7b2RsxEIqYIkLTAuLCtKd3n8R178hhBoO3FhGxq8OJi1CT08xESSMe4ltVJpCSclHjw==
-X-Received: by 2002:a17:902:ec92:b0:220:fce7:d3a6 with SMTP id d9443c01a7336-22592e44a09mr126226875ad.23.1741845926623;
-        Wed, 12 Mar 2025 23:05:26 -0700 (PDT)
-Received: from thinkpad ([120.60.60.84])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-737115781f3sm534483b3a.76.2025.03.12.23.05.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Mar 2025 23:05:26 -0700 (PDT)
-Date: Thu, 13 Mar 2025 11:35:21 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH RFC NOT TESTED 0/2] PCI: dra7xx: Try to clean up
- dra7xx_pcie_cpu_addr_fixup()
-Message-ID: <20250313060521.kjue4la47xd7g4te@thinkpad>
-References: <20250305-dra-v1-0-8dc6d9a0e1c0@nxp.com>
+	s=arc-20240116; t=1741859242; c=relaxed/simple;
+	bh=e/YRPj6RUaOq76Rd/cALVFxmh2DBSQ4Kxxlj2FhISN0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H0c+Bp1xqgjEn7u3Z+k0uqkr6BbE8kJxSjwJrZZtkyouAVgLRfzEdOx6EDMpKTmuEqQaqCFNwQze9ZyOMX76SAyGjDiftQORj3NqSXSRT0ekZ0qQtq8QfkHhA0X4zDQa02za5mkCtmMq452xGCYRP6erfYuaxiGi628/MmuaeJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=OyGQ53mB; arc=none smtp.client-ip=185.136.64.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+Received: by mta-64-228.siemens.flowmailer.net with ESMTPSA id 20250313094711444e6ee1ada0a6df84
+        for <linux-omap@vger.kernel.org>;
+        Thu, 13 Mar 2025 10:47:11 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=alexander.sverdlin@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=kF4icJdfP5lYpb8j8rEZ0/bmq66zQh7c61dM/j9rTKo=;
+ b=OyGQ53mBnlX/kxdCGiKDZ/Bdh0HnbzuOlKTqe0CaVPs+HtUnX0aRcIWo00h9uBYNaVkFwa
+ yyM0o0D5DrgQMAziGVk1BZG0CCyksS0YBM3blo3t1w7ltoZ+aoaSuP6fY7pGWhk9sXGMT1RR
+ JcduQxAP+dbk2OLxJI/uYmBeCBNopGxql+xKBHRVmhIt7ZtwXZb+cZrPYVWSS4iHHvgBWxQx
+ bIEKEJ/hK5ZU5EdKKDtqD0rCtIjBcOUOz+knSOj2UWe8iLuihbDc8diySnEoEu0rqxNA62m3
+ 4gSbfwsXjyO7oPpnm/l/y0AQcvPrU3jV0zxMTgg4EX3Jyr2jj8WbQazg==;
+From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+To: Tony Lindgren <tony@atomide.com>,
+	linux-omap@vger.kernel.org
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] Revert "bus: ti-sysc: Probe for l4_wkup and l4_cfg interconnect devices first"
+Date: Thu, 13 Mar 2025 10:47:06 +0100
+Message-ID: <20250313094708.1003092-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250305-dra-v1-0-8dc6d9a0e1c0@nxp.com>
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-456497:519-21489:flowmailer
 
-On Wed, Mar 05, 2025 at 11:20:21AM -0500, Frank Li wrote:
-> This patches basic on
-> https://lore.kernel.org/imx/20250128-pci_fixup_addr-v9-0-3c4bb506f665@nxp.com/
-> 
-> I have not hardware to test.
-> 
-> Look for driver owner, who help test this and start move forward to remove
-> cpu_addr_fixup() work.
-> 
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-If you remove cpu_addr_fixup() callback, it will break backwards compatibility
-with old DTs.
+This reverts commit 4700a00755fb5a4bb5109128297d6fd2d1272ee6.
 
-You should fix the existing DTs and continue carrying the callback for a while.
+It brakes target-module@2b300050 ("ti,sysc-omap2") probe on AM62x in a case
+when minimally-configured system tries to network-boot:
 
-- Mani
+[    6.888776] probe of 2b300050.target-module returned 517 after 258 usecs
+[   17.129637] probe of 2b300050.target-module returned 517 after 708 usecs
+[   17.137397] platform 2b300050.target-module: deferred probe pending: (reason unknown)
+[   26.878471] Waiting up to 100 more seconds for network.
 
+Arbitrary 10 deferrals is really not a solution to any problem.
+Stable mmc enumeration can be achiever by filling /aliases node properly
+(4700a00755fb commit's rationale).
+
+After revert:
+
+[    9.006816] IP-Config: Complete:
+[    9.010058]      device=lan0, ...
+
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+---
+ drivers/bus/ti-sysc.c | 49 -------------------------------------------
+ 1 file changed, 49 deletions(-)
+
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index f67b927ae4caa..e5c02e950f2c1 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -677,51 +677,6 @@ static int sysc_parse_and_check_child_range(struct sysc *ddata)
+ 	return 0;
+ }
+ 
+-/* Interconnect instances to probe before l4_per instances */
+-static struct resource early_bus_ranges[] = {
+-	/* am3/4 l4_wkup */
+-	{ .start = 0x44c00000, .end = 0x44c00000 + 0x300000, },
+-	/* omap4/5 and dra7 l4_cfg */
+-	{ .start = 0x4a000000, .end = 0x4a000000 + 0x300000, },
+-	/* omap4 l4_wkup */
+-	{ .start = 0x4a300000, .end = 0x4a300000 + 0x30000,  },
+-	/* omap5 and dra7 l4_wkup without dra7 dcan segment */
+-	{ .start = 0x4ae00000, .end = 0x4ae00000 + 0x30000,  },
+-};
+-
+-static atomic_t sysc_defer = ATOMIC_INIT(10);
+-
+-/**
+- * sysc_defer_non_critical - defer non_critical interconnect probing
+- * @ddata: device driver data
+- *
+- * We want to probe l4_cfg and l4_wkup interconnect instances before any
+- * l4_per instances as l4_per instances depend on resources on l4_cfg and
+- * l4_wkup interconnects.
+- */
+-static int sysc_defer_non_critical(struct sysc *ddata)
+-{
+-	struct resource *res;
+-	int i;
+-
+-	if (!atomic_read(&sysc_defer))
+-		return 0;
+-
+-	for (i = 0; i < ARRAY_SIZE(early_bus_ranges); i++) {
+-		res = &early_bus_ranges[i];
+-		if (ddata->module_pa >= res->start &&
+-		    ddata->module_pa <= res->end) {
+-			atomic_set(&sysc_defer, 0);
+-
+-			return 0;
+-		}
+-	}
+-
+-	atomic_dec_if_positive(&sysc_defer);
+-
+-	return -EPROBE_DEFER;
+-}
+-
+ static struct device_node *stdout_path;
+ 
+ static void sysc_init_stdout_path(struct sysc *ddata)
+@@ -947,10 +902,6 @@ static int sysc_map_and_check_registers(struct sysc *ddata)
+ 	if (error)
+ 		return error;
+ 
+-	error = sysc_defer_non_critical(ddata);
+-	if (error)
+-		return error;
+-
+ 	sysc_check_children(ddata);
+ 
+ 	if (!of_property_present(np, "reg"))
 -- 
-மணிவண்ணன் சதாசிவம்
+2.48.1
+
 
