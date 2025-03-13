@@ -1,163 +1,113 @@
-Return-Path: <linux-omap+bounces-3384-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3385-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0353DA5EFE1
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Mar 2025 10:47:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEF28A5FAE1
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Mar 2025 17:11:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F8223AC6A9
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Mar 2025 09:47:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83D8917E980
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Mar 2025 16:09:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85EBC1FBCAE;
-	Thu, 13 Mar 2025 09:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446D126A0BE;
+	Thu, 13 Mar 2025 16:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="OyGQ53mB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m5w9qBku"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mta-64-228.siemens.flowmailer.net (mta-64-228.siemens.flowmailer.net [185.136.64.228])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B1E2641E6
-	for <linux-omap@vger.kernel.org>; Thu, 13 Mar 2025 09:47:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8532690CB;
+	Thu, 13 Mar 2025 16:02:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741859242; cv=none; b=ULy1zx0RFBhiMJh0nikHLfVFMs5CWW+sFEe8ZC/zXR+Po2UQoWbxF3++WX1QNlkDHQdrbVrDg92Zx04GIfB6f9iBoHAIDnipmCsjJHMWjYi5GBWVe8cB9Fyf6+Eg6Jv/eiuTTpcJo4pxAt+9vYTkA7EWSNIeMyAUAxoRWk+BbVQ=
+	t=1741881737; cv=none; b=eLDGztnWdxymSgxHVjmQ3j6UAR6p5alCB3i6ikItYsXAit0uTvmZuoTj3Iu3SrIIWkvFI9gcMzbm2cLO8HHRZ1J56LsfqAn3VCmh0ZBd0PekBjd/OdGqorUjetAQ5lvksdALOnnsKhtaNOaizBahESIJFYBHCitFMxE/ToNUoaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741859242; c=relaxed/simple;
-	bh=e/YRPj6RUaOq76Rd/cALVFxmh2DBSQ4Kxxlj2FhISN0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H0c+Bp1xqgjEn7u3Z+k0uqkr6BbE8kJxSjwJrZZtkyouAVgLRfzEdOx6EDMpKTmuEqQaqCFNwQze9ZyOMX76SAyGjDiftQORj3NqSXSRT0ekZ0qQtq8QfkHhA0X4zDQa02za5mkCtmMq452xGCYRP6erfYuaxiGi628/MmuaeJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=OyGQ53mB; arc=none smtp.client-ip=185.136.64.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-64-228.siemens.flowmailer.net with ESMTPSA id 20250313094711444e6ee1ada0a6df84
-        for <linux-omap@vger.kernel.org>;
-        Thu, 13 Mar 2025 10:47:11 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=alexander.sverdlin@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
- bh=kF4icJdfP5lYpb8j8rEZ0/bmq66zQh7c61dM/j9rTKo=;
- b=OyGQ53mBnlX/kxdCGiKDZ/Bdh0HnbzuOlKTqe0CaVPs+HtUnX0aRcIWo00h9uBYNaVkFwa
- yyM0o0D5DrgQMAziGVk1BZG0CCyksS0YBM3blo3t1w7ltoZ+aoaSuP6fY7pGWhk9sXGMT1RR
- JcduQxAP+dbk2OLxJI/uYmBeCBNopGxql+xKBHRVmhIt7ZtwXZb+cZrPYVWSS4iHHvgBWxQx
- bIEKEJ/hK5ZU5EdKKDtqD0rCtIjBcOUOz+knSOj2UWe8iLuihbDc8diySnEoEu0rqxNA62m3
- 4gSbfwsXjyO7oPpnm/l/y0AQcvPrU3jV0zxMTgg4EX3Jyr2jj8WbQazg==;
-From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-To: Tony Lindgren <tony@atomide.com>,
-	linux-omap@vger.kernel.org
-Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] Revert "bus: ti-sysc: Probe for l4_wkup and l4_cfg interconnect devices first"
-Date: Thu, 13 Mar 2025 10:47:06 +0100
-Message-ID: <20250313094708.1003092-1-alexander.sverdlin@siemens.com>
+	s=arc-20240116; t=1741881737; c=relaxed/simple;
+	bh=yeXHcZgjUGF7P1GdENNOH+WMNLvGwDA1Vl+O4Y03fFM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=SA7SGCNIcKK/7Zhk86Ks4cN9juiNcdflNlEUpj/tvxsyvpb776JS+3MriO+p26hdu9o7y/a88eqZoU09q2CC2eMLUfS9QblwDKTESu5AX63z34EHm/T2ngy3/fr+zgMfHBgi/PYdF3IbzDfzpAjlUFbaNxgYlbGux/mp59/5wnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m5w9qBku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ACE5C4CEEA;
+	Thu, 13 Mar 2025 16:02:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741881737;
+	bh=yeXHcZgjUGF7P1GdENNOH+WMNLvGwDA1Vl+O4Y03fFM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=m5w9qBkuDQVNB4YeKXrBEztJzAJGHkUy75sZhJ+lyGei4s3zeKWOv0SZtQO31Gsa9
+	 9zA5dwPqruTyKckVPVI3Sc2CPa9gE2fbKxs/DYBZvmfvZmjuHwYebhNnapwDXYjgiV
+	 +Ru2nP7dQP72CsjCRT8/D0/0G9JAKdUV1QsxuEZEfiAJ85SAHNurCgF+sSUsWpdVo3
+	 zhPn+Jxbv3jJ+xe+TaIpsptYh5bWhvbEA+03S0nIV0ZGEoNybkj3kpr3aGaPNTBxsR
+	 kLyPJeq8zLyfGsv/w3L4UI8oyVPmLWleh4wEsuh06Ft+FLVf9nk7CsKy1c7lySb3X+
+	 2njSxjG5yuz0Q==
+Date: Thu, 13 Mar 2025 11:02:15 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: lpieralisi@kernel.org, kw@linux.com, vigneshr@ti.com,
+	manivannan.sadhasivam@linaro.org, robh@kernel.org,
+	bhelgaas@google.com, rogerq@kernel.org, linux-omap@vger.kernel.org,
+	linux-pci@vger.kernel.org, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	srk@ti.com
+Subject: Re: [PATCH] PCI: j721e: Fix the value of linkdown_irq_regfield for
+ J784S4
+Message-ID: <20250313160215.GA736346@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-456497:519-21489:flowmailer
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250313055519.j3bpvsm6govd5ytk@uda0492258>
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+On Thu, Mar 13, 2025 at 11:25:19AM +0530, Siddharth Vadapalli wrote:
+> On Wed, Mar 12, 2025 at 11:16:00AM -0500, Bjorn Helgaas wrote:
+> > On Wed, Mar 05, 2025 at 06:50:18PM +0530, Siddharth Vadapalli wrote:
+> > > Commit under Fixes assigned the value of 'linkdown_irq_regfield' for the
+> > > J784S4 SoC as 'LINK_DOWN' which corresponds to BIT(1). However, according
+> > > to the Technical Reference Manual and Register Documentation for the J784S4
+> > > SoC [0], BIT(1) corresponds to "ENABLE_SYS_EN_PCIE_DPA_1" which is __NOT__
+> > > the field for the link-state interrupt. Instead, it is BIT(10) of the
+> > > "PCIE_INTD_ENABLE_REG_SYS_2" register that corresponds to the link-state
+> > > field named as "ENABLE_SYS_EN_PCIE_LINK_STATE".
+> > 
+> > I guess the reason we want this is that on J784S4, we ignore actual
+> > link-down interrupts (and we don't write STATUS_CLR_REG_SYS_2 to clear
+> > the interrupt indication, so maybe there's an interrupt storm), and we
+> > think some other interrupt (DPA_1, whatever that is) is actually a
+> > link-down interrupt?
+> 
+> While it is true that actual link-down interrupts are ignored, it is not
+> the case that there's an interrupt storm because the same incorrect macro
+> is used to enable the interrupt line. Since the enables an interrupt for
+> DPA_1 which never fires, we don't run into the situation where we are not
+> clearing the interrupt (the interrupt handler will look for the same
+> incorrect field to clear the interrupt if it does fire for DPA_1, but that
+> doesn't happen). The 'linkdown_irq_regfield' corresponds to the
+> "link-state" field not just in the J784S4 SoC, but in all SoCs supported by
+> the pci-j721e.c driver. It is only in J721E that it is BIT(1)
+> [LINK_DOWN macro], while in all other SoCs (J784S4 included), it is BIT(10)
+> [J7200_LINK_DOWN macro since it was first added for J7200 SoC]. Matt
+> probably referred to J721E's Technical Reference Manual and ended up
+> incorrectly assigning "LINK_DOWN", due to which the driver is enabling
+> the DPA_1 interrupt and the interrupt handler is also going to look for
+> the field corresponding to receiving an interrupt for DPA_1.
 
-This reverts commit 4700a00755fb5a4bb5109128297d6fd2d1272ee6.
+So I guess without this patch, we incorrectly ignore link-down
+interrupts on J784S4.  It's good to have a one-sentence motivation
+like that somewhere in the commit log that we can pull out and include
+in the merge commit log and the pull request.
 
-It brakes target-module@2b300050 ("ti,sysc-omap2") probe on AM62x in a case
-when minimally-configured system tries to network-boot:
+> I can only hope that the URL will redirect to the latest version of
+> the User Guide if at all it becomes invalid.
 
-[    6.888776] probe of 2b300050.target-module returned 517 after 258 usecs
-[   17.129637] probe of 2b300050.target-module returned 517 after 708 usecs
-[   17.137397] platform 2b300050.target-module: deferred probe pending: (reason unknown)
-[   26.878471] Waiting up to 100 more seconds for network.
+OK, thanks, I guess there's nothing more to do ;)  I guess that manual
+is not really designed for collaborative development.
 
-Arbitrary 10 deferrals is really not a solution to any problem.
-Stable mmc enumeration can be achiever by filling /aliases node properly
-(4700a00755fb commit's rationale).
+Thanks for the patient hand holding!
 
-After revert:
-
-[    9.006816] IP-Config: Complete:
-[    9.010058]      device=lan0, ...
-
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
----
- drivers/bus/ti-sysc.c | 49 -------------------------------------------
- 1 file changed, 49 deletions(-)
-
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index f67b927ae4caa..e5c02e950f2c1 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -677,51 +677,6 @@ static int sysc_parse_and_check_child_range(struct sysc *ddata)
- 	return 0;
- }
- 
--/* Interconnect instances to probe before l4_per instances */
--static struct resource early_bus_ranges[] = {
--	/* am3/4 l4_wkup */
--	{ .start = 0x44c00000, .end = 0x44c00000 + 0x300000, },
--	/* omap4/5 and dra7 l4_cfg */
--	{ .start = 0x4a000000, .end = 0x4a000000 + 0x300000, },
--	/* omap4 l4_wkup */
--	{ .start = 0x4a300000, .end = 0x4a300000 + 0x30000,  },
--	/* omap5 and dra7 l4_wkup without dra7 dcan segment */
--	{ .start = 0x4ae00000, .end = 0x4ae00000 + 0x30000,  },
--};
--
--static atomic_t sysc_defer = ATOMIC_INIT(10);
--
--/**
-- * sysc_defer_non_critical - defer non_critical interconnect probing
-- * @ddata: device driver data
-- *
-- * We want to probe l4_cfg and l4_wkup interconnect instances before any
-- * l4_per instances as l4_per instances depend on resources on l4_cfg and
-- * l4_wkup interconnects.
-- */
--static int sysc_defer_non_critical(struct sysc *ddata)
--{
--	struct resource *res;
--	int i;
--
--	if (!atomic_read(&sysc_defer))
--		return 0;
--
--	for (i = 0; i < ARRAY_SIZE(early_bus_ranges); i++) {
--		res = &early_bus_ranges[i];
--		if (ddata->module_pa >= res->start &&
--		    ddata->module_pa <= res->end) {
--			atomic_set(&sysc_defer, 0);
--
--			return 0;
--		}
--	}
--
--	atomic_dec_if_positive(&sysc_defer);
--
--	return -EPROBE_DEFER;
--}
--
- static struct device_node *stdout_path;
- 
- static void sysc_init_stdout_path(struct sysc *ddata)
-@@ -947,10 +902,6 @@ static int sysc_map_and_check_registers(struct sysc *ddata)
- 	if (error)
- 		return error;
- 
--	error = sysc_defer_non_critical(ddata);
--	if (error)
--		return error;
--
- 	sysc_check_children(ddata);
- 
- 	if (!of_property_present(np, "reg"))
--- 
-2.48.1
-
+Bjorn
 
