@@ -1,95 +1,92 @@
-Return-Path: <linux-omap+bounces-3386-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3387-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F60A5FCBA
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Mar 2025 17:55:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1FE0A5FE7B
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Mar 2025 18:44:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17BD43BE829
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Mar 2025 16:54:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B0C37ADF2C
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Mar 2025 17:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D1D26A0DC;
-	Thu, 13 Mar 2025 16:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D71B1DDC2A;
+	Thu, 13 Mar 2025 17:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RW5ZPE6z"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KOhrg+Lu"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A4A268FF4
-	for <linux-omap@vger.kernel.org>; Thu, 13 Mar 2025 16:53:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB541DACA7
+	for <linux-omap@vger.kernel.org>; Thu, 13 Mar 2025 17:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741884802; cv=none; b=KgQDRUzIxtha+SdfVXyc28BamnDpGuWYoswttSiwIDHkyXv8D9whWK0HGmJjjHG5Uo0odl5VwGlWubNkGzpIMzo+rGW9/VSFcIMNKuMIDqZP9YKJctOJpB543yPvxVCKzaZv/pw6Pu1UwOuCsmnvNUUxrBhWzjL+7YXfN2WwsMw=
+	t=1741887867; cv=none; b=Eec/9A2G6BuLiQCox1EFTjzluMRxEKNU7biayYJv/t3LtqwQ+QdqafhjNUNHOb9+W69FktijyuUUHaXq9wdJot1ueMwFU8yrTV4TbPbeTaJqF/mbEaKxrluCtVjyYKSfG8j+k+IqZ8YIuL7dl3nKQxbftC4ymFO8PduGwrRWZDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741884802; c=relaxed/simple;
-	bh=vwhTZJRxz/U4j6Fnzkv92NNO3NpiYFquEmYKurAYKUA=;
+	s=arc-20240116; t=1741887867; c=relaxed/simple;
+	bh=QV8C66sQqd3HvWMDCeN2JGXKbNAkGEFguMVZSlaWutk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A39seXcW6w9OsSCkFBGAVRGxpopuROaMxrR/wvQvy+DMxc90rQ+6lfJFX6jkm0R5iUWTorGNVQnabbox9rkT02b31/1MI4P2798t9QXx3XXxnvUjz/uFAqMrfy9gqUV3z0QEsuftxX5RCkuyfI7pPAfyyQn23hxMah/BP33hZaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RW5ZPE6z; arc=none smtp.client-ip=209.85.214.171
+	 Content-Type:Content-Disposition:In-Reply-To; b=gIlTCj7msMaUnVbtWuvDMSEmyMfpEVhcUBaAZDui0PBQj9USeKlWTqfAb6CJQgvY7z3BhgprNgtDdX7dGY+NWJtiOgExu4GHXRu2O79IcefP1BwB+jBUxrM6JIOkiA31vJDfwdupsFGa1ypbANOlpSLd12LRZKsOVeCI3eOEBno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KOhrg+Lu; arc=none smtp.client-ip=209.85.216.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-224341bbc1dso25820235ad.3
-        for <linux-omap@vger.kernel.org>; Thu, 13 Mar 2025 09:53:19 -0700 (PDT)
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-301302a328bso2675138a91.2
+        for <linux-omap@vger.kernel.org>; Thu, 13 Mar 2025 10:44:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741884799; x=1742489599; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1741887864; x=1742492664; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=RVvf10Ck2ho127r39h3riZTqgWY3zjYMF5s83hBhWK4=;
-        b=RW5ZPE6z8irH1KoF0hnYQffpHs8m/c/ALM2SXyC3OntO6Ij67BzGys14gUSuwPKR7D
-         XLA+zmh6D0mYfX7wb2XtThnWEg/PFtgE3CAIoHJIP8kR5ZklubksuQ84GkY8O/TC9NaX
-         dBi7eIG3fOKXtS1zhM8qtV61POjJGYWjyR3/YJ2q16SJ5JuLcO3ekE3Y7xEN3zekijMj
-         3jQb34FnJIUTvwuV4Sur01NY8x2ww/8HmDhjNGsF3or+BKzW9v2GpHRrjWmGB2okKZf3
-         dgmJ2Ira8+Uf+U9hXkJwtmdua1twkpkSBO7WTumh1P6fq591HFtOj6Xs8WpsH9PiSkQX
-         C9OA==
+        bh=NhFJsw8uawrCjQJevU/7j+bAkPgtLqvzMAQJU5JD9+8=;
+        b=KOhrg+LuXx7d9C6KKulJtOIW47AXQK03Ii3Cdb1e4XkkFTDbh7Va+0TMluG+MCqfwi
+         l+7euXp9RUPz0YFDNLbSfFz/lPSl8QveFsz1oay9BCjynTdYEL23qLaIBrqws0OXTyMk
+         v9GnLz34MNflm1o1A4hkwzLh3Jnyow7897BmBLFbK0yLnJWTfrFOIpVCTN8ekNwh91CB
+         Hnf2mEXr+a4EwpJO1tO2q7uVi6xWz/V3xm1unERXYKCPWTboYEkATbQELOqu3gnIvz3k
+         blPWgp5c8StBhUIZ1RK9yaYEMT5Uix+EYVCRWru43Guhwsslkh/Lc80wZY52jqwBs4GL
+         OnFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741884799; x=1742489599;
+        d=1e100.net; s=20230601; t=1741887864; x=1742492664;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RVvf10Ck2ho127r39h3riZTqgWY3zjYMF5s83hBhWK4=;
-        b=vDkDUw1ztGNI5dZsjZm7Dw6W3ebnL3ZpQ2t++fDyZSxNMZMvG3xlBv1Wl1Ynm37ksR
-         WQDK1mGvjXujNi/tp7Gsrd52NJGWUgb/loSotYwcX3dfX+bipknIxiujK1y5LgaGki4Q
-         gl4oBY4SNQo+xroDwpTTTNurLrFfOJqrpnCUQ0J74IOHRmdV5j67PxHIxBWNBn2y8AaJ
-         MvfI5k9vu8fud37sCcV9ga0+MKduMp/96l6F5P4P5+ZAqu9RwmjGedHrjJiKttcvfk+i
-         Q1vIYb5vxkMC8xucsQL4gwWMqGWQdd2Lo7YqnqWz/GzCfNfOhuZ2jy6mQ2K49KHZotH/
-         5Dgg==
-X-Forwarded-Encrypted: i=1; AJvYcCXYVBBll3L2rzjndfrMqDwt9J7mpXunjrzZtLxKRQ2GZZfhDDl71exfEJ0nZWqFIKPk8jypVR5t1Ckh@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbyWm4MvDhQe5JyvzNkLIDK4i3z316iQ62MKg1yyUQmtko6idU
-	0xvtez4z+B+7+6pVXePmWhu/364WdiQD1+nnZfvLYiHGnJrn4N+lQFZ85BMHXg==
-X-Gm-Gg: ASbGncuj48FHIEArn1a6Yj0igdY34i2PHhzxezKutsRpdAviVJJUcTudEh8hftm2FkV
-	Iym/Js1BcJ2enl0IxqCoOiuLxLelH2K2cnVpCiMGsJNM4+X9MKZWRE5/25RgqvCSna1Ro5cH4v5
-	8n18HGltFLu7YIY5Zo1C/mxlbqwOmZYT9PqxeCkMuSayo1cJKITdGT153vzGaBmAB40EjnncJEU
-	eKuN0ukLH9f0TjjG2KoSXu+2GLpLOpRrc1jC+PsXtDSvz+6Rw5v/SWPCL0wUxkYCmzlnMm4nHwR
-	KpTQvgJ6r8Zy9KjIUD16GwPGRrVGuvXEy9yBGql6bYZcEXavc8Cfpg==
-X-Google-Smtp-Source: AGHT+IFfcfuSPGO2mr5Ih54HzoCrJnTgSB49gCqwRuzftDvua6QaTJh101E/NjM3KLYPx8ydFXU52A==
-X-Received: by 2002:a05:6a21:3a93:b0:1f5:7b6f:f8e8 with SMTP id adf61e73a8af0-1f58cad4b2amr19998674637.6.1741884799320;
-        Thu, 13 Mar 2025 09:53:19 -0700 (PDT)
+        bh=NhFJsw8uawrCjQJevU/7j+bAkPgtLqvzMAQJU5JD9+8=;
+        b=IBw2Y4QSdHQV+4G8wC3zSNi0tg8hjjOm5CJQjmaqhgkJvQlEB6dZuylGL5ZMC6yzbI
+         Aq9fWjtKDYB19RlWAlKO/kjRXwyqXQyu4aOL7zIdL7POYdbtA+cUZNoHae0hM/FhvPUU
+         U+K6NRNo8XuBfS6dGwSDgcCI7QKYR6BGoBNVBkLa2zSD/cv4cxuv4a/FrVjk7qzcaAXJ
+         eOwlD9rCiFLaMtBfJvMWirK5tvc4Pnk4oStMhRPUUHAxKcAWr3FjOt3SQQzR05aharZ7
+         AF8yH7Q/2gpyjQ0ylFUAs8qHY+Ll8CgbboSJucog3kNuW3CJ1CmrqPJ3GE7ceyRZx1Nk
+         3uyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX6N/yvo1VujDHgmBcvsOm/8oFtPxa5J8ApObwqHbEBN8xGapDjwmOPDj63FYdu3Ez5mmw4Nlgp7T2w@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtC29jfnnbERTPMarEX+wn/MZPiJUBwhACtbakDPFJNbyJnPhh
+	38xlA3hqKgvpwyGELRIPk0EMxjr/Q6NfguLpUf7853bShNF8mE1oZWHZJxAbIw==
+X-Gm-Gg: ASbGncsgExAu6Dm1Trbx5hFcS9QkVKeKVTlb3AYFDCyh3B/lo/Wb8vs0IarUW3BudXn
+	Kghy6TkdC3JIPBdX8RTWF0m/J9wmZlDY0I1OBdrUMiWyn+42YFgq/8wLSOi2II9OIAkpB7Ck8iD
+	Rk3CxVqN2ATUZA+75qYBBysMmZw9IZBTQU2xbQc6OuaZ5Q6k4ZBm4K3lBOYV740by0BCjO6yl7V
+	miDPrkOf37ffzWSnFTTVhyZFh9nXZv+WraFOqzvXQb9FsEH1bVL+thlQ1IkWu7OSW2QoFgmg1It
+	QRNF3EGdX+MtXj6831jgfvbaVEnxhgp4x9zf7g427A2EsHfhisB1/g==
+X-Google-Smtp-Source: AGHT+IEaq+Fi1cGt0rAKa6Fc1r8aIz7Paw4eI3nREquhMURMlKswOymRbr7ex68I++4IhbW37kjVlQ==
+X-Received: by 2002:a17:90b:54c4:b0:2ff:52b8:2767 with SMTP id 98e67ed59e1d1-3014e8619f7mr487146a91.19.1741887864312;
+        Thu, 13 Mar 2025 10:44:24 -0700 (PDT)
 Received: from thinkpad ([120.60.60.84])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-737115511dasm1605770b3a.60.2025.03.13.09.53.14
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30138b4751fsm1670259a91.12.2025.03.13.10.44.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Mar 2025 09:53:18 -0700 (PDT)
-Date: Thu, 13 Mar 2025 22:23:11 +0530
+        Thu, 13 Mar 2025 10:44:23 -0700 (PDT)
+Date: Thu, 13 Mar 2025 23:14:16 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH PATCH RFC NOT TESTED 1/2] ARM: dts: ti: dra7: Correct
- ranges for PCIe and parent bus nodes
-Message-ID: <20250313165311.2fj7aus3pcsg4m2c@thinkpad>
-References: <20250305-dra-v1-0-8dc6d9a0e1c0@nxp.com>
- <20250305-dra-v1-1-8dc6d9a0e1c0@nxp.com>
+To: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: lpieralisi@kernel.org, kw@linux.com, robh@kernel.org,
+	bhelgaas@google.com, vigneshr@ti.com, kishon@kernel.org,
+	cassel@kernel.org, wojciech.jasko-EXT@continental-corporation.com,
+	thomas.richard@bootlin.com, bwawrzyn@cisco.com,
+	linux-pci@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	srk@ti.com
+Subject: Re: [PATCH 1/4] PCI: cadence: Add support to build pcie-cadence
+ library as a kernel module
+Message-ID: <20250313174416.n3c4srf6hb2l3bvg@thinkpad>
+References: <20250307103128.3287497-1-s-vadapalli@ti.com>
+ <20250307103128.3287497-2-s-vadapalli@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -99,57 +96,46 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250305-dra-v1-1-8dc6d9a0e1c0@nxp.com>
+In-Reply-To: <20250307103128.3287497-2-s-vadapalli@ti.com>
 
-On Wed, Mar 05, 2025 at 11:20:22AM -0500, Frank Li wrote:
+On Fri, Mar 07, 2025 at 04:01:25PM +0530, Siddharth Vadapalli wrote:
+> From: Kishon Vijay Abraham I <kishon@ti.com>
+> 
+> Currently, the Cadence PCIe controller driver can be built as a built-in
+> module only. Since PCIe functionality is not a necessity for booting, add
+> support to build the Cadence PCIe driver as a loadable module as well.
+> 
+> Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-If you want a specific patch to be tested, you can add [PATCH RFT] tag.C
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-> According to code in drivers/pci/controller/dwc/pci-dra7xx.c
-> 
-> dra7xx_pcie_cpu_addr_fixup()
-> {
-> 	return cpu_addr & DRA7XX_CPU_TO_BUS_ADDR;  //0x0FFFFFFF
-> }
-> 
-> PCI parent bus trim high 4 bits address to 0. Correct ranges in
-> target-module@51000000 to algin hardware behavior, which translate PCIe
-> outbound address 0..0x0fff_ffff to 0x2000_0000..0x2fff_ffff.
-> 
-> Set 'config' and 'addr_space' reg values to 0.
-> Change parent bus address of downstream I/O and non-prefetchable memory to
-> 0.
-> 
-> Ensure no functional impact on the final address translation result.
-> 
-> Prepare for the removal of the driver’s cpu_addr_fixup().
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  arch/arm/boot/dts/ti/omap/dra7.dtsi | 18 +++++++++---------
->  1 file changed, 9 insertions(+), 9 deletions(-)
+>  drivers/pci/controller/cadence/Kconfig             |  6 +++---
+>  drivers/pci/controller/cadence/pcie-cadence-ep.c   |  6 ++++++
+>  drivers/pci/controller/cadence/pcie-cadence-host.c |  9 +++++++++
+>  drivers/pci/controller/cadence/pcie-cadence.c      | 12 ++++++++++++
+>  drivers/pci/controller/cadence/pcie-cadence.h      |  4 ++--
+>  5 files changed, 32 insertions(+), 5 deletions(-)
 > 
-> diff --git a/arch/arm/boot/dts/ti/omap/dra7.dtsi b/arch/arm/boot/dts/ti/omap/dra7.dtsi
-> index b709703f6c0d4..9213fdd25330b 100644
-> --- a/arch/arm/boot/dts/ti/omap/dra7.dtsi
-> +++ b/arch/arm/boot/dts/ti/omap/dra7.dtsi
-> @@ -196,7 +196,7 @@ axi0: target-module@51000000 {
->  			#size-cells = <1>;
->  			#address-cells = <1>;
->  			ranges = <0x51000000 0x51000000 0x3000>,
-> -				 <0x20000000 0x20000000 0x10000000>;
-> +				 <0x00000000 0x20000000 0x10000000>;
+> diff --git a/drivers/pci/controller/cadence/Kconfig b/drivers/pci/controller/cadence/Kconfig
+> index 8a0044bb3989..82b58096eea0 100644
+> --- a/drivers/pci/controller/cadence/Kconfig
+> +++ b/drivers/pci/controller/cadence/Kconfig
+> @@ -4,16 +4,16 @@ menu "Cadence-based PCIe controllers"
+>  	depends on PCI
+>  
+>  config PCIE_CADENCE
+> -	bool
+> +	tristate
+>  
+>  config PCIE_CADENCE_HOST
+> -	bool
+> +	tristate
+>  	depends on OF
+>  	select IRQ_DOMAIN
 
-I'm not able to interpret this properly. So this essentially means that the
-parent address 0x20000000 is mapped to child address 0x00000000. And the child
-address is same for other controller as well.
-
-Also, the cpu_addr_fixup() is doing the same by masking out the upper 4 bits. I
-tried looking into the DRA7 TRM, but it says (ECAM_Param_Base_Addr +
-0x20000000) where ECAM_Param_Base_Addr = 0x0000_0000 to 0x0FFF_F000.
-
-I couldn't relate TRM with the cpu_addr_fixup() callback. Can someone from TI
-shed light on this?
+Even though this was added earlier, looks like not needed.
 
 - Mani
 
