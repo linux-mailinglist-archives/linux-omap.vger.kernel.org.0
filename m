@@ -1,164 +1,122 @@
-Return-Path: <linux-omap+bounces-3382-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3383-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ECD1A5EB56
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Mar 2025 06:55:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41B6CA5EB7B
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Mar 2025 07:05:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01C9E3B7177
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Mar 2025 05:55:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E0DA7A60C5
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Mar 2025 06:04:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B2AD1F9F79;
-	Thu, 13 Mar 2025 05:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E4D71FBC86;
+	Thu, 13 Mar 2025 06:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="zGmHtGiY"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kED28Sjn"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B2C80604;
-	Thu, 13 Mar 2025 05:55:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C311FAC4A
+	for <linux-omap@vger.kernel.org>; Thu, 13 Mar 2025 06:05:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741845337; cv=none; b=CVSv2bgO0iNBTMYQJVGliCocvTUhVo0+GPiMh3s0XFTRCVjfMdv+5psT4Tmyw0DLQ80KSDzr78/XargIBJkg/dPDYeWceUR1siSybrzCUo7VrHHRPZ0PC2ay8D1Wc1B8FABEXizTu1O6uIQ+cAretVld/Q0cm+OySU2iO4dY0mE=
+	t=1741845928; cv=none; b=epaRj7D09KDeZhWzm536fGvcC03cT9/HdZu4AZjMr9SbipM92hBVs8qzIPmqD8xUrkNwpb4lFPVXac22/YcrvnZMPy58Yq5FvgiDBCjhUPLGEhTr+68N6R4Eschc9uMLRh2EW+xMOTJR848gHvcF5+i82Gvy0Zv34yGNmfRJg80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741845337; c=relaxed/simple;
-	bh=HfSlSZ2CqVWFW48fAe4Pz+wvV6Z9OMo9fS/2rnnhenU=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W7LBa+QIAAj06PEg3+vl+zZSsxBlt7T2Va5wyv8a6nl+wITVx/nlMkqsJdU/PP5wL6GwkY2XpK8uq1i6s7MD44kPimYSbL3m2DejAcFE0GYBzKdXFNeVNsG2nUJKxQmjs1I6+GTNk+vWrD72ScJI+PcNF+8pLrHPIrRuaf6aBZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=zGmHtGiY; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 52D5tLKc1737463
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Mar 2025 00:55:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1741845321;
-	bh=XJezcyfF+yORt8Uw98gj4iwE+jSOmsLoiF2fnCYB870=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=zGmHtGiYaruD/5pWpaw3Km0ciUIhgr2MyPPLZyMnga2DreISPKbwWt5W+1+CUH44N
-	 1wDnb6Q9N5BwlRdwN+asaguym9HKZPgajwDhL9nPpaqDZvDdgLJUGKIZL9ZZ9sE01u
-	 h1WZOIbJy5u/ZVVEsSbJppqWKnNYybMNNtqW3q18=
-Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 52D5tLrL018383
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 13 Mar 2025 00:55:21 -0500
-Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 13
- Mar 2025 00:55:20 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 13 Mar 2025 00:55:20 -0500
-Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.113])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 52D5tJmY065334;
-	Thu, 13 Mar 2025 00:55:20 -0500
-Date: Thu, 13 Mar 2025 11:25:19 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <lpieralisi@kernel.org>,
-        <kw@linux.com>, <vigneshr@ti.com>, <manivannan.sadhasivam@linaro.org>,
-        <robh@kernel.org>, <bhelgaas@google.com>, <rogerq@kernel.org>,
-        <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>
-Subject: Re: [PATCH] PCI: j721e: Fix the value of linkdown_irq_regfield for
- J784S4
-Message-ID: <20250313055519.j3bpvsm6govd5ytk@uda0492258>
-References: <20250305132018.2260771-1-s-vadapalli@ti.com>
- <20250312161600.GA680640@bhelgaas>
+	s=arc-20240116; t=1741845928; c=relaxed/simple;
+	bh=xnjEUUt219szQVqS0FUbXn7jZKDT0VQ883gSiPYS0ZY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ljgS+mTXq5wOBe8hdCUpJqN2ORAG66+VW7nLdmQOHrSXPYbe52YMIh0c+NpVIJHPXMDP2xVHC7OGQUJOely5puXaQSsR69P7stIJCqxMfoA+28YdIFRKUBKtX7TllfEUh5Z3r/DHah/aLi/SBveqWVU+Za7TXQFL7tEAwALDEjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kED28Sjn; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-22355618fd9so11034315ad.3
+        for <linux-omap@vger.kernel.org>; Wed, 12 Mar 2025 23:05:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1741845926; x=1742450726; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ECQXFTKYOwgoxNWOGHysFhcD6t84a8REZICN/4jtZ5M=;
+        b=kED28SjnwcZto2IkTRX7p74kNmvwWpgjG6u07C0SY5sCiPVDpwLSPgdVl90OutwA3e
+         tA1Fm8OwFXs7In07wqf3aVAAfdZOmvAS9CUsa+0U/kUm6sUgDJWg4tSrwKl65vpZ2x/D
+         z6Ok6f08iTefTmi5gyABqQNlvNhLVUFR/1n5BaPd2CZH3Ba4GO/VNmBTSAi63e6ddx2L
+         Zlkm6OUKq2fSOUtQZedR14BwP/toHrhOEmYl+OyIRTsdb9JLhWqq+XZ8pEWH9JCD3sk7
+         fzpNITsP9Wy71Go1ygTpeVV+/4kftKFS4mkB4TGusdxDVnkFMpINqZHpJP1WisrNeehs
+         BZKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741845926; x=1742450726;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ECQXFTKYOwgoxNWOGHysFhcD6t84a8REZICN/4jtZ5M=;
+        b=LSx31eIdJ/Vljzaf6Oy/bR59si9kglYpgMXtLRrYg4HOTe2Ydtxu8xrFruPqJb87JG
+         0hs690I6p4ucZaL0I7AR6RaO3Q4rlaFYPxs4cnTWFwdO843KEs6Rb0+qtYSL1XNxBw8X
+         qD7NtLZj51Q1L8YRKIslh9f3UxsPjT35V5IiyRoipaecn74j/mJ66RcnN8ts4B5ZDjmt
+         Z9K9zlz4oOGGZOCECm36QIG9g8g1V8e4OmbYpFhRw1gAJfYMQS2AnCiNJQhIW4Kr5S9q
+         6DcwvpnecQjQaOosH7D8/wEIlQgJ67AaXzv+PQIEuQ9S4A4NyreLnID/2OQBjo+HOIx9
+         kLfg==
+X-Forwarded-Encrypted: i=1; AJvYcCUMp9FJdHBZPZYtOQWBZiHt6IaU10igF/bvkiJa/fdJAgbrtY5VnrfeUWtJycxVKEXl0d5WmnR4wkq2@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzd/XiEo4SQ/HW0ypgdcdNvR8uqhyYr+Rn6Ijt8+9hqHvgyhQ/g
+	EzKtdNf5JxypcQm37T+Hb6JSMZBzrjxwsGtod4F/cq48wPB4VUGqsrtq9IH4IQ==
+X-Gm-Gg: ASbGncudSQppD3knzYNyQ0TFHmAXjBRsf3FxB6jxS0Lty5jzvbCraC+XyDjz2kIAZs1
+	lvzeUS9KR7Lj+xS9Bekh4NW4Zsf6GB86K3FsPKv6F0TTw+R9f93WDXylqXZv4ZKIj7GKaZCGacV
+	nyJ8nTdI5x0BtvLBd3NflMu9DtxlkWIR0Jobjfj3qmO6JbrldJW7CCEaDH1HxVFjEhQ9vrnjJBu
+	KPfuegco919YFjw5jt3qjU6IuMYM24ay81UihnQRC737NCB1A9sTRCFgW0Ea+bu7ZKhKwoWdsWs
+	rtPQ3IEaSQmQhhvOXZJlxN5boKC+cx6ZKQybEUsQddBv10iVSHSxyQ==
+X-Google-Smtp-Source: AGHT+IHNYbI7b2RsxEIqYIkLTAuLCtKd3n8R178hhBoO3FhGxq8OJi1CT08xESSMe4ltVJpCSclHjw==
+X-Received: by 2002:a17:902:ec92:b0:220:fce7:d3a6 with SMTP id d9443c01a7336-22592e44a09mr126226875ad.23.1741845926623;
+        Wed, 12 Mar 2025 23:05:26 -0700 (PDT)
+Received: from thinkpad ([120.60.60.84])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-737115781f3sm534483b3a.76.2025.03.12.23.05.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Mar 2025 23:05:26 -0700 (PDT)
+Date: Thu, 13 Mar 2025 11:35:21 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH RFC NOT TESTED 0/2] PCI: dra7xx: Try to clean up
+ dra7xx_pcie_cpu_addr_fixup()
+Message-ID: <20250313060521.kjue4la47xd7g4te@thinkpad>
+References: <20250305-dra-v1-0-8dc6d9a0e1c0@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250312161600.GA680640@bhelgaas>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250305-dra-v1-0-8dc6d9a0e1c0@nxp.com>
 
-On Wed, Mar 12, 2025 at 11:16:00AM -0500, Bjorn Helgaas wrote:
-
-Hello Bjorn,
-
-> [+to Matt, author of e49ad667815d]
-
-I dropped Matt's email on purpose since it will bounce as the email is
-no longer valid.
-
+On Wed, Mar 05, 2025 at 11:20:21AM -0500, Frank Li wrote:
+> This patches basic on
+> https://lore.kernel.org/imx/20250128-pci_fixup_addr-v9-0-3c4bb506f665@nxp.com/
 > 
-> On Wed, Mar 05, 2025 at 06:50:18PM +0530, Siddharth Vadapalli wrote:
-> > Commit under Fixes assigned the value of 'linkdown_irq_regfield' for the
-> > J784S4 SoC as 'LINK_DOWN' which corresponds to BIT(1). However, according
-> > to the Technical Reference Manual and Register Documentation for the J784S4
-> > SoC [0], BIT(1) corresponds to "ENABLE_SYS_EN_PCIE_DPA_1" which is __NOT__
-> > the field for the link-state interrupt. Instead, it is BIT(10) of the
-> > "PCIE_INTD_ENABLE_REG_SYS_2" register that corresponds to the link-state
-> > field named as "ENABLE_SYS_EN_PCIE_LINK_STATE".
+> I have not hardware to test.
 > 
-> I guess the reason we want this is that on J784S4, we ignore actual
-> link-down interrupts (and we don't write STATUS_CLR_REG_SYS_2 to clear
-> the interrupt indication, so maybe there's an interrupt storm), and we
-> think some other interrupt (DPA_1, whatever that is) is actually a
-> link-down interrupt?
-
-While it is true that actual link-down interrupts are ignored, it is not
-the case that there's an interrupt storm because the same incorrect macro
-is used to enable the interrupt line. Since the enables an interrupt for
-DPA_1 which never fires, we don't run into the situation where we are not
-clearing the interrupt (the interrupt handler will look for the same
-incorrect field to clear the interrupt if it does fire for DPA_1, but that
-doesn't happen). The 'linkdown_irq_regfield' corresponds to the
-"link-state" field not just in the J784S4 SoC, but in all SoCs supported by
-the pci-j721e.c driver. It is only in J721E that it is BIT(1)
-[LINK_DOWN macro], while in all other SoCs (J784S4 included), it is BIT(10)
-[J7200_LINK_DOWN macro since it was first added for J7200 SoC]. Matt
-probably referred to J721E's Technical Reference Manual and ended up
-incorrectly assigning "LINK_DOWN", due to which the driver is enabling
-the DPA_1 interrupt and the interrupt handler is also going to look for
-the field corresponding to receiving an interrupt for DPA_1.
-
+> Look for driver owner, who help test this and start move forward to remove
+> cpu_addr_fixup() work.
 > 
-> > Hence, set 'linkdown_irq_regfield' to the macro 'J7200_LINK_DOWN' which
-> > expands to BIT(10) and was first defined for the J7200 SoC. Other SoCs
-> > already reuse this macro since it accurately represents the link-state
-> > field in their respective "PCIE_INTD_ENABLE_REG_SYS_2" register.
-> > 
-> > [0]: https://www.ti.com/lit/zip/spruj52
-> 
-> Thanks for the spec URL.  Can you include a relevant section number?
-> I searched for some of this stuff but couldn't find it.
 
-The URL above is taken from the "User Guide" section of the following
-webpage:
-https://www.ti.com/product/TDA4VH-Q1
-corresponding to the J784S4 SoC (TDA4VH is another name for it).
+If you remove cpu_addr_fixup() callback, it will break backwards compatibility
+with old DTs.
 
-The User Guide [0] is a zip file containing the Technical Reference
-Manual (without Registers) along with an Excel Sheet containing the
-Registers. There unfortunately is no particular section that I can
-quote in the Excel Sheet. The PCIe registers described in the Excel
-Sheet contain the "PCIE_INTD_ENABLE_REG_SYS_2" register in one of the
-rows (I didn't want to mention the row number since things could change
-over time, similar to how you pointed out below that the URL could
-potentially change). However, the register name should remain the same,
-the reason being that the name is consistent across all SoCs supported
-by the pci-j721e.c.
+You should fix the existing DTs and continue carrying the callback for a while.
 
-> 
-> Since I have low confidence that the URL will be valid after a few
-> years, I wish the spec also had a human-readable name and revision
-> number.  But maybe the alphabet soup or "SPRUJ52D", "revised July
-> 2024" is all we can hope for.
+- Mani
 
-I can only hope that the URL will redirect to the latest version of the
-User Guide if at all it becomes invalid.
-
-Regards,
-Siddharth.
+-- 
+மணிவண்ணன் சதாசிவம்
 
