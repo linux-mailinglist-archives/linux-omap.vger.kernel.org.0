@@ -1,144 +1,199 @@
-Return-Path: <linux-omap+bounces-3391-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3392-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9487A60808
-	for <lists+linux-omap@lfdr.de>; Fri, 14 Mar 2025 05:17:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 657B1A6094A
+	for <lists+linux-omap@lfdr.de>; Fri, 14 Mar 2025 07:47:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B21E3AF4BC
-	for <lists+linux-omap@lfdr.de>; Fri, 14 Mar 2025 04:17:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CC6B3AA694
+	for <lists+linux-omap@lfdr.de>; Fri, 14 Mar 2025 06:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58E8713C67C;
-	Fri, 14 Mar 2025 04:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28EF1154BE5;
+	Fri, 14 Mar 2025 06:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="zKBeeihX"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="QBExZSDE"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C48F50F;
-	Fri, 14 Mar 2025 04:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D1622339;
+	Fri, 14 Mar 2025 06:47:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741925850; cv=none; b=cZyWMJcvLF3AHSJ1/Q4B5bBgF2RXO+YN9fM0RILZ7zxgUlP31LIqbFDf6xz0tV8mOPIVUqsVe6JAScLlcYVNhfAc3n6NIccy7jB57HhYXQM0AoCClA6+wjPm7FA1KOIa4BnWnGTWXK2Dt1YTHgC4e/FdpxEuKsGIHT6j/3tM+ho=
+	t=1741934838; cv=none; b=VhjtpZtEZKtOcZzDttBlNT9AKVtdgdlJ7tlRoEu9dUHEYCSNStynAqBHjOSMAMHHMYuHNQsBQD5HcjEy6HaOySOXc66VPDLFwEV9e4nSWqNtj6UNfL3Y41vhoQnE2m6ctjLKcqA1uOdaqEMMhfrL8VusM+t1MxuPJ2GUFkwWB9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741925850; c=relaxed/simple;
-	bh=TnEWx0F+7GIBzZufC7ym7uTdsaxdyCuwesSiGz6Nu7g=;
+	s=arc-20240116; t=1741934838; c=relaxed/simple;
+	bh=vjRo8A/nl0MNPlHLRqdBMTEDNlFgWMnGlQWCZBpMdxc=;
 	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=isCiDLrRfUoYorDjRRjJ4Jmjn06r7Z94wJ/XTZaVZk60FSHGGnomaUYXhW7ouv52RL85Xw1X1IMAADRfLcUu/XDptmtlDqrdbke13udqXUnoLu914qY8PyHpWtvcGo9z1mpBwvEvFX6yD3+8dUOQCeRcEzZ9eDK/mE9Nee7KLSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=zKBeeihX; arc=none smtp.client-ip=198.47.23.234
+	 Content-Type:Content-Disposition:In-Reply-To; b=OdVZyEsqRo/wS0vip4uRjTIkqT3TkETG+bzFc1h8Qy6pkRC8bBGNfvObqhJ32o2wI8FO7Rk0dELfPRjTo9iKGKsy+H4XW/AzI6ZD/Cuyartbljw+JIB9HHRXiu+28qsHmYhPhxCBO7X1VsOl9/RTvpBMLGvO3WtABcUFeQ4IuVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=QBExZSDE; arc=none smtp.client-ip=198.47.19.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 52E4H7751577816
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 52E6kiWC2063154
 	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Mar 2025 23:17:07 -0500
+	Fri, 14 Mar 2025 01:46:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1741925827;
-	bh=uJxJyWw+HNGoEkY0YqzV8FUsX4LKlrT7ZOekNYT3OXg=;
+	s=ti-com-17Q1; t=1741934804;
+	bh=sdv4Yo9ucrKy29fcoJrxnRwdBQqji21FxYro7lytlc4=;
 	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=zKBeeihXhZ1QITWJuK3qrT/tyE4HVnXoRuzNmvNEv9uqrrliXTYcLFgAKLvhfZsry
-	 hLUynqqDWXbKfWI1IQS3GtSjXD8/lilRGvXOa9tAzUTxW11lhkleCjV0wa9ib8k5xg
-	 YYBPxSIzzeHjpN1ySx20PJb3Sn3MHG8S4sZ7ODsc=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 52E4H7xI031477
+	b=QBExZSDEGmPHLzA6qsuMdsZ87CEhH9UuDdJqw8tIQ8kGUBYsBbWc1N3cliSogzmvO
+	 N2qYjaClgK7sXf35eZ2kg3naoyhq8X84YJtLCEf1iSCMjhVyqQcXKjksGHbd3wt1EW
+	 KQRypMsLx8Y2DJtGqXwZPVcifxJIefmf6uA6El6Q=
+Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 52E6ki2E108138
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 13 Mar 2025 23:17:07 -0500
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 13
- Mar 2025 23:17:06 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+	Fri, 14 Mar 2025 01:46:44 -0500
+Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 14
+ Mar 2025 01:46:43 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 13 Mar 2025 23:17:06 -0500
+ Frontend Transport; Fri, 14 Mar 2025 01:46:43 -0500
 Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.113])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 52E4H5Lg046200;
-	Thu, 13 Mar 2025 23:17:06 -0500
-Date: Fri, 14 Mar 2025 09:47:05 +0530
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 52E6kgOi032405;
+	Fri, 14 Mar 2025 01:46:43 -0500
+Date: Fri, 14 Mar 2025 12:16:42 +0530
 From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <lpieralisi@kernel.org>,
-        <kw@linux.com>, <vigneshr@ti.com>, <manivannan.sadhasivam@linaro.org>,
-        <robh@kernel.org>, <bhelgaas@google.com>, <rogerq@kernel.org>,
-        <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>
-Subject: Re: [PATCH] PCI: j721e: Fix the value of linkdown_irq_regfield for
- J784S4
-Message-ID: <20250314041705.v5j2fjulol5ywvyq@uda0492258>
-References: <20250313055519.j3bpvsm6govd5ytk@uda0492258>
- <20250313160215.GA736346@bhelgaas>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+CC: Frank Li <Frank.Li@nxp.com>, Tony Lindgren <tony@atomide.com>,
+        Rob Herring
+	<robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+	<conor+dt@kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Siddharth
+ Vadapalli <s-vadapalli@ti.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Bjorn Helgaas
+	<bhelgaas@google.com>, <linux-omap@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH PATCH RFC NOT TESTED 1/2] ARM: dts: ti: dra7: Correct
+ ranges for PCIe and parent bus nodes
+Message-ID: <20250314064642.fyf3jqylmc6meft7@uda0492258>
+References: <20250305-dra-v1-0-8dc6d9a0e1c0@nxp.com>
+ <20250305-dra-v1-1-8dc6d9a0e1c0@nxp.com>
+ <20250313165311.2fj7aus3pcsg4m2c@thinkpad>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <20250313160215.GA736346@bhelgaas>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250313165311.2fj7aus3pcsg4m2c@thinkpad>
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Thu, Mar 13, 2025 at 11:02:15AM -0500, Bjorn Helgaas wrote:
-> On Thu, Mar 13, 2025 at 11:25:19AM +0530, Siddharth Vadapalli wrote:
-> > On Wed, Mar 12, 2025 at 11:16:00AM -0500, Bjorn Helgaas wrote:
-> > > On Wed, Mar 05, 2025 at 06:50:18PM +0530, Siddharth Vadapalli wrote:
-> > > > Commit under Fixes assigned the value of 'linkdown_irq_regfield' for the
-> > > > J784S4 SoC as 'LINK_DOWN' which corresponds to BIT(1). However, according
-> > > > to the Technical Reference Manual and Register Documentation for the J784S4
-> > > > SoC [0], BIT(1) corresponds to "ENABLE_SYS_EN_PCIE_DPA_1" which is __NOT__
-> > > > the field for the link-state interrupt. Instead, it is BIT(10) of the
-> > > > "PCIE_INTD_ENABLE_REG_SYS_2" register that corresponds to the link-state
-> > > > field named as "ENABLE_SYS_EN_PCIE_LINK_STATE".
-> > > 
-> > > I guess the reason we want this is that on J784S4, we ignore actual
-> > > link-down interrupts (and we don't write STATUS_CLR_REG_SYS_2 to clear
-> > > the interrupt indication, so maybe there's an interrupt storm), and we
-> > > think some other interrupt (DPA_1, whatever that is) is actually a
-> > > link-down interrupt?
+On Thu, Mar 13, 2025 at 10:23:11PM +0530, Manivannan Sadhasivam wrote:
+
+Hello Mani,
+
+> On Wed, Mar 05, 2025 at 11:20:22AM -0500, Frank Li wrote:
+> 
+> If you want a specific patch to be tested, you can add [PATCH RFT] tag.C
+> 
+> > According to code in drivers/pci/controller/dwc/pci-dra7xx.c
 > > 
-> > While it is true that actual link-down interrupts are ignored, it is not
-> > the case that there's an interrupt storm because the same incorrect macro
-> > is used to enable the interrupt line. Since the enables an interrupt for
-> > DPA_1 which never fires, we don't run into the situation where we are not
-> > clearing the interrupt (the interrupt handler will look for the same
-> > incorrect field to clear the interrupt if it does fire for DPA_1, but that
-> > doesn't happen). The 'linkdown_irq_regfield' corresponds to the
-> > "link-state" field not just in the J784S4 SoC, but in all SoCs supported by
-> > the pci-j721e.c driver. It is only in J721E that it is BIT(1)
-> > [LINK_DOWN macro], while in all other SoCs (J784S4 included), it is BIT(10)
-> > [J7200_LINK_DOWN macro since it was first added for J7200 SoC]. Matt
-> > probably referred to J721E's Technical Reference Manual and ended up
-> > incorrectly assigning "LINK_DOWN", due to which the driver is enabling
-> > the DPA_1 interrupt and the interrupt handler is also going to look for
-> > the field corresponding to receiving an interrupt for DPA_1.
+> > dra7xx_pcie_cpu_addr_fixup()
+> > {
+> > 	return cpu_addr & DRA7XX_CPU_TO_BUS_ADDR;  //0x0FFFFFFF
+> > }
+> > 
+> > PCI parent bus trim high 4 bits address to 0. Correct ranges in
+> > target-module@51000000 to algin hardware behavior, which translate PCIe
+> > outbound address 0..0x0fff_ffff to 0x2000_0000..0x2fff_ffff.
+> > 
+> > Set 'config' and 'addr_space' reg values to 0.
+> > Change parent bus address of downstream I/O and non-prefetchable memory to
+> > 0.
+> > 
+> > Ensure no functional impact on the final address translation result.
+> > 
+> > Prepare for the removal of the driver’s cpu_addr_fixup().
+> > 
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >  arch/arm/boot/dts/ti/omap/dra7.dtsi | 18 +++++++++---------
+> >  1 file changed, 9 insertions(+), 9 deletions(-)
+> > 
+> > diff --git a/arch/arm/boot/dts/ti/omap/dra7.dtsi b/arch/arm/boot/dts/ti/omap/dra7.dtsi
+> > index b709703f6c0d4..9213fdd25330b 100644
+> > --- a/arch/arm/boot/dts/ti/omap/dra7.dtsi
+> > +++ b/arch/arm/boot/dts/ti/omap/dra7.dtsi
+> > @@ -196,7 +196,7 @@ axi0: target-module@51000000 {
+> >  			#size-cells = <1>;
+> >  			#address-cells = <1>;
+> >  			ranges = <0x51000000 0x51000000 0x3000>,
+> > -				 <0x20000000 0x20000000 0x10000000>;
+> > +				 <0x00000000 0x20000000 0x10000000>;
 > 
-> So I guess without this patch, we incorrectly ignore link-down
-> interrupts on J784S4.  It's good to have a one-sentence motivation
-> like that somewhere in the commit log that we can pull out and include
-> in the merge commit log and the pull request.
-
-Yes, we can prepend the following to the existing commit message:
-"Link down interrupts on J784S4 SoC are missed because..."
-
-resulting in the following updated paragraph in the commit message:
-Link down interrupts on J784S4 SoC are missed because commit under Fixes
-assigned the value of 'linkdown_irq_regfield' for the....
-
-
+> I'm not able to interpret this properly. So this essentially means that the
+> parent address 0x20000000 is mapped to child address 0x00000000. And the child
+> address is same for other controller as well.
 > 
-> > I can only hope that the URL will redirect to the latest version of
-> > the User Guide if at all it becomes invalid.
+> Also, the cpu_addr_fixup() is doing the same by masking out the upper 4 bits. I
+> tried looking into the DRA7 TRM, but it says (ECAM_Param_Base_Addr +
+> 0x20000000) where ECAM_Param_Base_Addr = 0x0000_0000 to 0x0FFF_F000.
 > 
-> OK, thanks, I guess there's nothing more to do ;)  I guess that manual
-> is not really designed for collaborative development.
-> 
-> Thanks for the patient hand holding!
+> I couldn't relate TRM with the cpu_addr_fixup() callback. Can someone from TI
+> shed light on this?
 
-:)
+A "git blame" on the line being modified in dra7.dtsi gives the
+following commit:
+https://github.com/torvalds/linux/commit/c761028ef5e2
+prior to which the ranges is exactly the same as the one being added by
+this patch.
+
+The cpu_addr_fixup() function was introduced by the following commit:
+https://github.com/torvalds/linux/commit/2ed6cc71e6f7
+with the reason described in
+Section 24.9.4.3.2 PCIe Controller Slave Port
+of the T.R.M. at:
+https://www.ti.com/lit/ug/spruic2d/spruic2d.pdf
+---------------------------------------------------------------------------
+NOTE:
+The PCIe controller remains fully functional, and able to send transactions
+to, for example, anywhere within the 64-bit PCIe memory space, with the
+appropriate remapping of the 28-bit address by the outbound address
+translation unit (iATU). The limitation is that the total size of addressed
+PCIe regions (in config, memory, IO spaces) must be less than 2^28 bytes.
+---------------------------------------------------------------------------
+
+The entire sequence is:
+0) dra7.dtsi had ranges which match the ranges in the current patch.
+1) cpu_addr_fixup() was added by
+https://github.com/torvalds/linux/commit/2ed6cc71e6f7
+2) ranges was updated to <0x20000000 0x20000000 0x10000000> by:
+https://github.com/torvalds/linux/commit/c761028ef5e2
+3) ranges is being changed back to its original state of "0)" above.
+
+cpu_addr_fixup() was introduced to remove the following:
+	pp->io_base &= DRA7XX_CPU_TO_BUS_ADDR;
+	pp->mem_base &= DRA7XX_CPU_TO_BUS_ADDR;
+	pp->cfg0_base &= DRA7XX_CPU_TO_BUS_ADDR;
+	pp->cfg1_base &= DRA7XX_CPU_TO_BUS_ADDR;
+in dra7xx_pcie_host_init(). The reason for the above is mentioned in the
+"NOTE" as:
+---------------------------------------------------------------------------
+The limitation is that the total size of addressed PCIe regions
+(in config, memory, IO spaces) must be less than 2^28 bytes.
+---------------------------------------------------------------------------
+
+I am not sure if Frank is accounting for all of this in the current patch
+as well as the dependent patch series associated with removing
+cpu_addr_fixup().
+
+Regarding testing the series, I unfortunately don't have the hardware so
+I cannot test it.
 
 Regards,
 Siddharth.
