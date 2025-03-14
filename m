@@ -1,115 +1,148 @@
-Return-Path: <linux-omap+bounces-3395-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3396-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E22A6A60CC6
-	for <lists+linux-omap@lfdr.de>; Fri, 14 Mar 2025 10:07:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FA00A6108C
+	for <lists+linux-omap@lfdr.de>; Fri, 14 Mar 2025 13:02:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A7087A5FFB
-	for <lists+linux-omap@lfdr.de>; Fri, 14 Mar 2025 09:06:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE7E719C32A9
+	for <lists+linux-omap@lfdr.de>; Fri, 14 Mar 2025 12:01:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745981DE4D3;
-	Fri, 14 Mar 2025 09:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A0F1FECCA;
+	Fri, 14 Mar 2025 12:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="I9Gnyj6q"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Yat42aFj"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4869517E;
-	Fri, 14 Mar 2025 09:07:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C311FDE3B
+	for <linux-omap@vger.kernel.org>; Fri, 14 Mar 2025 12:01:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741943252; cv=none; b=iOxUExLmUtie1y9pYd++OmqaPjMW5Nm8G84RCN/WsfMiipz0EqokKFMx08P2JQEFyqHZJ8tr7IU7kza+nAMd/oxsbaRhOYpvSm8+lVXiuXmYrNS9HvcSsp9ZboQUVO1/qX4xSGkh1YRmophiUhjqUl/EuOWFBH2MT9oBiYXs7HY=
+	t=1741953673; cv=none; b=AaNw02/t7grJp44RWD56tvKT5jyl7Hp1YQ1l03CUDc3UH8E94zjmrffi65yB9+A7QU4ygd3l6jhyExDPfzC7FBigBaVfG+tKcC2etLGb9j6a4DF3Tx4KZ6X6dqA694fe/XEZi4rx3x8zCjhQGXfr2bzWFOL0HhUQNZS0lfgKm1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741943252; c=relaxed/simple;
-	bh=fWAl0o6kzNFqcIxGpkGrqFYkLiie1rYfsKfuIM2ZjbQ=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RGu2CeoBBEDWxWXx+Yn7faHfMg52Q1XUMWZorfpPmULkE2tjU5tr9TERqHJycGMP64BXOCjyWYlwszoK4RzQVKa3Nn9AAJWUiWpk+r9JCMsQ9QyhRkPGN7jYP5YhyU0PC+ZbrtNxFzrpioCfIhCMWOixstiKwgj2FWH9AGghxLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=I9Gnyj6q; arc=none smtp.client-ip=198.47.23.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 52E97BUG1638695
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 14 Mar 2025 04:07:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1741943231;
-	bh=PBc+H6lNDSCY0P/ZGAoCaWqWu97NXbYVzEJgVsi6CPI=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=I9Gnyj6qjLjU0xS0CUgxLIJLbySBdjn0ux91+G+Hk2P9/s6bLE2OX+auY59sWPwaz
-	 jAMEbPV9PCvP4qGZnRbZsZ9wEIWMobRZCUgRX6v7ZBsfc/ztQnRg5RQcaJHg+DMcxE
-	 u7wleChfDMdOUk75jk0rbrJ4oMXC0tg2OAe1QRPE=
-Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 52E97B6S005456
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 14 Mar 2025 04:07:11 -0500
-Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 14
- Mar 2025 04:07:11 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 14 Mar 2025 04:07:11 -0500
-Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.113])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 52E97AxF127218;
-	Fri, 14 Mar 2025 04:07:10 -0500
-Date: Fri, 14 Mar 2025 14:37:09 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Thomas Richard <thomas.richard@bootlin.com>
-CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <lpieralisi@kernel.org>,
-        <kw@linux.com>, <manivannan.sadhasivam@linaro.org>, <robh@kernel.org>,
-        <bhelgaas@google.com>, <vigneshr@ti.com>, <kishon@kernel.org>,
-        <cassel@kernel.org>, <wojciech.jasko-EXT@continental-corporation.com>,
-        <bwawrzyn@cisco.com>, <linux-pci@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>
-Subject: Re: [PATCH 4/4] PCI: j721e: Add support to build as a loadable module
-Message-ID: <20250314090709.oaaxhapvg4fxdjc7@uda0492258>
-References: <20250307103128.3287497-1-s-vadapalli@ti.com>
- <20250307103128.3287497-5-s-vadapalli@ti.com>
- <88b3ecbe-32b6-4310-afb9-da19a2d0506a@bootlin.com>
+	s=arc-20240116; t=1741953673; c=relaxed/simple;
+	bh=0EiFoivIfcK0VnjGA6hs9urmXfK68Rj6CImMeyaae+4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=THIKKMo5qHan1ncwB9g91yakdcSQytOTeCrRcG3axvIzFFUEeIHsNQGqngvKATImDaUB2XJaAV4J4ebFZLpEH8HcM7riebCucNu/1APdMjnpsS3cJ9EQfbwuxsOFOD/UedRQTy4w5AtpVpKbEdB534PZv1CdWEj8IJbKRl/kyus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Yat42aFj; arc=none smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-6f768e9be1aso30426947b3.0
+        for <linux-omap@vger.kernel.org>; Fri, 14 Mar 2025 05:01:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1741953670; x=1742558470; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=dwJmXPh0UZn8nk0X5v3R0BkMm6bGB9ygKP2kfBs4kzg=;
+        b=Yat42aFj7MBEGwoS1hxwqKXAcRxLU6lhEOH9b/R1At6TpAi7VLLFObOq31R5oCFPhb
+         pHYTQCme5LXShfXZA2TtaQfOaDugHKnj98QM5IrJCBW2Yv3pIthvkI3XXboURNx5Fl8w
+         wYZUj/3DjlBKdcXfIOHoGUEsIkRtUDBGpkTB5G73bMzfojAR5mSUDSBANE0zNSN2+mnE
+         D34ZUgex8WtogcKesZc61ZmehW1pPff94NRb6SgKJ4xIqisU1BtOn7Dme0WK37fDjy2o
+         vieqM8c2sX+8NO+QivDhxqSU6GeYHOWOpeoNcuHnkqFBMmaomeiiLMom1lQ6p366I+vD
+         Ks0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741953670; x=1742558470;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dwJmXPh0UZn8nk0X5v3R0BkMm6bGB9ygKP2kfBs4kzg=;
+        b=EFqTb+iewe4vh6SagbStdXUo2jmLq+la8PFxeasRuU0J6oaOX/ooDc9X7ppz4eW7J/
+         HSN/9vHpjF5rsSbfGmG5ew+m5Qwfu06sLnx3U9FJMD2gGlvogmpuZjPKGgPccMO9LYoQ
+         7l6BnKZFWgMxHEuyZjA0m3CJXVz3Ss+V7ol8KD7qtGGFta0jLhgr12nwEtoG1XavCxSP
+         hMZw5OsyQNarF2OUKFoAJokzZbB4QFJrpHcmrOrIWk9fnwnAZn4ByVp0m1GrLwY92jVu
+         RyVNv+Bh6EViAkpXHGsUl3iosL9YZJ1AMhmiPnkLKwuOmxXVOwnJ1PYMIu9BqAHIYwey
+         lVeA==
+X-Forwarded-Encrypted: i=1; AJvYcCXBT7YBDrXZCYBG77ZxrJRqxvagUZ86lJAYEzgQCCllmSazrZj9ZmjQvrswsBzFd+KgRJEHwL2EWcKR@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+ztP3CqwY2XmIy+Ixi4I/7ItgnYXbx7jCwkEw4RE5/NyDDlq5
+	bX+RwCE5KmqV2K/PdPBwzu4eYic/bFCSIxkDWWb6eL1tK6s4lXwnEIPGdEE4YACmDG8+8wBNN8f
+	UqbW9h45eECw8d1E+vrdZE+O+uNXrCF3N2YhFzA==
+X-Gm-Gg: ASbGncsa55bbSktcjrT8ll5TC3RNpBY8iYU32hyYi/WK3+pUoY57eiIUodlKI/ukjks
+	bQNOyg/nF+Bx6xbn9A7X8VJllzf1hxWTlvE2hfHmnUsoQ6ri4zv+cfsxrp5p3kiaxhZK5BYR0QJ
+	zKUb8zXVNicYj3FBrXEGTF4EzcKEE=
+X-Google-Smtp-Source: AGHT+IGZZCcwY5/1JbZjTo0RWJ2K/xyqiqYRIB+WoabIYLpe9OvKoQa822klhbBDtTeF2wPU+BJ9g+hqI+KNvuehlJ8=
+X-Received: by 2002:a05:690c:4c0a:b0:6f9:47ad:f5f1 with SMTP id
+ 00721157ae682-6ff4641f8cfmr21140237b3.17.1741953670170; Fri, 14 Mar 2025
+ 05:01:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <88b3ecbe-32b6-4310-afb9-da19a2d0506a@bootlin.com>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+References: <20250311-mvneta-xdp-meta-v1-0-36cf1c99790e@kernel.org> <20250311-mvneta-xdp-meta-v1-3-36cf1c99790e@kernel.org>
+In-Reply-To: <20250311-mvneta-xdp-meta-v1-3-36cf1c99790e@kernel.org>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date: Fri, 14 Mar 2025 14:00:33 +0200
+X-Gm-Features: AQ5f1JqD4PpWF9sD-c3WrV8oOlJztNLgYA2GJMvNudQfJQpIo6DpWKsJUUlKuVc
+Message-ID: <CAC_iWjKRLs4POP3TQ0XrXUiBmW0D5qD0JYh=UxqAytXjPvRmGw@mail.gmail.com>
+Subject: Re: [PATCH net-next 3/7] net: netsec: Add metadata support for xdp mode
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Marcin Wojtas <marcin.s.wojtas@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Masahisa Kojima <kojima.masahisa@socionext.com>, Sunil Goutham <sgoutham@marvell.com>, 
+	Geetha sowjanya <gakula@marvell.com>, Subbaraya Sundeep <sbhatta@marvell.com>, 
+	hariprasad <hkelam@marvell.com>, Bharat Bhushan <bbhushan2@marvell.com>, Felix Fietkau <nbd@nbd.name>, 
+	Sean Wang <sean.wang@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Siddharth Vadapalli <s-vadapalli@ti.com>, 
+	Roger Quadros <rogerq@kernel.org>, netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+	linux-hyperv@vger.kernel.org, linux-omap@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Mar 14, 2025 at 10:03:01AM +0100, Thomas Richard wrote:
+On Tue, 11 Mar 2025 at 14:19, Lorenzo Bianconi <lorenzo@kernel.org> wrote:
+>
+> Set metadata size building the skb from xdp_buff in netsec driver
+>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  drivers/net/ethernet/socionext/netsec.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/socionext/netsec.c b/drivers/net/ethernet/socionext/netsec.c
+> index dc99821c6226fbaece65c8ade23899f610b44a9a..ee890de69ffe795dbdcc5331e36be86769f0d9a6 100644
+> --- a/drivers/net/ethernet/socionext/netsec.c
+> +++ b/drivers/net/ethernet/socionext/netsec.c
+> @@ -970,7 +970,7 @@ static int netsec_process_rx(struct netsec_priv *priv, int budget)
+>                 struct netsec_de *de = dring->vaddr + (DESC_SZ * idx);
+>                 struct netsec_desc *desc = &dring->desc[idx];
+>                 struct page *page = virt_to_page(desc->addr);
+> -               u32 xdp_result = NETSEC_XDP_PASS;
+> +               u32 metasize, xdp_result = NETSEC_XDP_PASS;
+>                 struct sk_buff *skb = NULL;
+>                 u16 pkt_len, desc_len;
+>                 dma_addr_t dma_handle;
+> @@ -1019,7 +1019,7 @@ static int netsec_process_rx(struct netsec_priv *priv, int budget)
+>                 prefetch(desc->addr);
+>
+>                 xdp_prepare_buff(&xdp, desc->addr, NETSEC_RXBUF_HEADROOM,
+> -                                pkt_len, false);
+> +                                pkt_len, true);
+>
+>                 if (xdp_prog) {
+>                         xdp_result = netsec_run_xdp(priv, xdp_prog, &xdp);
+> @@ -1048,6 +1048,9 @@ static int netsec_process_rx(struct netsec_priv *priv, int budget)
+>
+>                 skb_reserve(skb, xdp.data - xdp.data_hard_start);
+>                 skb_put(skb, xdp.data_end - xdp.data);
+> +               metasize = xdp.data - xdp.data_meta;
+> +               if (metasize)
+> +                       skb_metadata_set(skb, metasize);
+>                 skb->protocol = eth_type_trans(skb, priv->ndev);
+>
+>                 if (priv->rx_cksum_offload_flag &&
+>
+> --
+> 2.48.1
+>
 
-Hello Thomas,
-
-> > +
-> > +	if (pcie->reset_gpio) {
-> > +		msleep(PCIE_T_PVPERL_MS);
-> > +		gpiod_set_value_cansleep(pcie->reset_gpio, 1);
-> > +	}
-> > +
-> > +	if (pcie->refclk)
-> > +		clk_disable_unprepare(pcie->refclk);
-> >  
-> 
-> Hello Siddharth,
-> 
-> I think clk_disable_unprepare() is a no-op if the clock is NULL, so the
-> if statement is useless.
-> 
-> https://elixir.bootlin.com/linux/v6.14-rc6/source/include/linux/clk.h#L1157
-> https://elixir.bootlin.com/linux/v6.14-rc6/source/drivers/clk/clk.c#L1237
-> https://elixir.bootlin.com/linux/v6.14-rc6/source/drivers/clk/clk.c#L1099
-
-Thank you for pointing it out. I will drop the unnecessary check in the
-next version. I will wait for feedback on other patches in this series
-before I post the next version.
-
-Regards,
-Siddharth.
+Acked-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
 
