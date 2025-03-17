@@ -1,80 +1,79 @@
-Return-Path: <linux-omap+bounces-3402-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3403-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4914A65C7B
-	for <lists+linux-omap@lfdr.de>; Mon, 17 Mar 2025 19:25:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF7DA65C7C
+	for <lists+linux-omap@lfdr.de>; Mon, 17 Mar 2025 19:26:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5D8719A12FE
-	for <lists+linux-omap@lfdr.de>; Mon, 17 Mar 2025 18:25:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA6A63B207A
+	for <lists+linux-omap@lfdr.de>; Mon, 17 Mar 2025 18:25:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0497619048F;
-	Mon, 17 Mar 2025 18:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE40D1B4232;
+	Mon, 17 Mar 2025 18:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="lYXq05zE"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="hRi7e4y7"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
+Received: from mail-pj1-f67.google.com (mail-pj1-f67.google.com [209.85.216.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA151C07DA
-	for <linux-omap@vger.kernel.org>; Mon, 17 Mar 2025 18:25:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A37EED6
+	for <linux-omap@vger.kernel.org>; Mon, 17 Mar 2025 18:26:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742235918; cv=none; b=qrqHQnTtoi6+/BWJhM3seVjfI36TYb+mYDneM7ROqCCRpq8HCE6O/UUmNgzQY4lLOzWMXl3tdigqyC88S348eLQbzcBcUCMIrdsBRCZ4waaL8I/15RZR4e2jbRFKI97lICHNPiqoKyitzskG7lfVnzfTgktiLKXDzOP9v27miR8=
+	t=1742235964; cv=none; b=lfCnNk2/oLs9lf0vzPn0CSMWJU8t9BVgdSgWvkBpUAIke1SlnUznENKL2b4+qMPM8l5SF5z8EleRn/BiLKifFTqBZ+ocWFa6EP08GjL9uQILZJnpFLUHn5dRjUpjaW40lz7glOZFq8yLAOVxWUj+1sOUk3rqCp+MfRun6YFO4xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742235918; c=relaxed/simple;
-	bh=F0kSk1oaVReSsBSXx9pB3+kykUsoZNLk1JX4ooTBvp0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fP+J9I/5qQ1blHi00urwBuc9aoR9DZ/7FI6oItTmAYBU4vVh7UdGrZXe6nsobOH9UJ4k2z+7K3Wq9XaAy6/6YLafoCrdAnydNmKJERS+SCoqWpKAOy14uYPeDSLobgSHrGHtxZhSbXfDIytnFNJXP58aVQy+f333KVw77Y4fyrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=lYXq05zE; arc=none smtp.client-ip=209.85.214.195
+	s=arc-20240116; t=1742235964; c=relaxed/simple;
+	bh=J/mr4I3uvI8W0Y1yAOw9cp7AhbUIUPwgEeg0HhkM+Wk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=thD3X23XBitkTPRoC6LQiB6lEmrexlC2jof6dzHOx7TGMdLtyNiUe/I+bAbbsFw3OB1e+jt7i93oluCKw5pQolfoWF7fFmdIEC/3UBqRuVgIktOsELyAzxxquztUecCrHEdPv9eLpOsKseP6PDLTktPKCOKZpRlmCfax5qqkBzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=hRi7e4y7; arc=none smtp.client-ip=209.85.216.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-22359001f1aso41703645ad.3
-        for <linux-omap@vger.kernel.org>; Mon, 17 Mar 2025 11:25:15 -0700 (PDT)
+Received: by mail-pj1-f67.google.com with SMTP id 98e67ed59e1d1-3012a0c8496so2848590a91.2
+        for <linux-omap@vger.kernel.org>; Mon, 17 Mar 2025 11:26:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1742235915; x=1742840715; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1742235962; x=1742840762; darn=vger.kernel.org;
         h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=POAt9Pl6v+5VOwi53a8XwCwJ6f8Q2+wA88xSDSYqCd0=;
-        b=lYXq05zEkhwD+2OGIcrN6bKlszyM6zq5rAipJZXHebK6w2Z/i9nO5Vj5ThidFYPe+A
-         UWOe1G34W0nBeHTzlob7C1pCiRkCQ1lz5JI/fq5LMoCWrkFSFIK44d9R4Wl/Ult9Wcb/
-         zLtxsIm1XFuYsn8sIpAFLa0zC6/QXRm1BX/BpMHHUTWQdEaZdbbXnAwbEATvJuLu/YVF
-         Y1KtjJfvF1kI4yRfm2DveNPO+dAJP4xFYAbZA7Pf/fLNQOe5GKPqGad/WzEsk3jSq/+e
-         v5q4hJt3zKmSRDaI9Irey6ijj5DLKO2ZjUR1EleaQUJYvYHU0IyTdx31nuuJB649/EVL
-         B+Zw==
+        bh=rYoO63O9hT+LgEGrGAhIiJ0zo/hJCz6kwWX13GuFt04=;
+        b=hRi7e4y7sVZr9z5ledzNGML2SUUWg8BzxJVhiN7/NXs7iUVR71EO4JVL4CA+tp9mYS
+         Mh5iQXsZrPd1wdLj0zHpfc4lONb1cCinWNqwI/Mxb5QhjmgnXyA61KoDPxdR6sOZACqQ
+         qed350UFkKY+cPbTuQpL3HCqepd2mSlSk42wstwejdAX6NUgP4zttCkWYnWLzXZql6bX
+         k1mh7oqAHv2yw0bma5pc7oXq1N6+GXm0zkcaE0u1vHVOsgNaBWoq9o0DgQ5ou50eSHtO
+         8eP5TYLQ3nm0e2RRYevZhUWn2qUugcPy0uQogZaXd3T0FzgfidPFdT0HNYMBd8pJsTgw
+         zIKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742235915; x=1742840715;
+        d=1e100.net; s=20230601; t=1742235962; x=1742840762;
         h=mime-version:message-id:date:subject:cc:to:from:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=POAt9Pl6v+5VOwi53a8XwCwJ6f8Q2+wA88xSDSYqCd0=;
-        b=WS+yezTI9JiL3a54ZMvoLIjOyJO7YDUoZDu8kqiBrOsmDS62Nh0TVuFfbZGL2iH6vq
-         fNZJFKDajWqIZhgUZbGCmCDY0UOy59WC4qE2C5F0HKKYWFoJwnXjuzbwrpDJo556QZNM
-         tue49gIfYHmhjmQRb1g5m015OzA2l8HVMCUR2sF13fz5+R9TVmfeXsilx+B44s+YUEsm
-         fy9ZpJrNwGQM3+OwJMTMIR66fMSFppnIVzmWsXaY76bi0SvXdxwR46S9lzhH5lK0qXt0
-         FMAHda4o1f+ifpsbmYVgB4kp7YPB5a7wGQ9eCXz+i4FwhC638YdT7ZvxiBjEoetvUoaN
-         jnZw==
-X-Gm-Message-State: AOJu0YyX7EmsTRVax2Azmfxayumj51ggVP2sPScxIcHhV5x7eDLjIoAM
-	PDbTyt9QwQyiR7Qx4edE4wcjFTgqqeFw5csebdRB11jp9OGahaBgOl6STsA/12rl/Qbfa6YkOH+
-	I42JF1g==
-X-Gm-Gg: ASbGnctcPkd+vsaEbXFN1/eWszNxez6yykhENaMQcx872grqW+4DH250zlTFToUsZKk
-	fquhTsXMGabhaCGLEuD2CiOYNb/zbLE3yl1RFCF+IRioDuItcdidQPhyfwOrSyoa75QB7Z1SORj
-	S+ln8WfsKeOdh6nwyLoITCxOCIgLNn/QbgmvVWXBYmBPpK7u7OrAzBUNtJpqCMsqNrSpIR6GI7G
-	DcL0X2NcHIRdShGzWd//zHSv2rtMponIK1OKowCUsx/PjALZjddTLlp+SOjou06FeoS1MJR2tK6
-	vuXnbJc7vZaAbtSX8HL1KA/I4vnklgB4aaQgzG6cx0c=
-X-Google-Smtp-Source: AGHT+IE+WFZbIbKZVR1Ierd5Hw06H1qgwrQdddFAnectjHJowyBTGk1xMScRIVqNGcKVFoQUH+RMIQ==
-X-Received: by 2002:a17:902:c952:b0:223:6744:bfb9 with SMTP id d9443c01a7336-2262c5ee786mr6788795ad.41.1742235914800;
-        Mon, 17 Mar 2025 11:25:14 -0700 (PDT)
+        bh=rYoO63O9hT+LgEGrGAhIiJ0zo/hJCz6kwWX13GuFt04=;
+        b=n8MkS0jMpykWc/VHnbj00HnVF1CtRzviLMposZnpKHKX1AKDNtTWxyKLnWkv9YhLGZ
+         dcEYPvpQj4DH5tdGYgSyOkYvaizrQg6zBHGFY50lezlTMmHtYTV/r/naU+QveUdwUneR
+         CVXwrRzLfAauJNiqBA9AC+WkiIUBj+XYz+0G1FStRZVRnPOeCQ3X30xHQr1yDilPUw4s
+         50oMHT1IiW1sm4cTRHF8xr91y5HTrpBGGnxHbDd8OXou6MEYQZavsEuDXKXwjzd1lCWV
+         qEKxAt7XpGGTYjzBXUwYcXwUeH4uXMemUjBIXIU9mpSvjQNevp5YNcnMzmqb0RCjUjPf
+         kPjA==
+X-Gm-Message-State: AOJu0Yzk2QXX15dq1v6y0V2vQSfYLRa3Z7mk0qTl5PwLQxHyoygw9F6f
+	uRS3WLZpHUEk7craUsHReTfYjf6Faw/WGMztZDrdq1t+MHCCHBU9h7v+YRyl/sQ=
+X-Gm-Gg: ASbGncu5/lNjOgxhOsMN3nvoZY0ohyf7OVTvV2+7YCab4qFClKO6m+hQwGVGN2LvnOt
+	rFFxGXw6BPmJZG/8Z29aPb6+/9CIoC/SG74JlN3XCTn4SlqmXsausyGdiGxknDb8UmQfOIWzUJG
+	diPKjXTCK3IKDmM8pmNAPApeHGm8YofSOlnQD7gU0JVsy/istUg2qFad6fUK22bc/ERC3dgpgTo
+	mDm38m+KsvCdb13CkZMCsjzOpK4Wkt/V6qJiEtZheHolVnclSHJysVmx6Ouwy0RKWdtzF7n+mrN
+	kFQvKjzRwarfW1W17cCwzU8DqFZkEyH5eNyzJ//UWgY=
+X-Google-Smtp-Source: AGHT+IGDo7UUMQx0KC2YYaD2K5Kwkp8RdeTOtJ+4dyeCTYAd0srXw/4KjI/PQ4Ty5nvijUZdv54Y0g==
+X-Received: by 2002:a17:90b:2cc8:b0:2ff:7ad4:77b1 with SMTP id 98e67ed59e1d1-30151cb4ab1mr17747816a91.2.1742235962013;
+        Mon, 17 Mar 2025 11:26:02 -0700 (PDT)
 Received: from localhost ([97.126.182.119])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-225c68a407asm78970415ad.62.2025.03.17.11.25.14
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-301534f47e4sm6410538a91.3.2025.03.17.11.26.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Mar 2025 11:25:14 -0700 (PDT)
+        Mon, 17 Mar 2025 11:26:01 -0700 (PDT)
 From: Kevin Hilman <khilman@baylibre.com>
 To: soc@kernel.org
 Cc: linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [GIT PULL] ARM: dts: misc. OMAP updates for v6.15
-Date: Mon, 17 Mar 2025 11:25:14 -0700
-Message-ID: <7hiko7qzud.fsf@baylibre.com>
+Subject: [GIT PULL] ARM: OMAP1: defconfig updates for v6.15
+Date: Mon, 17 Mar 2025 11:26:01 -0700
+Message-ID: <7hcyefqzt2.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -89,29 +88,19 @@ The following changes since commit 2014c95afecee3e76ca4a56956a936e23283f05b:
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/khilman/linux-omap.git tags/omap-for-v6.15/dt-signed
+  git://git.kernel.org/pub/scm/linux/kernel/git/khilman/linux-omap.git tags/omap-for-v6.15/soc-signed
 
-for you to fetch changes up to ea07a4775df03852c353514b5b7646a17bd425be:
+for you to fetch changes up to c2a5f8c4f28ffea8c93d10e509c5a6e61172cdca:
 
-  ARM: dts: omap4-panda-a4: Add missing model and compatible properties (2025-02-05 16:26:34 -0800)
-
-----------------------------------------------------------------
-ARM: dts: misc. OMAP updates for v6.15
+  ARM: OMAP1: select CONFIG_GENERIC_IRQ_CHIP (2025-02-05 16:31:37 -0800)
 
 ----------------------------------------------------------------
-Andreas Kemnade (1):
-      ARM: dts: ti/omap: omap4-serial: fix interrupts syntax
+ARM: OMAP1: defconfig updates for v6.15
 
-Krzysztof Kozlowski (1):
-      ARM: dts: ti: omap: Align GPIO hog name with bindings
+----------------------------------------------------------------
+Arnd Bergmann (1):
+      ARM: OMAP1: select CONFIG_GENERIC_IRQ_CHIP
 
-Tom Rini (2):
-      dt-bindings: omap: Add TI Pandaboard A4 variant
-      ARM: dts: omap4-panda-a4: Add missing model and compatible properties
-
- Documentation/devicetree/bindings/arm/ti/omap.yaml        | 7 +++++++
- arch/arm/boot/dts/ti/omap/omap3-evm-processor-common.dtsi | 2 +-
- arch/arm/boot/dts/ti/omap/omap4-l4.dtsi                   | 8 ++++----
- arch/arm/boot/dts/ti/omap/omap4-panda-a4.dts              | 5 +++++
- 4 files changed, 17 insertions(+), 5 deletions(-)
+ arch/arm/mach-omap1/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
