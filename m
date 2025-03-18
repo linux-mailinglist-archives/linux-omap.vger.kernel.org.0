@@ -1,150 +1,154 @@
-Return-Path: <linux-omap+bounces-3425-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3426-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 810FCA67342
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Mar 2025 12:58:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0793EA675E0
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Mar 2025 15:05:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1ABBC1776D5
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Mar 2025 11:58:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CABD33A8034
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Mar 2025 14:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED77020B7FA;
-	Tue, 18 Mar 2025 11:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E168C20DD56;
+	Tue, 18 Mar 2025 14:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VNZz+D/d"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PoHP/ZBM"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8278B20B209;
-	Tue, 18 Mar 2025 11:57:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFB51A2C0E;
+	Tue, 18 Mar 2025 14:02:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742299076; cv=none; b=OuROhSnZM5ege2b0L/9ELVdzKhMCaGVkfsPngV+h7cm+VLpAtQKH+DfjaegNYP29t8ZWmKE0TvAzN8njsRNFe+ZV+EkKvWWQlXjBv/kGP/PbO7hl4np1Tj4mm6mrcsbMYgtyd0gQL3dAflVmVU0IxhREbJo/wJcA5AtDZeDjNKo=
+	t=1742306558; cv=none; b=N0tvmHgP++SJmWznQCXibyxkIsI9BsSInGkWU9Pt0TfyFjwuI8oCD20vX08+HrPAxzG1gDPIhfO6PRAePPfRVvPYUG9wcGnD5/Gi2m9J4B9DIiER8ylPI/5c0DnrB5123eVHQYT5txyl+lQeqsOiIAUNBI0MnTsZh62rkR3asZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742299076; c=relaxed/simple;
-	bh=CIhTjH9kKlO1VYGiipc2V9drjBD3Ayt0OkD0U7KRb6w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mkX+QsufJkG5ESeDyS8MStZiypuvHgZ5nG5rtiru83QJN+WT9kcXnOAqINGMsq5+YAu1bMS3ANP4KEBI0GkKnXizDG0W/f6r8obtzT9twjis2uRbNnvPA+ap5cmh2IszKPTMaMvBNL8gESw2IsmDKJv4sTk9sIzrG/C6KkX+DFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VNZz+D/d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54476C4CEF4;
-	Tue, 18 Mar 2025 11:57:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742299076;
-	bh=CIhTjH9kKlO1VYGiipc2V9drjBD3Ayt0OkD0U7KRb6w=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=VNZz+D/dtbyshE97W4HnLDn48vAHhWJ1qM3mL/ZcYLXzJCavmJHa91JYiiOlMNJbz
-	 3UQHEcUGagflvTa1naQQ3WhxL7VDkHEqM2S7CkzCA9R2QNMrKsOF/87TV8TeAU7pag
-	 JnyeHsFK4NM+n6Sd6iwRDBgTTtsst7XHqqi+SMHGvuW0tYLqcabFNOqlgCauzVkD73
-	 FEV87vVnNi6+5cugxgHyXPjIWm09qmE4hdd7e5vWrscoz4DVCqYqP4MsFlrfEg/D+e
-	 hisoP8e3IL/aZBRIfu7TRQITKlDjGtX7HEA5nLU4mGdskuoLTKP3Pn1CaVYbWjJBBQ
-	 A9XO+vMkI9ejg==
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5e677f59438so8669594a12.2;
-        Tue, 18 Mar 2025 04:57:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUJn93+o9VThlJf248T8kDQN0A25pxlXD426wHkpSJ00P3nXOoDnyafmlQXi8g4RO1jV2w1+PHwdr13iq4=@vger.kernel.org, AJvYcCUQsv5tW7vwkMCEaajjS4tsu/CRPnrO21Tu2Vdiup8EhoC9mP/7yp/eN6USyp1IFV6xmtvvVcMF/8CMaA==@vger.kernel.org, AJvYcCXVWDtIkYsLnWBxymQTWh/RftqE3HUUANA66uM2rw6ONmrWYR8a87w9TMFGpmgiptUiuZGCspS1iTDkfCo=@vger.kernel.org, AJvYcCXf5pDmhbsiUMlSdYGefVs3+rbL9LuCwZsMOppZDeept2Jk1as5iU0h6+b9ztyq2D4QZN/yhDoypD4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwykM1XlCIEFflRUYmbznl9cYV/f8jcegCN+P7iUygQu6JIZWKj
-	Y9mLOY1Faam2YLWclHhHVXYf7VDMBmhJxOw/WjzpWjd6PTIFKYiQKKBcVmh3BnE2FnfhZZ2PSlD
-	+sqzRaWIRxQgDYCpKZnxPOcEySeU=
-X-Google-Smtp-Source: AGHT+IHWKrMLWQmDlK3EXFGkIz3JuWrB7n/PbIZxnJSxvCf68cavwFPKlU+WgeLv6v2/CTfArLyeiik7sHtiA+Oo+58=
-X-Received: by 2002:a17:907:1009:b0:ac3:3f10:e8e3 with SMTP id
- a640c23a62f3a-ac33f10ed5cmr1299294766b.1.1742299074804; Tue, 18 Mar 2025
- 04:57:54 -0700 (PDT)
+	s=arc-20240116; t=1742306558; c=relaxed/simple;
+	bh=5/H/RkdYCVBAtDQuOfxdiSWDTWx6gAPojS0OJOoPcU8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=h2iMdFHBKJPKo5ijdQ9W26W0lFZL9E/dsXhTtwm9a8S/eFfNpAIJDc9y3Q/LCVwDtwgNOA2zX3gfOvD2zkWKkRNka6eZt+3zwocJEtngg8lJt8R6p7hNLMPGT83cHmtn8aKDXEvfUOHOpMNCqPcoN0dXK0v9Ua4kH75iDsZ53Kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PoHP/ZBM; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-22423adf751so97069165ad.2;
+        Tue, 18 Mar 2025 07:02:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742306556; x=1742911356; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5ZJUD9hlXsfSxFciC6LxZ0uWYlsr5EYH2X9weMPvlrs=;
+        b=PoHP/ZBMTVaddrPEMmkuA/WhRYU5HgfgrlUY8DhaGeKEZjhr7RfgUEH453MPioe+aK
+         BCvDWViSI3FH9goqKcGdEwgeuUQxkawoqYhTqAnHvGf0dZSaFhFFre+9Q0wfiXSk03vk
+         /ySY/2GhqH4xkeifvy65a5vAUg3rxZEGahUwd1VQXdwfYBlYYc00Rd0z5bTSFiY1Q4Vm
+         E1Wf2nLTNxmgFBHImP6LYJJTtNrv5KebylYGHg+mfOVhJl5rE88+HHHcRz05ENKiamcC
+         ZNesPRpxlJiivCMngORPDi2TXHFbVjXu8W8Agx6QpRGFckN5Dk82LIv8SV3O9jC9Q0It
+         RY0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742306556; x=1742911356;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5ZJUD9hlXsfSxFciC6LxZ0uWYlsr5EYH2X9weMPvlrs=;
+        b=qjPx6fPMNyF9vJJMi0j1Rt7hm/2pClaOPEN8jkATMVO1KEQczbCgUpJLu667ZbDSE+
+         hhsnXEvr4mGDz+FbWtzE+rgkwZlPBRNmZ0d7xLM7wp9NgKaAEZLE3GSsFyFSUue44iiD
+         rotFGwIuOTOncwxJsMhZUuFL7szr1t4CRo2zD8+V1M0uv3uvPd41QYroSNmKKdhZ83Oy
+         yhUH3UfFcw+YbEFIVBetZzOEoBadc0END7pXp2WefKxa3Kf1jLGQFQ8DcJfytATwHdrC
+         R+X+ipjFwhrxrLHaYKryjfXuCXumZmjCZXz0StcdhnRFE+SVmDiTOTAFvhz5IG35H+J/
+         ToPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUh20IHe9dUTKTY6QZX+E92N4FcRazTjhyPK6fg9k8g/ZML8gv2c8DoTyaC/zHRZirUYyavrFCWgcWEbA==@vger.kernel.org, AJvYcCUlu3Ad/bVDrLSwovqFo5MDsnzHzqba8J7SEZBEkC+uLjvSTbnDwu4Etu8c6NJwBmcX7ospARDMLl0p@vger.kernel.org, AJvYcCXvzpsZSTrme6EgjtlDhI7v7KuVFGp4+D3HBtd18LYdnqb0xQs2a+waSL/wzmb1q8yyLwoE4+/7RkxC1W8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzu/OJRnVuQZjTMnpsEVj0IHBeA8z2MxWnAMLLjEnUIBX7mrlCV
+	LivN9FzgMpTYjUmqyOyYQEWbh7xHD5GE+tMMEn4F+/bWEOSXfOkX
+X-Gm-Gg: ASbGncsrBVcdvzajJq7DnYGfEKIw/JL28mERukcaRGaixynwIfT+1y9/iNa8mqsFOdm
+	rAmSr/IqbI1yOlbDJ9pbNaoI+3HVU2YndI2r7zo+SFW9IuDqavK2Pw7xOOnuRbjE9M5HFOmP6j3
+	ODSlKEdklAjf3TxyVPz11LfrFbxqtdW5nKg+Fqn8gZuBP6gr/ZnssYVV/wwOetdoBJhZrHuftUc
+	u15dzGboEbNUr14rq9bbHn67ZXJh6lIuDGraTztBGwZ2SwaB8dCaG0m7JQ6qhl/PMCOUPesi506
+	Mx+OvbT6d6sJ8sa3vxcYGNgqnsJr1AcUHL7il3OLhAHCv6qPxIap7d0Qh+lkm2JRNKA4
+X-Google-Smtp-Source: AGHT+IFBMrJUOeX6rBVBtMeZCzWcnrPnjlWcpCe5GLKn61z7Cz4IG3HfxXUVA8uXqfUqXzbnDgPFsQ==
+X-Received: by 2002:a17:903:3c50:b0:224:1579:5e8e with SMTP id d9443c01a7336-225e0a3635emr228282065ad.1.1742306556109;
+        Tue, 18 Mar 2025 07:02:36 -0700 (PDT)
+Received: from localhost.localdomain ([183.242.254.176])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-225c6bd547asm93998755ad.248.2025.03.18.07.02.31
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 18 Mar 2025 07:02:35 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Aubin Constans <aubin.constans@microchip.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Allen Pais <allen.lkml@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	linux-omap@vger.kernel.org,
+	linux-mmc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: linmq006@gmail.com
+Subject: [PATCH] mmc: omap: Fix memory leak in mmc_omap_new_slot
+Date: Tue, 18 Mar 2025 22:02:25 +0800
+Message-Id: <20250318140226.19650-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250115-fix-riscv-rt_group_sched-v4-0-607606fe73a5@coelacanthus.name>
- <20250115-fix-riscv-rt_group_sched-v4-4-607606fe73a5@coelacanthus.name> <t2dustbykx2qd24wazjeiw5hch5nwr6z2ewmaf4srg6r2grwrf@rdw47chzkef2>
-In-Reply-To: <t2dustbykx2qd24wazjeiw5hch5nwr6z2ewmaf4srg6r2grwrf@rdw47chzkef2>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Tue, 18 Mar 2025 19:57:44 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4fTGs-7EXE0EcR=P6GqHF2fokRE-kEte+cDmhjy=FYsA@mail.gmail.com>
-X-Gm-Features: AQ5f1Jo4W5NNqo2SfcBdxKCe2OFxQs4im7DaCODl6wEw6MnCM3-sp2pnyba2ZAw
-Message-ID: <CAAhV-H4fTGs-7EXE0EcR=P6GqHF2fokRE-kEte+cDmhjy=FYsA@mail.gmail.com>
-Subject: Re: [PATCH v4 4/4] arm: defconfig: drop RT_GROUP_SCHED=y from bcm2835/tegra/omap2plus
-To: Thierry Reding <thierry.reding@gmail.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, Celeste Liu <uwu@coelacanthus.name>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Guo Ren <guoren@kernel.org>, 
-	Anup Patel <anup@brainfault.org>, 
-	Heinrich Schuchardt <heinrich.schuchardt@canonical.com>, WANG Xuerui <kernel@xen0n.name>, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Russell King <linux@armlinux.org.uk>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, Tony Lindgren <tony@atomide.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
-	Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
-	Roger Quadros <rogerq@kernel.org>, Palmer Dabbelt <palmer@rivosinc.com>, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-sh@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-rpi-kernel@lists.infradead.org, linux-omap@vger.kernel.org, 
-	linux-tegra@vger.kernel.org, Stefan Wahren <wahrenst@gmx.net>, 
-	Thierry Reding <treding@nvidia.com>, soc@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Mar 7, 2025 at 3:19=E2=80=AFAM Thierry Reding <thierry.reding@gmail=
-.com> wrote:
->
-> On Wed, Jan 15, 2025 at 04:41:23AM +0800, Celeste Liu wrote:
-> > Commit 673ce00c5d6c ("ARM: omap2plus_defconfig: Add support for distros
-> > with systemd") said it's because of recommendation from systemd. But
-> > systemd changed their recommendation later.[1]
-> >
-> > For cgroup v1, if turned on, and there's any cgroup in the "cpu" hierar=
-chy it
-> > needs an RT budget assigned, otherwise the processes in it will not be =
-able to
-> > get RT at all. The problem with RT group scheduling is that it requires=
- the
-> > budget assigned but there's no way we could assign a default budget, si=
-nce the
-> > values to assign are both upper and lower time limits, are absolute, an=
-d need to
-> > be sum up to < 1 for each individal cgroup. That means we cannot really=
- come up
-> > with values that would work by default in the general case.[2]
-> >
-> > For cgroup v2, it's almost unusable as well. If it turned on, the cpu c=
-ontroller
-> > can only be enabled when all RT processes are in the root cgroup. But i=
-t will
-> > lose the benefits of cgroup v2 if all RT process were placed in the sam=
-e cgroup.
-> >
-> > Red Hat, Gentoo, Arch Linux and Debian all disable it. systemd also doe=
-sn't
-> > support it.
-> >
-> > [1]: https://github.com/systemd/systemd/commit/f4e74be1856b3ac058acbf1b=
-e321c31d5299f69f
-> > [2]: https://bugzilla.redhat.com/show_bug.cgi?id=3D1229700
-> >
-> > Tested-by: Stefan Wahren <wahrenst@gmx.net>
-> > Acked-by: Kevin Hilman <khilman@baylibre.com>
-> > Acked-by: Thierry Reding <treding@nvidia.com>
-> > Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
-> > ---
-> >  arch/arm/configs/bcm2835_defconfig   | 1 -
-> >  arch/arm/configs/omap2plus_defconfig | 1 -
-> >  arch/arm/configs/tegra_defconfig     | 1 -
-> >  3 files changed, 3 deletions(-)
->
-> Hi Arnd,
->
-> is this something that you could pick up? I think so far only the RISC-V
-> patch was picked up, but nobody seems to feel responsible for the ARM
-> patch here.
-I will take the LoongArch patch, but may be squashed to another one
-about config file update.
+Add err_free_host label to properly pair mmc_alloc_host() with
+mmc_free_host() in GPIO error paths. The allocated host memory was
+leaked when GPIO lookups failed.
 
-Huacai
+Fixes: e519f0bb64ef ("ARM/mmc: Convert old mmci-omap to GPIO descriptors")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ drivers/mmc/host/omap.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
->
-> Thierry
+diff --git a/drivers/mmc/host/omap.c b/drivers/mmc/host/omap.c
+index 62252ad4e20d..3cdb2fc44965 100644
+--- a/drivers/mmc/host/omap.c
++++ b/drivers/mmc/host/omap.c
+@@ -1272,19 +1272,25 @@ static int mmc_omap_new_slot(struct mmc_omap_host *host, int id)
+ 	/* Check for some optional GPIO controls */
+ 	slot->vsd = devm_gpiod_get_index_optional(host->dev, "vsd",
+ 						  id, GPIOD_OUT_LOW);
+-	if (IS_ERR(slot->vsd))
+-		return dev_err_probe(host->dev, PTR_ERR(slot->vsd),
++	if (IS_ERR(slot->vsd)) {
++		r = dev_err_probe(host->dev, PTR_ERR(slot->vsd),
+ 				     "error looking up VSD GPIO\n");
++		goto err_free_host;
++	}
+ 	slot->vio = devm_gpiod_get_index_optional(host->dev, "vio",
+ 						  id, GPIOD_OUT_LOW);
+-	if (IS_ERR(slot->vio))
+-		return dev_err_probe(host->dev, PTR_ERR(slot->vio),
++	if (IS_ERR(slot->vio)) {
++		r = dev_err_probe(host->dev, PTR_ERR(slot->vio),
+ 				     "error looking up VIO GPIO\n");
++		goto err_free_host;
++	}
+ 	slot->cover = devm_gpiod_get_index_optional(host->dev, "cover",
+ 						    id, GPIOD_IN);
+-	if (IS_ERR(slot->cover))
+-		return dev_err_probe(host->dev, PTR_ERR(slot->cover),
++	if (IS_ERR(slot->cover)) {
++		r = dev_err_probe(host->dev, PTR_ERR(slot->cover),
+ 				     "error looking up cover switch GPIO\n");
++		goto err_free_host;
++	}
+ 
+ 	host->slots[id] = slot;
+ 
+@@ -1344,6 +1350,7 @@ static int mmc_omap_new_slot(struct mmc_omap_host *host, int id)
+ 		device_remove_file(&mmc->class_dev, &dev_attr_slot_name);
+ err_remove_host:
+ 	mmc_remove_host(mmc);
++err_free_host:
+ 	mmc_free_host(mmc);
+ 	return r;
+ }
+-- 
+2.39.5 (Apple Git-154)
+
 
