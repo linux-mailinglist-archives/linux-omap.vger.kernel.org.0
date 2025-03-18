@@ -1,89 +1,154 @@
-Return-Path: <linux-omap+bounces-3432-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3433-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 085BAA67F9C
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Mar 2025 23:19:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47BAEA68040
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Mar 2025 00:01:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E62E17EF96
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Mar 2025 22:19:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 613421794FC
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Mar 2025 23:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D472205E0F;
-	Tue, 18 Mar 2025 22:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7068C211A1E;
+	Tue, 18 Mar 2025 23:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dygKBtNA"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="tXJB/EAw"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F9F155753;
-	Tue, 18 Mar 2025 22:19:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAB6211471
+	for <linux-omap@vger.kernel.org>; Tue, 18 Mar 2025 23:00:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742336374; cv=none; b=ijCOIN84drmhI3JbDDRZPgt7YbAyw99C+4F/iE56nuKjfCnIiuzKkfoKHPwE+v13YUcwz9xuLuN/K2STTQ9kThIFoD2th7PZNbkNnm5GNtg2kZxrcNn6DWrfwhME2I9cOpBnCUJRTR+Vn3aJZQJmn0te5bsRGj4PMPuexLDNqSg=
+	t=1742338851; cv=none; b=JcvrFnBC4RdVE5PMF9DEpyDNSTKR0dW5HkotaKvWYSgnNAj6ouEaV1NEIqX/mXVPPtMbzBlp5SGuMS/xn0NDisE/aNbAbKK8mJsCV+FxbiVcOt357hIePM9XHRzxdlvdGCK9U0KQzmlsJxOLbK7UpV3u4RQ2fpo3ccbkbeGMTN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742336374; c=relaxed/simple;
-	bh=u7b0EopUBIIvvpkNpfDzrd4hzh3ed8l6dHIQADUl/9k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cpj/J1uydqWMomdqMvrlbTp5bN/PHpD3WN/MChIN9Z9R5aR8oQCdYy9Ve+EoERVwiCpy6haR7dO0l/G7QKxlTGrFIyRnd0XWrxzE2mD1dVlVtihcMLQ1NM97EZw24QzDqImwrNHOLwEZw6dDyE2Ae/wEbJvKtcJbqsV5J5RjZZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dygKBtNA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC25C4CEEE;
-	Tue, 18 Mar 2025 22:19:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742336373;
-	bh=u7b0EopUBIIvvpkNpfDzrd4hzh3ed8l6dHIQADUl/9k=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=dygKBtNARW6ykDxVZ3qdWvoc10u9IKvdjo2DF1N3cCz0j9hL8QkReosLG3bCbYMa+
-	 e00/lop0BDmwpeGZq7P92T9JMFCb6VSww2TpVH/Pcc/S250sN9IgKklqWtu5rCmhZk
-	 FP5OsYM9gPn3vXAlQSpOmFu1ZCAr7HzOUEpA+ysHoTAFFrxi06l3NynjaukSuPaE24
-	 eM15tBXHwwjYTPnRNQjfcTF6Jm9RKpjpdLI45vccyW4zgxQGOMc/k66I/y19+aLK6M
-	 6OZ6Qp1lFNrWVeU1M0rG7oYVX5V/aoM5pTwBBU+VJfrucN3h9sVekBeWQOhhz+v/Ta
-	 REiblcTLHX5ag==
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5e61d91a087so9440457a12.0;
-        Tue, 18 Mar 2025 15:19:33 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWEvSY7USb8YKGrCEQDM5dPUfKdR5uuEjv1NjsZK0+53ShbdE3YVMMAyYcrIqUDbqUqGXZNhxccWjMjTFA8@vger.kernel.org, AJvYcCWrhOnPjxuhgXvraYfVbveVmiasUGvWRQ6ZMHOCrPGc1E1P3oBgJecsdRuYtWar81p87gkK1xdzL8aE@vger.kernel.org, AJvYcCWsDSgxLWMtWk4wMDLrnDzQ5Gz2/+dcUoTkvuM0l6CedB60Sii20y7+nFQLDkdJXMgKNM7SziZKLT9U5A==@vger.kernel.org, AJvYcCXPCEOOIOO3rpfIwU/jZYtnj55ABNmdRpN85rfhwQn6h5jNN77mOV4nJ394nJyV5cPkeyWCsZUguGmx@vger.kernel.org
-X-Gm-Message-State: AOJu0YysXn6WLkOzwKeNCebU5iy6LLZyR8c5xia/v2DhCF9J7utjjXTp
-	d+ttbys7BtLSp1dzH5SUG+gN0Kz8tuOEpnZ76wCpgmO2eaeUI75d21utPKPdx1PIQRccaJ8cmLS
-	dTx2OX4d5Mu4XmWg6SrqqytECjA==
-X-Google-Smtp-Source: AGHT+IGcMwYyO/POFMpTDFuIa2YqQWZAf278mdK5WfrUj18LXPSX+gWXwda7EIroobdoIYm7mMlPyGivS3yrEr8u7Rs=
-X-Received: by 2002:a05:6402:50c7:b0:5e5:b53:fd49 with SMTP id
- 4fb4d7f45d1cf-5eb80cc9af4mr343848a12.3.1742336372205; Tue, 18 Mar 2025
- 15:19:32 -0700 (PDT)
+	s=arc-20240116; t=1742338851; c=relaxed/simple;
+	bh=Ya379Ijr2ofj10+RRG61gqv1ZJJPtyVebxeOMcaN51U=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aaJamqrdqiCCaYlSwU17uMimVDMJO3SW+bIuNoxEwuzCXRRRU/6BWV8n1VwMVapueScOlBzXzIDwg9CiFoN7qvfhncOaOT72Ev13whFgI3ZAvXPBLwEdWRLIj3oWN4Taa7axTNMsf+BmQzCq0lFn9F/hAavRDrkVNoHGlmKlBJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=tXJB/EAw; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-22438c356c8so108262485ad.1
+        for <linux-omap@vger.kernel.org>; Tue, 18 Mar 2025 16:00:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1742338848; x=1742943648; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FYFuZAXLZfyhQ6Ofp04NHjTY3u72Upe1i27dNGQ4bgY=;
+        b=tXJB/EAwlLWnvEMZ0+wcOO3OQ0yjxiGe1FiILgTu0OlX3ceTueTlTVfOifrYI7wASA
+         K6tLlsOjZRn/Hx7/r13U7a1Ibm5gQbJQ0mvL54sG5X8U62CYpYS0eAX+/AwTPqBywKpr
+         bKS6YixmG9xxObsnhQzNEU2zwesBpNbPnOm0GLge0uRleYGl5dRTBFJkvim7UvE5CVLC
+         6EG63NvRnZ6eKBVtDgdf6Sa+uiHtN9ix4lZqOWxl3iP3jYjheNoQ3WvQDNLaTpp9gJq+
+         WTik6WkiFvnvRRGTc+ikLeCK3Pbduv25FJ/81NgghjZlvD1NalrcY/OgFAkDNEE7/EcZ
+         frJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742338848; x=1742943648;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FYFuZAXLZfyhQ6Ofp04NHjTY3u72Upe1i27dNGQ4bgY=;
+        b=PG2d6qnyozztL64hcygGrLkPFiVjjqdinuyTfDDbl+JS2CJhDij9q4FOKV0H2i6f59
+         95zhM8qyHD+3ePEFWTctf2yqmt/ZS+MOsEK0kOfFP8SshnnveANJbxu1EvjYvSggKadi
+         2diNM1JqXB+pXBPTSUge7hVaIbVi9Me3Cc+P+wQP9Nh5JbFlRQbyrrL5Cuf3WPuItEvu
+         D4KmMNopZynVRaUOvdrLFe0Fuaj8px5ZBwCrrPF8N6vu7dI8uQDDYwtIPmI1C8pGHxVC
+         e/32RDo+52WzkUwGK68JIV4WDPVnvLFIOXQ0bKCn0ga7BAWmkBScVe5eCmdfiKK7SLjh
+         3UCw==
+X-Forwarded-Encrypted: i=1; AJvYcCVrEt3HoAidnloRaMf8J1gb0yq37mgtvYD+HJWLdn3aU4ZWOYFZmF/Z/44Wi80C6YjqTNGqucXMsn7n@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCuQWhcdXZQzZHhVYUGlaKvJPG1gFhNjScusMnfmBHboiFu3M3
+	pY/8vumOmqRu/ljYA2gP6czc/7tNlE8302//ZOloHhRJj55BdrOuORUEJFRYEI4=
+X-Gm-Gg: ASbGncv5ibhywb7zDSOiJGeWkZihkPnmrmkcf8JCyRtHhpEyDCc/n1TnBhngNntDP2i
+	I3HvmR5HnnmMshX8XnPRtFU+yTDuxSQfq4/aZfdd3pxPNZKd4uQ7J+Bvoe7T4lOeIUmO8Fx6F/+
+	rNt6YrcgLKoTLMjf1+W+UBL49JXJ+FMWjLHrRdnxkT3CfuK3ibGd+bnQFfLWzRb+96txq9/siu8
+	V0Me2fpbqNwiVnq0hBWcK3QJ4Vp1UJA46WNXX1VX486vWt82Xxd2/K2kEzR/NlQNQ+dJCREzG+Z
+	0bjiFggcn0REaQZmSV/YqMjxVOQiz6lN3KyHhp0TXPmBQnF0agjK7efYMT+Yj/qKJC7SRaNM0ck
+	k+4cCAQQ=
+X-Google-Smtp-Source: AGHT+IFTfJJcr07mnjzLqCop80WxhC5Pssj38zY+A8XR2rKWIc2cYcEXx8f4iEqqmQsjWdqm+Dpo5Q==
+X-Received: by 2002:a17:902:d2c6:b0:215:acb3:3786 with SMTP id d9443c01a7336-2264993661fmr6691435ad.19.1742338847956;
+        Tue, 18 Mar 2025 16:00:47 -0700 (PDT)
+Received: from dev-linux.. (syn-076-088-115-008.res.spectrum.com. [76.88.115.8])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-225c6ba6f14sm100739465ad.111.2025.03.18.16.00.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Mar 2025 16:00:47 -0700 (PDT)
+From: Sukrut Bellary <sbellary@baylibre.com>
+To: Kevin Hilman <khilman@baylibre.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Rob Herring <robh@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Sukrut Bellary <sbellary@baylibre.com>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Roger Quadros <rogerq@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Santosh Shilimkar <ssantosh@kernel.org>,
+	Bajjuri Praneeth <praneeth@ti.com>,
+	Raghavendra Vignesh <vigneshr@ti.com>,
+	Bin Liu <b-liu@ti.com>,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-pm@vger.kernel.org
+Subject: [PATCH 0/4] PM: TI: AM335x: PM STANDBY fixes
+Date: Tue, 18 Mar 2025 16:00:38 -0700
+Message-Id: <20250318230042.3138542-1-sbellary@baylibre.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250318103622.29979-1-j-choudhary@ti.com> <20250318103622.29979-2-j-choudhary@ti.com>
-In-Reply-To: <20250318103622.29979-2-j-choudhary@ti.com>
-From: Rob Herring <robh@kernel.org>
-Date: Tue, 18 Mar 2025 17:19:20 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+L3Swkw5-8CcAC6++22k1irv2igoQBv8dTt+0pfonX-A@mail.gmail.com>
-X-Gm-Features: AQ5f1Jq0_JS7Y_H8njv49p8y_dpSwaJETWwZSkOw0KDF3rMauYXRpelek25NB9w
-Message-ID: <CAL_Jsq+L3Swkw5-8CcAC6++22k1irv2igoQBv8dTt+0pfonX-A@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: i2c: omap: Add mux-states property
-To: Jayesh Choudhary <j-choudhary@ti.com>
-Cc: vigneshr@ti.com, andi.shyti@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, linux-kernel@vger.kernel.org, aaro.koskinen@iki.fi, 
-	andreas@kemnade.info, khilman@baylibre.com, rogerq@kernel.org, 
-	tony@atomide.com, jmkrzyszt@gmail.com, linux-omap@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 18, 2025 at 5:36=E2=80=AFAM Jayesh Choudhary <j-choudhary@ti.co=
-m> wrote:
->
-> Add mux controller support for when the I2C lines are muxed after
-> signals come out of SoC and before they go to any client.
->
-> Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
-> ---
->  Documentation/devicetree/bindings/i2c/ti,omap4-i2c.yaml | 6 ++++++
->  1 file changed, 6 insertions(+)
+This patch series fixes the Power management issues on TI's am335x soc.
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+on AM335x, the wakeup doesn't work in the case of STANDBY.
+
+1. Since CM3 PM FW [1](ti-v4.1.y) doesn't enable l4ls clockdomain upon
+wakeup, it fails to wakeup the MPU.
+To fix this, don't turn off the l4ls clk domain in the STANDBY transition
+in MPU.
+
+2. Also Per AM335x TRM [2](section 8.1.4.3 Power mode), in case of STANDBY,
+PER domain should be ON. So fix PER power domain handling for 
+standby. l4ls is a part of the PER domain.
+
+Since we are not turning off the l4ls clockdomain on STANDBY in MPU,
+PER power domain would remain ON. But still, explicitly handle this
+to be in sync with the STANDBY requirement.
+
+3. On am335x evm[1], UART0 - (UART1-HW) has a wakeup capability.
+Set the wakeup-source property in DT for AM335x.
+
+4. Enable PM configs for AM335x.
+
+[1] https://git.ti.com/cgit/processor-firmware/ti-amx3-cm3-pm-firmware/
+[2] https://www.ti.com/lit/ug/spruh73q/spruh73q.pdf
+[3] https://www.ti.com/tool/TMDXEVM3358
+
+Test log:
+https://gist.github.com/sukrutb/bdbfd1220fe8578a9decf87d0bac6796
+
+Sukrut Bellary (4):
+  ARM: OMAP2+: Fix l4ls clk domain handling in STANDBY
+  pmdomain: ti: Fix STANDBY handling of PER power domain
+  ARM: dts: am335x: Set wakeup-source for UART0
+  ARM: multi_v7_defconfig: Enable am335x PM configs
+
+ arch/arm/boot/dts/ti/omap/am335x-evm.dts    |  2 +-
+ arch/arm/configs/multi_v7_defconfig         |  5 +++++
+ arch/arm/mach-omap2/clockdomain.h           |  1 +
+ arch/arm/mach-omap2/clockdomains33xx_data.c |  2 +-
+ arch/arm/mach-omap2/cm33xx.c                | 14 +++++++++++++-
+ drivers/pmdomain/ti/omap_prm.c              |  8 ++++++--
+ 6 files changed, 27 insertions(+), 5 deletions(-)
+
+-- 
+2.34.1
+
 
