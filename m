@@ -1,56 +1,56 @@
-Return-Path: <linux-omap+bounces-3431-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3432-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92EE7A67F94
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Mar 2025 23:18:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 085BAA67F9C
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Mar 2025 23:19:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE3F2422348
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Mar 2025 22:18:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E62E17EF96
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Mar 2025 22:19:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F491FECD1;
-	Tue, 18 Mar 2025 22:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D472205E0F;
+	Tue, 18 Mar 2025 22:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mSvj+ls3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dygKBtNA"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6C3155753;
-	Tue, 18 Mar 2025 22:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F9F155753;
+	Tue, 18 Mar 2025 22:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742336324; cv=none; b=bHbsyOhjhHNxnuRuPwztmfQ6Z1toOJYvo6kDqbGpAaEa9skUXZNq3JVp2m0pj5U8RPPlh1hWSncAnOB//ckkRy9FC3JZ2gk8OQdt+UklcfdQe4Z1sE847gh5RlvtalVd+4+mh2MjlAL7VWlNPrwjlYnTBp9ZeGhCFv/Jp8hS5A4=
+	t=1742336374; cv=none; b=ijCOIN84drmhI3JbDDRZPgt7YbAyw99C+4F/iE56nuKjfCnIiuzKkfoKHPwE+v13YUcwz9xuLuN/K2STTQ9kThIFoD2th7PZNbkNnm5GNtg2kZxrcNn6DWrfwhME2I9cOpBnCUJRTR+Vn3aJZQJmn0te5bsRGj4PMPuexLDNqSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742336324; c=relaxed/simple;
-	bh=vkdQC79XQvfkbqHQz7oVGDIS3l5lNGm2h04WoA3ouVE=;
+	s=arc-20240116; t=1742336374; c=relaxed/simple;
+	bh=u7b0EopUBIIvvpkNpfDzrd4hzh3ed8l6dHIQADUl/9k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l+HkbTSuBY19kgFCI64d9rUohoUYn6DAa8dG+4VTeqp6zd/mCr71Jbax59+MRfJgardVnIiHyiMV9RewU58ggAApdoc9HZ8vnbvVutFYh+aNO038J1R0Fjf8Ef2rB8cCmlJAxrSPH5rbME0yw3KUChJZ4rrGL7Eb7xKrrtiV0c0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mSvj+ls3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12026C4CEF5;
-	Tue, 18 Mar 2025 22:18:43 +0000 (UTC)
+	 To:Cc:Content-Type; b=cpj/J1uydqWMomdqMvrlbTp5bN/PHpD3WN/MChIN9Z9R5aR8oQCdYy9Ve+EoERVwiCpy6haR7dO0l/G7QKxlTGrFIyRnd0XWrxzE2mD1dVlVtihcMLQ1NM97EZw24QzDqImwrNHOLwEZw6dDyE2Ae/wEbJvKtcJbqsV5J5RjZZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dygKBtNA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC25C4CEEE;
+	Tue, 18 Mar 2025 22:19:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742336323;
-	bh=vkdQC79XQvfkbqHQz7oVGDIS3l5lNGm2h04WoA3ouVE=;
+	s=k20201202; t=1742336373;
+	bh=u7b0EopUBIIvvpkNpfDzrd4hzh3ed8l6dHIQADUl/9k=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mSvj+ls3VFqoS8fnbHtRkCu/Xna17GQd2hLGcYM5v88U77FMVl+6ShDUaJvS/d0ki
-	 Qr7brfAdNPkncBw+XqARc6t774GR33Dsuu48iGx29OpDyKVh/LqfncIpX/GrUInZts
-	 rs7+27Bh1XxAHAhh6hZVSIR0G64IjMELxYkUURfUZzw11nuMZYWfMduuN1It4KaoRg
-	 U+Mi96vZNnQfIGpWzoRAnXmZVoz/mQf7jvEa2+dKJ+qQWpvrdIzcFpgFc9wdMpTPom
-	 SznNDhzwuMkbqovlDYXs7iIpofyn0rB6/00hMsd+9abZosl7VcBDWVNdbjRGwQOdJw
-	 Nlicxhqbk3qIQ==
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5e60cfef9cfso8645262a12.2;
-        Tue, 18 Mar 2025 15:18:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUBdrO7l5ek4yHWXnoNy5c25NnqMToygXVClIFMAGGIdEHr2wSIyAgbZ5Vx39p1EmtwhP5hOC8XoWOZ@vger.kernel.org, AJvYcCUc4jBr+yYaLswbMUb9KrAqynWtfO+CRHtcEDnkaSqxjhhjspVtSCRPS1npHHfZqAd/MVq29q//bkSm0ou5@vger.kernel.org, AJvYcCVfsIi6A122XlTczJQ0nSJkpdm5Ax6Fkc3gZ/n7yIK+QOGIsl6+gwxc2TVEL2So1t4x3EbRsTx5bh9X@vger.kernel.org, AJvYcCXeYfxxhLJ1BEE0tYDHd3pi5MNVazkgHnHDoOoivQ+GS6tDe/rJ3vG3uJ21P8eb04z9ZYr1xQ+PZ0zhCQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0lICXXB7RQp6r9Cmg6kdGPLZkudnGOeadAHlpB+36lUwoQaOY
-	Qp6BbDb8ApeuVDlWO6NZJvYDNjGQBs8H8vOZzdtkSkSKNft9MIldrAS+Tb/FJbElpIA5OPcyG9a
-	Smz162FRLFSpennaZrJgld6KF7A==
-X-Google-Smtp-Source: AGHT+IFsMEAdgEoIYrNf71YtdNXeaCbte8P0UZiuSxcscCbHKKxY05YB9jxSreWxJ5mt5YFyuen73IUwyMiShOMj/eI=
-X-Received: by 2002:a05:6402:2551:b0:5db:f5bc:f696 with SMTP id
- 4fb4d7f45d1cf-5eb80cde5c1mr362082a12.5.1742336321427; Tue, 18 Mar 2025
- 15:18:41 -0700 (PDT)
+	b=dygKBtNARW6ykDxVZ3qdWvoc10u9IKvdjo2DF1N3cCz0j9hL8QkReosLG3bCbYMa+
+	 e00/lop0BDmwpeGZq7P92T9JMFCb6VSww2TpVH/Pcc/S250sN9IgKklqWtu5rCmhZk
+	 FP5OsYM9gPn3vXAlQSpOmFu1ZCAr7HzOUEpA+ysHoTAFFrxi06l3NynjaukSuPaE24
+	 eM15tBXHwwjYTPnRNQjfcTF6Jm9RKpjpdLI45vccyW4zgxQGOMc/k66I/y19+aLK6M
+	 6OZ6Qp1lFNrWVeU1M0rG7oYVX5V/aoM5pTwBBU+VJfrucN3h9sVekBeWQOhhz+v/Ta
+	 REiblcTLHX5ag==
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5e61d91a087so9440457a12.0;
+        Tue, 18 Mar 2025 15:19:33 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWEvSY7USb8YKGrCEQDM5dPUfKdR5uuEjv1NjsZK0+53ShbdE3YVMMAyYcrIqUDbqUqGXZNhxccWjMjTFA8@vger.kernel.org, AJvYcCWrhOnPjxuhgXvraYfVbveVmiasUGvWRQ6ZMHOCrPGc1E1P3oBgJecsdRuYtWar81p87gkK1xdzL8aE@vger.kernel.org, AJvYcCWsDSgxLWMtWk4wMDLrnDzQ5Gz2/+dcUoTkvuM0l6CedB60Sii20y7+nFQLDkdJXMgKNM7SziZKLT9U5A==@vger.kernel.org, AJvYcCXPCEOOIOO3rpfIwU/jZYtnj55ABNmdRpN85rfhwQn6h5jNN77mOV4nJ394nJyV5cPkeyWCsZUguGmx@vger.kernel.org
+X-Gm-Message-State: AOJu0YysXn6WLkOzwKeNCebU5iy6LLZyR8c5xia/v2DhCF9J7utjjXTp
+	d+ttbys7BtLSp1dzH5SUG+gN0Kz8tuOEpnZ76wCpgmO2eaeUI75d21utPKPdx1PIQRccaJ8cmLS
+	dTx2OX4d5Mu4XmWg6SrqqytECjA==
+X-Google-Smtp-Source: AGHT+IGcMwYyO/POFMpTDFuIa2YqQWZAf278mdK5WfrUj18LXPSX+gWXwda7EIroobdoIYm7mMlPyGivS3yrEr8u7Rs=
+X-Received: by 2002:a05:6402:50c7:b0:5e5:b53:fd49 with SMTP id
+ 4fb4d7f45d1cf-5eb80cc9af4mr343848a12.3.1742336372205; Tue, 18 Mar 2025
+ 15:19:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -58,65 +58,32 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250318103622.29979-1-j-choudhary@ti.com> <20250318103622.29979-2-j-choudhary@ti.com>
- <59651605-45fa-49d7-bb15-dae83d8ad471@jm0.eu>
-In-Reply-To: <59651605-45fa-49d7-bb15-dae83d8ad471@jm0.eu>
+In-Reply-To: <20250318103622.29979-2-j-choudhary@ti.com>
 From: Rob Herring <robh@kernel.org>
-Date: Tue, 18 Mar 2025 17:18:29 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJnhXwbLb3Hos2YdgnzQGOQ0AFp=HT37JsEdfp8qjuVNA@mail.gmail.com>
-X-Gm-Features: AQ5f1Jq_q-p36FuF5FSO3G448rRBEbH-k9cArJxfN4nOQpF8WgXeT562lCY_3qo
-Message-ID: <CAL_JsqJnhXwbLb3Hos2YdgnzQGOQ0AFp=HT37JsEdfp8qjuVNA@mail.gmail.com>
+Date: Tue, 18 Mar 2025 17:19:20 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+L3Swkw5-8CcAC6++22k1irv2igoQBv8dTt+0pfonX-A@mail.gmail.com>
+X-Gm-Features: AQ5f1Jq0_JS7Y_H8njv49p8y_dpSwaJETWwZSkOw0KDF3rMauYXRpelek25NB9w
+Message-ID: <CAL_Jsq+L3Swkw5-8CcAC6++22k1irv2igoQBv8dTt+0pfonX-A@mail.gmail.com>
 Subject: Re: [PATCH 1/2] dt-bindings: i2c: omap: Add mux-states property
-To: "Ing. Josua Mayer" <josua.mayer@jm0.eu>
-Cc: Jayesh Choudhary <j-choudhary@ti.com>, vigneshr@ti.com, andi.shyti@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, linux-kernel@vger.kernel.org, 
-	aaro.koskinen@iki.fi, andreas@kemnade.info, khilman@baylibre.com, 
-	rogerq@kernel.org, tony@atomide.com, jmkrzyszt@gmail.com, 
-	linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	devicetree@vger.kernel.org
+To: Jayesh Choudhary <j-choudhary@ti.com>
+Cc: vigneshr@ti.com, andi.shyti@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, linux-kernel@vger.kernel.org, aaro.koskinen@iki.fi, 
+	andreas@kemnade.info, khilman@baylibre.com, rogerq@kernel.org, 
+	tony@atomide.com, jmkrzyszt@gmail.com, linux-omap@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 18, 2025 at 2:55=E2=80=AFPM Ing. Josua Mayer <josua.mayer@jm0.e=
-u> wrote:
+On Tue, Mar 18, 2025 at 5:36=E2=80=AFAM Jayesh Choudhary <j-choudhary@ti.co=
+m> wrote:
 >
-> Hi Jayesh,
+> Add mux controller support for when the I2C lines are muxed after
+> signals come out of SoC and before they go to any client.
 >
-> Am 18.03.25 um 11:36 schrieb Jayesh Choudhary:
-> > Add mux controller support for when the I2C lines are muxed after
-> > signals come out of SoC and before they go to any client.
-> >
-> > Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
-> > ---
-> >   Documentation/devicetree/bindings/i2c/ti,omap4-i2c.yaml | 6 ++++++
-> >   1 file changed, 6 insertions(+)
->
-> Is there any chance for this to be generic across any i2c controller
-> regardless of SoC in use?
-> Is this perhaps also generic to any device in dts,
-> similar to assigned-clocks?
+> Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
+> ---
+>  Documentation/devicetree/bindings/i2c/ti,omap4-i2c.yaml | 6 ++++++
+>  1 file changed, 6 insertions(+)
 
-$ git grep assigned-clocks arch/ | wc -l
-2097
-
->
-> E.g. in k3-am642-hummingboard-t-{pcie,usb3}.dts we have a mux on the
-> carrier board switching a serdes lane between two different connectors.
-> It would make sense for pcie and usb phy nodes to delay probe in a
-> similar fashion.
-> The same may hold true for other buses muxed at boot-time or based on
-> assembly options or extension cards.
-
-$ git grep mux-states arch/
-arch/arm64/boot/dts/ti/k3-j7200-common-proc-board.dts:
-mux-states =3D <&mux0 1>;
-arch/arm64/boot/dts/ti/k3-j721s2-common-proc-board.dts:
-mux-states =3D <&mux0 1>;
-arch/arm64/boot/dts/ti/k3-j721s2-common-proc-board.dts:
-mux-states =3D <&mux1 1>;
-arch/arm64/boot/dts/ti/k3-j784s4-j742s2-evm-common.dtsi:
- mux-states =3D <&mux1 1>;
-
-I'm not convinced it is common enough to allow everywhere.
-
-Rob
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
