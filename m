@@ -1,163 +1,131 @@
-Return-Path: <linux-omap+bounces-3413-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3416-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8DCA6716A
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Mar 2025 11:36:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB5C7A6722E
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Mar 2025 12:08:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BA6A19A2402
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Mar 2025 10:36:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 329CD18924FC
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Mar 2025 11:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A560B207DF4;
-	Tue, 18 Mar 2025 10:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0828209F33;
+	Tue, 18 Mar 2025 11:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="ufrm5jsa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FZYeGP3C"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F5920459F;
-	Tue, 18 Mar 2025 10:36:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33AEE20967A;
+	Tue, 18 Mar 2025 11:06:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742294202; cv=none; b=eGJXkX0O8vzEPG6HBdWgERr3KH4afZNe9zunXUveP9dug3TV7tg3JZ9c59MfzJRVB/nHSW7x9OAJHVsMFiIEnluTmkUSw9Q7s6nBIPVItr8uTWpQfuDSGrJqXpeRX5FWYZq4jxT3reg5iJ4qyFX4rE0hWp5CJUeGwqBn+kLKEPQ=
+	t=1742295965; cv=none; b=jgUYEmmapO+MiJmVXiC1GuCL1jhCgidIKaA2aEPq69jfBRhlniBa3R+BUpR8hYLxbJEE5bsETKDaAJmmGvkV+6o4zWtZgtH70dASh8jkg6LpiahWvUBV+KK+lSSEY0Lrzzwz1TpNDhzHInTMbPf9HZ83ZKYEGQHAIYmG3sTwZF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742294202; c=relaxed/simple;
-	bh=Sai5g5/aPSCV0FNdoUWAXDOQb5aLvdETtjtDL4WuPys=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F072zd1KUhEp91rj3eZNuwj3Uy5fI1vFTXKYF8NuMliyUNGvUM67zqefy7Me84Bzozjl1NWadOblxDzqY3oyUqqLtEOPTHrYEuKZMM8LUe/ezAQBNHDzgjvv+g6vQmse/Qosbf5ipX4EAFVvrEE4EY9GneLcWb3Tq5ZQeDoy074=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=ufrm5jsa; arc=none smtp.client-ip=198.47.23.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 52IAaRCj3128589
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Mar 2025 05:36:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1742294187;
-	bh=1lT0nGmOjXid+4lh3vU+4FUK8ztnz2+Zk32BL7lapu0=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=ufrm5jsaus9ObIh1rzJikit9rlKnY0qo6rIYN91Y0hHKGeCIA0ExK2ZLtlQgTGzu5
-	 Ke6Wuj3klwcAlB5R6F9bYyxKSTnFRQiMn9Wh6ZHZuM9azgdi+69X7zoEyh9G8I758i
-	 6isEafIJc8hUDpd84vcT0BbypvyV9DTCa0NtMZ74=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 52IAaQDX125983
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 18 Mar 2025 05:36:26 -0500
-Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 18
- Mar 2025 05:36:26 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 18 Mar 2025 05:36:26 -0500
-Received: from localhost (jayesh-hp-z2-tower-g5-workstation.dhcp.ti.com [10.24.68.98])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 52IAaPsl042214;
-	Tue, 18 Mar 2025 05:36:26 -0500
-From: Jayesh Choudhary <j-choudhary@ti.com>
-To: <vigneshr@ti.com>, <andi.shyti@kernel.org>, <robh@kernel.org>,
-        <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC: <aaro.koskinen@iki.fi>, <andreas@kemnade.info>, <khilman@baylibre.com>,
-        <rogerq@kernel.org>, <tony@atomide.com>, <jmkrzyszt@gmail.com>,
-        <linux-omap@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <j-choudhary@ti.com>
-Subject: [PATCH 2/2] i2c: omap: Add support for setting mux
-Date: Tue, 18 Mar 2025 16:06:22 +0530
-Message-ID: <20250318103622.29979-3-j-choudhary@ti.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250318103622.29979-1-j-choudhary@ti.com>
-References: <20250318103622.29979-1-j-choudhary@ti.com>
+	s=arc-20240116; t=1742295965; c=relaxed/simple;
+	bh=+6eRMsycQCwnvUIb7YBuRBaRFSAMCS6WfElJU0fnob0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CB87L5QwBXwc8MwdcalIaFr3wE9Hg0Xd7qiIxLtT1pLh8Gc3JsTTnWx5jSlM2V/XPLzXmuqELb3DVq151pUqpyN/nVq+4tOXLAiaj0S0f/eLcR+kJMFPFGg9RxhT4kfXiRHCrTFccVvnt3kaXxueYtYtF3C5PmcJY8Nl60X51ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FZYeGP3C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9C8C4CEDD;
+	Tue, 18 Mar 2025 11:06:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742295964;
+	bh=+6eRMsycQCwnvUIb7YBuRBaRFSAMCS6WfElJU0fnob0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FZYeGP3ChLjFgxxPhXwyrzj+8hdudeUK9TYlMtJjGSLAVE9l7b23fy6AlOGY3cXco
+	 JxmfMzVCnaC8910yJDVJNyWc9cVokzjiSUhLJ9Nwbn3O0bxJNoUovv6P8rxYZkGqUW
+	 8vxI26ywb35jSaW/zqOold5OFSPC3VgWsJPF46QKs3hueJrNGXj/MHgxylHyWs/90j
+	 gcF0O9bB1CgoEohptMg4SEViZ5T3Sa50+WsOO+APy9ZU2ApxdGL0RC3xjifQ7u/F5s
+	 60UVEROqpuCVkYO1fQXx5oetwtG8O03iJJf3018VZ4xMcN/cI+pX2Ms/28vDZz3R1V
+	 2DKF4AiY4dA2A==
+Date: Tue, 18 Mar 2025 12:06:01 +0100
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Marcin Wojtas <marcin.s.wojtas@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Masahisa Kojima <kojima.masahisa@socionext.com>,
+	Sunil Goutham <sgoutham@marvell.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	hariprasad <hkelam@marvell.com>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Roger Quadros <rogerq@kernel.org>, netdev@vger.kernel.org,
+	bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, linux-hyperv@vger.kernel.org,
+	linux-omap@vger.kernel.org
+Subject: Re: [PATCH net-next 0/7] net: xdp: Add missing metadata support for
+ some xdp drvs
+Message-ID: <Z9lTmfyUsY3lqr1m@lore-desk>
+References: <20250311-mvneta-xdp-meta-v1-0-36cf1c99790e@kernel.org>
+ <6259af5f-f518-4f88-ada9-31c3425ce6ed@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="7FKbPnYNhz7Z7bep"
+Content-Disposition: inline
+In-Reply-To: <6259af5f-f518-4f88-ada9-31c3425ce6ed@redhat.com>
 
-Some SoCs require muxes in the routing for SDA and SCL lines.
-Therefore, add support for setting the mux by reading the mux-states
-property from the dt-node.
 
-Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
----
- drivers/i2c/busses/Kconfig    |  1 +
- drivers/i2c/busses/i2c-omap.c | 22 ++++++++++++++++++++++
- 2 files changed, 23 insertions(+)
+--7FKbPnYNhz7Z7bep
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
-index fc438f445771..0648e58b083e 100644
---- a/drivers/i2c/busses/Kconfig
-+++ b/drivers/i2c/busses/Kconfig
-@@ -940,6 +940,7 @@ config I2C_OMAP
- 	tristate "OMAP I2C adapter"
- 	depends on ARCH_OMAP || ARCH_K3 || COMPILE_TEST
- 	default MACH_OMAP_OSK
-+	select MULTIPLEXER
- 	help
- 	  If you say yes to this option, support will be included for the
- 	  I2C interface on the Texas Instruments OMAP1/2 family of processors.
-diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
-index f18c3e74b076..16afb9ca19bb 100644
---- a/drivers/i2c/busses/i2c-omap.c
-+++ b/drivers/i2c/busses/i2c-omap.c
-@@ -24,6 +24,7 @@
- #include <linux/platform_device.h>
- #include <linux/clk.h>
- #include <linux/io.h>
-+#include <linux/mux/consumer.h>
- #include <linux/of.h>
- #include <linux/slab.h>
- #include <linux/platform_data/i2c-omap.h>
-@@ -211,6 +212,7 @@ struct omap_i2c_dev {
- 	u16			syscstate;
- 	u16			westate;
- 	u16			errata;
-+	struct mux_state	*mux_state;
- };
- 
- static const u8 reg_map_ip_v1[] = {
-@@ -1452,6 +1454,23 @@ omap_i2c_probe(struct platform_device *pdev)
- 				       (1000 * omap->speed / 8);
- 	}
- 
-+	if (of_property_read_bool(node, "mux-states")) {
-+		struct mux_state *mux_state;
-+
-+		mux_state = devm_mux_state_get(&pdev->dev, NULL);
-+		if (IS_ERR(mux_state)) {
-+			r = PTR_ERR(mux_state);
-+			dev_dbg(&pdev->dev, "failed to get I2C mux: %d\n", r);
-+			goto err_disable_pm;
-+		}
-+		omap->mux_state = mux_state;
-+		r = mux_state_select(omap->mux_state);
-+		if (r) {
-+			dev_err(&pdev->dev, "failed to select I2C mux: %d\n", r);
-+			goto err_disable_pm;
-+		}
-+	}
-+
- 	/* reset ASAP, clearing any IRQs */
- 	omap_i2c_init(omap);
- 
-@@ -1511,6 +1530,9 @@ static void omap_i2c_remove(struct platform_device *pdev)
- 
- 	i2c_del_adapter(&omap->adapter);
- 
-+	if (omap->mux_state)
-+		mux_state_deselect(omap->mux_state);
-+
- 	ret = pm_runtime_get_sync(&pdev->dev);
- 	if (ret < 0)
- 		dev_err(omap->dev, "Failed to resume hardware, skip disable\n");
--- 
-2.34.1
+> On 3/11/25 1:18 PM, Lorenzo Bianconi wrote:
+> > Introduce missing metadata support for some xdp drivers setting metadata
+> > size building the skb from xdp_buff.
+> > Please note most of the drivers are just compile tested.
+>=20
+> I'm sorry, but you should at very least report explicitly on per patch
+> basis which ones have been compile tested.
+>=20
+> Even better, please additionally document in each patch why/how the
+> current headroom is large enough.
 
+ack, I will do in v2.
+
+Regards,
+Lorenzo
+
+>=20
+> Thanks,
+>=20
+> Paolo
+>=20
+
+--7FKbPnYNhz7Z7bep
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZ9lTmQAKCRA6cBh0uS2t
+rDqfAQDOJNpxheA0LSnvOCTN+kPvwHBu5AGV2ArPeTAp70kJ3QD/apFRSAbfIcY1
+1f9jJDVDMRYLq6bmd+WcgF6DA0c7JwE=
+=n3M4
+-----END PGP SIGNATURE-----
+
+--7FKbPnYNhz7Z7bep--
 
