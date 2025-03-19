@@ -1,153 +1,123 @@
-Return-Path: <linux-omap+bounces-3454-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3455-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7F26A689CD
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Mar 2025 11:39:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB40A68BCF
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Mar 2025 12:36:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 747223B0D1F
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Mar 2025 10:38:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D070B1B62EF1
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Mar 2025 11:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C26E253B77;
-	Wed, 19 Mar 2025 10:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288C9254B01;
+	Wed, 19 Mar 2025 11:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="THaB1Mxk"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="QjpuVdmL"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D060220E31B;
-	Wed, 19 Mar 2025 10:38:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9EEA29;
+	Wed, 19 Mar 2025 11:33:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742380688; cv=none; b=fxNusGijjeIFPbbQ2uoD9dZrQx+hBZWW7t/GkjNNCdex0575WOphaUHuLXPmrsQZSXKipjjlH2T73DtTyi6Gd9QQPDhN3moiaZ+SiyOndIysNfIMYdP/5gN/a/XfupqG8cLbS6+JGhx3pexhrViUVlKnyZfRlgK4K4rRlF9RAnc=
+	t=1742383987; cv=none; b=du7LrO8QmkvUAtWNyzXB/yVCSmuXLaGK1cYkZpw5u1g2wZicR1ZN+MeXsREZWeA2O/z/QeJOJPaZt0sHahDvPhAaK/wY0eTT22FxLmLUN10mUFWlrvPZE6UD5EIN5FfkS/y4LgR8jACzY04FC4mTomTeLrw5iCYtLVUO7s+rmPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742380688; c=relaxed/simple;
-	bh=+oIZNufj1mq+T+ll5yqNMkYOAPUj49odlNka6Mg6bSU=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nVKzTy4SyT6TXNHN0rVXTd/r1HSNJPl5j0o7s4fITmAQMzeHZN8NukoQD+Dd635CSRmhjcBOGnpty4+LDkN8MOR0VDnjhzO1gxinzLLcNIazWpuUOBvtfuiHO2g2DJr5vVrkaTffdBMCyeINDuzqNOJaQvRCDcf5ECITZrtjdew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=THaB1Mxk; arc=none smtp.client-ip=198.47.23.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 52JAbbc6298165
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 19 Mar 2025 05:37:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1742380657;
-	bh=VOJRXhgr4IvDYXXr3sLTtCmEn5aq6QJfPwnK5S28w5g=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=THaB1MxklKFszLt4uo+Kcwpd94AavvnNOGhhcEhJYjf7HeEli37mE7XGxcIM5PddP
-	 PhqRLc2PVxBzS/ZtsWybKw5gTZeqC9S9AG3jFOls1SupDnC8/fbBO0qmkOrGa00zwu
-	 kGzn+Z1n82sVRFvkRcapG88nFiMezHT3q0am6Mzs=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 52JAbb5l088419
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 19 Mar 2025 05:37:37 -0500
-Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 19
- Mar 2025 05:37:36 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 19 Mar 2025 05:37:36 -0500
-Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.113])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 52JAbZv4021781;
-	Wed, 19 Mar 2025 05:37:36 -0500
-Date: Wed, 19 Mar 2025 16:07:35 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <lpieralisi@kernel.org>,
-        <kw@linux.com>, <robh@kernel.org>, <bhelgaas@google.com>,
-        <vigneshr@ti.com>, <kishon@kernel.org>, <cassel@kernel.org>,
-        <wojciech.jasko-EXT@continental-corporation.com>,
-        <thomas.richard@bootlin.com>, <bwawrzyn@cisco.com>,
-        <linux-pci@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <srk@ti.com>
-Subject: Re: [PATCH 3/4] PCI: cadence-ep: Introduce cdns_pcie_ep_disable
- helper for cleanup
-Message-ID: <20250319103735.a45aa5trofo2c2fc@uda0492258>
-References: <20250307103128.3287497-1-s-vadapalli@ti.com>
- <20250307103128.3287497-4-s-vadapalli@ti.com>
- <20250318080304.jsmrxqil6pn74nzh@thinkpad>
- <20250318081239.rvbk3rqud7wcj5pj@uda0492258>
- <20250319103217.aaoxpzk2baqna5vc@thinkpad>
+	s=arc-20240116; t=1742383987; c=relaxed/simple;
+	bh=cXiXr/JsZvK+TvPi0jxSLIxmXwsNc8aIsF8cyvtS+Zc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VXkKvn9OR3yp5yCOtFnktmP65H5CqmbQ22Y4EDgm1sxSG0uM2zMX4MH+yTdzMlXe/g4DtpHrCtUyVw7p+LZ4nRDSnnjGTtoU46zOUK+abrj3HcKfwyNTHvv3xcrbM1n3JTfbqeEfpp4AyHfi5Wshr9usCqCNSjoVdByo6uuSAe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=QjpuVdmL; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=ALHuqvypAVXPwmYHPUNM9vrTavBCqYIlVAQfauZIino=; b=QjpuVdmLmwGDqb3PsuBJiXXCsf
+	Gdr0vXyKAhh3ZOVGKzxpuDEL0zoiqxEW5nCW9ylByoSMnJzl1VQgRtWV5rWhQ3DwcuB4Pxk6Zk48w
+	TW38A2F48+4eTn21KUYNCZDtPtA2gIHnoV67v6IYakxri29nOZXVJVzsnwEIKoZOmd+8Ilx56wlxw
+	vtJHafKUzNc9FFmL2W7OwQ5S4q2tqg5l7T4ORZwBYLCZf86y1rmEPEqTSDh+UH4MwzcO30TQaNV80
+	Hu5UM5hgu01lLf7u5ZmsKBtDeP7BxMYr/1sHmTd54OAgfx66f/h0epElMmE4eqp5uiJKg4ASJ7ZYE
+	JM89WWDQ==;
+Date: Wed, 19 Mar 2025 12:32:56 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Rob Herring <robh@kernel.org>
+Cc: "Ing. Josua Mayer" <josua.mayer@jm0.eu>, Jayesh Choudhary
+ <j-choudhary@ti.com>, vigneshr@ti.com, andi.shyti@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, linux-kernel@vger.kernel.org,
+ aaro.koskinen@iki.fi, khilman@baylibre.com, rogerq@kernel.org,
+ tony@atomide.com, jmkrzyszt@gmail.com, linux-omap@vger.kernel.org,
+ linux-i2c@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: i2c: omap: Add mux-states property
+Message-ID: <20250319123256.3482063f@akair>
+In-Reply-To: <CAL_JsqJnhXwbLb3Hos2YdgnzQGOQ0AFp=HT37JsEdfp8qjuVNA@mail.gmail.com>
+References: <20250318103622.29979-1-j-choudhary@ti.com>
+	<20250318103622.29979-2-j-choudhary@ti.com>
+	<59651605-45fa-49d7-bb15-dae83d8ad471@jm0.eu>
+	<CAL_JsqJnhXwbLb3Hos2YdgnzQGOQ0AFp=HT37JsEdfp8qjuVNA@mail.gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250319103217.aaoxpzk2baqna5vc@thinkpad>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 19, 2025 at 04:02:17PM +0530, Manivannan Sadhasivam wrote:
-> On Tue, Mar 18, 2025 at 01:42:39PM +0530, Siddharth Vadapalli wrote:
-> > On Tue, Mar 18, 2025 at 01:33:04PM +0530, Manivannan Sadhasivam wrote:
-> > 
-> > Hello Mani,
-> > 
-> > > On Fri, Mar 07, 2025 at 04:01:27PM +0530, Siddharth Vadapalli wrote:
-> > > > Introduce the helper function cdns_pcie_ep_disable() which will undo the
-> > > > configuration performed by cdns_pcie_ep_setup(). Also, export it for use
-> > > > by the existing callers of cdns_pcie_ep_setup(), thereby allowing them
-> > > > to cleanup on their exit path.
-> > > > 
-> > > > Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-> > > > ---
-> > > >  drivers/pci/controller/cadence/pcie-cadence-ep.c | 10 ++++++++++
-> > > >  drivers/pci/controller/cadence/pcie-cadence.h    |  5 +++++
-> > > >  2 files changed, 15 insertions(+)
-> > > > 
-> > > > diff --git a/drivers/pci/controller/cadence/pcie-cadence-ep.c b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-> > > > index eeb2afdd223e..85bec57fa5d9 100644
-> > > > --- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
-> > > > +++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-> > > > @@ -646,6 +646,16 @@ static const struct pci_epc_ops cdns_pcie_epc_ops = {
-> > > >  	.get_features	= cdns_pcie_ep_get_features,
-> > > >  };
-> > > >  
-> > > > +void cdns_pcie_ep_disable(struct cdns_pcie_ep *ep)
-> > > > +{
-> > > > +	struct device *dev = ep->pcie.dev;
-> > > > +	struct pci_epc *epc = to_pci_epc(dev);
-> > > > +
-> > > 
-> > > pci_epc_deinit_notify()
-> > 
-> > I had initially planned to add this, but I noticed that it is not
-> > invoked by dw_pcie_ep_deinit() within
-> > drivers/pci/controller/dwc/pcie-designware-ep.c
-> > Since cdns_pcie_ep_disable() is similar to dw_pcie_ep_deinit(), I
-> > decided to drop it. Current callers of pci_epc_deinit_notify() are:
-> > drivers/pci/controller/dwc/pcie-qcom-ep.c
-> > drivers/pci/controller/dwc/pcie-tegra194.c
-> > while there are many more users of dw_pcie_ep_deinit() that don't invoke
-> > pci_epc_deinit_notify().
-> > 
-> > While I don't intend to justify dropping pci_epc_deinit_notify() in the
-> > cleanup path, I wanted to check if this should be added to
-> > dw_pcie_ep_deinit() as well. Or is it the case that dw_pcie_ep_deinit()
-> > is different from cdns_pcie_ep_disable()? Please let me know.
-> > 
-> 
-> Reason why it was not added to dw_pcie_ep_deinit() because, deinit_notify() is
-> supposed to be called while performing the resource cleanup with active refclk.
-> 
-> Some plaforms (Tegra, Qcom) depend on refclk from host. So if deinit_notify() is
-> called when there is no refclk, it will crash the endpoint SoC. But since
-> cadence endpoint platforms seem to generate their own refclk, you can call
-> deinit_notify() during deinit phase.
+Am Tue, 18 Mar 2025 17:18:29 -0500
+schrieb Rob Herring <robh@kernel.org>:
 
-Thank you for the clarification. I will add pci_epc_deinit_notify() to
-cdns_pcie_ep_disable() in the v2 series.
+> On Tue, Mar 18, 2025 at 2:55=E2=80=AFPM Ing. Josua Mayer <josua.mayer@jm0=
+.eu> wrote:
+> >
+> > Hi Jayesh,
+> >
+> > Am 18.03.25 um 11:36 schrieb Jayesh Choudhary: =20
+> > > Add mux controller support for when the I2C lines are muxed after
+> > > signals come out of SoC and before they go to any client.
+> > >
+> > > Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
+> > > ---
+> > >   Documentation/devicetree/bindings/i2c/ti,omap4-i2c.yaml | 6 ++++++
+> > >   1 file changed, 6 insertions(+) =20
+> >
+> > Is there any chance for this to be generic across any i2c controller
+> > regardless of SoC in use?
+> > Is this perhaps also generic to any device in dts,
+> > similar to assigned-clocks? =20
+>=20
+> $ git grep assigned-clocks arch/ | wc -l
+> 2097
+>=20
+> >
+> > E.g. in k3-am642-hummingboard-t-{pcie,usb3}.dts we have a mux on the
+> > carrier board switching a serdes lane between two different connectors.
+> > It would make sense for pcie and usb phy nodes to delay probe in a
+> > similar fashion.
+> > The same may hold true for other buses muxed at boot-time or based on
+> > assembly options or extension cards. =20
+>=20
+> $ git grep mux-states arch/
+> arch/arm64/boot/dts/ti/k3-j7200-common-proc-board.dts:
+> mux-states =3D <&mux0 1>;
+> arch/arm64/boot/dts/ti/k3-j721s2-common-proc-board.dts:
+> mux-states =3D <&mux0 1>;
+> arch/arm64/boot/dts/ti/k3-j721s2-common-proc-board.dts:
+> mux-states =3D <&mux1 1>;
+> arch/arm64/boot/dts/ti/k3-j784s4-j742s2-evm-common.dtsi:
+>  mux-states =3D <&mux1 1>;
+>=20
+> I'm not convinced it is common enough to allow everywhere.
+>=20
+strange logic. It is not in there, because it is not allowed/supported
+and some quirk maybe is added elsewhere, e.g. in bootloader or private
+kernel branch.
+So you cannot say whether such a case is common engough by looking what
+is *now* in the dtb.
 
 Regards,
-Siddharth.
+Andreas
 
