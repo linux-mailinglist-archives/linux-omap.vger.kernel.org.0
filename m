@@ -1,171 +1,161 @@
-Return-Path: <linux-omap+bounces-3457-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3458-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48367A68C0B
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Mar 2025 12:45:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3143EA68DF6
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Mar 2025 14:41:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F01143B5865
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Mar 2025 11:41:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75122170A54
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Mar 2025 13:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1612561AE;
-	Wed, 19 Mar 2025 11:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383E82571B2;
+	Wed, 19 Mar 2025 13:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="V+qaj8ma"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eEYeT+qc"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A785255E53
-	for <linux-omap@vger.kernel.org>; Wed, 19 Mar 2025 11:41:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B95212B02;
+	Wed, 19 Mar 2025 13:41:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742384466; cv=none; b=iz/fQ55pwy6c2qa6fGhmFRrTMVHvhvfC8ZMtJrgxIkIpgzNpolAY0/Tfjw4Z0wcwN8+SNmfSFqvjV44lMhI11GbvVPzCarpzj5i49t9lOQhlSsNTVodene5RuxrpYzflu6fyZXA6rOU2pauBsozIA71S2Wq/l0FjeOd5RJ1ueZs=
+	t=1742391670; cv=none; b=rMdLo0XkdwW5qA4vsT2bDyhU8pAJYSOOXOq+LTXmfCNwWjofbFHeUedU2xM6LCoV8IdcIrNJMKWYUlAk66asSd/zOmzKswDuim5o1hb/W0OeUJ6JEwlLxyq6+Gawi+RI5d+Uv9/YRGDkglhScQaiA41iRcPhNA/DN0S+HbB32uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742384466; c=relaxed/simple;
-	bh=QN4TukBKcr7GCstePwybtb0ft9vY9vxyq4OwjIpkHrc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cVylRB25UptKFlZ1QJS6XK/PVzpWl6XTcZF/5HDa0bI1cmxAB933kE/n7CaJOh7VUi09braRPyL5R4aNLNDzMnKadID7ygx9iGonVGh6mm/mpXX+c7R9B0/9JKcPh6gTE1k0+40lrAmuoEJP92S6UnJM2e0YV39hsKi8rw0IlQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=V+qaj8ma; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ac2a089fbbdso118503666b.1
-        for <linux-omap@vger.kernel.org>; Wed, 19 Mar 2025 04:41:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1742384462; x=1742989262; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i8MTVrzHn47D07QaIZqTqMn4oOq2XC0e3Is4UWL2ono=;
-        b=V+qaj8majjDdDl3HUtX0Pz5hHUyvEEPO8oFQIykMTLjWZZjnOPFUPfjB463wakD4D/
-         ZQPxlCl6woS4hg9Jc3M3t15AKavoQGeSVVK/mhabWs9ZDbxOHUh+Oz17l6+goIeDuhVH
-         T/9DzAUEjpst491JXCAgSwMHfKzmvafHiGf0HsnnfJH1R8u6/4+4hYB2yI1KmVPrzcIm
-         qS6vM4Y4cbB6zXYYwHhcLUPpC7n95iMtTzb4CHGd2iPgnm5K9YTcX3QEaXE0XnhALRVx
-         fYDtFjf5lwolfLipriEZ1Y0I0uMmRTPx3SZJ8E8oXZCDXFq3SdORI+hQtRCLt+XA/FT6
-         GPnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742384462; x=1742989262;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i8MTVrzHn47D07QaIZqTqMn4oOq2XC0e3Is4UWL2ono=;
-        b=q8i1LV0KtSoH17muzJRfzcMs5cGtARrInv6Uz51Xspjt1PNnnwkfVjvf/CpROaN9fS
-         1w+6pk+vncF63wC3Da6fqAeV+sa9PFRWrzcMem6hi44U8tWd0yh09QL7pdPOQqDoqum6
-         KmUTjwDAekZN3Qq31Ir7rtgpIjUEWIFzaeRI+1mMgWUg0NjjRAjEhsR+qklfF8oIb6X1
-         ssMdVmXYg01UeRw05hx8FoVojEfQScdm6V+7w490CsDWn8mwBZbEsdzVSyr3PY2U1k7J
-         zzzQ194WO3vwHmhZ8JIyxXlNIrk7oZ9jXFOC3LReJqB68bEC6K62/7dOiDV4WkC/1RVQ
-         PGVg==
-X-Forwarded-Encrypted: i=1; AJvYcCXb+pYSxeBxEHpaYqvjFOieLW4YxjuxkL41/Ov9G0AzYb0m+NpnreMouCcmeaSLRC8QLlYZU2QjoqJl@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYhuESJoR/FfvLF8yW6kUG0lJ0R7mb4Ke5T/v8N7ovOFBO/dsJ
-	lKeVFBTAEt4S2VsW/09oqaEzvhv2IrzH6wRnvM0UN5owTriQRVTcXGGDIu/Dhaazq2baBaskArD
-	VRHz7nRP8vaKov4oBWvQw7VNUvzz2JrEIAg2wwA==
-X-Gm-Gg: ASbGncsA7qrWfuzQsNfEsLCafMUFsKmVdLagLJFpoCmnhgdung7LeEsfjEZWZ4ot9Bd
-	a9Zt0F/6BN82xmUgoR/Jjpt7f4PX6XAgafBm6HzPVF1lDdrzatOsL/4rjEPWC6YpGnVgzWMJSmp
-	x9mN/Hh3hNuChA92E8dHERp77XEB8=
-X-Google-Smtp-Source: AGHT+IG9mKS0iIWb3TO2ivefr79iMICflm2Da/NDX55DveFEcqxff+kn7i1aSb8ulYyq8ga428bcN003oK5dIc0IuVM=
-X-Received: by 2002:a17:907:3f17:b0:abf:6bba:9626 with SMTP id
- a640c23a62f3a-ac38f7c6017mr680301066b.12.1742384462329; Wed, 19 Mar 2025
- 04:41:02 -0700 (PDT)
+	s=arc-20240116; t=1742391670; c=relaxed/simple;
+	bh=cnlVr9ebe/wVCwlbNuUwa26VuO6b4XUGv9lN+d+DHtY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=RG8KTzAhGOTpLA2lkxYU778yj3mbx4CvXrnV+GMAYZ+5ZnieLlW/7e+l8+BnyIV4DqI5jTMDK+K64bcvcn9Dsj3uQyroColeNX3J/xfn9fXPLYQID555Cna5spswH9df9HS9vMXR8isYpbQ+x8y3iiN0YVED2OU5OZGE/HALzoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eEYeT+qc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E237C4CEE9;
+	Wed, 19 Mar 2025 13:41:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742391670;
+	bh=cnlVr9ebe/wVCwlbNuUwa26VuO6b4XUGv9lN+d+DHtY=;
+	h=From:Subject:Date:To:Cc:From;
+	b=eEYeT+qcfd4uvezcRWIjLe+o9miRa24DnCspF5gb0r9Nis+WxpC1eQUTRNjdKGIzJ
+	 LdpnOPB1UGc/1szYyYgGSLLflN8zGB0ytY5XyLoc9hsGFKhlJx5dzAuPGRirDGtjK4
+	 Uo67Vb29HxS7tmxYncjGDc8CLpNdMRKayoZIh0IOKnf20zBPmzwtlE+WujHjuFZIS+
+	 HatGyMshr/T6Yjvgoi1vEXtwfLn1eq12e3YpvEmyt5XIbmob78EZhOqE0q64cjehkD
+	 3T1CH1u9ku0xtqd0Hxw1UUf4VE3tos/FVQPkbLoQQRDY0s/JL9xZQbrl6cLJsPpjjo
+	 JQmaCCAC+vAiw==
+From: Roger Quadros <rogerq@kernel.org>
+Subject: [PATCH net-next 0/9] net: ethernet: ti: am65-cpsw: add network
+ flow classification support
+Date: Wed, 19 Mar 2025 15:38:26 +0200
+Message-Id: <20250319-am65-cpsw-rx-class-v1-0-2bfded07490e@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250312121712.1168007-1-ulf.hansson@linaro.org>
- <CAOCHtYjGuw9szeChihrDZ39_2+w5xOverbp6mAjjLjR=QkK1zg@mail.gmail.com>
- <CAPDyKFqPdDjoECXeBqx0P+fpbgVN1g_jWM2fQiH8Mw6HGMSPNA@mail.gmail.com> <20250319035911.GB4957@atomide.com>
-In-Reply-To: <20250319035911.GB4957@atomide.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Wed, 19 Mar 2025 12:40:24 +0100
-X-Gm-Features: AQ5f1JoOnwE3rFuTS8HijWcK8WnN5Pk8S5_GLHE89xJrW0hiLHYLTnkhrSGUYQg
-Message-ID: <CAPDyKFpFcL=c2g72tHJUJbKYZqoxZ_puVy+hYMByGRFFN7n=ew@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-omap: Disable MMC_CAP_AGGRESSIVE_PM for eMMC/SD
-To: Tony Lindgren <tony@atomide.com>
-Cc: Robert Nelson <robertcnelson@gmail.com>, linux-mmc@vger.kernel.org, 
-	Adrian Hunter <adrian.hunter@intel.com>, Vignesh Raghavendra <vigneshr@ti.com>, 
-	David Owens <daowens01@gmail.com>, Romain Naour <romain.naour@smile.fr>, 
-	Andrei Aldea <andrei@ti.com>, Judith Mendez <jm@ti.com>, linux-omap@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANTI2mcC/x3MwQqDMAyA4VeRnBfIlAbcq4wdujZqQDtpxBXEd
+ 7d4/A7/f4BJVjF4NQdk2dX0lyqejwbC5NMoqLEaWmoddeTQL+wwrPbHXDDM3gyZmYgH/+1jhBq
+ uWQYt9/QNSTZMUjb4nOcF84ja624AAAA=
+To: Siddharth Vadapalli <s-vadapalli@ti.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Russell King <linux@armlinux.org.uk>, danishanwar@ti.com
+Cc: srk@ti.com, linux-omap@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Roger Quadros <rogerq@kernel.org>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2954; i=rogerq@kernel.org;
+ h=from:subject:message-id; bh=cnlVr9ebe/wVCwlbNuUwa26VuO6b4XUGv9lN+d+DHtY=;
+ b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBn2slvwVxmRCQ3frCx1k2HBzsf4mqIzoYZp8KWX
+ 3mcTHmr9lqJAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCZ9rJbwAKCRDSWmvTvnYw
+ kwp/D/9IG17RvJG56TYva7/akiHCu6fxevUOlzC7AdyLuq91ev6Np4by+dGe0Durm3XoVpuI+lK
+ KQE99ChNiltKbd6kXffFBclipZSZ8eh2hrMrqS5saxlEY5uCU2MWI5MLcuEP/eHWIU3fhqgQxuy
+ 2+DcjzWuxEsDWXFf41aPYwkwzMR+vZ/hYR8/x0+UtaPeI6iSrEjkLIjmi8XMX+2iSgCZAkwTpqw
+ MhZFo2vQlnDNAfJSi5qvfRVBkdWFb2KiT3yn+SPbiLd0HANy0yO6EIjfQ8+nrtVWJctPvlIVALn
+ VJOZQ0HZFBUuYxDZ3Qba6gwcVETIhUjqsHkN7qUAu5E6lLSCAby4nol81ANaG4hLhmGun2jPWTF
+ IfbhdLbG7FgqBkss4+bp6PWhd2XXul4oj4YAf0wcWbhv+Mn9u7Q1+zPhlBHqgo5wAQBKN9YKiAw
+ m2gxfwWiozlW7ppeVxh9RmsgzltJON2zQqtn6A4yCAEwjiPG5ri0doe0GwnUzGIfyO5cR1RpAwd
+ 1DJPNzRXxMHMQ3i6JqvUH/4Mjlwk713IJNdCU+XG1a+u04BBSG9v95I1uVb6WUIVdci8hbUqilg
+ zPGf5U3Iz2FLHLTDUvp9iQlpaXVT+Ye6muq5s6wiM0FD4Qx+emsjTHEzxLv7YIWP6hrv+HMONkG
+ +kccwIyZ7NGZYEQ==
+X-Developer-Key: i=rogerq@kernel.org; a=openpgp;
+ fpr=412165D44C9F52780FAB1058D25A6BD3BE763093
 
-On Wed, 19 Mar 2025 at 04:59, Tony Lindgren <tony@atomide.com> wrote:
->
-> * Ulf Hansson <ulf.hansson@linaro.org> [250317 10:51]:
-> > On Sun, 16 Mar 2025 at 21:54, Robert Nelson <robertcnelson@gmail.com> w=
-rote:
-> > >
-> > > On Wed, Mar 12, 2025 at 7:17=E2=80=AFAM Ulf Hansson <ulf.hansson@lina=
-ro.org> wrote:
-> > > >
-> > > > We have received reports about cards can become corrupt related to =
-the
-> > > > aggressive PM support. Let's make a partial revert of the change th=
-at
-> > > > enabled the feature.
-> > > >
-> > > > Reported-by: David Owens <daowens01@gmail.com>
-> > > > Reported-by: Romain Naour <romain.naour@smile.fr>
-> > > > Reported-by: Robert Nelson <robertcnelson@gmail.com>
-> > > > Tested-by: Robert Nelson <robertcnelson@gmail.com>
-> > > > Fixes: 3edf588e7fe0 ("mmc: sdhci-omap: Allow SDIO card power off an=
-d enable aggressive PM")
-> > > > Cc: stable@vger.kernel.org
-> > > > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> > > > ---
-> > > >  drivers/mmc/host/sdhci-omap.c | 4 ++--
-> > > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > > >
-> > > > diff --git a/drivers/mmc/host/sdhci-omap.c b/drivers/mmc/host/sdhci=
--omap.c
-> > > > index 54d795205fb4..26a9a8b5682a 100644
-> > > > --- a/drivers/mmc/host/sdhci-omap.c
-> > > > +++ b/drivers/mmc/host/sdhci-omap.c
-> > > > @@ -1339,8 +1339,8 @@ static int sdhci_omap_probe(struct platform_d=
-evice *pdev)
-> > > >         /* R1B responses is required to properly manage HW busy det=
-ection. */
-> > > >         mmc->caps |=3D MMC_CAP_NEED_RSP_BUSY;
-> > > >
-> > > > -       /* Allow card power off and runtime PM for eMMC/SD card dev=
-ices */
-> > > > -       mmc->caps |=3D MMC_CAP_POWER_OFF_CARD | MMC_CAP_AGGRESSIVE_=
-PM;
-> > > > +       /*  Enable SDIO card power off. */
-> > > > +       mmc->caps |=3D MMC_CAP_POWER_OFF_CARD;
-> > > >
-> > > >         ret =3D sdhci_setup_host(host);
-> > > >         if (ret)
-> > > > --
-> > > > 2.43.0
-> > > >
-> > >
-> > > Thanks Ulf, i also have this exact revert running on the target in ou=
-r
-> > > ci farm, i think we should be good.  But I'll validate it in 4 weeks!
-> > >
-> > > Regards,
-> > >
-> > > --
-> > > Robert Nelson
-> > > https://rcn-ee.com/
-> >
-> > Thanks Robert for helping out!
-> >
-> > In the meantime I decided to queue this up for next, to allow it to
-> > get more testing in linux-next.
->
-> Thanks looks good to me too.
->
-> Regards,
->
-> Tony
+Adds support for -N/--config-nfc ethtool command for
+configuring RX classfiers.
 
-Thanks, I have added your Reviewed-by tag too.
+Currently only raw Ethernet (flow-type ether) matching is added
+based on source/destination addresses and VLAN Priority (PCP).
 
-Kind regards
-Uffe
+The ALE policer engine is used to perform the matching and routing to
+a specific RX channel.
+
+Test cases:
+
+Increase number of RX channels to 8
+ip link set eth1 down
+ip link set eth0 down
+ethtool -L eth0 rx 8
+
+1) Ether source address test
+	ethtool -N eth0 flow-type ether src xx:yy:zz:aa:bb:cc action 5
+
+  Traffic from that address should route to channel 5
+
+2) Ether destination address test
+	ethtool -N eth0 flow-type ether src yy:zz:aa:bb:cc:dd action 4
+
+  Traffic to that address should route to channel 4
+
+3) Drop test
+	ethtool -N end0 flow-type ether src xx:yy:zz:aa:bb:cc action -1
+
+  Traffic from that address should be dropped
+
+4) VLAN PCP test
+
+on Remote create VLAN with ID 5 and all traffic mapping to required priority to test. e.g. 7
+	sudo ip link add link eno1 name eno1.5 type vlan id 5 egress-qos-map 0:7 1:7 2:7 3:7 4:7 5:7 6:7 7:7
+	sudo ifconfig eno1.5 192.168.10.1
+
+on DUT create VLAN with id 5
+	ip link add link end0 name end0.5 type vlan id 5
+	ifconfig end0.5 192.168.10.5
+
+VLAN pcp 7 vid 5 route to RX channel 6
+	ethtool -N end0 flow-type ether vlan 0xe005 action 6
+
+  Traffic from that VLAN with PCP 7 should route to channel 6
+
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+---
+Roger Quadros (9):
+      net: ethernet: ti: cpsw_ale: Update Policer fields for more ALE size/ports
+      net: ethernet: ti: cpsw_ale: return ALE index in cpsw_ale_add_vlan()
+      net: ethernet: ti: cpsw_ale: return ALE index in cpsw_ale_vlan_add_modify()
+      net: ethernet: ti: cpsw_ale: return ALE index in cpsw_ale_add_ucast()
+      net: ethernet: ti: cpsw_ale: add cpsw_ale_policer_reset_entry()
+      net: ethernet: ti: cpsw_ale: add cpsw_ale_policer_set/clr_entry()
+      net: ethernet: ti: cpsw_ale: add policer save restore for PM sleep
+      net: ethernet: ti: am65-cpsw: add network flow classification support
+      net: ethernet: ti: am65-cpsw: remove cpsw_ale_classifier_setup_default()
+
+ drivers/net/ethernet/ti/am65-cpsw-ethtool.c   | 348 ++++++++++++++++++++++++++
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c      |  31 ++-
+ drivers/net/ethernet/ti/am65-cpsw-nuss.h      |  16 ++
+ drivers/net/ethernet/ti/am65-cpsw-switchdev.c |   6 +-
+ drivers/net/ethernet/ti/cpsw.c                |   4 +-
+ drivers/net/ethernet/ti/cpsw_ale.c            | 221 ++++++++++------
+ drivers/net/ethernet/ti/cpsw_ale.h            |  37 ++-
+ drivers/net/ethernet/ti/cpsw_new.c            |   4 +-
+ drivers/net/ethernet/ti/cpsw_switchdev.c      |   6 +-
+ 9 files changed, 580 insertions(+), 93 deletions(-)
+---
+base-commit: 23c9ff659140f97d44bf6fb59f89526a168f2b86
+change-id: 20250305-am65-cpsw-rx-class-666006fab9dd
+
+Best regards,
+-- 
+Roger Quadros <rogerq@kernel.org>
+
 
