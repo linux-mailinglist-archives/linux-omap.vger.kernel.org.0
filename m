@@ -1,162 +1,236 @@
-Return-Path: <linux-omap+bounces-3478-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3479-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901CFA6BAAB
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Mar 2025 13:29:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BFC6A6D4FC
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Mar 2025 08:23:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5304189EC44
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Mar 2025 12:29:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED8A3188D9E1
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Mar 2025 07:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8214226CE4;
-	Fri, 21 Mar 2025 12:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143A124EF94;
+	Mon, 24 Mar 2025 07:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="i57tvl4V";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="lT051Oi2"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="AcfwUvPn"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5FF1E98EB;
-	Fri, 21 Mar 2025 12:29:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D42B153800
+	for <linux-omap@vger.kernel.org>; Mon, 24 Mar 2025 07:23:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742560153; cv=none; b=pPv104fR+xjrsgdzd4JE4DowEThDnjeeiYYWaRZ3qpQl/ndDCGtd3+KHYQP/RNH8G4/6zDAhC0tBHYsZ8fOhwhS6GTklBcBI1EjjzGYJ2ctswLO+RlBa2a5ESyqwHkT0FPtV+WQEjX6kpIdA/0s1O9NUkMdjlsL+9Pzf8BNMTsE=
+	t=1742800996; cv=none; b=u7wRZh1sSEOoclHgUeQq9v/XSsh45y57ynxxS16gEpN3kZbl1h5j2KkTAu5G8UtGCBlWBl1XmEbUko/hhMducdoRCv8Th+V9PzLCHy8jl8pBgSGuZMVdfqORtCVg4HBR7IVsQuRtgHMZeHKVxp8Ot1VcRomu65qYwNp1kZyiXnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742560153; c=relaxed/simple;
-	bh=lfdiISzEEgrO+slIfnGzPTZpHHwZmhdB5j/bOmU0rqs=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=g0+RmCgQAKFVfXNrn4mYD7fiej19PSnYZ9xpfec8KvffpvAhD1Jcg3l5QeTWWTJcD+1dAWT0YPcFz3ZZwDY+bOfHaL+HPqA7LH1UyfYCs+k2nPAXQBXSYphhV1UPt/E2xAKOk3uMqdjDswzUdkHaagF1WXxO0Rgq/paRe2bGYkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=i57tvl4V; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=lT051Oi2; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
-	by mailfout.phl.internal (Postfix) with ESMTP id BBD171383770;
-	Fri, 21 Mar 2025 08:29:08 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-09.internal (MEProxy); Fri, 21 Mar 2025 08:29:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1742560148;
-	 x=1742646548; bh=N6kPZ0cFTmXIpixMnN6tF81nr1APN9wNYIh/tOxWbbw=; b=
-	i57tvl4VKDF5ha2G2v+8lAQuw6M4b1rAcdwypJljRX1jdQIIhzz0E6CEgVlFkLRO
-	QtFqzhLS998HFqJWRmkKelAQcaTcK0YLNtn49PmynzG8d5BS7EsoRVNiuYIoIn9I
-	cOiZVhYwtpQWmD2njqRcpGywgdu5+SQt/nPTb4yf8gMJbbwX9oQWrK8AkMTvoVOB
-	L9FmDRNfEoZgW12ShA0klsJ9QMNk9FrVQlr6W4xkhkSf5eGpp8IdkbpOJuEE/Qmg
-	lCPFhIGP50Wykl2lHlJ8xEpJHVYiNbUhYAS/6s/Ue5lmvLZ1GGZpHTY+Et+Yq5tZ
-	OE8D5fzFZEcdRDWUcd+hqQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1742560148; x=
-	1742646548; bh=N6kPZ0cFTmXIpixMnN6tF81nr1APN9wNYIh/tOxWbbw=; b=l
-	T051Oi2UrKbm70CTM0+WU3RQEBl8O2InYlf0qdnaHHzwk5G/DKmvmQY4V+YoDLdm
-	QJB0kaHQp9VLye/2Xf+xPqSWKQXyi08/ivcZ8uo6Mjm7/UXyd4jeDd8oB94FhdAa
-	aC2Y99wIkKUoxgxQP84BNTei34kdy6grBEl3jybYMlOFcPhV2LExykGvfGQg7QXH
-	P5QYIGouVKBsllY6pY33yrQvIxGDFhPJFKGTV00z6bwu67sOPPpsFCxVuqIIVKfM
-	Qs66jVGIffYzvn79RakI8Q67HJVtLeA8bZT2RhUYwT+Cx7EXXNC2exbfSZPdwyak
-	fA7bufMcB9yyYIgUYf9Bg==
-X-ME-Sender: <xms:kVvdZ-dvlNxtgCueP5K-X9LrgmPY6bqsjmhT2RPPYtEaSwAWAGAdAQ>
-    <xme:kVvdZ0gcXISmmqq1VzvW-zdk0qyp2ODnRZoy7qxoIXaKjL5LU_X1LWe1jWEw4F8_G
-    dd1P2hZMkrAJWbSSTA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduheduudduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
-    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
-    gsrdguvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeet
-    fefggfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohep
-    feeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehlihhnuhigsegrrhhmlhhinh
-    hugidrohhrghdruhhkpdhrtghpthhtohepthhonhihsegrthhomhhiuggvrdgtohhmpdhr
-    tghpthhtohepkhhhihhlmhgrnhessggrhihlihgsrhgvrdgtohhmpdhrtghpthhtoheprg
-    hnuhhpsegsrhgrihhnfhgruhhlthdrohhrghdprhgtphhtthhopegstghmqdhkvghrnhgv
-    lhdqfhgvvggusggrtghkqdhlihhsthessghrohgruggtohhmrdgtohhmpdhrtghpthhtoh
-    epfhhlohhrihgrnhdrfhgrihhnvghllhhisegsrhhorggutghomhdrtghomhdprhgtphht
-    thhopehrjhhuihessghrohgruggtohhmrdgtohhmpdhrtghpthhtohepshgsrhgrnhguvg
-    hnsegsrhhorggutghomhdrtghomhdprhgtphhtthhopehhvghinhhrihgthhdrshgthhhu
-    tghhrghrughtsegtrghnohhnihgtrghlrdgtohhm
-X-ME-Proxy: <xmx:kVvdZyTE_63LDgMM7nvl4LCgcIFqy_9iCOFIBpOZarDifNQuZnO2iA>
-    <xmx:kVvdZ9x64sGPKdZ2VIrCvWv-1MNkOWAp6cmotk7ZALObl9LtLLnk7A>
-    <xmx:kVvdZ9ft6EbGWl4xG5AO97oQzboLTu8b0zu7dl5RWqGY1OfLFgpFBA>
-    <xmx:kVvdZ5K36lITbTqEtI95TI43l1OeBmYuUxwKKiur1-FWuKwrE3_V5Q>
-    <xmx:lFvdZ0kCqZVFDyJTIxAcWCLqQ8EY8hX7Vh8b8wygXH59ssdCdw-ftcuY>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id CB0352220073; Fri, 21 Mar 2025 08:29:05 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1742800996; c=relaxed/simple;
+	bh=Rq5Qsj+vtD9TgfS3gUgFhd0FdKFXn64WXTOxKmO6hBs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kYNrq8NeHMrMy00oN9n49l/jwvJ7zaZ3jBMMx+wbBit6rxH3cmec13RIYt1pYqneIYTI04Jt4Sp+XOJZggSmqoA9wpYfFtYwTlv1pWBw6WEVwCsGSSPm9qesA4RB6AUE6NwppeSvEJWZDXXgjhJ/s/lQEwqsASjSBzPxYHGfCNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=AcfwUvPn; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2255003f4c6so73761125ad.0
+        for <linux-omap@vger.kernel.org>; Mon, 24 Mar 2025 00:23:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1742800993; x=1743405793; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=qe/MCCvdJLYJ3g+QnwJQUU6NC2SI4IaMPwysTrJxuV0=;
+        b=AcfwUvPnzD8feBoFMYcGQDZr8gNGhElE2P9+5TlfXfzozRkql5+6bPoYp6tG7dBJH/
+         tARAKzEXxuxrn49DEGkksvFJtgk0cXjWq4O9/ZIOKEoHlENv1NzM6+PL2eWATFdh6x+i
+         NpwqxgWRndt5AITQs6ml/xpxPGQYpLnBGdgnUaNOs5MJmqoA2+QJn0C+PyyoqBRsw/FY
+         yH5PqmuT5QIsaDh7kjEvsNlBrhUIyN/sBzk0X6b/B8M/mhL00QIkxQzZ3UZRWTw+NblC
+         Rmo2+2cu9/VOOSVVjCqjAStp81GNNP9fYEE8NmZQ9FJ/fId/YYj5kNJGBBi9tlH280h7
+         qvCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742800993; x=1743405793;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qe/MCCvdJLYJ3g+QnwJQUU6NC2SI4IaMPwysTrJxuV0=;
+        b=TV90uK0Y0qFKinOd9K0zS3kBZB9Nk1w5pCIY4pNxHl9DBXLkm3qXcKxzswOKngkBe8
+         EiUQLw2rkyWtOH0iXGgHI5+7SXj4jHCC1UaXnGTieChaeksy7hSlbavbb4WP6UGS0MIX
+         sKuiE3whKTLHnnlNlXxAE+Tknup6JjDaS3NFhjV9zwi+nk8DyqU67c3rD7HGavDV3b8K
+         WtsSEmpb9gdm7GNlP1qZDwvpa41BBb+Mpvldh2yERC8sWyKfxkcmWycKCFWJQM0w0iW3
+         11/6XUSnl07yTU1Yc8Tuo2vMpQDHX4kG2xpwEfCSwJTWdLShHvlq7cVrtIuof3U2Fk8T
+         fZcA==
+X-Forwarded-Encrypted: i=1; AJvYcCV4b8/z+6gjRGUtX5dxzuyOzXP52UpNBjLNXzQzfay/LWbeksqa3Tv1xsV8NWp8I2h0k0QHu8MzFwZ/@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxjj0uftvqwDrWxBr9ZxyfjPkLC5gNrwYvuEDuL9i6EPD7Keg0T
+	g0mfkI7V/yuCnAB8X8Mc1HNDS/4dXEQtoOm4IVdjo21rPfNvvt20ASP+xRDnVA==
+X-Gm-Gg: ASbGnct6aRuguH3rfhiQtJgl1scKgorAHwHwR8nYavOj5HDMUFUitCr/heoYh0NVWfY
+	7UNtt8UnFuDwAaXgkRr6au9q6tJj5o4Ex84Roi1THUpm5MC8zwUSmmyZxmZiOvF5Zhw6yAGn1rk
+	5Z50+gTGh8VcrMbYi3aQ3BetuSFxZQhpg4f0WkyKvaygyI+2h9+eiCMF6KGMMDHpB4lg83Nqtjc
+	HmY+Aqc0k2216xZ7WUsHxz99tQ14QshPn48HrIHwB4KDVzyunvYLip4F1xgh6CtX095mXuRjjEV
+	kxwU7yDKb1cyMNMuvOYFISeVPrc6shbBw16/VJtZxrdwMLKF9AiC4EYFGbX/Elu+Tkc=
+X-Google-Smtp-Source: AGHT+IEVDoBTCHOODzvBGMAnc/Iok1j6AhaExydrGDQgnCUirKAYBNkCKwG2t70sQoq1tMM3o02m1Q==
+X-Received: by 2002:a17:903:230d:b0:220:e9ac:e746 with SMTP id d9443c01a7336-22780e46648mr200826765ad.53.1742800992590;
+        Mon, 24 Mar 2025 00:23:12 -0700 (PDT)
+Received: from thinkpad ([220.158.156.91])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22781208966sm63304325ad.254.2025.03.24.00.23.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Mar 2025 00:23:12 -0700 (PDT)
+Date: Mon, 24 Mar 2025 12:53:05 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Tony Lindgren <tony@atomide.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Vignesh Raghavendra <vigneshr@ti.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH PATCH RFC NOT TESTED 1/2] ARM: dts: ti: dra7: Correct
+ ranges for PCIe and parent bus nodes
+Message-ID: <hhvst2uvlymcyir5sb5vwd4ezko7yawwp5cnosluaz2hkabcna@ywr4thtjpdps>
+References: <20250305-dra-v1-0-8dc6d9a0e1c0@nxp.com>
+ <20250305-dra-v1-1-8dc6d9a0e1c0@nxp.com>
+ <20250313165311.2fj7aus3pcsg4m2c@thinkpad>
+ <20250314064642.fyf3jqylmc6meft7@uda0492258>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: Td2a26421dc1a91fa
-Date: Fri, 21 Mar 2025 13:28:43 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Thierry Reding" <thierry.reding@gmail.com>
-Cc: "Celeste Liu" <uwu@coelacanthus.name>,
- "Paul Walmsley" <paul.walmsley@sifive.com>,
- "Palmer Dabbelt" <palmer@dabbelt.com>,
- "Albert Ou" <aou@eecs.berkeley.edu>, guoren <guoren@kernel.org>,
- "Anup Patel" <anup@brainfault.org>,
- "Heinrich Schuchardt" <heinrich.schuchardt@canonical.com>,
- "Huacai Chen" <chenhuacai@kernel.org>, "WANG Xuerui" <kernel@xen0n.name>,
- "Yoshinori Sato" <ysato@users.sourceforge.jp>,
- "Rich Felker" <dalias@libc.org>,
- "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
- "Russell King" <linux@armlinux.org.uk>,
- "Florian Fainelli" <florian.fainelli@broadcom.com>,
- "Broadcom internal kernel review list"
- <bcm-kernel-feedback-list@broadcom.com>, "Ray Jui" <rjui@broadcom.com>,
- "Scott Branden" <sbranden@broadcom.com>,
- "Tony Lindgren" <tony@atomide.com>, "Jon Hunter" <jonathanh@nvidia.com>,
- "Aaro Koskinen" <aaro.koskinen@iki.fi>,
- "Andreas Kemnade" <andreas@kemnade.info>,
- "Kevin Hilman" <khilman@baylibre.com>,
- "Roger Quadros" <rogerq@kernel.org>,
- "Palmer Dabbelt" <palmer@rivosinc.com>, linux-riscv@lists.infradead.org,
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
- linux-sh@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rpi-kernel@lists.infradead.org,
- Linux-OMAP <linux-omap@vger.kernel.org>, linux-tegra@vger.kernel.org,
- "Stefan Wahren" <wahrenst@gmx.net>,
- "Thierry Reding" <treding@nvidia.com>, soc@lists.linux.dev
-Message-Id: <5fd4f314-e570-4b37-b7c2-af5b4bc85a39@app.fastmail.com>
-In-Reply-To: 
- <t2dustbykx2qd24wazjeiw5hch5nwr6z2ewmaf4srg6r2grwrf@rdw47chzkef2>
-References: 
- <20250115-fix-riscv-rt_group_sched-v4-0-607606fe73a5@coelacanthus.name>
- <20250115-fix-riscv-rt_group_sched-v4-4-607606fe73a5@coelacanthus.name>
- <t2dustbykx2qd24wazjeiw5hch5nwr6z2ewmaf4srg6r2grwrf@rdw47chzkef2>
-Subject: Re: [PATCH v4 4/4] arm: defconfig: drop RT_GROUP_SCHED=y from
- bcm2835/tegra/omap2plus
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250314064642.fyf3jqylmc6meft7@uda0492258>
 
-On Thu, Mar 6, 2025, at 20:19, Thierry Reding wrote:
-> On Wed, Jan 15, 2025 at 04:41:23AM +0800, Celeste Liu wrote:
->> ---
->>  arch/arm/configs/bcm2835_defconfig   | 1 -
->>  arch/arm/configs/omap2plus_defconfig | 1 -
->>  arch/arm/configs/tegra_defconfig     | 1 -
->>  3 files changed, 3 deletions(-)
->
-> Hi Arnd,
->
-> is this something that you could pick up? I think so far only the RISC-V
-> patch was picked up, but nobody seems to feel responsible for the ARM
-> patch here.
+On Fri, Mar 14, 2025 at 12:16:42PM +0530, Siddharth Vadapalli wrote:
+> On Thu, Mar 13, 2025 at 10:23:11PM +0530, Manivannan Sadhasivam wrote:
+> 
+> Hello Mani,
+> 
+> > On Wed, Mar 05, 2025 at 11:20:22AM -0500, Frank Li wrote:
+> > 
+> > If you want a specific patch to be tested, you can add [PATCH RFT] tag.C
+> > 
+> > > According to code in drivers/pci/controller/dwc/pci-dra7xx.c
+> > > 
+> > > dra7xx_pcie_cpu_addr_fixup()
+> > > {
+> > > 	return cpu_addr & DRA7XX_CPU_TO_BUS_ADDR;  //0x0FFFFFFF
+> > > }
+> > > 
+> > > PCI parent bus trim high 4 bits address to 0. Correct ranges in
+> > > target-module@51000000 to algin hardware behavior, which translate PCIe
+> > > outbound address 0..0x0fff_ffff to 0x2000_0000..0x2fff_ffff.
+> > > 
+> > > Set 'config' and 'addr_space' reg values to 0.
+> > > Change parent bus address of downstream I/O and non-prefetchable memory to
+> > > 0.
+> > > 
+> > > Ensure no functional impact on the final address translation result.
+> > > 
+> > > Prepare for the removal of the driver’s cpu_addr_fixup().
+> > > 
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > >  arch/arm/boot/dts/ti/omap/dra7.dtsi | 18 +++++++++---------
+> > >  1 file changed, 9 insertions(+), 9 deletions(-)
+> > > 
+> > > diff --git a/arch/arm/boot/dts/ti/omap/dra7.dtsi b/arch/arm/boot/dts/ti/omap/dra7.dtsi
+> > > index b709703f6c0d4..9213fdd25330b 100644
+> > > --- a/arch/arm/boot/dts/ti/omap/dra7.dtsi
+> > > +++ b/arch/arm/boot/dts/ti/omap/dra7.dtsi
+> > > @@ -196,7 +196,7 @@ axi0: target-module@51000000 {
+> > >  			#size-cells = <1>;
+> > >  			#address-cells = <1>;
+> > >  			ranges = <0x51000000 0x51000000 0x3000>,
+> > > -				 <0x20000000 0x20000000 0x10000000>;
+> > > +				 <0x00000000 0x20000000 0x10000000>;
+> > 
+> > I'm not able to interpret this properly. So this essentially means that the
+> > parent address 0x20000000 is mapped to child address 0x00000000. And the child
+> > address is same for other controller as well.
+> > 
+> > Also, the cpu_addr_fixup() is doing the same by masking out the upper 4 bits. I
+> > tried looking into the DRA7 TRM, but it says (ECAM_Param_Base_Addr +
+> > 0x20000000) where ECAM_Param_Base_Addr = 0x0000_0000 to 0x0FFF_F000.
+> > 
+> > I couldn't relate TRM with the cpu_addr_fixup() callback. Can someone from TI
+> > shed light on this?
+> 
+> A "git blame" on the line being modified in dra7.dtsi gives the
+> following commit:
+> https://github.com/torvalds/linux/commit/c761028ef5e2
+> prior to which the ranges is exactly the same as the one being added by
+> this patch.
+> 
+> The cpu_addr_fixup() function was introduced by the following commit:
+> https://github.com/torvalds/linux/commit/2ed6cc71e6f7
+> with the reason described in
+> Section 24.9.4.3.2 PCIe Controller Slave Port
+> of the T.R.M. at:
+> https://www.ti.com/lit/ug/spruic2d/spruic2d.pdf
+> ---------------------------------------------------------------------------
+> NOTE:
+> The PCIe controller remains fully functional, and able to send transactions
+> to, for example, anywhere within the 64-bit PCIe memory space, with the
+> appropriate remapping of the 28-bit address by the outbound address
+> translation unit (iATU). The limitation is that the total size of addressed
+> PCIe regions (in config, memory, IO spaces) must be less than 2^28 bytes.
+> ---------------------------------------------------------------------------
+> 
+> The entire sequence is:
+> 0) dra7.dtsi had ranges which match the ranges in the current patch.
+> 1) cpu_addr_fixup() was added by
+> https://github.com/torvalds/linux/commit/2ed6cc71e6f7
+> 2) ranges was updated to <0x20000000 0x20000000 0x10000000> by:
+> https://github.com/torvalds/linux/commit/c761028ef5e2
+> 3) ranges is being changed back to its original state of "0)" above.
+> 
 
-I've merged it now after going through stuff in my inbox. It's
-generally ok for patches like this one to be forwarded to
-soc@lists.linux.dev where they end up in patchwork for me to apply,
-in case you don't want it to get lost.
+Thanks a lot for the reference.
 
-     Arnd
+> cpu_addr_fixup() was introduced to remove the following:
+> 	pp->io_base &= DRA7XX_CPU_TO_BUS_ADDR;
+> 	pp->mem_base &= DRA7XX_CPU_TO_BUS_ADDR;
+> 	pp->cfg0_base &= DRA7XX_CPU_TO_BUS_ADDR;
+> 	pp->cfg1_base &= DRA7XX_CPU_TO_BUS_ADDR;
+> in dra7xx_pcie_host_init(). The reason for the above is mentioned in the
+> "NOTE" as:
+> ---------------------------------------------------------------------------
+> The limitation is that the total size of addressed PCIe regions
+> (in config, memory, IO spaces) must be less than 2^28 bytes.
+> ---------------------------------------------------------------------------
+> 
+
+I don't think so. This note is for the *size* of the addressed regions. The
+fixup corresponds to the sentence in your above note from TRM:
+
+"able to send transactions to, for example, anywhere within the 64-bit PCIe
+memory space, with the appropriate remapping of the 28-bit address by the
+outbound address translation unit (iATU)"
+
+I think the limitation is due to the 29-bit address bus width of the PCIe
+controller slave port as mentionend in section, 24.9.4.3.2. And that correlates
+to the truncation of the upper 4 bits of the IO/CFG/MEM addresses. So even if
+the CPU passes address range relative to offset 0, PCIe controller converts it
+to 0x20000000/0x30000000 based on the instance.
+
+If my understanding is correct, then commit, c761028ef5e2 should be reverted and
+this patch can be applied.
+
+> I am not sure if Frank is accounting for all of this in the current patch
+> as well as the dependent patch series associated with removing
+> cpu_addr_fixup().
+> 
+> Regarding testing the series, I unfortunately don't have the hardware so
+> I cannot test it.
+> 
+
+That's a pity. If TI employee doesn't have access to an upstream supported
+platform, then I'm not sure whom we should ask for testing.
+
+Could you please ask around and see if you can get access to one? I'm sure that
+the hardware will be available somewhere :)
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
