@@ -1,277 +1,125 @@
-Return-Path: <linux-omap+bounces-3492-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3493-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A28CA7071C
-	for <lists+linux-omap@lfdr.de>; Tue, 25 Mar 2025 17:40:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4650A7092A
+	for <lists+linux-omap@lfdr.de>; Tue, 25 Mar 2025 19:42:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB64316B636
-	for <lists+linux-omap@lfdr.de>; Tue, 25 Mar 2025 16:36:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7017D7A488A
+	for <lists+linux-omap@lfdr.de>; Tue, 25 Mar 2025 18:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC881A01B0;
-	Tue, 25 Mar 2025 16:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B8431C84DD;
+	Tue, 25 Mar 2025 18:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Gm7A+yRb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nKEpl6PW"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22EC25D521
-	for <linux-omap@vger.kernel.org>; Tue, 25 Mar 2025 16:36:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEB41C6FFF;
+	Tue, 25 Mar 2025 18:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742920603; cv=none; b=pv+OTQdSkZtBfUwpUiM7YAH/cRbK8TPVAuD27EQ0oFIIyYmEDbWHqDn6cOXYxVeLPe2gxMPpEqnN6kTCP+G/M139EeT8aw4SjxAvZO5Nw4JPzWvtWPju2ohZ9bW4re/kN3GB+VJqwI8Y4r1E/h+Xcq9r7h63Izj8CmfaPtChN7g=
+	t=1742928143; cv=none; b=M7o3yri7Zyp1y1uMAFZOuTmKAn1QzaNryFaFo494mRtSOjh8J5HQ9iG7J5vm2tAyOn2oqpd1K0GWYQAOb0DNajL1r/4YU1bsjiAYYyx2i090166bdtnNz8lrzgTi7UdWwCjv4tMxF7/4J96YjJP1wvtrQytR6uC9xdiF8FhEvI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742920603; c=relaxed/simple;
-	bh=BVF6tvcpehD4+H6Zap8OoyqkRDaTorodX42PsoJ5H/I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XgEx9AhwlPe/cuVc9zewl10G9j30I1KXBP2pctPOFbHE0TPaIdrtH7Sb81QayEh5bgfHLBpqE8sZGx6hAeyeBm62PnjUbb4ZjHBmBYUXkKIXXw1hvigE2oL4+CJjjAk4aSC50LPM1ZSwMLQd5waAxEBqpl7eUnfSxXp74algNwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Gm7A+yRb; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-224171d6826so47456205ad.3
-        for <linux-omap@vger.kernel.org>; Tue, 25 Mar 2025 09:36:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1742920600; x=1743525400; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=x45WNxy+GXjRDdBoNfsMrlZpihQlvBlFRGtpBrd99JI=;
-        b=Gm7A+yRb2YKzS8G2j05WT9blXwkK1Vqgx13gbNEzJ87B1AM7QXoUaqTEUJAO9Ny8vp
-         9TffEpyYM/Bbc9cvqYA/BwVf7G7T6JUe6v4sPNUDrQVpLtUYSrIwoLZpZwSkm9JxvojS
-         t5eo4xY5wukC3c6bwM+2tP7+RvPA09/vGyM86pOOPa+Sq8X959pcIj3xluZodSMnjFA7
-         FeC/XGrvvzfPS/1BHYbhxZt/9aIibU8+qh1rWss0jr4Na+ruJ41ctJdGEju5QWnIHVsn
-         h/1Gzh/V3Ui8lMKCNkpxEK/SikbjYa4u5yJKw+Su0GaJeSPUr1/rySRU/lxzASdLVpjI
-         fSAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742920600; x=1743525400;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=x45WNxy+GXjRDdBoNfsMrlZpihQlvBlFRGtpBrd99JI=;
-        b=h2q0h9+eD5AnsIW2vSP6q7cLR5RDoiAPzFSfqtNVgVPh1R1rB26/ogl/Jl9ABfhe6A
-         CZG3yzkG5F190GVTEd7DLWVA6vQyFgubX11E352Renh7tV5/9SwI0PoXr3a1wUXmV5tJ
-         NKML4jOivhXuhtoOl+qhxPeD3IrTbq3BTWE/gnoGYN9U18rPX9jcuZhZ0PsctQWh8EBW
-         wWtp4wktxk3pngikvWQCS2uzVO6fMjB1TFW/AvDG6iyqR+jqnVUYcbmAsWetPD6eQUAO
-         dZdarzGNLchblJ3zOCWpm0UL3tnx8NYga7YKwmO+LtURVgk78K9gSpR07vG66ZatDEhf
-         c4aQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUE/febIcnc2xBsV4rYMTC8lgwdqnf77txxX1C8oKuxUlXb5IB6zj8s7Wl13xa5NjClh0lA24pFnQja@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKVyill0nphFwjbUcjTCkhTw+lHi6vWp6t/19jbJKPa900ffsX
-	irnCQb8mqrZHOH277wXL9Igw11ymfiDJHxKKilKoDsHoQoHEPgsyVdknlLDO4w==
-X-Gm-Gg: ASbGncs6VYiklZEzyKOoS/aaeSJQiJ2jplq9VedsO07uqQiVvjvi4hRe6e/fCa/R1/g
-	ZWE5fdDqYPgayl4iNpjhpFUMQ+XsT/NNs7KzlC1dEZM4VeJztnGbC3KK+gqRSzBZWhbzDIIFNJK
-	xiACGsi3qB1bIMwWTfW49ddIFhv8YgkgEUHRa+dDR0jjaXbXJsyBFeP0ilXWJVwNKU6f7c+flDW
-	HfiFLiAieJh7ij8cTizjDDsSaX3hJnkivq8fcQsH8eOEIUkHt6QcZhKGvwIfee6Pd4Gruu3sfM/
-	JJshyHx30maFI2Nsowul9bdN3eWZS9JKzbVV86h25oFfW81K23sLff+r
-X-Google-Smtp-Source: AGHT+IEVZf3cjT/H7LfymK6hzxUjvfOQ2dA0kGMvfu5BvFoGp9VVlRIweYBC+Rpqfm4TthlGV5Mt8g==
-X-Received: by 2002:a17:90b:1f8d:b0:2ff:72f8:3708 with SMTP id 98e67ed59e1d1-3030fea9024mr30752421a91.17.1742920599697;
-        Tue, 25 Mar 2025 09:36:39 -0700 (PDT)
-Received: from thinkpad ([120.60.136.104])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-301bf61a49bsm14597634a91.34.2025.03.25.09.36.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Mar 2025 09:36:39 -0700 (PDT)
-Date: Tue, 25 Mar 2025 22:06:32 +0530
-From: 
-	"manivannan.sadhasivam@linaro.org" <manivannan.sadhasivam@linaro.org>
-To: Hans Zhang <hans.zhang@cixtech.com>
-Cc: Peter Chen <peter.chen@cixtech.com>, 
-	Siddharth Vadapalli <s-vadapalli@ti.com>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>, 
-	"kw@linux.com" <kw@linux.com>, "robh@kernel.org" <robh@kernel.org>, 
-	"bhelgaas@google.com" <bhelgaas@google.com>, "vigneshr@ti.com" <vigneshr@ti.com>, 
-	"kishon@kernel.org" <kishon@kernel.org>, "cassel@kernel.org" <cassel@kernel.org>, 
-	"wojciech.jasko-EXT@continental-corporation.com" <wojciech.jasko-EXT@continental-corporation.com>, "thomas.richard@bootlin.com" <thomas.richard@bootlin.com>, 
-	"bwawrzyn@cisco.com" <bwawrzyn@cisco.com>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
-	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "srk@ti.com" <srk@ti.com>
-Subject: Re: [PATCH 0/4] Loadable Module support for PCIe Cadence and J721E
-Message-ID: <2sxwud7mllpbtymfvlw5sshv3fhz3rpk37x23x5ywpzle2qlg4@7bsqhcimnfqp>
-References: <20250307103128.3287497-1-s-vadapalli@ti.com>
- <Z9pffxeXHVOsoi4O@nchen-desktop>
- <20250319062534.ollh3s5t7znf5zqs@uda0492258>
- <Z9qO1f5MgNcwO5A4@nchen-desktop>
- <20250319095511.hf3y2c6vbbnm3ien@thinkpad>
- <a8966792-fa0e-4e8e-aceb-427819ae4ef5@cixtech.com>
- <bkw4xm4jwe3iuf6sixxl4udosea3bhlwogfua66naf5echbyzv@dlwcbscedh6w>
- <96940e1e-a395-49bc-ac29-7ca86bfb8ad7@cixtech.com>
+	s=arc-20240116; t=1742928143; c=relaxed/simple;
+	bh=RI1RQHO9FjldRw7o5gAktMtDyBAOjmrgGePPNYt8SLI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=U5+ltyrk9d2kPzrzoUqkFz+Va2AdOqk1OEa/p2b5K/Xr/bO59TryZYAACWZshRDwapayMote8UMTxw0RtWzZ5RfkZ8yK/Nm/9WMXl3iKxqiG+Zcdn/L8pD+XyGVCF04ESAqS7nnjJqGA+F3xBGk6C6EHRcTgOlga5OjSbOxOLNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nKEpl6PW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CEBEC4CEE8;
+	Tue, 25 Mar 2025 18:42:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742928143;
+	bh=RI1RQHO9FjldRw7o5gAktMtDyBAOjmrgGePPNYt8SLI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nKEpl6PW5QIHWAXKYD0+NQM3ZdbnG4l58Jg9RiavmImkRwaz5HrjqMIkSRjHOAJWp
+	 9Sxk7JAfKGmnraNEY1+wsH+0IW7c0+Io6sfogYQ9RPBUl0DA8lo+3A7y5O4ZGOVcQ/
+	 NqGrcxT/vxENQmo44xHZJbJclZcFsTwRvyP0NRkbJ+E5NNbXVu93uDGYaVygRUVuAU
+	 gSbOv2/nlX7x1UFpEV253B9j4D3S3XOdaUl3teTDIa8NP2y3zuP+WSi/4f1vYt4HLZ
+	 FnXXwuk0P8qDATkFFY51bFMT3QcbyzDeYWBti1z4Egb4iqBTq241FTq+OXWNCC+L8H
+	 NIPk47943BXHw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Roger Quadros <rogerq@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sasha Levin <sashal@kernel.org>,
+	tony@atomide.com,
+	krzk@kernel.org,
+	linux-omap@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 2/7] memory: omap-gpmc: drop no compatible check
+Date: Tue, 25 Mar 2025 14:42:10 -0400
+Message-Id: <20250325184215.2152123-2-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250325184215.2152123-1-sashal@kernel.org>
+References: <20250325184215.2152123-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.13.8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <96940e1e-a395-49bc-ac29-7ca86bfb8ad7@cixtech.com>
 
-On Wed, Mar 26, 2025 at 12:03:01AM +0800, Hans Zhang wrote:
-> 
-> 
-> On 2025/3/25 23:26, manivannan.sadhasivam@linaro.org wrote:
-> > EXTERNAL EMAIL
-> > 
-> > On Thu, Mar 20, 2025 at 10:14:02AM +0800, hans.zhang wrote:
-> > > 
-> > > 
-> > > On 2025/3/19 17:55, manivannan.sadhasivam@linaro.org wrote:
-> > > > EXTERNAL EMAIL
-> > > > 
-> > > > On Wed, Mar 19, 2025 at 05:31:01PM +0800, Peter Chen wrote:
-> > > > > On 25-03-19 14:25:34, Siddharth Vadapalli wrote:
-> > > > > > > > 
-> > > > > > > > Hello,
-> > > > > > > > 
-> > > > > > > > This series enables support to build the PCIe Cadence Controller drivers
-> > > > > > > > and the PCI J721E Application/Wrapper/Glue driver as Loadable Kernel
-> > > > > > > > Modules. The motivation for this series is that PCIe is not a necessity
-> > > > > > > > for booting the SoC, due to which it doesn't have to be a built-in
-> > > > > > > > module. Additionally, the defconfig doesn't enable the PCIe Cadence
-> > > > > > > > Controller drivers and the PCI J721E driver, due to which PCIe is not
-> > > > > > > > supported by default. Enabling the configs as of now (i.e. without this
-> > > > > > > > series) will result in built-in drivers i.e. a bloated Linux Image for
-> > > > > > > > everyone who doesn't have the PCIe Controller.
-> > > > > > > 
-> > > > > > > If the user doesn't enable PCIe controller device through DTS/ACPI,
-> > > > > > > that's doesn't matter.
-> > > > > > 
-> > > > > > The Linux Image for arm64 systems built using:
-> > > > > > arch/arm64/configs/defconfig
-> > > > > > will not have support for the Cadence PCIe Controller and the PCIe J721e
-> > > > > > driver, because these configs aren't enabled.
-> > > > > > 
-> > > > > > > 
-> > > > > > > > @@ -209,6 +209,12 @@ CONFIG_NFC=m
-> > > > > > > >    CONFIG_NFC_NCI=m
-> > > > > > > >    CONFIG_NFC_S3FWRN5_I2C=m
-> > > > > > > >    CONFIG_PCI=y
-> > > > > > > > +CONFIG_PCI_J721E=m
-> > > > > > > > +CONFIG_PCI_J721E_HOST=m
-> > > > > > > > +CONFIG_PCI_J721E_EP=m
-> > > > > > > > +CONFIG_PCIE_CADENCE=m
-> > > > > > > > +CONFIG_PCIE_CADENCE_HOST=m
-> > > > > > > > +CONFIG_PCIE_CADENCE_EP=m
-> > > > > > > 
-> > > > > > > The common Cadence configuration will be select if the glue layer's
-> > > > > > > configuration is select according to Kconfig.
-> > > > > > > 
-> > > > > > > Please do not set common configuration as module, some user may need
-> > > > > > > it as build-in like dw's. Considering the situation, the rootfs is at
-> > > > > > > NVMe.
-> > > > > > 
-> > > > > > The common configuration at the moment is "DISABLED" i.e. no support for
-> > > > > > the Cadence Controller at all. Which "user" are you referring to? This
-> > > > > > series was introduced since having the drivers built-in was pushed back at:
-> > > > > 
-> > > > > We are using Cadence controller, and prepare upstream radxa-o6 board
-> > > > > whose rootfs is at PCIe NVMe.
-> > > > > 
-> > > > 
-> > > > It doesn't matter. Only criteria AFAIK to build the driver as built-in in
-> > > > defconfig is that it should be a depedency for console. For some time, storage
-> > > > was also a dependency, but for sure PCIe is not.
-> > > > 
-> > > > Moreover, CONFIG_BLK_DEV_NVME is built as a module in ARM64 defconfig. So it
-> > > > doesn't matter if you build PCIe controller driver as a built-in or not. You
-> > > > need to load the NVMe driver somehow.
-> > > > 
-> > > > So please use initramfs.
-> > > > 
-> > > > > You could build driver as module for TI glue layer, but don't force
-> > > > > other vendors using module as well, see dwc as an example please.
-> > > > > 
-> > > > 
-> > > > DWC is a bad example here. Only reason the DWC drivers are not loadable is due
-> > > > to the in-built MSI controller implementation as irqchip. People tend to build
-> > > > the irqchip controllers as always built-in for some known issues. Even then some
-> > > > driver developers prefer to built them as loadable module but suppress unbind to
-> > > > avoid rmmoding the module.
-> > > Hi Mani,
-> > > 
-> > > I think the MSI RTL module provided by Synopsys PCIe controller IP is not a
-> > > standard operation. The reason for this MSI module is probably to be used by
-> > > some cpus that do not have ITS(LPI interrupt) designed. Or RISC-V SOC, etc.
-> > > MSI is defined as an MSI/MSIX interrupt that starts with a direct write
-> > > memory access.
-> > > 
-> > 
-> > Yeah, DWC MSI controller is not a great design. The older ones are even more
-> > horrible (using SPI interrupts for reporting AERs etc...).
-> 
-> Hi Mani,
-> 
-> Currently Synopsys and Cadence provide SPI interrupts for reporting AERs
-> etc... This IP vendor only provides an alternative approach that actually
-> requires SOC design companies to design according to PCIe SPEC and conform
-> to linux OS software behavior.
-> 
-> I have a way to workaround AER is SPI interrupt. It can also use aer.c
-> drivers. However, I have been afraid to submit patch, because this is a
-> problem of SOC designers themselves, which does not conform to the port
-> driver of linux os (aer.c). So it will certainly not be accepted.
-> 
+From: Roger Quadros <rogerq@kernel.org>
 
-Right. There is not clean way afaik.
+[ Upstream commit edcccc6892f65eff5fd3027a13976131dc7fd733 ]
 
-> 
-> > 
-> > > There are also SOC vendors that do not use the built-in MSI RTL module.
-> > > Instead, MSI/MSIX interrupts are transmitted directly to the GIC's ITS
-> > > module via the GIC V3/V4 interface. For example, RK3588, they do not use the
-> > > PCIe controller built-in MSI module. Some Qualcomm platforms also modify the
-> > > PCIe controller's built-in MSI modules to connect each of them to 32 SPI
-> > > interrupts to the GIC. I was under the impression that the SDM845 was
-> > > designed that way. The only explanation is that SPI interrupts are faster
-> > > than LPI interrupts without having to look up some tables.
-> > > 
-> > 
-> > If ITS is available, platforms should make use of that. There is no way DWC MSI
-> > is superior than ITS. We are slowly migrating the Qcom platforms to use ITS.
-> > 
-> 
-> I agree with you.
-> 
-> > And btw, Qcom DWC MSI controller raise interrupts for AER/PME sent by the
-> > downstream components. So enabling ITS is uncovering AER errors which were
-> > already present :)
-> > 
-> > > So the dwc driver can also compile to ko?
-> > > 
-> > 
-> > Only if the MSI support is made as a build time option and there is a guarantee
-> > that the platform will never use it (which is difficult to do as the driver can
-> > only detect it during the runtime based on devicetree).
-> 
-> Anyway, I would still like to request that the Cadence PCIe controller
-> driver not be in module mode. Cadence also has a lot of customers, we are
-> one of them, it's just that many customers don't have upstream. We are about
-> to upstream.
-> 
-> This series was introduced since having the drivers built-in was pushed back
-> at:
-> https://lore.kernel.org/linux-arm-kernel/20250122145822.4ewsmkk6ztbeejzf@slashing/
-> 
-> Hans:
-> The Cadence PCIe root port driver can not be made into module mode because
-> of TI's idea. We should consider the ideas of other customers. If you have
-> to make it module mode, I think all peripheral drivers should be module
-> mode. Maybe I'm being direct, but that's probably the case.
-> 
+We are no longer depending on legacy device trees so
+drop the no compatible check for NAND and OneNAND
+nodes.
 
-It is not about one company's idea to make the driver as a module. Linux kernel
-community in general strongly encourages developers to build the drivers as
-module unless there are exceptions (which I have already quoted). If you keep
-building the drivers as built-in, it will result in a bloated kernel image. For
-sure vendors would want *their* interested drivers to be built-in so that they
-do not need to package the drivers in initramfs/rootfs, but that's not a
-practice which is encouraged by the Linux community.
+Suggested-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Link: https://lore.kernel.org/r/20250114-omap-gpmc-drop-no-compatible-check-v1-1-262c8d549732@kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/memory/omap-gpmc.c | 20 --------------------
+ 1 file changed, 20 deletions(-)
 
-So I'm in favor of making the PCIe controllers as module if there are no
-technical issues.
-
-- Mani
-
+diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
+index 50eb9f49512b4..368b0848b64df 100644
+--- a/drivers/memory/omap-gpmc.c
++++ b/drivers/memory/omap-gpmc.c
+@@ -2245,26 +2245,6 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
+ 		goto err;
+ 	}
+ 
+-	if (of_node_name_eq(child, "nand")) {
+-		/* Warn about older DT blobs with no compatible property */
+-		if (!of_property_read_bool(child, "compatible")) {
+-			dev_warn(&pdev->dev,
+-				 "Incompatible NAND node: missing compatible");
+-			ret = -EINVAL;
+-			goto err;
+-		}
+-	}
+-
+-	if (of_node_name_eq(child, "onenand")) {
+-		/* Warn about older DT blobs with no compatible property */
+-		if (!of_property_read_bool(child, "compatible")) {
+-			dev_warn(&pdev->dev,
+-				 "Incompatible OneNAND node: missing compatible");
+-			ret = -EINVAL;
+-			goto err;
+-		}
+-	}
+-
+ 	if (of_match_node(omap_nand_ids, child)) {
+ 		/* NAND specific setup */
+ 		val = 8;
 -- 
-மணிவண்ணன் சதாசிவம்
+2.39.5
+
 
