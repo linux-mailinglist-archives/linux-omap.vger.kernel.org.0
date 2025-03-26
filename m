@@ -1,122 +1,129 @@
-Return-Path: <linux-omap+bounces-3500-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3501-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD33AA7111B
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Mar 2025 08:09:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36A7CA71C17
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Mar 2025 17:44:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44C023B9872
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Mar 2025 07:08:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBE1E3BD69A
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Mar 2025 16:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF4919994F;
-	Wed, 26 Mar 2025 07:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407471F4E2F;
+	Wed, 26 Mar 2025 16:43:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Rq8lWHdp"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8E5C8FE;
-	Wed, 26 Mar 2025 07:08:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8771547E7;
+	Wed, 26 Mar 2025 16:43:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742972909; cv=none; b=lQ2Q3VlttynLhcUEkXXWRoOt9buhGN35ZzA2eY66COtGD0xRlnpexGN4YIFKHtMyyp7nLDDec2lWi/DsC3bP0a3aDiSZO9F+UMZzOPHDBvfpIxnvpVtyb3YugxIRaEwDt6sfJ7G+6z4BngZfqNWIDiK6SSBNBO/8gs3Ix/uV4iI=
+	t=1743007390; cv=none; b=cEUJvQDqhz9sTKsw12JYk0iYAOFqsOeADUC951SVhiSdX/GyokTe7C1xyJZkRdEBNmVPtYmPojIJr0sKP5niGHn7md70K3Z8h/dtvE0S+ahj71Q4N9GSUtgbX9zK7ZKenJRPSS0n3cMpyBlZ9gcDm9sIzPZM6DuwmmIVp8yQIyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742972909; c=relaxed/simple;
-	bh=7umMe/owTqkQYNzQvn99o/BkcrVTlBwCps7KAJeuZOY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DmFuJ9WgsIy1Z4x4e4sJH1pLd+pINFEyAlf6QZaBZoe9l44+ZIcrn4MijW/i3t/jFizT1PiSgxT3+H4HQqWI+kl2PNN+aMdEw1TNEz72oYFUpF+9cJYAhNY4+xPp0amZqgOk/phl4tXPyvi8Hz0wWyY3/IHR7GXE2Ts+W9we9JI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-223a7065ff8so74535275ad.0;
-        Wed, 26 Mar 2025 00:08:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742972907; x=1743577707;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Usze/Hu/f9NyhQihXYEPOZpxjmRJBiCjP4S9p3//eDA=;
-        b=bP+ZXSoWioknnbmBlcB3ubm9613K1QbgsVKCRVzrg3lFE8KKby45PCniI63Fdqr+Fb
-         WVBpfOZq8hwwYvtYE1xhWNdD4thZrCEVOcAYBoN/REuRxUMAzeA2rTLgnB4pBBi2KSxc
-         yZ8FRzHQpH+k1R455aCTXwwtaEG3mNGII2WV5FZusssbFXylCfApy1BZJZ6z5Vf8slWz
-         WTX9mh0ms6HlRbD1ewzibZh2vdAqJGlZidat4zGKtMVA0ott42nUJiwvNbOfpJXYiZXH
-         k0FqQdlQqJrWexHg1baXTEPMlN++RbpEYCiQqFkv+Vr7HkGvfqLPfQL5izhpnvpcsYxB
-         d2Sg==
-X-Forwarded-Encrypted: i=1; AJvYcCUPPscDKY3vEAP8Mcr9yC6oVgEu17+5c6CqQQLdKxLUA5g/znpTrvkGgRPzwHYuh7IwM1s3eP1/OsM6+w==@vger.kernel.org, AJvYcCWBgyA6jQ3X/LN3+aea/CrUKLfiuuMz1g99xSODVwu7pQJd5UVWB1mUvszAqaWo24kSSh+xpDZa@vger.kernel.org, AJvYcCX/6Q8gQYeiPZS2GrC8bDEPkyjisfKCURtA7PxAUhC35MzSwoFTWtUYWgabRQniuKbRU2TXRs2XrJpx@vger.kernel.org, AJvYcCXcZOVvQF6AF0hDWKgJ3CUpWbH4GZV2JoY/3EGOvBEpnz3Vf1SfktOZ9n7fjcpmNC1FBwwBSb505lsRi8E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwK5Ch70/G1ah3B5V0cCdNGHkEZzj2WGYSnu9zyu8B/Dbt0zqfv
-	yvqzhovQr2R84hnHPmBFiwOdWTwe2/yyHJo/8PzVd8a9vv22HoOjJoyIuenT
-X-Gm-Gg: ASbGncv7BX7Ug600WmNxEJwsmZB8WbkQs7Q9NpRKt73Gl+b4QrUQDJfhcy0aftL/qBe
-	9pxuNXBdOFGAdqeUR4jT16avpw2BZBBahGYN8ym/foXwuha2phoRh90citBHMXrppZkN+OrEJWm
-	Y5qHjEiDpY5pmb+d0Do/d7AOeX7uplVZF0crJ7fyawx2J0YcHZwADEacpwdswMZVXWRgl1M3HJS
-	sSv4DJTp/tGmFKfzLH7AjVqyom46teiMQOJoL/1AR5J+M49vXqysB2aGd0dcYM7OPGuR0oJam71
-	jhixC/JGkVI/xD7s0qaYBIsUK2ZEqtu5o+iE+PJtSzEO7a9yBrjzlkS9EKog0dcqKEwkg0GZFLr
-	VUcc=
-X-Google-Smtp-Source: AGHT+IGyEsepOSz9UoNKc7Y22NXljw4tUhAHspFeSHM2qES1d+egW2qdQZ6cpo8lCD4d3eJlrT4aQQ==
-X-Received: by 2002:a17:902:e54a:b0:21f:85ee:f2df with SMTP id d9443c01a7336-22780c79888mr292422165ad.15.1742972906946;
-        Wed, 26 Mar 2025 00:08:26 -0700 (PDT)
-Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-22780f50c80sm102359315ad.104.2025.03.26.00.08.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Mar 2025 00:08:26 -0700 (PDT)
-Date: Wed, 26 Mar 2025 16:08:25 +0900
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, lpieralisi@kernel.org,
-	vigneshr@ti.com, manivannan.sadhasivam@linaro.org, robh@kernel.org,
-	bhelgaas@google.com, rogerq@kernel.org, linux-omap@vger.kernel.org,
-	linux-pci@vger.kernel.org, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	srk@ti.com
-Subject: Re: [PATCH] PCI: j721e: Fix the value of linkdown_irq_regfield for
- J784S4
-Message-ID: <20250326070825.GD2822343@rocinante>
-References: <20250313055519.j3bpvsm6govd5ytk@uda0492258>
- <20250313160215.GA736346@bhelgaas>
- <20250314041705.v5j2fjulol5ywvyq@uda0492258>
- <20250326065447.GC2822343@rocinante>
- <20250326070124.boluxjcid4ouszqk@uda0492258>
+	s=arc-20240116; t=1743007390; c=relaxed/simple;
+	bh=5LaXNLW37E2EEaddRWCUX09i5J874uRaHchU5pVY+P0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pAvgQhj7dT0zAx9wj611i/nyWHsAmOPoy1c115HppeaJNw3UzLRBQlaktuPZIyjvMbO3lHj3SPFUjzMnJhJS4oLhaB/YJYVj/VxW3uKRTZ4crDHTctMIN/fizIqzhEUebALqIORBYGWpH728oD21qOONngc6+QBIId9v2bXlVSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Rq8lWHdp; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5DC0242D46;
+	Wed, 26 Mar 2025 16:42:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1743007381;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hjKXwDgvk3pdIxFfT6ggKwXmZB2CLaZ9TOBwOFL7yIs=;
+	b=Rq8lWHdpvOVWYeg7riGtJTI+acq1/fmtn++wNgbJAqF9lD9bSWUzOBCr0FeszVEQaiQHP8
+	4JCexxQJy/DWx0c+J33z8UlwysohKktZUxjSXdApqHOuCzmiGhOOJ3XTzd4FFIJX24cEyV
+	qnbV1GboNUyojBkp9j/Y516j7DB/3GZHRcbtsAwn1Nl/VFao5Z00cIvsXqC3RD4YtnqoP1
+	NjDfUEgzokjQzCua1f/B6a+Vv54i4rAMz0NzpG9+aiOci4w2MtkgP5tROuXP0ZjgPyIZju
+	rTu9N/l0t1GKQNjKy/OpNX6sVzcmP8nu182di4RqMQugdLNC3icGwfY/z0Y2Eg==
+Date: Wed, 26 Mar 2025 17:42:57 +0100
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, <m-leonard@ti.com>,
+ <praneeth@ti.com>, <conor+dt@kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <khilman@baylibre.com>,
+ <rogerq@kernel.org>, <lgirdwood@gmail.com>, <linux-omap@vger.kernel.org>,
+ <robh@kernel.org>, <krzk+dt@kernel.org>, <tony@atomide.com>,
+ <andreas@kemnade.info>, <aaro.koskinen@iki.fi>, <broonie@kernel.org>, Lee
+ Jones <lee@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v5 0/5] Add TI TPS65214 & TPS65215 PMIC MFD Driver
+ Support
+Message-ID: <20250326174257.33f74e81@kmaincent-XPS-13-7390>
+In-Reply-To: <c0f28cb1-d2a8-4583-937d-4908e4b70b4a@ti.com>
+References: <20250206173725.386720-1-s-ramamoorthy@ti.com>
+	<173928615760.2233464.12306998726512431222.b4-ty@kernel.org>
+	<7f33b5c7-b1a7-4db9-9e19-e30cbb0066ab@ti.com>
+	<471cdd13-3250-46b1-b7a0-a4f236a47773@kernel.org>
+	<c0f28cb1-d2a8-4583-937d-4908e4b70b4a@ti.com>
+Organization: bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250326070124.boluxjcid4ouszqk@uda0492258>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduieeitdegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtqhertdertdejnecuhfhrohhmpefmohhrhicuofgrihhntggvnhhtuceokhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgfdutdefvedtudegvefgvedtgfdvhfdtueeltefffefffffhgfetkedvfeduieeinecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudelmeekheekjeemjedutddtmeekfeegrgemsggvvddvmegrtdgvugemkeguvdgrnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkeehkeejmeejuddttdemkeefgegrmegsvgdvvdemrgdtvggumeekugdvrgdphhgvlhhopehkmhgrihhntggvnhhtqdgirffuqddufedqjeefledtpdhmrghilhhfrhhomhepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddtpdhrtghpthhtohepshdqrhgrmhgrmhhoohhrthhhhiesthhirdgtohhmpdhrtghpthhtohepkhhriihksehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmqdhlvghon
+ hgrrhgusehtihdrtghomhdprhgtphhtthhopehprhgrnhgvvghthhesthhirdgtohhmpdhrtghpthhtoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopeguvghvihgtvghtrhgvvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehkhhhilhhmrghnsegsrgihlhhisghrvgdrtghomh
+X-GND-Sasl: kory.maincent@bootlin.com
 
-Hello,
+On Thu, 6 Mar 2025 16:56:56 -0600
+Shree Ramamoorthy <s-ramamoorthy@ti.com> wrote:
 
-[...]
-> > > > So I guess without this patch, we incorrectly ignore link-down
-> > > > interrupts on J784S4.  It's good to have a one-sentence motivation
-> > > > like that somewhere in the commit log that we can pull out and include
-> > > > in the merge commit log and the pull request.
-> > > 
-> > > Yes, we can prepend the following to the existing commit message:
-> > > "Link down interrupts on J784S4 SoC are missed because..."
-> > > 
-> > > resulting in the following updated paragraph in the commit message:
-> > > Link down interrupts on J784S4 SoC are missed because commit under Fixes
-> > > assigned the value of 'linkdown_irq_regfield' for the....
-> > 
-> > How does this look like?
-> > 
-> >   https://web.git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/commit/?h=controller/j721e&id=b97b5b8cb603a4ba6b3f7f1b6065fa76e69bdb56
-> > 
-> > Let me know if you want any changes.
-> 
-> I will suggest minor changes to the first paragraph of the commit
-> message resulting in the following paragraph:
-> 
-> Commit under Fixes assigned the value of .linkdown_irq_regfield for the
-> J784S4 SoC as the "LINK_DOWN" macro corresponding to BIT(1), and as a
-> result, the Link Down interrupts on J784S4 SoC are missed.
+> Hi,
+>=20
+> On 3/6/2025 1:26 AM, Krzysztof Kozlowski wrote:
+> > On 05/03/2025 22:09, Shree Ramamoorthy wrote: =20
+> >> Hi Lee,
+> >>
+> >>
+> >> On 2/11/25 9:02 AM, Lee Jones wrote: =20
+>  [...] =20
+>  [...] =20
+>  [...] =20
+> >> Would you be able to remove this series from your branch & replace it =
+with
+> >> this v6 [0], so Mark Brown will be able to apply the dependent regulat=
+or
+> >> series [1]? Thank you! =20
+> > You replied 3 weeks later. If something was applied not as it should,
+> > you ought to reply IMMEDIATELY, not 3 weeks after.
+> >
+> > The trees are mostly immutable after publishing.
+> >
+> > Best regards,
+> > Krzysztof =20
+>=20
+> Completely understand, sorry for re-sending the first 5 patches that were
+> already applied! I'll wait for the next merge window, so there won't be
+> dependencies between the MFD and regulator tree then.
 
-OK.  Updated.  We are going to meet there half-way. :)
+Hello Shree,
 
-Thank you!
+I think what you should have asked here was a to use an immutable tag to let
+Mark uses this tag to merge the regulator part of the series on top of it.
+We use immutable tag when work need to be merged thought several Linux
+merge tree.
 
-	Krzysztof
+It seems Lee does not remove the MFD support so now that we are in the merge
+window, you just need to wait two weeks and repost the regulator part.
+
+Regards,
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
 
