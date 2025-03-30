@@ -1,129 +1,145 @@
-Return-Path: <linux-omap+bounces-3501-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3506-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36A7CA71C17
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Mar 2025 17:44:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB48A7590C
+	for <lists+linux-omap@lfdr.de>; Sun, 30 Mar 2025 10:59:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBE1E3BD69A
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Mar 2025 16:43:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0C783AA109
+	for <lists+linux-omap@lfdr.de>; Sun, 30 Mar 2025 08:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407471F4E2F;
-	Wed, 26 Mar 2025 16:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502D017CA1B;
+	Sun, 30 Mar 2025 08:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Rq8lWHdp"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="CR6AnNXx"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8771547E7;
-	Wed, 26 Mar 2025 16:43:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82C274C08;
+	Sun, 30 Mar 2025 08:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743007390; cv=none; b=cEUJvQDqhz9sTKsw12JYk0iYAOFqsOeADUC951SVhiSdX/GyokTe7C1xyJZkRdEBNmVPtYmPojIJr0sKP5niGHn7md70K3Z8h/dtvE0S+ahj71Q4N9GSUtgbX9zK7ZKenJRPSS0n3cMpyBlZ9gcDm9sIzPZM6DuwmmIVp8yQIyA=
+	t=1743325150; cv=none; b=T1j7hFTAkGWknU8pD3qkr3UyvB35b5rRAMyoZAX4mXw7mF8KtCPUZ7Hs1KzgHPvM+yNELC2Q9icSk3Ib73fjFr/+zC7VXWyR3r7ac/5UU3jUkXkhVV+I/RJqaReYZRUwPDH57Lvm1ewlNvbj9vIxEq3lyDE5XPZa7izi1ftrEfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743007390; c=relaxed/simple;
-	bh=5LaXNLW37E2EEaddRWCUX09i5J874uRaHchU5pVY+P0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pAvgQhj7dT0zAx9wj611i/nyWHsAmOPoy1c115HppeaJNw3UzLRBQlaktuPZIyjvMbO3lHj3SPFUjzMnJhJS4oLhaB/YJYVj/VxW3uKRTZ4crDHTctMIN/fizIqzhEUebALqIORBYGWpH728oD21qOONngc6+QBIId9v2bXlVSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Rq8lWHdp; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5DC0242D46;
-	Wed, 26 Mar 2025 16:42:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1743007381;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hjKXwDgvk3pdIxFfT6ggKwXmZB2CLaZ9TOBwOFL7yIs=;
-	b=Rq8lWHdpvOVWYeg7riGtJTI+acq1/fmtn++wNgbJAqF9lD9bSWUzOBCr0FeszVEQaiQHP8
-	4JCexxQJy/DWx0c+J33z8UlwysohKktZUxjSXdApqHOuCzmiGhOOJ3XTzd4FFIJX24cEyV
-	qnbV1GboNUyojBkp9j/Y516j7DB/3GZHRcbtsAwn1Nl/VFao5Z00cIvsXqC3RD4YtnqoP1
-	NjDfUEgzokjQzCua1f/B6a+Vv54i4rAMz0NzpG9+aiOci4w2MtkgP5tROuXP0ZjgPyIZju
-	rTu9N/l0t1GKQNjKy/OpNX6sVzcmP8nu182di4RqMQugdLNC3icGwfY/z0Y2Eg==
-Date: Wed, 26 Mar 2025 17:42:57 +0100
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, <m-leonard@ti.com>,
- <praneeth@ti.com>, <conor+dt@kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <khilman@baylibre.com>,
- <rogerq@kernel.org>, <lgirdwood@gmail.com>, <linux-omap@vger.kernel.org>,
- <robh@kernel.org>, <krzk+dt@kernel.org>, <tony@atomide.com>,
- <andreas@kemnade.info>, <aaro.koskinen@iki.fi>, <broonie@kernel.org>, Lee
- Jones <lee@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v5 0/5] Add TI TPS65214 & TPS65215 PMIC MFD Driver
- Support
-Message-ID: <20250326174257.33f74e81@kmaincent-XPS-13-7390>
-In-Reply-To: <c0f28cb1-d2a8-4583-937d-4908e4b70b4a@ti.com>
-References: <20250206173725.386720-1-s-ramamoorthy@ti.com>
-	<173928615760.2233464.12306998726512431222.b4-ty@kernel.org>
-	<7f33b5c7-b1a7-4db9-9e19-e30cbb0066ab@ti.com>
-	<471cdd13-3250-46b1-b7a0-a4f236a47773@kernel.org>
-	<c0f28cb1-d2a8-4583-937d-4908e4b70b4a@ti.com>
-Organization: bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1743325150; c=relaxed/simple;
+	bh=/km/b3RP7+meUdGujK5Cfjr3gVbfpj8Ix+nZ0yoaw80=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=opyOBPoIBA8DBalkPnAKssJsTG/XPXi/dE138ZVavArP9WynyzwF0IQorKR7KBwoBC36SJ9WH3FFvxlSoMIWvJmNLFVy+jD737gNU0Hhc4PD9PZBycMD0M6OM6eiyhH6+ml36QiJtYoK8aFFo0iiEBjV6NUuaw4ODWF0XRjhqQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=CR6AnNXx; arc=none smtp.client-ip=198.47.23.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 52U8dKo53063341
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Sun, 30 Mar 2025 03:39:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1743323960;
+	bh=zVyzdrsq8rwcKEYT3slz18YJ/cFCFrZ4CWV2JbLOQZg=;
+	h=From:To:CC:Subject:Date;
+	b=CR6AnNXxBE8XeAGt6nNrC2LOTQwIlN7yitDmLdEDpYT3rVcHLm8OfbVxDMLNPVtTK
+	 ia1Fp6Jx7t9dFfDjNOQKRHiKYHaP4KM8FJQPdN0JSpi94znarBoF+CqZ82eZkGCCYI
+	 qm/hyf4JSBQjIAlLbWmElYreWFpu2mr/RwR5gg+g=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTP id 52U8dKrW118394;
+	Sun, 30 Mar 2025 03:39:20 -0500
+Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Sun, 30
+ Mar 2025 03:39:19 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Sun, 30 Mar 2025 03:39:19 -0500
+Received: from uda0492258.dhcp.ti.com (uda0492258.dhcp.ti.com [10.24.72.113])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 52U8dE4g015769;
+	Sun, 30 Mar 2025 03:39:15 -0500
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: <lpieralisi@kernel.org>, <kw@linux.com>,
+        <manivannan.sadhasivam@linaro.org>, <robh@kernel.org>,
+        <bhelgaas@google.com>, <vigneshr@ti.com>, <kishon@kernel.org>,
+        <18255117159@163.com>, <cassel@kernel.org>,
+        <wojciech.jasko-EXT@continental-corporation.com>,
+        <thomas.richard@bootlin.com>, <bwawrzyn@cisco.com>
+CC: <linux-pci@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <srk@ti.com>, <s-vadapalli@ti.com>
+Subject: [PATCH v2 0/4] Loadable Module support for PCIe Cadence and J721E
+Date: Sun, 30 Mar 2025 14:09:10 +0530
+Message-ID: <20250330083914.529222-1-s-vadapalli@ti.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduieeitdegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtqhertdertdejnecuhfhrohhmpefmohhrhicuofgrihhntggvnhhtuceokhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgfdutdefvedtudegvefgvedtgfdvhfdtueeltefffefffffhgfetkedvfeduieeinecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudelmeekheekjeemjedutddtmeekfeegrgemsggvvddvmegrtdgvugemkeguvdgrnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkeehkeejmeejuddttdemkeefgegrmegsvgdvvdemrgdtvggumeekugdvrgdphhgvlhhopehkmhgrihhntggvnhhtqdgirffuqddufedqjeefledtpdhmrghilhhfrhhomhepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddtpdhrtghpthhtohepshdqrhgrmhgrmhhoohhrthhhhiesthhirdgtohhmpdhrtghpthhtohepkhhriihksehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmqdhlvghon
- hgrrhgusehtihdrtghomhdprhgtphhtthhopehprhgrnhgvvghthhesthhirdgtohhmpdhrtghpthhtoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopeguvghvihgtvghtrhgvvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehkhhhilhhmrghnsegsrgihlhhisghrvgdrtghomh
-X-GND-Sasl: kory.maincent@bootlin.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Thu, 6 Mar 2025 16:56:56 -0600
-Shree Ramamoorthy <s-ramamoorthy@ti.com> wrote:
+Hello,
 
-> Hi,
->=20
-> On 3/6/2025 1:26 AM, Krzysztof Kozlowski wrote:
-> > On 05/03/2025 22:09, Shree Ramamoorthy wrote: =20
-> >> Hi Lee,
-> >>
-> >>
-> >> On 2/11/25 9:02 AM, Lee Jones wrote: =20
->  [...] =20
->  [...] =20
->  [...] =20
-> >> Would you be able to remove this series from your branch & replace it =
-with
-> >> this v6 [0], so Mark Brown will be able to apply the dependent regulat=
-or
-> >> series [1]? Thank you! =20
-> > You replied 3 weeks later. If something was applied not as it should,
-> > you ought to reply IMMEDIATELY, not 3 weeks after.
-> >
-> > The trees are mostly immutable after publishing.
-> >
-> > Best regards,
-> > Krzysztof =20
->=20
-> Completely understand, sorry for re-sending the first 5 patches that were
-> already applied! I'll wait for the next merge window, so there won't be
-> dependencies between the MFD and regulator tree then.
+This series enables support to build the PCIe Cadence Controller drivers
+and the PCI J721E Application/Wrapper/Glue driver as Loadable Kernel
+Modules. The motivation for this series is that PCIe is not a necessity
+for booting the SoC, due to which it doesn't have to be a built-in
+module. Additionally, the defconfig doesn't enable the PCIe Cadence
+Controller drivers and the PCI J721E driver, due to which PCIe is not
+supported by default. Enabling the configs as of now (i.e. without this
+series) will result in built-in drivers i.e. a bloated Linux Image for
+everyone who doesn't have the PCIe Controller. Therefore, with this
+series, after enabling support for building the drivers as loadable
+modules, the driver configs can be enabled in the defconfig to build
+the drivers as loadable modules, thereby enabling PCIe.
 
-Hello Shree,
+Series is based on linux-next tagged next-20250328.
 
-I think what you should have asked here was a to use an immutable tag to let
-Mark uses this tag to merge the regulator part of the series on top of it.
-We use immutable tag when work need to be merged thought several Linux
-merge tree.
+Series has been tested by loading and unloading the PCI J721E driver
+when operating in the Root-Complex mode on J700-EVM with an NVMe SSD
+connected to the PCIe Connector. "hdparm" based reads of the NVMe SSD
+have been performed to validate functionality before and after a module
+unload-load sequence using modprobe. Additionally, the module unload
+was performed while running "hdparm" in the background. No crash was
+seen and reloading the module enumerated the NVMe SSD and "hdparm" could
+be re-run successfully.
 
-It seems Lee does not remove the MFD support so now that we are in the merge
-window, you just need to wait two weeks and repost the regulator part.
+v1 of this series is at:
+https://lore.kernel.org/r/20250307103128.3287497-1-s-vadapalli@ti.com/
+Changes since v1:
+- Collected "Reviewed-by" tags from:
+  Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+  for the first two patches in this series.
+- Based on feedback from Mani on the third patch of the v1 series at:
+  https://lore.kernel.org/r/20250318080304.jsmrxqil6pn74nzh@thinkpad/
+  pci_epc_deinit_notify() has been included in cdns_pcie_ep_disable().
+- Based on feedback from Thomas on the fourth patch of the v1 series at:
+  https://lore.kernel.org/r/88b3ecbe-32b6-4310-afb9-da19a2d0506a@bootlin.com/
+  the "check" for a non-NULL "pcie-refclk" in j721e_pcie_remove() has been
+  dropped.
 
 Regards,
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+Siddharth.
+
+Kishon Vijay Abraham I (1):
+  PCI: cadence: Add support to build pcie-cadence library as a kernel
+    module
+
+Siddharth Vadapalli (3):
+  PCI: cadence-host: Introduce cdns_pcie_host_disable helper for cleanup
+  PCI: cadence-ep: Introduce cdns_pcie_ep_disable helper for cleanup
+  PCI: j721e: Add support to build as a loadable module
+
+ drivers/pci/controller/cadence/Kconfig        |  12 +-
+ drivers/pci/controller/cadence/pci-j721e.c    |  33 ++++-
+ .../pci/controller/cadence/pcie-cadence-ep.c  |  17 +++
+ .../controller/cadence/pcie-cadence-host.c    | 113 ++++++++++++++++++
+ drivers/pci/controller/cadence/pcie-cadence.c |  12 ++
+ drivers/pci/controller/cadence/pcie-cadence.h |  14 ++-
+ 6 files changed, 192 insertions(+), 9 deletions(-)
+
+-- 
+2.34.1
+
 
