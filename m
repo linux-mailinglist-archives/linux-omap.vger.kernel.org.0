@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-3512-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3513-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBE95A75ABB
-	for <lists+linux-omap@lfdr.de>; Sun, 30 Mar 2025 17:57:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 565D5A75ABF
+	for <lists+linux-omap@lfdr.de>; Sun, 30 Mar 2025 17:59:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC9633A37BC
-	for <lists+linux-omap@lfdr.de>; Sun, 30 Mar 2025 15:57:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06307167A9D
+	for <lists+linux-omap@lfdr.de>; Sun, 30 Mar 2025 15:59:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABAD61D6DBF;
-	Sun, 30 Mar 2025 15:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142971D7982;
+	Sun, 30 Mar 2025 15:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rvA707m0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iRRUJk5A"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42080288D2;
-	Sun, 30 Mar 2025 15:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E58288D2;
+	Sun, 30 Mar 2025 15:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743350251; cv=none; b=SY5z8Et6nutL1QRE2M8TUlFdWEqfWAoRYQRTklIfCaz0NmwqZvS0nKs4T5PWO2fmMD87sHgaBsGudEA4P7uqS2ri2+1d8EP1rcWuqCmmrRjr9XGa2USy+TmCxLI/2naI+6Xk4i9UGw4DcTcaGJTcBK/FRG9jCfEAYmquZ0SEH+E=
+	t=1743350387; cv=none; b=l3stsQJKEirsDGc0FAdKZ/R7W96HAcm0i1ghTid9wsF9kwYt2Lbn6a19cChBIYGxMGpknd3pKUvsavulUeQl8dflQZihUf0HPxLFKEuTzVAGGxaxfwFCOBVMF6d0zaGHbJ1JBb4tEo6Py/mOhZo+76NNk8eU2g/kIJcDvhyVK7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743350251; c=relaxed/simple;
-	bh=Qz3ZW7jTGwc4+Gke2BBUjYiiNeyI/5IFC3GJNo0RbUA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DIFG9OQBpDkXO6lVc7ag8wSSK8B+s5LCzK+1Ounn4PmAMEAlWvCGzrVwYOJeFFmiIyjIhVMJmIP32pvKNvcYNV541vP5PXtBu7g4KlVx3tOS8ULeh1lCVhQmBLhDK1Jq/qb2cnBK3BTiZkFZ5IpPZLuB1y2cQjuRzSW5bTATBsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rvA707m0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF39C4CEDD;
-	Sun, 30 Mar 2025 15:57:23 +0000 (UTC)
+	s=arc-20240116; t=1743350387; c=relaxed/simple;
+	bh=+hc6ZmQs69KjkaXKZpdn1lHsTJoFpsZN+4tkqBaD7A0=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Wjt+OKtwYz7UzcA0KDGEIIeIyrUKBln6jvlntVZEh2kPexWb7mynzlWnm6NY4sHmo+AwYEKyFO/eEXg3mSYvmuNCzklfHRdgODKhTiaftiYoMRCLSrgZqXsW+8wcJXpKih560ZU4b/zYDAmRBeCwB3wWHEiXi6Cn3mmMo9PMJQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iRRUJk5A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2F7C4CEDD;
+	Sun, 30 Mar 2025 15:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743350250;
-	bh=Qz3ZW7jTGwc4+Gke2BBUjYiiNeyI/5IFC3GJNo0RbUA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rvA707m0DfZeDFLeFidge2igqNYOXK57DryhR8o0B/H2wprw1JS1e08THJhLFub7P
-	 wqQx7phln5sv9ysOU4jkYraut8Oi6s/f6mms1HzRWWtCXBn3k665CJW1faBXMVX1nY
-	 BBrmI6SNSZIidQ+YByeFsHuZmxXkuP1npfoABCfn+xpqesiV+8Jwu19WMvjJxwo67y
-	 bXehi8zrnWNYN0nptvTzt0c/pDOdFhiz90v5pJISA5lvyMb2KkoTmiFC/d1miksrMX
-	 baWRT1v82GzpY9WbvEPZ0SmwvGlByU/yFKiuX7pxSkg6diPTVAxxj18oOm3+1TRxBV
-	 BtnT+5mmopypA==
-Message-ID: <2d2307d9-6a5a-400c-b209-ae2b31ef87b6@kernel.org>
-Date: Sun, 30 Mar 2025 17:57:21 +0200
+	s=k20201202; t=1743350386;
+	bh=+hc6ZmQs69KjkaXKZpdn1lHsTJoFpsZN+4tkqBaD7A0=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=iRRUJk5A8aMnU/zhz6g0o2HwULK1FWZUZ8ro03HEAIfoUnfbtQHsBQ0oX4rk58Vof
+	 FiY0g5Z8O+OfizNAtO4d0vfZcFdtOdKORuoGeHRytvnDlrY9LUDRnljc4XpJWixYYM
+	 kBdVy6V72RSzwiexyrjs2YPShhPT9NKis+cu2UKF/fcg/aPu9ws1nos118AlcJgnnE
+	 YSI4sENWYj1wTlDCxyP9Nbyd4pkJJutWTW7vkXHaq5dOXEBbPFGUdAXAOxjU5q26d2
+	 m9ka9SkthNKLDK29+usiY3WIhbnhW3g5JosTaOTBvbieLHM2tpNkTpmf4SJY+AQc8p
+	 FXjZVSCNJp25Q==
+Message-ID: <c0fedf8e-1d2a-4dbe-b92d-9efb686807f5@kernel.org>
+Date: Sun, 30 Mar 2025 17:59:38 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -51,6 +51,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 0/5] ARM: dts: fix faulty ohci/ehci node names
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
  linux-arm-kernel@lists.infradead.org
 Cc: Alexey Charkov <alchark@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
@@ -64,7 +65,7 @@ Cc: Alexey Charkov <alchark@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
  Tony Lindgren <tony@atomide.com>, Viresh Kumar <vireshk@kernel.org>,
  Vladimir Zapolskiy <vz@mleia.com>
 References: <20250330121326.9069-7-wsa+renesas@sang-engineering.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <2d2307d9-6a5a-400c-b209-ae2b31ef87b6@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -109,26 +110,32 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250330121326.9069-7-wsa+renesas@sang-engineering.com>
+In-Reply-To: <2d2307d9-6a5a-400c-b209-ae2b31ef87b6@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 30/03/2025 14:13, Wolfram Sang wrote:
-> After I fixed this for the at91-boards I was interested in, I let the
-> scripts run for the other boards, too, of course. Here is the outcome.
-> 49 less dtbs_check errors. Build bots were happy. No dependencies, I
-> suggest sub-trees apply them on their own. Thanks!
+On 30/03/2025 17:57, Krzysztof Kozlowski wrote:
+> On 30/03/2025 14:13, Wolfram Sang wrote:
+>> After I fixed this for the at91-boards I was interested in, I let the
+>> scripts run for the other boards, too, of course. Here is the outcome.
+>> 49 less dtbs_check errors. Build bots were happy. No dependencies, I
+>> suggest sub-trees apply them on their own. Thanks!
+>>
+> 
+> For this and the rest patches, I would not call it "fix" in the subject
+> because there is no bug to fix here and you just might confuse AUTOSEL.
+> What's more backporting this might actually cause regressions, because
+> in rare cases node name is an ABI. Therefore avoid calling anything here
+> fix.
+> 
+> You just adjust or align them with coding style or what
+> bindings/dtschema expect (but it expects due to generic naming
+> convention which is still just convention).
 > 
 
-For this and the rest patches, I would not call it "fix" in the subject
-because there is no bug to fix here and you just might confuse AUTOSEL.
-What's more backporting this might actually cause regressions, because
-in rare cases node name is an ABI. Therefore avoid calling anything here
-fix.
+And I forgot:
 
-You just adjust or align them with coding style or what
-bindings/dtschema expect (but it expects due to generic naming
-convention which is still just convention).
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
