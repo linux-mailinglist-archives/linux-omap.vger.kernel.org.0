@@ -1,57 +1,57 @@
-Return-Path: <linux-omap+bounces-3517-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3518-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6707EA762E3
-	for <lists+linux-omap@lfdr.de>; Mon, 31 Mar 2025 11:01:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ACE3A76399
+	for <lists+linux-omap@lfdr.de>; Mon, 31 Mar 2025 11:53:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 195411673AF
-	for <lists+linux-omap@lfdr.de>; Mon, 31 Mar 2025 09:01:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D0903AA595
+	for <lists+linux-omap@lfdr.de>; Mon, 31 Mar 2025 09:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F112A1DC745;
-	Mon, 31 Mar 2025 09:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD6C1DED56;
+	Mon, 31 Mar 2025 09:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="zO7yvgN4"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="Sl2GwtHh"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139297083C;
-	Mon, 31 Mar 2025 09:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788987E107;
+	Mon, 31 Mar 2025 09:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743411631; cv=none; b=ipG2+pbvCKjBKBJo0QbWbuu10XnQY2gyFAHK+pjYEKyO5wkclz/FHEATBKJ/glssr3vtASyMpaWkmZr7uvQ8jhndn29DSE0pAbUH35uGaTYnCPjs3S1R6x9SedVnY7Vp5T0km2b8ySZrjiUfDfZexbn5DHaMsCc5NjA94s+9ypw=
+	t=1743414817; cv=none; b=DTOJkqA2TAnl4DPLg9FZwMDJvaLDuwvnr5drrvdL8qz+G9fbsSSI+qVJD4yDeLUJB6PMct6Bs3QxjuaBB7wHHBSl01cD3N59g6wm9MR39IaMfWhx21uNncLgl7+DBsm2XukLGwdnbFMwh/On5+4Mh++OjzwLv+I4qRumeJvwtwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743411631; c=relaxed/simple;
-	bh=napwSWd5S8Bya3ev5krOVMpvA8ZN/WqtxQpabE0zxpg=;
+	s=arc-20240116; t=1743414817; c=relaxed/simple;
+	bh=s2tStVhn1e1t7IqCmmfP0IH00x+iT51tHDJhGWq4w5Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sG62v54cQA3llGjMjAqqXrNOhJzUF3I1pI2dPXm6B7L+cspYZcz4igj0ICN5UFj1KykTOsHps7a/ZNMqoXLP9Zkzp/oXH+QozXJkLihFNZ6TvXMIQ6UM1ujXAEqFF2wrAxbzE0NLqCfcCuy+eG8QzN1YaiCXJkVffG8GLUiAVUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=zO7yvgN4; arc=none smtp.client-ip=178.238.236.174
+	 MIME-Version:Content-Type; b=pIAJe+mlLaJdR7kY8Qv8p27woxtGHEm4R+Lpywjoh3K/Xz5GawUwLA9tMhijwj3KtYsIZrR9UQhCAzF+y/UVsjlnsv7VqPChJqV0edIt46d4YwXNFajl2GmTZhEL2m9ieZJ79SY8euNpgPh6LBEsXp3S6duU1WHxs+YUQ3bvwjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=Sl2GwtHh; arc=none smtp.client-ip=178.238.236.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=KWr4Lqm1cmqHpRh/AqmCsQHoBFqR80xk7bvspb5WObI=; b=zO7yvgN4w26TreKKVEjvfOzvOW
-	Q3UeGM2hzZguQXpx+GLxFhgDeRzyVBrDkqOSDRapP9NS5gnPz7ju4idZX0YUMtHjJ+ey3COJkw1A0
-	FfeA3TdsaC7N9gVQNs3dz4FQiCSEgPlb/R94YrkwHWTlfJD8XBw9XExMQK7Xl1VY+RqigYHF/HS0B
-	PMRJtrz4/CvI/XVJde7BHE6l2JdRXFNe3EScsDUy0B0s/ROHE/NUbRX7RJ84Ed/CrEFU+cBni1fM+
-	NFUNpRIkCaDYh2ACFEQxCqFQgoUBalv7L38EY8CdjaEIHWIMyZHcn5Ti/STIjsIloMGyBwebSFKXv
-	rpcNPz7A==;
-Date: Mon, 31 Mar 2025 11:00:17 +0200
+	bh=4Z5w3F+5s20TF98d7Wk6lyX/I/bUzPKuZAUpTRIcVFs=; b=Sl2GwtHhJPZka/HRC/U5h0oy/7
+	fSUJ7vgm3x1oZ+vf3jtxzhvEXWuAIip5Km4rffuwuWyHxTDIU74RPOcMGGueUktxRMnzmoNtl+QHd
+	47uZFVCvqNNOE6MyJJ+xtEKwV/XgAqzCnGxzDXP3nqzXMMXlJW3pe0hZt3HeyemyLSUvwBsMmo4j6
+	L189otEvFc32EveqPR6y5Sr/oS8uqff/1+Jss5IwoZ1S4Ldr+ZBoLvN1b0+ZnRAxPu4w/jFnHnF5t
+	b2hgxARsfze5gGSECqqdWjpv41nbLs+dZFX6A1m+TN6GIzVya0LIZi/N2LbOQeahRfPQpmrupm0wh
+	S8DH9BhQ==;
+Date: Mon, 31 Mar 2025 11:53:29 +0200
 From: Andreas Kemnade <andreas@kemnade.info>
-To: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-Cc: Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org, Aaro
- Koskinen <aaro.koskinen@iki.fi>, Kevin Hilman <khilman@baylibre.com>, Roger
- Quadros <rogerq@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Revert "bus: ti-sysc: Probe for l4_wkup and l4_cfg
- interconnect devices first"
-Message-ID: <20250331110017.2b0aa9ae@akair>
-In-Reply-To: <20250313094708.1003092-1-alexander.sverdlin@siemens.com>
-References: <20250313094708.1003092-1-alexander.sverdlin@siemens.com>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Tero Kristo <kristo@kernel.org>, Michael Turquette
+ <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
+ linux-omap@vger.kernel.org, linux-clk@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] clk: ti: Simplify ti_find_clock_provider()
+Message-ID: <20250331115329.605ba522@akair>
+In-Reply-To: <20250312163330.865573-2-robh@kernel.org>
+References: <20250312163330.865573-2-robh@kernel.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -62,34 +62,30 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-Am Thu, 13 Mar 2025 10:47:06 +0100
-schrieb "A. Sverdlin" <alexander.sverdlin@siemens.com>:
+Am Wed, 12 Mar 2025 11:33:30 -0500
+schrieb "Rob Herring (Arm)" <robh@kernel.org>:
 
-> From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+> Remove using for_each_of_allnodes_from() which is not safe to use
+> without holding the DT spinlock. In reality that probably doesn't
+> matter here. This is the only user in the whole tree, so it can be
+> made private once removed here. The "from" argument is always NULL, so
+> it can be dropped as well.
 > 
-> This reverts commit 4700a00755fb5a4bb5109128297d6fd2d1272ee6.
+> There's a slight change in behavior in matching the "clock-output-names"
+> value as the prior code would match if the node name matched the
+> beginning of the value and the comparision was case insensitive. Now
+> it must be an exact match.
 > 
-> It brakes target-module@2b300050 ("ti,sysc-omap2") probe on AM62x in a case
-> when minimally-configured system tries to network-boot:
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+> Compiled only. I'm not sure if the the change in behavior is going to 
+> matter. 
 > 
-> [    6.888776] probe of 2b300050.target-module returned 517 after 258 usecs
-> [   17.129637] probe of 2b300050.target-module returned 517 after 708 usecs
-> [   17.137397] platform 2b300050.target-module: deferred probe pending: (reason unknown)
-> [   26.878471] Waiting up to 100 more seconds for network.
-> 
-> Arbitrary 10 deferrals is really not a solution to any problem.
-> Stable mmc enumeration can be achiever by filling /aliases node properly
-> (4700a00755fb commit's rationale).
-> 
-> After revert:
-> 
-> [    9.006816] IP-Config: Complete:
-> [    9.010058]      device=lan0, ...
-> 
-> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+did some testing. Nothing odd seen at the platforms I tested but I feel
+a bit uncomfortable with
+https://lore.kernel.org/linux-clk/20240925100603.4cba9176@akair/
+in combination with this.
 
-No regressions seen on GTA04, Pandaboard and BT200.
-So
-
-Tested-by: Andreas Kemnade <andreas@kemnade.info> # GTA04, Panda, BT200
+Regards,
+Andreas
 
