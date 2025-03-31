@@ -1,147 +1,95 @@
-Return-Path: <linux-omap+bounces-3516-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3517-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A60AA75BFA
-	for <lists+linux-omap@lfdr.de>; Sun, 30 Mar 2025 21:39:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6707EA762E3
+	for <lists+linux-omap@lfdr.de>; Mon, 31 Mar 2025 11:01:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 029373A8564
-	for <lists+linux-omap@lfdr.de>; Sun, 30 Mar 2025 19:39:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 195411673AF
+	for <lists+linux-omap@lfdr.de>; Mon, 31 Mar 2025 09:01:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9899C1DDC11;
-	Sun, 30 Mar 2025 19:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F112A1DC745;
+	Mon, 31 Mar 2025 09:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="EwMBV0mK"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="zO7yvgN4"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6567364A8F
-	for <linux-omap@vger.kernel.org>; Sun, 30 Mar 2025 19:39:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139297083C;
+	Mon, 31 Mar 2025 09:00:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743363558; cv=none; b=RijFcbTuel+FXGytOs2ntjIqUcZS9uTgUrRFVgLmGYfmlWg9RcRLAQelYJsWoiVc6MRTY8+QW8/dSGfViXg72vZ+pLkSO2rN+GbgYP+8IprPqLcfFmqyLl7Q39ca5/35MGB4zAuAVgUduH7DY4v9X9GYKCSGWxMNZgNCR4hVFlA=
+	t=1743411631; cv=none; b=ipG2+pbvCKjBKBJo0QbWbuu10XnQY2gyFAHK+pjYEKyO5wkclz/FHEATBKJ/glssr3vtASyMpaWkmZr7uvQ8jhndn29DSE0pAbUH35uGaTYnCPjs3S1R6x9SedVnY7Vp5T0km2b8ySZrjiUfDfZexbn5DHaMsCc5NjA94s+9ypw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743363558; c=relaxed/simple;
-	bh=Pu3XnOmuOsuenROzY+fwWH0MnQAWIv/xzJa4/R+mM80=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gVSSIWd6ZrSs/Ulo6jC9crrgnLazg0aPndio0IGUIkj9nWspQQIiW9jXyCaGDS3IIqYfsTnAkPDPT5cxr6CpOTqO19x5NEfH8JIZCyYGJS/j+aHYTfEYYhj+hDcqcL7aTjIENMCgUfT5oMxPXIlcr+F/RAgIjNOVFGGeKFgzPek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=EwMBV0mK; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=from:to:cc:subject:date:message-id
-	:in-reply-to:references:mime-version:content-transfer-encoding;
-	 s=k1; bh=0ZE35oNxFm+cLFtskkk1IPsKgn9aJpsHDgF40rmaSN4=; b=EwMBV0
-	mKkExS95rgBuS9b+06LY6/mgrHb40RxDjdB6ANo/IYxOZ9UvFHFyjowg1lUbbU3E
-	a5B1mqZOs7uocKD1FI5CeSX8s/Uv49eFLCOKX6pcX9L6q1EATbLP66sElGlvMccb
-	VNbDZFVJfpNj5VW6g01L1QXtR+rlBZhYrUbA0JQ3I/bCgTzAf3O3cZlCFT5FodI3
-	wOByNZ6qa5p1xuHGlyRyfZpZ31BG2RkPmKhkYdNaXzbVxIJKoMBCuKMjVocSicuE
-	5/bLk0snCP4/U6Cz7C5COp39ck2q7ovJ7hOdrIe4UYPMzo5eAsiXfFfu+EN6Doyi
-	C5WBQAkcZlNKoSAw==
-Received: (qmail 964929 invoked from network); 30 Mar 2025 21:39:08 +0200
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 30 Mar 2025 21:39:08 +0200
-X-UD-Smtp-Session: l3s3148p1@HvX8dJQxAKxQ8qei
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: linux-arm-kernel@lists.infradead.org
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-omap@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH v2 4/5] ARM: dts: ti: omap: use correct ohci/ehci node names
-Date: Sun, 30 Mar 2025 21:38:35 +0200
-Message-ID: <20250330193833.21970-11-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250330193833.21970-7-wsa+renesas@sang-engineering.com>
-References: <20250330193833.21970-7-wsa+renesas@sang-engineering.com>
+	s=arc-20240116; t=1743411631; c=relaxed/simple;
+	bh=napwSWd5S8Bya3ev5krOVMpvA8ZN/WqtxQpabE0zxpg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sG62v54cQA3llGjMjAqqXrNOhJzUF3I1pI2dPXm6B7L+cspYZcz4igj0ICN5UFj1KykTOsHps7a/ZNMqoXLP9Zkzp/oXH+QozXJkLihFNZ6TvXMIQ6UM1ujXAEqFF2wrAxbzE0NLqCfcCuy+eG8QzN1YaiCXJkVffG8GLUiAVUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=zO7yvgN4; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=KWr4Lqm1cmqHpRh/AqmCsQHoBFqR80xk7bvspb5WObI=; b=zO7yvgN4w26TreKKVEjvfOzvOW
+	Q3UeGM2hzZguQXpx+GLxFhgDeRzyVBrDkqOSDRapP9NS5gnPz7ju4idZX0YUMtHjJ+ey3COJkw1A0
+	FfeA3TdsaC7N9gVQNs3dz4FQiCSEgPlb/R94YrkwHWTlfJD8XBw9XExMQK7Xl1VY+RqigYHF/HS0B
+	PMRJtrz4/CvI/XVJde7BHE6l2JdRXFNe3EScsDUy0B0s/ROHE/NUbRX7RJ84Ed/CrEFU+cBni1fM+
+	NFUNpRIkCaDYh2ACFEQxCqFQgoUBalv7L38EY8CdjaEIHWIMyZHcn5Ti/STIjsIloMGyBwebSFKXv
+	rpcNPz7A==;
+Date: Mon, 31 Mar 2025 11:00:17 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+Cc: Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org, Aaro
+ Koskinen <aaro.koskinen@iki.fi>, Kevin Hilman <khilman@baylibre.com>, Roger
+ Quadros <rogerq@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Revert "bus: ti-sysc: Probe for l4_wkup and l4_cfg
+ interconnect devices first"
+Message-ID: <20250331110017.2b0aa9ae@akair>
+In-Reply-To: <20250313094708.1003092-1-alexander.sverdlin@siemens.com>
+References: <20250313094708.1003092-1-alexander.sverdlin@siemens.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-They should be named "usb@".
+Am Thu, 13 Mar 2025 10:47:06 +0100
+schrieb "A. Sverdlin" <alexander.sverdlin@siemens.com>:
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
- arch/arm/boot/dts/ti/omap/omap3.dtsi    | 4 ++--
- arch/arm/boot/dts/ti/omap/omap4-l4.dtsi | 4 ++--
- arch/arm/boot/dts/ti/omap/omap5-l4.dtsi | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
+> From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+> 
+> This reverts commit 4700a00755fb5a4bb5109128297d6fd2d1272ee6.
+> 
+> It brakes target-module@2b300050 ("ti,sysc-omap2") probe on AM62x in a case
+> when minimally-configured system tries to network-boot:
+> 
+> [    6.888776] probe of 2b300050.target-module returned 517 after 258 usecs
+> [   17.129637] probe of 2b300050.target-module returned 517 after 708 usecs
+> [   17.137397] platform 2b300050.target-module: deferred probe pending: (reason unknown)
+> [   26.878471] Waiting up to 100 more seconds for network.
+> 
+> Arbitrary 10 deferrals is really not a solution to any problem.
+> Stable mmc enumeration can be achiever by filling /aliases node properly
+> (4700a00755fb commit's rationale).
+> 
+> After revert:
+> 
+> [    9.006816] IP-Config: Complete:
+> [    9.010058]      device=lan0, ...
+> 
+> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-diff --git a/arch/arm/boot/dts/ti/omap/omap3.dtsi b/arch/arm/boot/dts/ti/omap/omap3.dtsi
-index 92cd4c99dae7..817474ee2d13 100644
---- a/arch/arm/boot/dts/ti/omap/omap3.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap3.dtsi
-@@ -862,14 +862,14 @@ usbhshost: usbhshost@48064000 {
- 			#size-cells = <1>;
- 			ranges;
- 
--			usbhsohci: ohci@48064400 {
-+			usbhsohci: usb@48064400 {
- 				compatible = "ti,ohci-omap3";
- 				reg = <0x48064400 0x400>;
- 				interrupts = <76>;
- 				remote-wakeup-connected;
- 			};
- 
--			usbhsehci: ehci@48064800 {
-+			usbhsehci: usb@48064800 {
- 				compatible = "ti,ehci-omap";
- 				reg = <0x48064800 0x400>;
- 				interrupts = <77>;
-diff --git a/arch/arm/boot/dts/ti/omap/omap4-l4.dtsi b/arch/arm/boot/dts/ti/omap/omap4-l4.dtsi
-index 150dd84c9e0f..4ee53dfb71b4 100644
---- a/arch/arm/boot/dts/ti/omap/omap4-l4.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap4-l4.dtsi
-@@ -302,14 +302,14 @@ usbhshost: usbhshost@0 {
- 					      "refclk_60m_ext_p1",
- 					      "refclk_60m_ext_p2";
- 
--				usbhsohci: ohci@800 {
-+				usbhsohci: usb@800 {
- 					compatible = "ti,ohci-omap3";
- 					reg = <0x800 0x400>;
- 					interrupts = <GIC_SPI 76 IRQ_TYPE_LEVEL_HIGH>;
- 					remote-wakeup-connected;
- 				};
- 
--				usbhsehci: ehci@c00 {
-+				usbhsehci: usb@c00 {
- 					compatible = "ti,ehci-omap";
- 					reg = <0xc00 0x400>;
- 					interrupts = <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>;
-diff --git a/arch/arm/boot/dts/ti/omap/omap5-l4.dtsi b/arch/arm/boot/dts/ti/omap/omap5-l4.dtsi
-index 3b505fe415ed..9f6100c7c34d 100644
---- a/arch/arm/boot/dts/ti/omap/omap5-l4.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap5-l4.dtsi
-@@ -331,14 +331,14 @@ usbhshost: usbhshost@0 {
- 					      "refclk_60m_ext_p1",
- 					      "refclk_60m_ext_p2";
- 
--				usbhsohci: ohci@800 {
-+				usbhsohci: usb@800 {
- 					compatible = "ti,ohci-omap3";
- 					reg = <0x800 0x400>;
- 					interrupts = <GIC_SPI 76 IRQ_TYPE_LEVEL_HIGH>;
- 					remote-wakeup-connected;
- 				};
- 
--				usbhsehci: ehci@c00 {
-+				usbhsehci: usb@c00 {
- 					compatible = "ti,ehci-omap";
- 					reg = <0xc00 0x400>;
- 					interrupts = <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>;
--- 
-2.47.2
+No regressions seen on GTA04, Pandaboard and BT200.
+So
 
+Tested-by: Andreas Kemnade <andreas@kemnade.info> # GTA04, Panda, BT200
 
