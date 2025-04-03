@@ -1,105 +1,126 @@
-Return-Path: <linux-omap+bounces-3529-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3530-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79658A794CD
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Apr 2025 20:06:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37B7DA7ADF7
+	for <lists+linux-omap@lfdr.de>; Thu,  3 Apr 2025 22:17:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 941B43AF90E
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Apr 2025 18:06:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77D7617CC75
+	for <lists+linux-omap@lfdr.de>; Thu,  3 Apr 2025 20:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0901C5F07;
-	Wed,  2 Apr 2025 18:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6852D1DFD96;
+	Thu,  3 Apr 2025 19:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="M70sHcsc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W29lUZ9v"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A475819DF81;
-	Wed,  2 Apr 2025 18:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFFD11DBB13;
+	Thu,  3 Apr 2025 19:15:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743617190; cv=none; b=jsK7MANC2gPruxiEFr8F4DvW+Se0AXyyzcO2gZxI4RrNB29ExoNympkCt6Q0BIp4b6cLHKU4I+vnEKn3FWo24VtpJstJJRFjWhpbZn4Dn/wgR/CZCjL+1ojJ6pcZwDnzbWa4YGdR+IQXEHIgKE4xtuzu4rVQMSzikURirHxxkq4=
+	t=1743707707; cv=none; b=X6k4m1k4H5smHb5y58tILp+qkHW3eu+KelqHAF7OruUQIFMF95w1beYXwFY4q8nNp8pO7L1eW80AuLdPSNBGUfPz0ABF24vptIrD6HgxVSe78z7m6JbclKU8A8uqHhmb6CY/qAbspgvKsUl8vrTBhSwEnulQIttOSzR8D/Zilpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743617190; c=relaxed/simple;
-	bh=9pQGGuSouKXoS8qG0zRttHnAPodUpm8bR+nFZgvVr3Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GHSoSp6+UgkSt9OVpiGAdiBv6jJZNU2fjH21k397CMvSJmztXz/uqUybq4H8J2nGeNl61NojefrTtgoA5agLzlBxY1gkIX/oO30/dOYPmdbk13d5JE+ik8zNMJdNt7LfZhLQlZdTDVYvpqxWk+3Zl0yotlN5H7Za0mfrHHWWQnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=M70sHcsc; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=7VdTECC2N6MiKQNDMTygCmE5/bjawPj1l5VgBhhTh2I=; b=M70sHcsc8pTsjpaScMMBOWc044
-	1pcXqmpoQpvbfg4oMB/RNHpvOWrAyTPjzw8BVQJHCah/JbAvFTahgtmAC8Z/+2sABBefFRE7GX6Bb
-	DWbA6aNY2EqdGlrmpiEqC25OKbfhTiXX8JyJT1UhHBBU02qGEFFJn5bh/mPh3jsxbcvaTn+qh41Zr
-	DyeNo+Noj4MZP7qpPLSnulbI5OKGKYjeqb+Wut+zg6SN77lgRZe3pw93qJKqn4IXfKlTQ0y1jfPaI
-	yTqwcKb3bTU29592SPyuFjQoIU5F01ExwAQJcfzDP36scINgw/WuM+8A1daAaYBKsRLkWQvuvmuUL
-	l/zZFzJQ==;
-Date: Wed, 2 Apr 2025 20:06:17 +0200
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Roger Quadros <rogerq@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Kevin Hilman <khilman@baylibre.com>,
- linux-omap@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
- linux-kernel@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>,
- devicetree@vger.kernel.org, Tony Lindgren <tony@atomide.com>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>
-Subject: Re: [PATCH v2 2/2] ARM: dts: omap4: panda: cleanup bluetooth
-Message-ID: <20250402200617.0482a150@akair>
-In-Reply-To: <aded0940-45d8-4063-a1a2-f0763d509095@kernel.org>
-References: <20250330151401.444956-1-andreas@kemnade.info>
-	<20250330151401.444956-3-andreas@kemnade.info>
-	<aded0940-45d8-4063-a1a2-f0763d509095@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1743707707; c=relaxed/simple;
+	bh=u0zW9PD+fB/FpI5XciLwh5vH0OQS0J9qDGBpyQcD3Gc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=cBnWc0YKIvn0HADmKchFa2wAzgbwbC/FWgsjcOQa0McFvsHKhElq2DQg6hUi6SL7sAgUrcOMJTDQQngfrfS6o82uApt0SrId/Yj0Gw/80pOPQRRj2F37iIZ/wEiutD6GrSefNG8NHPXQJSNsWjPwc/jRrVZvX+YNpcVkHBdj5QY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W29lUZ9v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2044AC4CEE8;
+	Thu,  3 Apr 2025 19:15:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743707706;
+	bh=u0zW9PD+fB/FpI5XciLwh5vH0OQS0J9qDGBpyQcD3Gc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=W29lUZ9vspFTNgE8U120ZofUZdwOJksceoQp5IRZzqmL4ETPjvC93j7Zc3WO8SkGb
+	 fpqyMJ5EXqtxzc7QD/OmFYyHKYOFQj7Rfo+uWO46uEiwHJ1eIEzPcn1s7hXTduhVMM
+	 6lStYzRPCVTqluDOfmBI7DWsFjd802n1El7gUoW6mkQ0jZ0XD+PUiTTn/uJPDb1Lew
+	 G8MpzLMmiWEn7a9nFQJwac9gFMwx75PsXMCOvLf5mM8EYCoASP0Bb1+D8RqCfvzxNa
+	 ND1cjcDoi1yy1yL+h6dJJXuvKLbbRGHnegwLLHJKIsHc/Y5YG7GsGIDzfLFMoGUVBp
+	 jpnTyANYeEBXQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Leonid Arapov <arapovl839@gmail.com>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>,
+	krzysztof.kozlowski@linaro.org,
+	u.kleine-koenig@baylibre.com,
+	tzimmermann@suse.de,
+	linux@treblig.org,
+	linux-omap@vger.kernel.org,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.14 39/44] fbdev: omapfb: Add 'plane' value check
+Date: Thu,  3 Apr 2025 15:13:08 -0400
+Message-Id: <20250403191313.2679091-39-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250403191313.2679091-1-sashal@kernel.org>
+References: <20250403191313.2679091-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.14
+Content-Transfer-Encoding: 8bit
 
-Am Wed, 2 Apr 2025 14:54:12 +0300
-schrieb Roger Quadros <rogerq@kernel.org>:
+From: Leonid Arapov <arapovl839@gmail.com>
 
-> Hi Andreas,
-> 
-> On 30/03/2025 18:14, Andreas Kemnade wrote:
-> > Bluetooth is available on the other Panda board versions, too, so move
-> > stuff to common and specify the needed clock properly.
-> > 
-> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> > ---
-> >  .../boot/dts/ti/omap/omap4-panda-common.dtsi  | 31 ++++++++++++++++--
-> >  arch/arm/boot/dts/ti/omap/omap4-panda-es.dts  | 32 -------------------
-> >  2 files changed, 28 insertions(+), 35 deletions(-)
-> > 
-> > diff --git a/arch/arm/boot/dts/ti/omap/omap4-panda-common.dtsi b/arch/arm/boot/dts/ti/omap/omap4-panda-common.dtsi
-> > index c860b590142a..05c871d31d7b 100644
-> > --- a/arch/arm/boot/dts/ti/omap/omap4-panda-common.dtsi
-> > +++ b/arch/arm/boot/dts/ti/omap/omap4-panda-common.dtsi
-> > @@ -367,10 +367,8 @@ OMAP4_IOPAD(0x130, PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c4_sda */
-> >  	 */
-> >  	wl12xx_gpio: wl12xx-gpio-pins {
-> >  		pinctrl-single,pins = <
-> > -			OMAP4_IOPAD(0x066, PIN_OUTPUT | MUX_MODE3)		/* gpmc_a19.gpio_43 */
-> > -			OMAP4_IOPAD(0x06c, PIN_OUTPUT | MUX_MODE3)		/* gpmc_a22.gpio_46 */
-> > +			OMAP4_IOPAD(0x066, PIN_OUTPUT | MUX_MODE3)		/* gpmc_a19.gpio_43 - WLAN_EN */
-> >  			OMAP4_IOPAD(0x070, PIN_OUTPUT_PULLUP | MUX_MODE3)	/* gpmc_a24.gpio_48 */  
-> 
-> Apparently GPIO 48 is FM audio related and has nothing to do with wl12xx?
-> So should we drop it from here?
-> 
-Well, FM audio is part of the wl12xx, so it is a bit related. There is
-no driver for the FM part upstream. It is a bit suboptimal, so feel
-free to submit a patch to put it somewhere else.
+[ Upstream commit 3e411827f31db7f938a30a3c7a7599839401ec30 ]
 
-Regards,
-Andreas
+Function dispc_ovl_setup is not intended to work with the value OMAP_DSS_WB
+of the enum parameter plane.
+
+The value of this parameter is initialized in dss_init_overlays and in the
+current state of the code it cannot take this value so it's not a real
+problem.
+
+For the purposes of defensive coding it wouldn't be superfluous to check
+the parameter value, because some functions down the call stack process
+this value correctly and some not.
+
+For example, in dispc_ovl_setup_global_alpha it may lead to buffer
+overflow.
+
+Add check for this value.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE static
+analysis tool.
+
+Signed-off-by: Leonid Arapov <arapovl839@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/video/fbdev/omap2/omapfb/dss/dispc.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+index ccb96a5be07e4..139476f9d9189 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+@@ -2738,9 +2738,13 @@ int dispc_ovl_setup(enum omap_plane plane, const struct omap_overlay_info *oi,
+ 		bool mem_to_mem)
+ {
+ 	int r;
+-	enum omap_overlay_caps caps = dss_feat_get_overlay_caps(plane);
++	enum omap_overlay_caps caps;
+ 	enum omap_channel channel;
+ 
++	if (plane == OMAP_DSS_WB)
++		return -EINVAL;
++
++	caps = dss_feat_get_overlay_caps(plane);
+ 	channel = dispc_ovl_get_channel_out(plane);
+ 
+ 	DSSDBG("dispc_ovl_setup %d, pa %pad, pa_uv %pad, sw %d, %d,%d, %dx%d ->"
+-- 
+2.39.5
+
 
