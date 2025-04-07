@@ -1,34 +1,34 @@
-Return-Path: <linux-omap+bounces-3547-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3548-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A3D1A7DC71
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Apr 2025 13:38:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93379A7DC75
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Apr 2025 13:38:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2D4F17428A
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Apr 2025 11:38:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4B213A6D02
+	for <lists+linux-omap@lfdr.de>; Mon,  7 Apr 2025 11:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73DA923CF08;
-	Mon,  7 Apr 2025 11:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A08323CEF7;
+	Mon,  7 Apr 2025 11:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="lWnjousx"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="TYXnvXF3"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from server.wki.vra.mybluehostin.me (server.wki.vra.mybluehostin.me [162.240.238.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11062206B8;
-	Mon,  7 Apr 2025 11:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E230323C8CC;
+	Mon,  7 Apr 2025 11:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.238.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744025883; cv=none; b=NKrcxIixxL8MuskNerydP29shd5cTZ/QqDp/xRw3jmRVDSVEPeRwpTK6R/KiK9+YY7LpyYWBG4xQVp97htXizZCk76qi3lwYk3PILRbkJag1uWnriXLEY85r/8B04EJQhBafQzIUeNY/qQzqgjs99l7Lb50YTXi9A/JkkFnaSLM=
+	t=1744025902; cv=none; b=eAvno2ZYJOpGMf7kRsPXn3yk4O5KQvhOXm7wRs3MVsQ0mVf9h/VWBG5dOCzU3/esfKDKbbLjYYVEidXNwigZJulwmSI2xwA4gJ/X8H9CYEnO3k9HOdHKM+gl80pwshSNi5PyMB4CZkh4+ltnquzIVBOKZkUILhU5AmWMEiRNmvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744025883; c=relaxed/simple;
-	bh=Xjqu7WsLNNmuSc2tYNkOjQveQMPv5T09P2X+4HZybds=;
+	s=arc-20240116; t=1744025902; c=relaxed/simple;
+	bh=jgpNUX+RyDa9aoxup9DWCn68zh8N9gVgsH2Ni/DPUyI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LEVAaMWfjcB+quzNBQXXoTDOMsDqfDpTeoawVTWmZV3zKjlrYZIMTj8tw3hJLlRU3Nc6TSzUqVTxZfuzMKF7F3ClTx5n6YZ40ojUPYmYr7eY5kUVzzuC7qYnVbnGUNXLRMAqPxibp3eZnrLJqHkSq5xs30pVTN8f+jVeobMA5sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=lWnjousx; arc=none smtp.client-ip=162.240.238.73
+	 MIME-Version; b=A2lWXOM9MMTXs/egiuI/wwuciKh4jCB9SauP2wb+HyRr/CFv5mJlLyvt0wP2zXRQ8NcPP/As483gow/bJi4vJiJONvxSyLBtwnvtSh8+iC4s/O5yVCcDOwVx4IcESzUqkLcr/rYwBfKwEv1v2BYcDaR1IL7fzfxqQu7fbxjcA4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=TYXnvXF3; arc=none smtp.client-ip=162.240.238.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
@@ -37,17 +37,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=avUZIRR63gVWC5+6tppVtbgOGEA09DiOMN4f9In4OTA=; b=lWnjousxqOYrPXLaguxu8fPjhi
-	buU6N48yoGUcLWqd5ly+DyV7ucCSiNeDkmaG1i0J2iaJ1CebTOpIA5p7Nhmb9DZu1UIQhaFUBwtzN
-	Xy6wIP47u3nnZ89kbJ6XpguL1tfzPNNdlzY+pajmZ0Efr2A4tg+eV9vqVGI3v4Bo/S4JFctq92NZn
-	dCXMLGW97nwknwVU0s92Mel459xw5Oi7Mhrz+IC9SeF2aZDvFKmBZCZCuota6SghkEEpVO7+ozkez
-	UKlPrim+3LIVzHZCgXxK0SQ3DilLn3k6d8taHLFUwa1pjwqyzPxOai4gTkfx+N3Rh1A6DeL1cQLIk
-	pvfp1Wrg==;
+	bh=OoHmP5o/IoVoi8CIAyAIN1gz4gF37eTMxTO3Ic4RrxU=; b=TYXnvXF3Q9D/WojB27hORA09Tm
+	FYPG8u1QqrdV701XjWNPLsh/IvpQ4P87JRcf3/imtlYa8Yu16H1HPD65u0LpQ7UhgJQU/H8iN0+8A
+	EZW9WJM5+8spi/hhNo52m9vdZ1NyiZ/1zMW1QvLCBb78Wl5JJoEvcZhAgLrKEIs80/v/ouTnIKL7F
+	zFBAYkAPOC+N7kO3g7xUcFL/LgywYV+BwAnzJjZTkkB1gIeZ//KMVw2leGn5xTyD8zDWVbxPGsgvm
+	30XflTymoqiawqewUugoLqDHcnIUk/GVxenKRTdkHQhwjHf1diePa2cRdSCzPuwcIE+VagO5xT69g
+	tZZGY8vA==;
 Received: from [122.175.9.182] (port=42475 helo=cypher.couthit.local)
 	by server.wki.vra.mybluehostin.me with esmtpa (Exim 4.98.1)
 	(envelope-from <parvathi@couthit.com>)
-	id 1u1knZ-000000002o0-3p4R;
-	Mon, 07 Apr 2025 17:07:54 +0530
+	id 1u1knt-000000002o0-1cuK;
+	Mon, 07 Apr 2025 17:08:13 +0530
 From: Parvathi Pudi <parvathi@couthit.com>
 To: danishanwar@ti.com,
 	rogerq@kernel.org,
@@ -90,9 +90,9 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	krishna@couthit.com,
 	pmohan@couthit.com,
 	mohan@couthit.com
-Subject: [PATCH net-next v4 04/11] net: ti: prueth: Adds link detection, RX and TX support.
-Date: Mon,  7 Apr 2025 17:07:07 +0530
-Message-Id: <20250407113714.1050076-5-parvathi@couthit.com>
+Subject: [PATCH net-next v4 05/11] net: ti: prueth: Adds ethtool support for ICSSM PRUETH Driver
+Date: Mon,  7 Apr 2025 17:07:08 +0530
+Message-Id: <20250407113714.1050076-6-parvathi@couthit.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250407102528.1048589-1-parvathi@couthit.com>
 References: <20250407102528.1048589-1-parvathi@couthit.com>
@@ -116,830 +116,536 @@ X-Source-Dir:
 
 From: Roger Quadros <rogerq@ti.com>
 
-Changes corresponding to link configuration such as speed and duplexity.
-IRQ and handler initializations are performed for packet reception.Firmware
-receives the packet from the wire and stores it into OCMC queue. Next, it
-notifies the CPU via interrupt. Upon receiving the interrupt CPU will
-service the IRQ and packet will be processed by pushing the newly allocated
-SKB to upper layers.
+Changes for enabling ethtool support for the newly added PRU Ethernet
+interfaces. Extends the support for statistics collection from PRU internal
+memory and displays it in the user space. Along with statistics,
+enable/disable of features, configuring link speed etc.are now supported.
 
-When the user application want to transmit a packet, it will invoke
-sys_send() which will inturn invoke the PRUETH driver, then it will write
-the packet into OCMC queues. PRU firmware will pick up the packet and
-transmit it on to the wire.
+The firmware running on PRU maintains statistics in internal data memory.
+When requested ethtool collects all the statistics for the specified
+interface and displays it in the user space.
+
+Makefile is updated to include ethtool support into PRUETH driver.
 
 Signed-off-by: Roger Quadros <rogerq@ti.com>
 Signed-off-by: Andrew F. Davis <afd@ti.com>
 Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
 Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
 ---
- drivers/net/ethernet/ti/icssm/icssm_prueth.c | 611 ++++++++++++++++++-
- drivers/net/ethernet/ti/icssm/icssm_prueth.h |  45 ++
- 2 files changed, 650 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/ti/Makefile              |   2 +-
+ drivers/net/ethernet/ti/icssm/icssm_ethtool.c | 257 ++++++++++++++++++
+ drivers/net/ethernet/ti/icssm/icssm_prueth.c  |  34 +++
+ drivers/net/ethernet/ti/icssm/icssm_prueth.h  | 127 +++++++++
+ 4 files changed, 419 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_ethtool.c
 
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-index 60f911a6e621..56c4deeace90 100644
---- a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-+++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-@@ -36,6 +36,13 @@
- #define TX_START_DELAY		0x40
- #define TX_CLK_DELAY_100M	0x6
+diff --git a/drivers/net/ethernet/ti/Makefile b/drivers/net/ethernet/ti/Makefile
+index 93c0a4d0e33a..f21dd11118ab 100644
+--- a/drivers/net/ethernet/ti/Makefile
++++ b/drivers/net/ethernet/ti/Makefile
+@@ -4,7 +4,7 @@
+ #
  
-+static inline void icssm_prueth_write_reg(struct prueth *prueth,
-+					  enum prueth_mem region,
-+					  unsigned int reg, u32 val)
-+{
-+	writel_relaxed(val, prueth->mem[region].va + reg);
-+}
-+
- /* Below macro is for 1528 Byte Frame support, to Allow even with
-  * Redundancy tag
-  */
-@@ -299,18 +306,31 @@ static void icssm_prueth_init_ethernet_mode(struct prueth *prueth)
- 	icssm_prueth_hostinit(prueth);
- }
+ obj-$(CONFIG_TI_PRUETH) += icssm-prueth.o
+-icssm-prueth-y := icssm/icssm_prueth.o
++icssm-prueth-y := icssm/icssm_prueth.o icssm/icssm_ethtool.o
  
--static int icssm_prueth_emac_config(struct prueth_emac *emac)
-+static void icssm_prueth_port_enable(struct prueth_emac *emac, bool enable)
- {
- 	struct prueth *prueth = emac->prueth;
-+	void __iomem *port_ctrl;
-+	void __iomem *ram;
- 
--	/* PRU needs local shared RAM address for C28 */
--	u32 sharedramaddr = ICSS_LOCAL_SHARED_RAM;
-+	ram = prueth->mem[emac->dram].va;
-+	port_ctrl = ram + PORT_CONTROL_ADDR;
-+	writeb(!!enable, port_ctrl);
-+}
- 
--	/* PRU needs real global OCMC address for C30*/
--	u32 ocmcaddr = (u32)prueth->mem[PRUETH_MEM_OCMC].pa;
-+static int icssm_prueth_emac_config(struct prueth_emac *emac)
-+{
-+	struct prueth *prueth = emac->prueth;
-+	u32 sharedramaddr, ocmcaddr;
- 	void __iomem *dram_base;
- 	void __iomem *mac_addr;
- 	void __iomem *dram;
-+	void __iomem *sram;
-+
-+	/* PRU needs local shared RAM address for C28 */
-+	sharedramaddr = ICSS_LOCAL_SHARED_RAM;
-+	/* PRU needs real global OCMC address for C30*/
-+	ocmcaddr = (u32)prueth->mem[PRUETH_MEM_OCMC].pa;
-+	sram = prueth->mem[PRUETH_MEM_SHARED_RAM].va;
- 
- 	/* Clear data RAM */
- 	icssm_prueth_clearmem(prueth, emac->dram);
-@@ -331,6 +351,9 @@ static int icssm_prueth_emac_config(struct prueth_emac *emac)
- 	memcpy_toio(dram, queue_descs[emac->port_id],
- 		    sizeof(queue_descs[emac->port_id]));
- 
-+	emac->rx_queue_descs = sram + HOST_QUEUE_DESC_OFFSET;
-+	emac->tx_queue_descs = dram;
-+
- 	/* Set in constant table C28 of PRU0 to ICSS Shared memory */
- 	pru_rproc_set_ctable(emac->pru, PRU_C28, sharedramaddr);
- 
-@@ -345,8 +368,12 @@ static void icssm_emac_adjust_link(struct net_device *ndev)
- {
- 	struct prueth_emac *emac = netdev_priv(ndev);
- 	struct phy_device *phydev = emac->phydev;
-+	struct prueth *prueth = emac->prueth;
- 	bool new_state = false;
-+	enum prueth_mem region;
- 	unsigned long flags;
-+	u32 port_status = 0;
-+	u32 delay;
- 
- 	spin_lock_irqsave(&emac->lock, flags);
- 
-@@ -369,8 +396,38 @@ static void icssm_emac_adjust_link(struct net_device *ndev)
- 		emac->link = 0;
- 	}
- 
--	if (new_state)
-+	if (new_state) {
- 		phy_print_status(phydev);
-+		region = emac->dram;
-+
-+		/* update phy/port status information based on PHY values*/
-+		if (emac->link) {
-+			port_status |= PORT_LINK_MASK;
-+
-+			icssm_prueth_write_reg(prueth, region, PHY_SPEED_OFFSET,
-+					       emac->speed);
-+
-+			delay = TX_CLK_DELAY_100M;
-+			delay = delay << PRUSS_MII_RT_TXCFG_TX_CLK_DELAY_SHIFT;
-+
-+			if (emac->port_id) {
-+				regmap_update_bits
-+					(prueth->mii_rt,
-+					 PRUSS_MII_RT_TXCFG1,
-+					 PRUSS_MII_RT_TXCFG_TX_CLK_DELAY_MASK,
-+					 delay);
-+			} else {
-+				regmap_update_bits
-+					(prueth->mii_rt,
-+					 PRUSS_MII_RT_TXCFG0,
-+					 PRUSS_MII_RT_TXCFG_TX_CLK_DELAY_MASK,
-+					 delay);
-+			}
-+		}
-+
-+		writeb(port_status, prueth->mem[region].va +
-+		       PORT_STATUS_OFFSET);
-+	}
- 
- 	if (emac->link) {
- 	       /* reactivate the transmit queue if it is stopped */
-@@ -384,6 +441,397 @@ static void icssm_emac_adjust_link(struct net_device *ndev)
- 	spin_unlock_irqrestore(&emac->lock, flags);
- }
- 
-+static unsigned int
-+icssm_get_buff_desc_count(const struct prueth_queue_info *queue)
-+{
-+	unsigned int buffer_desc_count;
-+
-+	buffer_desc_count = queue->buffer_desc_end -
-+			    queue->buffer_desc_offset;
-+	buffer_desc_count /= BD_SIZE;
-+	buffer_desc_count++;
-+
-+	return buffer_desc_count;
-+}
-+
-+static void icssm_get_block(struct prueth_queue_desc __iomem *queue_desc,
-+			    const struct prueth_queue_info *queue,
-+			    int *write_block, int *read_block)
-+{
-+	*write_block = (readw(&queue_desc->wr_ptr) -
-+			queue->buffer_desc_offset) / BD_SIZE;
-+	*read_block = (readw(&queue_desc->rd_ptr) -
-+		       queue->buffer_desc_offset) / BD_SIZE;
-+}
-+
-+/**
-+ * icssm_prueth_tx_enqueue - queue a packet to firmware for transmission
+ obj-$(CONFIG_TI_CPSW) += cpsw-common.o
+ obj-$(CONFIG_TI_DAVINCI_EMAC) += cpsw-common.o
+diff --git a/drivers/net/ethernet/ti/icssm/icssm_ethtool.c b/drivers/net/ethernet/ti/icssm/icssm_ethtool.c
+new file mode 100644
+index 000000000000..85c7afb9557a
+--- /dev/null
++++ b/drivers/net/ethernet/ti/icssm/icssm_ethtool.c
+@@ -0,0 +1,257 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Texas Instruments ICSSM Ethernet Driver
 + *
-+ * @emac: EMAC data structure
-+ * @skb: packet data buffer
-+ * @queue_id: priority queue id
++ * Copyright (C) 2018-2022 Texas Instruments Incorporated - https://www.ti.com/
 + *
-+ * Return: 0 (Success)
 + */
-+static int icssm_prueth_tx_enqueue(struct prueth_emac *emac,
-+				   struct sk_buff *skb,
-+				   enum prueth_queue_id queue_id)
++
++#include <linux/if_bridge.h>
++#include <linux/if_vlan.h>
++#include "icssm_prueth.h"
++
++#define PRUETH_MODULE_VERSION "0.2"
++#define PRUETH_MODULE_DESCRIPTION "PRUSS Ethernet driver"
++
++/* set PRU firmware statistics */
++void icssm_emac_set_stats(struct prueth_emac *emac,
++			  struct port_statistics *pstats)
 +{
-+	struct prueth_queue_desc __iomem *queue_desc;
-+	const struct prueth_queue_info *txqueue;
-+	struct net_device *ndev = emac->ndev;
-+	unsigned int buffer_desc_count;
-+	int free_blocks, update_block;
-+	bool buffer_wrapped = false;
-+	int write_block, read_block;
-+	void *src_addr, *dst_addr;
-+	int pkt_block_size;
 +	void __iomem *dram;
-+	int txport, pktlen;
-+	u16 update_wr_ptr;
-+	u32 wr_buf_desc;
-+	void *ocmc_ram;
 +
 +	dram = emac->prueth->mem[emac->dram].va;
-+	if (eth_skb_pad(skb)) {
-+		if (netif_msg_tx_err(emac) && net_ratelimit())
-+			netdev_err(ndev, "packet pad failed\n");
-+		return -ENOMEM;
-+	}
-+
-+	/* which port to tx: MII0 or MII1 */
-+	txport = emac->tx_port_queue;
-+	src_addr = skb->data;
-+	pktlen = skb->len;
-+	/* Get the tx queue */
-+	queue_desc = emac->tx_queue_descs + queue_id;
-+	txqueue = &queue_infos[txport][queue_id];
-+
-+	buffer_desc_count = icssm_get_buff_desc_count(txqueue);
-+
-+	/* the PRU firmware deals mostly in pointers already
-+	 * offset into ram, we would like to deal in indexes
-+	 * within the queue we are working with for code
-+	 * simplicity, calculate this here
-+	 */
-+	icssm_get_block(queue_desc, txqueue, &write_block, &read_block);
-+
-+	if (write_block > read_block) {
-+		free_blocks = buffer_desc_count - write_block;
-+		free_blocks += read_block;
-+	} else if (write_block < read_block) {
-+		free_blocks = read_block - write_block;
-+	} else { /* they are all free */
-+		free_blocks = buffer_desc_count;
-+	}
-+
-+	pkt_block_size = DIV_ROUND_UP(pktlen, ICSS_BLOCK_SIZE);
-+	if (pkt_block_size > free_blocks) /* out of queue space */
-+		return -ENOBUFS;
-+
-+	/* calculate end BD address post write */
-+	update_block = write_block + pkt_block_size;
-+
-+	/* Check for wrap around */
-+	if (update_block >= buffer_desc_count) {
-+		update_block %= buffer_desc_count;
-+		buffer_wrapped = true;
-+	}
-+
-+	/* OCMC RAM is not cached and write order is not important */
-+	ocmc_ram = (__force void *)emac->prueth->mem[PRUETH_MEM_OCMC].va;
-+	dst_addr = ocmc_ram + txqueue->buffer_offset +
-+		   (write_block * ICSS_BLOCK_SIZE);
-+
-+	/* Copy the data from socket buffer(DRAM) to PRU buffers(OCMC) */
-+	if (buffer_wrapped) { /* wrapped around buffer */
-+		int bytes = (buffer_desc_count - write_block) * ICSS_BLOCK_SIZE;
-+		int remaining;
-+
-+		/* bytes is integral multiple of ICSS_BLOCK_SIZE but
-+		 * entire packet may have fit within the last BD
-+		 * if pkt_info.length is not integral multiple of
-+		 * ICSS_BLOCK_SIZE
-+		 */
-+		if (pktlen < bytes)
-+			bytes = pktlen;
-+
-+		/* copy non-wrapped part */
-+		memcpy(dst_addr, src_addr, bytes);
-+
-+		/* copy wrapped part */
-+		src_addr += bytes;
-+		remaining = pktlen - bytes;
-+		dst_addr = ocmc_ram + txqueue->buffer_offset;
-+		memcpy(dst_addr, src_addr, remaining);
-+	} else {
-+		memcpy(dst_addr, src_addr, pktlen);
-+	}
-+
-+       /* update first buffer descriptor */
-+	wr_buf_desc = (pktlen << PRUETH_BD_LENGTH_SHIFT) &
-+		       PRUETH_BD_LENGTH_MASK;
-+	writel(wr_buf_desc, dram + readw(&queue_desc->wr_ptr));
-+
-+	/* update the write pointer in this queue descriptor, the firmware
-+	 * polls for this change so this will signal the start of transmission
-+	 */
-+	update_wr_ptr = txqueue->buffer_desc_offset + (update_block * BD_SIZE);
-+	writew(update_wr_ptr, &queue_desc->wr_ptr);
-+
-+	return 0;
++	memcpy_toio(dram + STATISTICS_OFFSET, pstats, STAT_SIZE);
 +}
 +
-+void icssm_parse_packet_info(struct prueth *prueth, u32 buffer_descriptor,
-+			     struct prueth_packet_info *pkt_info)
++/* get statistics maintained by the PRU firmware into @pstats */
++void icssm_emac_get_stats(struct prueth_emac *emac,
++			  struct port_statistics *pstats)
 +{
-+	pkt_info->start_offset = false;
++	void __iomem *dram;
 +
-+	pkt_info->shadow = !!(buffer_descriptor & PRUETH_BD_SHADOW_MASK);
-+	pkt_info->port = (buffer_descriptor & PRUETH_BD_PORT_MASK) >>
-+			 PRUETH_BD_PORT_SHIFT;
-+	pkt_info->length = (buffer_descriptor & PRUETH_BD_LENGTH_MASK) >>
-+			   PRUETH_BD_LENGTH_SHIFT;
-+	pkt_info->broadcast = !!(buffer_descriptor & PRUETH_BD_BROADCAST_MASK);
-+	pkt_info->error = !!(buffer_descriptor & PRUETH_BD_ERROR_MASK);
-+	pkt_info->sv_frame = false;
-+	pkt_info->lookup_success = !!(buffer_descriptor &
-+				      PRUETH_BD_LOOKUP_SUCCESS_MASK);
-+	pkt_info->flood = !!(buffer_descriptor & PRUETH_BD_SW_FLOOD_MASK);
-+	pkt_info->timestamp = !!(buffer_descriptor & PRUETH_BD_TIMESTAMP_MASK);
++	dram = emac->prueth->mem[emac->dram].va;
++	memcpy_fromio(pstats, dram + STATISTICS_OFFSET, STAT_SIZE);
 +}
 +
 +/**
-+ * icssm_emac_rx_packet - EMAC Receive function
++ * icssm_emac_get_drvinfo - Get EMAC driver information
++ * @ndev: The network adapter
++ * @info: ethtool info structure containing name and version
 + *
-+ * @emac: EMAC data structure
-+ * @bd_rd_ptr: Buffer descriptor read pointer
-+ * @pkt_info: packet information structure
-+ * @rxqueue: Receive queue information structure
++ * Returns EMAC driver information (name and version)
++ */
++static void icssm_emac_get_drvinfo(struct net_device *ndev,
++				   struct ethtool_drvinfo *info)
++{
++	strscpy(info->driver, PRUETH_MODULE_DESCRIPTION, sizeof(info->driver));
++	strscpy(info->version, PRUETH_MODULE_VERSION, sizeof(info->version));
++}
++
++/**
++ * icssm_emac_get_link_ksettings - Get EMAC settings
++ * @ndev: The network adapter
++ * @ecmd: ethtool command
 + *
-+ * Get a packet from receive queue
++ * Executes ethool get command
 + *
 + * Return: 0 (Success)
 + */
-+int icssm_emac_rx_packet(struct prueth_emac *emac, u16 *bd_rd_ptr,
-+			 struct prueth_packet_info *pkt_info,
-+			 const struct prueth_queue_info *rxqueue)
++static int icssm_emac_get_link_ksettings(struct net_device *ndev,
++					 struct ethtool_link_ksettings *ecmd)
 +{
-+	struct net_device *ndev = emac->ndev;
-+	unsigned int buffer_desc_count;
-+	int read_block, update_block;
-+	unsigned int actual_pkt_len;
-+	bool buffer_wrapped = false;
-+	void *src_addr, *dst_addr;
-+	u16 start_offset = 0;
-+	struct sk_buff *skb;
-+	int pkt_block_size;
-+	void *ocmc_ram;
-+
-+	/* the PRU firmware deals mostly in pointers already
-+	 * offset into ram, we would like to deal in indexes
-+	 * within the queue we are working with for code
-+	 * simplicity, calculate this here
-+	 */
-+	buffer_desc_count = icssm_get_buff_desc_count(rxqueue);
-+	read_block = (*bd_rd_ptr - rxqueue->buffer_desc_offset) / BD_SIZE;
-+	pkt_block_size = DIV_ROUND_UP(pkt_info->length, ICSS_BLOCK_SIZE);
-+
-+	/* calculate end BD address post read */
-+	update_block = read_block + pkt_block_size;
-+
-+	/* Check for wrap around */
-+	if (update_block >= buffer_desc_count) {
-+		update_block %= buffer_desc_count;
-+		if (update_block)
-+			buffer_wrapped = true;
-+	}
-+
-+	/* calculate new pointer in ram */
-+	*bd_rd_ptr = rxqueue->buffer_desc_offset + (update_block * BD_SIZE);
-+
-+	/* Pkt len w/ HSR tag removed, If applicable */
-+	actual_pkt_len = pkt_info->length - start_offset;
-+
-+	/* Allocate a socket buffer for this packet */
-+	skb = netdev_alloc_skb_ip_align(ndev, actual_pkt_len);
-+	if (!skb) {
-+		if (netif_msg_rx_err(emac) && net_ratelimit())
-+			netdev_err(ndev, "failed rx buffer alloc\n");
-+		return -ENOMEM;
-+	}
-+
-+	dst_addr = skb->data;
-+
-+	/* OCMC RAM is not cached and read order is not important */
-+	ocmc_ram = (__force void *)emac->prueth->mem[PRUETH_MEM_OCMC].va;
-+
-+	/* Get the start address of the first buffer from
-+	 * the read buffer description
-+	 */
-+	src_addr = ocmc_ram + rxqueue->buffer_offset +
-+		   (read_block * ICSS_BLOCK_SIZE);
-+	src_addr += start_offset;
-+
-+	/* Copy the data from PRU buffers(OCMC) to socket buffer(DRAM) */
-+	if (buffer_wrapped) { /* wrapped around buffer */
-+		int bytes = (buffer_desc_count - read_block) * ICSS_BLOCK_SIZE;
-+		int remaining;
-+		/* bytes is integral multiple of ICSS_BLOCK_SIZE but
-+		 * entire packet may have fit within the last BD
-+		 * if pkt_info.length is not integral multiple of
-+		 * ICSS_BLOCK_SIZE
-+		 */
-+		if (pkt_info->length < bytes)
-+			bytes = pkt_info->length;
-+
-+		/* If applicable, account for the HSR tag removed */
-+		bytes -= start_offset;
-+
-+		/* copy non-wrapped part */
-+		memcpy(dst_addr, src_addr, bytes);
-+
-+		/* copy wrapped part */
-+		dst_addr += bytes;
-+		remaining = actual_pkt_len - bytes;
-+
-+		src_addr = ocmc_ram + rxqueue->buffer_offset;
-+		memcpy(dst_addr, src_addr, remaining);
-+		src_addr += remaining;
-+	} else {
-+		memcpy(dst_addr, src_addr, actual_pkt_len);
-+		src_addr += actual_pkt_len;
-+	}
-+
-+	if (!pkt_info->sv_frame) {
-+		skb_put(skb, actual_pkt_len);
-+
-+		/* send packet up the stack */
-+		skb->protocol = eth_type_trans(skb, ndev);
-+		local_bh_disable();
-+		netif_receive_skb(skb);
-+		local_bh_enable();
-+	} else {
-+		dev_kfree_skb_any(skb);
-+	}
-+
-+	/* update stats */
-+	ndev->stats.rx_bytes += actual_pkt_len;
-+	ndev->stats.rx_packets++;
-+
-+	return 0;
++	return phy_ethtool_get_link_ksettings(ndev, ecmd);
 +}
 +
 +/**
-+ * icssm_emac_rx_thread - EMAC Rx interrupt thread handler
-+ * @irq: interrupt number
-+ * @dev_id: pointer to net_device
++ * icssm_emac_set_link_ksettings - Set EMAC settings
++ * @ndev: The EMAC network adapter
++ * @ecmd: ethtool command
 + *
-+ * EMAC Rx Interrupt thread handler - function to process the rx frames in a
-+ * irq thread function. There is only limited buffer at the ingress to
-+ * queue the frames. As the frames are to be emptied as quickly as
-+ * possible to avoid overflow, irq thread is necessary. Current implementation
-+ * based on NAPI poll results in packet loss due to overflow at
-+ * the ingress queues. Industrial use case requires loss free packet
-+ * processing. Tests shows that with threaded irq based processing,
-+ * no overflow happens when receiving at ~92Mbps for MTU sized frames and thus
-+ * meet the requirement for industrial use case.
++ * Executes ethool set command
 + *
-+ * Return: interrupt handled condition
++ * Return: 0 (Success)
 + */
-+static irqreturn_t icssm_emac_rx_thread(int irq, void *dev_id)
++static int
++icssm_emac_set_link_ksettings(struct net_device *ndev,
++			      const struct ethtool_link_ksettings *ecmd)
 +{
-+	struct net_device *ndev = (struct net_device *)dev_id;
-+	struct prueth_emac *emac = netdev_priv(ndev);
-+	struct prueth_queue_desc __iomem *queue_desc;
-+	const struct prueth_queue_info *rxqueue;
-+	struct prueth *prueth = emac->prueth;
-+	struct net_device_stats *ndevstats;
-+	struct prueth_packet_info pkt_info;
-+	int start_queue, end_queue;
-+	void __iomem *shared_ram;
-+	u16 bd_rd_ptr, bd_wr_ptr;
-+	u16 update_rd_ptr;
-+	u8 overflow_cnt;
-+	u32 rd_buf_desc;
-+	int used = 0;
-+	int i, ret;
-+
-+	ndevstats = &emac->ndev->stats;
-+	shared_ram = emac->prueth->mem[PRUETH_MEM_SHARED_RAM].va;
-+
-+	start_queue = emac->rx_queue_start;
-+	end_queue = emac->rx_queue_end;
-+retry:
-+	/* search host queues for packets */
-+	for (i = start_queue; i <= end_queue; i++) {
-+		queue_desc = emac->rx_queue_descs + i;
-+		rxqueue = &queue_infos[PRUETH_PORT_HOST][i];
-+
-+		overflow_cnt = readb(&queue_desc->overflow_cnt);
-+		if (overflow_cnt > 0) {
-+			emac->ndev->stats.rx_over_errors += overflow_cnt;
-+			/* reset to zero */
-+			writeb(0, &queue_desc->overflow_cnt);
-+		}
-+
-+		bd_rd_ptr = readw(&queue_desc->rd_ptr);
-+		bd_wr_ptr = readw(&queue_desc->wr_ptr);
-+
-+		/* while packets are available in this queue */
-+		while (bd_rd_ptr != bd_wr_ptr) {
-+			/* get packet info from the read buffer descriptor */
-+			rd_buf_desc = readl(shared_ram + bd_rd_ptr);
-+			icssm_parse_packet_info(prueth, rd_buf_desc, &pkt_info);
-+
-+			if (pkt_info.length <= 0) {
-+				/* a packet length of zero will cause us to
-+				 * never move the read pointer ahead, locking
-+				 * the driver, so we manually have to move it
-+				 * to the write pointer, discarding all
-+				 * remaining packets in this queue. This should
-+				 * never happen.
-+				 */
-+				update_rd_ptr = bd_wr_ptr;
-+				ndevstats->rx_length_errors++;
-+			} else if (pkt_info.length > EMAC_MAX_FRM_SUPPORT) {
-+				/* if the packet is too large we skip it but we
-+				 * still need to move the read pointer ahead
-+				 * and assume something is wrong with the read
-+				 * pointer as the firmware should be filtering
-+				 * these packets
-+				 */
-+				update_rd_ptr = bd_wr_ptr;
-+				ndevstats->rx_length_errors++;
-+			} else {
-+				update_rd_ptr = bd_rd_ptr;
-+				ret = icssm_emac_rx_packet(emac, &update_rd_ptr,
-+							   &pkt_info, rxqueue);
-+				if (ret)
-+					return IRQ_HANDLED;
-+				used++;
-+			}
-+
-+			/* after reading the buffer descriptor we clear it
-+			 * to prevent improperly moved read pointer errors
-+			 * from simply looking like old packets.
-+			 */
-+			writel(0, shared_ram + bd_rd_ptr);
-+
-+			/* update read pointer in queue descriptor */
-+			writew(update_rd_ptr, &queue_desc->rd_ptr);
-+			bd_rd_ptr = update_rd_ptr;
-+		}
-+	}
-+
-+	if (used) {
-+		used = 0;
-+		goto retry;
-+	}
-+
-+	return IRQ_HANDLED;
++	return phy_ethtool_set_link_ksettings(ndev, ecmd);
 +}
 +
- static int icssm_emac_set_boot_pru(struct prueth_emac *emac,
- 				   struct net_device *ndev)
- {
-@@ -412,6 +860,21 @@ static int icssm_emac_set_boot_pru(struct prueth_emac *emac,
- 		netdev_err(ndev, "failed to boot PRU0: %d\n", ret);
- 		return ret;
- 	}
-+	return ret;
-+}
++#define PRUETH_STAT_OFFSET(m) offsetof(struct port_statistics, m)
 +
-+static int icssm_emac_request_irqs(struct prueth_emac *emac)
-+{
-+	struct net_device *ndev = emac->ndev;
-+	int ret;
++static const struct {
++	char string[ETH_GSTRING_LEN];
++	u32 offset;
++} prueth_ethtool_stats[] = {
++	{"txBcast", PRUETH_STAT_OFFSET(tx_bcast)},
++	{"txMcast", PRUETH_STAT_OFFSET(tx_mcast)},
++	{"txUcast", PRUETH_STAT_OFFSET(tx_ucast)},
++	{"txOctets", PRUETH_STAT_OFFSET(tx_octets)},
++	{"rxBcast", PRUETH_STAT_OFFSET(rx_bcast)},
++	{"rxMcast", PRUETH_STAT_OFFSET(rx_mcast)},
++	{"rxUcast", PRUETH_STAT_OFFSET(rx_ucast)},
++	{"rxOctets", PRUETH_STAT_OFFSET(rx_octets)},
 +
-+	ret = request_threaded_irq(emac->rx_irq, NULL, icssm_emac_rx_thread,
-+				   IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
-+				   ndev->name, ndev);
-+	if (ret) {
-+		netdev_err(ndev, "unable to request RX IRQ\n");
-+		return ret;
-+	}
- 
- 	return ret;
- }
-@@ -442,10 +905,27 @@ static int icssm_emac_ndo_open(struct net_device *ndev)
- 	if (ret)
- 		return ret;
- 
-+	ret = icssm_emac_request_irqs(emac);
-+	if (ret)
-+		goto rproc_shutdown;
++	{"tx64byte", PRUETH_STAT_OFFSET(tx64byte)},
++	{"tx65_127byte", PRUETH_STAT_OFFSET(tx65_127byte)},
++	{"tx128_255byte", PRUETH_STAT_OFFSET(tx128_255byte)},
++	{"tx256_511byte", PRUETH_STAT_OFFSET(tx256_511byte)},
++	{"tx512_1023byte", PRUETH_STAT_OFFSET(tx512_1023byte)},
++	{"tx1024byte", PRUETH_STAT_OFFSET(tx1024byte)},
++	{"rx64byte", PRUETH_STAT_OFFSET(rx64byte)},
++	{"rx65_127byte", PRUETH_STAT_OFFSET(rx65_127byte)},
++	{"rx128_255byte", PRUETH_STAT_OFFSET(rx128_255byte)},
++	{"rx256_511byte", PRUETH_STAT_OFFSET(rx256_511byte)},
++	{"rx512_1023byte", PRUETH_STAT_OFFSET(rx512_1023byte)},
++	{"rx1024byte", PRUETH_STAT_OFFSET(rx1024byte)},
 +
- 	/* start PHY */
- 	phy_start(emac->phydev);
++	{"lateColl", PRUETH_STAT_OFFSET(late_coll)},
++	{"singleColl", PRUETH_STAT_OFFSET(single_coll)},
++	{"multiColl", PRUETH_STAT_OFFSET(multi_coll)},
++	{"excessColl", PRUETH_STAT_OFFSET(excess_coll)},
 +
-+	/* enable the port and vlan */
-+	icssm_prueth_port_enable(emac, true);
++	{"rxMisAlignmentFrames", PRUETH_STAT_OFFSET(rx_misalignment_frames)},
++	{"stormPrevCounterBC", PRUETH_STAT_OFFSET(stormprev_counter_bc)},
++	{"stormPrevCounterMC", PRUETH_STAT_OFFSET(stormprev_counter_mc)},
++	{"stormPrevCounterUC", PRUETH_STAT_OFFSET(stormprev_counter_uc)},
++	{"macRxError", PRUETH_STAT_OFFSET(mac_rxerror)},
++	{"SFDError", PRUETH_STAT_OFFSET(sfd_error)},
++	{"defTx", PRUETH_STAT_OFFSET(def_tx)},
++	{"macTxError", PRUETH_STAT_OFFSET(mac_txerror)},
++	{"rxOverSizedFrames", PRUETH_STAT_OFFSET(rx_oversized_frames)},
++	{"rxUnderSizedFrames", PRUETH_STAT_OFFSET(rx_undersized_frames)},
++	{"rxCRCFrames", PRUETH_STAT_OFFSET(rx_crc_frames)},
++	{"droppedPackets", PRUETH_STAT_OFFSET(dropped_packets)},
 +
- 	prueth->emac_configured |= BIT(emac->port_id);
-+
-+	if (netif_msg_drv(emac))
-+		dev_notice(&ndev->dev, "started\n");
-+
- 	return 0;
-+
-+rproc_shutdown:
-+	rproc_shutdown(emac->pru);
-+
-+	return ret;
- }
- 
- /**
-@@ -459,18 +939,116 @@ static int icssm_emac_ndo_open(struct net_device *ndev)
- static int icssm_emac_ndo_stop(struct net_device *ndev)
- {
- 	struct prueth_emac *emac = netdev_priv(ndev);
-+	struct prueth *prueth = emac->prueth;
-+
-+	prueth->emac_configured &= ~BIT(emac->port_id);
-+
-+	/* disable the mac port */
-+	icssm_prueth_port_enable(emac, false);
- 
- 	/* stop PHY */
- 	phy_stop(emac->phydev);
- 
-+	/* stop the PRU */
- 	rproc_shutdown(emac->pru);
- 
-+	/* free rx interrupts */
-+	free_irq(emac->rx_irq, ndev);
-+
-+	if (netif_msg_drv(emac))
-+		dev_notice(&ndev->dev, "stopped\n");
-+
- 	return 0;
- }
- 
-+/* VLAN-tag PCP to priority queue map for EMAC/Switch/HSR/PRP used by driver
-+ * Index is PCP val / 2.
-+ *   low  - pcp 0..3 maps to Q4 for Host
-+ *   high - pcp 4..7 maps to Q3 for Host
-+ *   low  - pcp 0..3 maps to Q2 (FWD Queue) for PRU-x
-+ *   where x = 1 for PRUETH_PORT_MII0
-+ *             0 for PRUETH_PORT_MII1
-+ *   high - pcp 4..7 maps to Q1 (FWD Queue) for PRU-x
-+ */
-+static const unsigned short emac_pcp_tx_priority_queue_map[] = {
-+	PRUETH_QUEUE4, PRUETH_QUEUE4,
-+	PRUETH_QUEUE3, PRUETH_QUEUE3,
-+	PRUETH_QUEUE2, PRUETH_QUEUE2,
-+	PRUETH_QUEUE1, PRUETH_QUEUE1,
++	{"txHWQOverFlow", PRUETH_STAT_OFFSET(tx_hwq_overflow)},
++	{"txHWQUnderFlow", PRUETH_STAT_OFFSET(tx_hwq_underflow)},
++	{"vlanDropped", PRUETH_STAT_OFFSET(vlan_dropped)},
++	{"multicastDropped", PRUETH_STAT_OFFSET(multicast_dropped)},
 +};
 +
-+static u16 icssm_prueth_get_tx_queue_id(struct prueth *prueth,
-+					struct sk_buff *skb)
++static int icssm_emac_get_sset_count(struct net_device *ndev, int stringset)
 +{
-+	u16 vlan_tci, pcp;
-+	int err;
++	int a_size;
 +
-+	err = vlan_get_tag(skb, &vlan_tci);
-+	if (likely(err))
-+		pcp = 0;
-+	else
-+		pcp = (vlan_tci & VLAN_PRIO_MASK) >> VLAN_PRIO_SHIFT;
++	switch (stringset) {
++	case ETH_SS_STATS:
++		a_size = ARRAY_SIZE(prueth_ethtool_stats);
 +
-+	/* Below code (pcp >>= 1) is made common for all
-+	 * protocols (i.e., EMAC, RSTP, HSR and PRP)*
-+	 * pcp value 0,1 will be updated to 0 mapped to QUEUE4
-+	 * pcp value 2,3 will be updated to 1 mapped to QUEUE4
-+	 * pcp value 4,5 will be updated to 2 mapped to QUEUE3
-+	 * pcp value 6,7 will be updated to 3 mapped to QUEUE3
-+	 */
-+	pcp >>= 1;
-+
-+	return emac_pcp_tx_priority_queue_map[pcp];
++		return a_size;
++	default:
++		return -EOPNOTSUPP;
++	}
 +}
 +
-+/**
-+ * icssm_emac_ndo_start_xmit - EMAC Transmit function
-+ * @skb: SKB pointer
-+ * @ndev: EMAC network adapter
-+ *
-+ * Called by the system to transmit a packet  - we queue the packet in
-+ * EMAC hardware transmit queue
-+ *
-+ * Return: enum netdev_tx
-+ */
-+static enum netdev_tx icssm_emac_ndo_start_xmit(struct sk_buff *skb,
-+						struct net_device *ndev)
++static void icssm_emac_get_strings(struct net_device *ndev, u32 stringset,
++				   u8 *data)
++{
++	u8 *p = data;
++	int i;
++
++	switch (stringset) {
++	case ETH_SS_STATS:
++		for (i = 0; i < ARRAY_SIZE(prueth_ethtool_stats); i++) {
++			memcpy(p, prueth_ethtool_stats[i].string,
++			       ETH_GSTRING_LEN);
++			p += ETH_GSTRING_LEN;
++		}
++		break;
++	default:
++		break;
++	}
++}
++
++static void icssm_emac_get_ethtool_stats(struct net_device *ndev,
++					 struct ethtool_stats *stats, u64 *data)
 +{
 +	struct prueth_emac *emac = netdev_priv(ndev);
-+	int ret;
-+	u16 qid;
++	struct port_statistics pstats;
++	void *ptr;
++	u32 val;
++	int i;
 +
-+	qid = icssm_prueth_get_tx_queue_id(emac->prueth, skb);
-+	ret = icssm_prueth_tx_enqueue(emac, skb, qid);
-+	if (ret) {
-+		if (ret != -ENOBUFS && netif_msg_tx_err(emac) &&
-+		    net_ratelimit())
-+			netdev_err(ndev, "packet queue failed: %d\n", ret);
-+		goto fail_tx;
++	icssm_emac_get_stats(emac, &pstats);
++
++	for (i = 0; i < ARRAY_SIZE(prueth_ethtool_stats); i++) {
++		ptr = &pstats;
++		ptr += prueth_ethtool_stats[i].offset;
++		val = *(u32 *)ptr;
++		data[i] = val;
 +	}
++}
 +
-+	ndev->stats.tx_packets++;
-+	ndev->stats.tx_bytes += skb->len;
-+	dev_kfree_skb_any(skb);
++static void icssm_emac_get_regs(struct net_device *ndev,
++				struct ethtool_regs *regs, void *p)
++{
++	struct prueth_emac *emac = netdev_priv(ndev);
++	struct prueth *prueth = emac->prueth;
 +
-+	return NETDEV_TX_OK;
++	regs->version = PRUETH_REG_DUMP_GET_VER(prueth);
++}
 +
-+fail_tx:
-+	if (ret == -ENOBUFS) {
-+		ret = NETDEV_TX_BUSY;
-+	} else {
-+		/* error */
-+		ndev->stats.tx_dropped++;
-+		ret = NET_XMIT_DROP;
-+	}
++static const struct ethtool_rmon_hist_range icssm_emac_rmon_ranges[] = {
++	{    0,   64},
++	{   65,  127},
++	{  128,  255},
++	{  256,  511},
++	{  512,  1023},
++	{ 1024,  EMAC_MAX_PKTLEN},
++	{}
++};
 +
-+	return ret;
++static void
++icssm_emac_get_rmon_stats(struct net_device *ndev,
++			  struct ethtool_rmon_stats *rmon_stats,
++			  const struct ethtool_rmon_hist_range **ranges)
++{
++	struct prueth_emac *emac = netdev_priv(ndev);
++	struct port_statistics pstats;
++
++	*ranges = icssm_emac_rmon_ranges;
++	icssm_emac_get_stats(emac, &pstats);
++
++	rmon_stats->undersize_pkts = pstats.rx_undersized_frames;
++	rmon_stats->oversize_pkts  = pstats.rx_oversized_frames;
++
++	rmon_stats->hist[0] = pstats.tx64byte;
++	rmon_stats->hist[1] = pstats.tx65_127byte;
++	rmon_stats->hist[2] = pstats.tx128_255byte;
++	rmon_stats->hist[3] = pstats.tx256_511byte;
++	rmon_stats->hist[4] = pstats.tx512_1023byte;
++
++	rmon_stats->hist_tx[0] = pstats.rx64byte;
++	rmon_stats->hist_tx[1] = pstats.rx65_127byte;
++	rmon_stats->hist_tx[2] = pstats.rx128_255byte;
++	rmon_stats->hist_tx[3] = pstats.rx256_511byte;
++	rmon_stats->hist_tx[4] = pstats.rx1024byte;
++}
++
++static void
++icssm_emac_get_eth_mac_stats(struct net_device *ndev,
++			     struct ethtool_eth_mac_stats *mac_stats)
++{
++	struct prueth_emac *emac = netdev_priv(ndev);
++	struct port_statistics pstats;
++
++	icssm_emac_get_stats(emac, &pstats);
++
++	mac_stats->LateCollisions = pstats.late_coll;
++	mac_stats->SingleCollisionFrames = pstats.single_coll;
++	mac_stats->MultipleCollisionFrames = pstats.multi_coll;
++}
++
++/* Ethtool support for EMAC adapter */
++const struct ethtool_ops emac_ethtool_ops = {
++	.get_drvinfo = icssm_emac_get_drvinfo,
++	.get_link_ksettings = icssm_emac_get_link_ksettings,
++	.set_link_ksettings = icssm_emac_set_link_ksettings,
++	.get_link = ethtool_op_get_link,
++	.get_sset_count = icssm_emac_get_sset_count,
++	.get_strings = icssm_emac_get_strings,
++	.get_ethtool_stats = icssm_emac_get_ethtool_stats,
++	.get_regs = icssm_emac_get_regs,
++	.get_rmon_stats = icssm_emac_get_rmon_stats,
++	.get_eth_mac_stats = icssm_emac_get_eth_mac_stats,
++};
++EXPORT_SYMBOL_GPL(emac_ethtool_ops);
+diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
+index 56c4deeace90..3f948032b2bb 100644
+--- a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
++++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
+@@ -901,6 +901,8 @@ static int icssm_emac_ndo_open(struct net_device *ndev)
+ 
+ 	icssm_prueth_emac_config(emac);
+ 
++	icssm_emac_set_stats(emac, &emac->stats);
++
+ 	ret = icssm_emac_set_boot_pru(emac, ndev);
+ 	if (ret)
+ 		return ret;
+@@ -952,6 +954,8 @@ static int icssm_emac_ndo_stop(struct net_device *ndev)
+ 	/* stop the PRU */
+ 	rproc_shutdown(emac->pru);
+ 
++	icssm_emac_get_stats(emac, &emac->stats);
++
+ 	/* free rx interrupts */
+ 	free_irq(emac->rx_irq, ndev);
+ 
+@@ -1045,10 +1049,39 @@ static enum netdev_tx icssm_emac_ndo_start_xmit(struct sk_buff *skb,
+ 	return ret;
+ }
+ 
++/**
++ * icssm_emac_ndo_get_stats64 - EMAC get statistics function
++ * @ndev: The EMAC network adapter
++ * @stats: rtnl_link_stats structure
++ *
++ * Called when system wants to get statistics from the device.
++ *
++ */
++static void icssm_emac_ndo_get_stats64(struct net_device *ndev,
++				       struct rtnl_link_stats64 *stats)
++{
++	struct prueth_emac *emac = netdev_priv(ndev);
++	struct port_statistics pstats;
++
++	icssm_emac_get_stats(emac, &pstats);
++
++	stats->rx_packets = ndev->stats.rx_packets;
++	stats->rx_bytes   = ndev->stats.rx_bytes;
++	stats->tx_packets = ndev->stats.tx_packets;
++	stats->tx_bytes   = ndev->stats.tx_bytes;
++	stats->tx_errors  = ndev->stats.tx_errors;
++	stats->tx_dropped = ndev->stats.tx_dropped;
++	stats->multicast  = pstats.rx_mcast;
++
++	stats->rx_over_errors   = ndev->stats.rx_over_errors;
++	stats->rx_length_errors = ndev->stats.rx_length_errors;
 +}
 +
  static const struct net_device_ops emac_netdev_ops = {
  	.ndo_open = icssm_emac_ndo_open,
  	.ndo_stop = icssm_emac_ndo_stop,
-+	.ndo_start_xmit = icssm_emac_ndo_start_xmit,
+ 	.ndo_start_xmit = icssm_emac_ndo_start_xmit,
++	.ndo_get_stats64 = icssm_emac_ndo_get_stats64,
  };
  
  /* get emac_port corresponding to eth_node name */
-@@ -540,16 +1118,37 @@ static int icssm_prueth_netdev_init(struct prueth *prueth,
- 	/* by default eth_type is EMAC */
- 	switch (port) {
- 	case PRUETH_PORT_MII0:
-+		emac->tx_port_queue = PRUETH_PORT_QUEUE_MII0;
-+
-+		/* packets from MII0 are on queues 1 through 2 */
-+		emac->rx_queue_start = PRUETH_QUEUE1;
-+		emac->rx_queue_end = PRUETH_QUEUE2;
-+
- 		emac->dram = PRUETH_MEM_DRAM0;
- 		emac->pru = prueth->pru0;
- 		break;
- 	case PRUETH_PORT_MII1:
-+		emac->tx_port_queue = PRUETH_PORT_QUEUE_MII1;
-+
-+		/* packets from MII1 are on queues 3 through 4 */
-+		emac->rx_queue_start = PRUETH_QUEUE3;
-+		emac->rx_queue_end = PRUETH_QUEUE4;
-+
- 		emac->dram = PRUETH_MEM_DRAM1;
- 		emac->pru = prueth->pru1;
- 		break;
- 	default:
- 		return -EINVAL;
- 	}
-+
-+	emac->rx_irq = of_irq_get_byname(eth_node, "rx");
-+	if (emac->rx_irq < 0) {
-+		ret = emac->rx_irq;
-+		if (ret != -EPROBE_DEFER)
-+			dev_err(prueth->dev, "could not get rx irq\n");
-+		goto free;
-+	}
-+
- 	/* get mac address from DT and set private and netdev addr */
- 	ret = of_get_ethdev_address(eth_node, ndev);
- 	if (!is_valid_ether_addr(ndev->dev_addr)) {
+@@ -1177,6 +1210,7 @@ static int icssm_prueth_netdev_init(struct prueth *prueth,
+ 	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_Asym_Pause_BIT);
+ 
+ 	ndev->netdev_ops = &emac_netdev_ops;
++	ndev->ethtool_ops = &emac_ethtool_ops;
+ 
+ 	return 0;
+ free:
 diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.h b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
-index fc59087c214d..3c70dc9c4be0 100644
+index 3c70dc9c4be0..39ceed0e2d15 100644
 --- a/drivers/net/ethernet/ti/icssm/icssm_prueth.h
 +++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
-@@ -20,6 +20,12 @@
+@@ -27,6 +27,12 @@
+ #define EMAC_MAX_FRM_SUPPORT (ETH_HLEN + VLAN_HLEN + ETH_DATA_LEN + \
+ 			      ICSSM_LRE_TAG_SIZE)
  
- /* PRUSS local memory map */
- #define ICSS_LOCAL_SHARED_RAM	0x00010000
-+#define EMAC_MAX_PKTLEN		(ETH_HLEN + VLAN_HLEN + ETH_DATA_LEN)
-+/* Below macro is for 1528 Byte Frame support, to Allow even with
-+ * Redundancy tag
-+ */
-+#define EMAC_MAX_FRM_SUPPORT (ETH_HLEN + VLAN_HLEN + ETH_DATA_LEN + \
-+			      ICSSM_LRE_TAG_SIZE)
- 
++#define PRUETH_REG_DUMP_VER		1
++
++/* Encoding: 32-16: Reserved, 16-8: Reg dump version, 8-0: Ethertype  */
++#define PRUETH_REG_DUMP_GET_VER(x)	((PRUETH_REG_DUMP_VER << 8) | \
++					 ((x)->eth_type))
++
  /* PRU Ethernet Type - Ethernet functionality (protocol
   * implemented) provided by the PRU firmware being loaded.
-@@ -76,6 +82,32 @@ struct prueth_queue_info {
- 	u16 buffer_desc_end;
- } __packed;
+  */
+@@ -108,6 +114,119 @@ struct prueth_packet_info {
+ 	bool timestamp;
+ };
  
 +/**
-+ * struct prueth_packet_info - Info about a packet in buffer
-+ * @start_offset: start offset of the frame in the buffer for HSR/PRP
-+ * @shadow: this packet is stored in the collision queue
-+ * @port: port packet is on
-+ * @length: length of packet
-+ * @broadcast: this packet is a broadcast packet
-+ * @error: this packet has an error
-+ * @sv_frame: indicate if the frame is a SV frame for HSR/PRP
-+ * @lookup_success: src mac found in FDB
-+ * @flood: packet is to be flooded
-+ * @timestamp: Specifies if timestamp is appended to the packet
++ * struct port_statistics - Statistics structure for capturing statistics
++ *			    on PRUs
++ * @tx_bcast: Number of broadcast packets sent
++ * @tx_mcast:Number of multicast packets sent
++ * @tx_ucast:Number of unicast packets sent
++ *
++ * @tx_octets:Number of undersized frames rcvd
++ *
++ * @rx_bcast:Number of broadcast packets rcvd
++ * @rx_mcast:Number of multicast packets rcvd
++ * @rx_ucast:Number of unicast packets rcvd
++ *
++ * @rx_octets:Number of Rx packets
++ *
++ * @tx64byte:Number of 64 byte packets sent
++ * @tx65_127byte:Number of 65-127 byte packets sent
++ * @tx128_255byte:Number of 128-255 byte packets sent
++ * @tx256_511byte:Number of 256-511 byte packets sent
++ * @tx512_1023byte:Number of 512-1023 byte packets sent
++ * @tx1024byte:Number of 1024 and larger size packets sent
++ *
++ * @rx64byte:Number of 64 byte packets rcvd
++ * @rx65_127byte:Number of 65-127 byte packets rcvd
++ * @rx128_255byte:Number of 128-255 byte packets rcvd
++ * @rx256_511byte:Number of 256-511 byte packets rcvd
++ * @rx512_1023byte:Number of 512-1023 byte packets rcvd
++ * @rx1024byte:Number of 1024 and larger size packets rcvd
++ *
++ * @late_coll:Number of late collisions(Half Duplex)
++ * @single_coll:Number of single collisions (Half Duplex)
++ * @multi_coll:Number of multiple collisions (Half Duplex)
++ * @excess_coll:Number of excess collisions(Half Duplex)
++ *
++ * @rx_misalignment_frames:Number of non multiple of 8 byte frames rcvd
++ * @stormprev_counter:Number of packets dropped because of Storm Prevention
++ * @mac_rxerror:Number of MAC receive errors
++ * @sfd_error:Number of invalid SFD
++ * @def_tx:Number of transmissions deferred
++ * @mac_txerror:Number of MAC transmit errors
++ * @rx_oversized_frames:Number of oversized frames rcvd
++ * @rx_undersized_frames:Number of undersized frames rcvd
++ * @rx_crc_frames:Number of CRC error frames rcvd
++ * @dropped_packets:Number of packets dropped due to link down on opposite port
++ *
++ * @tx_hwq_overflow:Hardware Tx Queue (on PRU) over flow count
++ * @tx_hwq_underflow:Hardware Tx Queue (on PRU) under flow count
++ *
++ * @u32 cs_error: Number of carrier sense errors
++ * @sqe_test_error: Number of MAC receive errors
++ *
++ * Above fields are aligned so that it's consistent
++ * with the memory layout in PRU DRAM, this is to facilitate easy
++ * memcpy. Don't change the order of the fields.
++ *
++ * @vlan_dropped: Number of VLAN tagged packets dropped
++ * @multicast_dropped: Number of multicast packets dropped
 + */
-+struct prueth_packet_info {
-+	bool start_offset;
-+	bool shadow;
-+	unsigned int port;
-+	unsigned int length;
-+	bool broadcast;
-+	bool error;
-+	bool sv_frame;
-+	bool lookup_success;
-+	bool flood;
-+	bool timestamp;
-+};
++struct port_statistics {
++	u32 tx_bcast;
++	u32 tx_mcast;
++	u32 tx_ucast;
++
++	u32 tx_octets;
++
++	u32 rx_bcast;
++	u32 rx_mcast;
++	u32 rx_ucast;
++
++	u32 rx_octets;
++
++	u32 tx64byte;
++	u32 tx65_127byte;
++	u32 tx128_255byte;
++	u32 tx256_511byte;
++	u32 tx512_1023byte;
++	u32 tx1024byte;
++
++	u32 rx64byte;
++	u32 rx65_127byte;
++	u32 rx128_255byte;
++	u32 rx256_511byte;
++	u32 rx512_1023byte;
++	u32 rx1024byte;
++
++	u32 late_coll;
++	u32 single_coll;
++	u32 multi_coll;
++	u32 excess_coll;
++
++	u32 rx_misalignment_frames;
++	u32 stormprev_counter_bc;
++	u32 stormprev_counter_mc;
++	u32 stormprev_counter_uc;
++	u32 mac_rxerror;
++	u32 sfd_error;
++	u32 def_tx;
++	u32 mac_txerror;
++	u32 rx_oversized_frames;
++	u32 rx_undersized_frames;
++	u32 rx_crc_frames;
++	u32 dropped_packets;
++
++	u32 tx_hwq_overflow;
++	u32 tx_hwq_underflow;
++
++	u32 cs_error;
++	u32 sqe_test_error;
++
++	u32 vlan_dropped;
++	u32 multicast_dropped;
++} __packed;
 +
  /* In switch mode there are 3 real ports i.e. 3 mac addrs.
   * however Linux sees only the host side port. The other 2 ports
   * are the switch ports.
-@@ -169,14 +201,21 @@ struct prueth_emac {
- 
- 	struct rproc *pru;
+@@ -203,6 +322,7 @@ struct prueth_emac {
  	struct phy_device *phydev;
-+	struct prueth_queue_desc __iomem *rx_queue_descs;
-+	struct prueth_queue_desc __iomem *tx_queue_descs;
+ 	struct prueth_queue_desc __iomem *rx_queue_descs;
+ 	struct prueth_queue_desc __iomem *tx_queue_descs;
++	struct port_statistics stats; /* stats holder when i/f is down */
  
  	int link;
  	int speed;
- 	int duplex;
-+	int rx_irq;
- 
-+	enum prueth_port_queue_id tx_port_queue;
-+	enum prueth_queue_id rx_queue_start;
-+	enum prueth_queue_id rx_queue_end;
- 	enum prueth_port port_id;
- 	enum prueth_mem dram;
- 	const char *phy_id;
-+	u32 msg_enable;
- 	u8 mac_addr[6];
- 	phy_interface_t phy_if;
- 	spinlock_t lock;	/* serialize access */
-@@ -201,4 +240,10 @@ struct prueth {
- 	size_t ocmc_ram_size;
+@@ -241,9 +361,16 @@ struct prueth {
  	u8 emac_configured;
  };
+ 
++extern const struct ethtool_ops emac_ethtool_ops;
 +
-+void icssm_parse_packet_info(struct prueth *prueth, u32 buffer_descriptor,
-+			     struct prueth_packet_info *pkt_info);
-+int icssm_emac_rx_packet(struct prueth_emac *emac, u16 *bd_rd_ptr,
-+			 struct prueth_packet_info *pkt_info,
-+			 const struct prueth_queue_info *rxqueue);
+ void icssm_parse_packet_info(struct prueth *prueth, u32 buffer_descriptor,
+ 			     struct prueth_packet_info *pkt_info);
+ int icssm_emac_rx_packet(struct prueth_emac *emac, u16 *bd_rd_ptr,
+ 			 struct prueth_packet_info *pkt_info,
+ 			 const struct prueth_queue_info *rxqueue);
++
++void icssm_emac_set_stats(struct prueth_emac *emac,
++			  struct port_statistics *pstats);
++void icssm_emac_get_stats(struct prueth_emac *emac,
++			  struct port_statistics *pstats);
  #endif /* __NET_TI_PRUETH_H */
 -- 
 2.34.1
