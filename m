@@ -1,154 +1,177 @@
-Return-Path: <linux-omap+bounces-3558-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3559-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6909A81450
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Apr 2025 20:13:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA70CA81D10
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Apr 2025 08:29:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86B331B8863F
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Apr 2025 18:13:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6878A1B80E4F
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Apr 2025 06:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71A323E227;
-	Tue,  8 Apr 2025 18:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 921EC1DDC0B;
+	Wed,  9 Apr 2025 06:29:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uWeAEPOL"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from cantor.telenet-ops.be (cantor.telenet-ops.be [195.130.132.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC2823CF07
-	for <linux-omap@vger.kernel.org>; Tue,  8 Apr 2025 18:13:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90CB31D86F2
+	for <linux-omap@vger.kernel.org>; Wed,  9 Apr 2025 06:29:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744136003; cv=none; b=VomoNDL1TNKexB0WlTpNE5gJxR0kAM04Dj1m7kvcOa/NOM4BNaV3zA8BAeeMIDsHZfn2lfah8kUNtOr1tmVzLK5KdVhU1fsidh8912Mg0GkpS+jtzSJ4BTfc9KrF972HiWQaPE/kRRxPycimvwvuDUKmQXZxIuVwGv6OE6annt4=
+	t=1744180182; cv=none; b=Sv2CM0UTDK/xNOsLkaaReCxgUNRo+C0Hn4DQeQDXEsaWZCgsB+Bj0ZketSmDNjC8sH2gM5XTP+eyZCNk0+Lqy5mhvoiEV/3fW3OSrWtb2gPb0uGwiRKaehbz6oP9mE0uJFU77SjaCiZJzjSJZ6R8jADeNU22EQtp9UJ6bEARlKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744136003; c=relaxed/simple;
-	bh=zuLTOwLuHsYDzMbkf+aBznMLg7hEW/VvEFThYjA/tNo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tGHVzMHHjWZKnnHTEGh09T7V7jwAfQ66ZQoOEsafhLVYIVwMVDjBXd7Tx15ypTT8c5ajnWtokzsbQcso3Qs6+9u5c5n3TzX0/VfhaIMaCRd+fjieRs7EeUCEIwCbeZEZZWzCa8Uw9pV44PBfDc5UBMBiM7PaBpOmj0XfOEJio5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
-	by cantor.telenet-ops.be (Postfix) with ESMTPS id 4ZXDYw2qXcz4x0WF
-	for <linux-omap@vger.kernel.org>; Tue, 08 Apr 2025 20:07:16 +0200 (CEST)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:a74f:875e:25d1:823b])
-	by albert.telenet-ops.be with cmsmtp
-	id ai772E0090XRBii06i77zS; Tue, 08 Apr 2025 20:07:08 +0200
-Received: from rox.of.borg ([192.168.97.57])
-	by ramsan.of.borg with esmtp (Exim 4.97)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1u2DLn-000000009xH-3KiT;
-	Tue, 08 Apr 2025 20:07:07 +0200
-Received: from geert by rox.of.borg with local (Exim 4.97)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1u2DLn-00000002s7k-2ssL;
-	Tue, 08 Apr 2025 20:07:07 +0200
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>
-Cc: Matti Vaittinen <mazziesaccount@gmail.com>,
-	linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] genirq/generic-chip: Fix incorrect lock guard conversions
-Date: Tue,  8 Apr 2025 20:07:02 +0200
-Message-ID: <514f94c5891c61ac0a4a7fdad113e75db1eea367.1744135467.git.geert+renesas@glider.be>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1744180182; c=relaxed/simple;
+	bh=GqY1tsZNSIrPzzrHoXynnaRNG6y6kEra0eAN9CxIYUg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GUOzP1wa3o5E/JrJWouyFc38vboaCokCg1m+cJPB9PXMFBZAahohpkC1/XlGfJGm20DGreV179EVvqs2IBd02nSBFX38yr+rmXOVPYfRlKFBYcH8ZnfpZFSwlLds9OFV1GGM9BhF/1Is7zS3bdTEoN9URmN5A6kFhm2YAUDueSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uWeAEPOL; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-af51e820336so6026828a12.1
+        for <linux-omap@vger.kernel.org>; Tue, 08 Apr 2025 23:29:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1744180180; x=1744784980; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=usHmxHbXCM+dAW0xD/QM+lICH9ZjXWjSDlg+5wMOzf8=;
+        b=uWeAEPOLzUS1qPqqijnEuIwxXe1YRLDoqQSMCdF6hxOkjNfLCHqEF5EdOqpeFne/nA
+         nanOypinBAEiPIQdWFuMUul9DP1eqiDoEH9rfpusWGq8/NDjSUgU4APQnTY/DUshohVT
+         ve/8jxUl2BnyMFxNiv26mfeWYg2on9hK4ockTAnbdzq9V9U3hN6nYfTOwUa/FMv32yEy
+         aW8AznqAKbJx08ildAdWOIsEifcHDSeVS1RllA7Sr7smmNUmVgL/L0oajpf7S233HjQ4
+         SzAyNeD89K0Os3W3961Pk2fIhRZ6LVTJkCA1x79nJiO0M1kk6tVwHAy5uGNUEbS5MK4O
+         E98g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744180180; x=1744784980;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=usHmxHbXCM+dAW0xD/QM+lICH9ZjXWjSDlg+5wMOzf8=;
+        b=TIHk6yzgnf5w+Uo8vjfueiS7CI8HVJEYCbSIPF+dbneUPe2QcGzBKxmO+t4lu8vwJG
+         Kl5oLTYFAPaCFPFqBwo3kpgPZYYXGHUZPW7aj/orfrRnf6ue1YUhu26p+qhnVHtBto1F
+         7kGagsxmSldlG/+Ihe8ToI+f4mvQde8PjpxpgYSHUsP0u/K/QxZqJcxJ5CjAb+1qFMvu
+         8EwQM5uuc8bnDi3MPGWhd+XozJeJxZZr524YALaal8xEMywmEpsi5nbN1kqvKn7uy3Be
+         bVaDxXN6cFYC/YBplXycmEYIB82oiwMmEMYLjVNrhfvhTR1KCs87xA5dUMVOmmnVXJC3
+         j9iQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXmb8FKgH2D/WemzFTtbeZocoQWLsU7HLkHVv0LDGZK7fl7bhBd+DY4Tj9lhJCpljcrTGCD3gpk+C4D@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7mV0n+/+TW1wRjrcEKKFA5CDWBBdZgM0hea84T+Bdhm5Ly+ib
+	nbAk5lavYRhYnxhF2lqzET98PcsmSHv63ecsPHoZxsmpVmJJF/H5/cRDe5n6pw==
+X-Gm-Gg: ASbGncv/SKwaBTYqctb2yTF11yXhqVmcLKEgPLBAL1IKthTc79P3GC3Pctg0mf2H1De
+	Q5yswAdm9yBwyilucTdF71SA5N7YquvQ1aJCi6+cpGGauDNHp2kjdh/Tor8JfQ5xvTe0HcksNOa
+	RfxLay12jWbKCQuQRJMcpIUjk1hx5/mBn+1MmifQmyxiCkFyUpNKBM2HbNuX5H+9wSkOgy09sjo
+	nzB+emF0H679JEUs1c65Q3R29J0maPusagD0wSJ7gvfxcMJTnOFy3vI11px405jo4yXPdfH06ZM
+	uwl3ysQ4x7lXTeWRAt6Wcxf/Tcav+rAmKGyRlSjkX2B4X45iQdI=
+X-Google-Smtp-Source: AGHT+IFMg3stzRdVMVbjl7VIfmZ5+DK7eVP2nR526pWDqOTgCQzPmJ9NitfwkUXy92kR/MtVTv0MhA==
+X-Received: by 2002:a05:6a21:8dcb:b0:1f5:769a:a4b2 with SMTP id adf61e73a8af0-20159195613mr2687257637.17.1744180179850;
+        Tue, 08 Apr 2025 23:29:39 -0700 (PDT)
+Received: from thinkpad ([120.56.198.53])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bb1e51f48sm496746b3a.147.2025.04.08.23.29.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Apr 2025 23:29:38 -0700 (PDT)
+Date: Wed, 9 Apr 2025 11:59:33 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: lpieralisi@kernel.org, kw@linux.com, robh@kernel.org, 
+	bhelgaas@google.com, vigneshr@ti.com, kishon@kernel.org, 18255117159@163.com, 
+	cassel@kernel.org, wojciech.jasko-EXT@continental-corporation.com, 
+	thomas.richard@bootlin.com, bwawrzyn@cisco.com, linux-pci@vger.kernel.org, 
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, srk@ti.com
+Subject: Re: [PATCH v2 3/4] PCI: cadence-ep: Introduce cdns_pcie_ep_disable
+ helper for cleanup
+Message-ID: <vaqnrp46asxjiqjefajqfeqcp7kjhcelc2nabilrgjdqevwncj@i64fd7jt5gil>
+References: <20250330083914.529222-1-s-vadapalli@ti.com>
+ <20250330083914.529222-4-s-vadapalli@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250330083914.529222-4-s-vadapalli@ti.com>
 
-When booting BeagleBone Black:
+On Sun, Mar 30, 2025 at 02:09:13PM +0530, Siddharth Vadapalli wrote:
+> Introduce the helper function cdns_pcie_ep_disable() which will undo the
+> configuration performed by cdns_pcie_ep_setup(). Also, export it for use
+> by the existing callers of cdns_pcie_ep_setup(), thereby allowing them
+> to cleanup on their exit path.
+> 
+> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-    ------------[ cut here ]------------
-    WARNING: CPU: 0 PID: 0 at kernel/locking/lockdep.c:4398 lockdep_hardirqs_on_prepare+0x23c/0x280
-    DEBUG_LOCKS_WARN_ON(early_boot_irqs_disabled)
-    CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.15.0-rc1-boneblack-00004-g195298c3b116 #209 NONE
-    Hardware name: Generic AM33XX (Flattened Device Tree)
-    Call trace:
-     unwind_backtrace from show_stack+0x10/0x14
-     show_stack from dump_stack_lvl+0x6c/0x90
-     dump_stack_lvl from __warn+0x70/0x1b0
-     __warn from warn_slowpath_fmt+0x1d4/0x1ec
-     warn_slowpath_fmt from lockdep_hardirqs_on_prepare+0x23c/0x280
-     lockdep_hardirqs_on_prepare from trace_hardirqs_on+0x68/0xb4
-     trace_hardirqs_on from _raw_spin_unlock_irq+0x20/0x38
-     _raw_spin_unlock_irq from irq_map_generic_chip+0x144/0x190
-     irq_map_generic_chip from irq_domain_associate_locked+0x68/0x164
-     irq_domain_associate_locked from irq_create_fwspec_mapping+0x34c/0x43c
-     irq_create_fwspec_mapping from irq_create_of_mapping+0x64/0x8c
-     irq_create_of_mapping from irq_of_parse_and_map+0x54/0x7c
-     irq_of_parse_and_map from dmtimer_clkevt_init_common+0x54/0x15c
-     dmtimer_clkevt_init_common from dmtimer_systimer_init+0x41c/0x5b8
-     dmtimer_systimer_init from timer_probe+0x68/0xf0
-     timer_probe from start_kernel+0x4a4/0x6bc
-     start_kernel from 0x0
-    irq event stamp: 0
-    hardirqs last  enabled at (0): [<00000000>] 0x0
-    hardirqs last disabled at (0): [<00000000>] 0x0
-    softirqs last  enabled at (0): [<00000000>] 0x0
-    softirqs last disabled at (0): [<00000000>] 0x0
-    ---[ end trace 0000000000000000 ]---
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-and:
+- Mani
 
-    ------------[ cut here ]------------
-    WARNING: CPU: 0 PID: 0 at init/main.c:1022 start_kernel+0x4e8/0x6bc
-    Interrupts were enabled early
-    CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Tainted: G        W           6.15.0-rc1-boneblack-00004-g195298c3b116 #209 NONE
-    Tainted: [W]=WARN
-    Hardware name: Generic AM33XX (Flattened Device Tree)
-    Call trace:
-     unwind_backtrace from show_stack+0x10/0x14
-     show_stack from dump_stack_lvl+0x6c/0x90
-     dump_stack_lvl from __warn+0x70/0x1b0
-     __warn from warn_slowpath_fmt+0x1d4/0x1ec
-     warn_slowpath_fmt from start_kernel+0x4e8/0x6bc
-     start_kernel from 0x0
-    irq event stamp: 0
-    hardirqs last  enabled at (0): [<00000000>] 0x0
-    hardirqs last disabled at (0): [<00000000>] 0x0
-    softirqs last  enabled at (0): [<00000000>] 0x0
-    softirqs last disabled at (0): [<00000000>] 0x0
-    ---[ end trace 0000000000000000 ]---
+> ---
+> 
+> v1:
+> https://lore.kernel.org/r/20250307103128.3287497-4-s-vadapalli@ti.com/
+> Changes since v1:
+> - Based on feedback from Mani at:
+>   https://lore.kernel.org/r/20250318080304.jsmrxqil6pn74nzh@thinkpad/
+>   pci_epc_deinit_notify() has been included in cdns_pcie_ep_disable().
+> 
+> Regards,
+> Siddharth.
+> 
+>  drivers/pci/controller/cadence/pcie-cadence-ep.c | 11 +++++++++++
+>  drivers/pci/controller/cadence/pcie-cadence.h    |  5 +++++
+>  2 files changed, 16 insertions(+)
+> 
+> diff --git a/drivers/pci/controller/cadence/pcie-cadence-ep.c b/drivers/pci/controller/cadence/pcie-cadence-ep.c
+> index b4bcef2d020a..ffd19cb25eed 100644
+> --- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
+> +++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
+> @@ -645,6 +645,17 @@ static const struct pci_epc_ops cdns_pcie_epc_ops = {
+>  	.get_features	= cdns_pcie_ep_get_features,
+>  };
+>  
+> +void cdns_pcie_ep_disable(struct cdns_pcie_ep *ep)
+> +{
+> +	struct device *dev = ep->pcie.dev;
+> +	struct pci_epc *epc = to_pci_epc(dev);
+> +
+> +	pci_epc_deinit_notify(epc);
+> +	pci_epc_mem_free_addr(epc, ep->irq_phys_addr, ep->irq_cpu_addr,
+> +			      SZ_128K);
+> +	pci_epc_mem_exit(epc);
+> +}
+> +EXPORT_SYMBOL_GPL(cdns_pcie_ep_disable);
+>  
+>  int cdns_pcie_ep_setup(struct cdns_pcie_ep *ep)
+>  {
+> diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
+> index 0b6bed1ac146..387174d6e453 100644
+> --- a/drivers/pci/controller/cadence/pcie-cadence.h
+> +++ b/drivers/pci/controller/cadence/pcie-cadence.h
+> @@ -555,11 +555,16 @@ static inline void __iomem *cdns_pci_map_bus(struct pci_bus *bus, unsigned int d
+>  
+>  #if IS_ENABLED(CONFIG_PCIE_CADENCE_EP)
+>  int cdns_pcie_ep_setup(struct cdns_pcie_ep *ep);
+> +void cdns_pcie_ep_disable(struct cdns_pcie_ep *ep);
+>  #else
+>  static inline int cdns_pcie_ep_setup(struct cdns_pcie_ep *ep)
+>  {
+>  	return 0;
+>  }
+> +
+> +static inline void cdns_pcie_ep_disable(struct cdns_pcie_ep *ep)
+> +{
+> +}
+>  #endif
+>  
+>  void cdns_pcie_detect_quiet_min_delay_set(struct cdns_pcie *pcie);
+> -- 
+> 2.34.1
+> 
 
-Fix this by correcting two misconversions of
-raw_spin_{,un}lock_irq{save,restore}() to lock guards.
-
-Fixes: 195298c3b11628a6 ("genirq/generic-chip: Convert core code to lock guards")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
- kernel/irq/generic-chip.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/irq/generic-chip.c b/kernel/irq/generic-chip.c
-index 8014bfecb948e862..bf59e37d650ad27e 100644
---- a/kernel/irq/generic-chip.c
-+++ b/kernel/irq/generic-chip.c
-@@ -330,7 +330,7 @@ int irq_domain_alloc_generic_chips(struct irq_domain *d,
- 				goto err;
- 		}
- 
--		scoped_guard (raw_spinlock, &gc_lock)
-+		scoped_guard (raw_spinlock_irqsave, &gc_lock)
- 			list_add_tail(&gc->list, &gc_list);
- 		/* Calc pointer to the next generic chip */
- 		tmp += gc_sz;
-@@ -467,7 +467,7 @@ int irq_map_generic_chip(struct irq_domain *d, unsigned int virq,
- 
- 	/* We only init the cache for the first mapping of a generic chip */
- 	if (!gc->installed) {
--		guard(raw_spinlock_irq)(&gc->lock);
-+		guard(raw_spinlock_irqsave)(&gc->lock);
- 		irq_gc_init_mask_cache(gc, dgc->gc_flags);
- 	}
- 
 -- 
-2.43.0
-
+மணிவண்ணன் சதாசிவம்
 
