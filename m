@@ -1,96 +1,120 @@
-Return-Path: <linux-omap+bounces-3577-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3578-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B84EA850A4
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Apr 2025 02:40:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE39A850B6
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Apr 2025 02:41:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 401529A4336
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Apr 2025 00:39:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3ACB4C1D7E
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Apr 2025 00:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21C82AF11;
-	Fri, 11 Apr 2025 00:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29DBE1B7F4;
+	Fri, 11 Apr 2025 00:41:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="U6F3HDwt"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FA9179BD
-	for <linux-omap@vger.kernel.org>; Fri, 11 Apr 2025 00:39:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D840DDC3
+	for <linux-omap@vger.kernel.org>; Fri, 11 Apr 2025 00:41:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744331973; cv=none; b=faJ4l/BO9QoMBYwU/vAnn7RBVVGpwQjXHFZAKp2sXWfh3R3napIAxR/jia25ClQKGgqp7OzQwPzEcWYm57uq7JuiZ47ovtioesWxreHkEIoXjDQ3gOaJMjbzyCjGNaIDTkDF4IzhAwk96W84BF7/jCoGs9eDEIes3qjyVw7TseE=
+	t=1744332083; cv=none; b=QMFCK/fWLkCodhUNkVDJY3Bzc96qwpAN2pYUCI9pHGCNW/nnTh6mb9hdrwTkVnf7ep1C504DE8wWce4BoFUMmntNekXojZLx7Eqmq/EiJdykzhzg/8D2ZjT+16jO02QyDFeKZ5FdzD786NZUArBO9AVQHmbDJ2sV1qGoWN5goyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744331973; c=relaxed/simple;
-	bh=e9D0qS5c9xuGHL/ortzIXle6NYY2SiyUiI7O3e/dBck=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ew8+4WgAxDsr48kCsmve2YuN4QzhnLC+lzRxZ6D/ZVEyVp36aQbE/1Xenc/itCcgaiJXE8Aal8/T0FlydDsq0D5prXyvGPiYSr1dYktC/aZMazIuwzEKel/+klegRxQjH2sTwa2fspyhRQa2cDz6r9NHFfTFqwJfV2KpwyRsI58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=baylibre.com; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+	s=arc-20240116; t=1744332083; c=relaxed/simple;
+	bh=1r1LHmJ+FP1QHwOwOrhftk8RpNrpsI8w5sTLVW80UhE=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=JtTn1YCvLicD5Og1Bc3YVwEqjbFkfH8GPyH8nGjguC0QJzj8qoluoY5i9daSIcXvLnA8omhFnLtbQVJSev7RIxSE5mtQKfHBR5E7TqASmpmDhKXlxcn2QZM2wLuIyyshQmcClq+XKQOw4H1v7xcUBBmbJHZft0VPwI63PB7eDzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=U6F3HDwt; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2264aefc45dso20750165ad.0
-        for <linux-omap@vger.kernel.org>; Thu, 10 Apr 2025 17:39:31 -0700 (PDT)
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-22928d629faso14745415ad.3
+        for <linux-omap@vger.kernel.org>; Thu, 10 Apr 2025 17:41:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1744332081; x=1744936881; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r/4rHMPP0tffZ6aLtmo/OkH8XS8Fu3axD96DxnaYzNo=;
+        b=U6F3HDwtzPTj+nzsOMh1ZiHxU0zQaKETkoaiMI7cwLjpLmOJztyMyBKkymPijMAJPr
+         SNE95bkET+fPAlsExTfLcykdtL/9+AouqlHsZbkN4I9kbOTULuQEqJpsJ7gWwXzanJmo
+         gfWWUnXOeNBbDJqzykRt+846ntDiSH1q8Y+NlaVXw8CiWMQPPykqPmKhQ3Mxi+PYCFEM
+         nKWoK1z9T+k8FO1OIOJ87a6EkJC0jMy5dr41gaZoUUgjxeVB5GaXA7G111ptU1njRswc
+         AHN484nYNqp4/9Y8iSfIoQKwtAX7KBqpMeiDxm0WbRjL2eb2mAuiC1zNkh7ThtuGkypn
+         69Tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744331971; x=1744936771;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=e9D0qS5c9xuGHL/ortzIXle6NYY2SiyUiI7O3e/dBck=;
-        b=XsauMtyOqt188PtrPnZEJm8lrpWkQhFgafCvPpeZPeqA4EQA0sCMh5WLRRJ7e1RfqC
-         qGVIHDDb//wSscr64IiBZQ6Qa3PMg+BU1EtLMcvo+dkvLr+N2KkgF2QhTg+dJzMvyJRj
-         igmzkEffIA7vcT4Cuzs1OxAeI+AAspFPUTCEDY7dNQaxC5R3ca3OCvFw2DU3npVapneG
-         kc3m02PzYo5VAlND47sWaciEKiAGk81hitqWi7p8kHwAHBx6h3krkoEUUHn7ze++1tyR
-         8mAPSM1hK8gnhIESH17u7ft3pzLIpLa++FkSrikzd4n2uZag6kX6a1eYCFVQXADAETUj
-         7flw==
-X-Forwarded-Encrypted: i=1; AJvYcCWDIiKz3u3y21McXuQ+MCMdwXe+Vd+0u4TK2P7GpMdxuzGK3FS+i1669zoyaaUmTtfMwuezBFAgj/VB@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTobaMgMsns9U+2Nby4BNGJE5YXvintRC1HujqoFByN0/5Adi9
-	d3T+/WPiJjhXdb/EkNPTUfDOK93p+r9+yaJkmxobuDAzpiHGKPUhZnccS7KUH38IiXXGN+ctaQ0
-	CZzg=
-X-Gm-Gg: ASbGncvlw6dBiQxedWFXcODqeMk3y+O5BvecC9BHTk8+ucBqBgYYZbCST6qdNG9W2He
-	2Ci9UFRKV8F7lxz8SaK+WLYa5fTEfuylIvTw5M9xe0UaHwUPAHRnuZnoTbMyQjmPAqZ0azSwwYU
-	3M1e6eL0yvsFFS21KvN1lMw/RTWUeTx7VE/bqP5JVpmUSGG2g7xtjz6omXNGlspxikXyCVHu8YT
-	OAYEezkjsbqYJ95fIfTzVeXJchEMElWM5XPN254ICq7LkJdlmzg7C/vWmMF5n2hrMh+wzUFWbqu
-	+gYeEWJZtUYZvLqArYUpKkAUs51xssS7mY3breEOaEVCiFTJVw==
-X-Google-Smtp-Source: AGHT+IHE46ZClxLKC9hdNZdcLjjMQRYqIyIdTcUA0yqBYfKQO0vYwM2JBDfdFcSq7VTlGW9xIaW8WA==
-X-Received: by 2002:a17:902:ccc5:b0:224:376:7a21 with SMTP id d9443c01a7336-22bea4fde7cmr10776535ad.42.1744331971575;
-        Thu, 10 Apr 2025 17:39:31 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1744332081; x=1744936881;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=r/4rHMPP0tffZ6aLtmo/OkH8XS8Fu3axD96DxnaYzNo=;
+        b=E4jxMDVUEfuoXgH8pl7f8qy2sZqjY16Vaz+yNDlxCCju3xXF2wzXiyvOHPiNZ/aixf
+         Bovvh79Wc6YJQop9hSoVMv4oeUprb3MRh+mZKS9/XuGTIvs1hx2QAodqoKfcgFtRV+Cf
+         hxKUcOfiJNmtsqcTPngjV59R17AdplhRRlQiVxRSyZelk5zLN8f3YiRhW9/WMBXrNNHY
+         tdTL90tGQ4fE+mJ5z/83vJ2+88j6NtwsUx56QxTWqdgKetFM961d7F7ISQG9Zf2Y2OGi
+         5kKRFbO3GBITp6MzZxjgw852HOyPMNxf2suMi0kmftirREFJ39FEEjE3GHNdDGUBu7v8
+         slHA==
+X-Forwarded-Encrypted: i=1; AJvYcCVV5CPC3EUu8GmkJzXzJph9DB+wlKgWuKKQZilc2I/T5kx9Fij2ZURDwV36xSIAgibvHC7JKOMHD1KD@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7AcX2W9Z5rJtgH3OaRWORDTOaGLb5axifRbByRwOQBUqymJAm
+	0YKxOxgyg6a8njZCNqTzWESVLqKphqmFHcbku9Vj/d1qLRFul/FQPTk15cqixB4=
+X-Gm-Gg: ASbGncvUJSP4XKpK3a3RT/Uo7RvlbpBC05BJen0+QHF6ImVAPPRiLZb3yh39I7CMHPl
+	EUXTQACOirqguv3FZKqzaNrC5AcQRdl7jogE3s/BqGInDIosFdVRCUrAKO3x3NFaQZLJL0KhDtJ
+	NlTYeZIbIwOeG9WpwVYC26IZbnQKuqiPdFC0Yu/DaCJh+I9Kp37Rp3hAzxeGlza031QOdgynwLj
+	I/gCSRxho8KQGhY2mC9hebE/P6FEC7EB2FAzMi9kxfFpvZmR01wFL9qCn5gEZwyyAC6mjpXrjg6
+	IKhrE54CzKHqN2BniKJU9tALzuFcv/yCXZejPIZ0fIIpyT1xAA==
+X-Google-Smtp-Source: AGHT+IEANi1v1Y2M7NRf7CyhxCioJrGmWqjbDMTvAkz7Sx4lx+Y+fr7d1/1Sg6nvnkECl35OKVi/5w==
+X-Received: by 2002:a17:902:daca:b0:223:2361:e855 with SMTP id d9443c01a7336-22bea4eff3fmr12289655ad.39.1744332081416;
+        Thu, 10 Apr 2025 17:41:21 -0700 (PDT)
 Received: from localhost ([97.126.182.119])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22ac7ccb5c5sm37254655ad.222.2025.04.10.17.39.31
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22ac7b63ef1sm37289685ad.35.2025.04.10.17.41.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Apr 2025 17:39:31 -0700 (PDT)
-From: Kevin Hilman <khilman@kernel.org>
-To: David Heidelberg <david@ixit.cz>, Tony Lindgren <tony@atomide.com>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Pavel Machek <pavel@ucw.cz>, Pali
- =?utf-8?Q?Roh=C3=A1r?=
- <pali@kernel.org>
-Cc: David Heidelberg <david@ixit.cz>, linux-omap@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: nokia n900: remove useless io-channel-cells
- property
-In-Reply-To: <20250213203208.93316-1-david@ixit.cz>
-References: <20250213203208.93316-1-david@ixit.cz>
-Date: Thu, 10 Apr 2025 17:39:30 -0700
-Message-ID: <7htt6vwmyl.fsf@baylibre.com>
+        Thu, 10 Apr 2025 17:41:20 -0700 (PDT)
+From: Kevin Hilman <khilman@baylibre.com>
+To: Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org, 
+ Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Andreas Kemnade <andreas@kemnade.info>, Roger Quadros <rogerq@kernel.org>, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250401090643.2776793-1-alexander.sverdlin@siemens.com>
+References: <20250401090643.2776793-1-alexander.sverdlin@siemens.com>
+Subject: Re: [PATCH v2] Revert "bus: ti-sysc: Probe for l4_wkup and l4_cfg
+ interconnect devices first"
+Message-Id: <174433208050.2415440.8081203416709656827.b4-ty@baylibre.com>
+Date: Thu, 10 Apr 2025 17:41:20 -0700
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3-dev-94c79
 
-David Heidelberg <david@ixit.cz> writes:
 
-> This property is irrelevant for the ad5820 DAC,
-> the driver nor the hardware indicate use of channel cells.
->
-> Fixes: d510d12f26f4 ("ARM: dts: nokia n900: update dts with camera support")
-> Signed-off-by: David Heidelberg <david@ixit.cz>
+On Tue, 01 Apr 2025 11:06:34 +0200, A. Sverdlin wrote:
+> This reverts commit 4700a00755fb5a4bb5109128297d6fd2d1272ee6.
+> 
+> It breaks target-module@2b300050 ("ti,sysc-omap2") probe on AM62x in a case
+> when minimally-configured system tries to network-boot:
+> 
+> [    6.888776] probe of 2b300050.target-module returned 517 after 258 usecs
+> [   17.129637] probe of 2b300050.target-module returned 517 after 708 usecs
+> [   17.137397] platform 2b300050.target-module: deferred probe pending: (reason unknown)
+> [   26.878471] Waiting up to 100 more seconds for network.
+> 
+> [...]
 
-Queued for v6.16,
+Applied, thanks!
 
-Thanks,
+[1/1] Revert "bus: ti-sysc: Probe for l4_wkup and l4_cfg interconnect devices first"
+      commit: 36305857b1ead8f6ca033a913162ebc09bee0b43
 
-Kevin
+Best regards,
+-- 
+Kevin Hilman <khilman@baylibre.com>
+
 
