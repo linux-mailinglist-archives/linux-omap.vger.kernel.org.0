@@ -1,203 +1,119 @@
-Return-Path: <linux-omap+bounces-3573-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3574-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45646A8411C
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Apr 2025 12:46:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AADAA85084
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Apr 2025 02:30:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EE17461715
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Apr 2025 10:46:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 058C84680EB
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Apr 2025 00:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C9DE28135E;
-	Thu, 10 Apr 2025 10:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68FA4F513;
+	Fri, 11 Apr 2025 00:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="L4BIy32T"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Vz0rCi3K"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D64256C75;
-	Thu, 10 Apr 2025 10:45:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44ADE8837
+	for <linux-omap@vger.kernel.org>; Fri, 11 Apr 2025 00:30:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744281929; cv=none; b=DjnHQFLF/6xy0cZHxuf052XbLgJ9f6Z2+SXcaKeg6KKpQOwXvjcm7YUqetP2HqtXCOPnJpUfVOjuo3rZIe/GMY25A+r3F3nt4rNG5ErFyrgPj6VXBfbTvaoVWjtYRyBTUPGJzegSHm+1YHn9x4V1RVwS9sEn1bRbzlGayYiVMAw=
+	t=1744331424; cv=none; b=sPhNmDZtpO2x2NtNoE6422XCi8t1a8zZ5i8ouTurGtZMxMj+gmwZ1Rfd2eRR8lgLMsvVHki38F3k1KITaAfpNGf7inxtKFyLv8CyAcIaAQ2WUhUody7FgjuVZ+87CcC7KcY0zJWNiQtUVS4baVR1S0N8yIB3ZC2yI2PZickHpgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744281929; c=relaxed/simple;
-	bh=UVI0WemhrJIJJAw/K5tiecV3b2m3m1TgcgpdKp/Z4LY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LSmwpCiAvYAkMudSQQt8wZ/2N4BKUYt+oprF5FTV7y05bTKXTA3ZKpQxJ4/gcneDA2xsHVyaKsYTi7DJ/gXutjNQNYV4jDmRbpyOTf/6ELQoRzsyOi/HEWv03PriF0tNxxZnEqXUquLtdfWbmIZ+6/8bsX1LFdkJLJb3qPXVfvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=L4BIy32T; arc=none smtp.client-ip=198.47.19.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53AAiqT71113498
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 10 Apr 2025 05:44:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1744281892;
-	bh=dqftKNKxx5ydl41p6D6qtfUbybxxG2CAHEr50Cw4Dog=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=L4BIy32TOYbi379cB/6qCdZO65sLIq03yLnQwdfEha+OuBo+Vido5mRgU9DJsk/ST
-	 K94TZE0XfaXZJRyovAkEfdOhXcm4rc+8v3LwTFGfSmfELPCwIXcvg/1AHgre0odfWZ
-	 wvhxb65RaBggfxBJ4p4b5kaNQMsGQ53+jEpIiDkM=
-Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53AAiqoi067445
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 10 Apr 2025 05:44:52 -0500
-Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 10
- Apr 2025 05:44:52 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE102.ent.ti.com
- (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 10 Apr 2025 05:44:52 -0500
-Received: from uda0492258.dhcp.ti.com (uda0492258.dhcp.ti.com [10.24.72.113])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53AAiRff029210;
-	Thu, 10 Apr 2025 05:44:47 -0500
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: <lpieralisi@kernel.org>, <kw@linux.com>,
-        <manivannan.sadhasivam@linaro.org>, <robh@kernel.org>,
-        <bhelgaas@google.com>, <vigneshr@ti.com>, <kishon@kernel.org>,
-        <18255117159@163.com>, <cassel@kernel.org>,
-        <wojciech.jasko-EXT@continental-corporation.com>,
-        <thomas.richard@bootlin.com>, <bwawrzyn@cisco.com>
-CC: <linux-pci@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <srk@ti.com>, <s-vadapalli@ti.com>
-Subject: [PATCH v3 4/4] PCI: j721e: Add support to build as a loadable module
-Date: Thu, 10 Apr 2025 16:14:26 +0530
-Message-ID: <20250410104426.463453-5-s-vadapalli@ti.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250410104426.463453-1-s-vadapalli@ti.com>
-References: <20250410104426.463453-1-s-vadapalli@ti.com>
+	s=arc-20240116; t=1744331424; c=relaxed/simple;
+	bh=iCBIHlgYqBmRae+sv1JEgK6hpnqzk+F+c41u/4PRRSk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=k7NGuVzSUZh8HAyZOc6UPJyYMUfJqVLoRx779xl2puqQJrGWbXl+MYPGRERipeOoXoqWseIc333JVrSwYzf/Lgce6EX97RP/qcAin6n7jQiW/MxzOZcOOAmLY2XgmntmbYmKDMA5cUR/Jl9HwNp+G8We6OFWa4ubhnCZPbpxEzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Vz0rCi3K; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-303a66af07eso1159048a91.2
+        for <linux-omap@vger.kernel.org>; Thu, 10 Apr 2025 17:30:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1744331421; x=1744936221; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LEj/TlILN37TPKrS4vVDvJow8Rh350Q5eqqNTt+HqJQ=;
+        b=Vz0rCi3KjFp/uGhfKUxc3lTYusrqq9XTdoQLvG9waZT1/aiqpct5HdhhY+llKZLynx
+         bTKPC6+l4u71ZNTO2Vn9dZsvXaBQt4kBKlcCY4L4DcoVUwLVw8R9tawuDSxzzWIjmKeK
+         /+rRPJZs/P+LasovyIU+TXIYxJvWVBGO546hkDWf27CFYpfczqxPLmTrDTNjwX62nSDB
+         UxaydnJULZQ8N4XJ8JOHzC6otQftEMjQ5NL8oTMLDWGBD9sMR7/5/Eeor96xrcd13jg5
+         zQjbCqpWUKU5lTyHUJZvf3J5/n1FVr4/lXcPdAG5/ykzKC0vUIyQ9priBo3yhgh5I1AC
+         289g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744331421; x=1744936221;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LEj/TlILN37TPKrS4vVDvJow8Rh350Q5eqqNTt+HqJQ=;
+        b=tM8nf101xw0rU+O8MPnNUPY+aDHzgYnjF99zaK4xXwK91HIPHC3Y8mvTMjGOL7EvJD
+         vlyxF8ie/pV0U1r0k0EDChtr4DDR1eJaq386MaBV8y6j8O33GeMWoPhdZbIffmBS3nNA
+         lZRZE1tVq7hBRAOYjqY5PGsS+B0Z/IYNmqpX+BFbjtCrJzz7SLljKh8BIEAuQvKAqIJT
+         Ks9+0kAU8hVr4aXj5I6CHxa5iuAtpHHFVXB6lpHEk9I2FsdyL3sKCBF2ceGCOmTr7FCS
+         yUbbZQpYJ12UTctC/U7YnUv/a4Qe1lc4uiWVa1OTjB9BgnU1AoywesBn38ooN+2Vs1/2
+         XoXA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQHgR4fnRDP0ezpzOqAZlw28RRoBwI/1jdBBwJlYgFkTSFW59kMby0DHpyO7yAu3HZO7RyAJpN/a6Q@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqEVRg3dTCP9HEsAMVpTUYQMT5n6M8kijzUSsln9lFRi7DkmVH
+	J/R5wsvRcC58hx5MawE+6KU8nVVf6yRFSTERDHpXQjYENREgdDKN5eC9Gp8xe20=
+X-Gm-Gg: ASbGncv+eA/R2+rbtmEXZtY7zdghtkg/iGAV29nKp3ALL9b9ZhDHhxl6C/6vZP0spUf
+	fR5+E0kKqk/Pw3KSxhgg0dXMgwZCZw02LKtNGngvUYscDAWxh2QfsTFYz+AWL68fUKhrM3gIktb
+	s1xz4UjXUrYBXTovWKrLiyCwRd1QUxCvwaxDTsH+K5bdlhW0cc7r80UW95JLShemLrYoyACz3IV
+	wBZFE3DVd/cJGiVhNtdfau77UsMd+JMhmV55DE8+k4P3hzCS9j+lTI4g+s+fbTK7XOF1xUHZjLl
+	vEurxlsRi4RJCGzxbRb4Ke+CDMdDiSy/Imd59mo=
+X-Google-Smtp-Source: AGHT+IHK+hZPSxDXu+yULAA+P8ggs/de/t3JfqukjQr3W1pHmgkXMe4iexgqgEe5uUDhbixl0eakvA==
+X-Received: by 2002:a17:90b:388c:b0:2ff:5a9d:937f with SMTP id 98e67ed59e1d1-308237e1b7emr1466823a91.24.1744331421495;
+        Thu, 10 Apr 2025 17:30:21 -0700 (PDT)
+Received: from localhost ([97.126.182.119])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-306dd11e666sm4395562a91.15.2025.04.10.17.30.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Apr 2025 17:30:20 -0700 (PDT)
+From: Kevin Hilman <khilman@baylibre.com>
+To: Sukrut Bellary <sbellary@baylibre.com>, Russell King
+ <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>, Tony Lindgren
+ <tony@atomide.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Nishanth
+ Menon <nm@ti.com>, Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Sukrut Bellary <sbellary@baylibre.com>, Aaro Koskinen
+ <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, Roger
+ Quadros <rogerq@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Santosh
+ Shilimkar <ssantosh@kernel.org>, Bajjuri Praneeth <praneeth@ti.com>,
+ Raghavendra Vignesh <vigneshr@ti.com>, Bin Liu <b-liu@ti.com>,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-pm@vger.kernel.org
+Subject: Re: [PATCH 0/4] PM: TI: AM335x: PM STANDBY fixes
+In-Reply-To: <20250318230042.3138542-1-sbellary@baylibre.com>
+References: <20250318230042.3138542-1-sbellary@baylibre.com>
+Date: Thu, 10 Apr 2025 17:30:20 -0700
+Message-ID: <7h34efy1yb.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-The 'pci-j721e.c' driver is the application/glue/wrapper driver for the
-Cadence PCIe Controllers on TI SoCs. Implement support for building it as a
-loadable module.
+Sukrut Bellary <sbellary@baylibre.com> writes:
 
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
----
+> This patch series fixes the Power management issues on TI's am335x soc.
+>
+> on AM335x, the wakeup doesn't work in the case of STANDBY.
 
-v2 of this patch is at:
-https://lore.kernel.org/r/20250330083914.529222-5-s-vadapalli@ti.com/
-Change since v2:
-- Dropped a delay before PERST assertion in the driver's remove callback
-  based on Mani's feedback at:
-  https://lore.kernel.org/r/zsxnx7biwogov5dw5yiafkgk6tsrtspac75bjbrca5uevweaim@ly67hwfyk7qh/
+This series is specifically targetted at the AM335x EVM (which I don't
+have to test), so I'd appreciate getting any test reports for this
+before I queue it up.
 
- drivers/pci/controller/cadence/Kconfig     |  6 ++---
- drivers/pci/controller/cadence/pci-j721e.c | 31 +++++++++++++++++++++-
- 2 files changed, 33 insertions(+), 4 deletions(-)
+For AM335x, I currently only have the ICEv2 and Beaglebone Black,
+neithor of which support suspend resume with RTC wake AFAICT.  If they
+do, please enlighten me. :)
 
-diff --git a/drivers/pci/controller/cadence/Kconfig b/drivers/pci/controller/cadence/Kconfig
-index 82b58096eea0..72d7d264d6c3 100644
---- a/drivers/pci/controller/cadence/Kconfig
-+++ b/drivers/pci/controller/cadence/Kconfig
-@@ -43,10 +43,10 @@ config PCIE_CADENCE_PLAT_EP
- 	  different vendors SoCs.
- 
- config PCI_J721E
--	bool
-+	tristate
- 
- config PCI_J721E_HOST
--	bool "TI J721E PCIe controller (host mode)"
-+	tristate "TI J721E PCIe controller (host mode)"
- 	depends on ARCH_K3 || COMPILE_TEST
- 	depends on OF
- 	select PCIE_CADENCE_HOST
-@@ -57,7 +57,7 @@ config PCI_J721E_HOST
- 	  core.
- 
- config PCI_J721E_EP
--	bool "TI J721E PCIe controller (endpoint mode)"
-+	tristate "TI J721E PCIe controller (endpoint mode)"
- 	depends on ARCH_K3 || COMPILE_TEST
- 	depends on OF
- 	depends on PCI_ENDPOINT
-diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index ef1cfdae33bb..51b09f70000c 100644
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -15,6 +15,7 @@
- #include <linux/irqchip/chained_irq.h>
- #include <linux/irqdomain.h>
- #include <linux/mfd/syscon.h>
-+#include <linux/module.h>
- #include <linux/of.h>
- #include <linux/pci.h>
- #include <linux/platform_device.h>
-@@ -27,6 +28,7 @@
- #define cdns_pcie_to_rc(p) container_of(p, struct cdns_pcie_rc, pcie)
- 
- #define ENABLE_REG_SYS_2	0x108
-+#define ENABLE_CLR_REG_SYS_2	0x308
- #define STATUS_REG_SYS_2	0x508
- #define STATUS_CLR_REG_SYS_2	0x708
- #define LINK_DOWN		BIT(1)
-@@ -116,6 +118,15 @@ static irqreturn_t j721e_pcie_link_irq_handler(int irq, void *priv)
- 	return IRQ_HANDLED;
- }
- 
-+static void j721e_pcie_disable_link_irq(struct j721e_pcie *pcie)
-+{
-+	u32 reg;
-+
-+	reg = j721e_pcie_intd_readl(pcie, ENABLE_CLR_REG_SYS_2);
-+	reg |= pcie->linkdown_irq_regfield;
-+	j721e_pcie_intd_writel(pcie, ENABLE_CLR_REG_SYS_2, reg);
-+}
-+
- static void j721e_pcie_config_link_irq(struct j721e_pcie *pcie)
- {
- 	u32 reg;
-@@ -633,9 +644,23 @@ static void j721e_pcie_remove(struct platform_device *pdev)
- 	struct j721e_pcie *pcie = platform_get_drvdata(pdev);
- 	struct cdns_pcie *cdns_pcie = pcie->cdns_pcie;
- 	struct device *dev = &pdev->dev;
-+	struct cdns_pcie_ep *ep;
-+	struct cdns_pcie_rc *rc;
-+
-+	if (pcie->mode == PCI_MODE_RC) {
-+		rc = container_of(cdns_pcie, struct cdns_pcie_rc, pcie);
-+		cdns_pcie_host_disable(rc);
-+	} else {
-+		ep = container_of(cdns_pcie, struct cdns_pcie_ep, pcie);
-+		cdns_pcie_ep_disable(ep);
-+	}
-+
-+	if (pcie->reset_gpio)
-+		gpiod_set_value_cansleep(pcie->reset_gpio, 1);
- 
- 	clk_disable_unprepare(pcie->refclk);
- 	cdns_pcie_disable_phy(cdns_pcie);
-+	j721e_pcie_disable_link_irq(pcie);
- 	pm_runtime_put(dev);
- 	pm_runtime_disable(dev);
- }
-@@ -730,4 +755,8 @@ static struct platform_driver j721e_pcie_driver = {
- 		.pm	= pm_sleep_ptr(&j721e_pcie_pm_ops),
- 	},
- };
--builtin_platform_driver(j721e_pcie_driver);
-+module_platform_driver(j721e_pcie_driver);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("PCIe controller driver for TI's J721E and related SoCs");
-+MODULE_AUTHOR("Kishon Vijay Abraham I <kishon@ti.com>");
--- 
-2.34.1
+I was able to do a basic boot test on the 2 boards I have with this
+series applied on top of v6.15-rc1 and basic boot still works, but I was
+not able to test the PM path that's being changed here, so any tests on
+AM3 platforms that actually use this path are appreciated.
 
+Kevin
 
