@@ -1,89 +1,89 @@
-Return-Path: <linux-omap+bounces-3578-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3579-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE39A850B6
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Apr 2025 02:41:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE6DA850BD
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Apr 2025 02:44:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3ACB4C1D7E
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Apr 2025 00:41:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AF801BA51BC
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Apr 2025 00:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29DBE1B7F4;
-	Fri, 11 Apr 2025 00:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99E1235BE1;
+	Fri, 11 Apr 2025 00:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="U6F3HDwt"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="nOoXGtMI"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D840DDC3
-	for <linux-omap@vger.kernel.org>; Fri, 11 Apr 2025 00:41:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31B123372A
+	for <linux-omap@vger.kernel.org>; Fri, 11 Apr 2025 00:44:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744332083; cv=none; b=QMFCK/fWLkCodhUNkVDJY3Bzc96qwpAN2pYUCI9pHGCNW/nnTh6mb9hdrwTkVnf7ep1C504DE8wWce4BoFUMmntNekXojZLx7Eqmq/EiJdykzhzg/8D2ZjT+16jO02QyDFeKZ5FdzD786NZUArBO9AVQHmbDJ2sV1qGoWN5goyk=
+	t=1744332275; cv=none; b=i+G076JpzrYnPFxP3pM+/oo4eAWxFVqDMrXKMho0K4QWHl/ba9bTWvfS54AVPkWlNfmxzLQZUbWBdbQhUouNbgkU5cz8LSQ3YAqgT2q6TRfsrIErben6km+SSZP7KcMOg9m/qnD9JkuEM2fn6GXsouWP7FRuIliF9QIKRZzygf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744332083; c=relaxed/simple;
-	bh=1r1LHmJ+FP1QHwOwOrhftk8RpNrpsI8w5sTLVW80UhE=;
+	s=arc-20240116; t=1744332275; c=relaxed/simple;
+	bh=1ZEPH7TmFUPnTJrhe0atIMbdcdbraXRklkxsYKwkU/s=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=JtTn1YCvLicD5Og1Bc3YVwEqjbFkfH8GPyH8nGjguC0QJzj8qoluoY5i9daSIcXvLnA8omhFnLtbQVJSev7RIxSE5mtQKfHBR5E7TqASmpmDhKXlxcn2QZM2wLuIyyshQmcClq+XKQOw4H1v7xcUBBmbJHZft0VPwI63PB7eDzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=U6F3HDwt; arc=none smtp.client-ip=209.85.214.177
+	 MIME-Version:Content-Type; b=fcNjLmBuW+SlVsf4XS5v+uqnlBtxtN3R4cikJaBGPvkBYNuo2H2qJYQJNgiTNUDwZdjVhrSDgJ17EHZuG7uMFZx9925Lx5F3HmsGugeTcCg9Ys6UI3+EO7zf22bnTYUePAPM6IO7sW5m/OqxCx9YdduPbbz0MHHsExZSuRSAtDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=nOoXGtMI; arc=none smtp.client-ip=209.85.216.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-22928d629faso14745415ad.3
-        for <linux-omap@vger.kernel.org>; Thu, 10 Apr 2025 17:41:21 -0700 (PDT)
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-30155bbbed9so1173298a91.1
+        for <linux-omap@vger.kernel.org>; Thu, 10 Apr 2025 17:44:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1744332081; x=1744936881; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1744332273; x=1744937073; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:date:message-id:subject
          :references:in-reply-to:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=r/4rHMPP0tffZ6aLtmo/OkH8XS8Fu3axD96DxnaYzNo=;
-        b=U6F3HDwtzPTj+nzsOMh1ZiHxU0zQaKETkoaiMI7cwLjpLmOJztyMyBKkymPijMAJPr
-         SNE95bkET+fPAlsExTfLcykdtL/9+AouqlHsZbkN4I9kbOTULuQEqJpsJ7gWwXzanJmo
-         gfWWUnXOeNBbDJqzykRt+846ntDiSH1q8Y+NlaVXw8CiWMQPPykqPmKhQ3Mxi+PYCFEM
-         nKWoK1z9T+k8FO1OIOJ87a6EkJC0jMy5dr41gaZoUUgjxeVB5GaXA7G111ptU1njRswc
-         AHN484nYNqp4/9Y8iSfIoQKwtAX7KBqpMeiDxm0WbRjL2eb2mAuiC1zNkh7ThtuGkypn
-         69Tw==
+        bh=vsdZTMwIykwxFZW7XdBDDBQTHYKFUKUO10UneP5f6Co=;
+        b=nOoXGtMIFe6EhxQrTSlvKfccPlUzmFf130pwUKHAYPfwouDrIO4/ZLXFsFz6W7/jnn
+         ERqXrmA1IZ5eagU7uMdH3/1ILpEF6xci/B4m644AOLov23Z3lBzsKZEJddySyEQFJxMX
+         baGMCgNzTSkLcm0luawYBqd30kj/dCQ2gl1L4wMn59zFn8Prt+Tvy6G9csn2ZZS7Oumn
+         FAM/irLz6SRHY/QAFqrbPz8Z5Vx7Kahxx2MnUR2dZ9+GpZRU3zSkTVT0Pml83KMJPyw+
+         QX+z2D+k5iNMNl3sGMUZFdZECWdlpdbWzK9lLdHou4bcoUm9Cks9F51hvGdeK8uA7DKv
+         XiTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744332081; x=1744936881;
+        d=1e100.net; s=20230601; t=1744332273; x=1744937073;
         h=content-transfer-encoding:mime-version:date:message-id:subject
          :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=r/4rHMPP0tffZ6aLtmo/OkH8XS8Fu3axD96DxnaYzNo=;
-        b=E4jxMDVUEfuoXgH8pl7f8qy2sZqjY16Vaz+yNDlxCCju3xXF2wzXiyvOHPiNZ/aixf
-         Bovvh79Wc6YJQop9hSoVMv4oeUprb3MRh+mZKS9/XuGTIvs1hx2QAodqoKfcgFtRV+Cf
-         hxKUcOfiJNmtsqcTPngjV59R17AdplhRRlQiVxRSyZelk5zLN8f3YiRhW9/WMBXrNNHY
-         tdTL90tGQ4fE+mJ5z/83vJ2+88j6NtwsUx56QxTWqdgKetFM961d7F7ISQG9Zf2Y2OGi
-         5kKRFbO3GBITp6MzZxjgw852HOyPMNxf2suMi0kmftirREFJ39FEEjE3GHNdDGUBu7v8
-         slHA==
-X-Forwarded-Encrypted: i=1; AJvYcCVV5CPC3EUu8GmkJzXzJph9DB+wlKgWuKKQZilc2I/T5kx9Fij2ZURDwV36xSIAgibvHC7JKOMHD1KD@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7AcX2W9Z5rJtgH3OaRWORDTOaGLb5axifRbByRwOQBUqymJAm
-	0YKxOxgyg6a8njZCNqTzWESVLqKphqmFHcbku9Vj/d1qLRFul/FQPTk15cqixB4=
-X-Gm-Gg: ASbGncvUJSP4XKpK3a3RT/Uo7RvlbpBC05BJen0+QHF6ImVAPPRiLZb3yh39I7CMHPl
-	EUXTQACOirqguv3FZKqzaNrC5AcQRdl7jogE3s/BqGInDIosFdVRCUrAKO3x3NFaQZLJL0KhDtJ
-	NlTYeZIbIwOeG9WpwVYC26IZbnQKuqiPdFC0Yu/DaCJh+I9Kp37Rp3hAzxeGlza031QOdgynwLj
-	I/gCSRxho8KQGhY2mC9hebE/P6FEC7EB2FAzMi9kxfFpvZmR01wFL9qCn5gEZwyyAC6mjpXrjg6
-	IKhrE54CzKHqN2BniKJU9tALzuFcv/yCXZejPIZ0fIIpyT1xAA==
-X-Google-Smtp-Source: AGHT+IEANi1v1Y2M7NRf7CyhxCioJrGmWqjbDMTvAkz7Sx4lx+Y+fr7d1/1Sg6nvnkECl35OKVi/5w==
-X-Received: by 2002:a17:902:daca:b0:223:2361:e855 with SMTP id d9443c01a7336-22bea4eff3fmr12289655ad.39.1744332081416;
-        Thu, 10 Apr 2025 17:41:21 -0700 (PDT)
+        bh=vsdZTMwIykwxFZW7XdBDDBQTHYKFUKUO10UneP5f6Co=;
+        b=ro7SWNweBcIw5icL7S0rGrYrm/Dxe5PG8NlXwZqLBpf/enhugri9LAnHmv/7uuI9Xd
+         huIpCoBRlX912j4un8BcDvMeM3JelUalfmRSpwwod9IkwnhsqekRNaY2zMWxYRAzXdFe
+         CkQXBxJgBJYJcDqcrtuLsNx2b3KjnS6jgN3DenFYB7mRR+RExk+g6cv15taX0HB4UQAs
+         wIvX1Zs2FNDWuqd+7yAm9yZDllwJTElM3UTRk9tfa1qs+rDnkygLt3JfWdriYS7YU1PM
+         RYaW7Zv4DqxjXG7ny8ZvdyoKOIDKRvNBuEnHGv+8pvTCXN+0gVaiVveLHkbFR5ApcgYG
+         Eymw==
+X-Forwarded-Encrypted: i=1; AJvYcCVMo9nU+JzRwfCJF34iYG51VCEK8Pw/eQcWwS2f56wYIiSdT2KbN9RY5bHhkJFLMC0WKH/7taHEmdT7@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyn3wsdvX4/9ghmPn1sGbVK6jRUXo/dGgG7p4bTsFq/A4FVo65P
+	qdw02zYGaE/fQTMeROCInnJYskBsNc5WWbK26UMKt50s/6Uiy8Fn80NRozrWULI=
+X-Gm-Gg: ASbGncsv7KdkgObLuYQuzDWiXpfTJ8x1aDFphihxlywgGppRh1mVmLmanv6H9sNWZYZ
+	lDzbooopG5rjbNS2vkVOv01plINva6nWEwCVWRAbSjbEtrv8CHdfFB5ReWxQMOoYObKXLIrDJld
+	NFtNfDBJ131UdXLh+Otbhnhvx+RurJyT2MuQ/dAW7DewNnSQ1mZYjpoVUNwnZIGHVEafYDiDnsW
+	Dy3cRHgIcdoNo7FYVF8SdwHp/rLXLV/jnSkGtoeohrwRodEG80Hc4mW5nn2Skm6mdb9h4pi1usA
+	lLC/WEvD1Nr1oLjrdUwdb4sDCP5UIB+DiA5oIgY=
+X-Google-Smtp-Source: AGHT+IGkKIOCVVDwPQC40Jos5ojyeCmRImM+y0qVGUmSsNBURG1P7WKROT7Lbtkb6eCO6oUjraoobA==
+X-Received: by 2002:a17:90b:2752:b0:2ff:5e4e:861 with SMTP id 98e67ed59e1d1-308237b52c1mr1313845a91.24.1744332273039;
+        Thu, 10 Apr 2025 17:44:33 -0700 (PDT)
 Received: from localhost ([97.126.182.119])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22ac7b63ef1sm37289685ad.35.2025.04.10.17.41.20
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-306dd11e996sm4406937a91.20.2025.04.10.17.44.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Apr 2025 17:41:20 -0700 (PDT)
+        Thu, 10 Apr 2025 17:44:32 -0700 (PDT)
 From: Kevin Hilman <khilman@baylibre.com>
-To: Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org, 
- Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Andreas Kemnade <andreas@kemnade.info>, Roger Quadros <rogerq@kernel.org>, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250401090643.2776793-1-alexander.sverdlin@siemens.com>
-References: <20250401090643.2776793-1-alexander.sverdlin@siemens.com>
-Subject: Re: [PATCH v2] Revert "bus: ti-sysc: Probe for l4_wkup and l4_cfg
- interconnect devices first"
-Message-Id: <174433208050.2415440.8081203416709656827.b4-ty@baylibre.com>
-Date: Thu, 10 Apr 2025 17:41:20 -0700
+To: khilman@kernel.org, aaro.koskinen@iki.fi, rogerq@kernel.org, 
+ tony@atomide.com, linux@armlinux.org.uk, linux-omap@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ sre@kernel.org, Andreas Kemnade <andreas@kemnade.info>
+Cc: stable@vger.kernel.org
+In-Reply-To: <20250331144439.769697-1-andreas@kemnade.info>
+References: <20250331144439.769697-1-andreas@kemnade.info>
+Subject: Re: [PATCH] ARM: omap: pmic-cpcap: do not mess around without
+ CPCAP or OMAP4
+Message-Id: <174433227218.2416322.15261895858877666275.b4-ty@baylibre.com>
+Date: Thu, 10 Apr 2025 17:44:32 -0700
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -95,23 +95,22 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3-dev-94c79
 
 
-On Tue, 01 Apr 2025 11:06:34 +0200, A. Sverdlin wrote:
-> This reverts commit 4700a00755fb5a4bb5109128297d6fd2d1272ee6.
+On Mon, 31 Mar 2025 16:44:39 +0200, Andreas Kemnade wrote:
+> The late init call just writes to omap4 registers as soon as
+> CONFIG_MFD_CPCAP is enabled without checking whether the
+> cpcap driver is actually there or the SoC is indeed an
+> OMAP4.
+> Rather do these things only with the right device combination.
 > 
-> It breaks target-module@2b300050 ("ti,sysc-omap2") probe on AM62x in a case
-> when minimally-configured system tries to network-boot:
-> 
-> [    6.888776] probe of 2b300050.target-module returned 517 after 258 usecs
-> [   17.129637] probe of 2b300050.target-module returned 517 after 708 usecs
-> [   17.137397] platform 2b300050.target-module: deferred probe pending: (reason unknown)
-> [   26.878471] Waiting up to 100 more seconds for network.
+> Fixes booting the BT200 with said configuration enabled and non-factory
+> X-Loader and probably also some surprising behavior on other devices.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] Revert "bus: ti-sysc: Probe for l4_wkup and l4_cfg interconnect devices first"
-      commit: 36305857b1ead8f6ca033a913162ebc09bee0b43
+[1/1] ARM: omap: pmic-cpcap: do not mess around without CPCAP or OMAP4
+      commit: 7397daf1029d5bfd3415ec8622f5179603d5702d
 
 Best regards,
 -- 
