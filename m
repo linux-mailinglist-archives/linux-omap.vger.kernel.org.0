@@ -1,85 +1,77 @@
-Return-Path: <linux-omap+bounces-3576-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3577-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DE93A85098
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Apr 2025 02:39:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B84EA850A4
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Apr 2025 02:40:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FFA03BDFC4
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Apr 2025 00:38:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 401529A4336
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Apr 2025 00:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76CEC2D1;
-	Fri, 11 Apr 2025 00:39:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="zbcrWb36"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21C82AF11;
+	Fri, 11 Apr 2025 00:39:33 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D924C92
-	for <linux-omap@vger.kernel.org>; Fri, 11 Apr 2025 00:39:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FA9179BD
+	for <linux-omap@vger.kernel.org>; Fri, 11 Apr 2025 00:39:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744331942; cv=none; b=fGNJDwVJ8wemT0hviEgBiAun2w8IGT4YgnRJ4a7+7EeqVNq/4ZxpFx6pXkaGTKsN0WNCBYKIqdrE9Rl/A8YvPT916CADfDptn4brcX5rza7MQoEnppfetDIO2XLX2RrDepVux9AR2w6owfuUL++t+FijjBuH2TU69D4zmL2y/v8=
+	t=1744331973; cv=none; b=faJ4l/BO9QoMBYwU/vAnn7RBVVGpwQjXHFZAKp2sXWfh3R3napIAxR/jia25ClQKGgqp7OzQwPzEcWYm57uq7JuiZ47ovtioesWxreHkEIoXjDQ3gOaJMjbzyCjGNaIDTkDF4IzhAwk96W84BF7/jCoGs9eDEIes3qjyVw7TseE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744331942; c=relaxed/simple;
-	bh=+5YsoHQ8CSMxUeDudniraau5fmGGTFuPzw0XxUxa5Sw=;
-	h=From:To:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=slFUy3ylHpN2MPdqt/YbmEbjfbYvMnlhDEPgqKUQMWhwCwbQ4cKa5USD2QJbfaWn3Kv9DXOXTN+89aY6zwn5Rm+t2nVLxIcyjQyPpaTHI01AXwmDU/XIjaL7PaYCTT3Cs/jS+emhI0o8oDG97FG6c6YtRDPTZ9ccDMBLPTV2tY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=zbcrWb36; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+	s=arc-20240116; t=1744331973; c=relaxed/simple;
+	bh=e9D0qS5c9xuGHL/ortzIXle6NYY2SiyUiI7O3e/dBck=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ew8+4WgAxDsr48kCsmve2YuN4QzhnLC+lzRxZ6D/ZVEyVp36aQbE/1Xenc/itCcgaiJXE8Aal8/T0FlydDsq0D5prXyvGPiYSr1dYktC/aZMazIuwzEKel/+klegRxQjH2sTwa2fspyhRQa2cDz6r9NHFfTFqwJfV2KpwyRsI58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=baylibre.com; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-736c3e7b390so1350988b3a.2
-        for <linux-omap@vger.kernel.org>; Thu, 10 Apr 2025 17:39:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1744331940; x=1744936740; darn=vger.kernel.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:to:from
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+5YsoHQ8CSMxUeDudniraau5fmGGTFuPzw0XxUxa5Sw=;
-        b=zbcrWb36cOskvr/Uzp6OZmRd1No8pPYrsWD5NUFet671YZrG5nbONkJvmcupPK4VYA
-         hxBQFstZuFiMNnq1JQUF1FWSiS+8V7rnBPwH3JrTed2A2/9xOoxN9xJqm1HqV3tV3LyQ
-         pYv2yboDCJw76Wxa7BJDyvsPE1ty5zuJNgBHAdhsEwxK9VqHiGEFvRafzZLjTkHjYB/b
-         Q+OFHOXv3C+Q7V/UPtr2XZJzzsad9OiHbPdsjba9FCdYqgbWQAZTC/tTkHSbZ115Gm2C
-         AzPY7uYaW5T/+Fs7J5zQuACzpJYz//oqYOTERDnybBRN/ErhkP0bt5mZ0qHDTi1BOSRf
-         mITQ==
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2264aefc45dso20750165ad.0
+        for <linux-omap@vger.kernel.org>; Thu, 10 Apr 2025 17:39:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744331940; x=1744936740;
-        h=mime-version:message-id:date:references:in-reply-to:subject:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+5YsoHQ8CSMxUeDudniraau5fmGGTFuPzw0XxUxa5Sw=;
-        b=pxftPs87im+j8OIeAEnAzqJLfjTF9ox+DUxS65eCn6C1gn0vkc6g+hfuqcrpKYrzYj
-         Hme/ZquDCfuYfnYXc35mXtU8NClwRe1S5CQzRJlxhsB1SjkDSMMftT9eCs4dJtfuLIHE
-         bDMWjaWez8FHRA+VYEALX0xnOXwob06Lk/g3KXX3FGt0GAmuW5RxE5nJZHTo2iat3tgK
-         F5h1beOLrDK8K2oCOW3rrB6BptfwrjJKFB0BZQX3iqQqKn4hHTL49pi5ItHwegEF6Uuz
-         VP23+3DZhbTecAaz4PrD1/GQpJycnJXCAH+VJ9SAk5f8uvSlFMsvC/hhM07+d5X4/MVW
-         qu3w==
-X-Forwarded-Encrypted: i=1; AJvYcCWT5kEkf3b7Fm6NME562KLy0gT1AsQHzwCtWbaQpkzn6nmERxjc40f+Oqfv99Uzz2cCpfQALc2Bt7Lv@vger.kernel.org
-X-Gm-Message-State: AOJu0YyevyFlneYKD4K42MpaRZRdwHD1SOX4yfZmwErXkfjq/lOpsaUd
-	D6WODgpfOmRBSFEep8ufQ7+8bAP9RgYJKOGaihttuY+zuWBphy+yVH3AixwxI7Q=
-X-Gm-Gg: ASbGncuMUQTAOEmQKKXtpiHjGM3G92I6nwseYIthReBG5uWnCNeD88+Zhkl+NfVjKng
-	i19+xYQLZqFwAZKQq3Rz07GgegDnH+tIfcl06Lsx/KKPun4ieGFEAy2ndcAgBp8ys7cMpqTO+LY
-	rBmDuMtPwkqAETYLTA+S37mhjNgpHPydgfLHDLXO8rxXOUDZDbX4+fjomeCcaYUwVSBEVgH1xWI
-	bmqHYzYW2JnxQl7uPPoITjCABzOfS+SlY7GJnpiBaTW4vIpYaDWXHkw/byFbuRXSJBh8cHIuhFN
-	QqT8gIIIdyoNuqt/z/bXhi6FNZJ8jl6HhFvXQgPHNT0vok+RPA==
-X-Google-Smtp-Source: AGHT+IH81RSmoGv2vG9iqqRjG+DYtBzAdJMaGkRjl+5vBHC3a1xD7FDcQMu2Rp5DtnM0NFxvXyDmyA==
-X-Received: by 2002:a05:6a20:2d13:b0:1f3:33c2:29c5 with SMTP id adf61e73a8af0-20179787583mr1577432637.7.1744331940263;
-        Thu, 10 Apr 2025 17:39:00 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1744331971; x=1744936771;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=e9D0qS5c9xuGHL/ortzIXle6NYY2SiyUiI7O3e/dBck=;
+        b=XsauMtyOqt188PtrPnZEJm8lrpWkQhFgafCvPpeZPeqA4EQA0sCMh5WLRRJ7e1RfqC
+         qGVIHDDb//wSscr64IiBZQ6Qa3PMg+BU1EtLMcvo+dkvLr+N2KkgF2QhTg+dJzMvyJRj
+         igmzkEffIA7vcT4Cuzs1OxAeI+AAspFPUTCEDY7dNQaxC5R3ca3OCvFw2DU3npVapneG
+         kc3m02PzYo5VAlND47sWaciEKiAGk81hitqWi7p8kHwAHBx6h3krkoEUUHn7ze++1tyR
+         8mAPSM1hK8gnhIESH17u7ft3pzLIpLa++FkSrikzd4n2uZag6kX6a1eYCFVQXADAETUj
+         7flw==
+X-Forwarded-Encrypted: i=1; AJvYcCWDIiKz3u3y21McXuQ+MCMdwXe+Vd+0u4TK2P7GpMdxuzGK3FS+i1669zoyaaUmTtfMwuezBFAgj/VB@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTobaMgMsns9U+2Nby4BNGJE5YXvintRC1HujqoFByN0/5Adi9
+	d3T+/WPiJjhXdb/EkNPTUfDOK93p+r9+yaJkmxobuDAzpiHGKPUhZnccS7KUH38IiXXGN+ctaQ0
+	CZzg=
+X-Gm-Gg: ASbGncvlw6dBiQxedWFXcODqeMk3y+O5BvecC9BHTk8+ucBqBgYYZbCST6qdNG9W2He
+	2Ci9UFRKV8F7lxz8SaK+WLYa5fTEfuylIvTw5M9xe0UaHwUPAHRnuZnoTbMyQjmPAqZ0azSwwYU
+	3M1e6eL0yvsFFS21KvN1lMw/RTWUeTx7VE/bqP5JVpmUSGG2g7xtjz6omXNGlspxikXyCVHu8YT
+	OAYEezkjsbqYJ95fIfTzVeXJchEMElWM5XPN254ICq7LkJdlmzg7C/vWmMF5n2hrMh+wzUFWbqu
+	+gYeEWJZtUYZvLqArYUpKkAUs51xssS7mY3breEOaEVCiFTJVw==
+X-Google-Smtp-Source: AGHT+IHE46ZClxLKC9hdNZdcLjjMQRYqIyIdTcUA0yqBYfKQO0vYwM2JBDfdFcSq7VTlGW9xIaW8WA==
+X-Received: by 2002:a17:902:ccc5:b0:224:376:7a21 with SMTP id d9443c01a7336-22bea4fde7cmr10776535ad.42.1744331971575;
+        Thu, 10 Apr 2025 17:39:31 -0700 (PDT)
 Received: from localhost ([97.126.182.119])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bd2335294sm212602b3a.176.2025.04.10.17.38.59
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22ac7ccb5c5sm37254655ad.222.2025.04.10.17.39.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Apr 2025 17:38:59 -0700 (PDT)
-From: Kevin Hilman <khilman@baylibre.com>
-To: Andreas Kemnade <andreas@kemnade.info>, aaro.koskinen@iki.fi,
- andreas@kemnade.info, rogerq@kernel.org, tony@atomide.com,
- linux@armlinux.org.uk, linux-omap@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ARM: omap2plus_defconfig: enable I2C devices of GTA04
-In-Reply-To: <20250228112750.367251-1-andreas@kemnade.info>
-References: <20250228112750.367251-1-andreas@kemnade.info>
-Date: Thu, 10 Apr 2025 17:38:59 -0700
-Message-ID: <7hwmbrwmzg.fsf@baylibre.com>
+        Thu, 10 Apr 2025 17:39:31 -0700 (PDT)
+From: Kevin Hilman <khilman@kernel.org>
+To: David Heidelberg <david@ixit.cz>, Tony Lindgren <tony@atomide.com>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Pavel Machek <pavel@ucw.cz>, Pali
+ =?utf-8?Q?Roh=C3=A1r?=
+ <pali@kernel.org>
+Cc: David Heidelberg <david@ixit.cz>, linux-omap@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: nokia n900: remove useless io-channel-cells
+ property
+In-Reply-To: <20250213203208.93316-1-david@ixit.cz>
+References: <20250213203208.93316-1-david@ixit.cz>
+Date: Thu, 10 Apr 2025 17:39:30 -0700
+Message-ID: <7htt6vwmyl.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -88,13 +80,13 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Andreas Kemnade <andreas@kemnade.info> writes:
+David Heidelberg <david@ixit.cz> writes:
 
-> Enable I2C devices of GTA04 to get better test coverage when using
-> the defconfig. Until the I2C host driver is fixed, BMG160 module should be
-> blacklisted when booting on the GTA04A5.
+> This property is irrelevant for the ad5820 DAC,
+> the driver nor the hardware indicate use of channel cells.
 >
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> Fixes: d510d12f26f4 ("ARM: dts: nokia n900: update dts with camera support")
+> Signed-off-by: David Heidelberg <david@ixit.cz>
 
 Queued for v6.16,
 
