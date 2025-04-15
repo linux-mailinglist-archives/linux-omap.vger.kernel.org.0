@@ -1,122 +1,100 @@
-Return-Path: <linux-omap+bounces-3584-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3585-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 898DFA893D4
-	for <lists+linux-omap@lfdr.de>; Tue, 15 Apr 2025 08:21:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E678A895B0
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Apr 2025 09:53:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0EA47A9E2A
-	for <lists+linux-omap@lfdr.de>; Tue, 15 Apr 2025 06:19:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F3A817E317
+	for <lists+linux-omap@lfdr.de>; Tue, 15 Apr 2025 07:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF7F6275108;
-	Tue, 15 Apr 2025 06:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1FA72798FA;
+	Tue, 15 Apr 2025 07:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ig8QJL1X"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EK+yQOjB"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11B2230BE1
-	for <linux-omap@vger.kernel.org>; Tue, 15 Apr 2025 06:20:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBDB24169D;
+	Tue, 15 Apr 2025 07:53:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744698052; cv=none; b=SY7cn3ogYD7DrfJMYWpgAWt+sZJ5Yfi5x35icA3kDHLZhpioszMr7WWLkeAcht992DHGdDnPC/W4BGWoVQzH0BZRkVSFnNnCHtHqcZFx/eghvdzkGGfhOi55gbIu3gpbOoN+aXChkbdrPuEQSSGgmc62cA9J8zYfawcK5fBUFTU=
+	t=1744703597; cv=none; b=svEQzrLm0Mp/dOZ+lbq5IMnx/5N6w1WQ3gNaRjaeSoEJCRFjZIYYBPU9k//ScR0DkrmSPiYZngJFfXjBtcJ8hddpm+nNuiDn5Jq38tlExrn2sZOcp5zfKV/0n+gIiELEskBZQN1q19z7Fkf9f2lvlvakNTeRhyaCvd+HQwIF4og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744698052; c=relaxed/simple;
-	bh=1wXOBOgYQVNqr+xMFUAAYMAmc5Wy2T1Eoh8nZ0KLltY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Qev+CAuYmR4LRuyKWmYapMbCg0tDnyItWGdxaiNDSmjGemMgLIOIwwFFhGMeAPlXH5/ldvmUvLeHkdDwy3yOPzPE+4Exbvkz8uDCLdTN1/tORhuJL9oDJKXwNZH4mfcBoavOxR8rulCpyWAK4NmdfYM9QpOV1YdU3cPBY6zy8O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ig8QJL1X; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5ed1d8ff85dso818564a12.0
-        for <linux-omap@vger.kernel.org>; Mon, 14 Apr 2025 23:20:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744698049; x=1745302849; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/rfhPeoEjzIHtAc7j+jocnOEOsiVdj1SVq02z7sozKs=;
-        b=ig8QJL1Xhqwwy0hLREy+2K7hmZMcxyrN4K6Lxe+TrFw8rZqJZJOS+tHfsOPuh0S0vD
-         vtaeJxABSLClVsbFlQtenxdHomUawuGUZen6+zUb9lCwz2AWP/hPf7HzA3Ah25BXrSKu
-         NmYpqpM0hNmO9FxeJtXHpMYoxZWsc0NhruOQupkmq3b0juoNK+v+okKrk403nxArvRaX
-         5QmswtVN6Bm+4kzy1MGO2/HRY59Y2pQZVXRhA4Uwn9LKPa9Z1SCagCcCYvMK8GRmxP8+
-         ZNs0ELxqu6igbpX4O/pdn9caw/fJ7+Yxxh86iUuUNxJLxhT524Kdzad35GilE3cZFnmD
-         vkbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744698049; x=1745302849;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/rfhPeoEjzIHtAc7j+jocnOEOsiVdj1SVq02z7sozKs=;
-        b=jgfYtElkBvZEZLJtaHjeqh2CKvJQbP2rIbDYHEYUVtCaXDyqfnLrEqt8WohztVI0DK
-         pz/Istr2Xw5lg0HLvAZHfv5wxNe6xgPjxtPVc0J9YJlKlnWvn8EY6VRBOIuMy9SSZ4PB
-         7XcC74ixrBGqmSEnflTZ/WcxLr3L+Ef4rLP62QwNCqrc2cXIxB31IpSa5359PlnGDxMn
-         p2O6p5APHcV6CF0EpZqrclQNrTQs052WY4zxfTJa/BxGXnHL2jOzMqITOBSZs2ZqHiED
-         GMJvqSbfihHFeCTPArdfy5VEFJHIDYUaR6RJZfW2GWyb5vrnrqYjXvEkWiXwtqvb2b7m
-         adow==
-X-Gm-Message-State: AOJu0YwmK9sDNwBuWjpk+aUPqbcYC5TMcZUDIH0OVKk6bA9NlZcrFPtV
-	bajCieyzkwE3pn4GFAbl1aMlLD7oZUEN6xCRC+9R7fAZqwsG/hC8joMZlyzQOF0T02Y2zhLEoIB
-	6
-X-Gm-Gg: ASbGnctUqqbrh/y/FQ4TjIjtHHfdxqUxQPgQCt+W7aFvlnwuojI4bZv0rOZsKnfkquC
-	Ti3WySLoqmO+rLhDwwUjahMYAcC7FQQ8neKsnx8UQef3dJARP6auwRqdXmQnFx6Jirhf0VIeI3B
-	chGOMkTsXrQntRBW5AZGBrOQunfGM17LqlqRiVIR+9f6g4e13Raymof2g9yxV7bEON31tIG94Vi
-	vx0AF6g6/Xskn3CKkpHJIp4uA7Wb78IObz9m4iBQt0Julka54UpfZGgR88dL6oo8DbUD19ZA37J
-	T7vU5M4JpN+c1Vqe6cHDJEXqeZsRxOM6vBvjzUhHYin42ilqA4WWoPvWhYviFpZS/14npIgWEh0
-	36U9AcidYtWwVYVc=
-X-Google-Smtp-Source: AGHT+IEhbVvbM/D9UHsiRmzPL9GGSfYHw1Hou6MhR4w4bWsSUPkFLFMOaIpV5Zft9r0xm9z2VHFeZg==
-X-Received: by 2002:a17:907:d850:b0:ac7:3911:250f with SMTP id a640c23a62f3a-acad36a20a5mr446907666b.14.1744698048611;
-        Mon, 14 Apr 2025 23:20:48 -0700 (PDT)
-Received: from [192.168.1.26] (46.150.74.144.lvv.nat.volia.net. [46.150.74.144])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acaa1cb4129sm1053861866b.98.2025.04.14.23.20.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Apr 2025 23:20:48 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Linus Walleij <linus.walleij@linaro.org>, 
- Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-gpio@vger.kernel.org, 
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-In-Reply-To: <20250407-gpiochip-set-rv-memory-v1-0-5ab0282a9da7@linaro.org>
-References: <20250407-gpiochip-set-rv-memory-v1-0-5ab0282a9da7@linaro.org>
-Subject: Re: [PATCH 0/2] memory: omap-gpmc: improve the GPIO chip
- implementation
-Message-Id: <174469804731.15476.5829884320265602221.b4-ty@linaro.org>
-Date: Tue, 15 Apr 2025 08:20:47 +0200
+	s=arc-20240116; t=1744703597; c=relaxed/simple;
+	bh=fj87Ge4+Z4L8TW3BbiLnnTXesT/+hsNjN1y3z7e+Mkg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gbB/nKkRZ5OVUvI57qxsG0WPdpCAjCBBxYd3WPw0nUK5mRDcxP+gwGsCcxrAILk3rWpLxVeO8AkIYVKagXzoxFoqoewv/ZIpIehULCryyPYF7dv0mAEPCLOisMcVaHgcvjTQOFSIJBJiKTa0Dqc+3liXVyVrzH46mLIbs9A6m8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EK+yQOjB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF2ABC4CEDD;
+	Tue, 15 Apr 2025 07:53:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744703596;
+	bh=fj87Ge4+Z4L8TW3BbiLnnTXesT/+hsNjN1y3z7e+Mkg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=EK+yQOjBOmd1XzZmqH7iP2Xe3e3aND27IbJfvw8ZYNElItdtNokMw7lNo74YbaFhG
+	 v6USctTyL8CB7JDBfT0RPEHH+1PckBdZw17dp9r8C4pC4ZPka3r1X0Z2G0sB2oiGoE
+	 gHt9hZeYXpEzRVDh1vM7r5WiUmiaActjbPERtoeAYE4s9JlRxMiBlXdQgNZmDi79c3
+	 2ypjm1SCHU04YgGiglJTNlDUgoOtCCIfkF5FvedMP/2oZR5FrBJ42yi2nNqJzQGd4g
+	 EBgG+o2tXr0xS9QNHMWVIPWtwnl64lKpVbChBtH8EKsk8aRNnL4KM2SIGdpOq5nkwo
+	 TW6lShjOzf8Dg==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1u4b6X-000000004Eq-1Ib1;
+	Tue, 15 Apr 2025 09:53:13 +0200
+From: Johan Hovold <johan+linaro@kernel.org>
+To: Vignesh R <vigneshr@ti.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+	linux-omap@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Jayesh Choudhary <j-choudhary@ti.com>
+Subject: [PATCH] i2c: omap: fix deprecated of_property_read_bool() use
+Date: Tue, 15 Apr 2025 09:52:30 +0200
+Message-ID: <20250415075230.16235-1-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 
+Using of_property_read_bool() for non-boolean properties is deprecated
+and results in a warning during runtime since commit c141ecc3cecd ("of:
+Warn when of_property_read_bool() is used on non-boolean properties").
 
-On Mon, 07 Apr 2025 09:21:18 +0200, Bartosz Golaszewski wrote:
-> struct gpio_chip now has callbacks for setting line values that return
-> an integer, allowing to indicate failures. We're in the process of
-> converting all GPIO drivers to using the new API. However, this
-> driver doesn't even need the set() callback so let's remove it
-> altogether.
-> 
-> 
-> [...]
+Fixes: b6ef830c60b6 ("i2c: omap: Add support for setting mux")
+Cc: Jayesh Choudhary <j-choudhary@ti.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ drivers/i2c/busses/i2c-omap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied, thanks!
-
-[1/2] memory: omap-gpmc: use the dedicated define for GPIO direction
-      https://git.kernel.org/krzk/linux-mem-ctrl/c/a63f9903a56fabe17a0c71dd0c291499d28214c5
-[2/2] memory: omap-gpmc: remove GPIO set() and direction_output() callbacks
-      https://git.kernel.org/krzk/linux-mem-ctrl/c/1f34b5a9f09696eaf464c6ed06a055ed9cde3425
-
-Best regards,
+diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
+index 16afb9ca19bb..876791d20ed5 100644
+--- a/drivers/i2c/busses/i2c-omap.c
++++ b/drivers/i2c/busses/i2c-omap.c
+@@ -1454,7 +1454,7 @@ omap_i2c_probe(struct platform_device *pdev)
+ 				       (1000 * omap->speed / 8);
+ 	}
+ 
+-	if (of_property_read_bool(node, "mux-states")) {
++	if (of_property_present(node, "mux-states")) {
+ 		struct mux_state *mux_state;
+ 
+ 		mux_state = devm_mux_state_get(&pdev->dev, NULL);
 -- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+2.49.0
 
 
