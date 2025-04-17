@@ -1,206 +1,82 @@
-Return-Path: <linux-omap+bounces-3591-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3592-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8272A91CAD
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Apr 2025 14:45:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29FF8A92CCD
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Apr 2025 23:42:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC18219E6120
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Apr 2025 12:45:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BED13B09B7
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Apr 2025 21:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A669424BBF7;
-	Thu, 17 Apr 2025 12:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B65E120A5F5;
+	Thu, 17 Apr 2025 21:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="StPjh+hX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j0n0fJjt"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6783424BBE0;
-	Thu, 17 Apr 2025 12:44:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BE41E4B2;
+	Thu, 17 Apr 2025 21:41:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744893899; cv=none; b=lT/UfYdUDQ+rAeIBkEhRcYB6dsHSdDNPSRQSQcWqG/dy6i7dK7OFPe1Zt27ZEGDQJPCa1SB/nUa4fLYlnXCE4DeKfUMEKtW4uUyHnQdmY48AZr+zmXB5DbKJ+I1QbLJfTpOyP0BxVZwCSS9ezlkQYBPQTc0lRcqP3SfWEChSZw0=
+	t=1744926115; cv=none; b=jguwmPc2rTWoDePOzz0+HPVNpadJ4ilmhngoh4iMmJK0IaHMPne/hJTE5DP7Rye9b9ckJSGsiUOF2ZQ4gaA57fQhpy4MEc7P0w4SCFlLO7ZTkV7g663obwuQ1ChHodPrv3gaShTHAubHgg24bVZ/ZsEaB8q8k19IKc7jBxH5+vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744893899; c=relaxed/simple;
-	bh=9Nbb4YPHosWOsW0a1OW2TNBQJ63eKsRN1ZLANFh/wqI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A9rjMbFSR384xIY7R/sava7qj1VAdfuh8Do+EYQN3NPvq7rTaGr2k+v7xi/5bWtwv0GavhQvfV9ULHBnb7qFx2KI8a7hGOizaQalWhy+JrwfNAfo+QtITQZpkN0fSkexNtq2oO9hl0bVeWNlMlFrwXDfHxqIsx8Ylh7wD1/QQQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=StPjh+hX; arc=none smtp.client-ip=198.47.23.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53HCiYrE693912
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 17 Apr 2025 07:44:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1744893874;
-	bh=6QwmiXYtdXkY7XEVleeAYjYv8cWgU96/EzVkuZEZzKU=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=StPjh+hXsJ9g5LMJn+a2ndKbUGMRM1tB+6f6lKRCofHWgoQlkE597gNltQzR2ZjOF
-	 K/7tv1xqMleQXtSd7cY0JlLmMSCFiaeQanmByITxUTRO50ZxoOyWuJrGWwJ4U1mjsQ
-	 kLu6Qr0h1/LSJQBqA02naCXX8RU6r+BOQrAkKIfw=
-Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53HCiYNG065173
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 17 Apr 2025 07:44:34 -0500
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 17
- Apr 2025 07:44:34 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 17 Apr 2025 07:44:34 -0500
-Received: from uda0492258.dhcp.ti.com (uda0492258.dhcp.ti.com [10.24.72.113])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53HCi9XF048918;
-	Thu, 17 Apr 2025 07:44:29 -0500
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: <lpieralisi@kernel.org>, <kw@linux.com>,
-        <manivannan.sadhasivam@linaro.org>, <robh@kernel.org>,
-        <bhelgaas@google.com>, <vigneshr@ti.com>, <kishon@kernel.org>,
-        <18255117159@163.com>, <cassel@kernel.org>,
-        <wojciech.jasko-EXT@continental-corporation.com>,
-        <thomas.richard@bootlin.com>, <bwawrzyn@cisco.com>
-CC: <linux-pci@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <srk@ti.com>, <s-vadapalli@ti.com>
-Subject: [PATCH v4 4/4] PCI: j721e: Add support to build as a loadable module
-Date: Thu, 17 Apr 2025 18:14:08 +0530
-Message-ID: <20250417124408.2752248-5-s-vadapalli@ti.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250417124408.2752248-1-s-vadapalli@ti.com>
-References: <20250417124408.2752248-1-s-vadapalli@ti.com>
+	s=arc-20240116; t=1744926115; c=relaxed/simple;
+	bh=pHNrlN3TZ0Dz44eAymjQKJzusOSRhuBN+CARL/3NRNE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E3EyBIo0seuLAiGIgj1slHVFjWgvgZzDfLOSqCqXwZljtMFDTd4Samwm3iVFKe26KQ3Zh3wwd93l/hxv5eWYEkxjUc/8QKQqVhMVAetAdyy9vBfiibWJFIjq71d3jAOG5VHnCTMsC3WujsQKJKaz78sFj9MUobYVRtkXdbotg5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j0n0fJjt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81304C4CEF0;
+	Thu, 17 Apr 2025 21:41:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744926115;
+	bh=pHNrlN3TZ0Dz44eAymjQKJzusOSRhuBN+CARL/3NRNE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=j0n0fJjt0zExw5dVmyIaTIeJCCMYii+hijBsJH91FkNNnDOmgWVoxdG0npgxPzioP
+	 NBnHTlVFW4p/Kj6ZFVjVwKU2yaiuGwVLf/Eq7WOLXY4o5ElWZPLvA1BC+eZGAUhA4i
+	 wDGmtz3Tnz3Lx/+XdfX59JBHHBrNpM4SAwTHUd5rVH031MBMYDYR/1ZV9vo29k0zsu
+	 66N42YC7TgOQZUXgiQen1cpGqcHzFnbztqhoxUN3zkBLO9iLzfIREaPWDGgnLht5YE
+	 GFtaXGhj+Bcys/1eGoWc/Ff16SvoewZkOBmeNSI5teb42eDawLBGRQdpPU4V7Xb+Dk
+	 r/6Kw4GpHLbYA==
+Date: Thu, 17 Apr 2025 23:41:51 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: Vignesh R <vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+	Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
+	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>, linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Jayesh Choudhary <j-choudhary@ti.com>
+Subject: Re: [PATCH] i2c: omap: fix deprecated of_property_read_bool() use
+Message-ID: <vcwjwrjgzwoil5ydds4findhcgl2ujoxwia7eh7yrbdc45yx26@kmpmvataffzr>
+References: <20250415075230.16235-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250415075230.16235-1-johan+linaro@kernel.org>
 
-The 'pci-j721e.c' driver is the application/glue/wrapper driver for the
-Cadence PCIe Controllers on TI SoCs. Implement support for building it as a
-loadable module.
+Hi Johan,
 
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
----
+On Tue, Apr 15, 2025 at 09:52:30AM +0200, Johan Hovold wrote:
+> Using of_property_read_bool() for non-boolean properties is deprecated
+> and results in a warning during runtime since commit c141ecc3cecd ("of:
+> Warn when of_property_read_bool() is used on non-boolean properties").
+> 
+> Fixes: b6ef830c60b6 ("i2c: omap: Add support for setting mux")
+> Cc: Jayesh Choudhary <j-choudhary@ti.com>
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 
-v3 patch is at:
-https://lore.kernel.org/r/20250410104426.463453-5-s-vadapalli@ti.com/
-Changes since v3:
-- In the fourth patch of this series, the polarity for PERST# assert in
-  the driver's .remove callback has been fixed based on Mani's feedback at
-  https://lore.kernel.org/r/6bi5gul3sqvycmkf6cwokkvownjffaf2tkonjlefo2d7cautwx@uhfexzgz3okp/
+Thanks for your patch! I'm going to drop the Fixes tag, as this
+isn't really a bug fix but rather a warning suppression during
+boot time.
 
-Regards,
-Siddharth.
-
- drivers/pci/controller/cadence/Kconfig     |  6 ++---
- drivers/pci/controller/cadence/pci-j721e.c | 31 +++++++++++++++++++++-
- 2 files changed, 33 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/pci/controller/cadence/Kconfig b/drivers/pci/controller/cadence/Kconfig
-index 82b58096eea0..72d7d264d6c3 100644
---- a/drivers/pci/controller/cadence/Kconfig
-+++ b/drivers/pci/controller/cadence/Kconfig
-@@ -43,10 +43,10 @@ config PCIE_CADENCE_PLAT_EP
- 	  different vendors SoCs.
- 
- config PCI_J721E
--	bool
-+	tristate
- 
- config PCI_J721E_HOST
--	bool "TI J721E PCIe controller (host mode)"
-+	tristate "TI J721E PCIe controller (host mode)"
- 	depends on ARCH_K3 || COMPILE_TEST
- 	depends on OF
- 	select PCIE_CADENCE_HOST
-@@ -57,7 +57,7 @@ config PCI_J721E_HOST
- 	  core.
- 
- config PCI_J721E_EP
--	bool "TI J721E PCIe controller (endpoint mode)"
-+	tristate "TI J721E PCIe controller (endpoint mode)"
- 	depends on ARCH_K3 || COMPILE_TEST
- 	depends on OF
- 	depends on PCI_ENDPOINT
-diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index ef1cfdae33bb..8a73a4d382d1 100644
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -15,6 +15,7 @@
- #include <linux/irqchip/chained_irq.h>
- #include <linux/irqdomain.h>
- #include <linux/mfd/syscon.h>
-+#include <linux/module.h>
- #include <linux/of.h>
- #include <linux/pci.h>
- #include <linux/platform_device.h>
-@@ -27,6 +28,7 @@
- #define cdns_pcie_to_rc(p) container_of(p, struct cdns_pcie_rc, pcie)
- 
- #define ENABLE_REG_SYS_2	0x108
-+#define ENABLE_CLR_REG_SYS_2	0x308
- #define STATUS_REG_SYS_2	0x508
- #define STATUS_CLR_REG_SYS_2	0x708
- #define LINK_DOWN		BIT(1)
-@@ -116,6 +118,15 @@ static irqreturn_t j721e_pcie_link_irq_handler(int irq, void *priv)
- 	return IRQ_HANDLED;
- }
- 
-+static void j721e_pcie_disable_link_irq(struct j721e_pcie *pcie)
-+{
-+	u32 reg;
-+
-+	reg = j721e_pcie_intd_readl(pcie, ENABLE_CLR_REG_SYS_2);
-+	reg |= pcie->linkdown_irq_regfield;
-+	j721e_pcie_intd_writel(pcie, ENABLE_CLR_REG_SYS_2, reg);
-+}
-+
- static void j721e_pcie_config_link_irq(struct j721e_pcie *pcie)
- {
- 	u32 reg;
-@@ -633,9 +644,23 @@ static void j721e_pcie_remove(struct platform_device *pdev)
- 	struct j721e_pcie *pcie = platform_get_drvdata(pdev);
- 	struct cdns_pcie *cdns_pcie = pcie->cdns_pcie;
- 	struct device *dev = &pdev->dev;
-+	struct cdns_pcie_ep *ep;
-+	struct cdns_pcie_rc *rc;
-+
-+	if (pcie->mode == PCI_MODE_RC) {
-+		rc = container_of(cdns_pcie, struct cdns_pcie_rc, pcie);
-+		cdns_pcie_host_disable(rc);
-+	} else {
-+		ep = container_of(cdns_pcie, struct cdns_pcie_ep, pcie);
-+		cdns_pcie_ep_disable(ep);
-+	}
-+
-+	if (pcie->reset_gpio)
-+		gpiod_set_value_cansleep(pcie->reset_gpio, 0);
- 
- 	clk_disable_unprepare(pcie->refclk);
- 	cdns_pcie_disable_phy(cdns_pcie);
-+	j721e_pcie_disable_link_irq(pcie);
- 	pm_runtime_put(dev);
- 	pm_runtime_disable(dev);
- }
-@@ -730,4 +755,8 @@ static struct platform_driver j721e_pcie_driver = {
- 		.pm	= pm_sleep_ptr(&j721e_pcie_pm_ops),
- 	},
- };
--builtin_platform_driver(j721e_pcie_driver);
-+module_platform_driver(j721e_pcie_driver);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("PCIe controller driver for TI's J721E and related SoCs");
-+MODULE_AUTHOR("Kishon Vijay Abraham I <kishon@ti.com>");
--- 
-2.34.1
-
+Thanks,
+Andi
 
