@@ -1,47 +1,47 @@
-Return-Path: <linux-omap+bounces-3592-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3593-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29FF8A92CCD
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Apr 2025 23:42:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36207A92D33
+	for <lists+linux-omap@lfdr.de>; Fri, 18 Apr 2025 00:18:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BED13B09B7
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Apr 2025 21:41:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D44807A6915
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Apr 2025 22:17:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B65E120A5F5;
-	Thu, 17 Apr 2025 21:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A74212B1E;
+	Thu, 17 Apr 2025 22:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j0n0fJjt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XjCCN0eN"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BE41E4B2;
-	Thu, 17 Apr 2025 21:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4BFA927;
+	Thu, 17 Apr 2025 22:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744926115; cv=none; b=jguwmPc2rTWoDePOzz0+HPVNpadJ4ilmhngoh4iMmJK0IaHMPne/hJTE5DP7Rye9b9ckJSGsiUOF2ZQ4gaA57fQhpy4MEc7P0w4SCFlLO7ZTkV7g663obwuQ1ChHodPrv3gaShTHAubHgg24bVZ/ZsEaB8q8k19IKc7jBxH5+vQ=
+	t=1744928321; cv=none; b=Txrrfpnny7G+LLJSCVuLJA4r9ue9wTH6hjeF2jmIjTojTp9L7l1rlBK0NNchbJ2iel6UadSnr3Hzg31MeI9WcaZC3VdlP9fKOjoPL4/Jl5K5KB6ppjDl9fwRhGFJG8HWORAmtFqYwIglmUe3WtZyBC5ExpE7tOCl9CoqPOScv0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744926115; c=relaxed/simple;
-	bh=pHNrlN3TZ0Dz44eAymjQKJzusOSRhuBN+CARL/3NRNE=;
+	s=arc-20240116; t=1744928321; c=relaxed/simple;
+	bh=QjJTP4Xml5PPnWy3nkDp7pe0ewVgS2VUneSvY+aKt0k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E3EyBIo0seuLAiGIgj1slHVFjWgvgZzDfLOSqCqXwZljtMFDTd4Samwm3iVFKe26KQ3Zh3wwd93l/hxv5eWYEkxjUc/8QKQqVhMVAetAdyy9vBfiibWJFIjq71d3jAOG5VHnCTMsC3WujsQKJKaz78sFj9MUobYVRtkXdbotg5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j0n0fJjt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81304C4CEF0;
-	Thu, 17 Apr 2025 21:41:54 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=oFT0f0Co8Zaj56EcBY92D5dM+k3SjbFQSHohsudj9YJ02o/n5oJhR4dzCyOudQo4MKqT4m+PxPny3W0O9KO+zaOAdeSLEjzE+88ZwNZ2v1Sb7ZPnwE0dRVZsYChoLt417dRQi9SbCCfIssvMzXufmgU3Ivbz/HJXLP/OEM8/zxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XjCCN0eN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD55C4CEE4;
+	Thu, 17 Apr 2025 22:18:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744926115;
-	bh=pHNrlN3TZ0Dz44eAymjQKJzusOSRhuBN+CARL/3NRNE=;
+	s=k20201202; t=1744928321;
+	bh=QjJTP4Xml5PPnWy3nkDp7pe0ewVgS2VUneSvY+aKt0k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j0n0fJjt0zExw5dVmyIaTIeJCCMYii+hijBsJH91FkNNnDOmgWVoxdG0npgxPzioP
-	 NBnHTlVFW4p/Kj6ZFVjVwKU2yaiuGwVLf/Eq7WOLXY4o5ElWZPLvA1BC+eZGAUhA4i
-	 wDGmtz3Tnz3Lx/+XdfX59JBHHBrNpM4SAwTHUd5rVH031MBMYDYR/1ZV9vo29k0zsu
-	 66N42YC7TgOQZUXgiQen1cpGqcHzFnbztqhoxUN3zkBLO9iLzfIREaPWDGgnLht5YE
-	 GFtaXGhj+Bcys/1eGoWc/Ff16SvoewZkOBmeNSI5teb42eDawLBGRQdpPU4V7Xb+Dk
-	 r/6Kw4GpHLbYA==
-Date: Thu, 17 Apr 2025 23:41:51 +0200
+	b=XjCCN0eNeWaws2QkPN2scvCWqqO7bHQRig0v8geeJw22Eo1RvJh7Cy3i97Bc1HJ7o
+	 ml6g7peo3og01ORmfIc9AHAtBw+ql0wLGoeeG+0cfRxHAhL/1BDEF0pgvC2G28J0kt
+	 M5YJw6Eq8dAzKVFzfwitPCKEzkqtIPvcgB24ndc3OLPHYq60JAvq1wjhIorcef8f6d
+	 VslUf+mZ7YZKM5WbzHkulH9KCVzUe3rk9USKt/lOg4vvBsLFxqkR/US+i6z9kFWWJv
+	 op9IKvLiOQbUtJJbWqyqMC99isiAH5XyrCI92ktiOm936K3KGT3IhysCyZI4mjz1Nc
+	 Ur9GhBZglP4TA==
+Date: Fri, 18 Apr 2025 00:18:37 +0200
 From: Andi Shyti <andi.shyti@kernel.org>
 To: Johan Hovold <johan+linaro@kernel.org>
 Cc: Vignesh R <vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
@@ -50,8 +50,9 @@ Cc: Vignesh R <vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
 	Janusz Krzysztofik <jmkrzyszt@gmail.com>, linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, Jayesh Choudhary <j-choudhary@ti.com>
 Subject: Re: [PATCH] i2c: omap: fix deprecated of_property_read_bool() use
-Message-ID: <vcwjwrjgzwoil5ydds4findhcgl2ujoxwia7eh7yrbdc45yx26@kmpmvataffzr>
+Message-ID: <njmy47do6paacr334gbiiwywuuzujqnbhchwj4vt7r5ribdleq@zskrmx6egtc4>
 References: <20250415075230.16235-1-johan+linaro@kernel.org>
+ <vcwjwrjgzwoil5ydds4findhcgl2ujoxwia7eh7yrbdc45yx26@kmpmvataffzr>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -60,22 +61,23 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250415075230.16235-1-johan+linaro@kernel.org>
+In-Reply-To: <vcwjwrjgzwoil5ydds4findhcgl2ujoxwia7eh7yrbdc45yx26@kmpmvataffzr>
 
-Hi Johan,
-
-On Tue, Apr 15, 2025 at 09:52:30AM +0200, Johan Hovold wrote:
-> Using of_property_read_bool() for non-boolean properties is deprecated
-> and results in a warning during runtime since commit c141ecc3cecd ("of:
-> Warn when of_property_read_bool() is used on non-boolean properties").
+On Thu, Apr 17, 2025 at 11:41:51PM +0200, Andi Shyti wrote:
+> On Tue, Apr 15, 2025 at 09:52:30AM +0200, Johan Hovold wrote:
+> > Using of_property_read_bool() for non-boolean properties is deprecated
+> > and results in a warning during runtime since commit c141ecc3cecd ("of:
+> > Warn when of_property_read_bool() is used on non-boolean properties").
+> > 
+> > Fixes: b6ef830c60b6 ("i2c: omap: Add support for setting mux")
+> > Cc: Jayesh Choudhary <j-choudhary@ti.com>
+> > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 > 
-> Fixes: b6ef830c60b6 ("i2c: omap: Add support for setting mux")
-> Cc: Jayesh Choudhary <j-choudhary@ti.com>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> Thanks for your patch! I'm going to drop the Fixes tag, as this
+> isn't really a bug fix but rather a warning suppression during
+> boot time.
 
-Thanks for your patch! I'm going to drop the Fixes tag, as this
-isn't really a bug fix but rather a warning suppression during
-boot time.
+forgot to say that I merged the patch in i2c/i2c-host.
 
 Thanks,
 Andi
