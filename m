@@ -1,135 +1,154 @@
-Return-Path: <linux-omap+bounces-3586-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3587-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63298A89CCF
-	for <lists+linux-omap@lfdr.de>; Tue, 15 Apr 2025 13:49:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E439A91CA1
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Apr 2025 14:44:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D758C18867E0
-	for <lists+linux-omap@lfdr.de>; Tue, 15 Apr 2025 11:49:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DB1016F0B8
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Apr 2025 12:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1672A2918E3;
-	Tue, 15 Apr 2025 11:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EEE244186;
+	Thu, 17 Apr 2025 12:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="D8L00DBx"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="AXwUaOHK"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CB127586B;
-	Tue, 15 Apr 2025 11:48:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20566243968;
+	Thu, 17 Apr 2025 12:44:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744717733; cv=none; b=q1enRmqj/CMYNn0Bx+5CU/2Z8EjUW+R5EG9nJIsetw/IZes04vVK3S4kBk0DuhUm1Er49jUCZv7IXF4Cwp4kn3kK4SwulzI4ct5CWJ+/tKdnAc7olnUoxzNC7H4vojDZfQgalVk5ickOPvRPmR3gcMNZJiacinqPK4vFuYdvAdg=
+	t=1744893881; cv=none; b=TWqhwDgs+hWyE1EbYTWkHArfbj0eauMgWe/dEFqDeSpj+La5EMwGx79JR2LtOHulsty54TQRn6R5EXNcRCDLkeTU+rfqUE91WLyJ8qHLBRctWGmihb6R7efaiyfcDC+m6HGz9YZnmFpImKXSJVJ79u2mlyZcivEi0nBSIq/dlPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744717733; c=relaxed/simple;
-	bh=uxPhOzxY14pVCHZGfJbw2h3p6ZWpthGrzWp7eAolL2c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=eDTwEBI9V1l609jMOsBrQNCl/73FQdsAniZk/Ft3bzKOaoyUh9aTcAgqmiTITbM0dW1QJowK9iJ0q1S+CC0fattXSBPMpn1pOZTgd1Bz4PhbdRxvQEI/YOhXZ8w3iG8AcYLSNTlKHxCS/vgp0G2wSWzf4R9VxLwp8y65eNPm728=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=D8L00DBx; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53F8tNPc002462;
-	Tue, 15 Apr 2025 11:48:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	WPx0blElfQsDzlplnsNASavPopVyU/xxzlA7I369vRc=; b=D8L00DBxD6XIws3E
-	pKwaBK34gh6NnOaJB2Ghd6AX3puoBBsVFJV09h4ayjUjTsR8IVKZ5XiCQIR/u0jD
-	FLFIGq8YbO7EjKbTUlFWpc/UzciygLVSMHaYHg66K7fEjqk83YqCsuxIPnxewb17
-	Jmcfo84ZDdJtbM1uhLja2++55Xwgk09PyV1VKwhzOtz9BX5mDrcmv184Y3F+6iz+
-	J5i3XvEJLS8ngu4nR80+B9p+B0+2qV/WgSPAnsRgKRhdzht9PmceOZ0v+t6K9i+i
-	WO+OQR4y4rKhsGfJzPt8MxAmloLbVbTjetVq6Ar1/WE+tqQU5Sa9HpEMGcrcwwtC
-	9S9qpQ==
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45ygxjyrvn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Apr 2025 11:48:25 +0000 (GMT)
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53FBmP4p025518
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Apr 2025 11:48:25 GMT
-Received: from [10.217.219.207] (10.80.80.8) by nasanex01c.na.qualcomm.com
- (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 15 Apr
- 2025 04:48:21 -0700
-Message-ID: <3204f619-61a5-41b9-b9a5-c72397b21d11@quicinc.com>
-Date: Tue, 15 Apr 2025 17:18:18 +0530
+	s=arc-20240116; t=1744893881; c=relaxed/simple;
+	bh=REIhlmNxxgT8aKtiF2L/vrBcBS0fkO7/qt+KHBVnbNw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Q/IoprF0fkLpuJQ9XomcWBYX0SfqfQ2z/YfnwYdpjn0rCmpsaL5F+Y00Z37i9t/iJ9zctz223XnxfTHIp4OMCs9DslARq58J6qS74pRELS7P3yV/qn4wCd2NmuuBb52njzikAuiGBQGYCn0lMOX1NxVpwsApqTED17a7VTZodaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=AXwUaOHK; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53HCiElx628357
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 17 Apr 2025 07:44:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1744893854;
+	bh=at8L1hZ/1fuPCfwlRQeFEAPYB3p7nMuCwhudAWDVQOY=;
+	h=From:To:CC:Subject:Date;
+	b=AXwUaOHKaq6yywaZtF+0qviR+V9JBb4c2r17yXrIuXQF4GuiIs16MHTZMxb6GXWwf
+	 ywt5ynzfA/SkC1m57RwsqjYrKGs/eI+cvhMlMWcgypXXa/nkIgDq1PlPSe4dIvNbEn
+	 cEFp0rZP7jFYXUWbbG9NL2KkkAnpPyTV20m4ixAw=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53HCiEDm101084
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 17 Apr 2025 07:44:14 -0500
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 17
+ Apr 2025 07:44:14 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 17 Apr 2025 07:44:14 -0500
+Received: from uda0492258.dhcp.ti.com (uda0492258.dhcp.ti.com [10.24.72.113])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53HCi9XB048918;
+	Thu, 17 Apr 2025 07:44:09 -0500
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: <lpieralisi@kernel.org>, <kw@linux.com>,
+        <manivannan.sadhasivam@linaro.org>, <robh@kernel.org>,
+        <bhelgaas@google.com>, <vigneshr@ti.com>, <kishon@kernel.org>,
+        <18255117159@163.com>, <cassel@kernel.org>,
+        <wojciech.jasko-EXT@continental-corporation.com>,
+        <thomas.richard@bootlin.com>, <bwawrzyn@cisco.com>
+CC: <linux-pci@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <srk@ti.com>, <s-vadapalli@ti.com>
+Subject: [PATCH v4 0/4] Loadable Module support for PCIe Cadence and J721E
+Date: Thu, 17 Apr 2025 18:14:04 +0530
+Message-ID: <20250417124408.2752248-1-s-vadapalli@ti.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] i2c: omap: fix deprecated of_property_read_bool() use
-To: Johan Hovold <johan+linaro@kernel.org>, Vignesh R <vigneshr@ti.com>,
-        Andi
- Shyti <andi.shyti@kernel.org>
-CC: Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Andreas Kemnade
-	<andreas@kemnade.info>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Roger Quadros
-	<rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
-        Janusz Krzysztofik
-	<jmkrzyszt@gmail.com>,
-        <linux-omap@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Jayesh Choudhary
-	<j-choudhary@ti.com>
-References: <20250415075230.16235-1-johan+linaro@kernel.org>
-Content-Language: en-US
-From: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-In-Reply-To: <20250415075230.16235-1-johan+linaro@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=WecMa1hX c=1 sm=1 tr=0 ts=67fe4789 cx=c_pps a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=sozttTNsAAAA:8 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
- a=CDmJc5vrhkyB_-nfjVoA:9 a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: PnkJCtQy-JYDDiG_fx88-OnPln3Z4BRm
-X-Proofpoint-ORIG-GUID: PnkJCtQy-JYDDiG_fx88-OnPln3Z4BRm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-15_05,2025-04-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
- adultscore=0 clxscore=1011 lowpriorityscore=0 phishscore=0 mlxscore=0
- impostorscore=0 mlxlogscore=999 spamscore=0 malwarescore=0
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504150083
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
+Hello,
 
+This series enables support to build the PCIe Cadence Controller drivers
+and the PCI J721E Application/Wrapper/Glue driver as Loadable Kernel
+Modules. The motivation for this series is that PCIe is not a necessity
+for booting the SoC, due to which it doesn't have to be a built-in
+module. Additionally, the defconfig doesn't enable the PCIe Cadence
+Controller drivers and the PCI J721E driver, due to which PCIe is not
+supported by default. Enabling the configs as of now (i.e. without this
+series) will result in built-in drivers i.e. a bloated Linux Image for
+everyone who doesn't have the PCIe Controller. Therefore, with this
+series, after enabling support for building the drivers as loadable
+modules, the driver configs can be enabled in the defconfig to build
+the drivers as loadable modules, thereby enabling PCIe.
 
-On 4/15/2025 1:22 PM, Johan Hovold wrote:
-> Using of_property_read_bool() for non-boolean properties is deprecated
-> and results in a warning during runtime since commit c141ecc3cecd ("of:
-> Warn when of_property_read_bool() is used on non-boolean properties").
-> 
-> Fixes: b6ef830c60b6 ("i2c: omap: Add support for setting mux")
-> Cc: Jayesh Choudhary <j-choudhary@ti.com>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
->   drivers/i2c/busses/i2c-omap.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
-> index 16afb9ca19bb..876791d20ed5 100644
-> --- a/drivers/i2c/busses/i2c-omap.c
-> +++ b/drivers/i2c/busses/i2c-omap.c
-> @@ -1454,7 +1454,7 @@ omap_i2c_probe(struct platform_device *pdev)
->   				       (1000 * omap->speed / 8);
->   	}
->   
-> -	if (of_property_read_bool(node, "mux-states")) {
-> +	if (of_property_present(node, "mux-states")) {
->   		struct mux_state *mux_state;
->   
->   		mux_state = devm_mux_state_get(&pdev->dev, NULL);
-Acked-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
+Series is based on linux-next tagged next-20250417.
+
+v3 of this series is at:
+https://lore.kernel.org/r/20250410104426.463453-1-s-vadapalli@ti.com/
+Changes since v3:
+- In the fourth patch of this series, the polarity for PERST# assert in
+  the driver's .remove callback has been fixed based on Mani's feedback at
+  https://lore.kernel.org/r/6bi5gul3sqvycmkf6cwokkvownjffaf2tkonjlefo2d7cautwx@uhfexzgz3okp/
+
+v2 of this series is at:
+https://lore.kernel.org/r/20250330083914.529222-1-s-vadapalli@ti.com/
+Changes since v2:
+- Collected "Reviewed-by" tag from:
+  Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+  for the third patch in this series.
+- Dropped a delay before PERST assertion in the driver's remove callback
+  in the fourth patch of this series based on Mani's feedback at:
+  https://lore.kernel.org/r/zsxnx7biwogov5dw5yiafkgk6tsrtspac75bjbrca5uevweaim@ly67hwfyk7qh/
+
+v1 of this series is at:
+https://lore.kernel.org/r/20250307103128.3287497-1-s-vadapalli@ti.com/
+Changes since v1:
+- Collected "Reviewed-by" tags from:
+  Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+  for the first two patches in this series.
+- Based on feedback from Mani on the third patch of the v1 series at:
+  https://lore.kernel.org/r/20250318080304.jsmrxqil6pn74nzh@thinkpad/
+  pci_epc_deinit_notify() has been included in cdns_pcie_ep_disable().
+- Based on feedback from Thomas on the fourth patch of the v1 series at:
+  https://lore.kernel.org/r/88b3ecbe-32b6-4310-afb9-da19a2d0506a@bootlin.com/
+  the "check" for a non-NULL "pcie-refclk" in j721e_pcie_remove() has been
+  dropped.
+
+Regards,
+Siddharth.
+
+Kishon Vijay Abraham I (1):
+  PCI: cadence: Add support to build pcie-cadence library as a kernel
+    module
+
+Siddharth Vadapalli (3):
+  PCI: cadence-host: Introduce cdns_pcie_host_disable helper for cleanup
+  PCI: cadence-ep: Introduce cdns_pcie_ep_disable helper for cleanup
+  PCI: j721e: Add support to build as a loadable module
+
+ drivers/pci/controller/cadence/Kconfig        |  12 +-
+ drivers/pci/controller/cadence/pci-j721e.c    |  31 ++++-
+ .../pci/controller/cadence/pcie-cadence-ep.c  |  17 +++
+ .../controller/cadence/pcie-cadence-host.c    | 113 ++++++++++++++++++
+ drivers/pci/controller/cadence/pcie-cadence.c |  12 ++
+ drivers/pci/controller/cadence/pcie-cadence.h |  14 ++-
+ 6 files changed, 190 insertions(+), 9 deletions(-)
+
+-- 
+2.34.1
+
 
