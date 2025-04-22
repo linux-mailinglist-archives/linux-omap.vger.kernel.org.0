@@ -1,132 +1,277 @@
-Return-Path: <linux-omap+bounces-3597-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3598-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0851A94E5D
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Apr 2025 11:00:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28C0FA9730E
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Apr 2025 18:50:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22163170C45
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Apr 2025 09:00:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E77BF3B9131
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Apr 2025 16:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4003220B7FA;
-	Mon, 21 Apr 2025 09:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA76C29617E;
+	Tue, 22 Apr 2025 16:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xRCPV8bv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ae9PaHLI"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7326A101E6
-	for <linux-omap@vger.kernel.org>; Mon, 21 Apr 2025 09:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5061A296175;
+	Tue, 22 Apr 2025 16:49:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745226051; cv=none; b=uV5eg7NcS1FGAYalRO9SIhaeE/SgtysycCubhC8nK7fAKSc9th9yv+Tv81lKfg41+a6JXpu0YN3q46XLvBxDF4kOiM+AOZ/zRaSgdK6CsQFA0KQlPlPcP3RmlIDre5dr6FIGVIkEer+GWx8Ke0zdUNL+BLJ47fRbai0RfMDISh8=
+	t=1745340576; cv=none; b=L9WNJJHB7DXPVE/blUc1Zr6V4ukoGQqJI0LRZQkUGAp2BM8qxxqk2f1EvnWv6C9Z8mUrB0z2gvs1kDaq8bKTnyIfRaxPjtJwu1LN7Y8GpQ5CYs82yYUKq7w7c8eJB3XgX+z51Rju/pBq/yrm+iuerrRPZqu5OXFWFVq0AZ441NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745226051; c=relaxed/simple;
-	bh=cn+6RgyhJyrOchkn6Kud6JEzYKcCVkqWUi6B/Ufas2Q=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=ssTJq/prhGkkBgTI0FJwbbrgKBwQSK991VSf1voHTXDvHpORV1wfJIKR69kCF/F8x1UGuQv3xGe4aFDupFs7uyzsFWvz9VLw9loNhVgQ/V2gcZAtLgD9x3z70iMCyQrSCwtSZXr2fhXwCOl80LxgIl7BiXEBYe179ESiL+kzmDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xRCPV8bv; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-22c336fcdaaso40848285ad.3
-        for <linux-omap@vger.kernel.org>; Mon, 21 Apr 2025 02:00:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1745226050; x=1745830850; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ouxcv+1YvuOkFG0jn+K0SUmzYu0kHcqjiq9UZ3JDI9g=;
-        b=xRCPV8bv7Dln033MHYLb8EKfQjp8ZBVRXsfy8JMBxINlH8RFatJASwA7mrXt+WgGqh
-         VZxtyNrpqV6zX9Ax3zI8f/yHV1dBgIz9wjnnXmz7kawi7CDNgUeWY974UclPePrPvQ5c
-         6fbHGjFxvHMSxeQz2f4OvZYZvFXD2kx9ORp4FH3A76AFS3Gb47lspJZAJMTCozrmlbHJ
-         EKdA7yru7p4QPIonBfymU6R299LPK8eY7LJKkz5lMg/IRI9/6GD4huh28xyBdHqevAZm
-         i32J8+G2Ez4mNsn4an2ZRJ6iABYuciY1ugyTPzyJbE66o3mr68JJqUN8iz8VgXgGF44k
-         2Prw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745226050; x=1745830850;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ouxcv+1YvuOkFG0jn+K0SUmzYu0kHcqjiq9UZ3JDI9g=;
-        b=B2C8MN+tAPK6M0f3vX4iwp76nhyka7AT5hJlAPsnR2D7RUmOH6dPj5iNdRLY/kd5Pz
-         5saT5qCag0KpKvZPSETvOQ3kvevS9A2aZ2N8TFn3tV7D3A+ehx+xUPUvA/3mIVv5MTe0
-         6pBmv3swPklpYvQhOxhlKk3wnGkzhU1O3Axpy1xYngVv8L4vQGt0pwlasOVGf+L066t7
-         7blaZAyzB4V+ASdiOP3anjEZ6TfkCnK544YXIp1+8PPsZdd6VHdmDnGOZZo5vGg105jL
-         xuIuXg9bE2qodHeYa4WM6h1c56lN4GOBAtUmkUzjoE08Tx6MyJstfbKn7Y9mQxQeRX7h
-         pQhg==
-X-Forwarded-Encrypted: i=1; AJvYcCWLdYBAA5euEaP/cc9AkWSBAzNlb5YUw3ovVERXD8MJ0ZtzpnRIzIM5wNfU3YjywbYcJbZKyrSoTYkp@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzg159dRl0u5RwC4Ko5pKgds/cP8f1jlvr/ys7tXVG1lwzlDqxR
-	q/9CZBWfao4TEg+pi5VOG9TZDY+4+fBiiFcwlj/M5qVDHlqMyaDxAMtuyCRu7w==
-X-Gm-Gg: ASbGncudXrdOZ0ElRZvFhT7siu8cuhz8m4YQ+K/4sOVKSP566F6vXLSuGB270f9SYv8
-	715I37nzi4zExceF0rjE4xI4dZGyFpeQgbnFx1kT7UyA/0VOmpJH+ZfzD5l7WZ7CNV93PPvYq5Y
-	dweUs8sGFYPnIqD1MUzkSAso+0u0g45We6Dw1+1Fbhac6VU824Ev7Hdcg5DIju7EaYIMs8T2+qV
-	TJBf7iAq68000/KuXFGwGE70dBbC3GOPc4HgHZ06ntkxKxRoor7OGqNPHl1MtFlfDrTXEqRCnjf
-	nU7YhQ8OvRXFujoh3VgIJXIPaRxyXOlECv331fMI06tqepXLAbrPAjg=
-X-Google-Smtp-Source: AGHT+IHiH+ZKaGvLzhdCRmqt8PauvespnoNN+FTbSbWKbr7BrL2gDOrlx85PNmYsb8mZdnhuym89Hg==
-X-Received: by 2002:a17:902:e5cf:b0:223:6657:5003 with SMTP id d9443c01a7336-22c53611037mr177515125ad.32.1745226049715;
-        Mon, 21 Apr 2025 02:00:49 -0700 (PDT)
-Received: from [127.0.1.1] ([120.60.74.237])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b0db1273edbsm5278363a12.8.2025.04.21.02.00.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Apr 2025 02:00:49 -0700 (PDT)
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: lpieralisi@kernel.org, kw@linux.com, robh@kernel.org, 
- bhelgaas@google.com, vigneshr@ti.com, kishon@kernel.org, 
- 18255117159@163.com, cassel@kernel.org, 
- wojciech.jasko-EXT@continental-corporation.com, thomas.richard@bootlin.com, 
- bwawrzyn@cisco.com, Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: linux-pci@vger.kernel.org, linux-omap@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- srk@ti.com
-In-Reply-To: <20250417124408.2752248-1-s-vadapalli@ti.com>
-References: <20250417124408.2752248-1-s-vadapalli@ti.com>
-Subject: Re: [PATCH v4 0/4] Loadable Module support for PCIe Cadence and
- J721E
-Message-Id: <174522604280.13504.6844455381479495318.b4-ty@linaro.org>
-Date: Mon, 21 Apr 2025 14:30:42 +0530
+	s=arc-20240116; t=1745340576; c=relaxed/simple;
+	bh=s9kMwJjDJ2rcuOzb9LFbxhZCz0C30M7jGjVo/6qeYK4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=lN1DcvFzqCRJ+nw/X51W33ne3iQz9t6ed415jw+WszqytSRVRChM/gN/Ksd+2VifNiie9igFEHkWK40NQuFMYNs9CoQK0GWpQceWH0j1OJbTomfsiahC8p5H9BlbeWFDzqVCeHAUx30GMOjw8jAaoM4xHs1nWWg+u04j8LV20Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ae9PaHLI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940C1C4CEE9;
+	Tue, 22 Apr 2025 16:49:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745340575;
+	bh=s9kMwJjDJ2rcuOzb9LFbxhZCz0C30M7jGjVo/6qeYK4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=ae9PaHLIH2pXGK2vvhTyEi/fVGiLgSKV4bCaKMpxmdsSaiLLWnZqNuS4RAWP3Ppc1
+	 czwixz4vaqciUviy4ZyA5cTYsFXWnFNkvVLSdc96cu84GvEpu5vZFRPCS6j4nx1WOJ
+	 s7rH2IZeDPUtON+2lVgPeSoIAQpvH3FV0AucL6BANOrTyIhrVv5NvD8KwjR2fZ4JEj
+	 m1j7NI9i/5kGbRWvlvrcB6IUMKSY/thPOJc09MpEGq15sUqADWF7keSXCuXbBaHCP5
+	 UrvpBGwig4QBQYxOJHvAs4ehuBg0gVVnzDgfGFfWNllCDiSk0EnVLm/amLooatEfVi
+	 3VdUuE8Fz+rBw==
+Date: Tue, 22 Apr 2025 11:49:34 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: lpieralisi@kernel.org, kw@linux.com, manivannan.sadhasivam@linaro.org,
+	robh@kernel.org, bhelgaas@google.com, vigneshr@ti.com,
+	kishon@kernel.org, 18255117159@163.com, cassel@kernel.org,
+	wojciech.jasko-EXT@continental-corporation.com,
+	thomas.richard@bootlin.com, bwawrzyn@cisco.com,
+	linux-pci@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	srk@ti.com
+Subject: Re: [PATCH v4 2/4] PCI: cadence-host: Introduce
+ cdns_pcie_host_disable helper for cleanup
+Message-ID: <20250422164934.GA333709@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250417124408.2752248-3-s-vadapalli@ti.com>
 
+On Thu, Apr 17, 2025 at 06:14:06PM +0530, Siddharth Vadapalli wrote:
+> Introduce the helper function cdns_pcie_host_disable() which will undo
+> the configuration performed by cdns_pcie_host_setup(). Also, export it
+> for use by existing callers of cdns_pcie_host_setup(), thereby allowing
+> them to cleanup on their exit path.
 
-On Thu, 17 Apr 2025 18:14:04 +0530, Siddharth Vadapalli wrote:
-> This series enables support to build the PCIe Cadence Controller drivers
-> and the PCI J721E Application/Wrapper/Glue driver as Loadable Kernel
-> Modules. The motivation for this series is that PCIe is not a necessity
-> for booting the SoC, due to which it doesn't have to be a built-in
-> module. Additionally, the defconfig doesn't enable the PCIe Cadence
-> Controller drivers and the PCI J721E driver, due to which PCIe is not
-> supported by default. Enabling the configs as of now (i.e. without this
-> series) will result in built-in drivers i.e. a bloated Linux Image for
-> everyone who doesn't have the PCIe Controller. Therefore, with this
-> series, after enabling support for building the drivers as loadable
-> modules, the driver configs can be enabled in the defconfig to build
-> the drivers as loadable modules, thereby enabling PCIe.
+For the merge commit log and eventual pull request, can you give me a
+hint about the motivation for this?  Based on the other patches in
+this series, my guess is that this is required for making the j721e
+driver buildable as a module and removable?
+
+> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> ---
 > 
-> [...]
-
-Applied, thanks!
-
-[1/4] PCI: cadence: Add support to build pcie-cadence library as a kernel module
-      commit: b51c6fee0a06b71e9bf610f4b294426d0a1f1b51
-[2/4] PCI: cadence-host: Introduce cdns_pcie_host_disable helper for cleanup
-      commit: 23c498ea9abd7bed7d0f8c1c5f63459100b01028
-[3/4] PCI: cadence-ep: Introduce cdns_pcie_ep_disable helper for cleanup
-      commit: 5f8c840aa407588a7eae89af1301ba19c307aab7
-[4/4] PCI: j721e: Add support to build as a loadable module
-      commit: 7a68d4ab59fa66ebbd9b8abdbffcaf748e109ad7
-
-Best regards,
--- 
-Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-
+> v3 patch is at:
+> https://lore.kernel.org/r/20250410104426.463453-3-s-vadapalli@ti.com/
+> No changes since v3.
+> 
+> Regards,
+> Siddharth.
+> 
+>  .../controller/cadence/pcie-cadence-host.c    | 104 ++++++++++++++++++
+>  drivers/pci/controller/cadence/pcie-cadence.h |   5 +
+>  2 files changed, 109 insertions(+)
+> 
+> diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
+> index 96055edeb099..741508738f88 100644
+> --- a/drivers/pci/controller/cadence/pcie-cadence-host.c
+> +++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
+> @@ -152,6 +152,14 @@ static int cdns_pcie_retrain(struct cdns_pcie *pcie)
+>  	return ret;
+>  }
+>  
+> +static void cdns_pcie_host_disable_ptm_response(struct cdns_pcie *pcie)
+> +{
+> +	u32 val;
+> +
+> +	val = cdns_pcie_readl(pcie, CDNS_PCIE_LM_PTM_CTRL);
+> +	cdns_pcie_writel(pcie, CDNS_PCIE_LM_PTM_CTRL, val & ~CDNS_PCIE_LM_TPM_CTRL_PTMRSEN);
+> +}
+> +
+>  static void cdns_pcie_host_enable_ptm_response(struct cdns_pcie *pcie)
+>  {
+>  	u32 val;
+> @@ -177,6 +185,26 @@ static int cdns_pcie_host_start_link(struct cdns_pcie_rc *rc)
+>  	return ret;
+>  }
+>  
+> +static void cdns_pcie_host_deinit_root_port(struct cdns_pcie_rc *rc)
+> +{
+> +	struct cdns_pcie *pcie = &rc->pcie;
+> +	u32 value, ctrl;
+> +
+> +	cdns_pcie_rp_writew(pcie, PCI_CLASS_DEVICE, 0xffff);
+> +	cdns_pcie_rp_writeb(pcie, PCI_CLASS_PROG, 0xff);
+> +	cdns_pcie_rp_writeb(pcie, PCI_CLASS_REVISION, 0xff);
+> +	cdns_pcie_writel(pcie, CDNS_PCIE_LM_ID, 0xffffffff);
+> +	cdns_pcie_rp_writew(pcie, PCI_DEVICE_ID, 0xffff);
+> +	ctrl = CDNS_PCIE_LM_BAR_CFG_CTRL_DISABLED;
+> +	value = ~(CDNS_PCIE_LM_RC_BAR_CFG_BAR0_CTRL(ctrl) |
+> +		CDNS_PCIE_LM_RC_BAR_CFG_BAR1_CTRL(ctrl) |
+> +		CDNS_PCIE_LM_RC_BAR_CFG_PREFETCH_MEM_ENABLE |
+> +		CDNS_PCIE_LM_RC_BAR_CFG_PREFETCH_MEM_64BITS |
+> +		CDNS_PCIE_LM_RC_BAR_CFG_IO_ENABLE |
+> +		CDNS_PCIE_LM_RC_BAR_CFG_IO_32BITS);
+> +	cdns_pcie_writel(pcie, CDNS_PCIE_LM_RC_BAR_CFG, value);
+> +}
+> +
+>  static int cdns_pcie_host_init_root_port(struct cdns_pcie_rc *rc)
+>  {
+>  	struct cdns_pcie *pcie = &rc->pcie;
+> @@ -393,6 +421,32 @@ static int cdns_pcie_host_dma_ranges_cmp(void *priv, const struct list_head *a,
+>          return resource_size(entry2->res) - resource_size(entry1->res);
+>  }
+>  
+> +static void cdns_pcie_host_unmap_dma_ranges(struct cdns_pcie_rc *rc)
+> +{
+> +	struct cdns_pcie *pcie = &rc->pcie;
+> +	enum cdns_pcie_rp_bar bar;
+> +	u32 value;
+> +
+> +	/* Reset inbound configuration for all BARs which were being used */
+> +	for (bar = RP_BAR0; bar <= RP_NO_BAR; bar++) {
+> +		if (rc->avail_ib_bar[bar])
+> +			continue;
+> +
+> +		cdns_pcie_writel(pcie, CDNS_PCIE_AT_IB_RP_BAR_ADDR0(bar), 0);
+> +		cdns_pcie_writel(pcie, CDNS_PCIE_AT_IB_RP_BAR_ADDR1(bar), 0);
+> +
+> +		if (bar == RP_NO_BAR)
+> +			continue;
+> +
+> +		value = ~(LM_RC_BAR_CFG_CTRL_MEM_64BITS(bar) |
+> +			  LM_RC_BAR_CFG_CTRL_PREF_MEM_64BITS(bar) |
+> +			  LM_RC_BAR_CFG_CTRL_MEM_32BITS(bar) |
+> +			  LM_RC_BAR_CFG_CTRL_PREF_MEM_32BITS(bar) |
+> +			  LM_RC_BAR_CFG_APERTURE(bar, bar_aperture_mask[bar] + 2));
+> +		cdns_pcie_writel(pcie, CDNS_PCIE_LM_RC_BAR_CFG, value);
+> +	}
+> +}
+> +
+>  static int cdns_pcie_host_map_dma_ranges(struct cdns_pcie_rc *rc)
+>  {
+>  	struct cdns_pcie *pcie = &rc->pcie;
+> @@ -430,6 +484,29 @@ static int cdns_pcie_host_map_dma_ranges(struct cdns_pcie_rc *rc)
+>  	return 0;
+>  }
+>  
+> +static void cdns_pcie_host_deinit_address_translation(struct cdns_pcie_rc *rc)
+> +{
+> +	struct cdns_pcie *pcie = &rc->pcie;
+> +	struct pci_host_bridge *bridge = pci_host_bridge_from_priv(rc);
+> +	struct resource_entry *entry;
+> +	int r;
+> +
+> +	cdns_pcie_host_unmap_dma_ranges(rc);
+> +
+> +	/*
+> +	 * Reset outbound region 0 which was reserved for configuration space
+> +	 * accesses.
+> +	 */
+> +	cdns_pcie_reset_outbound_region(pcie, 0);
+> +
+> +	/* Reset rest of the outbound regions */
+> +	r = 1;
+> +	resource_list_for_each_entry(entry, &bridge->windows) {
+> +		cdns_pcie_reset_outbound_region(pcie, r);
+> +		r++;
+> +	}
+> +}
+> +
+>  static int cdns_pcie_host_init_address_translation(struct cdns_pcie_rc *rc)
+>  {
+>  	struct cdns_pcie *pcie = &rc->pcie;
+> @@ -487,6 +564,12 @@ static int cdns_pcie_host_init_address_translation(struct cdns_pcie_rc *rc)
+>  	return cdns_pcie_host_map_dma_ranges(rc);
+>  }
+>  
+> +static void cdns_pcie_host_deinit(struct cdns_pcie_rc *rc)
+> +{
+> +	cdns_pcie_host_deinit_address_translation(rc);
+> +	cdns_pcie_host_deinit_root_port(rc);
+> +}
+> +
+>  int cdns_pcie_host_init(struct cdns_pcie_rc *rc)
+>  {
+>  	int err;
+> @@ -499,6 +582,14 @@ int cdns_pcie_host_init(struct cdns_pcie_rc *rc)
+>  }
+>  EXPORT_SYMBOL_GPL(cdns_pcie_host_init);
+>  
+> +static void cdns_pcie_host_link_disable(struct cdns_pcie_rc *rc)
+> +{
+> +	struct cdns_pcie *pcie = &rc->pcie;
+> +
+> +	cdns_pcie_stop_link(pcie);
+> +	cdns_pcie_host_disable_ptm_response(pcie);
+> +}
+> +
+>  int cdns_pcie_host_link_setup(struct cdns_pcie_rc *rc)
+>  {
+>  	struct cdns_pcie *pcie = &rc->pcie;
+> @@ -524,6 +615,19 @@ int cdns_pcie_host_link_setup(struct cdns_pcie_rc *rc)
+>  }
+>  EXPORT_SYMBOL_GPL(cdns_pcie_host_link_setup);
+>  
+> +void cdns_pcie_host_disable(struct cdns_pcie_rc *rc)
+> +{
+> +	struct pci_host_bridge *bridge;
+> +
+> +	bridge = pci_host_bridge_from_priv(rc);
+> +	pci_stop_root_bus(bridge->bus);
+> +	pci_remove_root_bus(bridge->bus);
+> +
+> +	cdns_pcie_host_deinit(rc);
+> +	cdns_pcie_host_link_disable(rc);
+> +}
+> +EXPORT_SYMBOL_GPL(cdns_pcie_host_disable);
+> +
+>  int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
+>  {
+>  	struct device *dev = rc->pcie.dev;
+> diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
+> index 4b7f295e24e7..0b6bed1ac146 100644
+> --- a/drivers/pci/controller/cadence/pcie-cadence.h
+> +++ b/drivers/pci/controller/cadence/pcie-cadence.h
+> @@ -523,6 +523,7 @@ static inline bool cdns_pcie_link_up(struct cdns_pcie *pcie)
+>  int cdns_pcie_host_link_setup(struct cdns_pcie_rc *rc);
+>  int cdns_pcie_host_init(struct cdns_pcie_rc *rc);
+>  int cdns_pcie_host_setup(struct cdns_pcie_rc *rc);
+> +void cdns_pcie_host_disable(struct cdns_pcie_rc *rc);
+>  void __iomem *cdns_pci_map_bus(struct pci_bus *bus, unsigned int devfn,
+>  			       int where);
+>  #else
+> @@ -541,6 +542,10 @@ static inline int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
+>  	return 0;
+>  }
+>  
+> +static inline void cdns_pcie_host_disable(struct cdns_pcie_rc *rc)
+> +{
+> +}
+> +
+>  static inline void __iomem *cdns_pci_map_bus(struct pci_bus *bus, unsigned int devfn,
+>  					     int where)
+>  {
+> -- 
+> 2.34.1
+> 
 
