@@ -1,130 +1,153 @@
-Return-Path: <linux-omap+bounces-3600-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3601-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B97A4A989EB
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Apr 2025 14:40:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00071A994F0
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Apr 2025 18:25:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 005154403E0
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Apr 2025 12:40:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EABE7AA68D
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Apr 2025 16:24:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65FF0266B65;
-	Wed, 23 Apr 2025 12:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF83C280CD1;
+	Wed, 23 Apr 2025 16:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="Msb2GjoA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KdtHlFVG"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from server.wki.vra.mybluehostin.me (server.wki.vra.mybluehostin.me [162.240.238.73])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5942726E165;
-	Wed, 23 Apr 2025 12:39:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.238.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5763F27C87C;
+	Wed, 23 Apr 2025 16:25:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745411990; cv=none; b=hl48F8P+LbQ2lJia7l+KSVB2+UFAbuRxuaAik9vXujZlO7Z7NVGgpu8MIH5XY9wjpxb7MHf6ekxQvzFbuuU9U5XBorgCgKIS1/P//3KUh+ygc9IFotx2JPKeSDRFnwGXaJX/4SNmNL3HxK3ia269IUkRBrBi+cqe/TdxFucGQzU=
+	t=1745425529; cv=none; b=MbDJVMRMW+fc39T9LTOoP3JDqMhL4atdYKP+2RkZpHL8oZ7wVU/R10AiJiCGBZj+kwP3yy0BG5V1ZgLJPN3/5AhCPhvxpCCLpRtKpjmmOF+ZJAGjzrKSJFN3RLZa3mXKhtBBWwbJmTFndBe4Tq58/bBXHkb1jPndX7J5N3FwA50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745411990; c=relaxed/simple;
-	bh=bqsE/wefBMSFpl+lZS8viS6c+r4FhfHizYbstk43JFU=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=RlIQkicEu9cWKfy/VNunw3OkDinXNYhkBIr0O0YbBhdpeSLvC9mAf3mdmHMFce4hF+2gcv7qIUu+bfapMQjMCora1BLYI+iTfndX/RH3UPyD2pNIUtokvp433ewXXNyLoA5W+X/qEsghjM5Pc2d+WiqDe9HeAQWx53nMHTZ2Z8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=Msb2GjoA; arc=none smtp.client-ip=162.240.238.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
-	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=+785VF6wf30WYbsN36DFocTAix1Cw2QRRtSgmA1b0mA=; b=Msb2GjoAwZAIjJl8zVc/M8FmVw
-	pYxra9w5JfOBQHdCvh+gnNpkASeHxNUqeaQWQcsGtbwnAzi8dFPm5YZ3dTftgckx5kbQVhRgNq9K9
-	h19oy09iu0vCYYnvDfgbKReOZ07kR02HLT2Wn67szJEvyR2ztkRAvI3XN0yIHuKr1w5Ch9pJDQPA4
-	1Bx1mevYKhtn1el3BT1MXT2n/YSOLkwYIi9difoKs7V5Czgwrbwen0IqB4CYT7DPje9kjj33aiF1z
-	1x0SJYvkRyA2ukHxrN64t5S49VVOEglV3+3DBNV9J9jISx2F4PPPeRQT8retbOaPd0DyHa8pj2mOd
-	D/n7m6Og==;
-Received: from [122.175.9.182] (port=50077 helo=zimbra.couthit.local)
-	by server.wki.vra.mybluehostin.me with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.1)
-	(envelope-from <parvathi@couthit.com>)
-	id 1u7ZOB-000000002Er-2d9B;
-	Wed, 23 Apr 2025 18:09:43 +0530
-Received: from zimbra.couthit.local (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTPS id B1C601781E1E;
-	Wed, 23 Apr 2025 18:09:37 +0530 (IST)
-Received: from localhost (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTP id 981B01781F8D;
-	Wed, 23 Apr 2025 18:09:37 +0530 (IST)
-Received: from zimbra.couthit.local ([127.0.0.1])
-	by localhost (zimbra.couthit.local [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id SUAdxjcaZ9Di; Wed, 23 Apr 2025 18:09:37 +0530 (IST)
-Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
-	by zimbra.couthit.local (Postfix) with ESMTP id 4D4C51781E1E;
-	Wed, 23 Apr 2025 18:09:37 +0530 (IST)
-Date: Wed, 23 Apr 2025 18:09:37 +0530 (IST)
-From: Parvathi Pudi <parvathi@couthit.com>
-To: aaro koskinen <aaro.koskinen@iki.fi>, andreas@kemnade.info, 
-	Kevin Hilman <khilman@baylibre.com>, rogerq <rogerq@kernel.org>, 
-	tony <tony@atomide.com>
-Cc: linux-omap <linux-omap@vger.kernel.org>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, nm <nm@ti.com>, 
-	pratheesh <pratheesh@ti.com>, Prajith Jayarajan <prajith@ti.com>, 
-	Vignesh Raghavendra <vigneshr@ti.com>, 
-	danishanwar <danishanwar@ti.com>, praneeth <praneeth@ti.com>, 
-	srk <srk@ti.com>, rogerq <rogerq@ti.com>, afd <afd@ti.com>, 
-	krishna <krishna@couthit.com>, pmohan <pmohan@couthit.com>, 
-	mohan <mohan@couthit.com>, basharath <basharath@couthit.com>, 
-	parvathi <parvathi@couthit.com>
-Message-ID: <724357882.1133776.1745411977085.JavaMail.zimbra@couthit.local>
-In-Reply-To: <20250407072134.1044797-1-parvathi@couthit.com>
-References: <20250407072134.1044797-1-parvathi@couthit.com>
-Subject: Re: [PATCH v1 0/1] Adds support for OCP master port configuration
- of PRU-ICSS
+	s=arc-20240116; t=1745425529; c=relaxed/simple;
+	bh=03WXX9bI80F4RuR2COjFJcSHqoLClrUtwLqycde4R5o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cpmhl3UDGfh1Fa8l9S0BqthlChN03smq2CAfZ7z1UiAFA+PvjfKUO6tk2Mxpdnh0E2Egy27SuZ1XBO3dmW2CeHMjzwCMwCaAc5ceJ4bzBGBUW/crMPL/5gqAkyyrNWkLq+mOSXiQ/jpU0kjGTBobe2vaev3WJ3M/ExNVKjMZoZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KdtHlFVG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4D2C4CEE2;
+	Wed, 23 Apr 2025 16:25:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745425528;
+	bh=03WXX9bI80F4RuR2COjFJcSHqoLClrUtwLqycde4R5o=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KdtHlFVG+C2C3wnnQCGlOHOAd1wKtHZPuDrQpRmQqsuVUHE72k4FzU5qWE1J5rgR/
+	 /ZsIDe6BB+Yiufu3qFAbjC6/+P6tEHWQWsgwekIt5GO4tVg9gLMElRV8Xc4N1NV8BJ
+	 PTCC2Sq9JC+byFkU3fcrcOgH6m+0ahty6Ty/OfhIBWSUGTHu1Fx0TDWzk1zA4JfU+G
+	 F3QMd7ijPr1RMiQ2XZoqhHkEGsF3cNdjR4lQEDhevqQL1e+7dRHrNYzUWWgV/BLJ9D
+	 2fRRm/Sp9fBSmYrKrModt5KlcNdqrhkfiIoKCqgxu0ssRpjpOAwtffqvY0tDdrBhII
+	 XCdfSjKgyS1Pw==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Rob Herring <robh@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Thomas Richard <thomas.richard@bootlin.com>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] pci: j721e: fix host/endpoint dependencies
+Date: Wed, 23 Apr 2025 18:25:16 +0200
+Message-Id: <20250423162523.2060405-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: Zimbra 8.8.15_GA_3968 (ZimbraWebClient - FF113 (Linux)/8.8.15_GA_3968)
-Thread-Topic: Adds support for OCP master port configuration of PRU-ICSS
-Thread-Index: 7g8Hzj8NpLh4XB+icw2rQ1sMuCtyyQ==
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.wki.vra.mybluehostin.me
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.wki.vra.mybluehostin.me: authenticated_id: smtp@couthit.com
-X-Authenticated-Sender: server.wki.vra.mybluehostin.me: smtp@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Arnd Bergmann <arnd@arndb.de>
 
-> 
-> This patch updates OCP master port configuration to enable memory access
-> outside of the PRU-ICSS subsystem.
-> 
-> It configures PRUSS_SYSCFG.STANDBY_INIT bit to enable the OCP master ports
-> on AM335x, AM437x and AM57x devices.
-> 
-> Thanks and Regards,
-> Parvathi.
-> 
-> Parvathi Pudi (1):
->  bus: ti-sysc: PRUSS OCP configuration
-> 
-> drivers/bus/ti-sysc.c | 17 ++++++++++++++++-
-> 1 file changed, 16 insertions(+), 1 deletion(-)
-> 
+The j721e driver has a single platform driver that can be built-in or
+a loadable module, but it calls two separate backend drivers depending
+on whether it is a host or endpoint.
 
-This is a follow-up request for feedback in case this patch is missed, as it's
-been two weeks since the patch was submitted and no feedback has been received.
+If the two modes are not the same, we can end up with a situation where
+the built-in pci-j721e driver tries to call the modular host or endpoint
+driver, which causes a link failure:
 
+ld.lld-21: error: undefined symbol: cdns_pcie_ep_setup
+>>> referenced by pci-j721e.c
+>>>               drivers/pci/controller/cadence/pci-j721e.o:(j721e_pcie_probe) in archive vmlinux.a
 
-Thanks and Regards,
-Parvathi.
+ld.lld-21: error: undefined symbol: cdns_pcie_host_setup
+>>> referenced by pci-j721e.c
+>>>               drivers/pci/controller/cadence/pci-j721e.o:(j721e_pcie_probe) in archive vmlinux.a
+
+Rework the dependencies so that the 'select' is done by the common
+Kconfig symbol, based on which of the two are enabled. Effectively
+this means that having one built-in makes the other either built-in
+or disabled, but all configurations will now build.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/pci/controller/cadence/Kconfig     | 4 ++--
+ drivers/pci/controller/cadence/pci-j721e.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/pci/controller/cadence/Kconfig b/drivers/pci/controller/cadence/Kconfig
+index 72d7d264d6c3..666e16b6367f 100644
+--- a/drivers/pci/controller/cadence/Kconfig
++++ b/drivers/pci/controller/cadence/Kconfig
+@@ -44,12 +44,13 @@ config PCIE_CADENCE_PLAT_EP
+ 
+ config PCI_J721E
+ 	tristate
++	select PCIE_CADENCE_HOST if PCI_J721E_HOST != n
++	select PCIE_CADENCE_EP if PCI_J721E_EP != n
+ 
+ config PCI_J721E_HOST
+ 	tristate "TI J721E PCIe controller (host mode)"
+ 	depends on ARCH_K3 || COMPILE_TEST
+ 	depends on OF
+-	select PCIE_CADENCE_HOST
+ 	select PCI_J721E
+ 	help
+ 	  Say Y here if you want to support the TI J721E PCIe platform
+@@ -61,7 +62,6 @@ config PCI_J721E_EP
+ 	depends on ARCH_K3 || COMPILE_TEST
+ 	depends on OF
+ 	depends on PCI_ENDPOINT
+-	select PCIE_CADENCE_EP
+ 	select PCI_J721E
+ 	help
+ 	  Say Y here if you want to support the TI J721E PCIe platform
+diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+index b87bc26bbf06..f0051805f9e9 100644
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -475,7 +475,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+ 
+ 	switch (mode) {
+ 	case PCI_MODE_RC:
+-		if (!IS_ENABLED(CONFIG_PCIE_CADENCE_HOST))
++		if (!IS_ENABLED(CONFIG_PCI_J721E_HOST))
+ 			return -ENODEV;
+ 
+ 		bridge = devm_pci_alloc_host_bridge(dev, sizeof(*rc));
+@@ -494,7 +494,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+ 		pcie->cdns_pcie = cdns_pcie;
+ 		break;
+ 	case PCI_MODE_EP:
+-		if (!IS_ENABLED(CONFIG_PCIE_CADENCE_EP))
++		if (!IS_ENABLED(CONFIG_PCI_J721E_EP))
+ 			return -ENODEV;
+ 
+ 		ep = devm_kzalloc(dev, sizeof(*ep), GFP_KERNEL);
+-- 
+2.39.5
+
 
