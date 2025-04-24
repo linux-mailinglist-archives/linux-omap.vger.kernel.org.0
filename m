@@ -1,131 +1,122 @@
-Return-Path: <linux-omap+bounces-3602-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3603-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A605EA9A067
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Apr 2025 07:19:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E8AA9A957
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Apr 2025 12:04:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAE9F17B879
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Apr 2025 05:19:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 905E6462E02
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Apr 2025 10:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED4C1B0F2C;
-	Thu, 24 Apr 2025 05:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C4322069E;
+	Thu, 24 Apr 2025 10:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="ZA9NLSwz"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jyWjnrK8"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6533F35963;
-	Thu, 24 Apr 2025 05:19:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A531202C2A
+	for <linux-omap@vger.kernel.org>; Thu, 24 Apr 2025 10:04:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745471974; cv=none; b=MH9GTP8452dGVjxF0cQJdM2ikSHRhFP9j0xmCw9wPHd1LjFb+DWni0KokgM094pGT5alA2FTh9a9rmYDcrZnWn7J7xqm1NCbNayB/w0BOA3P1CtSoUIdWV1zK6IfuVQAltYE8I13QQyRRz6jxGPriv9AcgspD3KeqE7vhIyNZEI=
+	t=1745489087; cv=none; b=awiHxpIjetmTeFvbUcyuq7WqXvKJGJHub9eCY7Zh7RF15RHiN9Elj98jow5/6XPuSr6Dp7+z1IK4VSclHgyqSyKVcfrC3fCc60QIBdfofbCwvvYCJQzrgtORREAA6vyc0E5mH594sfQTzyI6xzw9YUvcyCSbZq28DrR30UsO0KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745471974; c=relaxed/simple;
-	bh=4ryzhcUAeRnEsFAHV5+kuidBXWoDMlQmTIfVZyXdDEw=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AU/FK1vtu9SXl+OnnqRP/ggOJbPOhvMcJih9wqE3Bl//E8C+rQNBi9Tes+5qJzqo/lyha/PZXNWODFSwbglt9/Rf0fRyMMnsV062p3G8lexu6i8N7W6bCdl696WD6avHsuqy9hjZFe1AScLljLj/DcF16gIwBwdGJxi2R/x5vjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=ZA9NLSwz; arc=none smtp.client-ip=198.47.23.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53O5JAvq1756408
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 24 Apr 2025 00:19:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1745471950;
-	bh=AlHahpXnp8IJeAHPagZczFwQdB2gTDNHE9Q1Zh7iQoM=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=ZA9NLSwzw4l+T1crMjoGLiAMzSUx1V07zKqDk+BL6ZeDY1f+AHsiUvPWZZzaL2scP
-	 +/KD3ycD23xEnj1CD8W6UBS7BRXBmunBtTpYw0h7QOHHQSAz9gCizXg2QyhJAs4VbP
-	 cUYR8DE/hTkrfiUSLHPjZVJojedvakxIfs7aFIUw=
-Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53O5JAgn022471
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 24 Apr 2025 00:19:10 -0500
-Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 24
- Apr 2025 00:19:10 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 24 Apr 2025 00:19:10 -0500
-Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.113])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53O5J8Ux080258;
-	Thu, 24 Apr 2025 00:19:09 -0500
-Date: Thu, 24 Apr 2025 10:49:08 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Arnd Bergmann <arnd@kernel.org>
-CC: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Krzysztof
- =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Manivannan Sadhasivam
-	<manivannan.sadhasivam@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>, Arnd Bergmann <arnd@arndb.de>,
-        Rob
- Herring <robh@kernel.org>,
-        Siddharth Vadapalli <s-vadapalli@ti.com>,
-        Kishon
- Vijay Abraham I <kishon@kernel.org>,
-        Thomas Richard
-	<thomas.richard@bootlin.com>,
-        =?utf-8?B?VGjDqW8=?= Lebrun
-	<theo.lebrun@bootlin.com>,
-        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH] pci: j721e: fix host/endpoint dependencies
-Message-ID: <573c92aa-f891-47c9-9ea8-c71e89694a11@ti.com>
-References: <20250423162523.2060405-1-arnd@kernel.org>
+	s=arc-20240116; t=1745489087; c=relaxed/simple;
+	bh=zRK3bbAG3gBasDkhsvYPox8gR9dNStS01VlvA2H/3aE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TiPLrsbXzOao5EAFcBYj0ACDGmJDM+Pz5cVLHw4OifJtrcf1MQr8eAnAgJw/tJUh5MFmWIeopUS7oLUZkTIjsKtvyXHKGzgmR5iozZ4Zg/7LbpjkHP5O6ZaOOs7mMsEuSUQLa5qsdgP8VGr8zd2iU1puwNQ9xC+I6FGuPo/S4nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jyWjnrK8; arc=none smtp.client-ip=209.85.128.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-7080dd5fe92so7589887b3.3
+        for <linux-omap@vger.kernel.org>; Thu, 24 Apr 2025 03:04:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1745489085; x=1746093885; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=gAhE2hvzxTYkRTXNnlbXymQxLrf75SVoPXCltrmDJvs=;
+        b=jyWjnrK8S8PiyEAcESmahfm+w6OCZcpQdVgbpZ02IHoQOgrxPs5mgtYf1eblYueZyK
+         b5xjCtnjwt/OXlHfWCuOoRpyGivSHscHfZLyMfWqBQGNjUnJbNDY9PFl1kRGU/40x90e
+         ZGnH/uFx3mu6Stq4kO21OpRIsx37E+gwfWgYw0wBlFDtNG3TjWiEswpWJMzWAsSZqdwa
+         E9L+P9Z7hMTyFOJzP9i9Q6W+C6sUJA6o6ORXsqeBV4l30TXVuTOGNGUFhNwFizGGKFxX
+         iLtaGP55Bbr/LQplqZ7eVYePACRFpTmPSedoDrGUWuyy9i4CddavUyupnQkMK8fk0kPq
+         k9Zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745489085; x=1746093885;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gAhE2hvzxTYkRTXNnlbXymQxLrf75SVoPXCltrmDJvs=;
+        b=dzGCuboVnRG56qBM/oRv2XkJjMIpUG8slMfuvgJlb1WbrK9K0Q6mBlP3r56BRL2rQD
+         40yMkHaXeAdZp0Fi2l40lwIS+f8CHcrh/B7AnmWVRVqSYbdZ0SsrKiBDrfgatLO442Hk
+         HPbqaacdBXIzoKyjwkj0r9w4dU3KYh7B2zGiwe87t7lkyYiOLRShKG3s+bFMVmPFCMBF
+         JEfiDZc4YyvKfNPrn1swpOVde+LMZEUDMmDKOZRBqaESoBRqu3UrO+XdjnnhfGog7NPo
+         FVpUJ1K8SMM0szHgIMullNRQVNStO0O6IC7nlOOQRQD8VVaZUI/uJ6zqipEufqku89qV
+         cLHA==
+X-Forwarded-Encrypted: i=1; AJvYcCUeh+Y7imyM8Vw2TIY3HLpTitFPk/cxjoKcu+VUMI990KjQn3esTn7bZ5srKDf9FjfYYsvUf8+btzB4@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlAJiAsFkua5XX7JATje9JDbIgQ+Vuh0A0AbhnthxmbaiV54ZR
+	trdIh9z3hQZGs0WhKsZOywC4Sx6Tpbf462KIQDbiY0wFpw4cusjmg2jXpNUcFYZ5FpOA2Jnlq/k
+	45ptszCvIDBqGVVQFK+AVHDbhzVMM9wcAoOXNTA==
+X-Gm-Gg: ASbGncsVycCh6f2n3UPborp1n5QVsYjVxWk9DOW52l4ZBDolwpY/um2UIqfiK+AVm3X
+	RlbKL9lFSy2iXVAS6PDaP9WhCi/fyFNToLUJUoeNELa1JFr6Kh85zv0DI1tzg8TOygUTausXo1h
+	a46L4c7jxQf8Jl06RMyxYiYF1bbsAvJyeJsA==
+X-Google-Smtp-Source: AGHT+IHRN80V1KALg8QZOLapRyt4m3FJEY1PBgmKaeRU8QtTlcQsNpNO06R02rhYUFQKcspficc8vQEmJKzZwiZz8/c=
+X-Received: by 2002:a05:690c:ed6:b0:703:c3ed:1f61 with SMTP id
+ 00721157ae682-7083ec82f04mr27461187b3.20.1745489085089; Thu, 24 Apr 2025
+ 03:04:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250423162523.2060405-1-arnd@kernel.org>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+References: <20250318230042.3138542-1-sbellary@baylibre.com> <7h34efy1yb.fsf@baylibre.com>
+In-Reply-To: <7h34efy1yb.fsf@baylibre.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Thu, 24 Apr 2025 12:04:08 +0200
+X-Gm-Features: ATxdqUENVboYpckvehllaXvPNTBLeweZdKshsm3F8BsEr2O9Rx9nnzm5gOhifiU
+Message-ID: <CAPDyKFrM7Qn2YtQKY+vCHP32Z_Ly-ECt=SU9EGojFu1ShktUpQ@mail.gmail.com>
+Subject: Re: [PATCH 0/4] PM: TI: AM335x: PM STANDBY fixes
+To: Sukrut Bellary <sbellary@baylibre.com>, Kevin Hilman <khilman@baylibre.com>
+Cc: Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>, 
+	Tony Lindgren <tony@atomide.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Nishanth Menon <nm@ti.com>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, 
+	Roger Quadros <rogerq@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Santosh Shilimkar <ssantosh@kernel.org>, Bajjuri Praneeth <praneeth@ti.com>, 
+	Raghavendra Vignesh <vigneshr@ti.com>, Bin Liu <b-liu@ti.com>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-pm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Apr 23, 2025 at 06:25:16PM +0200, Arnd Bergmann wrote:
+On Fri, 11 Apr 2025 at 02:30, Kevin Hilman <khilman@baylibre.com> wrote:
+>
+> Sukrut Bellary <sbellary@baylibre.com> writes:
+>
+> > This patch series fixes the Power management issues on TI's am335x soc.
+> >
+> > on AM335x, the wakeup doesn't work in the case of STANDBY.
+>
+> This series is specifically targetted at the AM335x EVM (which I don't
+> have to test), so I'd appreciate getting any test reports for this
+> before I queue it up.
+>
+> For AM335x, I currently only have the ICEv2 and Beaglebone Black,
+> neithor of which support suspend resume with RTC wake AFAICT.  If they
+> do, please enlighten me. :)
+>
+> I was able to do a basic boot test on the 2 boards I have with this
+> series applied on top of v6.15-rc1 and basic boot still works, but I was
+> not able to test the PM path that's being changed here, so any tests on
+> AM3 platforms that actually use this path are appreciated.
+>
+> Kevin
 
-Hello Arnd,
+Is the pmdomain patch(3) ready to be applied here? Please let me know
+if you want me to pick it up.
 
-Thank you for the Fix.
-
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> The j721e driver has a single platform driver that can be built-in or
-> a loadable module, but it calls two separate backend drivers depending
-> on whether it is a host or endpoint.
-> 
-> If the two modes are not the same, we can end up with a situation where
-> the built-in pci-j721e driver tries to call the modular host or endpoint
-> driver, which causes a link failure:
-> 
-> ld.lld-21: error: undefined symbol: cdns_pcie_ep_setup
-> >>> referenced by pci-j721e.c
-> >>>               drivers/pci/controller/cadence/pci-j721e.o:(j721e_pcie_probe) in archive vmlinux.a
-> 
-> ld.lld-21: error: undefined symbol: cdns_pcie_host_setup
-> >>> referenced by pci-j721e.c
-> >>>               drivers/pci/controller/cadence/pci-j721e.o:(j721e_pcie_probe) in archive vmlinux.a
-> 
-> Rework the dependencies so that the 'select' is done by the common
-> Kconfig symbol, based on which of the two are enabled. Effectively
-> this means that having one built-in makes the other either built-in
-> or disabled, but all configurations will now build.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-
-Regards,
-Siddharth.
+Kind regards
+Uffe
 
