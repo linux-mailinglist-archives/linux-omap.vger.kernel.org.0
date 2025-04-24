@@ -1,153 +1,131 @@
-Return-Path: <linux-omap+bounces-3601-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3602-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00071A994F0
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Apr 2025 18:25:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A605EA9A067
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Apr 2025 07:19:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EABE7AA68D
-	for <lists+linux-omap@lfdr.de>; Wed, 23 Apr 2025 16:24:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAE9F17B879
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Apr 2025 05:19:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF83C280CD1;
-	Wed, 23 Apr 2025 16:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED4C1B0F2C;
+	Thu, 24 Apr 2025 05:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KdtHlFVG"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="ZA9NLSwz"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5763F27C87C;
-	Wed, 23 Apr 2025 16:25:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6533F35963;
+	Thu, 24 Apr 2025 05:19:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745425529; cv=none; b=MbDJVMRMW+fc39T9LTOoP3JDqMhL4atdYKP+2RkZpHL8oZ7wVU/R10AiJiCGBZj+kwP3yy0BG5V1ZgLJPN3/5AhCPhvxpCCLpRtKpjmmOF+ZJAGjzrKSJFN3RLZa3mXKhtBBWwbJmTFndBe4Tq58/bBXHkb1jPndX7J5N3FwA50=
+	t=1745471974; cv=none; b=MH9GTP8452dGVjxF0cQJdM2ikSHRhFP9j0xmCw9wPHd1LjFb+DWni0KokgM094pGT5alA2FTh9a9rmYDcrZnWn7J7xqm1NCbNayB/w0BOA3P1CtSoUIdWV1zK6IfuVQAltYE8I13QQyRRz6jxGPriv9AcgspD3KeqE7vhIyNZEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745425529; c=relaxed/simple;
-	bh=03WXX9bI80F4RuR2COjFJcSHqoLClrUtwLqycde4R5o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cpmhl3UDGfh1Fa8l9S0BqthlChN03smq2CAfZ7z1UiAFA+PvjfKUO6tk2Mxpdnh0E2Egy27SuZ1XBO3dmW2CeHMjzwCMwCaAc5ceJ4bzBGBUW/crMPL/5gqAkyyrNWkLq+mOSXiQ/jpU0kjGTBobe2vaev3WJ3M/ExNVKjMZoZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KdtHlFVG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4D2C4CEE2;
-	Wed, 23 Apr 2025 16:25:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745425528;
-	bh=03WXX9bI80F4RuR2COjFJcSHqoLClrUtwLqycde4R5o=;
-	h=From:To:Cc:Subject:Date:From;
-	b=KdtHlFVG+C2C3wnnQCGlOHOAd1wKtHZPuDrQpRmQqsuVUHE72k4FzU5qWE1J5rgR/
-	 /ZsIDe6BB+Yiufu3qFAbjC6/+P6tEHWQWsgwekIt5GO4tVg9gLMElRV8Xc4N1NV8BJ
-	 PTCC2Sq9JC+byFkU3fcrcOgH6m+0ahty6Ty/OfhIBWSUGTHu1Fx0TDWzk1zA4JfU+G
-	 F3QMd7ijPr1RMiQ2XZoqhHkEGsF3cNdjR4lQEDhevqQL1e+7dRHrNYzUWWgV/BLJ9D
-	 2fRRm/Sp9fBSmYrKrModt5KlcNdqrhkfiIoKCqgxu0ssRpjpOAwtffqvY0tDdrBhII
-	 XCdfSjKgyS1Pw==
-From: Arnd Bergmann <arnd@kernel.org>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Rob Herring <robh@kernel.org>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Thomas Richard <thomas.richard@bootlin.com>,
-	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] pci: j721e: fix host/endpoint dependencies
-Date: Wed, 23 Apr 2025 18:25:16 +0200
-Message-Id: <20250423162523.2060405-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1745471974; c=relaxed/simple;
+	bh=4ryzhcUAeRnEsFAHV5+kuidBXWoDMlQmTIfVZyXdDEw=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AU/FK1vtu9SXl+OnnqRP/ggOJbPOhvMcJih9wqE3Bl//E8C+rQNBi9Tes+5qJzqo/lyha/PZXNWODFSwbglt9/Rf0fRyMMnsV062p3G8lexu6i8N7W6bCdl696WD6avHsuqy9hjZFe1AScLljLj/DcF16gIwBwdGJxi2R/x5vjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=ZA9NLSwz; arc=none smtp.client-ip=198.47.23.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53O5JAvq1756408
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 24 Apr 2025 00:19:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1745471950;
+	bh=AlHahpXnp8IJeAHPagZczFwQdB2gTDNHE9Q1Zh7iQoM=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=ZA9NLSwzw4l+T1crMjoGLiAMzSUx1V07zKqDk+BL6ZeDY1f+AHsiUvPWZZzaL2scP
+	 +/KD3ycD23xEnj1CD8W6UBS7BRXBmunBtTpYw0h7QOHHQSAz9gCizXg2QyhJAs4VbP
+	 cUYR8DE/hTkrfiUSLHPjZVJojedvakxIfs7aFIUw=
+Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53O5JAgn022471
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 24 Apr 2025 00:19:10 -0500
+Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 24
+ Apr 2025 00:19:10 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 24 Apr 2025 00:19:10 -0500
+Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.113])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53O5J8Ux080258;
+	Thu, 24 Apr 2025 00:19:09 -0500
+Date: Thu, 24 Apr 2025 10:49:08 +0530
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: Arnd Bergmann <arnd@kernel.org>
+CC: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Krzysztof
+ =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Manivannan Sadhasivam
+	<manivannan.sadhasivam@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>, Arnd Bergmann <arnd@arndb.de>,
+        Rob
+ Herring <robh@kernel.org>,
+        Siddharth Vadapalli <s-vadapalli@ti.com>,
+        Kishon
+ Vijay Abraham I <kishon@kernel.org>,
+        Thomas Richard
+	<thomas.richard@bootlin.com>,
+        =?utf-8?B?VGjDqW8=?= Lebrun
+	<theo.lebrun@bootlin.com>,
+        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH] pci: j721e: fix host/endpoint dependencies
+Message-ID: <573c92aa-f891-47c9-9ea8-c71e89694a11@ti.com>
+References: <20250423162523.2060405-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20250423162523.2060405-1-arnd@kernel.org>
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-From: Arnd Bergmann <arnd@arndb.de>
+On Wed, Apr 23, 2025 at 06:25:16PM +0200, Arnd Bergmann wrote:
 
-The j721e driver has a single platform driver that can be built-in or
-a loadable module, but it calls two separate backend drivers depending
-on whether it is a host or endpoint.
+Hello Arnd,
 
-If the two modes are not the same, we can end up with a situation where
-the built-in pci-j721e driver tries to call the modular host or endpoint
-driver, which causes a link failure:
+Thank you for the Fix.
 
-ld.lld-21: error: undefined symbol: cdns_pcie_ep_setup
->>> referenced by pci-j721e.c
->>>               drivers/pci/controller/cadence/pci-j721e.o:(j721e_pcie_probe) in archive vmlinux.a
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> The j721e driver has a single platform driver that can be built-in or
+> a loadable module, but it calls two separate backend drivers depending
+> on whether it is a host or endpoint.
+> 
+> If the two modes are not the same, we can end up with a situation where
+> the built-in pci-j721e driver tries to call the modular host or endpoint
+> driver, which causes a link failure:
+> 
+> ld.lld-21: error: undefined symbol: cdns_pcie_ep_setup
+> >>> referenced by pci-j721e.c
+> >>>               drivers/pci/controller/cadence/pci-j721e.o:(j721e_pcie_probe) in archive vmlinux.a
+> 
+> ld.lld-21: error: undefined symbol: cdns_pcie_host_setup
+> >>> referenced by pci-j721e.c
+> >>>               drivers/pci/controller/cadence/pci-j721e.o:(j721e_pcie_probe) in archive vmlinux.a
+> 
+> Rework the dependencies so that the 'select' is done by the common
+> Kconfig symbol, based on which of the two are enabled. Effectively
+> this means that having one built-in makes the other either built-in
+> or disabled, but all configurations will now build.
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-ld.lld-21: error: undefined symbol: cdns_pcie_host_setup
->>> referenced by pci-j721e.c
->>>               drivers/pci/controller/cadence/pci-j721e.o:(j721e_pcie_probe) in archive vmlinux.a
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-Rework the dependencies so that the 'select' is done by the common
-Kconfig symbol, based on which of the two are enabled. Effectively
-this means that having one built-in makes the other either built-in
-or disabled, but all configurations will now build.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/pci/controller/cadence/Kconfig     | 4 ++--
- drivers/pci/controller/cadence/pci-j721e.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/pci/controller/cadence/Kconfig b/drivers/pci/controller/cadence/Kconfig
-index 72d7d264d6c3..666e16b6367f 100644
---- a/drivers/pci/controller/cadence/Kconfig
-+++ b/drivers/pci/controller/cadence/Kconfig
-@@ -44,12 +44,13 @@ config PCIE_CADENCE_PLAT_EP
- 
- config PCI_J721E
- 	tristate
-+	select PCIE_CADENCE_HOST if PCI_J721E_HOST != n
-+	select PCIE_CADENCE_EP if PCI_J721E_EP != n
- 
- config PCI_J721E_HOST
- 	tristate "TI J721E PCIe controller (host mode)"
- 	depends on ARCH_K3 || COMPILE_TEST
- 	depends on OF
--	select PCIE_CADENCE_HOST
- 	select PCI_J721E
- 	help
- 	  Say Y here if you want to support the TI J721E PCIe platform
-@@ -61,7 +62,6 @@ config PCI_J721E_EP
- 	depends on ARCH_K3 || COMPILE_TEST
- 	depends on OF
- 	depends on PCI_ENDPOINT
--	select PCIE_CADENCE_EP
- 	select PCI_J721E
- 	help
- 	  Say Y here if you want to support the TI J721E PCIe platform
-diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index b87bc26bbf06..f0051805f9e9 100644
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -475,7 +475,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
- 
- 	switch (mode) {
- 	case PCI_MODE_RC:
--		if (!IS_ENABLED(CONFIG_PCIE_CADENCE_HOST))
-+		if (!IS_ENABLED(CONFIG_PCI_J721E_HOST))
- 			return -ENODEV;
- 
- 		bridge = devm_pci_alloc_host_bridge(dev, sizeof(*rc));
-@@ -494,7 +494,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
- 		pcie->cdns_pcie = cdns_pcie;
- 		break;
- 	case PCI_MODE_EP:
--		if (!IS_ENABLED(CONFIG_PCIE_CADENCE_EP))
-+		if (!IS_ENABLED(CONFIG_PCI_J721E_EP))
- 			return -ENODEV;
- 
- 		ep = devm_kzalloc(dev, sizeof(*ep), GFP_KERNEL);
--- 
-2.39.5
-
+Regards,
+Siddharth.
 
