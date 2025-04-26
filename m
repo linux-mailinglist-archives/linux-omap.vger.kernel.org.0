@@ -1,158 +1,84 @@
-Return-Path: <linux-omap+bounces-3613-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3614-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 981ECA9D5DC
-	for <lists+linux-omap@lfdr.de>; Sat, 26 Apr 2025 00:47:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA373A9DA14
+	for <lists+linux-omap@lfdr.de>; Sat, 26 Apr 2025 12:20:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D683D1BA7E88
-	for <lists+linux-omap@lfdr.de>; Fri, 25 Apr 2025 22:47:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8F4D7AF371
+	for <lists+linux-omap@lfdr.de>; Sat, 26 Apr 2025 10:19:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7802957D8;
-	Fri, 25 Apr 2025 22:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C522A251783;
+	Sat, 26 Apr 2025 10:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Y0MRYNjx"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="1pEJTd38"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC4D21E086;
-	Fri, 25 Apr 2025 22:47:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB63A251780;
+	Sat, 26 Apr 2025 10:19:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745621251; cv=none; b=SyKpqygdafcKGHl3zg1giEJBP/Xz7lrUC4h0vCoLYz9tCQBhR/d0oFaJzoD4xCe81kL73v6GcR/liv6RUAO+qNfiqV0J9M697n/klHRwueJeh+ndxZ0Dv/ntRpVzGKcZNiAweP2ThzPmqIBCPxGfycxxera6I+g4YhkswN42cmU=
+	t=1745662795; cv=none; b=tTtwmK9t8vOk88TPNm6zyYwAc/l821eoZE4YM24PD1WWz4MBvOmvWc5bjpkD8IH2UCNYFpZrB9kTjv2SG8/n9asB1sMHOmBrSboXHMcH4TeKNRMijJ0nNgnOFcV04xuyhAD3A3c4igVf7KgGFoSIrwca6bBopSaFvxJrSEmv+5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745621251; c=relaxed/simple;
-	bh=iCPckNGlCDJnBU6/bcQd7B/IgIqbFWGF9SGWYCj64uo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=i+L0Z+L1pL/pzOdYcR4rRoE0kGab+CaJsR4u+1qT8UjaUUzVilMqhsodhOYzyXmUqo7xMqWk1Z8vFttiRhrSmToMCvFoJDmxOpcQ59aWiOh2EPzXLfjcnljeTUAEaex4UJxbyyNTVSlDelRAMvEZFw7ETfD8U+uhIGcyPxHhqyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Y0MRYNjx; arc=none smtp.client-ip=198.47.23.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53PMlAVC3038686
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 25 Apr 2025 17:47:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1745621230;
-	bh=jjueoLTU8LQ1im3N7LQcZlHwiqmLoT++rzhGz/8/1ls=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=Y0MRYNjxr0LJ8hjuhLyWkWKwNLmdd82ZuU/DkaQXJWQO7w1gt4INJiJhsllFAk4RD
-	 1h3dM2/4I9vN42RXrAA8tEE8V4GPl+XWL6F9VqS3WUVzpoFNufqkM46oSGfsqJUxpu
-	 Sq0GSir8RxjibCyIlU65guZjNx0xUDuPJixwhUNg=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53PMlA0t007073
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 25 Apr 2025 17:47:10 -0500
-Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 25
- Apr 2025 17:47:10 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 25 Apr 2025 17:47:10 -0500
-Received: from [10.249.42.149] ([10.249.42.149])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53PMl91c073339;
-	Fri, 25 Apr 2025 17:47:09 -0500
-Message-ID: <313daa6d-c108-44d6-94b7-3b1005e2081c@ti.com>
-Date: Fri, 25 Apr 2025 17:47:09 -0500
+	s=arc-20240116; t=1745662795; c=relaxed/simple;
+	bh=Gi4j3/CStBhVaColCj9R9LbTwPaj/OLr7aMH5pr1hDI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iOpOR/LneKLJuERs9I39YjpMgCFdQFmO2kWuIkXdq1EmzlikxjPusIUbJemVhPWH9lO/Clak+ThUTYxvD2FbGDrPi20LaQy812tExgIFe3nR3FZ0WHDzQ8TDSkNWgu2ZJT/PTfOTclfMMQBSYXKv95OEE+XpNUj7Wjq2WuH41ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=1pEJTd38; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=vUfBLhny/0NLdb0Q3q96q+rAFFUP94yvmCb4kfOb41o=; b=1pEJTd38fUuMwt9fBRDqdD6DAB
+	vMcI6iM52egg2hGUOUJfAoTdol0Bjyf8adf1LnKmx0159/xAy1HGTCFJ9yjRW99rWfdJM3crXL3hK
+	DoxjvUN/3HEJusEs4UcPkKgIzKV6Mi9zKx3lZiTZxQXB8dOVGB62wVgo7ETAz7y2S6CFRBQxtPzEX
+	H86ggO93qASnN7/iyW0Xw8uABpr4TS4Eh14syuPS5987La2V2/qYqAdWMvvJK5SiGv8RK0/PvXI/b
+	V/fVSm5yjqgUvAbbdzd2K3aRE183gorJ+VpKW5R2GtHJZnHYpZz6hBUe2TxgIFWqIppuuFhqKRE3x
+	2YzdlIZA==;
+Date: Sat, 26 Apr 2025 11:54:24 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Parvathi Pudi <parvathi@couthit.com>
+Cc: aaro.koskinen@iki.fi, khilman@baylibre.com, rogerq@kernel.org,
+ tony@atomide.com, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+ nm@ti.com, pratheesh@ti.com, prajith@ti.com, vigneshr@ti.com,
+ danishanwar@ti.com, praneeth@ti.com, srk@ti.com, rogerq@ti.com, afd@ti.com,
+ krishna@couthit.com, pmohan@couthit.com, mohan@couthit.com,
+ basharath@couthit.com
+Subject: Re: [PATCH v1 1/1] bus: ti-sysc: PRUSS OCP configuration
+Message-ID: <20250426115424.518cfe88@akair>
+In-Reply-To: <20250407072134.1044797-2-parvathi@couthit.com>
+References: <20250407072134.1044797-1-parvathi@couthit.com>
+	<20250407072134.1044797-2-parvathi@couthit.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/3] gpio: tps65219: Add TPS65215 to platform_device_id
- table
-To: Shree Ramamoorthy <s-ramamoorthy@ti.com>, <aaro.koskinen@iki.fi>,
-        <andreas@kemnade.info>, <khilman@baylibre.com>, <rogerq@kernel.org>,
-        <tony@atomide.com>, <linus.walleij@linaro.org>, <brgl@bgdev.pl>,
-        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-gpio@vger.kernel.org>
-CC: <m-leonard@ti.com>, <praneeth@ti.com>
-References: <20250425203315.71497-1-s-ramamoorthy@ti.com>
- <20250425203315.71497-2-s-ramamoorthy@ti.com>
-Content-Language: en-US
-From: Andrew Davis <afd@ti.com>
-In-Reply-To: <20250425203315.71497-2-s-ramamoorthy@ti.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On 4/25/25 3:33 PM, Shree Ramamoorthy wrote:
-> Add platform_device_id struct and use the platform_get_device_id() output
-> to match which PMIC device is in use. With new name options, the gpio_chip
-> .label field is now assigned to the platform_device name match.
+Am Mon,  7 Apr 2025 12:51:34 +0530
+schrieb Parvathi Pudi <parvathi@couthit.com>:
+
+> Updates OCP master port configuration to enable memory access outside
+> of the PRU-ICSS subsystem.
 > 
-> Remove MODULE_ALIAS since it is now generated by MODULE_DEVICE_TABLE.
+> This set of changes configures PRUSS_SYSCFG.STANDBY_INIT bit to enable
+> the OCP master ports during resume sequence and disables the OCP master
+> ports during suspend sequence (applicable only on SoCs using OCP
+> interconnect like the OMAP family).
 > 
-> Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-> ---
->   drivers/gpio/gpio-tps65219.c | 17 ++++++++++++-----
->   1 file changed, 12 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/gpio/gpio-tps65219.c b/drivers/gpio/gpio-tps65219.c
-> index 526640c39a11..996f8deaf03d 100644
-> --- a/drivers/gpio/gpio-tps65219.c
-> +++ b/drivers/gpio/gpio-tps65219.c
-> @@ -1,8 +1,8 @@
->   // SPDX-License-Identifier: GPL-2.0
->   /*
-> - * GPIO driver for TI TPS65219 PMICs
-> + * GPIO driver for TI TPS65215/TPS65219 PMICs
->    *
-> - * Copyright (C) 2022 Texas Instruments Incorporated - http://www.ti.com/
-> + * Copyright (C) 2024 Texas Instruments Incorporated - http://www.ti.com/
->    */
->   
->   #include <linux/bits.h>
-> @@ -141,7 +141,6 @@ static int tps65219_gpio_direction_output(struct gpio_chip *gc, unsigned int off
->   }
->   
->   static const struct gpio_chip tps65219_template_chip = {
-> -	.label			= "tps65219-gpio",
->   	.owner			= THIS_MODULE,
->   	.get_direction		= tps65219_gpio_get_direction,
->   	.direction_input	= tps65219_gpio_direction_input,
-> @@ -164,20 +163,28 @@ static int tps65219_gpio_probe(struct platform_device *pdev)
->   
->   	gpio->tps = tps;
->   	gpio->gpio_chip = tps65219_template_chip;
-> +	gpio->gpio_chip.label = dev_name(&pdev->dev);
->   	gpio->gpio_chip.parent = tps->dev;
->   
->   	return devm_gpiochip_add_data(&pdev->dev, &gpio->gpio_chip, gpio);
->   }
->   
-> +static const struct platform_device_id tps6521x_gpio_id_table[] = {
-> +	{ "tps65215-gpio", TPS65215 },
+> Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
 
-I would have added this TPS65215 item to this table in patch [3/3]
-where it is first used, but that's nitpicking,
+mirrors what is done on module disable, so it looks sane.
 
-Reviewed-by: Andrew Davis <afd@ti.com>
-
-> +	{ "tps65219-gpio", TPS65219 },
-> +	{ /* sentinel */ }
-> +};
-> +MODULE_DEVICE_TABLE(platform, tps6521x_gpio_id_table);
-> +
->   static struct platform_driver tps65219_gpio_driver = {
->   	.driver = {
->   		.name = "tps65219-gpio",
->   	},
->   	.probe = tps65219_gpio_probe,
-> +	.id_table = tps6521x_gpio_id_table,
->   };
->   module_platform_driver(tps65219_gpio_driver);
->   
-> -MODULE_ALIAS("platform:tps65219-gpio");
->   MODULE_AUTHOR("Jonathan Cormier <jcormier@criticallink.com>");
-> -MODULE_DESCRIPTION("TPS65219 GPIO driver");
-> +MODULE_DESCRIPTION("TPS65215/TPS65219 GPIO driver");
->   MODULE_LICENSE("GPL");
+Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
 
