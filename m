@@ -1,189 +1,128 @@
-Return-Path: <linux-omap+bounces-3616-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3618-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C345DA9DF26
-	for <lists+linux-omap@lfdr.de>; Sun, 27 Apr 2025 07:27:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DAF6A9E3F3
+	for <lists+linux-omap@lfdr.de>; Sun, 27 Apr 2025 18:27:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D40435A626A
-	for <lists+linux-omap@lfdr.de>; Sun, 27 Apr 2025 05:27:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6A9C173CDB
+	for <lists+linux-omap@lfdr.de>; Sun, 27 Apr 2025 16:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FB72253BB;
-	Sun, 27 Apr 2025 05:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912BD1C831A;
+	Sun, 27 Apr 2025 16:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="qwR6rJAo"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MBssuu5r"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F457E9;
-	Sun, 27 Apr 2025 05:27:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C186218C03F
+	for <linux-omap@vger.kernel.org>; Sun, 27 Apr 2025 16:26:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745731667; cv=none; b=Qp1LtAzQ/PteSe2gnuWGe2/z819sDuMID2Jcu565SpR8vz0Gi/ZJznOsmKJxsOm8JHtORgg3DtsjPOnAonXBjRf5rIzDF6hiQ5lKrly1ghlYL4szix4UvlEN9MYcF44+YD995cGDqlILU+o49xrlVqyW+mkmXOC26VocgO3EP/0=
+	t=1745771220; cv=none; b=p765Xb44uGOBmEWmn1ayO31LCTvTp7pk9M5y48kKAfGk0A4mwfSyerGi1fBNHHmQU8h9VbIBa6On1v1s8iqvER7hoG++a0OIKOMUq77a4hOTQVUREy2NBOpLQ+c8wkixfr/pAvCoQDia8yeEw99ol4BQLb4guryrQGJAPdPQB3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745731667; c=relaxed/simple;
-	bh=WEEMvuLtd7p4Qgk0tAoa2kXnjk6i2SW6sYj7Ivqq/+8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=j6qySmYuO/DbtpmfuI89xs4JO5YeUQgNTn4cs/aiBFIuKQg9mULzPifeMeIvlyGPrM1dnh65XBUcwBHxsK09YSoeIC3zjfNAq2muKd2FQMrs6zMEgVW91ugo5X+2Ijp53vKn8Y/VKMP2Cw8K4BnhiUemREHYHjEX8dCbw01yTXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=qwR6rJAo; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=9frzizwkt26vlquYFfrv5FcyPYNaWUMutJpHPozBbhQ=; b=qwR6rJAokchwAAsw8fJ4WtZxj6
-	PYWWozpbZJwpmrxRNfN2+nQ6Gz+mmPfJVUBREZ/TxB8A0pmjk+CJUHYsmqEYsXrorLevkXuB7vC3r
-	affRQpHq/CytoZ38KSGex7QBZ3VrcRTDXqb59as3L1BlPGxcxrLV/Ke1YVy7bdti7lbeUO0mIU0LM
-	6R5/YUXW89Iwaf8mdzqRGQXVSa69gekSDdzENXd7KDagpjKDgV0vnMZ2HMlpaxOSR40JWpnu7JVHM
-	YffJC7wafilU5dH5DeSX3uCg2ATLP603LaXaTfMknrbn/hhG2px4iu6ZdOMJtx2DK7YDVWyqYm8Xg
-	iRFavy4A==;
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	devicetree@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	Tony Lindgren <tony@atomide.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Kevin Hilman <khilman@baylibre.com>,
+	s=arc-20240116; t=1745771220; c=relaxed/simple;
+	bh=gK/GSzH9Orq/qWZ7kN2L7Q4nJaH1G+CWqxeLvWpcZrE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=W7QNvZgi0Wv5avpckATE0j+Zu4AM4MBD89B3K8ODAiYytPJNp6hmwFSnI8pgMdH4Ywk8RrJ3DLbJDdqsmXFH4e4cN6Djj9I/HNrqtOlBSWZlYUZI6h5EVYUp4yrsDj7Ew4/jpdPpT3IRiMYDhu5eo5GmAqd4YSKBeTqMFcr3swA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MBssuu5r; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-224019ad9edso58398065ad.1
+        for <linux-omap@vger.kernel.org>; Sun, 27 Apr 2025 09:26:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1745771218; x=1746376018; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8Hm8ymC3WlboH6v1puutB+PkeMUv87jriOcmD+BHZJ8=;
+        b=MBssuu5rB7t+EueylX10Mtl9cHUpep+Xdb/9vLuPPNUWCsojFUGU5EpyCxxGsDiez1
+         jv3hKq6oK5u9OFUoUNPYbVw4gmBB8Zp7IeMOSAU/M9EDTcKlGU0SxDiX/xMzcmlyKjrQ
+         0DIIXzuaGhIhqlaXilJ8lgA0ThpWvNWlfPWq492IbcFbMskIgGaFdsb5Ka7qc+gNhqwO
+         pLGq74xVKnMAttc2j6JR9mjvZn+CocP4UIsMJgpnafYtn/3APB9iDBi+1FkEfT+6Hydd
+         P0fUv4TqRwCSlHZW6HjDR5sgzvopsCqEWrT+QhSyb11Ta7GTNH3NQaCvWCAjfWG3RkvA
+         A1DA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745771218; x=1746376018;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8Hm8ymC3WlboH6v1puutB+PkeMUv87jriOcmD+BHZJ8=;
+        b=iiRRek2xgrRceHK1dhJk+JXxrmD/YEFPnyguCBNwLT5HJsavrJB2TRvtnGvoVRDO3O
+         pjUScfsHtijCn8Xw2A6/nrRi46yzcPhuA5jS9aw3xmayGWTRl6XX54pfQQB7gk+1YxW8
+         eGG25ehqXHI3aP8w0v9F1LgKmzpbidWlWgn7loqhWqkJuPccZGoHOQywME7iQlG/Jitq
+         i8RYkrvUACh3nwm5AJ93Abg3aw0/JvCjT6iFI8f6wIGdxe4YVHiXy+kHo6yr+OpbCPYd
+         4Gcceus3RsnFjumkl2Z98IZqGiHvT1g2aSeMhpAlQlAKUNN84Zqk5CGNriTMZElgbaMM
+         cgRw==
+X-Forwarded-Encrypted: i=1; AJvYcCVIckituEJ8sN1/cDJ/PrxjOHN4ecVbPmh8qD0oqDkp5kC14ceiskyCVbeyfH7fVf0EbzI53X+zSH3b@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywj7T8z9nh3k8QEMUie0PmmthNzxof28+wgLjdeQuOK2cMQS0bD
+	Csq9OdUWng5qYyNlggSJ+7X7K7f5mbvML8VJSLNugqUhftJ4TRI3dHa4x118lg==
+X-Gm-Gg: ASbGncs2gv2lujsX1slQ718MOYnAGs+BFAE4iojvoaMvaryqfr8mCk/cnhgcrkC3jRH
+	HINhsKtR7++b4xJVD6rUnSeMuxY8Bb3N/IcqC2Iyi9mNJRu/CpjH2rSTpOqU53PJhjyWbJdIgu6
+	pgTPrDDXoTlmiYfpI4ZSD5t+maIkACg5seS5uFpM0iLLlmq6aBQccqMglMlLvJcDjBRVWNjnSyN
+	H2EISylVYbNCkc7sgU4ixqVySuHonUzJB0EzYrINuMNq8uAqzA51M7n9tjtcmvnIq6keBzLHruM
+	j54uaxz63tBDUKokc08M11n9Nn2IO1LOkesCx5uvmNCAo4pksUp7
+X-Google-Smtp-Source: AGHT+IGewTBDql+2+UdyTbCLzjXJegcsr5fvdoDv6DORAwSGJR8R6yqyunL8uBX+TIfarA0AmXkmwQ==
+X-Received: by 2002:a17:902:ccca:b0:220:f795:5f14 with SMTP id d9443c01a7336-22dbf5f0b82mr130834365ad.27.1745771218030;
+        Sun, 27 Apr 2025 09:26:58 -0700 (PDT)
+Received: from thinkpad.. ([120.60.52.11])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db5216adbsm65705855ad.234.2025.04.27.09.26.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Apr 2025 09:26:57 -0700 (PDT)
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Arnd Bergmann <arnd@kernel.org>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Rob Herring <robh@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Thomas Richard <thomas.richard@bootlin.com>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+	linux-pci@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Andreas Kemnade <andreas@kemnade.info>
-Subject: [PATCH v3 2/2] ARM: dts: omap4: panda: cleanup bluetooth
-Date: Sun, 27 Apr 2025 07:27:35 +0200
-Message-Id: <20250427052735.88133-3-andreas@kemnade.info>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250427052735.88133-1-andreas@kemnade.info>
-References: <20250427052735.88133-1-andreas@kemnade.info>
+	linux-omap@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] pci: j721e: fix host/endpoint dependencies
+Date: Sun, 27 Apr 2025 21:56:46 +0530
+Message-ID: <174577118328.83097.3904673051712701084.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250423162523.2060405-1-arnd@kernel.org>
+References: <20250423162523.2060405-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-Bluetooth is available on the other Panda board versions, too, so move
-stuff to common and specify the needed clock properly.
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
----
- .../boot/dts/ti/omap/omap4-panda-common.dtsi  | 31 ++++++++++++++++--
- arch/arm/boot/dts/ti/omap/omap4-panda-es.dts  | 32 -------------------
- 2 files changed, 28 insertions(+), 35 deletions(-)
+On Wed, 23 Apr 2025 18:25:16 +0200, Arnd Bergmann wrote:
+> The j721e driver has a single platform driver that can be built-in or
+> a loadable module, but it calls two separate backend drivers depending
+> on whether it is a host or endpoint.
+> 
+> If the two modes are not the same, we can end up with a situation where
+> the built-in pci-j721e driver tries to call the modular host or endpoint
+> driver, which causes a link failure:
+> 
+> [...]
 
-diff --git a/arch/arm/boot/dts/ti/omap/omap4-panda-common.dtsi b/arch/arm/boot/dts/ti/omap/omap4-panda-common.dtsi
-index c860b590142a..05c871d31d7b 100644
---- a/arch/arm/boot/dts/ti/omap/omap4-panda-common.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap4-panda-common.dtsi
-@@ -367,10 +367,8 @@ OMAP4_IOPAD(0x130, PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c4_sda */
- 	 */
- 	wl12xx_gpio: wl12xx-gpio-pins {
- 		pinctrl-single,pins = <
--			OMAP4_IOPAD(0x066, PIN_OUTPUT | MUX_MODE3)		/* gpmc_a19.gpio_43 */
--			OMAP4_IOPAD(0x06c, PIN_OUTPUT | MUX_MODE3)		/* gpmc_a22.gpio_46 */
-+			OMAP4_IOPAD(0x066, PIN_OUTPUT | MUX_MODE3)		/* gpmc_a19.gpio_43 - WLAN_EN */
- 			OMAP4_IOPAD(0x070, PIN_OUTPUT_PULLUP | MUX_MODE3)	/* gpmc_a24.gpio_48 */
--			OMAP4_IOPAD(0x072, PIN_OUTPUT_PULLUP | MUX_MODE3)	/* gpmc_a25.gpio_49 */
- 		>;
- 	};
- 
-@@ -393,6 +391,22 @@ button_pins: button-pins {
- 			OMAP4_IOPAD(0x114, PIN_INPUT_PULLUP | MUX_MODE3)	/* gpio_121 */
- 		>;
- 	};
-+
-+	bt_pins: bt-pins {
-+		pinctrl-single,pins = <
-+			OMAP4_IOPAD(0x06c, PIN_OUTPUT | MUX_MODE3)	  /* gpmc_a22.gpio_46 - BTEN */
-+			OMAP4_IOPAD(0x072, PIN_OUTPUT_PULLUP | MUX_MODE3) /* gpmc_a25.gpio_49 - BTWAKEUP */
-+		>;
-+	};
-+
-+	uart2_pins: uart2-pins {
-+		pinctrl-single,pins = <
-+			OMAP4_IOPAD(0x118, PIN_INPUT_PULLUP | MUX_MODE0)  /* uart2_cts.uart2_cts - HCI */
-+			OMAP4_IOPAD(0x11a, PIN_OUTPUT | MUX_MODE0)	  /* uart2_rts.uart2_rts */
-+			OMAP4_IOPAD(0x11c, PIN_INPUT_PULLUP | MUX_MODE0)  /* uart2_rx.uart2_rx */
-+			OMAP4_IOPAD(0x11e, PIN_OUTPUT | MUX_MODE0)	  /* uart2_tx.uart2_tx */
-+		>;
-+	};
- };
- 
- &omap4_pmx_wkup {
-@@ -531,8 +545,19 @@ &twl_usb_comparator {
- };
- 
- &uart2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart2_pins>;
- 	interrupts-extended = <&wakeupgen GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH
- 			       &omap4_pmx_core OMAP4_UART2_RX>;
-+
-+	bluetooth {
-+		compatible = "ti,wl1271-st";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&bt_pins>;
-+		enable-gpios = <&gpio2 14 GPIO_ACTIVE_HIGH>;	/* GPIO_46 */
-+		clocks = <&twl 0>;
-+		clock-names = "ext_clock";
-+	};
- };
- 
- &uart3 {
-diff --git a/arch/arm/boot/dts/ti/omap/omap4-panda-es.dts b/arch/arm/boot/dts/ti/omap/omap4-panda-es.dts
-index fe7b156d10ed..a933fe560834 100644
---- a/arch/arm/boot/dts/ti/omap/omap4-panda-es.dts
-+++ b/arch/arm/boot/dts/ti/omap/omap4-panda-es.dts
-@@ -49,22 +49,6 @@ button_pins: button-pins {
- 			OMAP4_IOPAD(0x0fc, PIN_INPUT_PULLUP | MUX_MODE3) /* gpio_113 */
- 		>;
- 	};
--
--	bt_pins: bt-pins {
--		pinctrl-single,pins = <
--			OMAP4_IOPAD(0x06c, PIN_OUTPUT | MUX_MODE3)		/* gpmc_a22.gpio_46 - BTEN */
--			OMAP4_IOPAD(0x072, PIN_OUTPUT_PULLUP | MUX_MODE3)	/* gpmc_a25.gpio_49 - BTWAKEUP */
--		>;
--	};
--
--	uart2_pins: uart2-pins {
--		pinctrl-single,pins = <
--			OMAP4_IOPAD(0x118, PIN_INPUT_PULLUP | MUX_MODE0)	/* uart2_cts.uart2_cts - HCI */
--			OMAP4_IOPAD(0x11a, PIN_OUTPUT | MUX_MODE0)		/* uart2_rts.uart2_rts */
--			OMAP4_IOPAD(0x11c, PIN_INPUT_PULLUP | MUX_MODE0)	/* uart2_rx.uart2_rx */
--			OMAP4_IOPAD(0x11e, PIN_OUTPUT | MUX_MODE0)		/* uart2_tx.uart2_tx */
--		>;
--	};
- };
- 
- &led_wkgpio_pins {
-@@ -96,19 +80,3 @@ buttonS2 {
- &gpio1_target {
- 	 ti,no-reset-on-init;
- };
--
--&wl12xx_gpio {
--	pinctrl-single,pins = <
--		OMAP4_IOPAD(0x066, PIN_OUTPUT | MUX_MODE3)		/* gpmc_a19.gpio_43 */
--		OMAP4_IOPAD(0x070, PIN_OUTPUT_PULLUP | MUX_MODE3)	/* gpmc_a24.gpio_48 */
--	>;
--};
--
--&uart2 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&uart2_pins &bt_pins>;
--	bluetooth: tiwi {
--		compatible = "ti,wl1271-st";
--		enable-gpios = <&gpio2 14 GPIO_ACTIVE_HIGH>;	/* GPIO_46 */
--	};
--};
+Applied, thanks!
+
+[1/1] pci: j721e: fix host/endpoint dependencies
+      commit: 10aae64c2fb5148409cc9beba7f849a79fe82f17
+
+Best regards,
 -- 
-2.39.5
-
+Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
