@@ -1,135 +1,100 @@
-Return-Path: <linux-omap+bounces-3626-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3627-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1AEEAA1B4E
-	for <lists+linux-omap@lfdr.de>; Tue, 29 Apr 2025 21:25:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5550AA44A4
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Apr 2025 10:01:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CAA777B1895
-	for <lists+linux-omap@lfdr.de>; Tue, 29 Apr 2025 19:24:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C36B47AD809
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Apr 2025 08:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 760DF25E47A;
-	Tue, 29 Apr 2025 19:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FBCC1F0994;
+	Wed, 30 Apr 2025 08:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=criticallink.com header.i=@criticallink.com header.b="HwxktT6L"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="qza0LVi/"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86347F477
-	for <linux-omap@vger.kernel.org>; Tue, 29 Apr 2025 19:25:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A78839F4;
+	Wed, 30 Apr 2025 08:01:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745954723; cv=none; b=VBzrfSs3zGAVBWnZMYcFW1pj4zMETWi1CwtPF/MCJVJI/D1tzQAXs1zmM9gO6fewDH217DQIF1rDwrWFI19QjkWuRSFJKfi9E04j/l5+F1s5DyOZelNpoGJuA9EaP7Le8eohR83g3AX6Z36GSy0sLVBDJ0SMvP0pW0iH8vSkXz4=
+	t=1746000080; cv=none; b=NUJ/iX8xbR/ihOm8t14YK8gVKhIECn6OiyQ9jxnFg84tRpRJSdht6l5fo+kKqlmh3IS1j+7I8EZRHVKBgTvt288EWO2EKXMBihZIRUM4YF3QXvJ7UFLWlUidv4G4AYJYjOWCpxu0XyYCOkIgoVhn9TDEcl02SFIEJObRfLE9+MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745954723; c=relaxed/simple;
-	bh=wQYgyO8cTCRZnnsbCH9cX9z79zt/5slmTEUOaPrK4W0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dRo4y9YNWELVCs/0VGh9ZYmrsjNn1wrONbd2lBvr9vfr+4aljI3oXi5GeXMWuAaM8Uhx0y+JPpkTgpCHrXZ+ItlRQnbaAGAvObkAdHpImNWv05WhvyR9K7yyITey11ybYXSjDnkJpgUOCGErnX/+8FuytB619S1sBKGO9yKkHPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=criticallink.com; spf=pass smtp.mailfrom=criticallink.com; dkim=pass (2048-bit key) header.d=criticallink.com header.i=@criticallink.com header.b=HwxktT6L; arc=none smtp.client-ip=209.85.219.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=criticallink.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=criticallink.com
-Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e7387d4a334so643470276.2
-        for <linux-omap@vger.kernel.org>; Tue, 29 Apr 2025 12:25:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=criticallink.com; s=google; t=1745954719; x=1746559519; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r/ifkoP2VzjSNVs4Xu0uRQ1iLvHQ3o12JsQMc2lGYGM=;
-        b=HwxktT6Ll2Y2nntGRoqh71qvITTVcUnQ3FOKA9UsN7vKADajUmLO+49zUMvPjstHFw
-         kl7tbuqrhtSTwvODBUMOCRCjlYzWCmXqhWwwjp92UF/DK5yjPv/qX/k1bEFWG8IjKRqz
-         Hk63CKe/gulqhRywbXQY37anWtr99uhNUof5BNzREIfmI4yihYPlHDFWMeI/vnPzSDG0
-         kyrsgD6GLeSrrZ9RLewKLm1sB5dtNyvZIfRNmZMC0eQJFDWNT0266m9xfQQpAh94p2JL
-         NI41TZ0Lvy1wOqp/HGwGYVLqTD7eaNDlyjBK4905N+qwk5YOLXX1mWa5omki+jG+K0fI
-         /OzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745954719; x=1746559519;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=r/ifkoP2VzjSNVs4Xu0uRQ1iLvHQ3o12JsQMc2lGYGM=;
-        b=oguzB8iuY2qYzZ+5+chU2Lq57GeRqM6uew/FZ0D7oHXYOyuNe8KoFQYX/ZonlctbL9
-         4OEM842naBbM6eS0cJX0sEAOg4oyR4/ovXaLrZavbRaSgU3YeamRJcRn3UY3t8cDl8TX
-         7VRXtGAFCbkfMX3vlROMcyIWQNUG3aDw8x21YFaWGqo7s9JmPi9TjPRuaYbP3yOGKtU2
-         wOordAPFtx8coY/U6czEh+dmwll6qvjH/ccgNRq8n4rxwgyK71YKHSB8wegTBPT0rWfT
-         WteZPOED6TkllQq3y4B7NRf5MRmqj8Y353Fyf2w/9wsXdtnZtxUwYU1fKg/KrGvF2xaI
-         2oQg==
-X-Forwarded-Encrypted: i=1; AJvYcCWM6Cc6bY0Cf5bMtMlNNFZ7QtxAlWvqlTmcroV0ItvYFhLeh9REvzL74dIKzrMO4jm11YGYZanqvc0v@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPgAMcDVhjGDmbRfIb6pPogh020G//ZDvA9glSHigdvqbq9uMN
-	PUgE9gJG58gWz/KdALcn1Kp/XtEGqvhcGahKT0qV8UFOLFuRS6Ybe1tOZyvLoiFSV8pPHlT+tyV
-	/UT12CBjUdygDPCnhPPP5hWQvkwIHl73U5I0B
-X-Gm-Gg: ASbGncuz31MGlwNIxEJ4yhZyiJab8TwK7gl2EvzwnQj+fX+DdtpEo2bMQlHQJxBygAQ
-	a/utXKw8qEY+65aZXuYwpNBkMDIBL5081X3+OLQ0H8Or9P96SfAesNjWhFwaV03cKHq2Qa4aS4x
-	Gz3XLFQ6HxSppnT/pTLIKN
-X-Google-Smtp-Source: AGHT+IGqPxuLRzyJFjxrB+wKq9wOk//LyPTOPx3ptoig5goYUbeX82deJ4X6MbMth7FkOt7ItZfdyhmRh3usApwY78Q=
-X-Received: by 2002:a05:6902:2808:b0:e73:117c:42cb with SMTP id
- 3f1490d57ef6-e73ea2123bemr645377276.2.1745954719592; Tue, 29 Apr 2025
- 12:25:19 -0700 (PDT)
+	s=arc-20240116; t=1746000080; c=relaxed/simple;
+	bh=kOLgDW5mAscBzPybxkcT5m7kBv/Z93TCzymRJmIKLfs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jsowh5jX74PeqQ1stuSjhcP0+jBWfo0pJ4s4NzCUAkGNQSGdzHLXEC6nu2BlOOn8DN1xJ4EJK0lUSxNG5HJTGesuWSVAJotkx6BBC3Tzv2xk3VwNXVOvchrZQtAQNxaMS0hD63QsGVeL2VtxhWHPeCOkCubPHUSiD9GW4qBCxxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=qza0LVi/; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 35DEE1F969;
+	Wed, 30 Apr 2025 10:01:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1746000073;
+	bh=Qwk49apGdChV5JZGiqEylFepdwmcqjzUOJTqLuSzy70=; h=From:To:Subject;
+	b=qza0LVi/m2HVbgsx5wPZ2FtmT7C3PHPi6mEHLul28C5RUkukL9Y99CETWlrSzEmYT
+	 /onAc2BzSyL8esA5FVRV2j2LWwUKd2IWD6u7rXhhzNH0VmmOXFQH2tCikLIi1785PS
+	 VBS7t4lAzvGefP/J42axieMW7vhXTrosZlnRfiYKxjAriW2SRdQRhVehSmDJH5Yrjn
+	 r36yWuEvvaeGKi6TWZs6Fjvddh6La7HD5SL8yBl03FnPLQFfF4uzlku0g2iDcY2em8
+	 S+5AafpdlscJJyxwJRDEC/fQosP+ZFDyeFsR1K/9oePSqI8yxays62bWn5m+tugHYZ
+	 V/w3WsBIFGUYA==
+Date: Wed, 30 Apr 2025 10:01:09 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Jerome Neanne <jneanne@baylibre.com>,
+	Shree Ramamoorthy <s-ramamoorthy@ti.com>,
+	Mark Brown <broonie@kernel.org>, Nishanth Menon <nm@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Tero Kristo <kristo@kernel.org>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
+	Liam Girdwood <lgirdwood@gmail.com>, linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: tps65219/am62p kernel oops
+Message-ID: <20250430080109.GA65078@francesco-nb>
+References: <aBDSTxALaOc-PD7X@gaggiata.pivistrello.it>
+ <20250429185240.6a7644bf@akair>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250425203315.71497-1-s-ramamoorthy@ti.com> <20250425203315.71497-4-s-ramamoorthy@ti.com>
- <f92085bd-e35e-422a-8aa3-66e624c44586@criticallink.com> <683a1c36-0b5a-461f-bc89-3a418f542b57@ti.com>
-In-Reply-To: <683a1c36-0b5a-461f-bc89-3a418f542b57@ti.com>
-From: Jon Cormier <jcormier@criticallink.com>
-Date: Tue, 29 Apr 2025 15:25:08 -0400
-X-Gm-Features: ATxdqUFbxaBs_n6S4jW-r8vtMbiLr_Zi-oXCzuJN-ujmvmE10E7tbKFaoDyKPd4
-Message-ID: <CADL8D3YwBOf6wPTgxjadsPPn3rLR16V7nAO39+7J=tNxk_hQDQ@mail.gmail.com>
-Subject: Re: [PATCH v4 3/3] gpio: tps65219: Add support for varying
- gpio/offset values
-To: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-Cc: aaro.koskinen@iki.fi, andreas@kemnade.info, khilman@baylibre.com, 
-	rogerq@kernel.org, tony@atomide.com, linus.walleij@linaro.org, brgl@bgdev.pl, 
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, Jerome Neanne <jneanne@baylibre.com>, m-leonard@ti.com, 
-	praneeth@ti.com, jsava@criticallink.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250429185240.6a7644bf@akair>
 
-On Tue, Apr 29, 2025 at 12:42=E2=80=AFPM Shree Ramamoorthy <s-ramamoorthy@t=
-i.com> wrote:
->
-> Hi,
->
-> On 4/28/2025 11:41 AM, Jonathan Cormier wrote:
-> > On 4/25/25 4:33 PM, Shree Ramamoorthy wrote:
+On Tue, Apr 29, 2025 at 06:52:40PM +0200, Andreas Kemnade wrote:
+> Am Tue, 29 Apr 2025 15:21:19 +0200
+> schrieb Francesco Dolcini <francesco@dolcini.it>:
+> 
+> > Hello all,
+> > while working on adding support in mainline for a new board based on TI
+> > AM62P SoC I noticed the following Kernel Oops.
+> > 
+> > This oops was reproduced running current Linux
+> > master, 6.15.0-rc4+, ca91b9500108d4cf083a635c2e11c884d5dd20ea, but I was able
+> > to reproduce the same with 6.14.4.
+> > 
+> 
+> [...]
+> > [  +0.000022] Call trace:
+> > [  +0.000011]  regulator_notifier_call_chain+0x20/0xa4 (P)
+> > [  +0.000018]  tps65219_regulator_irq_handler+0x34/0x80
+> 
+> wild guessing: maybe because irqdata->rdev is not initalized in
+> _probe()? At least I do not see where it would be initialized.
 
-> >
-> > However Jerome wanted GPIO to map to linux "GPIO 0".  Is this still
-> > the case for TPS65215?
->
-> In my attempt to combine TPS65214 (which originally had 1 GPO and 1 GPIO
-> when I wrote the patch, but systems informed me they just switched it to
-> 2 GPOs and 1 GPIO) & TPS65215 (2 GPOs and 1 GPIO), I made a mistake in
-> combining the 2 series during rebase & with how similar the PMICs are.
-> Thanks for reviewing this as I wrote it a cycle ago. I'll made the
-> necessary changes & re-test. I will double check that GPIO matches to
-> linux "GPIO 0" now that I have more context about the offset math (super
-> helpful explanation!).
+your wild guess seems correct, I'll send a proper patch with your
+suggested-by after doing a couple of more tests, thanks.
 
+Francesco
 
-Thanks. Considering this confusion, could you add a comment for the
-pin mappings? Something like:
-// TPS65219 GPIO mapping
-// Linux gpio 0 -> GPIO (pin16) -> offset 2
-// Linux gpio 1 -> GPO1 (pin8 ) -> offset 0
-// Linux gpio 2 -> GPO2 (pin17) -> offset 1
-
-
-
-
---=20
-Jonathan Cormier
-Senior Software Engineer
-
-Voice:  315.425.4045 x222
-
-http://www.CriticalLink.com
-6712 Brooklawn Parkway, Syracuse, NY 13211
 
