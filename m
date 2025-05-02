@@ -1,118 +1,112 @@
-Return-Path: <linux-omap+bounces-3632-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3633-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BD2EAA62A6
-	for <lists+linux-omap@lfdr.de>; Thu,  1 May 2025 20:11:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C434AAA729F
+	for <lists+linux-omap@lfdr.de>; Fri,  2 May 2025 14:54:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C34729A2E8D
-	for <lists+linux-omap@lfdr.de>; Thu,  1 May 2025 18:11:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9714C1BA5866
+	for <lists+linux-omap@lfdr.de>; Fri,  2 May 2025 12:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC6F221292;
-	Thu,  1 May 2025 18:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05036253949;
+	Fri,  2 May 2025 12:54:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Z254Mk3u"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="tefFsVbb"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88ADC2DC799
-	for <linux-omap@vger.kernel.org>; Thu,  1 May 2025 18:11:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D237F211A1E;
+	Fri,  2 May 2025 12:54:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746123088; cv=none; b=jMTJ5i/5I1d6dLzbyfQPMnqyB92WlapOh4oojbE0rFsNJEDENTQk/4UPATQO03M5PgyjFq9z9OsYN4tiAbBZxBXmue0Sdo8j3q1aBCODI8gwEK3ebsj9M6iQ/f7S4Cf0RYcl9a1VSqcswBX3Yw8vtZluXBRaaGeIeR18RD+RHtQ=
+	t=1746190482; cv=none; b=AvSeRhMkrIbryT303F56W3mUagfwdQUWOVjyOowwGDzw22xReuhZ95ZJI9mpNQ8ZWHggtZO0TkBxQL7Es4h8fkSWQuOKwJVtS1rDS1uJcyZaCeCcffA4DHSVFWgzw77SrMxmmtDPlKmmSSzL3ExfB4vn1McD0wDcHmNEDYF0kCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746123088; c=relaxed/simple;
-	bh=n2hdrzkozFdUt75+CFb0KwrxNnR9IhTGVsPXZ6VJ5AQ=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=u2FzJ3pBad8nvQ+VOR+yAeN8NV0yUoX7ryNxPCPkRqlf+XK5yxCUvLGQJVWBQxDHERvjM70mWRF9xfSqooOpkuY5tKnGOLwp4/6EAUT6lVYi1h7BAV9F98k3C8NV1M6E1K126Rispf5MTFCgYYsmK3Vi8pkhhX+kTIJZ/QPHhVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Z254Mk3u; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-22409077c06so21099015ad.1
-        for <linux-omap@vger.kernel.org>; Thu, 01 May 2025 11:11:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746123086; x=1746727886; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9t400dGVqKpa0aJ5NF/wqCMTUOEugJbXa0Ak07h82mM=;
-        b=Z254Mk3u/zSGMbaP17a1gwGX7Qdl9VC6nX+mkYtasNPHNMV3pMncjHl7X7Y+f0q13t
-         O9BsWhcyp1DP2DIjpZfxfU+rgVDW7vIWkhsS4moraAyu/L9AqFXOp1KrGqjYrEAHLH6I
-         +O9SB+sO9AIDtpLJQmBXXRbz2SXjvNaB2tWMQD7KwTbLZgDHr4ROxtTGIuwknXnPsB29
-         kK88O1MiOop6HUPYHT5Y68UvHTg4UCy5vO9W/rR9l+pofSY37zocqYsXv+LDcpgjEboL
-         1GsZNr00hOjL3jLJHohjNuB0sdQGsASGd/LBFZa26ehY2Luy1vsurXdcqnHzqVZC0xGN
-         wRjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746123086; x=1746727886;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9t400dGVqKpa0aJ5NF/wqCMTUOEugJbXa0Ak07h82mM=;
-        b=FSjKSgWrirlt7wmW7VzDMvoBoeaG7ukON3yjyfl7cAEzRJQtohVxT7iuWAgPo5/QFR
-         6uiLoWBpGL8MdVMXqu4+8PdqKzvc59dr0Lm/1a6Ud2FQtBpOIgy8oDnt4vGeofv5ZwVr
-         +RxyBFew55png5mGnSIBkQEBltN8f0CaXzoFpU663udb2r0KwOk1KREpVnXarutBed71
-         q65T0wgofRQeCCNDwkhkYwGys0/U0QzKQQggQh5Whs+hX66ADr2ohXKsB44pefqQSBXc
-         Ah2/hDeoEyRAlE5cLAymLfGL67kSaQrzRp9792A3cbCyBtFz6myscdFKkgrE+v8C/gl7
-         SgYA==
-X-Forwarded-Encrypted: i=1; AJvYcCXasHtt6YuE7+Y81kmsAG9NUnlAqJGhyPMtKjFr/YchzvAtzBUerTR7MMKLBOv1wu8r0CRhzwXs5365@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDGNAoYSa/xsZAg9gFrjUjh/rSC+9MTdYB0fs4S3MRHH4qa/Di
-	03AJefpI4K6NktPv2XTtiZCDsmUIwJssAyHW57RfvbSiZcdYb6SJ1MVhmnaSbGI=
-X-Gm-Gg: ASbGncucdS7a2bOsHTRDrOmdeZX/ecOljAof16gMDrvKjKxBJZQfBkLux/4VHdNxyqC
-	scgMgGeaOYBNJGYUUOtOWooy9zwnM7C1zWfdzxvdMmJgQJB+RDtOPzEKa1NKeKzeM12PTeeVhyY
-	8FCc635vXOyEW9hkP+7QsVKFbTUYqYor++WNCjgfoykNkeoAJ9OFKSIVfbG+rM9a6woWOUS4pQz
-	0Q7Y6uYBC2VodRZ4M4JE62WJ60Ml1f8pcgELCDZeTVJZJuo8W8cQzHvVlhwe2juvaVezO7cAO8R
-	vAPZCXil/6qa1/ox9OAU6S7DaIEEeRC4eXdmFSI=
-X-Google-Smtp-Source: AGHT+IHS7iGdpbnvZSPtibrutAPiNsrIFRXMmGkTFO74ZmAaMQXJuegvR8E/cjr6fvB47F0IN/BmvQ==
-X-Received: by 2002:a17:903:1b2d:b0:223:f408:c3f7 with SMTP id d9443c01a7336-22e102cd9bbmr970795ad.16.1746123085925;
-        Thu, 01 May 2025 11:11:25 -0700 (PDT)
-Received: from localhost ([97.126.182.119])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e0bc6d528sm9783865ad.137.2025.05.01.11.11.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 May 2025 11:11:25 -0700 (PDT)
-From: Kevin Hilman <khilman@baylibre.com>
-To: Krzysztof Kozlowski <krzk+dt@kernel.org>, devicetree@vger.kernel.org, 
- linux-omap@vger.kernel.org, Tony Lindgren <tony@atomide.com>, 
- Roger Quadros <rogerq@kernel.org>, Rob Herring <robh@kernel.org>, 
- linux-kernel@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Conor Dooley <conor+dt@kernel.org>, Andreas Kemnade <andreas@kemnade.info>
-In-Reply-To: <20250427052735.88133-1-andreas@kemnade.info>
-References: <20250427052735.88133-1-andreas@kemnade.info>
-Subject: Re: [PATCH v3 0/2] ARM: dts: omap4: panda: TiWilink improvements
-Message-Id: <174612308508.158405.11020603792617275281.b4-ty@baylibre.com>
-Date: Thu, 01 May 2025 11:11:25 -0700
+	s=arc-20240116; t=1746190482; c=relaxed/simple;
+	bh=0S4njLBx477UY0EGQFCzlms0FZEfXroNv1KmF3jVh3w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jcqItCZuKJ5rs3HYwS+jjY/GzZ+uxUS7F2u6x4wpmrzdVMGpxcm9rleZt7EgWQjBxId+OC2erzRvgN4oJAdlNcK8MYjOkaoNCZRQ5PIMiBYXHLx3pQWnr2xD9QYc8g0047Wo8MWqiKeAcCBbYNQGuJEV7ixKZpZhBZ104nzIwS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=tefFsVbb; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=fdclFqSEaIk6BP0kwR3B1xdvCQwhZtNIC8kiyckL4fw=; b=tefFsVbbmieIaZxr6uA2/anU1g
+	k5v7LsaWGOffxM3gI22D/S19P9jGpatY0I/0oZwayz6xjHv/6xUm0WltatFayDFTdKe1OwucSY1OS
+	57MlVNPgsFcgJpfsHEYztOTk/I5iZ5Av7I3Q3/n/zxTEa1AdvOBRLDrsmJDSmOaM6JHt2SjnR1BZh
+	i5afFoydi+2HqxggIxX0YtqnCou8R5FlDgpQCRfmDvvSz7qK+CdZRaREeCVAHsDWueArLBGt+Cz2k
+	eg2CRZgqPXJx4JeLpHwMlj2sXdp3dhgnbT9mpQWGY7f2Wik9JZnmMzkYM8EFdQEF8OR/RLenGr4x4
+	hucT8ymg==;
+Date: Fri, 2 May 2025 14:54:20 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Andi Shyti <andi.shyti@kernel.org>
+Cc: Johan Hovold <johan@kernel.org>, Johan Hovold <johan+linaro@kernel.org>,
+ Vignesh R <vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, Kevin
+ Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, Tony
+ Lindgren <tony@atomide.com>, Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+ linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jayesh Choudhary <j-choudhary@ti.com>
+Subject: Re: [PATCH] i2c: omap: fix deprecated of_property_read_bool() use
+Message-ID: <20250502145420.6bca53f9@akair>
+In-Reply-To: <hn3gsrizar6xbr4seclnb6xot4fo4ztryks4w7exvztsdzj4f6@jhobhujf3ezi>
+References: <20250415075230.16235-1-johan+linaro@kernel.org>
+	<vcwjwrjgzwoil5ydds4findhcgl2ujoxwia7eh7yrbdc45yx26@kmpmvataffzr>
+	<aAIiJQVAUdWJFVy7@hovoldconsulting.com>
+	<hn3gsrizar6xbr4seclnb6xot4fo4ztryks4w7exvztsdzj4f6@jhobhujf3ezi>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3-dev-94c79
 
+Am Tue, 29 Apr 2025 15:10:13 +0200
+schrieb Andi Shyti <andi.shyti@kernel.org>:
 
-On Sun, 27 Apr 2025 07:27:33 +0200, Andreas Kemnade wrote:
-> Add proper definitions for 32k clock and enable bluetooth
-> everywhere.
+> Hi Johan,
 > 
-> Changes:
-> v3:
->   - better commit message to describe what the clocks are for
+> On Fri, Apr 18, 2025 at 11:57:57AM +0200, Johan Hovold wrote:
+> > On Thu, Apr 17, 2025 at 11:41:51PM +0200, Andi Shyti wrote:  
+> > > On Tue, Apr 15, 2025 at 09:52:30AM +0200, Johan Hovold wrote:  
+> > > > Using of_property_read_bool() for non-boolean properties is deprecated
+> > > > and results in a warning during runtime since commit c141ecc3cecd ("of:
+> > > > Warn when of_property_read_bool() is used on non-boolean properties").
+> > > > 
+> > > > Fixes: b6ef830c60b6 ("i2c: omap: Add support for setting mux")
+> > > > Cc: Jayesh Choudhary <j-choudhary@ti.com>
+> > > > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>  
+> > > 
+> > > Thanks for your patch! I'm going to drop the Fixes tag, as this
+> > > isn't really a bug fix but rather a warning suppression during
+> > > boot time.  
+> > 
+> > Thanks, but I think you should have kept the Fixes tag and merged this
+> > for 6.15 (i2c-host-fixes) since this is a new warning in 6.15-rc1 (and
+> > that does warrant a Fixes tag). Perhaps I should have highlighted that
+> > better.
+> > 
+> > If the offending patch had been posted or merged before such uses
+> > started generating warnings in 6.14-rc1 then that would have been a
+> > different matter.  
 > 
-> [...]
+> I'm sorry, but as I understand it, the Fixes tag should be used
+> only when an actual bug is being fixed. I've seen stable
+> maintainers getting annoyed when it's used for non-bug issues.
+> 
+hmm, some issue new in -rc1 could be fixed in a later -rcX. I have seen
+a lot of typos and other minor stuff getting fixed that way. So
+it does not need to be backported to any stable/longterm tree at all.
+Are the rules for that really that tough as for stable trees? I really
+doubt.
 
-Applied, thanks!
-
-[1/2] ARM: dts: omap4: panda: fix resources needed for Wifi
-      commit: 1132bb4df2375ae4a2303068c6f5fc62bc63b870
-[2/2] ARM: dts: omap4: panda: cleanup bluetooth
-      commit: a2db9bbcf64a43c8347625dca9ca0927bb444d43
-
-Best regards,
--- 
-Kevin Hilman <khilman@baylibre.com>
+Regards,
+Andreas 
 
 
