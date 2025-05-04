@@ -1,57 +1,79 @@
-Return-Path: <linux-omap+bounces-3636-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3637-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99842AA8360
-	for <lists+linux-omap@lfdr.de>; Sun,  4 May 2025 02:03:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E97FEAA8633
+	for <lists+linux-omap@lfdr.de>; Sun,  4 May 2025 13:24:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFFD25A0DAA
-	for <lists+linux-omap@lfdr.de>; Sun,  4 May 2025 00:03:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F39C3BBF56
+	for <lists+linux-omap@lfdr.de>; Sun,  4 May 2025 11:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 217A22914;
-	Sun,  4 May 2025 00:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91CB81A9B5B;
+	Sun,  4 May 2025 11:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k/Ha57fX"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="afOhK/bt"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F0CA32;
-	Sun,  4 May 2025 00:03:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6848C0B
+	for <linux-omap@vger.kernel.org>; Sun,  4 May 2025 11:24:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746317004; cv=none; b=hlt/X8Y9EpBKizanOunHrfiUMBuZM0R9LYQLx70uhF0sY0p6Qq/dDoFkBIiqJCeL4JF0pHhs6cQ7IzNw868/v0tTnH1dEyLNAKd9/8H8lygnNa/hQAwgagFOsABbuYx8JFvdTb1bMrHS9n0UtXEjnhJRFdn7nxHZQYbBMgOVBM4=
+	t=1746357886; cv=none; b=KlYwSIL/mWEF9IfFv+wwtj++8J42vRjMCcUXHrrWa98DWcPi6JqA/SVRLZAYJj2sN0TPPUMcIMsMCWJti2PuPl23rKGSYWDJlDkkPdFeYNbzZw14u8X8zc23dYt8dAX7zN1JREq88WsLG2lYQgz7rqW+jHte7W+VnHJfNtC/gV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746317004; c=relaxed/simple;
-	bh=Mno4SLcszCX6FGKxxppDC/J9CWohXjwvG7MA1LQb/14=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=lj7nvQ4WapmNkdNL6ipvvGI96JcX0KVUghthHGEsLnbA28D44Ycnx5K0RtzDeEW6mEYxmih/FMzrvp5GdPkjnT8/Q/UflI1Iz+IVeQu4c0xNEZrW9HsOFO1KhW4sDVwrw6pZO5uvrOL5dGBpXfo7Y2rkJhwN7GAhdQeHgk55i8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k/Ha57fX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4439C4CEE3;
-	Sun,  4 May 2025 00:03:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746317004;
-	bh=Mno4SLcszCX6FGKxxppDC/J9CWohXjwvG7MA1LQb/14=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=k/Ha57fXypMH8X92xBkrS25DfVd/YvnkdLdhgwMxftUNgYmSNjTp8OnjIZNkkUAHn
-	 7VXIsqqKp51qXaFgiPcwLMicbg5jEDSxO5xZbMEBsjOfg/fKHfdjMxHcfhB0EDl+xc
-	 6siILwsAZB4QA4pqsB5aSVGUcMX2lFHV23xcU8J4t4PHFxDBEwJqHKrqWwN4e5LE+q
-	 tbc+Xy1X2FR9SNcxDf60I+v4482cSxrdPuje63vtYwsycsJOm+H7PoU7zmZJzc2t70
-	 jfyo0CGBss2czmmv/o1cL+cq6x5OT2pROFdCXB+gWZg3dsaKNt9y/mM2ME0D/0dIVJ
-	 cATUZdCYqCXbg==
-From: Mark Brown <broonie@kernel.org>
-To: lgirdwood@gmail.com, aaro.koskinen@iki.fi, andreas@kemnade.info, 
- khilman@baylibre.com, rogerq@kernel.org, tony@atomide.com, 
- linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Shree Ramamoorthy <s-ramamoorthy@ti.com>
-Cc: m-leonard@ti.com, praneeth@ti.com
-In-Reply-To: <20250425205736.76433-1-s-ramamoorthy@ti.com>
-References: <20250425205736.76433-1-s-ramamoorthy@ti.com>
-Subject: Re: [PATCH v7 0/4] Add TI TPS65214 & TPS65215 Regulator Support
-Message-Id: <174631700028.4095183.1037286484966079333.b4-ty@kernel.org>
-Date: Sun, 04 May 2025 09:03:20 +0900
+	s=arc-20240116; t=1746357886; c=relaxed/simple;
+	bh=dB+eSdk5bmJLofe21KHiRL9lm/wFp6a0skcb5cnR6rU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=tgeXS77gkzya34JXbss/EhAJB8prDjQQ9Jzvr6VhvIdNJwEcszKMglNVPl4Pm8Xh7ZJlbH7N3oaMOtl72BF48z6erqE9JpIRcKVmeSXOlZ8rIH9rdSDecxhcWHEqH938HkIpfe3c48LAtSpOspj7KKSxqBofNydIKsHtFpvNRgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=afOhK/bt; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43cfe63c592so32126215e9.2
+        for <linux-omap@vger.kernel.org>; Sun, 04 May 2025 04:24:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746357881; x=1746962681; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rCvX4uJY7+qc0Sa1nCHPGxvQLNSrnb7aHcxG3bQRQw8=;
+        b=afOhK/bt9WYNcxRQ81bpkpz3FhoaVFXsFrnqMkOndLgbxFonqwK1MfBziOR9LltpsG
+         LckHJcH66eXE6jfEZ88Qe4wjZbQE5f40nGTzaLUvqRJoSeSBaAYQBy4D+Z/b6yEF8cGc
+         kAdCaM9YjYQpznlRefu6LR82LkHkGA7Oj5JxqIzpmfh10ZPl1fdV6ZvqZ6Jn0bwGT4Gj
+         zIneHE4TqwoWtlAAvkoNAyyeCnun9PKfRJh2YmglNURbj25HyHVoj1U6zaZBlP3Mp5Hd
+         dRXW3R0Yl57EUMEkSzcIxjcNOFkm2qgX30CQCMwksfHbVKOaG7K23se8D6rwRbE/3C+3
+         HRpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746357881; x=1746962681;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rCvX4uJY7+qc0Sa1nCHPGxvQLNSrnb7aHcxG3bQRQw8=;
+        b=Solnc4Kb8lWc+kr9cr1nOB7DffZbGHRul/PcPzBuNRmbbjt0RA6fONROq0vtrdsliT
+         Ga4qyqeVHC2IOyx6OMCH59igE2z1ziKK9pr9KNM725SUrmi6QU/TZzzdCBxPaIuV9RVv
+         miyXJAdYoggmccydsTPuqjmhPjRm0OWOagtSqbvHM0ViRzwD8WNhtyh1NxP1B6OU2q9f
+         UgdrpW79kxGgVw7Zg7FirgAH9oz8su/zDnlv+eYff3QKSgh9UDCM5Gee6PaEc3X9lCan
+         NOR3eTXyZAYdcKuRRW1mSalqwH12EbI/8VlqoFUfl8k8K9RqJxnHEg1c1FxFWi1HtuQY
+         ggAg==
+X-Forwarded-Encrypted: i=1; AJvYcCUXGaVLwAhqrJYBXFGf82uup7ohD/3rdCsTTz+w2NvRoQ4EKCiAgKN76U6mPAugzw/03+MvelqYOiCD@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzsg7CnNW8OIDBOPiVpfz20sDZUbinh8MbrrYAXAX8fxCzX9a0+
+	+g4FUFInkqMJ5rSIp8D3OYZmOB9QND8eN7gaDdDeANNqrxsYOydfeW4fG2uq+hg=
+X-Gm-Gg: ASbGnctWlDhdV9FFHTszsfEFSVw20dgv5Gj6BBUakao/2iHjO8d18CL0DsSjtUCaw1E
+	NKDJYZ5WbjkBddaICl7HjtblhDDhVq6QMMWU2XZ/ySvN+PCjLJAP2rCl/fbNhGtkAHUL3W1IdbO
+	ZJwH4pcJbGTznWGTULEQ6DTikVzoo3cRBNUrFJysMRuDqS7XiaZ/fXs8iZW95f+yRwJIkgpZ0Q1
+	6AdmuajGWo3QKR2/5D/MqcKCa+AfQX+PPPst9MxxStrrUaHLMMQ1goHcj38TspBzo6FwzVVFfuC
+	85bU5blnGOqybl4Md6XbEGcOql+1LQp1HDlkiGFvXkve
+X-Google-Smtp-Source: AGHT+IF/nTjowgFTpX4DBmNA53Y4LVnmPuQntazuU/vu02j6XLWVnIjjuNgsMm6A3VC25/HRU1jVEA==
+X-Received: by 2002:a05:600c:4e88:b0:441:b19c:96fe with SMTP id 5b1f17b1804b1-441c48bdfe5mr30770245e9.10.1746357880705;
+        Sun, 04 May 2025 04:24:40 -0700 (PDT)
+Received: from [127.0.1.1] ([2a01:e0a:e50:3860:9356:7b97:9d4d:d944])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441b2ad784asm144447685e9.7.2025.05.04.04.24.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 May 2025 04:24:40 -0700 (PDT)
+From: Guillaume La Roque <glaroque@baylibre.com>
+Date: Sun, 04 May 2025 13:24:39 +0200
+Subject: [PATCH] arm64: Kconfig.platforms: remove useless select for
+ ARCH_K3
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -60,51 +82,50 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-c25d1
+Message-Id: <20250504-kconfig-v1-1-ab0216f4fa98@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAHZOF2gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDUwMT3ezk/Ly0zHRdM4s0Q2PLtKQ0Y2NzJaDqgqLUtMwKsEnRsbW1AH7
+ Au9tZAAAA
+To: Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>, Nishanth Menon <nm@ti.com>
+Cc: Andrew Davis <afd@ti.com>, vishalm@ti.com, linux-omap@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Guillaume La Roque <glaroque@baylibre.com>
+X-Mailer: b4 0.14.1
 
-On Fri, 25 Apr 2025 15:57:32 -0500, Shree Ramamoorthy wrote:
-> Rebase patch series for 6.16 cycle. The related MFD series was integrated
-> in mainline during 6.15 cycle [0].
-> 
-> TPS65214 and TPS65215 are Power Management Integrated Circuits (PMICs) that
-> have significant register map overlap with TPS65219 and each other. The
-> series introduces the 2 new PMICs and restructures the existing driver to
-> support multiple devices.
-> 
-> [...]
+After patch done on TI_MESSAGE_MANAGER[1] and TI_SCI_PROTOCOL[2] driver
+select on ARCH_K3 are not needed anymore.
 
-Applied to
+Remove it and give possibility to enable this driver in modules.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
+[1] https://lore.kernel.org/all/20180828005311.8529-1-nm@ti.com/
+[2] https://lore.kernel.org/all/20250220-ti-firmware-v2-1-ff26883c6ce9@baylibre.com/
 
-Thanks!
+Signed-off-by: Guillaume La Roque <glaroque@baylibre.com>
+---
+ arch/arm64/Kconfig.platforms | 2 --
+ 1 file changed, 2 deletions(-)
 
-[1/4] regulator: tps65219: Update struct names
-      commit: 8c04144e156b49980a786e80c855e41f6c71685c
-[2/4] regulator: tps65219: Add support for TPS65215 regulator resources
-      commit: 3f2e457efdad5af4164f155bd7ac902258a9b1ce
-[3/4] regulator: tps65219: Add support for TPS65215 Regulator IRQs
-      commit: 38c9f98db20a649a1f8454f507608b6aef0c9297
-[4/4] regulator: tps65219: Add TI TPS65214 Regulator Support
-      commit: f1471bc435afa31c8c0c58551922830dc8f4b06b
+diff --git a/arch/arm64/Kconfig.platforms b/arch/arm64/Kconfig.platforms
+index 8b76821f190f..5b63a42c4dff 100644
+--- a/arch/arm64/Kconfig.platforms
++++ b/arch/arm64/Kconfig.platforms
+@@ -138,8 +138,6 @@ config ARCH_K3
+ 	select PM_GENERIC_DOMAINS if PM
+ 	select MAILBOX
+ 	select SOC_TI
+-	select TI_MESSAGE_MANAGER
+-	select TI_SCI_PROTOCOL
+ 	select TI_K3_SOCINFO
+ 	help
+ 	  This enables support for Texas Instruments' K3 multicore SoC
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+---
+base-commit: e8ab83e34bdc458b5cd77f201e4ed04807978fb1
+change-id: 20250504-kconfig-68f139fbf337
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Best regards,
+-- 
+Guillaume La Roque <glaroque@baylibre.com>
 
 
