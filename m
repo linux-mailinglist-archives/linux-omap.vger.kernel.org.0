@@ -1,50 +1,50 @@
-Return-Path: <linux-omap+bounces-3643-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3644-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21FE3AA98D1
-	for <lists+linux-omap@lfdr.de>; Mon,  5 May 2025 18:28:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEEC8AA98D0
+	for <lists+linux-omap@lfdr.de>; Mon,  5 May 2025 18:27:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 079B3189A4AF
-	for <lists+linux-omap@lfdr.de>; Mon,  5 May 2025 16:27:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3E913BC4ED
+	for <lists+linux-omap@lfdr.de>; Mon,  5 May 2025 16:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75AE026A09E;
-	Mon,  5 May 2025 16:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13EFE26139C;
+	Mon,  5 May 2025 16:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SyYkNTZD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EVAo6evf"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA17269CE6;
-	Mon,  5 May 2025 16:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A295325DCEC;
+	Mon,  5 May 2025 16:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746462402; cv=none; b=U5gJ6JgR7bQHG8JHDlij/b7fx3g9CHlrWdoWk6TgTcGlD+hS0WPJNEpfZxSYuG2ODtxJaV8SRq1hkSPcVuMmLdh29tO+k44iyJOdtgukpiToE9IgaMEMiRHoq42W6XWTpOU2BYIceVBqmC1/3/1b0/QlUKkR2yc3nZONFeIhL8k=
+	t=1746462405; cv=none; b=N9DF3fI7RmPg4fjf74Vg8+5QrhvV0lc61j+ms6euWwvGr+sLdGC1MyXz7G88FuYdYQ4BDlHp0oK3429xtbi1cPAYGR1IdMI4eOSiNr+pVvhStSqTHmnNigypHPRG1FClvFaMFn0Gk9G9Duhad9rVo5Rs46kA4Fzz0rafKg9nFMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746462402; c=relaxed/simple;
-	bh=u7HKkwOPvItFSrEFnYEsRbbOURBbm71UWURQboRepAs=;
+	s=arc-20240116; t=1746462405; c=relaxed/simple;
+	bh=YbtaSFXvEqscgWdaWU4X/6cPyfGpueE1ti1NCjiITjk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ADwUZeQIZ41ugshPbPluL8eqZsUcaeh6TgpaKfIcYpZ/cQhFTKyNtT3kP5d+ERycFErkyQlrxy9cGgfOoSxATXL9yxQaLriY4P86Vhua26Enk0PsKewdFClVVjKRVi7y9vwL0ZMpf8RB+/F5cpvOfljivh8OabU8jb9J2TsKvG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SyYkNTZD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18D25C4CEEE;
-	Mon,  5 May 2025 16:26:38 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=aCNK4sLeT5YG1XSUvyXawwST6j932taY3bFDmlSGysTJCwu6Dxk6lbbcXYEoVwr/WolN3pvIqTS/AwhZljbQ9tSrTIJsNRiofqQiITCgl1K4CQSdoY76TcI/HD61Io8dFivukrUTzEdTgSTK3ifukWVV0PMkxU9UGZCgFH7/JKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EVAo6evf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CB87C4CEEE;
+	Mon,  5 May 2025 16:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746462401;
-	bh=u7HKkwOPvItFSrEFnYEsRbbOURBbm71UWURQboRepAs=;
+	s=k20201202; t=1746462405;
+	bh=YbtaSFXvEqscgWdaWU4X/6cPyfGpueE1ti1NCjiITjk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=SyYkNTZDG2/wL/ye+SB93kdqQHWQWGYZ8uT70cNjPeUig78gUDFhnokhvw+m2mroa
-	 tD21CBWbth0iL3kRP73cRkO6TX/HfUTMTCLqKvjuNB8cbClMxk5xa20uyF4FYbsOf+
-	 kB0k2YCpJJeh6eyq4CJkKRMurmV/kXjCxeV1ASLxFryvoTifjHt+VkhwV717y4SIl6
-	 6UPLNgwJjFpgqrkXVCJGPnpM0I/C81AreJ2/E/8PiguvsHx3TxRjW8BcLWK1kYWrwe
-	 tlMa7v0LcYsnIXEpWAK2MgZVoK88ygD2tVK/UL2BXL0HQN+kzhpT3ZgQ9rKX2hrHlP
-	 RGds7vzvtEVmA==
+	b=EVAo6evfK8FfO5wWdHDh9OStIv0JZRQEFxT39XalB16nJQqh2sKBQhp6cXHNDA/5R
+	 PvkXvpgXTqoBcrF5dYbSSY4UagNogEkLKCDXNOqKdyvCf2xqyl5ZRxMqpiUc0WPTuw
+	 UrBwRbHHX9izJHWBfgr+weU4ErBUGRX1HZ+RllpoCwhObUEEkLPW1LIYCu5oiB0nK/
+	 TBCbJx/1Q7TizDYjH7qVVHwEU4zOWff1VaIw76LccPYwmjWPHV+JzjsRXvhsHnn4gc
+	 B1YQCfgCAtyywh8gIU8ZKOlx7eynkm8G7SDgn3/NmRw0klg7Wo4xujgiAH34G5c8fI
+	 b60ThL4zqDFeg==
 From: Roger Quadros <rogerq@kernel.org>
-Date: Mon, 05 May 2025 19:26:31 +0300
-Subject: [PATCH net-next v2 1/9] net: ethernet: ti: cpsw_ale: Update
- Policer fields for more ALE size/ports
+Date: Mon, 05 May 2025 19:26:32 +0300
+Subject: [PATCH net-next v2 2/9] net: ethernet: ti: cpsw_ale: return ALE
+ index in cpsw_ale_add_vlan()
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250505-am65-cpsw-rx-class-v2-1-5359ea025144@kernel.org>
+Message-Id: <20250505-am65-cpsw-rx-class-v2-2-5359ea025144@kernel.org>
 References: <20250505-am65-cpsw-rx-class-v2-0-5359ea025144@kernel.org>
 In-Reply-To: <20250505-am65-cpsw-rx-class-v2-0-5359ea025144@kernel.org>
 To: Siddharth Vadapalli <s-vadapalli@ti.com>, 
@@ -64,78 +64,92 @@ To: Siddharth Vadapalli <s-vadapalli@ti.com>,
 Cc: srk@ti.com, linux-omap@vger.kernel.org, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Roger Quadros <rogerq@kernel.org>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2711; i=rogerq@kernel.org;
- h=from:subject:message-id; bh=u7HKkwOPvItFSrEFnYEsRbbOURBbm71UWURQboRepAs=;
- b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBoGOa6f11vlH1akMfGGi2ce9Q9UGvEtRj5pn5W/
- CYgx4P1Zp2JAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCaBjmugAKCRDSWmvTvnYw
- kyStD/9LH21q8ModEJVKq9rYaAq1MaMhKO33F4ioQ3seBTURZg4h7oQ74jhgbV/YArCOt854O42
- EzOd+IgoutZn8ODyZape1HVUFfoG1HRYgAyWyV6GYGnb47V7HAEPr0a475G6+N4mAS3AefyIC98
- lRWpdKoECtYwtUxgk/4YCxOXgUVARD44jQ3DiwDyAfXyTkdpO/ZLd2QiedWwQPE1XNoOR3GLjS8
- vkiDaQzYH1rHQyTGDPwMQLmCCaesDiucxmHYvND0JBx9KTpDdbh7Pt0wI+R7HGMY/egABbX9etJ
- qpNnbkLxfEIq5QhHu/FrnvMT4YTb2X3uacWh2hsLoQy5WU/zMUofZFEiYd2gJd3rLy3Akgu9Py9
- 80xpiZJlbRCVKZxemKJVEf2Jl89gNbXUV00/Rxe32XPQgFARpbAy5O1tClDhUL19yE3Q3qw+yig
- Z5JFNAMNvQgYI96vQfoQ59620V6OoGaJum1vHpnyf7yUSJGNU/PcNLWblNv9XdWEI3M59uY7J1a
- 4JPRVhUO08XneAuiWUQ1wWNHpFJ5Mo93CTsjQBbA/glHVjO+ea2zaqiuENjARyR0b1ZkVVzaybc
- pc86SSu31CvrfTy7FvBBX0jumB7U5aBvmjVCW9Cgukq0Kb9FbrkkyIwGovoB7nFlJMXSiCMyz8P
- xUFyNH8nQq1KfHQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2474; i=rogerq@kernel.org;
+ h=from:subject:message-id; bh=YbtaSFXvEqscgWdaWU4X/6cPyfGpueE1ti1NCjiITjk=;
+ b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBoGOa6TQt6aiPNyp839anENScUA0fz9kZx8hXM6
+ 6KPV9mhAGWJAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCaBjmugAKCRDSWmvTvnYw
+ k6HLEADILWBsl/ODdlvVbpq71DOfdKVCgrMrAwaOPiOcSK2BplMNYjE1LKvyQJi+S6KFjn38mJv
+ CILD2gIivEqh4XHiMToDJFswZ2L/LuPr+7ZvEcO1n5SnOufSIih5P8oemMeWEPUWUFACe76VfFY
+ lB3uhknLDzmvdytTRVFbkYooGC8SVVibpZpWacp4Bzmj7OS7DTIpy5ymfEgbgxgbyN1zh2N6ZjO
+ kkqh+laUImVcebSGwKPNq6bV5L9Xsz06Gxb2hmoLzICCUCP1trloIhRS3owBOtQTk6RpkAUuCcq
+ MNUuTAJuzaM0ua81xj0pYyzOh/jTonWxTlMeuMP1QiEhm8t5Htw1PvU5z77iXazM6jDmrIz/t1d
+ xw1pHzW+z8OeUrgMzXH3zFZyVKdaKOG1KmjPcBctnImeSw0Aoy7TsCh8YpOzGwOi+2Co7mskzT1
+ YpzY2uJCiCfeBNfgKHLRmbUir5TOGzyQ9UMfcb95yB77ULYvPKUUXSgx35pbtD/3IoguB9uLsXw
+ tWUIaCSssA7MK/10hhnp7vZOEVUHtqOl6+dWmH6SKbM4QMCmE7zTnWaotMEp/aRheNLfCkt35G8
+ MTmntHPSdtr2zrJGltg/lpmvfYDLi0d/Ya2BR++JUq/DBMzlucVom+/pzWkN1rTCRjTx1+tGXmQ
+ 8BvhDVaPjf+34xQ==
 X-Developer-Key: i=rogerq@kernel.org; a=openpgp;
  fpr=412165D44C9F52780FAB1058D25A6BD3BE763093
 
-Different SoCs have different sized ALE table and number of ports.
-Expand the Policer fields to support 16 ports and 1024 ALE entries.
+Policer helpers will be interested to know what ALE index was used
+for the added VLAN entry. So return the ALE index instead of zero
+on success.
+
+Modify existing users to check for less than zero as error case.
 
 Signed-off-by: Roger Quadros <rogerq@kernel.org>
 ---
- drivers/net/ethernet/ti/cpsw_ale.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/ti/cpsw.c     | 2 +-
+ drivers/net/ethernet/ti/cpsw_ale.c | 6 +++---
+ drivers/net/ethernet/ti/cpsw_new.c | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
+index a984b7d84e5e..2d23cba557f3 100644
+--- a/drivers/net/ethernet/ti/cpsw.c
++++ b/drivers/net/ethernet/ti/cpsw.c
+@@ -1026,7 +1026,7 @@ static inline int cpsw_add_vlan_ale_entry(struct cpsw_priv *priv,
+ 
+ 	ret = cpsw_ale_add_vlan(cpsw->ale, vid, port_mask, 0, port_mask,
+ 				unreg_mcast_mask);
+-	if (ret != 0)
++	if (ret < 0)
+ 		return ret;
+ 
+ 	ret = cpsw_ale_add_ucast(cpsw->ale, priv->mac_addr,
 diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index 7f77694ecfba..7bb63aad7724 100644
+index 7bb63aad7724..0bdc95552410 100644
 --- a/drivers/net/ethernet/ti/cpsw_ale.c
 +++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -1341,33 +1341,33 @@ static const struct reg_field ale_fields_cpsw_nu[] = {
- 	/* CPSW_ALE_POLICER_PORT_OUI_REG */
- 	[POL_PORT_MEN]	= REG_FIELD(ALE_POLICER_PORT_OUI, 31, 31),
- 	[POL_TRUNK_ID]	= REG_FIELD(ALE_POLICER_PORT_OUI, 30, 30),
--	[POL_PORT_NUM]	= REG_FIELD(ALE_POLICER_PORT_OUI, 25, 25),
-+	[POL_PORT_NUM]	= REG_FIELD(ALE_POLICER_PORT_OUI, 25, 28),
- 	[POL_PRI_MEN]	= REG_FIELD(ALE_POLICER_PORT_OUI, 19, 19),
- 	[POL_PRI_VAL]	= REG_FIELD(ALE_POLICER_PORT_OUI, 16, 18),
- 	[POL_OUI_MEN]	= REG_FIELD(ALE_POLICER_PORT_OUI, 15, 15),
--	[POL_OUI_INDEX]	= REG_FIELD(ALE_POLICER_PORT_OUI, 0, 5),
-+	[POL_OUI_INDEX]	= REG_FIELD(ALE_POLICER_PORT_OUI, 0, 9),
+@@ -680,7 +680,7 @@ int cpsw_ale_add_vlan(struct cpsw_ale *ale, u16 vid, int port_mask, int untag,
+ 		return -ENOMEM;
  
- 	/* CPSW_ALE_POLICER_DA_SA_REG */
- 	[POL_DST_MEN]	= REG_FIELD(ALE_POLICER_DA_SA, 31, 31),
--	[POL_DST_INDEX]	= REG_FIELD(ALE_POLICER_DA_SA, 16, 21),
-+	[POL_DST_INDEX]	= REG_FIELD(ALE_POLICER_DA_SA, 16, 25),
- 	[POL_SRC_MEN]	= REG_FIELD(ALE_POLICER_DA_SA, 15, 15),
--	[POL_SRC_INDEX]	= REG_FIELD(ALE_POLICER_DA_SA, 0, 5),
-+	[POL_SRC_INDEX]	= REG_FIELD(ALE_POLICER_DA_SA, 0, 9),
+ 	cpsw_ale_write(ale, idx, ale_entry);
+-	return 0;
++	return idx;
+ }
  
- 	/* CPSW_ALE_POLICER_VLAN_REG */
- 	[POL_OVLAN_MEN]		= REG_FIELD(ALE_POLICER_VLAN, 31, 31),
--	[POL_OVLAN_INDEX]	= REG_FIELD(ALE_POLICER_VLAN, 16, 21),
-+	[POL_OVLAN_INDEX]	= REG_FIELD(ALE_POLICER_VLAN, 16, 25),
- 	[POL_IVLAN_MEN]		= REG_FIELD(ALE_POLICER_VLAN, 15, 15),
--	[POL_IVLAN_INDEX]	= REG_FIELD(ALE_POLICER_VLAN, 0, 5),
-+	[POL_IVLAN_INDEX]	= REG_FIELD(ALE_POLICER_VLAN, 0, 9),
+ static void cpsw_ale_vlan_del_modify_int(struct cpsw_ale *ale,  u32 *ale_entry,
+@@ -803,14 +803,14 @@ int cpsw_ale_vlan_add_modify(struct cpsw_ale *ale, u16 vid, int port_mask,
  
- 	/* CPSW_ALE_POLICER_ETHERTYPE_IPSA_REG */
- 	[POL_ETHERTYPE_MEN]	= REG_FIELD(ALE_POLICER_ETHERTYPE_IPSA, 31, 31),
--	[POL_ETHERTYPE_INDEX]	= REG_FIELD(ALE_POLICER_ETHERTYPE_IPSA, 16, 21),
-+	[POL_ETHERTYPE_INDEX]	= REG_FIELD(ALE_POLICER_ETHERTYPE_IPSA, 16, 25),
- 	[POL_IPSRC_MEN]		= REG_FIELD(ALE_POLICER_ETHERTYPE_IPSA, 15, 15),
--	[POL_IPSRC_INDEX]	= REG_FIELD(ALE_POLICER_ETHERTYPE_IPSA, 0, 5),
-+	[POL_IPSRC_INDEX]	= REG_FIELD(ALE_POLICER_ETHERTYPE_IPSA, 0, 9),
+ 	ret = cpsw_ale_add_vlan(ale, vid, vlan_members, untag_members,
+ 				reg_mcast_members, unreg_mcast_members);
+-	if (ret) {
++	if (ret < 0) {
+ 		dev_err(ale->params.dev, "Unable to add vlan\n");
+ 		return ret;
+ 	}
+ 	dev_dbg(ale->params.dev, "port mask 0x%x untag 0x%x\n", vlan_members,
+ 		untag_mask);
  
- 	/* CPSW_ALE_POLICER_IPDA_REG */
- 	[POL_IPDST_MEN]		= REG_FIELD(ALE_POLICER_IPDA, 31, 31),
--	[POL_IPDST_INDEX]	= REG_FIELD(ALE_POLICER_IPDA, 16, 21),
-+	[POL_IPDST_INDEX]	= REG_FIELD(ALE_POLICER_IPDA, 16, 25),
+-	return ret;
++	return 0;
+ }
  
- 	/* CPSW_ALE_POLICER_TBL_CTL_REG */
- 	/**
+ void cpsw_ale_set_unreg_mcast(struct cpsw_ale *ale, int unreg_mcast_mask,
+diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
+index 5b5b52e4e7a7..1516171352cd 100644
+--- a/drivers/net/ethernet/ti/cpsw_new.c
++++ b/drivers/net/ethernet/ti/cpsw_new.c
+@@ -417,7 +417,7 @@ static int cpsw_add_vlan_ale_entry(struct cpsw_priv *priv,
+ 
+ 	ret = cpsw_ale_add_vlan(cpsw->ale, vid, port_mask, 0, port_mask,
+ 				unreg_mcast_mask);
+-	if (ret != 0)
++	if (ret < 0)
+ 		return ret;
+ 
+ 	ret = cpsw_ale_add_ucast(cpsw->ale, priv->mac_addr,
 
 -- 
 2.34.1
