@@ -1,130 +1,126 @@
-Return-Path: <linux-omap+bounces-3652-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3655-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08C76AA9EC7
-	for <lists+linux-omap@lfdr.de>; Tue,  6 May 2025 00:13:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71083AAA971
+	for <lists+linux-omap@lfdr.de>; Tue,  6 May 2025 03:14:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1D077A64C3
-	for <lists+linux-omap@lfdr.de>; Mon,  5 May 2025 22:12:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBE671885E35
+	for <lists+linux-omap@lfdr.de>; Tue,  6 May 2025 01:12:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E23D2750FB;
-	Mon,  5 May 2025 22:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC8212CD8B;
+	Mon,  5 May 2025 22:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EZANMyNE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kt2mXu3S"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170C313AF2;
-	Mon,  5 May 2025 22:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E467F299AA2;
+	Mon,  5 May 2025 22:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483184; cv=none; b=M8l1J34WuGV1NWXI2C8kKPJ5Vur2cth6fypfVmAtqypJnElwo+afZZYUWwrA1sw0PUJTW4JmDCBcqvkABP2fkdExkpZjx/45Fc2YcKJKtLP6B3JNmb0CfSoPisWCe8/8VQt193n8IOJg3EYVxI8RL+FMP/sw2t8fHziV2ISZVn4=
+	t=1746485002; cv=none; b=io80+uEjATtuJAP5o1Q+wqovHjL/W1wVQAxz+dVnOLbxniNAM0F9PLeQbGNiWN0wsKYVLHhx09qMaVxAiADDjax8JX/yRpy7I+2Ke/DKqN9p8AXda4F6UDV4Ku1By2Sj4x1uh4MW07R9d+qw2Uq6TwzazWMgbmFDVVW/3oJ4ZzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483184; c=relaxed/simple;
-	bh=wyVv8r87sFQD3h4JxZbcpjjhi07POlfuqfD61jwf/WE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r4/sVdu9SciKf7uJEk7JnhWb0LwQCBNUd5WgzZSIKbHwgpyMySmX4ZUCwaQt3WxMDdZAAeOtyT+KtU/lu21uKXlV1hchl931vTBVRE+Eb+9WA78x2mIJrohLwPqjEvRJMnRfjXUE31GyeEqGDmo4qQxMCHiJvT9enUbXENiZI0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZANMyNE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E369AC4CEE4;
-	Mon,  5 May 2025 22:13:02 +0000 (UTC)
+	s=arc-20240116; t=1746485002; c=relaxed/simple;
+	bh=ay8e5jZYitraKytTGlIPwdEHkmewyYwRjos8ZAFOtVY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=sk+Y87ceib/iXvw5P8IgCv5zaY2IvEmrB9dldzJGZLhRvUzDSYL+yxwHqY+rc6dg8VKchhHf1Cuatf8akikUcSqqeYD0BqvQ6P0orTZZni2HyFuDSKaWJrPaCdm4m6hlHNexCLFtQcnWTOkjITYet5sYAMiLMfjX4SZCD5TL+uM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kt2mXu3S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1EBFC4CEEE;
+	Mon,  5 May 2025 22:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483183;
-	bh=wyVv8r87sFQD3h4JxZbcpjjhi07POlfuqfD61jwf/WE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EZANMyNEI1oG7oG8Lbnk5GKx+kYRPd8c8oPqrO9lTzLaEamqD+IznbrSMUeVs9yuh
-	 nNDSW3vIph88Xbc0VVlZ0+dZLABQaupc/jqipV2tosqfK/66kDlNDI3L8P1vmD1leu
-	 jgNiYfmoJ0y/hApMjRcRod2/FCSIev2PLpY3PSXKg7tF+rysIVI5xIjzODARRUAjxk
-	 MV2CJSPY3T9VKAGWFAUNMU71o5yFphGWaiMP5mSTSItTQzQL0+S8IvYtCBhWVtzZdQ
-	 gzVL7qxqOFHr6qEmBRPF8zFnrcKtOmtlQA8U11VJ//lldEf80oTMQMKyRp6Q+OtnUm
-	 I2FGI/wEY8jIQ==
-Date: Tue, 6 May 2025 00:13:00 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>, Vignesh R <vigneshr@ti.com>, 
-	Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, 
-	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
-	Tony Lindgren <tony@atomide.com>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
-	linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Jayesh Choudhary <j-choudhary@ti.com>
-Subject: Re: [PATCH] i2c: omap: fix deprecated of_property_read_bool() use
-Message-ID: <6nn2l75kkbkdu3wf3kta4mezno6cy4e3zzwzdc4cpmujjhr6lp@ct7w72zwbrhu>
-References: <20250415075230.16235-1-johan+linaro@kernel.org>
- <vcwjwrjgzwoil5ydds4findhcgl2ujoxwia7eh7yrbdc45yx26@kmpmvataffzr>
- <aAIiJQVAUdWJFVy7@hovoldconsulting.com>
- <hn3gsrizar6xbr4seclnb6xot4fo4ztryks4w7exvztsdzj4f6@jhobhujf3ezi>
- <aBiMJ0z5q4K2xTGT@hovoldconsulting.com>
+	s=k20201202; t=1746485001;
+	bh=ay8e5jZYitraKytTGlIPwdEHkmewyYwRjos8ZAFOtVY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Kt2mXu3SGuuElopaDqMPbV+0cBpNxtO29TwuHrN40wLNnyey/pP9gcr426UmCzPke
+	 Y2HyvhjrUehd9L8QuMz5cyWKizTYJo7K0gHVwgm6dP9Ird50jYTmQQTQJCUO2wOCrH
+	 ioO/yHESd1W7eUWaauoi7BPDHtL8YuG1NOfDYhFrtXkNyQiPFtWr7J/4b40zsM5XLC
+	 c8qstO4JwClHkYP22u72jgCMUEf2jxZNjTpsZjbA0grTQ+BPASfWVpxJSYbur2czju
+	 kD+5oRUg6y/Ir4Q9HKolVDYJxqUksjWQ+7xLtsiFhHZjYUw4QJpx47/6SGFU7m52Zi
+	 yKICZdL4lnBEg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Shree Ramamoorthy <s-ramamoorthy@ti.com>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	aaro.koskinen@iki.fi,
+	andreas@kemnade.info,
+	khilman@baylibre.com,
+	rogerq@kernel.org,
+	tony@atomide.com,
+	linux-omap@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 119/486] mfd: tps65219: Remove TPS65219_REG_TI_DEV_ID check
+Date: Mon,  5 May 2025 18:33:15 -0400
+Message-Id: <20250505223922.2682012-119-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
+References: <20250505223922.2682012-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aBiMJ0z5q4K2xTGT@hovoldconsulting.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.12.26
+Content-Transfer-Encoding: 8bit
 
-Hi Johan,
+From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
 
-On Mon, May 05, 2025 at 12:00:07PM +0200, Johan Hovold wrote:
-> On Tue, Apr 29, 2025 at 03:10:13PM +0200, Andi Shyti wrote:
-> > On Fri, Apr 18, 2025 at 11:57:57AM +0200, Johan Hovold wrote:
-> > > On Thu, Apr 17, 2025 at 11:41:51PM +0200, Andi Shyti wrote:
-> > > > On Tue, Apr 15, 2025 at 09:52:30AM +0200, Johan Hovold wrote:
-> > > > > Using of_property_read_bool() for non-boolean properties is deprecated
-> > > > > and results in a warning during runtime since commit c141ecc3cecd ("of:
-> > > > > Warn when of_property_read_bool() is used on non-boolean properties").
-> > > > > 
-> > > > > Fixes: b6ef830c60b6 ("i2c: omap: Add support for setting mux")
-> > > > > Cc: Jayesh Choudhary <j-choudhary@ti.com>
-> > > > > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> > > > 
-> > > > Thanks for your patch! I'm going to drop the Fixes tag, as this
-> > > > isn't really a bug fix but rather a warning suppression during
-> > > > boot time.
-> > > 
-> > > Thanks, but I think you should have kept the Fixes tag and merged this
-> > > for 6.15 (i2c-host-fixes) since this is a new warning in 6.15-rc1 (and
-> > > that does warrant a Fixes tag). Perhaps I should have highlighted that
-> > > better.
-> > > 
-> > > If the offending patch had been posted or merged before such uses
-> > > started generating warnings in 6.14-rc1 then that would have been a
-> > > different matter.
-> > 
-> > I'm sorry, but as I understand it, the Fixes tag should be used
-> > only when an actual bug is being fixed. I've seen stable
-> > maintainers getting annoyed when it's used for non-bug issues.
-> 
-> You seem to confuse the Fixes tag with a CC stable tag. A Fixes tag is
-> used to indicate which commit introduced an issue, while the CC stable
-> tag is used to flag a commit for backporting (and the fact that autosel
-> tends to pick up patches with just a Fixes doesn't change this).
+[ Upstream commit 76b58d5111fdcffce615beb71520bc7a6f1742c9 ]
 
-(the Cc tag for fixes is not mandatory, it's more a courtesy)
+The chipid macro/variable and regmap_read function call is not needed
+because the TPS65219_REG_TI_DEV_ID register value is not a consistent value
+across TPS65219 PMIC config versions. Reading from the DEV_ID register
+without a consistent value to compare it to isn't useful. There isn't a
+way to verify the match data ID is the same ID read from the DEV_ID device
+register. 0xF0 isn't a DEV_ID value consistent across TPS65219 NVM
+configurations.
 
-> It's perfectly fine to fix an issue and use a Fixes tag when doing so
-> even if the fix itself does not qualify for backporting (for whatever
-> reason).
+For TPS65215, there is a consistent value in bits 5-0 of the DEV_ID
+register. However, there are other error checks in place within probe()
+that apply to both PMICs rather than keeping this isolated check for one
+PMIC.
 
-Oh yes, I forgot that patch was part of the 6.15 merge window. I
-will then move it to the -fixes and send it for this week's merge
-request.
+Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+Link: https://lore.kernel.org/r/20250206173725.386720-4-s-ramamoorthy@ti.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/mfd/tps65219.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-Thanks and sorry for the confusion,
-Andi
+diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c
+index 57ff5cb294a66..d3b77abec786e 100644
+--- a/drivers/mfd/tps65219.c
++++ b/drivers/mfd/tps65219.c
+@@ -228,7 +228,6 @@ static const struct regmap_irq_chip tps65219_irq_chip = {
+ static int tps65219_probe(struct i2c_client *client)
+ {
+ 	struct tps65219 *tps;
+-	unsigned int chipid;
+ 	bool pwr_button;
+ 	int ret;
+ 
+@@ -253,12 +252,6 @@ static int tps65219_probe(struct i2c_client *client)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = regmap_read(tps->regmap, TPS65219_REG_TI_DEV_ID, &chipid);
+-	if (ret) {
+-		dev_err(tps->dev, "Failed to read device ID: %d\n", ret);
+-		return ret;
+-	}
+-
+ 	ret = devm_mfd_add_devices(tps->dev, PLATFORM_DEVID_AUTO,
+ 				   tps65219_cells, ARRAY_SIZE(tps65219_cells),
+ 				   NULL, 0, regmap_irq_get_domain(tps->irq_data));
+-- 
+2.39.5
 
-> > The system works perfectly fine even with the warning printed.
-> > It might confuse CI systems, but that shouldn't really be our
-> > concern.
-> 
-> You should not knowingly be introducing new warnings. The Fixes tag I
-> added showed that this was an issue introduced in 6.15-rc1, and, unless
-> discovered really late in the cycle, it should be fixed before 6.15 is
-> out.
-> 
-> Johan
 
