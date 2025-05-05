@@ -1,64 +1,71 @@
-Return-Path: <linux-omap+bounces-3660-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3661-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7F52AAB6BB
-	for <lists+linux-omap@lfdr.de>; Tue,  6 May 2025 07:56:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08BB0AAB5A9
+	for <lists+linux-omap@lfdr.de>; Tue,  6 May 2025 07:34:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3C7A7A2D7F
-	for <lists+linux-omap@lfdr.de>; Tue,  6 May 2025 05:51:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 034CE1B674B3
+	for <lists+linux-omap@lfdr.de>; Tue,  6 May 2025 05:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75105339080;
-	Tue,  6 May 2025 00:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F6004A3C22;
+	Tue,  6 May 2025 00:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X27a6MLV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VrkPNUPO"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A283745AC;
-	Mon,  5 May 2025 22:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909E828AB0C;
+	Mon,  5 May 2025 23:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485939; cv=none; b=m1NciCu9Xor3fiUKQWhmGjgmruEKEuMeJxhZq1E0TpWv/S5xJTA+dgCTlqJJIECEyTm3usCr570c/9mpNAnlNTv2nrWq9uECAYTAEfWu3UB8sbzX6lQuUlrja4r6FbVLkGn/kbATGf2P3GaGfjIm2a06ZSVhMM4tTFg0QzEpf6I=
+	t=1746487191; cv=none; b=sodoKnWLa/qoG793oOT0MAnt9QFp7DDGF8Wsmyv4n0czrxJaO+7UzbuYUIjqRBC818R29rFHrmWWuIN3wi71RmjwpX6bjnEx5rvQ4tk73bKON63TEOSqNu5W/NA8c1sRIKNhXP89t82muSeuDYvZHoqLZUs/FWy9G9qOixJe/tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485939; c=relaxed/simple;
-	bh=PC+jTUt+sBuQzvXdmwfPrlJqZ2o7S8lrY1pss0LCaHU=;
+	s=arc-20240116; t=1746487191; c=relaxed/simple;
+	bh=5z5mejJ4lJQ7xauFMS3AH3ERPz0KEqrovqj9Hs4PAZM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SCqJRuzZGf0pBVei8UlAZIgJnB7n4TLkX+D9bIvlTYE6FV3HaJES1GIlyMslr9nytb6uu+6w/YPF1Y1X4DJiw86e2Y9Q9b5LHuFYD6KMqv5bB+JTyryWGADLBpUkW3jl8ZkJcgndwFU+hGucKyY3yP6svvphvQXUcybyYY6AeJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X27a6MLV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B389BC4CEEF;
-	Mon,  5 May 2025 22:58:56 +0000 (UTC)
+	 MIME-Version; b=PCSHrziEcnE6CyIZkmOZJ2q7sh73BdtKczJRicl64jJl702RDHRrLQRKqG05ZTlkbN+s4ZefEDCverSKOMfAf6o2FCGSY+4fuQcZdrLj3dJA7+2oeOtM/eKZjKCo1neG7528RwTfUXzbkANhroQQOsFUga8u++og7nmrDQRmjM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VrkPNUPO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4EEC4CEED;
+	Mon,  5 May 2025 23:19:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485937;
-	bh=PC+jTUt+sBuQzvXdmwfPrlJqZ2o7S8lrY1pss0LCaHU=;
+	s=k20201202; t=1746487191;
+	bh=5z5mejJ4lJQ7xauFMS3AH3ERPz0KEqrovqj9Hs4PAZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X27a6MLV5dIGbyzh76VTcsfJiuxcCF88fXihxB24EpDRuK8v6ILYUhQPB3uj282hj
-	 pm4yFH6s3SQ0HW89d9OYoewOe/rOOOop54UKbR/PLnur8MFDoPsrZMYUk/LHp1gW+t
-	 w1zGVMxO3zKM5JCfzNElg2jFsugIm3KAZN4B9CebDxXb/upZp5YLPPhpxqdvjoJfP4
-	 352Ebh3V/fZcBtFzkymp0FTP5jBhB+g3nnr7ZpNFVWAo8Ra4C2pOAieNY/qF0hWfqu
-	 FZXhnazoc8aSPmFQFM5Be3k3Kk4fSm7vBBNI7QrPH/OxHshb0pRtnGUMDz2Mspqpa4
-	 JTX0HTmJfoQ7g==
+	b=VrkPNUPOCtZ6dCkl6z24q8eK1cIdNziaaeoRdo+iMkTwMGa0M6wMW5CbwBiDAXGtb
+	 SkZSKfNg3xjaxQFfSA4E2OuRUqjEU83HX4Sk6cSqNPFDH7+qVntrQ/qr4x5u8wp7bU
+	 Orsj3TV/7GWgTZg/TfxCxsfuztc761hqU2lWNHGK2iDjoW8Pj4djneXSU53xq7DbxQ
+	 uxUKwRyWbbkc4OAd2XI0XydKg8Vtp6NyhsJT2eCW+YY8c8Gujz8WJPa11jkyfFutZg
+	 /JVqhyl74tyQuSeipjvC057m2FYj/bF/bcTozEHSoAzi6XH/OTIl7xYttsfhj8JATc
+	 YdFzo9LU/kjlg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shree Ramamoorthy <s-ramamoorthy@ti.com>,
-	Lee Jones <lee@kernel.org>,
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	aaro.koskinen@iki.fi,
-	andreas@kemnade.info,
-	khilman@baylibre.com,
-	rogerq@kernel.org,
-	tony@atomide.com,
-	linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 075/294] mfd: tps65219: Remove TPS65219_REG_TI_DEV_ID check
-Date: Mon,  5 May 2025 18:52:55 -0400
-Message-Id: <20250505225634.2688578-75-sashal@kernel.org>
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	alexander.sverdlin@gmail.com,
+	hkallweit1@gmail.com,
+	lorenzo@kernel.org,
+	nicolas.dichtel@6wind.com,
+	aleksander.lobakin@intel.com,
+	linux-omap@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 049/114] net: ethernet: ti: cpsw_new: populate netdev of_node
+Date: Mon,  5 May 2025 19:17:12 -0400
+Message-Id: <20250505231817.2697367-49-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
-References: <20250505225634.2688578-1-sashal@kernel.org>
+In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
+References: <20250505231817.2697367-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -67,59 +74,38 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.89
+X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit 76b58d5111fdcffce615beb71520bc7a6f1742c9 ]
+[ Upstream commit 7ff1c88fc89688c27f773ba956f65f0c11367269 ]
 
-The chipid macro/variable and regmap_read function call is not needed
-because the TPS65219_REG_TI_DEV_ID register value is not a consistent value
-across TPS65219 PMIC config versions. Reading from the DEV_ID register
-without a consistent value to compare it to isn't useful. There isn't a
-way to verify the match data ID is the same ID read from the DEV_ID device
-register. 0xF0 isn't a DEV_ID value consistent across TPS65219 NVM
-configurations.
+So that of_find_net_device_by_node() can find CPSW ports and other DSA
+switches can be stacked downstream. Tested in conjunction with KSZ8873.
 
-For TPS65215, there is a consistent value in bits 5-0 of the DEV_ID
-register. However, there are other error checks in place within probe()
-that apply to both PMICs rather than keeping this isolated check for one
-PMIC.
-
-Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-Link: https://lore.kernel.org/r/20250206173725.386720-4-s-ramamoorthy@ti.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://patch.msgid.link/20250303074703.1758297-1-alexander.sverdlin@siemens.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/tps65219.c | 7 -------
- 1 file changed, 7 deletions(-)
+ drivers/net/ethernet/ti/cpsw_new.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c
-index 0e0c42e4fdfc7..72a5f51fe32a5 100644
---- a/drivers/mfd/tps65219.c
-+++ b/drivers/mfd/tps65219.c
-@@ -228,7 +228,6 @@ static struct regmap_irq_chip tps65219_irq_chip = {
- static int tps65219_probe(struct i2c_client *client)
- {
- 	struct tps65219 *tps;
--	unsigned int chipid;
- 	bool pwr_button;
- 	int ret;
+diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
+index a1ee205d6a889..d6f8d3e757a25 100644
+--- a/drivers/net/ethernet/ti/cpsw_new.c
++++ b/drivers/net/ethernet/ti/cpsw_new.c
+@@ -1427,6 +1427,7 @@ static int cpsw_create_ports(struct cpsw_common *cpsw)
+ 		ndev->netdev_ops = &cpsw_netdev_ops;
+ 		ndev->ethtool_ops = &cpsw_ethtool_ops;
+ 		SET_NETDEV_DEV(ndev, dev);
++		ndev->dev.of_node = slave_data->slave_node;
  
-@@ -253,12 +252,6 @@ static int tps65219_probe(struct i2c_client *client)
- 	if (ret)
- 		return ret;
- 
--	ret = regmap_read(tps->regmap, TPS65219_REG_TI_DEV_ID, &chipid);
--	if (ret) {
--		dev_err(tps->dev, "Failed to read device ID: %d\n", ret);
--		return ret;
--	}
--
- 	ret = devm_mfd_add_devices(tps->dev, PLATFORM_DEVID_AUTO,
- 				   tps65219_cells, ARRAY_SIZE(tps65219_cells),
- 				   NULL, 0, regmap_irq_get_domain(tps->irq_data));
+ 		if (!napi_ndev) {
+ 			/* CPSW Host port CPDMA interface is shared between
 -- 
 2.39.5
 
