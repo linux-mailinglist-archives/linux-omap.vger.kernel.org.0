@@ -1,46 +1,46 @@
-Return-Path: <linux-omap+bounces-3658-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3659-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A45BDAAAF5D
-	for <lists+linux-omap@lfdr.de>; Tue,  6 May 2025 05:15:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A0CFAAAC9A
+	for <lists+linux-omap@lfdr.de>; Tue,  6 May 2025 04:19:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24374166504
-	for <lists+linux-omap@lfdr.de>; Tue,  6 May 2025 03:14:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2E251BC07DD
+	for <lists+linux-omap@lfdr.de>; Tue,  6 May 2025 02:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E06AC2FA812;
-	Mon,  5 May 2025 23:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 874F32FE0B7;
+	Mon,  5 May 2025 23:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iY69dcXy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E/PTVPJ5"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0101A381DF5;
-	Mon,  5 May 2025 23:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE93F2F4039;
+	Mon,  5 May 2025 23:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486571; cv=none; b=BgKw0fW5RDFRNBfiUenER61kxR4odS2zNtiRyb5pp6oermC5Jsbe3Gf0uIA1TIMp7j/qGQD2Dvjq7OE9rFN7Eigw7uyMcD9xNrJMxp/qWzEpjKeCfxChozXSzmVHvjTXMiRKtxD3Tm1NNclcbGdp90DL6ct6oGGzhzv+zfdhtss=
+	t=1746486941; cv=none; b=jN0LWYCgqixfb5hwGiRKJ7z9wZdCbcrYlD75lk6+ubfahCjzn3qa8uiO7Ek0BekqJY0EbUJXC6jRUBG5yNztaFjIQvsVG7wGq1d2MU8YTwibM3otUr6fkCDMAjGU7O8e2SGA08Cf5X/uohpxmOLeZNPvdesS1zZfDDSXFA2gcx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486571; c=relaxed/simple;
-	bh=nzUV9tgjnukF7hG64rvR+C0pNLtSPqeM60qMohGRKDo=;
+	s=arc-20240116; t=1746486941; c=relaxed/simple;
+	bh=zpYXZf/1szlzcErFIeG/BZoeXx0H2PEPmL6HjLHy8H8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=b0GHi41rzUHUqdVO6bIgqBuOiVUtLBnHNu2NfK2S/iB8MDGw8CKYPliflKPJnhLHzwCuMlT2iCVdjGce5nKGcRrIVx4Ybsbp1SK2T2k7njykJGSOsPGteQXWnR5mn/wzepBlOez+EaB6AM+zYohFk4dsMhmzw+6nF20RwirZ2Fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iY69dcXy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82ACBC4CEE4;
-	Mon,  5 May 2025 23:09:27 +0000 (UTC)
+	 MIME-Version; b=ZrJPsdeVlex5NBRes2KmAQYBbTF2u0yJmZK3HwxIZrgO6I0XHcotpSadsf3+XADCAIkzXeiK8GclBPf0voCqXIm5ZSxcKnaxuxvOwG36GzmedAkbiQ5+/BZiRaIVQtXIFfZ6ihF946+XqeSvdL5GUD39M1nu9Vb2YB3UIQna2B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E/PTVPJ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E41EEC4CEED;
+	Mon,  5 May 2025 23:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486569;
-	bh=nzUV9tgjnukF7hG64rvR+C0pNLtSPqeM60qMohGRKDo=;
+	s=k20201202; t=1746486939;
+	bh=zpYXZf/1szlzcErFIeG/BZoeXx0H2PEPmL6HjLHy8H8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iY69dcXyv2P9OsxFJIgxV9pC3E1XHqczc3a8sR//bi5f2vH69AB9CCVI8SHuO4tgU
-	 ZeshqbNKaNeUWRbjRmJh5L77xfT9yJ6s2PYuiBZdTXCqvhUlVrHm6d7w4rUjoRnuKA
-	 5/JXqPqtiMHb+lbS6NGPLhBVHeap98go4cwb+JKa8BcX7J3rCRDji8pt+bKfWPkD/m
-	 eYjF/zInNGrQRLaKPzHgWGjFthl1JPb22Nwb5qSOZb55qmcGhQEUmzIk1s7xfRuffp
-	 ev2Qw9c/S+j9+HQVAw0XdLfjbFCY4EfoqDABfscUQBcQfDv84uMLPOkLNU5z913Jna
-	 KbhAY8AgjeKkQ==
+	b=E/PTVPJ5mlcVF6ywpuF0DbDhsqhnBW/NsONWR0nzERD91/SREwPb6nMwQ8W3faEqm
+	 Q1eXvsAA6okcXUxWoYoXuT3R8KdwN3bKGfMm0QkJJLRTV30T1KlnAVO704/eOB177K
+	 mb4mta6hQtO7rZSu8nLUFpXFdI0xlITT4PeO0dWK/OXUU8K+5S+gw0EH+Yv2zGE9s3
+	 3ZVhzuzD+qSArgKkRHocZ/15L8zAfmrAeOQglG46iyJ3beEeknnkMvY0qseGrUYH4t
+	 0c2iA1Akhi6O474wszth4rqgXmRQaQLWSvifE3k3EDJnrjle+phw8idQjm3IRJ1Qey
+	 xS4M996tXWEpg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -54,19 +54,19 @@ Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
 	edumazet@google.com,
 	pabeni@redhat.com,
 	alexander.sverdlin@gmail.com,
-	aleksander.lobakin@intel.com,
 	lorenzo@kernel.org,
+	aleksander.lobakin@intel.com,
+	nicolas.dichtel@6wind.com,
 	hkallweit1@gmail.com,
 	u.kleine-koenig@baylibre.com,
-	nicolas.dichtel@6wind.com,
 	linux-omap@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 095/212] net: ethernet: ti: cpsw_new: populate netdev of_node
-Date: Mon,  5 May 2025 19:04:27 -0400
-Message-Id: <20250505230624.2692522-95-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 069/153] net: ethernet: ti: cpsw_new: populate netdev of_node
+Date: Mon,  5 May 2025 19:11:56 -0400
+Message-Id: <20250505231320.2695319-69-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
-References: <20250505230624.2692522-1-sashal@kernel.org>
+In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
+References: <20250505231320.2695319-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -75,7 +75,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.136
+X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
 From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
@@ -96,10 +96,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index 6e70aa1cc7bf1..42684cb83606a 100644
+index 13e34ad72f265..923746ba87a61 100644
 --- a/drivers/net/ethernet/ti/cpsw_new.c
 +++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -1411,6 +1411,7 @@ static int cpsw_create_ports(struct cpsw_common *cpsw)
+@@ -1418,6 +1418,7 @@ static int cpsw_create_ports(struct cpsw_common *cpsw)
  		ndev->netdev_ops = &cpsw_netdev_ops;
  		ndev->ethtool_ops = &cpsw_ethtool_ops;
  		SET_NETDEV_DEV(ndev, dev);
