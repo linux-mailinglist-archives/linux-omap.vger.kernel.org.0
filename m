@@ -1,236 +1,182 @@
-Return-Path: <linux-omap+bounces-3679-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3680-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFB92AAFC42
-	for <lists+linux-omap@lfdr.de>; Thu,  8 May 2025 16:00:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2125DAAFFB8
+	for <lists+linux-omap@lfdr.de>; Thu,  8 May 2025 17:57:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF68F1C209E0
-	for <lists+linux-omap@lfdr.de>; Thu,  8 May 2025 14:00:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A4CB4A45B2
+	for <lists+linux-omap@lfdr.de>; Thu,  8 May 2025 15:57:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B4822D7BC;
-	Thu,  8 May 2025 14:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F81279916;
+	Thu,  8 May 2025 15:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OlLc5mLr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C6/U1TVf"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A1E22C35E
-	for <linux-omap@vger.kernel.org>; Thu,  8 May 2025 14:00:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BABD62CCC0;
+	Thu,  8 May 2025 15:57:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746712813; cv=none; b=kzuN/iO4SEFj/jaX3mW6khMljHVnPUGe6pWRAXJC6YzWam54HBxAg+o/4Fqi5Hy3QGCAA8Zpn7t1h78WMhRaxM9fIVx8nWG/37HVpWt204j/opAVtALHMmR2XxpISJa+rJcjGHWWrenXmpHKgiyvrFJKJFSAG81OnrX5DxveGnI=
+	t=1746719852; cv=none; b=gZwaIvnF9mM6yqnBT+GuSckMbyabpzlcJYHyDPk1rcseHODvEYLHTOYiaadnIZT97FPANdsV3XhwDZcfPgu3iDd73mlSwY8zj4oMDrUHGyr8IkercrEhI4iB8820luSI0eaJyXjZ0d7GfWBopWO/DwSuCC40h/Zu29T9t8vDpeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746712813; c=relaxed/simple;
-	bh=0CBNblVGBwzC4K+9AanOCAcHMIo1KuKGB49HbiekJQI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kltRbJb3o6MAWVBoH919nxVpfdec9RIfw6uKpmmbR+9jNkey9OWvKJUDVSqgmpzuWFs0dI+saCeBYK6unOpBlk4zocmu9cnlJTWlvrXDtxxH6sSlnCCD2Vw66BUn9Eh3MghWcF20zgUpYZFyXVbrxo9dHJyKjgG1FTVB3N9vlys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OlLc5mLr; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1746712810;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9N9KFBFAtHdvMwtJNTBznZFyJ6K9qRAlGv8LqfVMqBw=;
-	b=OlLc5mLryunthBx23rro8PQYJw/P/9PmLdXe4gV+Mlw4rJd7v4M+OF9quS4w8vlF5KKaYa
-	lBbmKfabq0iznQvhIDh3w5ozjmKFmYPq3Hp10NychL72XCj0bskBjFgpqzRSPhTbwWz7jP
-	3q36Pq1dXIoFDOwoj4K40p05ogp7pSk=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-393-fPvu4qQMMeGpemcwPJiqoQ-1; Thu, 08 May 2025 10:00:09 -0400
-X-MC-Unique: fPvu4qQMMeGpemcwPJiqoQ-1
-X-Mimecast-MFC-AGG-ID: fPvu4qQMMeGpemcwPJiqoQ_1746712808
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-43d00017e9dso4707055e9.0
-        for <linux-omap@vger.kernel.org>; Thu, 08 May 2025 07:00:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746712808; x=1747317608;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9N9KFBFAtHdvMwtJNTBznZFyJ6K9qRAlGv8LqfVMqBw=;
-        b=gt+gHiFLxn5HVbeTGKAllaW7lOiBRmM7JftO6eV1dSz1YlLmDCej8nJCkIG8st54jz
-         6l5IBhCpcaNtWFN/SEINXeRc5E9tdgU5vg0x2f+vqCxcllpvOrc26X1WF2nDYCisHIB3
-         eJ83uz91eCpz4BDibTabBdGMZ5/TpHA8EYhx074bpeh0Sty4NyP32Chy+QUtF9GjtMz/
-         cAyf8PDsM3dhgjnyKZ+NGKd0Z14pfdGXhivAq++0K2ReNB3b6LdioW3KJn/aLtvQsRnT
-         dxJh5sUa7Enf/oD+/NRC7glOUKdc9p4JbdwNoKGD+QQK6/vZsYEXvfbB4zNE3RyWRcgX
-         fJ+w==
-X-Forwarded-Encrypted: i=1; AJvYcCURUTS0xBGWIGMJX66drBD70Cze89xTV3ry0Lj99i9TB4kpf/Tbv7ERAClwr7avR0WlpQroFG3iBVMn@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvIK8FYf/JFi2tjH7BwO+AaXnSWIUlfc5OkIVkQefwdCqHgnSV
-	CJMFL5cVXyVhWX1XYoUdZXfFR3ZLdN2UQ69ad/S1esDoMIAGwSahQqIUf59tytVmjfILKyuIrLi
-	K7N/8OYFxKalZwoYERL1XrzdzmJBKn3ZmebNsooaxxsEtRvtahEvUUN/p9R4=
-X-Gm-Gg: ASbGncsY/Vo2W87rnQqZ0O2MC2wwCDrp1VL0Oz/A1vRQL25CCJCouLdtiVGmdb0Ys9u
-	wXKk8lS21izqz3ZShJrg9JIff3RpMBbvE0Kf4+8XI18WBjSOwaHhEbAPp55uL9wM6ojtrO8rE85
-	8S5HRmREsEh0bBzDBu6RCNYBM6w/iePSl9OMuBkTNfPM+q7d9ROXqVoGncmma57oWzvaz5GRoRa
-	UjblN3UGkZW3QEzRMkVWK+PyUGCdkcCQcEFuupmEWjji3FIJxoD5cputUa4H+IEHGgVoa+4DKUt
-	GgsSpKREPe3fO7wj
-X-Received: by 2002:a05:600c:5491:b0:43d:ac5:11ed with SMTP id 5b1f17b1804b1-441d44dc05amr62664185e9.24.1746712807962;
-        Thu, 08 May 2025 07:00:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGC2fc8m3vhbJavq1eX+bZPuWSNvi1AlBB3FQAZ2SaPCTNloEhwJvAd3tWCs+J3g6gFaFKD4A==
-X-Received: by 2002:a05:600c:5491:b0:43d:ac5:11ed with SMTP id 5b1f17b1804b1-441d44dc05amr62663825e9.24.1746712807597;
-        Thu, 08 May 2025 07:00:07 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:244b:910::f39? ([2a0d:3344:244b:910::f39])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442cd2b2050sm39103855e9.0.2025.05.08.07.00.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 May 2025 07:00:07 -0700 (PDT)
-Message-ID: <244138b2-a90e-404d-946f-9ce25c6155e1@redhat.com>
-Date: Thu, 8 May 2025 16:00:05 +0200
+	s=arc-20240116; t=1746719852; c=relaxed/simple;
+	bh=+Ffm6s3wi6yqUpfLRXrGBMyqeQgdnVpjhjHH/4soLF0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=AuEv9TvBJAbeMz4x54yR0nLrNJ9AKsHZbvB3um2TX5Ru8lHJR2n/nQLb3JaUM68YOuH0nj081p691+gcKnz17Ys8h9uKXYPnYP7aaBC2aPPo1uGJIG7RgfpW24QG9X0jH904b3OH/VwAnRze3/sOM0FzmGvpf1+t9KLfGOq9J/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C6/U1TVf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37836C4CEE7;
+	Thu,  8 May 2025 15:57:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746719852;
+	bh=+Ffm6s3wi6yqUpfLRXrGBMyqeQgdnVpjhjHH/4soLF0=;
+	h=From:Date:Subject:To:Cc:From;
+	b=C6/U1TVfy40SGQ0GsQJsvMc4w4N5aqHB4NfePWRBd9NLE7SCQFg1vTwnPRsWzwMK2
+	 BlGTquLxF4jSrgb4s8FL8+sxq1xa2UJTTMAhuZ3B+RPekxp/JGht8cmQf83YaDUjQw
+	 hFFB/WKgXMiQ2BdehpVXueFZt2Opqi2htZFY35ezm7nflcLxvNBxyZj3mWeTyh6Hbq
+	 wx07eFdcyaHRqiP7IRfSJHuitQ+B78OIvy2+6IMK4Jq7X4Fe/KYlkJ5NnSjLyvaqtW
+	 DpxugqYo+pzPk6psmXam5Kq+1t66hjn5ZYinBsSnwr56ZvpoOtcDoofX2KET+oH/5z
+	 YgSMq455fVXtQ==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Thu, 08 May 2025 16:57:24 +0100
+Subject: [PATCH] mfd: Remove node variables that are unused with
+ CONFIG_OF=n
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 8/9] net: ethernet: ti: am65-cpsw: add network
- flow classification support
-To: Roger Quadros <rogerq@kernel.org>,
- Siddharth Vadapalli <s-vadapalli@ti.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Russell King <linux@armlinux.org.uk>, danishanwar@ti.com
-Cc: srk@ti.com, linux-omap@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250505-am65-cpsw-rx-class-v2-0-5359ea025144@kernel.org>
- <20250505-am65-cpsw-rx-class-v2-8-5359ea025144@kernel.org>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250505-am65-cpsw-rx-class-v2-8-5359ea025144@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250508-mfd-fix-unused-node-variables-v1-1-df84d80cca55@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAGPUHGgC/x3MQQrCMBBG4auUWTuQhlbEq4iLmPmnDmgqGVoKp
+ Xc3dPnB4+3kqAane7dTxWpuc2noLx3ldyoT2KSZYohjGMONvyqstvFSFodwmQW8pmrp9YFzPyg
+ GjVnlmqk9fhUtPv+P53H8AVFLAWFvAAAA
+X-Change-ID: 20250508-mfd-fix-unused-node-variables-14fe4f2cfd6c
+To: Thomas Gleixner <tglx@linutronix.de>, Jiri Slaby <jirislaby@kernel.org>
+Cc: Lee Jones <lee@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
+ Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+ linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4327; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=+Ffm6s3wi6yqUpfLRXrGBMyqeQgdnVpjhjHH/4soLF0=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDBkyVzK9r9x/3LtwZU7UtKerNHb4b1/xJOX0dHEefeamC
+ xOCHUpDO0pZGMS4GGTFFFmqH6seNzScc5bxxqlJMHNYmUCGMHBxCsBELLwY/vDffc4Tf3DR/Ce7
+ ZU/w9ZslNmteiWf9++eRan/967c2eucZGW7sFT4eyXO7mb2J70DwMyeL/Wttf/wKF+r2ZTgUEZ2
+ /jQ8A
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-On 5/5/25 6:26 PM, Roger Quadros wrote:
-[...]
-> +/* validate the rxnfc rule and convert it to policer config */
-> +static int am65_cpsw_rxnfc_validate(struct am65_cpsw_port *port,
-> +				    struct ethtool_rxnfc *rxnfc,
-> +				    struct cpsw_ale_policer_cfg *cfg)
-> +{
-> +	struct ethtool_rx_flow_spec *fs = &rxnfc->fs;
-> +	int flow_type = AM65_CPSW_FLOW_TYPE(fs->flow_type);
-> +	struct ethhdr *eth_mask;
+A recent cleanup introduced a few instances of -Wunused-variable in
+configurations without CONFIG_OF because of_fwnode_handle() does not
+reference its argument in that case:
 
-(Minor nit only mentioned because of more relevant comments on previous
-patch) Please respect the reverse christmas tree order above.
+  drivers/mfd/twl4030-irq.c: In function 'twl4030_init_irq':
+  drivers/mfd/twl4030-irq.c:679:46: warning: unused variable 'node' [-Wunused-variable]
+    679 |         struct                  device_node *node = dev->of_node;
+        |                                              ^~~~
+  drivers/mfd/max8925-core.c: In function 'max8925_irq_init':
+  drivers/mfd/max8925-core.c:659:29: warning: unused variable 'node' [-Wunused-variable]
+    659 |         struct device_node *node = chip->dev->of_node;
+        |                             ^~~~
+  drivers/mfd/88pm860x-core.c: In function 'device_irq_init':
+  drivers/mfd/88pm860x-core.c:576:29: warning: unused variable 'node' [-Wunused-variable]
+    576 |         struct device_node *node = i2c->dev.of_node;
+        |                             ^~~~
 
-> +
-> +	memset(cfg, 0, sizeof(*cfg));
-> +
-> +	if (flow_type & FLOW_RSS)
-> +		return -EINVAL;
-> +
-> +	if (fs->location == RX_CLS_LOC_ANY ||
-> +	    fs->location >= port->rxnfc_max)
-> +		return -EINVAL;
-> +
-> +	if (fs->ring_cookie == RX_CLS_FLOW_DISC)
-> +		cfg->drop = true;
-> +	else if (fs->ring_cookie > AM65_CPSW_MAX_QUEUES)
-> +		return -EINVAL;
-> +
-> +	cfg->port_id = port->port_id;
-> +	cfg->thread_id = fs->ring_cookie;
-> +
-> +	switch (flow_type) {
-> +	case ETHER_FLOW:
-> +		eth_mask = &fs->m_u.ether_spec;
-> +
-> +		/* etherType matching is supported by h/w but not yet here */
-> +		if (eth_mask->h_proto)
-> +			return -EINVAL;
-> +
-> +		/* Only support source matching addresses by full mask */
-> +		if (is_broadcast_ether_addr(eth_mask->h_source)) {
-> +			cfg->match_flags |= CPSW_ALE_POLICER_MATCH_MACSRC;
-> +			ether_addr_copy(cfg->src_addr,
-> +					fs->h_u.ether_spec.h_source);
-> +		}
-> +
-> +		/* Only support destination matching addresses by full mask */
-> +		if (is_broadcast_ether_addr(eth_mask->h_dest)) {
-> +			cfg->match_flags |= CPSW_ALE_POLICER_MATCH_MACDST;
-> +			ether_addr_copy(cfg->dst_addr,
-> +					fs->h_u.ether_spec.h_dest);
-> +		}
-> +
-> +		if ((fs->flow_type & FLOW_EXT) && fs->m_ext.vlan_tci) {
-> +			/* Don't yet support vlan ethertype */
-> +			if (fs->m_ext.vlan_etype)
-> +				return -EINVAL;
-> +
-> +			if (fs->m_ext.vlan_tci != VLAN_TCI_FULL_MASK)
-> +				return -EINVAL;
-> +
-> +			cfg->vid = FIELD_GET(VLAN_VID_MASK,
-> +					     ntohs(fs->h_ext.vlan_tci));
-> +			cfg->vlan_prio = FIELD_GET(VLAN_PRIO_MASK,
-> +						   ntohs(fs->h_ext.vlan_tci));
-> +			cfg->match_flags |= CPSW_ALE_POLICER_MATCH_OVLAN;
-> +		}
-> +
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int am65_cpsw_policer_find_match(struct am65_cpsw_port *port,
-> +					struct cpsw_ale_policer_cfg *cfg)
-> +{
-> +	struct am65_cpsw_rxnfc_rule *rule;
-> +	int loc = -EINVAL;
-> +
-> +	mutex_lock(&port->rxnfc_lock);
-> +	list_for_each_entry(rule, &port->rxnfc_rules, list) {
-> +		if (!memcmp(&rule->cfg, cfg, sizeof(*cfg))) {
-> +			loc = rule->location;
-> +			break;
-> +		}
-> +	}
-> +
-> +	mutex_unlock(&port->rxnfc_lock);
-> +
-> +	return loc;
-> +}
-> +
-> +static int am65_cpsw_rxnfc_add_rule(struct am65_cpsw_port *port,
-> +				    struct ethtool_rxnfc *rxnfc)
-> +{
-> +	struct ethtool_rx_flow_spec *fs = &rxnfc->fs;
-> +	struct am65_cpsw_rxnfc_rule *rule;
-> +	struct cpsw_ale_policer_cfg cfg;
-> +	int loc, ret;
-> +
-> +	if (am65_cpsw_rxnfc_validate(port, rxnfc, &cfg))
-> +		return -EINVAL;
-> +
-> +	/* need to check if similar rule is already present at another location,
-> +	 * if yes error out
-> +	 */
-> +	loc = am65_cpsw_policer_find_match(port, &cfg);
-> +	if (loc >= 0 && loc != fs->location) {
-> +		netdev_info(port->ndev,
-> +			    "rule already exists in location %d. not adding\n",
-> +			    loc);
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* delete exisiting rule */
-> +	if (loc >= 0) {
-> +		mutex_lock(&port->rxnfc_lock);
+Use the value of these variables as the argument to of_fwnode_handle()
+directly, clearing up the warnings.
 
-The rxnfc_lock mutex is released and re-aquired after the previous
-lookup. Con some other thread delete the matching rule in-between and
-add another one at a different location?
+Fixes: e3d44f11da04 ("mfd: Switch to irq_domain_create_*()")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ drivers/mfd/88pm860x-core.c | 5 ++---
+ drivers/mfd/max8925-core.c  | 5 ++---
+ drivers/mfd/twl4030-irq.c   | 5 ++---
+ 3 files changed, 6 insertions(+), 9 deletions(-)
 
-/P
+diff --git a/drivers/mfd/88pm860x-core.c b/drivers/mfd/88pm860x-core.c
+index 488e346047c1..25300b53a8ef 100644
+--- a/drivers/mfd/88pm860x-core.c
++++ b/drivers/mfd/88pm860x-core.c
+@@ -573,7 +573,6 @@ static int device_irq_init(struct pm860x_chip *chip,
+ 	unsigned long flags = IRQF_TRIGGER_FALLING | IRQF_ONESHOT;
+ 	int data, mask, ret = -EINVAL;
+ 	int nr_irqs, irq_base = -1;
+-	struct device_node *node = i2c->dev.of_node;
+ 
+ 	mask = PM8607_B0_MISC1_INV_INT | PM8607_B0_MISC1_INT_CLEAR
+ 		| PM8607_B0_MISC1_INT_MASK;
+@@ -624,8 +623,8 @@ static int device_irq_init(struct pm860x_chip *chip,
+ 		ret = -EBUSY;
+ 		goto out;
+ 	}
+-	irq_domain_create_legacy(of_fwnode_handle(node), nr_irqs, chip->irq_base, 0,
+-				 &pm860x_irq_domain_ops, chip);
++	irq_domain_create_legacy(of_fwnode_handle(i2c->dev.of_node), nr_irqs,
++				 chip->irq_base, 0, &pm860x_irq_domain_ops, chip);
+ 	chip->core_irq = i2c->irq;
+ 	if (!chip->core_irq)
+ 		goto out;
+diff --git a/drivers/mfd/max8925-core.c b/drivers/mfd/max8925-core.c
+index 78b16c67a5fc..91388477ad2b 100644
+--- a/drivers/mfd/max8925-core.c
++++ b/drivers/mfd/max8925-core.c
+@@ -656,7 +656,6 @@ static int max8925_irq_init(struct max8925_chip *chip, int irq,
+ {
+ 	unsigned long flags = IRQF_TRIGGER_FALLING | IRQF_ONESHOT;
+ 	int ret;
+-	struct device_node *node = chip->dev->of_node;
+ 
+ 	/* clear all interrupts */
+ 	max8925_reg_read(chip->i2c, MAX8925_CHG_IRQ1);
+@@ -682,8 +681,8 @@ static int max8925_irq_init(struct max8925_chip *chip, int irq,
+ 		return -EBUSY;
+ 	}
+ 
+-	irq_domain_create_legacy(of_fwnode_handle(node), MAX8925_NR_IRQS, chip->irq_base, 0,
+-				 &max8925_irq_domain_ops, chip);
++	irq_domain_create_legacy(of_fwnode_handle(chip->dev->of_node), MAX8925_NR_IRQS,
++				 chip->irq_base, 0, &max8925_irq_domain_ops, chip);
+ 
+ 	/* request irq handler for pmic main irq*/
+ 	chip->core_irq = irq;
+diff --git a/drivers/mfd/twl4030-irq.c b/drivers/mfd/twl4030-irq.c
+index 232c2bfe8c18..c7191d2992a1 100644
+--- a/drivers/mfd/twl4030-irq.c
++++ b/drivers/mfd/twl4030-irq.c
+@@ -676,7 +676,6 @@ int twl4030_init_irq(struct device *dev, int irq_num)
+ 	static struct irq_chip	twl4030_irq_chip;
+ 	int			status, i;
+ 	int			irq_base, irq_end, nr_irqs;
+-	struct			device_node *node = dev->of_node;
+ 
+ 	/*
+ 	 * TWL core and pwr interrupts must be contiguous because
+@@ -691,8 +690,8 @@ int twl4030_init_irq(struct device *dev, int irq_num)
+ 		return irq_base;
+ 	}
+ 
+-	irq_domain_create_legacy(of_fwnode_handle(node), nr_irqs, irq_base, 0,
+-				 &irq_domain_simple_ops, NULL);
++	irq_domain_create_legacy(of_fwnode_handle(dev->of_node), nr_irqs,
++				 irq_base, 0, &irq_domain_simple_ops, NULL);
+ 
+ 	irq_end = irq_base + TWL4030_CORE_NR_IRQS;
+ 
+
+---
+base-commit: c63e393a16c9c4cf8c9b70fedf9f27b442874ef2
+change-id: 20250508-mfd-fix-unused-node-variables-14fe4f2cfd6c
+
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
 
 
