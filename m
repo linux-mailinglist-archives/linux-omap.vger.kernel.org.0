@@ -1,125 +1,116 @@
-Return-Path: <linux-omap+bounces-3697-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3698-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C691BAB537F
-	for <lists+linux-omap@lfdr.de>; Tue, 13 May 2025 13:09:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF33EAB53BE
+	for <lists+linux-omap@lfdr.de>; Tue, 13 May 2025 13:23:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADFD6163B0F
-	for <lists+linux-omap@lfdr.de>; Tue, 13 May 2025 11:09:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FD0719E3DB0
+	for <lists+linux-omap@lfdr.de>; Tue, 13 May 2025 11:23:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1C7928CF41;
-	Tue, 13 May 2025 11:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB8128D8C2;
+	Tue, 13 May 2025 11:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="feK7OW7F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="InxzWI8a"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C01C28C863;
-	Tue, 13 May 2025 11:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE07F28D840;
+	Tue, 13 May 2025 11:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747134590; cv=none; b=gK2bGnraBx4/ECbI9DOGcIJNEQd25vOG2O5eSHhlKrtbog3VC70O17HSrHYmhQb93159/BnK0VYlewKzwIYdXNX54sr+lbwhwwyAZUJn5wb9MCGmBus+TPPWhIFAXRuSEYH/+nVhGrwoXHZD1gsth9ptWsq30aPEVAYmQe9hzyo=
+	t=1747135409; cv=none; b=M27/dZE58h/ToWkUSsbbQf5QYc4KK5UlWvrnK/V9zPfEvx5OQBqVvAQ4g9Fc2a/hjNj/McJS+/WLaExpuwi2zhp81w9QK/FNZL1xb1PZMAdjdKOcNWvSlMvrbuHgABa8M9QWS1XRw5Ua/6ha2egL+SnJ4j29D8+3sOH60Xdbh0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747134590; c=relaxed/simple;
-	bh=PCcbjUrOFmJlpnhODLBlzDB5IxuULw8I8RG6eT+YV44=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AsflIVxD7EKltnmPv2i/bRC9v4qsB4kmlYAibt1Ac/re450s33HPzgVibQ8U//3CmtM6xRSLOVGDYRzSXZzrb96QNRc8eoaQrGYw1RZZeX0xXnt9voZyWQ1MUSSyHfLKafty/CEjxkTgU+k4SeEqkSCkzaRBvRv190nfh55VGyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=feK7OW7F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3148C4CEEB;
-	Tue, 13 May 2025 11:09:47 +0000 (UTC)
+	s=arc-20240116; t=1747135409; c=relaxed/simple;
+	bh=t9jS1x/YvXLsXUVlOHRpXEQ1NUosivINnVeq2109bOE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HoQ0KsTXBOLMrtIl/Ogvh3BQHZSQHIG0mL55MiZtPKim2/I03Re83v3246Q4GAzomTu3ElKFekKKgpOV/WlQAIsUDNEXD3kpxyoNXT3+KVNkpq3z2d2hiFdNhHJtcq+r0nHu7c6d/tPYDJTLFObvduj1gepoDmmN5O6e0vpRHXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=InxzWI8a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D71B2C4CEE4;
+	Tue, 13 May 2025 11:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747134589;
-	bh=PCcbjUrOFmJlpnhODLBlzDB5IxuULw8I8RG6eT+YV44=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=feK7OW7FwHoi4OhtOu7F98KEGSctnjGS5nj6laZjAI4seK3EA+Vk+37j637GNRrNO
-	 ha7EBfFVqEiY17ZwWFFXce9yEwagN33CWkm5HMyYzGYAv38YSjAavo0+akYOGlrq5l
-	 VuCogM2TiYIbSy1mpWZXvGIRipPNTXYAJh5y5vZw0wqgh4hLrznnkN30JIJDXM0PCr
-	 4U6qOGiv2NkU5lGdOb+iWATP0QALNZLKipmqLWCjDiaPFtCtRb5RcLSgG/jUXc0TD4
-	 QMFcfTmxJus5+H4KWoHIXGnkjXAj6g0jie/+a2X/QjiMTAQj59MM0YsNXQ9vuPptbl
-	 3nU0UTzAF6NUg==
-Date: Tue, 13 May 2025 12:09:45 +0100
-From: Lee Jones <lee@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Jiri Slaby <jirislaby@kernel.org>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH] mfd: Remove node variables that are unused with
- CONFIG_OF=n
-Message-ID: <20250513110945.GK2936510@google.com>
-References: <20250508-mfd-fix-unused-node-variables-v1-1-df84d80cca55@kernel.org>
- <20250513094726.GG2936510@google.com>
- <20250513104518.GA2811486@ax162>
+	s=k20201202; t=1747135408;
+	bh=t9jS1x/YvXLsXUVlOHRpXEQ1NUosivINnVeq2109bOE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=InxzWI8a/l+p9XCiwXBwCVJzeVa9Lr+PlapJNCbDQomFGXunqynh2SeoCFm7e9PHQ
+	 bXyIiyQglFyjtrYfUp8X8v0ZNrFUAtZywLKxGUxB9ewoNf6eYCU2VKv0vLSn6ja4y9
+	 acZnfAGOwoh/by+ToBDD/iZ83ogsYWA1jDZvixR6R8gWn/npoHlGy0W07UI9oIPC5q
+	 u9/s1pBTjlxiWyen3oFmg6ztBfCi4pCK+prpxbiPpMLvcjc4Ny1sMBC74CFiHNNkvo
+	 YerZvr8Ik3dWbLbP+xGS46uxMJixhEl6oDbjk32QCP3HDHF1qnpocSrcR9Dwbeo8Yw
+	 5fVi/Sgn6Y7nQ==
+Message-ID: <5ec638ab-e61f-4fe7-b7bc-14c03a0de359@kernel.org>
+Date: Tue, 13 May 2025 14:23:23 +0300
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250513104518.GA2811486@ax162>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 7/9] net: ethernet: ti: cpsw_ale: add policer
+ save restore for PM sleep
+To: Paolo Abeni <pabeni@redhat.com>, Siddharth Vadapalli
+ <s-vadapalli@ti.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ danishanwar@ti.com
+Cc: srk@ti.com, linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250505-am65-cpsw-rx-class-v2-0-5359ea025144@kernel.org>
+ <20250505-am65-cpsw-rx-class-v2-7-5359ea025144@kernel.org>
+ <23278f6d-f111-46f7-a844-2cd7fbf8b623@redhat.com>
+Content-Language: en-US
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <23278f6d-f111-46f7-a844-2cd7fbf8b623@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, 13 May 2025, Nathan Chancellor wrote:
 
-> On Tue, May 13, 2025 at 10:47:26AM +0100, Lee Jones wrote:
-> > On Thu, 08 May 2025, Nathan Chancellor wrote:
-> > 
-> > > A recent cleanup introduced a few instances of -Wunused-variable in
-> > > configurations without CONFIG_OF because of_fwnode_handle() does not
-> > > reference its argument in that case:
-> > > 
-> > >   drivers/mfd/twl4030-irq.c: In function 'twl4030_init_irq':
-> > >   drivers/mfd/twl4030-irq.c:679:46: warning: unused variable 'node' [-Wunused-variable]
-> > >     679 |         struct                  device_node *node = dev->of_node;
-> > >         |                                              ^~~~
-> > >   drivers/mfd/max8925-core.c: In function 'max8925_irq_init':
-> > >   drivers/mfd/max8925-core.c:659:29: warning: unused variable 'node' [-Wunused-variable]
-> > >     659 |         struct device_node *node = chip->dev->of_node;
-> > >         |                             ^~~~
-> > >   drivers/mfd/88pm860x-core.c: In function 'device_irq_init':
-> > >   drivers/mfd/88pm860x-core.c:576:29: warning: unused variable 'node' [-Wunused-variable]
-> > >     576 |         struct device_node *node = i2c->dev.of_node;
-> > >         |                             ^~~~
-> > > 
-> > > Use the value of these variables as the argument to of_fwnode_handle()
-> > > directly, clearing up the warnings.
-> > > 
-> > > Fixes: e3d44f11da04 ("mfd: Switch to irq_domain_create_*()")
-> > > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> > > ---
-> > >  drivers/mfd/88pm860x-core.c | 5 ++---
-> > >  drivers/mfd/max8925-core.c  | 5 ++---
-> > >  drivers/mfd/twl4030-irq.c   | 5 ++---
-> > >  3 files changed, 6 insertions(+), 9 deletions(-)
-> > 
-> > Doesn't apply.  Which base commit / repo / branch are you using?
+
+On 08/05/2025 16:49, Paolo Abeni wrote:
+> On 5/5/25 6:26 PM, Roger Quadros wrote:
+>> diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+>> index ce216606d915..4e29702b86ea 100644
+>> --- a/drivers/net/ethernet/ti/cpsw_ale.c
+>> +++ b/drivers/net/ethernet/ti/cpsw_ale.c
+>> @@ -1823,3 +1823,45 @@ int cpsw_ale_policer_set_entry(struct cpsw_ale *ale, u32 policer_idx,
+>>  
+>>  	return 0;
+>>  }
+>> +
+>> +void cpsw_ale_policer_save(struct cpsw_ale *ale, u32 *data)
+>> +{
+>> +	int i, idx;
+>> +
+>> +	for (idx = 0; idx < ale->params.num_policers; idx++) {
+>> +		cpsw_ale_policer_read_idx(ale, idx);
+>> +
+>> +		for (i = 0; i < CPSW_ALE_POLICER_ENTRY_WORDS; i++)
+>> +			data[i] = readl_relaxed(ale->params.ale_regs +
+>> +						ALE_POLICER_PORT_OUI + 4 * i);
+>> +
+>> +		regmap_field_write(ale->fields[ALE_THREAD_CLASS_INDEX], idx);
+>> +		data[i++] = readl_relaxed(ale->params.ale_regs +
+>> +					ALE_THREAD_VAL);
+>> +		data += i * 4;
 > 
-> -tip's irq/cleanups branch:
+> I'm confused by the '* 4' part. I think that you just need:
+> 		data += i
 > 
-> https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/log/?h=irq/cleanups
+> to move to the next policer context. I *think* the current code causes
+> OoB?!?
+
+Good catch. Since data is u32 pointer we should not need '* 4'
+
 > 
-> This change has both a base commit and a Fixes tag and you were on Cc,
-> not To. Is there anything else I can do (aside from a note in the
-> scissor area) to signal that you don't need to handle this change?
-
-Wait what!  This is not okay.
-
-e3d44f11da04 ("mfd: Switch to irq_domain_create_*()") should not have
-been applied without at least an MFD Ack.  Preferably it would have been
-applied to an MFD based immutable branch where it could have been shared
-from (if required).
-
-It was missed because the submitted patch had an "irqdomain" prefix.
-And now we're in a position where conflicts are likely to occur.
+> /P
+> 
 
 -- 
-Lee Jones [李琼斯]
+cheers,
+-roger
+
 
