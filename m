@@ -1,213 +1,180 @@
-Return-Path: <linux-omap+bounces-3699-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3700-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96FC4AB540C
-	for <lists+linux-omap@lfdr.de>; Tue, 13 May 2025 13:42:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 862FCAB5461
+	for <lists+linux-omap@lfdr.de>; Tue, 13 May 2025 14:13:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3BCE7A2E29
-	for <lists+linux-omap@lfdr.de>; Tue, 13 May 2025 11:41:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D58227AD61E
+	for <lists+linux-omap@lfdr.de>; Tue, 13 May 2025 12:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3796428D8F0;
-	Tue, 13 May 2025 11:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B4528DB4D;
+	Tue, 13 May 2025 12:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ALQTm+uZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="quYHpJec"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C505028D8D5;
-	Tue, 13 May 2025 11:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FDF1C84A0;
+	Tue, 13 May 2025 12:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747136522; cv=none; b=o7R+Emj2xYLFJMPkPu5EkH1TbMEvu/OEBqfn4Pu1b3VFBE7ZCbTyGox2i67Jfa68AQxcDohANhImyVfFaCut1zFW4sjdnNLHvijjcSxEgGSXnj+M7cvfrMQMQ1fBUVoiU4YZui0TID/cAu67Ui0LXCSC1XPmUXQfIS4YIl99gKE=
+	t=1747138393; cv=none; b=GY/lvEVIy3Sk8csYECIq+LPLeue+oeN0ACOmA5v7JxuMwO742xH3ZsAVKX3Gp5bCeb3qIa9qAjc9DfzSXom9+/Mr2D4gOKZqsFoU3QB9zkBH/Zh27gboSY/pZxSjk4iFwIEd1VahctHZiBBjTqsWknxbKfLU9Xt2eVqAZ1NnnTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747136522; c=relaxed/simple;
-	bh=eO9w3nrvJ3H7rmAo2MSmMtziW1MVTfuuIqYcS6Qt1nc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AF+4SPash3SIrc2smLaymje5pA8ssvD3RuMrDwqdcylP5MAUHuzHRuRdKBDytYnS10JwLAKlCXTEfbh0VTvvmEU+wB34NwFbuGO+dGF4ToMxKCccDsyDkryK8bi+5IYwwe6/x3p1wgHTGlsc6uV/5xjmDIbLqLnuc8N2lQ0tR0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ALQTm+uZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DFAC4CEE4;
-	Tue, 13 May 2025 11:41:59 +0000 (UTC)
+	s=arc-20240116; t=1747138393; c=relaxed/simple;
+	bh=WwRX2OejuzC52IouwPlF8ikN471u8m0tJYL5AHiFFZQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dsYoqm9DoX/eJnKcK+/TQHROnG7CLHClqo4gYZWFaANS7dK0KCY8RE0ZHaAvC+KNEkEw0poTSxLybO2GBrOr8lkxuaxZzRqsb9y1rA7iWjVqKDaBwzO0NWYyfFIO33+4aruD3fIz47velCeBUSXAayvw8EppNK3e8ayhvqdmdVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=quYHpJec; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E34C4CEE4;
+	Tue, 13 May 2025 12:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747136522;
-	bh=eO9w3nrvJ3H7rmAo2MSmMtziW1MVTfuuIqYcS6Qt1nc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ALQTm+uZKtmN5UlGkFrdCVIxYdmEa51vs3Szkdm/bveJ7cMR8fbapYChmVr4IOXVy
-	 JTmyKduvFQ7iheA0gswCrH+MhKqDbBOXLG445lihmw/VGg6qbqyGWZH8oImsbH9ydk
-	 zreDSLU3ZMLy+3p49pfo8SRhhW1z9iPZAPKrTYido6cGWXKWY4cU6zQ6kecLo11vO3
-	 KfUMs6o4Pp9FMaS8QX2R8or77RRf7C8co856S4AholzaZ40vOBemhzj27WpDu+nChG
-	 0hyBFJLdyD+depPaZm3pxw7pNL1jyDahEztadYIypvXPauJPaxlfc7/YNgpgyRxEID
-	 UIF6c8Cpjwv/w==
-Message-ID: <58dcc38b-8150-4272-b214-b046163292a6@kernel.org>
-Date: Tue, 13 May 2025 14:41:57 +0300
+	s=k20201202; t=1747138392;
+	bh=WwRX2OejuzC52IouwPlF8ikN471u8m0tJYL5AHiFFZQ=;
+	h=From:Subject:Date:To:Cc:From;
+	b=quYHpJeceb7NAVqgllAbARouzyFJ/MJGF0S6vzsUbkQcIvXknG5uCUJpOvaJrH+At
+	 usJVlmMqdwloNaUv6ZZhgxNveioXcYIWUR48M2/UxD2iV98AQE8uu6WOnnyyvEfSLd
+	 IYbxbL68NubUoJsrwIvPlU8h57j5af+qIaCN863k3i+HzNwpGUJhwoToOBptaj6P9Y
+	 ZM9+wzdE8RFeCd5REBFbYLnGO5l3GvRF3eyEoWrsiEK1SXqEL68N5v/WMphE2BrYFR
+	 cLyPmB5Pj+saMm/hysXD85mJgP367ElO3YfEfgarW1wEfNI+glDwCcgXDpvp36qi75
+	 KHIB1P1ib0TSQ==
+From: Roger Quadros <rogerq@kernel.org>
+Subject: [PATCH net-next v3 0/9] net: ethernet: ti: am65-cpsw: add network
+ flow classification support
+Date: Tue, 13 May 2025 15:13:04 +0300
+Message-Id: <20250513-am65-cpsw-rx-class-v3-0-492d9a2586b6@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 8/9] net: ethernet: ti: am65-cpsw: add network
- flow classification support
-To: Paolo Abeni <pabeni@redhat.com>, Siddharth Vadapalli
- <s-vadapalli@ti.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Russell King <linux@armlinux.org.uk>,
- danishanwar@ti.com
-Cc: srk@ti.com, linux-omap@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250505-am65-cpsw-rx-class-v2-0-5359ea025144@kernel.org>
- <20250505-am65-cpsw-rx-class-v2-8-5359ea025144@kernel.org>
- <244138b2-a90e-404d-946f-9ce25c6155e1@redhat.com>
-Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <244138b2-a90e-404d-946f-9ce25c6155e1@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFA3I2gC/23OwQ6CMAwG4FcxO1tTBpuZJ9/DeBiswCIOspGJI
+ by7yzwYE45//vZrVxbIWwrscliZp2iDHV0K5fHAml67jsCalBlHLrBEAfopBTRTeIFfoBl0CCC
+ lRJStrpUxLC1Onlq7ZPTGHM3gaJnZPTW9DfPo3/laLHL/hQu1B8cCEHjdGjJ4rhTS9UHe0XAaf
+ Ze9yH+G2H8u8mSIUijSaaqoqj9j27YPGA7CCAMBAAA=
+To: Siddharth Vadapalli <s-vadapalli@ti.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Russell King <linux@armlinux.org.uk>, danishanwar@ti.com
+Cc: srk@ti.com, linux-omap@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Roger Quadros <rogerq@kernel.org>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3764; i=rogerq@kernel.org;
+ h=from:subject:message-id; bh=WwRX2OejuzC52IouwPlF8ikN471u8m0tJYL5AHiFFZQ=;
+ b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBoIzdU0UZBtndJE4vH9lH8ZTl3FkmTYAClNI1cU
+ AooF6jlH3WJAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCaCM3VAAKCRDSWmvTvnYw
+ k6ZND/0eEwTieqMEnUR66/H/wsISnBo5LcMaTIcCgHaht/YVVR3sZlEm5droTVI7uglO/+5fVMI
+ JNk175rhjvP9UiAa89nPr3+n1SZrJABLGcEDPPYTueHkBKzhg4RHxc1pfh4qiJVQgZyQNDaeer2
+ cWnQfr1946CNQUwcKjmVHfv6gzT0wDrb4IrqsZT8hrnQv62Igc/LJWGOwivOOroKmE57/SgsIY4
+ CeKUNd3kQPgF+wZXCZR5Od7pO1SY0JshJNjogMmug6mftdP22uZdelIVcPYvJIBd9sQWWxOCIpR
+ pTIGx1AI4gSCbHOL9xEqg5SLktWAtKFR6qXTIhvn4QualgSqpU7ogG8lctUNZphfyvL+lbfuh6J
+ Zkn2kBmAem+LXd8XR7GDf0Tt4zdswF6rb865Vg5ksALMryGFPNw9PYkI9lw5NfVRIJAHyqQIyOw
+ z9XzsBfNRA4UYehmjNIullWS912GUqvE/7Z1iXIhCx61/5IVtbOCWEPkE1z5oJLPu1Un4uzYKyW
+ rhhfm3kg6Ml095EbBiPJapeG46+ub9aDFE1tGeXKzonbZ344Gw+p94EMCcQEd0ENCDrrL5Bpl1x
+ BXJLzOp60tFNHDpMJqOL/rMfisvg6A8gWXf0Y1kw2PqpgWHzGU5IFL6Eqwp9c07TumltC8cjUEN
+ XbXadsEwhwoaJtg==
+X-Developer-Key: i=rogerq@kernel.org; a=openpgp;
+ fpr=412165D44C9F52780FAB1058D25A6BD3BE763093
 
+Adds support for -N/--config-nfc ethtool command for
+configuring RX classfiers.
 
+Currently only raw Ethernet (flow-type ether) matching is added
+based on source/destination addresses and VLAN Priority (PCP).
 
-On 08/05/2025 17:00, Paolo Abeni wrote:
-> On 5/5/25 6:26 PM, Roger Quadros wrote:
-> [...]
->> +/* validate the rxnfc rule and convert it to policer config */
->> +static int am65_cpsw_rxnfc_validate(struct am65_cpsw_port *port,
->> +				    struct ethtool_rxnfc *rxnfc,
->> +				    struct cpsw_ale_policer_cfg *cfg)
->> +{
->> +	struct ethtool_rx_flow_spec *fs = &rxnfc->fs;
->> +	int flow_type = AM65_CPSW_FLOW_TYPE(fs->flow_type);
->> +	struct ethhdr *eth_mask;
-> 
-> (Minor nit only mentioned because of more relevant comments on previous
-> patch) Please respect the reverse christmas tree order above.
+The ALE policer engine is used to perform the matching and routing to
+a specific RX channel.
 
-Yes, will fix.
-> 
->> +
->> +	memset(cfg, 0, sizeof(*cfg));
->> +
->> +	if (flow_type & FLOW_RSS)
->> +		return -EINVAL;
->> +
->> +	if (fs->location == RX_CLS_LOC_ANY ||
->> +	    fs->location >= port->rxnfc_max)
->> +		return -EINVAL;
->> +
->> +	if (fs->ring_cookie == RX_CLS_FLOW_DISC)
->> +		cfg->drop = true;
->> +	else if (fs->ring_cookie > AM65_CPSW_MAX_QUEUES)
->> +		return -EINVAL;
->> +
->> +	cfg->port_id = port->port_id;
->> +	cfg->thread_id = fs->ring_cookie;
->> +
->> +	switch (flow_type) {
->> +	case ETHER_FLOW:
->> +		eth_mask = &fs->m_u.ether_spec;
->> +
->> +		/* etherType matching is supported by h/w but not yet here */
->> +		if (eth_mask->h_proto)
->> +			return -EINVAL;
->> +
->> +		/* Only support source matching addresses by full mask */
->> +		if (is_broadcast_ether_addr(eth_mask->h_source)) {
->> +			cfg->match_flags |= CPSW_ALE_POLICER_MATCH_MACSRC;
->> +			ether_addr_copy(cfg->src_addr,
->> +					fs->h_u.ether_spec.h_source);
->> +		}
->> +
->> +		/* Only support destination matching addresses by full mask */
->> +		if (is_broadcast_ether_addr(eth_mask->h_dest)) {
->> +			cfg->match_flags |= CPSW_ALE_POLICER_MATCH_MACDST;
->> +			ether_addr_copy(cfg->dst_addr,
->> +					fs->h_u.ether_spec.h_dest);
->> +		}
->> +
->> +		if ((fs->flow_type & FLOW_EXT) && fs->m_ext.vlan_tci) {
->> +			/* Don't yet support vlan ethertype */
->> +			if (fs->m_ext.vlan_etype)
->> +				return -EINVAL;
->> +
->> +			if (fs->m_ext.vlan_tci != VLAN_TCI_FULL_MASK)
->> +				return -EINVAL;
->> +
->> +			cfg->vid = FIELD_GET(VLAN_VID_MASK,
->> +					     ntohs(fs->h_ext.vlan_tci));
->> +			cfg->vlan_prio = FIELD_GET(VLAN_PRIO_MASK,
->> +						   ntohs(fs->h_ext.vlan_tci));
->> +			cfg->match_flags |= CPSW_ALE_POLICER_MATCH_OVLAN;
->> +		}
->> +
->> +		break;
->> +	default:
->> +		return -EINVAL;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +static int am65_cpsw_policer_find_match(struct am65_cpsw_port *port,
->> +					struct cpsw_ale_policer_cfg *cfg)
->> +{
->> +	struct am65_cpsw_rxnfc_rule *rule;
->> +	int loc = -EINVAL;
->> +
->> +	mutex_lock(&port->rxnfc_lock);
->> +	list_for_each_entry(rule, &port->rxnfc_rules, list) {
->> +		if (!memcmp(&rule->cfg, cfg, sizeof(*cfg))) {
->> +			loc = rule->location;
->> +			break;
->> +		}
->> +	}
->> +
->> +	mutex_unlock(&port->rxnfc_lock);
->> +
->> +	return loc;
->> +}
->> +
->> +static int am65_cpsw_rxnfc_add_rule(struct am65_cpsw_port *port,
->> +				    struct ethtool_rxnfc *rxnfc)
->> +{
->> +	struct ethtool_rx_flow_spec *fs = &rxnfc->fs;
->> +	struct am65_cpsw_rxnfc_rule *rule;
->> +	struct cpsw_ale_policer_cfg cfg;
->> +	int loc, ret;
->> +
->> +	if (am65_cpsw_rxnfc_validate(port, rxnfc, &cfg))
->> +		return -EINVAL;
->> +
->> +	/* need to check if similar rule is already present at another location,
->> +	 * if yes error out
->> +	 */
->> +	loc = am65_cpsw_policer_find_match(port, &cfg);
->> +	if (loc >= 0 && loc != fs->location) {
->> +		netdev_info(port->ndev,
->> +			    "rule already exists in location %d. not adding\n",
->> +			    loc);
->> +		return -EINVAL;
->> +	}
->> +
->> +	/* delete exisiting rule */
->> +	if (loc >= 0) {
->> +		mutex_lock(&port->rxnfc_lock);
-> 
-> The rxnfc_lock mutex is released and re-aquired after the previous
-> lookup. Con some other thread delete the matching rule in-between and
-> add another one at a different location?
+Test cases:
 
-Good point. I will remove mutex acquiring from am65_cpsw_policer_find_match() and
-add acquire it instead in the beginning of am65_cpsw_rxnfc_add_rule()
+Increase number of RX channels to 8
+ip link set end1 down
+ip link set end0 down
+ethtool -L end0 rx 8
 
-> 
-> /P
-> 
+1) Ether source address test
+	ethtool -N end0 flow-type ether src xx:yy:zz:aa:bb:cc action 5
 
+  Traffic from that address should route to channel 5
+
+2) Ether destination address test
+	ethtool -N eth0 flow-type ether dst yy:zz:aa:bb:cc:dd action 4
+
+  Traffic to that address should route to channel 4
+
+3) Drop test
+	ethtool -N end0 flow-type ether src xx:yy:zz:aa:bb:cc action -1
+
+  Traffic from that address should be dropped
+
+4) VLAN PCP test
+
+on Remote create VLAN with ID 5 and all traffic mapping to required priority to test. e.g. 7
+	sudo ip link add link eno1 name eno1.5 type vlan id 5 egress-qos-map 0:7 1:7 2:7 3:7 4:7 5:7 6:7 7:7
+	sudo ifconfig eno1.5 192.168.10.1
+
+on DUT create VLAN with id 5
+	ip link add link end0 name end0.5 type vlan id 5
+	ifconfig end0.5 192.168.10.5
+
+VLAN pcp 7 vid 5 route to RX channel 6
+	ethtool -N end0 flow-type ether vlan 0xe005 action 6
+
+  Traffic from that VLAN with PCP 7 should route to channel 6
+
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+---
+Changes in v3:
+- Fixed bug in cpsw_ale_policer_save/restore(). '* 4' is not needed for
+  a u32 pointer.
+- Fixed reverse Christmas tree order
+- Moved mutex acquiring out of am65_cpsw_policer_find_match() and
+  at beginning of am65_cpsw_rxnfc_add_rule()
+- Link to v2: https://lore.kernel.org/r/20250505-am65-cpsw-rx-class-v2-0-5359ea025144@kernel.org
+
+Changes in v2:
+- Error out if VLAN_ID > 0 as VLAN ID based flow routing still doesn't
+   seem to work. Drop commented out code.
+- Limit lines to 80 characters whereever possible.
+- Change struct am65_cpsw_rxnfc_rule.location from int to unsigned int.
+- Add information about order of rules evaluation and multiple matches
+   in commit log.
+- Link to v1: https://lore.kernel.org/r/20250319-am65-cpsw-rx-class-v1-0-2bfded07490e@kernel.org
+
+---
+Roger Quadros (9):
+      net: ethernet: ti: cpsw_ale: Update Policer fields for more ALE size/ports
+      net: ethernet: ti: cpsw_ale: return ALE index in cpsw_ale_add_vlan()
+      net: ethernet: ti: cpsw_ale: return ALE index in cpsw_ale_vlan_add_modify()
+      net: ethernet: ti: cpsw_ale: return ALE index in cpsw_ale_add_ucast()
+      net: ethernet: ti: cpsw_ale: add cpsw_ale_policer_reset_entry()
+      net: ethernet: ti: cpsw_ale: add cpsw_ale_policer_set/clr_entry()
+      net: ethernet: ti: cpsw_ale: add policer save restore for PM sleep
+      net: ethernet: ti: am65-cpsw: add network flow classification support
+      net: ethernet: ti: am65-cpsw: remove cpsw_ale_classifier_setup_default()
+
+ drivers/net/ethernet/ti/am65-cpsw-ethtool.c   | 353 ++++++++++++++++++++++++++
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c      |  32 ++-
+ drivers/net/ethernet/ti/am65-cpsw-nuss.h      |  16 ++
+ drivers/net/ethernet/ti/am65-cpsw-switchdev.c |   6 +-
+ drivers/net/ethernet/ti/cpsw.c                |   4 +-
+ drivers/net/ethernet/ti/cpsw_ale.c            | 214 ++++++++++------
+ drivers/net/ethernet/ti/cpsw_ale.h            |  37 ++-
+ drivers/net/ethernet/ti/cpsw_new.c            |   4 +-
+ drivers/net/ethernet/ti/cpsw_switchdev.c      |   6 +-
+ 9 files changed, 579 insertions(+), 93 deletions(-)
+---
+base-commit: 9f607dc39b6658ba8ea647bd99725e68c66071b7
+change-id: 20250305-am65-cpsw-rx-class-666006fab9dd
+
+Best regards,
 -- 
-cheers,
--roger
+Roger Quadros <rogerq@kernel.org>
 
 
