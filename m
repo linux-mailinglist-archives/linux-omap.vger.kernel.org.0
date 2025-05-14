@@ -1,187 +1,177 @@
-Return-Path: <linux-omap+bounces-3721-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3722-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43072AB6AFF
-	for <lists+linux-omap@lfdr.de>; Wed, 14 May 2025 14:07:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3955FAB6BCE
+	for <lists+linux-omap@lfdr.de>; Wed, 14 May 2025 14:52:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BED563A8082
-	for <lists+linux-omap@lfdr.de>; Wed, 14 May 2025 12:07:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B53024C15D5
+	for <lists+linux-omap@lfdr.de>; Wed, 14 May 2025 12:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3107827EC80;
-	Wed, 14 May 2025 12:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DEF427934B;
+	Wed, 14 May 2025 12:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nQWVr4ce"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aT8JaSyO"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36D027E7F0;
-	Wed, 14 May 2025 12:04:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0580B202990
+	for <linux-omap@vger.kernel.org>; Wed, 14 May 2025 12:52:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747224298; cv=none; b=B4i/20nOJTPdjZOGY1zjGiLcw3JxvYPyGuEXrrvcrTMBdyYBYP1tKOtQHSr1PuJ5a53Cv3jA5d6RwcwAVEcxurHul6s5gppmoZx1N1ZgjDXO2n5CVlnsiomurymCOg+QHSMftQB/66whKzHhAxZvBkNyR+IsSQa9HwOTEUpoqOo=
+	t=1747227129; cv=none; b=cwrwzE7+YwdNsddU7P1oUiANO9u4pCLlA85zSv6Y7HB8nq9kETk0/pHFwBJFQwzh221ktSKFXUeuvSn/ROTVbOAA8qr/3JNykoNiLDZL87ATxNjubs2mb+4iO00QRFKY8M97U3+gakQdtNNicAaILza9auQnMm+3KMKg2WwGB18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747224298; c=relaxed/simple;
-	bh=ZLuQ+QKiv6AHk6aYVgypKAalpJm1udHDw0jrk7Sr2HM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jDnDmDfTydEWmpJqhnHVEhkx/Og17/H6ZVwkFPTii06KZuSjYIHSliqyk2hRUdkD9mSDKWwYPGJ58bqBxku+mTZh8L1pWGYzPDibpUdBWpRgMUEjmYIC3uaoElOsPwIYSfH8UUx9+uMok7et9kOnpdqJSStuqXRvvdAJmr44odE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nQWVr4ce; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76566C4CEF0;
-	Wed, 14 May 2025 12:04:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747224298;
-	bh=ZLuQ+QKiv6AHk6aYVgypKAalpJm1udHDw0jrk7Sr2HM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=nQWVr4ceomZQiVyJDD2RLJXhCp007SAaQ3hux2k5W2JzwcUW/2KBfYBAbmHKSnHjd
-	 RnyovmoDllw6CW5QwAWHMMLyCYWaIYQ/zMn7vlAmsGN/9bejTckcpQ8I4RREN6lI4e
-	 qzJitNlYzDqwX1tdwZtC6OGYV6G/IHaawSHfPRaqK3FOnlrT9V0CbWlwJHJ0KJcul/
-	 4fMXX22vtyqNLLNwkSPeFglAOKTKZ3SRvyy6hz9io4Q/qFCQPzlTkW8QAdFPE95YAd
-	 zBS6Pt6PmrccdT3sK7sYj75FIAhSnNCRUHpTBJiF7ncmt/3qEwCyh7P8Rfc8BSr4QQ
-	 l6pOOP92h+Y5A==
-From: Roger Quadros <rogerq@kernel.org>
-Date: Wed, 14 May 2025 15:04:29 +0300
-Subject: [PATCH net-next v4 9/9] net: ethernet: ti: am65-cpsw: remove
- cpsw_ale_classifier_setup_default()
+	s=arc-20240116; t=1747227129; c=relaxed/simple;
+	bh=r0UAET3u4O10Z95IN00IAwMDZWY6tEVI/2uuYA8w2G4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d/QAXEvqwRYpMpvQHA54w81TqdDS/VKkXjnk8vrSZRZSKMOIATcY61ZCSyEHE/bsRCnvnoCjKgr+0zbEZ6eaPm5yZ7xKTtmXJp2Wefxpyb5SJrEMfSOyx+p+LAaMSAN6OiGVeyZ68HnrHuyOU1ttJS04wouYOiu6ehc3pXwaqRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aT8JaSyO; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-440668acbf3so3833985e9.0
+        for <linux-omap@vger.kernel.org>; Wed, 14 May 2025 05:52:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1747227126; x=1747831926; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/Icx5r//j5xtN6M3xRCGMrBcZJl6vrsvOrbn/XQKDqk=;
+        b=aT8JaSyOsoEVqEmm0hOoe8POhudj+s3tcfwhRvglSzYrZ+X7M+ojtAw/fWSlghKoPh
+         Vqm97BS2unBjrKyeQ0Mn/xQHshn1eqEve0GlwFNPCG5c03g1mFiH0TwRw1024pGyqMgy
+         s6edlzrzFqVlD9WkHIE0LytK5DCkDwf+47tv8nKAneDDEjbULoYyy7+O1kwMsoRQonlm
+         v+JPbBtIB8VWQUIFhyvgFclD4M3ixq+LOmV5i3yUGNRYFMxB4R73sn5Yw3fpR712ZPyk
+         6Db2Yy5nxrF/AZKzcAsY9USHMI7W7qGGwWtVsneUVu/hSWQ+0brOUEtMMT453M2nK5gb
+         0WBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747227126; x=1747831926;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/Icx5r//j5xtN6M3xRCGMrBcZJl6vrsvOrbn/XQKDqk=;
+        b=hJQ3llhJJxdLBHQlIoJzx88bD6qoVt7aJbYksCic6K1tpwKfruBdAaYbT/S0jJs57s
+         wa00eoMvZRPzLz7+Jef+BhU+c/J6DXAwVtAia3A7YSY5GQg2zi46q+If4+kL98Lxown9
+         TULgSzyNA74qJ3+Gq8hajqUIRVbgPlFe5go+HDCjT/47GMiC+p+B1fcKgYoj0z9QBXr1
+         hQPkY3ZJhxZBatcTp7U6cJ3954cfZp0AtiizxGZEo3Tai28YOolJOP72wkSb4Br2PPKm
+         Je2pRqdsfCEdY1UqYKvAB/yGAerh5lhHwifI4URzgceHBGQE9URubuu9wkAytOjwGvIw
+         5zKw==
+X-Forwarded-Encrypted: i=1; AJvYcCU9ENyXg9rhOTNws0dUXuM2dWmEDpgMhA0fYXxzcUeo5eZPtmApYrf6J4wR3tzRkWZoIxzSTZWZSORL@vger.kernel.org
+X-Gm-Message-State: AOJu0YxP0Hmkkxu8amoxHw3Mso89Ym72GrOgw1StnjNE2T1zcdXGOrVr
+	fxW9GLWrPzp9n6u9MNA/Iqt25xM6XMmydaKRfKouSMH+FJFOyb8zPZ0EbLanaAyyL4dO+CR6M9y
+	/gRU=
+X-Gm-Gg: ASbGncs6rp4mxh/bbr5cFayDHoSfUke1+n35Lhcb0h2rYCR0dQpZ21JPs9dXT/PzRIk
+	YYNKJYo2Kjgwq+vojtg7Lp82NAeJdhtglwASRy7d75eI7FAoorpJMH8X0EaDpJX2mH5DnBIyUr3
+	A15RgizdDf8OJQIyz+RKYVY0Klb/miNdE6dt3s+NGC6DzXLSgLjj34uUOOQl5mSrrXGFK450K3L
+	4lBKSjBt+SmssEURRMj5JMK7lLVhzUdKpP6iOj6o+veuqoMOz7OYz78Vfuf7A2k45wb/4IMbJ1l
+	Ow6gTe20XhAmkRrwwSNTICcusy1bLHm8szsQpAGGrx8OKZCGLamY4hbVHlKLv/l4eEEoRb3+Iwl
+	xACTfJcHL925/MHxzRQ9gAAiWR74mpYlUTZmZSPk=
+X-Google-Smtp-Source: AGHT+IH70OLtjH8hCoyZN61xOx6Gwct+2Y+hYWBjOeLLeTkhtB7K6QbcHqoPUIiZer6kZhrVbCnzyg==
+X-Received: by 2002:a05:600c:1ca3:b0:43b:c938:1d0e with SMTP id 5b1f17b1804b1-442f20bfcd5mr10316405e9.2.1747227126266;
+        Wed, 14 May 2025 05:52:06 -0700 (PDT)
+Received: from kuoka.c.hoisthospitality.com (110.8.30.213.rev.vodafone.pt. [213.30.8.110])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442f3951494sm31346635e9.22.2025.05.14.05.52.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 May 2025 05:52:05 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Mark Jackson <mpfj@newflow.co.uk>,
+	Tony Lindgren <tony@atomide.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH] ARM: dts: omap: am335x: Use non-deprecated rts-gpios
+Date: Wed, 14 May 2025 14:51:59 +0200
+Message-ID: <20250514125158.56285-2-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250514-am65-cpsw-rx-class-v4-9-5202d8119241@kernel.org>
-References: <20250514-am65-cpsw-rx-class-v4-0-5202d8119241@kernel.org>
-In-Reply-To: <20250514-am65-cpsw-rx-class-v4-0-5202d8119241@kernel.org>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Russell King <linux@armlinux.org.uk>, danishanwar@ti.com
-Cc: srk@ti.com, linux-omap@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Roger Quadros <rogerq@kernel.org>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4075; i=rogerq@kernel.org;
- h=from:subject:message-id; bh=ZLuQ+QKiv6AHk6aYVgypKAalpJm1udHDw0jrk7Sr2HM=;
- b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBoJIbJgvwvVRPMVMrXLHpU7je+8Sp2Temu9+DTu
- B7XMCjhsYmJAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCaCSGyQAKCRDSWmvTvnYw
- kyFkD/4o2JEvfduzn104O4gNsUiLmyaKFR+/ymEzhChd2ruMMvzuXYqiIApQu4hcpO/ioRp4gcu
- f3A4EMscKxuHkLTuWNHecHFy5kwU278sYmtvuZnfNeZhY0/4tDc5StzHTMjz5SrMJ34IVyYJGaz
- E5CRSXhjYozVtgvEsq1YqHd0oZWvso0C26uZjMm2A+DpLN4OblPOmvMKyB09310lk/OC9eN0Vxb
- a+k+xIuX8IC+9HjuXY8GAi8rUjTItrCBxKR9mogdwwHy+Yd+NA9zINUqa1FtuIsKaBENNwQmXTw
- +lEjvzrbq3H28uVnUNaI2DN7npfaFGB1+LAjSYdhOam80jbaDxd3GbAhKBQaQ8eOQhASxCHhxnI
- e9q2JwPMl+jP3IYAm6oetl233VNwiR9kbcyjcn0BENe4UijJ8iiDwWoXDm7z86UzaFz3SRtCYKg
- 3N0yZQcKmrqgmUnpC/YKWvIwt9JKh6SNf3HIGhB1nP1k18+Gy56fJzXS55J1c6crIU+d6TXt6ip
- /VUwfSxtrz5TG17P+NCZfm83RmXGD5uaWF+8kx/JTkLHjFoOSpT0FpRdeU8ZcCuWpyfYiZkza1Z
- dqGgiGs+tGKZXy8BYC0fDd0D1WLbdgVNsAogbq1NhbRX8AZnJYdHgI2nv86XO7Syc5aK7LuOz3n
- sKnUga6x5p6sjrA==
-X-Developer-Key: i=rogerq@kernel.org; a=openpgp;
- fpr=412165D44C9F52780FAB1058D25A6BD3BE763093
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2257; i=krzysztof.kozlowski@linaro.org;
+ h=from:subject; bh=r0UAET3u4O10Z95IN00IAwMDZWY6tEVI/2uuYA8w2G4=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoJJHuHLecMyoK1eeXlf89efwj5jb4C3yc70IKK
+ hW9xJc8VTGJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaCSR7gAKCRDBN2bmhouD
+ 1+nJD/9D13tuP838tCo6G7Y3qU/PXA1AcuULSanion8zxnZ5wpdXNiARStcj7Pw7+/5asMrUXlc
+ iZUTLEseHozu4E6Yla9lurNNqv9D+QIEnj0X2j/iztjwdB7GYGwM9TW9ewjZPWTrb4rDXmbVfo+
+ 5ocR7KoM8vt+YSDZFvPzsAkaQLvvg548/3FNivZFwdohaQaH8G0Ay8Ssg05TmApv6tfhdWqEM/r
+ D+4Tox/63adAmLmQMWkNubPhYiNVjw/lxfmXtzz94gm1iCNt0KyepoSoAvM5mmDODZCNRcqRtQf
+ jsB6Lf6YaIVetQ4DfjRPPm4hfe5omXq1G8dOxq3WQJzoIAzSzT3VUcXhf2VcnMjqMzC9hEPpmEh
+ /ZBXbgbm+aIpNKOcadDXVSyqTHMLmtKnkqZXBN0MJt5viSw3XOuS7DH48jos9dwV3gOsj578ZwW
+ Tuvj7sC4jp2aZgKf2P+BvTbmogVZ+at2vuJXBGVdbMz2rHKdJvFfjmponUDB3qDfQpZV1Tg7tp7
+ jlKx0EKgfIEvkT2t/dwDWz5lVVqwUQAzmCRLeeb3oLwtS5t1H5AJVjvj793lFP00jPNJMBGG/Jn
+ L2nBuJbaiBPhNGXdxBJpnKfFyV9f24svonYV2Y+RV3UNFFbH4tuds0jeXEbbjXrO5z2XoWN565B hCn0bQPc9oQARlg==
+X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+Content-Transfer-Encoding: 8bit
 
-The RX classifier can now be configured by user using ethtool -N.
-So drop cpsw_ale_classifier_setup_default().
+The 'rts-gpio' (without trailing 's') is deprecated in favor of
+'rts-gpios'.  Kernel supports both variants, so switch the DTS to
+preferred one.
 
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c |  3 --
- drivers/net/ethernet/ti/cpsw_ale.c       | 52 --------------------------------
- drivers/net/ethernet/ti/cpsw_ale.h       |  1 -
- 3 files changed, 56 deletions(-)
+ arch/arm/boot/dts/ti/omap/am335x-nano.dts   | 8 ++++----
+ arch/arm/boot/dts/ti/omap/am335x-pdu001.dts | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index cdb83ae54656..0523c81a2a54 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -2497,9 +2497,6 @@ static int am65_cpsw_nuss_init_rx_chns(struct am65_cpsw_common *common)
- 		}
- 	}
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-nano.dts b/arch/arm/boot/dts/ti/omap/am335x-nano.dts
+index 56929059f5af..d51cdd6e1ab4 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-nano.dts
++++ b/arch/arm/boot/dts/ti/omap/am335x-nano.dts
+@@ -167,7 +167,7 @@ &uart1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart1_pins>;
+ 	status = "okay";
+-	rts-gpio = <&gpio0 13 GPIO_ACTIVE_HIGH>;
++	rts-gpios = <&gpio0 13 GPIO_ACTIVE_HIGH>;
+ 	rs485-rts-active-high;
+ 	rs485-rx-during-tx;
+ 	rs485-rts-delay = <1 1>;
+@@ -178,7 +178,7 @@ &uart2 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart2_pins>;
+ 	status = "okay";
+-	rts-gpio = <&gpio2 15 GPIO_ACTIVE_HIGH>;
++	rts-gpios = <&gpio2 15 GPIO_ACTIVE_HIGH>;
+ 	rs485-rts-active-high;
+ 	rs485-rts-delay = <1 1>;
+ 	linux,rs485-enabled-at-boot-time;
+@@ -187,7 +187,7 @@ &uart2 {
+ &uart3 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart3_pins>;
+-	rts-gpio = <&gpio2 17 GPIO_ACTIVE_HIGH>;
++	rts-gpios = <&gpio2 17 GPIO_ACTIVE_HIGH>;
+ 	rs485-rts-active-high;
+ 	rs485-rx-during-tx;
+ 	rs485-rts-delay = <1 1>;
+@@ -198,7 +198,7 @@ &uart3 {
+ &uart4 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart4_pins>;
+-	rts-gpio = <&gpio0 9 GPIO_ACTIVE_HIGH>;
++	rts-gpios = <&gpio0 9 GPIO_ACTIVE_HIGH>;
+ 	rs485-rts-active-high;
+ 	rs485-rx-during-tx;
+ 	rs485-rts-delay = <1 1>;
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts b/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
+index ded19e24e666..f0da94a738d5 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
++++ b/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
+@@ -256,7 +256,7 @@ &uart0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart0_pins>;
  
--	/* setup classifier to route priorities to flows */
--	cpsw_ale_classifier_setup_default(common->ale, common->rx_ch_num_flows);
--
- 	return 0;
- 
- err_request_irq:
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index 0cd27a6fe575..ba639d87706b 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.c
-+++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -1695,58 +1695,6 @@ void cpsw_ale_policer_reset(struct cpsw_ale *ale)
- 		cpsw_ale_policer_reset_entry(ale, i);
- }
- 
--/* Default classifier is to map 8 user priorities to N receive channels */
--void cpsw_ale_classifier_setup_default(struct cpsw_ale *ale, int num_rx_ch)
--{
--	int pri, idx;
--
--	/* Reference:
--	 * IEEE802.1Q-2014, Standard for Local and metropolitan area networks
--	 *    Table I-2 - Traffic type acronyms
--	 *    Table I-3 - Defining traffic types
--	 * Section I.4 Traffic types and priority values, states:
--	 * "0 is thus used both for default priority and for Best Effort, and
--	 *  Background is associated with a priority value of 1. This means
--	 * that the value 1 effectively communicates a lower priority than 0."
--	 *
--	 * In the table below, Priority Code Point (PCP) 0 is assigned
--	 * to a higher priority thread than PCP 1 wherever possible.
--	 * The table maps which thread the PCP traffic needs to be
--	 * sent to for a given number of threads (RX channels). Upper threads
--	 * have higher priority.
--	 * e.g. if number of threads is 8 then user priority 0 will map to
--	 * pri_thread_map[8-1][0] i.e. thread 1
--	 */
--
--	int pri_thread_map[8][8] = {   /* BK,BE,EE,CA,VI,VO,IC,NC */
--					{ 0, 0, 0, 0, 0, 0, 0, 0, },
--					{ 0, 0, 0, 0, 1, 1, 1, 1, },
--					{ 0, 0, 0, 0, 1, 1, 2, 2, },
--					{ 0, 0, 1, 1, 2, 2, 3, 3, },
--					{ 0, 0, 1, 1, 2, 2, 3, 4, },
--					{ 1, 0, 2, 2, 3, 3, 4, 5, },
--					{ 1, 0, 2, 3, 4, 4, 5, 6, },
--					{ 1, 0, 2, 3, 4, 5, 6, 7 } };
--
--	cpsw_ale_policer_reset(ale);
--
--	/* use first 8 classifiers to map 8 (DSCP/PCP) priorities to channels */
--	for (pri = 0; pri < 8; pri++) {
--		idx = pri;
--
--		/* Classifier 'idx' match on priority 'pri' */
--		cpsw_ale_policer_read_idx(ale, idx);
--		regmap_field_write(ale->fields[POL_PRI_VAL], pri);
--		regmap_field_write(ale->fields[POL_PRI_MEN], 1);
--		cpsw_ale_policer_write_idx(ale, idx);
--
--		/* Map Classifier 'idx' to thread provided by the map */
--		cpsw_ale_policer_thread_idx_enable(ale, idx,
--						   pri_thread_map[num_rx_ch - 1][pri],
--						   1);
--	}
--}
--
- #define HOST_PORT_NUM 0
- 
- /* Clear Policer and associated ALE table entries */
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.h b/drivers/net/ethernet/ti/cpsw_ale.h
-index dbc095397389..5c9614730998 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.h
-+++ b/drivers/net/ethernet/ti/cpsw_ale.h
-@@ -223,7 +223,6 @@ int cpsw_ale_vlan_add_modify(struct cpsw_ale *ale, u16 vid, int port_mask,
- int cpsw_ale_vlan_del_modify(struct cpsw_ale *ale, u16 vid, int port_mask);
- void cpsw_ale_set_unreg_mcast(struct cpsw_ale *ale, int unreg_mcast_mask,
- 			      bool add);
--void cpsw_ale_classifier_setup_default(struct cpsw_ale *ale, int num_rx_ch);
- void cpsw_ale_policer_reset(struct cpsw_ale *ale);
- int cpsw_ale_policer_set_entry(struct cpsw_ale *ale, u32 policer_idx,
- 			       struct cpsw_ale_policer_cfg *cfg);
-
+-	rts-gpio = <&gpio1 9 GPIO_ACTIVE_HIGH>;
++	rts-gpios = <&gpio1 9 GPIO_ACTIVE_HIGH>;
+ 	rs485-rts-active-high;
+ 	rs485-rts-delay = <0 0>;
+ 	linux,rs485-enabled-at-boot-time;
 -- 
-2.34.1
+2.45.2
 
 
