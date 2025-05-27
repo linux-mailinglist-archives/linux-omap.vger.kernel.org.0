@@ -1,69 +1,72 @@
-Return-Path: <linux-omap+bounces-3740-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3739-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 638FCAC5A5E
-	for <lists+linux-omap@lfdr.de>; Tue, 27 May 2025 21:05:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28CF3AC5A5C
+	for <lists+linux-omap@lfdr.de>; Tue, 27 May 2025 21:05:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD7747B06FF
-	for <lists+linux-omap@lfdr.de>; Tue, 27 May 2025 19:04:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E14AB1BA81AE
+	for <lists+linux-omap@lfdr.de>; Tue, 27 May 2025 19:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 821BE281341;
-	Tue, 27 May 2025 19:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845E428032F;
+	Tue, 27 May 2025 19:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="GGLAubnk"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="hhWXpHyR"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFDC1F8F04;
-	Tue, 27 May 2025 19:05:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A2D1F7586;
+	Tue, 27 May 2025 19:05:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748372717; cv=none; b=AxDOrH4xKm7pNEuSCdBEyb0R30CkY8EbgT3VBHFkEfBUNlmIs/1JwiqA0xcvNCa3yHxFs5UjkaDpww0F+NNBisXakL/vTOgkhnkT+MsL/cJxYZGqkPMWr1ZTkFC6l9f5DkEe47ZzCjAKCh19Pm+e91NBjRTCehJfj1wulAjpH44=
+	t=1748372715; cv=none; b=lh/3tMrRkRGMu5BV9uUBH3HTktq19qxthpuMQoQqxtUU0IIeHNtMqa3bl9oZsdxxkdU4y1cFvoNJp6em2T93yPksVOC5kLfLbnAJ3+TCwEPaBPZ905oaThoy9WVG3bxZx1pOXdH/C3vNFruPtjgdUvacMj+5ND2E8TNCJf8J/bM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748372717; c=relaxed/simple;
-	bh=3+NtFlmtXfUy839svZeeGU9OBD1iYnlGA4I+ECBvv9c=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YJe8iKz+wQyHVOCrAFbGxng0EfF033dfxyGTXG3WKK5vnS0XCzI3knBfOXd2yttsuDR8PMPuPG3ObTI97ohzOIh12u/pzjgi69b8HyWfrwxpUNyW409peVqZrA63FY3JLiEcT8Xshe5KKW5ZbJLdKF5MNdhOLIdOiVLzPTlVmCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=GGLAubnk; arc=none smtp.client-ip=198.47.23.234
+	s=arc-20240116; t=1748372715; c=relaxed/simple;
+	bh=DErBwuGDA0aAYvIh8kx8TKOu8IPySNxIzGeGTG3YRzQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IKLkqSvIb2QojVAipCUe+SexUeSIfaI8Q+O62IF6FRAPAiYcrZcwkdgyYrFE6XxWNg+wU3feSmKYVMd+cidnemzFCaqJ4W/vwjkbfKzRlZo9Z0Q5PAPmsNDaLC14tvg/oeMKeAxKZ4d1rBMmqHjJ7lsJ9z2UbMQ+ItqyyfBJ0D8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=hhWXpHyR; arc=none smtp.client-ip=198.47.19.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 54RJ4t293043645;
+Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 54RJ4tL61848158;
 	Tue, 27 May 2025 14:04:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
 	s=ti-com-17Q1; t=1748372695;
-	bh=VcCP5sL9rJHfMN4liqC6MuWZiSWMlAhVNHDNS4foVfg=;
-	h=From:To:CC:Subject:Date;
-	b=GGLAubnkSWIH0+nEECy1q4toh4BMWOeckgibF8+Qe3PS1Oi7I6OmzzsV+yhOvCauP
-	 QiWIZzb8lmsRCLU806SN5tOllfo/FMm0ym6D3scT8C+e1HtYvHXx/cef8iUojRBKuF
-	 Ej8WcDXqNDGv+3NzF4FWn0cIeugRdPU1IH361MuU=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 54RJ4t3t930893
+	bh=QMdcykWUhhJabXPslQaqBIiFZkw7Vp/iY23BnvihBl4=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=hhWXpHyRd4vJRCJNRt7XuDYUA3kXrzoA/8GWXh+fG3c551ytKs/0r9jKNWazWo96V
+	 cahMobmTqeJNzMVY0vksM1UUD0VeI2Zwd5Ofy6ceii3YYQum9PqvVw6c1LqEkjuNxM
+	 UCDy2Map/Wel9lHwdcMKWdFSIaAIMqFbKbbQVIPg=
+Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
+	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 54RJ4tl43064132
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
 	Tue, 27 May 2025 14:04:55 -0500
-Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 27
- May 2025 14:04:54 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ May 2025 14:04:55 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
  Frontend Transport; Tue, 27 May 2025 14:04:55 -0500
 Received: from DMZ007XYY.dhcp.ti.com (dmz007xyy.dhcp.ti.com [128.247.29.251])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 54RJ4tcP3540893;
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 54RJ4tcQ3540893;
 	Tue, 27 May 2025 14:04:55 -0500
 From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
 To: <aaro.koskinen@iki.fi>, <andreas@kemnade.info>, <khilman@baylibre.com>,
         <rogerq@kernel.org>, <tony@atomide.com>, <lee@kernel.org>,
         <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC: <m-leonard@ti.com>, <praneeth@ti.com>, <afd@ti.com>
-Subject: [PATCH 0/2] TI TPS65214 & TPS65215: Update MFD Cell Structs
-Date: Tue, 27 May 2025 14:04:53 -0500
-Message-ID: <20250527190455.169772-1-s-ramamoorthy@ti.com>
+Subject: [PATCH 1/2] mfd: tps65219: Update TPS65214 MFD cell's GPIO compatible string
+Date: Tue, 27 May 2025 14:04:54 -0500
+Message-ID: <20250527190455.169772-2-s-ramamoorthy@ti.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250527190455.169772-1-s-ramamoorthy@ti.com>
+References: <20250527190455.169772-1-s-ramamoorthy@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -74,24 +77,33 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-The patches updates the GPIO compatible string for the TPS65214 & TPS65215
-MFD cell struct based on a system design change made after driver
-development. TPS65215 & TPS65219 now share the same GPIO count 2 GPOs and
-1 GPIO), instead of TPS65214 & TPS65215. TPS65215 will reuse the TPS65219
-GPIO compatible string, instead of TPS65214. TPS65214 still has 1 GPO and
-1 GPIO.
+This patch reflects the change made to move TPS65215 from 1 GPO and 1 GPIO
+to 2 GPOs and 1 GPIO. TPS65215 and TPS65219 both have 2 GPOs and 1 GPIO.
+TPS65214 has 1 GPO and 1 GPIO. TPS65215 will reuse the TPS65219 GPIO
+compatible string.
 
-TPS65214 Datasheet: https://www.ti.com/lit/gpn/TPS65214
 TPS65214 TRM: https://www.ti.com/lit/pdf/slvud30
 TPS65215 TRM: https://www.ti.com/lit/pdf/slvucw5/
 
-Shree Ramamoorthy (2):
-  mfd: tps65219: Update TPS65214 MFD cell's GPIO compatible string
-  mfd: tps65219: Update TPS65215's MFD cell GPIO compatible string
+Fixes: 7947219ab1a2 ("mfd: tps65219: Add support for TI TPS65214 PMIC")
+Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+---
+ drivers/mfd/tps65219.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/mfd/tps65219.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
+diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c
+index fd390600fbf0..297511025dd4 100644
+--- a/drivers/mfd/tps65219.c
++++ b/drivers/mfd/tps65219.c
+@@ -190,7 +190,7 @@ static const struct resource tps65219_regulator_resources[] = {
+ 
+ static const struct mfd_cell tps65214_cells[] = {
+ 	MFD_CELL_RES("tps65214-regulator", tps65214_regulator_resources),
+-	MFD_CELL_NAME("tps65215-gpio"),
++	MFD_CELL_NAME("tps65214-gpio"),
+ };
+ 
+ static const struct mfd_cell tps65215_cells[] = {
 -- 
 2.43.0
 
