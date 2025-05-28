@@ -1,110 +1,186 @@
-Return-Path: <linux-omap+bounces-3741-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3742-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA120AC5A60
-	for <lists+linux-omap@lfdr.de>; Tue, 27 May 2025 21:05:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1D52AC6D7E
+	for <lists+linux-omap@lfdr.de>; Wed, 28 May 2025 18:06:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B39E616B8DE
-	for <lists+linux-omap@lfdr.de>; Tue, 27 May 2025 19:05:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A1DD1C00895
+	for <lists+linux-omap@lfdr.de>; Wed, 28 May 2025 16:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0049D2820B7;
-	Tue, 27 May 2025 19:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDC9D28C011;
+	Wed, 28 May 2025 16:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="oENNXdiS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7sahqms"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8E5280A5F;
-	Tue, 27 May 2025 19:05:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C34A1D6193;
+	Wed, 28 May 2025 16:06:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748372718; cv=none; b=B9+kNXmK2jfOGLWdDb9f7InelDk4VPEWJWk7L3KAcDNjSdfSvKgFj7CvMBSda/o8WHMK4LKE5k8g/bBcpO/B+HigWsuj5xNYgJyhQcPXrP1+vdduwfhKh8l2lmSA+pDGhdU2Tfk59sCnS1wiUMHK3Iv9GAGpXfFQBIq9Int4Mo4=
+	t=1748448369; cv=none; b=oNJXJuY3PvcKH8nhr0w8H12kTkLADWQ7syEsvinKXhCPjCGv1pXRj+BdgyOWySnqSGnkWOCu8wVqfhXBvA9jy8oYsL4pZXik4JhFVj82xwYzz7N4Tj1A2xqyIn/qNObZOD4ClwqupNAHen8j4R76p9ZbzFzphkQ6MODY2jcaKYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748372718; c=relaxed/simple;
-	bh=ckblmtnoGdjYWvgBzZSWCc3EJjTaUp2SFihxEwTFxCA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UMIIuSzOGn861MFGWtiZOIg0RkC5A96sSwlE+Ssypa3PKiePrbbqOCAIJ27qEIrI6tFUVMzuIi3cwqLXISjPGr6egn5uwMDHdF1uEbFrLYBwFyrmDcFxY3bQ7lrpOAKDhwT00Wz0emblborTyHojMUc9EC/nwWp4XeHJaeS4qT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=oENNXdiS; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 54RJ4teq1848154;
-	Tue, 27 May 2025 14:04:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1748372695;
-	bh=9stycSswd791X6qRlyUiAsWHNY4Daq7bq21hDEYk+Ts=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=oENNXdiSqgaqnztaFxZvw8izAnBnURisdWwzhnd6XBJFhQOB2QVpCyqL8GuyFBHKU
-	 FLwffN9LeIbjXs7PhWSr/SP4BroVClMPIx4c5rVZknGq+yPGas824+Pztv7K1HOqQs
-	 pXkZW0dkIOM646Mpj9lk976aEpKmj68oZBTcnb54=
-Received: from DLEE110.ent.ti.com (dlee110.ent.ti.com [157.170.170.21])
-	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 54RJ4tqJ930899
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Tue, 27 May 2025 14:04:55 -0500
-Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE110.ent.ti.com
- (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 27
- May 2025 14:04:55 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 27 May 2025 14:04:55 -0500
-Received: from DMZ007XYY.dhcp.ti.com (dmz007xyy.dhcp.ti.com [128.247.29.251])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 54RJ4tcR3540893;
-	Tue, 27 May 2025 14:04:55 -0500
-From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-To: <aaro.koskinen@iki.fi>, <andreas@kemnade.info>, <khilman@baylibre.com>,
-        <rogerq@kernel.org>, <tony@atomide.com>, <lee@kernel.org>,
-        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <m-leonard@ti.com>, <praneeth@ti.com>, <afd@ti.com>
-Subject: [PATCH 2/2] mfd: tps65219: Update TPS65215's MFD cell GPIO compatible string
-Date: Tue, 27 May 2025 14:04:55 -0500
-Message-ID: <20250527190455.169772-3-s-ramamoorthy@ti.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250527190455.169772-1-s-ramamoorthy@ti.com>
-References: <20250527190455.169772-1-s-ramamoorthy@ti.com>
+	s=arc-20240116; t=1748448369; c=relaxed/simple;
+	bh=E39xeMDQKZ3ZvVa5E2QtOO0iwP3p31vysrL4F+yxZJM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VNmMNuiufMVspr/rA84t7FsU5cDTbRUnOvSf/cRFpuhnfgZmAewrY42TLgXl2xTiZsMRrYR4BsKIa1uJ4wsXvaAX8OLRBaS4fZnhgJGgGUqTJY9I3ALByezS5AdMj/R9y0jXQAjoelIhcFWtPVBpkVQDRctkX8f0/BPTliZPKdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7sahqms; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79CEDC4CEE3;
+	Wed, 28 May 2025 16:06:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748448368;
+	bh=E39xeMDQKZ3ZvVa5E2QtOO0iwP3p31vysrL4F+yxZJM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=k7sahqmsm2qzmR0d9kv2eHlH0yQoF3o8f6VJ8OWutWTiGrLuM4c79VZMXrpZ4OLbU
+	 1VNQhGhrk1dSZLC03Z9xy0hFB3ojejIo57HEmZWKtQDJzXQ/1ONdWKgU10UuvdWDJ0
+	 voUiyOM4abGfD9FeM504FY83+skEMLnJF0ZMiV9iMIBhIudKTJvaZksd5zwYH4SB/F
+	 RnE8t29JTO4LyQ50PbrGBDAjdP3qsDp3DontP84JAET9CF7VPBK4PnYo5mLdX5Ccmg
+	 bWTe7joBqst8QJa0npB/NkCWsGaGESGVMciUSEwFb8keLm6dAUgk4oF4taWFLfV47N
+	 B/9Ir/0J1XKlw==
+Date: Wed, 28 May 2025 09:06:03 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Thomas Gleixner <tglx@linutronix.de>, Jiri Slaby <jirislaby@kernel.org>
+Cc: Lee Jones <lee@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
+	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] mfd: Remove node variables that are unused with
+ CONFIG_OF=n
+Message-ID: <20250528160603.GA1172935@ax162>
+References: <20250508-mfd-fix-unused-node-variables-v1-1-df84d80cca55@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250508-mfd-fix-unused-node-variables-v1-1-df84d80cca55@kernel.org>
 
-This patch reflects the change made to move TPS65215 from 1 GPO and 1 GPIO
-to 2 GPOs and 1 GPIO. TPS65215 and TPS65219 both have 2 GPOs and 1 GPIO.
-TPS65214 has 1 GPO and 1 GPIO. TPS65215 will reuse the TPS65219 GPIO
-compatible string.
+Hi Thomas,
 
-TPS65214 TRM: https://www.ti.com/lit/pdf/slvud30
-TPS65215 TRM: https://www.ti.com/lit/pdf/slvucw5/
+On Thu, May 08, 2025 at 04:57:24PM +0100, Nathan Chancellor wrote:
+> A recent cleanup introduced a few instances of -Wunused-variable in
+> configurations without CONFIG_OF because of_fwnode_handle() does not
+> reference its argument in that case:
+> 
+>   drivers/mfd/twl4030-irq.c: In function 'twl4030_init_irq':
+>   drivers/mfd/twl4030-irq.c:679:46: warning: unused variable 'node' [-Wunused-variable]
+>     679 |         struct                  device_node *node = dev->of_node;
+>         |                                              ^~~~
+>   drivers/mfd/max8925-core.c: In function 'max8925_irq_init':
+>   drivers/mfd/max8925-core.c:659:29: warning: unused variable 'node' [-Wunused-variable]
+>     659 |         struct device_node *node = chip->dev->of_node;
+>         |                             ^~~~
+>   drivers/mfd/88pm860x-core.c: In function 'device_irq_init':
+>   drivers/mfd/88pm860x-core.c:576:29: warning: unused variable 'node' [-Wunused-variable]
+>     576 |         struct device_node *node = i2c->dev.of_node;
+>         |                             ^~~~
 
-Fixes: 7f9ed27eead6 ("mfd: tps65219: Add support for TI TPS65215 PMIC")
-Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
----
- drivers/mfd/tps65219.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+These warnings are now present in mainline after the merge of the
+irq/cleanups branch...
 
-diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c
-index 297511025dd4..041a5b563951 100644
---- a/drivers/mfd/tps65219.c
-+++ b/drivers/mfd/tps65219.c
-@@ -195,7 +195,7 @@ static const struct mfd_cell tps65214_cells[] = {
- 
- static const struct mfd_cell tps65215_cells[] = {
- 	MFD_CELL_RES("tps65215-regulator", tps65215_regulator_resources),
--	MFD_CELL_NAME("tps65215-gpio"),
-+	MFD_CELL_NAME("tps65219-gpio"),
- };
- 
- static const struct mfd_cell tps65219_cells[] = {
--- 
-2.43.0
+> Use the value of these variables as the argument to of_fwnode_handle()
+> directly, clearing up the warnings.
+> 
+> Fixes: e3d44f11da04 ("mfd: Switch to irq_domain_create_*()")
 
+but this hash has changed, so this should be
+
+Fixes: a36aa0f7226a ("mfd: Switch to irq_domain_create_*()")
+
+but the rest of the change is still applicable. Would you like a new
+change or can you adjust that when applying?
+
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+>  drivers/mfd/88pm860x-core.c | 5 ++---
+>  drivers/mfd/max8925-core.c  | 5 ++---
+>  drivers/mfd/twl4030-irq.c   | 5 ++---
+>  3 files changed, 6 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/mfd/88pm860x-core.c b/drivers/mfd/88pm860x-core.c
+> index 488e346047c1..25300b53a8ef 100644
+> --- a/drivers/mfd/88pm860x-core.c
+> +++ b/drivers/mfd/88pm860x-core.c
+> @@ -573,7 +573,6 @@ static int device_irq_init(struct pm860x_chip *chip,
+>  	unsigned long flags = IRQF_TRIGGER_FALLING | IRQF_ONESHOT;
+>  	int data, mask, ret = -EINVAL;
+>  	int nr_irqs, irq_base = -1;
+> -	struct device_node *node = i2c->dev.of_node;
+>  
+>  	mask = PM8607_B0_MISC1_INV_INT | PM8607_B0_MISC1_INT_CLEAR
+>  		| PM8607_B0_MISC1_INT_MASK;
+> @@ -624,8 +623,8 @@ static int device_irq_init(struct pm860x_chip *chip,
+>  		ret = -EBUSY;
+>  		goto out;
+>  	}
+> -	irq_domain_create_legacy(of_fwnode_handle(node), nr_irqs, chip->irq_base, 0,
+> -				 &pm860x_irq_domain_ops, chip);
+> +	irq_domain_create_legacy(of_fwnode_handle(i2c->dev.of_node), nr_irqs,
+> +				 chip->irq_base, 0, &pm860x_irq_domain_ops, chip);
+>  	chip->core_irq = i2c->irq;
+>  	if (!chip->core_irq)
+>  		goto out;
+> diff --git a/drivers/mfd/max8925-core.c b/drivers/mfd/max8925-core.c
+> index 78b16c67a5fc..91388477ad2b 100644
+> --- a/drivers/mfd/max8925-core.c
+> +++ b/drivers/mfd/max8925-core.c
+> @@ -656,7 +656,6 @@ static int max8925_irq_init(struct max8925_chip *chip, int irq,
+>  {
+>  	unsigned long flags = IRQF_TRIGGER_FALLING | IRQF_ONESHOT;
+>  	int ret;
+> -	struct device_node *node = chip->dev->of_node;
+>  
+>  	/* clear all interrupts */
+>  	max8925_reg_read(chip->i2c, MAX8925_CHG_IRQ1);
+> @@ -682,8 +681,8 @@ static int max8925_irq_init(struct max8925_chip *chip, int irq,
+>  		return -EBUSY;
+>  	}
+>  
+> -	irq_domain_create_legacy(of_fwnode_handle(node), MAX8925_NR_IRQS, chip->irq_base, 0,
+> -				 &max8925_irq_domain_ops, chip);
+> +	irq_domain_create_legacy(of_fwnode_handle(chip->dev->of_node), MAX8925_NR_IRQS,
+> +				 chip->irq_base, 0, &max8925_irq_domain_ops, chip);
+>  
+>  	/* request irq handler for pmic main irq*/
+>  	chip->core_irq = irq;
+> diff --git a/drivers/mfd/twl4030-irq.c b/drivers/mfd/twl4030-irq.c
+> index 232c2bfe8c18..c7191d2992a1 100644
+> --- a/drivers/mfd/twl4030-irq.c
+> +++ b/drivers/mfd/twl4030-irq.c
+> @@ -676,7 +676,6 @@ int twl4030_init_irq(struct device *dev, int irq_num)
+>  	static struct irq_chip	twl4030_irq_chip;
+>  	int			status, i;
+>  	int			irq_base, irq_end, nr_irqs;
+> -	struct			device_node *node = dev->of_node;
+>  
+>  	/*
+>  	 * TWL core and pwr interrupts must be contiguous because
+> @@ -691,8 +690,8 @@ int twl4030_init_irq(struct device *dev, int irq_num)
+>  		return irq_base;
+>  	}
+>  
+> -	irq_domain_create_legacy(of_fwnode_handle(node), nr_irqs, irq_base, 0,
+> -				 &irq_domain_simple_ops, NULL);
+> +	irq_domain_create_legacy(of_fwnode_handle(dev->of_node), nr_irqs,
+> +				 irq_base, 0, &irq_domain_simple_ops, NULL);
+>  
+>  	irq_end = irq_base + TWL4030_CORE_NR_IRQS;
+>  
+> 
+> ---
+> base-commit: c63e393a16c9c4cf8c9b70fedf9f27b442874ef2
+> change-id: 20250508-mfd-fix-unused-node-variables-14fe4f2cfd6c
+> 
+> Best regards,
+> -- 
+> Nathan Chancellor <nathan@kernel.org>
+> 
 
