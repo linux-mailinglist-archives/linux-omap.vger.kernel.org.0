@@ -1,114 +1,114 @@
-Return-Path: <linux-omap+bounces-3745-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3746-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BC0AC7F98
-	for <lists+linux-omap@lfdr.de>; Thu, 29 May 2025 16:21:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2A6CAC817B
+	for <lists+linux-omap@lfdr.de>; Thu, 29 May 2025 19:09:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 762B43ABA9A
-	for <lists+linux-omap@lfdr.de>; Thu, 29 May 2025 14:21:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02B159E1EE5
+	for <lists+linux-omap@lfdr.de>; Thu, 29 May 2025 17:08:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D8B1E9B2A;
-	Thu, 29 May 2025 14:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0400C22E403;
+	Thu, 29 May 2025 17:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=ltec.ch header.i=@ltec.ch header.b="/tg5MDE3";
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=ltec.ch header.i=@ltec.ch header.b="Z4Vam7we"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="VFdgZAYy"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.ltec.ch (mail.ltec.ch [95.143.48.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC0C1DC075;
-	Thu, 29 May 2025 14:21:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.48.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD11222ACCE
+	for <linux-omap@vger.kernel.org>; Thu, 29 May 2025 17:09:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748528504; cv=none; b=l03DUdqSS8CrhRcPVdFYrqdeffELZMsJt+iF+aTLBYWzjt2GMLN/SKVhTF66Qz359GIN3Yn3S+LorN6e5fThmVe2RBoiVuqsf+Hr1xdm37B2ZSZl9d6RWGJSRwLfPv6MK6Wfyrt5edQ0CBGul2W5AqIXhMUXso8gQmljLM2UPek=
+	t=1748538546; cv=none; b=acNqj93ZvMzmvYtM+nHGaH5gbQsyqlU50NdT45Uv+Lm5y8PxgFCSXNLjhEZRTM+hCOJen52pMLBPbFNGp+xu6Kyf90WUB5kNtsND75q8wBcPackQpIBu9A5t9iDAkTpEe1J0SmN8sW+F41lgnjeVpbQxtZa3tE/lPIDN9MrtGcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748528504; c=relaxed/simple;
-	bh=pnOeuLVvoGhxI9QE7V69Klv9q3SpI04PooUYZCiq2UM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e9Qm7ADkTNB4T3U47VkcnBEUIlzXWcrztcR9EhHFWbxRAPyuPgUGlf+4dTw+hQ0EBoTMHK6zxSL2yllhtY6Q5x/rCniwUdr9FlW/s8hm76mXFboiXZCNMJ6eMSObHNJm/tpc/JXbkg0osE7802QV/G1iKlqz8vRY0mjFmJ5PtGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ltec.ch; spf=pass smtp.mailfrom=ltec.ch; dkim=permerror (0-bit key) header.d=ltec.ch header.i=@ltec.ch header.b=/tg5MDE3; dkim=pass (2048-bit key) header.d=ltec.ch header.i=@ltec.ch header.b=Z4Vam7we; arc=none smtp.client-ip=95.143.48.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ltec.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ltec.ch
-DKIM-Signature: v=1; a=ed25519-sha256; q=dns/txt; c=relaxed/relaxed; d=ltec.ch
-	; s=ec-sel; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=20lWbhN2MmPbIZRs+wuEiLtogdwAF/uD3/PsgRMN/1s=; b=/tg5MDE3pEY3MSfpL3xu6MuU3d
-	XFU1r8nwL3BzB2TRBTgLj26yntHPnpQKN6/TCYERatd+AExBQmG/rMdBMuDg==;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ltec.ch;
-	s=rsa-sel; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=20lWbhN2MmPbIZRs+wuEiLtogdwAF/uD3/PsgRMN/1s=; b=Z4Vam7weU0qIZwRgq7MHz7oBz8
-	RqVtemlvRIzhMaTr8nCgknEpBLKpWDGzZlIwk2zsZG0LYyha6IDeJzLbcn4ghkvmVFigj6gPCaDvV
-	eyX2W02zVc5WKxgw6QUUwsCGNfR7QbC8K27vJyCiFQRQMyoaUaMPNmmxKFgzs6Mcf2IeOEiYJMfjf
-	LpupnPMdZeHUS5XgbKMMfSDHrj9YNwbAI3qVWUKd9uZyhs+QNrqzMfPjLBeyaYMdi7DsshOvOu9bg
-	LfZGmqBo8UMcaMUt9H26Lig/cOd5iDw0BrohhR3n+kYsVmqGPlliQSxZaSlpxWT0yZfVWwjMzy/d5
-	hZ6UsojA==;
-Received: from nebula.ltec ([172.27.11.2] helo=localhost.localdomain)
-	by mail.ltec.ch with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <fb@ltec.ch>)
-	id 1uKdhJ-006Vmc-0W;
-	Thu, 29 May 2025 15:53:29 +0200
-From: Felix Brack <fb@ltec.ch>
-To: tony@atomide.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	linux-omap@vger.kernel.org,
-	devicetree@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	fb@ltec.ch
-Subject: [PATCH] ARM: dts: am335x-pdu001: Fix RS-485 transceiver switching
-Date: Thu, 29 May 2025 15:53:24 +0200
-Message-ID: <20250529135324.182868-1-fb@ltec.ch>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1748538546; c=relaxed/simple;
+	bh=bTCJh7Vs9YYA62uTf9Qa5e5R88sXF7eDOyoY3jHAfms=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=SGMvuU93Qvza2IlnzCQ9LRgEv7Qxy4uDb5zflGAOS0tvu4s/NAEWRebs/ll4KcO0MKj3dsmX4Wh6/tfDx0mH4ruQ/oj/4hK9ICEHfxNp2LiZ+g2oHO6xh8xdMKE+uLtcJIhyLzm5G0ut5pBnWbh9mEMSTQFQ/t87gN1XNEtNRBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=VFdgZAYy; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-74267c68c11so982889b3a.0
+        for <linux-omap@vger.kernel.org>; Thu, 29 May 2025 10:09:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1748538544; x=1749143344; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=475QwjMvob141k8a/Wu8TwXkWBwztNaPrC5le4HhOJA=;
+        b=VFdgZAYylFU8y6AQEOWhvTM2lqdrEJ1dSxQmIjOsYRUiNwT/l4hFRHjSgLOD/M2EQD
+         qihBYlkgFfDhUopSR8LegVYx/BLLWuazLA4pm5JrTzEDNzOd74qG/RNDG90nuNTX0GxR
+         tSMo3Ou4X01BtRE7dkKXOS93M2kNDsGGE+o7qhtz733emPXkgp6B3EppLTjmSoyYoOCo
+         DxEO/zmoNWqnFUghtqoB74XYgnOhPmVEPcrNYDPr5rPlmCqAGYHDKyQ0iW+Yv31Nc+cj
+         BJmzwEHpRW2np4UT6UenDeyXoe+oTvumoVJZ6zKtKzMZjJNgfEUIR5kCW1Nz/JW4ls8u
+         Us2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748538544; x=1749143344;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=475QwjMvob141k8a/Wu8TwXkWBwztNaPrC5le4HhOJA=;
+        b=fhTSfpycuGatN296JtTGk0+xo1Yu153IWnK9ECwNdrFEG1e3wK0edHrhcVf08oKkhw
+         npVyFsEOHMD0vVcmU6phm86zdGhf5NiE6dgdS5ZfokIZUib4VRYZMulOHCbpF2EmHmdq
+         2q23lbrtIEbsvBkNQRcYVl3T2Mo/S1d5UpL9SGaCS3RIZFF3ZVSNDxzLQeXf84MtNnpQ
+         LPrDLNS9xs8goymQUAksx8rDg6eWoViMe+7CZi10ccjNRYzp0TYsQ2ghRNLwbimYzzCc
+         WtOY8B0lIKg3vUcOoh8pbe23eDTDIrywtif5XjxCtvvF4Kmbv2MDbArzzMu3OqXd/iZk
+         l2YA==
+X-Forwarded-Encrypted: i=1; AJvYcCW3EoB0QQ8wHCZ7dbrcRVG68c088dYG+paPtw3vuIeCUsP80U1+VMKHDGkoH/tKyIvziky1g0XrG3zS@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJQ05HqVaKuAWD8OL1vGENbG3VEX1oINNA8R+dkpp7RCFS0ATZ
+	NebejcV/lNn/sZBVecyBU4IY+On9OADI1GXjVko0LRP2DNmsUrs01o4Ykdoxh4IEvWPOQg1Gy/Q
+	DLO5vpDJO8Q==
+X-Gm-Gg: ASbGnctwYstdAZF3II74xABSG897Bl4DSTmDGadwi8nINoenSwqWBgm7VsYilF9xd/B
+	S3aVsg2t9Pw+FZPJMNuiqA4bNP6+VEmQfvrvf9OLecGftsu4/R23q9oJIRWAPbeGLMGorH91Vj7
+	UnzkiKOonT7WxnWcBdiBU4ZN8f63n7miMyi2LZzfGJv1u5NkkoPlwK8Wh46gmPeF/uSBzhl3WLZ
+	ZjnNhiWxOuzWT1Cx3B/qpIyEqQtFoZt8mkntRau15swXd4qy9ffloAIhmr6GEPToRkAZG4f/UAH
+	E7fwjXkeQapcl5CbRK6Ltz6XxFIAyDZ6Qj1tRLFR5+Ra0d56Vg==
+X-Google-Smtp-Source: AGHT+IFsZkN4U8eseSF5210Vs36avHRe1Pd57NJYh8mHeC8iyOPf69SAlhCzh6rpbhZ6zB7HSxl2pA==
+X-Received: by 2002:a05:6a00:4fc3:b0:740:6f86:a0e6 with SMTP id d2e1a72fcca58-747bd96da33mr304060b3a.6.1748538543680;
+        Thu, 29 May 2025 10:09:03 -0700 (PDT)
+Received: from localhost ([97.126.182.119])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-747affb01d3sm1559252b3a.113.2025.05.29.10.09.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 May 2025 10:09:03 -0700 (PDT)
+From: Kevin Hilman <khilman@baylibre.com>
+To: Mark Jackson <mpfj@newflow.co.uk>, Tony Lindgren <tony@atomide.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, linux-omap@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20250514125158.56285-2-krzysztof.kozlowski@linaro.org>
+References: <20250514125158.56285-2-krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH] ARM: dts: omap: am335x: Use non-deprecated rts-gpios
+Message-Id: <174853854269.3631742.2539937093987304095.b4-ty@baylibre.com>
+Date: Thu, 29 May 2025 10:09:02 -0700
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3-dev-d7477
 
-The wiring of the RS-485 transceiver of UART0 of the PDU-001 board
-allows sending or receiving date exclusively. In other words: no
-character transmitted will ever be received.
-Hence the tx-filter counter in the OMAP serial driver can't work
-correctly as it relies on receiving the transmitted characters.
-This in turn will prevent reception of data unless we disable the
-tx-filter counter.
-This patch disables the tx-filter counter by enabling the DTS setting
-rs485-rx-during-tx. This might sound like the opposite to be done but
-it uses the enabling of rs485-rx-during-tx not for receiving the data
-transmitted but for disabling the tx-fiter counter.
 
-Tested-by: Felix Brack <fb@ltec.ch>
-Signed-off-by: Felix Brack <fb@ltec.ch>
----
- arch/arm/boot/dts/ti/omap/am335x-pdu001.dts | 1 +
- 1 file changed, 1 insertion(+)
+On Wed, 14 May 2025 14:51:59 +0200, Krzysztof Kozlowski wrote:
+> The 'rts-gpio' (without trailing 's') is deprecated in favor of
+> 'rts-gpios'.  Kernel supports both variants, so switch the DTS to
+> preferred one.
+> 
+> 
 
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts b/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
-index ded19e24e666..6c96840fe8be 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
-@@ -258,6 +258,7 @@ &uart0 {
- 
- 	rts-gpio = <&gpio1 9 GPIO_ACTIVE_HIGH>;
- 	rs485-rts-active-high;
-+	rs485-rx-during-tx;
- 	rs485-rts-delay = <0 0>;
- 	linux,rs485-enabled-at-boot-time;
- 
+Applied, thanks!
+
+[1/1] ARM: dts: omap: am335x: Use non-deprecated rts-gpios
+      commit: 30b3788330e351f0f16d484f0e7b9b816506e444
+
+Best regards,
 -- 
-2.43.0
+Kevin Hilman <khilman@baylibre.com>
 
 
