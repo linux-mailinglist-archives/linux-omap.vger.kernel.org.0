@@ -1,114 +1,162 @@
-Return-Path: <linux-omap+bounces-3749-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3750-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D50C9AC874A
-	for <lists+linux-omap@lfdr.de>; Fri, 30 May 2025 06:27:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA7DAC9B54
+	for <lists+linux-omap@lfdr.de>; Sat, 31 May 2025 16:14:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 080473BC029
-	for <lists+linux-omap@lfdr.de>; Fri, 30 May 2025 04:26:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A0BD7A29DC
+	for <lists+linux-omap@lfdr.de>; Sat, 31 May 2025 14:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB591DDA1E;
-	Fri, 30 May 2025 04:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED5223C8A1;
+	Sat, 31 May 2025 14:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NhmqoDxL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iv4VoH58"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10B94430;
-	Fri, 30 May 2025 04:26:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7F32BCF5;
+	Sat, 31 May 2025 14:13:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748579220; cv=none; b=oRfSONQTozh08U/o8osUWK0jM6auJs9BpEsjNV3sP1WxZ7vnxV+3WaX0rrizvRRzNprZBRUmomA3kJeTkhoGL08geyqPclFJRZm8PzFWWJM/sMCUXDmAO6PtTlef2wu8iHEJxach5niuNvPl4/7QlVRE4pQC/eETW39Bn2Ovq8E=
+	t=1748700839; cv=none; b=esC/yHP//Y0H+nqQybGJ3xTtKyfyXerSNaE9h2L5G8i/QpPtCcf+taFAUPj1HN+KTiBii5/tWbDcRPsJz0vww6rgfpaNElrcH9vA/GAuvh/ZUc3Qbe71j7OQgToOoBMkH8H57g8301xiZLf1segms2eskT6gH0UfJ8FP4h6/1lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748579220; c=relaxed/simple;
-	bh=i78PUUdi5zUCTmaJv+tqoMT3SKJTsfKFV2V4vz0UtUU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=p5wLgS7qxDOfe3IcOhnX7in5awrFL2nE586Bu2KvsHQv1qC5clLmgKhZ3BkSRgEqe4Devf5vd8UtrrkRIhv3gITk7GrA5aZuZTTIRV3dmo9u32ovEnGmhRhG6gPB3UgrPkmByGaRaneKG7D1XAa3QWiQgDxo1Z8DncAftAO2ISc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NhmqoDxL; arc=none smtp.client-ip=209.85.167.43
+	s=arc-20240116; t=1748700839; c=relaxed/simple;
+	bh=jClOl4d/ELwIaidMD0YDUkJojPmuj94eLxAmlAxnuR4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XQglfFcqEK2KNkPzUAp3N2r+6AJ+qGMhF2O8FFMiYiVGDGZLLZrVlWmdUgFhpeD3tG9BSlQSQ1YiuBdAFVFCRhbs5Ni0Dsx8M7P29Sa94Aw6DSxaHpEhBTDT52QSGBn6QSkFpcZuEKV4uLrc8o85tXB1ISwqdpITDMNMusprFTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iv4VoH58; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-553241d30b3so1846965e87.3;
-        Thu, 29 May 2025 21:26:58 -0700 (PDT)
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-312150900afso3019742a91.1;
+        Sat, 31 May 2025 07:13:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748579217; x=1749184017; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4cUfFUBNSEriDxRb2IzxC9/n0RXxLFJKdbbL6QYJivA=;
-        b=NhmqoDxLZzMxa5Wjska6QnEqgQgUOWnvjSBACEgY8Q3xG7CfGRiwzTqp50j88wXil+
-         rRNl49U+DgoCl6hOljT3gf2VcjF3KHD7ueVwkDbUl7JcBNh1Mbr7VyCCL5gZs2r1IjAw
-         FPHv6qJ0KX1bn9FLh26mm4oCBeXLwLR3dP3LGF9TQT9/AIlC4ZcqL8Dr1lyDZaYnSBxy
-         Bv0eX6wkzZ0IvWIOnUjdka9yY8IqxqTxttZrBFtankLHzxcKw+ydYsgabXZ0K+UaOl2h
-         6HcwI3FgVRriMDqf0sLtPv+5A6XxGonn5kNJFCPx2Ku9TB5idiRV9EdfwEkxPdEzu4+y
-         eV9A==
+        d=gmail.com; s=20230601; t=1748700838; x=1749305638; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZByPvqrueKC3c9aa9kKxrMQLY2qgkp2Pbw7suNhDht0=;
+        b=iv4VoH585LXr0A/tTf2l+zqIEihaxxYTxlwx36H56sHoDEMjMKq1BzYQb6/7zXv7KU
+         rGKlCmmuC61iyrtD5zWGGMVPw6SWpl1QziKhmsr2d9IjY2nTjzrXHCxV0ia2EClgYU7u
+         3J4abned+Sav0Diqj9mT1Zj0aMzD2Ba0UXE4eTC+YdkhzE7MYMkzeQEAOurFczuw3Y47
+         XwLBdfw5QaxEIJCGP/jVC3dwVFtWXazcbr7EfyN3+O5nWJmyRmHvwA+WJheOZ+lsrUPA
+         SktX839+5Km57hJLkGL/8kE50ToPmUPSkDz/Nb4/nWv1pIKa9FkIE5fgJ23c2RQCBdLb
+         9j3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748579217; x=1749184017;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4cUfFUBNSEriDxRb2IzxC9/n0RXxLFJKdbbL6QYJivA=;
-        b=F0Z0Rus9RJmY2Pz4/wvc2jLQdmi7Boi4MmXioDJ0bcXH4+ypa65WBnTO3phC69Pdlo
-         bN1r4vWzGyrwxLu5cK+p3sCSEcYtC7Bljt8az+ub+i6WRGd4z66NaqjopsmwrS0ZZpQi
-         +ON/A9NAWLceDOnr+3sJdCouFK4bH1kM9cMjq8+kHBHQ27mmbdB+hkqtBcFlx9RjxCZQ
-         4Si8HEPj9cOugVpG26qpPxacXu2l6Bw4s9CDCH1nKAEYIksumnxQBk63Yi3ELwRSgywW
-         k9ZMXaEmoA1bpEHZCViJeXVyS+A1vToQNbemcuwDvXBG1nLVSS9SmuqzMMtFwu0OFY5H
-         s3tg==
-X-Forwarded-Encrypted: i=1; AJvYcCVvFuTVCcUUqkYcu1MQi7p9yMLaE7U5hGIgwdqaO3yWlUag5DCiELaFVG8T2tg2R6BBxrSbDT+dG8zPAA==@vger.kernel.org, AJvYcCXoht1TdYDJdaIPEMF3bRnfYEA1GVhRvu+Gz6CqKO/TyrfUX4SKe6UMwjGoiXtS0o6pKRQX7Ad2rohYOv8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHVYdpq4qkXRib/G/CBPnfDiYeSaSiaAMwJ/SFk10G2O4qTbDz
-	bE1hDaziv6+SSJBRYdLd9eG3ZV6Pi6RVZ4SrYLcME4BR+UmDE7d+CSu2
-X-Gm-Gg: ASbGncvMNxvB62nvBzaduLAxOJuLjUqwu/V99pLBkpnzhLLRSkxJkCB/QhIknc0ZrGq
-	pj6mEvCLoSVl7SSwFbEAq5hofyOCuTSqn6lM4izebIGxW0nk9um7cycW9f3KkrAeMK42w6IXFwJ
-	bZUlElnVTroYINOa8ar9pQKK1xb37MHYUUgDUFNr6rbrvAO69CFxvXaXEWeIfiiIvvDxIxomLfX
-	kU10Wi0EwV28pBauV3YzY5NGA9usuiWXYZb2VSvJo3v0fFKu+ZJme52UZdm60uKxnbEDuGMqpoI
-	ZR4RdYfHQkBnU/LWwx8qwrZDkE1kXb+3Mt0RysD6HpBKh9RwDCoSkfpm4LX+WwK9yY4ONqefIq/
-	Oz9sax8RvKCtmqNpbXFNb2Aayl2t4BFrn2vT3y5F5P4g=
-X-Google-Smtp-Source: AGHT+IGuXhOrU45WLtPXz+vrV5WSbqfhZy6p6bxNlYIqNzI1Gym7QVkgZ5+4VSaTxBaa/rgvx8QCKg==
-X-Received: by 2002:a05:6512:1595:b0:553:2969:1d61 with SMTP id 2adb3069b0e04-5533b90a316mr671673e87.24.1748579216437;
-        Thu, 29 May 2025 21:26:56 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5533789d769sm561918e87.56.2025.05.29.21.26.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 May 2025 21:26:55 -0700 (PDT)
-Message-ID: <8ef8257b-da1d-4436-91f1-72721a45bc5d@gmail.com>
-Date: Fri, 30 May 2025 07:26:54 +0300
+        d=1e100.net; s=20230601; t=1748700838; x=1749305638;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZByPvqrueKC3c9aa9kKxrMQLY2qgkp2Pbw7suNhDht0=;
+        b=usDhMj87UwjGgewu48FKcFKVF0tT1SHPO6PkiRmxh193ETVpaJpoVAZrknEskXiGFM
+         fVU9GtCBLUm+ht2IawzjdafNNT3J8MhYVZJAih4m6dNjXC/QYfIAsfPkXjnC0cao2G2v
+         xOBGInJPqvd94Gg6tfwnO+8fR+7/2IzeMQyWyWJB2HEnFmEHS6P4D1CdRkBjKmj3ICIo
+         WJastaSMCMGIDO4hsmDpWKkP84PL+yP26EjsMbs5R/JUtoj8eafRkuMaPRtdkju5KirB
+         sK6k32n2gHQC96p9pOF8Qo4eMN+I4EZ7EqYvgHtSZJNs/iL762ZGH40ho4lxlR7MvpJd
+         /6Jg==
+X-Forwarded-Encrypted: i=1; AJvYcCUTRGxVDxLK/+jLWFyF2FuNPy0Tkf7k6MDvG8xZXRI6ykGRGdc5l/C6n7gIXTmUbjIIdDGwBS15A/GchoI=@vger.kernel.org, AJvYcCWaZtsKJmpsr0f3nT4YaeYYqPT8BmBlLGsOu0CA0b5aHZajUTrgURNHNirxaKl/JrCFw301B5hd9oRO1g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2/IBxeuq6yEVgOgfvEu7WXt0nsN6KadT0GmLQRtw6sGSOcwV3
+	xYmrihjyz7QuUKEYasJWXj02Pm7X+Bk0YmY2p3zgURg9SahTU/5p5SF8TOzH1oy/
+X-Gm-Gg: ASbGncuNevE7nygua+lPNzAgCt1YFRYjGN3dtnaB17uoWZHXASi4zCXRcpXI+czMHD/
+	jwMBFhZrwebTgza0FzPdVgOxJZPBbiOA8lkOzFGpR5W7UmaTQIHZq9jbZgaAqNMguTYBOgCab27
+	WMozVKVI5s3n5m2ufkMEU2xyrft/hGDWG37DM5rzu3jNjwkhxqmcTKX4CvJXijsZzEWhZ1GOgn3
+	Grg4Xk6rmZtxhmxXJE1Xg4ZcrQHksKrCUQMTCVDxx635jNqys9HKCobeKjOiHqTpjoGW4uG3C2z
+	esNSlD0Uz+6o7198/6t6ZCMEuZj6Q820vdkb/LUPh+ZhcDV8JA6ky3jvAYCNnB5GiQ84pvTv/LS
+	piw==
+X-Google-Smtp-Source: AGHT+IFYU4KVCP8B3byl3tmb0tTbxJppAnwli3RGwvqFUoEzTzVn13HOAyXwmQfc7P7gQn9gi+RgOw==
+X-Received: by 2002:a17:90a:ec8d:b0:312:1e41:3a58 with SMTP id 98e67ed59e1d1-3127c871ca7mr2752786a91.34.1748700837652;
+        Sat, 31 May 2025 07:13:57 -0700 (PDT)
+Received: from yn386-ZK.. (p1273134-ipoe.ipoe.ocn.ne.jp. [122.26.118.133])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3124e29f883sm2774643a91.1.2025.05.31.07.13.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 31 May 2025 07:13:57 -0700 (PDT)
+From: Yuuki NAGAO <wf.yn386@gmail.com>
+To: Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Jarkko Nikula <jarkko.nikula@bitmer.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>
+Cc: linux-sound@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yuuki NAGAO <wf.yn386@gmail.com>
+Subject: [PATCH] ASoC: ti: omap-hdmi: Re-add dai_link->platform to fix card init
+Date: Sat, 31 May 2025 23:13:41 +0900
+Message-ID: <20250531141341.81164-1-wf.yn386@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mfd: Constify reg_sequence and regmap_irq
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- James Ogletree <jogletre@opensource.cirrus.com>,
- Fred Treven <fred.treven@cirrus.com>, Ben Bright <ben.bright@cirrus.com>,
- Lee Jones <lee@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>,
- Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>,
- Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
- patches@opensource.cirrus.com, linux-kernel@vger.kernel.org,
- linux-omap@vger.kernel.org
-References: <20250528194416.567127-2-krzysztof.kozlowski@linaro.org>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20250528194416.567127-2-krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Thanks Krzysztof!
+The removed dai_link->platform component cause a fail which
+is exposed at runtime. (ex: when a sound tool is used)
+This patch re-adds the dai_link->platform component to have
+a full card registered.
 
-On 28/05/2025 22:44, Krzysztof Kozlowski wrote:
-> Static 'struct reg_sequence' array, 'struct regmap_irq_sub_irq_map' and
-> 'struct regmap_irq_chip ' are not modified so can be changed to const
-> for more safety.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Before this patch:
+$ aplay -l
+**** List of PLAYBACK Hardware Devices ****
+card 1: HDMI [HDMI], device 0: HDMI snd-soc-dummy-dai-0 []
+  Subdevices: 1/1
+  Subdevice #0: subdevice #0
 
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+$ speaker-test -D plughw:1,0 -t sine
+speaker-test 1.2.8
+Playback device is plughw:1,0
+Stream parameters are 48000Hz, S16_LE, 1 channels
+Sine wave rate is 440.0000Hz
+Playback open error: -22,Invalid argument
 
-Yours,
-	-- Matti
+After this patch which restores the platform component:
+$ aplay -l
+**** List of PLAYBACK Hardware Devices ****
+card 0: HDMI [HDMI], device 0: HDMI snd-soc-dummy-dai-0 [HDMI snd-soc-dummy-dai-0]
+  Subdevices: 0/1
+  Subdevice #0: subdevice #0
+
+-> Resolve the playback error.
+
+Fixes: 3b0db249cf8f ("ASoC: ti: remove unnecessary dai_link->platform")
+
+Signed-off-by: Yuuki NAGAO <wf.yn386@gmail.com>
+---
+ sound/soc/ti/omap-hdmi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
+index cf43ac19c4a6..55e7cb96858f 100644
+--- a/sound/soc/ti/omap-hdmi.c
++++ b/sound/soc/ti/omap-hdmi.c
+@@ -361,17 +361,20 @@ static int omap_hdmi_audio_probe(struct platform_device *pdev)
+ 	if (!card->dai_link)
+ 		return -ENOMEM;
+ 
+-	compnent = devm_kzalloc(dev, sizeof(*compnent), GFP_KERNEL);
++	compnent = devm_kzalloc(dev, 2 * sizeof(*compnent), GFP_KERNEL);
+ 	if (!compnent)
+ 		return -ENOMEM;
+-	card->dai_link->cpus		= compnent;
++	card->dai_link->cpus		= &compnent[0];
+ 	card->dai_link->num_cpus	= 1;
+ 	card->dai_link->codecs		= &snd_soc_dummy_dlc;
+ 	card->dai_link->num_codecs	= 1;
++	card->dai_link->platforms	= &compnent[1];
++	card->dai_link->num_platforms	= 1;
+ 
+ 	card->dai_link->name = card->name;
+ 	card->dai_link->stream_name = card->name;
+ 	card->dai_link->cpus->dai_name = dev_name(ad->dssdev);
++	card->dai_link->platforms->name = dev_name(ad->dssdev);
+ 	card->num_links = 1;
+ 	card->dev = dev;
+ 
+-- 
+2.43.0
+
 
