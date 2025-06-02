@@ -1,162 +1,110 @@
-Return-Path: <linux-omap+bounces-3750-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3751-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA7DAC9B54
-	for <lists+linux-omap@lfdr.de>; Sat, 31 May 2025 16:14:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B97F6ACB907
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Jun 2025 17:54:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A0BD7A29DC
-	for <lists+linux-omap@lfdr.de>; Sat, 31 May 2025 14:12:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDDDC1888BE0
+	for <lists+linux-omap@lfdr.de>; Mon,  2 Jun 2025 15:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED5223C8A1;
-	Sat, 31 May 2025 14:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9AB4221FB8;
+	Mon,  2 Jun 2025 15:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iv4VoH58"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QGQJuCs1"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7F32BCF5;
-	Sat, 31 May 2025 14:13:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806DD1CBA18;
+	Mon,  2 Jun 2025 15:50:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748700839; cv=none; b=esC/yHP//Y0H+nqQybGJ3xTtKyfyXerSNaE9h2L5G8i/QpPtCcf+taFAUPj1HN+KTiBii5/tWbDcRPsJz0vww6rgfpaNElrcH9vA/GAuvh/ZUc3Qbe71j7OQgToOoBMkH8H57g8301xiZLf1segms2eskT6gH0UfJ8FP4h6/1lY=
+	t=1748879440; cv=none; b=Qfaq3/UuJMgulouG2AvUEKcgcywLyKfmA4ZkqAgbMPwTHSQ9B0LYfCb8K2Wm+D5L3vjvkecvcdf6ZNLGuBT2Tvct6MAk7zZYZR/oqTnrfsygJuqDSRmNw8XIC5TGDNa61mRW3l/RJYr1TyOigJ8rPvacNG1DfidteImelnZjT6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748700839; c=relaxed/simple;
-	bh=jClOl4d/ELwIaidMD0YDUkJojPmuj94eLxAmlAxnuR4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XQglfFcqEK2KNkPzUAp3N2r+6AJ+qGMhF2O8FFMiYiVGDGZLLZrVlWmdUgFhpeD3tG9BSlQSQ1YiuBdAFVFCRhbs5Ni0Dsx8M7P29Sa94Aw6DSxaHpEhBTDT52QSGBn6QSkFpcZuEKV4uLrc8o85tXB1ISwqdpITDMNMusprFTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iv4VoH58; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-312150900afso3019742a91.1;
-        Sat, 31 May 2025 07:13:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748700838; x=1749305638; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZByPvqrueKC3c9aa9kKxrMQLY2qgkp2Pbw7suNhDht0=;
-        b=iv4VoH585LXr0A/tTf2l+zqIEihaxxYTxlwx36H56sHoDEMjMKq1BzYQb6/7zXv7KU
-         rGKlCmmuC61iyrtD5zWGGMVPw6SWpl1QziKhmsr2d9IjY2nTjzrXHCxV0ia2EClgYU7u
-         3J4abned+Sav0Diqj9mT1Zj0aMzD2Ba0UXE4eTC+YdkhzE7MYMkzeQEAOurFczuw3Y47
-         XwLBdfw5QaxEIJCGP/jVC3dwVFtWXazcbr7EfyN3+O5nWJmyRmHvwA+WJheOZ+lsrUPA
-         SktX839+5Km57hJLkGL/8kE50ToPmUPSkDz/Nb4/nWv1pIKa9FkIE5fgJ23c2RQCBdLb
-         9j3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748700838; x=1749305638;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZByPvqrueKC3c9aa9kKxrMQLY2qgkp2Pbw7suNhDht0=;
-        b=usDhMj87UwjGgewu48FKcFKVF0tT1SHPO6PkiRmxh193ETVpaJpoVAZrknEskXiGFM
-         fVU9GtCBLUm+ht2IawzjdafNNT3J8MhYVZJAih4m6dNjXC/QYfIAsfPkXjnC0cao2G2v
-         xOBGInJPqvd94Gg6tfwnO+8fR+7/2IzeMQyWyWJB2HEnFmEHS6P4D1CdRkBjKmj3ICIo
-         WJastaSMCMGIDO4hsmDpWKkP84PL+yP26EjsMbs5R/JUtoj8eafRkuMaPRtdkju5KirB
-         sK6k32n2gHQC96p9pOF8Qo4eMN+I4EZ7EqYvgHtSZJNs/iL762ZGH40ho4lxlR7MvpJd
-         /6Jg==
-X-Forwarded-Encrypted: i=1; AJvYcCUTRGxVDxLK/+jLWFyF2FuNPy0Tkf7k6MDvG8xZXRI6ykGRGdc5l/C6n7gIXTmUbjIIdDGwBS15A/GchoI=@vger.kernel.org, AJvYcCWaZtsKJmpsr0f3nT4YaeYYqPT8BmBlLGsOu0CA0b5aHZajUTrgURNHNirxaKl/JrCFw301B5hd9oRO1g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2/IBxeuq6yEVgOgfvEu7WXt0nsN6KadT0GmLQRtw6sGSOcwV3
-	xYmrihjyz7QuUKEYasJWXj02Pm7X+Bk0YmY2p3zgURg9SahTU/5p5SF8TOzH1oy/
-X-Gm-Gg: ASbGncuNevE7nygua+lPNzAgCt1YFRYjGN3dtnaB17uoWZHXASi4zCXRcpXI+czMHD/
-	jwMBFhZrwebTgza0FzPdVgOxJZPBbiOA8lkOzFGpR5W7UmaTQIHZq9jbZgaAqNMguTYBOgCab27
-	WMozVKVI5s3n5m2ufkMEU2xyrft/hGDWG37DM5rzu3jNjwkhxqmcTKX4CvJXijsZzEWhZ1GOgn3
-	Grg4Xk6rmZtxhmxXJE1Xg4ZcrQHksKrCUQMTCVDxx635jNqys9HKCobeKjOiHqTpjoGW4uG3C2z
-	esNSlD0Uz+6o7198/6t6ZCMEuZj6Q820vdkb/LUPh+ZhcDV8JA6ky3jvAYCNnB5GiQ84pvTv/LS
-	piw==
-X-Google-Smtp-Source: AGHT+IFYU4KVCP8B3byl3tmb0tTbxJppAnwli3RGwvqFUoEzTzVn13HOAyXwmQfc7P7gQn9gi+RgOw==
-X-Received: by 2002:a17:90a:ec8d:b0:312:1e41:3a58 with SMTP id 98e67ed59e1d1-3127c871ca7mr2752786a91.34.1748700837652;
-        Sat, 31 May 2025 07:13:57 -0700 (PDT)
-Received: from yn386-ZK.. (p1273134-ipoe.ipoe.ocn.ne.jp. [122.26.118.133])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3124e29f883sm2774643a91.1.2025.05.31.07.13.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 May 2025 07:13:57 -0700 (PDT)
-From: Yuuki NAGAO <wf.yn386@gmail.com>
-To: Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Jarkko Nikula <jarkko.nikula@bitmer.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>
-Cc: linux-sound@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yuuki NAGAO <wf.yn386@gmail.com>
-Subject: [PATCH] ASoC: ti: omap-hdmi: Re-add dai_link->platform to fix card init
-Date: Sat, 31 May 2025 23:13:41 +0900
-Message-ID: <20250531141341.81164-1-wf.yn386@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1748879440; c=relaxed/simple;
+	bh=dpNIIRfB6X+tuqJ+fGKlkwqZb7Bt5khpJO2+aEzdglw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=FI+q2Om6jJrjAE4BNkJY+hQy+hqvUhpqT1/9XFzdLKqwtL401yKQsQ1zrwf+mqQtfAj0mSXXnOOoccd4KVB236Yr1uSEJcT4JrCEoHsWXTP7H59mzqezJfZYxxPSGhqMkIA/0hL1sz+sqNynkgaeb17YKsM30oKqhlSt0sGyDpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QGQJuCs1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA1AC4CEEB;
+	Mon,  2 Jun 2025 15:50:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748879440;
+	bh=dpNIIRfB6X+tuqJ+fGKlkwqZb7Bt5khpJO2+aEzdglw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=QGQJuCs16VY0EdzuFVkt4FySTiy1Bj2lJX4It/9FIWELldK6cXbRkjOr1+EMvA/2z
+	 nNlzb9EKc2z7i05vME31Tm/pB2TXFY1YPFjpEITva7Us/4SaPBW1sI2o3rJH+LRfQK
+	 e9gPbkXTednpzOnnmZKNXSnGzpg3+fNKFa7TyMMztJy6FQWCDfcdGjQz2XBimS3nvN
+	 yXApjkN/Fu+VbMb3OsznieAeAwrlRKiFbZUKatNviKZDjxUsxvBeX3wh3GN/882exw
+	 QH1Y2A2CPhKUWOS0GZs5pWtXF4BOIRrqiRIRBDAOBzuSsG1VTXekl0JMM99CorHYeg
+	 6A93uOcXdIbYQ==
+From: Mark Brown <broonie@kernel.org>
+To: Peter Ujfalusi <peter.ujfalusi@gmail.com>, 
+ Jarkko Nikula <jarkko.nikula@bitmer.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, Yuuki NAGAO <wf.yn386@gmail.com>
+Cc: linux-sound@vger.kernel.org, linux-omap@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250531141341.81164-1-wf.yn386@gmail.com>
+References: <20250531141341.81164-1-wf.yn386@gmail.com>
+Subject: Re: [PATCH] ASoC: ti: omap-hdmi: Re-add dai_link->platform to fix
+ card init
+Message-Id: <174887943805.88031.11177528647496649258.b4-ty@kernel.org>
+Date: Mon, 02 Jun 2025 16:50:38 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-c25d1
 
-The removed dai_link->platform component cause a fail which
-is exposed at runtime. (ex: when a sound tool is used)
-This patch re-adds the dai_link->platform component to have
-a full card registered.
+On Sat, 31 May 2025 23:13:41 +0900, Yuuki NAGAO wrote:
+> The removed dai_link->platform component cause a fail which
+> is exposed at runtime. (ex: when a sound tool is used)
+> This patch re-adds the dai_link->platform component to have
+> a full card registered.
+> 
+> Before this patch:
+> $ aplay -l
+> **** List of PLAYBACK Hardware Devices ****
+> card 1: HDMI [HDMI], device 0: HDMI snd-soc-dummy-dai-0 []
+>   Subdevices: 1/1
+>   Subdevice #0: subdevice #0
+> 
+> [...]
 
-Before this patch:
-$ aplay -l
-**** List of PLAYBACK Hardware Devices ****
-card 1: HDMI [HDMI], device 0: HDMI snd-soc-dummy-dai-0 []
-  Subdevices: 1/1
-  Subdevice #0: subdevice #0
+Applied to
 
-$ speaker-test -D plughw:1,0 -t sine
-speaker-test 1.2.8
-Playback device is plughw:1,0
-Stream parameters are 48000Hz, S16_LE, 1 channels
-Sine wave rate is 440.0000Hz
-Playback open error: -22,Invalid argument
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-After this patch which restores the platform component:
-$ aplay -l
-**** List of PLAYBACK Hardware Devices ****
-card 0: HDMI [HDMI], device 0: HDMI snd-soc-dummy-dai-0 [HDMI snd-soc-dummy-dai-0]
-  Subdevices: 0/1
-  Subdevice #0: subdevice #0
+Thanks!
 
--> Resolve the playback error.
+[1/1] ASoC: ti: omap-hdmi: Re-add dai_link->platform to fix card init
+      commit: bae071aa7bcd034054cec91666c80f812adeccd9
 
-Fixes: 3b0db249cf8f ("ASoC: ti: remove unnecessary dai_link->platform")
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-Signed-off-by: Yuuki NAGAO <wf.yn386@gmail.com>
----
- sound/soc/ti/omap-hdmi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
-index cf43ac19c4a6..55e7cb96858f 100644
---- a/sound/soc/ti/omap-hdmi.c
-+++ b/sound/soc/ti/omap-hdmi.c
-@@ -361,17 +361,20 @@ static int omap_hdmi_audio_probe(struct platform_device *pdev)
- 	if (!card->dai_link)
- 		return -ENOMEM;
- 
--	compnent = devm_kzalloc(dev, sizeof(*compnent), GFP_KERNEL);
-+	compnent = devm_kzalloc(dev, 2 * sizeof(*compnent), GFP_KERNEL);
- 	if (!compnent)
- 		return -ENOMEM;
--	card->dai_link->cpus		= compnent;
-+	card->dai_link->cpus		= &compnent[0];
- 	card->dai_link->num_cpus	= 1;
- 	card->dai_link->codecs		= &snd_soc_dummy_dlc;
- 	card->dai_link->num_codecs	= 1;
-+	card->dai_link->platforms	= &compnent[1];
-+	card->dai_link->num_platforms	= 1;
- 
- 	card->dai_link->name = card->name;
- 	card->dai_link->stream_name = card->name;
- 	card->dai_link->cpus->dai_name = dev_name(ad->dssdev);
-+	card->dai_link->platforms->name = dev_name(ad->dssdev);
- 	card->num_links = 1;
- 	card->dev = dev;
- 
--- 
-2.43.0
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
 
