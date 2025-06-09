@@ -1,99 +1,122 @@
-Return-Path: <linux-omap+bounces-3773-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3774-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EBEEAD1E81
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 15:10:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39CCBAD22CA
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 17:45:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D96711886E3E
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 13:10:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17E65162F4E
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 15:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F7D2571C2;
-	Mon,  9 Jun 2025 13:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4AAF211A2A;
+	Mon,  9 Jun 2025 15:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I0wN1IPY"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Q1xfhvoZ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBB7C148
-	for <linux-omap@vger.kernel.org>; Mon,  9 Jun 2025 13:09:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4131D63F5;
+	Mon,  9 Jun 2025 15:45:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749474596; cv=none; b=KTwJGzVEsAim7rWsCN9tk6+3lnGue4jKWcBm4RuUXIJjB0bTxvE0tYttomrAs09+gYAL7qNP2UrHFqVbl7KQ/Cb2fdcpeGzlNFCEbogZqVw5JX0qIIOKqqxQyrkjG0/BUig9gojOzxSO+iblxMApp7e+6cx5xoQKaHCBLDWQ1ZU=
+	t=1749483929; cv=none; b=PEujV7cwqYD+OYaNel9lHoK/zPYlaOc7T6cYttzu5WdijrWsngpSHSF+iWxevD78wFXLUAJqaoYqx9SCKyKwffjKZ75RVbSIf00yzG27QtXELZNILEIQPNBi1FRo+cLBWDR9gSQ/SSQPtIyMu4VU6FSnHeJRk+CkAkAqCblEIZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749474596; c=relaxed/simple;
-	bh=WmbHRh0xs1vMU36jY2dvZxixhiAmfmMlA4DmT0bejCA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T4C+gCMI0it8tgOvkD4BCeO4Eots43GDs7WJfxvUbXNAxZanzilm4QzxO9KPiyTlJQFIJvYSxHp8Dh0IQbMlorDFB5BHXOjviLEnwhdJxR/VCnEYsVh1yPZnbPThy96JzfsP9AFL0hCaH+uIhHD9ZP+SLb+KeGX8oxCWvclLxVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I0wN1IPY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A922C4CEEB;
-	Mon,  9 Jun 2025 13:09:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749474596;
-	bh=WmbHRh0xs1vMU36jY2dvZxixhiAmfmMlA4DmT0bejCA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=I0wN1IPYzjQmcULO/jx+YZrUrL44e2po3BfXAL6VK7vSmlM/q+KnLgtEGc9lS9uIg
-	 ydAnf1d2QFZSiOm+wLuoYG0ELBKLmw/IFcgr7LDftBrxGulu/Z6wQUPFCXz66PUo5I
-	 f0az6hhp03yTOQQsonovur9sPKMF1OBzggdilxPUqaVOOhb6lnAVW9wBQHCNaXHIwd
-	 nthyjMpxQX+IHbqZTjxW6fZrfmEy51RLcaeAtGdXZZljkUZaFt4WdT4JNGdyOI6cC6
-	 GXFhJJS9M7+L+tUuo3DxbSJBHNeWXHoES5fVP2K8yXs31UdL6g9tRXqbo+xe/SsT2v
-	 InhKaKlFAzzHw==
-Message-ID: <6fc05e73-1110-4316-994e-85a7d1c63d2f@kernel.org>
-Date: Mon, 9 Jun 2025 08:09:51 -0500
+	s=arc-20240116; t=1749483929; c=relaxed/simple;
+	bh=6PjEAD3RDNws1qU7noPgM8k6oU9CmCMLwJ2Py+MuuYM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jYydHG1/QQYPhkDWrGeqh5lC9Qb77gbjttBw3ZQixu0a0c9IueUjia5UaiK17S9+z5K3QuTicGxcUnQyLnjJnDrg+WI5TMxIdCU4pFqdovnj0Q999Njl1gsuk7Hig5nn3UpUP6GLrsWSPyaho484G0Lxr++pNjqku9YE8JVIRZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Q1xfhvoZ; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id BAF461F65B;
+	Mon,  9 Jun 2025 15:45:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1749483924;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=dlGWUhva3kGs1RISxq/rd4pyC6pmuyqH7UPyu/eBX5c=;
+	b=Q1xfhvoZ8rA/smOkbSOAIh7DQTHIBcSCZnvb2wZBDuYUiLJMo+tWWVQvepnf/92ocriULE
+	4ETt1WPgrZJ6TSCZrJD8IQKeBXJY9l7k8WNOK97vDmWNLpkvjBbZ6jyhMkp/9z3msaHeCp
+	1n71iZxTpar0LbHtJ7DHAbKMQzm//vmM0dGnVLZ5XbVCzkdSx7kjK3AbhSVV5cU0qtu6jM
+	ewqiGIaZZNHbpFh4psTkuCT6Mw86KKrwNFg/Nl5u9n6pgffY8Zxw+ElhLQaG4IurDREfo5
+	qKiYq2PyGj/o1JDYs7aFmxTb8lJxk6Bu8itNvjmPVE5l+I5qMGhjm6sqSopyPg==
+From: Kory Maincent <kory.maincent@bootlin.com>
+Subject: [PATCH v2 0/5] Add support for BeagleBone Green Eco board
+Date: Mon, 09 Jun 2025 17:43:50 +0200
+Message-Id: <20250609-bbg-v2-0-5278026b7498@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mfd: Fix compilation without CONFIG_OF
-To: Jiri Slaby <jirislaby@kernel.org>, mario.limonciello@amd.com,
- lee@kernel.org, aaro.koskinen@iki.fi, andreas@kemnade.info,
- khilman@baylibre.com, rogerq@kernel.org, tony@atomide.com,
- tglx@linutronix.de, Arnd Bergmann <arnd@arndb.de>,
- Nathan Chancellor <nathan@kernel.org>
-Cc: linux-omap@vger.kernel.org
-References: <20250602201008.1850418-1-superm1@kernel.org>
- <9feed8e3-e831-4096-8a4a-0ceca7d18f61@kernel.org>
- <a3754c77-b85c-48f7-aacf-b50725b2dd01@kernel.org>
-Content-Language: en-US
-From: Mario Limonciello <superm1@kernel.org>
-In-Reply-To: <a3754c77-b85c-48f7-aacf-b50725b2dd01@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIADYBR2gC/1WMQQ7CIBREr9L8tRigItaV9zBdQPtpf6LQQENsG
+ u4udufs3mTm7ZAwEia4NztEzJQo+Ary1MAwGz8ho7EySC4VV7Jl1k5MXzsubqNw0mioyyWio89
+ hefaVZ0priNshzeLX/v+zYJyhu5gOlcaahw1hfZE/D+ENfSnlCxzCmgeYAAAA
+To: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
+ Roger Quadros <rogerq@kernel.org>, Russell King <linux@armlinux.org.uk>
+Cc: Bajjuri Praneeth <praneeth@ti.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-omap@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, 
+ Kory Maincent <kory.maincent@bootlin.com>
+X-Mailer: b4 0.15-dev-8cb71
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdelgeelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthekredtredtjeenucfhrhhomhepmfhorhihucforghinhgtvghnthcuoehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeduhfevudetfffgkedvhfevheeghedtleeghfffudeiffefvdehfeegieeivdekteenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomhepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudekpdhrtghpthhtoheprhhoghgvrhhqsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigsegrrhhmlhhinhhugidrohhrghdruhhkpdhrtghpthhtoheplhhinhhugidqohhmrghpsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghrohhonhhivgeskhgvrhhnvghlrdhorhhgpdhrtghpthhto
+ heprggrrhhordhkohhskhhinhgvnhesihhkihdrfhhipdhrtghpthhtohepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdprhgtphhtthhopehtohhnhiesrghtohhmihguvgdrtghomhdprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrgh
+X-GND-Sasl: kory.maincent@bootlin.com
 
-On 6/9/2025 3:31 AM, Jiri Slaby wrote:
-> On 09. 06. 25, 10:29, Jiri Slaby wrote:
->> On 02. 06. 25, 22:09, Mario Limonciello wrote:
->>> From: Mario Limonciello <mario.limonciello@amd.com>
->>>
->>> When compiling without CONFIG_OF but with CONFIG_WERROR enabled
->>> several mfd drivers fail with -Werror=unused-variable.
->>>
->>> The assignment from these variables is only used in of_fwnode_handle()
->>> and thus they can be moved to only be used directly in the macro.
->>>
->>> Fixes: a36aa0f7226a2 ("mfd: Switch to irq_domain_create_*()")
->>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->>
->> Arnd sent a fix for this already:
->> https://lore.kernel.org/all/20250520154106.2019525-1-arnd@kernel.org/
-> 
-> And actually Nathan even before:
-> https://lore.kernel.org/all/20250508-mfd-fix-unused-node-variables-v1-1- 
-> df84d80cca55@kernel.org/
+SeeedStudio BeagleBone Green Eco (BBGE) is a clone of the BeagleBone Green
+(BBG). It has minor differences from the BBG, such as a different PMIC,
+a different Ethernet PHY, and a larger eMMC.
 
-Thanks for sharing those.
+Also update the omap.yaml binding to include missing compatible strings
+that were previously undocumented.
 
-> 
->> Hopefully all the fixes can be applied now, so no more duplicated 
->> efforts. Sorry for the breakage.
->>
-> 
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+---
+Changes in v2:
+- Add patch 1 to 3 to fix binding and devicetree inconsistencies.
+- Rename tps node name to generic pmic node name in am335x-bone-common.
+- Link to v1: https://lore.kernel.org/r/20250523-bbg-v1-0-ef4a9e57eeee@bootlin.com
 
+---
+Kory Maincent (5):
+      arm: dts: omap: Remove incorrect compatible strings from device trees
+      binding: omap: Add lots of missing omap AM33 compatibles
+      arm: dts: omap: am335x-bone-common: Rename tps to generic pmic node
+      arm: dts: omap: Add support for BeagleBone Green Eco board
+      arm: omap2plus_defconfig: Enable TPS65219 regulator
+
+ Documentation/devicetree/bindings/arm/ti/omap.yaml |  39 +++++
+ arch/arm/boot/dts/ti/omap/Makefile                 |   1 +
+ arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi  |   2 +-
+ arch/arm/boot/dts/ti/omap/am335x-bonegreen-eco.dts | 170 +++++++++++++++++++++
+ .../boot/dts/ti/omap/am335x-bonegreen-wireless.dts |   2 +-
+ arch/arm/boot/dts/ti/omap/am335x-bonegreen.dts     |   2 +-
+ .../arm/boot/dts/ti/omap/am335x-osd3358-sm-red.dts |   2 +-
+ arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts  |   2 +-
+ arch/arm/boot/dts/ti/omap/am335x-shc.dts           |   2 +-
+ arch/arm/configs/omap2plus_defconfig               |   3 +
+ 10 files changed, 219 insertions(+), 6 deletions(-)
+---
+base-commit: e22b9ddaf3afd031abc350c303c7c07a51c569d8
+change-id: 20250523-bbg-769018d1f2a7
+
+Best regards,
+-- 
+Köry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
 
 
