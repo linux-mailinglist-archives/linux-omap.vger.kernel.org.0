@@ -1,69 +1,69 @@
-Return-Path: <linux-omap+bounces-3784-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3785-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA06FAD2799
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 22:35:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EFA5AD2804
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 22:45:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E2CF3B1D9E
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 20:35:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 425667A6D37
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 20:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F13221726;
-	Mon,  9 Jun 2025 20:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0A7221F21;
+	Mon,  9 Jun 2025 20:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YrK78fOZ"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="O9dUXnOD"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912D021D3EE;
-	Mon,  9 Jun 2025 20:35:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B9A220F5C;
+	Mon,  9 Jun 2025 20:45:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749501325; cv=none; b=N3Q2GwTo5KnjL1yUsy7CC40XRw3+aHiV3JPTL+H3IerGCE4knaspJmLWLSaG4FdUfZG3/PSIY92cabeGjs4smcrvWB5YZGiOxkAuzbm7BcU8nzukUwtb2tliq15vgD0lz1yyW8F/dQmwK1x7XCYTeS55yFCuikIR6rG5QaRK3xg=
+	t=1749501909; cv=none; b=UYckLEFi3dfDAEVfU/Q6RAOQeZ4PUz9HgJTTrru1xFBwMKuOgnFrqcH7x9Z8Zom01FYKX0uwheGVaWCSgJr2ZDo9/oYOQDGNqyrWBwh8GDiybPcnsOwCI27vWKNDPddaUgJpcdCnnsd/pzsiT8OWPGVlbpbONadF0RcWRw2H0SM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749501325; c=relaxed/simple;
-	bh=Fs6P0u7FSsyMJlOZbjCW9SUJIuR6W5jHyZmibIaJAZE=;
+	s=arc-20240116; t=1749501909; c=relaxed/simple;
+	bh=jPj7Sjc0AlG78SlEVxbzLFkY+icJgot4jPJU8v9Hg64=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZX1VwXXM+RguEFxbRNjtrVcScQHm0XdqjofAKO5XgbyvGk2fFIZbbzKsgjUkPVsnGAxnKl8U3Ed4Ao2dXWQc/lh+5cRtoEC7hQjRGvvQQQ6iMLKuq2IUfUYmTu9D2zSB1k8lN4IXamBUGJj3rUPLJyc+acxrM/3JBXVj9EU7ork=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YrK78fOZ; arc=none smtp.client-ip=217.70.183.199
+	 MIME-Version:Content-Type; b=M0yLLSg5h0RoJ5I/o/OHmr6NNKVJhX8/Q1kdBAVNu8cbnGTByVzwGLt2Ku0uqTdGVXxDrhmu2FLucysZdM8VEp/0Bn9tcUo6cxCsFi5t/FccYIAVsY2Ysok9wBh606pI4J4nPaZdMeuyaa+E5YvT+RHDM6NhPNmj6EunOlmlhxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=O9dUXnOD; arc=none smtp.client-ip=217.70.183.196
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E9510442C7;
-	Mon,  9 Jun 2025 20:35:18 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B88CA44400;
+	Mon,  9 Jun 2025 20:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1749501320;
+	t=1749501905;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MZOonTfrv64GIV5+rDFu+eH6vhEGsf8KKT5JpDnAQ04=;
-	b=YrK78fOZJDmLOg1RDpxGMfVw6vaSzXByQyQaykHVH/1X5NOCYhIm4g1T8qzTHme003x90b
-	VnwtXQG6E3xFyRfYrU7hSlHzRD162lYU64kTsqLgoLLmF6jKimBGtw0wQ91RimxpOgxvsz
-	Fjj6+uSdffdgYJ+k6BDdyyHCA0P9A3+uFbcPcaUY6npbyjb+aGuqFx/8Od5QMD/FKV1MmY
-	DdoYGs4QkA4O7Yg7S87xmuutd6w0GyjsDlaTg8FTDDAAq9u4NSW60dKjHpuatxw/rkIStT
-	O4SWy0Zii9SUoCuFoSZrOkqHZDjkJZBGQOpTz2H74DBpOE4YfnzSVDBIFBy26w==
-Date: Mon, 9 Jun 2025 22:35:16 +0200
+	bh=SR2d9reP8TqJ3UfMOktGuMwu95S3n7zGli3lgi0UUmg=;
+	b=O9dUXnOD9YyA/wh8TMe9VcmiIPn+5MMmKcqUtv7n/HXwVsZBlk8SEbbuTTSsBHNVEpfTtQ
+	xPvkA94UOJJF6p6nYPgYx1gA7Ljdv7dZF1EuGP84P8VWRcQ2HHPpUQovBHzlBxY+NUI7jZ
+	S2+BVfM0x79jDSSnmEiHQJejDJBS2DU7VUBe+wJyYMCJ1lEkhN5xDkSLZwx5bbTHnYHCSi
+	Og85IJQ/z4rlELNony9HQr16gr726jcdlG6Rqat8y+fkfbFVP4ynbMPmQyzRphxRc0jTbh
+	L0wXVdAB0ebiFjq+SI3QQJetH5fkAO7u/A3EfNir102f4FvaUp2RoRDVFxeIKQ==
+Date: Mon, 9 Jun 2025 22:45:02 +0200
 From: Kory Maincent <kory.maincent@bootlin.com>
-To: Andreas Kemnade <andreas@kemnade.info>
+To: Conor Dooley <conor@kernel.org>
 Cc: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, Kevin Hilman
- <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, Russell King
- <linux@armlinux.org.uk>, Bajjuri Praneeth <praneeth@ti.com>, Liam Girdwood
- <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, linux-omap@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 1/5] arm: dts: omap: Remove incorrect compatible
- strings from device trees
-Message-ID: <20250609223516.32ec18be@kmaincent-XPS-13-7390>
-In-Reply-To: <20250609220809.3a488972@akair>
+ <conor+dt@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas
+ Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, Roger
+ Quadros <rogerq@kernel.org>, Russell King <linux@armlinux.org.uk>, Bajjuri
+ Praneeth <praneeth@ti.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
+ <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 4/5] arm: dts: omap: Add support for BeagleBone Green
+ Eco board
+Message-ID: <20250609224502.1fce742c@kmaincent-XPS-13-7390>
+In-Reply-To: <20250609-helpful-immodest-0f195cdbcbf2@spud>
 References: <20250609-bbg-v2-0-5278026b7498@bootlin.com>
-	<20250609-bbg-v2-1-5278026b7498@bootlin.com>
-	<20250609220809.3a488972@akair>
+	<20250609-bbg-v2-4-5278026b7498@bootlin.com>
+	<20250609-helpful-immodest-0f195cdbcbf2@spud>
 Organization: bootlin
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
@@ -76,54 +76,49 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdeljeekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtqhertdertdejnecuhfhrohhmpefmohhrhicuofgrihhntggvnhhtuceokhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgfdutdefvedtudegvefgvedtgfdvhfdtueeltefffefffffhgfetkedvfeduieeinecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudelmeekheekjeemjedutddtmeelhegvvgemrggvugdvmeeitgeksgemudgsfegsnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkeehkeejmeejuddttdemleehvggvmegrvgguvdemiegtkegsmedusgefsgdphhgvlhhopehkmhgrihhntggvnhhtqdgirffuqddufedqjeefledtpdhmrghilhhfrhhomhepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudekpdhrtghpthhtoheprghnughrvggrsheskhgvmhhnrgguvgdrihhnfhhopdhrtghpthhtohepthhonhihsegrthhomhhiuggvrdgtohhmpdhrtghpthhtoheprhhosghhsehkv
- ghrnhgvlhdrohhrghdprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprggrrhhordhkohhskhhinhgvnhesihhkihdrfhhipdhrtghpthhtohepkhhhihhlmhgrnhessggrhihlihgsrhgvrdgtohhmpdhrtghpthhtoheprhhoghgvrhhqsehkvghrnhgvlhdrohhrgh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdeljeelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtqhertdertdejnecuhfhrohhmpefmohhrhicuofgrihhntggvnhhtuceokhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgfdutdefvedtudegvefgvedtgfdvhfdtueeltefffefffffhgfetkedvfeduieeinecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudelmeekheekjeemjedutddtmeelhegvvgemrggvugdvmeeitgeksgemudgsfegsnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkeehkeejmeejuddttdemleehvggvmegrvgguvdemiegtkegsmedusgefsgdphhgvlhhopehkmhgrihhntggvnhhtqdgirffuqddufedqjeefledtpdhmrghilhhfrhhomhepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudelpdhrtghpthhtoheptghonhhorheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhonhihsegrthhomhhiuggvrdgtohhmpdhrtghpthhtoheprhhosghhsehkvghrnhgvl
+ hdrohhrghdprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprggrrhhordhkohhskhhinhgvnhesihhkihdrfhhipdhrtghpthhtoheprghnughrvggrsheskhgvmhhnrgguvgdrihhnfhhopdhrtghpthhtohepkhhhihhlmhgrnhessggrhihlihgsrhgvrdgtohhm
 X-GND-Sasl: kory.maincent@bootlin.com
 
-Le Mon, 9 Jun 2025 22:08:09 +0200,
-Andreas Kemnade <andreas@kemnade.info> a =C3=A9crit :
+Le Mon, 9 Jun 2025 18:04:01 +0100,
+Conor Dooley <conor@kernel.org> a =C3=A9crit :
 
-> Am Mon, 09 Jun 2025 17:43:51 +0200
-> schrieb Kory Maincent <kory.maincent@bootlin.com>:
->=20
-> > Several device trees incorrectly included ti,am335x-bone-black or
-> > ti,am335x-bone in their compatible lists without including the
-> > corresponding bone-black-common or bone-common device tree files.
-> > Remove these incompatible strings to fix the inconsistency.
-> >  =20
-> thanks for cleaning up some mess.
->=20
+> On Mon, Jun 09, 2025 at 05:43:54PM +0200, Kory Maincent wrote:
+> > SeeedStudio BeagleBone Green Eco (BBGE) is a clone of the BeagleBone Gr=
+een
+> > (BBG). It has minor differences from the BBG, such as a different PMIC,
+> > a different Ethernet PHY, and a larger eMMC.
+> >=20
 > > Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 > > ---
 > >=20
-> > Change in v2:
-> > - New patch
+> > Changes in v2:
+> > - Used generic pmic node name.
+> > - Add regulator prefix to fixed regulator node name.
+> > - Add the compatible to omap.yaml binding
 > > ---
-> >  arch/arm/boot/dts/ti/omap/am335x-bonegreen-wireless.dts | 2 +-
-> >  arch/arm/boot/dts/ti/omap/am335x-bonegreen.dts          | 2 +-
-> >  arch/arm/boot/dts/ti/omap/am335x-osd3358-sm-red.dts     | 2 +-
-> >  arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts       | 2 +-
-> >  arch/arm/boot/dts/ti/omap/am335x-shc.dts                | 2 +-
-> >  5 files changed, 5 insertions(+), 5 deletions(-)
+> >  Documentation/devicetree/bindings/arm/ti/omap.yaml |   1 +
+> >  arch/arm/boot/dts/ti/omap/Makefile                 |   1 +
+> >  arch/arm/boot/dts/ti/omap/am335x-bonegreen-eco.dts | 170
+> > +++++++++++++++++++++ 3 files changed, 172 insertions(+)
 > >=20
-> > diff --git a/arch/arm/boot/dts/ti/omap/am335x-bonegreen-wireless.dts
-> > b/arch/arm/boot/dts/ti/omap/am335x-bonegreen-wireless.dts index
-> > a4f5b5262645..fb88eebb8c5d 100644 ---
-> > a/arch/arm/boot/dts/ti/omap/am335x-bonegreen-wireless.dts +++
-> > b/arch/arm/boot/dts/ti/omap/am335x-bonegreen-wireless.dts @@ -11,7 +11,=
-7 @@
-> > =20
-> >  / {
-> >  	model =3D "TI AM335x BeagleBone Green Wireless";
-> > -	compatible =3D "ti,am335x-bone-green-wireless",
-> > "ti,am335x-bone-green", "ti,am335x-bone-black", "ti,am335x-bone",
-> > "ti,am33xx";
-> > +	compatible =3D "ti,am335x-bone-green-wireless", "ti,am335x-bone",
-> > "ti,am33xx";=20
-> this looks like too much cleanup, also according your omap.yaml stuff,
-> ti,am335x-bone-green should still be included.
+> > diff --git a/Documentation/devicetree/bindings/arm/ti/omap.yaml
+> > b/Documentation/devicetree/bindings/arm/ti/omap.yaml index
+> > c43fa4f4af81..774c13157caa 100644 ---
+> > a/Documentation/devicetree/bindings/arm/ti/omap.yaml +++
+> > b/Documentation/devicetree/bindings/arm/ti/omap.yaml @@ -145,6 +145,7 @@
+> > properties:
+> >        - description: TI bone green variants based on TI AM335
+> >          items:
+> >            - enum:
+> > +              - ti,am335x-bone-green-eco
+> >                - ti,am335x-bone-green-wireless
+> >            - const: ti,am335x-bone-green
+> >            - const: ti,am335x-bone =20
+>=20
+> Why is this hunk here?
 
-Oh indeed! Thanks.
+Do you mean that the binding change should be in another patch?
 
 --=20
 K=C3=B6ry Maincent, Bootlin
