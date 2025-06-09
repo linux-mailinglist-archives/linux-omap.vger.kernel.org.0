@@ -1,203 +1,129 @@
-Return-Path: <linux-omap+bounces-3770-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3771-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2F91AD0FBE
-	for <lists+linux-omap@lfdr.de>; Sat,  7 Jun 2025 22:23:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EABA7AD19C5
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 10:29:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D4AA16BBA0
-	for <lists+linux-omap@lfdr.de>; Sat,  7 Jun 2025 20:23:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E316E3A5275
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 08:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0A22163BB;
-	Sat,  7 Jun 2025 20:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66831E8342;
+	Mon,  9 Jun 2025 08:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="CtaAVHhb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jsV/CEuI"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670D2214209;
-	Sat,  7 Jun 2025 20:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B99B8BFF
+	for <linux-omap@vger.kernel.org>; Mon,  9 Jun 2025 08:29:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749327772; cv=none; b=T4S4hEkVw7jz8EQKqp3QfQnCfN7fpLifdzSYDxRLq786eMrZWMf4YUcnbeejW6Z6sZTm0rKN00b2DV8gXDN5yvgjmep07kfI/2WoCbpxCaHAYi8W7vQxDKikIi3+L6ysxhSrI4SM4erSvR2WQShMFUzZxCMg1XH6c29IKUbDSF0=
+	t=1749457769; cv=none; b=CPWEz+sBmQo2pSOtcS33CL9f5LNJWd08L4STkunyFDQy3tJ/rieeG8ArwoBlOkX231xdbQyiHVn6BHBCIGckAl5ez0VUX98KpCB9yVaW3A3rAtD9yWIGWOXXXZprkizVTfJaHcgG526eCMsxMF6S4Qu8CjNi5Be8AB+MIneXW2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749327772; c=relaxed/simple;
-	bh=PXVbc7qziX7wyQpmvBeHw1IEKl5BICyNV/r4zYr8Q9o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SJt4He8VfC6ZLqmu28gHl58ILukg7Qa7PJrw19IF2ZzsISsek/amu2tVuP/qgykWWEMJiRepZzSiEMh/mXXR6/whMS+81fg2c1sqT8jeXPDlklVyUsjafG2IlS4dbd5IDAjNx1pSuQOICknVZEVO7AKQnEwmnIq58S+i4SP7mpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=CtaAVHhb; arc=none smtp.client-ip=46.235.229.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
-	:Subject; bh=9s/wfk+unWYhlmqioNR6ZlXMVZtayZqWBr1Mup2bmEk=; b=CtaAVHhb09Ewv1O2
-	6pl97eyhlA1ymYbTYXshyj1iJP3LBKIykxY8FwjjF0MvfAn1A0cjdq4GyrhwTSotl2O9vOggUBBhA
-	fp0bprNT86I8Ra1Nko2ycEx9sWfNbQ0MaqletVx6YyjjcE4TVoqrbj18Iq7Hroc7h/zcy635GRpks
-	Kzxk8Jw9zKScf6E8vGbVL9UY54AA2OB1YYSZt17Y7idXO3oetsvbuxxHFqbJhodG7FLWUpPr9nquJ
-	HG+0PG6kvjBm4TbZVM0aMyFImqEj/BToHkgsOzrT+YfugQ52NGdKUyqHNmSXqrhdrNNtZHLSGB6Xl
-	MrSrjBHMQkpz/ZlP3w==;
-Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
-	by mx.treblig.org with esmtp (Exim 4.96)
-	(envelope-from <linux@treblig.org>)
-	id 1uO03l-008Cy1-19;
-	Sat, 07 Jun 2025 20:22:33 +0000
-From: linux@treblig.org
-To: aaro.koskinen@iki.fi,
-	andreas@kemnade.info,
-	khilman@baylibre.com,
-	rogerq@kernel.org,
-	tony@atomide.com
-Cc: lee@kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Dr. David Alan Gilbert" <linux@treblig.org>
-Subject: [PATCH] mfd: twl6030-irq: Remove unused twl6030_mmc_card_detect*
-Date: Sat,  7 Jun 2025 21:22:32 +0100
-Message-ID: <20250607202232.265344-1-linux@treblig.org>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1749457769; c=relaxed/simple;
+	bh=YFi9LWQy833kHSvTlpaxjsTs5+21svqNssRXAiUaBvA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Kr7NDZQqoWDeU4xHQY0sSN3TeyXY2/5ERnmDUdNAnTtXlLJfuNS4Fc88NbPFspG7u2WIyXiS2kqfhIBghbY6WBeCA971q1BAv3/ZKSY8OAP4L2bGEp/lyJ5BIbYhjZqoFwkREhWz0TPafX+4wIpC1qnSNrG80sZoZLSYDXqlihU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jsV/CEuI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE5D7C4CEEB;
+	Mon,  9 Jun 2025 08:29:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749457769;
+	bh=YFi9LWQy833kHSvTlpaxjsTs5+21svqNssRXAiUaBvA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=jsV/CEuICj89sFJ1HUACSSYUz6toltm9cI255Y7JNydVIqF69dlxOPMoR54qrJElL
+	 yBGA3DB92y4pHqzyNXeQCGG0T0dBRRJCT2uEIdvgoglFF1BZN49Fd+UdUb/olLIWim
+	 iZofsHwThOBRPB/H5WrBqFuxaPN+fdyLmA2wFEH8f+qfb+ECPGDzGogt6Px2BEZdWx
+	 Y4i1kmm/6kEmVdD+9VnCnw1PUgADETiZ81jD3HYsXRwZGniCsHE+9cIHx/xSD8W3RZ
+	 H4CV0s56ZCzIwxFlbAO7WDRENKBhdWQnsQAHvnTUb53tYpqKUCNMZQQwlSdvbcVUZU
+	 s2uZjkOq1C6zg==
+Message-ID: <9feed8e3-e831-4096-8a4a-0ceca7d18f61@kernel.org>
+Date: Mon, 9 Jun 2025 10:29:25 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mfd: Fix compilation without CONFIG_OF
+To: Mario Limonciello <superm1@kernel.org>, mario.limonciello@amd.com,
+ lee@kernel.org, aaro.koskinen@iki.fi, andreas@kemnade.info,
+ khilman@baylibre.com, rogerq@kernel.org, tony@atomide.com,
+ tglx@linutronix.de, Arnd Bergmann <arnd@arndb.de>
+Cc: linux-omap@vger.kernel.org
+References: <20250602201008.1850418-1-superm1@kernel.org>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ xsFNBE6S54YBEACzzjLwDUbU5elY4GTg/NdotjA0jyyJtYI86wdKraekbNE0bC4zV+ryvH4j
+ rrcDwGs6tFVrAHvdHeIdI07s1iIx5R/ndcHwt4fvI8CL5PzPmn5J+h0WERR5rFprRh6axhOk
+ rSD5CwQl19fm4AJCS6A9GJtOoiLpWn2/IbogPc71jQVrupZYYx51rAaHZ0D2KYK/uhfc6neJ
+ i0WqPlbtIlIrpvWxckucNu6ZwXjFY0f3qIRg3Vqh5QxPkojGsq9tXVFVLEkSVz6FoqCHrUTx
+ wr+aw6qqQVgvT/McQtsI0S66uIkQjzPUrgAEtWUv76rM4ekqL9stHyvTGw0Fjsualwb0Gwdx
+ ReTZzMgheAyoy/umIOKrSEpWouVoBt5FFSZUyjuDdlPPYyPav+hpI6ggmCTld3u2hyiHji2H
+ cDpcLM2LMhlHBipu80s9anNeZhCANDhbC5E+NZmuwgzHBcan8WC7xsPXPaiZSIm7TKaVoOcL
+ 9tE5aN3jQmIlrT7ZUX52Ff/hSdx/JKDP3YMNtt4B0cH6ejIjtqTd+Ge8sSttsnNM0CQUkXps
+ w98jwz+Lxw/bKMr3NSnnFpUZaxwji3BC9vYyxKMAwNelBCHEgS/OAa3EJoTfuYOK6wT6nadm
+ YqYjwYbZE5V/SwzMbpWu7Jwlvuwyfo5mh7w5iMfnZE+vHFwp/wARAQABzSFKaXJpIFNsYWJ5
+ IDxqaXJpc2xhYnlAa2VybmVsLm9yZz7CwXcEEwEIACEFAlW3RUwCGwMFCwkIBwIGFQgJCgsC
+ BBYCAwECHgECF4AACgkQvSWxBAa0cEnVTg//TQpdIAr8Tn0VAeUjdVIH9XCFw+cPSU+zMSCH
+ eCZoA/N6gitEcnvHoFVVM7b3hK2HgoFUNbmYC0RdcSc80pOF5gCnACSP9XWHGWzeKCARRcQR
+ 4s5YD8I4VV5hqXcKo2DFAtIOVbHDW+0okOzcecdasCakUTr7s2fXz97uuoc2gIBB7bmHUGAH
+ XQXHvdnCLjDjR+eJN+zrtbqZKYSfj89s/ZHn5Slug6w8qOPT1sVNGG+eWPlc5s7XYhT9z66E
+ l5C0rG35JE4PhC+tl7BaE5IwjJlBMHf/cMJxNHAYoQ1hWQCKOfMDQ6bsEr++kGUCbHkrEFwD
+ UVA72iLnnnlZCMevwE4hc0zVhseWhPc/KMYObU1sDGqaCesRLkE3tiE7X2cikmj/qH0CoMWe
+ gjnwnQ2qVJcaPSzJ4QITvchEQ+tbuVAyvn9H+9MkdT7b7b2OaqYsUP8rn/2k1Td5zknUz7iF
+ oJ0Z9wPTl6tDfF8phaMIPISYrhceVOIoL+rWfaikhBulZTIT5ihieY9nQOw6vhOfWkYvv0Dl
+ o4GRnb2ybPQpfEs7WtetOsUgiUbfljTgILFw3CsPW8JESOGQc0Pv8ieznIighqPPFz9g+zSu
+ Ss/rpcsqag5n9rQp/H3WW5zKUpeYcKGaPDp/vSUovMcjp8USIhzBBrmI7UWAtuedG9prjqfO
+ wU0ETpLnhgEQAM+cDWLL+Wvc9cLhA2OXZ/gMmu7NbYKjfth1UyOuBd5emIO+d4RfFM02XFTI
+ t4MxwhAryhsKQQcA4iQNldkbyeviYrPKWjLTjRXT5cD2lpWzr+Jx7mX7InV5JOz1Qq+P+nJW
+ YIBjUKhI03ux89p58CYil24Zpyn2F5cX7U+inY8lJIBwLPBnc9Z0An/DVnUOD+0wIcYVnZAK
+ DiIXODkGqTg3fhZwbbi+KAhtHPFM2fGw2VTUf62IHzV+eBSnamzPOBc1XsJYKRo3FHNeLuS8
+ f4wUe7bWb9O66PPFK/RkeqNX6akkFBf9VfrZ1rTEKAyJ2uqf1EI1olYnENk4+00IBa+BavGQ
+ 8UW9dGW3nbPrfuOV5UUvbnsSQwj67pSdrBQqilr5N/5H9z7VCDQ0dhuJNtvDSlTf2iUFBqgk
+ 3smln31PUYiVPrMP0V4ja0i9qtO/TB01rTfTyXTRtqz53qO5dGsYiliJO5aUmh8swVpotgK4
+ /57h3zGsaXO9PGgnnAdqeKVITaFTLY1ISg+Ptb4KoliiOjrBMmQUSJVtkUXMrCMCeuPDGHo7
+ 39Xc75lcHlGuM3yEB//htKjyprbLeLf1y4xPyTeeF5zg/0ztRZNKZicgEmxyUNBHHnBKHQxz
+ 1j+mzH0HjZZtXjGu2KLJ18G07q0fpz2ZPk2D53Ww39VNI/J9ABEBAAHCwV8EGAECAAkFAk6S
+ 54YCGwwACgkQvSWxBAa0cEk3tRAAgO+DFpbyIa4RlnfpcW17AfnpZi9VR5+zr496n2jH/1ld
+ wRO/S+QNSA8qdABqMb9WI4BNaoANgcg0AS429Mq0taaWKkAjkkGAT7mD1Q5PiLr06Y/+Kzdr
+ 90eUVneqM2TUQQbK+Kh7JwmGVrRGNqQrDk+gRNvKnGwFNeTkTKtJ0P8jYd7P1gZb9Fwj9YLx
+ jhn/sVIhNmEBLBoI7PL+9fbILqJPHgAwW35rpnq4f/EYTykbk1sa13Tav6btJ+4QOgbcezWI
+ wZ5w/JVfEJW9JXp3BFAVzRQ5nVrrLDAJZ8Y5ioWcm99JtSIIxXxt9FJaGc1Bgsi5K/+dyTKL
+ wLMJgiBzbVx8G+fCJJ9YtlNOPWhbKPlrQ8+AY52Aagi9WNhe6XfJdh5g6ptiOILm330mkR4g
+ W6nEgZVyIyTq3ekOuruftWL99qpP5zi+eNrMmLRQx9iecDNgFr342R9bTDlb1TLuRb+/tJ98
+ f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
+ DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
+ S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
+In-Reply-To: <20250602201008.1850418-1-superm1@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
+On 02. 06. 25, 22:09, Mario Limonciello wrote:
+> From: Mario Limonciello <mario.limonciello@amd.com>
+> 
+> When compiling without CONFIG_OF but with CONFIG_WERROR enabled
+> several mfd drivers fail with -Werror=unused-variable.
+> 
+> The assignment from these variables is only used in of_fwnode_handle()
+> and thus they can be moved to only be used directly in the macro.
+> 
+> Fixes: a36aa0f7226a2 ("mfd: Switch to irq_domain_create_*()")
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 
-twl6030_mmc_card_detect() and twl6030_mmc_card_detect_config() have
-been unused since 2013's
-commit b2ff4790612b ("ARM: OMAP2+: Remove legacy
-omap4_twl6030_hsmmc_init")
+Arnd sent a fix for this already:
+https://lore.kernel.org/all/20250520154106.2019525-1-arnd@kernel.org/
 
-Remove them.
+Hopefully all the fixes can be applied now, so no more duplicated 
+efforts. Sorry for the breakage.
 
-Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
----
- drivers/mfd/twl6030-irq.c | 74 ---------------------------------------
- include/linux/mfd/twl.h   | 21 -----------
- 2 files changed, 95 deletions(-)
-
-diff --git a/drivers/mfd/twl6030-irq.c b/drivers/mfd/twl6030-irq.c
-index 00b14cef1dfb..ffb4b98639c7 100644
---- a/drivers/mfd/twl6030-irq.c
-+++ b/drivers/mfd/twl6030-irq.c
-@@ -256,80 +256,6 @@ int twl6030_interrupt_mask(u8 bit_mask, u8 offset)
- }
- EXPORT_SYMBOL(twl6030_interrupt_mask);
- 
--int twl6030_mmc_card_detect_config(void)
--{
--	int ret;
--	u8 reg_val = 0;
--
--	/* Unmasking the Card detect Interrupt line for MMC1 from Phoenix */
--	twl6030_interrupt_unmask(TWL6030_MMCDETECT_INT_MASK,
--						REG_INT_MSK_LINE_B);
--	twl6030_interrupt_unmask(TWL6030_MMCDETECT_INT_MASK,
--						REG_INT_MSK_STS_B);
--	/*
--	 * Initially Configuring MMC_CTRL for receiving interrupts &
--	 * Card status on TWL6030 for MMC1
--	 */
--	ret = twl_i2c_read_u8(TWL6030_MODULE_ID0, &reg_val, TWL6030_MMCCTRL);
--	if (ret < 0) {
--		pr_err("twl6030: Failed to read MMCCTRL, error %d\n", ret);
--		return ret;
--	}
--	reg_val &= ~VMMC_AUTO_OFF;
--	reg_val |= SW_FC;
--	ret = twl_i2c_write_u8(TWL6030_MODULE_ID0, reg_val, TWL6030_MMCCTRL);
--	if (ret < 0) {
--		pr_err("twl6030: Failed to write MMCCTRL, error %d\n", ret);
--		return ret;
--	}
--
--	/* Configuring PullUp-PullDown register */
--	ret = twl_i2c_read_u8(TWL6030_MODULE_ID0, &reg_val,
--						TWL6030_CFG_INPUT_PUPD3);
--	if (ret < 0) {
--		pr_err("twl6030: Failed to read CFG_INPUT_PUPD3, error %d\n",
--									ret);
--		return ret;
--	}
--	reg_val &= ~(MMC_PU | MMC_PD);
--	ret = twl_i2c_write_u8(TWL6030_MODULE_ID0, reg_val,
--						TWL6030_CFG_INPUT_PUPD3);
--	if (ret < 0) {
--		pr_err("twl6030: Failed to write CFG_INPUT_PUPD3, error %d\n",
--									ret);
--		return ret;
--	}
--
--	return irq_find_mapping(twl6030_irq->irq_domain,
--				 MMCDETECT_INTR_OFFSET);
--}
--EXPORT_SYMBOL(twl6030_mmc_card_detect_config);
--
--int twl6030_mmc_card_detect(struct device *dev, int slot)
--{
--	int ret = -EIO;
--	u8 read_reg = 0;
--	struct platform_device *pdev = to_platform_device(dev);
--
--	if (pdev->id) {
--		/* TWL6030 provide's Card detect support for
--		 * only MMC1 controller.
--		 */
--		pr_err("Unknown MMC controller %d in %s\n", pdev->id, __func__);
--		return ret;
--	}
--	/*
--	 * BIT0 of MMC_CTRL on TWL6030 provides card status for MMC1
--	 * 0 - Card not present ,1 - Card present
--	 */
--	ret = twl_i2c_read_u8(TWL6030_MODULE_ID0, &read_reg,
--						TWL6030_MMCCTRL);
--	if (ret >= 0)
--		ret = read_reg & STS_MMC;
--	return ret;
--}
--EXPORT_SYMBOL(twl6030_mmc_card_detect);
--
- static int twl6030_irq_map(struct irq_domain *d, unsigned int virq,
- 			      irq_hw_number_t hwirq)
- {
-diff --git a/include/linux/mfd/twl.h b/include/linux/mfd/twl.h
-index 85dc406173db..b31e07fa4d51 100644
---- a/include/linux/mfd/twl.h
-+++ b/include/linux/mfd/twl.h
-@@ -205,27 +205,6 @@ int twl_get_hfclk_rate(void);
- int twl6030_interrupt_unmask(u8 bit_mask, u8 offset);
- int twl6030_interrupt_mask(u8 bit_mask, u8 offset);
- 
--/* Card detect Configuration for MMC1 Controller on OMAP4 */
--#ifdef CONFIG_TWL4030_CORE
--int twl6030_mmc_card_detect_config(void);
--#else
--static inline int twl6030_mmc_card_detect_config(void)
--{
--	pr_debug("twl6030_mmc_card_detect_config not supported\n");
--	return 0;
--}
--#endif
--
--/* MMC1 Controller on OMAP4 uses Phoenix irq for Card detect */
--#ifdef CONFIG_TWL4030_CORE
--int twl6030_mmc_card_detect(struct device *dev, int slot);
--#else
--static inline int twl6030_mmc_card_detect(struct device *dev, int slot)
--{
--	pr_debug("Call back twl6030_mmc_card_detect not supported\n");
--	return -EIO;
--}
--#endif
- /*----------------------------------------------------------------------*/
- 
- /*
 -- 
-2.49.0
-
+js
+suse labs
 
