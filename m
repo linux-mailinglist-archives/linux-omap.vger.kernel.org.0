@@ -1,130 +1,96 @@
-Return-Path: <linux-omap+bounces-3781-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3783-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23033AD2497
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 19:04:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F66AD2771
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 22:15:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D66D618837C5
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 17:04:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0427E170DAC
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 20:15:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CCD521B191;
-	Mon,  9 Jun 2025 17:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D9922126F;
+	Mon,  9 Jun 2025 20:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vOnLQMgX"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="MPW2cK/a"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3907A1F17E8;
-	Mon,  9 Jun 2025 17:04:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668D21CF7AF;
+	Mon,  9 Jun 2025 20:15:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749488647; cv=none; b=kYrK/VSTZ1oXM5K6duX9pcN+ZIrSEhLROht7duEQtyvFH/CBvoMs50nxyK9Es51VsVulYYjmPc1wAnmWEddUqqjHIYbwtvwaA7bmXzPkcY//AbZl8SNmbNqV0hZh/FJJJ+iGZ8YtShbatErdEbC7eFg2k0aRfrikHs8Rvg+43Do=
+	t=1749500101; cv=none; b=cIwM0UFbmy5hw2sJ9f7gO2ZjWPiBc/ydb/m1+2oXsRtnA1optY3LWsq43f4F7Vzp3N9lm9SDCEs44N/xBby2BOlCDmP4iv4j1GXob10nAwkkZMxJi94+jMuCBlGQwtWNS1aGx6W6/GU1PgMW/TWDlfcQXNvHSsErKXJnWLiRpBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749488647; c=relaxed/simple;
-	bh=f5pI2UHN8+s/yMkJm1kl6R65sHaQKYgNclTmzYcp7R8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=njfxhENIay4yPFfblDNlLt3njUOMIF8hYRqK02LBMJb2s8Ns0EfnHTgi49dAApDbrn4FNu3+cn8XHmatoddF0X0NzUc2e4V3UjiGlVQsJq4+P6gGi4Q8/fpxw5UekUcAjkQOSICV6jZ5w20JIrZqIexmi82cQv4Ey6joHqc+Uo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vOnLQMgX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C22C4CEEB;
-	Mon,  9 Jun 2025 17:04:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749488646;
-	bh=f5pI2UHN8+s/yMkJm1kl6R65sHaQKYgNclTmzYcp7R8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vOnLQMgXQN4VEY/z4Gsg7QRW4+a43c6FGy8VCK0sA6v4OwSUsAEThu37LBnmXqU6y
-	 fae0aKwZKa96gUSQniCjV78+h2V2buKgNgMcdyyHAQ6GyBybRrkoNUH5mwGG3/DFDW
-	 WHoACyq73Zkbu8AyARmOZwJJNGX5ExnfnDsHlQ3Gok5dtY6jaZGCCI0o53oHmBunto
-	 svG/RpBcoGbONHc2n767orlFR61W67kNWZu6P8FPkvSIt5BHJ74dnFrRHVeMpH/esK
-	 wo8SHEnSevvPpyB7+E1ayPkrXs8hRiET8W/ZAgmWIE1l2lC5Z6285LGcmLvOh8C6ki
-	 Th7CXfhA5dflw==
-Date: Mon, 9 Jun 2025 18:04:01 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Kory Maincent <kory.maincent@bootlin.com>
-Cc: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Bajjuri Praneeth <praneeth@ti.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 4/5] arm: dts: omap: Add support for BeagleBone Green
- Eco board
-Message-ID: <20250609-helpful-immodest-0f195cdbcbf2@spud>
+	s=arc-20240116; t=1749500101; c=relaxed/simple;
+	bh=kgrnDOGQDmclaNhJePtCHT7yqFnabWOEr9ZX+kemgVE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HzGha61mJF7Hs+oPsrZ+x9NTofXn3CdGhIT5XPImxLdzjP8+7ppuGQTqyy/17C5F0WBOBNSbwZB8J8qLu5wTVpp8zsS4YSGrV4nLaSSCNlD3Z5Zrg6/Jd9hu4IPEYruE1LrXEkJkfIFPJuYSneEosz2nX64YPiaKbDiyGn9tsfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=MPW2cK/a; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=R3yQ0tJ0CBdLt3HO3JHLYhAu43xMtm6smkUOzO9SHfM=; b=MPW2cK/a3Cr/+tQ6wajfTf0PH0
+	32PLU9fyua87i8J/ZhOi6jJcfaFRzoWwHFhYBqnQY176/VsX11xPNdq5rOxApMq7gS5oPfRLwfSWa
+	DyVwB7nZIsljFHXjFB2m7v3l7K8Hu7f6VkvnxgqQmf76/aU5zDmtJiklVBsA77fUpwzxly1HOo0sY
+	NQc6GApVgJfKRHtdYFOo5e2CwLdKPx2PMUN6nKC+sxm4AHRCFcVa5XDbevXUYFsdZ1ojt+odcCVX5
+	+ruLuHh2ptiJDRbBhX9n4bLP/L5wtYDgQucPc+lLCgLGSr0TkyEMxJ38j5Ehwni/FLzOcPAbLemio
+	XEiFTVHw==;
+Date: Mon, 9 Jun 2025 21:50:44 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Conor Dooley <conor@kernel.org>
+Cc: Kory Maincent <kory.maincent@bootlin.com>, Tony Lindgren
+ <tony@atomide.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Aaro Koskinen
+ <aaro.koskinen@iki.fi>, Kevin Hilman <khilman@baylibre.com>, Roger Quadros
+ <rogerq@kernel.org>, Russell King <linux@armlinux.org.uk>, Bajjuri Praneeth
+ <praneeth@ti.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
+ <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 2/5] binding: omap: Add lots of missing omap AM33
+ compatibles
+Message-ID: <20250609215044.33ef6b52@akair>
+In-Reply-To: <20250609-hacking-corporate-d53531577680@spud>
 References: <20250609-bbg-v2-0-5278026b7498@bootlin.com>
- <20250609-bbg-v2-4-5278026b7498@bootlin.com>
+	<20250609-bbg-v2-2-5278026b7498@bootlin.com>
+	<20250609-hacking-corporate-d53531577680@spud>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="qN2c0PWcJTDqDL56"
-Content-Disposition: inline
-In-Reply-To: <20250609-bbg-v2-4-5278026b7498@bootlin.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+Am Mon, 9 Jun 2025 18:03:05 +0100
+schrieb Conor Dooley <conor@kernel.org>:
 
---qN2c0PWcJTDqDL56
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> > +      - description: TI bone variants based on TI AM335  
+> 
+> "bone variant" sounds like some shortand or nickname. Are the boards not
+> called "beaglebone green" and "beaglebone black"? Whatever about the
+> compatible, the description should use the full name I think.
+> 
+we have an enum below it listing all those variants. So "variants"
+makes sense here, but better "TI Beaglebone variants"
 
-On Mon, Jun 09, 2025 at 05:43:54PM +0200, Kory Maincent wrote:
-> SeeedStudio BeagleBone Green Eco (BBGE) is a clone of the BeagleBone Green
-> (BBG). It has minor differences from the BBG, such as a different PMIC,
-> a different Ethernet PHY, and a larger eMMC.
->=20
-> Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-> ---
->=20
-> Changes in v2:
-> - Used generic pmic node name.
-> - Add regulator prefix to fixed regulator node name.
-> - Add the compatible to omap.yaml binding
-> ---
->  Documentation/devicetree/bindings/arm/ti/omap.yaml |   1 +
->  arch/arm/boot/dts/ti/omap/Makefile                 |   1 +
->  arch/arm/boot/dts/ti/omap/am335x-bonegreen-eco.dts | 170 +++++++++++++++=
-++++++
->  3 files changed, 172 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/arm/ti/omap.yaml b/Documen=
-tation/devicetree/bindings/arm/ti/omap.yaml
-> index c43fa4f4af81..774c13157caa 100644
-> --- a/Documentation/devicetree/bindings/arm/ti/omap.yaml
-> +++ b/Documentation/devicetree/bindings/arm/ti/omap.yaml
-> @@ -145,6 +145,7 @@ properties:
->        - description: TI bone green variants based on TI AM335
->          items:
->            - enum:
-> +              - ti,am335x-bone-green-eco
->                - ti,am335x-bone-green-wireless
->            - const: ti,am335x-bone-green
->            - const: ti,am335x-bone
+> > +        items:
+> > +          - enum:
+> > +              - ti,am335x-bone-black
+> > +              - ti,am335x-bone-green
+> > +              - ti,am335x-pocketbeagle
+> > +          - const: ti,am335x-bone
+> > +          - const: ti,am33xx
+> > +
 
-Why is this hunk here?
-
---qN2c0PWcJTDqDL56
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaEcUAQAKCRB4tDGHoIJi
-0nHcAQDmm/vSthV7u0cRPShkiyiEYLhnJ1c/e0XLct8fqEWuHQD5ATthst+Gc7KE
-2683y1k2eOiCjIvKEVH6KWfQEL79XQI=
-=5ZBs
------END PGP SIGNATURE-----
-
---qN2c0PWcJTDqDL56--
+Regards,
+Andreas
 
