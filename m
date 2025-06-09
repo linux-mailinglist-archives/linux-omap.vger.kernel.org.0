@@ -1,121 +1,178 @@
-Return-Path: <linux-omap+bounces-3779-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3780-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB239AD22E4
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 17:48:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8FEAD2495
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 19:03:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDA3F3B1B6F
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 15:46:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE2757A26AF
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 17:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A9E721ABDA;
-	Mon,  9 Jun 2025 15:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 676FE21C189;
+	Mon,  9 Jun 2025 17:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="FRjW8vF5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qFXB3fAK"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25AE4218AD4;
-	Mon,  9 Jun 2025 15:45:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023EE21C161;
+	Mon,  9 Jun 2025 17:03:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749483934; cv=none; b=QwgmAN4zK2jkrfQ0kVmK9hi+jNJ0OR+h+kNFrv8BlHVvi3QiDHzWugcPUf1KoHXQqyq+d+VD6n7fUs90ElmGQz0vNn1nHphr5Ef/D6/UBLILR8Ha/CX72gJJO5AZhZuLfhjXmGmwpSV141Tc9EPJpWrk7NgCxm41F5kN6pLSBRY=
+	t=1749488591; cv=none; b=ir3P7FV629X2D2N4JMw3WRfMhv6eyN5w/PuUZ9mOylRGtPTOnZbOq7zs0fiNLsj1yin+uLKjgUSrle/9+cxGQA8gKa9S7rGC+C6cTL1Uxn+oB84TwkSqrOabYT8RGczaBOdgfl1zJVmGi5QnDNEQBQXzWHU+2NLmSPYDxS9ztJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749483934; c=relaxed/simple;
-	bh=xdCDFsY7fHfgyuBIW40huzR//1ytnbFa21uQW+dNB+4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FcBTvdIn4Rs0HikvZBgv7gc5Q4aP6RloyWNvS4yK/mqkyoI35T+U7hrxYpTCp71cKrPwxCLjAGb36b7U/QOdvkBbeqPq1FpJ3NpuDvIS54HCkYDDGsUcDLSdueL0lGPL5xl6BmXsBcOjyxO+SmxjUkzu0Eb49Cu9YmCTYZczMCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=FRjW8vF5; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A3CC220597;
-	Mon,  9 Jun 2025 15:45:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1749483930;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v1FemFSObCbEVYAn/hTqf4EyYMN6hadEZQLG7F20BzM=;
-	b=FRjW8vF5AcIIzbCC7XRcdDpcJFUJm6p8SmaGyUDwjPoKk8ljtvfddcvcziEQ3xzOz8wfVf
-	UuEJ3vqldWRWuKmFU4h8NQZ+la6Csift1rnodqlVEnEfluKM9IQ5ooAmDL9LPDlQNv4ml8
-	+NXMb1vb8RTEmPy4RmKJQ/T6Gz9Gs8HUDr+HV1w/26OO06DRyxc+ic/15YdVc4kEEvJlFk
-	NyfSh+JkJGRZxembU5VoCXv7eaj7sXXzs5x32JZHZxjEuMAd8av8/IhFAFoEykc4n+oWGp
-	Fje5zvLMA54TYuTF3laVhGXqN/W48f76HuxsVGM3WBKMkNJbcHakvndiEzHBJQ==
-From: Kory Maincent <kory.maincent@bootlin.com>
-Date: Mon, 09 Jun 2025 17:43:55 +0200
-Subject: [PATCH v2 5/5] arm: omap2plus_defconfig: Enable TPS65219 regulator
+	s=arc-20240116; t=1749488591; c=relaxed/simple;
+	bh=yshw6FuZ+90MLQuf4k5pVwoG8nSwK5lhMx3IZxX4Yjg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qa9c4+8sqZfjYXSjmRhCfl8aGVf8s6Xcr0qdmIBeGj9xN9y4PHVQEIBrk0CTvM9R1LHL7wzNrCXHcGSznChqgOXTgTQQPd8S8Ft9X4OR4r4Azk66cYEsEVINeL7O1kbXfDNhA/bSgOhqD4iVjQHv2pQ6rhtdame9Jo+EpPMDzr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qFXB3fAK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF62C4CEEB;
+	Mon,  9 Jun 2025 17:03:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749488590;
+	bh=yshw6FuZ+90MLQuf4k5pVwoG8nSwK5lhMx3IZxX4Yjg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qFXB3fAKQEml8axtfTSLRX63AIu8lfrNVd+eSmH26rzMKl81kmc988nBVEr9eiZ1I
+	 ABLbR7+i4oqcCDUoEBZ0cFj/PmQ2Jk/NHjXSS+VdEn1xeMDaRnMluobVOXG6KeSy7b
+	 BWM0etqh25arz2xYTX7VNHo9ZefvrTD4JWEgwuBjixEd69Tbwt5mzbIUnZ0POKprtz
+	 lhD3a8dBgphRmfNY16L3Cjv4mOj8FuyFaDE0wgroUkIZJhAWBPazsSRTHVXI34/qyb
+	 UhC/J6aYB4lubISyYSg92C5BDTXs3aSMTm15JLoyYup3LnSdNEJjbZ/iPP9TV5XtFv
+	 7r/muSVDvqI6Q==
+Date: Mon, 9 Jun 2025 18:03:05 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Bajjuri Praneeth <praneeth@ti.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 2/5] binding: omap: Add lots of missing omap AM33
+ compatibles
+Message-ID: <20250609-hacking-corporate-d53531577680@spud>
+References: <20250609-bbg-v2-0-5278026b7498@bootlin.com>
+ <20250609-bbg-v2-2-5278026b7498@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250609-bbg-v2-5-5278026b7498@bootlin.com>
-References: <20250609-bbg-v2-0-5278026b7498@bootlin.com>
-In-Reply-To: <20250609-bbg-v2-0-5278026b7498@bootlin.com>
-To: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
- Roger Quadros <rogerq@kernel.org>, Russell King <linux@armlinux.org.uk>
-Cc: Bajjuri Praneeth <praneeth@ti.com>, Liam Girdwood <lgirdwood@gmail.com>, 
- Mark Brown <broonie@kernel.org>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-omap@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, 
- Kory Maincent <kory.maincent@bootlin.com>
-X-Mailer: b4 0.15-dev-8cb71
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdelgeelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomhepmfhorhihucforghinhgtvghnthcuoehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeevgfdvgfektefgfefggeekudfggffhtdfffedtueetheejtddvledvvdelhedtveenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedukedprhgtphhtthhopehrohhgvghrqheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopehlihhnuhigqdhomhgrphesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegsrhhoohhnihgvsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrghrohdrkhhoshhkihhnvghnsehikhhirdhfihdprhgtphhtthhop
- ehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepthhonhihsegrthhomhhiuggvrdgtohhmpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhg
-X-GND-Sasl: kory.maincent@bootlin.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="LtdcJJGh4TYXgIhP"
+Content-Disposition: inline
+In-Reply-To: <20250609-bbg-v2-2-5278026b7498@bootlin.com>
 
-Enable the TPS65219 regulator in the defconfig, as the TPS65214
-variant is used by the newly introduced BeagleBoard Green Eco board.
 
-Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
----
- arch/arm/configs/omap2plus_defconfig | 3 +++
- 1 file changed, 3 insertions(+)
+--LtdcJJGh4TYXgIhP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-index 9f9780c8e62a..2ad669f7b202 100644
---- a/arch/arm/configs/omap2plus_defconfig
-+++ b/arch/arm/configs/omap2plus_defconfig
-@@ -385,6 +385,7 @@ CONFIG_TOUCHSCREEN_TSC2007=m
- CONFIG_INPUT_MISC=y
- CONFIG_INPUT_CPCAP_PWRBUTTON=m
- CONFIG_INPUT_TPS65218_PWRBUTTON=m
-+CONFIG_INPUT_TPS65219_PWRBUTTON=m
- CONFIG_INPUT_TWL4030_PWRBUTTON=m
- CONFIG_INPUT_UINPUT=m
- CONFIG_INPUT_PALMAS_PWRBUTTON=m
-@@ -454,6 +455,7 @@ CONFIG_MFD_TPS65217=y
- CONFIG_MFD_TI_LP873X=y
- CONFIG_MFD_TI_LP87565=y
- CONFIG_MFD_TPS65218=y
-+CONFIG_MFD_TPS65219=y
- CONFIG_MFD_TPS65910=y
- CONFIG_TWL6040_CORE=y
- CONFIG_REGULATOR_CPCAP=y
-@@ -470,6 +472,7 @@ CONFIG_REGULATOR_TPS65023=y
- CONFIG_REGULATOR_TPS6507X=y
- CONFIG_REGULATOR_TPS65217=y
- CONFIG_REGULATOR_TPS65218=y
-+CONFIG_REGULATOR_TPS65219=y
- CONFIG_REGULATOR_TPS65910=y
- CONFIG_REGULATOR_TWL4030=y
- CONFIG_RC_CORE=m
+On Mon, Jun 09, 2025 at 05:43:52PM +0200, Kory Maincent wrote:
+> Add several compatible strings that were missing from the binding
+> documentation. Add description for Bone, BoneBlack and BoneGreen
+> variants.
+>=20
+> Add several compatible that were missing from the binding.
+>=20
+> Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+> ---
+>=20
+> Change in v2:
+> - New patch
+> ---
+>  Documentation/devicetree/bindings/arm/ti/omap.yaml | 38 ++++++++++++++++=
+++++++
+>  1 file changed, 38 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/arm/ti/omap.yaml b/Documen=
+tation/devicetree/bindings/arm/ti/omap.yaml
+> index 3603edd7361d..c43fa4f4af81 100644
+> --- a/Documentation/devicetree/bindings/arm/ti/omap.yaml
+> +++ b/Documentation/devicetree/bindings/arm/ti/omap.yaml
+> @@ -104,12 +104,50 @@ properties:
+>        - description: TI AM33 based platform
+>          items:
+>            - enum:
+> +              - bosch,am335x-guardian
+>                - compulab,cm-t335
+> +              - grinn,am335x-chilisom
+> +              - gumstix,am335x-pepper
+> +              - moxa,uc-2101
+>                - moxa,uc-8100-me-t
+> +              - myir,myc-am335x
+> +              - myir,myd-am335x
+>                - novatech,am335x-lxm
+> +              - oct,osd3358-sm-refdesign
+> +              - tcl,am335x-sl50
+>                - ti,am335x-bone
+>                - ti,am335x-evm
+> +              - ti,am335x-evmsk
+> +              - ti,am335x-pocketbeagle
+> +              - ti,am335x-shc
+>                - ti,am3359-icev2
+> +              - vscom,onrisc
+> +          - const: ti,am33xx
+> +
+> +      - description: TI bone variants based on TI AM335
 
--- 
-2.43.0
+"bone variant" sounds like some shortand or nickname. Are the boards not
+called "beaglebone green" and "beaglebone black"? Whatever about the
+compatible, the description should use the full name I think.
 
+> +        items:
+> +          - enum:
+> +              - ti,am335x-bone-black
+> +              - ti,am335x-bone-green
+> +              - ti,am335x-pocketbeagle
+> +          - const: ti,am335x-bone
+> +          - const: ti,am33xx
+> +
+> +      - description: TI bone black variants based on TI AM335
+> +        items:
+> +          - enum:
+> +              - sancloud,am335x-boneenhanced
+> +              - ti,am335x-bone-black-wireless
+> +          - const: ti,am335x-bone-black
+> +          - const: ti,am335x-bone
+> +          - const: ti,am33xx
+> +
+> +      - description: TI bone green variants based on TI AM335
+> +        items:
+> +          - enum:
+> +              - ti,am335x-bone-green-wireless
+> +          - const: ti,am335x-bone-green
+> +          - const: ti,am335x-bone
+>            - const: ti,am33xx
+> =20
+>        - description: Compulab board variants based on TI AM33
+>=20
+> --=20
+> 2.43.0
+>=20
+
+--LtdcJJGh4TYXgIhP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaEcTyQAKCRB4tDGHoIJi
+0qmaAQCnYxeSuRJuzQVZJXHtkG21nWecDwYZTK+G5bmgMQu4JAEA1D88zUPK6VZX
+LCfljitN0oDl0kGQFAPdaT7pXwWKdgQ=
+=7/bx
+-----END PGP SIGNATURE-----
+
+--LtdcJJGh4TYXgIhP--
 
