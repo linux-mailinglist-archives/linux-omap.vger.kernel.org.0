@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-3771-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3772-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EABA7AD19C5
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 10:29:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9B41AD19D2
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 10:31:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E316E3A5275
-	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 08:29:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD75C7A50A6
+	for <lists+linux-omap@lfdr.de>; Mon,  9 Jun 2025 08:30:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66831E8342;
-	Mon,  9 Jun 2025 08:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31E01A314D;
+	Mon,  9 Jun 2025 08:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jsV/CEuI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ULl8OXhV"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B99B8BFF
-	for <linux-omap@vger.kernel.org>; Mon,  9 Jun 2025 08:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6189A19A288
+	for <linux-omap@vger.kernel.org>; Mon,  9 Jun 2025 08:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749457769; cv=none; b=CPWEz+sBmQo2pSOtcS33CL9f5LNJWd08L4STkunyFDQy3tJ/rieeG8ArwoBlOkX231xdbQyiHVn6BHBCIGckAl5ez0VUX98KpCB9yVaW3A3rAtD9yWIGWOXXXZprkizVTfJaHcgG526eCMsxMF6S4Qu8CjNi5Be8AB+MIneXW2c=
+	t=1749457886; cv=none; b=dYdJMtakJSqqGvvBtbdNOv0XQvTI0rpS6/CaA71EFgxHY+39uhS23qUQakYdXsGoINpJXIehhMz+YApcU/P5uat2if8RNEWyc/M/acQdd41Dho0SPnFOnhWzvR5X2vLvK1R8OzCPD/ipD04iQlisJnIh9rZkwTG4CKjUhgiDaq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749457769; c=relaxed/simple;
-	bh=YFi9LWQy833kHSvTlpaxjsTs5+21svqNssRXAiUaBvA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Kr7NDZQqoWDeU4xHQY0sSN3TeyXY2/5ERnmDUdNAnTtXlLJfuNS4Fc88NbPFspG7u2WIyXiS2kqfhIBghbY6WBeCA971q1BAv3/ZKSY8OAP4L2bGEp/lyJ5BIbYhjZqoFwkREhWz0TPafX+4wIpC1qnSNrG80sZoZLSYDXqlihU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jsV/CEuI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE5D7C4CEEB;
-	Mon,  9 Jun 2025 08:29:26 +0000 (UTC)
+	s=arc-20240116; t=1749457886; c=relaxed/simple;
+	bh=WSOOS5aOtD4i4eTEPQBLNTX7iBqx7l4/LH/DX9py+Ic=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=i8gXuJhVINaUb4wUQozmMbCtVgYGnXT4Qu4uFyND8cLQPozYTusjaMYZy52BdhcQ7DveA9etWSF/+TVCkz1aX//6GPsbyT7jzoDScWsLbRguiqDY/wQDoN/VStR2pJ2XpygguAyyf9CAaD9q7E59lIGlJENt56xNIux4QdfzA+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ULl8OXhV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F36C4CEED;
+	Mon,  9 Jun 2025 08:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749457769;
-	bh=YFi9LWQy833kHSvTlpaxjsTs5+21svqNssRXAiUaBvA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jsV/CEuICj89sFJ1HUACSSYUz6toltm9cI255Y7JNydVIqF69dlxOPMoR54qrJElL
-	 yBGA3DB92y4pHqzyNXeQCGG0T0dBRRJCT2uEIdvgoglFF1BZN49Fd+UdUb/olLIWim
-	 iZofsHwThOBRPB/H5WrBqFuxaPN+fdyLmA2wFEH8f+qfb+ECPGDzGogt6Px2BEZdWx
-	 Y4i1kmm/6kEmVdD+9VnCnw1PUgADETiZ81jD3HYsXRwZGniCsHE+9cIHx/xSD8W3RZ
-	 H4CV0s56ZCzIwxFlbAO7WDRENKBhdWQnsQAHvnTUb53tYpqKUCNMZQQwlSdvbcVUZU
-	 s2uZjkOq1C6zg==
-Message-ID: <9feed8e3-e831-4096-8a4a-0ceca7d18f61@kernel.org>
-Date: Mon, 9 Jun 2025 10:29:25 +0200
+	s=k20201202; t=1749457886;
+	bh=WSOOS5aOtD4i4eTEPQBLNTX7iBqx7l4/LH/DX9py+Ic=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=ULl8OXhVPJa0MgnIKjHOjYnpWHFmjmWCXrklSnWUBGjZW7dL6zKk6tiJrNVPDVlaY
+	 Kv1LRds9lv/s/SjIZsN6MuTLmFzHAM2fFTq/V6m8LxksWVMv8wDZ13OfjUAnLYHW0u
+	 Av+exN54q4DAsbLMipBebAUTuVRmTceESMhIVQhrKVPBat10YKUREa7q07RnrIIK5r
+	 AcM8HKpr2aPdzVjPQlYX2BepzB8rDQcqKMKyOW38EqKwlgxxQzBn9aVtKz1NY/pWyo
+	 nCOAM5xmgVbvkS490YWvvSFlDpBIlr2voo7j/FQqYa4gubsn0lk3W7lVCeInmMNz29
+	 blbFd+xBXbk7A==
+Message-ID: <a3754c77-b85c-48f7-aacf-b50725b2dd01@kernel.org>
+Date: Mon, 9 Jun 2025 10:31:21 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -51,14 +51,16 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mfd: Fix compilation without CONFIG_OF
+From: Jiri Slaby <jirislaby@kernel.org>
 To: Mario Limonciello <superm1@kernel.org>, mario.limonciello@amd.com,
  lee@kernel.org, aaro.koskinen@iki.fi, andreas@kemnade.info,
  khilman@baylibre.com, rogerq@kernel.org, tony@atomide.com,
- tglx@linutronix.de, Arnd Bergmann <arnd@arndb.de>
+ tglx@linutronix.de, Arnd Bergmann <arnd@arndb.de>,
+ Nathan Chancellor <nathan@kernel.org>
 Cc: linux-omap@vger.kernel.org
 References: <20250602201008.1850418-1-superm1@kernel.org>
+ <9feed8e3-e831-4096-8a4a-0ceca7d18f61@kernel.org>
 Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
 Autocrypt: addr=jirislaby@kernel.org; keydata=
  xsFNBE6S54YBEACzzjLwDUbU5elY4GTg/NdotjA0jyyJtYI86wdKraekbNE0bC4zV+ryvH4j
  rrcDwGs6tFVrAHvdHeIdI07s1iIx5R/ndcHwt4fvI8CL5PzPmn5J+h0WERR5rFprRh6axhOk
@@ -101,29 +103,35 @@ Autocrypt: addr=jirislaby@kernel.org; keydata=
  f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
  DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
  S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <20250602201008.1850418-1-superm1@kernel.org>
+In-Reply-To: <9feed8e3-e831-4096-8a4a-0ceca7d18f61@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 02. 06. 25, 22:09, Mario Limonciello wrote:
-> From: Mario Limonciello <mario.limonciello@amd.com>
+On 09. 06. 25, 10:29, Jiri Slaby wrote:
+> On 02. 06. 25, 22:09, Mario Limonciello wrote:
+>> From: Mario Limonciello <mario.limonciello@amd.com>
+>>
+>> When compiling without CONFIG_OF but with CONFIG_WERROR enabled
+>> several mfd drivers fail with -Werror=unused-variable.
+>>
+>> The assignment from these variables is only used in of_fwnode_handle()
+>> and thus they can be moved to only be used directly in the macro.
+>>
+>> Fixes: a36aa0f7226a2 ("mfd: Switch to irq_domain_create_*()")
+>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > 
-> When compiling without CONFIG_OF but with CONFIG_WERROR enabled
-> several mfd drivers fail with -Werror=unused-variable.
-> 
-> The assignment from these variables is only used in of_fwnode_handle()
-> and thus they can be moved to only be used directly in the macro.
-> 
-> Fixes: a36aa0f7226a2 ("mfd: Switch to irq_domain_create_*()")
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> Arnd sent a fix for this already:
+> https://lore.kernel.org/all/20250520154106.2019525-1-arnd@kernel.org/
 
-Arnd sent a fix for this already:
-https://lore.kernel.org/all/20250520154106.2019525-1-arnd@kernel.org/
+And actually Nathan even before:
+https://lore.kernel.org/all/20250508-mfd-fix-unused-node-variables-v1-1-df84d80cca55@kernel.org/
 
-Hopefully all the fixes can be applied now, so no more duplicated 
-efforts. Sorry for the breakage.
+> Hopefully all the fixes can be applied now, so no more duplicated 
+> efforts. Sorry for the breakage.
+> 
 
 -- 
 js
 suse labs
+
 
