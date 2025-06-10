@@ -1,93 +1,92 @@
-Return-Path: <linux-omap+bounces-3799-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3798-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4E1CAD3473
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Jun 2025 13:04:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B980AD3476
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Jun 2025 13:04:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A05843B51DA
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Jun 2025 11:03:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CAC447A6097
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Jun 2025 11:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB8D028DEF7;
-	Tue, 10 Jun 2025 11:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3BE28DF12;
+	Tue, 10 Jun 2025 11:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="rlhvlR+U";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="l1WVTku3";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="rlhvlR+U";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="l1WVTku3"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="FaZpN5p2";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="fzzZr+qP";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="FaZpN5p2";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="fzzZr+qP"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D3A747F
-	for <linux-omap@vger.kernel.org>; Tue, 10 Jun 2025 11:04:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FAC747F
+	for <linux-omap@vger.kernel.org>; Tue, 10 Jun 2025 11:03:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749553442; cv=none; b=ZaiMtXf8shTE9OTXc2XYYvFHh3TPHLVQ4RbZfnxQGNA/g0GP2RVpRGI4HjjQNHJCzTxKTRB6Fl3FkGnl9ORo50+20AyLOhbUj8R/YXIWGetKNX+4Cw1N92D22nDEEPmSzJrU5GwMJUL1vjyOySdXZqRZaiNjEKXBechjWEeeE0E=
+	t=1749553439; cv=none; b=cd7KngjhmgI3XAz58Ty34/DRpNe7YA9/XuxagLn0AzL0G0BMGhhZTJkFVFKagnnE7Mz3V5qLnvKqNjwplBQkopT1TNQb1SvLjw52gqWPc5LNtt2CjLNMgYrzDYINIxvx9pNjJLmfmT6MpXDTGtGrNi7Aqs7eGi5jL4V+kIRxFlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749553442; c=relaxed/simple;
-	bh=yan4UjctUjQOBR9LYhj20RO4TsCKHSxIa2QcqHtgBzc=;
+	s=arc-20240116; t=1749553439; c=relaxed/simple;
+	bh=S3NDPFvnJmlOy+yNSyT9CO8zALqdkA+CgCrwNZiJdZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RHMsMpWkUOpU/oXJox0UiEcBRo9dHyOM39YR+LsZJjRb2ZbgYBc70R3Nzo/yjxs9TPs69HvQED+p7T1/AQ5HFKFJJUOCR4wic/Y/IGVUAykhUNnRHwasS/ZlW6WY4P+knsYYw5jtfNYkMtpWeIIuIV1BB0wgHunGFCtziKC026s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=rlhvlR+U; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=l1WVTku3; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=rlhvlR+U; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=l1WVTku3; arc=none smtp.client-ip=195.135.223.131
+	 MIME-Version; b=n0Lj9Mgs29P4yK841g7hAUoOH0HZaRyvEy1c86Gr1aVQR8DHx7eLRdUEALbrL81udntDLhuwJA7KCpR+C7FidEZMavBQ+G23GSoRcJOtfMGvoMMUE858mmJ6bcKWxfQd9o/0ZsDa1VGLsRcdluXh1nzBD7M8AWK0k/kYHQatvXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=FaZpN5p2; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=fzzZr+qP; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=FaZpN5p2; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=fzzZr+qP; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 73BC11F852;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D62FB21989;
 	Tue, 10 Jun 2025 11:03:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1749553406; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=G3FyHIoikmcz/gU+8T29N/Q9anRoC0fTRgVb+97m9RA=;
-	b=rlhvlR+UiKVZj1BbdntIP2jXL3lI4ixzg4F90ypK71Vn+GQOfgTql9fgNwZZlWIp31lvbE
-	q7aTFRD+h11hzPt50I4roVy06UHPh+n8LxuXbzJdkTuOAxUlDrCkHlhi+yhwaQjjoBdV9w
-	iTxJg0njiSIn5fPuccpHCeXO00T5IUE=
+	bh=QFF/VDCaBeJg0xRNuB1Q3WCLsI36V6WPpnd2AkwWVQg=;
+	b=FaZpN5p2EBoh1HOdRYBZk8H0QrAJmtbhO4mzvutaUcFk/LZor2fTclWwnJsIyAEGcjXIrF
+	4p8jVzr/xZp/lnL9uwRYlWrdaQc7Z/vJ63pvlzfiPgRfeg63DPp+KD8kMx3a3yuqZFVWSa
+	qyewHdkhjUl/mUZavG+e3EmZPBGdXew=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1749553406;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=G3FyHIoikmcz/gU+8T29N/Q9anRoC0fTRgVb+97m9RA=;
-	b=l1WVTku3H5tVEG7Ao1t2VB12ojtE0QsoQX0AjzmYFuDmEbu2Z3nqmX4FlDPTew+bdXqhMm
-	TQY9kLMgaDyMwTDA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rlhvlR+U;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=l1WVTku3
+	bh=QFF/VDCaBeJg0xRNuB1Q3WCLsI36V6WPpnd2AkwWVQg=;
+	b=fzzZr+qPGyTOPOIxqNfg7JmKDRaqBFFYlm+7g7TNZ51DAZCHsl5iG8O0PmXXWAFdnzxmWJ
+	opGcszwpvXCNmPDQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1749553406; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=G3FyHIoikmcz/gU+8T29N/Q9anRoC0fTRgVb+97m9RA=;
-	b=rlhvlR+UiKVZj1BbdntIP2jXL3lI4ixzg4F90ypK71Vn+GQOfgTql9fgNwZZlWIp31lvbE
-	q7aTFRD+h11hzPt50I4roVy06UHPh+n8LxuXbzJdkTuOAxUlDrCkHlhi+yhwaQjjoBdV9w
-	iTxJg0njiSIn5fPuccpHCeXO00T5IUE=
+	bh=QFF/VDCaBeJg0xRNuB1Q3WCLsI36V6WPpnd2AkwWVQg=;
+	b=FaZpN5p2EBoh1HOdRYBZk8H0QrAJmtbhO4mzvutaUcFk/LZor2fTclWwnJsIyAEGcjXIrF
+	4p8jVzr/xZp/lnL9uwRYlWrdaQc7Z/vJ63pvlzfiPgRfeg63DPp+KD8kMx3a3yuqZFVWSa
+	qyewHdkhjUl/mUZavG+e3EmZPBGdXew=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1749553406;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=G3FyHIoikmcz/gU+8T29N/Q9anRoC0fTRgVb+97m9RA=;
-	b=l1WVTku3H5tVEG7Ao1t2VB12ojtE0QsoQX0AjzmYFuDmEbu2Z3nqmX4FlDPTew+bdXqhMm
-	TQY9kLMgaDyMwTDA==
+	bh=QFF/VDCaBeJg0xRNuB1Q3WCLsI36V6WPpnd2AkwWVQg=;
+	b=fzzZr+qPGyTOPOIxqNfg7JmKDRaqBFFYlm+7g7TNZ51DAZCHsl5iG8O0PmXXWAFdnzxmWJ
+	opGcszwpvXCNmPDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2490213A17;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7929F13A69;
 	Tue, 10 Jun 2025 11:03:26 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GHCTB/4QSGgOTAAAD6G6ig
+	id cARqHP4QSGgOTAAAD6G6ig
 	(envelope-from <tzimmermann@suse.de>); Tue, 10 Jun 2025 11:03:26 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: deller@gmx.de,
@@ -103,9 +102,9 @@ Cc: linux-fbdev@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-omap@vger.kernel.org,
 	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 09/14] fbdev/omap2: Do not include <linux/export.h>
-Date: Tue, 10 Jun 2025 12:56:42 +0200
-Message-ID: <20250610105948.384540-10-tzimmermann@suse.de>
+Subject: [PATCH 10/14] fbdev/mb862xx: Do not include <linux/export.h>
+Date: Tue, 10 Jun 2025 12:56:43 +0200
+Message-ID: <20250610105948.384540-11-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250610105948.384540-1-tzimmermann@suse.de>
 References: <20250610105948.384540-1-tzimmermann@suse.de>
@@ -116,90 +115,54 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.01 / 50.00];
+X-Spam-Flag: NO
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00];
 	BAYES_HAM(-3.00)[100.00%];
 	MID_CONTAINS_FROM(1.00)[];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	NEURAL_HAM_SHORT(-0.20)[-1.000];
 	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FREEMAIL_TO(0.00)[gmx.de,c64.rulez.org,ffwll.ch,intworks.biz,armlinux.org.uk,gmail.com,kernel.org];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	ARC_NA(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_COUNT_TWO(0.00)[2];
 	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLwqwbgho3bgbo9wb3ecq1qfng)];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
-	FROM_EQ_ENVFROM(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
 	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo];
+	FREEMAIL_TO(0.00)[gmx.de,c64.rulez.org,ffwll.ch,intworks.biz,armlinux.org.uk,gmail.com,kernel.org];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	R_RATELIMIT(0.00)[to_ip_from(RLeer19tzumyaughgdh7h6uhe9)];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de]
 X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: 73BC11F852
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Score: -3.01
 
-Fix the compile-time warnings
+Fix the compile-time warning
 
-  drivers/video/fbdev/omap2/omapfb/dss/dpi.c: warning: EXPORT_SYMBOL() is not used, but #include <linux/export.h> is present
-  drivers/video/fbdev/omap2/omapfb/dss/sdi.c: warning: EXPORT_SYMBOL() is not used, but #include <linux/export.h> is present
-  drivers/video/fbdev/omap2/omapfb/omapfb-ioctl.c: warning: EXPORT_SYMBOL() is not used, but #include <linux/export.h> is present
+  drivers/video/fbdev/mb862xx/mb862xx-i2c.c: warning: EXPORT_SYMBOL() is not used, but #include <linux/export.h> is present
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- drivers/video/fbdev/omap2/omapfb/dss/dpi.c      | 1 -
- drivers/video/fbdev/omap2/omapfb/dss/sdi.c      | 1 -
- drivers/video/fbdev/omap2/omapfb/omapfb-ioctl.c | 1 -
- 3 files changed, 3 deletions(-)
+ drivers/video/fbdev/mb862xx/mb862xx-i2c.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dpi.c b/drivers/video/fbdev/omap2/omapfb/dss/dpi.c
-index 86ed4c077c30..ad8ae1727966 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/dpi.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/dpi.c
-@@ -13,7 +13,6 @@
- 
- #include <linux/kernel.h>
+diff --git a/drivers/video/fbdev/mb862xx/mb862xx-i2c.c b/drivers/video/fbdev/mb862xx/mb862xx-i2c.c
+index ffdb1597d303..08b7f19a67a5 100644
+--- a/drivers/video/fbdev/mb862xx/mb862xx-i2c.c
++++ b/drivers/video/fbdev/mb862xx/mb862xx-i2c.c
+@@ -9,7 +9,6 @@
+ #include <linux/i2c.h>
+ #include <linux/io.h>
  #include <linux/delay.h>
 -#include <linux/export.h>
- #include <linux/err.h>
- #include <linux/errno.h>
- #include <linux/platform_device.h>
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/sdi.c b/drivers/video/fbdev/omap2/omapfb/dss/sdi.c
-index 2d3e5d4467c5..68e569ec0f83 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/sdi.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/sdi.c
-@@ -12,7 +12,6 @@
- #include <linux/delay.h>
- #include <linux/err.h>
- #include <linux/regulator/consumer.h>
--#include <linux/export.h>
- #include <linux/platform_device.h>
- #include <linux/string.h>
- #include <linux/of.h>
-diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb-ioctl.c b/drivers/video/fbdev/omap2/omapfb/omapfb-ioctl.c
-index ea8c88aa4477..152dbeaa6451 100644
---- a/drivers/video/fbdev/omap2/omapfb/omapfb-ioctl.c
-+++ b/drivers/video/fbdev/omap2/omapfb/omapfb-ioctl.c
-@@ -16,7 +16,6 @@
- #include <linux/mm.h>
- #include <linux/omapfb.h>
- #include <linux/vmalloc.h>
--#include <linux/export.h>
- #include <linux/sizes.h>
  
- #include <video/omapfb_dss.h>
+ #include "mb862xxfb.h"
+ #include "mb862xx_reg.h"
 -- 
 2.49.0
 
