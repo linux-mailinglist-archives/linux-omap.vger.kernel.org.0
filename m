@@ -1,86 +1,86 @@
-Return-Path: <linux-omap+bounces-3823-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3824-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 800C5AD458C
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Jun 2025 00:04:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21EDDAD45A3
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Jun 2025 00:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC54C189D990
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Jun 2025 22:04:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE6C0171C4E
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Jun 2025 22:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C75286881;
-	Tue, 10 Jun 2025 22:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39693285412;
+	Tue, 10 Jun 2025 22:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="darL0WaF"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JBJYrun6"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8294285401
-	for <linux-omap@vger.kernel.org>; Tue, 10 Jun 2025 22:02:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8F926656D
+	for <linux-omap@vger.kernel.org>; Tue, 10 Jun 2025 22:06:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749592923; cv=none; b=Tx/r1uWbop9iHSIqd20LtVdcoymFFA93kZwFoXCMGDotN1Tk3nAyOc5oXE2mKANObT5iRBwcfVyLgNY1HIjKz3U0vJSUhVqZ4qwmq0Z2ZNAjvUh4gd/pXEDK1lwb+Q0jj1D4VH/qq1JRuume7q4rnt/W4l+e5tc6culG2jIVa18=
+	t=1749593207; cv=none; b=sGI79q89Muna6xm7wO5NXBbYzJXSPmXHBr5FRCjXLP3lZOyp9QdOvqzPUrNAJxNlebwnMvPxfzBZB3eTTOgDyrv9Ui6y6XwxflFZXZYwukggSNXjZI7BD3RVjhojoJrDxMRTyWQ30Tx69B6aL3tW3JNeeFOhfq4VAEbaD2S+RiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749592923; c=relaxed/simple;
+	s=arc-20240116; t=1749593207; c=relaxed/simple;
 	bh=WEjoFKJq1fwhLjJL/1LIboVF8pYHP56Xq9jI3aQ+dvM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bnQbkJ4UsoXp9KzSKwWuZBFDOMkDM7Cvjz6CiFAobyOPpD4McH2DB4kRSzOyE5wjnTdxgfeBXnmi3H0TZNx4gCgObzwwvvOdmFlZ8xb5FtTiXZ2rOPAG6uNE/R9nxj+oeFKuD/0mLxN6qDgYBWSjms4pk/NftwVTzBGD1wnQpqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=darL0WaF; arc=none smtp.client-ip=209.85.167.53
+	 To:Cc:Content-Type; b=r2YUfigKz4HXYrBdvd/I3rz1J2cDp2X5SC1kiN/DK4v4y+dpRq/aO2snm3dx0z7yMzMDyaaTd9jdkQ+/4EXUBAXSN7FBquzd7lAbmrgn7sEh06x0We9NhgVeZq0sKTjKDXyeE7OKnlmnIvtZ74zJ5yhALUioUMQUSawL/2/pQJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JBJYrun6; arc=none smtp.client-ip=209.85.167.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5535e35b059so300019e87.1
-        for <linux-omap@vger.kernel.org>; Tue, 10 Jun 2025 15:02:01 -0700 (PDT)
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-552206ac67aso7240032e87.2
+        for <linux-omap@vger.kernel.org>; Tue, 10 Jun 2025 15:06:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1749592920; x=1750197720; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1749593204; x=1750198004; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
         bh=WEjoFKJq1fwhLjJL/1LIboVF8pYHP56Xq9jI3aQ+dvM=;
-        b=darL0WaFnqXsN60//KyNJtt83dkUlHHZa7TiQytwBwMfvg8t0Bs5VmCa4OdUdkOKcK
-         3KCxkXaBD/KLi+JQ8KUhosrpIA1k9+tlptkt2QwxVgNGib31KzwFfYdc2jVqcLPN3JMC
-         hP0QjgBAIU2VbTSnTIzbG3f4boMFIPDnGka2gTEuLgpGhfUu+R4cPQLV1EeXJlSFf/j9
-         GAYJ6POlPW+B3Zzd4rbTI83BVhQi/WQilVQVuDz+adCtIPFVrjao3dJV7fA/zQrn/AL0
-         NWIPHwvEiRgeyNdi3Fs7eMMlnR2nVCFdGstfo0b/HPtgr5+I5ostEaAmybKca7b7g+Y0
-         kBmg==
+        b=JBJYrun6Y8qBLpH9PeR9sxX/5z4fhsjOpHAkFqgY0n2+M6LRu3j4vZiLPDo+BfITjb
+         Oa9OiHV6c2aIF8gRcMZtA8BdO0qGfwjvCCnFAPTjF+5ODhsxXVyIWWTQFP/oMQH0bO+y
+         BslMRlE/h2JaJl4K0u1Z54N15+GJSs/nex480LPcBIEZtTWNUvMV4H+MDCyGVjXj1O0O
+         2JouZ2smwpnISJy3oXIlUy8shjX00CXFA2iiS7ZJzTjsiOe9O5hQF84Y8YCFdVZGn5TW
+         iIJA7+dXQwCW35mgrBlQWbGKdJWrQD2QR3uI/Z9S4gxp4O75uxJ68M/6XhNV6iGLN6uU
+         cxdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749592920; x=1750197720;
+        d=1e100.net; s=20230601; t=1749593204; x=1750198004;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
         bh=WEjoFKJq1fwhLjJL/1LIboVF8pYHP56Xq9jI3aQ+dvM=;
-        b=Xyc0sUMACDDHpN1Roxdr0jD5Y5rT1fR5irLO/c+yXGwEXsyS+n0IBs8MgeTbda8UcP
-         m7/cqfGFrknMFWrq0bJHnc5yowRXkqUo6z3UZjaajfWk75EioSv5DGm/G3yv5gZiXN15
-         lvcAQ/HDCH+MwrctALqT1yl/AUagUyYck2vbzNhsm2+YJncPGokiynLG7zTUINNjrfRE
-         02Q2of3iyAxEprWTsn8QEXFGj34+ZEn4FEd2pqfVLne6+B5A9bh7Zs1SF4+mN3kdQPQM
-         u6XaFbEkeWidmRL9wMqHM9At4uMZkdMtOmj+VgizVEWKApFw0+RJ5MsYR2RWPypgy/UM
-         IzGA==
-X-Forwarded-Encrypted: i=1; AJvYcCVvBf7VnnpRHb+SZ48KWcEnJ8cpjjvktClGjXLjdVrR2eGEjU9kbUC5treQEnZAYc3h6xsrej1HMlMw@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0Ne6h1YHgnKrS4KV/AZ3WMsca5GFeYY+NGbG9YIpXFJk0qS7n
-	OkVXZXZUik8gv+Sj/Cyq5lvH9L9CHPYmgio50wdONyOM+pX7KyYZoHXyCz0RIChsO3SbTQA4uAu
-	1mW3eIW6EHd8NjVJRsOAxGTFVQj1zwaU/CihVE8UO1g==
-X-Gm-Gg: ASbGnctXGzver9ZfLy3phIz+JOnx8NteAPsWt4QDuPgDR3osn4QxQSvxp+c6fNAhbO5
-	pEJbiz15dMF0jkhdWv3wIm0cwQDkS/bxQkCsypC0UAE/TFMjLDgKAFzR+mq2IBr6cxVF+Pw6M5q
-	ea+6603kIe3FTDww2S/SQikWX051XmuBqStUvriHXVQI4=
-X-Google-Smtp-Source: AGHT+IHHOhOUj30OWDDSx+2F42g2fLc3I9bcRSXhW2UcQzuablZdDsnZ46Wc3GihsOmkn7ZczCyHo2K03K0tk80OU04=
-X-Received: by 2002:a05:6512:1504:10b0:551:f166:bbb with SMTP id
- 2adb3069b0e04-5539c5ff09amr174150e87.13.1749592919907; Tue, 10 Jun 2025
- 15:01:59 -0700 (PDT)
+        b=ti6JQ5WXY9w979wkJXqcMBw/gDJwwnHHETTKj1OMetWQy2KTlIulHinAobCr7PtqfK
+         aWZCmwwFWzjdUbFDKOb37jVFm1rn0oPNxm3tyx+ikvm07CTBbMX5O8mT+qpQkUjIq2pX
+         Y0+hUEQAkH1Gu83iOSwoYE1E2ex2DsIsY0IZ8wZSonPkabVuDxcdqiO7pgltQasAMnxC
+         crbkUSlMBBxuSEd1/a90OON2gppbarKqk6ft7RvQNH3gn3ZSsB4ohQ571u2jTpUohxtb
+         +bWJtRXOnFbdP0H5rX0sNOFV+2DcNbQJ6mcuqELkM7ED28rMrkIeN2Qh+JgZuRtPrs2k
+         NF6g==
+X-Forwarded-Encrypted: i=1; AJvYcCXhGUC4fGcxKcaa1mDjzaAzgNnDaVDPo7xzOLnBqCnlYvzidsgfdbUZPZuwLtcxAwRKy6uxkvccasoR@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQhBZuzH7cCiiqLcYHkxpCAqG61nfTGE4J8KljzyMsyWVEyY7I
+	r1+Gd66Xet3zDjZ1uCVjy0YgJhVC44CJmaUVHsX3TjZ38yJqhFGW0bxrFPSijUnUPOvqOGuyLaE
+	bKg92RKyAPnXOeCE0rPkCYCAoVGRV5wh5mp6MKzsxKw==
+X-Gm-Gg: ASbGncvro2tBCEhvkv+FH4tAsy7Tu6uAFCn1uLY8Yn9amwwz+hNf77Ah4Jmid477zTg
+	GNcychg97mty9AbyoKTlolB3m7yDZvZ9Kznssn60wqlKx5OcfT2AX0ctQ/Cnvqz8ad9lF38m/Nc
+	yRLIQTyRBafet3uoJCFmP9kcMttVZW8IfnMHqIyjdrhuk=
+X-Google-Smtp-Source: AGHT+IGlqZqOxo94Fq1AxRXbuSE8IQ4NwQa1mjzmaOgaM7Du8n0a08UJH2Mj9vvFcKeYpn253k3S/NXDYuSRYxggVL8=
+X-Received: by 2002:ac2:4c4f:0:b0:553:659c:53fa with SMTP id
+ 2adb3069b0e04-5539d4be3f5mr111095e87.5.1749593203962; Tue, 10 Jun 2025
+ 15:06:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250610-gpiochip-set-rv-gpio-v1-0-3a9a3c1472ff@linaro.org> <20250610-gpiochip-set-rv-gpio-v1-2-3a9a3c1472ff@linaro.org>
-In-Reply-To: <20250610-gpiochip-set-rv-gpio-v1-2-3a9a3c1472ff@linaro.org>
+References: <20250610-gpiochip-set-rv-gpio-v1-0-3a9a3c1472ff@linaro.org> <20250610-gpiochip-set-rv-gpio-v1-8-3a9a3c1472ff@linaro.org>
+In-Reply-To: <20250610-gpiochip-set-rv-gpio-v1-8-3a9a3c1472ff@linaro.org>
 From: Linus Walleij <linus.walleij@linaro.org>
-Date: Wed, 11 Jun 2025 00:01:49 +0200
-X-Gm-Features: AX0GCFufuH4LiWDSgWF_9h-zk6BcvJ0Do0hqFlGAZPq_9bZnp7tz4BcqtgZHIfw
-Message-ID: <CACRpkdaK=Ua0=Jgnff4xXxVx9W=LcLg7RykR7CozhqtAb+8XQw@mail.gmail.com>
-Subject: Re: [PATCH 02/12] gpio: mm-lantiq: use new GPIO line value setter callbacks
+Date: Wed, 11 Jun 2025 00:06:32 +0200
+X-Gm-Features: AX0GCFsQuNMrR1lnqoFxpoWnn4BCOjfc6g0nU8IoyS3i9wf_s_1MzLLDkyq5jQE
+Message-ID: <CACRpkdb8GBwtOGQYrVkxiv8ZCjEE6pkQ_kSEutY2jYG0bUbFVg@mail.gmail.com>
+Subject: Re: [PATCH 08/12] gpio: nomadik: use new GPIO line value setter callbacks
 To: Bartosz Golaszewski <brgl@bgdev.pl>
 Cc: =?UTF-8?B?TWFyZWsgQmVow7pu?= <kabel@kernel.org>, 
 	Conor Dooley <conor.dooley@microchip.com>, Daire McNamara <daire.mcnamara@microchip.com>, 
