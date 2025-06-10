@@ -1,149 +1,221 @@
-Return-Path: <linux-omap+bounces-3788-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3789-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3247AD2F7D
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Jun 2025 10:05:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FFA9AD3457
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Jun 2025 13:03:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C2D9188696E
-	for <lists+linux-omap@lfdr.de>; Tue, 10 Jun 2025 08:06:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B217162E55
+	for <lists+linux-omap@lfdr.de>; Tue, 10 Jun 2025 11:03:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C76280005;
-	Tue, 10 Jun 2025 08:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFBA28DF0A;
+	Tue, 10 Jun 2025 11:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="AMYHv+YB"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dNxzJShp";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/4ndFyI7";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dNxzJShp";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/4ndFyI7"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F13E21FF25;
-	Tue, 10 Jun 2025 08:05:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D7828C004
+	for <linux-omap@vger.kernel.org>; Tue, 10 Jun 2025 11:03:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749542752; cv=none; b=OdHR5uNtzAbHfTGMVAstZH9FhMBY2IudJWZEf7WjHkViRHkGr8Ls4wIxyNcmdM+NmnsBcVprYTLLtqJLEKhEvPXZjk97CqU7MfJWsjHwDPdmizHygSex+SuGisdKSnN6cTNb3F/gd/xkaaYVyN7tjmTwvlRKE3BYD8wbWY06rk0=
+	t=1749553412; cv=none; b=M6CqMIfrDfyEOsmyfsK8KE/SwFfm1VeLMKlbxpD2HIRkY2epNi4Nv5EcDIrFZXFS2z3jlirUeGblu+ti60sssN4U4dK7k9xUI83Oh2ltNYz6QlQFLw1RQxlRH12J6dtJZWeuHLM77HwUBhgRdidJ7uzHmusEK2v6gIw617/RDno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749542752; c=relaxed/simple;
-	bh=R0LZ4WPp+OZg/a0tufPN45j+fi9t2hD3NjBIp0M9uzM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cD875/VCiDHO63N8Qb2pjqzWK4zVedylTlKkTtXZoFDAG19kAy99BMnCry9A89vYiDQV2m7SQW//ca+67061wh7DOgkxD2P9EniSuA61AqIX5xHa/b7qZXs726dlKm4jk/cPjbzvGBECUaqjmEbhvf/DPPdF9cMFaux21kg2PCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=AMYHv+YB; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3485B43B18;
-	Tue, 10 Jun 2025 08:05:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1749542747;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tbFv7luxCC5IISk2uJse1688WeTghFStrZlFWtawY5I=;
-	b=AMYHv+YB2V7GGqx349LfS0wy7zrqWUk+OUwn0m+foMWfBSDDu5wpy+lDYu019KHki8B4YE
-	BQBxd6TlDpxQWsejIBbs9J7RWu+BCJRDcHfjvRbRLm68MKlhzst1Nq7pyacfC2PpiF4Ei5
-	NsQwQzU/SxuxZ8pKvZJBdVYU4H8/S7MLDs1R7stTtZAJUAExVtevtUrZ1sTAfTpLcvPMKZ
-	wly9lvCjL7kqqmPRMUjTCYWpbpwIqZDEZAXCWlZf1EBndFl7S4yKOvtBImE4kpmJUPDno6
-	bcXXcjnnNaW/x66rz/2j0xZCVbaY5Ps8BS4gADOgWkEwBPuEHvEtBuoKsXUMKw==
-Date: Tue, 10 Jun 2025 10:05:44 +0200
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Andrew Davis <afd@ti.com>
-Cc: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas
- Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, Roger
- Quadros <rogerq@kernel.org>, Russell King <linux@armlinux.org.uk>, Bajjuri
- Praneeth <praneeth@ti.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
- <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v2 2/5] binding: omap: Add lots of missing omap AM33
- compatibles
-Message-ID: <20250610100544.4beb07e2@kmaincent-XPS-13-7390>
-In-Reply-To: <53b48816-37e6-49e8-a5cf-adcca04c57a7@ti.com>
-References: <20250609-bbg-v2-0-5278026b7498@bootlin.com>
-	<20250609-bbg-v2-2-5278026b7498@bootlin.com>
-	<53b48816-37e6-49e8-a5cf-adcca04c57a7@ti.com>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1749553412; c=relaxed/simple;
+	bh=6Q4xBezM2TQDsVWWki+9hlTZO/nio/0J1uPNA4T+1p0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FBX78oOqsRN1Z54oxO5p0zl2TUJHcjA5bPCS5kZVU0aVpiARvmcrqzqLWXUVzsE2rypx/xnTnBoLE9DTC5HLez7uiO+BjiFLBxErk3STGg+81Zx0CImF9yx51pyAki2bzycQ+3JqS5U7Ivm8FCIjsjnsgJCD7UVASP6XB/D9Zt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dNxzJShp; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/4ndFyI7; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dNxzJShp; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/4ndFyI7; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 2E99D1F848;
+	Tue, 10 Jun 2025 11:03:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1749553403; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=JBBa1CNqwIJKfOnOIWpEbn0xaM85120pWePKC5roVMI=;
+	b=dNxzJShpIEYWmLE4CdcGR2HSN5SZ9moOGdQtUCo8isxyeaqAr3ebOkV66v8SyR+V/uxvPO
+	7jAxqVqlV4fycMH3kc0PQIoxoONPlsoUVymdlfpInkrWHsEI8k2WkjqcsCDxFN7dnIApCP
+	rucaLILT5BhQaHk18B+VA2YFX4ZSHNw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1749553403;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=JBBa1CNqwIJKfOnOIWpEbn0xaM85120pWePKC5roVMI=;
+	b=/4ndFyI78v71NKYLyklrybB6ZG0OmkxJHyI1SadiM7OmzOQjqRQX3oqlNbbQ3fKun3EkOo
+	sZcWLG6SfKASmyCA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dNxzJShp;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/4ndFyI7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1749553403; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=JBBa1CNqwIJKfOnOIWpEbn0xaM85120pWePKC5roVMI=;
+	b=dNxzJShpIEYWmLE4CdcGR2HSN5SZ9moOGdQtUCo8isxyeaqAr3ebOkV66v8SyR+V/uxvPO
+	7jAxqVqlV4fycMH3kc0PQIoxoONPlsoUVymdlfpInkrWHsEI8k2WkjqcsCDxFN7dnIApCP
+	rucaLILT5BhQaHk18B+VA2YFX4ZSHNw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1749553403;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=JBBa1CNqwIJKfOnOIWpEbn0xaM85120pWePKC5roVMI=;
+	b=/4ndFyI78v71NKYLyklrybB6ZG0OmkxJHyI1SadiM7OmzOQjqRQX3oqlNbbQ3fKun3EkOo
+	sZcWLG6SfKASmyCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CA8CA13964;
+	Tue, 10 Jun 2025 11:03:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id AA8pL/oQSGgOTAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 10 Jun 2025 11:03:22 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: deller@gmx.de,
+	soci@c64.rulez.org,
+	simona@ffwll.ch,
+	jayalk@intworks.biz,
+	linux@armlinux.org.uk,
+	FlorianSchandinat@gmx.de,
+	alchark@gmail.com,
+	krzk@kernel.org
+Cc: linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-omap@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 00/14] fbdev: Fix warnings related to including <linux/export.h>
+Date: Tue, 10 Jun 2025 12:56:33 +0200
+Message-ID: <20250610105948.384540-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddutdegjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthhqredtredtjeenucfhrhhomhepmfhorhihucforghinhgtvghnthcuoehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpefguddtfeevtddugeevgfevtdfgvdfhtdeuleetffefffffhffgteekvdefudeiieenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghlohepkhhmrghinhgtvghnthdqigfrufdqudefqdejfeeltddpmhgrihhlfhhrohhmpehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeduledprhgtphhtthhopegrfhgusehtihdrtghomhdprhgtphhtthhopehtohhnhiesrghtohhmihguvgdrtghomhdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrg
- hdprhgtphhtthhopegrrghrohdrkhhoshhkihhnvghnsehikhhirdhfihdprhgtphhtthhopegrnhgurhgvrghssehkvghmnhgruggvrdhinhhfohdprhgtphhtthhopehkhhhilhhmrghnsegsrgihlhhisghrvgdrtghomh
-X-GND-Sasl: kory.maincent@bootlin.com
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 2E99D1F848
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FREEMAIL_TO(0.00)[gmx.de,c64.rulez.org,ffwll.ch,intworks.biz,armlinux.org.uk,gmail.com,kernel.org];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	ARC_NA(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+	FROM_EQ_ENVFROM(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de]
+X-Spam-Score: -3.01
+X-Spam-Level: 
 
-Le Mon, 9 Jun 2025 18:34:10 -0500,
-Andrew Davis <afd@ti.com> a =C3=A9crit :
+Some source files in fbdev do not include <linux/export.h> properly;
+others do when they don't have to. The build scripts warn about these
+cases.
 
-> On 6/9/25 10:43 AM, Kory Maincent wrote:
-> > Add several compatible strings that were missing from the binding
-> > documentation. Add description for Bone, BoneBlack and BoneGreen
-> > variants.
-> >=20
-> > Add several compatible that were missing from the binding.
-> >=20
-> > Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-> > ---
-> >=20
-> > Change in v2:
-> > - New patch
-> > ---
-> >   Documentation/devicetree/bindings/arm/ti/omap.yaml | 38
-> > ++++++++++++++++++++++ 1 file changed, 38 insertions(+)
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/arm/ti/omap.yaml
-> > b/Documentation/devicetree/bindings/arm/ti/omap.yaml index
-> > 3603edd7361d..c43fa4f4af81 100644 ---
-> > a/Documentation/devicetree/bindings/arm/ti/omap.yaml +++
-> > b/Documentation/devicetree/bindings/arm/ti/omap.yaml @@ -104,12 +104,50=
- @@
-> > properties:
-> >         - description: TI AM33 based platform
-> >           items:
-> >             - enum:
-> > +              - bosch,am335x-guardian
-> >                 - compulab,cm-t335
-> > +              - grinn,am335x-chilisom
-> > +              - gumstix,am335x-pepper
-> > +              - moxa,uc-2101
-> >                 - moxa,uc-8100-me-t
-> > +              - myir,myc-am335x
-> > +              - myir,myd-am335x
-> >                 - novatech,am335x-lxm
-> > +              - oct,osd3358-sm-refdesign
-> > +              - tcl,am335x-sl50
-> >                 - ti,am335x-bone
-> >                 - ti,am335x-evm
-> > +              - ti,am335x-evmsk
-> > +              - ti,am335x-pocketbeagle
-> > +              - ti,am335x-shc
-> >                 - ti,am3359-icev2
-> > +              - vscom,onrisc
-> > +          - const: ti,am33xx
-> > +
-> > +      - description: TI bone variants based on TI AM335 =20
->=20
-> Do we really need these "bone variants" split out from the above
-> list of TI AM33 based boards? We don't do that for any of the other
-> boards, you get a SoC and a Board compatible, every classification
-> in-between is just unneeded.
+Clean up to fix the related warnings. While at it, also fix trailing
+whitespaces in the affected files.
 
-As omap maintainers prefer. I did that to have the least amount of change in
-the devicetree. We could have U-boot using these compatible but after a qui=
-ck
-check it seems not.
+Thomas Zimmermann (14):
+  fbdev: Remove trailing whitespaces
+  fbdev: Include <linux/export.h>
+  fbdev/c2p: Include <linux/export.h>
+  fbdev/cyber2000fb: Unexport symbols
+  fbdev/matroxfb: Remove trailing whitespaces
+  fbdev/matroxfb: Include <linux/export.h>
+  fbdev/omap: Include <linux/export.h>
+  fbdev/omap2: Include <linux/export.h>
+  fbdev/omap2: Do not include <linux/export.h>
+  fbdev/mb862xx: Do not include <linux/export.h>
+  fbdev/pxafb: Unexport symbol
+  fbdev/sisfb: Unexport symbols
+  fbdev/viafb: Include <linux/export.h>
+  fbdev/viafb: Do not include <linux/export.h>
 
-Regards,
---
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+ drivers/video/fbdev/c2p_iplan2.c              |  1 +
+ drivers/video/fbdev/c2p_planar.c              |  1 +
+ drivers/video/fbdev/core/cfbcopyarea.c        |  2 +
+ drivers/video/fbdev/core/cfbfillrect.c        |  2 +
+ drivers/video/fbdev/core/cfbimgblt.c          |  2 +
+ drivers/video/fbdev/core/fb_ddc.c             |  1 +
+ drivers/video/fbdev/core/fb_defio.c           |  1 +
+ drivers/video/fbdev/core/fb_io_fops.c         |  1 +
+ drivers/video/fbdev/core/fb_sys_fops.c        |  2 +
+ drivers/video/fbdev/core/fbcmap.c             |  1 +
+ drivers/video/fbdev/core/fbcon.c              |  1 +
+ drivers/video/fbdev/core/fbmon.c              |  2 +
+ drivers/video/fbdev/core/modedb.c             |  1 +
+ drivers/video/fbdev/core/svgalib.c            |  1 +
+ drivers/video/fbdev/core/syscopyarea.c        |  2 +
+ drivers/video/fbdev/core/sysfillrect.c        |  2 +
+ drivers/video/fbdev/core/sysimgblt.c          |  2 +
+ drivers/video/fbdev/cyber2000fb.c             |  4 --
+ drivers/video/fbdev/macmodes.c                |  3 +-
+ drivers/video/fbdev/matrox/g450_pll.c         | 26 ++++----
+ drivers/video/fbdev/matrox/matroxfb_DAC1064.c | 47 +++++++-------
+ drivers/video/fbdev/matrox/matroxfb_Ti3026.c  |  1 +
+ drivers/video/fbdev/matrox/matroxfb_accel.c   |  2 +
+ drivers/video/fbdev/matrox/matroxfb_base.c    |  1 +
+ drivers/video/fbdev/matrox/matroxfb_g450.c    | 62 ++++++++++---------
+ drivers/video/fbdev/matrox/matroxfb_misc.c    | 21 ++++---
+ drivers/video/fbdev/mb862xx/mb862xx-i2c.c     |  1 -
+ drivers/video/fbdev/omap/lcd_dma.c            |  1 +
+ drivers/video/fbdev/omap/lcdc.c               |  2 +
+ drivers/video/fbdev/omap/omapfb_main.c        |  2 +
+ drivers/video/fbdev/omap2/omapfb/dss/apply.c  |  1 +
+ drivers/video/fbdev/omap2/omapfb/dss/core.c   |  1 +
+ .../fbdev/omap2/omapfb/dss/dispc-compat.c     |  1 +
+ .../video/fbdev/omap2/omapfb/dss/display.c    |  1 +
+ drivers/video/fbdev/omap2/omapfb/dss/dpi.c    |  1 -
+ drivers/video/fbdev/omap2/omapfb/dss/dss-of.c |  1 +
+ .../fbdev/omap2/omapfb/dss/dss_features.c     |  1 +
+ .../video/fbdev/omap2/omapfb/dss/manager.c    |  1 +
+ drivers/video/fbdev/omap2/omapfb/dss/output.c |  1 +
+ .../video/fbdev/omap2/omapfb/dss/overlay.c    |  1 +
+ drivers/video/fbdev/omap2/omapfb/dss/sdi.c    |  1 -
+ drivers/video/fbdev/omap2/omapfb/dss/venc.c   |  1 +
+ .../video/fbdev/omap2/omapfb/omapfb-ioctl.c   |  1 -
+ drivers/video/fbdev/omap2/omapfb/vrfb.c       |  1 +
+ drivers/video/fbdev/pxafb.c                   |  1 -
+ drivers/video/fbdev/sbuslib.c                 |  1 +
+ drivers/video/fbdev/sis/sis_main.c            |  9 ---
+ drivers/video/fbdev/via/via-core.c            |  1 +
+ drivers/video/fbdev/via/via-gpio.c            |  1 -
+ drivers/video/fbdev/via/via_i2c.c             |  1 +
+ drivers/video/fbdev/wmt_ge_rops.c             |  1 +
+ 51 files changed, 132 insertions(+), 95 deletions(-)
+
+-- 
+2.49.0
+
 
