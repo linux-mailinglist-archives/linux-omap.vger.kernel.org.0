@@ -1,304 +1,155 @@
-Return-Path: <linux-omap+bounces-3828-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3829-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E19A9AD5288
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Jun 2025 12:48:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D0AAD60DA
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Jun 2025 23:14:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2FE0189A8A9
-	for <lists+linux-omap@lfdr.de>; Wed, 11 Jun 2025 10:47:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EDF93AA0CA
+	for <lists+linux-omap@lfdr.de>; Wed, 11 Jun 2025 21:13:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE06328150F;
-	Wed, 11 Jun 2025 10:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A090E2BDC2D;
+	Wed, 11 Jun 2025 21:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pyHpeuv3"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="dE0mmlgJ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584722749FE;
-	Wed, 11 Jun 2025 10:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BFF11F7904;
+	Wed, 11 Jun 2025 21:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749638666; cv=none; b=hx0TrluXkqsB8Bd9/1DgqdTdtn+jHqcEsycsQ76DYf/LpymPvyQvBNZKu86REwbvx7JxyXDBxykzxfOxM6JCU8RwfnWYPSTKUMusrTVOSJbSVXNGAdZH9HsB9QjEM//KyHZAFf1f6Fzhy/oLklrh6GLAizr2k4riPBoHs7//VCU=
+	t=1749676434; cv=none; b=JTRVbGis5LmbiABX2DMXa3Isw9jyDPoiHzl9OAM/fiNNYXiXLOjTJUGjyyZXvsmvNziBoYxCZoBhy1ERaGF2VNlCfi6Od87xmdSgY57Jbe4IlpDZFhHSwnOKNhvPsfKGEWQa34n9b8FuIFLCrueKktF+dYek31MU2hFv8pHxJXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749638666; c=relaxed/simple;
-	bh=nZEHCyf1wViLq4HI/tYy5LRKqqJyp4jta9zEgDjuh9I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cz2Pg52Vxnjk6whC0MDZ+XngGRnMl/0pwjRJQy3tyyRrkUhTSgSQGWspHCDDDmWwycKNAsul3TaPXg7xbr/JOKjBgm639AOdoLRAwtmguMC35RuRhBh3WcEFGFUS4AauDsde6+DGZQn9SbCkwW+MQHSvhz1qVrDTBHhQm9nfbck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pyHpeuv3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D775C4CEEE;
-	Wed, 11 Jun 2025 10:44:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749638666;
-	bh=nZEHCyf1wViLq4HI/tYy5LRKqqJyp4jta9zEgDjuh9I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pyHpeuv3BVU8OP1oC49OuLmvAsS4N/mu9V6m2BrDoR/y98PKOa4nzrV4zyxLaDHVQ
-	 fbQmG3Gv5gsyhOJGBFaGTlBLfOpBidLXjIRIDr5wzfW++zdQdz7q2zNR/8NCpjjqnu
-	 gHk+PYDWOkIAIIA5vpKCxbK8YIs8JEvNutmvthP3kwUVUe9x/oM88mRQqzhBE3ftuF
-	 7UMsjcIYXx7VYtl7VZVcklfY89lZqEcB36NkxNce7nptCAQ2HrR/Da1ybB7uhxFEfD
-	 mmB0bbkeaf2y1dR5Ktn0SlJ+w77bHGSDlm3d4siYuNmu2GyZnMz2QNE59SQNxb4uwW
-	 CBGN1WbJVmzaw==
-From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: tglx@linutronix.de,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-omap@vger.kernel.org,
-	patches@opensource.cirrus.com
-Subject: [PATCH] mfd: Use dev_fwnode()
-Date: Wed, 11 Jun 2025 12:43:41 +0200
-Message-ID: <20250611104348.192092-13-jirislaby@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250611104348.192092-1-jirislaby@kernel.org>
-References: <20250611104348.192092-1-jirislaby@kernel.org>
+	s=arc-20240116; t=1749676434; c=relaxed/simple;
+	bh=ayf4MxTJT3l5fo3kpVYbW6H4t8k6I/d2JD5oWmRS3lE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=paT1cVKN7Hw5wTZwGhm7Mmk/lyvNVd1IWsJPJZG7XECIU2hPK8ReOkXixZcuyb+bz0rhWzbSs+2yq14ytRQ8e095DFyyS6qzO5E6amPeGc31sw527lnbMD0fcRsNvUEz5JuYsPrhA8lbX83jzF4fHMXugC9hPySHcez/+QxxDwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=dE0mmlgJ; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 55BLD7hs1489819;
+	Wed, 11 Jun 2025 16:13:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1749676387;
+	bh=P+Ei0nVTdPkuikDxd53VFZwYxoc432vn+t6Xh2VDjE0=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=dE0mmlgJbKsvhfBls2pR1EbemC7uEJZuES1EahQoc8L6WSOnP8d1R9evWoC6GzdP3
+	 oeZpSbqnZmO5dq24iQEK0m9FEziQiySjMvgU0x0naAIIDm3umuYzmD6IUgybyolKJc
+	 hG6C/5SmGkOAHrNVcr2M3+Jm9jQXsDOCg+Hx05JM=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 55BLD7Iq1414936
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Wed, 11 Jun 2025 16:13:07 -0500
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 11
+ Jun 2025 16:13:06 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Wed, 11 Jun 2025 16:13:06 -0500
+Received: from [10.249.42.149] ([10.249.42.149])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 55BLD55v923069;
+	Wed, 11 Jun 2025 16:13:06 -0500
+Message-ID: <1d87fa3b-c3b9-44fd-9e61-7f1ffadcfb0c@ti.com>
+Date: Wed, 11 Jun 2025 16:13:05 -0500
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 5/5] arm: omap2plus_defconfig: Enable TPS65219
+ regulator
+To: Kory Maincent <kory.maincent@bootlin.com>,
+        Tony Lindgren
+	<tony@atomide.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Aaro Koskinen
+	<aaro.koskinen@iki.fi>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Kevin Hilman
+	<khilman@baylibre.com>,
+        Roger Quadros <rogerq@kernel.org>,
+        Russell King
+	<linux@armlinux.org.uk>
+CC: Bajjuri Praneeth <praneeth@ti.com>, Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Thomas Petazzoni
+	<thomas.petazzoni@bootlin.com>,
+        <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
+References: <20250609-bbg-v2-0-5278026b7498@bootlin.com>
+ <20250609-bbg-v2-5-5278026b7498@bootlin.com>
+Content-Language: en-US
+From: Andrew Davis <afd@ti.com>
+In-Reply-To: <20250609-bbg-v2-5-5278026b7498@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-irq_domain_create_simple() takes fwnode as the first argument. It can be
-extracted from the struct device using dev_fwnode() helper instead of
-using of_node with of_fwnode_handle().
+On 6/9/25 10:43 AM, Kory Maincent wrote:
+> Enable the TPS65219 regulator in the defconfig, as the TPS65214
+> variant is used by the newly introduced BeagleBoard Green Eco board.
+> 
+> Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
+> Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+> ---
+>   arch/arm/configs/omap2plus_defconfig | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
+> index 9f9780c8e62a..2ad669f7b202 100644
+> --- a/arch/arm/configs/omap2plus_defconfig
+> +++ b/arch/arm/configs/omap2plus_defconfig
 
-So use the dev_fwnode() helper.
+Why omap2plus_defconfig? OMAP3 and newer are all ARMv7 and
+boards with those can/should use multi_v7_defconfig.
 
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Cc: Lee Jones <lee@kernel.org>
+OMAP1 and OMAP2 are the only devices that cannot use multi_v7_defconfig
+as they are not ARMv7. So I'd almost recommend we rename
+omap2plus_defconfig to just omap2_defconfig to avoid more confusion.
+Then we would have:
 
----
-Cc: Linus Walleij <linus.walleij@linaro.org>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: Andreas Kemnade <andreas@kemnade.info>
-Cc: Kevin Hilman <khilman@baylibre.com>
-Cc: Roger Quadros <rogerq@kernel.org>
-Cc: Tony Lindgren <tony@atomide.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: imx@lists.linux.dev
-Cc: linux-mediatek@lists.infradead.org
-Cc: linux-arm-msm@vger.kernel.org
-Cc: linux-stm32@st-md-mailman.stormreply.com
-Cc: linux-omap@vger.kernel.org
-Cc: patches@opensource.cirrus.com
----
- drivers/mfd/ab8500-core.c     |  3 +--
- drivers/mfd/fsl-imx25-tsadc.c |  4 ++--
- drivers/mfd/lp8788-irq.c      |  2 +-
- drivers/mfd/mt6358-irq.c      |  3 +--
- drivers/mfd/mt6397-irq.c      |  4 ++--
- drivers/mfd/qcom-pm8xxx.c     |  4 ++--
- drivers/mfd/stmfx.c           |  5 ++---
- drivers/mfd/tps65217.c        |  4 ++--
- drivers/mfd/tps6586x.c        |  6 +++---
- drivers/mfd/twl6030-irq.c     |  5 ++---
- drivers/mfd/wm831x-irq.c      | 10 ++++------
- 11 files changed, 22 insertions(+), 28 deletions(-)
+OMAP1:  ARMv4/5: omap1_defconfig
+OMAP2:  ARMv6:   omap2_defconfig
+OMAP3+: ARMv7:   multi_v7_defconfig
 
-diff --git a/drivers/mfd/ab8500-core.c b/drivers/mfd/ab8500-core.c
-index 049abcbd71ce..f0bc0b5a6f4a 100644
---- a/drivers/mfd/ab8500-core.c
-+++ b/drivers/mfd/ab8500-core.c
-@@ -580,8 +580,7 @@ static int ab8500_irq_init(struct ab8500 *ab8500, struct device_node *np)
- 		num_irqs = AB8500_NR_IRQS;
- 
- 	/* If ->irq_base is zero this will give a linear mapping */
--	ab8500->domain = irq_domain_create_simple(of_fwnode_handle(ab8500->dev->of_node),
--						  num_irqs, 0,
-+	ab8500->domain = irq_domain_create_simple(dev_fwnode(ab8500->dev), num_irqs, 0,
- 						  &ab8500_irq_ops, ab8500);
- 
- 	if (!ab8500->domain) {
-diff --git a/drivers/mfd/fsl-imx25-tsadc.c b/drivers/mfd/fsl-imx25-tsadc.c
-index d47152467951..0aab6428e042 100644
---- a/drivers/mfd/fsl-imx25-tsadc.c
-+++ b/drivers/mfd/fsl-imx25-tsadc.c
-@@ -71,8 +71,8 @@ static int mx25_tsadc_setup_irq(struct platform_device *pdev,
- 	if (irq < 0)
- 		return irq;
- 
--	tsadc->domain = irq_domain_create_simple(of_fwnode_handle(dev->of_node), 2, 0,
--						 &mx25_tsadc_domain_ops, tsadc);
-+	tsadc->domain = irq_domain_create_simple(dev_fwnode(dev), 2, 0, &mx25_tsadc_domain_ops,
-+						 tsadc);
- 	if (!tsadc->domain) {
- 		dev_err(dev, "Failed to add irq domain\n");
- 		return -ENOMEM;
-diff --git a/drivers/mfd/lp8788-irq.c b/drivers/mfd/lp8788-irq.c
-index ea0fdf7a4b6e..f62fa2d7f010 100644
---- a/drivers/mfd/lp8788-irq.c
-+++ b/drivers/mfd/lp8788-irq.c
-@@ -161,7 +161,7 @@ int lp8788_irq_init(struct lp8788 *lp, int irq)
- 		return -ENOMEM;
- 
- 	irqd->lp = lp;
--	irqd->domain = irq_domain_create_linear(of_fwnode_handle(lp->dev->of_node), LP8788_INT_MAX,
-+	irqd->domain = irq_domain_create_linear(dev_fwnode(lp->dev), LP8788_INT_MAX,
- 					&lp8788_domain_ops, irqd);
- 	if (!irqd->domain) {
- 		dev_err(lp->dev, "failed to add irq domain err\n");
-diff --git a/drivers/mfd/mt6358-irq.c b/drivers/mfd/mt6358-irq.c
-index 9f0bcc3ad7a1..f467b00d2366 100644
---- a/drivers/mfd/mt6358-irq.c
-+++ b/drivers/mfd/mt6358-irq.c
-@@ -272,8 +272,7 @@ int mt6358_irq_init(struct mt6397_chip *chip)
- 				     irqd->pmic_ints[i].en_reg_shift * j, 0);
- 	}
- 
--	chip->irq_domain = irq_domain_create_linear(of_fwnode_handle(chip->dev->of_node),
--						    irqd->num_pmic_irqs,
-+	chip->irq_domain = irq_domain_create_linear(dev_fwnode(chip->dev), irqd->num_pmic_irqs,
- 						    &mt6358_irq_domain_ops, chip);
- 	if (!chip->irq_domain) {
- 		dev_err(chip->dev, "Could not create IRQ domain\n");
-diff --git a/drivers/mfd/mt6397-irq.c b/drivers/mfd/mt6397-irq.c
-index badc614b4345..0e463026c5a9 100644
---- a/drivers/mfd/mt6397-irq.c
-+++ b/drivers/mfd/mt6397-irq.c
-@@ -216,8 +216,8 @@ int mt6397_irq_init(struct mt6397_chip *chip)
- 		regmap_write(chip->regmap, chip->int_con[2], 0x0);
- 
- 	chip->pm_nb.notifier_call = mt6397_irq_pm_notifier;
--	chip->irq_domain = irq_domain_create_linear(of_fwnode_handle(chip->dev->of_node),
--						    MT6397_IRQ_NR, &mt6397_irq_domain_ops, chip);
-+	chip->irq_domain = irq_domain_create_linear(dev_fwnode(chip->dev), MT6397_IRQ_NR,
-+						    &mt6397_irq_domain_ops, chip);
- 	if (!chip->irq_domain) {
- 		dev_err(chip->dev, "could not create irq domain\n");
- 		return -ENOMEM;
-diff --git a/drivers/mfd/qcom-pm8xxx.c b/drivers/mfd/qcom-pm8xxx.c
-index c96ea6fbede8..1149f7102a36 100644
---- a/drivers/mfd/qcom-pm8xxx.c
-+++ b/drivers/mfd/qcom-pm8xxx.c
-@@ -559,8 +559,8 @@ static int pm8xxx_probe(struct platform_device *pdev)
- 	chip->pm_irq_data = data;
- 	spin_lock_init(&chip->pm_irq_lock);
- 
--	chip->irqdomain = irq_domain_create_linear(of_fwnode_handle(pdev->dev.of_node),
--						   data->num_irqs, &pm8xxx_irq_domain_ops, chip);
-+	chip->irqdomain = irq_domain_create_linear(dev_fwnode(&pdev->dev), data->num_irqs,
-+						   &pm8xxx_irq_domain_ops, chip);
- 	if (!chip->irqdomain)
- 		return -ENODEV;
- 
-diff --git a/drivers/mfd/stmfx.c b/drivers/mfd/stmfx.c
-index 823b1d29389e..f683fdb6ece6 100644
---- a/drivers/mfd/stmfx.c
-+++ b/drivers/mfd/stmfx.c
-@@ -269,9 +269,8 @@ static int stmfx_irq_init(struct i2c_client *client)
- 	u32 irqoutpin = 0, irqtrigger;
- 	int ret;
- 
--	stmfx->irq_domain = irq_domain_create_simple(of_fwnode_handle(stmfx->dev->of_node),
--						  STMFX_REG_IRQ_SRC_MAX, 0,
--						  &stmfx_irq_ops, stmfx);
-+	stmfx->irq_domain = irq_domain_create_simple(dev_fwnode(stmfx->dev), STMFX_REG_IRQ_SRC_MAX,
-+						     0, &stmfx_irq_ops, stmfx);
- 	if (!stmfx->irq_domain) {
- 		dev_err(stmfx->dev, "Failed to create IRQ domain\n");
- 		return -EINVAL;
-diff --git a/drivers/mfd/tps65217.c b/drivers/mfd/tps65217.c
-index 4e9669d327b4..c240fac0ede7 100644
---- a/drivers/mfd/tps65217.c
-+++ b/drivers/mfd/tps65217.c
-@@ -158,8 +158,8 @@ static int tps65217_irq_init(struct tps65217 *tps, int irq)
- 	tps65217_set_bits(tps, TPS65217_REG_INT, TPS65217_INT_MASK,
- 			  TPS65217_INT_MASK, TPS65217_PROTECT_NONE);
- 
--	tps->irq_domain = irq_domain_create_linear(of_fwnode_handle(tps->dev->of_node),
--		TPS65217_NUM_IRQ, &tps65217_irq_domain_ops, tps);
-+	tps->irq_domain = irq_domain_create_linear(dev_fwnode(tps->dev), TPS65217_NUM_IRQ,
-+						   &tps65217_irq_domain_ops, tps);
- 	if (!tps->irq_domain) {
- 		dev_err(tps->dev, "Could not create IRQ domain\n");
- 		return -ENOMEM;
-diff --git a/drivers/mfd/tps6586x.c b/drivers/mfd/tps6586x.c
-index 853c48286071..8d5fe2b60bfa 100644
---- a/drivers/mfd/tps6586x.c
-+++ b/drivers/mfd/tps6586x.c
-@@ -363,9 +363,9 @@ static int tps6586x_irq_init(struct tps6586x *tps6586x, int irq,
- 		new_irq_base = 0;
- 	}
- 
--	tps6586x->irq_domain = irq_domain_create_simple(of_fwnode_handle(tps6586x->dev->of_node),
--				irq_num, new_irq_base, &tps6586x_domain_ops,
--				tps6586x);
-+	tps6586x->irq_domain = irq_domain_create_simple(dev_fwnode(tps6586x->dev), irq_num,
-+							new_irq_base, &tps6586x_domain_ops,
-+							tps6586x);
- 	if (!tps6586x->irq_domain) {
- 		dev_err(tps6586x->dev, "Failed to create IRQ domain\n");
- 		return -ENOMEM;
-diff --git a/drivers/mfd/twl6030-irq.c b/drivers/mfd/twl6030-irq.c
-index 00b14cef1dfb..df87b5168ae9 100644
---- a/drivers/mfd/twl6030-irq.c
-+++ b/drivers/mfd/twl6030-irq.c
-@@ -410,9 +410,8 @@ int twl6030_init_irq(struct device *dev, int irq_num)
- 	atomic_set(&twl6030_irq->wakeirqs, 0);
- 	twl6030_irq->irq_mapping_tbl = of_id->data;
- 
--	twl6030_irq->irq_domain =
--		irq_domain_create_linear(of_fwnode_handle(dev->of_node), nr_irqs,
--					 &twl6030_irq_domain_ops, twl6030_irq);
-+	twl6030_irq->irq_domain = irq_domain_create_linear(dev_fwnode(dev), nr_irqs,
-+							   &twl6030_irq_domain_ops, twl6030_irq);
- 	if (!twl6030_irq->irq_domain) {
- 		dev_err(dev, "Can't add irq_domain\n");
- 		return -ENOMEM;
-diff --git a/drivers/mfd/wm831x-irq.c b/drivers/mfd/wm831x-irq.c
-index b3883fa5dd9f..defd5f173eb6 100644
---- a/drivers/mfd/wm831x-irq.c
-+++ b/drivers/mfd/wm831x-irq.c
-@@ -587,13 +587,11 @@ int wm831x_irq_init(struct wm831x *wm831x, int irq)
- 	}
- 
- 	if (irq_base)
--		domain = irq_domain_create_legacy(of_fwnode_handle(wm831x->dev->of_node),
--						  ARRAY_SIZE(wm831x_irqs), irq_base, 0,
--						  &wm831x_irq_domain_ops, wm831x);
-+		domain = irq_domain_create_legacy(dev_fwnode(wm831x->dev), ARRAY_SIZE(wm831x_irqs),
-+						  irq_base, 0, &wm831x_irq_domain_ops, wm831x);
- 	else
--		domain = irq_domain_create_linear(of_fwnode_handle(wm831x->dev->of_node),
--						  ARRAY_SIZE(wm831x_irqs), &wm831x_irq_domain_ops,
--						  wm831x);
-+		domain = irq_domain_create_linear(dev_fwnode(wm831x->dev), ARRAY_SIZE(wm831x_irqs),
-+						  &wm831x_irq_domain_ops, wm831x);
- 
- 	if (!domain) {
- 		dev_warn(wm831x->dev, "Failed to allocate IRQ domain\n");
--- 
-2.49.0
+Any issue with that I'm missing?
 
+Andrew
+
+> @@ -385,6 +385,7 @@ CONFIG_TOUCHSCREEN_TSC2007=m
+>   CONFIG_INPUT_MISC=y
+>   CONFIG_INPUT_CPCAP_PWRBUTTON=m
+>   CONFIG_INPUT_TPS65218_PWRBUTTON=m
+> +CONFIG_INPUT_TPS65219_PWRBUTTON=m
+>   CONFIG_INPUT_TWL4030_PWRBUTTON=m
+>   CONFIG_INPUT_UINPUT=m
+>   CONFIG_INPUT_PALMAS_PWRBUTTON=m
+> @@ -454,6 +455,7 @@ CONFIG_MFD_TPS65217=y
+>   CONFIG_MFD_TI_LP873X=y
+>   CONFIG_MFD_TI_LP87565=y
+>   CONFIG_MFD_TPS65218=y
+> +CONFIG_MFD_TPS65219=y
+>   CONFIG_MFD_TPS65910=y
+>   CONFIG_TWL6040_CORE=y
+>   CONFIG_REGULATOR_CPCAP=y
+> @@ -470,6 +472,7 @@ CONFIG_REGULATOR_TPS65023=y
+>   CONFIG_REGULATOR_TPS6507X=y
+>   CONFIG_REGULATOR_TPS65217=y
+>   CONFIG_REGULATOR_TPS65218=y
+> +CONFIG_REGULATOR_TPS65219=y
+>   CONFIG_REGULATOR_TPS65910=y
+>   CONFIG_REGULATOR_TWL4030=y
+>   CONFIG_RC_CORE=m
+> 
 
