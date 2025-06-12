@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-3850-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3851-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F6C5AD6F18
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Jun 2025 13:34:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF9EAD6F35
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Jun 2025 13:38:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DEA27A7447
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Jun 2025 11:33:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 269423B1B67
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Jun 2025 11:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035362F4321;
-	Thu, 12 Jun 2025 11:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A871C2F4323;
+	Thu, 12 Jun 2025 11:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EhqEmwGe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AdLWrbrW"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95556EC2;
-	Thu, 12 Jun 2025 11:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A162F4326;
+	Thu, 12 Jun 2025 11:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749728079; cv=none; b=HTmhr/b3Jh/pNDXriGpoynAmKJTiQt9a9lU5Ns7XBzdptb8dJ0k7IsBESjYaJfcncx45Kji92FTFgldQJCRZRlh94Yw5COEnpmJltdJKo2WFlGZdSbWhWOsUgxdIxe/9aDw/DtdEF5TvpVQGjo7uKPXPJiTbkp3GtKZr9+xXSLs=
+	t=1749728295; cv=none; b=ilWVmzEKHH1D9+atxFNIOlzTQJ/fDWsirEWOsBRHez1sPgkMBrHrrVyR2qeYqkXuaIm6Up2qEZ1cNS7Xf21eKJTPojjtyTSg+eIrQJR1ln532CR+5NHRUOW/OY9n7ez+rKqmtYF+2QtkqSTrOfffJPdUVOxL5x8r1iOvJsMefqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749728079; c=relaxed/simple;
-	bh=ko4mzublJtTdY4EpEM9EjKSBWpgXZ7qKq5Px9Dremvw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZQ3qipd4iQZFgCmLnl55pkYj4xyZuZhvdKX71L4qKqnn0tUclYF8ux4iPY9YmCDU26SJ5AuJfg1/J+lPvQ1+1hTDFSr9R6FNI3OryvZruChZTevFiyxAHnXC7Hycg5dJQAYPFVsdegfaYwklV7SmNiQwpCWNmpuvxK7b1dMzk9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EhqEmwGe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9647CC4CEEA;
-	Thu, 12 Jun 2025 11:34:36 +0000 (UTC)
+	s=arc-20240116; t=1749728295; c=relaxed/simple;
+	bh=hmQ2WB7k05UStqlp8lH+Xb689CCwEJuFoE+8aHNXjQg=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=fap6gBqAw1GrJkFNKujMGUNaubrrqCZo3jzdYUDXVMLbbWrKjzrA3L/8VR2DLRX0FGQDvuIGXLR7AnZ5KKcTIRK2jwMhe/vDwNcnYRswTAnRN+JxohDDRm7Xv88zdGxbUSvmtkLx7uMh+d8Lrt/iu8WLiU2gld4/yVy3L1Rk2a0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AdLWrbrW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407D7C4CEEA;
+	Thu, 12 Jun 2025 11:38:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749728078;
-	bh=ko4mzublJtTdY4EpEM9EjKSBWpgXZ7qKq5Px9Dremvw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EhqEmwGe0O4o3LvIBM90L2FgyNeWgLHGs/ZjhvGkJjrp1F6995G5rxjk/Z+CxNIIw
-	 OHxBQNREf9HFm5Dywf93qFYuNiN8XB+HEnJaPAjsQuzjT6oiSqO36W7lwtr2/8xwf2
-	 EHJ7RmpMlsuo24oo84zXwwUdI3FIoq2Qb7uQ5vrjg+1EPVAzIWD7ICKnrbYHVhqRmX
-	 UMTn+dnrpgE/Xb4CpItVUCiY4P0Z1JK9fz1XLGN8zGtLp6LzXztIxT+3EHdSaVuP4f
-	 3Uky+WEsKWrjyUexjT94tmMeSXxN3+B07u/xiKOZu942X9zV+/uBzbGRGcfwWJxXfz
-	 lh+lSh6bn20OA==
-Message-ID: <bae87d5b-c1e6-431a-ac25-9b3d7a2a5696@kernel.org>
-Date: Thu, 12 Jun 2025 13:34:34 +0200
+	s=k20201202; t=1749728293;
+	bh=hmQ2WB7k05UStqlp8lH+Xb689CCwEJuFoE+8aHNXjQg=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=AdLWrbrWNFfYyGeiLVfR1indmcgBxobUOK49257ngZvDGAhgA0/Tw5YG7sYD5WLy0
+	 1iOajQJwho1uJU2IKPEibjpDHjsCVXmAjD/5BDKvqkTqP186DBhjnFuEH61x7j/sjc
+	 7fbhwnL3UARPTOA4BAeptwxy2J0XP9hPyPQ+Ok7tACLU379M4W0SfPyut4DG7/ww8F
+	 MbZ53fH1qZk4c1WBoigwIKAUQ7JQSsByDqHi/CdJPcws6cFcZmKLeZjP1R2P7tFrsK
+	 mpOwE46ZQdMJ1u6DGI0U6S+2gMO+Duno4KWUP1jZkFvhLL7OQTjFCzIT/8gO7gB5rw
+	 1EcrCFRIbzNsg==
+Message-ID: <e782e790-3002-4af2-b5ee-c2e478e1e9ef@kernel.org>
+Date: Thu, 12 Jun 2025 13:38:10 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -51,12 +51,13 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] memory: Use dev_fwnode()
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>, linux-kernel@vger.kernel.org
 Cc: tglx@linutronix.de, Roger Quadros <rogerq@kernel.org>,
  Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
 References: <20250611104348.192092-1-jirislaby@kernel.org>
  <20250611104348.192092-12-jirislaby@kernel.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <bae87d5b-c1e6-431a-ac25-9b3d7a2a5696@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -101,62 +102,66 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250611104348.192092-12-jirislaby@kernel.org>
+In-Reply-To: <bae87d5b-c1e6-431a-ac25-9b3d7a2a5696@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 11/06/2025 12:43, Jiri Slaby (SUSE) wrote:
-> irq_domain_create_simple() takes fwnode as the first argument. It can be
-> extracted from the struct device using dev_fwnode() helper instead of
-> using of_node with of_fwnode_handle().
+On 12/06/2025 13:34, Krzysztof Kozlowski wrote:
+> On 11/06/2025 12:43, Jiri Slaby (SUSE) wrote:
+>> irq_domain_create_simple() takes fwnode as the first argument. It can be
+>> extracted from the struct device using dev_fwnode() helper instead of
+>> using of_node with of_fwnode_handle().
+>>
+>> So use the dev_fwnode() helper.
+>>
+>> Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+>> Cc: Roger Quadros <rogerq@kernel.org>
+>> Cc: Tony Lindgren <tony@atomide.com>
+>> Cc: Krzysztof Kozlowski <krzk@kernel.org>
+>> Cc: linux-omap@vger.kernel.org
+>> ---
+> Please send patches standard way, so without fake in-reply-to. b4 shazam
+> on entire patchset (because this is not a continuation - see subject
+> prefix) grabs entirely wrong patch:
 > 
-> So use the dev_fwnode() helper.
-> 
-> Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-> Cc: Roger Quadros <rogerq@kernel.org>
-> Cc: Tony Lindgren <tony@atomide.com>
-> Cc: Krzysztof Kozlowski <krzk@kernel.org>
-> Cc: linux-omap@vger.kernel.org
+> -----------------
+> Grabbing thread from
+> lore.kernel.org/all/20250611104348.192092-12-jirislaby@kernel.org/t.mbox.gz
+> Breaking thread to remove parents of
+> 20250611104348.192092-12-jirislaby@kernel.org
+> Checking for newer revisions
+> Grabbing search results from lore.kernel.org
+>   Added from v2: 1 patches
+> Analyzing 10 messages in the thread
+> Analyzing 19 code-review messages
+> Will use the latest revision: v2
+> You can pick other revisions using the -vN flag
+> Checking attestation on all messages, may take a moment...
 > ---
-Please send patches standard way, so without fake in-reply-to. b4 shazam
-on entire patchset (because this is not a continuation - see subject
-prefix) grabs entirely wrong patch:
+>   ✓ [PATCH v2] iio: adc: stm32-adc: Use dev_fwnode()
+>     + Link:
+> https://lore.kernel.org/r/20250612084627.217341-1-jirislaby@kernel.org
+> -----------------
+> 
+> Applying single patch also fails:
+> 
+> 
+> -----------------
+> Grabbing thread from
+> lore.kernel.org/all/20250611104348.192092-12-jirislaby@kernel.org/t.mbox.gz
+> Checking for newer revisions
+> Grabbing search results from lore.kernel.org
+>   Added from v2: 1 patches
+> Analyzing 10 messages in the thread
+> Analyzing 19 code-review messages
+> Will use the latest revision: v2
+> You can pick other revisions using the -vN flag
+> Specified msgid is not present in the series, cannot cherrypick
+> -----------------
 
------------------
-Grabbing thread from
-lore.kernel.org/all/20250611104348.192092-12-jirislaby@kernel.org/t.mbox.gz
-Breaking thread to remove parents of
-20250611104348.192092-12-jirislaby@kernel.org
-Checking for newer revisions
-Grabbing search results from lore.kernel.org
-  Added from v2: 1 patches
-Analyzing 10 messages in the thread
-Analyzing 19 code-review messages
-Will use the latest revision: v2
-You can pick other revisions using the -vN flag
-Checking attestation on all messages, may take a moment...
----
-  ✓ [PATCH v2] iio: adc: stm32-adc: Use dev_fwnode()
-    + Link:
-https://lore.kernel.org/r/20250612084627.217341-1-jirislaby@kernel.org
------------------
-
-Applying single patch also fails:
-
-
------------------
-Grabbing thread from
-lore.kernel.org/all/20250611104348.192092-12-jirislaby@kernel.org/t.mbox.gz
-Checking for newer revisions
-Grabbing search results from lore.kernel.org
-  Added from v2: 1 patches
-Analyzing 10 messages in the thread
-Analyzing 19 code-review messages
-Will use the latest revision: v2
-You can pick other revisions using the -vN flag
-Specified msgid is not present in the series, cannot cherrypick
------------------
-
+ok, -v1 helped, but this entire dance could be avoided if you sent it
+standard way, without confusing threading and attaching on patch to
+something else.
 
 Best regards,
 Krzysztof
