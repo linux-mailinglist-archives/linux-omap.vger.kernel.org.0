@@ -1,119 +1,148 @@
-Return-Path: <linux-omap+bounces-3852-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3853-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97307AD6F38
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Jun 2025 13:39:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 988CFAD714C
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Jun 2025 15:12:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 998D118993BB
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Jun 2025 11:40:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A99163B224F
+	for <lists+linux-omap@lfdr.de>; Thu, 12 Jun 2025 13:10:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E4E2F4326;
-	Thu, 12 Jun 2025 11:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16550243371;
+	Thu, 12 Jun 2025 13:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FobjXkpf"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="R49oWCXa"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8022F430B
-	for <linux-omap@vger.kernel.org>; Thu, 12 Jun 2025 11:39:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D968E946F;
+	Thu, 12 Jun 2025 13:11:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749728380; cv=none; b=WFkfwznJD3XgaIlUUDaFI1lUKM6nGPe4LwvzTwum6JPizuxFpMKAi8F9hR5/nFvBEGf3lw9nQxTcoLduTyoE2zX2A8krxS40EdA4E79o/UR5WEk+XCCVAEfvQKekKBxwxzsjjcFvSIcAb6YG1LE9vndYTbVTe0ecf295n9aLo6E=
+	t=1749733865; cv=none; b=FMz8Ps5MlBzfzlcyMwp35zQTPsNi30Aw0W83mJK/1FzqZD1Q5cKLgIbamuXCwLEj4ViR+4Nj+Id07/xjznBot3Y3OW3X3cAMK3a5HAhF7w7+XztwZTygFVXPCV4d4gVC+UAXL9ZKuvrZBWW4Jd9j8eDrpLoG4Sp84Mjo9VuUhvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749728380; c=relaxed/simple;
-	bh=czXIVD6xQjvC1tEbZIVsAxrEf357Wbyhje47vKPmNJw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=PSkHWwxo96BanPtVAIUCu5+/ZGDHu1TD600575jlEMWBDm6SlNXzoJj4+dz7zvDvzSj4cclgQQ0wY9gnobNGyNHUmcONfMAWpW/UMYABtMgfruAO3HbHAisDhdAvJL8bdQocTaoe8ZoiRXQbWG0nOPw0Xc0hYydZwBS0mCfKsyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FobjXkpf; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-44069f5f3aaso1223925e9.2
-        for <linux-omap@vger.kernel.org>; Thu, 12 Jun 2025 04:39:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1749728376; x=1750333176; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BH9zpyyeQx03Xpt9F0YSvnLpGJjqpDHk0YVCL6WUMi0=;
-        b=FobjXkpff1OC/6aLAkU+164UgetZbovzhE5f6ioENUEldH2P7mwyUMnNJNspXrgkLg
-         hURsyNj+9N6M6u0qtcI51w4A7mL7x/D/LFal60ZgyPmwbDKf1TgXJFQIR7H4d3a4+3Ql
-         KdBCz5NO8D0H5qFkhauCJytNuq+3qx15LB5lrcH6zR0syBPAkywGdwnpMvNbZwgcj3aU
-         CVUMRFl+CWz0OiFiXI/G645wOaQXTRE/DBDMrR0AgiQ+Im4jqJ91z51Z4MHZaLFrvNtM
-         kKW/6cUGAm6I7XDLanUpuiouWn/OMA3P1ntwq6wj7Qd74smZ6VjFqkanm6FiWSGk7p6N
-         NTaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749728376; x=1750333176;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BH9zpyyeQx03Xpt9F0YSvnLpGJjqpDHk0YVCL6WUMi0=;
-        b=oQPbVEf5bBPa1kq9bC9MUOFJgg161M9yRigzL01Ncuqx/agmUggYf3iE1Snj2ekoKr
-         cr/JVn0fh2WrQbHyo/ltDSB0VYtoWxHbqVyGJYAI7XIERlcexyCoxYOD1LoyFsUfBgEW
-         +2a8QSvK0yGOoDpxXPz5VvpAqI2dY5y64MqF7ks9u7bMjknd6cNulAQWVHHMo9WEzKz1
-         sE0rOHwwBHMvDRjXxdGSSAC1si2biWHrpigGL9U1SEKactZnjhCU1Y+WXJv0V30eXaxi
-         Cc0x+/wkNJmmTZY+3r7Je2BM/J2fg6BFjWEDi6ZA5ZLJMW/we0m/nbbFL8Mi8yzS9QY5
-         FE2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWxOU4VEAoinm+Gxox0/1zFxa+nLeJMMaBfBlDuxtz2za+r0wndJvd7Zbsk5PQFz9MrBS6zTT+Dy1YX@vger.kernel.org
-X-Gm-Message-State: AOJu0YyeSlICMEwKcssqIVNS/q/SA2trM5j5ZwJq/Fkx19U+8NIYFtjr
-	8qAUNbiODv0S/p/yRKvZvD73Q0BbmQ1semA/uzr+3LPnoo2+e638L6h7xNxC5gIO1adVP2qTNKV
-	0e7/R
-X-Gm-Gg: ASbGnctkTUezT9oNzlVPVqstS7Pcc3wjN9wTT8TcpLwmBAwxYyiaxtEu+v6qBwWlYnX
-	rpb8B1DseP02eZWVdO4LoW0LB98YXK9MGsZMfNnNUJpVcXJrILXFWqHxea8sl63RJ23isg6EJOR
-	Kw9C42jTEkc0sFhJ78aSPL7KjYL+C0aTVZUXbbETDyBJg2zXV5Cjtiq19P950FTbBLuEqj+znlK
-	Lk6WxDEnz9phWbCnWI83B6Q+3LTk1dohsWfaFSlSt0zwyG4WPirQKikcrw3L0qY3dbMgpHrT307
-	i3kX70wDTqG7yfT66qkec6AW6p43o717RQ3YlChB7toW4OII/3snTf4mbvoB2xrJPN1SyFAAH+l
-	6lTn43nc=
-X-Google-Smtp-Source: AGHT+IEcpObNjeWZdXRhh+Gz2mVKzNVAOuBcl9lUX8WtlsYJJ+gSEvmYwY5GXQOg2ReoFXO+QM0Mpg==
-X-Received: by 2002:a05:6000:2313:b0:3a4:eeeb:7e79 with SMTP id ffacd0b85a97d-3a55881f23fmr2471607f8f.12.1749728376305;
-        Thu, 12 Jun 2025 04:39:36 -0700 (PDT)
-Received: from [192.168.1.29] ([178.197.223.125])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a561a3c763sm1750430f8f.62.2025.06.12.04.39.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Jun 2025 04:39:35 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: linux-kernel@vger.kernel.org, 
- "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Cc: tglx@linutronix.de, Roger Quadros <rogerq@kernel.org>, 
- Tony Lindgren <tony@atomide.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
- linux-omap@vger.kernel.org
-In-Reply-To: <20250611104348.192092-12-jirislaby@kernel.org>
-References: <20250611104348.192092-1-jirislaby@kernel.org>
- <20250611104348.192092-12-jirislaby@kernel.org>
-Subject: Re: [PATCH] memory: Use dev_fwnode()
-Message-Id: <174972837497.91877.6617168191559505764.b4-ty@linaro.org>
-Date: Thu, 12 Jun 2025 13:39:34 +0200
+	s=arc-20240116; t=1749733865; c=relaxed/simple;
+	bh=vrQyTyacU7Ij/hd4JULIJv8TrZZjFmKfYlNixSpiJok=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=WGtyWLuNUeRA1IHe4IMzEAEEgS01PGFSHbZ8LD7b3dBjp12bdcTaEGA5vXV1GFOll2xWRdC8Sdmf+3GXKhRGknwR5Hl3ODlI8S6wnkvYa0o03rteXz18QVH745e883XEHOvR6nJskwEdiAE1mErVtl+0YYpqcyxKzLGitSHHtEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=R49oWCXa; arc=none smtp.client-ip=198.47.23.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 55CDA0Z32925702;
+	Thu, 12 Jun 2025 08:10:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1749733800;
+	bh=SZsYXdUJxDqqAruGjKI1G6QK33eagQBI2kBAS/U2H9E=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=R49oWCXaLeCfto2fyhcX2Jk6U0KZNdPtDpKrvGWbubbskG+aLLBqLbREwF7QbmKcd
+	 7OYm7RcUMzTCdwG00Bsk6z945Ucq/sEKFUXc0NzL6jS8KN0MCl2uGmQYws+UoISeqp
+	 Dz5eCdTo+xIsSS7Ve7zKvmFGNXi+y3yACikjK5pk=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 55CDA0Q91974279
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Thu, 12 Jun 2025 08:10:00 -0500
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Thu, 12
+ Jun 2025 08:09:59 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Thu, 12 Jun 2025 08:09:59 -0500
+Received: from [10.249.42.149] ([10.249.42.149])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 55CD9xgi2202130;
+	Thu, 12 Jun 2025 08:09:59 -0500
+Message-ID: <ef6d6315-6517-4c8b-bf76-e41bb72bae8d@ti.com>
+Date: Thu, 12 Jun 2025 08:09:59 -0500
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 5/5] arm: omap2plus_defconfig: Enable TPS65219
+ regulator
+To: Andreas Kemnade <andreas@kemnade.info>
+CC: Kory Maincent <kory.maincent@bootlin.com>,
+        Tony Lindgren
+	<tony@atomide.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Aaro Koskinen
+	<aaro.koskinen@iki.fi>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Roger Quadros
+	<rogerq@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Bajjuri Praneeth
+	<praneeth@ti.com>,
+        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
+	<broonie@kernel.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
+References: <20250609-bbg-v2-0-5278026b7498@bootlin.com>
+ <20250609-bbg-v2-5-5278026b7498@bootlin.com>
+ <1d87fa3b-c3b9-44fd-9e61-7f1ffadcfb0c@ti.com> <20250612081255.255be21e@akair>
+Content-Language: en-US
+From: Andrew Davis <afd@ti.com>
+In-Reply-To: <20250612081255.255be21e@akair>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-
-On Wed, 11 Jun 2025 12:43:40 +0200, Jiri Slaby (SUSE) wrote:
-> irq_domain_create_simple() takes fwnode as the first argument. It can be
-> extracted from the struct device using dev_fwnode() helper instead of
-> using of_node with of_fwnode_handle().
+On 6/12/25 1:12 AM, Andreas Kemnade wrote:
+> Am Wed, 11 Jun 2025 16:13:05 -0500
+> schrieb Andrew Davis <afd@ti.com>:
 > 
-> So use the dev_fwnode() helper.
+>> On 6/9/25 10:43 AM, Kory Maincent wrote:
+>>> Enable the TPS65219 regulator in the defconfig, as the TPS65214
+>>> variant is used by the newly introduced BeagleBoard Green Eco board.
+>>>
+>>> Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
+>>> Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+>>> ---
+>>>    arch/arm/configs/omap2plus_defconfig | 3 +++
+>>>    1 file changed, 3 insertions(+)
+>>>
+>>> diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
+>>> index 9f9780c8e62a..2ad669f7b202 100644
+>>> --- a/arch/arm/configs/omap2plus_defconfig
+>>> +++ b/arch/arm/configs/omap2plus_defconfig
+>>
+>> Why omap2plus_defconfig? OMAP3 and newer are all ARMv7 and
+>> boards with those can/should use multi_v7_defconfig.
+>>
+> if there are enough drivers enabled there, it would work, but it is not.
+> So there need to be a bunch of patches to add the missing stuff.
+> omap2plus_defconfig is there and support for boards are added.
 > 
+
+Yes multi_v7 is still missing stuff for some boards we want to
+support, and we are working on adding those needed modules now.
+
+We won't get feature parity in multi_v7 if we keep adding new
+boards to the old omap2plus_defconfig. For this patch series
+how about we add support to both defconfigs?
+
+> So I think until multi_v7_defconfig is really usable for OMAP3+, we
+> should stick with the name omap2plus_defconfig and add stuff.
+> If we rename omap2plus_defconfig to omap2_defconfig, we should imho
+> disable OMAP3/4/5 there to avoid confusion.
 > 
-> [...]
 
-Applied, thanks!
+Yes, that was part of the plan, right now these SoCs are enabled
+in both configs, so new boards often get enabled in one or the other
+but rarely both.
 
-[1/1] memory: Use dev_fwnode()
-      https://git.kernel.org/krzk/linux-mem-ctrl/c/a0be20055d41028a121a5acc140e17c73d7541c5
+Andrew
 
-Best regards,
--- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
+> Regards,
+> Andreas
 
