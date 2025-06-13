@@ -1,54 +1,53 @@
-Return-Path: <linux-omap+bounces-3870-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3871-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12740AD91F2
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 17:50:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99864AD91F5
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 17:51:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80A7E17F1A4
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 15:50:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87AAF3BDA1A
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 15:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4922144C4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF92221A451;
 	Fri, 13 Jun 2025 15:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JoEXE9bZ"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Wp9VUg8P"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9231FFC5E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BF7205AD7;
 	Fri, 13 Jun 2025 15:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749829800; cv=none; b=uYxVBci089z5YeDez4k5M6yxsrlnufCP8lerwSb07vxycPRJ74Aj37KAFAa2/yUr3u0lPg/n4RUFd4XXSH4TJ/nbTAnJs6sYw5Lf2LuLm4GRbXomk1wYHbMybj6tSxg0aoy5wfjF46Blw5nibDDRzxlLUJArZhEksXXMfVqPNH4=
+	t=1749829801; cv=none; b=mWP03IxOQO3d1/zv1Q7e/bJg2VcMGanZASuoWB7H5/9oN6oYfpbol5veyujmyuSg8jxbsSza0OzvswuGfe09ihk1RQu5PcAjDfZqUkP5r+1v6VqsdTn/u+Fi6pNEmjMx+adJyuQqBTKTFzlafyX52Nq9foJcwcwgOT3ULQYVxyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749829800; c=relaxed/simple;
-	bh=sg5hFcA5AJD67pL+3h9mhGYook12TaG/km05mOqEqTQ=;
+	s=arc-20240116; t=1749829801; c=relaxed/simple;
+	bh=ISHQU1cmFw/m0uyP4RSh5htPyAFa7hJOS97zfwUtOMg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=umuKr3WJAlqrbZAavVUasQ/ShMf0ImkFf0r3MV7yjuN4B8+Md/kIn/uJlOdLm6DpEW55Fe1M/vKLLwC4rEgVTuwwsK5bNwlYk22xtKtzRoFRKPvrHQDcBA4a95AROLVMph8tobX/jnSQLtxDDLeaIKHqncOOfeb5gz7RsdCRyXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JoEXE9bZ; arc=none smtp.client-ip=217.70.183.201
+	 In-Reply-To:To:Cc; b=MrLj2lB6CZzggYrFAPDPdI4tMavNX3xMuMDbv1aprnAuYGqyjdTNRk3YC0Ll3SkP2xcMXskH8D00p4R7Jrzhg15zr6LgoJvXDx+1+Z2ekQDXPt+GLJJ48wSYrCX8gmFytEBAJnVu35TKyoay7GGJFjwkqyvHCtYg76MHLRqtUt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Wp9VUg8P; arc=none smtp.client-ip=217.70.183.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 77A9344447;
-	Fri, 13 Jun 2025 15:49:50 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 96DA24444A;
+	Fri, 13 Jun 2025 15:49:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1749829791;
+	t=1749829792;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=06HUies5V7PRfoIqtd4meQuakxr9viCcxBP1N+2s1sA=;
-	b=JoEXE9bZRnEeG69FH/gTa6N9rF1tm/6Ztnot7Gm6/NbrXPQAkk3NnioADJWIfErYMt9AB6
-	ePqTcMnkm1QuuVNeBkH9eB4ydseegPV4fBNSyEl1hxBn8Wrl+MmyOB3soCwodliRBRzDur
-	Z73+3SuxAk55frgcM22aKCONpIex3CUEDv3EtOic1LC6VCZOQ3ZsaZsJjkHMgrMZ3VAHmt
-	4f9VbdUpSHWZG59BiuUzJ8wCrhgp14p/3meF42uyVEQXMGew3nBAiWttWx4eHOLJ7GjCqT
-	QrLQhIWZaxz2PwLlqCn2CC5jsu+eaymmicitVmZ3SwGwG6G2jbtY4e+HIkkrPA==
+	bh=l4xSW+80MqoDG23KGcCM5xT/Ae+6OLrjp6YJqiTmAcg=;
+	b=Wp9VUg8PovgxA0M9BNy/D7GFxOFV0At/cEaSO6bkpnSQZPOFlgtSy1Rnowsf8RODLwjha9
+	SXNhn0Gh0jB8jIRuJFDUjcqmLRL+/qfiMAXk8zXqkI1OAx5pCdjtQsmyQiGS8tA+WlUTwG
+	FtA5ZRqSgV39ErgkBJdtxw4oCdXOVpMi+lzHUDQIbd7QT+H/dHANhRbvjpMOUkRR2P2PCF
+	srp0pVRwf5OMxzvaC0hEDeAy6rpiyCi+BRR3TqKcO9lL90T7qN26bMN2BBCH1uZiIXk+Ke
+	qSKSTMOQhfd7Oh5PcdkOl/bm6RLZPRPiP/mXzKQuakTX/kE9xvkxkCc6U5b1Vw==
 From: Kory Maincent <kory.maincent@bootlin.com>
-Date: Fri, 13 Jun 2025 17:49:46 +0200
-Subject: [PATCH v3 3/7] arm: dts: omap: am335x-bone-common: Rename tps to
- generic pmic node
+Date: Fri, 13 Jun 2025 17:49:47 +0200
+Subject: [PATCH v3 4/7] dt-bindings: omap: Add Seeed BeagleBone Green Eco
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -57,7 +56,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250613-bbg-v3-3-514cdc768448@bootlin.com>
+Message-Id: <20250613-bbg-v3-4-514cdc768448@bootlin.com>
 References: <20250613-bbg-v3-0-514cdc768448@bootlin.com>
 In-Reply-To: <20250613-bbg-v3-0-514cdc768448@bootlin.com>
 To: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>, 
@@ -81,30 +80,30 @@ X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddukeefhecutefuodetggdotef
  hhhhiesshgrnhgtlhhouhgurdgtohhmpdhrtghpthhtoheplhhinhhugidqohhmrghpsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhkrhhiughnvghrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepthhonhihsegrthhomhhiuggvrdgtohhmpdhrtghpthhtohepkhhhihhlmhgrnhessggrhihlihgsrhgvrdgtohhm
 X-GND-Sasl: kory.maincent@bootlin.com
 
-Rename tps@24 to the generic pmic@24 node name.
+Document the seed,am335x-bone-green-eco compatible string in the
+appropriate place within the omap family binding file.
 
 Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
 
-Change in v2:
-- New patch.
+Changes in v3:
+- New patch
 ---
- arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/devicetree/bindings/arm/ti/omap.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi b/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
-index c400b7b70d0d..ad1e60a9b6fd 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
-@@ -212,7 +212,7 @@ &i2c0 {
- 	status = "okay";
- 	clock-frequency = <400000>;
- 
--	tps: tps@24 {
-+	tps: pmic@24 {
- 		reg = <0x24>;
- 	};
- 
+diff --git a/Documentation/devicetree/bindings/arm/ti/omap.yaml b/Documentation/devicetree/bindings/arm/ti/omap.yaml
+index 45fa1c61cafd..b8f198a7b763 100644
+--- a/Documentation/devicetree/bindings/arm/ti/omap.yaml
++++ b/Documentation/devicetree/bindings/arm/ti/omap.yaml
+@@ -123,6 +123,7 @@ properties:
+               - oct,osd3358-sm-refdesign
+               - sancloud,am335x-boneenhanced
+               - seeed,am335x-bone-green
++              - seeed,am335x-bone-green-eco
+               - seeed,am335x-bone-green-wireless
+               - tcl,am335x-sl50
+               - ti,am335x-evm
 
 -- 
 2.43.0
