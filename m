@@ -1,231 +1,146 @@
-Return-Path: <linux-omap+bounces-3863-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3865-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F41EAD9145
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 17:28:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 954ECAD91E3
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 17:50:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AEA31BC40C3
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 15:28:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BBCC18919E7
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 15:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E421E51FA;
-	Fri, 13 Jun 2025 15:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5011FCCEB;
+	Fri, 13 Jun 2025 15:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="LoQ71uMo"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="UCS0Yhp0"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51D61E5213;
-	Fri, 13 Jun 2025 15:28:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6004F18DB29;
+	Fri, 13 Jun 2025 15:49:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749828488; cv=none; b=jwKzkPV2S1Mn8v1j0gkjXI7zaELXumLihrgXl8GVHmFCqUjZpK97lhcER1Y8joBHNRAiFfYkZNWxx4sNUzP7AOSjpBVylAKYVpeNksVIuuhQbqm8MNYEEieB1Z3Y3lNe/8Ivu89/LGGlDhv/AsomD4fMwyIAbMk7SlbPxVdgDtU=
+	t=1749829797; cv=none; b=mxOU4OkdbewztjPDuTA/muP56VFaACOhCEqX+BbXjYmQX6GauvR4i9MyRo5IYE3Vk7RH8KShhLNdCKk4J9jHs2pSn7IgEt3p8cyeofkBnt9H/998vWEGWJ/jatAB6L2+AGp64hlcQ6zhuatptqYNgBcvNwLI0aG+pzDvvQonrBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749828488; c=relaxed/simple;
-	bh=lZbjiI8BJRGFZREb8yB2aImrrLJURRAQA+9VZvg2vKQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CJ4XjrS6S4Z+6q8k++RZvihh79X55FB7FoSZLvJ+yILYwVEpu6gt3Ltxy10Kdv5hFWAcGhanbBxHe4MSiqBQtux/d52eHLShDDpFRsjE+PPsVWWkZRvBgLjILK+mYcX2mW9iWsK/Ag/iRvPhf9a9FQcV8gsM0gW53+IceTnTsrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=LoQ71uMo; arc=none smtp.client-ip=46.235.229.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
-	:Subject; bh=fPFxp42Sz5bwGweJ0n3EfAQxzOWSYSCVdXzYHdKL0H4=; b=LoQ71uMoJ1/DM/ga
-	n5aA+Quh+VC6y4ZnY0qNc3G0/tXbjYt/w9h8+LV2Qz4uJjjxo+V5/5GJNSYIOIuSKCScRvpyp/o7m
-	Cc5qxHed74lDtDdbvlRptljCZ1mImG2Vrv3tJNNKexjFtZ6oGC38XcZf74qicwL1XJxoJpwQEfIrQ
-	nb8kMI0YXnDXepCrXOTxwntBAtmg7ot4CN20IAmnhqdDjbzvT9Chxrx9MXUTeK6zwJSdsImrhiR07
-	5FQ9W14cYuJzKbl9be0wyZ0z+a/5fQ+pNpAKUNVvm2T1PekKac+L+fzO2BOr1C3B/z5XfVn4dAUpt
-	0/ybu1B6s5fTUNIVNQ==;
-Received: from dg by mx.treblig.org with local (Exim 4.96)
-	(envelope-from <dg@treblig.org>)
-	id 1uQ6Ji-009V2x-11;
-	Fri, 13 Jun 2025 15:27:42 +0000
-Date: Fri, 13 Jun 2025 15:27:42 +0000
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
-To: Lee Jones <lee@kernel.org>
-Cc: aaro.koskinen@iki.fi, andreas@kemnade.info, khilman@baylibre.com,
-	rogerq@kernel.org, tony@atomide.com, linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mfd: twl6030-irq: Remove unused twl6030_mmc_card_detect*
-Message-ID: <aExDbkQBhK3ZubVo@gallifrey>
-References: <20250607202232.265344-1-linux@treblig.org>
- <20250613143757.GL897353@google.com>
+	s=arc-20240116; t=1749829797; c=relaxed/simple;
+	bh=kQEepNrhTMoeLkMWuKHbX1FQWB7KfGk67Nh0dUtM66U=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=izsUmehcMS5Bp4cAovF/w1oL594/RUn9p0XWOfGAOhPa/B9uMDA5D8vCnl/HzyiGKRa0O88jUj5HstTMICrKxDfskcOGievwzxWzphnwE/XE3hvoE3jBujvFVhCXxIdhTvF3cTYVTg7FVB7lTlq7S5wQX3N54rsEYiWFNrsj6Qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UCS0Yhp0; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A0F7F4441C;
+	Fri, 13 Jun 2025 15:49:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1749829788;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=OOVi85YqZgwGXGhiKBANfYwAT8bk0/6cs0m4L0QZ5ww=;
+	b=UCS0Yhp0BmMKUNuUyOR1T25Kcr7nlJYjEgZK7Ufhbcj4FHb/qXJeRN4v5mPpJFrUUd2oem
+	fTzexFYkAKc3Kmfz2P1OQvLBE+rxYG/C49/ZWpML3/gowta2wgXwaugkZO9UfkCjyYXWDx
+	RB6/pbV8Lk9OHGzj0x6TCeGHiOuWwOw/GqRXABCIgt30idmf0uSS81p/0VYG7O3uIIXuci
+	oyU8nkw5n3EEIwKUqyshs1iZB8Srz5x5aWPAzF2rECrBLWduAsy0u7nADm+hGQEekGTeZN
+	nOKckX4BRAxjjOjp2rEOrb5hE9vJqwJBHUL1+pi98FGvNMufLUkIapIRvlBCPw==
+From: Kory Maincent <kory.maincent@bootlin.com>
+Subject: [PATCH v3 0/7] Add support for BeagleBone Green Eco board
+Date: Fri, 13 Jun 2025 17:49:43 +0200
+Message-Id: <20250613-bbg-v3-0-514cdc768448@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250613143757.GL897353@google.com>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.1.0-34-amd64 (x86_64)
-X-Uptime: 15:25:58 up 46 days, 23:39,  1 user,  load average: 0.06, 0.02, 0.00
-User-Agent: Mutt/2.2.12 (2023-09-09)
+X-B4-Tracking: v=1; b=H4sIAJdITGgC/1WMQQ6CMBBFr0JmbU070Ja68h7GBYUBmig1LWk0h
+ LtbcGGY3Zv89xaIFBxFuBQLBEouOj9lKE8FtGMzDcRclxmQo+QSS2btwLQyXNSd6LHRkJevQL1
+ 775XbPfPo4uzDZ48msX2PfhKMM+qrxpDUlO9qvZ8fbjq3/glbIeHfUtz8LMyWRF1zVFZXpj5a6
+ 7p+Acr49H7OAAAA
+To: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
+ Roger Quadros <rogerq@kernel.org>, Russell King <linux@armlinux.org.uk>, 
+ Paul Barker <paul.barker@sancloud.com>, 
+ Marc Murphy <marc.murphy@sancloud.com>
+Cc: Jason Kridner <jkridner@gmail.com>, Andrew Davis <afd@ti.com>, 
+ Bajjuri Praneeth <praneeth@ti.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-omap@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, 
+ Kory Maincent <kory.maincent@bootlin.com>
+X-Mailer: b4 0.15-dev-8cb71
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddukeefhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffufffkgggtgffvvefosehtkeertdertdejnecuhfhrohhmpefmohhrhicuofgrihhntggvnhhtuceokhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepudfhveduteffgfekvdfhveehgeehtdelgefhffduiefffedvheefgeeiiedvkeetnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgduleemkeehkeejmeejuddttdemfedttgefmeektgehsgemfhdtkegumeegfeegsgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekheekjeemjedutddtmeeftdgtfeemkegthegsmehftdekugemgeefgegspdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvvddprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegsrhhoohhnihgvsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhgvrghss
+ ehkvghmnhgruggvrdhinhhfohdprhgtphhtthhopehmrghrtgdrmhhurhhphhihsehsrghntghlohhuugdrtghomhdprhgtphhtthhopehlihhnuhigqdhomhgrphesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehjkhhrihgunhgvrhesghhmrghilhdrtghomhdprhgtphhtthhopehtohhnhiesrghtohhmihguvgdrtghomhdprhgtphhtthhopehkhhhilhhmrghnsegsrgihlhhisghrvgdrtghomh
+X-GND-Sasl: kory.maincent@bootlin.com
 
-* Lee Jones (lee@kernel.org) wrote:
-> On Sat, 07 Jun 2025, linux@treblig.org wrote:
-> 
-> > From: "Dr. David Alan Gilbert" <linux@treblig.org>
-> > 
-> > twl6030_mmc_card_detect() and twl6030_mmc_card_detect_config() have
-> > been unused since 2013's
-> > commit b2ff4790612b ("ARM: OMAP2+: Remove legacy
-> > omap4_twl6030_hsmmc_init")
-> 
-> This formatting is driving the little OCD being that lives on my
-> shoulder crazy!
+SeeedStudio BeagleBone Green Eco (BBGE) is a clone of the BeagleBone Green
+(BBG). It has minor differences from the BBG, such as a different PMIC,
+a different Ethernet PHY, and a larger eMMC.
 
-Thanks, which bit?  I tend to put the commit .... on it's own
-line, but then checkpatch really doesn't like long lines so I wrap
-any word that starts after col 75.
+Also update the omap.yaml binding to include missing compatible strings
+that were previously undocumented.
 
-> I'll fix-up and apply the patch.  Bear with.
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+---
+Changes in v3:
+- Update multi_v7_defconfig with TPS65219 config.
+- Remove extraneous compatible strings.
+- Replace BeagleBone compatible board name vendor to use "beagle" instead
+  of "ti".
+- Link to v2: https://lore.kernel.org/r/20250609-bbg-v2-0-5278026b7498@bootlin.com
 
-Thanks!
+Changes in v2:
+- Add patch 1 to 3 to fix binding and devicetree inconsistencies.
+- Rename tps node name to generic pmic node name in am335x-bone-common.
+- Link to v1: https://lore.kernel.org/r/20250523-bbg-v1-0-ef4a9e57eeee@bootlin.com
 
-Dave
+---
+Kory Maincent (7):
+      dt-bindings: omap: Add missing AM33xx compatible strings
+      ARM: dts: omap: Remove incorrect compatible strings from device trees
+      arm: dts: omap: am335x-bone-common: Rename tps to generic pmic node
+      dt-bindings: omap: Add Seeed BeagleBone Green Eco
+      arm: dts: omap: Add support for BeagleBone Green Eco board
+      arm: omap2plus_defconfig: Enable TPS65219 regulator
+      arm: multi_v7_defconfig: Enable TPS65219 regulator
 
-> 
-> > Remove them.
-> > 
-> > Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
-> > ---
-> >  drivers/mfd/twl6030-irq.c | 74 ---------------------------------------
-> >  include/linux/mfd/twl.h   | 21 -----------
-> >  2 files changed, 95 deletions(-)
-> > 
-> > diff --git a/drivers/mfd/twl6030-irq.c b/drivers/mfd/twl6030-irq.c
-> > index 00b14cef1dfb..ffb4b98639c7 100644
-> > --- a/drivers/mfd/twl6030-irq.c
-> > +++ b/drivers/mfd/twl6030-irq.c
-> > @@ -256,80 +256,6 @@ int twl6030_interrupt_mask(u8 bit_mask, u8 offset)
-> >  }
-> >  EXPORT_SYMBOL(twl6030_interrupt_mask);
-> >  
-> > -int twl6030_mmc_card_detect_config(void)
-> > -{
-> > -	int ret;
-> > -	u8 reg_val = 0;
-> > -
-> > -	/* Unmasking the Card detect Interrupt line for MMC1 from Phoenix */
-> > -	twl6030_interrupt_unmask(TWL6030_MMCDETECT_INT_MASK,
-> > -						REG_INT_MSK_LINE_B);
-> > -	twl6030_interrupt_unmask(TWL6030_MMCDETECT_INT_MASK,
-> > -						REG_INT_MSK_STS_B);
-> > -	/*
-> > -	 * Initially Configuring MMC_CTRL for receiving interrupts &
-> > -	 * Card status on TWL6030 for MMC1
-> > -	 */
-> > -	ret = twl_i2c_read_u8(TWL6030_MODULE_ID0, &reg_val, TWL6030_MMCCTRL);
-> > -	if (ret < 0) {
-> > -		pr_err("twl6030: Failed to read MMCCTRL, error %d\n", ret);
-> > -		return ret;
-> > -	}
-> > -	reg_val &= ~VMMC_AUTO_OFF;
-> > -	reg_val |= SW_FC;
-> > -	ret = twl_i2c_write_u8(TWL6030_MODULE_ID0, reg_val, TWL6030_MMCCTRL);
-> > -	if (ret < 0) {
-> > -		pr_err("twl6030: Failed to write MMCCTRL, error %d\n", ret);
-> > -		return ret;
-> > -	}
-> > -
-> > -	/* Configuring PullUp-PullDown register */
-> > -	ret = twl_i2c_read_u8(TWL6030_MODULE_ID0, &reg_val,
-> > -						TWL6030_CFG_INPUT_PUPD3);
-> > -	if (ret < 0) {
-> > -		pr_err("twl6030: Failed to read CFG_INPUT_PUPD3, error %d\n",
-> > -									ret);
-> > -		return ret;
-> > -	}
-> > -	reg_val &= ~(MMC_PU | MMC_PD);
-> > -	ret = twl_i2c_write_u8(TWL6030_MODULE_ID0, reg_val,
-> > -						TWL6030_CFG_INPUT_PUPD3);
-> > -	if (ret < 0) {
-> > -		pr_err("twl6030: Failed to write CFG_INPUT_PUPD3, error %d\n",
-> > -									ret);
-> > -		return ret;
-> > -	}
-> > -
-> > -	return irq_find_mapping(twl6030_irq->irq_domain,
-> > -				 MMCDETECT_INTR_OFFSET);
-> > -}
-> > -EXPORT_SYMBOL(twl6030_mmc_card_detect_config);
-> > -
-> > -int twl6030_mmc_card_detect(struct device *dev, int slot)
-> > -{
-> > -	int ret = -EIO;
-> > -	u8 read_reg = 0;
-> > -	struct platform_device *pdev = to_platform_device(dev);
-> > -
-> > -	if (pdev->id) {
-> > -		/* TWL6030 provide's Card detect support for
-> > -		 * only MMC1 controller.
-> > -		 */
-> > -		pr_err("Unknown MMC controller %d in %s\n", pdev->id, __func__);
-> > -		return ret;
-> > -	}
-> > -	/*
-> > -	 * BIT0 of MMC_CTRL on TWL6030 provides card status for MMC1
-> > -	 * 0 - Card not present ,1 - Card present
-> > -	 */
-> > -	ret = twl_i2c_read_u8(TWL6030_MODULE_ID0, &read_reg,
-> > -						TWL6030_MMCCTRL);
-> > -	if (ret >= 0)
-> > -		ret = read_reg & STS_MMC;
-> > -	return ret;
-> > -}
-> > -EXPORT_SYMBOL(twl6030_mmc_card_detect);
-> > -
-> >  static int twl6030_irq_map(struct irq_domain *d, unsigned int virq,
-> >  			      irq_hw_number_t hwirq)
-> >  {
-> > diff --git a/include/linux/mfd/twl.h b/include/linux/mfd/twl.h
-> > index 85dc406173db..b31e07fa4d51 100644
-> > --- a/include/linux/mfd/twl.h
-> > +++ b/include/linux/mfd/twl.h
-> > @@ -205,27 +205,6 @@ int twl_get_hfclk_rate(void);
-> >  int twl6030_interrupt_unmask(u8 bit_mask, u8 offset);
-> >  int twl6030_interrupt_mask(u8 bit_mask, u8 offset);
-> >  
-> > -/* Card detect Configuration for MMC1 Controller on OMAP4 */
-> > -#ifdef CONFIG_TWL4030_CORE
-> > -int twl6030_mmc_card_detect_config(void);
-> > -#else
-> > -static inline int twl6030_mmc_card_detect_config(void)
-> > -{
-> > -	pr_debug("twl6030_mmc_card_detect_config not supported\n");
-> > -	return 0;
-> > -}
-> > -#endif
-> > -
-> > -/* MMC1 Controller on OMAP4 uses Phoenix irq for Card detect */
-> > -#ifdef CONFIG_TWL4030_CORE
-> > -int twl6030_mmc_card_detect(struct device *dev, int slot);
-> > -#else
-> > -static inline int twl6030_mmc_card_detect(struct device *dev, int slot)
-> > -{
-> > -	pr_debug("Call back twl6030_mmc_card_detect not supported\n");
-> > -	return -EIO;
-> > -}
-> > -#endif
-> >  /*----------------------------------------------------------------------*/
-> >  
-> >  /*
-> > -- 
-> > 2.49.0
-> > 
-> 
-> -- 
-> Lee Jones [李琼斯]
+ Documentation/devicetree/bindings/arm/ti/omap.yaml |  23 ++-
+ arch/arm/boot/dts/ti/omap/Makefile                 |   1 +
+ arch/arm/boot/dts/ti/omap/am335x-base0033.dts      |   2 +-
+ arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi  |   2 +-
+ arch/arm/boot/dts/ti/omap/am335x-bone.dts          |   4 +-
+ .../boot/dts/ti/omap/am335x-boneblack-wireless.dts |   4 +-
+ arch/arm/boot/dts/ti/omap/am335x-boneblack.dts     |   4 +-
+ arch/arm/boot/dts/ti/omap/am335x-boneblue.dts      |   4 +-
+ arch/arm/boot/dts/ti/omap/am335x-bonegreen-eco.dts | 169 +++++++++++++++++++++
+ .../boot/dts/ti/omap/am335x-bonegreen-wireless.dts |   4 +-
+ arch/arm/boot/dts/ti/omap/am335x-bonegreen.dts     |   4 +-
+ arch/arm/boot/dts/ti/omap/am335x-chiliboard.dts    |   3 +-
+ arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts  |   2 +-
+ .../arm/boot/dts/ti/omap/am335x-osd3358-sm-red.dts |   2 +-
+ arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts  |   4 +-
+ .../ti/omap/am335x-sancloud-bbe-extended-wifi.dts  |   5 +-
+ .../boot/dts/ti/omap/am335x-sancloud-bbe-lite.dts  |   5 +-
+ arch/arm/boot/dts/ti/omap/am335x-sancloud-bbe.dts  |   2 +-
+ arch/arm/boot/dts/ti/omap/am335x-shc.dts           |   2 +-
+ arch/arm/configs/multi_v7_defconfig                |   3 +
+ arch/arm/configs/omap2plus_defconfig               |   3 +
+ 21 files changed, 221 insertions(+), 31 deletions(-)
+---
+base-commit: e22b9ddaf3afd031abc350c303c7c07a51c569d8
+change-id: 20250523-bbg-769018d1f2a7
+
+Best regards,
 -- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+Köry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
+
 
