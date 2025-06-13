@@ -1,54 +1,53 @@
-Return-Path: <linux-omap+bounces-3864-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3867-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E3D5AD91E2
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 17:50:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9742EAD91E9
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 17:50:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2378017AB7F
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 15:50:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABCCF17B978
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 15:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6A41FDA61;
-	Fri, 13 Jun 2025 15:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A20F202C52;
+	Fri, 13 Jun 2025 15:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VEaKUB9U"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YQ5haUf4"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFFB2E11B6;
-	Fri, 13 Jun 2025 15:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD011C5F2C;
+	Fri, 13 Jun 2025 15:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749829797; cv=none; b=ApavFtMGBuMAwZc0MuU0RqQu1qRdB/sIO68iSSQ84lSoDsE+40mnU1O4yMF6klC4y0t+Ih6rzr01f84XCrhpSBeI0vwY+TzbVzWv539+mQ5HVHIqnLDov/QmZh8mOOKFLSCIUjrtDDqGvbgMZxlFO7I4jYD+KkNKeoVpQjH95WU=
+	t=1749829798; cv=none; b=gDtkO7xsFVn7kiNAaTwFn1m49JAQIIGw2/4tuwFXyTZNEaf2aNn9KOzdPBuKwfBgvzyu1rxI+dnRu0TqOG74vQtVQ5MkV7YbJiF/i1P/5hzjh3kn+DLEgD72b92iU6430loHjEZFFLIHQIEr7fFQq8FIND8Z/YS006ObrA/QD3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749829797; c=relaxed/simple;
-	bh=f6KtTx5/hc8c9bUEnqixi7gJqY6a4toTxuz7twUxHuY=;
+	s=arc-20240116; t=1749829798; c=relaxed/simple;
+	bh=xdCDFsY7fHfgyuBIW40huzR//1ytnbFa21uQW+dNB+4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=VYBrQTD604rvcIcu+WSYW3BPKwyNI+PKNtOHdpmqXLDjKpiZ9IzrKPhP9yYXNSf73W21k0twB9QVpYR/XEOXFs0lzWdknyAJCSH9R3ZsuoxEgOtNWjWE5wXbcpIm7tGGGeXXIi/yGU/i8SbSYQa+clYp55mqZ9Ko5APEMUmb0Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VEaKUB9U; arc=none smtp.client-ip=217.70.183.201
+	 In-Reply-To:To:Cc; b=m5c6TGvU8wezrHI8yqiviI9atK+0kVImOpitC4VYSklKr+QbmrcyKRVA8Ox1uvStY3vuXJ0uksk/Y74cagpzzS38ce1T5gyYg6OaMCGSugtANnRIetRp8UFExYnH1hXWeEVBGT1vldePPbBLyqSAhZT0hnbzahNDWvMCR4Sh6Ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YQ5haUf4; arc=none smtp.client-ip=217.70.183.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C867644437;
-	Fri, 13 Jun 2025 15:49:52 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id EAFA344423;
+	Fri, 13 Jun 2025 15:49:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1749829793;
+	t=1749829794;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=I5rL/78vEkcT8X+PwnhChTTg8nE+GD6lBE/h9c4n3k0=;
-	b=VEaKUB9UvNNZMv7/6+h5WoeDaZ3BGS7d4kujf5MuZiibP5IArnwl5MGhrhkgykeuPhZGdm
-	BAD6ErUgwp4oisaiRgvMsMCYThKOr2Bw4GeWsdVo193Hl1tyAEV7/W3LhARmW6ZcaJLkSw
-	bcrdeibdGAMekg0T5YKPtyZ0OH1+RUveWLM4MnEDl/wK0HOeHX1pPKuhCr1BwyqLRcm1KH
-	ESTWpg6XXcvMH9aLefQZ5ua8bfJkAcwPcd6TDZJ672ngLLPOPyoD3w7KTRb1dUzBVIJQZA
-	zJhntrP3usfc4J7xT+n/qFjekFEGrDzSDIwdFTFBSZwJB0Ddeed7JfJxG2S3dA==
+	bh=v1FemFSObCbEVYAn/hTqf4EyYMN6hadEZQLG7F20BzM=;
+	b=YQ5haUf4MGZknhpKqWKmRoydgFIHIXX7eOIPMF19aFHD1E7AtPH0r+fIDAzdUQ+viOLOzS
+	Z0/JPIt4JvvLiF3NSz18rw3a88z6uu+RIcpsq3zCnlu6WgsWtgcbr3SetKiJtQeMxFKcy/
+	D688E3Ijw4RLK4pGhJOeeR4WcO3WL/rI10Hc891qn0VGEa0SSL2MszPiJm634wKkHe1yp/
+	sZZxcSJMG5g44KAocIzsQEk6mfe2K3jE7PamlO3J44rGWIfTGbC67y5hxnWEe+k5z9s4NW
+	Yrxrct8tih8J5mTn0kvqMYBwwR2Zs4WvVgxAlyHSujJRKraZVeRMa/91pUfCUg==
 From: Kory Maincent <kory.maincent@bootlin.com>
-Date: Fri, 13 Jun 2025 17:49:48 +0200
-Subject: [PATCH v3 5/7] arm: dts: omap: Add support for BeagleBone Green
- Eco board
+Date: Fri, 13 Jun 2025 17:49:49 +0200
+Subject: [PATCH v3 6/7] arm: omap2plus_defconfig: Enable TPS65219 regulator
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -57,7 +56,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250613-bbg-v3-5-514cdc768448@bootlin.com>
+Message-Id: <20250613-bbg-v3-6-514cdc768448@bootlin.com>
 References: <20250613-bbg-v3-0-514cdc768448@bootlin.com>
 In-Reply-To: <20250613-bbg-v3-0-514cdc768448@bootlin.com>
 To: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>, 
@@ -81,212 +80,43 @@ X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddukeefhecutefuodetggdotef
  hhhhiesshgrnhgtlhhouhgurdgtohhmpdhrtghpthhtoheplhhinhhugidqohhmrghpsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhkrhhiughnvghrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepthhonhihsegrthhomhhiuggvrdgtohhmpdhrtghpthhtohepkhhhihhlmhgrnhessggrhihlihgsrhgvrdgtohhm
 X-GND-Sasl: kory.maincent@bootlin.com
 
-SeeedStudio BeagleBone Green Eco (BBGE) is a clone of the BeagleBone Green
-(BBG). It has minor differences from the BBG, such as a different PMIC,
-a different Ethernet PHY, and a larger eMMC.
+Enable the TPS65219 regulator in the defconfig, as the TPS65214
+variant is used by the newly introduced BeagleBoard Green Eco board.
 
+Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
 Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
+ arch/arm/configs/omap2plus_defconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Changes in v3:
-- Move the omap.yaml binding change in another patch.
-
-Changes in v2:
-- Used generic pmic node name.
-- Add regulator prefix to fixed regulator node name.
-- Add the compatible to omap.yaml binding
----
- arch/arm/boot/dts/ti/omap/Makefile                 |   1 +
- arch/arm/boot/dts/ti/omap/am335x-bonegreen-eco.dts | 169 +++++++++++++++++++++
- 2 files changed, 170 insertions(+)
-
-diff --git a/arch/arm/boot/dts/ti/omap/Makefile b/arch/arm/boot/dts/ti/omap/Makefile
-index 95c68135dd0c..1aef60eef671 100644
---- a/arch/arm/boot/dts/ti/omap/Makefile
-+++ b/arch/arm/boot/dts/ti/omap/Makefile
-@@ -93,6 +93,7 @@ dtb-$(CONFIG_SOC_AM33XX) += \
- 	am335x-boneblue.dtb \
- 	am335x-bonegreen.dtb \
- 	am335x-bonegreen-wireless.dtb \
-+	am335x-bonegreen-eco.dtb \
- 	am335x-chiliboard.dtb \
- 	am335x-cm-t335.dtb \
- 	am335x-evm.dtb \
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-bonegreen-eco.dts b/arch/arm/boot/dts/ti/omap/am335x-bonegreen-eco.dts
-new file mode 100644
-index 000000000000..2e6050bd2da1
---- /dev/null
-+++ b/arch/arm/boot/dts/ti/omap/am335x-bonegreen-eco.dts
-@@ -0,0 +1,169 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2025 Bootlin
-+ */
-+/dts-v1/;
-+
-+#include "am33xx.dtsi"
-+#include "am335x-bone-common.dtsi"
-+#include "am335x-bonegreen-common.dtsi"
-+#include <dt-bindings/net/ti-dp83867.h>
-+
-+/ {
-+	model = "TI AM335x BeagleBone Green Eco";
-+	compatible = "seeed,am335x-bone-green-eco", "ti,am33xx";
-+
-+	cpus {
-+		cpu@0 {
-+			cpu0-supply = <&buck1>;
-+		};
-+	};
-+
-+	sys_5v: regulator-sys-5v {
-+		compatible = "regulator-fixed";
-+		regulator-name = "sys_5v";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		regulator-always-on;
-+	};
-+
-+	v3v3: regulator-v3v3 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "v3v3";
-+		regulator-always-on;
-+	};
-+};
-+
-+&usb0 {
-+	interrupts-extended = <&intc 18>;
-+	interrupt-names = "mc";
-+};
-+
-+&baseboard_eeprom {
-+	vcc-supply = <&v3v3>;
-+};
-+
-+&i2c0 {
-+	/delete-node/ pmic@24;
-+
-+	tps65214: pmic@30 {
-+		compatible = "ti,tps65214";
-+		reg = <0x30>;
-+		buck1-supply = <&sys_5v>;
-+		buck2-supply = <&sys_5v>;
-+		buck3-supply = <&sys_5v>;
-+		ldo1-supply = <&sys_5v>;
-+		ldo2-supply = <&sys_5v>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <7>;
-+		pinctrl-0 = <&pmic_irq_pins_default>;
-+
-+		regulators {
-+			buck1: buck1 {
-+				regulator-name = "vdd_mpu";
-+				regulator-min-microvolt = <925000>;
-+				regulator-max-microvolt = <1351500>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			buck2: buck2 {
-+				regulator-name = "vdd_core";
-+				regulator-min-microvolt = <925000>;
-+				regulator-max-microvolt = <1150000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			buck3: buck3 {
-+				regulator-name = "vdds_ddr";
-+				regulator-min-microvolt = <1350000>;
-+				regulator-max-microvolt = <1350000>;
-+				regulator-always-on;
-+			};
-+
-+			ldo1_reg: ldo1 {
-+				regulator-name = "vdd_1v8_1";
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <1800000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			ldo2_reg: ldo2 {
-+				regulator-name = "vdd_1v8_2";
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <1800000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+		};
-+	};
-+};
-+
-+&cpsw_port1 {
-+	phy-mode = "rgmii-id";
-+	phy-handle = <&dp83867_0>;
-+	ti,dual-emac-pvid = <1>;
-+};
-+
-+&mac_sw {
-+	pinctrl-0 = <&cpsw_b_default>;
-+	pinctrl-1 = <&cpsw_b_sleep>;
-+};
-+
-+&davinci_mdio_sw {
-+	/delete-node/ ethernet-phy@0;
-+
-+	dp83867_0: ethernet-phy@0 {
-+		reg = <0>;
-+		ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_50_NS>;
-+		ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_50_NS>;
-+		ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_8_B_NIB>;
-+		ti,min-output-impedance;
-+		ti,dp83867-rxctrl-strap-quirk;
-+	};
-+};
-+
-+&am33xx_pinmux {
-+	cpsw_b_default: cpsw-b-default-pins {
-+		pinctrl-single,pins = <
-+			AM33XX_PADCONF(AM335X_PIN_MII1_TX_EN, PIN_OUTPUT_PULLDOWN, MUX_MODE2)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_RX_DV, PIN_INPUT_PULLDOWN, MUX_MODE2)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_TX_CLK, PIN_OUTPUT_PULLDOWN, MUX_MODE2)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_RX_CLK, PIN_INPUT_PULLDOWN, MUX_MODE2)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_TXD0, PIN_OUTPUT_PULLDOWN, MUX_MODE2)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_TXD1, PIN_OUTPUT_PULLDOWN, MUX_MODE2)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_TXD2, PIN_OUTPUT_PULLDOWN, MUX_MODE2)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_TXD3, PIN_OUTPUT_PULLDOWN, MUX_MODE2)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_RXD0, PIN_INPUT_PULLDOWN, MUX_MODE2)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_RXD1, PIN_INPUT_PULLDOWN, MUX_MODE2)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_RXD2, PIN_INPUT_PULLDOWN, MUX_MODE2)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_RXD3, PIN_INPUT_PULLDOWN, MUX_MODE2)
-+		>;
-+	};
-+
-+	cpsw_b_sleep: cpsw-b-sleep-pins {
-+		pinctrl-single,pins = <
-+			AM33XX_PADCONF(AM335X_PIN_MII1_TX_EN, PIN_INPUT_PULLDOWN, MUX_MODE7)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_RX_DV, PIN_INPUT_PULLDOWN, MUX_MODE7)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_TX_CLK, PIN_INPUT_PULLDOWN, MUX_MODE7)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_RX_CLK, PIN_INPUT_PULLDOWN, MUX_MODE7)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_TXD0, PIN_INPUT_PULLDOWN, MUX_MODE7)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_TXD1, PIN_INPUT_PULLDOWN, MUX_MODE7)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_TXD2, PIN_INPUT_PULLDOWN, MUX_MODE7)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_TXD3, PIN_INPUT_PULLDOWN, MUX_MODE7)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_RXD0, PIN_INPUT_PULLDOWN, MUX_MODE7)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_RXD1, PIN_INPUT_PULLDOWN, MUX_MODE7)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_RXD2, PIN_INPUT_PULLDOWN, MUX_MODE7)
-+			AM33XX_PADCONF(AM335X_PIN_MII1_RXD3, PIN_INPUT_PULLDOWN, MUX_MODE7)
-+		>;
-+	};
-+
-+	pmic_irq_pins_default: pmic-irq-default-pins {
-+		pinctrl-single,pins = <
-+			AM33XX_IOPAD(AM335X_PIN_NNMI, PIN_INPUT_PULLUP | MUX_MODE0)
-+		>;
-+	};
-+};
+diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
+index 9f9780c8e62a..2ad669f7b202 100644
+--- a/arch/arm/configs/omap2plus_defconfig
++++ b/arch/arm/configs/omap2plus_defconfig
+@@ -385,6 +385,7 @@ CONFIG_TOUCHSCREEN_TSC2007=m
+ CONFIG_INPUT_MISC=y
+ CONFIG_INPUT_CPCAP_PWRBUTTON=m
+ CONFIG_INPUT_TPS65218_PWRBUTTON=m
++CONFIG_INPUT_TPS65219_PWRBUTTON=m
+ CONFIG_INPUT_TWL4030_PWRBUTTON=m
+ CONFIG_INPUT_UINPUT=m
+ CONFIG_INPUT_PALMAS_PWRBUTTON=m
+@@ -454,6 +455,7 @@ CONFIG_MFD_TPS65217=y
+ CONFIG_MFD_TI_LP873X=y
+ CONFIG_MFD_TI_LP87565=y
+ CONFIG_MFD_TPS65218=y
++CONFIG_MFD_TPS65219=y
+ CONFIG_MFD_TPS65910=y
+ CONFIG_TWL6040_CORE=y
+ CONFIG_REGULATOR_CPCAP=y
+@@ -470,6 +472,7 @@ CONFIG_REGULATOR_TPS65023=y
+ CONFIG_REGULATOR_TPS6507X=y
+ CONFIG_REGULATOR_TPS65217=y
+ CONFIG_REGULATOR_TPS65218=y
++CONFIG_REGULATOR_TPS65219=y
+ CONFIG_REGULATOR_TPS65910=y
+ CONFIG_REGULATOR_TWL4030=y
+ CONFIG_RC_CORE=m
 
 -- 
 2.43.0
