@@ -1,53 +1,54 @@
-Return-Path: <linux-omap+bounces-3871-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3864-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99864AD91F5
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 17:51:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E3D5AD91E2
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 17:50:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87AAF3BDA1A
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 15:50:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2378017AB7F
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 15:50:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF92221A451;
-	Fri, 13 Jun 2025 15:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6A41FDA61;
+	Fri, 13 Jun 2025 15:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Wp9VUg8P"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VEaKUB9U"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BF7205AD7;
-	Fri, 13 Jun 2025 15:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFFB2E11B6;
+	Fri, 13 Jun 2025 15:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749829801; cv=none; b=mWP03IxOQO3d1/zv1Q7e/bJg2VcMGanZASuoWB7H5/9oN6oYfpbol5veyujmyuSg8jxbsSza0OzvswuGfe09ihk1RQu5PcAjDfZqUkP5r+1v6VqsdTn/u+Fi6pNEmjMx+adJyuQqBTKTFzlafyX52Nq9foJcwcwgOT3ULQYVxyk=
+	t=1749829797; cv=none; b=ApavFtMGBuMAwZc0MuU0RqQu1qRdB/sIO68iSSQ84lSoDsE+40mnU1O4yMF6klC4y0t+Ih6rzr01f84XCrhpSBeI0vwY+TzbVzWv539+mQ5HVHIqnLDov/QmZh8mOOKFLSCIUjrtDDqGvbgMZxlFO7I4jYD+KkNKeoVpQjH95WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749829801; c=relaxed/simple;
-	bh=ISHQU1cmFw/m0uyP4RSh5htPyAFa7hJOS97zfwUtOMg=;
+	s=arc-20240116; t=1749829797; c=relaxed/simple;
+	bh=f6KtTx5/hc8c9bUEnqixi7gJqY6a4toTxuz7twUxHuY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MrLj2lB6CZzggYrFAPDPdI4tMavNX3xMuMDbv1aprnAuYGqyjdTNRk3YC0Ll3SkP2xcMXskH8D00p4R7Jrzhg15zr6LgoJvXDx+1+Z2ekQDXPt+GLJJ48wSYrCX8gmFytEBAJnVu35TKyoay7GGJFjwkqyvHCtYg76MHLRqtUt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Wp9VUg8P; arc=none smtp.client-ip=217.70.183.201
+	 In-Reply-To:To:Cc; b=VYBrQTD604rvcIcu+WSYW3BPKwyNI+PKNtOHdpmqXLDjKpiZ9IzrKPhP9yYXNSf73W21k0twB9QVpYR/XEOXFs0lzWdknyAJCSH9R3ZsuoxEgOtNWjWE5wXbcpIm7tGGGeXXIi/yGU/i8SbSYQa+clYp55mqZ9Ko5APEMUmb0Ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VEaKUB9U; arc=none smtp.client-ip=217.70.183.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 96DA24444A;
-	Fri, 13 Jun 2025 15:49:51 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C867644437;
+	Fri, 13 Jun 2025 15:49:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1749829792;
+	t=1749829793;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=l4xSW+80MqoDG23KGcCM5xT/Ae+6OLrjp6YJqiTmAcg=;
-	b=Wp9VUg8PovgxA0M9BNy/D7GFxOFV0At/cEaSO6bkpnSQZPOFlgtSy1Rnowsf8RODLwjha9
-	SXNhn0Gh0jB8jIRuJFDUjcqmLRL+/qfiMAXk8zXqkI1OAx5pCdjtQsmyQiGS8tA+WlUTwG
-	FtA5ZRqSgV39ErgkBJdtxw4oCdXOVpMi+lzHUDQIbd7QT+H/dHANhRbvjpMOUkRR2P2PCF
-	srp0pVRwf5OMxzvaC0hEDeAy6rpiyCi+BRR3TqKcO9lL90T7qN26bMN2BBCH1uZiIXk+Ke
-	qSKSTMOQhfd7Oh5PcdkOl/bm6RLZPRPiP/mXzKQuakTX/kE9xvkxkCc6U5b1Vw==
+	bh=I5rL/78vEkcT8X+PwnhChTTg8nE+GD6lBE/h9c4n3k0=;
+	b=VEaKUB9UvNNZMv7/6+h5WoeDaZ3BGS7d4kujf5MuZiibP5IArnwl5MGhrhkgykeuPhZGdm
+	BAD6ErUgwp4oisaiRgvMsMCYThKOr2Bw4GeWsdVo193Hl1tyAEV7/W3LhARmW6ZcaJLkSw
+	bcrdeibdGAMekg0T5YKPtyZ0OH1+RUveWLM4MnEDl/wK0HOeHX1pPKuhCr1BwyqLRcm1KH
+	ESTWpg6XXcvMH9aLefQZ5ua8bfJkAcwPcd6TDZJ672ngLLPOPyoD3w7KTRb1dUzBVIJQZA
+	zJhntrP3usfc4J7xT+n/qFjekFEGrDzSDIwdFTFBSZwJB0Ddeed7JfJxG2S3dA==
 From: Kory Maincent <kory.maincent@bootlin.com>
-Date: Fri, 13 Jun 2025 17:49:47 +0200
-Subject: [PATCH v3 4/7] dt-bindings: omap: Add Seeed BeagleBone Green Eco
+Date: Fri, 13 Jun 2025 17:49:48 +0200
+Subject: [PATCH v3 5/7] arm: dts: omap: Add support for BeagleBone Green
+ Eco board
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -56,7 +57,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250613-bbg-v3-4-514cdc768448@bootlin.com>
+Message-Id: <20250613-bbg-v3-5-514cdc768448@bootlin.com>
 References: <20250613-bbg-v3-0-514cdc768448@bootlin.com>
 In-Reply-To: <20250613-bbg-v3-0-514cdc768448@bootlin.com>
 To: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>, 
@@ -76,34 +77,216 @@ Cc: Jason Kridner <jkridner@gmail.com>, Andrew Davis <afd@ti.com>,
 X-Mailer: b4 0.15-dev-8cb71
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddukeefhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpefmohhrhicuofgrihhntggvnhhtuceokhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepvefgvdfgkeetgfefgfegkedugffghfdtffeftdeuteehjedtvdelvddvleehtdevnecukfhppedvrgdtudemtggsudelmeekheekjeemjedutddtmeeftdgtfeemkegthegsmehftdekugemgeefgegsnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkeehkeejmeejuddttdemfedttgefmeektgehsgemfhdtkegumeegfeegsgdphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomhepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddvpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghrohhonhhivgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughrvggrsheskhgvmhhnrgguvgdrihhnfhhopdhrtghpthhtohepmhgrrhgtrdhmuhhrp
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddukeefhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpefmohhrhicuofgrihhntggvnhhtuceokhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepvefgvdfgkeetgfefgfegkedugffghfdtffeftdeuteehjedtvdelvddvleehtdevnecukfhppedvrgdtudemtggsudelmeekheekjeemjedutddtmeeftdgtfeemkegthegsmehftdekugemgeefgegsnecuvehluhhsthgvrhfuihiivgepgeenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkeehkeejmeejuddttdemfedttgefmeektgehsgemfhdtkegumeegfeegsgdphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomhepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddvpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghrohhonhhivgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughrvggrsheskhgvmhhnrgguvgdrihhnfhhopdhrtghpthhtohepmhgrrhgtrdhmuhhrp
  hhhhiesshgrnhgtlhhouhgurdgtohhmpdhrtghpthhtoheplhhinhhugidqohhmrghpsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhkrhhiughnvghrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepthhonhihsegrthhomhhiuggvrdgtohhmpdhrtghpthhtohepkhhhihhlmhgrnhessggrhihlihgsrhgvrdgtohhm
 X-GND-Sasl: kory.maincent@bootlin.com
 
-Document the seed,am335x-bone-green-eco compatible string in the
-appropriate place within the omap family binding file.
+SeeedStudio BeagleBone Green Eco (BBGE) is a clone of the BeagleBone Green
+(BBG). It has minor differences from the BBG, such as a different PMIC,
+a different Ethernet PHY, and a larger eMMC.
 
 Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
 
 Changes in v3:
-- New patch
----
- Documentation/devicetree/bindings/arm/ti/omap.yaml | 1 +
- 1 file changed, 1 insertion(+)
+- Move the omap.yaml binding change in another patch.
 
-diff --git a/Documentation/devicetree/bindings/arm/ti/omap.yaml b/Documentation/devicetree/bindings/arm/ti/omap.yaml
-index 45fa1c61cafd..b8f198a7b763 100644
---- a/Documentation/devicetree/bindings/arm/ti/omap.yaml
-+++ b/Documentation/devicetree/bindings/arm/ti/omap.yaml
-@@ -123,6 +123,7 @@ properties:
-               - oct,osd3358-sm-refdesign
-               - sancloud,am335x-boneenhanced
-               - seeed,am335x-bone-green
-+              - seeed,am335x-bone-green-eco
-               - seeed,am335x-bone-green-wireless
-               - tcl,am335x-sl50
-               - ti,am335x-evm
+Changes in v2:
+- Used generic pmic node name.
+- Add regulator prefix to fixed regulator node name.
+- Add the compatible to omap.yaml binding
+---
+ arch/arm/boot/dts/ti/omap/Makefile                 |   1 +
+ arch/arm/boot/dts/ti/omap/am335x-bonegreen-eco.dts | 169 +++++++++++++++++++++
+ 2 files changed, 170 insertions(+)
+
+diff --git a/arch/arm/boot/dts/ti/omap/Makefile b/arch/arm/boot/dts/ti/omap/Makefile
+index 95c68135dd0c..1aef60eef671 100644
+--- a/arch/arm/boot/dts/ti/omap/Makefile
++++ b/arch/arm/boot/dts/ti/omap/Makefile
+@@ -93,6 +93,7 @@ dtb-$(CONFIG_SOC_AM33XX) += \
+ 	am335x-boneblue.dtb \
+ 	am335x-bonegreen.dtb \
+ 	am335x-bonegreen-wireless.dtb \
++	am335x-bonegreen-eco.dtb \
+ 	am335x-chiliboard.dtb \
+ 	am335x-cm-t335.dtb \
+ 	am335x-evm.dtb \
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-bonegreen-eco.dts b/arch/arm/boot/dts/ti/omap/am335x-bonegreen-eco.dts
+new file mode 100644
+index 000000000000..2e6050bd2da1
+--- /dev/null
++++ b/arch/arm/boot/dts/ti/omap/am335x-bonegreen-eco.dts
+@@ -0,0 +1,169 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2025 Bootlin
++ */
++/dts-v1/;
++
++#include "am33xx.dtsi"
++#include "am335x-bone-common.dtsi"
++#include "am335x-bonegreen-common.dtsi"
++#include <dt-bindings/net/ti-dp83867.h>
++
++/ {
++	model = "TI AM335x BeagleBone Green Eco";
++	compatible = "seeed,am335x-bone-green-eco", "ti,am33xx";
++
++	cpus {
++		cpu@0 {
++			cpu0-supply = <&buck1>;
++		};
++	};
++
++	sys_5v: regulator-sys-5v {
++		compatible = "regulator-fixed";
++		regulator-name = "sys_5v";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		regulator-always-on;
++	};
++
++	v3v3: regulator-v3v3 {
++		compatible = "regulator-fixed";
++		regulator-name = "v3v3";
++		regulator-always-on;
++	};
++};
++
++&usb0 {
++	interrupts-extended = <&intc 18>;
++	interrupt-names = "mc";
++};
++
++&baseboard_eeprom {
++	vcc-supply = <&v3v3>;
++};
++
++&i2c0 {
++	/delete-node/ pmic@24;
++
++	tps65214: pmic@30 {
++		compatible = "ti,tps65214";
++		reg = <0x30>;
++		buck1-supply = <&sys_5v>;
++		buck2-supply = <&sys_5v>;
++		buck3-supply = <&sys_5v>;
++		ldo1-supply = <&sys_5v>;
++		ldo2-supply = <&sys_5v>;
++
++		interrupt-parent = <&intc>;
++		interrupts = <7>;
++		pinctrl-0 = <&pmic_irq_pins_default>;
++
++		regulators {
++			buck1: buck1 {
++				regulator-name = "vdd_mpu";
++				regulator-min-microvolt = <925000>;
++				regulator-max-microvolt = <1351500>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			buck2: buck2 {
++				regulator-name = "vdd_core";
++				regulator-min-microvolt = <925000>;
++				regulator-max-microvolt = <1150000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			buck3: buck3 {
++				regulator-name = "vdds_ddr";
++				regulator-min-microvolt = <1350000>;
++				regulator-max-microvolt = <1350000>;
++				regulator-always-on;
++			};
++
++			ldo1_reg: ldo1 {
++				regulator-name = "vdd_1v8_1";
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			ldo2_reg: ldo2 {
++				regulator-name = "vdd_1v8_2";
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++		};
++	};
++};
++
++&cpsw_port1 {
++	phy-mode = "rgmii-id";
++	phy-handle = <&dp83867_0>;
++	ti,dual-emac-pvid = <1>;
++};
++
++&mac_sw {
++	pinctrl-0 = <&cpsw_b_default>;
++	pinctrl-1 = <&cpsw_b_sleep>;
++};
++
++&davinci_mdio_sw {
++	/delete-node/ ethernet-phy@0;
++
++	dp83867_0: ethernet-phy@0 {
++		reg = <0>;
++		ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_50_NS>;
++		ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_50_NS>;
++		ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_8_B_NIB>;
++		ti,min-output-impedance;
++		ti,dp83867-rxctrl-strap-quirk;
++	};
++};
++
++&am33xx_pinmux {
++	cpsw_b_default: cpsw-b-default-pins {
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_MII1_TX_EN, PIN_OUTPUT_PULLDOWN, MUX_MODE2)
++			AM33XX_PADCONF(AM335X_PIN_MII1_RX_DV, PIN_INPUT_PULLDOWN, MUX_MODE2)
++			AM33XX_PADCONF(AM335X_PIN_MII1_TX_CLK, PIN_OUTPUT_PULLDOWN, MUX_MODE2)
++			AM33XX_PADCONF(AM335X_PIN_MII1_RX_CLK, PIN_INPUT_PULLDOWN, MUX_MODE2)
++			AM33XX_PADCONF(AM335X_PIN_MII1_TXD0, PIN_OUTPUT_PULLDOWN, MUX_MODE2)
++			AM33XX_PADCONF(AM335X_PIN_MII1_TXD1, PIN_OUTPUT_PULLDOWN, MUX_MODE2)
++			AM33XX_PADCONF(AM335X_PIN_MII1_TXD2, PIN_OUTPUT_PULLDOWN, MUX_MODE2)
++			AM33XX_PADCONF(AM335X_PIN_MII1_TXD3, PIN_OUTPUT_PULLDOWN, MUX_MODE2)
++			AM33XX_PADCONF(AM335X_PIN_MII1_RXD0, PIN_INPUT_PULLDOWN, MUX_MODE2)
++			AM33XX_PADCONF(AM335X_PIN_MII1_RXD1, PIN_INPUT_PULLDOWN, MUX_MODE2)
++			AM33XX_PADCONF(AM335X_PIN_MII1_RXD2, PIN_INPUT_PULLDOWN, MUX_MODE2)
++			AM33XX_PADCONF(AM335X_PIN_MII1_RXD3, PIN_INPUT_PULLDOWN, MUX_MODE2)
++		>;
++	};
++
++	cpsw_b_sleep: cpsw-b-sleep-pins {
++		pinctrl-single,pins = <
++			AM33XX_PADCONF(AM335X_PIN_MII1_TX_EN, PIN_INPUT_PULLDOWN, MUX_MODE7)
++			AM33XX_PADCONF(AM335X_PIN_MII1_RX_DV, PIN_INPUT_PULLDOWN, MUX_MODE7)
++			AM33XX_PADCONF(AM335X_PIN_MII1_TX_CLK, PIN_INPUT_PULLDOWN, MUX_MODE7)
++			AM33XX_PADCONF(AM335X_PIN_MII1_RX_CLK, PIN_INPUT_PULLDOWN, MUX_MODE7)
++			AM33XX_PADCONF(AM335X_PIN_MII1_TXD0, PIN_INPUT_PULLDOWN, MUX_MODE7)
++			AM33XX_PADCONF(AM335X_PIN_MII1_TXD1, PIN_INPUT_PULLDOWN, MUX_MODE7)
++			AM33XX_PADCONF(AM335X_PIN_MII1_TXD2, PIN_INPUT_PULLDOWN, MUX_MODE7)
++			AM33XX_PADCONF(AM335X_PIN_MII1_TXD3, PIN_INPUT_PULLDOWN, MUX_MODE7)
++			AM33XX_PADCONF(AM335X_PIN_MII1_RXD0, PIN_INPUT_PULLDOWN, MUX_MODE7)
++			AM33XX_PADCONF(AM335X_PIN_MII1_RXD1, PIN_INPUT_PULLDOWN, MUX_MODE7)
++			AM33XX_PADCONF(AM335X_PIN_MII1_RXD2, PIN_INPUT_PULLDOWN, MUX_MODE7)
++			AM33XX_PADCONF(AM335X_PIN_MII1_RXD3, PIN_INPUT_PULLDOWN, MUX_MODE7)
++		>;
++	};
++
++	pmic_irq_pins_default: pmic-irq-default-pins {
++		pinctrl-single,pins = <
++			AM33XX_IOPAD(AM335X_PIN_NNMI, PIN_INPUT_PULLUP | MUX_MODE0)
++		>;
++	};
++};
 
 -- 
 2.43.0
