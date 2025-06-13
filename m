@@ -1,119 +1,131 @@
-Return-Path: <linux-omap+bounces-3854-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3855-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 152BAAD71C3
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Jun 2025 15:26:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C99B7AD8BEE
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 14:23:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54CCC3AD0F5
-	for <lists+linux-omap@lfdr.de>; Thu, 12 Jun 2025 13:21:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 459257ADC3C
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 12:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4DA25B1D8;
-	Thu, 12 Jun 2025 13:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F582E0B6B;
+	Fri, 13 Jun 2025 12:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bofp8ZTg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DH28uZDU"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B18923C50F;
-	Thu, 12 Jun 2025 13:19:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA342727E8;
+	Fri, 13 Jun 2025 12:23:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749734369; cv=none; b=ed205qAlSIHE6kd7p7rqTjE82T3PteFq8Z9FDvVDAZ7aGiVMZ6GoJ0LnWlWCrvcqBbOwbG0KK1whP3ZaiBMFfDFbnwLOZEPIxUocrYj0KiD3BO+6i/pbYJ3P9FVOQCQZjslfM9WqL/6i5xG1oANdrUyJ1ZcDE4ki0efU3uBmZaQ=
+	t=1749817391; cv=none; b=gtzpXequoXoFNLqtpIaTHWFxy4CF4wehkuMxvI3tVN/QESnJX6LNGfaJE9mRPduxVyQXds9Y9M6MEERTBuxmLKYy9icbcgqIFlmqOjkjJkZvuZeX4HkP08kdYnKpTDRVibS1jbaM9hf0vsmJHSV5zpIj6rRjxlwPuylDFfco5GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749734369; c=relaxed/simple;
-	bh=Zmq7LwoPt7MZJE/08CV/hmDhdIJv4EK5akZLX8g6Swk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s8TGdhiBr5cl9lhk2nlsTdq9+Xo3rgD/h9fsSmEHJS5UI6n2N4K5EsxdUSEb0w/eu2qNvnn4w0K6dpL/lPqMr7UAB8QIUmmt7B+C1vhe6Cm+CxO13OpjzVu5JUcyFzMa21HK+LeFmYjF361MK3eyQNMOXIkdjAWe/Mr38xsr1Jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bofp8ZTg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E44C4CEEE;
-	Thu, 12 Jun 2025 13:19:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749734369;
-	bh=Zmq7LwoPt7MZJE/08CV/hmDhdIJv4EK5akZLX8g6Swk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Bofp8ZTgYCZ2pKDEwAV3kCP1qSAF8tHnj2pTmRuDfrO/7pyE48oSyygMGr9VP2UY5
-	 JXdXbyGdib651JSC0XTB52jFYIm0BPEf1NnG+mbvlhIydtGImsD33guECyqhiqrH+d
-	 rvM0KJLYUU4vEPDjKUmvzsyMJX/x5gAWg9PZEfS5Juf37qpMogSDxYEYVJ8je8AUdV
-	 mCb/XyjcZ/d7zax6KRCaE6upz6qRGllGARlCmwDN9E+LOIDIxiZWRlRMGn8AWn3v6E
-	 olQnFfGYN8bSLRJceUGIwPKgIUs1lNPpTA+IylkfFQFyBxYzBm+IRuXRiTPJ3xi4pr
-	 SsGc66ndSd40A==
-Date: Thu, 12 Jun 2025 14:19:22 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Andrew Davis <afd@ti.com>
-Cc: Andreas Kemnade <andreas@kemnade.info>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Bajjuri Praneeth <praneeth@ti.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 5/5] arm: omap2plus_defconfig: Enable TPS65219
- regulator
-Message-ID: <90c50d23-1a70-47e4-a80d-c951f7afc5df@sirena.org.uk>
-References: <20250609-bbg-v2-0-5278026b7498@bootlin.com>
- <20250609-bbg-v2-5-5278026b7498@bootlin.com>
- <1d87fa3b-c3b9-44fd-9e61-7f1ffadcfb0c@ti.com>
- <20250612081255.255be21e@akair>
- <ef6d6315-6517-4c8b-bf76-e41bb72bae8d@ti.com>
+	s=arc-20240116; t=1749817391; c=relaxed/simple;
+	bh=JiQ9RO63rTiSweA5WgDt7giwKWP1ckT6Lp/wiX88Ws4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EH4V15f5Yy4UyI+/Qhxv+m70VnEqytWbbE8HwN0AE7Bhgy5r8cubvJ+Lmn88tP819611kXiCP9k1XvuITW2IBuK04uMPfHkxQWFH5Ozntj+135aeWHCnutg+mqxCkPyzjsUzPkJKeMBUHb3ywcj6avb1iehtcWMkpyUu44Tcc3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DH28uZDU; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b2f1032e1c4so2141042a12.3;
+        Fri, 13 Jun 2025 05:23:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749817389; x=1750422189; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZF8Ijk+kxycu39taXWGDmympqXTula1EYmwZ/sS6tJg=;
+        b=DH28uZDUQE2D5c/KwBjFmKc4qVA4LIDW8tZ/eI7WQX/a6psAmXrGlG7LyJJCNT9+3R
+         AJGh7TJ4VdRU2dWlJZGFXkhFYPtuyB8nxIKQ93IUiieywgkQJ6iECI282/KtnGvP7wNP
+         fzDN3leajla5xlY530lS+utKP/XYBB/n7g3VfYRIh0bTobz515F/ccIsd+jY52AnbeLH
+         aUkfKHWLPDNR5smo46mzqHbLHxyQS2y5hfE1vLHjOn591JEUQ4UK9xmVfsg7Nedo5cSm
+         m2ZkyR/VTOBFj0uHYQUBOuC8gmPUl1JHX14ymCn8s+xaUakRdPh4LES2yfcxLeN2O3+N
+         0gxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749817389; x=1750422189;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZF8Ijk+kxycu39taXWGDmympqXTula1EYmwZ/sS6tJg=;
+        b=L49QlZOiDDdzI6LFYhLFvmL7oFfbUPXnh3p+suQR74i9sSs8b7aupy3PZyGg8Oibed
+         M/t6DshgItamwompKXvmrrf0jkI+bZ/kGsaLrFZ0644MGaR1pzwwvoySNGTm6JiwkuXM
+         2CBai3sL6sWiLtUxOJY7a13UJ9kOzacS8AehJFwg47Jugro6OouZofRgzn6Jq2Vvsilv
+         +aBsg029bFHyVdOvzVv8zA60F+PnysG2cKwXUZnWXjLXP3ggjfVZCBUqwlMblcUNly7+
+         oUtvbaLEAXiM38DKe8SghazzD0EYHb/kwusBC9SVVqi6OV25st0JpTimgNkCur0LrAVM
+         B/Ew==
+X-Gm-Message-State: AOJu0YxII6i7RDu0q6yGKUuQt+/+EiZXmzSNsXQ1kLPtw9N5NaWuFp27
+	xVBp9xQlQBd67gTWde7U0DWBOfs6uAa+J4ou24BDWpp5xJ5MIyjWpEOjdhDRz+Gb
+X-Gm-Gg: ASbGncvMvi1xOq0NqTw5+UEof+rc/jWVGp6vLSKbLfaAbgVddp9dhDV8Sr+Z19X6fDE
+	kxEDwm9ZiCz7kYRc44M3JhFUDDCSwK9Z1zLCJdIIquDbsATib1rc6DQfB3BTZfwu9xMZAf8ZREv
+	J5hQmBQkPT2729iNu/yCwzTpd5hXOJ41YVSffJznPsZKY/Ljhv7BZM3Rt3ZmKpKjrcjEPGMqR1O
+	mc9+pHKyve6D/P94pU0pcrS+KLVEux5yjwRkWXd8zHGKtyyq9/AZBlD9nlYlyRxzY4CpzgwZFPQ
+	vyNvQfG99kB2fQGFCh7F7JjeKlXDc4IsGmSJS4STFlvWv6ubkVE08UrzGRoYpYDz8E/aBP84en8
+	ZXwdIsMI8oPzw/A==
+X-Google-Smtp-Source: AGHT+IELKrcoAf7PgPvBAOyNIQlmy6cdkvLGa8CIZk+QShFhYJ6D0lC7HFhfXUI/BeWfsLf0KH8zAQ==
+X-Received: by 2002:a05:6a20:9148:b0:21f:512c:ba2c with SMTP id adf61e73a8af0-21facec450emr5046063637.34.1749817389000;
+        Fri, 13 Jun 2025 05:23:09 -0700 (PDT)
+Received: from avinash-INBOOK-Y2-PLUS.. ([27.63.22.176])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2fe163a470sm1553126a12.9.2025.06.13.05.23.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Jun 2025 05:23:08 -0700 (PDT)
+From: avinashlalotra <abinashlalotra@gmail.com>
+X-Google-Original-From: avinashlalotra <abinashsinghlalotra@gmail.com>
+To: linux-omap@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	aaro.koskinen@iki.fi,
+	andreas@kemnade.info,
+	khilman@baylibre.com,
+	rogerq@kernel.org,
+	tony@atomide.com,
+	lee@kernel.org,
+	avinashlalotra <abinashsinghlalotra@gmail.com>
+Subject: [RFC PATCH] mfd: twl4030-irq: remove redundant 'node' variable
+Date: Fri, 13 Jun 2025 17:52:51 +0530
+Message-ID: <20250613122251.1033078-1-abinashsinghlalotra@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="GNSy8GOpRYA2RVtl"
-Content-Disposition: inline
-In-Reply-To: <ef6d6315-6517-4c8b-bf76-e41bb72bae8d@ti.com>
-X-Cookie: Biz is better.
+Content-Transfer-Encoding: 8bit
 
+The local variable 'node' was used only once to retrieve dev->of_node
+in a call to irq_domain_create_legacy(). This patch inlines the usage
+and removes the redundant variable, improving code clarity.
 
---GNSy8GOpRYA2RVtl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+No functional change intended.
 
-On Thu, Jun 12, 2025 at 08:09:59AM -0500, Andrew Davis wrote:
-> On 6/12/25 1:12 AM, Andreas Kemnade wrote:
+Signed-off-by: avinashlalotra <abinashsinghlalotra@gmail.com>
+---
+ drivers/mfd/twl4030-irq.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-> > So there need to be a bunch of patches to add the missing stuff.
-> > omap2plus_defconfig is there and support for boards are added.
+diff --git a/drivers/mfd/twl4030-irq.c b/drivers/mfd/twl4030-irq.c
+index 232c2bfe8c18..a2ab5deef9e2 100644
+--- a/drivers/mfd/twl4030-irq.c
++++ b/drivers/mfd/twl4030-irq.c
+@@ -676,7 +676,6 @@ int twl4030_init_irq(struct device *dev, int irq_num)
+ 	static struct irq_chip	twl4030_irq_chip;
+ 	int			status, i;
+ 	int			irq_base, irq_end, nr_irqs;
+-	struct			device_node *node = dev->of_node;
+ 
+ 	/*
+ 	 * TWL core and pwr interrupts must be contiguous because
+@@ -691,7 +690,7 @@ int twl4030_init_irq(struct device *dev, int irq_num)
+ 		return irq_base;
+ 	}
+ 
+-	irq_domain_create_legacy(of_fwnode_handle(node), nr_irqs, irq_base, 0,
++	irq_domain_create_legacy(of_fwnode_handle(dev->of_node), nr_irqs, irq_base, 0,
+ 				 &irq_domain_simple_ops, NULL);
+ 
+ 	irq_end = irq_base + TWL4030_CORE_NR_IRQS;
+-- 
+2.43.0
 
-> Yes multi_v7 is still missing stuff for some boards we want to
-> support, and we are working on adding those needed modules now.
-
-> We won't get feature parity in multi_v7 if we keep adding new
-> boards to the old omap2plus_defconfig. For this patch series
-> how about we add support to both defconfigs?
-
-Keeping the more specific defconfigs around is handy as they're much
-smaller and therefore faster to build, but I do agree that the
-multi_vX_defconfigs should also work.
-
---GNSy8GOpRYA2RVtl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmhK09oACgkQJNaLcl1U
-h9BQ4gf+LYAiC+6SJGmRoNcTP/UfS3rf/D+1XLuJJYKWsIh7wkg6m3pLmH2zMtG9
-QmBwEAumEqTdKxNiujtRn5Y4wFw3w2WA3PLQtPpr+o1qSVfxxFLxggM/BNz6uQH8
-ALc56Y8Ft/mUSfEod2xzbUe31gnfGyQ3X2TrwXyEd/97Shu4T89o8nNBcZPLLZkM
-ETR3Raif3ZXYRwMefhT/eDl0Qd8S95Yoyj754c9wcd4Al0KFJpKw9z4F8gkLM6jb
-13GP3UQ4w5kW7Qft4OkPeV1bufB31Xo7zx6DYT9SXjfZGgyCQteRDym5y6QKgCv5
-gPJl3KnWCXq/IauwmreGj56PaPQKvA==
-=xL1X
------END PGP SIGNATURE-----
-
---GNSy8GOpRYA2RVtl--
 
