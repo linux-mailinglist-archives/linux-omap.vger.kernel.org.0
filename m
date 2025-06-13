@@ -1,111 +1,116 @@
-Return-Path: <linux-omap+bounces-3873-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3874-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B170AD9280
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 18:06:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40317AD927F
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 18:06:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43D9A1888C52
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 16:06:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9396D7A7948
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 16:04:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 166131FE477;
-	Fri, 13 Jun 2025 16:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2BAE1FC0FE;
+	Fri, 13 Jun 2025 16:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G8hMhHkm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YhOx/8jZ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659671E834C;
-	Fri, 13 Jun 2025 16:05:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420151E834C;
+	Fri, 13 Jun 2025 16:06:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749830752; cv=none; b=R8UGuP+l4gzaE0PTwm2SdBgyiThfaI4OromFDu+T/9HyocdVOL+fC9lEk+xb13lNAbfVWgGcWCT4WAguQl2klyGi1HqPRRjoJjKnSJqdy8I2ggD0fqPGam/0jYD33ZMrGqA1lZMIMSlx3QTFea7SeO5t5j8Yw3UR+vHmGso160Q=
+	t=1749830767; cv=none; b=d0DR8BauGabxXEc7kRkAaccIDrYEJ32c886+6h33HPwPPqRfRnv/VytxyYIn6jmDYgfcPLEpnjVlgvLdN3NDTLTMn0+KdWYzSLmbs3GhM2HIMMLFXhUVz449EDpIv2PxHogCgdyXqk5ohDwbyKs82MUl7bjltJFkEMVuWdtLB78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749830752; c=relaxed/simple;
-	bh=mBrLzA5ur/SlC5AN5M2PdYJv6t0e09dXg58E8o3mblE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=p8bAZQcAkar6wAlUw1ZGPBWPUrKzO4/kVZGfVlhJRlPTP2uzHEDq4W4UjpApJbiX/v93C1beqNt8k0PF+Iz9jBmVHCPhwVokrnPFXJv2WFGIRJHIWRSHpNxGKPuPbrFCyaqLo1d4A+UTfvS0hpw+ubUtLJ+Tr74Bwa9r90Y88bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G8hMhHkm; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b2fca9dc5f8so1770713a12.1;
-        Fri, 13 Jun 2025 09:05:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749830751; x=1750435551; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mBrLzA5ur/SlC5AN5M2PdYJv6t0e09dXg58E8o3mblE=;
-        b=G8hMhHkm9XbT61dLuBE/iICQSjUxPSSRlyngh4qgSNpIYWL4FFmECMK8EZtRbOO7Jb
-         F852mxw8vSj2N1WCG+VY8JQLxhtfFLC8PJKja3K/sULGfViO0ol13V24mGh8kCKrdBTX
-         iqSw7b5hlDlnvX33BjcTFpMlrgWO4cnBMiDgu9x+QwgYDivZwJlYO+7JUP+pgpe4irYI
-         +RXcXZt+uv7k2d1uml8K6hzjLCgbHJK0ePgtg5JM0UH8IR4OzijdyPejWpIKfZlOzPik
-         89GtZyGlEAI/rTeiWwrG5lHEFfsBY2TjA7EifzcL1S+nCc2cVdSg6/lxHS/5kVf8drpx
-         XPHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749830751; x=1750435551;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mBrLzA5ur/SlC5AN5M2PdYJv6t0e09dXg58E8o3mblE=;
-        b=Zw7ToSv77Ep3LXVRploTx5U72C689awFzD8LRAYYD9c2qFju7fV9Bp/9/qaCiFR9gn
-         RrLW7+sr4/pg1uPEJy+RQuDs7ItyWprzUql6RilU5TFtNM+VNfpP063tGAVudxfnOM1M
-         ee1zPCjxIv5+uZP/4pT/+t+94apVPDJIb6q9ArEEEn50wbQUUXBJIIWcOByESz0/mBKE
-         TTU8auz2X8kuUXy94RcZUVutUcsZzdL6ops0y0AJSdChnFJMkQ39Js268MhVCIc9fhab
-         g5SRI9JTzh+s4X/EHbAMCGmQppe2Q2L2hb/V1DX8ggPmQeFq3HNsFOuZ5O5ZcAExjX7Y
-         RJ7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUoW2jbmHsJOVG3/aQDk1SOaq30M1fJlLb6c3QKLEitP+nuS1W9kS4uv5+DGZmnN1hynSWNo5oVkmoo@vger.kernel.org, AJvYcCVahXLyvzIbclvaIomKh94fQerC/0PGMMKYfvkDDm1CO5cB58pVoB/h5IDcEBq0Vb5xUA/YfA3NturQ9TXr@vger.kernel.org, AJvYcCXsD583cWJmrfgrZTG8MOssDQKvOPQUn4GrM3HeWcQkLFlVwUsP27cD5E7jJ8anx9qcxOAY2UsnXqm3NQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUHS+RJfqE4dFfvs4jlYbVnJg3AHv6LS/Mg97NTzafU6gqRFS9
-	dgEDrEoVmm4lK87UfiZ2Di8xJif5QI8denzNTgYY9JhS1W2uTGp1YfTPh9CBNmN8FsMQ/1De5ol
-	3n9dTzudEldh51ehqEdv9ahYrLhc8Jhg=
-X-Gm-Gg: ASbGncuf3KxDrqu95f2T44iqCMVGkOcgydeQCLp+k6hf/Biw4uNIYh6BdHlH+cOAXA+
-	aICIn20qqwdbzp35+J50CDg2nVAoNEZ8ujGOho0UaKgZRnu4ulRmadTSeZGi/Qbtvq+eDnws3oz
-	ZUHFTnM7ueFSnQfUdFu9N+zqOkxQxgF5WDBE0vNdKMbhL8
-X-Google-Smtp-Source: AGHT+IGkRwuBDi8P1hGdy0piKZzS+a+5N+inyeIw1I7jmEwifkcgqsBw7iDP3Xyu6Jz+spOq3lm/iRfZkorggjRDPA8=
-X-Received: by 2002:a17:90b:2e44:b0:313:28e7:af14 with SMTP id
- 98e67ed59e1d1-313f1d5efe4mr350773a91.19.1749830750557; Fri, 13 Jun 2025
- 09:05:50 -0700 (PDT)
+	s=arc-20240116; t=1749830767; c=relaxed/simple;
+	bh=LbTFGrRlyBuEb/Q0Nmcf3Gn8qywV37ze+AzMh87bn6Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ReCUztvXDluYVDWrOwo9d3C1SH1L6vQOhYkijT2LeWZ/7sW9IxAkiuHEjmdwGa8baSgEd4QBBIjIA5Wp8DQh6GNbc8TbRQfH6jYiSthLM53V5YxLPkxw7p7veodJ/vxhElKlheBZyQYc3M4DdZ4eLArDSA0Fj2VZsHttAjRu7JU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YhOx/8jZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADAD9C4CEE3;
+	Fri, 13 Jun 2025 16:06:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749830765;
+	bh=LbTFGrRlyBuEb/Q0Nmcf3Gn8qywV37ze+AzMh87bn6Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YhOx/8jZm9mtTdJ503kl2WxEIZb75vVUQvDfBYwLKYgsTrEIFUziMriujJUz6ThZ5
+	 IT2d3zNVSunaBjr6SJl92a5XlMfaBDWJqpjt/L9VS0zgk9ID9LZSzVlDu++VrbuW2h
+	 TwIsDIFOLIbDqO9QHHTyUK71FIShhbCbO8tcsWn227NVvAnjUzmKBmysiq4gVox2la
+	 lMOngixMGdZPjnBwZ0dPFXwn6HFuBXoUz6zvnQeGi4NK59t3JiF3KUO04EZoqoM1ZY
+	 h3l9wNyofVIWzKGMFijhLnrvvvpH1HLv6epd5nMEsTqIz9Uz6ITu0edDHemwJ1LSMk
+	 /ctHC01D39GIg==
+Date: Fri, 13 Jun 2025 09:06:00 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Lee Jones <lee@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Jiri Slaby <jirislaby@kernel.org>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
+	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] mfd: Remove node variables that are unused with
+ CONFIG_OF=n
+Message-ID: <20250613160600.GA228083@ax162>
+References: <20250508-mfd-fix-unused-node-variables-v1-1-df84d80cca55@kernel.org>
+ <20250528160603.GA1172935@ax162>
+ <20250613133905.GA897353@google.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250613-bbg-v3-0-514cdc768448@bootlin.com> <20250613-bbg-v3-4-514cdc768448@bootlin.com>
-In-Reply-To: <20250613-bbg-v3-4-514cdc768448@bootlin.com>
-From: Robert Nelson <robertcnelson@gmail.com>
-Date: Fri, 13 Jun 2025 11:05:24 -0500
-X-Gm-Features: AX0GCFsijTlH9k-tyupTKWkiHQY6VEd8JiYrIAPf2uoe0h8I7b4t84UjPXX0FBg
-Message-ID: <CAOCHtYg10H537Hu=kMqgFashuNHK_pDFZ_SQsLaJjG-efP9_Rg@mail.gmail.com>
-Subject: Re: [PATCH v3 4/7] dt-bindings: omap: Add Seeed BeagleBone Green Eco
-To: Kory Maincent <kory.maincent@bootlin.com>
-Cc: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, 
-	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
-	Russell King <linux@armlinux.org.uk>, Paul Barker <paul.barker@sancloud.com>, 
-	Marc Murphy <marc.murphy@sancloud.com>, Jason Kridner <jkridner@gmail.com>, Andrew Davis <afd@ti.com>, 
-	Bajjuri Praneeth <praneeth@ti.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-omap@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250613133905.GA897353@google.com>
 
-On Fri, Jun 13, 2025 at 10:51=E2=80=AFAM Kory Maincent
-<kory.maincent@bootlin.com> wrote:
->
-> Document the seed,am335x-bone-green-eco compatible string in the
-> appropriate place within the omap family binding file.
+On Fri, Jun 13, 2025 at 02:39:05PM +0100, Lee Jones wrote:
+> On Wed, 28 May 2025, Nathan Chancellor wrote:
+> 
+> > Hi Thomas,
+> > 
+> > On Thu, May 08, 2025 at 04:57:24PM +0100, Nathan Chancellor wrote:
+> > > A recent cleanup introduced a few instances of -Wunused-variable in
+> > > configurations without CONFIG_OF because of_fwnode_handle() does not
+> > > reference its argument in that case:
+> > > 
+> > >   drivers/mfd/twl4030-irq.c: In function 'twl4030_init_irq':
+> > >   drivers/mfd/twl4030-irq.c:679:46: warning: unused variable 'node' [-Wunused-variable]
+> > >     679 |         struct                  device_node *node = dev->of_node;
+> > >         |                                              ^~~~
+> > >   drivers/mfd/max8925-core.c: In function 'max8925_irq_init':
+> > >   drivers/mfd/max8925-core.c:659:29: warning: unused variable 'node' [-Wunused-variable]
+> > >     659 |         struct device_node *node = chip->dev->of_node;
+> > >         |                             ^~~~
+> > >   drivers/mfd/88pm860x-core.c: In function 'device_irq_init':
+> > >   drivers/mfd/88pm860x-core.c:576:29: warning: unused variable 'node' [-Wunused-variable]
+> > >     576 |         struct device_node *node = i2c->dev.of_node;
+> > >         |                             ^~~~
+> > 
+> > These warnings are now present in mainline after the merge of the
+> > irq/cleanups branch...
+> > 
+> > > Use the value of these variables as the argument to of_fwnode_handle()
+> > > directly, clearing up the warnings.
+> > > 
+> > > Fixes: e3d44f11da04 ("mfd: Switch to irq_domain_create_*()")
+> > 
+> > but this hash has changed, so this should be
+> > 
+> > Fixes: a36aa0f7226a ("mfd: Switch to irq_domain_create_*()")
+> > 
+> > but the rest of the change is still applicable. Would you like a new
+> > change or can you adjust that when applying?
+> 
+> Okay, please rebase and resubmit.
+> 
+> I suspect at least one of these has been fixed by Arnd already.
 
-just a small miss (missing e): `seeed,am335x-bone-green-eco`
+All of these are addressed by commit fc5f017a71d0 ("mfd: Fix building
+without CONFIG_OF") in your tree. Is that going to be merged into 6.16?
 
-Regards,
-
---=20
-Robert Nelson
-https://rcn-ee.com/
+Cheers,
+Nathan
 
