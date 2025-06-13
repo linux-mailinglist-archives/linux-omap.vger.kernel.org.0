@@ -1,53 +1,53 @@
-Return-Path: <linux-omap+bounces-3867-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3868-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9742EAD91E9
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 17:50:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE1FAD91EF
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 17:50:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABCCF17B978
-	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 15:50:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4985189DBB0
+	for <lists+linux-omap@lfdr.de>; Fri, 13 Jun 2025 15:50:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A20F202C52;
-	Fri, 13 Jun 2025 15:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E4E20E313;
+	Fri, 13 Jun 2025 15:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YQ5haUf4"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dxL7MVHd"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD011C5F2C;
-	Fri, 13 Jun 2025 15:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE151E3DCF;
+	Fri, 13 Jun 2025 15:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749829798; cv=none; b=gDtkO7xsFVn7kiNAaTwFn1m49JAQIIGw2/4tuwFXyTZNEaf2aNn9KOzdPBuKwfBgvzyu1rxI+dnRu0TqOG74vQtVQ5MkV7YbJiF/i1P/5hzjh3kn+DLEgD72b92iU6430loHjEZFFLIHQIEr7fFQq8FIND8Z/YS006ObrA/QD3c=
+	t=1749829799; cv=none; b=WTu8fu8mN6SCjryjW3Iko4KonknHpOBFNbSj5Q1EldnsCPjmksj20p2pekI+ROTqeLvyX4SNNAD8TccWyl57TrxN957Jr0CV0e82DEciHuUZhWIu04rIfssSx5z6vxw1/tMpX4+yWM5J6WAhA/ZDJDhAF9YbKqcRCAjz4bE5CLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749829798; c=relaxed/simple;
-	bh=xdCDFsY7fHfgyuBIW40huzR//1ytnbFa21uQW+dNB+4=;
+	s=arc-20240116; t=1749829799; c=relaxed/simple;
+	bh=N2UYITogtfecT3kXHmGjJKBWnKKAGejg+NybZgL/OX4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=m5c6TGvU8wezrHI8yqiviI9atK+0kVImOpitC4VYSklKr+QbmrcyKRVA8Ox1uvStY3vuXJ0uksk/Y74cagpzzS38ce1T5gyYg6OaMCGSugtANnRIetRp8UFExYnH1hXWeEVBGT1vldePPbBLyqSAhZT0hnbzahNDWvMCR4Sh6Ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YQ5haUf4; arc=none smtp.client-ip=217.70.183.201
+	 In-Reply-To:To:Cc; b=sZPBvj/xPkHFq19Bs8CS1/A4lPhifLtaFVp1ciIBAPFDdTdkABz/A5L7OKysseRsnjuO7rLefL0pEuKL7rCrWQmP8xSHpPtT8PnA43paaW+7T5F5m6AQd8ZVuU0N/yvLrr4JrWgP7DCEDhlVZKmgRi0BacnGounWtYmgUT5KSdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dxL7MVHd; arc=none smtp.client-ip=217.70.183.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id EAFA344423;
-	Fri, 13 Jun 2025 15:49:53 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0365E4444D;
+	Fri, 13 Jun 2025 15:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1749829794;
+	t=1749829796;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=v1FemFSObCbEVYAn/hTqf4EyYMN6hadEZQLG7F20BzM=;
-	b=YQ5haUf4MGZknhpKqWKmRoydgFIHIXX7eOIPMF19aFHD1E7AtPH0r+fIDAzdUQ+viOLOzS
-	Z0/JPIt4JvvLiF3NSz18rw3a88z6uu+RIcpsq3zCnlu6WgsWtgcbr3SetKiJtQeMxFKcy/
-	D688E3Ijw4RLK4pGhJOeeR4WcO3WL/rI10Hc891qn0VGEa0SSL2MszPiJm634wKkHe1yp/
-	sZZxcSJMG5g44KAocIzsQEk6mfe2K3jE7PamlO3J44rGWIfTGbC67y5hxnWEe+k5z9s4NW
-	Yrxrct8tih8J5mTn0kvqMYBwwR2Zs4WvVgxAlyHSujJRKraZVeRMa/91pUfCUg==
+	bh=YLidNV2GFKH/2JeWLKry+LSYqYYCzq3L8dBLPFyZJ/4=;
+	b=dxL7MVHdZNHIwWXIQRb95+ubU7TDxRKIiAsPh8EtlqpFPN0MQlZZltCAMK0VZgl6XKLMj1
+	OKsgyAmjfB04or5CTEjRlp68NGFkPW7Z7o6zEtNxI/tmOmQ2UM9qXjC52c2QsaNyQz2oz4
+	1uOhm5OKoWiPcVyHBtNQSzB3KRZzm/8naL7cOh3D/dUDuJc96jSlwETwPn+0lxZmDjYk3/
+	A8MZAFzjKILr7PfdRTtbvQOJR/H1De4moclzfUX2xQyTUpH9vYRR1qSfuO9UPUj1G4e0iJ
+	4Rrd5Q6cZFtEt73qabcvefXUNOep2kdA8ERirTK/RoV6sz++JAVFrQ891cpOKg==
 From: Kory Maincent <kory.maincent@bootlin.com>
-Date: Fri, 13 Jun 2025 17:49:49 +0200
-Subject: [PATCH v3 6/7] arm: omap2plus_defconfig: Enable TPS65219 regulator
+Date: Fri, 13 Jun 2025 17:49:50 +0200
+Subject: [PATCH v3 7/7] arm: multi_v7_defconfig: Enable TPS65219 regulator
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250613-bbg-v3-6-514cdc768448@bootlin.com>
+Message-Id: <20250613-bbg-v3-7-514cdc768448@bootlin.com>
 References: <20250613-bbg-v3-0-514cdc768448@bootlin.com>
 In-Reply-To: <20250613-bbg-v3-0-514cdc768448@bootlin.com>
 To: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>, 
@@ -83,40 +83,43 @@ X-GND-Sasl: kory.maincent@bootlin.com
 Enable the TPS65219 regulator in the defconfig, as the TPS65214
 variant is used by the newly introduced BeagleBoard Green Eco board.
 
-Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
 Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
- arch/arm/configs/omap2plus_defconfig | 3 +++
+
+Change in v3:
+- New patch.
+---
+ arch/arm/configs/multi_v7_defconfig | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-index 9f9780c8e62a..2ad669f7b202 100644
---- a/arch/arm/configs/omap2plus_defconfig
-+++ b/arch/arm/configs/omap2plus_defconfig
-@@ -385,6 +385,7 @@ CONFIG_TOUCHSCREEN_TSC2007=m
- CONFIG_INPUT_MISC=y
+diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
+index 50c170b4619f..76f74103c1f0 100644
+--- a/arch/arm/configs/multi_v7_defconfig
++++ b/arch/arm/configs/multi_v7_defconfig
+@@ -344,6 +344,7 @@ CONFIG_INPUT_MAX77693_HAPTIC=m
+ CONFIG_INPUT_MAX8997_HAPTIC=m
+ CONFIG_INPUT_GPIO_DECODER=m
  CONFIG_INPUT_CPCAP_PWRBUTTON=m
- CONFIG_INPUT_TPS65218_PWRBUTTON=m
 +CONFIG_INPUT_TPS65219_PWRBUTTON=m
- CONFIG_INPUT_TWL4030_PWRBUTTON=m
- CONFIG_INPUT_UINPUT=m
- CONFIG_INPUT_PALMAS_PWRBUTTON=m
-@@ -454,6 +455,7 @@ CONFIG_MFD_TPS65217=y
- CONFIG_MFD_TI_LP873X=y
- CONFIG_MFD_TI_LP87565=y
+ CONFIG_INPUT_AXP20X_PEK=m
+ CONFIG_INPUT_DA9063_ONKEY=m
+ CONFIG_INPUT_ADXL34X=m
+@@ -618,6 +619,7 @@ CONFIG_MFD_PALMAS=y
+ CONFIG_MFD_TPS65090=y
+ CONFIG_MFD_TPS65217=y
  CONFIG_MFD_TPS65218=y
 +CONFIG_MFD_TPS65219=y
+ CONFIG_MFD_TPS6586X=y
  CONFIG_MFD_TPS65910=y
- CONFIG_TWL6040_CORE=y
- CONFIG_REGULATOR_CPCAP=y
-@@ -470,6 +472,7 @@ CONFIG_REGULATOR_TPS65023=y
- CONFIG_REGULATOR_TPS6507X=y
+ CONFIG_MFD_STM32_LPTIMER=m
+@@ -667,6 +669,7 @@ CONFIG_REGULATOR_TPS62360=y
+ CONFIG_REGULATOR_TPS65090=y
  CONFIG_REGULATOR_TPS65217=y
  CONFIG_REGULATOR_TPS65218=y
 +CONFIG_REGULATOR_TPS65219=y
+ CONFIG_REGULATOR_TPS6586X=y
  CONFIG_REGULATOR_TPS65910=y
  CONFIG_REGULATOR_TWL4030=y
- CONFIG_RC_CORE=m
 
 -- 
 2.43.0
