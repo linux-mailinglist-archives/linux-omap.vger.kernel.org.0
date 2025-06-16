@@ -1,139 +1,105 @@
-Return-Path: <linux-omap+bounces-3887-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3888-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84FF7ADB09C
-	for <lists+linux-omap@lfdr.de>; Mon, 16 Jun 2025 14:51:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC81DADB481
+	for <lists+linux-omap@lfdr.de>; Mon, 16 Jun 2025 16:55:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35B9C7A8330
-	for <lists+linux-omap@lfdr.de>; Mon, 16 Jun 2025 12:49:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BBB97A846A
+	for <lists+linux-omap@lfdr.de>; Mon, 16 Jun 2025 14:51:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43AD292B25;
-	Mon, 16 Jun 2025 12:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B6820DD49;
+	Mon, 16 Jun 2025 14:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PE8qN9cr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AviViFz8"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906D51ABEC5;
-	Mon, 16 Jun 2025 12:51:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712881FDE31;
+	Mon, 16 Jun 2025 14:52:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750078268; cv=none; b=d3ylVaYaVqaX6r2F1ipToIoEqXoFLfwVH57NEodjgkn908mjwq+X4PR1pfOXDdBUVE1BMw3jjINDa29Eqe6hRa58xT2xYr4TsQUDFwbPZAk5iMMYU4496vbt7ifZNO+Ja/Q2IobAu+ZplC4tVOhzVXIttYiUdbhSrg6DZ0TdNhk=
+	t=1750085547; cv=none; b=ELyQPh7rf9jhjAwBWAPOocFeyacBDGjcWN4P2YOtW+90cvH4jmDy1hH6j3FUEKIU6rqfYsKc7PRcMICY8KHVen87dkTfMCHmyo8vDQgMVDQgUHTs+ft9MIYhmLCAhm82aznfbjpA/JEzKKSswYNKWiFkBIfCP9l1cVOx5UzpdxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750078268; c=relaxed/simple;
-	bh=ob5g0+4JbmSONLghaJGyWFg+GyfiXEdGuasTfAQVUhk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PRWrYS2c/QPHmfTKHGEnfD0rqYZps3f1opvQgQ6RipN3EFNUAmBZvxu1dgAZCM6WyIWoqlIBhKqO6cqQGs/5wuCad7DXWiS6cNj4l81IIIH/s46cTxxK6xupMYotpvb9S9NP+1bF6lmgHhVej/vHVqLMfhj9UM9j750g4hmdeXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PE8qN9cr; arc=none smtp.client-ip=217.70.178.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id B3C455820CB;
-	Mon, 16 Jun 2025 12:29:25 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E1EF243896;
-	Mon, 16 Jun 2025 12:29:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1750076957;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9e0ar1sgFXhVsoTqepigfauoukIlQ93Op70pYJgpDmk=;
-	b=PE8qN9crPUfVsmmKX1QwY80baPPMNqjFlfFPzpM5Eq0j5MuzDvPUVMJpKUpg6WV/76Cyw0
-	d7iRil/yVoRQNmsCfRQv+rsi/o5Xa7H9KKAnpaPoMBX94B4lAkPcEj0rL6uorWEet1Cgpt
-	vmDQXP8/yafePzzRl1VVgmiMEqXaF1Mvgpa+AcpEi0yHtzgrNPJAdcnRUTjC9fOcw+kaFT
-	8CVbyEHQYK9g2DwNs8JiLHR/MtnP8AqquUzEaOtd+yih2pO2DsxOQLY7gwYpyiRxdqDXkg
-	FDjcd97wb0m0vlbTllM9Y6+wt/Q17I0PvXaQ6jPcYSCGnUjrx4I0jmliYaeJ/g==
-Date: Mon, 16 Jun 2025 14:29:13 +0200
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Josua Mayer <josua.mayer@jm0.eu>
-Cc: Jason Kridner <jkridner@gmail.com>, Tony Lindgren <tony@atomide.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>,
- Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman
- <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, Russell King
- <linux@armlinux.org.uk>, Paul Barker <paul.barker@sancloud.com>, Marc
- Murphy <marc.murphy@sancloud.com>, Andrew Davis <afd@ti.com>, Bajjuri
- Praneeth <praneeth@ti.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
- <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 2/7] ARM: dts: omap: Remove incorrect compatible
- strings from device trees
-Message-ID: <20250616142913.1afad458@kmaincent-XPS-13-7390>
-In-Reply-To: <7e854232-f02f-4ad6-b65e-22c18d1d9fe5@jm0.eu>
+	s=arc-20240116; t=1750085547; c=relaxed/simple;
+	bh=bPuvx70ZOohoMirTtBhIdmAQVlAZJUxM/oDnk3mWn5M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NZD3VQuQ1PtFq6rDQjJeQivSApq6HtshFe6wuz8Rr7ekx9YlE0yo7nvePDLOqOeYJUh6j3AzWvr4gLbbVhD1oaWE4csIflI5btlCB9uJJRbgagZ+1+6owQ9yzJw6zj/4bdYKGRKSq7afx5l7WOtESJGyqewBqW6NZLUiWJOLg64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AviViFz8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A616C4CEEA;
+	Mon, 16 Jun 2025 14:52:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750085547;
+	bh=bPuvx70ZOohoMirTtBhIdmAQVlAZJUxM/oDnk3mWn5M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AviViFz8EDSu4pci4/s35SA1EqiENbj+hMVxRmOPRm70Az5musdKvmu9A76JmREBN
+	 lqQVDakjXqlhAIkWJp9ABAW4/s5Led2bkjbdMB4FEDiYrdTH/U6abDbfSI6xaLtwhz
+	 V762DmpOqOrEs9gpSu8bLgLPnCqRXf67JzcKF7EwByyiSrBE2Ixn6TZ0zkVRmiPzlu
+	 cBTXzeuatxpRD+D/ljoBdyEmczJe0grP7mkQHUkRIw+5Tjs5XpNjpmmgh2T+5P79Y1
+	 x6UZbY/qPahUUjKXdMSQv/lP2nTTHYIAjTulak70ZXln6pW/68GWC1HxrAy4PmCMBd
+	 98szxgsNLrYUQ==
+Date: Mon, 16 Jun 2025 15:52:20 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Paul Barker <paul.barker@sancloud.com>,
+	Marc Murphy <marc.murphy@sancloud.com>,
+	Jason Kridner <jkridner@gmail.com>, Andrew Davis <afd@ti.com>,
+	Bajjuri Praneeth <praneeth@ti.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 4/7] dt-bindings: omap: Add Seeed BeagleBone Green Eco
+Message-ID: <20250616-scientist-displease-7fba3321aa8f@spud>
 References: <20250613-bbg-v3-0-514cdc768448@bootlin.com>
-	<20250613-bbg-v3-2-514cdc768448@bootlin.com>
-	<CA+T6QPnaCFZyRsv9q3bcOrTc22nA0AOXy0tR_SpAkGVVPQqfLg@mail.gmail.com>
-	<20250616103919.2d678c1a@kmaincent-XPS-13-7390>
-	<7e854232-f02f-4ad6-b65e-22c18d1d9fe5@jm0.eu>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+ <20250613-bbg-v3-4-514cdc768448@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="NffML9ZiH2lsh2fO"
+Content-Disposition: inline
+In-Reply-To: <20250613-bbg-v3-4-514cdc768448@bootlin.com>
+
+
+--NffML9ZiH2lsh2fO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddvieehkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthhqredtredtjeenucfhrhhomhepmfhorhihucforghinhgtvghnthcuoehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehuddtveeigfevgeegfefghefgkeeigfefgefhvdeufeejledtledvgfffieekveenucffohhmrghinhepuggvsghirghnrdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehkmhgrihhntggvnhhtqdgirffuqddufedqjeefledtpdhmrghilhhfrhhomhepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvdefpdhrtghpthhtohepjhhoshhurgdrmhgrhigvrhesjhhmtddrvghupdhrtghpthhtohepjhhkrhhiughnvghrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepthhonhihsegrthhomhhiuggvrdgtohhmpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhop
- ehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprggrrhhordhkohhskhhinhgvnhesihhkihdrfhhipdhrtghpthhtoheprghnughrvggrsheskhgvmhhnrgguvgdrihhnfhho
-X-GND-Sasl: kory.maincent@bootlin.com
 
-Le Mon, 16 Jun 2025 14:39:03 +0300,
-Josua Mayer <josua.mayer@jm0.eu> a =C3=A9crit :
-
-> Hi Kory,
+On Fri, Jun 13, 2025 at 05:49:47PM +0200, Kory Maincent wrote:
+> Document the seed,am335x-bone-green-eco compatible string in the
+> appropriate place within the omap family binding file.
 >=20
-> Am 16.06.25 um 11:39 schrieb Kory Maincent:
-> > Le Fri, 13 Jun 2025 13:52:23 -0500,
-> > Jason Kridner <jkridner@gmail.com> a =C3=A9crit :
-> > =20
-> >> On Fri, Jun 13, 2025 at 10:49=E2=80=AFAM Kory Maincent <kory.maincent@=
-bootlin.com>
-> >> wrote:
-> >> =20
->  [...] =20
-> >>
-> >> We have software that looks at these in running systems, so I=E2=80=99=
-d be ok not
-> >> to change. If changing, why not =E2=80=9CBeagleBoard.org BeagleBone=E2=
-=80=9D? Not sure of
-> >> the convention to mention the SoC, but AM335x is not part of the produ=
-ct
-> >> name. =20
-> > Is it ok to change it or not then? Ok to move on to BeagleBoard.org. =20
-> The Debian project most notably uses the "model" string:
->=20
-> https://salsa.debian.org/installer-team/flash-kernel/-/blob/master/db/all=
-.db?ref_type=3Dheads#L2191
->=20
-> When that changes inside a dtb by kernel update, users may be unable to=20
-> boot.
-> Therefore I would recommend against changing "model" values.
+> Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 
-Maybe they will have to follow the change.
-Don't know if this should not be changed over time even if they are wrong f=
-rom
-the beginning.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-It would be nice to have a devicetree maintainer's opinion on this but I do=
-n't
-think they will reach this message.
+--NffML9ZiH2lsh2fO
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I think I will keep old model values for this series then, I don't want to
-block this series on this topic.
+-----BEGIN PGP SIGNATURE-----
 
-Regards,
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaFAvpAAKCRB4tDGHoIJi
+0nSjAP0QTnkfbkMNtybseo1N8W/Zu0dXYmt/Zvr8lhBp4dvehAD7BpcL4CUzvHX9
+ruQ7cqsF7o2eAFOxPej8RZ+ayyl54gU=
+=zZQH
+-----END PGP SIGNATURE-----
+
+--NffML9ZiH2lsh2fO--
 
