@@ -1,107 +1,52 @@
-Return-Path: <linux-omap+bounces-3891-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3892-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A230BADC5EA
-	for <lists+linux-omap@lfdr.de>; Tue, 17 Jun 2025 11:14:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5571ADCA34
+	for <lists+linux-omap@lfdr.de>; Tue, 17 Jun 2025 13:59:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C53D2189383B
-	for <lists+linux-omap@lfdr.de>; Tue, 17 Jun 2025 09:14:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A5E4166F82
+	for <lists+linux-omap@lfdr.de>; Tue, 17 Jun 2025 11:59:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CED629293F;
-	Tue, 17 Jun 2025 09:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835902E06FF;
+	Tue, 17 Jun 2025 11:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="rY4Za35o"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Vt01Nre3"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay16.mail.gandi.net (relay16.mail.gandi.net [217.70.178.236])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15300290D9E
-	for <linux-omap@vger.kernel.org>; Tue, 17 Jun 2025 09:14:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FFC2DF3C1;
+	Tue, 17 Jun 2025 11:59:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.236
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750151664; cv=none; b=hQ7HVkxrjxgLeAP7likGu28+UlNcLDbAX3o/pqKuE5J+07kkl1BtIKbx0ZRY2O014G7L9oRQJ6lCThfgJyPkTSwY2YTlnALN0jVHWmOof/HESmBDv/A0yLs3xDtewpXAYLfmghgJBkNuHf42d8eWiD4uFDf8wGmi/4gBaI+j2+k=
+	t=1750161582; cv=none; b=BzLC+8E48wjRrwfrtbmKOPHA/tEnEvVFwr8kj3z8KCtT58HFFQ3xF0U2UndiRC5WQ2NQWP7ky3gZngB4ksLDWgpktZolyMpRVhQPrf+ar1AtjSj3wqyrH8F06YCede2hHxgvz0CUPXeeVTx8QSkEmrHnLchfmNcJzry5m0Kr9hE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750151664; c=relaxed/simple;
-	bh=7WDJZGLza1OHlk0gQlkqb4Yxfh5XP2wKfRxEaeiBz1A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l5JKppVPLXZzGmqHyVAJs/0livPSQ8ANSbImL3PTN/1GxCDJYHTTyFUUGaR6Jh7cMoxm8VQvYRySLdRKROH54J0W9nbPhdNxE0OnvGiA97wTu/ELKBZ7tFJYHAbLiKtmZZr8ny/tKCuvN0lfKO4T0DncCgdlnXpPjNvD5rK+I4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=rY4Za35o; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-45305c280a3so22164625e9.3
-        for <linux-omap@vger.kernel.org>; Tue, 17 Jun 2025 02:14:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1750151661; x=1750756461; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z2DwhOwUsMunVDJWED8rmtY3JjlBmcuuZx6kyq72hSI=;
-        b=rY4Za35oGlalwwh9bWutx+y1NTSYmJJ9QIqXkH9DcLLAbVch0GVAQbDrp0oJe5uIfh
-         6BHkiwIBA5kfSo/noJxNZXFydCVth5cmZ6d862I3aXaj6GIXzcv7exvTESSlMFP4Y5sz
-         0iAG1SF8uWCnjmF/dHaW28g2jfE7oHiMbguusXZjvW2Fu9b9Zemc8VuIUa6iPdW8/zmz
-         CxU1iGfdCORTeXgUK5Ck1+tNu8N39PxF3omYfPsYgWz4guLr6I/4WZlCeo13n6KZ2grB
-         Kg3Q66IjblgUl4BrikeCb5qm3Byeo3YH/ckkO/rzL9XXW5Ut7yxLwpHmGwYIVAHeLvCt
-         bj7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750151661; x=1750756461;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=z2DwhOwUsMunVDJWED8rmtY3JjlBmcuuZx6kyq72hSI=;
-        b=woRB4uuNhZeNYy1/Q6LCX8Ohp9LTPpMY0aCi8f0jAtBTf1uVSuENSohmrtPtPADl7d
-         BMIrDl3gw16mmIePRCK5ue5ZTYkK8YtE06HC14Vjz91ot/5dShhuYlq1+Lrxl/ceVWqc
-         Qztv5utTeXsno9+r9RXN8LJb5RCPQKUfk8TKw+drnMDx595Vm+OIxgCsb/erPEjMNc8q
-         e3/9WL2LqefWtbiHvfrnkW/c9Tp7Fb7zfNzv6x9HixYQI0hXX2KnTInu5+zJnPUET0Jg
-         8Vu2hJDi7kxQuOxoAYdkkKY6JQVS17/7MjMCe//Q9WC2KL+OuqmyFoPoq5tT9Kd3/rvT
-         pf0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVt+/OxLbEPcA/ympWvoDaRIrYqq7aDkMxbmEzivnQ1hWK3LuGMkTKhgNQXKUtFIda2BrcfgItg3rm8@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlAhbvlgCWi07KT9fBVZTvaE9bss8bAvEYAZaCsrfveDNsavJQ
-	kjGO1I28bLWAZ0Tz5kDxhe/jpZ0TMBpmlwC4QHCv6KEMmN0JCu3PAjlfi64xvN7WS0k=
-X-Gm-Gg: ASbGncvHJfZBsxzRASPT+OXGhdYyuaiDYuylYlN8iExbujFiKCFPwfNkmBwgi70w4X5
-	brVzUguJO8TspgEP23GXxjdTq8gjFfKPaFooEJ7cP8A2r4hJSfxmkBsG3DLIId5EVahhPZiMKgQ
-	TKAct/ke6S+Ef8kTvCkR12mHWVXVqQbJNnSFmzZYhPpex0Pkgq2o4s2jRrGbKI8j4EKqRN9mJwm
-	gEU1pwldrXe0Q9AckKRzfrcq7f1Dr3UruLJLQ10j0Rn0dKuz8zCJmNqjGALZlkShWpnW5TnnF0R
-	EWFzkvGzPexxMTGNHgqljVg9Dg4IgOSYNtz7p4RyFnIVaPQTqIzFu8+ddSr6DkA=
-X-Google-Smtp-Source: AGHT+IHJrUzq11FqzFpCalpA8oxq7QOoJUd6doTIPdsMKhwT2j2fIZKoD5gQsAT4CYJMYxX4N6Amdw==
-X-Received: by 2002:a05:6000:230e:b0:3a4:e740:cd72 with SMTP id ffacd0b85a97d-3a572396df6mr10071598f8f.13.1750151661308;
-        Tue, 17 Jun 2025 02:14:21 -0700 (PDT)
-Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:90df:ded7:9cbf:4074])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568a633ddsm13280685f8f.26.2025.06.17.02.14.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Jun 2025 02:14:20 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: Linus Walleij <linus.walleij@linaro.org>,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Daniel Palmer <daniel@thingy.jp>,
-	Romain Perier <romain.perier@gmail.com>,
-	Avi Fishman <avifishman70@gmail.com>,
-	Tomer Maimon <tmaimon77@gmail.com>,
-	Tali Perry <tali.perry1@gmail.com>,
-	Patrick Venture <venture@google.com>,
-	Nancy Yuen <yuenn@google.com>,
-	Benjamin Fair <benjaminfair@google.com>,
-	Grygorii Strashko <grygorii.strashko@ti.com>,
-	Santosh Shilimkar <ssantosh@kernel.org>,
-	Kevin Hilman <khilman@kernel.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	openbmc@lists.ozlabs.org,
-	linux-omap@vger.kernel.org
-Subject: Re: [PATCH 00/12] gpio: convert another round of GPIO drivers to using new line value setters
-Date: Tue, 17 Jun 2025 11:14:17 +0200
-Message-ID: <175015165197.21779.16487408157196142174.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250610-gpiochip-set-rv-gpio-v1-0-3a9a3c1472ff@linaro.org>
-References: <20250610-gpiochip-set-rv-gpio-v1-0-3a9a3c1472ff@linaro.org>
+	s=arc-20240116; t=1750161582; c=relaxed/simple;
+	bh=ZEZdT01ycHwNVlYTkoDA/lXI0JtNVBBiR8zRPwgoix0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=lolifAtLeTcdlO/f+T/aVFYmTRwu4iDBJhTYd51Y+0NYmDUsUKOwTWgphrNpOudZ9Z/kd2mP84TZSneGH4vUDbPUV0VkNBpH/5LDYf3p7tZ7Uttd+mh7H/SYiYaf7/cc4lgu4F7Xw1QP6Ku8QfyMmTLZYoVzC3Amt3eStCBD8zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Vt01Nre3; arc=none smtp.client-ip=217.70.178.236
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 41717424BB;
+	Tue, 17 Jun 2025 11:59:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1750161571;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=W6Pvni7Zs0uwK3wQbi9OBXyIZ+nOBBx/+O2vZSvueFw=;
+	b=Vt01Nre3N3weW1j5b6mpQKCevzIeBd8IhkGB7MqVOybqKY9vj63AhoAAM7WC57Q4KAjkmp
+	JkIrbTnwWwU7PYOKFreWuVr8CQQrYDI/ukvTPvWM9+T5LlJ10dN9SmjQqTJ8zbmLmvFqG3
+	L91iNkBE8nLA6i8YKx8UfBLl8qdVDVJ1KDST8pZdlQlB1B1QW6ZsqkMTFAymMfmt5m/whP
+	HCB4H/38TSYm9RTLYkoQq/a6zHuCo9BlIxbC/C2+4JL4/XwwJ7m1D4XA04t2BQdqK2ugXA
+	6rQKw00O6rpMAx98wmSV1Chvx9YUOwEZ6MWiAx+JNZzU4FUb+HE5K5Ne0+TxIw==
+From: Kory Maincent <kory.maincent@bootlin.com>
+Subject: [PATCH v4 0/7] Add support for BeagleBone Green Eco board
+Date: Tue, 17 Jun 2025 13:59:23 +0200
+Message-Id: <20250617-bbg-v4-0-827cbd606db6@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -110,48 +55,100 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAJtYUWgC/2XNyw7CIBAF0F8xrMXAlKcr/8O4KJS2JFoMNETT9
+ N+l1cTX7O5kzp0JJRe9S2i/mVB02ScfhhLYdoNsXw+dw74pGQEBTjhU2JgOS6EJVQ1toZaoXF6
+ ja/1tbTmeSu59GkO8r6WZLttvnykm2LWs1o5LV+ZgQhjPftjZcEFLQ4a3EkQ/FRTFQSoCwkim1
+ b+qPhR9/aoWRZltrBSKsR81z/MDTtMZnwQBAAA=
+To: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
+ Roger Quadros <rogerq@kernel.org>, Russell King <linux@armlinux.org.uk>, 
+ Paul Barker <paul.barker@sancloud.com>, 
+ Marc Murphy <marc.murphy@sancloud.com>
+Cc: Jason Kridner <jkridner@gmail.com>, Andrew Davis <afd@ti.com>, 
+ Bajjuri Praneeth <praneeth@ti.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-omap@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, 
+ Kory Maincent <kory.maincent@bootlin.com>, 
+ Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.15-dev-8cb71
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdduvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffufffkgggtgffvvefosehtkeertdertdejnecuhfhrohhmpefmohhrhicuofgrihhntggvnhhtuceokhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptdefkeekjeevjeegffdtfeekkeetueejfedvtefgveekfeeifeejvdekfeetfffgnecuffhomhgrihhnpeguvggsihgrnhdrohhrghdpkhgvrhhnvghlrdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomhepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvdefpdhrtghpthhtoheprghnughrvggrsheskhgvmhhnrgguvgdrihhnfhhopdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtoheptghonhhorhdrughoohhlvgihsehmihgtrhhotghhihhprdgtohhmpdhrtghpthhtoheplhhinhhug
+ idqohhmrghpsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegsrhhoohhnihgvsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehjkhhrihgunhgvrhesghhmrghilhdrtghomhdprhgtphhtthhopehtohhnhiesrghtohhmihguvgdrtghomh
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+SeeedStudio BeagleBone Green Eco (BBGE) is a clone of the BeagleBone Green
+(BBG). It has minor differences from the BBG, such as a different PMIC,
+a different Ethernet PHY, and a larger eMMC.
 
+Also update the omap.yaml binding to include missing compatible strings
+that were previously undocumented.
 
-On Tue, 10 Jun 2025 14:33:10 +0200, Bartosz Golaszewski wrote:
-> Commit 98ce1eb1fd87e ("gpiolib: introduce gpio_chip setters that return
-> values") added new line setter callbacks to struct gpio_chip. They allow
-> to indicate failures to callers. We're in the process of converting all
-> GPIO controllers to using them before removing the old ones. This series
-> converts another round of GPIO drivers.
-> 
-> 
-> [...]
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+---
+Changes in v4:
+- Drop model value change to avoid conflict with script based on this
+  value like:
+  https://salsa.debian.org/installer-team/flash-kernel/-/blob/master/db/all.db?ref_type=heads
+- Rename ti,am335x-shc to bosch,am335x-shc
+- Forgot to change to "Seeed" in BeagleBone Green Eco model description.
+- Link to v3: https://lore.kernel.org/r/20250613-bbg-v3-0-514cdc768448@bootlin.com
 
-Applied, thanks!
+Changes in v3:
+- Update multi_v7_defconfig with TPS65219 config.
+- Remove extraneous compatible strings.
+- Replace BeagleBone compatible board name vendor to use "beagle" instead
+  of "ti".
+- Link to v2: https://lore.kernel.org/r/20250609-bbg-v2-0-5278026b7498@bootlin.com
 
-[01/12] gpio: mmio: use new GPIO line value setter callbacks
-        https://git.kernel.org/brgl/linux/c/b908d35d0003cc75d4ebf7c24a61b07d34e7f5dc
-[02/12] gpio: mm-lantiq: use new GPIO line value setter callbacks
-        https://git.kernel.org/brgl/linux/c/d27746181905c256eced857f4b2c051ac44b0b45
-[03/12] gpio: moxtet: use new GPIO line value setter callbacks
-        https://git.kernel.org/brgl/linux/c/b454580cf11b45a9da22821543f1455a6a31c5ee
-[04/12] gpio: mpc5200: use new GPIO line value setter callbacks
-        https://git.kernel.org/brgl/linux/c/80d42372d9d87626b55516779e935c012cecdae7
-[05/12] gpio: mpfs: use new GPIO line value setter callbacks
-        https://git.kernel.org/brgl/linux/c/3aa3628f8168df9fe154b09b1710d3314b9fa4b7
-[06/12] gpio: mpsse: use new GPIO line value setter callbacks
-        https://git.kernel.org/brgl/linux/c/e63d9fbe9f148b44f2fdc211941f2d4485022549
-[07/12] gpio: msc313: use new GPIO line value setter callbacks
-        https://git.kernel.org/brgl/linux/c/88a775454a0fe923f3d34d8f30cd1d6b75be0859
-[08/12] gpio: nomadik: use new GPIO line value setter callbacks
-        https://git.kernel.org/brgl/linux/c/aaec273c7b511a7826df09123a1fd6e4896c1bfd
-[09/12] gpio: npcm-sgpio: use new GPIO line value setter callbacks
-        https://git.kernel.org/brgl/linux/c/0e1a8930c941e3a7bea25928b254ece8caa5135d
-[10/12] gpio: octeon: use new GPIO line value setter callbacks
-        https://git.kernel.org/brgl/linux/c/f02614561493da22f24b0e2ec1c2ae0d5b41c68b
-[11/12] gpio: omap: use new GPIO line value setter callbacks
-        https://git.kernel.org/brgl/linux/c/57065d62e672bce193f186c7b759f928b9a90ca0
-[12/12] gpio: palmas: use new GPIO line value setter callbacks
-        https://git.kernel.org/brgl/linux/c/f3763403a6bbc3a18379fe4c415bda899a111d55
+Changes in v2:
+- Add patch 1 to 3 to fix binding and devicetree inconsistencies.
+- Rename tps node name to generic pmic node name in am335x-bone-common.
+- Link to v1: https://lore.kernel.org/r/20250523-bbg-v1-0-ef4a9e57eeee@bootlin.com
+
+---
+Kory Maincent (7):
+      dt-bindings: omap: Add missing AM33xx compatible strings
+      arm: dts: omap: Remove incorrect compatible strings from device trees
+      arm: dts: omap: am335x-bone-common: Rename tps to generic pmic node
+      dt-bindings: omap: Add Seeed BeagleBone Green Eco
+      arm: dts: omap: Add support for BeagleBone Green Eco board
+      arm: omap2plus_defconfig: Enable TPS65219 regulator
+      arm: multi_v7_defconfig: Enable TPS65219 regulator
+
+ Documentation/devicetree/bindings/arm/ti/omap.yaml |  23 ++-
+ arch/arm/boot/dts/ti/omap/Makefile                 |   1 +
+ arch/arm/boot/dts/ti/omap/am335x-base0033.dts      |   2 +-
+ arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi  |   2 +-
+ arch/arm/boot/dts/ti/omap/am335x-bone.dts          |   2 +-
+ .../boot/dts/ti/omap/am335x-boneblack-wireless.dts |   2 +-
+ arch/arm/boot/dts/ti/omap/am335x-boneblack.dts     |   2 +-
+ arch/arm/boot/dts/ti/omap/am335x-boneblue.dts      |   2 +-
+ arch/arm/boot/dts/ti/omap/am335x-bonegreen-eco.dts | 169 +++++++++++++++++++++
+ .../boot/dts/ti/omap/am335x-bonegreen-wireless.dts |   2 +-
+ arch/arm/boot/dts/ti/omap/am335x-bonegreen.dts     |   2 +-
+ arch/arm/boot/dts/ti/omap/am335x-chiliboard.dts    |   3 +-
+ arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts  |   2 +-
+ .../arm/boot/dts/ti/omap/am335x-osd3358-sm-red.dts |   2 +-
+ arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts  |   2 +-
+ .../ti/omap/am335x-sancloud-bbe-extended-wifi.dts  |   5 +-
+ .../boot/dts/ti/omap/am335x-sancloud-bbe-lite.dts  |   5 +-
+ arch/arm/boot/dts/ti/omap/am335x-sancloud-bbe.dts  |   2 +-
+ arch/arm/boot/dts/ti/omap/am335x-shc.dts           |   2 +-
+ arch/arm/configs/multi_v7_defconfig                |   3 +
+ arch/arm/configs/omap2plus_defconfig               |   3 +
+ 21 files changed, 214 insertions(+), 24 deletions(-)
+---
+base-commit: e22b9ddaf3afd031abc350c303c7c07a51c569d8
+change-id: 20250523-bbg-769018d1f2a7
 
 Best regards,
 -- 
-Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Köry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
+
 
