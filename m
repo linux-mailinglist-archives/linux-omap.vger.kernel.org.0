@@ -1,156 +1,375 @@
-Return-Path: <linux-omap+bounces-3906-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3907-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24B6DADF349
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Jun 2025 19:00:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F35ADF7E7
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Jun 2025 22:41:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55ECC188624D
-	for <lists+linux-omap@lfdr.de>; Wed, 18 Jun 2025 17:00:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18F003BD001
+	for <lists+linux-omap@lfdr.de>; Wed, 18 Jun 2025 20:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0FA2EA738;
-	Wed, 18 Jun 2025 17:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B308A21C188;
+	Wed, 18 Jun 2025 20:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="gLlzbqTP"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="l2MUqNBP"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644661A9B48
-	for <linux-omap@vger.kernel.org>; Wed, 18 Jun 2025 17:00:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019EA188006
+	for <linux-omap@vger.kernel.org>; Wed, 18 Jun 2025 20:41:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750266033; cv=none; b=YNU8sctiM5xdbZtZ+HYPJEg7pKL+EKa2aGW5kCdrO2l1j2u2hkvqzpkjBI60JnHfTBd1IEva87IYGJDo1HkqrlHlLg8o5V/77q5mcYAj2poVLgc25K+3F21GdoZOWSnoABq64ZJQWB2u4z0JMycXLMr/NqWUCJcMtvdhdXbuHDk=
+	t=1750279284; cv=none; b=UXcvpesGrjINuIheOWc82luBP9puxaD/ePEPZRpWBhUMFKbdqkSW6XVyv6G6xOUhozsEqLLN51Zg5FxHZdBB58vJs3vPooWlCAu1faRapgIPd6eNacDNsETApKn49iz1UyyEkt05E6IlGw7u259xtnSTmi6xvkaxKMzHprlkr1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750266033; c=relaxed/simple;
-	bh=+8Xdqwb6MvOa9JgOjMPmutzEepHU6LBWPxhoVAtdHHk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EREAorp2q0eojDsP2Wokt75yjEp1uiNENI2A3b9LHWprg2nzi1gT1PN1LCLqNq+IA9jJb2Cq1PEEijDZ9hKhKkjlC3YqWRI52/C5gZ5O4j2SygFWHp5oBFW556fhT/+7reAlrJk1MGfBWVaQQGq6pIDT4yA0T/DRYxJG0OPKX60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=gLlzbqTP; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-54b09cb06b0so8100939e87.1
-        for <linux-omap@vger.kernel.org>; Wed, 18 Jun 2025 10:00:31 -0700 (PDT)
+	s=arc-20240116; t=1750279284; c=relaxed/simple;
+	bh=3dkE3lsYL5FGEBR8G1u7uyEL2RsZEtB06UZ0J9FZ1Jg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=AHheKi0oa3O8iE/8ntMcZ+/UvBARum66omI11xahsARyXZl8LGJh7zn0DUZO+bDERP+iBDph6ZuRwHHi1rFQ+pX5mDFO2RF1o+RhlggBNSkhtLtdackSkLXZ0rfPS4fCriqeTE1jT/QkGt31W6idxzhQQilFAMxEv9fnIeS4d5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=l2MUqNBP; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b2c4476d381so60306a12.0
+        for <linux-omap@vger.kernel.org>; Wed, 18 Jun 2025 13:41:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1750266029; x=1750870829; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OxTtuzusVWGqXpGsGysxbx2Frn0OYva/hDBE1FUWIBE=;
-        b=gLlzbqTPf/GdtLrDXOO1UxqicEoY8LKaUh1Hck/2/j6M7gHgMw14kX/GildZRh/9zf
-         nAC51FFNJkA8qY4KcDgA+zaz+8rJPC9W30WytThRwAP3Fv6k4mwK4yMqaSMlKw0AeNtk
-         4sFqa0liiR0XrECqxPTxvefJ6+fui69u4huVAriuIiu+SggLO16eG7RU9WiJnJToWT/E
-         JqdtyRKPA1mCVXBN7PaSD0euGTSP0jQ4MF4/AgU196BoF7ew7D3DC8B2ZbNW7p1r9u2d
-         q5q2g0ibe/4zcOc81a0kCFjMhNyggezAx4wzvqbfk8Ae/iz5pYkeIlveRaqeGwSLX7MD
-         9HrA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1750279280; x=1750884080; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FRgH8+d7aznA4MQghmGW1XETNNC6iKcuwGWHKJaLMaY=;
+        b=l2MUqNBPue5CgmYbguEYfPtEqU25bdFeMOa/OXl8ulmi2vQzAQRlPsDtrne2Gxg7uK
+         LjvwC5e7Vpi6H8e/ucd/EVpiy6Hu9JuvqOblUpbudcWAxBVf4rddJjkAQsVWj2PQ7U/s
+         ChggQozH1tqhpctoNnHdIqGnOopbPpZ3Z0vbSqPX8tHSHICDmHe2R5KZWaZldSkRd2+6
+         8LLsgdAbvlmJiI9nH+fuh29U0QKYuu/ZSdKS/1ED1sEy/CeY0+HktM37TNHHitW7pJKr
+         rCCsaxhp/lKauNoGyvNMinCt3K4OSXAZe349oBTVAoWdS1oWx9aixo/5Uu2oEwziY2DT
+         VXZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750266029; x=1750870829;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OxTtuzusVWGqXpGsGysxbx2Frn0OYva/hDBE1FUWIBE=;
-        b=XwtA3VXGvXqRBn6HMHr26EADGg7bQXgtiPoQR2V7E0d+gDz8p9MQCf8GuCRpCP2c5S
-         D0AcFN6CdKAIzsTh4/Q2o1rICeFy0HlfvH53DkrF2IY8PtdbABVRYsvoAGdbvOUuSwpT
-         +29e6oTUZWSCiVuerRwno1CJdzfR3q2et+XIYHmnHNbzlFu604AAUnLj/6L1WDBsBHgI
-         /Om+L+fbPyT+u1RIlp2Y1MtAc2Jj28SKi9RJwFGiBEb1ynnivM8+3FiPGOJbshisaJLq
-         BIcq18jQAIP0HkKo5w+9zTHn5mbokMMplvgaQ7Om5d26EAFlYW+RypVX3iDPXxY3gKnl
-         tSXg==
-X-Forwarded-Encrypted: i=1; AJvYcCUD/2inVAPZhdoVF+AI2QiVXnKB8T//EaUoTnEUcC3pt+Y2UP+XwgPUsEQPu4FxwFgHRUwTFQ1iFu/W@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/9EHC2CJLSRxm/s4IKyNmgw7PxXG9vCkGFkoYhNDGfd0DuT/a
-	BbV8ZWTdQ+RyC1c+4xUnwsvzojmufOZ4CJkX6XpMBmY0E6mfGQf1L5mZAqHrXg4DGiKkYycoalG
-	5zQK3n1ydMppXM1FxFV+VpBb5vUpix7sD5T1xpeR5aw==
-X-Gm-Gg: ASbGncvqzowz1OiWHS4eNhCllBki3F0pf4M1EOQQVNA2E1tk5dUeJrKEQPMxd2egFUx
-	UEFF5Ykeg4XrqbmSG+g31uUXPrjuwQAq9/myv0gQhjDd6pZRTErkA2f8Iy4aNeisU6P1Ww3oa9w
-	I/1eLoRE2HzwjUTqmRQIw/NTU/PYZyByFFlrwzIh8bUn5xev9s0WF5kyZE82r0RBUSGYyB0N67w
-	w==
-X-Google-Smtp-Source: AGHT+IFrk7wjLo0FScAaHSeULurkvYIZ6q3poIqbDoop4mdMvyFf4GdTA027YlkMWkLw9hocI1+ULYkfCsJCJgw5Ht4=
-X-Received: by 2002:a05:6512:6ca:b0:553:25b2:fd2d with SMTP id
- 2adb3069b0e04-553b6f16e9cmr4855031e87.30.1750266029272; Wed, 18 Jun 2025
- 10:00:29 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1750279280; x=1750884080;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FRgH8+d7aznA4MQghmGW1XETNNC6iKcuwGWHKJaLMaY=;
+        b=gK9Q+dMcaKSeuvNcp9+mGOHqNlTUAANWUkKrCmrJ3fLJed5zX2TA1CJOXQ1g15G39a
+         P0zGk2iDjHQslACkiqgjbWuN9Fg4B3HvjRCVG9soIlo7Ixt2w+wo3vbynE9kTeWHVvdM
+         ae5wytFa9XSqQD6yBpfbpz4qmtCUlg9lCAoz0KUXvHZzQXky8zvtrtacsfInez+805vh
+         rz+KdOL4CfVU2zXGf7HrhiAt3MyHKl3zxAAyQdR7iWJJ/w0DA7IvIXKEk0nspn/ZV6R4
+         cjky+iGLxulVe4Zo1Fg+roe9KjVvuWHzuVNoNrOM7P6puC0ftV81F4KxLhxBh+Gv4QsG
+         X32A==
+X-Forwarded-Encrypted: i=1; AJvYcCWhYhqVO6gs1BPFBVHcB5luNFbt2T+RB5dqLsqQed+W38Ou8nmMbryKv9frndnEwollRnuCiPCtdgK6@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywu8vVijZz2ynDa1qa3zZHQPUQUz1ad13e4+KGkYg5uN5939Rer
+	1y6oYkxeIUHmFuUHqgKSCph4YLAbzlQQ8Ek0pkOorcaPizpgB3/1xKk6hn5DflqaEdk=
+X-Gm-Gg: ASbGnctXcRiTGPN8jGyMBZ1AtlCyBpS6MM4Idoopl9SRyNACRqp2KYyWaulp28aIHbV
+	Zby1AOq1I9R57oHJiSFU85IacfamBJPUnLM9R2eTqAsvqDjh5rXGZGZPhrj+BhkG83apOxLH3Nd
+	3dfrb42U57cv+IPA0sdEEtiqnHClmmaeaoaCVdfxaO+54ozt7uDbz0chELWb1d4jld+mVsnmlAT
+	HuMzZpGmi67zGQkY10+ZARsJvYcRA4Q/teZGdRnviOPSWtYpguIPn3iK8QAIvreX1VCDQBJSEoq
+	zGtecnSeRrjHauGYj1dPrKFG0CkRi0Fnp1qEEFdKjz4lidQfVWl2u1ImMtGh
+X-Google-Smtp-Source: AGHT+IE2M4wu8ONpX/IiaC9ZvenKuU3UdWNHV2TzBZwcoAY9dPpuZfPN3dnzzwJJvIJDvRrlPVMKzw==
+X-Received: by 2002:a17:902:da90:b0:231:ad5a:fe9c with SMTP id d9443c01a7336-237cbf35959mr12925525ad.15.1750279280168;
+        Wed, 18 Jun 2025 13:41:20 -0700 (PDT)
+Received: from localhost ([97.126.182.119])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2365d88d921sm105355355ad.40.2025.06.18.13.41.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Jun 2025 13:41:19 -0700 (PDT)
+From: Kevin Hilman <khilman@baylibre.com>
+To: Kory Maincent <kory.maincent@bootlin.com>, Tony Lindgren
+ <tony@atomide.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Aaro Koskinen
+ <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, Roger
+ Quadros <rogerq@kernel.org>, Russell King <linux@armlinux.org.uk>, Paul
+ Barker <paul.barker@sancloud.com>, Marc Murphy <marc.murphy@sancloud.com>
+Cc: Jason Kridner <jkridner@gmail.com>, Andrew Davis <afd@ti.com>, Bajjuri
+ Praneeth <praneeth@ti.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark
+ Brown <broonie@kernel.org>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, linux-omap@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, Kory Maincent
+ <kory.maincent@bootlin.com>
+Subject: Re: [PATCH v4 2/7] arm: dts: omap: Remove incorrect compatible
+ strings from device trees
+In-Reply-To: <20250617-bbg-v4-2-827cbd606db6@bootlin.com>
+References: <20250617-bbg-v4-0-827cbd606db6@bootlin.com>
+ <20250617-bbg-v4-2-827cbd606db6@bootlin.com>
+Date: Wed, 18 Jun 2025 13:41:19 -0700
+Message-ID: <7hzfe4ok9c.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250610-gpiochip-set-rv-gpio-v1-0-3a9a3c1472ff@linaro.org>
- <CGME20250618164320eucas1p28174732f38fd279fbba72f07887e5da5@eucas1p2.samsung.com>
- <20250610-gpiochip-set-rv-gpio-v1-1-3a9a3c1472ff@linaro.org> <06e7a1dc-e58f-4cff-b962-5eb087dc4c1a@samsung.com>
-In-Reply-To: <06e7a1dc-e58f-4cff-b962-5eb087dc4c1a@samsung.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Wed, 18 Jun 2025 19:00:17 +0200
-X-Gm-Features: AX0GCFsZ9BzqvDbhrAHxtqvk55yr6p1JWPmW5O8GtAIoAiziZFdZwWCX10LDhDU
-Message-ID: <CAMRc=MfWD7XGuuiLd5_Sh1vODfE-v6suM3w=qdufxXPtkW+HVg@mail.gmail.com>
-Subject: Re: [PATCH 01/12] gpio: mmio: use new GPIO line value setter callbacks
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, =?UTF-8?B?TWFyZWsgQmVow7pu?= <kabel@kernel.org>, 
-	Conor Dooley <conor.dooley@microchip.com>, Daire McNamara <daire.mcnamara@microchip.com>, 
-	Daniel Palmer <daniel@thingy.jp>, Romain Perier <romain.perier@gmail.com>, 
-	Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>, 
-	Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>, 
-	Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>, 
-	Grygorii Strashko <grygorii.strashko@ti.com>, Santosh Shilimkar <ssantosh@kernel.org>, 
-	Kevin Hilman <khilman@kernel.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, openbmc@lists.ozlabs.org, 
-	linux-omap@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Wed, Jun 18, 2025 at 6:43=E2=80=AFPM Marek Szyprowski
-<m.szyprowski@samsung.com> wrote:
->
-> A few more changes are needed to avoid NULL pointer dereference
-> (observed on RasbperrryPi5), because this driver calls ->set method
-> internally:
->
-> diff --git a/drivers/gpio/gpio-mmio.c b/drivers/gpio/gpio-mmio.c
-> index 9169eccadb23..57622f45d33e 100644
-> --- a/drivers/gpio/gpio-mmio.c
-> +++ b/drivers/gpio/gpio-mmio.c
-> @@ -362,7 +362,7 @@ static int bgpio_dir_out_err(struct gpio_chip *gc,
-> unsigned int gpio,
->   static int bgpio_simple_dir_out(struct gpio_chip *gc, unsigned int gpio=
-,
->                                  int val)
->   {
-> -       gc->set(gc, gpio, val);
-> +       gc->set_rv(gc, gpio, val);
->
->          return bgpio_dir_return(gc, gpio, true);
->   }
-> @@ -427,14 +427,14 @@ static int bgpio_dir_out_dir_first(struct
-> gpio_chip *gc, unsigned int gpio,
->                                     int val)
->   {
->          bgpio_dir_out(gc, gpio, val);
-> -       gc->set(gc, gpio, val);
-> +       gc->set_rv(gc, gpio, val);
->          return bgpio_dir_return(gc, gpio, true);
->   }
->
->   static int bgpio_dir_out_val_first(struct gpio_chip *gc, unsigned int
-> gpio,
->                                     int val)
->   {
-> -       gc->set(gc, gpio, val);
-> +       gc->set_rv(gc, gpio, val);
->          bgpio_dir_out(gc, gpio, val);
->          return bgpio_dir_return(gc, gpio, true);
->   }
->
-> Do You want a formal patch with the above changes, or will You just
-> amend them to the updated patch?
->
+Kory Maincent <kory.maincent@bootlin.com> writes:
 
-Thanks, a patch[1] is already up for review. Please give it a try and
-leave your Tested-by: if you can.
+> Several device trees incorrectly included extraneous compatible strings
+> in their compatible property lists. The policy is to only describe the
+> specific board name and SoC name to avoid confusion.
+>
+> Remove these incorrect compatible strings to fix the inconsistency.
+>
+> Also fix board vendor prefixes for BeagleBoard variants that were
+> incorrectly using "ti" instead of "beagle" or "seeed".
+>
+> Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 
-Bartosz
+While I agree with adding the new compatibles for clarity, I question
+removing the old ones after so much time in the kernel. 
 
-[1] https://lore.kernel.org/all/20250618-gpio-mmio-fix-setter-v1-2-2578ffb7=
-7019@linaro.org/
+As mentioned in earlier reviews, there is other tooling outside the
+kernel that has been built around these strings.  The one that I have in
+mind is KernelCI based tooling that tracks boards based on compatible
+strings.
+
+While the KernelCI tooling does evolve with these kinds of kernel
+changes, it also still builds and tests older kernels.  So if we want
+these tools to know that "beagle,am335x-bone" on a new kernel and
+"ti,am335x-bone" on an older stable kernel are actually the same board,
+the tools will need to keep track of that mapping as these change.
+
+So instead of removing them, can't we just make the new ones higher prio
+than the old ones?  That way the tools can see both, and also see which
+one is higher prio.
+
+I fully realize this is not necessarily the best technical argument to
+keeping the old and wrong names, so I will defer to DT maintainers on
+this one.  But since it's been wrong for a long time, I'm a bit
+reluctant to remove them completely knowing there will be external tools
+breakage.
+
+Kevin
+
+> ---
+> Changes in v4:
+> - Rename ti,am335x-shc to bosch,am335x-shc
+> - Drop model value change to avoid conflict with script based on this
+>   value like:
+>   https://salsa.debian.org/installer-team/flash-kernel/-/blob/master/db/all.db?ref_type=heads
+>
+> Changes in v3:
+> - Remove extraneous compatible strings.
+> - Replace BeagleBone board name vendor.
+>
+> Changes in v2:
+> - New patch
+> ---
+>  arch/arm/boot/dts/ti/omap/am335x-base0033.dts                   | 2 +-
+>  arch/arm/boot/dts/ti/omap/am335x-bone.dts                       | 2 +-
+>  arch/arm/boot/dts/ti/omap/am335x-boneblack-wireless.dts         | 2 +-
+>  arch/arm/boot/dts/ti/omap/am335x-boneblack.dts                  | 2 +-
+>  arch/arm/boot/dts/ti/omap/am335x-boneblue.dts                   | 2 +-
+>  arch/arm/boot/dts/ti/omap/am335x-bonegreen-wireless.dts         | 2 +-
+>  arch/arm/boot/dts/ti/omap/am335x-bonegreen.dts                  | 2 +-
+>  arch/arm/boot/dts/ti/omap/am335x-chiliboard.dts                 | 3 +--
+>  arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts               | 2 +-
+>  arch/arm/boot/dts/ti/omap/am335x-osd3358-sm-red.dts             | 2 +-
+>  arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts               | 2 +-
+>  arch/arm/boot/dts/ti/omap/am335x-sancloud-bbe-extended-wifi.dts | 5 +----
+>  arch/arm/boot/dts/ti/omap/am335x-sancloud-bbe-lite.dts          | 5 +----
+>  arch/arm/boot/dts/ti/omap/am335x-sancloud-bbe.dts               | 2 +-
+>  arch/arm/boot/dts/ti/omap/am335x-shc.dts                        | 2 +-
+>  15 files changed, 15 insertions(+), 22 deletions(-)
+>
+> diff --git a/arch/arm/boot/dts/ti/omap/am335x-base0033.dts b/arch/arm/boot/dts/ti/omap/am335x-base0033.dts
+> index 46078af4b7a3..176de29de2a6 100644
+> --- a/arch/arm/boot/dts/ti/omap/am335x-base0033.dts
+> +++ b/arch/arm/boot/dts/ti/omap/am335x-base0033.dts
+> @@ -9,7 +9,7 @@
+>  
+>  / {
+>  	model = "IGEP COM AM335x on AQUILA Expansion";
+> -	compatible = "isee,am335x-base0033", "isee,am335x-igep0033", "ti,am33xx";
+> +	compatible = "isee,am335x-base0033", "ti,am33xx";
+>  
+>  	hdmi {
+>  		compatible = "ti,tilcdc,slave";
+> diff --git a/arch/arm/boot/dts/ti/omap/am335x-bone.dts b/arch/arm/boot/dts/ti/omap/am335x-bone.dts
+> index b5d85ef51a02..08616d449f95 100644
+> --- a/arch/arm/boot/dts/ti/omap/am335x-bone.dts
+> +++ b/arch/arm/boot/dts/ti/omap/am335x-bone.dts
+> @@ -9,7 +9,7 @@
+>  
+>  / {
+>  	model = "TI AM335x BeagleBone";
+> -	compatible = "ti,am335x-bone", "ti,am33xx";
+> +	compatible = "beagle,am335x-bone", "ti,am33xx";
+>  };
+>  
+>  &ldo3_reg {
+> diff --git a/arch/arm/boot/dts/ti/omap/am335x-boneblack-wireless.dts b/arch/arm/boot/dts/ti/omap/am335x-boneblack-wireless.dts
+> index b4b4b80df08c..aa668dfa1c6a 100644
+> --- a/arch/arm/boot/dts/ti/omap/am335x-boneblack-wireless.dts
+> +++ b/arch/arm/boot/dts/ti/omap/am335x-boneblack-wireless.dts
+> @@ -12,7 +12,7 @@
+>  
+>  / {
+>  	model = "TI AM335x BeagleBone Black Wireless";
+> -	compatible = "ti,am335x-bone-black-wireless", "ti,am335x-bone-black", "ti,am335x-bone", "ti,am33xx";
+> +	compatible = "beagle,am335x-bone-black-wireless", "ti,am33xx";
+>  
+>  	wlan_en_reg: fixedregulator@2 {
+>  		compatible = "regulator-fixed";
+> diff --git a/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts b/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
+> index 16b567e3cb47..476fb6677203 100644
+> --- a/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
+> +++ b/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
+> @@ -11,7 +11,7 @@
+>  
+>  / {
+>  	model = "TI AM335x BeagleBone Black";
+> -	compatible = "ti,am335x-bone-black", "ti,am335x-bone", "ti,am33xx";
+> +	compatible = "beagle,am335x-bone-black", "ti,am33xx";
+>  };
+>  
+>  &cpu0_opp_table {
+> diff --git a/arch/arm/boot/dts/ti/omap/am335x-boneblue.dts b/arch/arm/boot/dts/ti/omap/am335x-boneblue.dts
+> index f579df4c2c54..56f9042a5bfb 100644
+> --- a/arch/arm/boot/dts/ti/omap/am335x-boneblue.dts
+> +++ b/arch/arm/boot/dts/ti/omap/am335x-boneblue.dts
+> @@ -10,7 +10,7 @@
+>  
+>  / {
+>  	model = "TI AM335x BeagleBone Blue";
+> -	compatible = "ti,am335x-bone-blue", "ti,am33xx";
+> +	compatible = "beagle,am335x-bone-blue", "ti,am33xx";
+>  
+>  	chosen {
+>  		stdout-path = &uart0;
+> diff --git a/arch/arm/boot/dts/ti/omap/am335x-bonegreen-wireless.dts b/arch/arm/boot/dts/ti/omap/am335x-bonegreen-wireless.dts
+> index a4f5b5262645..37d4d5a3edf6 100644
+> --- a/arch/arm/boot/dts/ti/omap/am335x-bonegreen-wireless.dts
+> +++ b/arch/arm/boot/dts/ti/omap/am335x-bonegreen-wireless.dts
+> @@ -11,7 +11,7 @@
+>  
+>  / {
+>  	model = "TI AM335x BeagleBone Green Wireless";
+> -	compatible = "ti,am335x-bone-green-wireless", "ti,am335x-bone-green", "ti,am335x-bone-black", "ti,am335x-bone", "ti,am33xx";
+> +	compatible = "seeed,am335x-bone-green-wireless", "ti,am33xx";
+>  
+>  	wlan_en_reg: fixedregulator@2 {
+>  		compatible = "regulator-fixed";
+> diff --git a/arch/arm/boot/dts/ti/omap/am335x-bonegreen.dts b/arch/arm/boot/dts/ti/omap/am335x-bonegreen.dts
+> index 18cc0f49e999..3d6404653816 100644
+> --- a/arch/arm/boot/dts/ti/omap/am335x-bonegreen.dts
+> +++ b/arch/arm/boot/dts/ti/omap/am335x-bonegreen.dts
+> @@ -10,5 +10,5 @@
+>  
+>  / {
+>  	model = "TI AM335x BeagleBone Green";
+> -	compatible = "ti,am335x-bone-green", "ti,am335x-bone-black", "ti,am335x-bone", "ti,am33xx";
+> +	compatible = "seeed,am335x-bone-green", "ti,am33xx";
+>  };
+> diff --git a/arch/arm/boot/dts/ti/omap/am335x-chiliboard.dts b/arch/arm/boot/dts/ti/omap/am335x-chiliboard.dts
+> index 648e97fe1dfd..224095304ef3 100644
+> --- a/arch/arm/boot/dts/ti/omap/am335x-chiliboard.dts
+> +++ b/arch/arm/boot/dts/ti/omap/am335x-chiliboard.dts
+> @@ -8,8 +8,7 @@
+>  
+>  / {
+>  	model = "AM335x Chiliboard";
+> -	compatible = "grinn,am335x-chiliboard", "grinn,am335x-chilisom",
+> -		     "ti,am33xx";
+> +	compatible = "grinn,am335x-chiliboard", "ti,am33xx";
+>  
+>  	chosen {
+>  		stdout-path = &uart0;
+> diff --git a/arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts b/arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts
+> index fd91a3c01a63..55a454f51148 100644
+> --- a/arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts
+> +++ b/arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts
+> @@ -12,7 +12,7 @@
+>  
+>  / {
+>  	model = "MYIR MYD-AM335X";
+> -	compatible = "myir,myd-am335x", "myir,myc-am335x", "ti,am33xx";
+> +	compatible = "myir,myd-am335x", "ti,am33xx";
+>  
+>  	chosen {
+>  		stdout-path = &uart0;
+> diff --git a/arch/arm/boot/dts/ti/omap/am335x-osd3358-sm-red.dts b/arch/arm/boot/dts/ti/omap/am335x-osd3358-sm-red.dts
+> index d28d39728847..d87ac31a16a9 100644
+> --- a/arch/arm/boot/dts/ti/omap/am335x-osd3358-sm-red.dts
+> +++ b/arch/arm/boot/dts/ti/omap/am335x-osd3358-sm-red.dts
+> @@ -16,7 +16,7 @@
+>  
+>  / {
+>  	model = "Octavo Systems OSD3358-SM-RED";
+> -	compatible = "oct,osd3358-sm-refdesign", "ti,am335x-bone-black", "ti,am335x-bone", "ti,am33xx";
+> +	compatible = "oct,osd3358-sm-refdesign", "ti,am33xx";
+>  };
+>  
+>  &ldo3_reg {
+> diff --git a/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts b/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts
+> index 78ce860e59b3..908203fd9190 100644
+> --- a/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts
+> +++ b/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts
+> @@ -12,7 +12,7 @@
+>  
+>  / {
+>  	model = "TI AM335x PocketBeagle";
+> -	compatible = "ti,am335x-pocketbeagle", "ti,am335x-bone", "ti,am33xx";
+> +	compatible = "beagle,am335x-pocketbeagle", "ti,am33xx";
+>  
+>  	chosen {
+>  		stdout-path = &uart0;
+> diff --git a/arch/arm/boot/dts/ti/omap/am335x-sancloud-bbe-extended-wifi.dts b/arch/arm/boot/dts/ti/omap/am335x-sancloud-bbe-extended-wifi.dts
+> index 7c9f65126c63..61210f975542 100644
+> --- a/arch/arm/boot/dts/ti/omap/am335x-sancloud-bbe-extended-wifi.dts
+> +++ b/arch/arm/boot/dts/ti/omap/am335x-sancloud-bbe-extended-wifi.dts
+> @@ -13,10 +13,7 @@
+>  
+>  / {
+>  	model = "SanCloud BeagleBone Enhanced Extended WiFi";
+> -	compatible = "sancloud,am335x-boneenhanced",
+> -		     "ti,am335x-bone-black",
+> -		     "ti,am335x-bone",
+> -		     "ti,am33xx";
+> +	compatible = "sancloud,am335x-boneenhanced", "ti,am33xx";
+>  
+>  	wlan_en_reg: fixedregulator@2 {
+>  		compatible = "regulator-fixed";
+> diff --git a/arch/arm/boot/dts/ti/omap/am335x-sancloud-bbe-lite.dts b/arch/arm/boot/dts/ti/omap/am335x-sancloud-bbe-lite.dts
+> index c6c96f6182a8..10488b55689c 100644
+> --- a/arch/arm/boot/dts/ti/omap/am335x-sancloud-bbe-lite.dts
+> +++ b/arch/arm/boot/dts/ti/omap/am335x-sancloud-bbe-lite.dts
+> @@ -12,10 +12,7 @@
+>  
+>  / {
+>  	model = "SanCloud BeagleBone Enhanced Lite";
+> -	compatible = "sancloud,am335x-boneenhanced",
+> -		     "ti,am335x-bone-black",
+> -		     "ti,am335x-bone",
+> -		     "ti,am33xx";
+> +	compatible = "sancloud,am335x-boneenhanced", "ti,am33xx";
+>  };
+>  
+>  &am33xx_pinmux {
+> diff --git a/arch/arm/boot/dts/ti/omap/am335x-sancloud-bbe.dts b/arch/arm/boot/dts/ti/omap/am335x-sancloud-bbe.dts
+> index 32669346cefe..f1bdbf053fb2 100644
+> --- a/arch/arm/boot/dts/ti/omap/am335x-sancloud-bbe.dts
+> +++ b/arch/arm/boot/dts/ti/omap/am335x-sancloud-bbe.dts
+> @@ -13,7 +13,7 @@
+>  
+>  / {
+>  	model = "SanCloud BeagleBone Enhanced";
+> -	compatible = "sancloud,am335x-boneenhanced", "ti,am335x-bone-black", "ti,am335x-bone", "ti,am33xx";
+> +	compatible = "sancloud,am335x-boneenhanced", "ti,am33xx";
+>  };
+>  
+>  &am33xx_pinmux {
+> diff --git a/arch/arm/boot/dts/ti/omap/am335x-shc.dts b/arch/arm/boot/dts/ti/omap/am335x-shc.dts
+> index 597482822608..47b1db476cf3 100644
+> --- a/arch/arm/boot/dts/ti/omap/am335x-shc.dts
+> +++ b/arch/arm/boot/dts/ti/omap/am335x-shc.dts
+> @@ -12,7 +12,7 @@
+>  
+>  / {
+>  	model = "Bosch SHC";
+> -	compatible = "ti,am335x-shc", "ti,am335x-bone", "ti,am33xx";
+> +	compatible = "bosch,am335x-shc", "ti,am33xx";
+>  
+>  	aliases {
+>  		mmcblk0 = &mmc1;
+>
+> -- 
+> 2.43.0
 
