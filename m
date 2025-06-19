@@ -1,122 +1,90 @@
-Return-Path: <linux-omap+bounces-3909-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3910-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14165AE025C
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Jun 2025 12:06:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05DF0AE037D
+	for <lists+linux-omap@lfdr.de>; Thu, 19 Jun 2025 13:29:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B170A1BC33C9
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Jun 2025 10:06:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC3F93AD7FA
+	for <lists+linux-omap@lfdr.de>; Thu, 19 Jun 2025 11:28:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51046221DBA;
-	Thu, 19 Jun 2025 10:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A1C22B5B6;
+	Thu, 19 Jun 2025 11:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PBHTkQgI"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="gnMZLThv"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D584D221D98;
-	Thu, 19 Jun 2025 10:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE8622A7E6;
+	Thu, 19 Jun 2025 11:29:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750327592; cv=none; b=TPWYVn9AfmdOjic4pe/OaMhz66Alg0FGuK6mnDWRVEKPCHsPImliU5Q9q5hzAxzJXkeim7WV1ELlW43GIW4vqZYOtIcjXUEtNCQJA/CTcBp+cNPW0I//gofkt1Tff/CPy/Ih2mIsMq/gL8FtbSjyxjqtEpPUtG3QX2fPHKrMWsk=
+	t=1750332542; cv=none; b=G8NFbtc3yZsMxiL0mACXZ5v6MHteoJ58T8w+sRpX7MgtdoLSOXhBs8y1ikJ6zV1/0Gl6Dc//T8MVNSFkIzU+rldyAALJdPSVFYeUkUxWUlZoPzYZvz+gr8Ps9xWOb54Ftc3yOb93p23cA/bljYlcrSB6WlhP2futu895VkPUcUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750327592; c=relaxed/simple;
-	bh=eHBabgud4h7n4U/gvQWHnR21l+Nyew7nA8ITwD65mdY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q4IIIZqpIW0mzxgaN5bjkOfV0zKHy+IVU7Eb5NNUOR3tIiU+YUtIHIEE4GYaJ0hMg08aq8/5WIKKtqUu5L7FUsw6UypvqO1K/xkNWTjc6xGq/8t/R6Uw85YoccKOAJH07NDqSOqzrxW0uHPthYPwcTyMtldzIuHKjLoCewTv+ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PBHTkQgI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B51B7C4CEEA;
-	Thu, 19 Jun 2025 10:06:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750327592;
-	bh=eHBabgud4h7n4U/gvQWHnR21l+Nyew7nA8ITwD65mdY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PBHTkQgIJUfkkvcvS/typalQ2hrDJHxujqjNkKEVVlo+ahirNzZkWr436D/26zx+y
-	 Y5QFerO+yPdzNOJnpLwomOfrXWY/Eb4afFT7AJ/cDcfnjxARmodtEuooby7XLd8VmJ
-	 W8vZh01QglTaWVEMvqlH6IYtUJfvXkZ4txgGjbMK+1hjVbkBPCuyKMrF2bK8+UuZUW
-	 cA12DruHqYENZV7JuCmE3VeP34qlRBklb+vUnMoxcgM+TDA0mdh9YxT83fgg7p22Nf
-	 Z504H2eZcnW4Qfcgl3sawLtp/Iz3bUswN1ctsWbK/Cxk6YsY8LRVryoWbV0+nxMf1f
-	 eVV77ETNE6zLA==
-Date: Thu, 19 Jun 2025 11:06:27 +0100
-From: Lee Jones <lee@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Jiri Slaby <jirislaby@kernel.org>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH] mfd: Remove node variables that are unused with
- CONFIG_OF=n
-Message-ID: <20250619100627.GD587864@google.com>
-References: <20250508-mfd-fix-unused-node-variables-v1-1-df84d80cca55@kernel.org>
- <20250528160603.GA1172935@ax162>
- <20250613133905.GA897353@google.com>
- <20250613160600.GA228083@ax162>
+	s=arc-20240116; t=1750332542; c=relaxed/simple;
+	bh=9DCrtg9pL7wGw7+shaY0rq7YP7MG3KxqY8DbSNRb1vU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Rw6xyddIih5kiIxKde4hZV56BEwzsh3eY2gWC6SUtzvsH7wCD/7mLfMI0aXzBy3nmT6SWau5nLIFimCuzTbQsgTBY/kpk/fV+5gqQTOJ0Qvd56m+UJ64GvPF37gGaHYbnfuijPigzL86Z4sn7Kzmh8NfkUM0dVxE+ngLM83EcQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=gnMZLThv; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=iKincwA05ZxweoMeUklxZHYyUecsuKPd9x1q+OONCGw=; b=gnMZLThv43dnhLW6D3i8zHegva
+	aR4FXcTt8RGeQ3ikGzjC5M8yg1WbUIFlyQFyBIX4M/KXb3TKTpPyW0HmKE02ThZquorgeo3MMYy2f
+	5q2cn3YpWTe04TwaiggfPTOv3EOWSmvNtaVucxvVj2y7V6xPa7v+0tVIce/eLt+lIOVFGEY+kmFeF
+	9I4lPxs8E1AB3220opYIPmJ2/CSyh96OicCc0VTkQP4YcRKlMa8+o/jYSoKT9EDnWUL/H5eVM8HKQ
+	5B+yQNVge1Y+Jj8Tm6E/eTUhPAbLl5ovnZZmjtCbD+mUvRLjQZN4Bg/JUwQLiCNsIwPky6CTTz9Q/
+	dQUY9olw==;
+Date: Thu, 19 Jun 2025 13:28:29 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: Kevin Hilman <khilman@baylibre.com>, Tony Lindgren <tony@atomide.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>,
+ Roger Quadros <rogerq@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Paul Barker <paul.barker@sancloud.com>, Marc Murphy
+ <marc.murphy@sancloud.com>, Jason Kridner <jkridner@gmail.com>, Andrew
+ Davis <afd@ti.com>, Bajjuri Praneeth <praneeth@ti.com>, Liam Girdwood
+ <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, linux-omap@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v4 2/7] arm: dts: omap: Remove incorrect compatible
+ strings from device trees
+Message-ID: <20250619132829.76abfedb@akair>
+In-Reply-To: <20250619101334.5b67741c@kmaincent-XPS-13-7390>
+References: <20250617-bbg-v4-0-827cbd606db6@bootlin.com>
+	<20250617-bbg-v4-2-827cbd606db6@bootlin.com>
+	<7hzfe4ok9c.fsf@baylibre.com>
+	<20250619101334.5b67741c@kmaincent-XPS-13-7390>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250613160600.GA228083@ax162>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, 13 Jun 2025, Nathan Chancellor wrote:
+Am Thu, 19 Jun 2025 10:13:34 +0200
+schrieb Kory Maincent <kory.maincent@bootlin.com>:
 
-> On Fri, Jun 13, 2025 at 02:39:05PM +0100, Lee Jones wrote:
-> > On Wed, 28 May 2025, Nathan Chancellor wrote:
-> > 
-> > > Hi Thomas,
-> > > 
-> > > On Thu, May 08, 2025 at 04:57:24PM +0100, Nathan Chancellor wrote:
-> > > > A recent cleanup introduced a few instances of -Wunused-variable in
-> > > > configurations without CONFIG_OF because of_fwnode_handle() does not
-> > > > reference its argument in that case:
-> > > > 
-> > > >   drivers/mfd/twl4030-irq.c: In function 'twl4030_init_irq':
-> > > >   drivers/mfd/twl4030-irq.c:679:46: warning: unused variable 'node' [-Wunused-variable]
-> > > >     679 |         struct                  device_node *node = dev->of_node;
-> > > >         |                                              ^~~~
-> > > >   drivers/mfd/max8925-core.c: In function 'max8925_irq_init':
-> > > >   drivers/mfd/max8925-core.c:659:29: warning: unused variable 'node' [-Wunused-variable]
-> > > >     659 |         struct device_node *node = chip->dev->of_node;
-> > > >         |                             ^~~~
-> > > >   drivers/mfd/88pm860x-core.c: In function 'device_irq_init':
-> > > >   drivers/mfd/88pm860x-core.c:576:29: warning: unused variable 'node' [-Wunused-variable]
-> > > >     576 |         struct device_node *node = i2c->dev.of_node;
-> > > >         |                             ^~~~
-> > > 
-> > > These warnings are now present in mainline after the merge of the
-> > > irq/cleanups branch...
-> > > 
-> > > > Use the value of these variables as the argument to of_fwnode_handle()
-> > > > directly, clearing up the warnings.
-> > > > 
-> > > > Fixes: e3d44f11da04 ("mfd: Switch to irq_domain_create_*()")
-> > > 
-> > > but this hash has changed, so this should be
-> > > 
-> > > Fixes: a36aa0f7226a ("mfd: Switch to irq_domain_create_*()")
-> > > 
-> > > but the rest of the change is still applicable. Would you like a new
-> > > change or can you adjust that when applying?
-> > 
-> > Okay, please rebase and resubmit.
-> > 
-> > I suspect at least one of these has been fixed by Arnd already.
+[...]
+> I am wondering if I will separate my patch series, the cleaning part raises
+> lots of push back.
 > 
-> All of these are addressed by commit fc5f017a71d0 ("mfd: Fix building
-> without CONFIG_OF") in your tree. Is that going to be merged into 6.16?
+I think this is a good idea, it is usually a good thing to always clean
+things up when you bring in something new, but if it becomes the main
+work, it is a bit difficult. The /s/tps@/@pmic/ should be done now.
+That is unquestioned.
 
-Yes, I can make that happen.
-
--- 
-Lee Jones [李琼斯]
+Regards,
+Andreas
 
