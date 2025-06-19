@@ -1,136 +1,85 @@
-Return-Path: <linux-omap+bounces-3917-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3918-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99E43AE050D
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Jun 2025 14:07:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30A72AE0A2D
+	for <lists+linux-omap@lfdr.de>; Thu, 19 Jun 2025 17:20:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AE4E171B6B
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Jun 2025 12:05:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C89F5165CAD
+	for <lists+linux-omap@lfdr.de>; Thu, 19 Jun 2025 15:20:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111D12472BE;
-	Thu, 19 Jun 2025 12:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0470F220F2F;
+	Thu, 19 Jun 2025 15:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CmYtYljV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N526UxVR"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8F321FF4E;
-	Thu, 19 Jun 2025 12:03:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A944215F53;
+	Thu, 19 Jun 2025 15:19:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750334624; cv=none; b=QVKhbGGSD2fr5Ny9WCYcYyfAilaPKZSlHCvYSncKKMd+TRyke0OLasPbm/dG8Sl/xo2lnjOY1SL6WmLtx80g+SiRelJH5lAUeDikvvvnTc+JVVqQW2183CEpYwhDI+C4FVb5y7j5QpICaImVkO/TjLtbDyetaFEtxSkBT7IyY0I=
+	t=1750346394; cv=none; b=njM6wQhOu2IILsPKMLi6BK9LK1m61krPt3+q+4TsA8BVY3uWDCI6kSIaYJFqTRWa5QdV6c+gZN048BPF4ERohPBTGK1ms+Ndq3VRT+mRfFpl53iItEslmOgF5yrlwQ7M5CAkg1yoXeYxEspgfoqBBDlzk7/fG/o75kT8SX4pY3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750334624; c=relaxed/simple;
-	bh=032EOE3JfPpptoyB/kdOX7ovRnOD3oMGpL43P9g44pg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ako25OcEkmHCxbgYc+w/8xLP/Eya174SzEXxI7vFK7Wxw6u2Ih5OTLj22xDEUhcFKc4R5r0osrMuG0XeQlWIqipIlPYgptahlF+XGI9P5Fj2d4bYoda8k1BxT1g7VJA1yc5AVCp4gz2871L9eaZfDkKEBEAdMsork+DKzT/0AVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CmYtYljV; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-23694cec0feso6903885ad.2;
-        Thu, 19 Jun 2025 05:03:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750334622; x=1750939422; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GN05iZ9JjCWlPcMkETDxHecu9RgOSJlmZglV/hDkh9A=;
-        b=CmYtYljV6t4/NqJ8rYocV9UtcSHzFOejW+UkawLYBFLcrYaaB4B9i7KcGosICJZWfN
-         U74qMT2NADYuJFwpqQkgG71B6PN2re8WvWJwyvkdJdOGcrMM3Gsa3uwA5/4+nzrgsYrm
-         WldFFjf7FY8ApD59qrI+C3qTLgIK/4WvN1A+JxSgyjkWEKh1CGP97ATTsp7Ut6UUUzI3
-         ROA3Hnj7doDs3wMkgHn+urslGKUmOKdu3N2LUmPlwRWToQAvfIzlCUYuF9zZSDNG9Trh
-         +EBgpU/WPPX7oPBYHNni/ZvWEQj30geljMTiabr/opxbYG2PdkY6ynCE9qARYgUaeEb+
-         FWZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750334622; x=1750939422;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GN05iZ9JjCWlPcMkETDxHecu9RgOSJlmZglV/hDkh9A=;
-        b=RhbJOvGEMm5qqKL8/aQSg185Bpmth+kuy6ytuUiRWL/jsuFY8adzeB/e7idluChgf3
-         2nGla4Q6ckh3+gG6FL4PcY4bQOBj7qJV+iFa9pzbiy6A2nd16ZKfB9ZZIwvO+V4krrRh
-         Z2y3dZIIQ1A7Z1qLykH29z6IRVTd1fssaQ9fw2Fcvm9+bbl3xMQSXVMsuG/TuxnCemfl
-         ijCll8tFxc49i+gaLR8zeyEdOwuewMkZAsQMabDdfKJsQnB00B1TfPhjtluwE7vGRP3U
-         qRpgoDO2Lcgf47F50bjJJBIIxSRGmtrsr8WjXWjeWnv/H7nmoQEuMadBkoUZLxNA6ePl
-         mwUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVrrJxww6OfrkNgyWef078Mbo4xfvRbM/XD15/W2BXQx3Xi96twhakdnAHrwsyybLhv9m1jCAXEGwjLfJo=@vger.kernel.org, AJvYcCXKj6btDvXN8gqtouYeWTCDXEfji2IrgJ0Bl5JSh3ezf3j1INRGakAMgWRJyLM0vUF708o0qlpY5WaJKA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxei4GHGxMe7t74aYHLFab/4NET9op2iyPzZzIpXbJNj9wRM+WE
-	Lk1SaeVB5qyDer3X2FEpKVvYw32fRQoOsvlbTAZ83nJjub5xlGqZh3Tbtzs3PIyz
-X-Gm-Gg: ASbGncvq4o9d2EE4YY9ZePkP7UzfkIoI3Wjoukl9oSrS6+RnPQx2G5PIriktRALm8dJ
-	n7qGYzIeXRXLG9dBD1SYqCdrTWiU7q8k9aNqCfWLkHlcV/XB+wVP18tDc+I7xdYlCmfIN0bluzj
-	L8RQV79qYfQWvo3tdb7TXCGl9gY9rAmd9Egh4aBAtMrEs270/++JTUCp/g7lrLZU2+YG1opGoLr
-	rI6V73lg/llpZvA3j8oFqlJSLVtjAdPjxTmdC66/L9kCY67F+F0/prf5Q+JHTJkJUprmATnJWmQ
-	9OiSQJnQtyWtS37/QGpwlAyleq2k2VbFkitmF0IvYrnRUTWk1D+JoWx3eQgeVdg1rzh4ioDfMsx
-	B4j1Kr/HJZdqep6sqEe0j
-X-Google-Smtp-Source: AGHT+IFVMPL4iOLl0fq0NP8WifVvbMjfb/4BmsQnkmDJ80I1T4gI1rIgBo0OxdZUiQ7xi32ZHB+pmg==
-X-Received: by 2002:a17:902:fcc3:b0:235:6aa:1675 with SMTP id d9443c01a7336-2366b14d39cmr215385935ad.52.1750334622471;
-        Thu, 19 Jun 2025 05:03:42 -0700 (PDT)
-Received: from avinash-INBOOK-Y2-PLUS.. ([2401:4900:88e2:4433:2a7d:bb88:9d3c:be74])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23699a73732sm46079105ad.145.2025.06.19.05.03.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Jun 2025 05:03:42 -0700 (PDT)
-From: Abinash Singh <abinashlalotra@gmail.com>
-X-Google-Original-From: Abinash Singh <abinashsinghlalotra@gmail.com>
-To: aaro.koskinen@iki.fi,
-	andreas@kemnade.info,
-	khilman@baylibre.com,
-	rogerq@kernel.org,
-	tony@atomide.com
-Cc: lee@kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Abinash Singh <abinashsinghlalotra@gmail.com>
-Subject: [PATCH v2] mfd: twl4030-irq: remove redundant 'node' variable
-Date: Thu, 19 Jun 2025 17:33:15 +0530
-Message-ID: <20250619120315.125620-1-abinashsinghlalotra@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1750346394; c=relaxed/simple;
+	bh=bthCQ+YkD4ujyeg+3u97IE5fLYwuVz1WctN+JSqstVg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=ZyRfMFRbib1CjoBqQRdrCAisTdYmmBZ4mNS/0nmXGLG7eJFCdFBfMerjOhtjDa7J4GU9QRhLLLlBNRpb15TGAtL8EdJ1Qy46cVh5PAmWazUv+LeJamrO6Qhpc78bmAk/R2Mn6XOzbDXOSmhUj53jbYYdL1EaBO/ESuJ8xBxmyiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N526UxVR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2D1C4CEEA;
+	Thu, 19 Jun 2025 15:19:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750346394;
+	bh=bthCQ+YkD4ujyeg+3u97IE5fLYwuVz1WctN+JSqstVg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=N526UxVRetGS1XFnd9yZ8FRzcbUbxwX5fI8mo94kb1eiejuBTGKrQfKNiZeW6MtOD
+	 5RC1vG09fLJ1HCHoyJ7d/u+9wvHQbJTtYC20uF/3+Vsca6F2F5IL/AC06RZ9BJ5u7q
+	 XBYoVgHeezSgC+8H/wcr6zLc6WAAaF6wvqdcHDUif0DZPKcRqQrj1HGT8/k4GN2dKo
+	 ERFYvNJngOUelk2yoNmJBDrrOyxv0ClrPXKCQttlz53H4NxHnlUsE5w5Y8AaEaOrFn
+	 6DSI+vxKmoq+uE6ccAySls8o58KXML7md5ebr35K+bZ2Um/RiLpVvm6n41Po9Ca07X
+	 6TF/XEapotLiw==
+From: Lee Jones <lee@kernel.org>
+To: aaro.koskinen@iki.fi, andreas@kemnade.info, khilman@baylibre.com, 
+ rogerq@kernel.org, tony@atomide.com, lee@kernel.org, 
+ linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Shree Ramamoorthy <s-ramamoorthy@ti.com>
+Cc: m-leonard@ti.com, praneeth@ti.com, afd@ti.com
+In-Reply-To: <20250527190455.169772-1-s-ramamoorthy@ti.com>
+References: <20250527190455.169772-1-s-ramamoorthy@ti.com>
+Subject: Re: [PATCH 0/2] TI TPS65214 & TPS65215: Update MFD Cell Structs
+Message-Id: <175034639178.919047.12885250485072078236.b4-ty@kernel.org>
+Date: Thu, 19 Jun 2025 16:19:51 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.15-dev-c81fc
 
-The local variable 'node' was used only once to retrieve dev->of_node
-in a call to irq_domain_create_legacy(). This patch inlines the usage
-and removes the redundant variable, improving code clarity.
+On Tue, 27 May 2025 14:04:53 -0500, Shree Ramamoorthy wrote:
+> The patches updates the GPIO compatible string for the TPS65214 & TPS65215
+> MFD cell struct based on a system design change made after driver
+> development. TPS65215 & TPS65219 now share the same GPIO count 2 GPOs and
+> 1 GPIO), instead of TPS65214 & TPS65215. TPS65215 will reuse the TPS65219
+> GPIO compatible string, instead of TPS65214. TPS65214 still has 1 GPO and
+> 1 GPIO.
+> 
+> [...]
 
-No functional change intended.
+Applied, thanks!
 
-Signed-off-by: Abinash Singh <abinashsinghlalotra@gmail.com>
+[1/2] mfd: tps65219: Update TPS65214 MFD cell's GPIO compatible string
+      commit: b2082f5eabe1a2e1a0746258cf9f88bc313d0b35
+[2/2] mfd: tps65219: Update TPS65215's MFD cell GPIO compatible string
+      (no commit info)
 
----
-v2 : Corrected the author Name
-I am sorry for that .
----
- drivers/mfd/twl4030-irq.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/mfd/twl4030-irq.c b/drivers/mfd/twl4030-irq.c
-index 232c2bfe8c18..a2ab5deef9e2 100644
---- a/drivers/mfd/twl4030-irq.c
-+++ b/drivers/mfd/twl4030-irq.c
-@@ -676,7 +676,6 @@ int twl4030_init_irq(struct device *dev, int irq_num)
- 	static struct irq_chip	twl4030_irq_chip;
- 	int			status, i;
- 	int			irq_base, irq_end, nr_irqs;
--	struct			device_node *node = dev->of_node;
- 
- 	/*
- 	 * TWL core and pwr interrupts must be contiguous because
-@@ -691,7 +690,7 @@ int twl4030_init_irq(struct device *dev, int irq_num)
- 		return irq_base;
- 	}
- 
--	irq_domain_create_legacy(of_fwnode_handle(node), nr_irqs, irq_base, 0,
-+	irq_domain_create_legacy(of_fwnode_handle(dev->of_node), nr_irqs, irq_base, 0,
- 				 &irq_domain_simple_ops, NULL);
- 
- 	irq_end = irq_base + TWL4030_CORE_NR_IRQS;
--- 
-2.43.0
+--
+Lee Jones [李琼斯]
 
 
