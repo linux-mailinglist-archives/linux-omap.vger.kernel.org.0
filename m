@@ -1,141 +1,122 @@
-Return-Path: <linux-omap+bounces-3908-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3909-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98217ADFF7A
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Jun 2025 10:13:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14165AE025C
+	for <lists+linux-omap@lfdr.de>; Thu, 19 Jun 2025 12:06:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4825E3A455E
-	for <lists+linux-omap@lfdr.de>; Thu, 19 Jun 2025 08:13:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B170A1BC33C9
+	for <lists+linux-omap@lfdr.de>; Thu, 19 Jun 2025 10:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E462609FC;
-	Thu, 19 Jun 2025 08:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51046221DBA;
+	Thu, 19 Jun 2025 10:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Eue6Ooen"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PBHTkQgI"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3705215766;
-	Thu, 19 Jun 2025 08:13:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D584D221D98;
+	Thu, 19 Jun 2025 10:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750320823; cv=none; b=g2uUGUr5NiLtj/Dm1Un1JuGJ89x/ZaZyv/a472RW/sciyJu4Gbc8dczDuRN8h5jbz1CHmat0Y7FT7CrGp5HGUXkL9GM3g5r3KqjMMIS9+bpVR6OuAy+dNqbfUgjjP5M+1Vzcdg6bdIun5w5vxPt86utI6ilsszfEEaJTkQPiWvU=
+	t=1750327592; cv=none; b=TPWYVn9AfmdOjic4pe/OaMhz66Alg0FGuK6mnDWRVEKPCHsPImliU5Q9q5hzAxzJXkeim7WV1ELlW43GIW4vqZYOtIcjXUEtNCQJA/CTcBp+cNPW0I//gofkt1Tff/CPy/Ih2mIsMq/gL8FtbSjyxjqtEpPUtG3QX2fPHKrMWsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750320823; c=relaxed/simple;
-	bh=TOnvNAFh5loptubbVx+ifrw8+CaOXeq3Jklun6ffQ3Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pU7zHpmzWKlq498dl1g9ClsCuqM+haNHkzZOoHFepFL1Fm+aLAd1z9DP2NdiIhv6wxs3iny4zWWXs78SNDlcxqcwXNBaMmUDQFUmJEk9SFczV4xxihNVFBa0f2CH7Trd349e4PCwmZldj6UAOkAwSmU1UnIzOr68qEqZOuULFME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Eue6Ooen; arc=none smtp.client-ip=217.70.183.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7AF2C433B5;
-	Thu, 19 Jun 2025 08:13:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1750320818;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yX6a2kX+avN/Me66IK4ZdJGprGWZ34+Ag3m54z+SpxI=;
-	b=Eue6OoenItyJlrcTK8NqgxPTI37swvCJGgAJnJELLfqV+fYQW8Ef/A/4O+hUj/Fs9GmeKs
-	1YinOFWt6yZ6GN+aca9mfFx3psV6E0SPYS7N0rdzu7OMDQMdAUHg5K08EIBWvQvVOT9bDS
-	ttk4rJxeh5JZto5P6K5u5VVYaHE/amvOT/jBSqTCvRAJ+Fwlkq3cIyh8CPEg0+SxiNBY3U
-	ROtfmJYWC659jVw5L2J3nlpXGdwZlB+mJ4+ZCxELo6quZVZKzP0fLtGZE9R4ZO2gRbDzBD
-	2zOjaJpWPmj+vQBeoaAKdQMKWTuevNg8edK5uTNGLn3lGNMAbfPgBC2JAW45Aw==
-Date: Thu, 19 Jun 2025 10:13:34 +0200
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Kevin Hilman <khilman@baylibre.com>
-Cc: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas
- Kemnade <andreas@kemnade.info>, Roger Quadros <rogerq@kernel.org>, Russell
- King <linux@armlinux.org.uk>, Paul Barker <paul.barker@sancloud.com>, Marc
- Murphy <marc.murphy@sancloud.com>, Jason Kridner <jkridner@gmail.com>,
- Andrew Davis <afd@ti.com>, Bajjuri Praneeth <praneeth@ti.com>, Liam
- Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Thomas
- Petazzoni <thomas.petazzoni@bootlin.com>, linux-omap@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v4 2/7] arm: dts: omap: Remove incorrect compatible
- strings from device trees
-Message-ID: <20250619101334.5b67741c@kmaincent-XPS-13-7390>
-In-Reply-To: <7hzfe4ok9c.fsf@baylibre.com>
-References: <20250617-bbg-v4-0-827cbd606db6@bootlin.com>
-	<20250617-bbg-v4-2-827cbd606db6@bootlin.com>
-	<7hzfe4ok9c.fsf@baylibre.com>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1750327592; c=relaxed/simple;
+	bh=eHBabgud4h7n4U/gvQWHnR21l+Nyew7nA8ITwD65mdY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q4IIIZqpIW0mzxgaN5bjkOfV0zKHy+IVU7Eb5NNUOR3tIiU+YUtIHIEE4GYaJ0hMg08aq8/5WIKKtqUu5L7FUsw6UypvqO1K/xkNWTjc6xGq/8t/R6Uw85YoccKOAJH07NDqSOqzrxW0uHPthYPwcTyMtldzIuHKjLoCewTv+ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PBHTkQgI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B51B7C4CEEA;
+	Thu, 19 Jun 2025 10:06:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750327592;
+	bh=eHBabgud4h7n4U/gvQWHnR21l+Nyew7nA8ITwD65mdY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PBHTkQgIJUfkkvcvS/typalQ2hrDJHxujqjNkKEVVlo+ahirNzZkWr436D/26zx+y
+	 Y5QFerO+yPdzNOJnpLwomOfrXWY/Eb4afFT7AJ/cDcfnjxARmodtEuooby7XLd8VmJ
+	 W8vZh01QglTaWVEMvqlH6IYtUJfvXkZ4txgGjbMK+1hjVbkBPCuyKMrF2bK8+UuZUW
+	 cA12DruHqYENZV7JuCmE3VeP34qlRBklb+vUnMoxcgM+TDA0mdh9YxT83fgg7p22Nf
+	 Z504H2eZcnW4Qfcgl3sawLtp/Iz3bUswN1ctsWbK/Cxk6YsY8LRVryoWbV0+nxMf1f
+	 eVV77ETNE6zLA==
+Date: Thu, 19 Jun 2025 11:06:27 +0100
+From: Lee Jones <lee@kernel.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Jiri Slaby <jirislaby@kernel.org>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
+	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH] mfd: Remove node variables that are unused with
+ CONFIG_OF=n
+Message-ID: <20250619100627.GD587864@google.com>
+References: <20250508-mfd-fix-unused-node-variables-v1-1-df84d80cca55@kernel.org>
+ <20250528160603.GA1172935@ax162>
+ <20250613133905.GA897353@google.com>
+ <20250613160600.GA228083@ax162>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdehtdduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtqhertdertdejnecuhfhrohhmpefmohhrhicuofgrihhntggvnhhtuceokhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgfdutdefvedtudegvefgvedtgfdvhfdtueeltefffefffffhgfetkedvfeduieeinecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehkmhgrihhntggvnhhtqdgirffuqddufedqjeefledtpdhmrghilhhfrhhomhepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddvpdhrtghpthhtohepkhhhihhlmhgrnhessggrhihlihgsrhgvrdgtohhmpdhrtghpthhtohepthhonhihsegrthhomhhiuggvrdgtohhmpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodguthesk
- hgvrhhnvghlrdhorhhgpdhrtghpthhtoheprggrrhhordhkohhskhhinhgvnhesihhkihdrfhhipdhrtghpthhtoheprghnughrvggrsheskhgvmhhnrgguvgdrihhnfhhopdhrtghpthhtoheprhhoghgvrhhqsehkvghrnhgvlhdrohhrgh
-X-GND-Sasl: kory.maincent@bootlin.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250613160600.GA228083@ax162>
 
-Le Wed, 18 Jun 2025 13:41:19 -0700,
-Kevin Hilman <khilman@baylibre.com> a =C3=A9crit :
+On Fri, 13 Jun 2025, Nathan Chancellor wrote:
 
-> Kory Maincent <kory.maincent@bootlin.com> writes:
->=20
-> > Several device trees incorrectly included extraneous compatible strings
-> > in their compatible property lists. The policy is to only describe the
-> > specific board name and SoC name to avoid confusion.
-> >
-> > Remove these incorrect compatible strings to fix the inconsistency.
-> >
-> > Also fix board vendor prefixes for BeagleBoard variants that were
-> > incorrectly using "ti" instead of "beagle" or "seeed".
-> >
-> > Signed-off-by: Kory Maincent <kory.maincent@bootlin.com> =20
->=20
-> While I agree with adding the new compatibles for clarity, I question
-> removing the old ones after so much time in the kernel.=20
->=20
-> As mentioned in earlier reviews, there is other tooling outside the
-> kernel that has been built around these strings.  The one that I have in
-> mind is KernelCI based tooling that tracks boards based on compatible
-> strings.
->=20
-> While the KernelCI tooling does evolve with these kinds of kernel
-> changes, it also still builds and tests older kernels.  So if we want
-> these tools to know that "beagle,am335x-bone" on a new kernel and
-> "ti,am335x-bone" on an older stable kernel are actually the same board,
-> the tools will need to keep track of that mapping as these change.
->=20
-> So instead of removing them, can't we just make the new ones higher prio
-> than the old ones?  That way the tools can see both, and also see which
-> one is higher prio.
+> On Fri, Jun 13, 2025 at 02:39:05PM +0100, Lee Jones wrote:
+> > On Wed, 28 May 2025, Nathan Chancellor wrote:
+> > 
+> > > Hi Thomas,
+> > > 
+> > > On Thu, May 08, 2025 at 04:57:24PM +0100, Nathan Chancellor wrote:
+> > > > A recent cleanup introduced a few instances of -Wunused-variable in
+> > > > configurations without CONFIG_OF because of_fwnode_handle() does not
+> > > > reference its argument in that case:
+> > > > 
+> > > >   drivers/mfd/twl4030-irq.c: In function 'twl4030_init_irq':
+> > > >   drivers/mfd/twl4030-irq.c:679:46: warning: unused variable 'node' [-Wunused-variable]
+> > > >     679 |         struct                  device_node *node = dev->of_node;
+> > > >         |                                              ^~~~
+> > > >   drivers/mfd/max8925-core.c: In function 'max8925_irq_init':
+> > > >   drivers/mfd/max8925-core.c:659:29: warning: unused variable 'node' [-Wunused-variable]
+> > > >     659 |         struct device_node *node = chip->dev->of_node;
+> > > >         |                             ^~~~
+> > > >   drivers/mfd/88pm860x-core.c: In function 'device_irq_init':
+> > > >   drivers/mfd/88pm860x-core.c:576:29: warning: unused variable 'node' [-Wunused-variable]
+> > > >     576 |         struct device_node *node = i2c->dev.of_node;
+> > > >         |                             ^~~~
+> > > 
+> > > These warnings are now present in mainline after the merge of the
+> > > irq/cleanups branch...
+> > > 
+> > > > Use the value of these variables as the argument to of_fwnode_handle()
+> > > > directly, clearing up the warnings.
+> > > > 
+> > > > Fixes: e3d44f11da04 ("mfd: Switch to irq_domain_create_*()")
+> > > 
+> > > but this hash has changed, so this should be
+> > > 
+> > > Fixes: a36aa0f7226a ("mfd: Switch to irq_domain_create_*()")
+> > > 
+> > > but the rest of the change is still applicable. Would you like a new
+> > > change or can you adjust that when applying?
+> > 
+> > Okay, please rebase and resubmit.
+> > 
+> > I suspect at least one of these has been fixed by Arnd already.
+> 
+> All of these are addressed by commit fc5f017a71d0 ("mfd: Fix building
+> without CONFIG_OF") in your tree. Is that going to be merged into 6.16?
 
-But we can't add something like what you describe to the bindings. I don't =
-think
-they will accept this. And if we don't align the bindings the dtbs check wi=
-ll
-complain forever.
+Yes, I can make that happen.
 
-> I fully realize this is not necessarily the best technical argument to
-> keeping the old and wrong names, so I will defer to DT maintainers on
-> this one.  But since it's been wrong for a long time, I'm a bit
-> reluctant to remove them completely knowing there will be external tools
-> breakage.
-
-Yes, still waiting DT maintainers point of vue on this. :/
-
-I am wondering if I will separate my patch series, the cleaning part raises
-lots of push back.
-
-Regards,
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+-- 
+Lee Jones [李琼斯]
 
