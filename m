@@ -1,53 +1,54 @@
-Return-Path: <linux-omap+bounces-3934-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3935-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E111CAE15D2
-	for <lists+linux-omap@lfdr.de>; Fri, 20 Jun 2025 10:25:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F76EAE15D7
+	for <lists+linux-omap@lfdr.de>; Fri, 20 Jun 2025 10:25:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AF011788C5
-	for <lists+linux-omap@lfdr.de>; Fri, 20 Jun 2025 08:25:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E15CC7A7925
+	for <lists+linux-omap@lfdr.de>; Fri, 20 Jun 2025 08:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08AD82367B7;
-	Fri, 20 Jun 2025 08:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9202C2376E1;
+	Fri, 20 Jun 2025 08:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ecNrct5h"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YQcZUHmI"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DAEE4685;
-	Fri, 20 Jun 2025 08:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C622367A8;
+	Fri, 20 Jun 2025 08:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750407914; cv=none; b=XSvBQIqyYMKxSeqDsFJAeN9rvMdIRyMUgntUI+yqZXfETMvMhrK0jS4JPFvTR7ZKsaAInkuugGx4DuqVItPPjHzx0j7mA6MjZvowMuecbdGYQOSyah32mqR5b8DLFy5UnadDraUMSD1cTqV2qDEPp5zQeOQZGqfbUnoA3wniagA=
+	t=1750407916; cv=none; b=SzdhWubEuCtKuMNgb2JycNYCGA7pRBhDf5ish2pUqpDV065oiUHwWXD9YwBj9uGNggpUG26XZiKIps/AYaR/jOpKwD0lUXd09BYeJqAq7uqmFnNIEDSEo4k65oQ/ImRSKBmsr5l3ZKZ69m2NaMbn059XVage3uXCvY8ZqhNub0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750407914; c=relaxed/simple;
-	bh=8ABtenNmTJXm6OLMSEc4qgTfYHPuyEw5w8fRORSVstY=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HcZd6Uvkj6fzDgPTZ/OcP1MMMLSQb36unL3xjJ5tXq2H20HDSNLex3jee0aY7QPauFkyXqK7/+vvo28WQbZXFDK/mKckF275OViL8O9A4Lie8q29B0qRhtjEN3UK8b4fAFIrcOQAhNIWDiIQofMTTNrF0+f+67hSBagTyBOl0q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ecNrct5h; arc=none smtp.client-ip=217.70.183.199
+	s=arc-20240116; t=1750407916; c=relaxed/simple;
+	bh=5mhU+zy1iqiq6WLa137lYMb1TjyKTTWMxd8F1lamkCg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=EpeJDYemR+j/jxQMcDIdDPo71ONL3Ly3Ezt+3+nzklBuqxkPh8248zsVofbsgiMx3US/LnAX30/a3O4j98DUbvcNMmRDI8KrQI3qK5WpEXCMwTRS24VqKb4X2Hh2WZ6HM8NVbBhv9IW2IkKsKMHLMGsCNtp2crWYat67pd7DnuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YQcZUHmI; arc=none smtp.client-ip=217.70.183.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3CCD743290;
-	Fri, 20 Jun 2025 08:25:09 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 71944432B8;
+	Fri, 20 Jun 2025 08:25:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1750407910;
+	t=1750407911;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=gDPNG7WMvm3bEoGApTr+1a6HMKuYycQMrui7vFgvIMc=;
-	b=ecNrct5h/xPO0eM8VGijl260rKUqbBJIc1PzOfGIlY9Q1PACNqAh1P64dktpTA0/sEz/pB
-	mYEqSIi5RDHRsNbCVFA51AlrOMRH9xkgFRadtOgXISSHY0qIIIJESo0G46t/aBQmbCaV0r
-	JrJo1LyoCXCe48fFL3tbP2zfbRHgTg2+VQtFG44W1THprFY7gzu5HER1v3uGd/6MyQ+sJv
-	FIVvuqYYb6QiFGfiMC1pOKabHQXChkQy7yvU2v9/5Te9kZwZvUXeDOYG6KqfvmlTAoEbQ7
-	86HBfnjgeqkhxVdTbQSsNDIF03DXCZcRObWafbkqjnU9UEOpv1bjR0lJ+OQQsQ==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2/+9JmWWxm4DGTrHspWkgeCTwy2Jd8ENsZDMgJXDZ1k=;
+	b=YQcZUHmIECBwkMnXRfYChBNnrkMDHgUz5U+RFw3ZmqTIpcKzFDm6pwdGDOC7RwjFOcptMV
+	dZujTciZmEUR5nYcr8u+aBJArscARQClAcf3Yof0GGGbcPeI0WyPoiz/LDr1npCD/5ZB9i
+	opictUx/7hsMc/D6XzqkgULbxAJIUBNffRguOBLB7OgS4oY/bDehrzSEwDHlVH9LE4Nnkx
+	G5FXQY+z1DlulLWdXPWNtxf0IRXKK30ECkYgv8BivPtQcpsVPx5tbbjJ0OaPARdeXZcjzl
+	3nIzaajvu338yZGjhfniDsYbgEfgmYm9TXWpKC+klxS3OxgMdf3VnVzFyX/G2A==
 From: Kory Maincent <kory.maincent@bootlin.com>
-Subject: [PATCH 0/2] arm: dts: OMAP: Clean up devicetree bindings and
- compatible strings
-Date: Fri, 20 Jun 2025 10:24:07 +0200
-Message-Id: <20250620-ti_dts_clean-v1-0-786a3059bca7@bootlin.com>
+Date: Fri, 20 Jun 2025 10:24:08 +0200
+Subject: [PATCH 1/2] dt-bindings: omap: Add missing AM33xx compatible
+ strings
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -55,11 +56,10 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAKcaVWgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDM0NL3ZLM+JSS4vjknNTEPN0UwxQLs2TLVDNz0zQloJaCotS0zAqwcdG
- xtbUAsd8+mF4AAAA=
-X-Change-ID: 20250619-ti_dts_clean-d1d86c9e675f
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250620-ti_dts_clean-v1-1-786a3059bca7@bootlin.com>
+References: <20250620-ti_dts_clean-v1-0-786a3059bca7@bootlin.com>
+In-Reply-To: <20250620-ti_dts_clean-v1-0-786a3059bca7@bootlin.com>
 To: Aaro Koskinen <aaro.koskinen@iki.fi>, 
  Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
  Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
@@ -75,59 +75,60 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 X-Mailer: b4 0.15-dev-dd21f
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdejleduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthekredtredtjeenucfhrhhomhepmfhorhihucforghinhgtvghnthcuoehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeduhfevudetfffgkedvhfevheeghedtleeghfffudeiffefvdehfeegieeivdekteenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomhepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudelpdhrtghpthhtohepthhhohhmrghsrdgsohhnnhgvfhhilhhlvgessghoohhtlhhinhdrtghomhdprhgtphhtthhopehprghulhdrsggrrhhkvghrsehsrghntghlohhuugdrtghomhdprhgtphhtthhopegrnhgurhgvrghssehkvghmnhgruggvrdhinhhfohdprhgtphhtthhopehtohhnhiesrghtohhmihguvgdrtghom
- hdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopehprhgrnhgvvghthhesthhirdgtohhmpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdejleduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomhepmfhorhihucforghinhgtvghnthcuoehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeevgfdvgfektefgfefggeekudfggffhtdfffedtueetheejtddvledvvdelhedtveenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeduledprhgtphhtthhopehthhhomhgrshdrsghonhhnvghfihhllhgvsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepphgruhhlrdgsrghrkhgvrhesshgrnhgtlhhouhgurdgtohhmpdhrtghpthhtoheprghnughrvggrsheskhgvmhhnrgguvgdrihhnfhhopdhrtghpthhtohepthhonhihsegrthhomhhiuggvrdgtohhmpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhot
+ hhlihhnrdgtohhmpdhrtghpthhtohepphhrrghnvggvthhhsehtihdrtghomhdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
 X-GND-Sasl: kory.maincent@bootlin.com
 
-This series addresses inconsistencies in OMAP devicetree bindings and
-compatible strings for AM33xx-based boards:
+Add several compatible strings that were missing from the binding
+documentation for AM33xx-based boards. Update vendor prefix from
+"ti" to "beagle" for BeagleBone to match actual hardware vendors.
 
-- Add missing compatible strings to binding documentation
-- Update vendor prefix from "ti" to "beagle" for BeagleBone boards
-  to reflect actual hardware vendors
-- Remove redundant compatible strings from device properties
-
-Note: Originally attempted to align devicetree model descriptions but
-received pushback due to Debian script dependencies (see thread at
-https://lore.kernel.org/all/7e854232-f02f-4ad6-b65e-22c18d1d9fe5@jm0.eu/).
-The compatible string changes may face similar concerns and would
-benefit from devicetree maintainer review.
-
-This work was split from a larger series to address feedback and allow
-independent progression of each topic area. Original series:
-https://lore.kernel.org/r/20250617-bbg-v4-0-827cbd606db6@bootlin.com
-
+Reviewed-by: Andrew Davis <afd@ti.com>
 Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
-Kory Maincent (2):
-      dt-bindings: omap: Add missing AM33xx compatible strings
-      arm: dts: omap: Remove incorrect compatible strings from device trees
-
  Documentation/devicetree/bindings/arm/ti/omap.yaml | 22 +++++++++++++++++++++-
- arch/arm/boot/dts/ti/omap/am335x-base0033.dts      |  2 +-
- arch/arm/boot/dts/ti/omap/am335x-bone.dts          |  2 +-
- .../boot/dts/ti/omap/am335x-boneblack-wireless.dts |  2 +-
- arch/arm/boot/dts/ti/omap/am335x-boneblack.dts     |  2 +-
- arch/arm/boot/dts/ti/omap/am335x-boneblue.dts      |  2 +-
- .../boot/dts/ti/omap/am335x-bonegreen-wireless.dts |  2 +-
- arch/arm/boot/dts/ti/omap/am335x-bonegreen.dts     |  2 +-
- arch/arm/boot/dts/ti/omap/am335x-chiliboard.dts    |  3 +--
- arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts  |  2 +-
- .../arm/boot/dts/ti/omap/am335x-osd3358-sm-red.dts |  2 +-
- arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts  |  2 +-
- .../ti/omap/am335x-sancloud-bbe-extended-wifi.dts  |  5 +----
- .../boot/dts/ti/omap/am335x-sancloud-bbe-lite.dts  |  5 +----
- arch/arm/boot/dts/ti/omap/am335x-sancloud-bbe.dts  |  2 +-
- arch/arm/boot/dts/ti/omap/am335x-shc.dts           |  2 +-
- 16 files changed, 36 insertions(+), 23 deletions(-)
----
-base-commit: e22b9ddaf3afd031abc350c303c7c07a51c569d8
-change-id: 20250619-ti_dts_clean-d1d86c9e675f
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-Best regards,
---  
-Köry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+diff --git a/Documentation/devicetree/bindings/arm/ti/omap.yaml b/Documentation/devicetree/bindings/arm/ti/omap.yaml
+index 3603edd7361d..7e0d5d376d57 100644
+--- a/Documentation/devicetree/bindings/arm/ti/omap.yaml
++++ b/Documentation/devicetree/bindings/arm/ti/omap.yaml
+@@ -104,12 +104,32 @@ properties:
+       - description: TI AM33 based platform
+         items:
+           - enum:
++              - beagle,am335x-bone
++              - beagle,am335x-bone-black
++              - beagle,am335x-bone-black-wireless
++              - beagle,am335x-bone-blue
++              - beagle,am335x-pocketbeagle
++              - bosch,am335x-guardian
++              - bosch,am335x-shc
+               - compulab,cm-t335
++              - grinn,am335x-chiliboard
++              - grinn,am335x-chilisom
++              - gumstix,am335x-pepper
++              - isee,am335x-base0033
++              - moxa,uc-2101
+               - moxa,uc-8100-me-t
++              - myir,myc-am335x
++              - myir,myd-am335x
+               - novatech,am335x-lxm
+-              - ti,am335x-bone
++              - oct,osd3358-sm-refdesign
++              - sancloud,am335x-boneenhanced
++              - seeed,am335x-bone-green
++              - seeed,am335x-bone-green-wireless
++              - tcl,am335x-sl50
+               - ti,am335x-evm
++              - ti,am335x-evmsk
+               - ti,am3359-icev2
++              - vscom,onrisc
+           - const: ti,am33xx
+ 
+       - description: Compulab board variants based on TI AM33
+
+-- 
+2.43.0
 
 
