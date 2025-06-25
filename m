@@ -1,134 +1,164 @@
-Return-Path: <linux-omap+bounces-3969-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3970-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 211A7AE78C4
-	for <lists+linux-omap@lfdr.de>; Wed, 25 Jun 2025 09:38:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00599AE7AF2
+	for <lists+linux-omap@lfdr.de>; Wed, 25 Jun 2025 10:54:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B52AE160F68
-	for <lists+linux-omap@lfdr.de>; Wed, 25 Jun 2025 07:37:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46D4D3B83E0
+	for <lists+linux-omap@lfdr.de>; Wed, 25 Jun 2025 08:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375D122259E;
-	Wed, 25 Jun 2025 07:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F26274FDB;
+	Wed, 25 Jun 2025 08:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="srAV+ug0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ol4yIJDs"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0590B20E031
-	for <linux-omap@vger.kernel.org>; Wed, 25 Jun 2025 07:35:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7FE20DD40;
+	Wed, 25 Jun 2025 08:54:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750836922; cv=none; b=UhA/LaVAuz9jbT6HscZ32UdE4GKFESj4bUPjo7q/Np9geKDoViMWbsOwtwc2ta6v0XksUNribHnJ9P9mwmvupS++8BffmC79DBLcm3hTgWARrV+9WPxtzgycIR0l/6QZ6Zo7+qldXAdtjmixjYzWgAQzlROCY36/J+pPvHJBxyo=
+	t=1750841640; cv=none; b=j7Pte4aBq8FfXLKW762YpBqs1FB7UzVlbhWIr3wsCNxm6yzQCU/h3vxSpMAyFinuBDskKEqTB7v2W8va8x2IDNUZiISXUQa07FVxhachJsEu/gsa+xIhmR2Le6n2YqLrdKShNyaWCXUpsNO3VNEngKRYDY3aUn/kLpLVBlHBPuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750836922; c=relaxed/simple;
-	bh=2DymnnvE184jkZ20uTvSiiI7+Y+QW2i9b6WEZQ2DOJs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=scI4YRfYqwJ+WHX5QKTsX8Knf6yvyVICsxHbrJMt0rMxg/MKIfaYSYbcmvu36Dn2jwwaOniVY8cBmc2gjTosAoLRSyCW/7q3NhuA/FKkc626PnNIxd34shihaBWIFFyZKpeUdz5xnSZKkpTcq7KVsbHSjNY3p+o0URoVL0OqkBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=srAV+ug0; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-60c3aafae23so1343530a12.1
-        for <linux-omap@vger.kernel.org>; Wed, 25 Jun 2025 00:35:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750836918; x=1751441718; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2DymnnvE184jkZ20uTvSiiI7+Y+QW2i9b6WEZQ2DOJs=;
-        b=srAV+ug0q+0w5chyQ7ijAx/duJp13PTzdHzxqz03njor3fxDjKTSaMxdvbKRTCT5gZ
-         +Bxeh6VtfhG3bTomX+QdTe81HgGz5BzUDK4udiYfRDAk+ECP7BQim++DL+2cdKRD9aA4
-         44nlCEEYK5P0Oodemdw27yZ6OKkgUBVIwqghmLBmMVYPmyGYZ6uKcLr1Hv+6qSuhGcCg
-         nYjDl273AZtO8v+TZ1GmQwsTAVWSygvyVr6NnEbWVuhHAXFXlERpkKNdsp+kS4EX/9wS
-         it+KDG+SVQlYaintKCAyowNqLIklO3lzyEQpnX/eptd3SY5uZmMOdaj11PQScdVElkxy
-         0xQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750836918; x=1751441718;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2DymnnvE184jkZ20uTvSiiI7+Y+QW2i9b6WEZQ2DOJs=;
-        b=R17xfezCNoNTwSs2/yv0jLb9/yFNSmxeAvwF1mQNAShcP3dYrKorR9eTJwZKn2BKs9
-         upyhl00avM1cSJ5qgVXYHHq4sK/ho0Z5wkQp5rXHxtj+tlLHftFLYy6+uIeKLtjv0iSy
-         fDhLwyIDpmZrP9jWYxN1hrYe1ziuE6/z5SFcg1ZeYCHgqU2MjGebuBj2DB0waJPJSDn/
-         sabvg6msDAZV+W/wcYYidEuACmPXA/8GbfFzXzPdoJs+D/NuifchD21CfRVb67CXaYzn
-         w2YqfXo9GExbpKQHrvJnHqHyHlmHgWi2WJ75pCDuN/YGX/M0R75pIHtSMWb20kHQAnxL
-         6AJA==
-X-Forwarded-Encrypted: i=1; AJvYcCXsHhDl4e09+kbR1pU/GMmcOncFxkh4F8TiEIURhz6XH1sTclD5Jm8JU4aIHCZyc2fCSh2sSXysQ3+s@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXKulD8fo14/O+6IWVGeG+wolXW6VmJ17YHiIXFkPZBQA+mKqE
-	+Ihucfz7502y7JNn5ScEc5rGBpIr4CZCtagnVnrLB7gf2sB3Q3GG+BPQic6mqLYEM3xqI4xDUH7
-	7xrj8gd/Avs04aS22qZ2l0XKAJ7HRb9HEeT8PlbBllg==
-X-Gm-Gg: ASbGnctqp3+kprV+9Q6sbzMBSrbD2uI9DeVtG0eq4SMIIf/NITEoXfhssbkew0ATYns
-	PdadF4+rFdsQXMGWC455+Cc5ou8Wvyea0aJ/d+Gq7sCHLZ5bIsD8j/ILUC1nct+eeLbHm69B9O+
-	lh2b0xfLcMUcv4vtcXp9qUTO5BCDwq5kWPHPDu+nL4/jysaOkZYMJiH583Pu8pC8cywzdmW7w5u
-	OA=
-X-Google-Smtp-Source: AGHT+IEyXKWCmKWZPw2kgX0twR9fcnM1z7nFPYHArFddxW4orcOtG+t3XPYgPsMNGRzQt/Onxf6tBPeKruUlJC8wqdE=
-X-Received: by 2002:a17:907:7215:b0:ad8:959c:c567 with SMTP id
- a640c23a62f3a-ae0c06af8f0mr172746266b.10.1750836918190; Wed, 25 Jun 2025
- 00:35:18 -0700 (PDT)
+	s=arc-20240116; t=1750841640; c=relaxed/simple;
+	bh=uuZhIR2tDWHzY5i4Kii6kMj+ClHkikC5nTMjdfaZpKc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p0yv7qCEeAJkTc+vQODFkTAg1V/5nnRSaMEG67A79DHsInfwQr/2iEcSRTKD/bXNkwrWwgjqhIH/PH22M0qbR2In8w2/yJPnZ6vOiVaVpMvSCkffaXK3fFHfu4K5RSgx4cG7jCHsrdwH9fv9gP94AH2LnKMP6FRcJxMguubFHMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ol4yIJDs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61218C4CEF1;
+	Wed, 25 Jun 2025 08:53:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750841640;
+	bh=uuZhIR2tDWHzY5i4Kii6kMj+ClHkikC5nTMjdfaZpKc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ol4yIJDsGd34ARrjOyA0FjvR0pdgqkwoX3owHxHT0bsCNIIdd36YIojK/17i971LM
+	 wJabuwS0ZbgBMU9WZ0TqU4K2Fe1slj39BoCfsA2UmNj2XROEiJ1NWvS7/RpOpn0i7X
+	 3iD2Mv17OaghckwJ1gJ6Ur4V27T+18yx7qr49RTuCRvh7qpVAIJmgKT8pZMXlYkkIO
+	 gcbxEnprSqeIZLOG6Ha22pEguFJ5C+3u633L9i4ttQGWieVXE0wOe8TD9X92rlho4L
+	 cf8aaTRk+Q3UYCb6U+0iIw3AK3zXgBgoY5xU64RzDkZv8a3j6/u6q23b5Qwmom8WqE
+	 tYmEiRIz3Izsw==
+Message-ID: <6c64751d-67f6-4c30-a312-af289d9f432e@kernel.org>
+Date: Wed, 25 Jun 2025 10:53:53 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250624-gpio-mmio-pdata-v1-0-a58c72eb556a@linaro.org>
- <20250624-gpio-mmio-pdata-v1-2-a58c72eb556a@linaro.org> <CACRpkdavsQJTfiwn-F+ML5MK6ADtr-31bBxLA4gV7MTAYR0YGQ@mail.gmail.com>
-In-Reply-To: <CACRpkdavsQJTfiwn-F+ML5MK6ADtr-31bBxLA4gV7MTAYR0YGQ@mail.gmail.com>
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Date: Wed, 25 Jun 2025 09:35:07 +0200
-X-Gm-Features: AX0GCFtyVKN-DtXqrWSfe49kFtB1susJDcQJSJJYWx2PpacFz_0klmfgmBsfOl0
-Message-ID: <CACMJSestPPEvsUrWaqz7yZ8OxZTMEOBY7htE7c8BV-VBumj1Lw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH RFT 2/6] gpio: mmio: get chip label and GPIO base from
  device properties
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Lee Jones <lee@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>, 
-	Sudeep Holla <sudeep.holla@arm.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Aaro Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
-	Tony Lindgren <tony@atomide.com>, Russell King <linux@armlinux.org.uk>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-omap@vger.kernel.org, patches@opensource.cirrus.com, 
-	linux-samsung-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+ Linus Walleij <linus.walleij@linaro.org>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Lee Jones <lee@kernel.org>,
+ Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Aaro Koskinen <aaro.koskinen@iki.fi>,
+ Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>,
+ Russell King <linux@armlinux.org.uk>, Alim Akhtar <alim.akhtar@samsung.com>,
+ linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+ patches@opensource.cirrus.com, linux-samsung-soc@vger.kernel.org
+References: <20250624-gpio-mmio-pdata-v1-0-a58c72eb556a@linaro.org>
+ <20250624-gpio-mmio-pdata-v1-2-a58c72eb556a@linaro.org>
+ <CACRpkdavsQJTfiwn-F+ML5MK6ADtr-31bBxLA4gV7MTAYR0YGQ@mail.gmail.com>
+ <CACMJSestPPEvsUrWaqz7yZ8OxZTMEOBY7htE7c8BV-VBumj1Lw@mail.gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <CACMJSestPPEvsUrWaqz7yZ8OxZTMEOBY7htE7c8BV-VBumj1Lw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 24 Jun 2025 at 21:44, Linus Walleij <linus.walleij@linaro.org> wrot=
-e:
->
-> On Tue, Jun 24, 2025 at 3:19=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.p=
-l> wrote:
->
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >
-> > Ahead of removing struct bgpio_pdata support from the gpio-mmio generic
-> > module, let's add support for getting the relevant values from generic
-> > device properties. "label" is a semi-standardized property in some GPIO
-> > drivers so let's go with it. There's no standard "base" property, so
-> > let's use the name "gpio-mmio,base" to tie it to this driver
-> > specifically. The number of GPIOs will be retrieved using
-> > gpiochip_get_ngpios() so there's no need to look it up in the software
-> > node.
-> >
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> This works for me.
-> I wouldn't be stoked to see device trees abusing the "gpio-mmio,base"
-> property all of a sudden just because it now exists as a device
-> property though... I kind of wish we had a way to opt out of exposing
-> this to all the sub-property paths. But it seems tiresome, so:
->
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
->
-> Yours,
-> Linus Walleij
+On 25/06/2025 09:35, Bartosz Golaszewski wrote:
+> On Tue, 24 Jun 2025 at 21:44, Linus Walleij <linus.walleij@linaro.org> wrote:
+>>
+>> On Tue, Jun 24, 2025 at 3:19 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+>>
+>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>>>
+>>> Ahead of removing struct bgpio_pdata support from the gpio-mmio generic
+>>> module, let's add support for getting the relevant values from generic
+>>> device properties. "label" is a semi-standardized property in some GPIO
+>>> drivers so let's go with it. There's no standard "base" property, so
+>>> let's use the name "gpio-mmio,base" to tie it to this driver
+>>> specifically. The number of GPIOs will be retrieved using
+>>> gpiochip_get_ngpios() so there's no need to look it up in the software
+>>> node.
+>>>
+>>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>>
+>> This works for me.
+>> I wouldn't be stoked to see device trees abusing the "gpio-mmio,base"
+>> property all of a sudden just because it now exists as a device
+>> property though... I kind of wish we had a way to opt out of exposing
+>> this to all the sub-property paths. But it seems tiresome, so:
+>>
+>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+>>
+>> Yours,
+>> Linus Walleij
+> 
+> That's not a problem - this property is not in any DT bindings and as
+> such is not an allowed property in DT sources. For out-of-tree DTs? We
+> don't care about those.
+That's not true, we do care about implied ABI. Try changing/breaking
+this later, when users complain their out of tree DTS is affected, and
+explaining this all to Greg.
 
-That's not a problem - this property is not in any DT bindings and as
-such is not an allowed property in DT sources. For out-of-tree DTs? We
-don't care about those.
+Rob was/is working on tools checking this for such implied ABI, I think.
+For of_xxx() calls it is obvious, for device_xxx() or fwnode_xxx() it is
+not, therefore please add a comment that this is not allowed to be used
+by Devicetree platforms (or that this is only for
+ACPI/platform_data/whatever). I don't have any other guideline/solution
+other than a comment.
 
-Bartosz
+Best regards,
+Krzysztof
 
