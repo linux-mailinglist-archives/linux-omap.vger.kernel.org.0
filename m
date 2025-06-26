@@ -1,134 +1,187 @@
-Return-Path: <linux-omap+bounces-3982-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3983-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4693AEA75E
-	for <lists+linux-omap@lfdr.de>; Thu, 26 Jun 2025 21:52:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5887AEA988
+	for <lists+linux-omap@lfdr.de>; Fri, 27 Jun 2025 00:21:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42A924E35A8
-	for <lists+linux-omap@lfdr.de>; Thu, 26 Jun 2025 19:52:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 417293BB454
+	for <lists+linux-omap@lfdr.de>; Thu, 26 Jun 2025 22:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA972EF9A9;
-	Thu, 26 Jun 2025 19:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QWVN1ZT/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8ED9264FBB;
+	Thu, 26 Jun 2025 22:21:05 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565D61552FA;
-	Thu, 26 Jun 2025 19:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1982E2620C4
+	for <linux-omap@vger.kernel.org>; Thu, 26 Jun 2025 22:21:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750967524; cv=none; b=fvrck+TSJihXn7f1ZNerTA50qCR57BXuM6Q7tBIJR49WMxlcs/RSUYXwv3qrn6TxBIMVfpRzc4lKiAOqdyWs7LJlYInb/zXdhfLG3vmTH2+doYFr0xs6BtFfEgVQx5NMOtwkxy0W08szk/7ho3wKI2bev50itanzYp+CQww0X20=
+	t=1750976465; cv=none; b=tlQS9ih6UVq9gN8BVwwja3RsHFkaUW7eF+UP0hb1fPk045mfmvcMH52pI+C+my+9skpZqZvyQ9PkJkZEkOCzYVDb94w8Rgn8cU+sFhPX5MEdpq3ZUeh2adY7S0qFcx9KkVqVYTc0eMhWCAfPuuZc9a5vlwTVfShn2fnHC8RqChk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750967524; c=relaxed/simple;
-	bh=e6KViXfQD5OG2cPkIRrqtZBedg8VPapSONDCN/qM0no=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uMT3VVy33CqvLJRmULUWg4kX6oEKdNH2R2HpbR0Xt+eMnmob26jxHWGv1h4rcQoENn1cCaH60drkIeGE+IX454xfbYYH/xrkjlAriIyLv1ZFq8j0B4R+IlPwnEF56jO1deS0ein8+PhYEDBWENubyUG6st3rSy1zdojEdfSu3wY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QWVN1ZT/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011EDC4CEEB;
-	Thu, 26 Jun 2025 19:51:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750967523;
-	bh=e6KViXfQD5OG2cPkIRrqtZBedg8VPapSONDCN/qM0no=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QWVN1ZT/H8yzS5oVa4d5uU1Zp59HQC+ccS/bFBDlSViJGSwLPPXumxI+vp4ynlXMg
-	 fhDxk08cD9AYXEv5WPY3eV3RcgBpMMkwBlDrOJ9NgRAv9aTejZI3icqy+fZ/wFjun+
-	 6KpwAx9vi5/FThEFsQ7mRxDk+99ZzEy4UIQbEegppvP/Qo5+SH0D1rV0Fzto5EVziM
-	 ckChEAw6K0Rg0Z9bicheFNRknUkPoISDOIcUf/JfRkMaYh/LQnj6bHUfCLBf0CfiO/
-	 qA7bA38qdYwJmPBtaMXFdQG3IZbS2NkaV3JD8UPJ7vW/iJfHgf9qQnGnceshWTbsiV
-	 TUMkxJbActFJA==
-Message-ID: <ab02736e-4d4b-4f6a-840a-d24201038b6d@kernel.org>
-Date: Thu, 26 Jun 2025 21:51:55 +0200
+	s=arc-20240116; t=1750976465; c=relaxed/simple;
+	bh=r1HSdZ6WNVEi/Mi83UVnh9NXStJTYzNzdw0G+GYtays=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B81LogsK3P57Sh/RQVUWAbBd76DDIT29JmEW5HHXrppDcNBStUr2mmpRCG0paVyrNyyjL8MMdzcW1C5wEwA3Pv5EPuAqXqfjnsw4BkmyOBAS8oo3jWX5qIpUMAyw0ipJqZJV6pM+k9a7/J6VxcFs471IPNrBJalUtR98l9LmkEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AC8AA169E
+	for <linux-omap@vger.kernel.org>; Thu, 26 Jun 2025 15:20:45 -0700 (PDT)
+Received: from e110455-lin.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 02FC53F66E
+	for <linux-omap@vger.kernel.org>; Thu, 26 Jun 2025 15:21:02 -0700 (PDT)
+Date: Thu, 26 Jun 2025 23:20:43 +0100
+From: Liviu Dudau <liviu.dudau@arm.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Lee Jones <lee@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-omap@vger.kernel.org, patches@opensource.cirrus.com,
+	linux-samsung-soc@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH RFT 3/6] mfd: vexpress-sysreg: set-up software nodes for
+ gpio-mmio
+Message-ID: <aF3Hu0bMVfkbXdFn@e110455-lin.cambridge.arm.com>
+References: <20250624-gpio-mmio-pdata-v1-0-a58c72eb556a@linaro.org>
+ <20250624-gpio-mmio-pdata-v1-3-a58c72eb556a@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFT 5/6] ARM: s3c: crag6410: use generic device properties
- for gpio-mmio
-To: Bartosz Golaszewski <brgl@bgdev.pl>,
- Linus Walleij <linus.walleij@linaro.org>, Lee Jones <lee@kernel.org>,
- Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Aaro Koskinen <aaro.koskinen@iki.fi>,
- Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>,
- Russell King <linux@armlinux.org.uk>, Alim Akhtar <alim.akhtar@samsung.com>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
- patches@opensource.cirrus.com, linux-samsung-soc@vger.kernel.org,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-References: <20250624-gpio-mmio-pdata-v1-0-a58c72eb556a@linaro.org>
- <20250624-gpio-mmio-pdata-v1-5-a58c72eb556a@linaro.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250624-gpio-mmio-pdata-v1-5-a58c72eb556a@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250624-gpio-mmio-pdata-v1-3-a58c72eb556a@linaro.org>
 
-On 24/06/2025 15:19, Bartosz Golaszewski wrote:
+On Tue, Jun 24, 2025 at 03:19:14PM +0200, Bartosz Golaszewski wrote:
 > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 > 
-> The GPIO device in crag6410 is registered with struct bgpio_pdata passed
-> as platform_data to the gpio-mmio driver. We want to remove the
-> bgpio_pdata from the kernel and the gpio-mmio driver is now also able to
-> get the relevant values from the software node. Set up device properties
-> and switch to using platform_device_info to register the device as
-> platform_add_devices() doesn't allow us to pass device properties to the
-> driver model.
+> Replace struct bgpio_pdata - that we plan to remove - with software
+> nodes containing properties encoding the same values thatr can now be
+> parsed by gpio-mmio.
 > 
 > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+
+I'm OK with this going through the GPIO tree.
 
 Best regards,
-Krzysztof
+Liviu
+
+> ---
+>  drivers/mfd/vexpress-sysreg.c | 46 ++++++++++++++++++++++++++-----------------
+>  1 file changed, 28 insertions(+), 18 deletions(-)
+> 
+> diff --git a/drivers/mfd/vexpress-sysreg.c b/drivers/mfd/vexpress-sysreg.c
+> index ef03d6cec9ff6927668d051ca459eb1d8ff7269e..fc2daffc4352cca763cefbf6e17bdd5242290198 100644
+> --- a/drivers/mfd/vexpress-sysreg.c
+> +++ b/drivers/mfd/vexpress-sysreg.c
+> @@ -11,6 +11,7 @@
+>  #include <linux/module.h>
+>  #include <linux/of_platform.h>
+>  #include <linux/platform_device.h>
+> +#include <linux/property.h>
+>  #include <linux/slab.h>
+>  #include <linux/stat.h>
+>  
+> @@ -37,22 +38,34 @@
+>  
+>  /* The sysreg block is just a random collection of various functions... */
+>  
+> -static struct bgpio_pdata vexpress_sysreg_sys_led_pdata = {
+> -	.label = "sys_led",
+> -	.base = -1,
+> -	.ngpio = 8,
+> +static const struct property_entry vexpress_sysreg_sys_led_props[] = {
+> +	PROPERTY_ENTRY_STRING("label", "sys_led"),
+> +	PROPERTY_ENTRY_U32("ngpios", 8),
+> +	{ }
+>  };
+>  
+> -static struct bgpio_pdata vexpress_sysreg_sys_mci_pdata = {
+> -	.label = "sys_mci",
+> -	.base = -1,
+> -	.ngpio = 2,
+> +static const struct software_node vexpress_sysreg_sys_led_swnode = {
+> +	.properties = vexpress_sysreg_sys_led_props,
+>  };
+>  
+> -static struct bgpio_pdata vexpress_sysreg_sys_flash_pdata = {
+> -	.label = "sys_flash",
+> -	.base = -1,
+> -	.ngpio = 1,
+> +static const struct property_entry vexpress_sysreg_sys_mci_props[] = {
+> +	PROPERTY_ENTRY_STRING("label", "sys_mci"),
+> +	PROPERTY_ENTRY_U32("ngpios", 2),
+> +	{ }
+> +};
+> +
+> +static const struct software_node vexpress_sysreg_sys_mci_swnode = {
+> +	.properties = vexpress_sysreg_sys_mci_props,
+> +};
+> +
+> +static const struct property_entry vexpress_sysreg_sys_flash_props[] = {
+> +	PROPERTY_ENTRY_STRING("label", "sys_flash"),
+> +	PROPERTY_ENTRY_U32("ngpios", 1),
+> +	{ }
+> +};
+> +
+> +static const struct software_node vexpress_sysreg_sys_flash_swnode = {
+> +	.properties = vexpress_sysreg_sys_flash_props,
+>  };
+>  
+>  static struct mfd_cell vexpress_sysreg_cells[] = {
+> @@ -61,22 +74,19 @@ static struct mfd_cell vexpress_sysreg_cells[] = {
+>  		.of_compatible = "arm,vexpress-sysreg,sys_led",
+>  		.num_resources = 1,
+>  		.resources = &DEFINE_RES_MEM_NAMED(SYS_LED, 0x4, "dat"),
+> -		.platform_data = &vexpress_sysreg_sys_led_pdata,
+> -		.pdata_size = sizeof(vexpress_sysreg_sys_led_pdata),
+> +		.swnode = &vexpress_sysreg_sys_led_swnode,
+>  	}, {
+>  		.name = "basic-mmio-gpio",
+>  		.of_compatible = "arm,vexpress-sysreg,sys_mci",
+>  		.num_resources = 1,
+>  		.resources = &DEFINE_RES_MEM_NAMED(SYS_MCI, 0x4, "dat"),
+> -		.platform_data = &vexpress_sysreg_sys_mci_pdata,
+> -		.pdata_size = sizeof(vexpress_sysreg_sys_mci_pdata),
+> +		.swnode = &vexpress_sysreg_sys_mci_swnode,
+>  	}, {
+>  		.name = "basic-mmio-gpio",
+>  		.of_compatible = "arm,vexpress-sysreg,sys_flash",
+>  		.num_resources = 1,
+>  		.resources = &DEFINE_RES_MEM_NAMED(SYS_FLASH, 0x4, "dat"),
+> -		.platform_data = &vexpress_sysreg_sys_flash_pdata,
+> -		.pdata_size = sizeof(vexpress_sysreg_sys_flash_pdata),
+> +		.swnode = &vexpress_sysreg_sys_flash_swnode,
+>  	}, {
+>  		.name = "vexpress-syscfg",
+>  		.num_resources = 1,
+> 
+> -- 
+> 2.48.1
+> 
+
+-- 
+====================
+| I would like to |
+| fix the world,  |
+| but they're not |
+| giving me the   |
+ \ source code!  /
+  ---------------
+    ¯\_(ツ)_/¯
 
