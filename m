@@ -1,125 +1,134 @@
-Return-Path: <linux-omap+bounces-3981-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3982-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1D0AE9EAA
-	for <lists+linux-omap@lfdr.de>; Thu, 26 Jun 2025 15:26:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4693AEA75E
+	for <lists+linux-omap@lfdr.de>; Thu, 26 Jun 2025 21:52:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73E6C3B454A
-	for <lists+linux-omap@lfdr.de>; Thu, 26 Jun 2025 13:25:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42A924E35A8
+	for <lists+linux-omap@lfdr.de>; Thu, 26 Jun 2025 19:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 149F92E54AF;
-	Thu, 26 Jun 2025 13:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA972EF9A9;
+	Thu, 26 Jun 2025 19:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="B2URa0mm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QWVN1ZT/"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010EC28BAAF
-	for <linux-omap@vger.kernel.org>; Thu, 26 Jun 2025 13:25:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565D61552FA;
+	Thu, 26 Jun 2025 19:52:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750944321; cv=none; b=RDjGdjxInTDjTriGETuOLdWN2ujVrt2Hjj7vpEDXSF5h7TREcKiOUGohJKBGgVnhTyGW7z9ycYNcwGbwWnkS8RKbSnFm+u+jwWo5afWsaVcoYmb0PLrOoTQbP6MznKuV0e+f1FT0cP99aYI8IK6gZ9uHRLIe8DRv95PmnPQcVE8=
+	t=1750967524; cv=none; b=fvrck+TSJihXn7f1ZNerTA50qCR57BXuM6Q7tBIJR49WMxlcs/RSUYXwv3qrn6TxBIMVfpRzc4lKiAOqdyWs7LJlYInb/zXdhfLG3vmTH2+doYFr0xs6BtFfEgVQx5NMOtwkxy0W08szk/7ho3wKI2bev50itanzYp+CQww0X20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750944321; c=relaxed/simple;
-	bh=enT5vO2ALcAa/LZ/Y3Lm+uixPZpZ0NB8EkbAOpe//TU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rl4fnhFsvsRUkM0NC4zMAY5psYrflT/4ynaz4KyiFpOsPr6gcl3lvWai76b6nKa4O68DlesFmRG3zlX46jGGZH3cdjxfQOxGgb7sU11eWhrtZDUKn66f3OVjsmjuGuLMMlhPKANAPcFPld8wOeldGTXWhW9IUDVGT0l0kIeII/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=B2URa0mm; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-553b544e7b4so1017982e87.3
-        for <linux-omap@vger.kernel.org>; Thu, 26 Jun 2025 06:25:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1750944318; x=1751549118; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mLwSjoUY7m1Ln7Qu4AWMnTKuJMVdB5FurphkXRXpBRw=;
-        b=B2URa0mmUHhnUjza7rK4696DHHQRqzZPsZe5TYKZKfgX+wCd+wRPV2jMDwS/ZdKSLd
-         GG29e4E2LuL+S6ctn/2NS4m/6ZIE2g0iPL6B8QpKy3nOO5WwKcDTr8e1HuUw2uq42BYs
-         VwDUidPE0YGep05ZnMAO/6qTkLMKYq6p4E1qlVkEwyO4CkhyfQSXd88NMQDxTBba7RWJ
-         D5CmwT6dZt+QP4retuQYMnXxS26f5thUFxNkgLK4Odj+9rxPKwiziZ0xMnrF9a75+8aH
-         7x2ei/oncy3TeryRSUA3mkUn6WU37Lr9LqHWN9rimDXlFPf9y4NV9WSUoJgn5+gYBKG5
-         ic5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750944318; x=1751549118;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mLwSjoUY7m1Ln7Qu4AWMnTKuJMVdB5FurphkXRXpBRw=;
-        b=entEsrjJiDZAD3HeqEEPVsCU8wqKpFiSKmkAXvJ/gn+qRCDO8fZ3hjzWl94MlhKhx1
-         0av8RSYsjt0AajFvKNjDpgI+Wg5shOav5p7HPOGLeA2Wp+d6UD3RgBovU1CsVwrXOhHF
-         crxCLFoHPO1HGsm61OGDksL+X9TDB3zwRPQORgJKmRLOVQ0dPduEhn2LIbBzPlL3jGBL
-         +UtesSQ/wJBmQg4RFBm2GN4Z3SBW0bQBTENPrHLjEIQoR1NdghBebO0v7I/4XAk/RxBH
-         l20CDWy2j8dxHM1Wd1aJOh4UOpv2U/y5z8/FURQpuR2RXo2hYK/zADUTB0990neCbhgX
-         o69g==
-X-Forwarded-Encrypted: i=1; AJvYcCUJaibSCVpNx84+QKLQlcLiPKn+iV83TOUpMsLqgmZid/13c/UYcj4WeXqAyL/KXF6udkdMjVSLcblH@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYAoBEP42IGz7KvQASX0W4xGIT6cr/EEetUbuSUz4T6H3phCu/
-	cdRZPWdsX8UeLKOhZvuUrYDjM/XiuyvT2ZzO/QX8Q49WpLXuU68XpmQcNPSX9kOMjKrXHL46HoP
-	emh8R6FGIZTBYwbKwY6+m78k8iaqX5Nz1/tbuOyjFlA==
-X-Gm-Gg: ASbGncvaiuvXiEndbZUvyyWTo/D3LmPO3r7RIswJGnTtQ4HBECsf2jBdU5aGtCYOU3i
-	FaqbWi4OOo+JX73+cEVtwVoJM+YiYJ9XyjSN43gUN+GKD/BiBASU+wjhvr2X57HIBMGAuHlO6bD
-	IjRMBjY0Xgw2bMSaYNAuDR1bsp78/XmoqnBBuKWGwJxRZq+wyLHsXHsWaWvspJP4gtinebo/51K
-	g==
-X-Google-Smtp-Source: AGHT+IFZCHpg6dN8jQOP4LGMeE8N6TdaxL+CR37n8aEWMLkZ46xkrupRdz8U89iquKgLZ75BaGxTbVJfXxSWy4Rbayg=
-X-Received: by 2002:a05:6512:691:b0:553:aed7:9807 with SMTP id
- 2adb3069b0e04-554fdcc531fmr2571744e87.9.1750944317960; Thu, 26 Jun 2025
- 06:25:17 -0700 (PDT)
+	s=arc-20240116; t=1750967524; c=relaxed/simple;
+	bh=e6KViXfQD5OG2cPkIRrqtZBedg8VPapSONDCN/qM0no=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uMT3VVy33CqvLJRmULUWg4kX6oEKdNH2R2HpbR0Xt+eMnmob26jxHWGv1h4rcQoENn1cCaH60drkIeGE+IX454xfbYYH/xrkjlAriIyLv1ZFq8j0B4R+IlPwnEF56jO1deS0ein8+PhYEDBWENubyUG6st3rSy1zdojEdfSu3wY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QWVN1ZT/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011EDC4CEEB;
+	Thu, 26 Jun 2025 19:51:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750967523;
+	bh=e6KViXfQD5OG2cPkIRrqtZBedg8VPapSONDCN/qM0no=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=QWVN1ZT/H8yzS5oVa4d5uU1Zp59HQC+ccS/bFBDlSViJGSwLPPXumxI+vp4ynlXMg
+	 fhDxk08cD9AYXEv5WPY3eV3RcgBpMMkwBlDrOJ9NgRAv9aTejZI3icqy+fZ/wFjun+
+	 6KpwAx9vi5/FThEFsQ7mRxDk+99ZzEy4UIQbEegppvP/Qo5+SH0D1rV0Fzto5EVziM
+	 ckChEAw6K0Rg0Z9bicheFNRknUkPoISDOIcUf/JfRkMaYh/LQnj6bHUfCLBf0CfiO/
+	 qA7bA38qdYwJmPBtaMXFdQG3IZbS2NkaV3JD8UPJ7vW/iJfHgf9qQnGnceshWTbsiV
+	 TUMkxJbActFJA==
+Message-ID: <ab02736e-4d4b-4f6a-840a-d24201038b6d@kernel.org>
+Date: Thu, 26 Jun 2025 21:51:55 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFT 5/6] ARM: s3c: crag6410: use generic device properties
+ for gpio-mmio
+To: Bartosz Golaszewski <brgl@bgdev.pl>,
+ Linus Walleij <linus.walleij@linaro.org>, Lee Jones <lee@kernel.org>,
+ Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Aaro Koskinen <aaro.koskinen@iki.fi>,
+ Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>,
+ Russell King <linux@armlinux.org.uk>, Alim Akhtar <alim.akhtar@samsung.com>
+Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+ patches@opensource.cirrus.com, linux-samsung-soc@vger.kernel.org,
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 References: <20250624-gpio-mmio-pdata-v1-0-a58c72eb556a@linaro.org>
- <20250624-gpio-mmio-pdata-v1-3-a58c72eb556a@linaro.org> <20250626132257.GE10134@google.com>
-In-Reply-To: <20250626132257.GE10134@google.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Thu, 26 Jun 2025 15:25:06 +0200
-X-Gm-Features: Ac12FXw9b1Ua2nskF_gKsApdHRnQVgOC-Rscq226tK5vt_NGX_5zRRRras-l-hs
-Message-ID: <CAMRc=MdBipydUjEKXDufMAWNZjMA18RKj0XcNofrn1oR7bXTZA@mail.gmail.com>
-Subject: Re: [PATCH RFT 3/6] mfd: vexpress-sysreg: set-up software nodes for gpio-mmio
-To: Lee Jones <lee@kernel.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Liviu Dudau <liviu.dudau@arm.com>, 
-	Sudeep Holla <sudeep.holla@arm.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Aaro Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
-	Tony Lindgren <tony@atomide.com>, Russell King <linux@armlinux.org.uk>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-omap@vger.kernel.org, patches@opensource.cirrus.com, 
-	linux-samsung-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <20250624-gpio-mmio-pdata-v1-5-a58c72eb556a@linaro.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250624-gpio-mmio-pdata-v1-5-a58c72eb556a@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jun 26, 2025 at 3:23=E2=80=AFPM Lee Jones <lee@kernel.org> wrote:
->
-> On Tue, 24 Jun 2025, Bartosz Golaszewski wrote:
->
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >
-> > Replace struct bgpio_pdata - that we plan to remove - with software
-> > nodes containing properties encoding the same values thatr can now be
->
-> Spelling.
->
-> > parsed by gpio-mmio.
-> >
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > ---
-> >  drivers/mfd/vexpress-sysreg.c | 46 ++++++++++++++++++++++++++---------=
---------
-> >  1 file changed, 28 insertions(+), 18 deletions(-)
->
-> Can this go in on its own, or does it have depend{encies,ants}?
+On 24/06/2025 15:19, Bartosz Golaszewski wrote:
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> 
+> The GPIO device in crag6410 is registered with struct bgpio_pdata passed
+> as platform_data to the gpio-mmio driver. We want to remove the
+> bgpio_pdata from the kernel and the gpio-mmio driver is now also able to
+> get the relevant values from the software node. Set up device properties
+> and switch to using platform_device_info to register the device as
+> platform_add_devices() doesn't allow us to pass device properties to the
+> driver model.
+> 
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-It will break the MFD GPIO sub-driver without patch 1/6 from this
-series. It would be best if you could Ack it and I can set up an
-immutable branch for v6.17 if you need it.
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Bartosz
+Best regards,
+Krzysztof
 
