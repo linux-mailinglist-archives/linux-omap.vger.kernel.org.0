@@ -1,180 +1,128 @@
-Return-Path: <linux-omap+bounces-3984-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3985-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04884AEAA85
-	for <lists+linux-omap@lfdr.de>; Fri, 27 Jun 2025 01:23:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37B55AEAB99
+	for <lists+linux-omap@lfdr.de>; Fri, 27 Jun 2025 02:10:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8170B64027C
-	for <lists+linux-omap@lfdr.de>; Thu, 26 Jun 2025 23:22:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 995153AD91A
+	for <lists+linux-omap@lfdr.de>; Fri, 27 Jun 2025 00:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C49223322;
-	Thu, 26 Jun 2025 23:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833EF2F3E;
+	Fri, 27 Jun 2025 00:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Q9rqQSRh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YY1x5GFc"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD26921FF47;
-	Thu, 26 Jun 2025 23:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7CBDF59;
+	Fri, 27 Jun 2025 00:04:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750980186; cv=none; b=Z8SaWjPafU1TCVFcMWPiW7tlRiB8jexIgrXUKxoxYOSEsWI5dJy0A+0pNWSBGRioBIQGhbqzVHw32HjRynNCNrpbp+fgNmcFciNPB61Qsbb16cU43RdT/la0pf2UmT/cQMZuTkg83k53dkXhxYchMhYh8ZL3TmWO7H6aVUoA4TI=
+	t=1750982666; cv=none; b=AH4KI26R55znIRENd4xuOWywc92HiBpapk0RKjhWUyiwIZUMdRKiV0AWqCwgRbvJwJdqNt5BMAtScuCHBi85NVGEugCiNkyXHWOnrIv8MkpAibpvqEkWCbuWD2MD0GxSKsYMN8F8yj0hH1JrO6vx4idQyXoBkzSH3TGVxPhvQt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750980186; c=relaxed/simple;
-	bh=dM3fad0aYF7xhw5qhluTNSyTBUUZhxy+O6kv065vpZs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=UYu6MI/QrSOpcUQBDhXkfDLOxyW0R8+jPOjCRu+0xnEN77zP9mRwEpyddF/Xa8XgxDMlkFdNLAjqJX8uiKmEXIJP0Sdf9ME5Mb1YLm6vI8bY5G3RCv2aDKUJl7K5oUJKMy/SaNJvlN/tg/RPAf4cGA15j4eKoEYoXbGS2v3UsC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Q9rqQSRh; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllvem-sh03.itg.ti.com ([10.64.41.86])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 55QNMJug2580697;
-	Thu, 26 Jun 2025 18:22:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1750980139;
-	bh=/LQM2y0c1hypruTZ0kUlI64jy128/WyN5WOrBAa7oaU=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=Q9rqQSRhDPnDsODGwL4CGAzbDJ7RnHulNsnAq1BepY5QqUb7TQCGXWV+YFPW8OE8u
-	 SzweOksJp2+vpInqroBecKAIll/JhqJXSpt7OD49WPbqYQq9jT5/XljLK20TkdGi66
-	 n5+/eNLZSI2PFOguDirq5pGbntdao2ee5C5vsgI0=
-Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
-	by fllvem-sh03.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 55QNMIun2412991
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Thu, 26 Jun 2025 18:22:18 -0500
-Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Thu, 26
- Jun 2025 18:22:18 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Thu, 26 Jun 2025 18:22:18 -0500
-Received: from [128.247.81.105] (judy-hp.dhcp.ti.com [128.247.81.105])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 55QNMINR1805323;
-	Thu, 26 Jun 2025 18:22:18 -0500
-Message-ID: <e49a3fff-8a50-44aa-aa0c-1ba1bf478eb6@ti.com>
-Date: Thu, 26 Jun 2025 18:22:18 -0500
+	s=arc-20240116; t=1750982666; c=relaxed/simple;
+	bh=MMnGvwviEVFlUvuSc5IrOYIGoVikK7rLR8ZR2R2Vb74=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lx6VKOlUf1xG8eCJJqqC8H9n8dX+f+iKn5nN352xUkI7JgDo24nVDkAvYEUEO+MiVCSqwyuXNDfyEdBMXfIY3+e0x5hPUG9DtQ6ToAgl1dC5WTwa5WDDG7Ekrv3M46kicvW0cHi67zSaS+H4j9tD1mPrZdzK/DxJTxeboKImh+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YY1x5GFc; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-236470b2dceso17908285ad.0;
+        Thu, 26 Jun 2025 17:04:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750982664; x=1751587464; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MMnGvwviEVFlUvuSc5IrOYIGoVikK7rLR8ZR2R2Vb74=;
+        b=YY1x5GFc9sOdDUcj7fllnIRRt11uSZx/pdaycwO8UNq70joxNoda+99Hphz08jMIEq
+         w65DiQfjFYsIF40SDOV0aJ+j5aTZLBQs/2KQPShWd88Vc0wK6c7jCVvHgF60tXW4aWF8
+         U89WCVOmq/wCqIfaFKmJ8+vV/mLbj92prnuNpsHgy1sVJCyp7WCHbiqwE6objMCIKwzw
+         9LWJe/MvC1yc3c4EJd7yfvBQAFH4KE5hq+txnil7Ca/2iiRRm+PBxsEFnu+H1uP7RjjL
+         oX7AzkSCgeY8GbydUfH7LAMgYcP8PSLxtgjYmGhcdQft0cSvmxf9Blvc6Ww1BazunKBR
+         O9Vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750982664; x=1751587464;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MMnGvwviEVFlUvuSc5IrOYIGoVikK7rLR8ZR2R2Vb74=;
+        b=tXfAtR7K4fmW1Uz3YzKS/oaVxg8EG/OBaWIy63jSoUCC7ePcN5hmnim8RCg9mPRBP1
+         E3C31rZW0hdhOIPVmwT2xWvIWSCoeqavH/9Q7BSx00wozIrkY4N0YFnPRNyXWXtZ1TFg
+         iO+GLWw1/Cf0ZKWk6JzELpZV4w54XgtdSvlMbdxzXqjiX6xibVppbAIZHySTksm/PoFa
+         0FYdMe5nyi/xbqttdLZx2JB1JyxqNl6Bi1XLSIYskN0OtIIyiA/XJT0ZHwhgJIZ8JCFC
+         JAOA3QSxBHdUT7lWVXBpM6y3S8p5NXxW1LmgyvDJ90SKpx9ipxHBtoQGSS0f2g1rVibZ
+         c6tA==
+X-Forwarded-Encrypted: i=1; AJvYcCUiUMV14Lrjc7ZHj8E0s7wPRgluR+Utf69bTUNlIklDutkW1mJ3ItOyZntlEr+r/12xcIZzA9gdnI/TGI1i@vger.kernel.org, AJvYcCWAb8jkwprQIbsm8doQg1BKjqXcX+awHVizVqLd43pb+cbgWYmT6HnObe35blE+1QnH/DfrtdKnYkaPLA==@vger.kernel.org, AJvYcCXCEmbeYbcf69qtfiLzYIsUuYySxWgqRPdj51eXkodzkbbNwzB54qci7EbB5GbGaebnIMCeKixhkpoI@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYjoJNH/jLvVKTcLnx00GlWjJH/D62PTV1STDAZg2ojXlChI6p
+	O7YZFs9GRHloJXTLCzgYzPHIt3WGM1NACJwEAYflqeWLhE8OkZVJDp9mOq32va7+flAxR7GhEPY
+	h2CPoRf248pbWz1E1I+v3nRnKupy2ztM=
+X-Gm-Gg: ASbGncuw0wboDWWVb6oXSvQR5QTlvohmktvcjCAZnbt6mdD7Kad0acL4xzSi0Q8va5Z
+	SeFlPTl1Fa3YYIspIlqSnMVDR8xXe8RQno8l4B3hylah8sUQpu7f2vIurieP1m1/Rb0ijyU0kMG
+	eQxd2Xc8LWSRauC1lGO3TvQv0N2joXXp8Swvb8MvTZ13Ys
+X-Google-Smtp-Source: AGHT+IFlddWDto7V2+jazoypW+F1vj2BX8bxx8BPpRAZpczzJKylaofzMNivlk1qo7wzFt/Q3vzyNmQWz/UqPI/9Bpo=
+X-Received: by 2002:a17:903:f8d:b0:234:a734:4ab1 with SMTP id
+ d9443c01a7336-23ac2d86971mr13866665ad.3.1750982663585; Thu, 26 Jun 2025
+ 17:04:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20250620-bbg-v5-0-84f9b9a2e3a8@bootlin.com> <e49a3fff-8a50-44aa-aa0c-1ba1bf478eb6@ti.com>
+In-Reply-To: <e49a3fff-8a50-44aa-aa0c-1ba1bf478eb6@ti.com>
+From: Robert Nelson <robertcnelson@gmail.com>
+Date: Thu, 26 Jun 2025 19:03:56 -0500
+X-Gm-Features: Ac12FXzvGaKZfG4TDGgxvXq8kIRn9_pX2bPdP2HIh9V69ipXrdVK7EmoJJX0lj8
+Message-ID: <CAOCHtYgNfnAK43GBTdN675dFSHrbTJfy_2GbRE88E-0keoChrg@mail.gmail.com>
 Subject: Re: [PATCH v5 0/5] Add support for BeagleBone Green Eco board
-To: Kory Maincent <kory.maincent@bootlin.com>,
-        Tony Lindgren
-	<tony@atomide.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Aaro Koskinen
-	<aaro.koskinen@iki.fi>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Kevin Hilman
-	<khilman@baylibre.com>,
-        Roger Quadros <rogerq@kernel.org>,
-        Russell King
-	<linux@armlinux.org.uk>,
-        Paul Barker <paul.barker@sancloud.com>,
-        Marc Murphy
-	<marc.murphy@sancloud.com>
-CC: Jason Kridner <jkridner@gmail.com>, Andrew Davis <afd@ti.com>,
-        Bajjuri
- Praneeth <praneeth@ti.com>,
-        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
-	<broonie@kernel.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        Thomas Bonnefille <thomas.bonnefille@bootlin.com>,
-        Romain Gantois
-	<romain.gantois@bootlin.com>,
-        Conor Dooley <conor.dooley@microchip.com>
-References: <20250620-bbg-v5-0-84f9b9a2e3a8@bootlin.com>
-Content-Language: en-US
-From: Judith Mendez <jm@ti.com>
-In-Reply-To: <20250620-bbg-v5-0-84f9b9a2e3a8@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+To: Judith Mendez <jm@ti.com>
+Cc: Kory Maincent <kory.maincent@bootlin.com>, Tony Lindgren <tony@atomide.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, 
+	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
+	Russell King <linux@armlinux.org.uk>, Paul Barker <paul.barker@sancloud.com>, 
+	Marc Murphy <marc.murphy@sancloud.com>, Jason Kridner <jkridner@gmail.com>, Andrew Davis <afd@ti.com>, 
+	Bajjuri Praneeth <praneeth@ti.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-omap@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, 
+	Thomas Bonnefille <thomas.bonnefille@bootlin.com>, Romain Gantois <romain.gantois@bootlin.com>, 
+	Conor Dooley <conor.dooley@microchip.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Kory,
+On Thu, Jun 26, 2025 at 6:23=E2=80=AFPM Judith Mendez <jm@ti.com> wrote:
+>
+> Hi Kory,
+>
+> On 6/20/25 3:15 AM, Kory Maincent wrote:
+> > SeeedStudio BeagleBone Green Eco (BBGE) is a clone of the BeagleBone Gr=
+een
+> > (BBG). It has minor differences from the BBG, such as a different PMIC,
+> > a different Ethernet PHY, and a larger eMMC.
+>
+> Thanks for the patches.
+> I was testing against next and noticed a kernel paging request error:
+> https://gist.github.com/jmenti/d861528f98035b07259c29e76e5fae8b
+>
+> Did you see this by chance?
+>
+> I will double check that I tested correctly and come back, but was just
+> curious to see if this is expected.
 
-On 6/20/25 3:15 AM, Kory Maincent wrote:
-> SeeedStudio BeagleBone Green Eco (BBGE) is a clone of the BeagleBone Green
-> (BBG). It has minor differences from the BBG, such as a different PMIC,
-> a different Ethernet PHY, and a larger eMMC.
+The tps65219-regulator.c has a bug, make sure with this board you also
+have: https://patchew.org/linux/20250620154541.2713036-1-s-ramamoorthy@ti.c=
+om/
 
-Thanks for the patches.
-I was testing against next and noticed a kernel paging request error:
-https://gist.github.com/jmenti/d861528f98035b07259c29e76e5fae8b
+Regards,
 
-Did you see this by chance?
-
-I will double check that I tested correctly and come back, but was just
-curious to see if this is expected.
-
-~ Judith
-
-> 
-> Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-> ---
-> Changes in v5:
-> - Split the patch series. As the cleaning process faced some pushback,
->    I prefer to first get this support accepted and separately work on the
->    devicetree and binding cleaning process.
-> - Link to v4: https://lore.kernel.org/r/20250617-bbg-v4-0-827cbd606db6@bootlin.com
-> 
-> Changes in v4:
-> - Drop model value change to avoid conflict with script based on this
->    value like:
->    https://salsa.debian.org/installer-team/flash-kernel/-/blob/master/db/all.db?ref_type=heads
-> - Rename ti,am335x-shc to bosch,am335x-shc
-> - Forgot to change to "Seeed" in BeagleBone Green Eco model description.
-> - Link to v3: https://lore.kernel.org/r/20250613-bbg-v3-0-514cdc768448@bootlin.com
-> 
-> Changes in v3:
-> - Update multi_v7_defconfig with TPS65219 config.
-> - Remove extraneous compatible strings.
-> - Replace BeagleBone compatible board name vendor to use "beagle" instead
->    of "ti".
-> - Link to v2: https://lore.kernel.org/r/20250609-bbg-v2-0-5278026b7498@bootlin.com
-> 
-> Changes in v2:
-> - Add patch 1 to 3 to fix binding and devicetree inconsistencies.
-> - Rename tps node name to generic pmic node name in am335x-bone-common.
-> - Link to v1: https://lore.kernel.org/r/20250523-bbg-v1-0-ef4a9e57eeee@bootlin.com
-> 
-> ---
-> Kory Maincent (5):
->        arm: dts: omap: am335x-bone-common: Rename tps to generic pmic node
->        dt-bindings: omap: Add Seeed BeagleBone Green Eco
->        arm: dts: omap: Add support for BeagleBone Green Eco board
->        arm: omap2plus_defconfig: Enable TPS65219 regulator
->        arm: multi_v7_defconfig: Enable TPS65219 regulator
-> 
->   Documentation/devicetree/bindings/arm/ti/omap.yaml |   1 +
->   arch/arm/boot/dts/ti/omap/Makefile                 |   1 +
->   arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi  |   2 +-
->   arch/arm/boot/dts/ti/omap/am335x-bonegreen-eco.dts | 169 +++++++++++++++++++++
->   arch/arm/configs/multi_v7_defconfig                |   3 +
->   arch/arm/configs/omap2plus_defconfig               |   3 +
->   6 files changed, 178 insertions(+), 1 deletion(-)
-> ---
-> base-commit: e22b9ddaf3afd031abc350c303c7c07a51c569d8
-> change-id: 20250523-bbg-769018d1f2a7
-> 
-> Best regards,
-> --
-> Köry Maincent, Bootlin
-> Embedded Linux and kernel engineering
-> https://bootlin.com
-> 
-> 
-
+--=20
+Robert Nelson
+https://rcn-ee.com/
 
