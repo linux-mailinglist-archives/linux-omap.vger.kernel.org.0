@@ -1,118 +1,100 @@
-Return-Path: <linux-omap+bounces-3990-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-3991-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 917F1AEC24F
-	for <lists+linux-omap@lfdr.de>; Fri, 27 Jun 2025 23:49:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E22F4AED1A7
+	for <lists+linux-omap@lfdr.de>; Mon, 30 Jun 2025 00:39:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33941188462A
-	for <lists+linux-omap@lfdr.de>; Fri, 27 Jun 2025 21:49:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14EFF3B4708
+	for <lists+linux-omap@lfdr.de>; Sun, 29 Jun 2025 22:38:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D59B28A700;
-	Fri, 27 Jun 2025 21:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3195222FE08;
+	Sun, 29 Jun 2025 22:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="AQfIPDnO"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="aCsLkVVa"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+Received: from relay15.mail.gandi.net (relay15.mail.gandi.net [217.70.178.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495DA1FBCB5;
-	Fri, 27 Jun 2025 21:48:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E45207A32;
+	Sun, 29 Jun 2025 22:39:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751060930; cv=none; b=N0VFn1NgllnuIOkL1I3iDw6PxEH7d7Sa33VYrddeQBQ/Vdsgak9Z+AKG4dJqXh5K7OfWcRLg2PlMyR82iDT5uFFyrlAUpN8kRpJM1gqxMeFvSkpkDOZLZKciezrAVI0oCD202mIUlCCbYDzgpSaVpBrPporH6N4Nn9OkktzifX4=
+	t=1751236745; cv=none; b=eO6Jd039LVZrzfadSddDfKiVH0jUZHYB29ZxcLP9bMjGvStci+Qr+vzrdtSN7EE3MyyoiqfmCz2EVTghqUXNCWnptHNRRdjvqtJN7Leop7Tkq/fdK+sd2bEh1VkpV75X5cljhg4J+Gz6K/BfhTeRZvgtrwfiVhi+Jtc/3V5J0pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751060930; c=relaxed/simple;
-	bh=RB25scHzcHUecT2LoPbXGgFC+nSWwtL47Zd0BDvbfR4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=frMaPVOHWrmddObZvyNzpHRCgI+IMuvYXeK7gIVOFT6dYFpVhMdg11Ohqo1VNEZRUS1EVb6RItHHcT9UlwA6G0VIgU+r8zcFQrmaSnUnv+Kw9HTws1m3eI2Pxqbxi2udSQiRDBbvy4AZ8eGxypLgdf8Y2Gt+to6R9/OgN1MxLu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=AQfIPDnO; arc=none smtp.client-ip=198.47.23.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTP id 55RLmK8d2841413;
-	Fri, 27 Jun 2025 16:48:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1751060900;
-	bh=c48FdaYUBETORNVRHnKeGAi+dO5DvZl4pZvPld9S9xs=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=AQfIPDnOuERmi0XwmMIvUYTCmUpBOeKEQY7wxkcO8M7+Yxbp0ibrKJco1fhXiU8pt
-	 HsPuS4sKbGLvDQ+XCNx3tS7nfSEuCL86z1TgYM/xpWrdhqAbB4oj+ISf+sPyNksGyn
-	 tdgFeG+JRjjY+knEm9QNv+/eBqIryYtZmUkdckCI=
-Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
-	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 55RLmKSP751364
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Fri, 27 Jun 2025 16:48:20 -0500
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Fri, 27
- Jun 2025 16:48:19 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Fri, 27 Jun 2025 16:48:19 -0500
-Received: from [128.247.81.105] (judy-hp.dhcp.ti.com [128.247.81.105])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 55RLmJ7J3755700;
-	Fri, 27 Jun 2025 16:48:19 -0500
-Message-ID: <89457440-8b3f-4e21-8352-6ee05b269398@ti.com>
-Date: Fri, 27 Jun 2025 16:48:19 -0500
+	s=arc-20240116; t=1751236745; c=relaxed/simple;
+	bh=RV2Ao9LrCXX4C6ZPYabE/JoQFUM+lMGNIBm5R3kM+Pk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FLshDJX8Y3SY9TNRq1vH/L3CIU53TG64ju7d+JScMHHHcj4fhV26L/YliWiE3AN7CmxX7dK9wpJ2QZbD1UMcptu5DQ5iznBViKR2H8hrCMoFs36Zdz66dm0WtlyuCBdslDP8FvUXuXGOkgbfSpXWK14ehaeMLXoCl/rYTPvjvy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=aCsLkVVa; arc=none smtp.client-ip=217.70.178.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 175E04317F;
+	Sun, 29 Jun 2025 22:38:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1751236740;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RV2Ao9LrCXX4C6ZPYabE/JoQFUM+lMGNIBm5R3kM+Pk=;
+	b=aCsLkVVacrBB0W2vMPwzfHp6ABwHsIWFTAqQ76GXLfApfoCWhqFZQmyRAHvjCmnnVhS2DD
+	m4Q9/g6XtMp8KyaIPhtCqlGFnnC/8M4Hn6QS15BpNbBAyaR3XUH0xIn6+kPwNyTo44aNPR
+	WBWSx4/quo6LIN10cDpRZZnqyBI7sH/X/qD0ymt8TIx8RN8zTpDkQ4xCIEekt1gReP7DHn
+	ukoJLaBOvr5DuVxQziBKzysA484Pvs+wKOhrTKAZBlUuJl5VquFMzcMqs81V1LXtIePEhx
+	nn9qa5hqV3441Vrg3YqE2RDLvHY8Rq0m9bf9n/m+yUyicd2qISF3WRHXbnp6YA==
+Date: Mon, 30 Jun 2025 00:38:54 +0200
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas
+ Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, Roger
+ Quadros <rogerq@kernel.org>, Russell King <linux@armlinux.org.uk>, Paul
+ Barker <paul.barker@sancloud.com>, Marc Murphy <marc.murphy@sancloud.com>
+Cc: Jason Kridner <jkridner@gmail.com>, Andrew Davis <afd@ti.com>, Bajjuri
+ Praneeth <praneeth@ti.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
+ <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas
+ Bonnefille <thomas.bonnefille@bootlin.com>, Romain Gantois
+ <romain.gantois@bootlin.com>, Conor Dooley <conor.dooley@microchip.com>
+Subject: Re: [PATCH v5 0/5] Add support for BeagleBone Green Eco board
+Message-ID: <20250630003854.79d6d9c4@kmaincent-XPS-13-7390>
+In-Reply-To: <20250620-bbg-v5-0-84f9b9a2e3a8@bootlin.com>
+References: <20250620-bbg-v5-0-84f9b9a2e3a8@bootlin.com>
+Organization: bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/5] Add support for BeagleBone Green Eco board
-To: Kory Maincent <kory.maincent@bootlin.com>,
-        Tony Lindgren
-	<tony@atomide.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Aaro Koskinen
-	<aaro.koskinen@iki.fi>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Kevin Hilman
-	<khilman@baylibre.com>,
-        Roger Quadros <rogerq@kernel.org>,
-        Russell King
-	<linux@armlinux.org.uk>,
-        Paul Barker <paul.barker@sancloud.com>,
-        Marc Murphy
-	<marc.murphy@sancloud.com>
-CC: Jason Kridner <jkridner@gmail.com>, Andrew Davis <afd@ti.com>,
-        Bajjuri
- Praneeth <praneeth@ti.com>,
-        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
-	<broonie@kernel.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        <linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        Thomas Bonnefille <thomas.bonnefille@bootlin.com>,
-        Romain Gantois
-	<romain.gantois@bootlin.com>,
-        Conor Dooley <conor.dooley@microchip.com>
-References: <20250620-bbg-v5-0-84f9b9a2e3a8@bootlin.com>
-Content-Language: en-US
-From: Judith Mendez <jm@ti.com>
-In-Reply-To: <20250620-bbg-v5-0-84f9b9a2e3a8@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddutddtgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthhqredtredtjeenucfhrhhomhepmfhorhihucforghinhgtvghnthcuoehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpefguddtfeevtddugeevgfevtdfgvdfhtdeuleetffefffffhffgteekvdefudeiieenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdtrgemledtieefmegtlehfvdemledvvdgrmeeltdelvgemgehfgeelmeehtddutdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggstdgrmeeltdeifeemtgelfhdvmeelvddvrgemledtlegvmeegfhegleemhedtuddtpdhhvghlohepkhhmrghinhgtvghnthdqigfrufdqudefqdejfeeltddpmhgrihhlfhhrohhmpehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvhedprhgtphhtthhopehtohhnhiesrghtohhmihguvgdrtghomhdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhriihkodgutheskhgvr
+ hhnvghlrdhorhhgpdhrtghpthhtoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrghrohdrkhhoshhkihhnvghnsehikhhirdhfihdprhgtphhtthhopegrnhgurhgvrghssehkvghmnhgruggvrdhinhhfohdprhgtphhtthhopehkhhhilhhmrghnsegsrgihlhhisghrvgdrtghomhdprhgtphhtthhopehrohhgvghrqheskhgvrhhnvghlrdhorhhg
 
-Hi Kory,
+Le Fri, 20 Jun 2025 10:15:51 +0200,
+Kory Maincent <kory.maincent@bootlin.com> a =C3=A9crit :
 
-On 6/20/25 3:15 AM, Kory Maincent wrote:
 > SeeedStudio BeagleBone Green Eco (BBGE) is a clone of the BeagleBone Green
 > (BBG). It has minor differences from the BBG, such as a different PMIC,
 > a different Ethernet PHY, and a larger eMMC.
-> 
+>=20
 > Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 
-For the series,
-Tested-by: Judith Mendez <jm@ti.com>
+Hello,
 
+Any news on this patch series?
+
+Regards,
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
 
