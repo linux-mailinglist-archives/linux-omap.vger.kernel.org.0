@@ -1,176 +1,178 @@
-Return-Path: <linux-omap+bounces-4014-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4015-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A32EAF025B
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Jul 2025 19:58:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D256AF033E
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Jul 2025 20:58:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F3E5162829
-	for <lists+linux-omap@lfdr.de>; Tue,  1 Jul 2025 17:58:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C36CC7ABFE4
+	for <lists+linux-omap@lfdr.de>; Tue,  1 Jul 2025 18:56:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B82528152B;
-	Tue,  1 Jul 2025 17:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0803B27EFEE;
+	Tue,  1 Jul 2025 18:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iUsIsFLR"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="V5XSQ3ZC"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2792B3596B;
-	Tue,  1 Jul 2025 17:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB39E26B2AA
+	for <linux-omap@vger.kernel.org>; Tue,  1 Jul 2025 18:57:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751392662; cv=none; b=hieCgyydzGkjwPcD8uxGP22c05kiSoDYcvzKBR+6BnA9VJ2goKSQYjkhigzd7raXHIG9mOR96HX5cuMNKinC0oQTYft0fmBHTpnsSV7JCKmllFA4T+NNhCKDTBhys5KNXsSUSzxzUv2Ai2FNGushiQuXS/dKee+d+84raoi61/Q=
+	t=1751396276; cv=none; b=OXf4JKb3ln+52ZHL/K4K+U0puNOvVFQneCj8BbFUYl7Aafbv10eqs9PuJv+kXG3e0rsO+k+T9IDhOxLvgiawo8XbD6UX0UxodDfE+nUbhDOMCWX3QcKnNRMMItmKx5+ivRVnkf3ocFiDFBRI8ENWo0vVHCjH60M3CPJNsghOync=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751392662; c=relaxed/simple;
-	bh=Xcj3t8dS0FcmInmyKWAR0WJhIMN9tZ31T0nM7EtTJpo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CSXhZya4XURCXoKlKZ2QVG4sUG50x0Ww+OmXOfg7ZBKh8r6EG6kZklDtTW0FsRJNa4Cjk8TcBCwVmpOIDs9KM8w8bAmezXKn7pyvCN0UIdsUlm95N1H2EWBkHWLVdhNg6t51QM/bQfDB6ftINs+mThT6dPW7nHogvlT5g81PwLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iUsIsFLR; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ae360b6249fso750356066b.1;
-        Tue, 01 Jul 2025 10:57:40 -0700 (PDT)
+	s=arc-20240116; t=1751396276; c=relaxed/simple;
+	bh=GWEL99hdlJ/IrXmR+14f96xedSnSMx9f2OPajvke3F8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RImE86X4j0/desH5eJifcK5VcbR8e1lQOONxQcc09Sto6xomVFRFPp6/sUWY6jz/tmBhUUQFFacI33DL3i8BYQhNVZ4hBawsH1qaTEjfsUv/zEUCkIXF5D5rcYzWfyMhJZ3OZ9JNscDIDZqM6a06zqkCcNSUj794QtCHFtV421o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=V5XSQ3ZC; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3a4f379662cso3075673f8f.0
+        for <linux-omap@vger.kernel.org>; Tue, 01 Jul 2025 11:57:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751392659; x=1751997459; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pXjfR544OdpbJ9besQg+JvGQxJKjojQewq85hiTyzvw=;
-        b=iUsIsFLRo0peJdxeIvjPC8w2Xj21cg7MZDINLIla+fLfS+v6bxkabM0H5Q0Osishi6
-         UUZ0SIUnGa3fiaE92Kz9bd1QGsNVTiEUW7FC0cJAcQn8H2dWljRcmYm342h5SyAc7WYD
-         KqWdMNgAui9YjsBXz8kWTWXfusZPEsmVJ5W9YOuhJgjNMxn7LBHvK9uwRhHF2HBdkREW
-         JyaWKNDQFmkjUI1gVZGrzA0IRQP8ikXGo0yg/a2ayPKPWvncq08QgBIqPIhK2Vu3qLtd
-         iCvF63w9b454hh9W3pn+da87v1Icl0ZsNiR8NFKteNWoXUJAjGwMih5M48U+TeoxYK20
-         GaDQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751396273; x=1752001073; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/OnXkb5Xk0A16V2ni6PtoSDVdWoQW1678+k13MiKScA=;
+        b=V5XSQ3ZCbAIR01/YKILh1W/SYSBoEeEC/amW5yxeFeW9FRQnrZ/15LJv4HFHhizV59
+         OoBApdRrOr7I5pE3EZLiBKfs4qbOpWR/G2SjjuqEjevDnQ0iuK9lEFmldiRuT0MBB4jK
+         BktIhNlFv3lEa5i9Jj1ctzlQsBWURnmFCJ0EdguhjJtPfa4Q2mdIBx8tVClaeLDbZ4RG
+         tNTSlXHiGyQps1oDruq6SpuaLFsuHj9v1dYn5XdvfwObR2Io7/c+1fVtFMqZuFtvDoVh
+         8kZd16OfcRDSdhGQUJ+m9DVEy0QIRUrGj8QJ68UYJc64SiOkKfn+qGYL1AGBQaXTXFMB
+         ou9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751392659; x=1751997459;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pXjfR544OdpbJ9besQg+JvGQxJKjojQewq85hiTyzvw=;
-        b=sVQ6LM1uKdTcWsRpvmMhCSfsZwekWzdzyAEGqF8nx/+e43poG2GrBssYpijs4DPwMB
-         QUNakoVVkmn225dhJ2Ah/fFMmeClmzouSEQzrdd1M2NfgHh4z4wniTIb26uWp7HYNR80
-         ypL/jFPrpSJBTaX4+QSggho1PaEY6+PhbjvGuDan5G+d0fG8sUrkV40y3sNQujk6p2LG
-         gLAELKO8H4/wwTSkqtFVN9qjeazgpAza5eA6DHLeS0JDX8JkVgZYLR3eu1KOMdf4BXWN
-         aqK4V1f01Ywyx4jzW6BmXAgYQAc11bgj79buSnm5gZ3SXEEJo+AxxZTRyo1R7amZYLWL
-         yTiw==
-X-Forwarded-Encrypted: i=1; AJvYcCUVy8txv5hM/+hSuI/nBkFn6sciUTOqmrIza6Z4MATGQRkWFZPHh6W7PFNMx62aS6WlENBSrOqzIqeG@vger.kernel.org, AJvYcCUYh/3YBv1eIHq8DRInHDBLAEmFMrOHWEueom13cLFsHpUWSBNjlr7B6a+L6qKXgil2tFStF96/ruPB@vger.kernel.org, AJvYcCUl/4+2LXagdrLUZ4u7f72e6Lw4rnyfO5dvFXvIj5SJV6GO9v66Gmgj5XJCgwld5BaBtigVz4Exz5csvw==@vger.kernel.org, AJvYcCVFajyBuFXmkHXMd12duyPWRVtLNot+iVJQ2/IPuCb0uJa6gCxkp4Xkk/ft5W0fJT69wnudFVsmiKLEeL8=@vger.kernel.org, AJvYcCVMM3qVPM93ghaLpM94wGg5djBKPtTjyghvV1y+wLFBTHwzMfa0QcrZJ3IT7iPcOPzh6XbhrlcJ@vger.kernel.org, AJvYcCVt3PauObtJgxRsytfRrfMRFYs7meOcw+YLXThV5ovyMad35OjbXCTm19HPF2x6XwLMSTY31TeHUin2@vger.kernel.org, AJvYcCWB9zAKg780CCcyghYnGyjDgwjPFyRtwiyVNldF8EJZDybh2g6wAI3sXIXtCCbbxCEM2rc5gx0I9QGd@vger.kernel.org, AJvYcCWTNg+wfy1z8mCD/919h9pxLk1WnuRvq7nQEHVTb+YIQlxIIMMcSaDFEScU+TWli8hRxmyvjL1rnjwj@vger.kernel.org, AJvYcCWTpf8edLOE12O7ljWgLR1PoBD5Q7pOH8XFMSO+qt2/9teyviBV2fMzn7mGHCIuU9DGKvZV4APecTn7DKhO@vger.kernel.org, AJvYcCWzLpehFBsFncirw4f3Yls10idYvrVYh6PTlarY
- FrlhboAOP9dq940VxmBDv6HlojJ4MnjRJgaw/EojpYg=@vger.kernel.org, AJvYcCX8hXB5mHBGjXE9tjVKBh1TE5C+51yE8VZwpkR2qotdZT0wmSKs2VYLJPSkhtwd3yf5cHdR46Uw8GncsOVa@vger.kernel.org, AJvYcCXDRYSqXJ9Ezu1RLo/SwxjSTIOa/G647ySbDPIqsfabcfI1xpy/1byYgi/ax+deLZwvzjkQxVtJO/8=@vger.kernel.org, AJvYcCXHNeWhtB4b5p5dsm0EflF1uQSI0DCPqiqflvwdZpVNDEoUPUnTeenoQg43EbD3X1JkuCC8J6x9j15Cq04v3L6T4yQ=@vger.kernel.org, AJvYcCXQAeJiMLfoDPN1XJ/5u6UnekWspCCP8LCUjucfOzv6fQofiveJmpcQjqKQVxTofwCIlK2J1vnSUX3y@vger.kernel.org, AJvYcCXrE5T3PSv+5HSh8qBMPdanjt4Q+ZYuWu0sb91nyrb0Nc90DWuATXDPnaGVQL53Hf582iw30kTfkbPqLQ==@vger.kernel.org, AJvYcCXrP5dOej6d3xvPVaf+mLWcS6a71IXhslX1x9UZphNsd6XgtvfbDD5VmpKc16cnh6EgdR7JjSx6YfxCpg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7MPPdXThqK15+abUr6j6KjvMcKc59g+Qv1fDXLHKI7HAX/iUd
-	y++Eq+5rPUGBreX7Jh1RwPNwHTEc+XB0b29HZJbs5/hVVzXp8FYlul82NNbM3MO4aM2ph4eWdXx
-	m50Vhz7xoDL74S+Ri/CTZZaS7IFVIswI=
-X-Gm-Gg: ASbGnctGtb3rAmJjJkxzrhubY3ksEybJjyB+5oLMHM8qciye+1xs+zPjo2zIb48G12U
-	PxQAG7NjFxDPU5bzK7Q3RFur/3s00DJBgthiyETtX3VTvj4o+HYi5OFKE+hDXqdACYbnOXOHVl+
-	hj7YhjckPnuLlO204B0V1gG7mAj5AhXebUfjMnqmXLjHM=
-X-Google-Smtp-Source: AGHT+IFi2mQZLuvuKUJ5Vmbx2bMFhgEtTB1rODdhMnUJkkTAqMfdBOcO66FNReafO5ChqP0c8B6r5Lro21q2uCkd3k4=
-X-Received: by 2002:a17:907:1c18:b0:ae0:4410:47e3 with SMTP id
- a640c23a62f3a-ae3501a58a6mr1915225466b.51.1751392659068; Tue, 01 Jul 2025
- 10:57:39 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1751396273; x=1752001073;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/OnXkb5Xk0A16V2ni6PtoSDVdWoQW1678+k13MiKScA=;
+        b=NJf2JHXSmfGg+UnGekKDvJE3IAL3FMwfb+B92r6zxiqXu3sMvQPKvm2rrFiprcPfIp
+         AdLC8FBFhbDWXaWp+1AicdvYuSgHxkT01ezFdF7GjHa9BP+3RT499/MMjOmVyPP19+t0
+         G0MvpxdpyPDKpuiqgA+E1DpII8EbjJNSmfRx3EKhExTPXrSLmvQWBDXiZ2yahcKkZkbs
+         nJF3BRqqQQ6Wde4Fq/kCZEtuwj7smfSoy1JNaLw58VXcwASvM+Mt+qDZ7IeFF0U7GlvW
+         jNgUvS15pVEVGAH63XUrxIh/cdLEIaZ80YLkSNEUbA+rIK+woqycwpVYmZsLMiPLJXQb
+         kNrA==
+X-Forwarded-Encrypted: i=1; AJvYcCUauk/sSs0nD/IExjAGOFhB9xHYIQa7+EC6qYYa04f/8OUbsRT0CMiPzlXAZtZk5AvxufOXYIFtZHr5@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWEl05E9Sp6+USD34xxMZn8s5IMCt2G2gpZvD5DilEaGDg/Bqw
+	4Mg7O152yq6ph9cYe1mJQPA2rJJ414YtzzjbPsh5PHdItxoBp3dm9Jdyw8EAwPSt6p0=
+X-Gm-Gg: ASbGnctrdyOeU0/6HjiQ16AnCp3iUSCFtkts9AehALGTkRX591o4kAE7sIjV+G656Ks
+	CGZTl17hmh7ZN/bNFVzUUXDsUEulL4oaWXA1pXn2of7Qa6psB0vkhEWkPFTJmHY0icxl1JUQKAl
+	OumjP2Y7Nmi9/C41FP0sYsGlRE1W7WARICw8AEcDOFr9CkK/f+Ugt7dYFxKssVVtgQRGCBWr+V5
+	Fx8P7MYM3lU1j+7/BhhRczleV+0WA8A5HFGOF2qcb22h2eWnJJjDvnRjbOTaQnRUhWlDZMrbHOD
+	XdDZcMGd4ru7r0umVlFR1r1/CROt9t0oVzkqhVpAqw4LhiwyIUG3AGbVrVmIXIWyPDIJjRheDiB
+	kkNwCduAIVewZEIXG0jkpj2K1/Ag1dZk=
+X-Google-Smtp-Source: AGHT+IG417ZWU7rctrUCSCtMeXYKqD6ggMKJuzWIMQooXOk1KUkGBbzbIcqMGsVv01VYeq1mnM/67Q==
+X-Received: by 2002:adf:9cc5:0:b0:3a4:cb4f:ac2a with SMTP id ffacd0b85a97d-3a8f482c161mr14623720f8f.21.1751396273005;
+        Tue, 01 Jul 2025 11:57:53 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:e50:3860:3714:f5bf:56c8:9f3? ([2a01:e0a:e50:3860:3714:f5bf:56c8:9f3])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4538233c523sm203068035e9.6.2025.07.01.11.57.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Jul 2025 11:57:52 -0700 (PDT)
+Message-ID: <e0773f0e-8d2f-4918-aaad-aab6345fdb81@baylibre.com>
+Date: Tue, 1 Jul 2025 20:57:52 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <pnd7c0s6ji2.fsf@axis.com> <ylr7cuxldwb24ccenen4khtyddzq3owgzzfblbohkdxb7p7eeo@qpuddn6wrz3x>
-In-Reply-To: <ylr7cuxldwb24ccenen4khtyddzq3owgzzfblbohkdxb7p7eeo@qpuddn6wrz3x>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 1 Jul 2025 20:57:02 +0300
-X-Gm-Features: Ac12FXyruF9twzstORuqQqTbcXFq7Oy0k32bhmiSfPFWKw8o7JRMkyPmwEAJIYk
-Message-ID: <CAHp75Ve=Zas8=6YKoPeTRrvjCaTyyRAyJG1gBLripqZgQpfg7g@mail.gmail.com>
-Subject: Re: [PATCH] Remove error prints for devm_add_action_or_reset()
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>
-Cc: Waqar Hameed <waqar.hameed@axis.com>, Vignesh Raghavendra <vigneshr@ti.com>, 
-	Julien Panis <jpanis@baylibre.com>, William Breathitt Gray <wbg@kernel.org>, 
-	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, Peter Rosin <peda@axentia.se>, 
-	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Cosmin Tanislav <cosmin.tanislav@analog.com>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Matteo Martelli <matteomartelli3@gmail.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Francesco Dolcini <francesco@dolcini.it>, 
-	=?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>, 
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>, Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>, 
-	Mudit Sharma <muditsharma.info@gmail.com>, Gerald Loacker <gerald.loacker@wolfvision.net>, 
-	Song Qiang <songqiang1304521@gmail.com>, Crt Mori <cmo@melexis.com>, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Karol Gugala <kgugala@antmicro.com>, Mateusz Holenko <mholenko@antmicro.com>, 
-	Gabriel Somlo <gsomlo@gmail.com>, Joel Stanley <joel@jms.id.au>, 
-	Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, 
-	Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Sebastian Reichel <sre@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Han Xu <han.xu@nxp.com>, 
-	Haibo Chen <haibo.chen@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, Avri Altman <avri.altman@wdc.com>, 
-	Bart Van Assche <bvanassche@acm.org>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, 
-	Souradeep Chowdhury <quic_schowdhu@quicinc.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
-	Bard Liao <yung-chuan.liao@linux.intel.com>, 
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>, Daniel Baluta <daniel.baluta@nxp.com>, 
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>, 
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, Jaroslav Kysela <perex@perex.cz>, 
-	Takashi Iwai <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, kernel@axis.com, linux-iio@vger.kernel.org, 
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	linux-rockchip@lists.infradead.org, linux-input@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, imx@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-phy@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-pwm@vger.kernel.org, 
-	linux-amlogic@lists.infradead.org, linux-spi@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-usb@vger.kernel.org, sound-open-firmware@alsa-project.org, 
-	linux-sound@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] arm64: Kconfig.platforms: remove useless select for
+ ARCH_K3
+To: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Cc: Andrew Davis <afd@ti.com>, vishalm@ti.com, linux-omap@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Nishanth Menon <nm@ti.com>, linux@ew.tq-group.com
+References: <20250519-kconfig-v2-1-56c1a0137a0f@baylibre.com>
+ <f44c7074337b79df9ad67f62acbc268acc344a23.camel@ew.tq-group.com>
+Content-Language: en-US
+From: Guillaume La Roque <glaroque@baylibre.com>
+In-Reply-To: <f44c7074337b79df9ad67f62acbc268acc344a23.camel@ew.tq-group.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 1, 2025 at 8:44=E2=80=AFPM Uwe Kleine-K=C3=B6nig <ukleinek@kern=
-el.org> wrote:
-> On Tue, Jul 01, 2025 at 05:03:33PM +0200, Waqar Hameed wrote:
+Le 01/07/2025 à 16:36, Matthias Schiffer a écrit :
+> On Mon, 2025-05-19 at 10:20 +0200, Guillaume La Roque wrote:
+>>
+>> After patch done on TI_MESSAGE_MANAGER[1] and TI_SCI_PROTOCOL[2] driver
+>> select on ARCH_K3 are not needed anymore.
+>> Select MAILBOX by default is not needed anymore[3],
+>> PM_GENERIC_DOMAIN if PM was enabled by default so not needed.
+> 
+> Hi,
 
-...
+Hi,
 
-> With that
->
->         ret =3D devm_add_action_or_reset(dev, meson_pwm_s4_put_clk,
->                                        meson->channels[i].clk);
->         if (ret)
->                 return dev_err_probe(dev, ret,
->                                      "Failed to add clk_put action\n");
->
-> from drivers/pwm/pwm-meson.c is optimized to
->
->         ret =3D devm_add_action_or_reset(dev, meson_pwm_s4_put_clk,
->                                        meson->channels[i].clk);
->         if (ret)
->                 return ret;
->
-> .
->
-> I would prefer this approach, because a) there is no need to drop all
-> dev_err_probe()s after devm_add_action_or_reset() and b) the
-> dev_err_probe()s could stay for consistency in the error paths of a
-> driver.
+> 
+> what selects PM_GENERIC_DOMAIN in your configuration? linux-next fails to boot
+> on our AM62x-based TQMa62xx if I don't (partially) revert this patch - I have
+> not found a way to enable PM_GENERIC_DOMAIN and TI_SCI_PM_DOMAINS without
+> enabling other unneeded features to pull it in.
+> 
+With master branch if i apply this patch and i do make ARCH=arm64 
+defconfig and check in .config  both TI_SCI_PM_DOMAINS and 
+PM_GENERIC_DOMAINS are enabled.
+with linux-next it's same. i don't really understand link with  PM part 
+in this patch and boot issue on your SOM.
 
-Why do we need a dev_err_probe() after devm_add_action*()? I would
-expect that the original call (if needed) can spit out a message.
+I probably misunderstand something.
 
 
---=20
-With Best Regards,
-Andy Shevchenko
+what is your problem exactly ?
+
+if you can share log or link to jobs
+
+Regards
+Guillaume
+
+> Best,
+> Matthias
+> 
+> 
+>>
+>> Remove it and give possibility to enable this driver in modules.
+>>
+>> [1] https://lore.kernel.org/all/20180828005311.8529-1-nm@ti.com/
+>> [2] https://lore.kernel.org/all/20250220-ti-firmware-v2-1-ff26883c6ce9@baylibre.com/
+>> [3] https://lore.kernel.org/all/20250507135213.g6li6ufp3cosxoys@stinging/
+>>
+>> Signed-off-by: Guillaume La Roque <glaroque@baylibre.com>
+>> ---
+>> Changes in v2:
+>> - Remove some other config after comment from Nishanth.
+>> - Link to v1: https://lore.kernel.org/r/20250504-kconfig-v1-1-ab0216f4fa98@baylibre.com
+>> ---
+>>   arch/arm64/Kconfig.platforms | 4 ----
+>>   1 file changed, 4 deletions(-)
+>>
+>> diff --git a/arch/arm64/Kconfig.platforms b/arch/arm64/Kconfig.platforms
+>> index 8b76821f190f..bf9e3d76b4c0 100644
+>> --- a/arch/arm64/Kconfig.platforms
+>> +++ b/arch/arm64/Kconfig.platforms
+>> @@ -135,11 +135,7 @@ config ARCH_SPARX5
+>>   
+>>   config ARCH_K3
+>>   	bool "Texas Instruments Inc. K3 multicore SoC architecture"
+>> -	select PM_GENERIC_DOMAINS if PM
+>> -	select MAILBOX
+>>   	select SOC_TI
+>> -	select TI_MESSAGE_MANAGER
+>> -	select TI_SCI_PROTOCOL
+>>   	select TI_K3_SOCINFO
+>>   	help
+>>   	  This enables support for Texas Instruments' K3 multicore SoC
+>>
+>> ---
+>> base-commit: e8ab83e34bdc458b5cd77f201e4ed04807978fb1
+>> change-id: 20250504-kconfig-68f139fbf337
+>>
+>> Best regards,
+> 
+
 
