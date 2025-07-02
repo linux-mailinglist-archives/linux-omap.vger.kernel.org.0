@@ -1,247 +1,220 @@
-Return-Path: <linux-omap+bounces-4037-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4038-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D95B6AF600D
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Jul 2025 19:31:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C77ADAF60E3
+	for <lists+linux-omap@lfdr.de>; Wed,  2 Jul 2025 20:14:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF8481C4388B
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Jul 2025 17:31:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2B1516BA66
+	for <lists+linux-omap@lfdr.de>; Wed,  2 Jul 2025 18:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC3F245032;
-	Wed,  2 Jul 2025 17:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861C4315511;
+	Wed,  2 Jul 2025 18:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Clj8hYgu"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Q1NwPTcB"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB852F50B2;
-	Wed,  2 Jul 2025 17:31:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF991C84CD
+	for <linux-omap@vger.kernel.org>; Wed,  2 Jul 2025 18:14:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751477484; cv=none; b=h/tkRHVoqbwPqc58nIrrh6BXBNEZrS+68kL/9+VLSHzi+6TfN85wUmyfDR+4/Hnj9ObegTLYTmCxH+YIesJMXdFIT50sq1nW1Lvygm6elOH3d6UosZ2Is7gjxxidT1MvnMsvS+xN1NbxrD6YDpJ/mvtHRoYYSKa60GzmwoSIL5c=
+	t=1751480085; cv=none; b=WBNAoa/wAsV3p2czH9Rmu/8zIKef8k48lZ3V5ObCQfaBD/aQZzqRbu+MnI2qO6+pmnwutGbPsDpQsqRV3WFZ2L5JPfo09/r1B7IeS41nhyvKcumxNvVnwT/JgRoID5C3FPVz95RVjmsPmnHm2JU9iC8F6eMVtENwdGvCYNUoRCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751477484; c=relaxed/simple;
-	bh=G+orHAF8XOTCINVvtBezAeB2WIZ6YVp5CgWCAcP9hLk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uF6QGLsRFl5R13s+rzlLAaDlo2aOtN8jg3EOD/QDcyp27Izdpskc+r+nJvs54udysv+t8xuaIVkTXC3bL3oPYB0P2P6U8b3zngGtSWxwv8e8UuQ+lZdJrcvom7mRrRYV9+wdYyfpPpXIfPbgRRkoSzM0JWn8eyDRmzS/kFy6cy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Clj8hYgu; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4538bc52a8dso49250535e9.2;
-        Wed, 02 Jul 2025 10:31:22 -0700 (PDT)
+	s=arc-20240116; t=1751480085; c=relaxed/simple;
+	bh=Y7hcao9a6aexovvTXzUfjrIePAz1w2DYFCt+WfiZwRQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QVPM10wYEGsJ/NgftEcDwoJWdWgJAL5F1avUHtHgU8d8/6WnDzRz+4GPTwjYndaE8odTI9o9v3ZDtqide70tFOlmf6WzdBMCXK5qYTO1/OlwsCq0I4LURz43KpKyN0wlIVATiUL4tNJUxglyYrZhfSKFJ4hszCHpdKvdkfZ+nDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Q1NwPTcB; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45363645a8eso50720055e9.1
+        for <linux-omap@vger.kernel.org>; Wed, 02 Jul 2025 11:14:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751477481; x=1752082281; darn=vger.kernel.org;
-        h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=asF3D2ihOKbd8HNb0tatN9FktDeMCIWfujlxMxgR2Jc=;
-        b=Clj8hYguhUclxeJJ7l/bvzhhEl7o6ktP3A1TZfckAxUerydG9/4c6rjam0DBsxmRiN
-         8cozz+6a9DRnKHAXVsWFhqOi1FF/5EpHic7wBahe8gQ3Sz3aBfwaUh3R7x4h04J3GR40
-         6EfJxDj7BCTtoApGXLHNsFEUL58hSOWfGbhGaBZJWvOOMYLnCI5MuxsgVN1Xu7KJ0iWi
-         bdiVFMfYkFv4Fh6RW0nhi4rqh60jDAhBoUJIx+ZUSHTR+NyiwCGN42HPLZSjyxM2t70M
-         Gg3J7+FgCuNNAW22PzFVh+CxBUPpWLEd7WUGZtgJ1Nud05YV7I+we/OZ1ew/5Uoj+8BS
-         gFSQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751480080; x=1752084880; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iF2pwmDnVnBgNlC3R2Sp9Qq8gNWHcSlx8oSPJnFeIBg=;
+        b=Q1NwPTcBP7mokfro05Cj+jUQbgdzMcYdn1TeFxNSzkozcwn9OlpQEL1bgdnghAqMJl
+         gIJIAhe47Yn+IpcQZB5A1hwtvih5T0FMiRVaOJ8PNxst03fDF3jKwIXP2LLvHIN55Jip
+         brgoyXZGITrcl4go3+NQCZAOpT67SPg1lvSu+WbvFn/7wLPYIca0jDM6O3ByZiwiocnL
+         3yWT1VDdXNdWnsUnVIJx3nBwwMJS3tHvXIUqeKs5LgE15qi1dgTMed/IvijT+Y+PF8OA
+         7mcxH4NVI8DD9MmnSnF+3T6e6zISDW+0UJIn5ehDjPpHg8AsGxETLxd3eUDH+dfwaZlI
+         ZBIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751477481; x=1752082281;
-        h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=asF3D2ihOKbd8HNb0tatN9FktDeMCIWfujlxMxgR2Jc=;
-        b=d7OrW6cT0vCmcmiFHb4PCupiS20e++aOhbv6oDPjdnsvOTgBVJKeeFLmtYhA/rPwW9
-         eQO+uSfDS0h80KZuqwl85qYwQFErspMwvphFNAnC8IaXcyA9pGoDYuexASPbpka3ShqK
-         7I/4WURs5Madb/uXxA198w/U+RBij4UsvUiCoof7Erp2zGJfCvy98mhrTqYIQ1cd95gW
-         lf4SSMAzRzRBxyK7f3bUFSTNYkWWTeWYJ9Orkcm9bOHMPEHSi1g6kDJ/NP60D50uyroj
-         DX91AQDOkhqTvZrCcIG4G0ENLGTSXoqyvaF0g96VE0lPz3YBWsluKR3SZVW+ph+i23eF
-         3IHg==
-X-Forwarded-Encrypted: i=1; AJvYcCV1kjiqy+oMySqjIXmGVTN3tmchhc5YJ2v4hR7RQlpsLGXN0LRQ3Qcq+D3ULdnLKL15w3Hv8cHNroYgv2c=@vger.kernel.org, AJvYcCVfizXybdxFtuANcVwJH4Ksu7+bN3Y19gkMOm6MJlzIntPzI7VbMAyxI2geZw9587nLJtgXREp/yW/zuA==@vger.kernel.org, AJvYcCWyY3pNhwMzbeex6SQ2K2bhIG6tZY5kyYCQ07fqZ7o9EJ91hDs8Wle0xp/EgfDpIo2eAVcLT5QgbnuYB1etCaPMbNg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIc+1jBZtzJp/94b6ZCa3qUzSzeTRDJzYlapktzOT98GzaKSck
-	IruZ9f9D5N27yxNpa9lOi6di3oT1ybftTytWhtSdOrhbYw3kju6laLrc
-X-Gm-Gg: ASbGnctDBF/QXKOjl/o+L7Y17KCZJF0uQkXxCCAqn55lOc46Ia9Wreko+z2Sd6jne3+
-	Xn8Jd1qWUR5tHJwpsAiCGax9qbleqwqJlJi7Wt48/sbi1yyiezJKwkppIU13t+CGYJ8ITA0hS4k
-	KNE2KZTizVa0UYwAcQMKRHLOcNF/pYn/ttxD9n5t0JZf4oll420SBRSpN4mdpL7hzqqdLp9taFj
-	PGnbiMvtEHf4rQZiyAKQCU/1AbsN7tb7pS4DpKdZza6r26RTHDAkBKwfH41XvH16bxlql+bAPrE
-	sC4VU1MH0+djClLaLZ5h5WdcPl/Zr4XuTRGuOBPGAg6mVO4YFPYi0giC+Vn/zofGI3Vrh0zOY+/
-	0xG/L0BtsTtlYwT5C4dbrV34MTuvf4DnywEM1zR9vfOLBMg0VyKRO
-X-Google-Smtp-Source: AGHT+IEy0lczmqisRYiq55PfynlMUAy8/Mwfp/b6dz/a8xMr1aLb26ndDyLOvjuXrp6A/iZDlNiYZg==
-X-Received: by 2002:a05:600c:4745:b0:445:49e:796b with SMTP id 5b1f17b1804b1-454a9cc478dmr6992135e9.17.1751477481011;
-        Wed, 02 Jul 2025 10:31:21 -0700 (PDT)
-Received: from dell.localnet (2a01-114f-400e-9dc0-0000-0000-0000-0540.ea.ipv6.supernova.orange.pl. [2a01:114f:400e:9dc0::540])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a892e52ca4sm16687615f8f.58.2025.07.02.10.31.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Jul 2025 10:31:20 -0700 (PDT)
-From: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-To: Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>, Lee Jones <lee@kernel.org>,
- Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Aaro Koskinen <aaro.koskinen@iki.fi>, Tony Lindgren <tony@atomide.com>,
- Russell King <linux@armlinux.org.uk>, Krzysztof Kozlowski <krzk@kernel.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
- patches@opensource.cirrus.com, linux-samsung-soc@vger.kernel.org,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject:
- Re: [PATCH RFT v2 4/6] ARM: omap1: ams-delta: use generic device properties
- for gpio-mmio
-Date: Wed, 02 Jul 2025 19:31:18 +0200
-Message-ID: <12693741.O9o76ZdvQC@dell>
-In-Reply-To: <20250701-gpio-mmio-pdata-v2-4-ebf34d273497@linaro.org>
-References:
- <20250701-gpio-mmio-pdata-v2-0-ebf34d273497@linaro.org>
- <20250701-gpio-mmio-pdata-v2-4-ebf34d273497@linaro.org>
+        d=1e100.net; s=20230601; t=1751480080; x=1752084880;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iF2pwmDnVnBgNlC3R2Sp9Qq8gNWHcSlx8oSPJnFeIBg=;
+        b=ARxEhEbgvhnaTVIqK8B4bb94MyVy9tlecMnhiLx1MU8VMiERpHuSo4a/rROERxEE7/
+         czNqD9zoxhWrCq3+EAshreDvfBr3B1DHYo8l9qhvl6PqGzjAtPwIcWtGjQRUxtM5qfVa
+         RibI7uYPGWzcPvZnnCuAFY8nPHVfF5XybkjAkeEym+EGDYXlMHabuqEXBsyHrMZXUsIv
+         8VUFHna39du3AkunK/8IqMI+lr5W7oDu9k2X9pD7qrVwQF60wuW7KgjFSLXYJHXiQBs+
+         p5HA4s6hEdM/j/XHkwpXqphRK+8ujPeeJq+JfhzS9kaYuK+JsiaHB2uOblLB8CGUKGN0
+         KEUg==
+X-Forwarded-Encrypted: i=1; AJvYcCWacqmkZ2pk+VZhHkFRFdleTWq/2+S1Jy3NRZprsXWQW9VYOBB7usVu3/cLrccMinGLQoRr5iTs5zSf@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQXxSPe8r4EmfX0mh6Y2sxsLIgkhw1CiZ4auQhVC+R/tgGl2gD
+	WMLWqNowe1DrzWDDTw0oLULsYauP1zXLlgFz/O6KdX4a7Tfwm2JjrLOEyuq6H74xAyQ=
+X-Gm-Gg: ASbGncvaX1+5gWXOf9LAlsuDGDiGQPYJoWi7UkeTuCQ8xKwnpkygL7AFo2IjfsbBiNP
+	pogDW/OogYV56gOvEi/sxjFwnFSB12vRH1GHmBhntYlLMG21YMjZDFudjstVZEmDylfgTq/irjQ
+	ePdZDZue7FyWCWgW+tJial8D8D6sl+KhTL4pubIYTKB5QwlhRzyNCRb/1PLm/exN6tHN24BtRJB
+	Fm5dYRFIGukMynnEY2Z3z0H75+XxoAAh2LeuF7kRX5dLhPxZ4lbJ3/HmyIg01oeZv8a5HWkZr6e
+	wV7hy9ai4drDAswueBX6C7ZL5WHvA6+A1r1016Vz9CVWaoS4Spz8IVXrF9n2M8PoGoCkis5ctKC
+	g4Sn2uFiE4KUwKtJl1sjEOjSiWKxG9/anJA==
+X-Google-Smtp-Source: AGHT+IEJVH+W+cvPNVB9masQuVIjw1/4pd1uCDTCuFbsfIezp0x+6PzwSC9D9AUHrQ5rPRHOy4i8Fg==
+X-Received: by 2002:a05:600c:4e05:b0:450:d00d:588b with SMTP id 5b1f17b1804b1-454a9c93836mr7813825e9.9.1751480080374;
+        Wed, 02 Jul 2025 11:14:40 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:e50:3860:9dba:9a50:1cc3:93af? ([2a01:e0a:e50:3860:9dba:9a50:1cc3:93af])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454a9989328sm4674325e9.18.2025.07.02.11.14.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Jul 2025 11:14:39 -0700 (PDT)
+Message-ID: <d5a03f2c-21a2-4cd6-acfe-9142f51a8655@baylibre.com>
+Date: Wed, 2 Jul 2025 20:14:38 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart5899106.DvuYhMxLoT";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] arm64: Kconfig.platforms: remove useless select for
+ ARCH_K3
+To: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+ Vignesh Raghavendra <vigneshr@ti.com>
+Cc: Andrew Davis <afd@ti.com>, vishalm@ti.com, linux-omap@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Nishanth Menon <nm@ti.com>, linux@ew.tq-group.com
+References: <20250519-kconfig-v2-1-56c1a0137a0f@baylibre.com>
+ <f44c7074337b79df9ad67f62acbc268acc344a23.camel@ew.tq-group.com>
+ <e0773f0e-8d2f-4918-aaad-aab6345fdb81@baylibre.com>
+ <9042d63de85f7ae8bf73760e9d2d7652c18a738c.camel@ew.tq-group.com>
+Content-Language: fr
+From: Guillaume La Roque <glaroque@baylibre.com>
+In-Reply-To: <9042d63de85f7ae8bf73760e9d2d7652c18a738c.camel@ew.tq-group.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
---nextPart5899106.DvuYhMxLoT
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-Date: Wed, 02 Jul 2025 19:31:18 +0200
-Message-ID: <12693741.O9o76ZdvQC@dell>
-In-Reply-To: <20250701-gpio-mmio-pdata-v2-4-ebf34d273497@linaro.org>
-MIME-Version: 1.0
+Hi,
 
-On Tuesday, 1 July 2025 13:49:38 CEST Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> 
-> The two latch GPIO devices in ams-delta are registered with struct
-> bgpio_pdata passed as platform_data to the gpio-mmio driver. We want to
-> remove the bgpio_pdata from the kernel and the gpio-mmio driver is now
-> also able to get the relevant values from the software node. Set up
-> device properties and switch to using platform_device_info to register
-> the devices as platform_add_devices() doesn't allow us to pass device
-> properties to the driver model.
-> 
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
++ Vignesh who was lost in email list , sorry for that
 
-Acked-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-
-> ---
->  arch/arm/mach-omap1/board-ams-delta.c | 42 +++++++++++++++++------------------
->  1 file changed, 20 insertions(+), 22 deletions(-)
-> 
-> diff --git a/arch/arm/mach-omap1/board-ams-delta.c b/arch/arm/mach-omap1/board-ams-delta.c
-> index 0daf6c5b5c1cbcfd5bd15203cad119d39aa95f19..16392720296cd224732450c85419c35bbab506f6 100644
-> --- a/arch/arm/mach-omap1/board-ams-delta.c
-> +++ b/arch/arm/mach-omap1/board-ams-delta.c
-> @@ -19,6 +19,7 @@
->  #include <linux/mtd/nand-gpio.h>
->  #include <linux/mtd/partitions.h>
->  #include <linux/platform_device.h>
-> +#include <linux/property.h>
->  #include <linux/regulator/consumer.h>
->  #include <linux/regulator/fixed.h>
->  #include <linux/regulator/machine.h>
-> @@ -175,20 +176,18 @@ static struct resource latch1_resources[] = {
->  
->  #define LATCH1_LABEL	"latch1"
->  
-> -static struct bgpio_pdata latch1_pdata = {
-> -	.label	= LATCH1_LABEL,
-> -	.base	= -1,
-> -	.ngpio	= LATCH1_NGPIO,
-> +static const struct property_entry latch1_gpio_props[] = {
-> +	PROPERTY_ENTRY_STRING("label", LATCH1_LABEL),
-> +	PROPERTY_ENTRY_U32("ngpios", LATCH1_NGPIO),
-> +	{ }
->  };
->  
-> -static struct platform_device latch1_gpio_device = {
-> +static const struct platform_device_info latch1_gpio_devinfo = {
->  	.name		= "basic-mmio-gpio",
->  	.id		= 0,
-> -	.resource	= latch1_resources,
-> -	.num_resources	= ARRAY_SIZE(latch1_resources),
-> -	.dev		= {
-> -		.platform_data	= &latch1_pdata,
-> -	},
-> +	.res		= latch1_resources,
-> +	.num_res	= ARRAY_SIZE(latch1_resources),
-> +	.properties	= latch1_gpio_props,
->  };
->  
->  #define LATCH1_PIN_LED_CAMERA		0
-> @@ -213,20 +212,18 @@ static struct resource latch2_resources[] = {
->  
->  #define LATCH2_LABEL	"latch2"
->  
-> -static struct bgpio_pdata latch2_pdata = {
-> -	.label	= LATCH2_LABEL,
-> -	.base	= -1,
-> -	.ngpio	= LATCH2_NGPIO,
-> +static const struct property_entry latch2_gpio_props[] = {
-> +	PROPERTY_ENTRY_STRING("label", LATCH2_LABEL),
-> +	PROPERTY_ENTRY_U32("ngpios", LATCH2_NGPIO),
-> +	{ }
->  };
->  
-> -static struct platform_device latch2_gpio_device = {
-> +static struct platform_device_info latch2_gpio_devinfo = {
->  	.name		= "basic-mmio-gpio",
->  	.id		= 1,
-> -	.resource	= latch2_resources,
-> -	.num_resources	= ARRAY_SIZE(latch2_resources),
-> -	.dev		= {
-> -		.platform_data	= &latch2_pdata,
-> -	},
-> +	.res		= latch2_resources,
-> +	.num_res	= ARRAY_SIZE(latch2_resources),
-> +	.properties	= latch2_gpio_props,
->  };
->  
->  #define LATCH2_PIN_LCD_VBLEN		0
-> @@ -542,8 +539,6 @@ static struct gpiod_lookup_table keybrd_pwr_gpio_table = {
->  };
->  
->  static struct platform_device *ams_delta_devices[] __initdata = {
-> -	&latch1_gpio_device,
-> -	&latch2_gpio_device,
->  	&ams_delta_kp_device,
->  	&ams_delta_audio_device,
->  	&ams_delta_serio_device,
-> @@ -697,6 +692,9 @@ static void __init ams_delta_init(void)
->  	omap1_usb_init(&ams_delta_usb_config);
->  	platform_add_devices(ams_delta_devices, ARRAY_SIZE(ams_delta_devices));
->  
-> +	platform_device_register_full(&latch1_gpio_devinfo);
-> +	platform_device_register_full(&latch2_gpio_devinfo);
-> +
->  	/*
->  	 * As soon as regulator consumers have been registered, assign their
->  	 * dev_names to consumer supply entries of respective regulators.
+Le 02/07/2025 à 09:25, Matthias Schiffer a écrit :
+> On Tue, 2025-07-01 at 20:57 +0200, Guillaume La Roque wrote:
+>>
+>> Le 01/07/2025 à 16:36, Matthias Schiffer a écrit :
+>>> On Mon, 2025-05-19 at 10:20 +0200, Guillaume La Roque wrote:
+>>>>
+>>>> After patch done on TI_MESSAGE_MANAGER[1] and TI_SCI_PROTOCOL[2] driver
+>>>> select on ARCH_K3 are not needed anymore.
+>>>> Select MAILBOX by default is not needed anymore[3],
+>>>> PM_GENERIC_DOMAIN if PM was enabled by default so not needed.
+>>>
+>>> Hi,
+>>
+>> Hi,
+>>
+>>>
+>>> what selects PM_GENERIC_DOMAIN in your configuration? linux-next fails to boot
+>>> on our AM62x-based TQMa62xx if I don't (partially) revert this patch - I have
+>>> not found a way to enable PM_GENERIC_DOMAIN and TI_SCI_PM_DOMAINS without
+>>> enabling other unneeded features to pull it in.
+>>>
+>> With master branch if i apply this patch and i do make ARCH=arm64
+>> defconfig and check in .config  both TI_SCI_PM_DOMAINS and
+>> PM_GENERIC_DOMAINS are enabled.
+>> with linux-next it's same. i don't really understand link with  PM part
+>> in this patch and boot issue on your SOM.
+>>
+>> I probably misunderstand something.
+>>
+>>
+>> what is your problem exactly ?
+>>
+>> if you can share log or link to jobs
 > 
 > 
+> Hi Guillaume,
+> 
+> with arm64_defconfig, this problem doesn't occur, as other CONFIG_ARCH_* symbols
+> also have "select PM_GENERIC_DOMAINS" (with or without "if PM").
+> 
+> We are using a smaller config specific to our K3-based SOMs however. I have
+> attached a defconfig that shows the problem - if you use this as the base for
+> .config on linux-next, there is no way to enable TI_SCI_PM_DOMAINS, as nothing
+> selects PM_GENERIC_DOMAINS.
+> 
+> So unless I'm missing some other configuration that would actually be useful on
+> the K3 platform and that would pull in PM_GENERIC_DOMAINS, I think that part
+> needs to be reverted. I can send a patch to that effect later.
+> 
+not sure good patch was to enable PM_GENERIC_DOMAINS on ARCH_K3 but it's 
+a deps on TI_SCI_PM_DOMAINS so perhaps do a select in PM_GENERIC_DOMAINS 
+Kconfig instead of a depends on should be a better solution .
+
+Nishanth and vignesh what do you prefer for this issue ?
 
 
---nextPart5899106.DvuYhMxLoT
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+thanks
+Guillaume
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEnyr6IsGnTYAeAkHJ2WqSnltsjBoFAmhlbOYACgkQ2WqSnlts
-jBqrFAf8Dn8vIXOgPM71DorIvYxA2dblFx/ioM03kGPEIyBdo9u5oreR8gnbeJ0M
-6nL5gblHZVjt8w24qn5cS+Y2CE1hERe9+2H27nbeBUt8jR1i+oH6lMNWTxEqcARB
-a6t639w3mfDggBfB6ylR/Figq2vACpInNkOMATa0czpIlHks8j/hg4we3HM7ikv/
-i8+Yq5lBagufNyl4T2qtAMyR7TLvYommOqsIDJgXd5WwknQSs8doQtQUKjPh9+DF
-MBYbY8jYcv6s9LeaUAjbRCXriJm6ja36+fayWHxmrHXdOZyXYxFfrUp3y9JrEZZO
-ej3300qSjoZkFgKR/vnA4rJxJP6m6w==
-=taj6
------END PGP SIGNATURE-----
-
---nextPart5899106.DvuYhMxLoT--
-
-
+> Best,
+> Matthias
+> 
+> 
+>>
+>> Regards
+>> Guillaume
+>>
+>>> Best,
+>>> Matthias
+>>>
+>>>
+>>>>
+>>>> Remove it and give possibility to enable this driver in modules.
+>>>>
+>>>> [1] https://lore.kernel.org/all/20180828005311.8529-1-nm@ti.com/
+>>>> [2] https://lore.kernel.org/all/20250220-ti-firmware-v2-1-ff26883c6ce9@baylibre.com/
+>>>> [3] https://lore.kernel.org/all/20250507135213.g6li6ufp3cosxoys@stinging/
+>>>>
+>>>> Signed-off-by: Guillaume La Roque <glaroque@baylibre.com>
+>>>> ---
+>>>> Changes in v2:
+>>>> - Remove some other config after comment from Nishanth.
+>>>> - Link to v1: https://lore.kernel.org/r/20250504-kconfig-v1-1-ab0216f4fa98@baylibre.com
+>>>> ---
+>>>>    arch/arm64/Kconfig.platforms | 4 ----
+>>>>    1 file changed, 4 deletions(-)
+>>>>
+>>>> diff --git a/arch/arm64/Kconfig.platforms b/arch/arm64/Kconfig.platforms
+>>>> index 8b76821f190f..bf9e3d76b4c0 100644
+>>>> --- a/arch/arm64/Kconfig.platforms
+>>>> +++ b/arch/arm64/Kconfig.platforms
+>>>> @@ -135,11 +135,7 @@ config ARCH_SPARX5
+>>>>    
+>>>>    config ARCH_K3
+>>>>    	bool "Texas Instruments Inc. K3 multicore SoC architecture"
+>>>> -	select PM_GENERIC_DOMAINS if PM
+>>>> -	select MAILBOX
+>>>>    	select SOC_TI
+>>>> -	select TI_MESSAGE_MANAGER
+>>>> -	select TI_SCI_PROTOCOL
+>>>>    	select TI_K3_SOCINFO
+>>>>    	help
+>>>>    	  This enables support for Texas Instruments' K3 multicore SoC
+>>>>
+>>>> ---
+>>>> base-commit: e8ab83e34bdc458b5cd77f201e4ed04807978fb1
+>>>> change-id: 20250504-kconfig-68f139fbf337
+>>>>
+>>>> Best regards,
+>>>
+>>
+> 
 
 
