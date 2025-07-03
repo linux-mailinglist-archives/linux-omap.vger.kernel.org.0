@@ -1,220 +1,130 @@
-Return-Path: <linux-omap+bounces-4038-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4039-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C77ADAF60E3
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Jul 2025 20:14:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ACEAAF6F3D
+	for <lists+linux-omap@lfdr.de>; Thu,  3 Jul 2025 11:52:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2B1516BA66
-	for <lists+linux-omap@lfdr.de>; Wed,  2 Jul 2025 18:14:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F142E7A5C1A
+	for <lists+linux-omap@lfdr.de>; Thu,  3 Jul 2025 09:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861C4315511;
-	Wed,  2 Jul 2025 18:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CEF22E03F8;
+	Thu,  3 Jul 2025 09:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Q1NwPTcB"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="2xRyu5kp"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF991C84CD
-	for <linux-omap@vger.kernel.org>; Wed,  2 Jul 2025 18:14:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249082D8783
+	for <linux-omap@vger.kernel.org>; Thu,  3 Jul 2025 09:51:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751480085; cv=none; b=WBNAoa/wAsV3p2czH9Rmu/8zIKef8k48lZ3V5ObCQfaBD/aQZzqRbu+MnI2qO6+pmnwutGbPsDpQsqRV3WFZ2L5JPfo09/r1B7IeS41nhyvKcumxNvVnwT/JgRoID5C3FPVz95RVjmsPmnHm2JU9iC8F6eMVtENwdGvCYNUoRCQ=
+	t=1751536296; cv=none; b=rN+iVSYzS0YpOq5OlRsjJHzFj/XU3M5es2cp80yAJRiJjsC8+sEZ1xLhoQ+AjLXNzLu2fQIOPPm0yQHWIeId8+XVOC2vh0vm72WTqmhdCnqU6UCShsyRF2eIHGrzlRv+JrK5O/2jnHMbuvwCLrV3C0rMwctrHwskaZK0jNnT37M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751480085; c=relaxed/simple;
-	bh=Y7hcao9a6aexovvTXzUfjrIePAz1w2DYFCt+WfiZwRQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QVPM10wYEGsJ/NgftEcDwoJWdWgJAL5F1avUHtHgU8d8/6WnDzRz+4GPTwjYndaE8odTI9o9v3ZDtqide70tFOlmf6WzdBMCXK5qYTO1/OlwsCq0I4LURz43KpKyN0wlIVATiUL4tNJUxglyYrZhfSKFJ4hszCHpdKvdkfZ+nDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Q1NwPTcB; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45363645a8eso50720055e9.1
-        for <linux-omap@vger.kernel.org>; Wed, 02 Jul 2025 11:14:41 -0700 (PDT)
+	s=arc-20240116; t=1751536296; c=relaxed/simple;
+	bh=YpTyljxwyw07U4P0gHb4gnrakvNkh+/hIrM+ABJ+fj0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qb7koBwEXRHHOrIa+aZNmYKz+Hg5bPncyPD5Qz30CVk4NbaimS+8uRu2j9KSKtLnK/DaYgOK7izl3cVjOqZGpH39LCVU4pd9SMPJ3JomOMckUrlUwSN9mrO9HG7IU4bUpyX20NZt/PQ3FzfmoOgYf8DPIvCucJCVyKFwt4uoFpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=2xRyu5kp; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-553bcf41440so8171562e87.3
+        for <linux-omap@vger.kernel.org>; Thu, 03 Jul 2025 02:51:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751480080; x=1752084880; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iF2pwmDnVnBgNlC3R2Sp9Qq8gNWHcSlx8oSPJnFeIBg=;
-        b=Q1NwPTcBP7mokfro05Cj+jUQbgdzMcYdn1TeFxNSzkozcwn9OlpQEL1bgdnghAqMJl
-         gIJIAhe47Yn+IpcQZB5A1hwtvih5T0FMiRVaOJ8PNxst03fDF3jKwIXP2LLvHIN55Jip
-         brgoyXZGITrcl4go3+NQCZAOpT67SPg1lvSu+WbvFn/7wLPYIca0jDM6O3ByZiwiocnL
-         3yWT1VDdXNdWnsUnVIJx3nBwwMJS3tHvXIUqeKs5LgE15qi1dgTMed/IvijT+Y+PF8OA
-         7mcxH4NVI8DD9MmnSnF+3T6e6zISDW+0UJIn5ehDjPpHg8AsGxETLxd3eUDH+dfwaZlI
-         ZBIw==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1751536292; x=1752141092; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Fm9C4xWfuuIKIxeM1FG7nAWF3Huvmfev7MnDCCzIEeo=;
+        b=2xRyu5kpBk32c8BFiGQ2GK2WOFFJHt38z+jgrUYl5ctvpo/ZGXTPEpt3mUnkXwlSnc
+         ONmpIfLJPriVZ9pppbTFbxn7Bc1ccQb9CZLX/d7Mjy2wWBuYacI19cLhdswRa8suDeHC
+         Vwviu3AzO0wopJY+YB5NtxbVIwQ/cVE+thlICj84t5BUg5Z8kqEmrKM1+v1f010xkmxv
+         NnIQb9F7JWSyn/L+jNjaRL7mmLCiyJVqYn+cdC62FTCgB8JEyC7R3FkHBv+2O+T9lGzb
+         ZuFcLFr9a2gSr6sX7eyaDB7hKh5bPq4zJ/PQrGpiP/8OUcnWtSKVy00b5dbaJbphxqJQ
+         Hgdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751480080; x=1752084880;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iF2pwmDnVnBgNlC3R2Sp9Qq8gNWHcSlx8oSPJnFeIBg=;
-        b=ARxEhEbgvhnaTVIqK8B4bb94MyVy9tlecMnhiLx1MU8VMiERpHuSo4a/rROERxEE7/
-         czNqD9zoxhWrCq3+EAshreDvfBr3B1DHYo8l9qhvl6PqGzjAtPwIcWtGjQRUxtM5qfVa
-         RibI7uYPGWzcPvZnnCuAFY8nPHVfF5XybkjAkeEym+EGDYXlMHabuqEXBsyHrMZXUsIv
-         8VUFHna39du3AkunK/8IqMI+lr5W7oDu9k2X9pD7qrVwQF60wuW7KgjFSLXYJHXiQBs+
-         p5HA4s6hEdM/j/XHkwpXqphRK+8ujPeeJq+JfhzS9kaYuK+JsiaHB2uOblLB8CGUKGN0
-         KEUg==
-X-Forwarded-Encrypted: i=1; AJvYcCWacqmkZ2pk+VZhHkFRFdleTWq/2+S1Jy3NRZprsXWQW9VYOBB7usVu3/cLrccMinGLQoRr5iTs5zSf@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQXxSPe8r4EmfX0mh6Y2sxsLIgkhw1CiZ4auQhVC+R/tgGl2gD
-	WMLWqNowe1DrzWDDTw0oLULsYauP1zXLlgFz/O6KdX4a7Tfwm2JjrLOEyuq6H74xAyQ=
-X-Gm-Gg: ASbGncvaX1+5gWXOf9LAlsuDGDiGQPYJoWi7UkeTuCQ8xKwnpkygL7AFo2IjfsbBiNP
-	pogDW/OogYV56gOvEi/sxjFwnFSB12vRH1GHmBhntYlLMG21YMjZDFudjstVZEmDylfgTq/irjQ
-	ePdZDZue7FyWCWgW+tJial8D8D6sl+KhTL4pubIYTKB5QwlhRzyNCRb/1PLm/exN6tHN24BtRJB
-	Fm5dYRFIGukMynnEY2Z3z0H75+XxoAAh2LeuF7kRX5dLhPxZ4lbJ3/HmyIg01oeZv8a5HWkZr6e
-	wV7hy9ai4drDAswueBX6C7ZL5WHvA6+A1r1016Vz9CVWaoS4Spz8IVXrF9n2M8PoGoCkis5ctKC
-	g4Sn2uFiE4KUwKtJl1sjEOjSiWKxG9/anJA==
-X-Google-Smtp-Source: AGHT+IEJVH+W+cvPNVB9masQuVIjw1/4pd1uCDTCuFbsfIezp0x+6PzwSC9D9AUHrQ5rPRHOy4i8Fg==
-X-Received: by 2002:a05:600c:4e05:b0:450:d00d:588b with SMTP id 5b1f17b1804b1-454a9c93836mr7813825e9.9.1751480080374;
-        Wed, 02 Jul 2025 11:14:40 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:e50:3860:9dba:9a50:1cc3:93af? ([2a01:e0a:e50:3860:9dba:9a50:1cc3:93af])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454a9989328sm4674325e9.18.2025.07.02.11.14.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Jul 2025 11:14:39 -0700 (PDT)
-Message-ID: <d5a03f2c-21a2-4cd6-acfe-9142f51a8655@baylibre.com>
-Date: Wed, 2 Jul 2025 20:14:38 +0200
+        d=1e100.net; s=20230601; t=1751536292; x=1752141092;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Fm9C4xWfuuIKIxeM1FG7nAWF3Huvmfev7MnDCCzIEeo=;
+        b=D8VpcQfkhMPCe/PT7BisFURbaX+SbwTp/Pih1ns2H5djyYHKGBG4KLNI2VBrbfrwGy
+         f6mtfiQdnwRTjR6ECVthOH0MnHkzvmmdyctxduB5v2IFDMpAracKjxpt313m8wVUKiKZ
+         K5aGO2k00UZEJMw0BUVgkj0V2Vr5eSQSeIAiYDMd0fgNNpUHkBc8wt7aauwCO1dEMx8U
+         X7JXWU4n2s1TpjeV0SHkMDX1y2yXaeRbVDO66t2Rrc6nN0Qry37oZgNU4US+QLlqPr4c
+         /ldtWu/grrD5zk4tQElwnerhJG8GSCZ6J1D4oYImmhIV9V3lC9KPOMO0NH+BNeCOuTUM
+         TUOg==
+X-Forwarded-Encrypted: i=1; AJvYcCUFfE2UgfClQCYGn5EPC+9MaaTsIlTWEX9agAwshI1HI+jnZwsM0dWF8y9oIcR3ESNL2f3Y1nv7ULaC@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSU/Y/Q9SIHFEqK//NZRU3t39VtllcRLgVW2OU9p9h/6aSItrz
+	t5hdYxL4HwqLRz4F2cp7Nc2S2lKKqBe/VHtlLNtkryVFQG6SQ1ULaioG0VleEUTZ8Mw52UOn9hY
+	wdpt8XYu6KqPnkBPy/ZMzGuwG6iaWET204EHXFOYizQ==
+X-Gm-Gg: ASbGnctQWTt5nWPnpARQUxpyCuo2NfugjAsosjK+KqPNgo9MEsyrMl0bBVKSD+KP8iP
+	ZejPRWahIlf/Bq+Q3cEp1WkYK3hgiOhAw7CQLFseReSp+D1vAH974XoAbF1TmpTia/CqvvjLdZJ
+	3+0o0Fyque7gpev3NrsoqIYDP0VvMja40sd7uUAxx15wFt3/VO6cj08MsVrqFLwiBjzEl8ky6pM
+	g==
+X-Google-Smtp-Source: AGHT+IFNLwhbBpukbVu0dvBLmLJ9QPZOvXagKslA4IQMG8t7aHrgsvuCJVnQ/Jp0X0+rUTcLV0jdkLs/XNf8N29ZrsA=
+X-Received: by 2002:a05:6512:3b29:b0:553:36b7:7b14 with SMTP id
+ 2adb3069b0e04-5562828523bmr2206635e87.37.1751536292037; Thu, 03 Jul 2025
+ 02:51:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] arm64: Kconfig.platforms: remove useless select for
- ARCH_K3
-To: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
- Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Andrew Davis <afd@ti.com>, vishalm@ti.com, linux-omap@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Nishanth Menon <nm@ti.com>, linux@ew.tq-group.com
-References: <20250519-kconfig-v2-1-56c1a0137a0f@baylibre.com>
- <f44c7074337b79df9ad67f62acbc268acc344a23.camel@ew.tq-group.com>
- <e0773f0e-8d2f-4918-aaad-aab6345fdb81@baylibre.com>
- <9042d63de85f7ae8bf73760e9d2d7652c18a738c.camel@ew.tq-group.com>
-Content-Language: fr
-From: Guillaume La Roque <glaroque@baylibre.com>
-In-Reply-To: <9042d63de85f7ae8bf73760e9d2d7652c18a738c.camel@ew.tq-group.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20250702164926.2990958-1-s-ramamoorthy@ti.com> <20250702164926.2990958-2-s-ramamoorthy@ti.com>
+In-Reply-To: <20250702164926.2990958-2-s-ramamoorthy@ti.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Thu, 3 Jul 2025 11:51:20 +0200
+X-Gm-Features: Ac12FXyCwoICVUr3Z51apCKRhZU7x6W4kGidAOB345u_C9-RSlabdFl5B5KxSls
+Message-ID: <CAMRc=Mdg8_Tq1PWAaOSzzPGUMu6-_3SvOy6F+n_Qv90arVyeLg@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] gpio: tps65219: Update _IDX & _OFFSET macro prefix
+To: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+Cc: aaro.koskinen@iki.fi, andreas@kemnade.info, khilman@baylibre.com, 
+	rogerq@kernel.org, tony@atomide.com, linus.walleij@linaro.org, 
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, m-leonard@ti.com, praneeth@ti.com, 
+	jcormier@criticallink.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Wed, Jul 2, 2025 at 6:51=E2=80=AFPM Shree Ramamoorthy <s-ramamoorthy@ti.=
+com> wrote:
+>
+> TPS65215 and TPS65219 are overlapping PMIC devices. While their regulator
+> features differe, the GPIO features are the same. In the TPS65219 MFD
+> driver, the 2 PMICs share the same "tps65219-gpio" compatible string to
+> limit support for TPS65215 in this GPIO driver to comments.
+>
+> The TPS6521X_GPIO0_IDX and TPS6521X_GPIO0_OFFSET macro name prefixes are
+> updated to indicate these macros apply to both PMICs.
+>
+> Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+> Reviewed-by: Roger Quadros <rogerq@kernel.org>
+> Acked-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+>  drivers/gpio/gpio-tps65219.c | 27 +++++++++++++++++----------
+>  1 file changed, 17 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/gpio/gpio-tps65219.c b/drivers/gpio/gpio-tps65219.c
+> index 526640c39a11..3c762103babc 100644
+> --- a/drivers/gpio/gpio-tps65219.c
+> +++ b/drivers/gpio/gpio-tps65219.c
+> @@ -1,8 +1,8 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  /*
+> - * GPIO driver for TI TPS65219 PMICs
+> + * GPIO driver for TI TPS65215/TPS65219 PMICs
+>   *
+> - * Copyright (C) 2022 Texas Instruments Incorporated - http://www.ti.com=
+/
+> + * Copyright (C) 2025 Texas Instruments Incorporated - http://www.ti.com=
+/
 
-+ Vignesh who was lost in email list , sorry for that
+Should be 2022,2025.
 
-Le 02/07/2025 à 09:25, Matthias Schiffer a écrit :
-> On Tue, 2025-07-01 at 20:57 +0200, Guillaume La Roque wrote:
->>
->> Le 01/07/2025 à 16:36, Matthias Schiffer a écrit :
->>> On Mon, 2025-05-19 at 10:20 +0200, Guillaume La Roque wrote:
->>>>
->>>> After patch done on TI_MESSAGE_MANAGER[1] and TI_SCI_PROTOCOL[2] driver
->>>> select on ARCH_K3 are not needed anymore.
->>>> Select MAILBOX by default is not needed anymore[3],
->>>> PM_GENERIC_DOMAIN if PM was enabled by default so not needed.
->>>
->>> Hi,
->>
->> Hi,
->>
->>>
->>> what selects PM_GENERIC_DOMAIN in your configuration? linux-next fails to boot
->>> on our AM62x-based TQMa62xx if I don't (partially) revert this patch - I have
->>> not found a way to enable PM_GENERIC_DOMAIN and TI_SCI_PM_DOMAINS without
->>> enabling other unneeded features to pull it in.
->>>
->> With master branch if i apply this patch and i do make ARCH=arm64
->> defconfig and check in .config  both TI_SCI_PM_DOMAINS and
->> PM_GENERIC_DOMAINS are enabled.
->> with linux-next it's same. i don't really understand link with  PM part
->> in this patch and boot issue on your SOM.
->>
->> I probably misunderstand something.
->>
->>
->> what is your problem exactly ?
->>
->> if you can share log or link to jobs
-> 
-> 
-> Hi Guillaume,
-> 
-> with arm64_defconfig, this problem doesn't occur, as other CONFIG_ARCH_* symbols
-> also have "select PM_GENERIC_DOMAINS" (with or without "if PM").
-> 
-> We are using a smaller config specific to our K3-based SOMs however. I have
-> attached a defconfig that shows the problem - if you use this as the base for
-> .config on linux-next, there is no way to enable TI_SCI_PM_DOMAINS, as nothing
-> selects PM_GENERIC_DOMAINS.
-> 
-> So unless I'm missing some other configuration that would actually be useful on
-> the K3 platform and that would pull in PM_GENERIC_DOMAINS, I think that part
-> needs to be reverted. I can send a patch to that effect later.
-> 
-not sure good patch was to enable PM_GENERIC_DOMAINS on ARCH_K3 but it's 
-a deps on TI_SCI_PM_DOMAINS so perhaps do a select in PM_GENERIC_DOMAINS 
-Kconfig instead of a depends on should be a better solution .
-
-Nishanth and vignesh what do you prefer for this issue ?
-
-
-thanks
-Guillaume
-
-> Best,
-> Matthias
-> 
-> 
->>
->> Regards
->> Guillaume
->>
->>> Best,
->>> Matthias
->>>
->>>
->>>>
->>>> Remove it and give possibility to enable this driver in modules.
->>>>
->>>> [1] https://lore.kernel.org/all/20180828005311.8529-1-nm@ti.com/
->>>> [2] https://lore.kernel.org/all/20250220-ti-firmware-v2-1-ff26883c6ce9@baylibre.com/
->>>> [3] https://lore.kernel.org/all/20250507135213.g6li6ufp3cosxoys@stinging/
->>>>
->>>> Signed-off-by: Guillaume La Roque <glaroque@baylibre.com>
->>>> ---
->>>> Changes in v2:
->>>> - Remove some other config after comment from Nishanth.
->>>> - Link to v1: https://lore.kernel.org/r/20250504-kconfig-v1-1-ab0216f4fa98@baylibre.com
->>>> ---
->>>>    arch/arm64/Kconfig.platforms | 4 ----
->>>>    1 file changed, 4 deletions(-)
->>>>
->>>> diff --git a/arch/arm64/Kconfig.platforms b/arch/arm64/Kconfig.platforms
->>>> index 8b76821f190f..bf9e3d76b4c0 100644
->>>> --- a/arch/arm64/Kconfig.platforms
->>>> +++ b/arch/arm64/Kconfig.platforms
->>>> @@ -135,11 +135,7 @@ config ARCH_SPARX5
->>>>    
->>>>    config ARCH_K3
->>>>    	bool "Texas Instruments Inc. K3 multicore SoC architecture"
->>>> -	select PM_GENERIC_DOMAINS if PM
->>>> -	select MAILBOX
->>>>    	select SOC_TI
->>>> -	select TI_MESSAGE_MANAGER
->>>> -	select TI_SCI_PROTOCOL
->>>>    	select TI_K3_SOCINFO
->>>>    	help
->>>>    	  This enables support for Texas Instruments' K3 multicore SoC
->>>>
->>>> ---
->>>> base-commit: e8ab83e34bdc458b5cd77f201e4ed04807978fb1
->>>> change-id: 20250504-kconfig-68f139fbf337
->>>>
->>>> Best regards,
->>>
->>
-> 
-
+Bart
 
