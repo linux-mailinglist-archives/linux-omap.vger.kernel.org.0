@@ -1,195 +1,142 @@
-Return-Path: <linux-omap+bounces-4054-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4055-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66582AF81CA
-	for <lists+linux-omap@lfdr.de>; Thu,  3 Jul 2025 22:13:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB63AF898D
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Jul 2025 09:32:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7C3F1C870FD
-	for <lists+linux-omap@lfdr.de>; Thu,  3 Jul 2025 20:13:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 519795A05E5
+	for <lists+linux-omap@lfdr.de>; Fri,  4 Jul 2025 07:32:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11E329B8DC;
-	Thu,  3 Jul 2025 20:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35F027FB1B;
+	Fri,  4 Jul 2025 07:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="hkIgnWSg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AHZeYaLY"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B15829B793;
-	Thu,  3 Jul 2025 20:13:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9712227F18B;
+	Fri,  4 Jul 2025 07:31:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751573610; cv=none; b=YNuO21Jm4+ZUltfp20+J6Js+nT1OP33KEbfJT9Cqo2slq2LvK7HUlrCsevLgMKYXF7qH7AeR7mjBo+KA/X/fYciNro4Ga5WWllb08ceJkr72o20o4Y2E+JzPAkqQms3u1189RorPRyyrLlZ5d/nas3NRUKlJoOALj/mr+7CEK+U=
+	t=1751614287; cv=none; b=g9JDrgWVCU8YImCJ9UIZpa2hxh7T0fVqr88lLm5LtR0gv46tG/1EIbK79ecanA3F/nYElr4+1cNPA8XZcMvVX1G7kgkwtwE7tfCfuhyHjNVYmyWxdLSWc3myQBcCmUY7/bXibI38hxKCxuSvXGgsXKeBnqOAa3XdSSAmK2LPd3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751573610; c=relaxed/simple;
-	bh=LCq9a4cW34CaPZRstxuZfpIVgSnBOhPtBk1dbm0I8bU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=oCNc7ynLBaGfO0LOzNC1QfQ3rHdeaLx9lN4Q7DoXnXVOHs7M0coKUG7upvB2zv3bzZkVoat/royjBX3gT3Y+0cTb9DZGwS+5L9wDPzp4iodcLhORMCzdKkpeTS7Sl/t7SbYNJ9Hag0RKYNc/5EiM0dnxTpmQ9BWtBvLWYXw6yO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=hkIgnWSg; arc=none smtp.client-ip=198.47.19.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllvem-sh03.itg.ti.com ([10.64.41.86])
-	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 563KD7u13987265;
-	Thu, 3 Jul 2025 15:13:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1751573587;
-	bh=mXAWnDKvBYL51tefBXkeube2AWz+vgQ8k8NXyfLv/1E=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=hkIgnWSgpoFemRx1hGlG8IvHbpbDhzhzSngNR8bzQF9OcpVH6N2rL/ZpJ+/8Rmrhh
-	 Bk+3ufEzw3PucLLc0c6f2zmsmayzsxX94CEb9I0AFs0Fo2KDfmIrMx3BDZnPHJXPER
-	 aXVVLduEgqepA89DvYrGEMDJNPjhB/0qX+q7aORk=
-Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
-	by fllvem-sh03.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 563KD6Rt676131
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Thu, 3 Jul 2025 15:13:07 -0500
-Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Thu, 3
- Jul 2025 15:13:06 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Thu, 3 Jul 2025 15:13:06 -0500
-Received: from [128.247.29.251] (dmz007xyy.dhcp.ti.com [128.247.29.251])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 563KD6to1412802;
-	Thu, 3 Jul 2025 15:13:06 -0500
-Message-ID: <95783fa1-017e-46cf-b135-7a797a7f5edd@ti.com>
-Date: Thu, 3 Jul 2025 15:13:06 -0500
+	s=arc-20240116; t=1751614287; c=relaxed/simple;
+	bh=I0BQB5Y0sAR1ONC1TeJSE+OpNExr7IsFBX7iMmg16MA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ii5DmzTDQHZ2THQZ6lizjwWEaXsr66aeGoWtVREnj9cNKGX72jzyLjT8iJ1EjjS5gI7ZXIG2QN4Pnbo8pv99Fp0zWuX1FfxwuK4QmMC26pq7te0tVy2ApEKZC85hOUF8f9oRIoP5hysjNdQJ41ETaWKDQh+unk3EDEaVpJZL5Zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AHZeYaLY; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751614286; x=1783150286;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=I0BQB5Y0sAR1ONC1TeJSE+OpNExr7IsFBX7iMmg16MA=;
+  b=AHZeYaLYKkLhsBO3qpELo4KicLw7pHGxZNqL6tJL/yN4exoIh5ihiHUZ
+   fXh3FWRT1DXapA4oOzX/Hh0MGhlz5wsCYlWxTC3MPGNBgOHmCXT0/jVmG
+   hVI8ghPGNjcB/LyQAG15HZ7Y67hw2l/kGdJKrVKmtPpf4NP2WEqjN1+dy
+   lb/3fgOh9C58m4aPkiI6AsO9CUOFRlJj69a433RgsJA65QUtUGK+aHxie
+   tHXrVOGJiK2PdtSxu7HXl5KPRtK4y+HY6p+E9nBDgCppHxcSDxFyXLBwB
+   kqakufG6Qtu8hqbgK7ed8CGbOn+ZooFnI5Nvc0F/2UmrMA9pBAkORRuZc
+   A==;
+X-CSE-ConnectionGUID: hYpzsugWTXqB1k3VPtp8yw==
+X-CSE-MsgGUID: tPNspjYyS+yhQKppjTZRng==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="53871627"
+X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; 
+   d="scan'208";a="53871627"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 00:31:25 -0700
+X-CSE-ConnectionGUID: NOGy6WoYRjKXVfBseLKXdA==
+X-CSE-MsgGUID: ob6MCjr8SRKu3k2TGvctbA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; 
+   d="scan'208";a="155337062"
+Received: from lkp-server01.sh.intel.com (HELO 0b2900756c14) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 04 Jul 2025 00:31:21 -0700
+Received: from kbuild by 0b2900756c14 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uXatD-0003Rn-10;
+	Fri, 04 Jul 2025 07:31:19 +0000
+Date: Fri, 4 Jul 2025 15:31:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: Shree Ramamoorthy <s-ramamoorthy@ti.com>, aaro.koskinen@iki.fi,
+	andreas@kemnade.info, khilman@baylibre.com, rogerq@kernel.org,
+	tony@atomide.com, linus.walleij@linaro.org, brgl@bgdev.pl,
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, m-leonard@ti.com,
+	praneeth@ti.com, jcormier@criticallink.com
+Subject: Re: [PATCH v6 2/2] gpio: tps65219: Add support for TI TPS65214 PMIC
+Message-ID: <202507041537.da8R2iEX-lkp@intel.com>
+References: <20250703180751.168755-3-s-ramamoorthy@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/2] gpio: tps65219: Add support for TI TPS65214 PMIC
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>, <aaro.koskinen@iki.fi>,
-        <andreas@kemnade.info>, <khilman@baylibre.com>, <rogerq@kernel.org>,
-        <tony@atomide.com>, <linus.walleij@linaro.org>, <brgl@bgdev.pl>,
-        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-gpio@vger.kernel.org>
-CC: <m-leonard@ti.com>, <praneeth@ti.com>, <jcormier@criticallink.com>
-References: <20250703180751.168755-1-s-ramamoorthy@ti.com>
- <20250703180751.168755-3-s-ramamoorthy@ti.com>
- <780d9307-4c47-4772-b527-bfd94486b931@wanadoo.fr>
-Content-Language: en-US
-From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-Organization: PMIC
-In-Reply-To: <780d9307-4c47-4772-b527-bfd94486b931@wanadoo.fr>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250703180751.168755-3-s-ramamoorthy@ti.com>
+
+Hi Shree,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on v6.16-rc4]
+[also build test ERROR on linus/master next-20250703]
+[cannot apply to tmlind-omap/for-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Shree-Ramamoorthy/gpio-tps65219-Update-_IDX-_OFFSET-macro-prefix/20250704-021048
+base:   v6.16-rc4
+patch link:    https://lore.kernel.org/r/20250703180751.168755-3-s-ramamoorthy%40ti.com
+patch subject: [PATCH v6 2/2] gpio: tps65219: Add support for TI TPS65214 PMIC
+config: hexagon-randconfig-002-20250704 (https://download.01.org/0day-ci/archive/20250704/202507041537.da8R2iEX-lkp@intel.com/config)
+compiler: clang version 21.0.0git (https://github.com/llvm/llvm-project 61529d9e36fa86782a2458e6bdeedf7f376ef4b5)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250704/202507041537.da8R2iEX-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202507041537.da8R2iEX-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/gpio/gpio-tps65219.c:208:14: error: incompatible function pointer types initializing 'int (*)(struct gpio_chip *, unsigned int, int)' with an expression of type 'void (struct gpio_chip *, unsigned int, int)' [-Wincompatible-function-pointer-types]
+     208 |         .set_rv                 = tps65219_gpio_set,
+         |                                   ^~~~~~~~~~~~~~~~~
+   drivers/gpio/gpio-tps65219.c:221:14: error: incompatible function pointer types initializing 'int (*)(struct gpio_chip *, unsigned int, int)' with an expression of type 'void (struct gpio_chip *, unsigned int, int)' [-Wincompatible-function-pointer-types]
+     221 |         .set_rv                 = tps65219_gpio_set,
+         |                                   ^~~~~~~~~~~~~~~~~
+   2 errors generated.
 
 
-On 7/3/25 2:05 PM, Christophe JAILLET wrote:
-> Le 03/07/2025 à 20:07, Shree Ramamoorthy a écrit :
->> Add support for the TI TPS65214 PMIC with the addition of an id_table,
->> separate TPS65214 template_chip, and device-specific _change_direction
->> functions.
->>
->> - Use platform_get_device_id() to assign dev-specific information.
->> - Use different change_direction() functions since TPS65214's GPIO
->>    configuration bits are changeable during device operation through bit
->>    GPIO_CONFIG in GENERAL_CONFIG register.
->> - Remove MODULE_ALIAS since it is now generated by MODULE_DEVICE_TABLE.
->>
->> Reviewed-by: Jonathan Cormier <jcormier@criticallink.com>
->> Tested-by: Jonathan Cormier <jcormier@criticallink.com>
->> Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
->> ---
->
-> ...
->
->> +static int tps65214_gpio_change_direction(struct gpio_chip *gc, 
->> unsigned int offset,
->> +                      unsigned int direction)
->> +{
->> +    struct tps65219_gpio *gpio = gpiochip_get_data(gc);
->> +    struct device *dev = gpio->tps->dev;
->> +    int val, ret;
->> +
->> +    /* Verified if GPIO or GPO in parent function
->
-> Nitpick: should the /* be on a separate line?
->
-Will fix this.
+vim +208 drivers/gpio/gpio-tps65219.c
 
->> +     * Masked value: 0 = GPIO, 1 = VSEL
->> +     */
->> +    ret = regmap_read(gpio->tps->regmap, TPS65219_REG_MFP_1_CONFIG, 
->> &val);
->> +    if (ret)
->> +        return ret;
->> +
->> +    ret = !!(val & BIT(TPS65219_GPIO0_DIR_MASK));
->> +    if (ret)
->> +        dev_err(dev, "GPIO%d configured as VSEL, not GPIO\n", offset);
->> +
->> +    ret = regmap_update_bits(gpio->tps->regmap, 
->> TPS65219_REG_GENERAL_CONFIG,
->> +                 TPS65214_GPIO0_DIR_MASK, direction);
->> +    if (ret)
->> +        dev_err(dev,
->> +            "Fail to change direction to %u for GPIO%d.\n",
->
-> Nitpick: keep it on the previous line?
-
-Will update this as well.
-
->
->> +            direction, offset);
->> +
->> +    return ret;
->> +}
->
-> ...
->
->> +static const struct gpio_chip tps65214_template_chip = {
->> +    .label            = "tps65214-gpio",
->> +    .owner            = THIS_MODULE,
->> +    .get_direction        = tps65214_gpio_get_direction,
->> +    .direction_input    = tps65219_gpio_direction_input,
->> +    .direction_output    = tps65219_gpio_direction_output,
->> +    .get            = tps65219_gpio_get,
->> +    .set_rv            = tps65219_gpio_set,
->> +    .base            = -1,
->> +    .ngpio            = 2,
->> +    .can_sleep        = true,
->> +};
->> +
->>   static const struct gpio_chip tps65219_template_chip = {
->>       .label            = "tps65219-gpio",
->>       .owner            = THIS_MODULE,
->> @@ -154,7 +218,7 @@ static const struct gpio_chip 
->> tps65219_template_chip = {
->>       .direction_input    = tps65219_gpio_direction_input,
->>       .direction_output    = tps65219_gpio_direction_output,
->>       .get            = tps65219_gpio_get,
->> -    .set            = tps65219_gpio_set,
->> +    .set_rv            = tps65219_gpio_set,
->
-> Is this correct? Does it even compile?
-> tps65219_gpio_set() returns void and .set_rv() expects a return value.
->
-> (same for tps65214_template_chip above)
-
-I sent this out too quickly, will add in the corresponding return values & re-test. Thanks for reviewing!
-
->
->>       .base            = -1,
->>       .ngpio            = 3,
->>       .can_sleep        = true,
->
-> ...
->
-> CJ
+   200	
+   201	static const struct gpio_chip tps65214_template_chip = {
+   202		.label			= "tps65214-gpio",
+   203		.owner			= THIS_MODULE,
+   204		.get_direction		= tps65214_gpio_get_direction,
+   205		.direction_input	= tps65219_gpio_direction_input,
+   206		.direction_output	= tps65219_gpio_direction_output,
+   207		.get			= tps65219_gpio_get,
+ > 208		.set_rv			= tps65219_gpio_set,
+   209		.base			= -1,
+   210		.ngpio			= 2,
+   211		.can_sleep		= true,
+   212	};
+   213	
 
 -- 
-Best,
-Shree Ramamoorthy
-PMIC Software Engineer
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
