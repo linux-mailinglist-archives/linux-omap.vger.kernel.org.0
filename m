@@ -1,115 +1,316 @@
-Return-Path: <linux-omap+bounces-4073-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4075-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E68FBAFBE0B
-	for <lists+linux-omap@lfdr.de>; Tue,  8 Jul 2025 00:02:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBD62AFEB7D
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Jul 2025 16:15:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08162166A52
-	for <lists+linux-omap@lfdr.de>; Mon,  7 Jul 2025 22:02:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C05EA5C65B3
+	for <lists+linux-omap@lfdr.de>; Wed,  9 Jul 2025 14:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909B828D8CC;
-	Mon,  7 Jul 2025 22:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765392E7657;
+	Wed,  9 Jul 2025 14:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="rDVrAfrC"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="swKSevdC"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B5628A1E3
-	for <linux-omap@vger.kernel.org>; Mon,  7 Jul 2025 22:02:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BED2E7639
+	for <linux-omap@vger.kernel.org>; Wed,  9 Jul 2025 14:02:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751925739; cv=none; b=WwSdyVDBYV32h89w18BD+/TDPPnn4Ci/X8JdoOmj+Q3bLQWfHdyHjmTWoacB75KPMIXdiG3SSRdWTAivPFfAnHxxQGfL9Z7vjtOE5cPbS3L5NoTgyPTqoTb24pdCr1MCuoMrtGRaWuCdZffC+D5SHfWB5ir3XK+YvDw1zogAjzg=
+	t=1752069780; cv=none; b=nG77lngdSpmR3mKrX1BIfQskzYctN/69GP/F0cejlPeEL8mPnenO2YUwrxPUtq/4e0qOglPi+iO53yEUzboNglos01xtjUik864+tShILupfZraVvy5VUm76JDjvzt+UL09FtwTAJ+JHlii4As3ldL9/i9Ivbzfp9B/uzjI6RvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751925739; c=relaxed/simple;
-	bh=M5CKuRv5NLhRjmqjKZwutyQJJfBH+MYMBM/Ul0kGuFA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Desi5j+qD+uMGHXaQpXSHxuOiP71g9UhA+AuXNmOAHs9zs0ylEFYT5fn7pdLBSBTd98PP4U5JpJM+qOG0E0R7O2s7JbZysbYmYJIxlMsqtsi99af4tYunvA+yPbtl81N1f3lIgeHPaGKz39/vnCXKdlZOVxGQCmF9O3KFKdm76g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=rDVrAfrC; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-23526264386so35492965ad.2
-        for <linux-omap@vger.kernel.org>; Mon, 07 Jul 2025 15:02:17 -0700 (PDT)
+	s=arc-20240116; t=1752069780; c=relaxed/simple;
+	bh=8ab465XL8RGJp2xwiNdST7psmhAqO4d1Mew5u/WfDXQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DyupXySZnTmwPAJtj+u1RCEO/cjnEKZqSZV18HssbS5TskybSPbIgh6PoofuPixmVVNezBdxWNEZ2cTBEnQ4rulfOx6mDMLt3rfvTHZFibeSI0AF2SiKbWbmooZApdelXTCQ7L8vjohDxYGOhvguM8GrHNvbp9YfesB8Rr7i0v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=swKSevdC; arc=none smtp.client-ip=209.85.128.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-710e344bbf9so51588017b3.2
+        for <linux-omap@vger.kernel.org>; Wed, 09 Jul 2025 07:02:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751925737; x=1752530537; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iMU0RXTncBQjVBF/K4IRgwydOyiiWJEg1TYIRfHWA68=;
-        b=rDVrAfrCOyRYGsEZfy+QI0QWn51zHFTZcYb+/9qjX8eCoOuqsMSI6czsUjUJkRcM2g
-         9Qnp3epWgrxYkddWTVb28DEqWj1+P2x2oB5bRGF+A+cSz4DIdTm8Ew0hDLwVrkr95NYj
-         hAvzgAj2J/O1tGZTHzon8AnhWqVWamRQBgNclNPtYUMkrAQD3OUQh8WlUfb2B94HgsZJ
-         JlnicNLhwDQFRTG418/EGOTBpYEvtZVaCHDpKTwSuoc2ypdy3pADhoTGOWSK5/fsu0SS
-         bCeh5QuiWrxoGZRgXBmM5Cyj9LApq7yEGPH28Dqme81V005+AGzLaiELMseEwtzQ3SAu
-         d+XQ==
+        d=linaro.org; s=google; t=1752069777; x=1752674577; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=0jxeF6qQ15W3iRJfD8FVALOVDq0XQ6sXFz3PZD+HrmQ=;
+        b=swKSevdCKyNFlX+iIPvi26Ju1UGrU8LxNf86oNwLRPtHY4MX3SH4wBPCF6JiSG5xkd
+         98VDL0n3bgY+Z9smjEOMHqmA+I1Yo+6p3+tn7lzz4p4T/27KGD6PewX6Pmm8+Pc6+Mpa
+         Y4CP7YpQ7v5+99ZQlfwIWq5Exi1BWa2/bXa3J0GQfoCveE6ToZBJ+KNR+eEQ53KJjLlx
+         5xvIZclBGj8TL53T4p2jHNSKsEeRX/qlLDLJY5gL5Sy+2ewwLuc7KmjCXJac/QH7nSIN
+         Q+YZ70Q4SFWsZswnhDiDvmjHcnFxxVgW1EjXbnztY9calqNI3jZq8QDCWhD7D6NPf6Pp
+         Ykmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751925737; x=1752530537;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iMU0RXTncBQjVBF/K4IRgwydOyiiWJEg1TYIRfHWA68=;
-        b=Vwcf8C4FlrUR8NOIoZcGohVsb8nd/80rbr0MF6osKePPwN56wOmJFmenG3N5bBkn16
-         xOmM/qVUtVoUqSgbSQRc+4qj2QrqqD5gPQqTLW2cKFeSThLnQoPnH12Q1mThTO/4TjN2
-         5/lWeP4BeygGXKI7S2wAbLl7LZix/hd4E1/J+0n7907KwPKi0UMaqRAQKFaHZa1IonrZ
-         LkkiRcLtX5ynrc54uAlz/Q/B3sSAOIUjFZKf0inZnTPx2HOBDrxyrZ1T1nEpMuPjpoR4
-         /b8G26Yg4kf4YLFdHnL/l8jBmTkrQRuApshcmTe2WmrkWU5c90Ap8lnOoM23Re6wlGP3
-         mFLw==
-X-Gm-Message-State: AOJu0YzAyFmXNgcQV2H3kHbIkdf9xdvAXGGFCm0OReONxUV33HZrPnUc
-	j38MoWFz9QlV4HPWw7A38DXZDGintkBVEOgv/d40As0/ZIcHEOgXKArIwsehtnJrqIM=
-X-Gm-Gg: ASbGnctIu8kIwTPGo2ukujKzn6FbFvvEtfYRvHT7Lb3aIE/h1TG9qsRK3uD+ZpAhrqh
-	kfWWq5L16JS2PpzeU2htqrqjixCxQdLWBnpDdCx3viRHzlpNoCFnoAwZiwisBuG2zeM8ZH3XBDi
-	PAj2bmbdDpseLLYwWyr+rs1JdnYL22r2Exzksiyth79Oc/zzboGraXhn4xsQnjborhw7POazX5A
-	6cjDXLosj95F3+Jf2ubIXWPr+26/btgtNaT+1jYTYvj3NjaPas6yP7KHGbKhTsP9ikzvRE+ExaT
-	QVls4m2rYFBURXm4NG/guytMqrSQz4/Vd4ODeq9oZXOu2ZcnL2SdEoTkg44n
-X-Google-Smtp-Source: AGHT+IF3ndJoSXBRWTscm4ArK+g7LkuzRAE2xYB7+hLKI3vLBOrqbLkXRpnWS+dMztiRe4cFppAyPw==
-X-Received: by 2002:a17:903:2b06:b0:234:db06:ac0 with SMTP id d9443c01a7336-23c875c0237mr213191825ad.45.1751925737144;
-        Mon, 07 Jul 2025 15:02:17 -0700 (PDT)
-Received: from localhost ([71.212.208.158])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23c8455ebb0sm92692555ad.120.2025.07.07.15.02.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Jul 2025 15:02:15 -0700 (PDT)
-From: Kevin Hilman <khilman@baylibre.com>
-To: tony@atomide.com, robh@kernel.org, krzk+dt@kernel.org, 
- conor+dt@kernel.org, Albin Tornqvist <albin.tornqvist@codiax.se>
-Cc: linux-omap@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250624114839.1465115-2-albin.tornqvist@codiax.se>
-References: <20250624114839.1465115-1-albin.tornqvist@codiax.se>
- <20250624114839.1465115-2-albin.tornqvist@codiax.se>
-Subject: Re: [PATCH] arm: dts: ti: omap: Fixup pinheader typo
-Message-Id: <175192573551.520018.5675346389036429336.b4-ty@baylibre.com>
-Date: Mon, 07 Jul 2025 15:02:15 -0700
+        d=1e100.net; s=20230601; t=1752069777; x=1752674577;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0jxeF6qQ15W3iRJfD8FVALOVDq0XQ6sXFz3PZD+HrmQ=;
+        b=r78uOY3mfvQYZFyKDpf0QKHNNdgefg5bev1G2W7h3EeE/A7jK7C7pJsJMqQWxLBfaR
+         LMO92EzR8JMeBPfqQRttEDvsykFd2aFevTz7WjdiK5iwY8jC+It55ezHwFyvEBbE1itE
+         ZC3eSJ1gVxzg49WurKW/EU2KPY6IQNGm1u50Yps1Qpg9K0sXb1q+f6I1EsvJAIRDKYCk
+         6bAoySgcGG1BBPSCv9KkPqRw2Gc5FU+sS/IlG816q/ObPwid7b9JZJKMViQdyt1l3e+y
+         oO7BrtwDNVK5ShYaNYspkAeE1lv4ilGEfgPT3R3PpBY8pEtzX5hf12Pj3cEQsqKd3Hma
+         aCQA==
+X-Forwarded-Encrypted: i=1; AJvYcCVe0dQZbCgU/Tljzv3bnQmcqL0+LZJ1TS1oNa46Q00YB8vfOsSrLkvwUQc6a0/tfP1s6jyoLZfEQh8O@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0CDETnM8hh35iuv0ChsIKF3NgkayrBS1nL9XYFvS2+Qz2P7lp
+	7xHElQPbsxRYrZfyxAaNfMVOfcLhQamAQXtCxiiCb0cg/lZ1sPMK3i7KO3XFgYjA0giY8CBtmSt
+	cxgihq9GrvZL6w26UWSe6gPPvQOA2+N/GTuSdSMN4YA==
+X-Gm-Gg: ASbGncssQjB78piMlongU3iXCgciTbjEyGAEa/ZIEbqqyIh7Ow8RjxNKt1ul0UhcVi+
+	h7bKz/vVqnV0KgdqDRLzYPiVhig8x2QQ4KfBdKrOg0A2e+9P4SU/T31FQox0USPqbS0WIk7JsIb
+	oCxJSHsMqjFdVI8XTa83WmBx9OnwafGxVGPLc0zrcTmKaa
+X-Google-Smtp-Source: AGHT+IFtWA8c7PWFxCFRls9OTwmIX50KvZ84tz29XCIMOswJWdVGY+cHCZiaI7O65CCj8j+BQ/aRqyiXkvmlO0NA56I=
+X-Received: by 2002:a05:690c:9c09:b0:70e:2d17:84b5 with SMTP id
+ 00721157ae682-717b13bf817mr39839927b3.0.1752069776636; Wed, 09 Jul 2025
+ 07:02:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3-dev-d7477
+References: <20250704075225.3212486-1-sakari.ailus@linux.intel.com> <20250704075434.3220506-1-sakari.ailus@linux.intel.com>
+In-Reply-To: <20250704075434.3220506-1-sakari.ailus@linux.intel.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Wed, 9 Jul 2025 16:02:20 +0200
+X-Gm-Features: Ac12FXwuMSAHr6sQzvdlqPxk0AdX5s1c2M_fF3m8uP0HMwMi2plFNm-Wc6CWOgg
+Message-ID: <CAPDyKFp+aBO9XTmvBYGj4bcL9BW26LCZb9O=6nstj29zctHi6A@mail.gmail.com>
+Subject: Re: [PATCH 44/80] mmc: Remove redundant pm_runtime_mark_last_busy() calls
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Aubin Constans <aubin.constans@microchip.com>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Russell King <linux@armlinux.org.uk>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Haibo Chen <haibo.chen@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Vignesh Raghavendra <vigneshr@ti.com>, Orson Zhai <orsonzhai@gmail.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, Avri Altman <avri.altman@sandisk.com>, 
+	Victor Shih <victor.shih@genesyslogic.com.tw>, Binbin Zhou <zhoubinbin@loongson.cn>, 
+	Huacai Chen <chenhuacai@kernel.org>, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
+	linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org, 
+	imx@lists.linux.dev, s32@nxp.com, linux-arm-msm@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+
+On Fri, 4 Jul 2025 at 09:54, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
+>
+> pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
+> pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
+> to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
+> pm_runtime_mark_last_busy().
+>
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+
+I have pulled in pm-runtime-6.17-rc1 and applied the $subject patch
+for next, thanks!
+
+Kind regards
+Uffe
 
 
-On Tue, 24 Jun 2025 13:48:39 +0200, Albin Tornqvist wrote:
-> This commit fixes a typo introduced in commit
-> ee368a10d0df ("ARM: dts: am335x-boneblack.dts: unique gpio-line-names").
-> gpio0_7 is located on the P9 header on the BBB.
-> This was verified with a BeagleBone Black by toggling the pin and
-> checking with a multimeter that it corresponds to pin 42 on the P9
-> header.
-> 
-> [...]
-
-Applied, thanks!
-
-[1/1] arm: dts: ti: omap: Fixup pinheader typo
-      commit: a3a4be32b69c99fc20a66e0de83b91f8c882bf4c
-
-Best regards,
--- 
-Kevin Hilman <khilman@baylibre.com>
-
+> ---
+> The cover letter of the set can be found here
+> <URL:https://lore.kernel.org/linux-pm/20250704075225.3212486-1-sakari.ailus@linux.intel.com>.
+>
+> In brief, this patch depends on PM runtime patches adding marking the last
+> busy timestamp in autosuspend related functions. The patches are here, on
+> rc2:
+>
+>         git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+>                 pm-runtime-6.17-rc1
+>
+>  drivers/mmc/core/core.c            | 1 -
+>  drivers/mmc/host/atmel-mci.c       | 2 --
+>  drivers/mmc/host/mmci.c            | 1 -
+>  drivers/mmc/host/omap_hsmmc.c      | 3 ---
+>  drivers/mmc/host/sdhci-esdhc-imx.c | 1 -
+>  drivers/mmc/host/sdhci-msm.c       | 1 -
+>  drivers/mmc/host/sdhci-omap.c      | 2 --
+>  drivers/mmc/host/sdhci-pxav3.c     | 2 --
+>  drivers/mmc/host/sdhci-sprd.c      | 1 -
+>  drivers/mmc/host/sdhci_am654.c     | 1 -
+>  drivers/mmc/host/tmio_mmc_core.c   | 1 -
+>  11 files changed, 16 deletions(-)
+>
+> diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+> index a0e2dce70434..874c6fe92855 100644
+> --- a/drivers/mmc/core/core.c
+> +++ b/drivers/mmc/core/core.c
+> @@ -882,7 +882,6 @@ void mmc_put_card(struct mmc_card *card, struct mmc_ctx *ctx)
+>         WARN_ON(ctx && host->claimer != ctx);
+>
+>         mmc_release_host(host);
+> -       pm_runtime_mark_last_busy(&card->dev);
+>         pm_runtime_put_autosuspend(&card->dev);
+>  }
+>  EXPORT_SYMBOL(mmc_put_card);
+> diff --git a/drivers/mmc/host/atmel-mci.c b/drivers/mmc/host/atmel-mci.c
+> index c885c04e938a..43f92f48590f 100644
+> --- a/drivers/mmc/host/atmel-mci.c
+> +++ b/drivers/mmc/host/atmel-mci.c
+> @@ -541,7 +541,6 @@ static int atmci_regs_show(struct seq_file *s, void *v)
+>         memcpy_fromio(buf, host->regs, ATMCI_REGS_SIZE);
+>         spin_unlock_bh(&host->lock);
+>
+> -       pm_runtime_mark_last_busy(dev);
+>         pm_runtime_put_autosuspend(dev);
+>
+>         seq_printf(s, "MR:\t0x%08x%s%s ",
+> @@ -2567,7 +2566,6 @@ static int atmci_probe(struct platform_device *pdev)
+>         dev_info(dev, "Atmel MCI controller at 0x%08lx irq %d, %u slots\n",
+>                  host->mapbase, irq, nr_slots);
+>
+> -       pm_runtime_mark_last_busy(dev);
+>         pm_runtime_put_autosuspend(dev);
+>
+>         return 0;
+> diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
+> index c70c64f8adc4..8367283647a9 100644
+> --- a/drivers/mmc/host/mmci.c
+> +++ b/drivers/mmc/host/mmci.c
+> @@ -2082,7 +2082,6 @@ static void mmci_enable_sdio_irq(struct mmc_host *mmc, int enable)
+>         spin_unlock_irqrestore(&host->lock, flags);
+>
+>         if (!enable) {
+> -               pm_runtime_mark_last_busy(mmc_dev(mmc));
+>                 pm_runtime_put_autosuspend(mmc_dev(mmc));
+>         }
+>  }
+> diff --git a/drivers/mmc/host/omap_hsmmc.c b/drivers/mmc/host/omap_hsmmc.c
+> index bf3b9f5b067c..adc0d0b6ae37 100644
+> --- a/drivers/mmc/host/omap_hsmmc.c
+> +++ b/drivers/mmc/host/omap_hsmmc.c
+> @@ -1663,7 +1663,6 @@ static int mmc_regs_show(struct seq_file *s, void *data)
+>         seq_printf(s, "CAPA:\t\t0x%08x\n",
+>                         OMAP_HSMMC_READ(host->base, CAPA));
+>
+> -       pm_runtime_mark_last_busy(host->dev);
+>         pm_runtime_put_autosuspend(host->dev);
+>
+>         return 0;
+> @@ -1954,7 +1953,6 @@ static int omap_hsmmc_probe(struct platform_device *pdev)
+>         }
+>
+>         omap_hsmmc_debugfs(mmc);
+> -       pm_runtime_mark_last_busy(host->dev);
+>         pm_runtime_put_autosuspend(host->dev);
+>
+>         return 0;
+> @@ -2031,7 +2029,6 @@ static int omap_hsmmc_resume(struct device *dev)
+>         if (!(host->mmc->pm_flags & MMC_PM_KEEP_POWER))
+>                 omap_hsmmc_conf_bus_power(host);
+>
+> -       pm_runtime_mark_last_busy(host->dev);
+>         pm_runtime_put_autosuspend(host->dev);
+>         return 0;
+>  }
+> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+> index 64c27349d79f..a040c0896a7b 100644
+> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> @@ -2108,7 +2108,6 @@ static int sdhci_esdhc_resume(struct device *dev)
+>             esdhc_is_usdhc(imx_data))
+>                 sdhc_esdhc_tuning_restore(host);
+>
+> -       pm_runtime_mark_last_busy(dev);
+>         pm_runtime_put_autosuspend(dev);
+>
+>         return ret;
+> diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+> index 732b65d4b61a..68e56251d5e8 100644
+> --- a/drivers/mmc/host/sdhci-msm.c
+> +++ b/drivers/mmc/host/sdhci-msm.c
+> @@ -2750,7 +2750,6 @@ static int sdhci_msm_probe(struct platform_device *pdev)
+>         if (ret)
+>                 goto pm_runtime_disable;
+>
+> -       pm_runtime_mark_last_busy(&pdev->dev);
+>         pm_runtime_put_autosuspend(&pdev->dev);
+>
+>         return 0;
+> diff --git a/drivers/mmc/host/sdhci-omap.c b/drivers/mmc/host/sdhci-omap.c
+> index 429d8a517fb6..cdb09605e009 100644
+> --- a/drivers/mmc/host/sdhci-omap.c
+> +++ b/drivers/mmc/host/sdhci-omap.c
+> @@ -1370,7 +1370,6 @@ static int sdhci_omap_probe(struct platform_device *pdev)
+>                 host->mmc->pm_caps |= MMC_PM_KEEP_POWER | MMC_PM_WAKE_SDIO_IRQ;
+>         }
+>
+> -       pm_runtime_mark_last_busy(dev);
+>         pm_runtime_put_autosuspend(dev);
+>
+>         return 0;
+> @@ -1379,7 +1378,6 @@ static int sdhci_omap_probe(struct platform_device *pdev)
+>         sdhci_cleanup_host(host);
+>
+>  err_rpm_put:
+> -       pm_runtime_mark_last_busy(dev);
+>         pm_runtime_put_autosuspend(dev);
+>  err_rpm_disable:
+>         pm_runtime_dont_use_autosuspend(dev);
+> diff --git a/drivers/mmc/host/sdhci-pxav3.c b/drivers/mmc/host/sdhci-pxav3.c
+> index 34abf986573f..1371960e34eb 100644
+> --- a/drivers/mmc/host/sdhci-pxav3.c
+> +++ b/drivers/mmc/host/sdhci-pxav3.c
+> @@ -494,7 +494,6 @@ static int sdhci_pxav3_suspend(struct device *dev)
+>         if (host->tuning_mode != SDHCI_TUNING_MODE_3)
+>                 mmc_retune_needed(host->mmc);
+>         ret = sdhci_suspend_host(host);
+> -       pm_runtime_mark_last_busy(dev);
+>         pm_runtime_put_autosuspend(dev);
+>
+>         return ret;
+> @@ -507,7 +506,6 @@ static int sdhci_pxav3_resume(struct device *dev)
+>
+>         pm_runtime_get_sync(dev);
+>         ret = sdhci_resume_host(host);
+> -       pm_runtime_mark_last_busy(dev);
+>         pm_runtime_put_autosuspend(dev);
+>
+>         return ret;
+> diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
+> index a5dec1a0e934..fe2fe52b23b2 100644
+> --- a/drivers/mmc/host/sdhci-sprd.c
+> +++ b/drivers/mmc/host/sdhci-sprd.c
+> @@ -863,7 +863,6 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
+>         if (ret)
+>                 goto err_cleanup_host;
+>
+> -       pm_runtime_mark_last_busy(&pdev->dev);
+>         pm_runtime_put_autosuspend(&pdev->dev);
+>
+>         return 0;
+> diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
+> index ea14d56558c4..e2c4a0049d61 100644
+> --- a/drivers/mmc/host/sdhci_am654.c
+> +++ b/drivers/mmc/host/sdhci_am654.c
+> @@ -986,7 +986,6 @@ static int sdhci_am654_probe(struct platform_device *pdev)
+>         /* Setting up autosuspend */
+>         pm_runtime_set_autosuspend_delay(dev, SDHCI_AM654_AUTOSUSPEND_DELAY);
+>         pm_runtime_use_autosuspend(dev);
+> -       pm_runtime_mark_last_busy(dev);
+>         pm_runtime_put_autosuspend(dev);
+>         return 0;
+>
+> diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
+> index 2cec463b5e00..21c2f9095bac 100644
+> --- a/drivers/mmc/host/tmio_mmc_core.c
+> +++ b/drivers/mmc/host/tmio_mmc_core.c
+> @@ -160,7 +160,6 @@ static void tmio_mmc_enable_sdio_irq(struct mmc_host *mmc, int enable)
+>                 sd_ctrl_write16(host, CTL_SDIO_IRQ_MASK, host->sdio_irq_mask);
+>
+>                 host->sdio_irq_enabled = false;
+> -               pm_runtime_mark_last_busy(mmc_dev(mmc));
+>                 pm_runtime_put_autosuspend(mmc_dev(mmc));
+>         }
+>  }
+> --
+> 2.39.5
+>
 
