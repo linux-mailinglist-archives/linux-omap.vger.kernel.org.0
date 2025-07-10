@@ -1,91 +1,138 @@
-Return-Path: <linux-omap+bounces-4077-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4078-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 342FAAFF15A
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Jul 2025 21:03:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA4C1B0078D
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Jul 2025 17:50:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27E084E67F2
-	for <lists+linux-omap@lfdr.de>; Wed,  9 Jul 2025 19:03:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDFA13A7567
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Jul 2025 15:48:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4ADE23F40F;
-	Wed,  9 Jul 2025 19:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E9E274B3F;
+	Thu, 10 Jul 2025 15:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uCNwN7RE"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="oXT9B+5G"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f196.google.com (mail-pl1-f196.google.com [209.85.214.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767B823CEFF;
-	Wed,  9 Jul 2025 19:03:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D5B2727F2
+	for <linux-omap@vger.kernel.org>; Thu, 10 Jul 2025 15:49:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752087795; cv=none; b=UJDCSeu2UYbTX/clfO+SyG3HNklGf/VnZbnSq6Aaf0Y8EWc0U+VxQv5PgQVGY7IbJf0+J1rYYxyjcDotOr4E4JdXha2dFjjtv59qLWorVxtwtMu5eCS4SkpdYPmepO0iLM/AHDtc5xbq/4F7u4w7vohkRrlR7ldSt5UQW4dYQ3M=
+	t=1752162548; cv=none; b=mnfkkCwK8xMm8jlEabKEH6BLPZd1fTlb5nxJCbJakG5Z+CSpkW6V86cBd4ptqpPIozXicNH7OqXEarhH6kAj+9uNUFGeEp46rixGZW1QVxXnPvm20wm1Lgc+Ln4078Guu88oMFbvtkSVZBzpUg5uWcV1fS/nxuHGDeWvLT15Rrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752087795; c=relaxed/simple;
-	bh=lSMeAZGO+rQcyXO17LJXWE7R5OHREkUaiHJQysbQyAQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OLkk4RKR58lCUct1RJ8ZdSyzBKsGVsyc4BTRs8olQ+SDq1kxvq3t8/6Jk6fxmTkU7K1tnBwKRhxKs1OgQpciluuErxZRiEvO5PHAG0+xQD9jJIl5ZMoVkdhB0n5y/rsugDoEzmq6oNkVZ17PdV3ep5jFkIQFBCQAPPnM/9LG9q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uCNwN7RE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69159C4CEEF;
-	Wed,  9 Jul 2025 19:03:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752087795;
-	bh=lSMeAZGO+rQcyXO17LJXWE7R5OHREkUaiHJQysbQyAQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uCNwN7RE0zBLIznZQ4rO0vv2r6KKEzCUXW+lP5lOxzZmIRXBc7cjgAyerPJvMwj1L
-	 uAg0enabL2soT/Hr6W0nfHHGxizr5YyaoWqJfpzASrenDnnvv2LzrnXHkPV8S7R/tN
-	 ESyXzqb036DdvWfqou325nJDpUNJz7LHFcRtDCaS/NlBCrQdvQD4caLHg0qEt3eIY/
-	 kTHI5g+2cj+/1A7f9JXOZGaMmJv4PUdSJygyRy4pD8ybIitR6OpW6MoIMwXN9297sf
-	 BOpKQWEEWMlLhHb3KKRZP32Lxh7xn3+U6xM4sDL2mUmAq3y8w6I9uCOjNrpMOsSM0o
-	 J78G7CngDS4qQ==
-Date: Wed, 9 Jul 2025 21:03:10 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>, vigneshr@ti.com, 
-	andreas@kemnade.info, khilman@baylibre.com, rogerq@kernel.org, tony@atomide.com, 
-	jmkrzyszt@gmail.com, miaoqinglang@huawei.com, grygorii.strashko@ti.com, 
-	wsa@kernel.org, Jean Delvare <khali@linux-fr.org>, 
-	Komal Shah <komal_shah802003@yahoo.com>, Greg Kroah-Hartman <gregkh@suse.de>, linux-omap@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 1/2] i2c: omap: Handle omap_i2c_init() errors in
- omap_i2c_probe()
-Message-ID: <joo6ibjqnsriouiw77fwc5kd2p2wd2junhlhe5nzivzot2jgac@q33qj637wt53>
-References: <cover.1751701715.git.christophe.jaillet@wanadoo.fr>
- <565311abf9bafd7291ca82bcecb48c1fac1e727b.1751701715.git.christophe.jaillet@wanadoo.fr>
- <aG60GJy60Jf3w8tZ@roadster.musicnaut.iki.fi>
+	s=arc-20240116; t=1752162548; c=relaxed/simple;
+	bh=NUas53vpoAk6VP6qKkOKtFSjta/i003A560bDDh3vDU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nBBIn7UB70oreJWqgBfdpi56zKwrIr3un7myB5ofNlb+JNIzU2ES7gg2rTz/jCS578RAdCdE+4mjotQDUFodKJntp5dgfm3qCAZC5C/ZNNX6B5Y0muQ41URsb9tQHoXPoGfQHN5m1rWofFKIDqJlKKHsUyy4aMy2R1UR4ryzAMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=oXT9B+5G; arc=none smtp.client-ip=209.85.214.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pl1-f196.google.com with SMTP id d9443c01a7336-2349f096605so14859675ad.3
+        for <linux-omap@vger.kernel.org>; Thu, 10 Jul 2025 08:49:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1752162546; x=1752767346; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=i9xR3mb1kxP9itCBHwNObW7nPNgFeA20Kv8/YjFmav0=;
+        b=oXT9B+5GPhhZG8Wih3VMoiPXnMn6DRwLm3FTsO5kMjwdUSv3RREABS/9arsiOYl7i8
+         zGI3KGn2FgnSVmERLHQEyM812mPyP1EhHaNZC9MLd0LuxANGEcRRul1/qh81eQhdYcio
+         fpneZqzEFGBXLdh395FdnPNrIde9SMhmzXUmjBzIkQHQIBj8JRRZLt1GjhsPB7EKN8Jh
+         xQQmOr2u+4Xe05O5GSGfJOb7RcMWNlyaDr+aYMmkZUd57e/rtNQVeO6W+1WQxAEoSTYj
+         Oga8YD6BUSKJK+NqvPtHVn6ztrmIjyMenshUEl1UA/E3ROoDznQBHeCqyUHFodkcUB71
+         F02g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752162546; x=1752767346;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=i9xR3mb1kxP9itCBHwNObW7nPNgFeA20Kv8/YjFmav0=;
+        b=GzWCJA3L/JX13/6q+7m5cJ/rToXM3cRJwUzHGPQseDHlQF/Du7wxdnyLvL4KfGaxeM
+         6owySfX2+3i98GvqvMSpSyzcKS9CZ2pHIvdmSNQMuVcIDXg3b0AcxT80chLpnhM9ZiPo
+         CbuwpIsOcMDIc8vyGp6hMFcZtJQhvImDQJW+MrlwGcceIsgCqtMpP9JefUwHleMpPvL0
+         7tEwputEDjFZIRHz1Tl776ASjxKcvoQNYE/awIcsCwWOYtcUcsrMdcliAQO08RYqrlbZ
+         M7CUT8T6PJRwD9mC+GTzSeCvfX8BCC9GlB1es0CJy22DkBMt+8e5ANidBxNUqzpj1CV8
+         aiEg==
+X-Gm-Message-State: AOJu0YzyKSZ0vgyQ9ukSEA85t0smcPODBItXtpO4H5C+BH6yVT6rphT6
+	TlR2yz4GA7CBVgBuK699BXW64tBc80zncIqHOGqQiMdJQUURef+Wtv9XRvzstBsI4CLi55t/k99
+	5az8eg6wFyA==
+X-Gm-Gg: ASbGncsk/49GJ2waSXwJXw01DEaadWz+zZ4xYQHO+b2sPdrsWPeJmMH6r9COT5lggG6
+	SinA70HGt+tL2hwSpNT17hDAeYtMwF8ImeHEbHWqWYP/4lvgLfXCIjX7BurvzgM5BLK+iDsTp55
+	1Zpy7Z+o/bLCxV7FR827d2oI2oijmGlEdbVjQGfOkXS+Xj3MDt3Y/B+7NI7YWRuj/J+2y8tqMBF
+	g1kCbQM6XDJ5OJTqMbV2AduCc7+t3Rd20X3TgwyCnfd0SmE1ul+WHPIG05BaztrublnjPUz7rAw
+	/RUDKJIqRHIY8OQujUE/KUyumus7H47GRQgQeWSNuw82JELuecEGndok9DhmyJJ19i7tpYA=
+X-Google-Smtp-Source: AGHT+IGl3lYbN2pRFYA0zQWbsg56J/yom0bWzs4fTRL3F5wEm5er1i3GzM8I8xWM5o1Eo43mIynm6Q==
+X-Received: by 2002:a17:902:dacc:b0:237:e818:30f2 with SMTP id d9443c01a7336-23de489588fmr41446345ad.50.1752162546029;
+        Thu, 10 Jul 2025 08:49:06 -0700 (PDT)
+Received: from localhost ([71.212.208.158])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de43313d3sm26855165ad.144.2025.07.10.08.49.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Jul 2025 08:49:05 -0700 (PDT)
+From: Kevin Hilman <khilman@baylibre.com>
+To: soc@lists.linux.dev
+Cc: linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: [GIT PULL] arm: dts: OMAP updates for v6.17
+Date: Thu, 10 Jul 2025 08:49:05 -0700
+Message-ID: <7h7c0gxczy.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aG60GJy60Jf3w8tZ@roadster.musicnaut.iki.fi>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Aaro,
+The following changes since commit 19272b37aa4f83ca52bdf9c16d5d81bdd1354494:
 
-> > diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
-> > index 8b01df3cc8e9..485313d872e5 100644
-> > --- a/drivers/i2c/busses/i2c-omap.c
-> > +++ b/drivers/i2c/busses/i2c-omap.c
-> > @@ -1472,7 +1472,11 @@ omap_i2c_probe(struct platform_device *pdev)
-> >  	}
-> >  
-> >  	/* reset ASAP, clearing any IRQs */
-> > -	omap_i2c_init(omap);
-> > +	r = omap_i2c_init(omap);
-> > +	if (r) {
-> > +		dev_err(omap->dev, "failure to initialize i2c: %d\n", r);
-> 
-> Error paths in omap_i2c_init already print a message and error code,
-> so this is log is redundant.
+  Linux 6.16-rc1 (2025-06-08 13:44:43 -0700)
 
-Good point! I will take care of it, no need to send a v2.
+are available in the Git repository at:
 
-Thanks,
-Andi
+  git://git.kernel.org/pub/scm/linux/kernel/git/khilman/linux-omap.git tags=
+/omap-for-v6.17/dt-signed
+
+for you to fetch changes up to a3a4be32b69c99fc20a66e0de83b91f8c882bf4c:
+
+  arm: dts: ti: omap: Fixup pinheader typo (2025-07-07 14:24:57 -0700)
+
+----------------------------------------------------------------
+arm: dts: OMAP updates for v6.17
+- new board support: Seeed BeagleBone Green Eco
+- misc. fixups / cleanups
+
+----------------------------------------------------------------
+Albin T=C3=B6rnqvist (1):
+      arm: dts: ti: omap: Fixup pinheader typo
+
+Felix Brack (1):
+      ARM: dts: am335x-pdu001: Fix RS-485 transceiver switching
+
+Frank Li (1):
+      Revert "ARM: dts: Update pcie ranges for dra7"
+
+Kory Maincent (3):
+      arm: dts: omap: am335x-bone-common: Rename tps to generic pmic node
+      dt-bindings: omap: Add Seeed BeagleBone Green Eco
+      arm: dts: omap: Add support for BeagleBone Green Eco board
+
+Krzysztof Kozlowski (1):
+      ARM: dts: omap: am335x: Use non-deprecated rts-gpios
+
+ Documentation/devicetree/bindings/arm/ti/omap.yaml |   1 +
+ arch/arm/boot/dts/ti/omap/Makefile                 |   1 +
+ arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi  |   2 +-
+ arch/arm/boot/dts/ti/omap/am335x-boneblack.dts     |   2 +-
+ arch/arm/boot/dts/ti/omap/am335x-bonegreen-eco.dts | 169 +++++++++++++++++=
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
+++
+ arch/arm/boot/dts/ti/omap/am335x-nano.dts          |   8 ++++----
+ arch/arm/boot/dts/ti/omap/am335x-pdu001.dts        |   3 ++-
+ arch/arm/boot/dts/ti/omap/dra7.dtsi                |  29 +++++++++++------=
+------------
+ 8 files changed, 190 insertions(+), 25 deletions(-)
+ create mode 100644 arch/arm/boot/dts/ti/omap/am335x-bonegreen-eco.dts
 
