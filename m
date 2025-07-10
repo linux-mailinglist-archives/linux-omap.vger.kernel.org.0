@@ -1,99 +1,101 @@
-Return-Path: <linux-omap+bounces-4083-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4084-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCF46B00A75
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Jul 2025 19:49:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E81B00D66
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Jul 2025 22:50:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 984EA7610F9
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Jul 2025 17:49:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6EFDA7B745C
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Jul 2025 20:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25882F234E;
-	Thu, 10 Jul 2025 17:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398352FD881;
+	Thu, 10 Jul 2025 20:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ncRj2Gg8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h6fyEEN4"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03B62F1FF6;
-	Thu, 10 Jul 2025 17:48:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B003728C5D7;
+	Thu, 10 Jul 2025 20:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752169741; cv=none; b=MujMYvThkmRZKnMkg6uvza/BG+rsLQL2urojO7bFWCly5DM+I6hQucXEjqwfiKV5//6ibOQPKV1Iog6y92p7DAa4LKejqxGnTo43bUoIWV26KAvAeTn4PqYQ4IMx3k31kd4iCrctRabWA9WO4kRAlIdo6d7/IKZLZ4DfJi9bNm0=
+	t=1752180594; cv=none; b=UZwyqbfmL+gy1wcHAlYxPnllWm+ZOl8JHX7La8oMonQh/fKxEi/aEhoJYSLdgJBOa//6FP9ZOnZouMZFUAGJ4/k1gMCqu3rR58I4gZEsPSslPemunAN/qS6+FYkiFdPINGq1/N9txCAz6RPCalgs5scaEtDn8EXctIE4u4H1c+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752169741; c=relaxed/simple;
-	bh=xjNm2BWeE00PHyvJRjfE7hktMpltcv0ocuIcwkJfQJs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UBk94KbYr7CYKiU+BUjxctjGafhVf/vK1/qdLOyMYn6HYe0dqm55c560KVR+QUaZr/t5w+FfZasN1DJEKMT6V5xxoFmHmIys3VseSB8iL2O6wl0Et6bjmAD8wvYS/YrS7JcrWGA0q6zzj+3eCKkmAhZ4Asqn+EkIJMKSLcbQLFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ncRj2Gg8; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id EA354B2B;
-	Thu, 10 Jul 2025 19:48:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1752169708;
-	bh=xjNm2BWeE00PHyvJRjfE7hktMpltcv0ocuIcwkJfQJs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ncRj2Gg8w0e+PTpGcWZQ1gTmvuSJV3nNnUhXD0kfTN6rtRBPpFWEIhV3x5446HOFn
-	 DvBwV2SoQN/RK04f8r0S9Ui9RoyjVK4MZ7I7fujYwMuWjP5yZh6e3npLf38rn8Ymtf
-	 SUJMBrPxtqhwliipbHaOcBKlt2N+pXgzmbgzIfUI=
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: linux-media@vger.kernel.org
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mehdi Djait <mehdi.djait@linux.intel.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-omap@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH 11/72] ARM: dts: ti: omap3-n9: Replace clock-frequency in camera sensor node
-Date: Thu, 10 Jul 2025 20:47:07 +0300
-Message-ID: <20250710174808.5361-12-laurent.pinchart@ideasonboard.com>
-X-Mailer: git-send-email 2.49.1
-In-Reply-To: <20250710174808.5361-1-laurent.pinchart@ideasonboard.com>
-References: <20250710174808.5361-1-laurent.pinchart@ideasonboard.com>
+	s=arc-20240116; t=1752180594; c=relaxed/simple;
+	bh=R7alaaCPHt1AUC5EDQMaWx/LazeRtOK9h/LtGYLubzc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nWhSvfjZe2LrvpM3In6r2w5oMcKpJPPuwcAeOuouTN58eTMwDIVvjDz3Nlctgctj9gWARXzyCtVDHbSs51F25Zu1SqnyXzNQaD7yPhuh3MqPkEVIi0ODkwQBbl5WHjB64QQImJMHStm416QGv3Xr5pi0R3+NCPnl4xITfd9n9Rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h6fyEEN4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2068FC4CEF4;
+	Thu, 10 Jul 2025 20:49:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752180594;
+	bh=R7alaaCPHt1AUC5EDQMaWx/LazeRtOK9h/LtGYLubzc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=h6fyEEN4OVF3X4z4T6olPNkDshuKXL14P1ZPQgpydfMFcwR9gfB/GOgMD4XCHMsaT
+	 imvTz7KUSeoR1/jaC3kgG9uR9g+XUykWN4fqfF0+nqa4G5qvdeRbBc9MnFG6JPwpxC
+	 ox4Ky8S7mPhrBIne33gDYoUD0T/ERZI7PD7fw9WWgjzVEj37q6CWRlQMB9b2NLWezl
+	 pJUcn55+qsWr3Y3mSb6HfxYvVxDKlTeiX2xva/VTcEnydxdor+JtVDcKnaLMw8YBlC
+	 yvnIRSbvTfsVnfz3DHpgDKlZWNaOUzIt2YJhwLMQOWTEF/SJIDs2dY6X2jqzlqJK3p
+	 Bvxnwb3KGLDBg==
+Date: Thu, 10 Jul 2025 22:49:49 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Elie Morisse <syniurge@gmail.com>, 
+	Shyam Sundar S K <shyam-sundar.s-k@amd.com>, Codrin Ciubotariu <codrin.ciubotariu@microchip.com>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Michal Simek <michal.simek@amd.com>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, Jarkko Nikula <jarkko.nikula@linux.intel.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Jan Dabros <jsd@semihalf.com>, Jean Delvare <jdelvare@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Oleksij Rempel <o.rempel@pengutronix.de>, 
+	Gregory CLEMENT <gregory.clement@bootlin.com>, Ajay Gupta <ajayg@nvidia.com>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, 
+	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
+	Tony Lindgren <tony@atomide.com>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
+	Vignesh R <vigneshr@ti.com>, Loic Poulain <loic.poulain@oss.qualcomm.com>, 
+	Robert Foss <rfoss@kernel.org>, Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>, 
+	Viken Dadhaniya <quic_vdadhani@quicinc.com>, Chris Brandt <chris.brandt@renesas.com>, 
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, Orson Zhai <orsonzhai@gmail.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>, 
+	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>, Alain Volmat <alain.volmat@foss.st.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH 23/80] i2c: Remove redundant pm_runtime_mark_last_busy()
+ calls
+Message-ID: <sj24iciugqjrof6672tvlnxjfvgperdliftfa47cquyfe6g22c@s5e7twdtjhsj>
+References: <20250704075225.3212486-1-sakari.ailus@linux.intel.com>
+ <20250704075415.3218608-1-sakari.ailus@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250704075415.3218608-1-sakari.ailus@linux.intel.com>
 
-The clock-frequency for camera sensors has been deprecated in favour of
-the assigned-clocks and assigned-clock-rates properties. Replace it in
-the device tree.
+Hi Sakari,
 
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
----
- arch/arm/boot/dts/ti/omap/omap3-n9.dts | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+On Fri, Jul 04, 2025 at 10:54:15AM +0300, Sakari Ailus wrote:
+> pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
+> pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
+> to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
+> pm_runtime_mark_last_busy().
+> 
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-diff --git a/arch/arm/boot/dts/ti/omap/omap3-n9.dts b/arch/arm/boot/dts/ti/omap/omap3-n9.dts
-index a3cf3f443785..2edc1933449b 100644
---- a/arch/arm/boot/dts/ti/omap/omap3-n9.dts
-+++ b/arch/arm/boot/dts/ti/omap/omap3-n9.dts
-@@ -21,8 +21,11 @@ smia_1: camera@10 {
- 		reg = <0x10>;
- 		/* No reset gpio */
- 		vana-supply = <&vaux3>;
-+
- 		clocks = <&isp 0>;
--		clock-frequency = <9600000>;
-+		assigned-clocks = <&isp 0>;
-+		assigned-clock-rates = <9600000>;
-+
- 		flash-leds = <&as3645a_flash &as3645a_indicator>;
- 		port {
- 			smia_1_1: endpoint {
--- 
-Regards,
+Acked-by: Andi Shyti <andi.shyti@kernel.org>
 
-Laurent Pinchart
-
+Thanks,
+Andi
 
