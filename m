@@ -1,88 +1,87 @@
-Return-Path: <linux-omap+bounces-4086-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4088-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3291CB00FCE
-	for <lists+linux-omap@lfdr.de>; Fri, 11 Jul 2025 01:43:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30CF3B00FD2
+	for <lists+linux-omap@lfdr.de>; Fri, 11 Jul 2025 01:43:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06DDE160C60
-	for <lists+linux-omap@lfdr.de>; Thu, 10 Jul 2025 23:43:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 112B01CA7490
+	for <lists+linux-omap@lfdr.de>; Thu, 10 Jul 2025 23:43:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA6F307488;
-	Thu, 10 Jul 2025 23:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64633074B9;
+	Thu, 10 Jul 2025 23:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KWLsEdq3"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SZlGlZz8"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CC82E62C7
-	for <linux-omap@vger.kernel.org>; Thu, 10 Jul 2025 23:42:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03307307498
+	for <linux-omap@vger.kernel.org>; Thu, 10 Jul 2025 23:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752190961; cv=none; b=Wp/sDTcay/KqqMBWGQwRGRFaJ7NmADE3NeuTv9t51JBRKsZX+Afi5XFShOd9oBlMvf+Wah/87MjPEgTHgIJzj3rZtDfrnu/hsG/AMkeAfpNuVBgVFLvz9ieo10VTujA8rWMAdKG9P4k64gb4epWEiOlmzSm9mljfRFwTAY7ri2I=
+	t=1752190964; cv=none; b=brFlHC0A3GhjAcwqVPF6e9pDXoYiFAxDb5bcUmLa0L9hI/xv0/OZ8Bdv4eKUTLxhn8QRDbUJjZcGIbbpKRuUjqnXSz4U/hC09WFGwZCrGpCh2Rm8lpVRbdmuOeF28nBAPhbtW/v8cUluOIP8nd82s0h/Qf+ObhIa/Zqv+REwHJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752190961; c=relaxed/simple;
-	bh=EUcAkc+MwYYvI7xJQeU4DcisuArrrCwBemUDYG66Ivw=;
+	s=arc-20240116; t=1752190964; c=relaxed/simple;
+	bh=jwHUuIfJpkKtUxi73mEQY+91PJvNh9g5xkFpUZRiga4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oOSl8RpJXghpGS4ll4rlJw8w7XfS7kol6cgKv6LLzcR02F+ycehCFVSE1pxc8u/NUPi4GKm01v5KjzdMH5ffO47GAVfRFDkeAnA8c1dX8H40zZE334iRLU0+F6mXF8sbGnif/pJJk1B1xzCCEg7vOow65tUg4ux/fr5gbiBI/6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KWLsEdq3; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:To:Cc; b=ecB9BwcZXQJjpxEbXXKeKBv+K2HBdmpwdptHX4WKS7ZbsIHwtAaWtvXxjxLJ8sEa9bBrZaEvLbIbOX8lpcYDlSJ3yzB9vGFgliczY1BSJOxD+oHv7+slXcIQFttZdvaBDSTnqEZgBHHhgr+lRSLK0JsYZOSQnNNBe8A4Nr31WrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SZlGlZz8; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752190959;
+	s=mimecast20190719; t=1752190962;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VCr73Arn7lW8l2qhlI4qEFhffjvPwgr/9jG/meQTRwk=;
-	b=KWLsEdq32MZRRMTd3Cfuf0/DmiODN/Oq2OS6ZBmeBTJAT7lK9tAQTsMOjHwzOLf39Y6FaL
-	cEYHeq0FyMFKHSYtH/Bbr7K2lXzgtBPB95VWsVcPAYb3UAQ9tb38Me48j56Wm7bO6UhvUA
-	j5YacV0S4ztxqyWI6SNwFpUbkQnAnEE=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=zzcdkHd9gFbf4QypMItIoKQ58RyRYzqIMuQJ/GqwgQs=;
+	b=SZlGlZz8vRD5dg6oHkP2LdXGUo4OeMBz28p7JsRA7pjIEMJ1rJ8irlr2/cxKYbiMpjXeTn
+	8Se+7u+gCVr3VWitF/YZrybNV0/trVPxJe553euzJmWr3F5bj6scU/Zs1pulrKobnSKjWH
+	PNBHhPqgdwJVOi/aMaUfSwHhkETAsrU=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-670-6Ers_Q3ENAWv89tHPuG8VA-1; Thu, 10 Jul 2025 19:42:38 -0400
-X-MC-Unique: 6Ers_Q3ENAWv89tHPuG8VA-1
-X-Mimecast-MFC-AGG-ID: 6Ers_Q3ENAWv89tHPuG8VA_1752190958
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6fd3aeb2825so46689356d6.3
-        for <linux-omap@vger.kernel.org>; Thu, 10 Jul 2025 16:42:38 -0700 (PDT)
+ us-mta-369-0sXvnL29MSaNab33JjoRKg-1; Thu, 10 Jul 2025 19:42:40 -0400
+X-MC-Unique: 0sXvnL29MSaNab33JjoRKg-1
+X-Mimecast-MFC-AGG-ID: 0sXvnL29MSaNab33JjoRKg_1752190960
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-704a8024e6aso865016d6.1
+        for <linux-omap@vger.kernel.org>; Thu, 10 Jul 2025 16:42:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752190957; x=1752795757;
+        d=1e100.net; s=20230601; t=1752190960; x=1752795760;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VCr73Arn7lW8l2qhlI4qEFhffjvPwgr/9jG/meQTRwk=;
-        b=wO2DK23PyEsHvOFQ2DvXhTMBqjxsPexl3ZR+dE6U2WghMC5rhWROdIR8lRfI8pgPPz
-         VLzOdmVrTQU//IMPBDbmDcBv2cVHb3LNuRiZczvvSYFNiPDl2zs9gJvlp1/gH+rUILcl
-         ELBxnz3IY39Z/3uKrIAZy58Qn2ZIoYEHn5t4qswqCQQaf6WQEtX5FauLvB1ABqv5rs1U
-         e0rR6M6FlzquZibU5eTrmxn26yZDm3JcWEKuO1wL+/UAlh+6Vz9ZlFSC0dkzrMJWCR0m
-         V21sdZHb3NQUMM4hjnBGK3xeKdtx4VyxelR5jZjtLKY43pIIjXvFQWjiaLbCXiSLSvGC
-         OUhA==
-X-Forwarded-Encrypted: i=1; AJvYcCVxiUalspcbwM8uyvwvlZ9KYyR0pIh33hionCcpNv31wYi/IWdaiea3IjDALd7cnSUd9CMSj3Tv90D/@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3GI5VLX46+PaqJSBfjmPuGr0msKEybi4fVYCZ5uwgwa/ntYDg
-	8tH/iF8PavpG2W6q2l9Ivm0cUNhGg7ZNyGQZ63zMs5R86Ki+5VIQ6Gg/HzRinVLSph1c+R3juo/
-	DzAIGelJ3W0cqyF6MljD5hQF70lOTFJvXROmemUqRUWTfuwGjcnDB95KqPqK1hD8=
-X-Gm-Gg: ASbGncsuVJvt+rXEGSoh3x22RsnP70PH/55qAlTPhlzP6LVwiUuxRN5JDw6Kzojg3m8
-	dSz/0/CcVNj71G00IEoMihL4be3c+SJNyb/iPKBhZmIiWPINcszKQlQe8XlOY03w+7zXOch/cgH
-	Hi9+V4Ia8bssk1BLkQFnw5z5ZU2tdDnP7Fo854yGO9rV1rMxrnFy1GlmhvdGB2nQDxxV+tBEXf9
-	Bn+IlbGpPFmBU6StFuO7BQRSzYkLNV/vpKWLUYDcCZV/jpt7rBf3GD/pgTvXAb75GtB0wGS5ueM
-	u2qwgyI8rS2BnzohvUXViqkw2t694OJT38AS92pH19TC2vQ6eBJr3gquC4jglZabvJOxgGYk7Qn
-	BNqk=
-X-Received: by 2002:ad4:5b82:0:b0:6fd:3a4d:363a with SMTP id 6a1803df08f44-704a359027fmr22077606d6.25.1752190957607;
-        Thu, 10 Jul 2025 16:42:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGLz6ZETzSGQzjCyDHW99TpL/CMMlr/fLIeK9Mwj1zXQh8KrDMwNBRoioYOOVVqlEpleU2jMA==
-X-Received: by 2002:ad4:5b82:0:b0:6fd:3a4d:363a with SMTP id 6a1803df08f44-704a359027fmr22077216d6.25.1752190957272;
-        Thu, 10 Jul 2025 16:42:37 -0700 (PDT)
+        bh=zzcdkHd9gFbf4QypMItIoKQ58RyRYzqIMuQJ/GqwgQs=;
+        b=rBn0XG5JwTk4N3o+mEUrowKXai52vI2eLBgUmVjqfOHN9yqrsVNf3f1jphq/t8HCx6
+         Zoy8RooZ4D3U07UYcMyEoBt3UNkG4k/D13Gp3TTPg5m8MHCGOeyS5DCa+ExLix4kvohr
+         629vQFtCNXqOM8nha7tscimuISci6TwAidLykrErjnM/btOIcWrAsxpDdL9bMRjpG9Mp
+         sDtmETgumkDoMTNJK+2HmGurOF1aZf9DZGwhieLiiP/t+sCxvCfQAvGSc6Zlephs5Nmf
+         6OqaXN4nnMPBhMaeKkaVOEs9HRUNsG3Prhp2xf8fBVhgzhK10DZEpKVqfpefpr4W9rMq
+         i8bA==
+X-Forwarded-Encrypted: i=1; AJvYcCVBkx045g90K9pQ2p9Zt83URqa0HdXg3SY43qIa1qSmjFajFa2i3Z2dyLcnGbu3HVtAfOIuUR7GFGnu@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqGn3qIULPp0WuS06VebWLVbvY9JN5Rj61hoopwqIcuxqRV1OR
+	xEBmpqzWnFivtNhL4lTqQRXbZMbwCMtCoTJXopi0XoT6PzOKSALkz8rCbmn+mKQJ1/SOHufMXW6
+	VnTtd53etraQs9FWpRxxLb5ynZY5yn2z7Niu/oXR0cwmdGJzSxzjO5PVWTkuQ67A=
+X-Gm-Gg: ASbGncuDsuVM3420JvuwTiM2wUlAYz3m/st0thGQkf6cgWEmJUmoTWjN17ljxJXkiuJ
+	QUgbgf3hKw0F3VtNIeHtzn3+od3eWTZ75K9WS+pz52GfqDhwQ0OXcrkAp+ep8R31oMpefg7Y+Dv
+	Pb5GpV1qwk+Bmfq3L0ZJhM1SYo41pspjANzbd2Q+fSBrvZ32wBxZbxSNST/ViKai2fBTff620fb
+	mHrD/07oHNTMquntF/YolnUpRnPHejf2+sxC6YzkJU0Cn+RjhaKFyWTbQn6OQrNWIPV6f0JZ7/P
+	h7Tgo7bEhrM1Xyb+HqkwvmERracioRrq/b9Ouq4BdxVCKi9yYFS4b74SthVNVQ==
+X-Received: by 2002:a05:620a:284b:b0:7d4:5b68:2646 with SMTP id af79cd13be357-7dded1ef04dmr206090785a.57.1752190960385;
+        Thu, 10 Jul 2025 16:42:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG4Qf90w3WAIU2WDAVl84idxN1ukujHZknm9tJ2hmS373+cRWGc+ayHL6trz95Fv5oRIp+Mrg==
+X-Received: by 2002:a05:620a:284b:b0:7d4:5b68:2646 with SMTP id af79cd13be357-7dded1ef04dmr206086485a.57.1752190959849;
+        Thu, 10 Jul 2025 16:42:39 -0700 (PDT)
 Received: from [192.168.1.15] (c-73-183-52-120.hsd1.pa.comcast.net. [73.183.52.120])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7dcde422e03sm153989385a.69.2025.07.10.16.42.34
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7dcde422e03sm153989385a.69.2025.07.10.16.42.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Jul 2025 16:42:36 -0700 (PDT)
+        Thu, 10 Jul 2025 16:42:39 -0700 (PDT)
 From: Brian Masney <bmasney@redhat.com>
-Date: Thu, 10 Jul 2025 19:42:17 -0400
-Subject: [PATCH 2/3] ARM: OMAP2+: clock: convert from round_rate() to
+Date: Thu, 10 Jul 2025 19:42:18 -0400
+Subject: [PATCH 3/3] ARM: versatile: clock: convert from round_rate() to
  determine_rate()
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -92,7 +91,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250710-arm32-clk-round-rate-v1-2-a9146b77aca9@redhat.com>
+Message-Id: <20250710-arm32-clk-round-rate-v1-3-a9146b77aca9@redhat.com>
 References: <20250710-arm32-clk-round-rate-v1-0-a9146b77aca9@redhat.com>
 In-Reply-To: <20250710-arm32-clk-round-rate-v1-0-a9146b77aca9@redhat.com>
 To: Paul Walmsley <paul@pwsan.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
@@ -107,11 +106,11 @@ Cc: linux-clk@vger.kernel.org, linux-omap@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  Brian Masney <bmasney@redhat.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1752190949; l=1927;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1752190949; l=1416;
  i=bmasney@redhat.com; s=20250528; h=from:subject:message-id;
- bh=EUcAkc+MwYYvI7xJQeU4DcisuArrrCwBemUDYG66Ivw=;
- b=N+7e5WUdWe0eSqdVYYqPWF410agqUBM3oaZotQ0G8zXJXUkdVBjHFser4LNyGdI4AwRnWbRfy
- 5UkEbXLMQmiAkXM1KekVeBLxlTf9LNC8v14IEIyHzxm7lTWB1d0OHWe
+ bh=jwHUuIfJpkKtUxi73mEQY+91PJvNh9g5xkFpUZRiga4=;
+ b=BvPcx1n0mHxD2gopIAIHjnh1g8w2Bjp39wDL14lGnKxt1a2WhjWjIRkC4v+Ur+bh9HIHtBv/h
+ TZtY3GXOwDxDw5NimZx9GggwdDZr1X0VaLAtH8tcwEpCQzCkO8UueKy
 X-Developer-Key: i=bmasney@redhat.com; a=ed25519;
  pk=x20f2BQYftANnik+wvlm4HqLqAlNs/npfVcbhHPOK2U=
 
@@ -119,52 +118,41 @@ The round_rate() clk ops is deprecated, so migrate this driver from
 round_rate() to determine_rate() using the Coccinelle semantic patch
 on the cover letter of this series.
 
-The change to virt_prcm_set_ops had to be made manually.
-
 Signed-off-by: Brian Masney <bmasney@redhat.com>
 ---
- arch/arm/mach-omap2/clkt2xxx_virt_prcm_set.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ arch/arm/mach-versatile/spc.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/clkt2xxx_virt_prcm_set.c b/arch/arm/mach-omap2/clkt2xxx_virt_prcm_set.c
-index 011076a5952f0bfb24eadd13b8991b41b8115bae..96c5cdc718c8b9449a4372e1bb83582eaa91440e 100644
---- a/arch/arm/mach-omap2/clkt2xxx_virt_prcm_set.c
-+++ b/arch/arm/mach-omap2/clkt2xxx_virt_prcm_set.c
-@@ -70,8 +70,8 @@ static unsigned long omap2_table_mpu_recalc(struct clk_hw *clk,
-  * Some might argue L3-DDR, others ARM, others IVA. This code is simple and
-  * just uses the ARM rates.
-  */
--static long omap2_round_to_table_rate(struct clk_hw *hw, unsigned long rate,
--			       unsigned long *parent_rate)
-+static int omap2_determine_rate_to_table(struct clk_hw *hw,
-+					 struct clk_rate_request *req)
- {
- 	const struct prcm_config *ptr;
- 	long highest_rate;
-@@ -87,10 +87,12 @@ static long omap2_round_to_table_rate(struct clk_hw *hw, unsigned long rate,
- 		highest_rate = ptr->mpu_speed;
+diff --git a/arch/arm/mach-versatile/spc.c b/arch/arm/mach-versatile/spc.c
+index 790092734cf6155daa63c44a1e5af00ecef30737..812db32448fcd415fa1a60f8bb971661369151e1 100644
+--- a/arch/arm/mach-versatile/spc.c
++++ b/arch/arm/mach-versatile/spc.c
+@@ -497,12 +497,13 @@ static unsigned long spc_recalc_rate(struct clk_hw *hw,
+ 	return freq * 1000;
+ }
  
- 		/* Can check only after xtal frequency check */
--		if (ptr->mpu_speed <= rate)
-+		if (ptr->mpu_speed <= req->rate)
- 			break;
- 	}
--	return highest_rate;
-+	req->rate = highest_rate;
+-static long spc_round_rate(struct clk_hw *hw, unsigned long drate,
+-		unsigned long *parent_rate)
++static int spc_determine_rate(struct clk_hw *hw, struct clk_rate_request *req)
+ {
+ 	struct clk_spc *spc = to_clk_spc(hw);
+ 
+-	return ve_spc_round_performance(spc->cluster, drate);
++	req->rate = ve_spc_round_performance(spc->cluster, req->rate);
 +
 +	return 0;
  }
  
- /* Sets basic clocks based on the specified rate */
-@@ -215,7 +217,7 @@ static void omap2xxx_clkt_vps_late_init(void)
- static const struct clk_ops virt_prcm_set_ops = {
- 	.recalc_rate	= &omap2_table_mpu_recalc,
- 	.set_rate	= &omap2_select_table_rate,
--	.round_rate	= &omap2_round_to_table_rate,
-+	.determine_rate = &omap2_determine_rate_to_table,
+ static int spc_set_rate(struct clk_hw *hw, unsigned long rate,
+@@ -515,7 +516,7 @@ static int spc_set_rate(struct clk_hw *hw, unsigned long rate,
+ 
+ static struct clk_ops clk_spc_ops = {
+ 	.recalc_rate = spc_recalc_rate,
+-	.round_rate = spc_round_rate,
++	.determine_rate = spc_determine_rate,
+ 	.set_rate = spc_set_rate,
  };
  
- /**
 
 -- 
 2.50.0
