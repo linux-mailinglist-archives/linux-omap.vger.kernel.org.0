@@ -1,88 +1,148 @@
-Return-Path: <linux-omap+bounces-4093-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4094-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4140FB08758
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Jul 2025 09:50:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2379AB08F19
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Jul 2025 16:24:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 109484E182A
-	for <lists+linux-omap@lfdr.de>; Thu, 17 Jul 2025 07:50:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 750B85608B8
+	for <lists+linux-omap@lfdr.de>; Thu, 17 Jul 2025 14:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 057A225A65B;
-	Thu, 17 Jul 2025 07:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B63652F85CA;
+	Thu, 17 Jul 2025 14:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=growora.pl header.i=@growora.pl header.b="N4TH97Ho"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xlsaWxi9"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.growora.pl (mail.growora.pl [51.254.119.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7572343CF
-	for <linux-omap@vger.kernel.org>; Thu, 17 Jul 2025 07:50:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.254.119.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C942F6FB6
+	for <linux-omap@vger.kernel.org>; Thu, 17 Jul 2025 14:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752738633; cv=none; b=TmnXLxUIeXYWE59zQvAxr8ZN+RdKIsbI9RaDR2NaA5Q1uZ4ToDy4/Mc6r5eISj09prSMEzfIY6ZnNbTNHAQyt3rCkHlbQp2xsHP/ME9hpKrqr8tz8Zudy3vaqng45ManhTZuPb6oJzNu16CrPseZgG8TYGfhEYEudqqq/NXIGQA=
+	t=1752762158; cv=none; b=tmCVtnWzobgfXce1+KPeZGkd/+Rc8/S25vuLeyhPWn+l3DoXEvwUqkVqBCFjH8mOgBhXI0wekAYPuWfJsS+TBv/GJm1pKRDVWDyKoTIktK6vyVw/Y/EgFvdMJbF7iqQXsRlsCefeJo63sdZw3NIeMpN8CJ2kxlR+1VJkT6n/cYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752738633; c=relaxed/simple;
-	bh=RSy3akR1+Z0TK1MqUcCTAhuNDshd4oA9g7Cu4aFIABY=;
-	h=Message-ID:Date:From:To:Subject:MIME-Version:Content-Type; b=F+/eFBt/mwkpuIMS7esU2QB44yVsAi05TIdqABXgE+HUi9wUY5q6NRIiMfzrc/G/o8ruVStXgmKw+OLTgjjGiHzxjFpsfsJBWxjxceafRr3yZgqnIWEF0niBYd6Esb15AdVwGykbgLPVBcCthfiYP1mS2mMOkneXFsDeyBl1sCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=growora.pl; spf=pass smtp.mailfrom=growora.pl; dkim=pass (2048-bit key) header.d=growora.pl header.i=@growora.pl header.b=N4TH97Ho; arc=none smtp.client-ip=51.254.119.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=growora.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=growora.pl
-Received: by mail.growora.pl (Postfix, from userid 1002)
-	id 0A4BD24402; Thu, 17 Jul 2025 09:46:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=growora.pl; s=mail;
-	t=1752738442; bh=RSy3akR1+Z0TK1MqUcCTAhuNDshd4oA9g7Cu4aFIABY=;
-	h=Date:From:To:Subject:From;
-	b=N4TH97HopPBbfury/xsbZXSEd+V4yugwMp2h1PZhrSkMTkwW6X0Cksf9FNcERidzY
-	 tPAPThjte17ZxJ5vP9tbebCE3I8uGiq8hXz6IG99ZZtWgS3m2ns2lEsb88ClDGJszf
-	 7qFz/4mCIickhqgrARoXLNo34gulMQC55BhAf1hxOgbDncj6+vD7WwgumHyJIBs0X8
-	 taQxIrwfXDPiJcXJ8cn8ecDjf/l8cmvuo6PbkCp7ivlyZ9Rm85/1tCopn6fonL6ROk
-	 431J73qL5L20q1dyN3R1nMq+L4Rszh2JKiQPz2VtDv2ZJOGK8JOIG2nCJlpIZJ/JXO
-	 bPw6jkqIVdEZQ==
-Received: by mail.growora.pl for <linux-omap@vger.kernel.org>; Thu, 17 Jul 2025 07:45:48 GMT
-Message-ID: <20250717084500-0.1.ko.28to3.0.hjtj9ypg79@growora.pl>
-Date: Thu, 17 Jul 2025 07:45:48 GMT
-From: "Mateusz Hopczak" <mateusz.hopczak@growora.pl>
-To: <linux-omap@vger.kernel.org>
-Subject: Wsparcie programistyczne - termin spotkania 
-X-Mailer: mail.growora.pl
+	s=arc-20240116; t=1752762158; c=relaxed/simple;
+	bh=OH4wrDfav89XkdNsE1p0BQDzGHuGj2x+JYSvAAX8m3o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RvSCUytt6qpKeCkceo4sQjEXlUrYiMcgbxUHGAY21uyUeHUVJX3rzxO4/8/FOUdT7Nt6R5XbGsMrE2K2ucroB7pe4db1F0hYrM1ArD2IzDhvIbgV3G1rJQapFHH9uSAEv09WSPyZ0vRUt92lG3C0E7NQ717n3KVBaqqg6w5yYuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xlsaWxi9; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ae6d8584e08so17820066b.2
+        for <linux-omap@vger.kernel.org>; Thu, 17 Jul 2025 07:22:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1752762155; x=1753366955; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZzNSUPnzBkKdR3mW5wA88jSoaUKRv7J/6KX45+OJCEo=;
+        b=xlsaWxi9O8W8k51M3yMHxlN9ZQAx3290Ehzb64ILx+L/VnQi2t/uBABmARvXYcu6NM
+         QIgsswDQ/KQYpicVmNLRdHRm5GOSSh2SRaXI0jdUPdf4uLxL4In04RxmA0OnNb7gYAs/
+         7lKmOjHed2PcQ0pJ8/4YmYRDb85IIsfrW1P0h5x+zNjatpaYQLc5Z3M5B1jpHje7+/KH
+         Pc2ExdUGuJofu6WFzk7zf6UpbsZDN7aVjehseVgzy9mAJIkX5+bbRgm69P6dy600aeZM
+         NCijeNyHYO0mPcKtgP+5pc0g6qqmQdKQQrR5trgWLHdAItjNPt5zWUC9ajP6KTIQNsTK
+         o63w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752762155; x=1753366955;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZzNSUPnzBkKdR3mW5wA88jSoaUKRv7J/6KX45+OJCEo=;
+        b=UtlGSRcPGM8sMpNBr2rZTv4l5EAphOdi/rgEHDzp5jYGMFvFmTW0D7sB/zSWWPfOCk
+         OyeGv/Nwg/TrywMk3GxIhUntYNTDT1z98zo7MU36L+HxqE6ZIp5J9f8gHy+c8gBStbP7
+         NfWbJLAifQnx0DSg2vOjvmeDyOgOABHGAyliX6AjsuxTzWr13PXrI+s6qORUaed/RRke
+         a/oa+LzyThMsCbO8bIgpeiW8Vlz+nbSUapSJCy1Hnfl1A8jHLgpRPU7/oEwcSYM7uYNF
+         wKcM4wyrci9eNdm1NJ6d3Eh4PbTs7SiCwZOcD4Hgfv2KGknBhxnK3dhM6X13vePIUPoz
+         /gWA==
+X-Forwarded-Encrypted: i=1; AJvYcCVNKrI/S/avvS/PKMgIJI+h5EXOmepO7RvEOipEAZnAELXhhaKdUWQENwESbRFRpcj0qgJGJesZH3To@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRANEV/9Qiso4vo/NldNx8pRYyOAcDG/r43uUZGEQ2jz7XPlAj
+	AoSG88WWroBGkG/tgo0eeyQ+fa5OYRUTni+a8pY+8NhzbYMEhVKSHi4/gZC02xeN3RQ=
+X-Gm-Gg: ASbGncudX1eLaSNOuB5EJpJfG54WUhpPJGQfht+resXHQ125b/x5B95/9CVzn6idcZc
+	RnOz9Nm67wnbWXzCB+etHicCAb+QEmHAYUNJTWxkaQ0ZN2LHWL+L9kEF7Po/4/fq+XyARkrrOXh
+	zRrP8gt80ZfJZ2UaOXJCl0or/6zoAqituf2lDXd9g9gYeSY7Im6rEkh0iHrJ2GBgKef6VwjODwX
+	gtTyloZ0CP1VQFvPcETdwG8VQJbtuRRgJ+UwtJX+1RR5KqVwkp3ELLHjth7Wc8btthN9hiIAIkh
+	sEHCKFPRQCq1tNUWdce21Zqie9tMvF06zCj9nKYmylfVN+E5yRw85bOWM1HY/ZUPmt5vE7goU2T
+	9uYUSpsl0VqBG+KcAg1N4YFVgd8zqyIAQ
+X-Google-Smtp-Source: AGHT+IG1+74iXCF3EHn6v+R1gCnqSq7/v8FseRyLjKbV9H4v/JXHyiAaJgnSRbcKuMka+iOoDn2N6w==
+X-Received: by 2002:a17:907:72c8:b0:ad8:9207:b436 with SMTP id a640c23a62f3a-ae9c99a0f28mr261270566b.5.1752762154888;
+        Thu, 17 Jul 2025 07:22:34 -0700 (PDT)
+Received: from kuoka.. ([178.197.222.89])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e82e3a8csm1379333266b.154.2025.07.17.07.22.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Jul 2025 07:22:34 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Tony Lindgren <tony@atomide.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH] ARM: dts: ti: omap4: Use generic "ethernet" as node name
+Date: Thu, 17 Jul 2025 16:22:13 +0200
+Message-ID: <20250717142212.92333-2-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1385; i=krzysztof.kozlowski@linaro.org;
+ h=from:subject; bh=OH4wrDfav89XkdNsE1p0BQDzGHuGj2x+JYSvAAX8m3o=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoeQcU4/pS61bv71IWPMnOqEVyfmAQdhNqJGsd1
+ Xeya8hli1uJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaHkHFAAKCRDBN2bmhouD
+ 19IjD/9qbG1sGKejcxxyfQtCjdj7pECUhqmNjsxjo05Sb57GTglnGbl8sd5s45fF6LXh7/FYn8L
+ 6bnTv/xa70PBMtvfjmvBCJwp5ipAptLRXCW9oG5gEP/KWqnZhkclU4Nv1euWv0P9M9T7cvZlMng
+ cIVqMV67MaYVKIUHxEcZFAl3mVw1gnZQUlie0iaVoKgh5mi8MriaZkP7wnrKkzG42gtT66LT+gB
+ 6JNkbUMWm2CschRyB0tN82rBuE0buJFlICyZhbZCp2I7qMUAgRCsxwTl1yb0T6kKnW+5ZnjmehX
+ dbvCWjy5J07YuUYPgnhrKkkoxamE98iK4gTdIsqrxK/L1m2mKztSz1bHdah3ipcHgiTKx+8R6J+
+ OlGD6+xJFBWGi5J6emkPNrqLIf0a1n5/PYrwbVqHY2loEFeND8KkFAVkaG85meogz4Qg9+zAQaw
+ mCY4EL8gRcekWxxitpBhQLjsq/Pk+U0jnG3akQsR5qsPKnNjlGlS0WAVdNW49I44xSQ6Gf9Mmfj
+ GFzqwK7Ooq/3rt+ieNGiG/nhkvPacZf02SY0iRsBV2O902Lprvg+CE+OF9sVyxsUaT93w37q/2J
+ LCAKmIiD/FCXB12uoWms7wL5AqJePnsi9y4yUxEIvA7ZXnB1dgp7vrsoyWuLRKiY1vncdQ5UT/X JjPkCR07dI3rK5A==
+X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+Content-Transfer-Encoding: 8bit
 
-Szanowni Pa=C5=84stwo,
+Common name for Ethernet controllers is "ethernet", not "eth", also
+recommended by Devicetree specification in "Generic Names
+Recommendation".  Verified lack of impact using dtx_diff.
 
-czy w Pa=C5=84stwa firmie rozwa=C5=BCaj=C4=85 Pa=C5=84stwo rozw=C3=B3j no=
-wego oprogramowania lub potrzebuj=C4=85 zaufanego zespo=C5=82u, kt=C3=B3r=
-y przejmie odpowiedzialno=C5=9B=C4=87 za stron=C4=99 technologiczn=C4=85 =
-projektu?
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ arch/arm/boot/dts/ti/omap/omap4-sdp.dts                  | 2 +-
+ arch/arm/boot/dts/ti/omap/omap4-var-om44customboard.dtsi | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Jeste=C5=9Bmy butikowym software housem z 20-osobowym zespo=C5=82em in=C5=
-=BCynier=C3=B3w. Specjalizujemy si=C4=99 w projektach high-tech i deeptec=
-h =E2=80=93 od zaawansowanych system=C3=B3w AI/ML, przez blockchain i IoT=
-, a=C5=BC po aplikacje mobilne, webowe i symulacyjne (m.in. Unreal Engine=
-).
+diff --git a/arch/arm/boot/dts/ti/omap/omap4-sdp.dts b/arch/arm/boot/dts/ti/omap/omap4-sdp.dts
+index b535d24c6140..b550105585a1 100644
+--- a/arch/arm/boot/dts/ti/omap/omap4-sdp.dts
++++ b/arch/arm/boot/dts/ti/omap/omap4-sdp.dts
+@@ -467,7 +467,7 @@ &mcspi1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&mcspi1_pins>;
+ 
+-	eth@0 {
++	ethernet@0 {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&ks8851_pins>;
+ 
+diff --git a/arch/arm/boot/dts/ti/omap/omap4-var-om44customboard.dtsi b/arch/arm/boot/dts/ti/omap/omap4-var-om44customboard.dtsi
+index cadc7e02592b..80e89a2f8be1 100644
+--- a/arch/arm/boot/dts/ti/omap/omap4-var-om44customboard.dtsi
++++ b/arch/arm/boot/dts/ti/omap/omap4-var-om44customboard.dtsi
+@@ -194,7 +194,7 @@ &mcspi1 {
+ 	pinctrl-0 = <&mcspi1_pins>;
+ 	status = "okay";
+ 
+-	eth@0 {
++	ethernet@0 {
+ 		compatible = "ks8851";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&ks8851_irq_pins>;
+-- 
+2.48.1
 
-Wspieramy firmy technologiczne oraz startupy na r=C3=B3=C5=BCnych etapach=
-: od koncepcji, przez development, po skalowanie i optymalizacj=C4=99. Dz=
-ia=C5=82amy elastycznie =E2=80=93 jako partnerzy, podwykonawcy lub ventur=
-e builderzy.
-
-Je=C5=9Bli szukaj=C4=85 Pa=C5=84stwo zespo=C5=82u, kt=C3=B3ry rozumie z=C5=
-=82o=C5=BCono=C5=9B=C4=87 projekt=C3=B3w i wnosi realn=C4=85 warto=C5=9B=C4=
-=87 technologiczn=C4=85 =E2=80=93 ch=C4=99tnie porozmawiamy.
-
-Czy mogliby=C5=9Bmy um=C3=B3wi=C4=87 si=C4=99 na kr=C3=B3tk=C4=85 rozmow=C4=
-=99, by sprawdzi=C4=87 potencja=C5=82 wsp=C3=B3=C5=82pracy?
-
-
-Z pozdrowieniami
-Mateusz Hopczak
 
