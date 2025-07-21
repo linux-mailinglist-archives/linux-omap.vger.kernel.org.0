@@ -1,171 +1,166 @@
-Return-Path: <linux-omap+bounces-4099-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4100-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED899B0C9D2
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Jul 2025 19:38:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 885E0B0CE2D
+	for <lists+linux-omap@lfdr.de>; Tue, 22 Jul 2025 01:30:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3CBD1674BB
-	for <lists+linux-omap@lfdr.de>; Mon, 21 Jul 2025 17:38:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 558E617CE7E
+	for <lists+linux-omap@lfdr.de>; Mon, 21 Jul 2025 23:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C942E1722;
-	Mon, 21 Jul 2025 17:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3CE924676C;
+	Mon, 21 Jul 2025 23:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="crNHOQ5Y"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="YwYR1WqB"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853572DECB5;
-	Mon, 21 Jul 2025 17:38:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A4B242D66;
+	Mon, 21 Jul 2025 23:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753119484; cv=none; b=VvJFoGZDzwwzfOXSJf6RrP8bCCOf8rPhEfnsUieIPIg7I9MsyDgDkNGZ4Xe/BmHr/zV13rbMnEG576JGn7NG1vIWuXp5/Z4f4thT3I0ZvYhxEKnIWoEs+2raQletzw9U2CFpmG0UdYB5ia/JfALNFUP6g8wmvmUfClcTL90APz4=
+	t=1753140609; cv=none; b=H6f8eAh5PKjp6rOQk5r1RvBoQ+KUHNtZ7QweYWacDylPtIpV2ajUpr81FP0v09wFyBFYI/ig0FtLelrQGdEAIlGy/wMgCI4tiID4OpcGSZWJRJPI/LfWc2aMUT16SS6lNU0sb7V5hzW7nOQVOFk64UvS2xEvezMVdJc8Wx5PeZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753119484; c=relaxed/simple;
-	bh=JQeKeyjQ550mGYzRoXjGCK3oDO8pvfYR6KeZGy7cwls=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l/GFSVZ8top+GJufSrsO14+Uf0DNPyGxhmA6eSK6qs716mqpdy2CJqdDo6TAB/FEN6JoXnlF15C7PZef79IDeRex9RcuTOoID/AvqJfYXWO1ooHTNwyaCIUZdio7IlOlY5JHJWN+SI6Q4VnJaPUxz9EsWjcKhDl/BYL6mgZxq/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=crNHOQ5Y; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-60707b740a6so6618967a12.0;
-        Mon, 21 Jul 2025 10:38:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753119480; x=1753724280; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=i5aYttvmuPho8Hr/hRnl5TjyZg+8OVRSRk5gmU1kZpA=;
-        b=crNHOQ5YvO5EnAAUGiPNkmGTIfe7JMRtHlZAY5aBtWvULAnRNnhNKmyAqErnL6xmXt
-         zPftPrzhlHDrCHXKwxApYoUBgkD6OMZucBKOAB1JzAPVfTMELOZGi3AjVTaRDJKI8cqZ
-         VdOrLLsWjJCCN8dcenW6QoDce04+QrFvR0TIrL2cvmZBKQuvVmSbQzuXN8fY5LVoRTw8
-         jn4vq/nvZcE5Ri5ilMmvX+JuOB6BRv3lAozyDpbJI0iBSWrPZtXe3ymKyXq1lcDrCv3u
-         R/pOCFvfhypDKBfsTPswSFv56NQcDvXAw/wgil6GFZpK+qNtbAl4IdBq+rjZEO6z+m2U
-         Dd1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753119480; x=1753724280;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i5aYttvmuPho8Hr/hRnl5TjyZg+8OVRSRk5gmU1kZpA=;
-        b=LdyAmM49OspMlnOtbBZcNYaJdoM0F958/Men5xxlvDjToBQsruX/zJtaL5uIPEa/gq
-         MJVr+9W6gNNR4uN3BnIrWpWm3fjQN9TLcr8+OuqDnx09FKOPIdhqMDuZqdlQlo2KYDQE
-         Ad1K9mpw8Yx9xxKN4TrBLJQhGpPmLTnWiFBWk/HBKThZmikgbjWA7/TECHjV6db+zNMh
-         JntfcpRaGMM6rK4nyvf3ehx0iloFZNDdBOaP89kWxgZ4opwrY6UNPw/ds7oR54FuSWef
-         BCnaRstoTOUe8J/YwOXsS82CVPRXtLeorHvYSJtLkIMfsct61v8GA9VgwZ7u+GP3m56T
-         oomQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUIlcJmpE63MUzrg1w9G+RR1QT5Wmr38hPDU+tax8h3FGrvClzkDAQVRRIzGhAh+vp8zKG+dXbB9U+w@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/IaAf/CImiGkmXxRd8cpuJdPmtLicrxKhQB5EZSCR2OqpVzMf
-	gLQ1kvqVgUA1RPZ1iCWsAA2xGHXlYwKpDl89y+j24O6kbiYtCz9vXoukbqrj3yaY
-X-Gm-Gg: ASbGncv04fe2sbIXxZil7vwU0K4DTcRtMAfydp9M0dAF8FA+934dCQlAKgY4F6zrCxp
-	x1TDQwqUiIVJbPD5n61dWGgym2F8kFWOhLJpR1KYeG9vuKtOP5uMNF8axHMTq900UTapFPX5ygz
-	ho48KfBkj26LFBRbqhFX9yzkJ8KGCh/hYyCSkRfHIr8K8Szgf0V8Cg/26pMbKlb4DpLqbdPzHXx
-	f7LkrtcOplyIThL+yKR2E0dvAKRwVz0WUtcW9+C/HUCul51n30dXtWMpbMZNRtzRLuggGHmQrMD
-	swAnli+uqIABKzA5T8CVWIti4ngrRMqjf8h8RK8U9VDQqsMzGmy51xo36K9Fo7OxsspqsMSeCI8
-	XTTY8YD75r9C4hOdyITsoyBNAVWrPLD6fPq4Ehb5LKFuz28q7rvQBRSKjFXVlsBUV7PUbZhR0Co
-	y1lDQ=
-X-Google-Smtp-Source: AGHT+IFEsc1qZOuWRAAkyRNnNZ2Vit1sRj4YvitU/IhJG0Vc2xsnI9fjQ01jyLofTpmOHPK/wEH/lA==
-X-Received: by 2002:a17:907:da0:b0:af0:3bac:4f88 with SMTP id a640c23a62f3a-af03bac510fmr326278466b.26.1753119480257;
-        Mon, 21 Jul 2025 10:38:00 -0700 (PDT)
-Received: from fedora.tux.internal (85.191.78.244.dynamic.dhcp.aura-net.dk. [85.191.78.244])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aec6ca315d5sm715812566b.98.2025.07.21.10.37.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Jul 2025 10:37:59 -0700 (PDT)
-From: Bruno Thomsen <bruno.thomsen@gmail.com>
-To: linux-omap@vger.kernel.org,
-	devicetree@vger.kernel.org
-Cc: Tony Lindgren <tony@atomide.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bruno Thomsen <bruno.thomsen@gmail.com>
-Subject: [PATCH] ARM: dts: am33xx-l4: fix UART compatible
-Date: Mon, 21 Jul 2025 19:37:41 +0200
-Message-ID: <20250721173741.6369-1-bruno.thomsen@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1753140609; c=relaxed/simple;
+	bh=1mVA3qtj+7u8uWG2B2BI4HIgM+5nWsnf7DvW3Tydo6g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=JyPGmFMqfeR+B+8oUlUpy2YIwI3+gPppzhzxI0+1MXaPu0xv5VLidhVLva1Dp9rwV7ZPdINlYhBliiOQWy/IFoKUY5Z/5LKwZG9d5I5lHV0rGWelm6JW6Tr4YTp1IkrfvHgzz/USdh6xv6qowmcqO09273f5EEkwKZN/Ht8zvOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=YwYR1WqB; arc=none smtp.client-ip=198.47.19.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
+	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 56LNTxW8906802;
+	Mon, 21 Jul 2025 18:29:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1753140599;
+	bh=QnOl9TFwV0HLisJeRRGeF8hqb3epTorUi0ml3BcDmwU=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=YwYR1WqBTuaHj0m5MkGEFl/yoPsaWRvGTcf7OgU1oYUJ1DT6OaK17ru8IUYEDwNDk
+	 P2R7zwz4cP5O/BzKmOuJ5/LqK4ZNaZeK4s5MCEFETkKUiL/p6F1rAo38yDiDqKn2o6
+	 WWQb1DX5sQI3B73kh/XjPYIBqD+ib249dp/frwNs=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 56LNTxA51206817
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Mon, 21 Jul 2025 18:29:59 -0500
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Mon, 21
+ Jul 2025 18:29:58 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Mon, 21 Jul 2025 18:29:58 -0500
+Received: from [128.247.81.105] (judy-hp.dhcp.ti.com [128.247.81.105])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 56LNTwCE087669;
+	Mon, 21 Jul 2025 18:29:58 -0500
+Message-ID: <15de4a9b-c81e-4eb2-9a3a-faf8b6571ad1@ti.com>
+Date: Mon, 21 Jul 2025 18:29:58 -0500
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ARM: dts: am33xx-l4: fix UART compatible
+To: Bruno Thomsen <bruno.thomsen@gmail.com>, <linux-omap@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+CC: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof
+ Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>
+References: <20250721173741.6369-1-bruno.thomsen@gmail.com>
+Content-Language: en-US
+From: Judith Mendez <jm@ti.com>
+In-Reply-To: <20250721173741.6369-1-bruno.thomsen@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Fixes the following dtschema check warning:
+Hi Bruno,
 
-serial@0 (ti,am3352-uart): compatible: 'oneOf' conditional failed, one must be fixed:
-	['ti,am3352-uart', 'ti,omap3-uart'] is too long
-	'ti,am3352-uart' is not one of ['ti,am64-uart', 'ti,j721e-uart']
-	'ti,am654-uart' was expected
-	from schema $id: http://devicetree.org/schemas/serial/8250_omap.yaml#
+On 7/21/25 12:37 PM, Bruno Thomsen wrote:
+> Fixes the following dtschema check warning:
+> 
+> serial@0 (ti,am3352-uart): compatible: 'oneOf' conditional failed, one must be fixed:
+> 	['ti,am3352-uart', 'ti,omap3-uart'] is too long
+> 	'ti,am3352-uart' is not one of ['ti,am64-uart', 'ti,j721e-uart']
+> 	'ti,am654-uart' was expected
+> 	from schema $id: http://devicetree.org/schemas/serial/8250_omap.yaml#
+> 
+> Signed-off-by: Bruno Thomsen <bruno.thomsen@gmail.com>
 
-Signed-off-by: Bruno Thomsen <bruno.thomsen@gmail.com>
----
- arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Thanks for the patch, I think you forgot to add Kevin Hilman to this
+email, but other than that LGTM.
 
-diff --git a/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi b/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi
-index d6a143abae5f..cef24aafed1a 100644
---- a/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi
-@@ -200,7 +200,7 @@ SYSC_OMAP2_SOFTRESET |
- 			ranges = <0x0 0x9000 0x1000>;
- 
- 			uart0: serial@0 {
--				compatible = "ti,am3352-uart", "ti,omap3-uart";
-+				compatible = "ti,am3352-uart";
- 				clock-frequency = <48000000>;
- 				reg = <0x0 0x1000>;
- 				interrupts = <72>;
-@@ -1108,7 +1108,7 @@ SYSC_OMAP2_SOFTRESET |
- 			ranges = <0x0 0x22000 0x1000>;
- 
- 			uart1: serial@0 {
--				compatible = "ti,am3352-uart", "ti,omap3-uart";
-+				compatible = "ti,am3352-uart";
- 				clock-frequency = <48000000>;
- 				reg = <0x0 0x1000>;
- 				interrupts = <73>;
-@@ -1139,7 +1139,7 @@ SYSC_OMAP2_SOFTRESET |
- 			ranges = <0x0 0x24000 0x1000>;
- 
- 			uart2: serial@0 {
--				compatible = "ti,am3352-uart", "ti,omap3-uart";
-+				compatible = "ti,am3352-uart";
- 				clock-frequency = <48000000>;
- 				reg = <0x0 0x1000>;
- 				interrupts = <74>;
-@@ -1770,7 +1770,7 @@ SYSC_OMAP2_SOFTRESET |
- 			ranges = <0x0 0xa6000 0x1000>;
- 
- 			uart3: serial@0 {
--				compatible = "ti,am3352-uart", "ti,omap3-uart";
-+				compatible = "ti,am3352-uart";
- 				clock-frequency = <48000000>;
- 				reg = <0x0 0x1000>;
- 				interrupts = <44>;
-@@ -1799,7 +1799,7 @@ SYSC_OMAP2_SOFTRESET |
- 			ranges = <0x0 0xa8000 0x1000>;
- 
- 			uart4: serial@0 {
--				compatible = "ti,am3352-uart", "ti,omap3-uart";
-+				compatible = "ti,am3352-uart";
- 				clock-frequency = <48000000>;
- 				reg = <0x0 0x1000>;
- 				interrupts = <45>;
-@@ -1828,7 +1828,7 @@ SYSC_OMAP2_SOFTRESET |
- 			ranges = <0x0 0xaa000 0x1000>;
- 
- 			uart5: serial@0 {
--				compatible = "ti,am3352-uart", "ti,omap3-uart";
-+				compatible = "ti,am3352-uart";
- 				clock-frequency = <48000000>;
- 				reg = <0x0 0x1000>;
- 				interrupts = <46>;
+Reviewed-by: Judith Mendez <jm@ti.com>
 
-base-commit: 89be9a83ccf1f88522317ce02f854f30d6115c41
--- 
-2.50.1
+> ---
+>   arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi | 12 ++++++------
+>   1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi b/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi
+> index d6a143abae5f..cef24aafed1a 100644
+> --- a/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi
+> +++ b/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi
+> @@ -200,7 +200,7 @@ SYSC_OMAP2_SOFTRESET |
+>   			ranges = <0x0 0x9000 0x1000>;
+>   
+>   			uart0: serial@0 {
+> -				compatible = "ti,am3352-uart", "ti,omap3-uart";
+> +				compatible = "ti,am3352-uart";
+>   				clock-frequency = <48000000>;
+>   				reg = <0x0 0x1000>;
+>   				interrupts = <72>;
+> @@ -1108,7 +1108,7 @@ SYSC_OMAP2_SOFTRESET |
+>   			ranges = <0x0 0x22000 0x1000>;
+>   
+>   			uart1: serial@0 {
+> -				compatible = "ti,am3352-uart", "ti,omap3-uart";
+> +				compatible = "ti,am3352-uart";
+>   				clock-frequency = <48000000>;
+>   				reg = <0x0 0x1000>;
+>   				interrupts = <73>;
+> @@ -1139,7 +1139,7 @@ SYSC_OMAP2_SOFTRESET |
+>   			ranges = <0x0 0x24000 0x1000>;
+>   
+>   			uart2: serial@0 {
+> -				compatible = "ti,am3352-uart", "ti,omap3-uart";
+> +				compatible = "ti,am3352-uart";
+>   				clock-frequency = <48000000>;
+>   				reg = <0x0 0x1000>;
+>   				interrupts = <74>;
+> @@ -1770,7 +1770,7 @@ SYSC_OMAP2_SOFTRESET |
+>   			ranges = <0x0 0xa6000 0x1000>;
+>   
+>   			uart3: serial@0 {
+> -				compatible = "ti,am3352-uart", "ti,omap3-uart";
+> +				compatible = "ti,am3352-uart";
+>   				clock-frequency = <48000000>;
+>   				reg = <0x0 0x1000>;
+>   				interrupts = <44>;
+> @@ -1799,7 +1799,7 @@ SYSC_OMAP2_SOFTRESET |
+>   			ranges = <0x0 0xa8000 0x1000>;
+>   
+>   			uart4: serial@0 {
+> -				compatible = "ti,am3352-uart", "ti,omap3-uart";
+> +				compatible = "ti,am3352-uart";
+>   				clock-frequency = <48000000>;
+>   				reg = <0x0 0x1000>;
+>   				interrupts = <45>;
+> @@ -1828,7 +1828,7 @@ SYSC_OMAP2_SOFTRESET |
+>   			ranges = <0x0 0xaa000 0x1000>;
+>   
+>   			uart5: serial@0 {
+> -				compatible = "ti,am3352-uart", "ti,omap3-uart";
+> +				compatible = "ti,am3352-uart";
+>   				clock-frequency = <48000000>;
+>   				reg = <0x0 0x1000>;
+>   				interrupts = <46>;
+> 
+> base-commit: 89be9a83ccf1f88522317ce02f854f30d6115c41
 
 
