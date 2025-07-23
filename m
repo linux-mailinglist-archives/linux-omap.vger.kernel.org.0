@@ -1,126 +1,135 @@
-Return-Path: <linux-omap+bounces-4112-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4113-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E1F5B0E4F4
-	for <lists+linux-omap@lfdr.de>; Tue, 22 Jul 2025 22:26:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62769B0ED30
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Jul 2025 10:28:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65FED56845C
-	for <lists+linux-omap@lfdr.de>; Tue, 22 Jul 2025 20:26:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 266991C82552
+	for <lists+linux-omap@lfdr.de>; Wed, 23 Jul 2025 08:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37E65285406;
-	Tue, 22 Jul 2025 20:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F461279DDB;
+	Wed, 23 Jul 2025 08:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Rd52q2Bf";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HKrle+RS"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="tcNX9ZTf"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401D927CB04
-	for <linux-omap@vger.kernel.org>; Tue, 22 Jul 2025 20:26:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED6C19C540
+	for <linux-omap@vger.kernel.org>; Wed, 23 Jul 2025 08:28:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753215966; cv=none; b=f2red7r+lHmQcI7gJxdMmmT40kO3sRo6KsK9a9peAr+J1KlRwKvieHlaiVsdccf+ZmWs9IisSQ6vg6Tt5ef1zgYo74/81UVruWtBmP1mJw/9YVOHdwW8NXJIe+eJrzz/7rYs4D2uuA5FLkXvrWeID17auM5WfFNuOwKXNGm3B08=
+	t=1753259302; cv=none; b=lkQfC3m1qeKWMUlXZwAmjwhaOgGVDrH/jCVgHSLT8oxgUof2sJZyjgQz1Oac07Cid6CP6vWbVy8zvaan+3nrEjp3czNq/KG+krNJRjIngqPMnaRri59xnbNsMIuJuW1QYr87TVZKeXZCv8YSWThiQxHOKaGiw1vq549y/j/pRks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753215966; c=relaxed/simple;
-	bh=W/bAgLR8ME2Pde2JaM5U+DcHtwE1H3uxp+kz01tcaag=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=mNuSag6Oy/Z/3k27rg2ZmSyRIp8o8jftS5IyXhzRVzu+uNEMDYng8sHv2V3K6FVSNlZIli4T84NeIkvrOzwgBQq6ObktxLnKQhFxYaEtEUgVKQwe8FEeous+olxq3NpTegPyufaIpqDdKhqN8h6PxTEAnbBUrnNzILjDk4QwN5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Rd52q2Bf; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HKrle+RS; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id 755BDEC0496;
-	Tue, 22 Jul 2025 16:26:04 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Tue, 22 Jul 2025 16:26:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1753215964;
-	 x=1753302364; bh=MPEMmEf06EwqkDHW4zrUmLX7eAmlPmYFpIvUGPbMw7U=; b=
-	Rd52q2BfCL9/WIb19/Ysv8UGZ9WK2HNVOX2Ey9x/s0HqweP0jYNyn7Q30j86Jyz/
-	7CF70njPB9GVR2qrqGrUkTYROhK+krc25ZRhpKhKkS6owDpiws1xKZyJ0WKaNoH9
-	4iem1FH9Ip488NgaR/BtEV6IBdx/6lqO7G0VKV0TvvGfUmt3HXIM6tG+Rbm/MPZh
-	QZBeHHDR2pN9csn7aHzlCbRRAnsFZbCi++sePtC3X3Fx4Y/wsnv4skNZXwzNpuPz
-	uW/lWbyLzhhxLb1RRN5isACPfh1C8MJyDky8jbssKZLBbzn1r+TjG/oTJxMDUuWO
-	x13cnNR7lYq+nRftU9QlkA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1753215964; x=
-	1753302364; bh=MPEMmEf06EwqkDHW4zrUmLX7eAmlPmYFpIvUGPbMw7U=; b=H
-	Krle+RSR9rlUkkLlbsHvYazh9bnORgBW3Ptun03Rn8DBtmu+7qLuWz6Ec+2sIkdf
-	ftWm14RvJCnVNhnvi07AzQ5HTa8PEV2qbt/E6gpMIc7+rfrYMZxHlmTEDqMU0mMI
-	sWMFaKdwa8cvkV3Ji82GEld4Jf9NZIbp6qCkko5/95INV0rmvctHoQ+okzmehnuD
-	W66mPIs7+MXhzkRA60xgC54gz9/xlq9I6Rs8sGXwHcgZCykp+MtjJlcDr4Dz5k04
-	bJJNX9WlrQs7DUFNOCyM39OJSUiMprnGz8eVG8cGrWKys2Vkj5sp7qeABaq66hX9
-	VwF1pOWEnv8eMqHl1lp4g==
-X-ME-Sender: <xms:2_N_aLPMzpfikfdmv8xVlSV_TZCO10pf9ZZhU4ol_6YTuEryAy-4lQ>
-    <xme:2_N_aF8W8KVR9sO-aPd2MWLIKJ7ViLWGroBdfazZtkhU5JCUfOXN2KT3ex_2mWyst
-    l4f5j6bXGnhpacXIto>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdejheekhecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeegpdhmohguvgepshhmthhpohhuthdp
-    rhgtphhtthhopehkhhhilhhmrghnsegsrgihlhhisghrvgdrtghomhdprhgtphhtthhope
-    hlihhnuhigqdgrrhhmqdhkvghrnhgvlheslhhishhtshdrihhnfhhrrgguvggrugdrohhr
-    ghdprhgtphhtthhopehsohgtsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoh
-    eplhhinhhugidqohhmrghpsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:3PN_aHM83_J50gnp6V0Ph2bL-JK6lWO6KCToQpcVUH8rbOLRg9n4XA>
-    <xmx:3PN_aNehchB_5QVS6ARKphS_Iw4kAtWBO3j03SKen2C5-0Maoy_vXg>
-    <xmx:3PN_aMs8Cyj35T7ZtPmy6o1_AT-4tXY_PkLx2RxcbMQ2kIwOxwJ7ow>
-    <xmx:3PN_aGkBoW_i_fcRJSZ1L-Zhnq5OSPdONC4bhAHEsH5bF2p_jHIh_g>
-    <xmx:3PN_aBZiQD9s7Pi5XJvKPPmXagN2SE7nx7sN9pA2iYeFlXiKuQU9JC5Y>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id E0A63700069; Tue, 22 Jul 2025 16:26:03 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1753259302; c=relaxed/simple;
+	bh=6MvseLLstFmue4ctlegk00xpra/zAxh0ntDD9nuLHKw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IgEAxDpcT45d4wGtKuh+FxtXeHh80Jn93K2UpqT00qvL4zZytMf7AR45f6JA+bRD/Xsm6IIoHj9/cbSjdfqbxIbjLJF9ZC0QmrptQCEb5NRmmsXQuzXjUg9rPn60Z+QprdxddAVsNgZM6pUyteKgJDCvzRcyaIz5PoRgt1QJAG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=tcNX9ZTf; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3a51481a598so3395521f8f.3
+        for <linux-omap@vger.kernel.org>; Wed, 23 Jul 2025 01:28:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1753259299; x=1753864099; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2pc4bHJoJoj3aO2qd55BKMxrmnifl3uVSUSK3UCX05c=;
+        b=tcNX9ZTfqfYkN5GgXb1CjxNKTK+8gD213fjHDke4HfRdJCjgm5fiV2+86jidELOU0O
+         s/667/KO492whsqH6eNLXnNzqmd/s/QZeLX61yk7UdC0nwr61pWlgbWSl/jc8f0Kcwfj
+         muRqcggEN71r0tY24gyJNlhji0UUIw1wkzf02ZodHNaxMEbc/M4MNlpzCC1zXpJ14+Fi
+         3NHaYgR8h4TazZeMrNmJIhTqTUuqquRX8ZFBVUTnf2/uZFlzBzvMvQo8Co/YTQCKHxgY
+         kM/8jabCm7/Mh2q0C52okNLwxUSK3BBr2TE2kYVq0V5eXwQS+VlHsqZKMU4fnBUJymJ2
+         VBWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753259299; x=1753864099;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2pc4bHJoJoj3aO2qd55BKMxrmnifl3uVSUSK3UCX05c=;
+        b=nkqlUqXdM+ONyBYBW7tGqzukUzKdQZ90lrMr0WYjOuxKGRaOofFo3hyRC/kBiTTYJ8
+         fUQ9gGh7S0EsIu0UNJnVGuNG57Zt2JT/EnvAYTqDIr/H0XfbuV4Ehlok5e9sWVzSt+OX
+         y04yWHZwKK/F6g7wwpG2DkhvjxD/qrELddpesCRTlJKAVt7YWbmygMIkjqd/jw+m3aSh
+         rTKfl8nie6ICik27D9SRATCSpFvmCfduUdVHiRxU3KduZ2eTc34wyDgru5NMvEqpV8Ue
+         8xYKFjVFnjk96R6MUfxTBIlDjYnLGSIzSovJ2jXY7ebaFFtLzXpLzlhSZkHfyq64T3xz
+         5KWA==
+X-Forwarded-Encrypted: i=1; AJvYcCVHPREgYy7buN1ds5VERzS2PVOGUwWkiFUmX7smFGa3kxQGhJTuUnEJmGwp8cvdub1EC1i4jCzwtlr6@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywct6CSNBtCTqwMHM6kqJAUke41/ev/aoiMqOOmMuBxFhfFKz4z
+	6ge1iolWIITOdcNDBKMHKSFeILVbvaWnJ3bDerUZxQ7v+crcetSnw3mQGfMXDATPZKJ5zLy6WCW
+	29ct7e0c=
+X-Gm-Gg: ASbGncvDrOMN48DCygLNFqPIr47Br4LD88kjMohTDAYanAFF7HZATPhPUGQqdumjivv
+	xVx0tVrRhNxerL0nEUK3+8La4FNPUHTPuROTCnvR8hqEceenLjxvllbWojrxX1jpLhX13DkB6s1
+	eeAfLg3KSOjmsR76IrfNh7wGJS1/WSFNAJ3SjBvuCd+wvHco/knJQb4wxNnL0zu3+ufMyCKX2S9
+	9GQKnKRt/xDf31leIypLEdyurCN89L0Dtc9ryanmC9xObAbA2VOXjog4U16HTUxtersIzOJ/dWK
+	pl+VXhycD9J7P48534Yxsqt35eo18fE5QkMhZSLijVhwMcjJWyLfgg32/ryEPOv/ivL8F0u/4sK
+	/UNnD3Rb/QpK1+FMuLxVMUg==
+X-Google-Smtp-Source: AGHT+IGK7N5pQ0+Y16nUh78stgbWDqftcQGNI/Gok59MRheVUKxpWDHp9OeWD2BQW29JilRfDWRv4w==
+X-Received: by 2002:a5d:588e:0:b0:3a4:eed9:755d with SMTP id ffacd0b85a97d-3b768caa1c0mr1809547f8f.3.1753259299570;
+        Wed, 23 Jul 2025 01:28:19 -0700 (PDT)
+Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:34cd:b1d:d4f9:be03])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca4d7efsm15696894f8f.67.2025.07.23.01.28.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Jul 2025 01:28:19 -0700 (PDT)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: aaro.koskinen@iki.fi,
+	andreas@kemnade.info,
+	khilman@baylibre.com,
+	rogerq@kernel.org,
+	tony@atomide.com,
+	linus.walleij@linaro.org,
+	brgl@bgdev.pl,
+	linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	Shree Ramamoorthy <s-ramamoorthy@ti.com>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	m-leonard@ti.com,
+	praneeth@ti.com,
+	jcormier@criticallink.com,
+	christophe.jaillet@wanadoo.fr
+Subject: Re: [PATCH v8 0/2] Add TI TPS65214 PMIC GPIO Support
+Date: Wed, 23 Jul 2025 10:28:17 +0200
+Message-ID: <175325929438.26908.5347574022964000296.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250722181609.1541739-1-s-ramamoorthy@ti.com>
+References: <20250722181609.1541739-1-s-ramamoorthy@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: T977abbae7a5b9ff8
-Date: Tue, 22 Jul 2025 22:25:42 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Kevin Hilman" <khilman@baylibre.com>, soc@lists.linux.dev
-Cc: Linux-OMAP <linux-omap@vger.kernel.org>,
- linux-arm-kernel@lists.infradead.org
-Message-Id: <42241d2a-bf66-4ef0-a083-b0d4f0c3f9b2@app.fastmail.com>
-In-Reply-To: <7h34b4xcxb.fsf@baylibre.com>
-References: <7h34b4xcxb.fsf@baylibre.com>
-Subject: Re: [GIT PULL] soc: OMAP updates for v6.17
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 10, 2025, at 17:50, Kevin Hilman wrote:
-> The following changes since commit 19272b37aa4f83ca52bdf9c16d5d81bdd1354494:
->
-> ----------------------------------------------------------------
-> Kory Maincent (2):
->       arm: omap2plus_defconfig: Enable TPS65219 regulator
->       arm: multi_v7_defconfig: Enable TPS65219 regulator
->
-> Li Jun (1):
->       bus: del unnecessary init var
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-Unfortunately these are changes that I really want in separate
-branches, for defconfig and drivers respectively.
 
-Since all three changes are trivial, I ended up cherry-picking
-the commits to where I want them. I hope that's ok with you,
-let me know if you need the stable commit IDs.
+On Tue, 22 Jul 2025 13:16:07 -0500, Shree Ramamoorthy wrote:
+> The related MFD series was integrated in mainline during 6.15 cycle [0].
+> 
+> TPS65214 is a Power Management Integrated Circuit (PMIC) that has
+> significant register map overlap with TPS65219. The series introduces
+> TPS65214 and restructures the existing driver to support multiple devices.
+> 
+> TPS65215's GPIO specs are the same as TPS65219, so the "tps65219-gpio"
+> compatible string is assigned to two devices in the TPS65219 MFD driver.
+> No additional support is required in the GPIO driver for TPS65215.
+> 
+> [...]
 
-     Arnd
+Applied, thanks!
+
+[1/2] gpio: tps65219: Update _IDX & _OFFSET macro prefix
+      https://git.kernel.org/brgl/linux/c/8206650c604687687bed5898b3bdb90e5d361ed4
+[2/2] gpio: tps65219: Add support for TI TPS65214 PMIC
+      https://git.kernel.org/brgl/linux/c/1b6ab07c0c800ed32ce417b71b32bb1baa91b493
+
+Best regards,
+-- 
+Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
