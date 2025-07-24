@@ -1,82 +1,82 @@
-Return-Path: <linux-omap+bounces-4122-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4121-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB49AB105F0
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Jul 2025 11:26:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 493B8B105EE
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Jul 2025 11:26:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72FBE1CE2C79
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Jul 2025 09:26:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A570D1CE2873
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Jul 2025 09:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7547328C02D;
-	Thu, 24 Jul 2025 09:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47BA28B4FE;
+	Thu, 24 Jul 2025 09:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="v6utmDc2"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="VrMZ/WCk"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9F9288C08
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2851E25A2B2
 	for <linux-omap@vger.kernel.org>; Thu, 24 Jul 2025 09:24:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753349097; cv=none; b=LAVYrDi3YinwKNRs++GdaRyDEs/rWzepY77IIcts7Mhh4TOSsXpkxYKpnb7nsWIH3C8OJneAC3wxQqIu4l1OSIKAbfz/h5GuCppjeACwgVjIjeWmpTKUXgNXaqa8duuxo0k6gE5Rs7Y0GeLWPpHOOV9o3H4gt3DhJJdL5GcfMc8=
+	t=1753349096; cv=none; b=MYZdgIf5qYevaw0EBWjL3k9U9qhfaj/s6jkjKNpLRwZFBOGS86On8upGRvJwKKZVBj95a7anTstHY/5nMqCzO11pkBZ2w76Qq1oLfIsxg093PnnD257HAth4SCMSYZbfU2r9DsW6jwYP5h26tRuqyoUshMgPbOF12F60LwyNlhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753349097; c=relaxed/simple;
-	bh=ZO1T9QN1h+Wgwad+qSu78n1uErb90oMrPBIjzdSmsuw=;
+	s=arc-20240116; t=1753349096; c=relaxed/simple;
+	bh=pN5GV9RpnHxQpsk+HalHBbLE8eiH2GyfU9FRFfex0qQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mIk3/TbcZJDc0gTJ7XLv9IWIvHPAgp6zR3OQxYz9TgLif0fNf3tO2QlzXG0fK/ftC/nouuaghKN9fyZmXBPs5h/QjtJovQwAeI4QrxjX1KPkydrDOtwHQn123RB53MOP/RFlRJXTc0Li/5djZyOJlbT0X8tJkI2SNOPYHCBOYxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=v6utmDc2; arc=none smtp.client-ip=209.85.128.53
+	 In-Reply-To:To:Cc; b=FACvAWHxl0IkTC9bpC1D9V8E2UfkUp6Vf/wRBT1dvmpIIENRBcSm+/bJKyok1iCVoG5N3b2l5Jokb+uZwfdwe9ZgIgbvWCaLI58ymmy0mw3sOB8gAWoE3QFDlUw6ur2SK/hrbIQoohj5W7HdN9GFDjRv0JmRrg7EDNy75i/2/EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=VrMZ/WCk; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4560d176f97so7991205e9.0
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3a6e8b1fa37so604236f8f.2
         for <linux-omap@vger.kernel.org>; Thu, 24 Jul 2025 02:24:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1753349091; x=1753953891; darn=vger.kernel.org;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1753349092; x=1753953892; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=/MsMdfp1xLANBZ9zZyNzSawqjnpLS694AVKVdRY29N0=;
-        b=v6utmDc2IzcH3wmXx5kXNnAc2iq7MaxTM1R85Fz/zC8bMoF3tGq1w3Mnxjn2z1BNoo
-         Cxs1E5HXVy4EWRb61wOXqz1vi4j7mK3y7dJzKEj9DxVSXfA99+A1+SntP/aDM8kSF1Z/
-         atY0p3Q45DUafuDwn0HGWli+iGW5m6e0ASDwrP7/upao4913GuolFXkuplLoi0lYu63u
-         iccuiDnee42I1WZRWnsrV6jIJhKt94Q6UZEO6XV7XaP8bV2BG3DEmnkBpPlnLFnb2peU
-         KbRTfFUOuji1eNCXAjgmFdGrbJ8SldszA75sRsL/Quv+6KiOKRffAHZSen0i0GxN53no
-         wctQ==
+        bh=jKjrihfR5UlU8kWog9NeCNGGbmct3fE4f6uM9NGLS/8=;
+        b=VrMZ/WCk8DpqIh/zsLs6nqZpOb48ezmpASa/Ot6P5HKpBxuG12Bq5F9KBFr3q+GVZH
+         dIbVAVtQNJf6yiZm8OocRFqCvBNaeThVLV5O0HlypYIa6v23XTeJYCAIcCzgIinCuaYg
+         kQ75s5ZPk2ocYakoPANQPEOCchXR7vWF8U9pA0P6y3tGBnDqSFMAL35U02/KZWLLM3XV
+         /dulXKICsCyrmLHb0x+b1ZmLdLpu3fEHIZO+fs+PrmmPCtQ3T2NoFXnNd4yb/D/cjQPc
+         rd1AuMaHVHdKLqUiwK5AF3OZndtErrAApE47kPWSpEaipleyPxOOSqGDy3xp0P9YV4kQ
+         nPrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753349091; x=1753953891;
+        d=1e100.net; s=20230601; t=1753349092; x=1753953892;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/MsMdfp1xLANBZ9zZyNzSawqjnpLS694AVKVdRY29N0=;
-        b=ew3GCb6jiyVp0Jj4XuTf48GCJq9mI7yJeHw2dZMLrubuULf1qABDesNRrVgkASaLiS
-         zhXeklI9cWDNJ/KAzsMfqiQjm7N7Hg5k2vDcg25kaL8TskZINFnKuM1S9F9X8y0M7P9H
-         pLKLxaQ0+UEZ+QpxDt6djenbw/i9op0fHm6CD2pOXSFuXwnA1SUU281+gB1ETndJr5js
-         SzKsk9Egw6rEq7Dmvf6yOgf2YwXWOD89IFvaoFgZhAIcoF2Z8ok4tbjw31qxMsrl9Ezj
-         JTBgkl/FikcZuhihK0QRLqb9rtX61uQMkCrhIErEi2Vz4A26FsOi7bZQHkKYCogPoHU/
-         oRig==
-X-Forwarded-Encrypted: i=1; AJvYcCUUPtbTqGmgg5qqa/WIux3PJk6sqQNjQasfrc3b1puqYlkBdXLcgQovr7NqMCkZZvsUr1//4eUdFc39@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjFoZoRwe0EPS+9ST6D0lN7EuSMcdGMAuLpPE7OqD+zC2qO0KC
-	6wQzPOGTuolxk73RAW4BjLPLDtN+KTtj42pV0NB8fTkFVBirQG7HF6sKxNfeu47EQfg=
-X-Gm-Gg: ASbGncu5T09CML9ZdoSnfaLTdiEWSy9spANyeiBJuh4+HaoIKi9UHdNtkcjRcFwODVX
-	b9Zbd601zvd/b+Vk6JqOWapim13e3GIkMi0Zex4JSF7p6qEiFIQ/cBZmw5oLmM+yOwRhqByiubV
-	/QiNcOYzMpFHp5LfnsUyt4FTtIsGDMr1qXJNCnUzT8/Z3xZPlx8om7u4OElkPh+lKgZaQ7bmE8x
-	miCkxZVZpkUVHqjBjKmuAKFzy+qQwYVQFyz2Q7nOftVEEmdbWRCpAai0DMMSTcDyJBkmZPwIq25
-	BWMLM+DgcMNFzGVpCCaWhEGst6Dx543PWBds4xEMM0iF6HeaokdsN7b/umj39tO6GaOdaBYWIQW
-	OwygqJ6aX6oUTnqbu
-X-Google-Smtp-Source: AGHT+IHqZ4KWF33bsWYC2NW13yLlFkOEfEwZMRqVsz0fuagNkHT/q0mO1E6+Gg7Jfa3lxSFmodfKew==
-X-Received: by 2002:a05:600c:35ca:b0:453:81a:2f3f with SMTP id 5b1f17b1804b1-45868d4f48bmr61519195e9.30.1753349090293;
-        Thu, 24 Jul 2025 02:24:50 -0700 (PDT)
+        bh=jKjrihfR5UlU8kWog9NeCNGGbmct3fE4f6uM9NGLS/8=;
+        b=GM+tpf35X9bqlnBG43tmgaZnNvr74+nXRCpaHI7GZWUyexWcnuMzWXT1KVN999gfby
+         WeTkIzfGn2Hls52uoV6kMMQzbYZ+wwM/gDKhCn1jEfIy4ZrtZs8LebPQWEGovM5hr6kh
+         VcHcvslCoaCkKSk8tBayu+tPLGBu17jeTSSWB7KSj/O77r+t0fUrNZir2jI5jnAkobk/
+         cCgYM09KPM5IAgJEPKvoUfGl1h+NW+Qwzd2TStAmIdsgGiWbSGjEGCCQcjVN7ZZFJu0u
+         uV0yoG5S+k37y8UyZefA9jVfuEtHcAI1WjiXdISfJqmrQXJKvBemO/2+lbvPgOV16Jdn
+         kWyA==
+X-Forwarded-Encrypted: i=1; AJvYcCVF+5jnJ/PbnSuQw7DQ2hXs3T7YProraDvmYAZcTwdC03C0EKFptY7sWveoiUiOq+WSE44akKP8wQsN@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8y4LwXSw2z2m9YeuPPA0pH7+dV/KWGd2TZloyrvTQkkoDJzLj
+	g0FV+O4S9jfF8MU3vIPcvhv6ljZKf73kjWTljiWkhwAwM9svzGEqFqoP9LpuSRhLu3s=
+X-Gm-Gg: ASbGnculL30Dft5wVodYzyXxdXvIXWl+RgyZ/KgFenEOCvES86HdcDj4bJrOh/Fxoqw
+	SwyHonAtq/aLzizg7oTYJM2v/rR4qpN0rSCvyK+iQN2eUWfF18vPC2lNyilErlBEMvOxoK9sK30
+	nAh16V0qXRSxH6o+a/2tcnIeNpr+kh5jc4/jPBO+qBL6gErUVCGOK70aoXTLo0Uag+3olREC3ct
+	45GaOOC5gHyh15wLvA5eYSy1P6e3OL8O2kACi0qwRX+U7YQB5x4KdD3TRu47ZJomQKIp9p4dozR
+	GRCIFXIBZhWERknDKxXRAz5f0AVRkFo7pZq8MMuSaRhW1B+uGLesoI9S3sEBzaaIeju/isAn8J9
+	JQDF9ig4qcO0JTkf2
+X-Google-Smtp-Source: AGHT+IEew+Sp6i4Ubvb4XcJSx1ljbxjsNF3zWCFZCTjc0gm39mQLURSOD2KwaMMXuMVDrNvP/L44lQ==
+X-Received: by 2002:a5d:5d0e:0:b0:3a4:e1e1:7779 with SMTP id ffacd0b85a97d-3b768ef8e49mr4370503f8f.32.1753349092060;
+        Thu, 24 Jul 2025 02:24:52 -0700 (PDT)
 Received: from [127.0.1.1] ([2a01:cb1d:dc:7e00:f44c:20db:7ada:b556])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b76fc72548sm1600833f8f.30.2025.07.24.02.24.48
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b76fc72548sm1600833f8f.30.2025.07.24.02.24.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Jul 2025 02:24:49 -0700 (PDT)
+        Thu, 24 Jul 2025 02:24:51 -0700 (PDT)
 From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Thu, 24 Jul 2025 11:24:35 +0200
-Subject: [PATCH v3 07/15] pinctrl: keembay: release allocated memory in
- detach path
+Date: Thu, 24 Jul 2025 11:24:36 +0200
+Subject: [PATCH v3 08/15] pinctrl: keembay: use a dedicated structure for
+ the pinfunction description
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -85,7 +85,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250724-pinctrl-gpio-pinfuncs-v3-7-af4db9302de4@linaro.org>
+Message-Id: <20250724-pinctrl-gpio-pinfuncs-v3-8-af4db9302de4@linaro.org>
 References: <20250724-pinctrl-gpio-pinfuncs-v3-0-af4db9302de4@linaro.org>
 In-Reply-To: <20250724-pinctrl-gpio-pinfuncs-v3-0-af4db9302de4@linaro.org>
 To: Linus Walleij <linus.walleij@linaro.org>, 
@@ -117,65 +117,107 @@ Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
  Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1780;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2974;
  i=bartosz.golaszewski@linaro.org; h=from:subject:message-id;
- bh=LKTpseRfAo7ye04iddOGWjUFjvvauRYDbdYlMpOMyLY=;
- b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBogfvSbjubxQ38F8ud5iCpNZ72Jm7IAoCj4lWgs
- 6LniCl93ieJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaIH70gAKCRARpy6gFHHX
- ch2CEADZjtdeLp35/fl14l9PQNJfmIbBfcUfYvyfA8t1LHfkmxLnRbErjq5eCVle+l5pe5R1BIn
- +X7gAAsSmm4v45lpL1ifrTXzAR7JcqsNbP0LtwqYSS4T7QPIPf7CtoZVhbHNjtKwLxhGF3P2JUT
- AdjounHFm3XKuKN29lK8QJ+FG0/OLUKPNc9HitRMm3XzO2nU8ilJ70+JnwJQZflutclz3OSvBxw
- WqkTLsIrsAiQB2n5Qpl5NDbIKMakIsw2cCfwyDfVPgUM9DTEbj8g9OjCakwq20up2vaVR2NwSvC
- ZUtq3k8Y6wWhqFR27KGwVPwfv8HIaqFEGGne/Tgpdz9o2yYU43x2jurLX0I7211S+r4oMERgXum
- fFMpJLG5QrteGGsb5MWK59iQtPyEgVfHlIaQ3KQbLi/DdqbqrMSorxafyVr+zb0dThp5gxoicfu
- h117nhV3u3ekRyFApUHBpQfA+qfmNBltfqn+M40vyVVFXVOa2tESEAtfwLmSloO/dbveOYt8RLI
- Bj1dwxB84ZzCL2A3uU8R8UZwWHLaGeHi7RG+LKGo5qu/P+loVUEwBcx+DPiWi1wI2VU1bscLdUr
- 2Q5DBSjVjYTXTfG4AJcen4wRUeC4rTi2BsDO70f2fHyhfmt1IEfYz/A322grH6bledRd46/o8vI
- JGEI+5r6wD3CF8Q==
+ bh=F6LdqVWEdZj3r0RjhnhQHFPIp/g37mzkevNQE3gBMmo=;
+ b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBogfvTVpmOt4llz/Wm2IBwGqzmLiabzjvGkJwgW
+ 9xjEp8YqIeJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaIH70wAKCRARpy6gFHHX
+ chw1EADi1Cwma2fZbyAAR08OmSEvcij1RMAppSgkXsomjoqmNxyiDsx/Czg2kRyC22gO9vwQqkT
+ Uf/mb5otj++jYRqhZyvV7MclKnpF4WwzdBXRBa/WHPlSYG07T4/L1hGfsvls07EILfhNwIL+RPM
+ /BUWIYNe0zfbRm2xmCJtmf70uzw8rin45jOPKTrMJnSO5HNsOg5RraEPuEddueRGcFbej7oVsGa
+ ElSq0O8joGSLsQKHwmLLyGg9FmyG1OrfkGdzcGW3WxAYqAyYGWiz4IP75vvmPP6Rah9aJVV182n
+ x6nLwVmRbj/a+snxdIZyIHA9DirbuUWpqoDun3Yhi8UNTJK4/AsV2qWTaiFV/iPMkKc1Q5W5uej
+ 2p4P77moT4hVppn+wdj8WyzOnCAozcG9fsb7yyo9f///qd584AZtQy3UuZoQdGlH5BMZEBDRVqr
+ UsfF9FOpTq8wcoxRwm+rG0j6Zz5DwVaGlApq2J6uGGvSEXcNBgjYPPJATtkjx6DiPzUM9szzMxC
+ PRu8c4ZcRcemfjr/JMdUW03WNHm/BNiHcLF2SLd0Kh87tiUTRC4cq1hT7OF99/ZU2Fshy+5NK6G
+ Brszu+Qp0v/qKUnyO4BlTlEZBbGUIYaN2H2+DwVoaNGBQQ5RPl6WhcYO4E244k9qEQzG2Etk5E2
+ j0z9HYEHrL6J6qg==
 X-Developer-Key: i=bartosz.golaszewski@linaro.org; a=openpgp;
  fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
 
 From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-Unlike all the other allocations in this driver, the memory for storing
-the pin function descriptions allocated with kcalloc() and later resized
-with krealloc() is never freed. Use devres like elsewhere to handle
-that.
-
-Note: the logic in this module is pretty convoluted and could probably
-use some revisiting, we should probably be able to calculate the exact
-amount of memory needed in advance or even skip the allocation
-alltogether and just add each function to the radix tree separately.
+struct function_desc is a wrapper around struct pinfunction with an
+additional void *data pointer. We're working towards reducing the usage
+of struct function_desc in pinctrl drivers - they should only be created
+by pinmux core and accessed by drivers using
+pinmux_generic_get_function(). This driver uses the data pointer so in
+order to stop using struct function_desc, we need to provide an
+alternative that also wraps the mux mode which is passed to pinctrl core
+as user data.
 
 Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 ---
- drivers/pinctrl/pinctrl-keembay.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/pinctrl/pinctrl-keembay.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/pinctrl/pinctrl-keembay.c b/drivers/pinctrl/pinctrl-keembay.c
-index 30e641571cfe5396075cb28febd2d0776326365d..b4c7b3ef79e0a34111f46f23adfee4c269e5be6e 100644
+index b4c7b3ef79e0a34111f46f23adfee4c269e5be6e..060d64ff3d9f01ecd3374935af66b55c38f60d67 100644
 --- a/drivers/pinctrl/pinctrl-keembay.c
 +++ b/drivers/pinctrl/pinctrl-keembay.c
-@@ -1603,7 +1603,8 @@ static int keembay_build_functions(struct keembay_pinctrl *kpc)
- 	 * being part of 8 (hw maximum) globally unique muxes.
- 	 */
- 	kpc->nfuncs = 0;
--	keembay_funcs = kcalloc(kpc->npins * 8, sizeof(*keembay_funcs), GFP_KERNEL);
-+	keembay_funcs = devm_kcalloc(kpc->dev, kpc->npins * 8,
-+				     sizeof(*keembay_funcs), GFP_KERNEL);
- 	if (!keembay_funcs)
- 		return -ENOMEM;
+@@ -135,6 +135,11 @@ struct keembay_pin_soc {
+ 	const struct pinctrl_pin_desc *pins;
+ };
  
-@@ -1634,7 +1635,8 @@ static int keembay_build_functions(struct keembay_pinctrl *kpc)
- 	}
++struct keembay_pinfunction {
++	struct pinfunction func;
++	u8 mux_mode;
++};
++
+ static const struct pinctrl_pin_desc keembay_pins[] = {
+ 	KEEMBAY_PIN_DESC(0, "GPIO0",
+ 			 KEEMBAY_MUX(0x0, "I2S0_M0"),
+@@ -1556,13 +1561,13 @@ static int keembay_pinctrl_reg(struct keembay_pinctrl *kpc,  struct device *dev)
+ }
  
- 	/* Reallocate memory based on actual number of functions */
--	new_funcs = krealloc(keembay_funcs, kpc->nfuncs * sizeof(*new_funcs), GFP_KERNEL);
-+	new_funcs = devm_krealloc(kpc->dev, keembay_funcs,
-+				  kpc->nfuncs * sizeof(*new_funcs), GFP_KERNEL);
- 	if (!new_funcs) {
- 		kfree(keembay_funcs);
- 		return -ENOMEM;
+ static int keembay_add_functions(struct keembay_pinctrl *kpc,
+-				 struct function_desc *functions)
++				 struct keembay_pinfunction *functions)
+ {
+ 	unsigned int i;
+ 
+ 	/* Assign the groups for each function */
+ 	for (i = 0; i < kpc->nfuncs; i++) {
+-		struct function_desc *func = &functions[i];
++		struct keembay_pinfunction *func = &functions[i];
+ 		const char **group_names;
+ 		unsigned int grp_idx = 0;
+ 		int j;
+@@ -1588,14 +1593,14 @@ static int keembay_add_functions(struct keembay_pinctrl *kpc,
+ 	/* Add all functions */
+ 	for (i = 0; i < kpc->nfuncs; i++)
+ 		pinmux_generic_add_pinfunction(kpc->pctrl, &functions[i].func,
+-					       functions[i].data);
++					       &functions[i].mux_mode);
+ 
+ 	return 0;
+ }
+ 
+ static int keembay_build_functions(struct keembay_pinctrl *kpc)
+ {
+-	struct function_desc *keembay_funcs, *new_funcs;
++	struct keembay_pinfunction *keembay_funcs, *new_funcs;
+ 	int i;
+ 
+ 	/*
+@@ -1614,7 +1619,7 @@ static int keembay_build_functions(struct keembay_pinctrl *kpc)
+ 		struct keembay_mux_desc *mux;
+ 
+ 		for (mux = pdesc->drv_data; mux->name; mux++) {
+-			struct function_desc *fdesc;
++			struct keembay_pinfunction *fdesc;
+ 
+ 			/* Check if we already have function for this mux */
+ 			for (fdesc = keembay_funcs; fdesc->func.name; fdesc++) {
+@@ -1628,7 +1633,7 @@ static int keembay_build_functions(struct keembay_pinctrl *kpc)
+ 			if (!fdesc->func.name) {
+ 				fdesc->func.name = mux->name;
+ 				fdesc->func.ngroups = 1;
+-				fdesc->data = &mux->mode;
++				fdesc->mux_mode = mux->mode;
+ 				kpc->nfuncs++;
+ 			}
+ 		}
 
 -- 
 2.48.1
