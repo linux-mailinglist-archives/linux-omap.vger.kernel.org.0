@@ -1,304 +1,244 @@
-Return-Path: <linux-omap+bounces-4144-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4145-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1389DB10C36
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Jul 2025 15:55:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE649B10D5D
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Jul 2025 16:23:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18688188B35A
-	for <lists+linux-omap@lfdr.de>; Thu, 24 Jul 2025 13:54:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AF241D012E3
+	for <lists+linux-omap@lfdr.de>; Thu, 24 Jul 2025 14:21:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6833B2DE6EF;
-	Thu, 24 Jul 2025 13:53:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Q6mze2Uq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5029F2E5414;
+	Thu, 24 Jul 2025 14:20:17 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from MA0PR01CU009.outbound.protection.outlook.com (mail-southindiaazon11020083.outbound.protection.outlook.com [52.101.227.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2304D2DE6E1;
-	Thu, 24 Jul 2025 13:53:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753365189; cv=none; b=H5MVdgSA0awDgPQrjyKCLyNW/FybCOb8E7ZO6tCaYmTK4fNIUqJVUQoX6RqYPFGIEHIcaPjcvEOFM929IVsCmJLGDpKBNouUnZBlQVl+8ubEGXyioXVwJ0tnjTEjwW434UWhderA7cXzAp9RgSoeTsU67WD7I8XP2/YCmoURZ54=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753365189; c=relaxed/simple;
-	bh=yqn7eXWGIicat6ACtQ06fChq2+bwHai2eNzsQEGAiZc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pFmujNQ7x0dtmyexmvoy87HPyAvVMLSGWuJVfFihC0h0F/3uruyJui8+B/jJWY39Pzd0zxrudIdndUcoRZ023s0j/ADBy1vZkYTSUWKxbeqfVDiKVzoMOZWvNsudQwyXVdr33HeJOQEMiNc1xbNbd4YjVAWHBsDrNsiO5/OtGYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Q6mze2Uq; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 129698BF;
-	Thu, 24 Jul 2025 15:52:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1753365144;
-	bh=yqn7eXWGIicat6ACtQ06fChq2+bwHai2eNzsQEGAiZc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q6mze2UqXFwh86Xtgaeu1xH+pGVtu3y3IGXfrWbM+IHtdZvLvV+KWdf1wPiHxCUUG
-	 wS5S2sHAqnfWVi4xOY5PgiM4mfRjJBG6AOYbYILNPM0dyegcAMR3HcMAvOJldHPuDH
-	 FFIaeNm6i+BIst7SC7YtTgFSfK9ibU/PTOGR506o=
-Date: Thu, 24 Jul 2025 16:52:59 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Tarang Raval <tarang.raval@siliconsignals.io>
-Cc: "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mehdi Djait <mehdi.djait@linux.intel.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	=?utf-8?B?QW5kcsOp?= Apitzsch <git@apitzsch.eu>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Arec Kao <arec.kao@intel.com>,
-	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Bryan O'Donoghue <bod@kernel.org>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Dongcheng Yan <dongcheng.yan@intel.com>,
-	Dongchun Zhu <dongchun.zhu@mediatek.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Hans de Goede <hansg@kernel.org>,
-	Hans Verkuil <hverkuil@kernel.org>, Hao Yao <hao.yao@intel.com>,
-	Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>,
-	Jacopo Mondi <jacopo@jmondi.org>,
-	Jason Chen <jason.z.chen@intel.com>, Jimmy Su <jimmy.su@intel.com>,
-	Jingjing Xiong <jingjing.xiong@intel.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Leon Luo <leonl@leopardimaging.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Matthew Majewski <mattwmajewski@gmail.com>,
-	Matthias Fend <matthias.fend@emfend.at>,
-	Mikhail Rudenko <mike.rudenko@gmail.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9F22E1741;
+	Thu, 24 Jul 2025 14:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.227.83
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753366817; cv=fail; b=OJhXPYgUWSJTg/GJ5fRFPIVs1wU0ZSzIHOck2nyeJXYkHE/n0ghfwby+RQ4eRI0MZzrAzAa+JKEpe9qzr66/qdlDSQCK0lESbtCpVNSpODKL2s7hNkhxt2UQYHRLwWsNlhQ/ApLIiEyUU4gzPj+2I8F+UZ0oi5Fay8xBHG5Zojs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753366817; c=relaxed/simple;
+	bh=f7ULJv2U5gq67cML9lc8WAMCO2FiXu88YCLAcG5SIiw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=dFfBYk3P35Yo8KVtETYlAaSrJSPqTfGFEIVAse4Lk8pKOUUWDeGT9kMl++ol/gM+OLHefFkjnzJkXff6vgyrnAHrVRYRm2HYGfgzsgWunNyzdOhni5XGpPm7pNBmi4gfi7bzsGqzrlXCXM0EmqmJkVlQCKauGc0kNGbVYTolw4I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io; spf=fail smtp.mailfrom=siliconsignals.io; arc=fail smtp.client-ip=52.101.227.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=siliconsignals.io
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=i6zq1xU9rLL6AyvAOD+HfviLk8FXm40flb0/cxVh2f0vZSx3CbuMAf/+UnRATkw2CcQp2U0FglYgNzolrprLorNeIWUfhaS/+V3NxeAKCJaVlPKavsGpoLReR//TPI/KacxxGi1K++QqA+Y2wpo88IqEkKTj34sT/7fhBigWYwlo7dgkBKFK8MTyB35uX6UAekS8MJjP1IZL6SKmF/cSgXzfTOSmeMTL7PVmSH/+uquKl9j361D1lXQkalk3UDxb/CcQl5w61a46/LVFjtapCneNVoiQBvcM4QZt1+K7fE/z9Bxfzh1e8LtEtKDvQ1qMmTq4RkkJ+v0qhGGX6Ufx3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=f7ULJv2U5gq67cML9lc8WAMCO2FiXu88YCLAcG5SIiw=;
+ b=I8RzJU+zSnBmFZZQIXSHwfKlzHkgWqYZgrVvN2q6JI4Obdw9ys7XO6Hb4r0hUWjdf/kBEWACAkMvu6rt/Ri4cI5kVM0nQapVPE2qEaEuyndruUXsD07Y+RsEHP/xrhYm+3P+tXqNeAyfjGcAZzq+QoXNEqRWp962qlxxOLkHg9yOQ8NAKXg290Eqf3WwXFdLWYfj3qTVqjulK1Vp4OKqVtjfUJ/5nMAOluL6R8f7bCiqVaGWjAJekDxQYkQWWVVg53hosGxM95yXTXeMTvdRlEewnNJb89cUFmVVrRUYu/kGODOdAfnOrwuCkz5NiRKjWN3OOHlIUZVXtu7uLWhvHA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=siliconsignals.io; dmarc=pass action=none
+ header.from=siliconsignals.io; dkim=pass header.d=siliconsignals.io; arc=none
+Received: from PN3P287MB1829.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:199::7)
+ by MA0P287MB1756.INDP287.PROD.OUTLOOK.COM (2603:1096:a01:fe::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.22; Thu, 24 Jul
+ 2025 14:20:10 +0000
+Received: from PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
+ ([fe80::58ec:81a0:9454:689f]) by PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
+ ([fe80::58ec:81a0:9454:689f%5]) with mapi id 15.20.8964.021; Thu, 24 Jul 2025
+ 14:20:10 +0000
+From: Tarang Raval <tarang.raval@siliconsignals.io>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+CC: "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>, Sakari Ailus
+	<sakari.ailus@linux.intel.com>, Mehdi Djait <mehdi.djait@linux.intel.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>, =?Windows-1252?Q?Andr=E9_Apitzsch?=
+	<git@apitzsch.eu>, Andrzej Hajda <andrzej.hajda@intel.com>, Arec Kao
+	<arec.kao@intel.com>, Benjamin Mugnier <benjamin.mugnier@foss.st.com>, Bingbu
+ Cao <bingbu.cao@intel.com>, Bjorn Andersson <andersson@kernel.org>, Bryan
+ O'Donoghue <bod@kernel.org>, Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Daniel Scally <djrscally@gmail.com>,
+	Dongcheng Yan <dongcheng.yan@intel.com>, Dongchun Zhu
+	<dongchun.zhu@mediatek.com>, Fabio Estevam <festevam@gmail.com>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, Hans de Goede <hansg@kernel.org>,
+	Hans Verkuil <hverkuil@kernel.org>, Hao Yao <hao.yao@intel.com>, Heimir Thor
+ Sverrisson <heimir.sverrisson@gmail.com>, Jacopo Mondi <jacopo@jmondi.org>,
+	Jason Chen <jason.z.chen@intel.com>, Jimmy Su <jimmy.su@intel.com>, Jingjing
+ Xiong <jingjing.xiong@intel.com>, Jonas Karlman <jonas@kwiboo.se>, Konrad
+ Dybcio <konradybcio@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Leon Luo
+	<leonl@leopardimaging.com>, Liam Girdwood <lgirdwood@gmail.com>, Magnus Damm
+	<magnus.damm@gmail.com>, Manivannan Sadhasivam <mani@kernel.org>, Mark Brown
+	<broonie@kernel.org>, Matthew Majewski <mattwmajewski@gmail.com>, Matthias
+ Fend <matthias.fend@emfend.at>, Mikhail Rudenko <mike.rudenko@gmail.com>,
 	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Pavel Machek <pavel@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Shunqian Zheng <zhengsq@rock-chips.com>,
-	Sylvain Petinot <sylvain.petinot@foss.st.com>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Tianshu Qiu <tian.shu.qiu@intel.com>,
-	Todor Tomov <todor.too@gmail.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Tony Lindgren <tony@atomide.com>, Zhi Mao <zhi.mao@mediatek.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
-	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
-	"linux-samsung-soc@vger.kernel.org" <linux-samsung-soc@vger.kernel.org>
+	=?Windows-1252?Q?Niklas_S=F6derlund?=
+	<niklas.soderlund+renesas@ragnatech.se>, Pavel Machek <pavel@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Ricardo Ribalda
+	<ribalda@chromium.org>, Rob Herring <robh@kernel.org>, Sascha Hauer
+	<s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Shunqian Zheng
+	<zhengsq@rock-chips.com>, Sylvain Petinot <sylvain.petinot@foss.st.com>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>, Tianshu Qiu
+	<tian.shu.qiu@intel.com>, Todor Tomov <todor.too@gmail.com>, Tomi Valkeinen
+	<tomi.valkeinen@ideasonboard.com>, Tony Lindgren <tony@atomide.com>, Zhi Mao
+	<zhi.mao@mediatek.com>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-arm-msm@vger.kernel.org"
+	<linux-arm-msm@vger.kernel.org>, "linux-omap@vger.kernel.org"
+	<linux-omap@vger.kernel.org>, "linux-renesas-soc@vger.kernel.org"
+	<linux-renesas-soc@vger.kernel.org>, "linux-samsung-soc@vger.kernel.org"
+	<linux-samsung-soc@vger.kernel.org>
 Subject: Re: [PATCH 00/72] media: i2c: Reduce cargo-cult
-Message-ID: <20250724135259.GR11202@pendragon.ideasonboard.com>
+Thread-Topic: [PATCH 00/72] media: i2c: Reduce cargo-cult
+Thread-Index: AQHb8cLi1z5mGUN1NkaS3NoM5ohUK7RBNANAgAALMwCAABfMAIAACf+AgAAFhHM=
+Date: Thu, 24 Jul 2025 14:20:10 +0000
+Message-ID:
+ <PN3P287MB1829E1FEE7D2468CE9915C778B5EA@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
 References: <20250710174808.5361-1-laurent.pinchart@ideasonboard.com>
  <PN3P287MB1829DD1254FB74391A750F498B5EA@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
  <20250724115202.GK11202@pendragon.ideasonboard.com>
  <PN3P287MB1829C9E8C78ADD70259A68F08B5EA@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
+ <20250724135259.GR11202@pendragon.ideasonboard.com>
+In-Reply-To: <20250724135259.GR11202@pendragon.ideasonboard.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=siliconsignals.io;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PN3P287MB1829:EE_|MA0P287MB1756:EE_
+x-ms-office365-filtering-correlation-id: 2a523b04-83e2-4f3e-c5ee-08ddcabd32be
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?Windows-1252?Q?lD0VakQ5AXe7P3Mm5DG6esDz3g0pntPIEyDg9phTcrNIa5bJ01ALX7UE?=
+ =?Windows-1252?Q?prBFkXMpHJs5Zf3Y6kyryYQqpIGITPOrsNF0AEL0ggCaZlWlX7P3U18I?=
+ =?Windows-1252?Q?aq3innjVdhIvYrhUnUIxyIRkcn0Y2QGiEQRKqbaRnMlgMNTRqko3SjMW?=
+ =?Windows-1252?Q?b7qG+un8RFmErXi3kkKL/H+2CMj7LXHvRPWzIRU6+FJWTJNhKfIi4l29?=
+ =?Windows-1252?Q?oVtZupq/fv3vDgYAFa+ivKZfOVIW6V67NCSt+pj7BNA3lf9Lg2/Dkdn6?=
+ =?Windows-1252?Q?PkKoGk+UcJ01DpH8p17gmDJkCPIDEB9SQdPPVhGgoVgCX6cCPEK4qXYq?=
+ =?Windows-1252?Q?Jp6CyR+d7LIZWhk+P4eHpAGYPSw71dpf+mXKdsdaDmkM9RDiwKfm1Jyi?=
+ =?Windows-1252?Q?T/PBuEk1c0fa2uQSGA188tYi2JEpPlbnR5RZjXfHTPfedgF2/EhEl5tX?=
+ =?Windows-1252?Q?qCzzk4W41LNpc0HRnFbnB500hpwXVhDrDei/BXynZfNhWSPwUrJR2FnO?=
+ =?Windows-1252?Q?1SXuWgB/iSM/lwn6NbgDF7SMw/uiINVasc1CLZ7XZO4difq1tokQ3Vcx?=
+ =?Windows-1252?Q?xiJjm7vixbN8EjNIwABE4kj04Ctp9szb1fChez8uJngpMqPEeVFDS65X?=
+ =?Windows-1252?Q?VgT1PFWb1B3rqp7uBJ7FCjXVIlDHb0Ag0H+YTxcUm0rHmXkiCUROhGlS?=
+ =?Windows-1252?Q?0dbb1iIqrvklcG5WPGeC5ZZnu7HKlfF5WDWDnaSf0x7ZZFpABHeUsfIe?=
+ =?Windows-1252?Q?nXynJcXzRjUCVUUGGn2gkEn28KebtjtyML97Y0nRLw6FNYxZonG+o8ay?=
+ =?Windows-1252?Q?UW6EhEEZKnDp67o3P0/U8fZrOhUWKSoen/aWgWJ04wBrZad7Vcfuthmi?=
+ =?Windows-1252?Q?GTQn23uEHLMBdVyxIGolzrDn6XjUVC1y/VDKal31x4HNJmbpPd7jh0HM?=
+ =?Windows-1252?Q?DQhzue+Yf1VwB94gRDSm6pwKM8iGNLU+J6HBUIZVcfDG0czNY3B/4SP9?=
+ =?Windows-1252?Q?0OmLX/Zk0jJYNnF9064ZAzKgus7wuFvl9P8mMC5YFKgx5VFFL+iL5O4Z?=
+ =?Windows-1252?Q?Me3OkC6aVOs8NM6djDV7ACGeYLvD8yYrYafJT7jsm8D/JbLYl507pXnb?=
+ =?Windows-1252?Q?O7QLKsZNcJ3asHDZieJ798aM/4fSg5sziotfeqQm5Oaw0r8sjA/RMBdZ?=
+ =?Windows-1252?Q?8JCvbV4Ly7kKI5uu5fgSzZ7C7ay887iFTC+zQFTncFwB0e5K4KuVOojv?=
+ =?Windows-1252?Q?jTje1rhXUXxKoAOA5SGu12ltkKQfstDY7h23L9uC21bZI1H0mDHW0VU3?=
+ =?Windows-1252?Q?P2/HSa/ROAbW1spJGjsMtV+9oqzRUS5pqiUlJrGLg5sX80TZDfq5G9bz?=
+ =?Windows-1252?Q?1g2usstKaarnYRRGOTEFWmAFJ32YNsfcm2AQsbTtYZhdqGplWLxwRisJ?=
+ =?Windows-1252?Q?O51BSaH4PRLWjQiua0vKA/DQdgLGBfiFcWx3bJY8sc0+54f1gJhTcmcN?=
+ =?Windows-1252?Q?YH29r/5dNzvzTMyUbJXGeOopx493xfNEYyy6hR0kWBKwclNLdi2Upo1m?=
+ =?Windows-1252?Q?ct9OxvXkq6OcbWB/ig3HRWXz3UejxZ/GdYm4Og=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PN3P287MB1829.INDP287.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?Windows-1252?Q?K5H+ScCiyLm1XwhMaUmWv0wnvovAQB2yR5dQoJrryJ5L7P3YXdLA24eH?=
+ =?Windows-1252?Q?M40RNfInoDvBa1CuNgZFeyuXvZhodYZG9flZJ9oDIxzzYXklcU3C1RDa?=
+ =?Windows-1252?Q?K4UPF9S9N9DBxD/Kt64tcL5Kb9NYwmmj4OMCzdCIfNli3UNOW7ZjxxGa?=
+ =?Windows-1252?Q?w0hqAY1ip1RW7rXLASOekGXqeAEx5E2J4Q+uPEwJ/Rd4TChic9mJJYta?=
+ =?Windows-1252?Q?W4bzTitHQ1uJSqgFgLWr/NUjiEBDmSviSLqoUkCfct/dCb7u/xW8UWPv?=
+ =?Windows-1252?Q?gG9GaYKq+G1w5IZ36Fr7T5M5cFU8oeWRzMLGuJJtBHuyLbkz8HMvi7/b?=
+ =?Windows-1252?Q?Kt+QuHhOkacYZb9/FoyEE5P+HPscaqTygseIsLsyF6kMWPtdhQzOja/k?=
+ =?Windows-1252?Q?VdqhwBYNsDhev9ePTsP6eyesUdShR5CyacEKkNtEAE7w6Da0O2Saql+r?=
+ =?Windows-1252?Q?6TOh5Y6CSvtewCU1hu5wZp9NffFqfIy9LI0hVvnwYp76CRdVBd3dLbW5?=
+ =?Windows-1252?Q?L3cTxPni85rUjSw6C+b5ys/ECodMSQErVJcBLcgIsvkT0wKiNXrtWUrg?=
+ =?Windows-1252?Q?WlqnzQJOPfaoi2nHXkl2Hk8Yzo4dp4UxhD94aeiqF7SPAlXxBDJWX8vM?=
+ =?Windows-1252?Q?/MWY/AvBoTRWnXz0peDlf5ibXFKP55pzpnlejeIPeXkgAFodaXyFWfyk?=
+ =?Windows-1252?Q?wVXJthVWUSCm4hHDd7TdzdeihudjCk/c6+VUbaJitLjgPQmesAhix0xt?=
+ =?Windows-1252?Q?74No+uHM+0TO7xFurSXTsxXPpmx1W7H/gUYyj3XrJNPvf3JKXQw5XSlc?=
+ =?Windows-1252?Q?W8UjvcAlzd5dEe0Wshf+CJVZhz9qU2xQOB/dB+NBtv1AdJkzWme40VO/?=
+ =?Windows-1252?Q?jX8D9Icjzuc6ff1grPANrf3WKqYQX8AVW87qFt55QTWpOa+NbtvEcOau?=
+ =?Windows-1252?Q?sHSA8FDxy3mY+taJmMZ162bzzTkXa9Ty3PapESNcqFKNDIVUbh522aOP?=
+ =?Windows-1252?Q?aHpyQ932Hwc+ps81vJfIfkekaxZrbg3X3quGQEFE1wATY/MtUOD5KsMN?=
+ =?Windows-1252?Q?eYyL2mF3hLdWud2sdvxe3gK+9SolC76+JLoZL4AA9PcHVgzNXT7uIKpI?=
+ =?Windows-1252?Q?/vrJJ4gE7t/fGkY158GfCFCzr4N2QDwBf2Jqcj3x4gzY29I1oO+PJjZ4?=
+ =?Windows-1252?Q?EBz5sBv5mTC2IVQvvoPV6AENO6c6KjfjhKhqdQjzThrNhZO5sCfYW9Gi?=
+ =?Windows-1252?Q?I6o+C3OU8lZjPeOWzHmgI58FPavWew+xfL/vBQOOrseLqNFBMNqZJsL8?=
+ =?Windows-1252?Q?tamTcX7WvO6bwot7Gy3xWF8O6pehPDqBDTPtXcOtM0xEuLvDNXOZpLKI?=
+ =?Windows-1252?Q?vTqj9MIFJjqSHB8euWLTR83/rZrWrBU+cYV/gRw/UX9y+kMT0QdU65FI?=
+ =?Windows-1252?Q?FvpDNxC6NpUPmXAjDaxjkMkyeTy0TZe4syYoWAQdByGMF/uzc4Q0nWGL?=
+ =?Windows-1252?Q?/tbHdYmRjhccyACtj6KUkWLBg4ug4ewHKpUUDvAI6WmKQ4wVxPvATEDt?=
+ =?Windows-1252?Q?iF6ftqxUc/nnhG4HVAtd3mm4RnniUkB4lQD8rqPTxOICc1DI6yzGSa0Y?=
+ =?Windows-1252?Q?8x3IxEgJO0VoEw/uDu1yHvT4cxQbs3Y5D7N8NQocNkbKG7WWiCYazz6B?=
+ =?Windows-1252?Q?nXGQLnX3agX6frT7t93T8RBfgvrgAZLc?=
+Content-Type: text/plain; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <PN3P287MB1829C9E8C78ADD70259A68F08B5EA@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
+X-OriginatorOrg: siliconsignals.io
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2a523b04-83e2-4f3e-c5ee-08ddcabd32be
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Jul 2025 14:20:10.5026
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 7ec5089e-a433-4bd1-a638-82ee62e21d37
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: iXOI7gmtyrhnjas+BKPwMKtapeFl8Wo/S98aZruqesNrp4hSqFIyOcZetr4+LM5uVYnTsIvvlTUFWimC7LNT3GCasTQH1Vj28L6anockes8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MA0P287MB1756
 
-On Thu, Jul 24, 2025 at 01:24:24PM +0000, Tarang Raval wrote:
-> > On Thu, Jul 24, 2025 at 11:42:55AM +0000, Tarang Raval wrote:
-> > > Hi Laurent,
-> > >
-> > > > This patch series build on top of Mehdi's introduction of the
-> > > > devm_v4l2_sensor_clk_get() helper (see [1]) to drastically reduce
-> > > > cargo-cult in camera sensor drivers.
-> > > >
-> > > > A large number of camera sensor drivers directly use the
-> > > > "clock-frequency" property to retrieve the effective or desired external
-> > > > clock rate. This is standard behaviour on ACPI platforms that don't
-> > > > implement MIPI DisCo for Imaging, but usage of the property has leaked
-> > > > to OF-based platforms, due to a combination of historical reasons (using
-> > > > "clock-frequency" was initially considered right until before the
-> > > > introduction of "assigned-clock-rates") and plain cargo-cult.
-> > > >
-> > > > A large number of camera sensor drivers also set the rate of the
-> > > > external clock with clk_set_rate(). This behaviour is also fine on ACPI
-> > > > platforms, and has also leaked to OF-based platforms for the same
-> > > > reasons.
-> > > >
-> > > > Mehdi's "[PATCH v2 00/48] media: Add a helper for obtaining the clock
-> > > > producer" series improves the situation by centralizing clock handling
-> > > > for camera sensor in one helper function that implements the correct
-> > > > behaviour for all types of platforms (and should later allow support of
-> > > > MIPI DisCo for Imaging transparently for camera sensor drivers). It
-> > > > doesn't however address direct access of the "clock-frequency" property
-> > > > or direct calls to clk_set_rate() in drivers.
-> > > >
-> > > > This series builds on top of the new helper to replace manual handling
-> > > > of the clock frequency in camera sensor drivers. It starts by addressing
-> > > > the DT bindings and reprecating the clock-frequency property for camera
-> > > > sensor drivers in all YAML bindings (01/72) and in the et8ek8 text
-> > > > bindings (02/72). After that, patches 03/72 and 04/72 make the clocks
-> > > > property mandatory in the two camera sensor DT bindings that specified
-> > > > it as optional. Finally for the DT side, patches 05/72 to 14/72 replace
-> > > > clock-frequency with assigned-clock-rates, or drops the property
-> > > > altogether when the source clock has a fixed rate. This aligns the DT
-> > > > bindings and device tree sources to the current recommended practice.
-> > > >
-> > > > After that, the next 5 patches are assorted drive-by changes. Patch
-> > > > 15/72 drops an unused header the belonged to a long gone driver, and
-> > > > patch 17/72 drops unusued support for platform data in the mt9v032
-> > > > driver. Patch 18/72 is the first that addresses clock rate handling by
-> > > > dropping unneeded clock rate setting in the mt9v111 driver. Patch 19/72
-> > > > takes a harsher approach for the ov6650 by dropping the driver
-> > > > completely as the driver hasn't been used since v5.9.
-> > > >
-> > > > The next part of the series replaces manual clock rate handling with
-> > > > usage of the devm_v4l2_sensor_clk_get() helper in a large number of
-> > > > camera sensor drivers that implement clock rate handling in a standard
-> > > > way. This is done in patches 20/72 to 54/72. This interleaves the clock
-> > > > rate handling changes with drive-by refactoring (in separate patches) to
-> > > > make the code easier to deal with.
-> > > >
-> > > > The final part of the series addresses the remaining drivers that
-> > > > implement non-standard behaviours. It starts in 55/72 by adding a new
-> > > > devm_v4l2_sensor_clk_get_legacy() helper function for those drivers,
-> > > > similar to devm_v4l2_sensor_clk_get() but with a few more quirks. This
-> > > > function should not be used in any new driver. The remaining patches,
-> > > > from 53/72 to 72/72, use the new helper in drivers, interleaved with
-> > > > drive-by refactoring similarly to the previous part.
-> > > >
-> > > > Before this series, with Mehdi's series applied, 29 drivers read the
-> > > > "clock-frequency" property and 18 drivers set the external clock rate.
-> > > > With these series we go down to 1 and 3 respectively, namely the ccs,
-> > > > mt9p031 and mt9v032 drivers. Clock handling in the CCS driver is a bit
-> > > > more convoluted so I will leave to Sakari the honour of dropping the
-> > > > last direct user of "clock-frequency" :-) As for the mt9p031 and mt9v032
-> > > > driver, addressing the issue there is more difficult and likely not
-> > > > worth it.
-> > > >
-> > > > [1] https://lore.kernel.org/linux-media/
-> cover.1750942967.git.mehdi.djait@linux.intel.com
-> > > >
-> > > > Laurent Pinchart (72):
-> > > >   dt-bindings: media: Deprecate clock-frequency property for camera sensors
-> > > >   dt-bindings: media: et8ek8: Deprecate clock-frequency property
-> > > >   dt-bindings: media: imx258: Make clocks property required
-> > > >   dt-bindings: media: imx274: Make clocks property required
-> > > >   ARM: dts: nxp: imx6qdl-pico: Replace clock-frequency in camera sensor node
-> > > >   ARM: dts: nxp: imx6qdl-wandboard: Replace clock-frequency in camera sensor node
-> > > >   ARM: dts: samsung: exynos4210-i9100: Replace clock-frequency in camera sensor node
-> > > >   ARM: dts: samsung: exynos4412-midas: Replace clock-frequency in camera sensor node
-> > > >   ARM: dts: ti: omap3-n900: Replace clock-frequency in camera sensor node
-> > > >   ARM: dts: ti: omap3-n950: Replace clock-frequency in camera sensor node
-> > > >   ARM: dts: ti: omap3-n9: Replace clock-frequency in camera sensor node
-> > > >   arm64: dts: qcom: sdm845-db845c-navigation-mezzanine: Replace clock-frequency in camera sensor node
-> > > >   arm64: dts: renesas: aistarvision-mipi-adapter-2.1: Drop clock-frequency from camera sensor node
-> > > >   arm64: dts: renesas: rzg2l-smarc: Drop clock-frequency from camera sensor node
-> > > >   media: i2c: mt9v022: Drop unused mt9v022.h header
-> > > >   media: i2c: mt9v032: Replace client->dev usage
-> > > >   media: i2c: mt9v032: Drop support for platform data
-> > > >   media: i2c: mt9v111: Do not set clock rate manually
-> > > >   media: i2c: ov6650: Drop unused driver
-> > > >   media: i2c: hi556: Replace client->dev usage
-> > > >   media: i2c: hi556: Use V4L2 sensor clock helper
-> > > >   media: i2c: hi847: Replace client->dev usage
-> > > >   media: i2c: hi847: Use V4L2 sensor clock helper
-> > > >   media: i2c: imx208: Replace client->dev usage
-> > > >   media: i2c: imx208: Use V4L2 sensor clock helper
-> > > >   media: i2c: imx319: Replace client->dev usage
-> > > >   media: i2c: imx319: Use V4L2 sensor clock helper
-> > > >   media: i2c: imx355: Replace client->dev usage
-> > > >   media: i2c: imx335: Use V4L2 sensor clock helper
-> > > >   media: i2c: og01a1b: Replace client->dev usage
-> > > >   media: i2c: og01a1b: Use V4L2 sensor clock helper
-> > > >   media: i2c: ov02c10: Replace client->dev usage
-> > > >   media: i2c: ov02c10: Use V4L2 sensor clock helper
-> > > >   media: i2c: ov02e10: Replace client->dev usage
-> > > >   media: i2c: ov02e10: Use V4L2 sensor clock helper
-> > > >   media: i2c: ov08d10: Replace client->dev usage
-> > > >   media: i2c: ov08d10: Use V4L2 sensor clock helper
-> > > >   media: i2c: ov08x40: Replace client->dev usage
-> > > >   media: i2c: ov08x40: Use V4L2 sensor clock helper
-> > > >   media: i2c: ov13858: Replace client->dev usage
-> > > >   media: i2c: ov13858: Use V4L2 sensor clock helper
-> > > >   media: i2c: ov13b10: Replace client->dev usage
-> > > >   media: i2c: ov13b10: Use V4L2 sensor clock helper
-> > > >   media: i2c: ov2740: Replace client->dev usage
-> > > >   media: i2c: ov2740: Use V4L2 sensor clock helper
-> > > >   media: i2c: ov4689: Use V4L2 sensor clock helper
-> > > >   media: i2c: ov5670: Replace client->dev usage
-> > > >   media: i2c: ov5670: Use V4L2 sensor clock helper
-> > > >   media: i2c: ov5675: Replace client->dev usage
-> > > >   media: i2c: ov5675: Use V4L2 sensor clock helper
-> > > >   media: i2c: ov5693: Use V4L2 sensor clock helper
-> > > >   media: i2c: ov7251: Use V4L2 sensor clock helper
-> > > >   media: i2c: ov9734: Replace client->dev usage
-> > > >   media: i2c: ov9734: Use V4L2 sensor clock helper
-> > > >   media: v4l2-common: Add legacy camera sensor clock helper
-> > > >   media: i2c: et8ek8: Drop support for per-mode external clock frequency
-> > > >   media: i2c: et8ek8: Use V4L2 legacy sensor clock helper
-> > > >   media: i2c: gc05a2: Use V4L2 legacy sensor clock helper
-> > > >   media: i2c: gc08a3: Use V4L2 legacy sensor clock helper
-> > > >   media: i2c: imx258: Replace client->dev usage
-> > > >   media: i2c: imx258: Use V4L2 legacy sensor clock helper
-> > > >   media: i2c: imx290: Use V4L2 legacy sensor clock helper
-> > > >   media: i2c: ov02a10: Replace client->dev usage
-> > > >   media: i2c: ov02a10: Use V4L2 legacy sensor clock helper
-> > > >   media: i2c: ov2685: Use V4L2 legacy sensor clock helper
-> > > >   media: i2c: ov5645: Use V4L2 legacy sensor clock helper
-> > > >   media: i2c: ov5695: Use V4L2 legacy sensor clock helper
-> > > >   media: i2c: ov8856: Replace client->dev usage
-> > > >   media: i2c: ov8856: Use V4L2 legacy sensor clock helper
-> > > >   media: i2c: s5c73m3: Use V4L2 legacy sensor clock helper
-> > > >   media: i2c: s5k5baf: Use V4L2 legacy sensor clock helper
-> > > >   media: i2c: s5k6a3: Use V4L2 legacy sensor clock helper
-> > >
-> > > If you are planning a v2 version of this patch series, please consider
-> > > incorporating the following improvements:
-> > >
-> > > 1. In the imx219 driver, you can also replace direct client->dev usage.
-> > 
-> > The series doesn't touch the imx219 driver. The patches that replace
-> > client->dev usage were meant to simplify the other changes. Additional
-> > client->dev removal should be done on top (and likely through all camera
-> > sensor drivers in one go).
-> 
-> Okay, great
-> 
-> > > 2. In the regulator code, you can reduce boilerplate by using
-> > >    devm_regulator_bulk_get_enable().
-> > 
-> > devm_regulator_bulk_get_enable() doesn't seem to be a good idea. You
-> > generally don't want to enable power everywhere unconditionally, and
-> > sensors very often need a guaranteed power up sequence.
-> 
-> The regulators are optional, we supply power to the camera sensor directly
-> through dedicated power rails and there is no strict enable sequence 
-> required in this case.
-
-What exactly do you mean by "this case" ? Are you talking about one
-particular sensor ? One particular camera module ?
-
-> However, if you feel it's better to retain explicit handling for clarity 
-> and flexibility, I’m happy to stick with the current approach.
-
--- 
-Regards,
-
-Laurent Pinchart
+> > > > 2. In the regulator code, you can reduce boilerplate by using=0A=
+> > > >=A0=A0=A0 devm_regulator_bulk_get_enable().=0A=
+> > >=0A=
+> > > devm_regulator_bulk_get_enable() doesn't seem to be a good idea. You=
+=0A=
+> > > generally don't want to enable power everywhere unconditionally, and=
+=0A=
+> > > sensors very often need a guaranteed power up sequence.=0A=
+> >=0A=
+> > The regulators are optional, we supply power to the camera sensor direc=
+tly=0A=
+> > through dedicated power rails and there is no strict enable sequence=0A=
+> > required in this case.=0A=
+> =0A=
+> What exactly do you mean by "this case" ? Are you talking about one=0A=
+> particular sensor ? One particular camera module ?=0A=
+=0A=
+Laurent, by =93this case=94 I meant the common scenario where power to the =
+=0A=
+camera sensor is supplied by a PMIC regulator that is always-on. In such =
+=0A=
+setups, the regulator is fixed and cannot be enabled or disabled from the =
+=0A=
+driver, the sensor is always powered.=0A=
+=0A=
+This is what I=92ve seen in most platforms, where the CSI input connector =
+=0A=
+provides fixed 3.3V/1.8V power rails directly to the camera module.=0A=
+=0A=
+Of course, if the camera supply comes from a dedicated regulator controlled=
+ =0A=
+via a GPIO, then the driver would need to handle enable/disable sequencing =
+=0A=
+explicitly. But I=92m specifically referring to the first case, where the p=
+ower rails =0A=
+are always-on.=0A=
+=0A=
+Mark, depending on the hardware, the power rails could come either from a =
+=0A=
+PMIC or from a regulator controlled by GPIO, but I=92m talking about the al=
+ways-on =0A=
+PMIC case here.=0A=
+=0A=
+Best Regards,=0A=
+Tarang=0A=
 
