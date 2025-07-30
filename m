@@ -1,74 +1,74 @@
-Return-Path: <linux-omap+bounces-4158-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4159-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4614B15D79
-	for <lists+linux-omap@lfdr.de>; Wed, 30 Jul 2025 11:55:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62289B160AE
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Jul 2025 14:50:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5292D7A5247
-	for <lists+linux-omap@lfdr.de>; Wed, 30 Jul 2025 09:54:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0766D3AEF1B
+	for <lists+linux-omap@lfdr.de>; Wed, 30 Jul 2025 12:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58037293C74;
-	Wed, 30 Jul 2025 09:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 348B1295D91;
+	Wed, 30 Jul 2025 12:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="y6v1Y+rP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jj939fjQ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A4F27467A
-	for <linux-omap@vger.kernel.org>; Wed, 30 Jul 2025 09:54:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FE7256C70;
+	Wed, 30 Jul 2025 12:50:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753869294; cv=none; b=rA2zD7LP6Q+M3bK4/LXd0K2P3TTQRYSTQAUQ3ZZSJO8hXgMyr8XYmeTuHy4GDKBWjoQT9Tvdex2W66chUN2l1Z2hv5mJJIdLZJWT4ngrQUZF9G+bi0t8efdZr2qmBzHdW1qWdBM/kSUl9RjDAvXYqQcXbXTnZnA8rPei/87QakU=
+	t=1753879831; cv=none; b=pDreQlFNh5BoQNg+RfH2N7rZSLvMF31alUKksk0XcyWxHbujt/rHnyEFMWuhEMBnx6kS3rRcfTjuyPqkWLHDaUAaUEKXQUwHZqOvXL2XguHp+rImRT8QOEQ4c5ejgnp/fMeOXzom9a68c8h9iuaitx0azmarzgqxT11QK46o12Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753869294; c=relaxed/simple;
-	bh=hp7bAnlyWbMe0UagxjClRdoFhPBImgjJBDcHhbMOPBc=;
+	s=arc-20240116; t=1753879831; c=relaxed/simple;
+	bh=mAirr7gyYUrBa/ClKW/JlnzUq/0q+Y/udQ6/llJgM1M=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PGCWQn3bdYq4Rda/svzYftdh2yEPcgXmwM3fPSelXjBqFIY1oG8fn8GnEiZI4CTbQu422dtB7WTRhAF8KGh5ChlR7M1aRqja780JlcqTA+S+ctr1w6CkO5/9N7BVDmMddNWCMzL6IhsxzRzEJFMQkvuGz1TJFFjJC3xFam1UBmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=y6v1Y+rP; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-55b81b58eb7so517327e87.2
-        for <linux-omap@vger.kernel.org>; Wed, 30 Jul 2025 02:54:51 -0700 (PDT)
+	 To:Cc:Content-Type; b=kcEHO/6eW5/qwaMH0kZwgAZEqafx+J54nz1/2nvhu5WEtoi6cIdQTkA0Y3G1H1CN4ytm83NS6rXsRK1w9zlK/NQI17Q2OvAoLPL5T7LBtH37LvaCg5nwrtQThzVO5A+IeLLbua0NnMBa7WqkX8pm3yJycRY7lafFnOuXBkfQzdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jj939fjQ; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-61592ff5ebbso1004268a12.3;
+        Wed, 30 Jul 2025 05:50:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1753869290; x=1754474090; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753879828; x=1754484628; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=b6vdhp2EWkPtq+IAr0ObGae8XoJd1fUV2G+NSQOgeB0=;
-        b=y6v1Y+rPEVDHOkrqc2KWOfhiugmQ47csz1p9+cPsKrBxMu6N++Lx7mDSVzJx9n6oqS
-         UB5hMz5e/MChLsSvAmzP82OKI7y6HHDsJkHIQqJ10ekWc9qTbZH4JevVzniY4W09B0A/
-         VbMUa0prk04D/p8/3TRqlWvGNSKC2kXTwf/bhns+HC7/CXVhXgBURVJR/9r87Bn9GlN0
-         gv/+LXG6hJV0a64I7ABkBgPr6iaKk6lKUYzENYZv0W+E8GgTmxZDjeJpjUQvzGsRYgUw
-         UIsm9yMb4dS4lePbwKM+ubqez2QY+tIytNFSDWF2gXWKi7MulASGNSolQFMpNoSrFq9C
-         RciA==
+        bh=Tvvn2gu3QwfMvEps+Es99aXQTd4n5DxwynGQISYrqRE=;
+        b=jj939fjQZ4wDTAgEPxBIpvsSlWtocNqjIVgGDoi1gza4p8ghhPsYOJFa3Bz3JoS9iY
+         rZtm3/86EDh2XIm09B4FI3bhOovSAkrNrO+LPglseWwCdBMfcoWDlHqABuBMBg9tPnnc
+         kXtPxFoMw5NtUr4vZBZRwFi03jBNYIeDoa2/CYuoCjYuDOPsqUbtgxcmBcf39lRARrc6
+         CVxcIx/RJfS0dGgjKzEQG7oJ6b/DJl4dMCpxr+0sJmZU3+sSm7hP/IsksGyF3snefxKy
+         vhvgjwknb337ddOAL7ZQlfAxRqpnfLGdaRwFAVtsUgiUUlTbxXfLRRAyA5wYqIvSdBai
+         HGEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753869290; x=1754474090;
+        d=1e100.net; s=20230601; t=1753879828; x=1754484628;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=b6vdhp2EWkPtq+IAr0ObGae8XoJd1fUV2G+NSQOgeB0=;
-        b=A3s+/a6pu2NSacWeplo9WeReZ10QWx2j5901G4tX8krtQDOY9Rzm+MHnuVHNirIUYv
-         vCXxExL3VrM+65MiCFjebscHt14Z0ZoGZCUcIxG1EyfcKW8uQzhc/H14BPHIzUOoFTip
-         OFEaRTzHnWQYQ8F3hcOYBlHKCgqwlA4j6MWklxO8zSbbtXfb7Cth5cBo2rMkVQN+JFKW
-         MxIl5XbvsCfPjI0Mkf28TH/NAzPVcgJ1NJWcnhJC3Q4UqiINDK1kYDT+cU8eHSuysQ1R
-         6BYNVYxFAhlB8ZGeHbbS2GbVvhYz2VZesgat5H7MEDueUMFRkij6hI2Lw5MNNbpYk6xp
-         tLvg==
-X-Forwarded-Encrypted: i=1; AJvYcCXr+D2MTCnQZzNN5bCJ3zQIWyhHXVYqG8JWaqmSN1x9OeSVIM+TU8XhElg8CnD0YuTBtsWdWc+Xov+T@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEW6sI2+NJtW9A2vg+yECgGzwQfs6/49x4D6JS1NNbJebkroW7
-	Vbj68tT9e4jInMLShCJb1A0y7DaD7pBgURNH3Ps/FnUAOhU3pyLPIc1wQ86uteojDm8SUqdX1zH
-	9kHsYCPFDEoHLcnsEny7RVEIpASSc6TnGd0sBgexYLQ==
-X-Gm-Gg: ASbGnctU68zcltLwgRM1E0H7HSBTJHIX2FLgs0ai+hkG5w7ju46H+zRop9zSBhCdJ6D
-	Ox2cbDYlEunumBgbuRpTxq/Sup3Kin+YfRAjpRbXB6RTgtbo04v9za05ResBeQfgnUsUKFRyEiv
-	PNra7mXjGP3IJy1sqdt0eYWzxNmtLIOKytxJB6/K7vuVw8TlhlfkkDQINwv4SEJcYdUeXHcLmGS
-	7XWCtDdYTKaaeUCn4/MpeMV3G4WwQJ8WSUbsH4=
-X-Google-Smtp-Source: AGHT+IFD0mC+adTu2tQIUqoYqi4YbEm6lb9KfHl4WlQUhUVwQ9owZPBnvnUOvhF+89ksRVwAv/r0YIR9B2aVVdKhoAo=
-X-Received: by 2002:a05:6512:33c7:b0:554:e7f2:d76b with SMTP id
- 2adb3069b0e04-55b7c0b0f66mr939851e87.56.1753869289592; Wed, 30 Jul 2025
- 02:54:49 -0700 (PDT)
+        bh=Tvvn2gu3QwfMvEps+Es99aXQTd4n5DxwynGQISYrqRE=;
+        b=VtWdnfXKyclte052wUlqjCm8FVwycOWY2c1tmRl4s+5ZK26bOuMfgiDiSaM5Rgp02O
+         vOJDcyKAeL0L/F06ARVofFa6xQc1TsHtq5oJko0XY5XX9PD/YAZ7BgIrdsSJvNKCsdnD
+         kik9laLFl16gHTr9TYV/dFLyW16ySdfeVVeuAJtUV+is6GR3HNjdJtQuPVqAFt67m8qC
+         7LdgN5Cn/jwbzdpPAyiRl/7E8A1IDJYYPTm1q7kRJbsGWglJEEW4bY5j8MfC9BdWbfgB
+         YRqpIYCw8y1AKbCit8o7ZCSb3hUyeJ8RuHmpY5Qb+mGYrW44WjXeyqrBejbYCJ7kqyLG
+         49Mw==
+X-Forwarded-Encrypted: i=1; AJvYcCUeQm8HA3HggJ5qPLFO4IXmQmOpwiNe4OZcKmd+mA2rO74FiYzMQeaXq8ktdvuBGLePGDfUPhl9jSQ/qLZYXQKq1to=@vger.kernel.org, AJvYcCV66tp77Q/YXhNzLpZogLetriY5/4DK31ql96bqJ9sBPxrFpk0uSf1Fm2giuONzXjD6pZf/nd4wmVTZdbDc@vger.kernel.org, AJvYcCVIsEywJpqHD85BmhqIiVHMhKmw8EzIP3Zq+WBb6cKEd3QMgu9zbMV7p6hd3S0Uh/qW1Bdqqg4ZsFvCPQ==@vger.kernel.org, AJvYcCWAPFVqIrXJ+13GZNQXBDX+olT47MOyLExxONuIJ8msyIDoVSHPcgcRItrvtWIRGgZWeuZPi7y77el3Fg==@vger.kernel.org, AJvYcCWQrlT6CELgxlQblrYpdzrAjCTo7IhgGnTiKXY5/RyLgkRX+Ohw2DfM34H9zGUq37YqWCwbp4OdhkuJr/2k@vger.kernel.org, AJvYcCWouxhrj2dQ7/KqShB/fJCV9mSg4F3JKFtgQWO0G+umeS2Whf5aOgKjr9M9a7lUPIubhi7g8LG1mhpsOHxwwDph@vger.kernel.org, AJvYcCWuKr7BYN6q7K/Kv+413333QkxYBSiYy5uZG17OzzSBkz2v6k8WWZhFIlzL9OVNScgFC/ohzdg7WNPU6Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWb1b1cnAVghNJ6hMDWw99Y/yUQVI6bK7AwCQWtzriPkb2QDIb
+	ncUvgdqlbjhaDrpJbj9nQHzyj3lk8WEaYhlslUZIl9hU9kKQFqP4DUN3H8XdaAfYeyYhLmJoAej
+	MjVzSI3DOoZCgVQ6QEqR7OCWp2p65Ot0=
+X-Gm-Gg: ASbGncsJUWaNg4xwi/CZrT4sTCEnXvYvBjNG1/kLIL3SLXfeJqAq1sRUCIiKlwRzuOy
+	KrTTOHzMzCXcpWQbvD7rj5dezCYq9WVwK+sSh+wQbbm8ZXyJIqDhdgQ0TCI8v104vSg72td/N7j
+	k6b6ITJKmRLpu93OIIk7X8cLu5Wkbubbmp83uMo9E8Z+Jmm2J8a/cuJiLjW8Iki71O/bNSCgNto
+	G+g9JoSWA==
+X-Google-Smtp-Source: AGHT+IEJQOY2N21rRHh/x9SsZgR/AC6673gfg/Aq7DulgeR+61NEupHsjseGW2o2I6RkO01k98hTvI6/W9mnPdZHDTE=
+X-Received: by 2002:a17:906:6a12:b0:ae0:b33d:2a4a with SMTP id
+ a640c23a62f3a-af8fd97569fmr398869466b.35.1753879828299; Wed, 30 Jul 2025
+ 05:50:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -76,15 +76,16 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250724-pinctrl-gpio-pinfuncs-v3-0-af4db9302de4@linaro.org>
- <20250724-pinctrl-gpio-pinfuncs-v3-12-af4db9302de4@linaro.org> <CAHp75Vc4vsJh_-GbP+YO50veoGoGtfAPL4tjcF+73uophfmnGw@mail.gmail.com>
-In-Reply-To: <CAHp75Vc4vsJh_-GbP+YO50veoGoGtfAPL4tjcF+73uophfmnGw@mail.gmail.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Wed, 30 Jul 2025 11:54:38 +0200
-X-Gm-Features: Ac12FXyouWksKyGI1Z-cYawOTPPQ3IbuMxJxWat2oIDr-ST0nxIlLBCifNIDusI
-Message-ID: <CAMRc=Mc1ophkofB6MmtD4adBAi69C3JyovM-S9YD_y7UA3V1qA@mail.gmail.com>
+ <20250724-pinctrl-gpio-pinfuncs-v3-12-af4db9302de4@linaro.org>
+ <CAHp75Vc4vsJh_-GbP+YO50veoGoGtfAPL4tjcF+73uophfmnGw@mail.gmail.com> <CAMRc=Mc1ophkofB6MmtD4adBAi69C3JyovM-S9YD_y7UA3V1qA@mail.gmail.com>
+In-Reply-To: <CAMRc=Mc1ophkofB6MmtD4adBAi69C3JyovM-S9YD_y7UA3V1qA@mail.gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Wed, 30 Jul 2025 14:49:51 +0200
+X-Gm-Features: Ac12FXxgFDuQutFN_-MaFgaos1SbYd6nY92Ty-kjNsHnooD1EOK3KyGkMl4TA4s
+Message-ID: <CAHp75VcV=K-DfOGs0z64==nO+wQNoEB2Ngd2vc+dLYr3WLChjg@mail.gmail.com>
 Subject: Re: [PATCH v3 12/15] pinctrl: allow to mark pin functions as
  requestable GPIOs
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
 Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
 	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
 	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
@@ -109,22 +110,30 @@ Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 24, 2025 at 2:22=E2=80=AFPM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
+On Wed, Jul 30, 2025 at 11:54=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.pl=
+> wrote:
 >
-> >  struct pinfunction {
-> >         const char *name;
-> >         const char * const *groups;
-> >         size_t ngroups;
-> > +       unsigned long flags;
+> On Thu, Jul 24, 2025 at 2:22=E2=80=AFPM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+> >
+> > >  struct pinfunction {
+> > >         const char *name;
+> > >         const char * const *groups;
+> > >         size_t ngroups;
+> > > +       unsigned long flags;
+> >
+> > Not sure we need this. If the function is GPIO, pin control already
+> > knows about this. The pin muxing has gpio request / release callbacks
+> > that change the state. Why do we need an additional flag(s)?
+> >
 >
-> Not sure we need this. If the function is GPIO, pin control already
-> knows about this. The pin muxing has gpio request / release callbacks
-> that change the state. Why do we need an additional flag(s)?
->
+> I'm not following, how does the pin controller know that the function
+> is GPIO exactly, other than by the bit set in this field?
 
-I'm not following, how does the pin controller know that the function
-is GPIO exactly, other than by the bit set in this field?
+AFAICS the gpio_owner !=3D NULL means that. No need to have a duplicate
+of this information.
 
-Bartosz
+--=20
+With Best Regards,
+Andy Shevchenko
 
