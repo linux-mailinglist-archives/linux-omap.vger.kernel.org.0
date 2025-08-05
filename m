@@ -1,122 +1,176 @@
-Return-Path: <linux-omap+bounces-4167-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4168-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0F86B1A0D1
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Aug 2025 14:04:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34BF4B1B11E
+	for <lists+linux-omap@lfdr.de>; Tue,  5 Aug 2025 11:33:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16E513A74D0
-	for <lists+linux-omap@lfdr.de>; Mon,  4 Aug 2025 12:04:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C91E7A2CF4
+	for <lists+linux-omap@lfdr.de>; Tue,  5 Aug 2025 09:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A93244662;
-	Mon,  4 Aug 2025 12:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D2F264A76;
+	Tue,  5 Aug 2025 09:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="co5FkmZN"
+	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="HeDAickp"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010030.outbound.protection.outlook.com [52.101.69.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D37B15C0;
-	Mon,  4 Aug 2025 12:04:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754309054; cv=none; b=QUO9S+KTAxgaWb0DAJnvNC2LcNTOi6w9N1T7zfwKouipGeVd6kQLFcQNMnRk2HkvFLyl+wG/j9jufenKrVz7a6WzR64IngxfHR8gtag8uHoXiyx8IAy555f5TVpJ6vkqYl1ZzBWekvJpzz1pMsKwYaFWI1XhbiOIZuozkjo7TZ4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754309054; c=relaxed/simple;
-	bh=K9OP5Ce3BveyGm5J7nKzieV7VKCpnajkBYBy1q/LiVQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CtXmfhLAX/wJQa9nm/yUwXTototSFGj4G2Krgu44/DwMJ/QWpITISoVqflmq9dzDgX3rDpQanQVXOeFiQUyzTKZ5RvOkurHS95I3U1oAJ7WnZyYsjinwAo82NJLcE3kf2mWCIpuHm9sRiIqn/f5TmjHSWL7bLtNSA8VFnZJcARE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=co5FkmZN; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-31ece02ad92so3488792a91.2;
-        Mon, 04 Aug 2025 05:04:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754309052; x=1754913852; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=26b/9qnmqoaTIMROPBhDyNWuHOe0gLMekSlP8n81tZ4=;
-        b=co5FkmZN94SZQ8K6cfiFYC31tAK9HOoINPFdYlAu7d9qj2U55VCBUU1Ox4BHQCZ5mg
-         5vCldCNPhXtAKzoXZWiU0LSb21S41jjnUyhPPAruDb540Kaq9BOqJnGTPuPDE3Tq+0Gm
-         tv4YLx0fURMsDo7B6KzGnoqL1iyehIm/xScTl++2npg0ni3IMhBbLP2pH/ojxemGAwXj
-         6jkKAYiSxMoeQOtPQhG3SClcXmN0lmU9+l8A1vDk259NyPpqRadR4re5oeqmAgkNtGOU
-         7E19s7THM/JMAVvvADKVDH710FxYZXsJyBAw2Gl5JFoW3Mne3t/jkkFDGkDbYYdX+KGN
-         p7CQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754309052; x=1754913852;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=26b/9qnmqoaTIMROPBhDyNWuHOe0gLMekSlP8n81tZ4=;
-        b=JLJZ4gG0E8btX8rYPLduJEic2QBnVH8HyaeA3lTDhJiCLF6pBSXfg+KdqMgrU+S9OJ
-         F0WhjjtkbPNCu1VEJSYdR+mB5DxM0AdZM5Ijsdc3japcsUj+nf8OJehWOm8ZMgtqySBH
-         QbN/nYi9nBq9CH90cUow5jDa0Oas1ixyeNEOymGmsv/KEj69ofkY51T5uzRp0VQYm3r6
-         c9VxstDfvi2q6ydZNYda0vV0ogJUbm4mLh0PIXm1tMtjUR/HsdxE15KZvtvDGhIg+1nj
-         IPd67UjxLCAPMv03kfDCS/HOU8i51e12AYxXE/G/QnBecg0Rskt4RlfyLZOIG7PAT8ZH
-         kJZg==
-X-Forwarded-Encrypted: i=1; AJvYcCWs9pE8UZr5R9jdYyX18CjqcCP+HKlnD7mPzr64QshfulWsZfvsnB7+OwBhPLCIhkc4GvZO4DIOLO/FLw==@vger.kernel.org, AJvYcCXm27em7zUncCDtPvlPsezT7Zb4c1UTACBlRa8EU6AlLcS4I7eEp2Xo3WIa6Jn6OCB3CS4JJiROHyvhfjA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCVlcZ/0ZcnLNNryfA1/fq6H73nex0jRBZ7Vo6dYLxWqi66yRj
-	i5inxzyi+pFJsyPLq79mQq3xmbPSgou2M0znOrFKqm8Fue8tZJRZef640/gWYfe+JbanoQ==
-X-Gm-Gg: ASbGncs4SJQsK5sZRvQI5CTpXuNpL+fOke3UUHOgpqXEVw5w574VsBD2IRQExmQ7emf
-	kGsAL/ffSj1XYhADarhgS2MoUOX02iTpX02Y2DEQ0mTvgKuMocJdJVQMSecwhJwBhdsrEENFe9b
-	XZZOZjc6ljSMhQbXfAYPS3OfD4v3tQUuscMXOpM0PbGViZtY5nkpeCHTyjzwBvSesbPYxt+Bc/2
-	kKf970SlpDEQDGpMWx1M/622oniPmiF5Ztcg3ijbs6fjiCvRW6tWm89N0GUwBcA5bsHRje43Ui1
-	eoCJ7ihhwzsKw5lcAUZPPSf3lK+LR/dn0s8mYqTZByNVzjmdycYIWQQJJz0PpIXerajJuVrEN1D
-	wZLzgvp2xtBKI0oj3EjvPaVRg9mDNeqZHVgqEMEKUXzQg0i710W/Zazt2O30IS9JkakoOibFSB3
-	uY8D2O2wo8Le+80YEfP5fMUM4=
-X-Google-Smtp-Source: AGHT+IGKhsUL8aFVrHDpanP0ClvwXqgzKV7JcdKY7FnQ5ZR6o5l+qtLq+7RB8VhCTFS4YLvc+k2pOg==
-X-Received: by 2002:a17:90b:33cd:b0:31f:42cd:690d with SMTP id 98e67ed59e1d1-321161f21d0mr12154208a91.13.1754309052080;
-        Mon, 04 Aug 2025 05:04:12 -0700 (PDT)
-Received: from vickymqlin-1vvu545oca.codev-2.svc.cluster.local ([14.22.11.162])
-        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-b422b785696sm8648504a12.9.2025.08.04.05.04.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Aug 2025 05:04:11 -0700 (PDT)
-From: Miaoqian Lin <linmq006@gmail.com>
-To: Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: linmq006@gmail.com
-Subject: [PATCH] bus: ti-sysc: Fix potential double free in sysc_add_named_clock_from_child()
-Date: Mon,  4 Aug 2025 20:04:03 +0800
-Message-Id: <20250804120403.97959-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.35.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E721225A348;
+	Tue,  5 Aug 2025 09:33:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754386421; cv=fail; b=iB0YSQPdfKfT+Pm815/tSynloNLRFw84+AMlF+gZHgTrDVSE65xKGv5pa4soRwEgOt5Z6sqwd5h0X+mg0vvYyn6dFxZhB3ab6iWkEUX4bMsmqAOtEicPZjbc2Sp3acTmDbU89prTOMFp9ndNtEN+Djdoj8MZFmpxwWEt0vjMido=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754386421; c=relaxed/simple;
+	bh=rePD9tTxnpc4ipiP4AGHmKjN6pd+Uf9yptM4rtiIieQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CI2T8vJTdQisgo7jGfiZ2GosVGijFtJeLtwvZ6NHWtIbKk/qbRblaYbM+/XZJYLXDJawTNZfaSMHGejABccUP73iH7HjYabGTahQKYmmI/kgnwXEt9trb9OSnA60YZeF40OWxGHv5hd1gDP6ADCFYbtTdEHYt35/u9xy6F9vbww=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com; spf=pass smtp.mailfrom=axis.com; dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b=HeDAickp; arc=fail smtp.client-ip=52.101.69.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axis.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mzuyAGOYcKrwk2hXj5XHixRtmoYYE3KbLi0ndVWwc1lhcBclrdlOLqb1eBeqqNpKh9lYOdCiM0C4oKHTV1LUB1VvCfDPmsN7TjTxHj+JlrXaDY0zcay91MK7h2DPrhzNAVe1SF1bPI9G2pnKfIzraJwS1X4nFlJBeWVi/aws4wZMzCgcCfww+i28kcuAFSBXdAf6WRC/yBdRcUvEf9tvM0SrurADlml6J1pimNxD2XRppH5N+NK2ztI45S+d/yRlyKT3ycjuGjQoHGa5qqaLVXEvwhTRNQSQZsaTkOiapqIF7kiy1J1qi/B72mUSjjtMwxgaKVDTg8Oot6s38L5vsA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4Rlr+H5lHjrKv0c5NsOfGAyXZnJ5tX0M3NVHk7I5ah4=;
+ b=xhnkPn6Lf4gRfl8u4NWwcsnQnKP31jdYnDJjxTp/x68Q1XHB1u/nhu4TRlX7DJ48qSX7comflZoeUA5jjjsX5ubw5IRkiiyRPyZsyNgBRsv08iiLh3lFrOMg9ywIjW/8QpxJVuM5ANJzYFRIjLq9PcfSAMD3/Uay1uf0JQAPgGaWvcxnzKnY1GnIuu8BeGXHVBPSu6ftw/cMQ0F07XWuHLiNCDhjUL4BteXLRzGTTDnkzbPgQj/cTLopBLRElR3RUJIqop92VcVifNrpctQiVKkeSreLir64nkJZpJL4QuyFmfBqeYsLJ9Zabs4VgrvMKdrHAAyO2pZ0+NBZj0LWlA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 195.60.68.100) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=axis.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=axis.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4Rlr+H5lHjrKv0c5NsOfGAyXZnJ5tX0M3NVHk7I5ah4=;
+ b=HeDAickpq3QlsxcHzzt+4CqsnFsszZ3luAA1NC/yiKn0tK2yKLckDUpKlvR3I4IkR7gNZV6/FKeXXhyR+qhSEW+ie/vzm8PkjWzIWinbgsvC16Xgo1KuYNcd3gAvNDiO26GPF5BERxXeFpkvcPDP4NV5n7gTfMuiPMrC3wax5/8=
+Received: from CWLP123CA0013.GBRP123.PROD.OUTLOOK.COM (2603:10a6:401:56::25)
+ by PRAPR02MB7836.eurprd02.prod.outlook.com (2603:10a6:102:27a::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.20; Tue, 5 Aug
+ 2025 09:33:35 +0000
+Received: from AM3PEPF0000A790.eurprd04.prod.outlook.com
+ (2603:10a6:401:56:cafe::83) by CWLP123CA0013.outlook.office365.com
+ (2603:10a6:401:56::25) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8989.21 via Frontend Transport; Tue,
+ 5 Aug 2025 09:33:35 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 195.60.68.100)
+ smtp.mailfrom=axis.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=axis.com;
+Received-SPF: Pass (protection.outlook.com: domain of axis.com designates
+ 195.60.68.100 as permitted sender) receiver=protection.outlook.com;
+ client-ip=195.60.68.100; helo=mail.axis.com; pr=C
+Received: from mail.axis.com (195.60.68.100) by
+ AM3PEPF0000A790.mail.protection.outlook.com (10.167.16.119) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.9009.8 via Frontend Transport; Tue, 5 Aug 2025 09:33:35 +0000
+Received: from pc52311-2249 (10.4.0.13) by se-mail01w.axis.com (10.20.40.7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Tue, 5 Aug
+ 2025 11:33:32 +0200
+From: Waqar Hameed <waqar.hameed@axis.com>
+To: Vignesh Raghavendra <vigneshr@ti.com>, Julien Panis <jpanis@baylibre.com>,
+	William Breathitt Gray <wbg@kernel.org>
+CC: <kernel@axis.com>, <linux-iio@vger.kernel.org>,
+	<linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2] counter: ti-ecap-capture: Remove error print for
+ devm_add_action_or_reset()
+User-Agent: a.out
+Date: Tue, 5 Aug 2025 11:33:32 +0200
+Message-ID: <pndms8em7tf.a.out@axis.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: se-mail01w.axis.com (10.20.40.7) To se-mail01w.axis.com
+ (10.20.40.7)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM3PEPF0000A790:EE_|PRAPR02MB7836:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1e7b3f4d-4796-4f46-295a-08ddd403268b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|36860700013|82310400026|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?t3SYMdqnNGpkO6LF45lRT9Rj9Wq/PnzwiQV5wueXYb6lrlasMoV6P2bIwDtv?=
+ =?us-ascii?Q?hDJu+7x/7fFjZBYV8r4L0J5nJ5pRkZXNbLMna5kQrE1+FAUL/OVjPjE2zgAe?=
+ =?us-ascii?Q?EZbTJ7LP55miOE9Wq7M2xhw/DrlAB/XRFC0kRM3Dfuu9TGP87WVjQf8syy32?=
+ =?us-ascii?Q?ToE6wDpvAe9oQTbzueRmOjFi9EAdtONuhkMwnUD7XRPfsENXRrjX3uzwQNVR?=
+ =?us-ascii?Q?VmWJLTACNsuWIED3ya+dMjmI1YlLmfbgCk4pUi0iJR5B9ttMaeCOWMEMDbBZ?=
+ =?us-ascii?Q?QYNXHs+Mf+wTIg51q+wMio6qpr5kWbJQyp0GLc1kE4sIG8LoVxxVcze5wymV?=
+ =?us-ascii?Q?qZLdTkFIG7tm45MzGoS+1EPpmR8Fxayu+/GA5WPUC/ZWtR3z5K2C0m1UQRKS?=
+ =?us-ascii?Q?NWyIGVgOE6HdY9GclDrE252gmOGil2oN6UgEFqzrkH/vfZfO51LiwPZGjiNa?=
+ =?us-ascii?Q?VjHwmaNOGWsj8hXZYVUEQAAsncFj4ijcz7MxKU1B6KuNcgV4mv3irFOTQTOv?=
+ =?us-ascii?Q?Q9vfwmgbyN9jeWg63v30ZDVnqlhUKF6jWdlEieaiJcJBsFR6XjX98rWh4yya?=
+ =?us-ascii?Q?K+4/hQECiAuW08ZyR/fmtJx+ZkZIQiV/U1ppO5PYP9TO0uzdH6NqoPAJ282d?=
+ =?us-ascii?Q?7CMtX77xKUmE/VL8JRJ+nrPY9UDuAwiYN55bfqlhYLIf54TJJeKPzjNSsW1y?=
+ =?us-ascii?Q?5TsWWm9OwDQw5XzRcd7DxPN0Yr6livt1kdwRsTK6OYbxgrk4S998BkCM/7uH?=
+ =?us-ascii?Q?v8Soq7qry9hBqAr1W3WTq5Xv+oOnviSpSzavMDEjefdljfCgIuk0E3+z8aMZ?=
+ =?us-ascii?Q?ksflqBxa4T9pyb3UVClR+jJNuiIjRxKluZAjFx20CfoH01VBbQEw1d1OPCGX?=
+ =?us-ascii?Q?80bZmV38kC5Glhp90Z8uzMk3YFwUFCX0t3a0CkojdQTrZhGc0PgdAywYljET?=
+ =?us-ascii?Q?ac1CrfG1g2UXL/O8xLn38wOZ/UjnreYUDn/LYF1LmaNTd7lW0Z9q4JQDs/KH?=
+ =?us-ascii?Q?n6CiZS4FRZtYxk/M4nfzJiSNlnd6AJdYYctCyFp5ZO6dt9sIM487i/QJxFP3?=
+ =?us-ascii?Q?VSqPUWzqxti7iSnrwwiV2ce2SXOz/zCIkqOMaOZtKxUqn2c4qpTujaxUdqCT?=
+ =?us-ascii?Q?eGsuutSuVRl02h5Q/FrD0fJa4JUhAV8xBGUBdT6oC5BtKIZuceNz9P4gFuwz?=
+ =?us-ascii?Q?+FBYPx9oChaX0t4DWJ1khpDH8e6rGUO57zc0UXrgs/DgnSk9JSdhI+ckij3o?=
+ =?us-ascii?Q?frM0yX4pqf4gQNo8S2X/kZx7Nuu+7ioxYiGEEo2YdCVvrFNtIzR5tUHS9R5p?=
+ =?us-ascii?Q?PoxkZfCszvN2FYOOGRp1slb4pUTFYDF7BjaXxFgXzLqOU6TsHmMcR88NW1Qf?=
+ =?us-ascii?Q?QyLi12IiUuwICYnFYSqhIyD3zmVU0pHuvu+VJPjOlHpdEs60+tTzChQII+nX?=
+ =?us-ascii?Q?lbLQ0GBe7VgoWoAipb8NATa8grlUEwkdvWRs9zEVc4aHlI4CI45Qii8TBBXo?=
+ =?us-ascii?Q?aci9rbh24HSzrNodKkAvz4hT9DPHy2YK6YzC6YJ/kcllER6TZy49Py0gVg?=
+ =?us-ascii?Q?=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(82310400026)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: axis.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2025 09:33:35.2704
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e7b3f4d-4796-4f46-295a-08ddd403268b
+X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=78703d3c-b907-432f-b066-88f7af9ca3af;Ip=[195.60.68.100];Helo=[mail.axis.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM3PEPF0000A790.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PRAPR02MB7836
 
-The devm_get_clk_from_child() function uses device-managed resources
-that are automatically cleaned up. The clk_put() call after
-devm_get_clk_from_child() is redundant and
-may lead to double-free issues.
+When `devm_add_action_or_reset()` fails, it is due to a failed memory
+allocation and will thus return `-ENOMEM`. `dev_err_probe()` doesn't do
+anything when error is `-ENOMEM`. Therefore, remove the useless call to
+`dev_err_probe()` when `devm_add_action_or_reset()` fails, and just
+return the value instead.
 
-Fixes: a54275f4ab20 ("bus: ti-sysc: Add quirk handling for external optional functional clock")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
 ---
- drivers/bus/ti-sysc.c | 1 -
- 1 file changed, 1 deletion(-)
+Changes in v2:
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 9f624e5da991..5441b0739faa 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -362,7 +362,6 @@ static int sysc_add_named_clock_from_child(struct sysc *ddata,
- 	cl->clk = clock;
- 	clkdev_add(cl);
+* Split the patch to one seperate patch for each sub-system.
+
+Link to v1: https://lore.kernel.org/all/pnd7c0s6ji2.fsf@axis.com/
+
+ drivers/counter/ti-ecap-capture.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-capture.c
+index 3faaf7f60539..114f2d33f193 100644
+--- a/drivers/counter/ti-ecap-capture.c
++++ b/drivers/counter/ti-ecap-capture.c
+@@ -528,7 +528,7 @@ static int ecap_cnt_probe(struct platform_device *pdev)
+ 	/* Register a cleanup callback to care for disabling PM */
+ 	ret = devm_add_action_or_reset(dev, ecap_cnt_pm_disable, dev);
+ 	if (ret)
+-		return dev_err_probe(dev, ret, "failed to add pm disable action\n");
++		return ret;
  
--	clk_put(clock);
- 
- 	return 0;
- }
+ 	ret = devm_counter_add(dev, counter_dev);
+ 	if (ret)
+
+base-commit: 260f6f4fda93c8485c8037865c941b42b9cba5d2
 -- 
-2.35.1
+2.39.5
 
 
