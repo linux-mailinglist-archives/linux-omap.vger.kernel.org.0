@@ -1,176 +1,126 @@
-Return-Path: <linux-omap+bounces-4168-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4169-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34BF4B1B11E
-	for <lists+linux-omap@lfdr.de>; Tue,  5 Aug 2025 11:33:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8D88B1B9DA
+	for <lists+linux-omap@lfdr.de>; Tue,  5 Aug 2025 20:10:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C91E7A2CF4
-	for <lists+linux-omap@lfdr.de>; Tue,  5 Aug 2025 09:32:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9501B189A992
+	for <lists+linux-omap@lfdr.de>; Tue,  5 Aug 2025 18:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D2F264A76;
-	Tue,  5 Aug 2025 09:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915252957BA;
+	Tue,  5 Aug 2025 18:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="HeDAickp"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="VQX76VEs"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010030.outbound.protection.outlook.com [52.101.69.30])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E721225A348;
-	Tue,  5 Aug 2025 09:33:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754386421; cv=fail; b=iB0YSQPdfKfT+Pm815/tSynloNLRFw84+AMlF+gZHgTrDVSE65xKGv5pa4soRwEgOt5Z6sqwd5h0X+mg0vvYyn6dFxZhB3ab6iWkEUX4bMsmqAOtEicPZjbc2Sp3acTmDbU89prTOMFp9ndNtEN+Djdoj8MZFmpxwWEt0vjMido=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754386421; c=relaxed/simple;
-	bh=rePD9tTxnpc4ipiP4AGHmKjN6pd+Uf9yptM4rtiIieQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CI2T8vJTdQisgo7jGfiZ2GosVGijFtJeLtwvZ6NHWtIbKk/qbRblaYbM+/XZJYLXDJawTNZfaSMHGejABccUP73iH7HjYabGTahQKYmmI/kgnwXEt9trb9OSnA60YZeF40OWxGHv5hd1gDP6ADCFYbtTdEHYt35/u9xy6F9vbww=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com; spf=pass smtp.mailfrom=axis.com; dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b=HeDAickp; arc=fail smtp.client-ip=52.101.69.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axis.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mzuyAGOYcKrwk2hXj5XHixRtmoYYE3KbLi0ndVWwc1lhcBclrdlOLqb1eBeqqNpKh9lYOdCiM0C4oKHTV1LUB1VvCfDPmsN7TjTxHj+JlrXaDY0zcay91MK7h2DPrhzNAVe1SF1bPI9G2pnKfIzraJwS1X4nFlJBeWVi/aws4wZMzCgcCfww+i28kcuAFSBXdAf6WRC/yBdRcUvEf9tvM0SrurADlml6J1pimNxD2XRppH5N+NK2ztI45S+d/yRlyKT3ycjuGjQoHGa5qqaLVXEvwhTRNQSQZsaTkOiapqIF7kiy1J1qi/B72mUSjjtMwxgaKVDTg8Oot6s38L5vsA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4Rlr+H5lHjrKv0c5NsOfGAyXZnJ5tX0M3NVHk7I5ah4=;
- b=xhnkPn6Lf4gRfl8u4NWwcsnQnKP31jdYnDJjxTp/x68Q1XHB1u/nhu4TRlX7DJ48qSX7comflZoeUA5jjjsX5ubw5IRkiiyRPyZsyNgBRsv08iiLh3lFrOMg9ywIjW/8QpxJVuM5ANJzYFRIjLq9PcfSAMD3/Uay1uf0JQAPgGaWvcxnzKnY1GnIuu8BeGXHVBPSu6ftw/cMQ0F07XWuHLiNCDhjUL4BteXLRzGTTDnkzbPgQj/cTLopBLRElR3RUJIqop92VcVifNrpctQiVKkeSreLir64nkJZpJL4QuyFmfBqeYsLJ9Zabs4VgrvMKdrHAAyO2pZ0+NBZj0LWlA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 195.60.68.100) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=axis.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=axis.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4Rlr+H5lHjrKv0c5NsOfGAyXZnJ5tX0M3NVHk7I5ah4=;
- b=HeDAickpq3QlsxcHzzt+4CqsnFsszZ3luAA1NC/yiKn0tK2yKLckDUpKlvR3I4IkR7gNZV6/FKeXXhyR+qhSEW+ie/vzm8PkjWzIWinbgsvC16Xgo1KuYNcd3gAvNDiO26GPF5BERxXeFpkvcPDP4NV5n7gTfMuiPMrC3wax5/8=
-Received: from CWLP123CA0013.GBRP123.PROD.OUTLOOK.COM (2603:10a6:401:56::25)
- by PRAPR02MB7836.eurprd02.prod.outlook.com (2603:10a6:102:27a::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.20; Tue, 5 Aug
- 2025 09:33:35 +0000
-Received: from AM3PEPF0000A790.eurprd04.prod.outlook.com
- (2603:10a6:401:56:cafe::83) by CWLP123CA0013.outlook.office365.com
- (2603:10a6:401:56::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8989.21 via Frontend Transport; Tue,
- 5 Aug 2025 09:33:35 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 195.60.68.100)
- smtp.mailfrom=axis.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=axis.com;
-Received-SPF: Pass (protection.outlook.com: domain of axis.com designates
- 195.60.68.100 as permitted sender) receiver=protection.outlook.com;
- client-ip=195.60.68.100; helo=mail.axis.com; pr=C
-Received: from mail.axis.com (195.60.68.100) by
- AM3PEPF0000A790.mail.protection.outlook.com (10.167.16.119) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9009.8 via Frontend Transport; Tue, 5 Aug 2025 09:33:35 +0000
-Received: from pc52311-2249 (10.4.0.13) by se-mail01w.axis.com (10.20.40.7)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Tue, 5 Aug
- 2025 11:33:32 +0200
-From: Waqar Hameed <waqar.hameed@axis.com>
-To: Vignesh Raghavendra <vigneshr@ti.com>, Julien Panis <jpanis@baylibre.com>,
-	William Breathitt Gray <wbg@kernel.org>
-CC: <kernel@axis.com>, <linux-iio@vger.kernel.org>,
-	<linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2] counter: ti-ecap-capture: Remove error print for
- devm_add_action_or_reset()
-User-Agent: a.out
-Date: Tue, 5 Aug 2025 11:33:32 +0200
-Message-ID: <pndms8em7tf.a.out@axis.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B67B1D416C;
+	Tue,  5 Aug 2025 18:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754417434; cv=none; b=Cf48356qKKpOSqbgDSHZ1D9C1pdd9sxVg5gRa8iucQak6VecJcyGyUMKZiAflzeEZlLOa/1ukLlNT9Eq5+dytjMbbaWDn5OSCenGktcXteTMcHUU61QdwRBjFX5K2wSQD1IzwVaQOGu+kTkPgUh1xGXMXrW48Pss1d/g799/HNc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754417434; c=relaxed/simple;
+	bh=sa/3JAiyq8ZL8E8FmlxXoRlvOIA5cIslWUue21dg6sM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ls/OMGnIdwDt5pwmelmQFzh9+gs3fvLkv7D0GxVcnHl2f12YHbISHmMbuEHPgaRxI5htRMfbZTLxjTyjKVRyHanX+AznSa2hp40A8kj7CcO1HQBeZFu2RZS0awYSJzcMOGl/tS69d/75ce9OwbMRj+LL8ygRmPa6jFtHoJM+XpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=VQX76VEs; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 575IACYW339823;
+	Tue, 5 Aug 2025 13:10:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1754417412;
+	bh=MOcH7Tn7FRepfCA9WMf5Cox4+wmbp3ABsQWFgUyfQTA=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=VQX76VEsNx6p7wJTJxDsZRM1lUHY+MgM8T7ce01KveW078EDY89Vd8CXaAr1jlFDN
+	 cBkC2e+cDCoQiRxmNh/nhx6OoUDIde+mBh9oqh/pngsPsS/Lmb0tQUzWRdCNsUyvaq
+	 h7gPomLg45OIsbmOJu55s4ApRG9Ra+iOv02zVKms=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 575IAB2i3762105
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Tue, 5 Aug 2025 13:10:11 -0500
+Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Tue, 5
+ Aug 2025 13:10:11 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Tue, 5 Aug 2025 13:10:11 -0500
+Received: from [10.249.42.149] ([10.249.42.149])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 575IAB5U2554228;
+	Tue, 5 Aug 2025 13:10:11 -0500
+Message-ID: <e0670467-65cb-441b-b14d-9775609ced8b@ti.com>
+Date: Tue, 5 Aug 2025 13:10:11 -0500
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: se-mail01w.axis.com (10.20.40.7) To se-mail01w.axis.com
- (10.20.40.7)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM3PEPF0000A790:EE_|PRAPR02MB7836:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1e7b3f4d-4796-4f46-295a-08ddd403268b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700013|82310400026|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?t3SYMdqnNGpkO6LF45lRT9Rj9Wq/PnzwiQV5wueXYb6lrlasMoV6P2bIwDtv?=
- =?us-ascii?Q?hDJu+7x/7fFjZBYV8r4L0J5nJ5pRkZXNbLMna5kQrE1+FAUL/OVjPjE2zgAe?=
- =?us-ascii?Q?EZbTJ7LP55miOE9Wq7M2xhw/DrlAB/XRFC0kRM3Dfuu9TGP87WVjQf8syy32?=
- =?us-ascii?Q?ToE6wDpvAe9oQTbzueRmOjFi9EAdtONuhkMwnUD7XRPfsENXRrjX3uzwQNVR?=
- =?us-ascii?Q?VmWJLTACNsuWIED3ya+dMjmI1YlLmfbgCk4pUi0iJR5B9ttMaeCOWMEMDbBZ?=
- =?us-ascii?Q?QYNXHs+Mf+wTIg51q+wMio6qpr5kWbJQyp0GLc1kE4sIG8LoVxxVcze5wymV?=
- =?us-ascii?Q?qZLdTkFIG7tm45MzGoS+1EPpmR8Fxayu+/GA5WPUC/ZWtR3z5K2C0m1UQRKS?=
- =?us-ascii?Q?NWyIGVgOE6HdY9GclDrE252gmOGil2oN6UgEFqzrkH/vfZfO51LiwPZGjiNa?=
- =?us-ascii?Q?VjHwmaNOGWsj8hXZYVUEQAAsncFj4ijcz7MxKU1B6KuNcgV4mv3irFOTQTOv?=
- =?us-ascii?Q?Q9vfwmgbyN9jeWg63v30ZDVnqlhUKF6jWdlEieaiJcJBsFR6XjX98rWh4yya?=
- =?us-ascii?Q?K+4/hQECiAuW08ZyR/fmtJx+ZkZIQiV/U1ppO5PYP9TO0uzdH6NqoPAJ282d?=
- =?us-ascii?Q?7CMtX77xKUmE/VL8JRJ+nrPY9UDuAwiYN55bfqlhYLIf54TJJeKPzjNSsW1y?=
- =?us-ascii?Q?5TsWWm9OwDQw5XzRcd7DxPN0Yr6livt1kdwRsTK6OYbxgrk4S998BkCM/7uH?=
- =?us-ascii?Q?v8Soq7qry9hBqAr1W3WTq5Xv+oOnviSpSzavMDEjefdljfCgIuk0E3+z8aMZ?=
- =?us-ascii?Q?ksflqBxa4T9pyb3UVClR+jJNuiIjRxKluZAjFx20CfoH01VBbQEw1d1OPCGX?=
- =?us-ascii?Q?80bZmV38kC5Glhp90Z8uzMk3YFwUFCX0t3a0CkojdQTrZhGc0PgdAywYljET?=
- =?us-ascii?Q?ac1CrfG1g2UXL/O8xLn38wOZ/UjnreYUDn/LYF1LmaNTd7lW0Z9q4JQDs/KH?=
- =?us-ascii?Q?n6CiZS4FRZtYxk/M4nfzJiSNlnd6AJdYYctCyFp5ZO6dt9sIM487i/QJxFP3?=
- =?us-ascii?Q?VSqPUWzqxti7iSnrwwiV2ce2SXOz/zCIkqOMaOZtKxUqn2c4qpTujaxUdqCT?=
- =?us-ascii?Q?eGsuutSuVRl02h5Q/FrD0fJa4JUhAV8xBGUBdT6oC5BtKIZuceNz9P4gFuwz?=
- =?us-ascii?Q?+FBYPx9oChaX0t4DWJ1khpDH8e6rGUO57zc0UXrgs/DgnSk9JSdhI+ckij3o?=
- =?us-ascii?Q?frM0yX4pqf4gQNo8S2X/kZx7Nuu+7ioxYiGEEo2YdCVvrFNtIzR5tUHS9R5p?=
- =?us-ascii?Q?PoxkZfCszvN2FYOOGRp1slb4pUTFYDF7BjaXxFgXzLqOU6TsHmMcR88NW1Qf?=
- =?us-ascii?Q?QyLi12IiUuwICYnFYSqhIyD3zmVU0pHuvu+VJPjOlHpdEs60+tTzChQII+nX?=
- =?us-ascii?Q?lbLQ0GBe7VgoWoAipb8NATa8grlUEwkdvWRs9zEVc4aHlI4CI45Qii8TBBXo?=
- =?us-ascii?Q?aci9rbh24HSzrNodKkAvz4hT9DPHy2YK6YzC6YJ/kcllER6TZy49Py0gVg?=
- =?us-ascii?Q?=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(82310400026)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: axis.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2025 09:33:35.2704
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e7b3f4d-4796-4f46-295a-08ddd403268b
-X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=78703d3c-b907-432f-b066-88f7af9ca3af;Ip=[195.60.68.100];Helo=[mail.axis.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AM3PEPF0000A790.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PRAPR02MB7836
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] counter: ti-ecap-capture: Remove error print for
+ devm_add_action_or_reset()
+To: Waqar Hameed <waqar.hameed@axis.com>,
+        Vignesh Raghavendra
+	<vigneshr@ti.com>,
+        Julien Panis <jpanis@baylibre.com>,
+        William Breathitt Gray
+	<wbg@kernel.org>
+CC: <kernel@axis.com>, <linux-iio@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <pndms8em7tf.a.out@axis.com>
+Content-Language: en-US
+From: Andrew Davis <afd@ti.com>
+In-Reply-To: <pndms8em7tf.a.out@axis.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-When `devm_add_action_or_reset()` fails, it is due to a failed memory
-allocation and will thus return `-ENOMEM`. `dev_err_probe()` doesn't do
-anything when error is `-ENOMEM`. Therefore, remove the useless call to
-`dev_err_probe()` when `devm_add_action_or_reset()` fails, and just
-return the value instead.
+On 8/5/25 4:33 AM, Waqar Hameed wrote:
+> When `devm_add_action_or_reset()` fails, it is due to a failed memory
+> allocation and will thus return `-ENOMEM`. `dev_err_probe()` doesn't do
+> anything when error is `-ENOMEM`. Therefore, remove the useless call to
+> `dev_err_probe()` when `devm_add_action_or_reset()` fails, and just
+> return the value instead.
+> 
+> Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
+> ---
+> Changes in v2:
+> 
+> * Split the patch to one seperate patch for each sub-system.
+> 
+> Link to v1: https://lore.kernel.org/all/pnd7c0s6ji2.fsf@axis.com/
+> 
+>   drivers/counter/ti-ecap-capture.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-capture.c
+> index 3faaf7f60539..114f2d33f193 100644
+> --- a/drivers/counter/ti-ecap-capture.c
+> +++ b/drivers/counter/ti-ecap-capture.c
+> @@ -528,7 +528,7 @@ static int ecap_cnt_probe(struct platform_device *pdev)
+>   	/* Register a cleanup callback to care for disabling PM */
+>   	ret = devm_add_action_or_reset(dev, ecap_cnt_pm_disable, dev);
 
-Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
----
-Changes in v2:
+Now that we have devm_pm_runtime_enable(), you can just turn the pm_enable()
+call 3 lines above this into that, and not need this manual devm action at all.
 
-* Split the patch to one seperate patch for each sub-system.
+Andrew
 
-Link to v1: https://lore.kernel.org/all/pnd7c0s6ji2.fsf@axis.com/
-
- drivers/counter/ti-ecap-capture.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-capture.c
-index 3faaf7f60539..114f2d33f193 100644
---- a/drivers/counter/ti-ecap-capture.c
-+++ b/drivers/counter/ti-ecap-capture.c
-@@ -528,7 +528,7 @@ static int ecap_cnt_probe(struct platform_device *pdev)
- 	/* Register a cleanup callback to care for disabling PM */
- 	ret = devm_add_action_or_reset(dev, ecap_cnt_pm_disable, dev);
- 	if (ret)
--		return dev_err_probe(dev, ret, "failed to add pm disable action\n");
-+		return ret;
- 
- 	ret = devm_counter_add(dev, counter_dev);
- 	if (ret)
-
-base-commit: 260f6f4fda93c8485c8037865c941b42b9cba5d2
--- 
-2.39.5
+>   	if (ret)
+> -		return dev_err_probe(dev, ret, "failed to add pm disable action\n");
+> +		return ret;
+>   
+>   	ret = devm_counter_add(dev, counter_dev);
+>   	if (ret)
+> 
+> base-commit: 260f6f4fda93c8485c8037865c941b42b9cba5d2
 
 
