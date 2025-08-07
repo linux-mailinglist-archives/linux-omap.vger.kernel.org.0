@@ -1,61 +1,60 @@
-Return-Path: <linux-omap+bounces-4170-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4171-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 991D4B1C78D
-	for <lists+linux-omap@lfdr.de>; Wed,  6 Aug 2025 16:20:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E23AB1D8DC
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Aug 2025 15:21:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70D0618988D0
-	for <lists+linux-omap@lfdr.de>; Wed,  6 Aug 2025 14:20:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B201171AE1
+	for <lists+linux-omap@lfdr.de>; Thu,  7 Aug 2025 13:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2228C28D83C;
-	Wed,  6 Aug 2025 14:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0DBB25A2A5;
+	Thu,  7 Aug 2025 13:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="nnbpHnao"
+	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="XQk1aKQh"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010013.outbound.protection.outlook.com [52.101.69.13])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013005.outbound.protection.outlook.com [52.101.72.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F8E23CB;
-	Wed,  6 Aug 2025 14:19:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA324A0C;
+	Thu,  7 Aug 2025 13:21:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.5
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754489982; cv=fail; b=TvnEc4/jZA86PE2aGp/vN/OFiHSa3GDH1i9YxKzsRNqfL4poD2FsQMQhM2SfZt4S3wBxHq3r1TIodnz4qcgM8eFkuU0K4fgaodp9owYs5+nhHJaNCLNvi1IbkQw7ykEI33GOk1yb7vievMvV1bc3jEKiDj6TmhQ8B0K00XgFy6Q=
+	t=1754572874; cv=fail; b=aoAHK30HI9C0RIu5qUNPq6ZFxl3uvkj4XIdUb8wdwTnGUnqwYDUmP2t6+eP1uatEmIiMjrWZFbgKOxcc0DPBBvM2t/miYHAG8QN/FhbhC7OzeKETqZmkfDdXi15ROI4e6Rhaj8t2+MxDzUZd0E7KFkVvyNA+aATNE5K30WNFi74=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754489982; c=relaxed/simple;
-	bh=m8NQJd/UBebd2gHXrFaKUZe1SAAo+9IzfaUrNb9JcPE=;
-	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=NHdkxiWDElP8Am9woaLQeRTIz45TvGF9olC2bow2HHjrNA4cvWyFpw0NDXibNVP9Bq5rhA+7jJpS5ibHobN+raIZ1HJdYIaifniNv61He+OsTSq6qDC6q50r4VCNEiu49Iuibu4NYKAdw4CMRTfVvcXUEDKVSh+TiPHXcCbNa5c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com; spf=pass smtp.mailfrom=axis.com; dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b=nnbpHnao; arc=fail smtp.client-ip=52.101.69.13
+	s=arc-20240116; t=1754572874; c=relaxed/simple;
+	bh=jY3onvjXhlOQnypq3SjqmmiVIKeCC4R3gmmxTzDfGMs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=e52ZSIa/mTSdP0DHkeS72LpllwrxOdyS/g/hD8hFUhcfZnCv3o+W1NURw7mR/ciAOGE3rax0UAjPit8yufggVSIO5d3sZ8j1CHmL69J/HMYPVsZC5DqYDoz6zAHp4CI7flAXOIlqKOWmKUMEEOoa8CilES1houAoLHJY6JeMnrw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com; spf=pass smtp.mailfrom=axis.com; dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b=XQk1aKQh; arc=fail smtp.client-ip=52.101.72.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axis.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZPzdCQ9nhKGLTMVhXncCBcIiIsjCOVLVg6mtbk/em0/IR22/73LQ6FXyPr+f0eC060xrdtoueF8k5bXa8DZjukxod33A8k6Tar376KgFidrte1jQSQQwIdodp6gNtFFpp7t6KrXnlXzUC7WA9LROj8SrN03kXV7E0Hd8+d83W6HO/OGzKxQlYscPpXCu3at0VI6GOOrDzrfG9DMzL3HKxYlhUs8ba0dxxSC5sGNJ7fZ/x+w8ZKE0aIo8yt9qfTCcHF07d3ck76jdTGGDjDXzf5EMfy/nrc1cT6Dq9idcWbCRaQWae+k5bOmZbMvmLyk2vt4NkHWtBJWD2D2fx/Lx1g==
+ b=RQqetpgNQczI4b0NA4KFTiOD8/TSRff6eEqLJMwRqP7zT1HvE0vi+b2AFTaTLl5y4RkemduEozLrG/EitpZ9ErYzK4JTenTF/MPgYrU/DrfnaupYyF46HlXg1wP0cXuhr4N3v/WiQPEAdN7jV6TcHI9NjGdw1SQtUH2niaVEZ8wTHm9VupeszNV5RpkwM9sRnEhPvj2ZTmnLeV34S++ycPAFSVERjBK1I5WGc3YPHufhc030FZ3gvsYeolmZwB2cjSpmAti2w0k+Es3aG75YbbIZoaQX//gGLIlO8TsUiX2osPVu8hoLpWtbvtpKuRrC6inEicnFIqW6HtRkPwR6aQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=97EQIsBX2ywPhopjt/ixeEJVRHsWxgssSO3AStKwdes=;
- b=X6J/lLMufTI/OsV4vTABu9+7Koc1XHgskwoT57FYXXCevB+u02BhUFIlRwzQu5/GEcGGnOqtUzCku53olKQxA5ozPckAegy4WsQI57ydH0LUjvNUdbOC9vlgJmFPI+8zkdloAQLPBrQkdlofNZGHccabIABoHUoeJnPGuytSOZ7/z54wNc2OlxJWv2omEogov3ZqHR9BbWZaLtS/5EfyljS5qi91jpiHP12YGgKs/kRA9UaCe3cqQKeVxoV7rAoAK2lC0k0O+CxGHya0uT/+Yh7FhFPKNW3mZhYMdUBmpMLwofyAIRzwlZVBMDGeT5d5auzcRB9uhAWcDXgThehxQg==
+ bh=n4B+DuRdNoT6o8X0sV8dOh00GPR3turbXYwOseGQPak=;
+ b=B1GT66J57S7Iq61eMDFktWudiwX94cBq6YRbirWhZ+9IKpP67ptRjbXv689HhGiSqGGD1vRw0QomvL8AbMIr3iIY0l+3br0r5mVl/w5JUhrRJTP90NQq1rH0UEqsELsiFx05jbQHCjolP3o8o3R97Wtwjiw0P9l0AVwKj8OYiBzTdZNxk6ky6mXnxbKZxispcZ8tEEWNR7XqMbbP5onhVV/cZIvN+CkdX9zSVBpkOz8v+X7nUbPcIrIz7Vnwm9yqaa0R/H5FTPIOGQxHQN8Vx+P9vA51MXSX1P0FoLojry1FIV4TwDtGxZPm8f6/PywY+pAoBwHJa1+ow57B0nN65w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  195.60.68.100) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=axis.com;
  dmarc=pass (p=none sp=none pct=100) action=none header.from=axis.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=97EQIsBX2ywPhopjt/ixeEJVRHsWxgssSO3AStKwdes=;
- b=nnbpHnaotPwGAOv8kMvPWJRmxYyIzy1RUp2Io4Gns+o+eAEwItiEwXOeQwXQts9p0jwoySFBUIiNWZ5eGs0Re1Kewcsyaggj5aFNErU65rOUStDul+1ozqgPr7EjnBmTY3jVd8D5sCso13H6OSOAFQY4nJtAecKIRE4Mr52dcBs=
-Received: from DUZPR01CA0060.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:469::18) by DBAPR02MB6182.eurprd02.prod.outlook.com
- (2603:10a6:10:18e::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.13; Wed, 6 Aug
- 2025 14:19:35 +0000
-Received: from DB1PEPF00039230.eurprd03.prod.outlook.com
- (2603:10a6:10:469:cafe::60) by DUZPR01CA0060.outlook.office365.com
- (2603:10a6:10:469::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8989.21 via Frontend Transport; Wed,
- 6 Aug 2025 14:19:35 +0000
+ bh=n4B+DuRdNoT6o8X0sV8dOh00GPR3turbXYwOseGQPak=;
+ b=XQk1aKQhuYn2VnkMZhW2GMT1MFPxFIrbemN0D4IcE/6ZMQ+B0KQMGzeS4PybfZ7PgF/C1NdXCr0rFyjeaCi3w+/uteBPi8OvIDyvXMDLe62DrO3KQ70VLiNz8PQi94T6U36at/qEcbFpye8AcJJFkrVzByhpyB78ePUCkde36eI=
+Received: from DUZPR01CA0342.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4b8::26) by AS8PR02MB9090.eurprd02.prod.outlook.com
+ (2603:10a6:20b:5b8::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.16; Thu, 7 Aug
+ 2025 13:21:09 +0000
+Received: from DB1PEPF000509F0.eurprd03.prod.outlook.com
+ (2603:10a6:10:4b8:cafe::cb) by DUZPR01CA0342.outlook.office365.com
+ (2603:10a6:10:4b8::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9009.16 via Frontend Transport; Thu,
+ 7 Aug 2025 13:21:08 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 195.60.68.100)
  smtp.mailfrom=axis.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=axis.com;
@@ -63,28 +62,22 @@ Received-SPF: Pass (protection.outlook.com: domain of axis.com designates
  195.60.68.100 as permitted sender) receiver=protection.outlook.com;
  client-ip=195.60.68.100; helo=mail.axis.com; pr=C
 Received: from mail.axis.com (195.60.68.100) by
- DB1PEPF00039230.mail.protection.outlook.com (10.167.8.103) with Microsoft
+ DB1PEPF000509F0.mail.protection.outlook.com (10.167.242.74) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9009.8 via Frontend Transport; Wed, 6 Aug 2025 14:19:35 +0000
+ 15.20.9009.8 via Frontend Transport; Thu, 7 Aug 2025 13:21:09 +0000
 Received: from pc52311-2249 (10.4.0.13) by se-mail01w.axis.com (10.20.40.7)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Wed, 6 Aug
- 2025 16:19:32 +0200
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Thu, 7 Aug
+ 2025 15:21:08 +0200
 From: Waqar Hameed <waqar.hameed@axis.com>
-To: Andrew Davis <afd@ti.com>
-CC: Vignesh Raghavendra <vigneshr@ti.com>, Julien Panis <jpanis@baylibre.com>,
-	William Breathitt Gray <wbg@kernel.org>, <kernel@axis.com>,
-	<linux-iio@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] counter: ti-ecap-capture: Remove error print for
- devm_add_action_or_reset()
-In-Reply-To: <e0670467-65cb-441b-b14d-9775609ced8b@ti.com> (Andrew Davis's
-	message of "Tue, 5 Aug 2025 13:10:11 -0500")
-References: <pndms8em7tf.a.out@axis.com>
-	<e0670467-65cb-441b-b14d-9775609ced8b@ti.com>
+To: Vignesh Raghavendra <vigneshr@ti.com>, Julien Panis <jpanis@baylibre.com>,
+	William Breathitt Gray <wbg@kernel.org>, Andrew Davis <afd@ti.com>
+CC: <kernel@axis.com>, <linux-iio@vger.kernel.org>,
+	<linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v3] counter: ti-ecap-capture: Use devm_pm_runtime_enable()
 User-Agent: a.out
-Date: Wed, 6 Aug 2025 16:19:32 +0200
-Message-ID: <pnd7bzgleh7.a.out@axis.com>
+Date: Thu, 7 Aug 2025 15:21:08 +0200
+Message-ID: <pnda54bjmij.a.out@axis.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -96,96 +89,118 @@ X-ClientProxiedBy: se-mail02w.axis.com (10.20.40.8) To se-mail01w.axis.com
  (10.20.40.7)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB1PEPF00039230:EE_|DBAPR02MB6182:EE_
-X-MS-Office365-Filtering-Correlation-Id: 57cdccf5-6746-46f7-72d6-08ddd4f4454c
+X-MS-TrafficTypeDiagnostic: DB1PEPF000509F0:EE_|AS8PR02MB9090:EE_
+X-MS-Office365-Filtering-Correlation-Id: f68ce342-411f-45f7-2505-08ddd5b545bb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|376014|36860700013|13003099007;
+	BCL:0;ARA:13230040|376014|1800799024|82310400026|36860700013;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?AHDAJpV6I1j/9XTP6aByIXws+3oXdU69VNTJOLjXawZJbfFxloIxCLEgJou0?=
- =?us-ascii?Q?haD436zStoTn8UNlK9lA9t8ObRMbmjo4wV+EDnLFGpdZ6KPa3l4HAKKW9lvM?=
- =?us-ascii?Q?P6rX9iAIuV2acUpzvkK7QuowDAjyw835BEXoeBmrShLcYIrwhAcw+krJCkKR?=
- =?us-ascii?Q?PUBlgoSaCdAD4UHGBwVfsKntDzSbvteuZX38tZOvHv0h6PCPeloav2jZmlqQ?=
- =?us-ascii?Q?XnbwzYW2VN2QREPWM/DClLFkUZNg7TB2a9gETr/Vxk9k4dp9oHQ8euOKxPRc?=
- =?us-ascii?Q?QoPn64u6x6QMvUcZsZAifIL2aLJDjBT1T0Fn74DpdrjNoylYBkxdQJJ6/zaU?=
- =?us-ascii?Q?rTrHy9gQUuLC6TwpoTTL4pjvxn5NeaAtDw10fLkHLpEH5a1q49d4QtHw3mwy?=
- =?us-ascii?Q?ukKMB988nMFhADbqI6vNAmtJ6qvn6sXAMTpXx4c8HfJI9sj157ErofCrqXYa?=
- =?us-ascii?Q?2nk22d7z4a9zcET75K3KvBUtAZPS3PTXSa1bUzfAykJXa0OStGprNv9fyQVQ?=
- =?us-ascii?Q?SQaxdCjgSB5cqfgxjxNogNPEViNBU+2X9tJMY4UBnWoLcXC5rl0bUtWckVu2?=
- =?us-ascii?Q?UOAKGKcbQQcpVcsVubem4HGMt5QxCx0xVR74Ujk9j71wW18d8CXNvNPsMAFo?=
- =?us-ascii?Q?ARsSisRQPlPp3pZbYmcgzic5mjjf8AvHK7pso9dgTBnT1hH3dLXieyJnIWiw?=
- =?us-ascii?Q?9EPMG5NzVx6KE5Zg74ImQGE7+7FilS8QatN54MSZtLCrTTPZcb8lZKaKRLzi?=
- =?us-ascii?Q?ii1DSYNg/pRCCDuw7Mr+7+Xm8Cy6EjedB1krd7TjPfrZ7IEOIJ0GBCn1TOl3?=
- =?us-ascii?Q?PHIGKMynQqDO/jfwmvCveX3nqEHURs4tENmCk7QRCvMRR43Tjs7a8C5/vhJg?=
- =?us-ascii?Q?yz7nDteH/Wq2terPV9iT2WCxPt1uF3Poaevz9G6tWNkex8SNAZVSWv8eHyP4?=
- =?us-ascii?Q?Y/grN3fwZyyfaCaTBpKk1ztvGfaZBABBQMrEZOOgtrg/LgVQEzgVOqHnCtM8?=
- =?us-ascii?Q?7jVXGVT7o+nqN/wGm8hqqkExax8gb35yiWAiFVNWImuJOxf65+GysOPGNduA?=
- =?us-ascii?Q?qmMRicdnWaj0DnTBv0iDkUSW8kejO8wxhBm5V1IL2Gn2GBPUC9WZswqoKZk7?=
- =?us-ascii?Q?3ZqawYrSufby923vq3/PzVQ1Io4yRVmulPkpVmKmceM6A+gz5hvvVm6aZvQt?=
- =?us-ascii?Q?JHwCz54CoSc6Ifv0REGlsYY+5KMVvMfqYWkmhdu3Xe8Lj+PAFJikTlcHwpIV?=
- =?us-ascii?Q?GHK+G91dphfgZoYmla+sj2744zdRNdZMiJuyvYRlhEKf0hzXQCdyUP9DWYYs?=
- =?us-ascii?Q?PEb8MJtwTNgzQNzqm5owimna96aF+RqIM+3eS81NOdoZzqr7NxW44Huk9/n1?=
- =?us-ascii?Q?8aJGo9HKc8ZJuVDE6+UtNcNi+WpiR0u6ChViFdqP+rYsvtdvzXVdGSBL78CR?=
- =?us-ascii?Q?28kIV2KmxxX11ugJ5UdRoUbltyaZ04T9tCLdxxfTRcxtuPUwMme79mA09xX8?=
- =?us-ascii?Q?dyz94SRzX1UiynFCb6raj1xJ8mg/G4tfo3CQuSKWW43wl7lITqK/R+x4Cg?=
+	=?us-ascii?Q?PrsObfwO0QGbnWoK2GSU+2+CddNH/iT76vVxHfHyrutLGFD2P7SSP5g8t73t?=
+ =?us-ascii?Q?eeWehHgYabypzp+2DfXM5+OWHOCeYn9KBe/K35XyVD1YqhGnbnfeZS5KiOq5?=
+ =?us-ascii?Q?yHuV1eYbsip2CCiSZZfzG6dvmbuZiQ169PvCFN9Cb/exfKsx1WbuT4gJXuxu?=
+ =?us-ascii?Q?LpeeFc/bgOkhJdp4O7Q3jpdxOFQZoVVxG1zCioytGmBKB9sF70Mx7nXoPVx1?=
+ =?us-ascii?Q?Y5Pmuv0r561MFf0PI6PSJdwi1dVRyq7x0EUe5X9O8zPxjJHceYz5T4dh7LMB?=
+ =?us-ascii?Q?MUE7kYmGq8PD7sfJFtJd2qHOzC2+UFIk6HkCUdddy1uYMPp2GcnnJwymHu0q?=
+ =?us-ascii?Q?pXL/MUS1nl9RITWRlr2Aoi8ZEzVL7CrBgFDovu2cawhRVgNdV4zXWRRDhAdM?=
+ =?us-ascii?Q?hf2vG3k+g+9xx1uZb4poANnklJ7Y4SO6+k2MMxOJLFCGCoLPxW3V7NLqy/5T?=
+ =?us-ascii?Q?T9UdeCGENpyjri+oy30+RGsdh/cAzuQGX2zG9hlnKJ2W6k2B9ZCzEWIDxg3X?=
+ =?us-ascii?Q?0HF+RdyxCog53mmeg2b51DBQramuYVIlSCd6Uupr3L8kuOwxilRWn0462Gw1?=
+ =?us-ascii?Q?IkIXKPutTOZ8y9AKzAUyk36+lqO3fk5IUHvSyXjh1Cc8kg+4byuNkFrpt0Xm?=
+ =?us-ascii?Q?Nq++i/EpQ0gSgJhmLg4s8Y1Ybqb2ANbmalbcatVe9vV93UClCGHVe9fNuUPL?=
+ =?us-ascii?Q?nSsIqynpektP4HDCNhYLoQfBv2YB7rqeH7xrNgM4FAKuVVGJbIjJ4mNcUfFP?=
+ =?us-ascii?Q?bzUlFy6nfNbz7DL9ZNS5JFcDaOHxYpwPHvVqrwNc8hSOGvnKINmHQnuA1WGg?=
+ =?us-ascii?Q?HDmVPMcDS6hGycCvADXXaHCwDt3SI0unFcLq08YR+WlTNCzb3U0kjy4PPbXy?=
+ =?us-ascii?Q?xWB6hzFcirLFNZDkMVIbv6PCGw3wz105Piqs1DbaYaFlgjEz2/y7DsQZg+Gs?=
+ =?us-ascii?Q?VXRLkJP2YUd8tGo8OSMMyWIw9URl2bjqr8gtqBn0t2mwnOmrRr8lPNFUwesc?=
+ =?us-ascii?Q?1DXg2bts+m2tAiGH2AJ97jgT7B/gSoxGfE3541mZ2ZHb3pnHTJeJ4nQLpxUo?=
+ =?us-ascii?Q?kgrKBbihr7fKSCUVBTsAneD183nH5q/15NArY/LMXT3rEQA/gqPcWKm9bxdP?=
+ =?us-ascii?Q?ljzMix3p5LIMB7CtVm4PCR2dgPmYS+y/G0cqXovsrJF1qxn9dgOypSH5DQlR?=
+ =?us-ascii?Q?uHQRNXYJI1QHc9oFiU8Hly/1oJJxXlyQWmLbp8ZwX8GdTroi1HY/c3hAKTUo?=
+ =?us-ascii?Q?1T9a+y+0FQCYQcDUUgNWueQ0YlMbvf61M7Ti2WyTVyW9jMfA22JaVfIQFPX0?=
+ =?us-ascii?Q?+S/RFEkXYoZL4vVUdmw9BAbyPgONhtvXJ6xd/iE5DPHiabLTaud7xc6eF+V6?=
+ =?us-ascii?Q?5H7C2+NEt5/sIonZNNBYbRAVrgbV/48v0QCLFyNdDX9Sj1QrSeLFvr0UgCLJ?=
+ =?us-ascii?Q?MSQGQnoAgZfsR7AOmLcOQG4MoNhtvmQrANkJWXwRoESL7ijPnBHMCIp5NLss?=
+ =?us-ascii?Q?lgviwtHC01UTYqnx3NJIyi5B/FCmXB5NY0gD8t+RsuG2pv5AAUzzmsJO3A?=
  =?us-ascii?Q?=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(36860700013)(13003099007);DIR:OUT;SFP:1101;
+	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(82310400026)(36860700013);DIR:OUT;SFP:1101;
 X-OriginatorOrg: axis.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2025 14:19:35.5686
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2025 13:21:09.1643
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 57cdccf5-6746-46f7-72d6-08ddd4f4454c
+X-MS-Exchange-CrossTenant-Network-Message-Id: f68ce342-411f-45f7-2505-08ddd5b545bb
 X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=78703d3c-b907-432f-b066-88f7af9ca3af;Ip=[195.60.68.100];Helo=[mail.axis.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DB1PEPF00039230.eurprd03.prod.outlook.com
+	DB1PEPF000509F0.eurprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR02MB6182
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR02MB9090
 
-On Tue, Aug 05, 2025 at 13:10 -0500 Andrew Davis <afd@ti.com> wrote:
+There is no need to register a manual `devm` action for
+`pm_runtime_disable()` when `devm_pm_runtime_enable()` exists. It does
+the same thing (but also calls `pm_runtime_dont_use_autosuspend()`,
+which should be fine here).
 
-> On 8/5/25 4:33 AM, Waqar Hameed wrote:
->> When `devm_add_action_or_reset()` fails, it is due to a failed memory
->> allocation and will thus return `-ENOMEM`. `dev_err_probe()` doesn't do
->> anything when error is `-ENOMEM`. Therefore, remove the useless call to
->> `dev_err_probe()` when `devm_add_action_or_reset()` fails, and just
->> return the value instead.
->>
->> Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
->> ---
->> Changes in v2:
->>
->> * Split the patch to one seperate patch for each sub-system.
->>
->> Link to v1: https://lore.kernel.org/all/pnd7c0s6ji2.fsf@axis.com/
->>
->>   drivers/counter/ti-ecap-capture.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-capture.c
->> index 3faaf7f60539..114f2d33f193 100644
->> --- a/drivers/counter/ti-ecap-capture.c
->> +++ b/drivers/counter/ti-ecap-capture.c
->> @@ -528,7 +528,7 @@ static int ecap_cnt_probe(struct platform_device *pdev)
->>       /* Register a cleanup callback to care for disabling PM */
->>       ret = devm_add_action_or_reset(dev, ecap_cnt_pm_disable, dev);
->
-> Now that we have devm_pm_runtime_enable(), you can just turn the pm_enable()
-> call 3 lines above this into that, and not need this manual devm action at all.
+Moreover, when `devm_add_action_or_reset()` fails, it is due to a failed
+memory allocation and will thus return `-ENOMEM`. `dev_err_probe()`
+doesn't do anything when error is `-ENOMEM`. Therefore, the call to
+`dev_err_probe()` is useless. Note that `devm_pm_runtime_enable()` has a
+tail call to `devm_add_action_or_reset()` and thus returns that value.
+Therefore, replace `dev_err_probe()` with the returning value.
 
-That's true! However, `devm_pm_runtime_enable` also runs
-`pm_runtime_dont_use_autosuspend()` on exit. I'm guessing we are fine
-with that extra side-effect so I'll change to that instead.
+Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
+---
+Changes in v3:
 
->
->>       if (ret)
->> -             return dev_err_probe(dev, ret, "failed to add pm disable action\n");
->> +             return ret;
->>
->>       ret = devm_counter_add(dev, counter_dev);
->>       if (ret)
->>
->> base-commit: 260f6f4fda93c8485c8037865c941b42b9cba5d2
+* Remove the manual `devm_add_action_or_reset()` and use
+  `devm_pm_runtime_enable()` instead.
+  
+Link to v2: https://lore.kernel.org/lkml/pndms8em7tf.a.out@axis.com/
+
+Changes in v2:
+
+* Split the patch to one seperate patch for each sub-system.
+
+Link to v1: https://lore.kernel.org/all/pnd7c0s6ji2.fsf@axis.com/
+
+drivers/counter/ti-ecap-capture.c | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-capture.c
+index 3faaf7f60539..3586a7ab9887 100644
+--- a/drivers/counter/ti-ecap-capture.c
++++ b/drivers/counter/ti-ecap-capture.c
+@@ -465,11 +465,6 @@ static irqreturn_t ecap_cnt_isr(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static void ecap_cnt_pm_disable(void *dev)
+-{
+-	pm_runtime_disable(dev);
+-}
+-
+ static int ecap_cnt_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -523,12 +518,9 @@ static int ecap_cnt_probe(struct platform_device *pdev)
+ 
+ 	platform_set_drvdata(pdev, counter_dev);
+ 
+-	pm_runtime_enable(dev);
+-
+-	/* Register a cleanup callback to care for disabling PM */
+-	ret = devm_add_action_or_reset(dev, ecap_cnt_pm_disable, dev);
++	ret = devm_pm_runtime_enable(dev);
+ 	if (ret)
+-		return dev_err_probe(dev, ret, "failed to add pm disable action\n");
++		return ret;
+ 
+ 	ret = devm_counter_add(dev, counter_dev);
+ 	if (ret)
+
+base-commit: 260f6f4fda93c8485c8037865c941b42b9cba5d2
+-- 
+2.39.5
+
 
