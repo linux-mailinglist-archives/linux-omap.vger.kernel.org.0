@@ -1,88 +1,87 @@
-Return-Path: <linux-omap+bounces-4174-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4175-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A1DBB2092E
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Aug 2025 14:48:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9DE4B20936
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Aug 2025 14:49:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9674422A60
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Aug 2025 12:48:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA4387B3641
+	for <lists+linux-omap@lfdr.de>; Mon, 11 Aug 2025 12:47:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D79E2D3A71;
-	Mon, 11 Aug 2025 12:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0D12DA758;
+	Mon, 11 Aug 2025 12:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DKaVTRNv"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cUebUoAW"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374772D6608
-	for <linux-omap@vger.kernel.org>; Mon, 11 Aug 2025 12:48:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1859C2D8387
+	for <linux-omap@vger.kernel.org>; Mon, 11 Aug 2025 12:48:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754916512; cv=none; b=RdFDG6Q+Lx2D4ZfmxCbXPV4KciWtSYS5/tAGaMYP+BsENusqK4THwuoVnCpRP1YYBxZ/6JU0ZbpDzqKa8bZepvKHDAwJOWMFAYIqLIoGhSL4KxdBWpoWp+l4qT/LgphupX5oY5aiatAtXh8CM9twxld/ibXi2W3B43A0GdafpII=
+	t=1754916515; cv=none; b=gzT3Yz61Up1/tzSZD33D9XkUXf3k8EuPx454u0VKpJ/TjnLhwZEcA/ve6PbruAoYmh0+W+sByRpBspufW4VhqgNgekAUWhtyw1ShR3PUaSBz3QwKOD8tyfHuCIsJwNSoKO2HAxBeZ4vh6vHOYuOTI3y/dHubz6Bnib2FvczC3gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754916512; c=relaxed/simple;
-	bh=797B/i7zAYqS3C3fUwjFhBm7v2UlPo/3f5vR7+9WseU=;
+	s=arc-20240116; t=1754916515; c=relaxed/simple;
+	bh=Z/Z8aNwjy/UKmGQb7dk5/C7R8VIWNkrG3ytaz73rEYE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LWFp+GN8OaWVEXJgHPZWrFzhnji3594qzglUwAnZURrLzyIbVDXuoPUzPBCpShxONT4gp+Tg//X9sKDC4QytVHSxMgp3OIeMjcCopF543jJTv0N0C0Ka9OjhKnVb9DneelgPhCe+R/xoQTclhhW2UXUhicJHlLJkLd8zZoEPqVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DKaVTRNv; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:To:Cc; b=o2aXO2DC6KPrbrSnjIG8AY6duKNbQxvZmYC8uGLNxR8HFyuqsl8Adf3CCcvxUkr636pAiosIY1MKxpUPPwcnboFoc0NjkJMnntQheGYktunj+E1x3aqiZ0GpiaeMytt9gBrvow5yG1xOz5j1MVcPWwt4M5xrNad3zHv7bbgAnls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cUebUoAW; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754916510;
+	s=mimecast20190719; t=1754916513;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KjrMZnWuasomCOeyOdrJf6baH8sgZvlHk16pzYaYGG4=;
-	b=DKaVTRNvXCzrZ+rfPqMa2LtjykOeqOSfisXBl3Joo0nqfNiNlA6xhZ5YkOHjq89gYovPtu
-	TCnAyKVAdX+/7HQNwqqByytO53AscIMPwFcfR49pV0J6xWsWMmumW9EeC2/xfqjGQP3C7S
-	kqTctt+5Mf6gTqhiBbIzjHNqDUawV/0=
+	bh=BegFxwY4bB32r47TdTN8tAF4AdmY2JQsv44/XYcFCFo=;
+	b=cUebUoAWr0mHr/zHYYFQCCwBX3bk9hu8cVIBRKsQYdwyqF8EbB5GUHup34ib0mx9ys6Lql
+	IogW5KUTKJs8Ik5rMg/mzJkiwiLXwnJPIU3rl93W64pqHklBRwGffnQN4X6js3I5egHO5W
+	R1QPUrYjuqkehWypjBu+vBTmDmtn+vM=
 Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
  [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-642-6Ab8vS9-Pq-yFy-cUniBjQ-1; Mon, 11 Aug 2025 08:48:29 -0400
-X-MC-Unique: 6Ab8vS9-Pq-yFy-cUniBjQ-1
-X-Mimecast-MFC-AGG-ID: 6Ab8vS9-Pq-yFy-cUniBjQ_1754916508
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4b06a73b580so63863861cf.1
-        for <linux-omap@vger.kernel.org>; Mon, 11 Aug 2025 05:48:28 -0700 (PDT)
+ us-mta-111-G1jSjW62NtOyUZu5Rxf8Rg-1; Mon, 11 Aug 2025 08:48:32 -0400
+X-MC-Unique: G1jSjW62NtOyUZu5Rxf8Rg-1
+X-Mimecast-MFC-AGG-ID: G1jSjW62NtOyUZu5Rxf8Rg_1754916511
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4b08431923dso111655611cf.0
+        for <linux-omap@vger.kernel.org>; Mon, 11 Aug 2025 05:48:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754916508; x=1755521308;
+        d=1e100.net; s=20230601; t=1754916511; x=1755521311;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KjrMZnWuasomCOeyOdrJf6baH8sgZvlHk16pzYaYGG4=;
-        b=BBZSykNQ4Kd4XpGVwA6kIYYW+m7euz6zF+eURBTg6zB2IuXYLljmS/yHB5cFLcPKqB
-         IPbaEhgsg+xB5+OoWjeHzoVGijO6oe2ZHnvyVuzwiSzYqOpdSdc/wCUpU+ZhYlQB+Cz8
-         0ABXLqkXB/o9c3BGlbM+WmMH27RLZ/rAnYbnlAeieO1ElqotFTun0ZSCLlyEqLScIKsE
-         DwkquJsRAdF2PMybidkjIeAYaj59BR/AT34EOuDyrrbP0CLhiZHJ/DWySnrgRGR3t2v/
-         t0kjCkKjEJlbQdHo2eXeFq3sWi35kzEP4Enegq9RzV7c3HBPEA6EiQ0qrERlV9kNCVGe
-         bz1A==
-X-Gm-Message-State: AOJu0YwPvu4l7HtcRD5N4pJ68TjO6+FbN2K8T4o0p4O1SIzexhBYER08
-	rMgBMjo3Ec3jXbaG49dUPpCOFjhw73dhh39SXnfsKo35VDz1Wsx89Cl0KfmKuyqFifLOCa8CeLg
-	vut/IkRVns/y5c0rjcznmi5QMqZWfzbPKK/SpFbGgvXTZEm0ZdLwflETgHJT0XxI=
-X-Gm-Gg: ASbGncuyz0eZYWFs3BwcXQeZxtHJOmPLjwDFLXOBrndlhQK2ZfUT5hTU8DJ6CojsH3i
-	+h4w8lwQEtBL9b44DbQvav1o35Fb3uA534pgJCnx38w7XrR1QlbxF233gAD3XsO5IPzLgNfgL/u
-	vK2LvnJDp532TS22QwBZlCUL0STavhUaGHrnjz2V7b4uMrbZ6l7kJSBGlThKrJfI3T4LuPUPvMG
-	EOdrsvfEtzIoyAZWJVEVFU1ZqxaveXGW8Oxp5JT6kQFS2xvi+uFM9uBe38JWRAKjBXV/a4kFmWN
-	iQ/uonuzex4tMHn9qjKK1KJfwPdKUYitU8bhIOr/72g/fz0nP6rMXaEsBppVm24+i0rcYQ/40Xz
-	TX0w=
-X-Received: by 2002:a05:622a:1347:b0:4b0:62c6:74c3 with SMTP id d75a77b69052e-4b0a081698bmr223865731cf.22.1754916508368;
-        Mon, 11 Aug 2025 05:48:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFZ6N8H2X/Bvn+Au+kqGnuF5oeyYWPX+3WMtIqSB8DTDsMJq8v6IX3eOUhsgPzL8VhHHDNq8g==
-X-Received: by 2002:a05:622a:1347:b0:4b0:62c6:74c3 with SMTP id d75a77b69052e-4b0a081698bmr223865281cf.22.1754916507766;
-        Mon, 11 Aug 2025 05:48:27 -0700 (PDT)
+        bh=BegFxwY4bB32r47TdTN8tAF4AdmY2JQsv44/XYcFCFo=;
+        b=il/VAG8/ZO/QUGJTTDl0EedZCX3GWvchqYM2DHweMf9HIzYPSjch84nEQNSpSHQqds
+         o+p6HfuhmTAXbUmZ0BSyfbIVE9branDJjicZUOeXucHFC6+AXrfUbtdP0Fl8UHDNfDJc
+         lHLeYitB4ayz111hi052yWWO1v0putaZ+Cc5axQFsEO1WZvaYsjH4fZne4FqsjcPXKbK
+         JMsnJpgJuKp60MOs+ua4Lhi74uDX9KRYh51VSyJm9t4az72IM4RIKrkbEtRcJhIflbiJ
+         Wt9BH6E/qhKEuEVr7JQ0A0dzGSPkk3uE3JKTBgFzNlKnEr1HZjB2x+cGSq0UvM+cGx5S
+         QVAA==
+X-Gm-Message-State: AOJu0YyFdaExxVhRJesRr8rZ3LHemnhYclFv5n/Zxc3iOkBHBW1Lw+BY
+	Ge5yGb9iEQqz59WTcAHdh3vbZ9Hs0v5jYvTmW3X0gt8nUugtEXNDiZ2Flntd5lbASmTkVvqPK7Q
+	+BqHwEu6d372pDHPw8mgwIMuTGryHF5oB+MBdNtgjmZSf9iZMZ1anuA0mSIMCYd4=
+X-Gm-Gg: ASbGncttyMMlRWRNY3s99Dg9BFr8btjyZrNCG/krbjdcGIu3NxPotWV7hohR+VY9G+v
+	baaNZLx97tGdQDO4vmuCZRUPDASTN4RR/g0WJDz6Bef0I1SvritrKqye2TDZnzqcHisR01Xylgh
+	V1TV9+8jLrFLpd5ZbnKufWZ94t+Hy2p75urD2BYYTVdN8I7Q0Bwy1uIQONUbRXwdoKxPL2iOT18
+	D4YK3mTt1hAtWAIjBrNemvveEzZGwsfaSdnhyaFX/MLO5QxvtAp8mjwlA8KRxQ6ryKYx6eaK8y6
+	cduDAk4sdrkv0nukqO3FoJ+qtU1AL7KEoUqfmgiDKWHoUQbeCUAhGNa/NxgMhUyXry0VbXrDstG
+	9u2s=
+X-Received: by 2002:a05:622a:228b:b0:4b0:863b:f4e5 with SMTP id d75a77b69052e-4b0c97460f4mr78690781cf.33.1754916511134;
+        Mon, 11 Aug 2025 05:48:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE8iAqFt+pVv6B/yoMCzQxz/7Jr3wwJUx8Cr8upJaSFiLU1TK2hQD/TeVZHYoxHNpp07QBXag==
+X-Received: by 2002:a05:622a:228b:b0:4b0:863b:f4e5 with SMTP id d75a77b69052e-4b0c97460f4mr78690371cf.33.1754916510574;
+        Mon, 11 Aug 2025 05:48:30 -0700 (PDT)
 Received: from [192.168.1.15] (c-73-183-52-120.hsd1.pa.comcast.net. [73.183.52.120])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4aef746b6efsm138724001cf.15.2025.08.11.05.48.25
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4aef746b6efsm138724001cf.15.2025.08.11.05.48.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Aug 2025 05:48:26 -0700 (PDT)
+        Mon, 11 Aug 2025 05:48:28 -0700 (PDT)
 From: Brian Masney <bmasney@redhat.com>
-Date: Mon, 11 Aug 2025 08:48:06 -0400
-Subject: [PATCH 1/7] clk: ti: dpll: remove round_rate() in favor of
- determine_rate()
+Date: Mon, 11 Aug 2025 08:48:07 -0400
+Subject: [PATCH 2/7] clk: ti: dpll: change error return from ~0 to -EINVAL
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -91,7 +90,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250811-b4-clk-ti-round-rate-v1-1-cc0840594a49@redhat.com>
+Message-Id: <20250811-b4-clk-ti-round-rate-v1-2-cc0840594a49@redhat.com>
 References: <20250811-b4-clk-ti-round-rate-v1-0-cc0840594a49@redhat.com>
 In-Reply-To: <20250811-b4-clk-ti-round-rate-v1-0-cc0840594a49@redhat.com>
 To: Tero Kristo <kristo@kernel.org>, 
@@ -100,77 +99,56 @@ To: Tero Kristo <kristo@kernel.org>,
 Cc: linux-omap@vger.kernel.org, linux-clk@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Brian Masney <bmasney@redhat.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1754916502; l=2854;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1754916502; l=1755;
  i=bmasney@redhat.com; s=20250528; h=from:subject:message-id;
- bh=797B/i7zAYqS3C3fUwjFhBm7v2UlPo/3f5vR7+9WseU=;
- b=f6AxDfpy+RCAm2k48bLMU6hHsZhiIhyDPP0Xu8DVBbm+SnUO1/phMmAPOVEmJhxdvCZ+PrTeV
- 420mVDpwyjfC9nn3pdrhSYEiP3VtgDwWcEOhdEyNFp3IV+ZmVRFc1tT
+ bh=Z/Z8aNwjy/UKmGQb7dk5/C7R8VIWNkrG3ytaz73rEYE=;
+ b=J9gUf0U1U5jq8sGZEfz6AEmIUDhkUmMSeIZZYSu0dbqaAVuS0vdyu5EjSZOZiuMAUcRlcCwZb
+ Fe8jvzOxIOuDPrsHiJFffOGHuTTuNmlFlQ/8USEG6GDyc4rGrcWmgcn
 X-Developer-Key: i=bmasney@redhat.com; a=ed25519;
  pk=x20f2BQYftANnik+wvlm4HqLqAlNs/npfVcbhHPOK2U=
 
-This driver implements both the determine_rate() and round_rate() clk
-ops, and the round_rate() clk ops is deprecated. When both are defined,
-clk_core_determine_round_nolock() from the clk core will only use the
-determine_rate() clk ops, so let's remove the round_rate() clk ops since
-it's unused.
+When the requested rate cannot be achieved, omap2_dpll_round_rate()
+will return ~0. Let's change this to -EINVAL to make the code a little
+cleaner to read. This is no functional change.
 
 Signed-off-by: Brian Masney <bmasney@redhat.com>
 ---
- drivers/clk/ti/dpll.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/clk/ti/clkt_dpll.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/ti/dpll.c b/drivers/clk/ti/dpll.c
-index 3386bd1903df6d6cc443c9e087497167682da8c4..1f55554e0d73ca0323459e8823125b22623ae4a9 100644
---- a/drivers/clk/ti/dpll.c
-+++ b/drivers/clk/ti/dpll.c
-@@ -25,7 +25,6 @@ static const struct clk_ops dpll_m4xen_ck_ops = {
- 	.enable		= &omap3_noncore_dpll_enable,
- 	.disable	= &omap3_noncore_dpll_disable,
- 	.recalc_rate	= &omap4_dpll_regm4xen_recalc,
--	.round_rate	= &omap4_dpll_regm4xen_round_rate,
- 	.set_rate	= &omap3_noncore_dpll_set_rate,
- 	.set_parent	= &omap3_noncore_dpll_set_parent,
- 	.set_rate_and_parent	= &omap3_noncore_dpll_set_rate_and_parent,
-@@ -48,7 +47,6 @@ static const struct clk_ops dpll_ck_ops = {
- 	.enable		= &omap3_noncore_dpll_enable,
- 	.disable	= &omap3_noncore_dpll_disable,
- 	.recalc_rate	= &omap3_dpll_recalc,
--	.round_rate	= &omap2_dpll_round_rate,
- 	.set_rate	= &omap3_noncore_dpll_set_rate,
- 	.set_parent	= &omap3_noncore_dpll_set_parent,
- 	.set_rate_and_parent	= &omap3_noncore_dpll_set_rate_and_parent,
-@@ -61,7 +59,6 @@ static const struct clk_ops dpll_ck_ops = {
- static const struct clk_ops dpll_no_gate_ck_ops = {
- 	.recalc_rate	= &omap3_dpll_recalc,
- 	.get_parent	= &omap2_init_dpll_parent,
--	.round_rate	= &omap2_dpll_round_rate,
- 	.set_rate	= &omap3_noncore_dpll_set_rate,
- 	.set_parent	= &omap3_noncore_dpll_set_parent,
- 	.set_rate_and_parent	= &omap3_noncore_dpll_set_rate_and_parent,
-@@ -103,7 +100,6 @@ static const struct clk_ops omap3_dpll_ck_ops = {
- 	.set_parent	= &omap3_noncore_dpll_set_parent,
- 	.set_rate_and_parent	= &omap3_noncore_dpll_set_rate_and_parent,
- 	.determine_rate	= &omap3_noncore_dpll_determine_rate,
--	.round_rate	= &omap2_dpll_round_rate,
- };
+diff --git a/drivers/clk/ti/clkt_dpll.c b/drivers/clk/ti/clkt_dpll.c
+index dfaa4d1f0b64b8e3606d928af7cef701be3fc677..a8c0fc20f791689c74868b98810b1af2c78b18c8 100644
+--- a/drivers/clk/ti/clkt_dpll.c
++++ b/drivers/clk/ti/clkt_dpll.c
+@@ -277,8 +277,8 @@ unsigned long omap2_get_dpll_rate(struct clk_hw_omap *clk)
+  * possible, programmable rate for this DPLL.  Attempts to select the
+  * minimum possible n.  Stores the computed (m, n) in the DPLL's
+  * dpll_data structure so set_rate() will not need to call this
+- * (expensive) function again.  Returns ~0 if the target rate cannot
+- * be rounded, or the rounded rate upon success.
++ * (expensive) function again.  Returns -EINVAL if the target rate
++ * cannot be rounded, or the rounded rate upon success.
+  */
+ long omap2_dpll_round_rate(struct clk_hw *hw, unsigned long target_rate,
+ 			   unsigned long *parent_rate)
+@@ -295,7 +295,7 @@ long omap2_dpll_round_rate(struct clk_hw *hw, unsigned long target_rate,
+ 	const char *clk_name;
  
- static const struct clk_ops omap3_dpll5_ck_ops = {
-@@ -115,7 +111,6 @@ static const struct clk_ops omap3_dpll5_ck_ops = {
- 	.set_parent	= &omap3_noncore_dpll_set_parent,
- 	.set_rate_and_parent	= &omap3_noncore_dpll_set_rate_and_parent,
- 	.determine_rate	= &omap3_noncore_dpll_determine_rate,
--	.round_rate	= &omap2_dpll_round_rate,
- };
+ 	if (!clk || !clk->dpll_data)
+-		return ~0;
++		return -EINVAL;
  
- static const struct clk_ops omap3_dpll_per_ck_ops = {
-@@ -127,7 +122,6 @@ static const struct clk_ops omap3_dpll_per_ck_ops = {
- 	.set_parent	= &omap3_noncore_dpll_set_parent,
- 	.set_rate_and_parent	= &omap3_dpll4_set_rate_and_parent,
- 	.determine_rate	= &omap3_noncore_dpll_determine_rate,
--	.round_rate	= &omap2_dpll_round_rate,
- };
- #endif
+ 	dd = clk->dpll_data;
  
+@@ -360,7 +360,7 @@ long omap2_dpll_round_rate(struct clk_hw *hw, unsigned long target_rate,
+ 	if (prev_min_delta == LONG_MAX) {
+ 		pr_debug("clock: %s: cannot round to rate %lu\n",
+ 			 clk_name, target_rate);
+-		return ~0;
++		return -EINVAL;
+ 	}
+ 
+ 	dd->last_rounded_m = min_delta_m;
 
 -- 
 2.50.1
