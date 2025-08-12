@@ -1,170 +1,151 @@
-Return-Path: <linux-omap+bounces-4198-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4199-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED91B22113
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Aug 2025 10:33:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3BC7B2221E
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Aug 2025 10:58:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAE071B620FD
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Aug 2025 08:31:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA35517BADD
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Aug 2025 08:51:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 376C32E337E;
-	Tue, 12 Aug 2025 08:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C03A52E5B32;
+	Tue, 12 Aug 2025 08:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="eMTt1x/n"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="C3aucEYb"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4671F2E888B
-	for <linux-omap@vger.kernel.org>; Tue, 12 Aug 2025 08:27:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FE22E5B11;
+	Tue, 12 Aug 2025 08:51:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754987259; cv=none; b=n6RVs7J5+8GrE86737ECcpfvpBKEyQs1+GtwXIlivYP4dt/A4NJsUe/rwX5fA4Dex7DcqysgTfJ9o8JKECfuhCHK736AohvuXoIFA0xkJ3EV6Ort7P0nK4/ZOLVLPhrgCIRAvQTMFQ9AZ+V9Dtv/6QBcxvU4AXRgKK8EXcqdzH8=
+	t=1754988701; cv=none; b=UFgyMBNFBfGbxIDrV1wXBdsoEaabvuyn0ja67RLcSnVr7pRhb8Ar2sQF/YWhGATrYHk3RTrfDsUTbxCQshT/bt3PbQegw2pgTlXYN+MUvNEdK2iLXL2tZOaOqbPekjoEIw2XhiMh92IJjTTNzyEJ9YJPdyTgSjj1eNx6SSqIFuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754987259; c=relaxed/simple;
-	bh=RFujl0Cr/YaORxwURfe0zTKDzCwOsKiOevFTrddSrvg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YWbhii9uBGhopmZ1GduLijpS691UxvNCingbMjPhxfjWTEAKuOl70QTxvMqdLjp/xZBXU3WTyN7mym2FKfnSpL/3HS5BjimbCM2LETRtTnaGcx1yuE19E9V+oGPytvIQ+56gwoJ5vTG4PYgkoA+/NtgRFCswWpRchQuJjkcaIwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=eMTt1x/n; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-459fdc391c6so24270435e9.3
-        for <linux-omap@vger.kernel.org>; Tue, 12 Aug 2025 01:27:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1754987254; x=1755592054; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jAO2WeXDFkbtwkjKyd1xrqU98u0EGyjojmTyXcAuE7w=;
-        b=eMTt1x/n1qgzpLXyHDo6MeIY4+ABzJ1/h6XwcjcSjBY8i4oEErGGJvm96NP7ZKL1ZE
-         RXo41IishSEJjQGnZyqdFwr2Ely5coNK7Sonl7CW/iQjuQJwWPA/5ulSPkzbJREn3Tgn
-         ItP1zxFMSppYm2uvC74UwX0VSbNhStsWMwGqI7rgRjSrpeluaqVqufJtLf6aNyqWqN6T
-         +qESXRX5qhzM/4BacuWQuWpoAjMVhEcDFmg2Gk4bCOlb2H2m4b+QE5pXYY/IrHUeBDCZ
-         gzVgkNBfVDNYUpv+pU165as8TndN+xeoIb5EPhLXMkb38ad31ptnJ4kIw7c14EqsKkmJ
-         8n2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754987254; x=1755592054;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jAO2WeXDFkbtwkjKyd1xrqU98u0EGyjojmTyXcAuE7w=;
-        b=QjhLNoazifA5Ip2jIfYc433ggY96/x77EczdjKC+l0+Do2j/9xYhKzDZ923FR88GmE
-         5vQe9fG4/xHLRNInF4qKy14HSGJOSakmlJnaYlQEQC/yTub3K0rc/WyGA1MT580jPtut
-         M2PB/MDT50h33u4wTpO15mUVoR94pvxgghPRKUswrrtOz+H9V7+DnxQ6KJkc6AqHvTuk
-         yPgLP9pZRfY4vsnB9EkS8qMh5bA/BQwxT8ByR13DRsZLUH9PzEmabaLqPhNOv6OdPJsC
-         OdTEGoToz6RQnEyU4leVYX13jKHnSoJ8Tbp5tIvs4o59wE9y8UC6EgxK4kw7jbeTn5eM
-         aCiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW7mbx9jZqqpB43TPGgzq0BiF4reydPg1kp/hdTF4EA7V48KEqA5nVQ4uSF8fwg7xcJNWku4QwPkmGO@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAAtI9MQRiG/VDE0kipV1uB7xbCLNTxLlcsBlEg0u2igZdzBWc
-	cjL/UZipoDiNXg1bhOhS89GhjEMDyVIghqIyM9TjWMmR8Nts+P0SOFDT3Nc1qOqY+kM=
-X-Gm-Gg: ASbGncuz8nKI31pINWiOqgIgBtBYrVA0C6fzUapGVnQk2qEKRLVOKolWku3S3N/WBN4
-	eHNt3Xvlw7LJHn0w/FFnXzqpIgchvoH70NRSqat+EXMhaSHiSrg+AKiRsL6+HC8w++NocgzQdiu
-	q6syrqVsJbDvFCWW9gkPSAyNmK0tMLZdbG/XWD3sSUfePuk74xSwQ9hdUiygwtN7dWnqpz8w/Bm
-	dFTcrODbno6olqsQVew/NsCMs2I8kyzPDi28UD05thJqRa5FT8oFMmtkZ7Fz8kBq/UXSeM8+uk3
-	FyJnyPhAif9mHUTbrQKiqDBjXkDBFiq3ubZFmEfkVsh9gFvia0g3LJPWib4t42GinHFqYQggWto
-	amxHpTRxzhfTXsbE=
-X-Google-Smtp-Source: AGHT+IEIkGK210eX4oaAWTvIndQdBKgODaVv89WdHuLZ5yZCYfAUy5DwGLKFKR8W9EpKo9YtXUOSDA==
-X-Received: by 2002:a05:6000:2501:b0:3b7:7904:58e1 with SMTP id ffacd0b85a97d-3b910fd9b5bmr1926776f8f.18.1754987253948;
-        Tue, 12 Aug 2025 01:27:33 -0700 (PDT)
-Received: from [127.0.1.1] ([2a01:cb1d:dc:7e00:16c8:50:27fe:4d94])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c3b9386sm43549423f8f.18.2025.08.12.01.27.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Aug 2025 01:27:33 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 12 Aug 2025 10:27:14 +0200
-Subject: [PATCH v4 15/15] pinctrl: qcom: make the pinmuxing strict
+	s=arc-20240116; t=1754988701; c=relaxed/simple;
+	bh=uWunz3Mv4f9pwZDDQLQYeUZk+J7flLykw7MQNQ5U70Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j90kGCFKlORB30OCIT91C1e0sMx5BVpYo4Qd8nYr3QZ9AXgujLpZLHipwWB0HlODpF+XXyf8w/P1jluX5WDrBWqQphlYXPRWarZto/C/TcEA+t8LVObCSALS0EI0oEAXIC+SasGYB6b0gIKsxlCKGTnStyygz9qFo9AYL55AFAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=C3aucEYb; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 58B6C228;
+	Tue, 12 Aug 2025 10:50:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1754988638;
+	bh=uWunz3Mv4f9pwZDDQLQYeUZk+J7flLykw7MQNQ5U70Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=C3aucEYbV0P7yp/axUQALhXq6bp8VBvc2J2Y7oxywS2DT0wkQcULimUysw6t2Wj9A
+	 02yqs0eGLRkh/tHSmaR/e3cSXgz6j1mowZZ/U7BJU1Gh9rA6wq0grt3RYB9zU7naYg
+	 AJwsTgVjQMR+YPXtsC5u0TEPyDTgoszJVunGgoA8=
+Date: Tue, 12 Aug 2025 11:51:12 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Bjorn Andersson <andersson@kernel.org>
+Cc: linux-media@vger.kernel.org,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mehdi Djait <mehdi.djait@linux.intel.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	=?utf-8?B?QW5kcsOp?= Apitzsch <git@apitzsch.eu>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Arec Kao <arec.kao@intel.com>,
+	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Bryan O'Donoghue <bod@kernel.org>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Dongcheng Yan <dongcheng.yan@intel.com>,
+	Dongchun Zhu <dongchun.zhu@mediatek.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Hans de Goede <hansg@kernel.org>,
+	Hans Verkuil <hverkuil@kernel.org>, Hao Yao <hao.yao@intel.com>,
+	Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>,
+	Jacopo Mondi <jacopo@jmondi.org>,
+	Jason Chen <jason.z.chen@intel.com>, Jimmy Su <jimmy.su@intel.com>,
+	Jingjing Xiong <jingjing.xiong@intel.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Leon Luo <leonl@leopardimaging.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Matthew Majewski <mattwmajewski@gmail.com>,
+	Matthias Fend <matthias.fend@emfend.at>,
+	Mikhail Rudenko <mike.rudenko@gmail.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Pavel Machek <pavel@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Shunqian Zheng <zhengsq@rock-chips.com>,
+	Sylvain Petinot <sylvain.petinot@foss.st.com>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Tarang Raval <tarang.raval@siliconsignals.io>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>,
+	Todor Tomov <todor.too@gmail.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Tony Lindgren <tony@atomide.com>, Zhi Mao <zhi.mao@mediatek.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-samsung-soc@vger.kernel.org
+Subject: Re: (subset) [PATCH 00/72] media: i2c: Reduce cargo-cult
+Message-ID: <20250812085112.GH30054@pendragon.ideasonboard.com>
+References: <20250710174808.5361-1-laurent.pinchart@ideasonboard.com>
+ <175495482477.157244.17354544707184168458.b4-ty@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250812-pinctrl-gpio-pinfuncs-v4-15-bb3906c55e64@linaro.org>
-References: <20250812-pinctrl-gpio-pinfuncs-v4-0-bb3906c55e64@linaro.org>
-In-Reply-To: <20250812-pinctrl-gpio-pinfuncs-v4-0-bb3906c55e64@linaro.org>
-To: Linus Walleij <linus.walleij@linaro.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Alexey Klimov <alexey.klimov@linaro.org>, 
- Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
- Andy Shevchenko <andy@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@redhat.com>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
- Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- NXP S32 Linux Team <s32@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Tony Lindgren <tony@atomide.com>, 
- Haojian Zhuang <haojian.zhuang@linaro.org>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
- linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
- linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
- linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1142;
- i=bartosz.golaszewski@linaro.org; h=from:subject:message-id;
- bh=M6AAfE1ZYIqFZsBoDZ4O1bJllvK/6bMXFJ6Zryc+i/E=;
- b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBomvrZaBmeISpiHCVh1NKR4JJvKfvoR7+4TGM34
- qACMSZiq0aJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaJr62QAKCRARpy6gFHHX
- ci+8EACxohGvZiGTBr0Y9QxyJzsEN0JDEuMPPP2/XSq+kOTHcKkmHErEtvBcohO7KLJzJuDM92q
- Iw3+IzM052WTxd4daM2zpMgweo/2dwzZfR5YEUer3WEroEGm+Bj1fVPmMiit7p1Urk63XsoIjrL
- iIqOXmtlteGyRTKCzz3k/xmfTyEyU7VBHczMECuT5uEu155Bu8nJCumD+wzbe8mmIlfgHaOMDUI
- EhNzoSXVeYCY0FHD/wqktUBCPUxVj3EGM965wJpVDJiroVIyzBPsjcH9gW4ZMI3gsrpLkKSn7/b
- B1DQKX5Md99KuFnktDMJfMeRA9VTUveqdFKrzKWO4O1PCOiNZYTlwh/00gXu8zMpM4AK1/xeHy6
- xv2CMDqxOQQE9pNYsgFWdMK5+GZYlQTAYrjZncSo6RYTzLN9weKlo0cKuhBe3wUVAZQntaTYy8i
- k/Zxwl8sT/axdwTsi8ewRtM0DJYHR7QWCXofS6dAiEDIgSKdzkZJ4mIec2cmwKInyd1Ja38qeyo
- BaUmY5FfX7ADJQDEVQD8b/C/oeUP+bk/MkxTefH5hvrw5RZW6Rm5jF7NwkotqyJwbEKJFZVea+T
- cJiJ5bAYHdIENT0OWfDZvACcGaK8OCdLW3UJoLXH1IZbWn2imkJ1JInadg5ZknF41i/olNLfmrS
- vdUH6mCryqoAAIg==
-X-Developer-Key: i=bartosz.golaszewski@linaro.org; a=openpgp;
- fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <175495482477.157244.17354544707184168458.b4-ty@kernel.org>
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Hi Bjorn,
 
-The strict flag in struct pinmux_ops disallows the usage of the same pin
-as a GPIO and for another function. Without it, a rouge user-space
-process with enough privileges (or even a buggy driver) can request a
-used pin as GPIO and drive it, potentially confusing devices or even
-crashing the system. Set it globally for all pinctrl-msm users.
+On Mon, Aug 11, 2025 at 06:27:01PM -0500, Bjorn Andersson wrote:
+> On Thu, 10 Jul 2025 20:46:56 +0300, Laurent Pinchart wrote:
+> > This patch series build on top of Mehdi's introduction of the
+> > devm_v4l2_sensor_clk_get() helper (see [1]) to drastically reduce
+> > cargo-cult in camera sensor drivers.
+> > 
+> > A large number of camera sensor drivers directly use the
+> > "clock-frequency" property to retrieve the effective or desired external
+> > clock rate. This is standard behaviour on ACPI platforms that don't
+> > implement MIPI DisCo for Imaging, but usage of the property has leaked
+> > to OF-based platforms, due to a combination of historical reasons (using
+> > "clock-frequency" was initially considered right until before the
+> > introduction of "assigned-clock-rates") and plain cargo-cult.
+> > 
+> > [...]
+> 
+> Applied, thanks!
+> 
+> [12/72] arm64: dts: qcom: sdm845-db845c-navigation-mezzanine: Replace clock-frequency in camera sensor node
+>         commit: 5433560caa5e7e677a8d4310bbec08312be765b4
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
----
- drivers/pinctrl/qcom/pinctrl-msm.c | 1 +
- 1 file changed, 1 insertion(+)
+I'm afraid that's too soon. This will introduce a breakage without a
+corresponding change to the camera sensor driver.
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-msm.c b/drivers/pinctrl/qcom/pinctrl-msm.c
-index a5f69464827119dfe2a7781b558094b283fca215..1751d838ce95d6138c824b90098f74891dec7656 100644
---- a/drivers/pinctrl/qcom/pinctrl-msm.c
-+++ b/drivers/pinctrl/qcom/pinctrl-msm.c
-@@ -268,6 +268,7 @@ static const struct pinmux_ops msm_pinmux_ops = {
- 	.function_is_gpio	= pinmux_generic_function_is_gpio,
- 	.gpio_request_enable	= msm_pinmux_request_gpio,
- 	.set_mux		= msm_pinmux_set_mux,
-+	.strict			= true,
- };
- 
- static int msm_config_reg(struct msm_pinctrl *pctrl,
+I will post a v2 with the patches reordered. We could merge the V4L2
+side in a rc1-based stable branch and merge than in the arm-soc tree as
+well, but I think we can also delay the .dts changes to the next kernel
+version. Do you have a preference ?
 
 -- 
-2.48.1
+Regards,
 
+Laurent Pinchart
 
