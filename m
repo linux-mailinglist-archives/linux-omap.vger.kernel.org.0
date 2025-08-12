@@ -1,115 +1,81 @@
-Return-Path: <linux-omap+bounces-4182-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4183-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E91CB21940
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Aug 2025 01:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54013B220E1
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Aug 2025 10:30:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1B426222F8
-	for <lists+linux-omap@lfdr.de>; Mon, 11 Aug 2025 23:29:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4C033A5968
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Aug 2025 08:27:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E6028000F;
-	Mon, 11 Aug 2025 23:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D4E2E264F;
+	Tue, 12 Aug 2025 08:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S48kvZrX"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="uh06br+1"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10FEE20FAA4;
-	Mon, 11 Aug 2025 23:27:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD702E1C78
+	for <linux-omap@vger.kernel.org>; Tue, 12 Aug 2025 08:27:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754954848; cv=none; b=Ci0oFfhSKFY0VeH0N3LFtMCUtHZlN9Wo6X9z9KPlvxV53OpmLUgV87PnWhouJMGOdH/owK48OvGWoGgT4KgycDwMsvbVUvcp+gGfNNeG1d70sQHnVpE9n2VW8UBKammWh+QEV91LSPy0mkLxwrwN8ZdOEymv/pIbszC30ZVmeho=
+	t=1754987233; cv=none; b=Kms07v29+gSGcXxdbBXT/vZEnKr5Ssa0K8ZwN8my6et6xQQh+e2j6T+RSX9D8aZY3SpKyQi/CSMoRS3dnwtsWB+7JTHHsgUF6Dyohw323XE6LKO8gkI7FHItLeLsHXubWOFDrhDPKiiP4HXp2dmKsl59LVg7PhBq+DnxBTy9nbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754954848; c=relaxed/simple;
-	bh=4F0GRrehYPOcCThNRJA3iC3eYSb/ULzVTrykDE/yncE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qPnITE7pN1s//qaWdt+Sfdf1D6nebrk/fiATZ2L4nvMUlpp+k8SGbL6Q35k2pKFIedkC8hYzdsdZvoCZtdzyTc89roBQphyvADHu7kVfD1OxZSYf5OXHQeOkKtma5NoEi7i7m7mbQDnRHMurE0CBMvEpvrthx/cy9wlcNyn2ELs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S48kvZrX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BC9C4CEF7;
-	Mon, 11 Aug 2025 23:27:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754954847;
-	bh=4F0GRrehYPOcCThNRJA3iC3eYSb/ULzVTrykDE/yncE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S48kvZrXP9VG4CTt7zBeg/XgN0GTF0GdFwM4hjSAC9fJOFSMSEMM6GSLa/sj1MXBT
-	 BrXJnP6polHMUDD1GFXtHQ7LPx5df1S73bSjNUYxKOUcwrbU07tn05FVm5uXGiiwtz
-	 rFXk9sqdkIOhbj60mhNMpHdU4XiJoSMiOtEnRDENIui2baifWG4XayjC+1ljtbZJB6
-	 6EREINkAwoY5slez1UqMiBrcVDTtiBECIuKEg6nsdqhsfSIdAxZ0w5GACJVe4WlKtV
-	 bivlYiUkBOWRLjJA2M+IuT7ke34uVXbmnF7Eh7ZqjGBL4Qzps/G9DlWUJYoadCdKlH
-	 oWccBbYIg68Lg==
-From: Bjorn Andersson <andersson@kernel.org>
-To: linux-media@vger.kernel.org,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mehdi Djait <mehdi.djait@linux.intel.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Arec Kao <arec.kao@intel.com>,
-	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Bryan O'Donoghue <bod@kernel.org>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Dongcheng Yan <dongcheng.yan@intel.com>,
-	Dongchun Zhu <dongchun.zhu@mediatek.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Hans de Goede <hansg@kernel.org>,
-	Hans Verkuil <hverkuil@kernel.org>,
-	Hao Yao <hao.yao@intel.com>,
-	Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>,
-	Jacopo Mondi <jacopo@jmondi.org>,
-	Jason Chen <jason.z.chen@intel.com>,
-	Jimmy Su <jimmy.su@intel.com>,
-	Jingjing Xiong <jingjing.xiong@intel.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Leon Luo <leonl@leopardimaging.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Matthew Majewski <mattwmajewski@gmail.com>,
-	Matthias Fend <matthias.fend@emfend.at>,
-	Mikhail Rudenko <mike.rudenko@gmail.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Pavel Machek <pavel@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Shunqian Zheng <zhengsq@rock-chips.com>,
-	Sylvain Petinot <sylvain.petinot@foss.st.com>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Tarang Raval <tarang.raval@siliconsignals.io>,
-	Tianshu Qiu <tian.shu.qiu@intel.com>,
-	Todor Tomov <todor.too@gmail.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Zhi Mao <zhi.mao@mediatek.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-samsung-soc@vger.kernel.org
-Subject: Re: (subset) [PATCH 00/72] media: i2c: Reduce cargo-cult
-Date: Mon, 11 Aug 2025 18:27:01 -0500
-Message-ID: <175495482477.157244.17354544707184168458.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250710174808.5361-1-laurent.pinchart@ideasonboard.com>
-References: <20250710174808.5361-1-laurent.pinchart@ideasonboard.com>
+	s=arc-20240116; t=1754987233; c=relaxed/simple;
+	bh=UDQSxGWEdaNlEt2M7Mav0VdZbGU+CXX3IOWp5CNXy64=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=AEMszv5s2foZ4WOrKZ/Gi3bumPl4tXdXKFJ9TCQipiKciEO1Som00M4DPZ9nKwyp9pp3gquScdWmI6GuFZrOaBqL42FRDHsOXdpvtN81n9bmIvyJizdlEX4+16d6zhIBGleyvBs2mCpkqOZzAIKKhu/nGVSDyG0jefX+zmISbhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=uh06br+1; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3b8de6f7556so2910812f8f.1
+        for <linux-omap@vger.kernel.org>; Tue, 12 Aug 2025 01:27:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1754987228; x=1755592028; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LSqLNFw5ZoJT+eJ+R/4RbrBYWHEJxUchO4svyAYAyHQ=;
+        b=uh06br+1hUHuDDhv+1MpaBvwx/eVDZjNM3nUeTrnjc5W0vKbVK83rgSCjAzcbPz04Z
+         Y3omjAuijSPpKXRcAO9GnfVtKoTGPozFk5/dmcCvAn4wRoMXrlsgYf939BfNUdx5GVmt
+         dQtyqM3ZgyK8QlJpczWKpnxmkZD1I66Ib6ujINItisGHFs258U78xkVSGpGM6DcmHU77
+         NdzkiHquTC6c5j0brtrMOqlXcWO1QUdSIHQ+lQMocXFEewagg5I665Sn6k9i0ZEn6LoE
+         S6SVcgOzfGjD4zxSiUdHjmKXxWDm5iyZG9ScSDj8QKcCy1JEmwyYwRJ/mN4oWnhDIWPd
+         VOjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754987228; x=1755592028;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LSqLNFw5ZoJT+eJ+R/4RbrBYWHEJxUchO4svyAYAyHQ=;
+        b=wAI2Rw7rOmkSONctqLJWDaPB0vtZ0+kpCzLSzfUrs9u5GzuL2LzNOyZ89/Avn9r/o9
+         X+fc4j3EclU2EUaAKwdZGLpkYFguDw01rb2pGS6XMKZ5frEau6XvyuoIyJBEhDW9kz9j
+         q38j8Quw9uy1k0lK3gHrTtuem7rA+g4aJFTLPAJLDbq+x5FQERtg96SGHd/tWnfvQMD7
+         3nDWIHpFngM201A4qLUDfjPch1Mt4C1BZV9MjZZhG2eKZ5bk/TNi4QowimJrQZ6uS7TN
+         VPRNRk8xXMgSnbBLNQoiyJK6hf4AUVoWlRtwNV3hcoS4JFB4sg4MTrw/yjZHV/YgUKNn
+         GUqw==
+X-Forwarded-Encrypted: i=1; AJvYcCX9w0cAG0k5QNXAj4lkrfWRPgAHan+5RwlZQEWKnjccwWE8TSiKiO2eQ2CgWcb/oRmwy3JYHOemPNSo@vger.kernel.org
+X-Gm-Message-State: AOJu0YwM6F8wE0U8nyI8ivNfy5WHoQMNgoBLAaL3Ac+zG6LZ8ir1aQsp
+	qVM1m2MK7zTkhbxHzSRsWPe4rUqtU/jbrscz/Xq209cwF9ALOydXV1b09PLAcO/3XOE=
+X-Gm-Gg: ASbGncsNM/1EQUKabSWc22U86LhsC+asEGRLlyVtv2eTL4egg5RFjbCxcKCpTqMHnvw
+	rvw5VZUG9CDa2CzxfSPrXUuh3GTrjxFPsWmv3Wbi2DKdNZAOqZDlTNNuyS/JZKQS3a+tOamNy8/
+	jElCNqu8ktL0ccyxYcGDSJPt0Fk2+Modokwq1IM2hb+PY/nKAysXOX6g8u052vDqq9N2jXOwQ3f
+	gSzOmOYY2qox1RQXTSTeHEdgsTcSxZoiwjXrqx1iMW+3u4s9s8KcqZXQHgMpzVdPXyayr2FDHv+
+	HDmqCSzbPhiw7TxUwxVvU9tU0AmNSA2Yio4YonOkQa00Tho48+H0XuEpfU+a+RyMf306FleGk6R
+	EqDWqB7Kmac/K/w4=
+X-Google-Smtp-Source: AGHT+IGt1Qdhl1SeHXbcRrXyromUYjuvLPhngmkyHILzZlpKPBo/s3ygqlYuwwSu6svvDg9bM89tcA==
+X-Received: by 2002:a05:6000:400b:b0:3a4:ee3f:8e1e with SMTP id ffacd0b85a97d-3b911031495mr2033996f8f.39.1754987228110;
+        Tue, 12 Aug 2025 01:27:08 -0700 (PDT)
+Received: from [127.0.1.1] ([2a01:cb1d:dc:7e00:16c8:50:27fe:4d94])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c3b9386sm43549423f8f.18.2025.08.12.01.27.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Aug 2025 01:27:07 -0700 (PDT)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: [PATCH v4 00/15] pinctrl: introduce the concept of a GPIO pin
+ function category
+Date: Tue, 12 Aug 2025 10:26:59 +0200
+Message-Id: <20250812-pinctrl-gpio-pinfuncs-v4-0-bb3906c55e64@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -117,30 +83,251 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANP6mmgC/3XNTQqDMBCG4atI1k3Jn9Z01XuULmISdUASSWxoE
+ e/eKBQsxeX7wTwzo2gD2IiuxYyCTRDBuxziVCDdK9dZDCY3YoSV5EIoHsHpKQy4G8Gv0T6djtj
+ YmjVGKqUFR/l2DLaF1+beH7l7iJMP7+1Nouv6FdmBmCgm2JqsklaKqja3AZwK/uxDh1YysT0jj
+ xiWmaaivKRCamLkH8N3DBNHDM+MaoVpJCfMWPHDLMvyAQqoo11JAQAA
+X-Change-ID: 20250701-pinctrl-gpio-pinfuncs-de82bd9aac43
+To: Linus Walleij <linus.walleij@linaro.org>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Alexey Klimov <alexey.klimov@linaro.org>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
+ Andy Shevchenko <andy@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@redhat.com>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ NXP S32 Linux Team <s32@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Tony Lindgren <tony@atomide.com>, 
+ Haojian Zhuang <haojian.zhuang@linaro.org>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>
+Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+ linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
+ linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
+ linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10405;
+ i=bartosz.golaszewski@linaro.org; h=from:subject:message-id;
+ bh=UDQSxGWEdaNlEt2M7Mav0VdZbGU+CXX3IOWp5CNXy64=;
+ b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBomvrWB2qIjviAYzOzF9rGQxbtFl0bfNv3xt3BN
+ hJcX75YR9WJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaJr61gAKCRARpy6gFHHX
+ cnenD/9QVkiYWaN45se9mVCv1Kmd7fcDNhqOnqO5k+01l7TQAlPMrQt3gTyvoe7CiEK5dDfa5ng
+ aIbDkSuHtaZBpDsgc/BXeJMoESoAl36UvqOBfrX/zRL+EXlA4pE843GNpasFYss8kGdRGKbtO4U
+ gcJKcstwSwRux/gfffXVtbEZO+jh7/3gggLSCCZHX0R6kJJWHhzou5kJ0h6bek677sBClWVmoY8
+ eysYG00x5CQE0RPIPIM+4S2fQfWfxzhhRWIEq/YuuvJ4CuJ3LFO28NteYEEc4Y765gqgO5aQ/Go
+ cn/UlbQCcl5oTQDS++2t1KbaW3KN/GDVlTpprFJQPsNzI1LyfcnlvtpUkvJeqZgN6oh3GCf55Ss
+ gI0pMQB3Mudri5qmQ/yBPMY9RoPMVyuVEEfItLwmQVPnFBCFaUtksAM7oU6HqbEoLI4QwIN9XsE
+ CFIHwvjFLRP9nqeDtNCtAUwKro0rLOkIkDmnsCkXIIZnZfimLTmSyBrLTY/elmWUlxfkqfAEYKV
+ +z4qBQkVA4AJg6liF53vwd12SvKxjZQ8h93srCOICJ9uz3tOlOm/ZNpgXBuy0xTOpxbL9hJk2t0
+ RGNzvJ1D4MnTaRwEHz9bw+spw3G0XBBakwDrnhB7sOPsN9dUclNtSpGJxeVXc4cqeavZgYMr3mj
+ g7yTIfabzK5/L/w==
+X-Developer-Key: i=bartosz.golaszewski@linaro.org; a=openpgp;
+ fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
 
+NOTE: This is obviously targetting v6.18.
 
-On Thu, 10 Jul 2025 20:46:56 +0300, Laurent Pinchart wrote:
-> This patch series build on top of Mehdi's introduction of the
-> devm_v4l2_sensor_clk_get() helper (see [1]) to drastically reduce
-> cargo-cult in camera sensor drivers.
-> 
-> A large number of camera sensor drivers directly use the
-> "clock-frequency" property to retrieve the effective or desired external
-> clock rate. This is standard behaviour on ACPI platforms that don't
-> implement MIPI DisCo for Imaging, but usage of the property has leaked
-> to OF-based platforms, due to a combination of historical reasons (using
-> "clock-frequency" was initially considered right until before the
-> introduction of "assigned-clock-rates") and plain cargo-cult.
-> 
-> [...]
+NOTER: This series is a bit all over the place and looks like it should
+be split into at least two separate ones but I figured sending it in its
+entirety better shows the whole picture - namely the fact that the
+pinfunction handling rework is there to allow using the generic pinux
+functions in qualcomm drivers without ballooning up runtime memory
+usage.
 
-Applied, thanks!
+NOTEST: I tested several Qualcomm platforms but I have no means of
+testing Mediatek and others. Tested-by tags are appreciated.
 
-[12/72] arm64: dts: qcom: sdm845-db845c-navigation-mezzanine: Replace clock-frequency in camera sensor node
-        commit: 5433560caa5e7e677a8d4310bbec08312be765b4
+Problem: when pinctrl core binds pins to a consumer device and the
+pinmux ops of the underlying driver are marked as strict, the pin in
+question can no longer be requested as a GPIO using the GPIO descriptor
+API. It will result in the following error:
+
+[    5.095688] sc8280xp-tlmm f100000.pinctrl: pin GPIO_25 already requested by regulator-edp-3p3; cannot claim for f100000.pinctrl:570
+[    5.107822] sc8280xp-tlmm f100000.pinctrl: error -EINVAL: pin-25 (f100000.pinctrl:570)
+
+This typically makes sense except when the pins are muxed to a function
+that actually says "GPIO". Of course, the function name is just a string
+so it has no meaning to the pinctrl subsystem.
+
+We have many Qualcomm SoCs (and I can imagine it's a common pattern in
+other platforms as well) where we mux a pin to "gpio" function using the
+`pinctrl-X` property in order to configure bias or drive-strength and
+then access it using the gpiod API. This makes it impossible to mark the
+pin controller module as "strict".
+
+This series proposes to introduce a concept of a sub-category of
+pinfunctions: GPIO functions where the above is not true and the pin
+muxed as a GPIO can still be accessed via the GPIO consumer API even for
+strict pinmuxers.
+
+To that end: we first clean up the drivers that use struct function_desc
+and make them use the smaller struct pinfunction instead - which is the
+correct structure for drivers to describe their pin functions with. We
+also rework pinmux core to not duplicate memory used to store the
+pinfunctions unless they're allocated dynamically.
+
+First: provide the kmemdup_const() helper which only duplicates memory
+if it's not in the .rodata section. Then rework all pinctrl drivers that
+instantiate objects of type struct function_desc as they should only be
+created by pinmux core. Next constify the return value of the accessor
+used to expose these structures to users and finally convert the
+pinfunction object within struct function_desc to a pointer and use
+kmemdup_const() to assign it. With this done proceed to add
+infrastructure for the GPIO pin function category and use it in Qualcomm
+drivers. At the very end: make the Qualcomm pinmuxer strict.
+
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+---
+Changes in v4:
+- Update the GPIO pin function definitions to include the new qcom
+  driver (milos)
+- Provide devm_kmemdup_const() instead of a non-managed kmemdup_const()
+  as a way to avoid casting out the 'const' modifier when passing the
+  const pointer to devm_add_action_or_reset()
+- Use devm_krealloc_array() where applicable instead of devm_krealloc()
+- Fix typos
+- Fix kerneldocs
+- Improve commit messages
+- Small tweaks as pointed out by Andy
+- Rebased on top of v6.17-rc1
+- Link to v3: https://lore.kernel.org/r/20250724-pinctrl-gpio-pinfuncs-v3-0-af4db9302de4@linaro.org
+
+Changes in v3:
+- Add more patches in front: convert pinctrl drivers to stop defining
+  their own struct function_desc objects and make pinmux core not
+  duplicate .rodata memory in which struct pinfunction objects are
+  stored.
+- Add a patch constifying pinmux_generic_get_function().
+- Drop patches that were applied upstream.
+- Link to v2: https://lore.kernel.org/r/20250709-pinctrl-gpio-pinfuncs-v2-0-b6135149c0d9@linaro.org
+
+Changes in v2:
+- Extend the series with providing pinmux_generic_add_pinfunction(),
+  using it in several drivers and converting pinctrl-msm to using
+  generic pinmux helpers
+- Add a generic function_is_gpio() callback for pinmux_ops
+- Convert all qualcomm drivers to using the new GPIO pin category so
+  that we can actually enable the strict flag
+- Link to v1: https://lore.kernel.org/r/20250702-pinctrl-gpio-pinfuncs-v1-0-ed2bd0f9468d@linaro.org
+
+---
+Bartosz Golaszewski (15):
+      devres: provide devm_kmemdup_const()
+      pinctrl: ingenic: use struct pinfunction instead of struct function_desc
+      pinctrl: airoha: replace struct function_desc with struct pinfunction
+      pinctrl: mediatek: mt7988: use PINCTRL_PIN_FUNCTION()
+      pinctrl: mediatek: moore: replace struct function_desc with struct pinfunction
+      pinctrl: imx: don't access the pin function radix tree directly
+      pinctrl: keembay: release allocated memory in detach path
+      pinctrl: keembay: use a dedicated structure for the pinfunction description
+      pinctrl: constify pinmux_generic_get_function()
+      pinctrl: make struct pinfunction a pointer in struct function_desc
+      pinctrl: qcom: use generic pin function helpers
+      pinctrl: allow to mark pin functions as requestable GPIOs
+      pinctrl: qcom: add infrastructure for marking pin functions as GPIOs
+      pinctrl: qcom: mark the `gpio` and `egpio` pins function as non-strict functions
+      pinctrl: qcom: make the pinmuxing strict
+
+ drivers/base/devres.c                            | 21 +++++++++
+ drivers/pinctrl/freescale/pinctrl-imx.c          | 42 ++++++-----------
+ drivers/pinctrl/mediatek/pinctrl-airoha.c        | 18 ++++----
+ drivers/pinctrl/mediatek/pinctrl-moore.c         | 10 ++--
+ drivers/pinctrl/mediatek/pinctrl-moore.h         |  7 +--
+ drivers/pinctrl/mediatek/pinctrl-mt7622.c        |  2 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7623.c        |  2 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7629.c        |  2 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7981.c        |  2 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7986.c        |  2 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7988.c        | 44 +++++++-----------
+ drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.h |  2 +-
+ drivers/pinctrl/pinctrl-equilibrium.c            |  2 +-
+ drivers/pinctrl/pinctrl-ingenic.c                | 49 +++++++++-----------
+ drivers/pinctrl/pinctrl-keembay.c                | 26 +++++++----
+ drivers/pinctrl/pinctrl-single.c                 |  4 +-
+ drivers/pinctrl/pinmux.c                         | 59 ++++++++++++++++++++----
+ drivers/pinctrl/pinmux.h                         |  9 ++--
+ drivers/pinctrl/qcom/pinctrl-ipq5018.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-ipq5332.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-ipq5424.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-ipq6018.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-ipq8074.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-ipq9574.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-mdm9607.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-mdm9615.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-milos.c             |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm.c               | 45 ++++++------------
+ drivers/pinctrl/qcom/pinctrl-msm.h               |  5 ++
+ drivers/pinctrl/qcom/pinctrl-msm8226.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8660.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8909.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8916.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8917.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8953.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8960.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8976.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8994.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8996.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8998.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-msm8x74.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-qcm2290.c           |  4 +-
+ drivers/pinctrl/qcom/pinctrl-qcs404.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-qcs615.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-qcs8300.c           |  4 +-
+ drivers/pinctrl/qcom/pinctrl-qdu1000.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sa8775p.c           |  4 +-
+ drivers/pinctrl/qcom/pinctrl-sar2130p.c          |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sc7180.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sc7280.c            |  4 +-
+ drivers/pinctrl/qcom/pinctrl-sc8180x.c           |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sc8280xp.c          |  4 +-
+ drivers/pinctrl/qcom/pinctrl-sdm660.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sdm670.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sdm845.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sdx55.c             |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sdx65.c             |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sdx75.c             |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm4450.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm6115.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm6125.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm6350.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm6375.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm7150.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm8150.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm8250.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm8350.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm8450.c            |  4 +-
+ drivers/pinctrl/qcom/pinctrl-sm8550.c            |  2 +-
+ drivers/pinctrl/qcom/pinctrl-sm8650.c            |  4 +-
+ drivers/pinctrl/qcom/pinctrl-sm8750.c            |  4 +-
+ drivers/pinctrl/qcom/pinctrl-x1e80100.c          |  2 +-
+ drivers/pinctrl/renesas/pinctrl-rza1.c           |  2 +-
+ drivers/pinctrl/renesas/pinctrl-rza2.c           |  2 +-
+ drivers/pinctrl/renesas/pinctrl-rzg2l.c          |  2 +-
+ drivers/pinctrl/renesas/pinctrl-rzv2m.c          |  2 +-
+ include/linux/device/devres.h                    |  2 +
+ include/linux/pinctrl/pinctrl.h                  | 14 ++++++
+ include/linux/pinctrl/pinmux.h                   |  2 +
+ 79 files changed, 274 insertions(+), 225 deletions(-)
+---
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+change-id: 20250701-pinctrl-gpio-pinfuncs-de82bd9aac43
 
 Best regards,
 -- 
-Bjorn Andersson <andersson@kernel.org>
+Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+
 
