@@ -1,124 +1,169 @@
-Return-Path: <linux-omap+bounces-4201-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4202-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AADEFB222DC
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Aug 2025 11:22:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C42D7B22367
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Aug 2025 11:40:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D14D563A9C
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Aug 2025 09:19:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 578F3188EC1C
+	for <lists+linux-omap@lfdr.de>; Tue, 12 Aug 2025 09:40:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95E6F2E8E1D;
-	Tue, 12 Aug 2025 09:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD872E975B;
+	Tue, 12 Aug 2025 09:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kcSf6R+w"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="pwLWRCZB"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B872E8897;
-	Tue, 12 Aug 2025 09:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EE92E8E0E;
+	Tue, 12 Aug 2025 09:39:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754990236; cv=none; b=i8a2CH8GmgKgDKOPLvJpedGCrT6PDknonn6slcC9eadekjRJjEXh/zqv4c4I/phczTibevzfxX2jQTjkScU9ajaMgAHhSnM/RGZEquiq5t+WoZPYfbAUhZtfkZOcS8lY9sV/aEWI4ujsAGfOD8PL5dkfpwtPBqnanwGhi5gZ/A8=
+	t=1754991578; cv=none; b=btJmrQwI8EdSArHrBzbXrV/2cA9rsrrBLp8tEmGiyvtRoqv9qE35y3irLirglIakloCV+VKUQwyfuLrPy1qP/YT5j3cMWwJ6D55nblPqCL6EtZS49NtG0ZtJ9TbiX7Rsn/JobKevtKzxUECeaHUXbTG3ghsOLD9Y6ZmZ/70H77E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754990236; c=relaxed/simple;
-	bh=FH40Q72Hlv1Q+FKRAVO0gIDPDVp0pGWeafDOUhL/q28=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UiARrn1HorsHcddKcrOLn9DhHYRkXgokB/+G3eHwZvHJQpJekBVbF1grxH+RnSN7QQlrTXRIfMCtGSESLbHG+ZuG6HSX/e3KuGMcVxRpVEI62ubLTWWmu3Or9BuTU1JEENUN0iJGnm7TdTEOx0xbbh284tYrzNPzWIr7WuxNE1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kcSf6R+w; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-33230f1347fso42418441fa.3;
-        Tue, 12 Aug 2025 02:17:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754990232; x=1755595032; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FH40Q72Hlv1Q+FKRAVO0gIDPDVp0pGWeafDOUhL/q28=;
-        b=kcSf6R+we9AS2Or4FMhZnYfGl5SAmg4yv5cv54zNHuZ/XDKpbghtGKy/qxlAJbj0ad
-         llU19nmlx1JFRxnhgSSHMrKPclzR+Z5y7LUBxNfO7iXThFpIM0nIYXmYKh5PnsFRY1gy
-         8ln9ppW4Cq1EkgT//vala6A20tPSS5xmoL8m0WJIZqUqqrpROEMxRBi6n3VvCiUv96i1
-         GcqlygFYY13oK46k9NQbOMppAxJtEzJKz+A/g24oYEnBTJgMAf0DhnK9vLfUjEzEYt3j
-         SUGom2JuPeYxaeEmQqE6MLdoRIx7dZh+fOg1odcBBwuFGJYC3aQiZsCfA/PMk7kRoGPs
-         cQ+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754990232; x=1755595032;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FH40Q72Hlv1Q+FKRAVO0gIDPDVp0pGWeafDOUhL/q28=;
-        b=DENyzFt7IAdKHu31p9boMgibQV8NbJE/LIIGZm2NJklC3+qsSTGpz5Rj07PxHsDZG2
-         +7Xp60rSiwGwc9ZJLssMf6DCY0ZzSWBvoUWe+34npXTL7QgnW18/+jW4apPiJCe2Ufed
-         VLpVNLW1HjXw8zdNvr+oMzzPc4rk9ZTOMuxeqqSymvFAb7wo279FevM8CuIbGB2YR8LW
-         Wgi8OcUsilukSg+SynCCcM3i69c+bnr0Bl3bTozR9PiBZITxcdo+hRtBLvS/Eqyqkv2n
-         FzGWi7UcZFcUyi0gr5VfOV7XGVc0Zd+ZynWKnU2G+ExPLijZvbBWw3CXTcWtXFaNk/4x
-         PUeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVLgeXATv+47uxuGlgRS5OodWs2vWfQvA0CMu6co9xxS7qVMtc9m314A59BwwWfQjtfq+UglPdyZqPwJA==@vger.kernel.org, AJvYcCViDGWF0d+PSnxY+LOPrA47WusknAk+ukTlVKKnbKxWN0nvAyVaCxDdcwmjne1WE468UVJbeFmimwHvD5Ew@vger.kernel.org, AJvYcCVmL7tD1bEuBQQEkTb7Amko3TkvakzMsbXo2n/Q2mzgGtdh4M79VzZt7GqsZ5Bjjdy8kWek9RB6iy6lLaXT5M4ykMs=@vger.kernel.org, AJvYcCVt+4oAuF06thvVJpUEnjdBA82klKDVwA8gsvTx+cIFCon2A50a8XUpRzqproYm7KV0T2rCXzu2o8aK6Q==@vger.kernel.org, AJvYcCW1aaVPxG8+KVpnYuamEUhRomET5xHBAUgMjaotRBmwCsjbhdIj+OhQkU87q9eBQm/z8UY/u8w4BtIL7Q==@vger.kernel.org, AJvYcCWB//6ONzkpsvZPJcw3PQHMYwvE/Z53bLKHtiLirxBE411Bj+GHVbhdUowTdRVjc+MEzM7f82+wWxYnX7zAlidW@vger.kernel.org, AJvYcCWEytDOvrhAtHGaRmGaRGFIHzxg0G0ubtMU4bQ/hODUESeGbIZd2maRk/ywUUXjaGwM/0+EVWZkagvyBnMm@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2xMa85W1X53xWf9OfXdUvAQlv2VLZIh8av2VZd5V0sqnRymt8
-	bcUOBNxDoo8MpkoxwGBopBcOUTLY7D+qXa4lfgDJRiCeBJAbNxOjM48kEaa3MDdc8dwBZVva+61
-	UgZdjHyBRfb5RBesbfmlYt3rnRKBt6Ok=
-X-Gm-Gg: ASbGncvMQohodooEszWnCMi6m1h+XYtU6RvYooLyd23JmjRkjzAQb9+KIK/G93TKb84
-	xdclUFoTqN8v79TvhIdU+K9JmZrHT1n8FU+dilLpCFQAbxki74HVqXOIWdPhtt6Cr01PSHH6uqP
-	jDc6yreI4XN0nzrAWJaplS7hgZu5IpOC4TPXe4iLV27RatXV058tH2gaVFJkOrGxw/5BejEB/k2
-	jMoc95gNw==
-X-Google-Smtp-Source: AGHT+IEhcflI5Ydaa1GuiuNmpjFNx5ppiNgejnDAuoNiBIEGufTrSOsbJvRUoZYThN0W3IOGq2XThl67s2szsla47bM=
-X-Received: by 2002:a2e:a7c1:0:b0:32b:59d1:7ef3 with SMTP id
- 38308e7fff4ca-333d7d29e55mr7575061fa.35.1754990232270; Tue, 12 Aug 2025
- 02:17:12 -0700 (PDT)
+	s=arc-20240116; t=1754991578; c=relaxed/simple;
+	bh=8yEQgzbMpg1th6gkmT4PUb/PSLZNKd1TBi+Gpd/s9tM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qf/RbLZ0q8Rf6dT7squh9l2db/mR/FaMEmNAVmjY1feyKeQJ+JvbZpN+OvvFJEyqql1e+amWwsa/pD2oADKIROToW2V9TpBau6K0MaNhZGMVtBsIy4NElJlsSuoZwQbCbhBskBAqwk5EWqGquEnanK3XBlmJ0FVu/4EHjOjYVgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=pwLWRCZB; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 051BA16A;
+	Tue, 12 Aug 2025 11:38:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1754991521;
+	bh=8yEQgzbMpg1th6gkmT4PUb/PSLZNKd1TBi+Gpd/s9tM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pwLWRCZBeGqbxZl/v8LLIqmae3UWD1uhVug0qkGMlewVXxenZwmj4h1lhN/Flc3nO
+	 jQ9eLJECUAHbRt30k+/z7N2wQwuUQ4Y1gcm/aKtI0WCU927XhdU9JSzMDdUqwv5jL0
+	 jcxXfYzCM5Y8ykxu1+mN71nqQUu+o8bJ3JreUS2A=
+Date: Tue, 12 Aug 2025 12:39:15 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, linux-media@vger.kernel.org,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mehdi Djait <mehdi.djait@linux.intel.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	=?utf-8?B?QW5kcsOp?= Apitzsch <git@apitzsch.eu>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Arec Kao <arec.kao@intel.com>,
+	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Bryan O'Donoghue <bod@kernel.org>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Dongcheng Yan <dongcheng.yan@intel.com>,
+	Dongchun Zhu <dongchun.zhu@mediatek.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Hans de Goede <hansg@kernel.org>,
+	Hans Verkuil <hverkuil@kernel.org>, Hao Yao <hao.yao@intel.com>,
+	Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>,
+	Jacopo Mondi <jacopo@jmondi.org>,
+	Jason Chen <jason.z.chen@intel.com>, Jimmy Su <jimmy.su@intel.com>,
+	Jingjing Xiong <jingjing.xiong@intel.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Leon Luo <leonl@leopardimaging.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Matthew Majewski <mattwmajewski@gmail.com>,
+	Matthias Fend <matthias.fend@emfend.at>,
+	Mikhail Rudenko <mike.rudenko@gmail.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Pavel Machek <pavel@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Shunqian Zheng <zhengsq@rock-chips.com>,
+	Sylvain Petinot <sylvain.petinot@foss.st.com>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Tarang Raval <tarang.raval@siliconsignals.io>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>,
+	Todor Tomov <todor.too@gmail.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Tony Lindgren <tony@atomide.com>, Zhi Mao <zhi.mao@mediatek.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-samsung-soc@vger.kernel.org
+Subject: Re: (subset) [PATCH 00/72] media: i2c: Reduce cargo-cult
+Message-ID: <20250812093915.GI30054@pendragon.ideasonboard.com>
+References: <20250710174808.5361-1-laurent.pinchart@ideasonboard.com>
+ <175495482477.157244.17354544707184168458.b4-ty@kernel.org>
+ <20250812085112.GH30054@pendragon.ideasonboard.com>
+ <ca1f08c9-244d-482b-b719-c7997913f56e@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250812-pinctrl-gpio-pinfuncs-v4-0-bb3906c55e64@linaro.org> <20250812-pinctrl-gpio-pinfuncs-v4-1-bb3906c55e64@linaro.org>
-In-Reply-To: <20250812-pinctrl-gpio-pinfuncs-v4-1-bb3906c55e64@linaro.org>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 12 Aug 2025 11:16:35 +0200
-X-Gm-Features: Ac12FXxOADkY0Kt68GjCLZnzoIn9ZUx9AbefjcCXbQIHx05RgPhrrqXj4qTh3Ik
-Message-ID: <CAHp75VecVi9XZ25_qY3vX97xbDndPT+O8z=+V=Jocv_8yOQ=4A@mail.gmail.com>
-Subject: Re: [PATCH v4 01/15] devres: provide devm_kmemdup_const()
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ca1f08c9-244d-482b-b719-c7997913f56e@kernel.org>
 
-On Tue, Aug 12, 2025 at 10:27=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.pl=
-> wrote:
->
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> Provide a function similar to devm_strdup_const() but for copying blocks
-> of memory that are likely to be placed in .rodata.
+On Tue, Aug 12, 2025 at 10:58:30AM +0200, Krzysztof Kozlowski wrote:
+> On 12/08/2025 10:51, Laurent Pinchart wrote:
+> > On Mon, Aug 11, 2025 at 06:27:01PM -0500, Bjorn Andersson wrote:
+> >> On Thu, 10 Jul 2025 20:46:56 +0300, Laurent Pinchart wrote:
+> >>> This patch series build on top of Mehdi's introduction of the
+> >>> devm_v4l2_sensor_clk_get() helper (see [1]) to drastically reduce
+> >>> cargo-cult in camera sensor drivers.
+> >>>
+> >>> A large number of camera sensor drivers directly use the
+> >>> "clock-frequency" property to retrieve the effective or desired external
+> >>> clock rate. This is standard behaviour on ACPI platforms that don't
+> >>> implement MIPI DisCo for Imaging, but usage of the property has leaked
+> >>> to OF-based platforms, due to a combination of historical reasons (using
+> >>> "clock-frequency" was initially considered right until before the
+> >>> introduction of "assigned-clock-rates") and plain cargo-cult.
+> >>>
+> >>> [...]
+> >>
+> >> Applied, thanks!
+> >>
+> >> [12/72] arm64: dts: qcom: sdm845-db845c-navigation-mezzanine: Replace clock-frequency in camera sensor node
+> >>         commit: 5433560caa5e7e677a8d4310bbec08312be765b4
+> > 
+> > I'm afraid that's too soon. This will introduce a breakage without a
+> > corresponding change to the camera sensor driver.
+> > 
+> > I will post a v2 with the patches reordered. We could merge the V4L2
+> > side in a rc1-based stable branch and merge than in the arm-soc tree as
+> 
+> You cannot ("cannot" as not following the process) merge drivers into
+> DTS branch.
 
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Ah, I wasn't aware of that. DTS trees don't allow merging stable
+branches shared with other subsystems ? Does it mean that a DTS change
+that depends on a driver change always need to be delayed by one kernel
+version ?
 
---=20
-With Best Regards,
-Andy Shevchenko
+> > well, but I think we can also delay the .dts changes to the next kernel
+> 
+> All users of DTS will be anyway affected and commit msg should address that.
+
+Which commit message, the one for the driver changes or the one for the
+DTS changes ? I plan in the next version to indicate that the DT changes
+depend on the driver changes.
+
+> > version. Do you have a preference ?
+
+-- 
+Regards,
+
+Laurent Pinchart
 
