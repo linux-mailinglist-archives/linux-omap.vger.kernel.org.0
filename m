@@ -1,98 +1,94 @@
-Return-Path: <linux-omap+bounces-4210-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4211-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 337CEB23B45
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Aug 2025 23:52:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C220BB24A52
+	for <lists+linux-omap@lfdr.de>; Wed, 13 Aug 2025 15:14:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95177585C19
-	for <lists+linux-omap@lfdr.de>; Tue, 12 Aug 2025 21:50:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD6101BC4B2B
+	for <lists+linux-omap@lfdr.de>; Wed, 13 Aug 2025 13:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C799B2E88A5;
-	Tue, 12 Aug 2025 21:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD5ED2E7188;
+	Wed, 13 Aug 2025 13:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="pP9ir+8o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pV2RQoMR"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174002E7F24;
-	Tue, 12 Aug 2025 21:48:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D7F185B67;
+	Wed, 13 Aug 2025 13:12:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755035313; cv=none; b=b/KlkHpgM7elpb1jMeOiaCuTE+kvnanKOEzXkp0gkX760knk3yI4L1u6UQKS8Taun95HfpE0hTLBx6wIBunX1oFlrM6vRufyCJLvvmZfxvFauC+VqPsFRKKYGAXdb1KwNNzq5++xfK89fgSIei0ImKkxPCVWk/ixeNCx9hjbmuU=
+	t=1755090774; cv=none; b=JfkYiCwzU79DI2iCW36S+vgbxz/93iJzjOCH4qtazJyIS6JrjBaXAIoF1hHtXAVxejNfzmqtLGPAwRBWEAynyw+9IdOhBBMpFkWYJXKptk0S2kDVCx7i+B4qxrwgsAb8jMIYc1u7OycjYoflYX5IhKu5BBiZm0i5rVswbWok9K0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755035313; c=relaxed/simple;
-	bh=BzgBR17Zq5zzhteVPxzOplHRa55eNAnsGAYxzfEuqZg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kl3CioYR3FsMtpNofpIGbou3CMnbC4knBpaWDlXVrEJJTIgfBuDWQQbYEmhMmUViP3MZWPMTdSWqrgOvwuUK8B5bdUw724b8IzA53W0D7dQCOzNlK7Psb2MiZOCMbSDySd7Gb3kkiUtulBoeELu4F0BRlTdZNL03J5x+qMuc/bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=pP9ir+8o; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id D72A410D4;
-	Tue, 12 Aug 2025 23:47:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1755035258;
-	bh=BzgBR17Zq5zzhteVPxzOplHRa55eNAnsGAYxzfEuqZg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pP9ir+8oK6d5gxI+lji1Ons0ktjRFZx6LB0BFqguYgBWmop9z6Kb80WIfWk+/W/tq
-	 +PYutm58Gcd+cM0hM0ya3zCGs81VmTzGVl7gogD+Bsw6n4uoYy9vG8MTs1UM9UBVTv
-	 oJgo0hf9m6lqSRU8vx9tgIKKRy//NZ5N5z6Ps5o4=
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: linux-media@vger.kernel.org
-Cc: Tony Lindgren <tony@atomide.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-omap@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH v2 67/72] ARM: dts: ti: omap3-n900: Replace clock-frequency in camera sensor node
-Date: Wed, 13 Aug 2025 00:46:15 +0300
-Message-ID: <20250812214620.30425-68-laurent.pinchart@ideasonboard.com>
-X-Mailer: git-send-email 2.49.1
-In-Reply-To: <20250812214620.30425-1-laurent.pinchart@ideasonboard.com>
-References: <20250812214620.30425-1-laurent.pinchart@ideasonboard.com>
+	s=arc-20240116; t=1755090774; c=relaxed/simple;
+	bh=Jf6vDdI8OOf9LByA09StU26Yh8XWjKOx5YsRHZ9KMM0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WFDJGQvW/i1J4kP5V0TKbwDBQO08+KIMugv6f0+ydXuomp3ICAxCJOLlurmN4gIich4BBgpOmJ05Yz/T/UXyFSTQmFCPnTgqbCp6Wk5ZZ9EkBS2b0H7zvTfzTua/jD4WLKtmpbMCEeQjsEZ+Cbrr97jzKIRGDYpFXHZXBt5vmCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pV2RQoMR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4075C4CEEB;
+	Wed, 13 Aug 2025 13:12:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755090773;
+	bh=Jf6vDdI8OOf9LByA09StU26Yh8XWjKOx5YsRHZ9KMM0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=pV2RQoMRJ2KvT4ix6r6Fy5k06i/w9ZJaIwdFKkPhMGU1XNy6/kXqTcr584735waBf
+	 Kz1xPXrvygdtseSu0wr9huc8ziRlC0nDSsZA3oUCebHn3CEDAYFgBgXbxw2Zeh25dr
+	 RxAp/yREvf+3PU0VWwLHZjS0hFhAaSL6xyS/BwDK/mUMINPxEpjvz0vsMZo2k4fEFe
+	 UCGheo+TPz1SGg6KckcHZ7IvQSCZEspXfBV2bm3WtVcVcWblKLCodEvAl/Xt+CTTdC
+	 j8bMpy3CsU4qtUohZKxq0RlXaV64o/gQQ7mJizGfReVC6EUAJKToeNaS30HTN6htKa
+	 bzc9qPiNq4H1w==
+Message-ID: <b9c504ee-6f5b-480c-9e73-83786e11aad9@kernel.org>
+Date: Wed, 13 Aug 2025 16:12:48 +0300
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 9/9] net: ethernet: ti: am65-cpsw: remove
+ cpsw_ale_classifier_setup_default()
+To: Simon Horman <horms@kernel.org>
+Cc: Siddharth Vadapalli <s-vadapalli@ti.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Russell King <linux@armlinux.org.uk>, danishanwar@ti.com, srk@ti.com,
+ linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250514-am65-cpsw-rx-class-v4-0-5202d8119241@kernel.org>
+ <20250514-am65-cpsw-rx-class-v4-9-5202d8119241@kernel.org>
+ <20250516092559.GG1898636@horms.kernel.org>
+Content-Language: en-US
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20250516092559.GG1898636@horms.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The clock-frequency for camera sensors has been deprecated in favour of
-the assigned-clocks and assigned-clock-rates properties. Replace it in
-the device tree.
+Hi Simon,
 
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
----
-This patch depends on "media: i2c: et8ek8: Use V4L2 legacy sensor clock
-helper", which we tentatively plan to merge for v6.18. It should
-therefore be postponed to v6.19.
----
- arch/arm/boot/dts/ti/omap/omap3-n900.dts | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+On 16/05/2025 12:25, Simon Horman wrote:
+> On Wed, May 14, 2025 at 03:04:29PM +0300, Roger Quadros wrote:
+>> The RX classifier can now be configured by user using ethtool -N.
+>> So drop cpsw_ale_classifier_setup_default().
+>>
+>> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+> 
+> Hi Roger,
+> 
+> Could you shed some light on how this effects user's experience,
+> say after probing the driver but without issuing any ethtool commands?
+> 
 
-diff --git a/arch/arm/boot/dts/ti/omap/omap3-n900.dts b/arch/arm/boot/dts/ti/omap/omap3-n900.dts
-index c50ca572d1b9..0d4ceaf96f66 100644
---- a/arch/arm/boot/dts/ti/omap/omap3-n900.dts
-+++ b/arch/arm/boot/dts/ti/omap/omap3-n900.dts
-@@ -792,7 +792,8 @@ cam1: camera@3e {
- 
- 		clocks = <&isp 0>;
- 		clock-names = "extclk";
--		clock-frequency = <9600000>;
-+		assigned-clocks = <&isp 0>;
-+		assigned-clock-rates = <9600000>;
- 
- 		reset-gpio = <&gpio4 6 GPIO_ACTIVE_HIGH>; /* 102 */
- 
+Default behavior is that all traffic is routed to channel 0.
+I will mention this in the commit log.
+
 -- 
-Regards,
-
-Laurent Pinchart
+cheers,
+-roger
 
 
