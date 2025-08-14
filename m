@@ -1,88 +1,85 @@
-Return-Path: <linux-omap+bounces-4215-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4216-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18849B250CC
-	for <lists+linux-omap@lfdr.de>; Wed, 13 Aug 2025 19:03:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8D8FB25A27
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Aug 2025 05:57:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2ACB3725661
-	for <lists+linux-omap@lfdr.de>; Wed, 13 Aug 2025 16:58:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DDA8170EB7
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Aug 2025 03:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5472A28D82A;
-	Wed, 13 Aug 2025 16:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C23A1DB551;
+	Thu, 14 Aug 2025 03:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ApNM+ubm"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="EvInC0dP"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1F928B415;
-	Wed, 13 Aug 2025 16:57:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED452836F
+	for <linux-omap@vger.kernel.org>; Thu, 14 Aug 2025 03:56:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755104261; cv=none; b=eTuihXQIcKFuVt3/mFotCMkKZ1K4BJXr1Qq5hwxLNYEWWfMBez0nMON0/wo2Jwp7z99tQP7hZL2onc2eMI6ohS8zm4zrNPkINnDseg/z/SSoun1voObkkaZryu5F4fbOeJIDbwSvxOtC0kh5Ik11E9ho4/pwo3jVpHSTiYM20w4=
+	t=1755143766; cv=none; b=t/puqOGSzsT2D7jLfuFZFt/ZblbtfwiHr79ZHxALXXffE/ZpdE5lkG+kFh6PN09AR4UypDAeJpG70oh1vFUqrWUcy+bNXnnCoSLXSE5+ZmxbIWMtHz8QX4aSPdEl9Q5EuiFBo/a8+nyzbn7oXwk1rLr6fGapVQM1ZWqDxFYkcsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755104261; c=relaxed/simple;
-	bh=d5wzBkVFNX6qAoxoJebtm0HqVmOo3GmOYnWMCd8weXs=;
+	s=arc-20240116; t=1755143766; c=relaxed/simple;
+	bh=QPXgL5JA1NadViWzO3at4LaILf4SB9CfhgF57NmFOj0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qi7ob+ZtrLVVySobUDDg7RDy0YgNl4yjYXjUtu9NCusKQloBhCWf+nYso14zVeaCPblexC3+OBHOYu9EjjPw02zQ+IIZsD4rvutPGeScvDuv5s3Dm/ILCK05PvLJuH88H5Y+vcen+ug+RSF8NSVTZitUV3gdQgeOZPpPIlFZJVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ApNM+ubm; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-afcb7a3b3a9so6984466b.2;
-        Wed, 13 Aug 2025 09:57:39 -0700 (PDT)
+	 To:Cc:Content-Type; b=gA8qVF9u6Un0M/IBLym827venVZwcuWRAsFD6WpqGqM29EL0Wtj6XS2Ge8Co+z9EevTAdgbo4MbP8m4pJO6G8cIC9QhRD+Hb0ndh8pJtdrL7MwHE3ksnxr5Fa2qc41B2AwTE/kJpjt7PeNMoJpOfcVLemRTtRA/91+By/xRZIgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=EvInC0dP; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-55ce510b4ceso534310e87.1
+        for <linux-omap@vger.kernel.org>; Wed, 13 Aug 2025 20:56:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755104258; x=1755709058; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1755143762; x=1755748562; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=a2gxI4yFXWVOtLhM/0polO/7seLsXtV2FXKtzlfxTr8=;
-        b=ApNM+ubmRwM7RSC40DNjE+ofpXjCz0yVpOG/2xfbZi7qscg3jPcd0V1xK83tfflzLO
-         xQQlfAD4bgsOZcSMc67YABOsyEF6BXTj5BH2upqRzKtS2Altdfq6vhhhP/7xyuZTRLw+
-         69ny3NIaMzt0MQQEQAutWV+QfX93MxlGgyAykiy+GLYt8EvrisfyCpZTFn1GwdzCRzkJ
-         MH3O+wRG8+n3jEaEctWMEIsjWc4iXIV5pxnkR1WZkgZJDJ6GapcKHjw5Tbsfar7c12Bg
-         xdB1OvsDYRk7kSQOc2nI21dgx6rKom352XD0xuHGhr1P29M7Evm+IOllImUPOVV/gWwS
-         6FGg==
+        bh=QPXgL5JA1NadViWzO3at4LaILf4SB9CfhgF57NmFOj0=;
+        b=EvInC0dPxLsxOgrcXaABeghM/4bT5PLVmE6f2aI+gEfPRh5bcJCK3IFSzB//2toRIW
+         qsHUSOgJq+PQj9Yw8ZwlWorNd/cPgDsXGTxs3D1Q4OZCWZN3kL9Xhmrk8WyxYsHAGyHm
+         e/jNSSc8EsiSs9zykXjkkGMzt/KMzDxyZTVOs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755104258; x=1755709058;
+        d=1e100.net; s=20230601; t=1755143762; x=1755748562;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=a2gxI4yFXWVOtLhM/0polO/7seLsXtV2FXKtzlfxTr8=;
-        b=ROBFyP7FXRAoMOQA9puH7RV1e+pK4tlgzizwsHAxkc2T2KFurKXxf18jnEp/Xk74kH
-         3Xe/1a2phHMo8hH/xB8y8bieWK1bS7lOhHGCWs7tJWiu4AmAnkE3tjwUjBXYuug9ieEd
-         jJG+nRkfjlhaCKWyuySRxZ8TjPVW3gsMsDHZDaXUBWPl0VZg/ye44uBE6Zi8+X1jEUAZ
-         aB+j2cK/gplAjEdjLsj/UA3QNAk91uKpOrSL80SNOCCecy0TKW2DNHm/rP4vaGcFOO8E
-         33rx/bVxXIfhzD4k9dZFKXg3vLx03ZFCYXRztnnA4USq550yiBg4xMc47MXDWG+DGLly
-         zTEw==
-X-Forwarded-Encrypted: i=1; AJvYcCUFb/n2JjPOu+zVN0OpJD5bZwH6eGBLsD5d7DAv6L9YHIdMD3b+KbEm+cfQLNAOHDBtQCyMXptz+YjslA==@vger.kernel.org, AJvYcCUP8BuxXXlOY9TMnZ/VD5tK6sjv0S13p63uOvvr90XZptPa5RoHXfYjgJvqf7atW4bXyOC3m748YAZ/Dg==@vger.kernel.org, AJvYcCV1bSdJq0Z/LPIvpipkgXlLXQnN2nZl87MGMArkAeMtDq1Jy12bwMXvUxbLlpXPwwhlva6T/vKs2UNV2gouSkCB@vger.kernel.org, AJvYcCVrwpaCIGrNeuijpvLKerhBzw4o4uOurA6c9XrYjP2f9ZpjvqNzd7TxepUNKxKSNl33unVrk4TAWaniHN6s@vger.kernel.org, AJvYcCWUknLfk/wYmVAYugSHt3TnD5PEmZGk1zXkLIWb3c6uFNWeqpLUUniVc8hcY07/7aKV4fmOJ3pG4GxhwQ==@vger.kernel.org, AJvYcCWb/Ndlo8q3BUH80OzxEitcaS/f7JIvCRPkowjJosNxWLWYQGrzt6ZQvLL6MYcI4iejGZvwHXTHi+cnybW5@vger.kernel.org, AJvYcCWdigR4/hLNteSLuUQHxSzRd5A428Xy0WdFVH//gJaUTiGeWqQR+jl6xqxND6EfYC5iHDryYD1s8R33VPwuW9fIHcg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhyqgZclVJHPondCKLNK8BuomvBV97MPaE9FWZH2oHA3ugNqaa
-	agiFpvx2BaCWd5PChZmqZ2yrMT+dtIGgJXeJNA77Ui/c22Fu2SM4FRTw9xDSwH7JiL07kUyyiC3
-	vuI/S2qSjAbBCFdjvzx/wOcAF634KxoE=
-X-Gm-Gg: ASbGncsIOMOGI6ZYGV8RcPe4fZAMDUblFDMD9hUgtTSdwG8wix5q5Nsi3YMegNgeaBX
-	nQPXHn2AZKzqwieFJp2k1jEOnJrqDh4vPeLhd75yDNt2YwnWEXtK6fMsAMvgh49amTV4wL7BNwu
-	0s/vT0Yz74ymLMzbQtMfq1jwPltmI6gfLaEzkz40xcyhg4KriywShqk1yhhV/oj14Itz5zF82dE
-	4QDzlAu/w==
-X-Google-Smtp-Source: AGHT+IHbk44OEj1r3kasIcTcyEDngMuhrBuyXGAMgY2npDrtdlj0x5dJHeL/vjl9xwrgnQvrGKpG6wybKFGCryjWMzw=
-X-Received: by 2002:a17:907:3f0b:b0:af9:116c:61c4 with SMTP id
- a640c23a62f3a-afca4e44cd7mr358157166b.48.1755104257569; Wed, 13 Aug 2025
- 09:57:37 -0700 (PDT)
+        bh=QPXgL5JA1NadViWzO3at4LaILf4SB9CfhgF57NmFOj0=;
+        b=gt3vpIsB9GXHQCBmPu2WpoUEUuXYZtMT2eIdQeXW3iAJOwEu8hENBCb6eYZxJSY0BC
+         txXm9l0BvkRVT/MC1ya8uqcajYSxYzD2b4/Ci/01X+A0SE3+rkLW4TzqJAU+us98akk7
+         +YGIL7BhLYENjWIPuPEzrvNrk90wCMVmlcmIxD7EbmZ6bBggyE+v4bU4fN0H18NPIJbU
+         rIQeRE808PgiZv3+5GgMybRZ1IIFd5bhKO/gxEEG9EJuNpiOq347BdD6OjQxzxzOs1gT
+         Na7qvaSfSZZO8fJ8S/Zd/nExibrgMMBjDWhmE14wdVMYwhUHJsYzNa1oOG8BDqSQS9l1
+         hDpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVEpugbAt4hup6YHSIAKAhfE3QxBU2kmZerNsCm8davp6pJTl1MFVcpsxAbUDnXSKVNfCiGdpT6r2my@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbL7cHkNGtsCm8WUBqgyLfM1xJJhuh+bWsTFU6tLv//xQFjgrl
+	g+XMSQhNbTgjxDSL5aJjZ/+ooyvjeCfViOu3WvpQoz0NUmBK7oJ19VN/ZF9SvTsqPz55WT+pWKm
+	SOkfa79bSjLeaO42cKYQmXZKSpNYXXIVu000anS1c
+X-Gm-Gg: ASbGncu3YsDnDMQ+OZOEFM4K8uKidPKhLVrvOAUWNBrjoAPXMZrIKBikzFXeyYAGxld
+	LfoznkkKU5H72jzj9ldP4bC42jhWacW0Q9Bc0EPgXWfiyL+aBdRQWeQZnvKS8uURhoEMxAoEFfL
+	4V9gLB3c+0EArWA/SgofrjOrPHI2rReCFtseqmliOHwp6aH7CMmRP9pJ+FY/AsaH5ueC9pwU2no
+	SE4dEKAZ21himxy+7GlIDgIDlz/mUl+2i6DT4aVGVIGLg==
+X-Google-Smtp-Source: AGHT+IHQMv69+04AP9otNVcxhwI8uWKlLmUkdvXFQ1PCUQkCenB9LDrLy/Vl+cHfeBSUvo7zV0jpH3UAnLNxpErRIuE=
+X-Received: by 2002:a05:6512:4406:b0:553:2868:6355 with SMTP id
+ 2adb3069b0e04-55ce4ffa5f7mr485589e87.18.1755143762579; Wed, 13 Aug 2025
+ 20:56:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250812-pinctrl-gpio-pinfuncs-v4-0-bb3906c55e64@linaro.org> <20250812-pinctrl-gpio-pinfuncs-v4-3-bb3906c55e64@linaro.org>
-In-Reply-To: <20250812-pinctrl-gpio-pinfuncs-v4-3-bb3906c55e64@linaro.org>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 13 Aug 2025 18:57:00 +0200
-X-Gm-Features: Ac12FXzRwEdbOG7WcfkJrIX52h7RVyVAx5HnOB8PpoXFNYyQXL2enxp09SWUXag
-Message-ID: <CAHp75VeSA=AYDKOV5XQ5nnz7EZRmnhbbVyJrcBUcMO2LrRMTmQ@mail.gmail.com>
-Subject: Re: [PATCH v4 03/15] pinctrl: airoha: replace struct function_desc
- with struct pinfunction
+References: <20250812-pinctrl-gpio-pinfuncs-v4-0-bb3906c55e64@linaro.org> <20250812-pinctrl-gpio-pinfuncs-v4-5-bb3906c55e64@linaro.org>
+In-Reply-To: <20250812-pinctrl-gpio-pinfuncs-v4-5-bb3906c55e64@linaro.org>
+From: Chen-Yu Tsai <wenst@chromium.org>
+Date: Thu, 14 Aug 2025 11:55:50 +0800
+X-Gm-Features: Ac12FXwQl-cvQ51JsCsvzfEY1EzqeHLXUhAtiyz4lnmgFYbrRneNtPbyaTw1wc8
+Message-ID: <CAGXv+5GE4eUjMhewRm9oa+GbJWt8tMC0RXvT0R5FEfVOAsJ3fQ@mail.gmail.com>
+Subject: Re: [PATCH v4 05/15] pinctrl: mediatek: moore: replace struct
+ function_desc with struct pinfunction
 To: Bartosz Golaszewski <brgl@bgdev.pl>
 Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
 	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
@@ -109,8 +106,8 @@ Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 12, 2025 at 10:27=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.pl=
-> wrote:
+On Tue, Aug 12, 2025 at 8:36=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
+ wrote:
 >
 > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 >
@@ -121,40 +118,8 @@ On Tue, Aug 12, 2025 at 10:27=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.pl=
 > accessed by drivers using pinmux_generic_get_function(). Replace the
 > struct function_desc objects in this driver with smaller struct
 > pinfunction instances.
+>
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-...
-
->  #define PINCTRL_FUNC_DESC(id)                                          \
->         {                                                               \
->                 .desc =3D {                                              =
- \
-> -                       .func =3D {                                      =
- \
-> -                               .name =3D #id,                           =
- \
-> -                               .groups =3D id##_groups,                 =
- \
-> -                               .ngroups =3D ARRAY_SIZE(id##_groups),    =
- \
-> -                       }                                               \
-> +                       .name =3D #id,                                   =
- \
-> +                       .groups =3D id##_groups,                         =
- \
-> +                       .ngroups =3D ARRAY_SIZE(id##_groups),            =
- \
-
-Can this use PINCTRL_PINFUNCITON() ?
-
->                 },                                                      \
->                 .groups =3D id##_func_group,                             =
- \
->                 .group_size =3D ARRAY_SIZE(id##_func_group),             =
- \
-
->  };
-
---=20
-With Best Regards,
-Andy Shevchenko
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
 
