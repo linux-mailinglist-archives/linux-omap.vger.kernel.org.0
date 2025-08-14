@@ -1,119 +1,140 @@
-Return-Path: <linux-omap+bounces-4217-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4218-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F0B3B25A2E
-	for <lists+linux-omap@lfdr.de>; Thu, 14 Aug 2025 05:58:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B64B25AB6
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Aug 2025 07:13:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DB26562B9F
-	for <lists+linux-omap@lfdr.de>; Thu, 14 Aug 2025 03:58:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DECB35A8269
+	for <lists+linux-omap@lfdr.de>; Thu, 14 Aug 2025 05:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F48C1D79BE;
-	Thu, 14 Aug 2025 03:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1CB21FF25;
+	Thu, 14 Aug 2025 05:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="EKHSha6q"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="FCjjvweP"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CCC19C556
-	for <linux-omap@vger.kernel.org>; Thu, 14 Aug 2025 03:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D309217734
+	for <linux-omap@vger.kernel.org>; Thu, 14 Aug 2025 05:13:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755143875; cv=none; b=GdlBi0GRhXWPylKTTSzBXtWdF3RJpdbj/w1Pi6R0sMb98j0/XAxs/v6jWJMOOSTmzLtqnxNRsL7oV3DR3nPCYi9Gn8z6INn191Q3ymMw5AXA8X1RwU3AwsvrXyIUZfEePcir+gVddoO1kcXFeknxnoJxaTUj8UpDU7Xlrhlnvfs=
+	t=1755148399; cv=none; b=OO3YUuvyT8tAnEa3EdoVOggdR6b1g9xPFNYrsZ9chyT2o0vFJNF7wJMoPHrDec4xQaXh2rXWVK9DRm4PL9WKakpI44YVFo2q5suII7FLrCFcM+JgSZZRVnk1o6DNPBPSwtRIYgO9ihLv+DH+iLyuJaZ4bBpHAWimSFLUel3j5Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755143875; c=relaxed/simple;
-	bh=KuAzkdu+nBeW4XQJu6RSp1V8OBm3suYsUZfkIRqSD68=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YQzT3pzo4obvRlaKGqYu9r4x38eVvQuxaaZG8A7qFUcfWZ6pGXxQykUE4ZnY9TZGcdQeWczcoT8kstJ7C9FloJFsh75CPh+iFOpcVG05dyRommACbeS6foXh/OJT+PcCmNaeIrASCrxO5WbqUjiKPL3+vcbsXlJr7a3uzvmOKik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=EKHSha6q; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-55ce509127bso396290e87.0
-        for <linux-omap@vger.kernel.org>; Wed, 13 Aug 2025 20:57:53 -0700 (PDT)
+	s=arc-20240116; t=1755148399; c=relaxed/simple;
+	bh=k7BQOJKsWTRVbsTyj8wE27+ReeJC9Y/WsWlZgzIGoO0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c9zZGEJQv1OTGTsmDkbyvo2QdLoWEq0wP0rBw12aca6Q1SSTVwlUUUTqScsxnXiuLAxxCAGO/DoQ49MzToPt/7l4GFLNo/KfVGZjgyVPPnUzTvgYFoPM8ACCydtJmxs6hhB6A3hP53mgmqn58fO/FFMCpw7hWtSOOW8TjIS1X2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=FCjjvweP; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-afcb7a0442bso92022766b.2
+        for <linux-omap@vger.kernel.org>; Wed, 13 Aug 2025 22:13:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1755143871; x=1755748671; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KuAzkdu+nBeW4XQJu6RSp1V8OBm3suYsUZfkIRqSD68=;
-        b=EKHSha6qdcBlsS3gXN4Cw+T6fWwdA1YCyfFc5q8C+8u6tYxjS3yl3WEbF+GocUde6a
-         Yr4akzI6BV7tlc0LbiOXzgB/ACP7W21rMCxsdytPp7bq7N3Oot9ZRftp5aDUg4ZN4OKs
-         loF7b7jyJYM9Acbf/YX0K99D2wwAo400Usa/0=
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755148395; x=1755753195; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zOs+Ja2LywqReJC9686EhsUnOQ6QzXRLXHcqfrYvThc=;
+        b=FCjjvwePwZ2mhuucScjnjn68NRhkzBNKMlIdyRf5y6AxrjHQUi07I1Or7rMDz+zQHl
+         jtVNBrD4S+gB74F5wnu2qtSXOPExGCbb+JTxot53WZTiSMl0aS0WTISMK/737/1s4344
+         xMJAtGWsBw/vBV4QjVmMShPS0soDQ/7rKSWug8TIliJ0cMj7vDiLWxqq2mkoOIQhd/YX
+         wqdTBzMA7LIrUJJu5+7JHw+BJTjHlKzDBhM7LX/KgcqEOnbkDPvzzm1E7T51W2+1+klq
+         4p5v4M6q/mPGhfGMHjiu1XCHNkaOMpfZecn63KrJpGzcEyHFs57aE4uINI4xt33IfwZG
+         ZwGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755143871; x=1755748671;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KuAzkdu+nBeW4XQJu6RSp1V8OBm3suYsUZfkIRqSD68=;
-        b=dIbkl8OMa4sMPv/CHdLJarL0tGcQgVVFFxhLCR70NR0DoQ0AP+iZft741Sp4Q69xFh
-         sbxji4R8yteoSZoY0FlrsOpvILyFfobR+KIn5Asy1QgMzym+SDcSv5Kas5SIzIO12VoQ
-         HPkJBnRuhoxAhQjPXOBo5qGyRGZONsr0esDdj8TU86MUNiUu57sdRvohVaYXxrMkM2kP
-         pY1lIOvLTCXSGkHCHcVDi8v9aB8XOkpi2NskNnbMpoRGqOpxUiocv+eYpQEHAjhfDPHr
-         sLmajftiYlxjxGINmMoJIL/GCjN5px/dS5/oz7fClBa9KEHjvBGny7MwvndXaIqOS/4x
-         IVCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWU+9uagkSThz+PC/RFnChQQRbblrUxn51jh6Zo+8ASMUxMG4cq8H/amkhN9yzPOtfkbW8Vlvy7OoBM@vger.kernel.org
-X-Gm-Message-State: AOJu0YzU7z7sbWkAcNlr3Kh74v5rDkPciqKchKiLZ0xQ4mABGJyefKR2
-	J0XwSpE0YsBkwhRiRjY74v7aU3ehQ60prX3/GfiqFdW5LuFLAjzN3IJZ/E1BpZci4gHzI782nu+
-	AUWeeuFa5O0qgs9GB4P3OEqEH8r38CD0rwMsWnKoP
-X-Gm-Gg: ASbGnctn3LBso/1DdCF3G6+/MYcoFQgmoCGY0CahPPcvgdAD06Y7z2W6ZNgaJx8goMJ
-	xUWyrcfzxefhe5vhq0aA6FBjrOKVxcOmWXHNOrXgb2N8PEYV0Kdoyllhns6pMe8VCOq1HQPPHUK
-	e8V1+wpSMeC+aGxAwL5Ybo/y4mq+xB3EiUk2tM5wrqg55uFIijSJ/SQ3EAZSUGfFClxsyxvzJ4l
-	TwPjpCpFVKQ4gvEfmEpjK3qrSiK70PwzpG66CEMm06BIw==
-X-Google-Smtp-Source: AGHT+IF+5iKv8rMK9YHb6myK/q855kRCdUIsQfOlyE7uVil4m3zuwOKJ3gr0xAyECxLHg6Jl7SqsZkrMsfX9UPSHH2s=
-X-Received: by 2002:a05:6512:b8a:b0:55b:8211:cc88 with SMTP id
- 2adb3069b0e04-55ce508ddefmr488807e87.51.1755143871084; Wed, 13 Aug 2025
- 20:57:51 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755148395; x=1755753195;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zOs+Ja2LywqReJC9686EhsUnOQ6QzXRLXHcqfrYvThc=;
+        b=WwUclvEX5UO2HtOTG0zAPlwsUjZHhX8ueb3NNSWjtL84F1uwpMFBY0u5FXu6PWl5sr
+         j6mhsZcWuexGQHrlH1m6DA7QY8nQ7MiOccYBBaK3rYRzAHACwLyCEnncQhCEqJS5tYvi
+         HIS59gbIEaA0psPlI2Od65JOBPHVe7SgXtawNk8cwTwHQOonZ/mqTG1WzZBCXO/NbEVo
+         VYZE6UvP4IO/dWi23XChTcIx5ev7gTb0OqLHXHTyPHLmAE0BzCvbm0Z4lufoUEdYEu30
+         oWnk6Lcbl1mhOQFuU//deMpObaxpK3NdT+kpQoClsygZ36H69Q7Z+Dd64rXcbNrEmo+b
+         zEkw==
+X-Forwarded-Encrypted: i=1; AJvYcCWCi254hDOSTHeIlF2qLzSMPYCYO3liX7exDR1IjsRIIlj7/SHO3HDbpIlU93faQvoqevvXmj2YufNV@vger.kernel.org
+X-Gm-Message-State: AOJu0YwonhVyrNRMafbqklueBCOX3Kah7pzCvQXP0hDc3Mi6ZrU3oS8n
+	RCwhz0Sm4LQm7qx5eCZz/S2XEF0q9sY4Lt18zTJqpr595QZgsKTeFSnvELhRzq6dtLE=
+X-Gm-Gg: ASbGncuk9CaZbOiwY/hiChOMOJyvRm/Fv8WVlwMsTRBOH1jobu4Xe7of2PQ7iqYDnsu
+	TMCSFAULia0h/x5zxzfOOL0yDRw6lc6krvq46MHAwKOZHyUeLoOABPHR/hGVYolyHlYsuZr4Q7m
+	Za8DruIpU2nj+GP50dIJD80WdGpe/5SOwv4l0uSXNWcZ4NJYRL54rf6qzM+cpvI3eNOgo+yc/IR
+	wzXH/y+9WZ9TkvYDizBjh698dSX+HCXUAqjkIS2TwqqEPg4Cbh9CaBTCDbdUwUzWUBsogh4LMv9
+	4bDA1/6qckX9cyKK5wSx1sa99q1m7sQ5JTjbxydoUN/P21xY5nWXCJuBejVrWOSlimL8Z2dYt4F
+	xvZN+q0LjAhHCMdH/ejcb9fSk9Dc=
+X-Google-Smtp-Source: AGHT+IE21Fscsduu8A2gVWCDMuP+3BFd0qyr2OthVuaxd9+6x6FL4+ivV3/eWrrrt5/okGohfJQ1Gg==
+X-Received: by 2002:a17:907:7243:b0:afa:97:55e9 with SMTP id a640c23a62f3a-afcb98c0441mr149870466b.36.1755148394806;
+        Wed, 13 Aug 2025 22:13:14 -0700 (PDT)
+Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-af91a078a28sm2533359966b.3.2025.08.13.22.13.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Aug 2025 22:13:14 -0700 (PDT)
+Date: Thu, 14 Aug 2025 07:13:12 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Dominik Brodowski <linux@dominikbrodowski.net>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
+	Tony Lindgren <tony@atomide.com>, Kevin Hilman <khilman@baylibre.com>, linux-omap@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 resend] pcmcia: omap_cf: Mark driver struct with
+ __refdata to prevent section mismatch
+Message-ID: <c5agcvxca6z7fb6eqwlrqq4232toncpfuu5frds3ebsbht7tyz@7lpkvzl4lyxi>
+References: <4937807c9d70644fae705459f36574bd24846d31.1755099931.git.geert+renesas@glider.be>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250812-pinctrl-gpio-pinfuncs-v4-0-bb3906c55e64@linaro.org> <20250812-pinctrl-gpio-pinfuncs-v4-4-bb3906c55e64@linaro.org>
-In-Reply-To: <20250812-pinctrl-gpio-pinfuncs-v4-4-bb3906c55e64@linaro.org>
-From: Chen-Yu Tsai <wenst@chromium.org>
-Date: Thu, 14 Aug 2025 11:57:40 +0800
-X-Gm-Features: Ac12FXwH4SzGC_raZvHd6w5DhOOOwcWIZ0DYC3dWkFgv22xak8lk2qDrshBunvY
-Message-ID: <CAGXv+5EDj4JEKAFC-Sv8kyiBNy8SViEXaepdssG5QTu_HtYQHw@mail.gmail.com>
-Subject: Re: [PATCH v4 04/15] pinctrl: mediatek: mt7988: use PINCTRL_PIN_FUNCTION()
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="xpccwvq7aahfhfvt"
+Content-Disposition: inline
+In-Reply-To: <4937807c9d70644fae705459f36574bd24846d31.1755099931.git.geert+renesas@glider.be>
+
+
+--xpccwvq7aahfhfvt
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 resend] pcmcia: omap_cf: Mark driver struct with
+ __refdata to prevent section mismatch
+MIME-Version: 1.0
 
-On Tue, Aug 12, 2025 at 8:36=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
- wrote:
->
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> We have a dedicated initializer macro for defining pin functions for
-> mediatek drivers so use it here.
->
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Hello Geert,
 
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+On Wed, Aug 13, 2025 at 05:50:14PM +0200, Geert Uytterhoeven wrote:
+> As described in the added code comment, a reference to .exit.text is ok
+> for drivers registered via platform_driver_probe().  Make this explicit
+> to prevent the following section mismatch warning
+>=20
+>     WARNING: modpost: drivers/pcmcia/omap_cf: section mismatch in referen=
+ce: omap_cf_driver+0x4 (section: .data) -> omap_cf_remove (section: .exit.t=
+ext)
+>=20
+> that triggers on an omap1_defconfig + CONFIG_OMAP_CF=3Dm build.
+>=20
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+
+Reviewed-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
+
+--xpccwvq7aahfhfvt
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmidcGUACgkQj4D7WH0S
+/k4qSQf+N2OQhVnGMcoElMAvBwKbRCYoXFuMOt9VpW03suQ+ZcmFQ0WmQou3haZQ
+IN7houqborh6Ue1EGpUzlzDurVsTzGE+yD4buFiPzbUpJmjg9Cr6OUeC/GXqLQOg
+Gs00rX2Xe1norafY8hDLFSbZHW3qENC7bRrRFkTCN2Gc0FaBiGNWNllE989SBoqT
+cwn8PzptDWqd7o8clOUBxZkTQG4j94H8WMgHHNDVbtWVra5Da4i57HyqWSCRbDZ2
+EBIwnC9shX0y8FwwQGwVQYteqIzn8ThU+C7vuoZ5+mV/L+E4o0Amc0xSzCs8fIZB
+S4Ho9JpdVDD8G2HV/ezYADHoQIBWfw==
+=su2q
+-----END PGP SIGNATURE-----
+
+--xpccwvq7aahfhfvt--
 
