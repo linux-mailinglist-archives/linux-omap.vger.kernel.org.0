@@ -1,119 +1,174 @@
-Return-Path: <linux-omap+bounces-4251-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4252-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7EA9B28EA5
-	for <lists+linux-omap@lfdr.de>; Sat, 16 Aug 2025 16:52:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DDBFB29246
+	for <lists+linux-omap@lfdr.de>; Sun, 17 Aug 2025 10:35:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EF381C215FD
-	for <lists+linux-omap@lfdr.de>; Sat, 16 Aug 2025 14:53:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49F6D177FDF
+	for <lists+linux-omap@lfdr.de>; Sun, 17 Aug 2025 08:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95312F39DF;
-	Sat, 16 Aug 2025 14:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA8721B91D;
+	Sun, 17 Aug 2025 08:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dominikbrodowski.net header.i=@dominikbrodowski.net header.b="zTtsWs7I"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="cIyiwxb3"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from isilmar-4.linta.de (isilmar-4.linta.de [136.243.71.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F03145B3F;
-	Sat, 16 Aug 2025 14:52:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.243.71.142
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E84A7081F
+	for <linux-omap@vger.kernel.org>; Sun, 17 Aug 2025 08:35:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755355950; cv=none; b=WLIyc90aHJUsOEcEEHcUgNO48aJ73ed0OKKgWutadR8uoURp/Wu/qJaNfcTV15J6eBpVkh5IDDVwI5nlWpC/tCw2lY8EO4yOZu9bfxQqLvx0xxNyn6Wj/NL2RtmZ5hmAwOAZOgkAIXUvGV6mYv+Bk4b7jZ8i3NW/JoYpEWqXsNE=
+	t=1755419725; cv=none; b=N6z/Q3cmid2b2zyRmw60g8/j0/cejeMqhe5MDL35Zp1yyDjWT7EPBrTPUJtyD+4PlJnTgqfVFslL4vXdLBx9/WeISP1E+dMN7k4MSCTCeJ8JBkWwhqYuyF3CrwA2REIwjnZXCADto8YSs6pkBuopk0rWv16cgblHXb25NNj7P1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755355950; c=relaxed/simple;
-	bh=eMxk3GbayUJW1JAPupzdQ4dkdxSkGIDON+spMHIA+3E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F1inmPZ5uLkhQIcidDWfJU2s1QgaC/OZR81loVKtpUWn80SOSFnLARSa6hqzlcYTgiPp8UmWettCKED6PSnT5iyWyS1OaRafWN1R9UOrzHGkTi2iy9myFXVlLjnfminp2o7eABLaL/Lgw+bHGgabLBiNp00QGaqZZLg6tRaCYAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dominikbrodowski.net; spf=pass smtp.mailfrom=dominikbrodowski.net; dkim=pass (2048-bit key) header.d=dominikbrodowski.net header.i=@dominikbrodowski.net header.b=zTtsWs7I; arc=none smtp.client-ip=136.243.71.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dominikbrodowski.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dominikbrodowski.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=dominikbrodowski.net;
-	s=k19.isilmar-4; t=1755355415;
-	bh=eMxk3GbayUJW1JAPupzdQ4dkdxSkGIDON+spMHIA+3E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=zTtsWs7Iff/U76XNVBhmkr0RimE1XKHoz7/cay212p9wMze/R69cadMf/wx7ZQe1k
-	 4AKYSrMm5iith9TFey0SQzWZembSD3U6shajPZeNSY/BSETsvMg6E+LkMjw+12b4vq
-	 VsCqNGwwSms1RJ013GOPs+mpq5huMShpnJfGh6mcQXCwnDBObhCJnw3m4XWhtBw+a9
-	 ABw7rmirqSKimrLiS1OeEvC4isUVr26Ruw8DU5+icB9Ind6OYfnrikXm9n1sh2Ltgq
-	 xVh6d2iAShZ0lDYTiGONQmcnrYnbULVEAloIsIBQ8VXitYyStZd3IppA93Lcdi80+x
-	 7NEeY5rkLJEjw==
-Received: from shine.dominikbrodowski.net (shine.brodo.linta [10.2.0.112])
-	by isilmar-4.linta.de (Postfix) with ESMTPSA id 8B33A200724;
-	Sat, 16 Aug 2025 14:43:35 +0000 (UTC)
-Received: by shine.dominikbrodowski.net (Postfix, from userid 1000)
-	id 17566A009A; Sat, 16 Aug 2025 16:41:52 +0200 (CEST)
-Date: Sat, 16 Aug 2025 16:41:52 +0200
-From: Dominik Brodowski <linux@dominikbrodowski.net>
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 resend] pcmcia: omap_cf: Mark driver struct with
- __refdata to prevent section mismatch
-Message-ID: <aKCYsJnFIbAK2y8q@shine.dominikbrodowski.net>
-References: <4937807c9d70644fae705459f36574bd24846d31.1755099931.git.geert+renesas@glider.be>
+	s=arc-20240116; t=1755419725; c=relaxed/simple;
+	bh=QnK00DP14og931D7K5uGWiQbxVg1tBZthOnJ09Y2qY8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qdY/Fl+SxZBe3o4UL5ZY62J3iwF0y6tUzFBQIxRAVK2gKjWCp8pqqBNsMVV+Lg1JsH6eWCncNahyYVa8Ohzrq/pz4yQetf4NFfitkWCo9Kuv8dDba0UksXfEROPniezL8xoVU2+JYUYpfdfFw+kRvTMDlDY8IzhUQoOVHOxzeeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=cIyiwxb3; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=mL
+	Y8zivKv4V7ZPqASwM9sGRdSMQXYChLQdHmi9I6EJE=; b=cIyiwxb3EIhFeCpqJg
+	0x9Mt29Uz+rCc31W+FAINyJuFpXzkM17eHmAY24J3/1sX06PUJ+Av9zBX693CwF7
+	gYej8Dcx85g3+1deNWN8UesI12uGLjOC9SdEfG0/08yrik68JTDyBuWXj/ZDAwIa
+	jjK04ycTh91fJI5YBfLbs5a4w=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wDHZ8UrlKFoCU5FCg--.59942S2;
+	Sun, 17 Aug 2025 16:34:53 +0800 (CST)
+From: Yang Xiuwei <yangxiuwei2025@163.com>
+To: tony@atomide.com,
+	khilman@baylibre.com
+Cc: linux-omap@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Yang Xiuwei <yangxiuwei@kylinos.cn>
+Subject: [PATCH] ARM: OMAP2+: use IS_ERR_OR_NULL() helper
+Date: Sun, 17 Aug 2025 16:34:49 +0800
+Message-Id: <20250817083449.2249268-1-yangxiuwei2025@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4937807c9d70644fae705459f36574bd24846d31.1755099931.git.geert+renesas@glider.be>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDHZ8UrlKFoCU5FCg--.59942S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZr18AFWUKw4kAF4rurW8tFb_yoW5KFW5pF
+	yqkw12gr40gw17J34DtF40vF1jy392qF40yrZY9w1Yqw4a9rnrG3W29Fyjk34Ykas7Ga1r
+	AF43Aay8Zr45JFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jJfHbUUUUU=
+X-CM-SenderInfo: p1dqw55lxzvxisqskqqrwthudrp/1tbiMQ+skGihi-yrTQAAsa
 
-Applied to pcmcia-next, thanks!
+From: Yang Xiuwei <yangxiuwei@kylinos.cn>
 
-Best,
-	Dominik
+Simplify error handling in OMAP powerdomain, voltage, and VP code by
+replacing open-coded '!ptr || IS_ERR(ptr)' checks with the combined
+IS_ERR_OR_NULL() helper.
 
+This improves readability and consistency across
+omap_set_pwrdm_state(), voltdm_get_voltage(), voltdm_scale(),
+voltdm_reset(), and related functions.
 
-Am Wed, Aug 13, 2025 at 05:50:14PM +0200 schrieb Geert Uytterhoeven:
-> As described in the added code comment, a reference to .exit.text is ok
-> for drivers registered via platform_driver_probe().  Make this explicit
-> to prevent the following section mismatch warning
-> 
->     WARNING: modpost: drivers/pcmcia/omap_cf: section mismatch in reference: omap_cf_driver+0x4 (section: .data) -> omap_cf_remove (section: .exit.text)
-> 
-> that triggers on an omap1_defconfig + CONFIG_OMAP_CF=m build.
-> 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Acked-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-> ---
-> v2:
->   - Add Acked-by.
-> ---
->  drivers/pcmcia/omap_cf.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pcmcia/omap_cf.c b/drivers/pcmcia/omap_cf.c
-> index 1b1dff56ec7b11f3..733777367c3b4505 100644
-> --- a/drivers/pcmcia/omap_cf.c
-> +++ b/drivers/pcmcia/omap_cf.c
-> @@ -302,7 +302,13 @@ static void __exit omap_cf_remove(struct platform_device *pdev)
->  	kfree(cf);
->  }
->  
-> -static struct platform_driver omap_cf_driver = {
-> +/*
-> + * omap_cf_remove() lives in .exit.text. For drivers registered via
-> + * platform_driver_probe() this is ok because they cannot get unbound at
-> + * runtime. So mark the driver struct with __refdata to prevent modpost
-> + * triggering a section mismatch warning.
-> + */
-> +static struct platform_driver omap_cf_driver __refdata = {
->  	.driver = {
->  		.name	= driver_name,
->  	},
-> -- 
-> 2.43.0
-> 
-> 
+No functional change intended.
+
+Signed-off-by: Yang Xiuwei <yangxiuwei@kylinos.cn>
+
+diff --git a/arch/arm/mach-omap2/powerdomain.c b/arch/arm/mach-omap2/powerdomain.c
+index a4785302b7ae..0225b9889404 100644
+--- a/arch/arm/mach-omap2/powerdomain.c
++++ b/arch/arm/mach-omap2/powerdomain.c
+@@ -1111,7 +1111,7 @@ int omap_set_pwrdm_state(struct powerdomain *pwrdm, u8 pwrst)
+ 	int curr_pwrst;
+ 	int ret = 0;
+ 
+-	if (!pwrdm || IS_ERR(pwrdm))
++	if (IS_ERR_OR_NULL(pwrdm))
+ 		return -EINVAL;
+ 
+ 	while (!(pwrdm->pwrsts & (1 << pwrst))) {
+diff --git a/arch/arm/mach-omap2/voltage.c b/arch/arm/mach-omap2/voltage.c
+index 49e8bc69abdd..000c2bca5ef0 100644
+--- a/arch/arm/mach-omap2/voltage.c
++++ b/arch/arm/mach-omap2/voltage.c
+@@ -51,7 +51,7 @@ static LIST_HEAD(voltdm_list);
+  */
+ unsigned long voltdm_get_voltage(struct voltagedomain *voltdm)
+ {
+-	if (!voltdm || IS_ERR(voltdm)) {
++	if (IS_ERR_OR_NULL(voltdm)) {
+ 		pr_warn("%s: VDD specified does not exist!\n", __func__);
+ 		return 0;
+ 	}
+@@ -73,7 +73,7 @@ static int voltdm_scale(struct voltagedomain *voltdm,
+ 	int ret, i;
+ 	unsigned long volt = 0;
+ 
+-	if (!voltdm || IS_ERR(voltdm)) {
++	if (IS_ERR_OR_NULL(voltdm)) {
+ 		pr_warn("%s: VDD specified does not exist!\n", __func__);
+ 		return -EINVAL;
+ 	}
+@@ -124,7 +124,7 @@ void voltdm_reset(struct voltagedomain *voltdm)
+ {
+ 	unsigned long target_volt;
+ 
+-	if (!voltdm || IS_ERR(voltdm)) {
++	if (IS_ERR_OR_NULL(voltdm)) {
+ 		pr_warn("%s: VDD specified does not exist!\n", __func__);
+ 		return;
+ 	}
+@@ -154,7 +154,7 @@ void voltdm_reset(struct voltagedomain *voltdm)
+ void omap_voltage_get_volttable(struct voltagedomain *voltdm,
+ 				struct omap_volt_data **volt_data)
+ {
+-	if (!voltdm || IS_ERR(voltdm)) {
++	if (IS_ERR_OR_NULL(voltdm)) {
+ 		pr_warn("%s: VDD specified does not exist!\n", __func__);
+ 		return;
+ 	}
+@@ -182,7 +182,7 @@ struct omap_volt_data *omap_voltage_get_voltdata(struct voltagedomain *voltdm,
+ {
+ 	int i;
+ 
+-	if (!voltdm || IS_ERR(voltdm)) {
++	if (IS_ERR_OR_NULL(voltdm)) {
+ 		pr_warn("%s: VDD specified does not exist!\n", __func__);
+ 		return ERR_PTR(-EINVAL);
+ 	}
+@@ -216,7 +216,7 @@ struct omap_volt_data *omap_voltage_get_voltdata(struct voltagedomain *voltdm,
+ int omap_voltage_register_pmic(struct voltagedomain *voltdm,
+ 			       struct omap_voltdm_pmic *pmic)
+ {
+-	if (!voltdm || IS_ERR(voltdm)) {
++	if (IS_ERR_OR_NULL(voltdm)) {
+ 		pr_warn("%s: VDD specified does not exist!\n", __func__);
+ 		return -EINVAL;
+ 	}
+diff --git a/arch/arm/mach-omap2/vp.c b/arch/arm/mach-omap2/vp.c
+index a709655b978c..03c481c4742c 100644
+--- a/arch/arm/mach-omap2/vp.c
++++ b/arch/arm/mach-omap2/vp.c
+@@ -199,7 +199,7 @@ void omap_vp_enable(struct voltagedomain *voltdm)
+ 	struct omap_vp_instance *vp;
+ 	u32 vpconfig, volt;
+ 
+-	if (!voltdm || IS_ERR(voltdm)) {
++	if (IS_ERR_OR_NULL(voltdm)) {
+ 		pr_warn("%s: VDD specified does not exist!\n", __func__);
+ 		return;
+ 	}
+@@ -244,7 +244,7 @@ void omap_vp_disable(struct voltagedomain *voltdm)
+ 	u32 vpconfig;
+ 	int timeout;
+ 
+-	if (!voltdm || IS_ERR(voltdm)) {
++	if (IS_ERR_OR_NULL(voltdm)) {
+ 		pr_warn("%s: VDD specified does not exist!\n", __func__);
+ 		return;
+ 	}
+-- 
+2.25.1
+
 
