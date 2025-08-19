@@ -1,306 +1,178 @@
-Return-Path: <linux-omap+bounces-4271-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4272-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79AD0B2CD91
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 22:13:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD45B2CE22
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 22:37:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 64BEE4E4BE7
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 20:13:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74C1E7B85CD
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 20:34:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C19341ADD;
-	Tue, 19 Aug 2025 20:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE42134AAE1;
+	Tue, 19 Aug 2025 20:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g9vuPIhH"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="2t0nH+rw"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD53F340DAB;
-	Tue, 19 Aug 2025 20:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832E233EB02;
+	Tue, 19 Aug 2025 20:33:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755634407; cv=none; b=u9o5dtrmCXGCQVCPYzOTcBghSyPKe8cDRv/IeC+t7Wg6UN4vmpk2OCdhjzkwH0IfSjCumCJD4+bCNr9UzsIaRa3oFewuMSFLKncvK2JVV6FvTfUxomLXuadHopzl/n0nvA7ajfZA+rv1ItpzgR9LmeEt9qMg5Cn31ByVNYcRm2M=
+	t=1755635617; cv=none; b=KmbvrB8oQCLQJ30Zx4mpDSj2aYILb/Sl17YIxb2OlOpn2ortmN0he8V3QWqFbkymAcTUw9M8vdUzBB15wGQvTpP9l2mCw+rqqEE9KXbz4yDFUriJvM6+khxfW8omcXhgTa0T6YRhyW5fCZw6IlPngCTWdYBel6FQMtYo6oOx1T4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755634407; c=relaxed/simple;
-	bh=NRTK5/DdsThFsD4bQ4sKyg20FKM0kzOknPwv4hIjSq8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PLOMZP0Ps0Uteca5uveb8sAtdqyF27FINI81egyfwcI9Pxvy4phnpPkZn9KkdDZ8m2pzVXfOJgdICMfwhGkrPbkKOkMqu7ius5V+e0gVTTgAf7N3DBzsFBPpaVP33+LijXs7jltUFmK0AVFkphHzf6GaPI38Ooeg9q35FQppGqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g9vuPIhH; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45a1b00a65fso30065315e9.0;
-        Tue, 19 Aug 2025 13:13:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755634404; x=1756239204; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2mvrZfLsypKMiACsSNAj4UlMwJzICbqho4HfD2MSUZ4=;
-        b=g9vuPIhH8d8oV8fz4ZKgYozQ+MWDamlS8Ge43DoYk4f+KDDVMap8LULOW/Ev+5bhTq
-         njXi6RDwAllLe0LKzcuOyUY/xbxyaPYORJ1dxfMQLSfPpy/GJto8D3zEhRVVWY94ZPPB
-         XJ5x2/csuZa674U0BjHTGWq4BP7kyb4TKUjHzvcRNuU4no43CMr/8RknPaLZ1gca+DXv
-         7hCQrbOOnh0c3Kj7bc5B8mCS9BwUkm33og4hdQkksirFs7pAfD3TNOgwu9eWwSeUxT/S
-         4zAJTKfiW5KrAZbKZAZbNEw24DJDlVv6lvB4kqLX/7uCcwz3ccuklTN/A4yQ5Z44AScx
-         Mw7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755634404; x=1756239204;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2mvrZfLsypKMiACsSNAj4UlMwJzICbqho4HfD2MSUZ4=;
-        b=Pqs6Ap26KYtgLLpvaLzvXypHM1kwCPPVgEUnCdEDyt69lz+Ez/oOugCTCiRW2uJtFH
-         /QNonIMHZvMkJUtofyPUCXQb6P418XNBbjzTn/8uDJ8NkeNGrAgIcYL1piQlCdmAU/JU
-         6VYvDZUGfGsBGXxLVMCHA6QWa2KQ1H4jDy9EP7GKWi8yf7YRBGlH7aRFeX4jRykBEKGs
-         uiqCeRBZhypTKWWRAmzGVg7nC9ZVrz0cfMkm0ey3lHrMyWXw+silUKUyfhmj82NkPAb0
-         fuaJlSPLpY/y2ck0pmFq1zY62Aaqk2tZnRH0z+QJN6N7ts3rwgVlga9Re3/indJCVmsi
-         CtPA==
-X-Forwarded-Encrypted: i=1; AJvYcCUxIJSPFSVh978H08H0TnLZG1DSvnTrfbHpDn0msjgqKQoPyDHT7Gp8yvrtJts6tKbApyyrRxiO1/zEw3ju@vger.kernel.org, AJvYcCV/LiOHTSdczjDFEs7jf6mVAgnBhG2n2Yxh4M+2u12zZB6c30026QSnd8vhFVjQl9T66AYDhKIVi8aTRZk=@vger.kernel.org, AJvYcCVnA+sPvBiECY26+1QArL/UxnAxo9sGSTbmVM1ndHKkBH+0nA+y7y5Y6FptDRSFqCHmzGSQgs6G6RGX@vger.kernel.org, AJvYcCXvKt9QXD8Hc44WscC+XFHdgB00A6yxoCo9OIk+fNXmSE9YnQlcDqJnpsb1o/NpSHcd5UTRfOwgoHQ1vQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2DusCO+mF/Co0tDXja8MfRP9fLdm/Oe9fp+iZ0CRNuzMlx9om
-	NzNhXOTfH6wGDDlBajt2k49gJj5apPIYmYdCyvsoOarvqidZFrHVJi9KVuQU
-X-Gm-Gg: ASbGncswN/rpVXRcTgfdBVj1id23shCAvYOBae7flVAtYaft626r2sOiheZRKA2IZY3
-	1oeDXzPYpND16Gv7KFVyo1EGLQLBNngp+tcaZtAZZgEnh+fi6X+QSpryzgRG5RSj3v4+fgy2oAM
-	GAZ1Sk0EbSA7l4bSwah8gcBgA9Fg0bjsWvUoi4IR5/VAc5TJVRgUgXZijjkp1oaWQpdXpenKCij
-	suWCRMw4vIN+uC2c/ypdDQwtPunsrmie+XJ4Q3MsUugVuQvVQCZoUc2RCTStRvvEb+o75pO9i4U
-	LnyG37dcttJDeMH18imz4zeUD+hzHFmQ3R8Lry6xoWCwyBG3uMt6LQD+i1rp1bd8SUclOyIWpAK
-	kqyI1umTBVXAJEiDxwRH9GmgPGfFCn7Wj4lzyF5Mco+znkTA=
-X-Google-Smtp-Source: AGHT+IE9G1eLKA6vQ6mXiMEYJDsNN7NkjG3lAgp3pl5kUZ4GhDYIow0VvLG4OUA1b4PHu+fmg6SB1Q==
-X-Received: by 2002:a05:600c:1c12:b0:456:3b21:ad1e with SMTP id 5b1f17b1804b1-45b479e949dmr1776775e9.17.1755634403743;
-        Tue, 19 Aug 2025 13:13:23 -0700 (PDT)
-Received: from localhost.localdomain ([2a0d:e487:216f:2f7a:74c6:177a:3b99:868c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c077c57d32sm4939887f8f.64.2025.08.19.13.13.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Aug 2025 13:13:23 -0700 (PDT)
-From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-To: broonie@kernel.org,
-	lgirdwood@gmail.com,
-	robh@kernel.org
-Cc: peter.ujfalusi@gmail.com,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	shuah@kernel.org,
-	jihed.chaibi.dev@gmail.com
-Subject: [PATCH v4 2/2] ASoC: dt-bindings: omap-twl4030: convert to DT schema
-Date: Tue, 19 Aug 2025 22:13:02 +0200
-Message-Id: <20250819201302.80712-3-jihed.chaibi.dev@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250819201302.80712-1-jihed.chaibi.dev@gmail.com>
-References: <20250819201302.80712-1-jihed.chaibi.dev@gmail.com>
+	s=arc-20240116; t=1755635617; c=relaxed/simple;
+	bh=u0jHy+96xQQc8Rsq14s4xOxOiOUOUoyteYoE2V6u/cs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=keESg/ZanVvBfLjES84GrfeI+YIOghKKARACJ7eGrtK3czKpvIaYtPXujFJMTCXzOpwxpcbs4UTK1qLS0mQYf38aBjhur/pt+GuGv1rKIUp6fCX+HWuB55veivIBgWQb0EZb93Shxv6qsywn7SNCygIag0gKxs7/GV7p1iFXnLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=2t0nH+rw; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=1/eUspNCUXyY5YlWldBkBwRS3SFcnhUn4WjHQtP/9wc=; b=2t0nH+rw7E8V78kWenP4au6K+4
+	exEwfVKJi8b0tPVduqB/o8rbtRCeUrCKje/ykiFOZopI3RhEtqZdqmYdm7DBGNefeRThMQJBt195Y
+	ADh1TgtWB7gNOx0iXJr67Cd9r/Ru148qKSOr2Ur3tE2CNtKuPFpxtpeWEqTlzh5VC3bft21T59xs4
+	3W/lkEzBbkczajoZIHzdhxFvbTaNAMXk1aNkAmSOAzyml43d0lDOd5EeHWpkyPExCBw03X66X2jmo
+	qIcEJJZbRla6DLBwkNeNn7lmyaF6Spxrn3gymHy0JHTIWpmhFX7vDrM8+SQdSS+IwK0GWYxC6IZ1E
+	5V3lht2A==;
+Date: Tue, 19 Aug 2025 22:31:57 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Jihed Chaibi <jihed.chaibi.dev@gmail.com>, linux-kernel@vger.kernel.org,
+ peter.ujfalusi@gmail.com, dmitry.torokhov@gmail.com, robh@kernel.org,
+ krzk+dt@kernel.org, lgirdwood@gmail.com, tiwai@suse.com,
+ conor+dt@kernel.org, lee@kernel.org, ukleinek@kernel.org,
+ broonie@kernel.org, gregkh@linuxfoundation.org, linus.walleij@linaro.org,
+ brgl@bgdev.pl, aaro.koskinen@iki.fi, khilman@baylibre.com,
+ rogerq@kernel.org, tony@atomide.com, linux-gpio@vger.kernel.org,
+ linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-pwm@vger.kernel.org, linux-sound@vger.kernel.org,
+ linux-usb@vger.kernel.org, linux-omap@vger.kernel.org, shuah@kernel.org
+Subject: Re: [PATCH v3 1/6] dt-bindings: mfd: twl: Add missing sub-nodes for
+ TWL4030 & TWL603x
+Message-ID: <20250819223157.0b271c74@akair>
+In-Reply-To: <20250819-humongous-muscular-curassow-5accd5@kuoka>
+References: <20250816021523.167049-1-jihed.chaibi.dev@gmail.com>
+	<20250816021523.167049-2-jihed.chaibi.dev@gmail.com>
+	<20250819-humongous-muscular-curassow-5accd5@kuoka>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Convert the legacy TXT binding for the OMAP TWL4030 sound card
-to the modern YAML DT schema format. This adds formal validation
-and improves documentation.
+Am Tue, 19 Aug 2025 10:13:39 +0200
+schrieb Krzysztof Kozlowski <krzk@kernel.org>:
 
-Acked-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+> On Sat, Aug 16, 2025 at 04:15:18AM +0200, Jihed Chaibi wrote:
+> > Update the TI TWL family Device Tree binding to include additional
+> > subnodes for TWL4030, TWL6030, and TWL6032 devices.
+> > 
+> > The simple power and PWM bindings (ti,twl4030-power, ti,twl-pwm, and
+> > ti,twl-pwmled) are now defined directly within this binding.
+> > 
+> > Other child node definitions (audio, gpio, keypad, usb, etc.) are also
+> > added to the schema. These additions fix 'unevaluated properties'
+> > errors found during dtbs_check for boards like the omap3-beagle
+> > and improve the binding's overall completeness.
+> > 
+> > Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+> > 
+> > ---
+> > Changes in v3:
+> >  - New patch to consolidate simple bindings (power, pwm) and add
+> >    definitions for all child nodes to fix dtbs_check validation
+> >    errors found in v2.
+> > ---
+> >  .../devicetree/bindings/mfd/ti,twl.yaml       | 191 ++++++++++++++++++
+> >  .../devicetree/bindings/mfd/twl4030-power.txt |  48 -----
+> >  .../devicetree/bindings/pwm/ti,twl-pwm.txt    |  17 --
+> >  .../devicetree/bindings/pwm/ti,twl-pwmled.txt |  17 --
+> >  4 files changed, 191 insertions(+), 82 deletions(-)
+> >  delete mode 100644 Documentation/devicetree/bindings/mfd/twl4030-power.txt
+> >  delete mode 100644 Documentation/devicetree/bindings/pwm/ti,twl-pwm.txt
+> >  delete mode 100644 Documentation/devicetree/bindings/pwm/ti,twl-pwmled.txt
+> > 
+> > diff --git a/Documentation/devicetree/bindings/mfd/ti,twl.yaml b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+> > index f162ab60c..b0f1cb7b5 100644
+> > --- a/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+> > +++ b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+> > @@ -76,6 +76,98 @@ allOf:
+> >            properties:
+> >              compatible:
+> >                const: ti,twl4030-wdt
+> > +
+> > +        audio:
+> > +          type: object
+> > +          $ref: /schemas/sound/ti,twl4030-audio.yaml#
+> > +          unevaluatedProperties: false
+> > +
+> > +        keypad:
+> > +          type: object
+> > +          $ref: /schemas/input/ti,twl4030-keypad.yaml#
+> > +          unevaluatedProperties: false
+> > +
+> > +        pwm:
+> > +          type: object
+> > +          $ref: /schemas/pwm/pwm.yaml#
+> > +          unevaluatedProperties: false
+> > +          description: |
+> > +            TWL4030 series: PWMA and PWMB (connected to LEDA and LEDB terminals)
+> > +          properties:
+> > +            compatible:
+> > +              enum:
+> > +                - ti,twl4030-pwm
+> > +            '#pwm-cells':
+> > +              const: 2
+> > +          required:
+> > +            - compatible
+> > +            - '#pwm-cells'
+> > +
+> > +        pwmled:
+> > +          type: object
+> > +          $ref: /schemas/pwm/pwm.yaml#
+> > +          unevaluatedProperties: false
+> > +          description: |
+> > +            TWL4030 series: PWMA and PWMB (connected to LEDA and LEDB terminals)
+> > +          properties:
+> > +            compatible:
+> > +              enum:
+> > +                - ti,twl4030-pwmled
+> > +            '#pwm-cells':
+> > +              const: 2
+> > +          required:
+> > +            - compatible
+> > +            - '#pwm-cells'
+> > +
+> > +        'twl4030-usb':  
+> 
+> No need for quotes.
+> 
+> > +          type: object
+> > +          $ref: /schemas/usb/ti,twlxxxx-usb.yaml#  
+> 
+> Are you sure your patchset is bsiectable? Apply this patch and test. You
+> will see errors and you must fix these. Even after fixing you have
+> strict dependencies so your cover letter must explain these (or merging
+> constraints)...
+> 
+what are the rules here regarding bisectability? non-existing files
+in $ref are probably bad. Are then unveiled errors in dts also a
+problem? I would not expect too much fixing effort needed here. I have
+not run dtbs_check yet.
 
----
-Changes in v4:
- - Deleted redundant pins list.
- - Split from larger series per maintainer feedback.
- - v3 link:
-   https://lore.kernel.org/all/20250816021523.167049-1-jihed.chaibi.dev@gmail.com/
+I have expected this would all go via Lee's usual immutable branches. 
 
-Changes in v3:
- - No change to binding content, only updating commit message format.
-
-Changes in v2:
- - Fixed comment formatting (added spaces for better alignment).
- - Updated commit subject to align with subsystem style.
- - Retained Acked-by from v1 as changes are cosmetic.
----
- .../bindings/sound/omap-twl4030.txt           | 62 ------------
- .../bindings/sound/ti,omap-twl4030.yaml       | 98 +++++++++++++++++++
- 2 files changed, 98 insertions(+), 62 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/sound/omap-twl4030.txt
- create mode 100644 Documentation/devicetree/bindings/sound/ti,omap-twl4030.yaml
-
-diff --git a/Documentation/devicetree/bindings/sound/omap-twl4030.txt b/Documentation/devicetree/bindings/sound/omap-twl4030.txt
-deleted file mode 100644
-index f6a715e4e..000000000
---- a/Documentation/devicetree/bindings/sound/omap-twl4030.txt
-+++ /dev/null
-@@ -1,62 +0,0 @@
--* Texas Instruments SoC with twl4030 based audio setups
--
--Required properties:
--- compatible: "ti,omap-twl4030"
--- ti,model: Name of the sound card (for example "omap3beagle")
--- ti,mcbsp: phandle for the McBSP node
--
--Optional properties:
--- ti,codec: phandle for the twl4030 audio node
--- ti,mcbsp-voice: phandle for the McBSP node connected to the voice port of twl
--- ti, jack-det-gpio: Jack detect GPIO
--- ti,audio-routing: List of connections between audio components.
--  Each entry is a pair of strings, the first being the connection's sink,
--  the second being the connection's source.
--  If the routing is not provided all possible connection will be available
--
--Available audio endpoints for the audio-routing table:
--
--Board connectors:
-- * Headset Stereophone
-- * Earpiece Spk
-- * Handsfree Spk
-- * Ext Spk
-- * Main Mic
-- * Sub Mic
-- * Headset Mic
-- * Carkit Mic
-- * Digital0 Mic
-- * Digital1 Mic
-- * Line In
--
--twl4030 pins:
-- * HSOL
-- * HSOR
-- * EARPIECE
-- * HFL
-- * HFR
-- * PREDRIVEL
-- * PREDRIVER
-- * CARKITL
-- * CARKITR
-- * MAINMIC
-- * SUBMIC
-- * HSMIC
-- * DIGIMIC0
-- * DIGIMIC1
-- * CARKITMIC
-- * AUXL
-- * AUXR
--
-- * Headset Mic Bias
-- * Mic Bias 1 /* Used for Main Mic or Digimic0 */
-- * Mic Bias 2 /* Used for Sub Mic or Digimic1 */
--
--Example:
--
--sound {
--	compatible = "ti,omap-twl4030";
--	ti,model = "omap3beagle";
--
--	ti,mcbsp = <&mcbsp2>;
--};
-diff --git a/Documentation/devicetree/bindings/sound/ti,omap-twl4030.yaml b/Documentation/devicetree/bindings/sound/ti,omap-twl4030.yaml
-new file mode 100644
-index 000000000..27c7019bd
---- /dev/null
-+++ b/Documentation/devicetree/bindings/sound/ti,omap-twl4030.yaml
-@@ -0,0 +1,98 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/sound/ti,omap-twl4030.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Texas Instruments SoC with twl4030 based audio setups
-+
-+maintainers:
-+  - Peter Ujfalusi <peter.ujfalusi@gmail.com>
-+
-+description:
-+  Audio setups on TI OMAP SoCs using TWL4030-family
-+  audio codec connected via a McBSP port.
-+
-+properties:
-+  compatible:
-+    const: ti,omap-twl4030
-+
-+  ti,model:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    description: Name of the sound card (for example "omap3beagle").
-+
-+  ti,mcbsp:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: phandle for the McBSP node.
-+
-+  ti,codec:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: phandle for the twl4030 audio node.
-+
-+  ti,mcbsp-voice:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: phandle to the McBSP node connected to the voice port.
-+
-+  ti,jack-det-gpio:
-+    description: GPIO specifier for jack detection.
-+    maxItems: 1
-+
-+  ti,audio-routing:
-+    description: |
-+      A list of audio routing connections. Each entry is a pair of strings,
-+      with the first being the connection's sink and the second being the
-+      source. If not provided, all possible connections are available.
-+
-+    $ref: /schemas/types.yaml#/definitions/non-unique-string-array
-+    items:
-+      enum:
-+        # Board Connectors
-+        - Headset Stereophone
-+        - Earpiece Spk
-+        - Handsfree Spk
-+        - Ext Spk
-+        - Main Mic
-+        - Sub Mic
-+        - Headset Mic
-+        - Carkit Mic
-+        - Digital0 Mic
-+        - Digital1 Mic
-+        - Line In
-+
-+        # CODEC Pins
-+        - HSOL
-+        - HSOR
-+        - EARPIECE
-+        - HFL
-+        - HFR
-+        - PREDRIVEL
-+        - PREDRIVER
-+        - CARKITL
-+        - CARKITR
-+        - MAINMIC
-+        - SUBMIC
-+        - HSMIC
-+        - DIGIMIC0
-+        - DIGIMIC1
-+        - CARKITMIC
-+        - AUXL
-+        - AUXR
-+
-+        # Headset Mic Bias
-+        - Mic Bias 1   # Used for Main Mic or Digimic0
-+        - Mic Bias 2   # Used for Sub Mic or Digimic1
-+
-+required:
-+  - compatible
-+  - ti,model
-+  - ti,mcbsp
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    sound {
-+        compatible = "ti,omap-twl4030";
-+        ti,model = "omap3beagle";
-+        ti,mcbsp = <&mcbsp2>;
-+    };
--- 
-2.39.5
-
+Regards,
+Andreas
 
