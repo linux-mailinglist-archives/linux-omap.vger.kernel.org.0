@@ -1,78 +1,78 @@
-Return-Path: <linux-omap+bounces-4270-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4271-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91BFDB2CD8E
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 22:13:45 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79AD0B2CD91
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 22:13:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3850B4E4BB7
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 20:13:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 64BEE4E4BE7
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 20:13:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A0C340DA4;
-	Tue, 19 Aug 2025 20:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C19341ADD;
+	Tue, 19 Aug 2025 20:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dMCQBojo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g9vuPIhH"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805DC3218CF;
-	Tue, 19 Aug 2025 20:13:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD53F340DAB;
+	Tue, 19 Aug 2025 20:13:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755634405; cv=none; b=geYd0T6hGFfJDun+RGSVrCwPeBE2wLy7JqhxHpkYhonBYlFQg1ahJ/yHE9LpZGRBS+XDJxjEF+ML0FkAwBfHyp3IQCciKAJdUoWxjX7V6ZzTWUsRJfttod4odnhzkXp8j9giJYhtzetR1lChhwFB+VzpKQ2jPOqPUOelL16w8uc=
+	t=1755634407; cv=none; b=u9o5dtrmCXGCQVCPYzOTcBghSyPKe8cDRv/IeC+t7Wg6UN4vmpk2OCdhjzkwH0IfSjCumCJD4+bCNr9UzsIaRa3oFewuMSFLKncvK2JVV6FvTfUxomLXuadHopzl/n0nvA7ajfZA+rv1ItpzgR9LmeEt9qMg5Cn31ByVNYcRm2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755634405; c=relaxed/simple;
-	bh=+w+HSP3UQA40aT2UcHbez1EfGnbKmtzc6qH3ip2f20k=;
+	s=arc-20240116; t=1755634407; c=relaxed/simple;
+	bh=NRTK5/DdsThFsD4bQ4sKyg20FKM0kzOknPwv4hIjSq8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jGBcQ4l9MFkxSxrpe4nJy+Op1wU1TmgZg0Ddh7Nv4mihTGB5X0jAEuA98TpJAC1aw0lPP8boaHNqn7p+ZQ3be2EzvBp7tMCmlPeOmCXD6Neg2+Vd0VD6aN2sXLvPtRHWzUZOX+FDeUtXifEw+kw2w3+wPIKZAmC0oHWY2Neu0E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dMCQBojo; arc=none smtp.client-ip=209.85.128.47
+	 MIME-Version; b=PLOMZP0Ps0Uteca5uveb8sAtdqyF27FINI81egyfwcI9Pxvy4phnpPkZn9KkdDZ8m2pzVXfOJgdICMfwhGkrPbkKOkMqu7ius5V+e0gVTTgAf7N3DBzsFBPpaVP33+LijXs7jltUFmK0AVFkphHzf6GaPI38Ooeg9q35FQppGqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g9vuPIhH; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-45a1b0cd668so30758825e9.3;
-        Tue, 19 Aug 2025 13:13:22 -0700 (PDT)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45a1b00a65fso30065315e9.0;
+        Tue, 19 Aug 2025 13:13:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755634401; x=1756239201; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1755634404; x=1756239204; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EyZ0mIX3sVnB4/cfE1N439HvZz2L5PuAVQyxyZo/jGY=;
-        b=dMCQBojo+T774y6llfPycpVe5aKNn0mRaSRMPQY1szxVt1X8LZojUBkm6oo/5tfpwV
-         j2KboDf+ftFb00J80iDmAoxfUPTq4HujgrUPU1/23PssBIbKOsWjp9iVxCPfsJiQ+wFK
-         bnYNEyZ81QUeWhvSc3ZfbiC7xBkunEJ/H0wQIS3Xy11W+L+6hZ0vcgtudET3aihVGPNk
-         tGZ3cxKXcC9GnkT/4TQ1zFTcVmmbBkvIKYLQ83yuVWB50yTqqCajjBuzv6aaK+0qDpGV
-         243f1cmiw4U3aYWpLxEhqfMS+PfRlHKnlpIVdx8tDAqarW15IFg108pnJszXGCLwx6qO
-         5O/w==
+        bh=2mvrZfLsypKMiACsSNAj4UlMwJzICbqho4HfD2MSUZ4=;
+        b=g9vuPIhH8d8oV8fz4ZKgYozQ+MWDamlS8Ge43DoYk4f+KDDVMap8LULOW/Ev+5bhTq
+         njXi6RDwAllLe0LKzcuOyUY/xbxyaPYORJ1dxfMQLSfPpy/GJto8D3zEhRVVWY94ZPPB
+         XJ5x2/csuZa674U0BjHTGWq4BP7kyb4TKUjHzvcRNuU4no43CMr/8RknPaLZ1gca+DXv
+         7hCQrbOOnh0c3Kj7bc5B8mCS9BwUkm33og4hdQkksirFs7pAfD3TNOgwu9eWwSeUxT/S
+         4zAJTKfiW5KrAZbKZAZbNEw24DJDlVv6lvB4kqLX/7uCcwz3ccuklTN/A4yQ5Z44AScx
+         Mw7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755634401; x=1756239201;
+        d=1e100.net; s=20230601; t=1755634404; x=1756239204;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=EyZ0mIX3sVnB4/cfE1N439HvZz2L5PuAVQyxyZo/jGY=;
-        b=ZPlhVfC82skVuxlFKeN0QuQqiY9zV0nlQhSVuko5OuEshecV0aUuvnqrctwjHvxZVZ
-         VbmoEowNEvA0BeDvp2C+nSEvtnlnYTWPPsPzF3TckyWRKjAVHy9kFLaka4/r5qGJkIsw
-         Lh/vV3lrBAAekdQUqJFh9gDIyDWSahqFStJDvk5Q9B5+kUrunzGszG8yI5ni+BhbK6Ol
-         g/lgxvBw0RJVwf4DdxqxtwsUMlAqOXdNAETIkeLX59Ko4ANilcy/5Tbl/OVlctqTXUdq
-         JgioFnbkArLOL+1GD8HOjWoNytMQa/PhU4oC1Ca3QQ277RATFSHHdM4Ncq5Ketc5xs+m
-         N7tA==
-X-Forwarded-Encrypted: i=1; AJvYcCUblSC1eSZUsz2fdUXe4p8YqYnM3j4Cy45nQ8rTuSZ3pN/SSXreaimRH79wyMjYrjURlZOUCJd0bCQK@vger.kernel.org, AJvYcCUefPDlS+mMDgaAV0TidusUg9LoEBlaufhjOyAbcOcr1IhLR5daBDEDG5kn6vuHDNSQFqf0VS9xFz1N2l4=@vger.kernel.org, AJvYcCVZ4uWODBfQkY7ywLBKGTs9fvX/lPbebx81D7KwgT4sVtdr4/dOhHvVD5bABhbk/1salL5NTqjsqaczTw==@vger.kernel.org, AJvYcCWMuLZ5/hLUS+VT94EZ8N+sMts1VoCJLpxry0bZczMuS4CxJyKvRcFynmjie1r/wS8YJgGxLfWkxwedHhSp@vger.kernel.org
-X-Gm-Message-State: AOJu0YwfjrWQKtn/nCX1d7MzHhzw7Wkx8l8wgdizRfpsJcgpTOoTUKt3
-	t6oUyfAg34P8/tRz3EkovXqvzfK6M4CR2BY2bYFePCBN395gkD05iE9dZRsK
-X-Gm-Gg: ASbGncv/zW/85Cx0l8IV5v07jYwftI529GbML5MUISkVtsPenbD6PWyRUMuAtViChvn
-	b2tCzlEXW6XAQsy8X5/45LNO9/NjlONUwiqyghVhy9yFK1K12pIEsqHHdJSjPqve/jElnAnTh7Y
-	LehLRoWKUdFy63BCpovGN72Ae8SnFcSrEED5P0mTPuID+vYVrLA5zjeaG4VQIL/E6p8Xpq6jPtD
-	VUmFeMd7+huqTVdzEsyx6UOq7K7CHz7eT2Qv0fAjTrLrRkvIzK7yCvF0Gpg7So/yUWeRFCK+7uj
-	QJUvHVflQhjdAzer4wDLT9R4pfj7gClzbrth7EcJHugw21EQzCE6shPcYcYGwa1l3UUxg0Fo4Ed
-	+7AbotTcmWnbL282rT3III2iRfR6j5wU8Gu54539TC/Ra2pc=
-X-Google-Smtp-Source: AGHT+IHBQRn+7AkkNspRNmMVIZUw7LUkz1hAP19KGjzlnW3afXQUlqlUskBZwdiuE5pBBVIywlkkwQ==
-X-Received: by 2002:a05:600c:6216:b0:456:1b93:76b with SMTP id 5b1f17b1804b1-45b47b50207mr748305e9.4.1755634400522;
-        Tue, 19 Aug 2025 13:13:20 -0700 (PDT)
+        bh=2mvrZfLsypKMiACsSNAj4UlMwJzICbqho4HfD2MSUZ4=;
+        b=Pqs6Ap26KYtgLLpvaLzvXypHM1kwCPPVgEUnCdEDyt69lz+Ez/oOugCTCiRW2uJtFH
+         /QNonIMHZvMkJUtofyPUCXQb6P418XNBbjzTn/8uDJ8NkeNGrAgIcYL1piQlCdmAU/JU
+         6VYvDZUGfGsBGXxLVMCHA6QWa2KQ1H4jDy9EP7GKWi8yf7YRBGlH7aRFeX4jRykBEKGs
+         uiqCeRBZhypTKWWRAmzGVg7nC9ZVrz0cfMkm0ey3lHrMyWXw+silUKUyfhmj82NkPAb0
+         fuaJlSPLpY/y2ck0pmFq1zY62Aaqk2tZnRH0z+QJN6N7ts3rwgVlga9Re3/indJCVmsi
+         CtPA==
+X-Forwarded-Encrypted: i=1; AJvYcCUxIJSPFSVh978H08H0TnLZG1DSvnTrfbHpDn0msjgqKQoPyDHT7Gp8yvrtJts6tKbApyyrRxiO1/zEw3ju@vger.kernel.org, AJvYcCV/LiOHTSdczjDFEs7jf6mVAgnBhG2n2Yxh4M+2u12zZB6c30026QSnd8vhFVjQl9T66AYDhKIVi8aTRZk=@vger.kernel.org, AJvYcCVnA+sPvBiECY26+1QArL/UxnAxo9sGSTbmVM1ndHKkBH+0nA+y7y5Y6FptDRSFqCHmzGSQgs6G6RGX@vger.kernel.org, AJvYcCXvKt9QXD8Hc44WscC+XFHdgB00A6yxoCo9OIk+fNXmSE9YnQlcDqJnpsb1o/NpSHcd5UTRfOwgoHQ1vQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2DusCO+mF/Co0tDXja8MfRP9fLdm/Oe9fp+iZ0CRNuzMlx9om
+	NzNhXOTfH6wGDDlBajt2k49gJj5apPIYmYdCyvsoOarvqidZFrHVJi9KVuQU
+X-Gm-Gg: ASbGncswN/rpVXRcTgfdBVj1id23shCAvYOBae7flVAtYaft626r2sOiheZRKA2IZY3
+	1oeDXzPYpND16Gv7KFVyo1EGLQLBNngp+tcaZtAZZgEnh+fi6X+QSpryzgRG5RSj3v4+fgy2oAM
+	GAZ1Sk0EbSA7l4bSwah8gcBgA9Fg0bjsWvUoi4IR5/VAc5TJVRgUgXZijjkp1oaWQpdXpenKCij
+	suWCRMw4vIN+uC2c/ypdDQwtPunsrmie+XJ4Q3MsUugVuQvVQCZoUc2RCTStRvvEb+o75pO9i4U
+	LnyG37dcttJDeMH18imz4zeUD+hzHFmQ3R8Lry6xoWCwyBG3uMt6LQD+i1rp1bd8SUclOyIWpAK
+	kqyI1umTBVXAJEiDxwRH9GmgPGfFCn7Wj4lzyF5Mco+znkTA=
+X-Google-Smtp-Source: AGHT+IE9G1eLKA6vQ6mXiMEYJDsNN7NkjG3lAgp3pl5kUZ4GhDYIow0VvLG4OUA1b4PHu+fmg6SB1Q==
+X-Received: by 2002:a05:600c:1c12:b0:456:3b21:ad1e with SMTP id 5b1f17b1804b1-45b479e949dmr1776775e9.17.1755634403743;
+        Tue, 19 Aug 2025 13:13:23 -0700 (PDT)
 Received: from localhost.localdomain ([2a0d:e487:216f:2f7a:74c6:177a:3b99:868c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c077c57d32sm4939887f8f.64.2025.08.19.13.13.19
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c077c57d32sm4939887f8f.64.2025.08.19.13.13.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Aug 2025 13:13:20 -0700 (PDT)
+        Tue, 19 Aug 2025 13:13:23 -0700 (PDT)
 From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
 To: broonie@kernel.org,
 	lgirdwood@gmail.com,
@@ -86,9 +86,9 @@ Cc: peter.ujfalusi@gmail.com,
 	linux-kernel@vger.kernel.org,
 	shuah@kernel.org,
 	jihed.chaibi.dev@gmail.com
-Subject: [PATCH v4 1/2] ASoC: dt-bindings: ti,twl4030-audio: convert to DT schema
-Date: Tue, 19 Aug 2025 22:13:01 +0200
-Message-Id: <20250819201302.80712-2-jihed.chaibi.dev@gmail.com>
+Subject: [PATCH v4 2/2] ASoC: dt-bindings: omap-twl4030: convert to DT schema
+Date: Tue, 19 Aug 2025 22:13:02 +0200
+Message-Id: <20250819201302.80712-3-jihed.chaibi.dev@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250819201302.80712-1-jihed.chaibi.dev@gmail.com>
 References: <20250819201302.80712-1-jihed.chaibi.dev@gmail.com>
@@ -98,185 +98,207 @@ List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Convert the TWL4030 audio module bindings from txt to YAML format and
-move them to the sound subsystem bindings directory. This patch also
-refines the schema by adding an enum constraint for ti,enable-vibra and
-updates the example to remove irrelevant I2C clock-frequency property.
+Convert the legacy TXT binding for the OMAP TWL4030 sound card
+to the modern YAML DT schema format. This adds formal validation
+and improves documentation.
 
+Acked-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
 
 ---
 Changes in v4:
- - No change to binding content, only updating commit message format.
+ - Deleted redundant pins list.
  - Split from larger series per maintainer feedback.
  - v3 link:
    https://lore.kernel.org/all/20250816021523.167049-1-jihed.chaibi.dev@gmail.com/
 
 Changes in v3:
- - No changes.
+ - No change to binding content, only updating commit message format.
 
 Changes in v2:
- - Moved binding from mfd to sound directory.
- - Added enum: [0, 1] to ti,enable-vibra for stricter validation.
- - Removed clock-frequency from the example as it’s not relevant to the binding.
- - Simplified example by removing unnecessary I2C node properties.
+ - Fixed comment formatting (added spaces for better alignment).
+ - Updated commit subject to align with subsystem style.
+ - Retained Acked-by from v1 as changes are cosmetic.
 ---
- .../devicetree/bindings/mfd/twl4030-audio.txt | 46 ----------
- .../bindings/sound/ti,twl4030-audio.yaml      | 90 +++++++++++++++++++
- 2 files changed, 90 insertions(+), 46 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/mfd/twl4030-audio.txt
- create mode 100644 Documentation/devicetree/bindings/sound/ti,twl4030-audio.yaml
+ .../bindings/sound/omap-twl4030.txt           | 62 ------------
+ .../bindings/sound/ti,omap-twl4030.yaml       | 98 +++++++++++++++++++
+ 2 files changed, 98 insertions(+), 62 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/sound/omap-twl4030.txt
+ create mode 100644 Documentation/devicetree/bindings/sound/ti,omap-twl4030.yaml
 
-diff --git a/Documentation/devicetree/bindings/mfd/twl4030-audio.txt b/Documentation/devicetree/bindings/mfd/twl4030-audio.txt
+diff --git a/Documentation/devicetree/bindings/sound/omap-twl4030.txt b/Documentation/devicetree/bindings/sound/omap-twl4030.txt
 deleted file mode 100644
-index 414d2ae0a..000000000
---- a/Documentation/devicetree/bindings/mfd/twl4030-audio.txt
+index f6a715e4e..000000000
+--- a/Documentation/devicetree/bindings/sound/omap-twl4030.txt
 +++ /dev/null
-@@ -1,46 +0,0 @@
--Texas Instruments TWL family (twl4030) audio module
--
--The audio module inside the TWL family consist of an audio codec and a vibra
--driver.
+@@ -1,62 +0,0 @@
+-* Texas Instruments SoC with twl4030 based audio setups
 -
 -Required properties:
--- compatible : must be "ti,twl4030-audio"
+-- compatible: "ti,omap-twl4030"
+-- ti,model: Name of the sound card (for example "omap3beagle")
+-- ti,mcbsp: phandle for the McBSP node
 -
--Optional properties, nodes:
+-Optional properties:
+-- ti,codec: phandle for the twl4030 audio node
+-- ti,mcbsp-voice: phandle for the McBSP node connected to the voice port of twl
+-- ti, jack-det-gpio: Jack detect GPIO
+-- ti,audio-routing: List of connections between audio components.
+-  Each entry is a pair of strings, the first being the connection's sink,
+-  the second being the connection's source.
+-  If the routing is not provided all possible connection will be available
 -
--Audio functionality:
--- codec { }: Need to be present if the audio functionality is used. Within this
--	     section the following options can be used:
--- ti,digimic_delay: Delay need after enabling the digimic to reduce artifacts
--		    from the start of the recorded sample (in ms)
---ti,ramp_delay_value: HS ramp delay configuration to reduce pop noise
---ti,hs_extmute: Use external mute for HS pop reduction
---ti,hs_extmute_gpio: Use external GPIO to control the external mute
---ti,offset_cncl_path: Offset cancellation path selection, refer to TRM for the
--		      valid values.
+-Available audio endpoints for the audio-routing table:
 -
--Vibra functionality
--- ti,enable-vibra: Need to be set to <1> if the vibra functionality is used. if
--		   missing or it is 0, the vibra functionality is disabled.
+-Board connectors:
+- * Headset Stereophone
+- * Earpiece Spk
+- * Handsfree Spk
+- * Ext Spk
+- * Main Mic
+- * Sub Mic
+- * Headset Mic
+- * Carkit Mic
+- * Digital0 Mic
+- * Digital1 Mic
+- * Line In
+-
+-twl4030 pins:
+- * HSOL
+- * HSOR
+- * EARPIECE
+- * HFL
+- * HFR
+- * PREDRIVEL
+- * PREDRIVER
+- * CARKITL
+- * CARKITR
+- * MAINMIC
+- * SUBMIC
+- * HSMIC
+- * DIGIMIC0
+- * DIGIMIC1
+- * CARKITMIC
+- * AUXL
+- * AUXR
+-
+- * Headset Mic Bias
+- * Mic Bias 1 /* Used for Main Mic or Digimic0 */
+- * Mic Bias 2 /* Used for Sub Mic or Digimic1 */
 -
 -Example:
--&i2c1 {
--	clock-frequency = <2600000>;
 -
--	twl: twl@48 {
--		reg = <0x48>;
--		interrupts = <7>; /* SYS_NIRQ cascaded to intc */
--		interrupt-parent = <&intc>;
+-sound {
+-	compatible = "ti,omap-twl4030";
+-	ti,model = "omap3beagle";
 -
--		twl_audio: audio {
--			compatible = "ti,twl4030-audio";
--
--			ti,enable-vibra = <1>;
--
--			codec {
--				ti,ramp_delay_value = <3>;
--			};
--
--		};
--	};
+-	ti,mcbsp = <&mcbsp2>;
 -};
-diff --git a/Documentation/devicetree/bindings/sound/ti,twl4030-audio.yaml b/Documentation/devicetree/bindings/sound/ti,twl4030-audio.yaml
+diff --git a/Documentation/devicetree/bindings/sound/ti,omap-twl4030.yaml b/Documentation/devicetree/bindings/sound/ti,omap-twl4030.yaml
 new file mode 100644
-index 000000000..c9c3f7513
+index 000000000..27c7019bd
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/sound/ti,twl4030-audio.yaml
-@@ -0,0 +1,90 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++++ b/Documentation/devicetree/bindings/sound/ti,omap-twl4030.yaml
+@@ -0,0 +1,98 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/sound/ti,twl4030-audio.yaml#
++$id: http://devicetree.org/schemas/sound/ti,omap-twl4030.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Texas Instruments TWL4030-family Audio Module
++title: Texas Instruments SoC with twl4030 based audio setups
 +
 +maintainers:
 +  - Peter Ujfalusi <peter.ujfalusi@gmail.com>
 +
 +description:
-+  The audio module within the TWL4030-family of companion chips consists
-+  of an audio codec and a vibra driver. This binding describes the parent
-+  node for these functions.
++  Audio setups on TI OMAP SoCs using TWL4030-family
++  audio codec connected via a McBSP port.
 +
 +properties:
 +  compatible:
-+    const: ti,twl4030-audio
++    const: ti,omap-twl4030
 +
-+  codec:
-+    type: object
-+    description: Node containing properties for the audio codec functionality.
++  ti,model:
++    $ref: /schemas/types.yaml#/definitions/string
++    description: Name of the sound card (for example "omap3beagle").
 +
-+    properties:
-+      ti,digimic_delay:
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+        description:
-+          Delay in milliseconds after enabling digital microphones to reduce
-+          artifacts.
++  ti,mcbsp:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description: phandle for the McBSP node.
 +
-+      ti,ramp_delay_value:
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+        description:
-+          Headset ramp delay configuration to reduce pop noise.
++  ti,codec:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description: phandle for the twl4030 audio node.
 +
-+      ti,hs_extmute:
-+        type: boolean
-+        description:
-+          Enable the use of an external mute for headset pop reduction.
++  ti,mcbsp-voice:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description: phandle to the McBSP node connected to the voice port.
 +
-+      ti,hs_extmute_gpio:
-+        $ref: /schemas/types.yaml#/definitions/phandle-array
-+        description:
-+          The GPIO specifier for the external mute control.
-+        maxItems: 1
++  ti,jack-det-gpio:
++    description: GPIO specifier for jack detection.
++    maxItems: 1
 +
-+      ti,offset_cncl_path:
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+        description:
-+          Offset cancellation path selection. Refer to the Technical
-+          Reference Manual for valid values.
++  ti,audio-routing:
++    description: |
++      A list of audio routing connections. Each entry is a pair of strings,
++      with the first being the connection's sink and the second being the
++      source. If not provided, all possible connections are available.
 +
-+  # The 'codec' node itself is optional, but if it exists, it can be empty.
-+  # We don't require any of its sub-properties.
++    $ref: /schemas/types.yaml#/definitions/non-unique-string-array
++    items:
++      enum:
++        # Board Connectors
++        - Headset Stereophone
++        - Earpiece Spk
++        - Handsfree Spk
++        - Ext Spk
++        - Main Mic
++        - Sub Mic
++        - Headset Mic
++        - Carkit Mic
++        - Digital0 Mic
++        - Digital1 Mic
++        - Line In
 +
-+  ti,enable-vibra:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [0, 1]
-+    description:
-+      Enable or disable the vibra functionality.
++        # CODEC Pins
++        - HSOL
++        - HSOR
++        - EARPIECE
++        - HFL
++        - HFR
++        - PREDRIVEL
++        - PREDRIVER
++        - CARKITL
++        - CARKITR
++        - MAINMIC
++        - SUBMIC
++        - HSMIC
++        - DIGIMIC0
++        - DIGIMIC1
++        - CARKITMIC
++        - AUXL
++        - AUXR
 +
-+additionalProperties: false
++        # Headset Mic Bias
++        - Mic Bias 1   # Used for Main Mic or Digimic0
++        - Mic Bias 2   # Used for Sub Mic or Digimic1
 +
 +required:
 +  - compatible
++  - ti,model
++  - ti,mcbsp
++
++additionalProperties: false
 +
 +examples:
 +  - |
-+    i2c {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+      twl: twl@48 {
-+        reg = <0x48>;
-+        interrupts = <7>; /* SYS_NIRQ cascaded to intc */
-+        interrupt-parent = <&intc>;
-+
-+        twl_audio: audio {
-+          compatible = "ti,twl4030-audio";
-+
-+          ti,enable-vibra = <1>;
-+
-+          codec {
-+            ti,ramp_delay_value = <3>;
-+          };
-+
-+        };
-+      };
++    sound {
++        compatible = "ti,omap-twl4030";
++        ti,model = "omap3beagle";
++        ti,mcbsp = <&mcbsp2>;
 +    };
 -- 
 2.39.5
