@@ -1,141 +1,215 @@
-Return-Path: <linux-omap+bounces-4265-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4266-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ED46B2C552
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 15:23:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACB52B2C799
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 16:53:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2C0E2434C2
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 13:18:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D83FD1BC3A6E
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 14:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2A2341AD6;
-	Tue, 19 Aug 2025 13:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E36C27F756;
+	Tue, 19 Aug 2025 14:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LSPYjr1x"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XdzC9lTx"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A400F3431FF
-	for <linux-omap@vger.kernel.org>; Tue, 19 Aug 2025 13:17:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE1321772D;
+	Tue, 19 Aug 2025 14:51:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755609428; cv=none; b=qC+FkUKqLw1OiE/Zw2DhAahbcS7FqSxDOQzjTM02mdAvOf8kbCleUhwHXsi3juB1SBs7WsbnC8bOlpT2vXFPEQr08MNCKIh864St5kWIxENj7lhYe7NWHzekpWsu4EbJSAcVlQuv+SctbaBSvk2fkS/MitSCpcDAZlu1D5LEtzU=
+	t=1755615074; cv=none; b=roSGSQ7Nmkq556rsHpFIaw7vETOslsIbAR7hmWj2Fa8oACsWeRARHBV6w/sHJr80zkjDuPeQonx2qOme36YkZhHLQbYyQK8c1j4BErGXRIecneGCfmjP+u1HPG15srlm4E1m6Lx+yLsoIqXRpoKsNVLGrcYhmzbHnY4S1vDuRi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755609428; c=relaxed/simple;
-	bh=ORjrWSJV9aCCGAusfNEVPPkAuUkckxWAi/ugZ/Z4HPI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AQe8U/9FreDEY1WSUq1FZk1f+UZjaQM4m5fttCu3YqwK+GpYh9nkPqfcuXsG+8v0wwJhnGRccWReLGt3syyu35eU+cnFA1TyBJa43GuKLAY9QoW5mvvjt6RQAwb+rimhupmPhIoavobvEKL7ybfdilWiIwqSA8ReP6pE7viiyXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LSPYjr1x; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-afcb7a01426so92304866b.2
-        for <linux-omap@vger.kernel.org>; Tue, 19 Aug 2025 06:17:05 -0700 (PDT)
+	s=arc-20240116; t=1755615074; c=relaxed/simple;
+	bh=eKOwK0qY0XlIYHG/mfv6JRGT834tGvbpGugdoJwXfiw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XwJS/bUCRfST0w9SjKUZXWc7naqayJ1tYAzk5o7knUxNVAgm4Ycdti2y5thh6e7+jeferJKzcQvWeIT1DikL4R+b/rOCjYishrnwOF2KkmISlgoXY29F1Dvjb63LgTeoQfrB1sm9b6Ii715Yer4Jap0Ffd8m4suYiTD7AWh1iJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XdzC9lTx; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-32326de9f4eso4716286a91.2;
+        Tue, 19 Aug 2025 07:51:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755609424; x=1756214224; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1755615072; x=1756219872; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ul4oZAmMUIisCohsZ+bnfu1tIYQt4ZmQITM62Hcbbp0=;
-        b=LSPYjr1xfIF8lJhSpH5hP6W1Utkt/cf3/0A2opTlqKTmmoIiG8uoTPBLgGljuNc5Xe
-         7isJg7ZxMoVLT/jnhcVx5381AiVbtCurg4eglwrI23t8kgmvjTX3f/4xLSExounzufeM
-         sVv8cWqNl1PK1wgTh2xLknR+ouQh5b7t2GsLrGTFmZ28oK9JEUDknz21MZtz9iFTqHgK
-         p+V3+Uq/e+NXJbMwtIOEUygNQaFFtMa060HTl4m8+UpTp86BYA6IvmgRuEj2EGQMLWrD
-         wqbY7cjsEsOJ2hFjiud8MwZcT86aMgUxOYo94tVYvlZ0P5ecSti1VvQDGWGr5OA92kg8
-         2xdw==
+        bh=84JBC/K4prfKTVHBWmcQiE2Ae580xZlTp9zQ8TNTSNA=;
+        b=XdzC9lTxcPRY7N+Kabkp7vSPBem3WSlSNOEshPU6GORd84T7ObUDPJQbzgEytlWIpZ
+         b8EAwnVXR7bGkffTMlkb8tztOUw5qDAXsr/+VcU2wwyw7u2dbbtEnH3bR36RyK0WdZa8
+         N+fOxO1iViF9QOPFQZe9iyYHXmcWtrA4+CenTC2/qnIYkJlqK0z/QUF6Itr5VggV378M
+         FezOun4VLyRTIP19W3VHpcOAbVZXSp68ZbqxHhhBMwCSf1JyvjV+zSEtBFxnXRFFOs0I
+         Y6xX9bOdGRmpVcv+dZWzQJV6YZY/BPWga+KsXXvML0q30Pa+FT7pRk7/bt/zoJmY5UfD
+         OOXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755609424; x=1756214224;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1755615072; x=1756219872;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Ul4oZAmMUIisCohsZ+bnfu1tIYQt4ZmQITM62Hcbbp0=;
-        b=wFszej/cmPZi0Hfb4pZFlvaoC7weg27RoAuQrpKLl7H0ZpkjPVr3bEU8KZ0ehjR0YY
-         gxw+UXs3tzds9BTPNkTihUJcYixSisXrZdyx7XsxS4TvmDlkhDK1SeU0sAPAzcl+oXaq
-         2yQSzOA6wGMXNVchXUUIDhfB3DpHnFJArq/n4GUZwy1PSf+ZxsWMLbLQxp4hdmF9kkLm
-         hSeg2gfPYW51hls8HpLGiSee82l7+gEHPuwu/dDmyjSoDbaZkTaSjxgDbKS2ru65KIMo
-         ySIq+nDRlYEmciBjJ4YFGD8G2iZCqdV+v9Y2ZvXR3koJGAe0ecJP+tE10F3LuqWvGsDe
-         dGsA==
-X-Forwarded-Encrypted: i=1; AJvYcCUdpt07NgXFYPySCOgP+fQZicK04Evv1QWt8Tc+xBunbtUhw5Hxq4Gj7/j7P+QSaU8fp3wdxchETjC4@vger.kernel.org
-X-Gm-Message-State: AOJu0YygmZ8FZ2J1VtvPqIVqv5LwWplemVB2t0BfVqQdPpN/OPDWB36N
-	xAm+sjtLqmm0FmVQKqjC70vw3txzAEMZh6YH4U2lad0/PcxUFEsSf2ElYGioH+tQ5RI=
-X-Gm-Gg: ASbGnctuz6xCzBIxBaory6hL+Xxk8ecwwBCV02fABch+SawnGtGKVdM+qFrZ1zC5ChJ
-	SSkm+IkUwLuuK4KtgNklQC+CGyc4zx4/bwFiU5rmt+W3un6aW+zeGgycJZXDFcsUuKlJ25tbdrw
-	AuOoebiowIpBS+oL2O0xgbYnldYRnrWTRdbwtzIP/+KHLE5LPEhIO+8AP6bbmuJLmEkYB6RJvjf
-	wej3IjfFLiI7rvXp94+II6u7/RChMVsmLaX7erEc2mNy/WQZVIpaFj+1fyYEmMElw8fGxN2bFFk
-	zsOAUbHuMY/yfNt5Xo5UI8IxBEEVQELBiT680L0k9kmhHu2ZqnNmOyktjGjgwHql0oUg40zk/n+
-	TbpnWCvY+2ssCRNa0G3LCU+s6DUTRdofOGG+QkkZ2/Iah
-X-Google-Smtp-Source: AGHT+IHIEZ0cqAuQ9z2NxnVy2zmkSoGqZVpGMt4PSnkN+/AzbQ7kBspgtZUPvFrM+aYznnjNvgIxIQ==
-X-Received: by 2002:a17:907:3d03:b0:ae3:617a:c52 with SMTP id a640c23a62f3a-afddcb63ca0mr100010466b.2.1755609423877;
-        Tue, 19 Aug 2025 06:17:03 -0700 (PDT)
-Received: from kuoka.. ([178.197.219.123])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afcdcfccea7sm1005948066b.67.2025.08.19.06.17.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Aug 2025 06:17:03 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Tony Lindgren <tony@atomide.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Nishanth Menon <nm@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Tero Kristo <kristo@kernel.org>,
-	linux-omap@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 4/4] arm64: dts: ti: k3-am6548: Minor whitespace cleanup
-Date: Tue, 19 Aug 2025 15:16:55 +0200
-Message-ID: <20250819131651.86569-8-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250819131651.86569-5-krzysztof.kozlowski@linaro.org>
-References: <20250819131651.86569-5-krzysztof.kozlowski@linaro.org>
+        bh=84JBC/K4prfKTVHBWmcQiE2Ae580xZlTp9zQ8TNTSNA=;
+        b=PrW47UPbb+4uCfby/Km8RJ/8e4Jj25Ns0KsJiV5bTFlqlJAE+6VD7wyrhf+5ZiMejs
+         ah6sw9tjx2bMwTYWUpnSZzE1kZmiVSRm6OSh91/MbB67iackG49WT5wkTap6YSvNUlvP
+         +YCTUeVA2qinrPK9NZr1c8fIO2+nnTptyrOTetOp11geFoMYZmG6PH4KTJPiEEIrJdj2
+         NBsHhs6dR1tpVlX12JpOFfDEud/pNTDJbvN9Vr+wEDU0t4MM6Yqrx60fbOXY3rmOxR/i
+         BEe7S5/BPPa18Oc1Fb/7PUKqElKl/jhSggrovo4g+V6mpsV22TmITAkBiMlpvAjZClzO
+         yLzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU8F+0vySOpamRbWB4WbZtvAx0RUfP1tNdKcW4fd8NHoWzZGKpr3SRTCw/dlFDO3VnQ2BnHgPrZK9vm@vger.kernel.org, AJvYcCUMNPxlV51SSjs6jpID71dv2sq22lHK+zojmLiEdp3VqvstDlFzfpNJmTghlt+/sQIBSmjUzGREQCGG@vger.kernel.org, AJvYcCUXjKHFQxEh5Ry5NN6Evab2oE/TbrELeRdyihiPyMZ7AMrRLfFd349m/5SGz3OpiFBMjmD0geX5xM7hTg==@vger.kernel.org, AJvYcCUYVY3KNv8qU+LxsO3Vx8e+1n6w5FCpbW+WcQv0TSi6cPInA35WEAaFYG+D3aNf4v2f7G+P6pSfNkXYFZk=@vger.kernel.org, AJvYcCUqPgxIZK/i5BDL1sVPFnK5nVPL16xgGmw4cbngadDHXr5mbkM/90CQvALt175V/rdFVI22PdKeplr2@vger.kernel.org, AJvYcCWlwrj5HW9N/eGnok0i4T6KZGSgVF9VWVDMPWUd57SRxXN7GMA34DG2JEG3rlepwcTMu/aZirJJHhrLPLI=@vger.kernel.org, AJvYcCXscHSGQ+VNKQ1wVg11zKwO8hdefrj1pMJF2qdXJzjU/NFjoAhPvsKZcrupM1IUnrWHIHh9oDFMeDu59g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdpbGzsX4148l3IfsL/y1j+4+/bAyR9TN6H/HT7ST+UnL5m4E9
+	P+3OuIINNQiuecbqVsllY45dk9xArQu3mertCZk8rxRTitkC7Z7VYBq1cRq8hVBYJCLgcSTvtFJ
+	sEN0/h+i4XRH44/LLOoLL3o0k50da2w==
+X-Gm-Gg: ASbGnctYsyNVABx2OZB/+S+40W7KAvM/mNaFjqaGC0p0d1Jjw8BCTuvpR4UUNMsEA1F
+	BZYtqdRvQU9iKar9ahHJl3r5m5HhRLi4AWzFZMczblUSW2LymVG3jODtWqPcyRpyO5YQAZORFq0
+	Wo8nScz5QHYa8sVQpjF02ZNoJerNDBEmMXEqCEWRuDGPmrX251YY0qOVyQOSmtl/RYEP5U6baHW
+	A92Faw=
+X-Google-Smtp-Source: AGHT+IGFX3Kpa1nizieMl3Ixu9nhO8VijjVmgDz/D33VTEV/CrtZhkKtRMf84sQy3fytu82eKOQOb3mHib8daIX2DhE=
+X-Received: by 2002:a17:90b:134e:b0:311:df4b:4b7a with SMTP id
+ 98e67ed59e1d1-32497102910mr3896605a91.29.1755615071705; Tue, 19 Aug 2025
+ 07:51:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=741; i=krzysztof.kozlowski@linaro.org;
- h=from:subject; bh=ORjrWSJV9aCCGAusfNEVPPkAuUkckxWAi/ugZ/Z4HPI=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBopHlGHslltHets9pe9QRd/Nka4ehFvGyWO1fzw
- 3Crv5EMFQmJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaKR5RgAKCRDBN2bmhouD
- 1xnzEACSo5uaWhdcpZ3vxl4F+ufrZhnxwghg1RpSkqDbNjA14v/O14NJ0BplGA1kN9H6teg0/tD
- 45eZc5/jrsjOU2ePK4/mzmrVErEppjEpBNeiWcPc67j5nPnt2RZOeJEDoFNq+/QPZB56FRbVooT
- 8jVo6FZiqWhTRQDrDBasWAvXwW2J+vY3KmturJdMyvmaTUlvE3jS+vS36IqXmXbH/ZJ3wvmMK9m
- No3A9cORAdHIkilGC/8fh5lo2Ss2IUPbhGOQptgHDdGUimDF9S4piGtE3ZUCGX1RA8LzSD+wE5K
- rsc+TbXc1scsxMYLhEgb/cKHNLWKg6eIFZcCcp7HSEHLPBBf26kFQAryE1O8xglgrC0TkY08dHS
- csk8/K3o2iOkIA+nEF3ynmMLPTYj9a917Qvtfoq0XbVZMzQ50wDpj7EdWcded7k97bPrb5iQw/j
- mL8M20Cs795m35cCeBdFKtBwgeqPVs/HTfUgN8LAQYbPFOtzb0ixnuJppGmzeKobrUT/tFIeCQA
- IxdroEfyAMgsQyru3AGY20HMh4Okr9J43LRAYPrHMChOJ/TssH5/shCRQxX9ZV3wc9M88LQvZbv
- uWW8cDEiUGIJx7MhidAnsqA/6WAKyXN39bFNt62VNYMVWZxHmwVbf+nYllcHCN6pjShEEVuPnzN Mcg5heNDUIFaX8A==
-X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
-Content-Transfer-Encoding: 8bit
+References: <20250816021523.167049-1-jihed.chaibi.dev@gmail.com>
+ <20250816021523.167049-2-jihed.chaibi.dev@gmail.com> <20250819-humongous-muscular-curassow-5accd5@kuoka>
+In-Reply-To: <20250819-humongous-muscular-curassow-5accd5@kuoka>
+From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Date: Tue, 19 Aug 2025 16:51:00 +0200
+X-Gm-Features: Ac12FXwysxyGsjAabyXw5_P1WV9yLN_7McwriOwmRdAXImPNCo-sOD4JlUKkl3s
+Message-ID: <CANBuOYr9Kmj7n664CSRuORKfxx70w+DHzO5kToyBnHyBv0SjNg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/6] dt-bindings: mfd: twl: Add missing sub-nodes for
+ TWL4030 & TWL603x
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-kernel@vger.kernel.org, andreas@kemnade.info, 
+	peter.ujfalusi@gmail.com, dmitry.torokhov@gmail.com, robh@kernel.org, 
+	krzk+dt@kernel.org, lgirdwood@gmail.com, tiwai@suse.com, conor+dt@kernel.org, 
+	lee@kernel.org, ukleinek@kernel.org, broonie@kernel.org, 
+	gregkh@linuxfoundation.org, linus.walleij@linaro.org, brgl@bgdev.pl, 
+	aaro.koskinen@iki.fi, khilman@baylibre.com, rogerq@kernel.org, 
+	tony@atomide.com, linux-gpio@vger.kernel.org, linux-input@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-pwm@vger.kernel.org, 
+	linux-sound@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-omap@vger.kernel.org, shuah@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The DTS code coding style expects exactly one space around '='
-character.
+On Tue, Aug 19, 2025 at 10:13=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.o=
+rg> wrote:
+>
+> On Sat, Aug 16, 2025 at 04:15:18AM +0200, Jihed Chaibi wrote:
+> > Update the TI TWL family Device Tree binding to include additional
+> > subnodes for TWL4030, TWL6030, and TWL6032 devices.
+> >
+> > The simple power and PWM bindings (ti,twl4030-power, ti,twl-pwm, and
+> > ti,twl-pwmled) are now defined directly within this binding.
+> >
+> > Other child node definitions (audio, gpio, keypad, usb, etc.) are also
+> > added to the schema. These additions fix 'unevaluated properties'
+> > errors found during dtbs_check for boards like the omap3-beagle
+> > and improve the binding's overall completeness.
+> >
+> > Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+> >
+> > ---
+> > Changes in v3:
+> >  - New patch to consolidate simple bindings (power, pwm) and add
+> >    definitions for all child nodes to fix dtbs_check validation
+> >    errors found in v2.
+> > ---
+> >  .../devicetree/bindings/mfd/ti,twl.yaml       | 191 ++++++++++++++++++
+> >  .../devicetree/bindings/mfd/twl4030-power.txt |  48 -----
+> >  .../devicetree/bindings/pwm/ti,twl-pwm.txt    |  17 --
+> >  .../devicetree/bindings/pwm/ti,twl-pwmled.txt |  17 --
+> >  4 files changed, 191 insertions(+), 82 deletions(-)
+> >  delete mode 100644 Documentation/devicetree/bindings/mfd/twl4030-power=
+.txt
+> >  delete mode 100644 Documentation/devicetree/bindings/pwm/ti,twl-pwm.tx=
+t
+> >  delete mode 100644 Documentation/devicetree/bindings/pwm/ti,twl-pwmled=
+.txt
+> >
+> > diff --git a/Documentation/devicetree/bindings/mfd/ti,twl.yaml b/Docume=
+ntation/devicetree/bindings/mfd/ti,twl.yaml
+> > index f162ab60c..b0f1cb7b5 100644
+> > --- a/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+> > +++ b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+> > @@ -76,6 +76,98 @@ allOf:
+> >            properties:
+> >              compatible:
+> >                const: ti,twl4030-wdt
+> > +
+> > +        audio:
+> > +          type: object
+> > +          $ref: /schemas/sound/ti,twl4030-audio.yaml#
+> > +          unevaluatedProperties: false
+> > +
+> > +        keypad:
+> > +          type: object
+> > +          $ref: /schemas/input/ti,twl4030-keypad.yaml#
+> > +          unevaluatedProperties: false
+> > +
+> > +        pwm:
+> > +          type: object
+> > +          $ref: /schemas/pwm/pwm.yaml#
+> > +          unevaluatedProperties: false
+> > +          description: |
+> > +            TWL4030 series: PWMA and PWMB (connected to LEDA and LEDB =
+terminals)
+> > +          properties:
+> > +            compatible:
+> > +              enum:
+> > +                - ti,twl4030-pwm
+> > +            '#pwm-cells':
+> > +              const: 2
+> > +          required:
+> > +            - compatible
+> > +            - '#pwm-cells'
+> > +
+> > +        pwmled:
+> > +          type: object
+> > +          $ref: /schemas/pwm/pwm.yaml#
+> > +          unevaluatedProperties: false
+> > +          description: |
+> > +            TWL4030 series: PWMA and PWMB (connected to LEDA and LEDB =
+terminals)
+> > +          properties:
+> > +            compatible:
+> > +              enum:
+> > +                - ti,twl4030-pwmled
+> > +            '#pwm-cells':
+> > +              const: 2
+> > +          required:
+> > +            - compatible
+> > +            - '#pwm-cells'
+> > +
+> > +        'twl4030-usb':
+>
+> No need for quotes.
+>
+> > +          type: object
+> > +          $ref: /schemas/usb/ti,twlxxxx-usb.yaml#
+>
+> Are you sure your patchset is bsiectable? Apply this patch and test. You
+> will see errors and you must fix these. Even after fixing you have
+> strict dependencies so your cover letter must explain these (or merging
+> constraints)...
+>
+> I suggest listing here only compatible with additionalProperties:true
+> and splitting entire patchset per different maintainers.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- arch/arm64/boot/dts/ti/k3-am6548-iot2050-advanced-sm.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi Krzysztof,
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am6548-iot2050-advanced-sm.dts b/arch/arm64/boot/dts/ti/k3-am6548-iot2050-advanced-sm.dts
-index b829f4bcab69..adf4da7dfa2d 100644
---- a/arch/arm64/boot/dts/ti/k3-am6548-iot2050-advanced-sm.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am6548-iot2050-advanced-sm.dts
-@@ -145,7 +145,7 @@ &main_spi0 {
- 	pinctrl-0 = <&main_spi0_pins>;
- 
- 	#address-cells = <1>;
--	#size-cells= <0>;
-+	#size-cells = <0>;
- };
- 
- &mcu_spi0 {
--- 
-2.48.1
+Thank you for the review. That additionalProperties
+suggestion is definitely helpful in this scenario.
 
+I will split (in v4) the patchset into smaller & independent
+series for each subsystem as recommended.
+
+Thanks again for your guidance.
+Jihed
 
