@@ -1,81 +1,87 @@
-Return-Path: <linux-omap+bounces-4254-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4255-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D10CAB2AF14
-	for <lists+linux-omap@lfdr.de>; Mon, 18 Aug 2025 19:12:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E7FAB2BB76
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 10:13:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BEBA3BC5CA
-	for <lists+linux-omap@lfdr.de>; Mon, 18 Aug 2025 17:12:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4ADB525C22
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 08:11:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1B632C325;
-	Mon, 18 Aug 2025 17:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF783112DB;
+	Tue, 19 Aug 2025 08:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="YO0O7Fct"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EzX++Nil"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9271532C320
-	for <linux-omap@vger.kernel.org>; Mon, 18 Aug 2025 17:12:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03E32B9B9;
+	Tue, 19 Aug 2025 08:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755537140; cv=none; b=VMkdHNFESQMttxNRtNdt5WBGTHnlRTcLohf14vs/15kyoo2wCOgLHW8OQ3UN8JAtqDvErfvYJUADneEw8AcFrql1KVd1r6rPbc5Xcr7H+XJblxuhV+LF07c5x7hgbVBq3JMlnIzhlF0dj18GuXdFbDkD4B08zajE5ugtR3RSoyE=
+	t=1755591094; cv=none; b=ctMUowUP6yNnab2NfU6FB9Vv06F/Rq3nXLRGf1OzTXXHwV+DNBO1UzlaiYJyCEEueRpHAwvdLm/8rukeHFRI9WP/ca+b4x5kXC8gjWXwUX843ZzIBOstDgyg3SC2dfCwU3MkN4teAjW5AmMpYCj60rZCjv+So40ZxV9LP0iFPks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755537140; c=relaxed/simple;
-	bh=2lTqlidf5KIiwx1f9Sfw4PRDWlZWhlwkXvJbs5fGqiA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eSL1rB65EeWCA1gJnIpwy6JPTdGd5tFkfTCpzObHdnqCssm06roR/a2MNLx50T6LvsuO3Ij2fjg5XZ0jWqztgVTgo+OJsboBpNF5b8UMhg7GlkkoxqN4CyuPlaAyMliOJvwd2t4xlxLkO2MLEkSJJxfULCPf6ZCYq7kHoWu1kEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=YO0O7Fct; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=P2QvCWe6PartnF3LoWYYsGQGy+7zL+gLb3mfCxj9MNM=; b=YO0O7Fct9K+fpC+r/8Zebl8Ekn
-	q1XcvYC2VDhRm2h/P9vBVIQFx+5la6aLRuhym+rkXpcDCzWjfsOswPFi6vkN2RusL5cavB8Tp1JQ1
-	GrNgUxdtd20RYoGMSS+b+7zPxXgr0XdD1MUwT7iuxsILGQZfvfB3U/Q487zULzOfn5VYhEDOZZena
-	9qRKrLYhyB5kLRD/8y/kSGYnximP7vRwMDQsfFXTdA0KJtM7KLLMeLtExVLc6sqQpsYxtVBEx8sJt
-	ObrW7UGkUSjUke9BFYjtw8ex1xz1x0zQIaxAD5JQPo2qPbc0mfuRwNJ1R/FQ2Zvqlu5O2lQCkUMdy
-	MS/fAFcA==;
-Date: Mon, 18 Aug 2025 19:12:08 +0200
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Yang Xiuwei <yangxiuwei2025@163.com>
-Cc: tony@atomide.com, khilman@baylibre.com, linux-omap@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, Yang Xiuwei <yangxiuwei@kylinos.cn>
-Subject: Re: [PATCH] ARM: OMAP2+: use IS_ERR_OR_NULL() helper
-Message-ID: <20250818191208.11db7aae@akair>
-In-Reply-To: <20250817083449.2249268-1-yangxiuwei2025@163.com>
-References: <20250817083449.2249268-1-yangxiuwei2025@163.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1755591094; c=relaxed/simple;
+	bh=3j9Oxbq/9jtnjR827ybfCD0f53dGZ18zhqTHoaC/+ac=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lnfiOxgBhv+CCFaLU577KdVSLifCrPIFmeTb41T2xlp//qIYvmldB5acxtUx6ixdglvNtvsLhmPjDfimXNjFXZvNVg8MLMkVCOJLqPam2crKREosjB0wA5llY0pyx4YTZU8B0CFoIRRFLOEtzL4LgAN8M8e7foUwe6WQGy4mJbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EzX++Nil; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D998EC4CEF1;
+	Tue, 19 Aug 2025 08:11:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755591094;
+	bh=3j9Oxbq/9jtnjR827ybfCD0f53dGZ18zhqTHoaC/+ac=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EzX++NillaBCks+hjcA7hDvXB2rWf9gQVUqvbPGyWil7O7XN5ciiG4pBkCUGtZece
+	 7G2IuPayDrM02yI6FgYuD3rxRBAqnUmmE+LDpsq2xOIJNzPvoc1ebE2NyQ9oGkIN7w
+	 AtP075qiDakx7jzeC6ov/2tsNXx1YftM02oLhpr1ob2vwCsqHUyBdZ5n/FI0NpAqZZ
+	 2O2p3uTScLX36laWk7MWRbfWuSZBWx3cc/SlKrEmCOMTlKQnKqZ10J6gv/dAyOmIjL
+	 RMmbHaxpN3MGjkfZ5v5Yf/zqulHv5zykX/8NBBSX74+drivXa9WCmkvXYpu//Sl2v6
+	 qQMYo0wUp/KVA==
+Date: Tue, 19 Aug 2025 10:11:31 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Cc: linux-kernel@vger.kernel.org, andreas@kemnade.info, 
+	peter.ujfalusi@gmail.com, dmitry.torokhov@gmail.com, robh@kernel.org, krzk+dt@kernel.org, 
+	lgirdwood@gmail.com, tiwai@suse.com, conor+dt@kernel.org, lee@kernel.org, 
+	ukleinek@kernel.org, broonie@kernel.org, gregkh@linuxfoundation.org, 
+	linus.walleij@linaro.org, brgl@bgdev.pl, aaro.koskinen@iki.fi, khilman@baylibre.com, 
+	rogerq@kernel.org, tony@atomide.com, linux-gpio@vger.kernel.org, 
+	linux-input@vger.kernel.org, devicetree@vger.kernel.org, linux-pwm@vger.kernel.org, 
+	linux-sound@vger.kernel.org, linux-usb@vger.kernel.org, linux-omap@vger.kernel.org, 
+	shuah@kernel.org
+Subject: Re: [PATCH v3 6/6] dt-bindings: gpio: ti,twl4030: Correct the schema
+ $id path
+Message-ID: <20250819-daring-shaggy-fossa-ee6d6c@kuoka>
+References: <20250816021523.167049-1-jihed.chaibi.dev@gmail.com>
+ <20250816021523.167049-7-jihed.chaibi.dev@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250816021523.167049-7-jihed.chaibi.dev@gmail.com>
 
-Am Sun, 17 Aug 2025 16:34:49 +0800
-schrieb Yang Xiuwei <yangxiuwei2025@163.com>:
+On Sat, Aug 16, 2025 at 04:15:23AM +0200, Jihed Chaibi wrote:
+> The $id for a binding should match its file path. The ti,twl4030-gpio
+> binding is located in the gpio/ subdirectory but was missing this from
+> its $id.
+> 
+> Correct the path to follow the standard convention.
+> 
 
-> From: Yang Xiuwei <yangxiuwei@kylinos.cn>
-> 
-> Simplify error handling in OMAP powerdomain, voltage, and VP code by
-> replacing open-coded '!ptr || IS_ERR(ptr)' checks with the combined
-> IS_ERR_OR_NULL() helper.
-> 
-> This improves readability and consistency across
-> omap_set_pwrdm_state(), voltdm_get_voltage(), voltdm_scale(),
-> voltdm_reset(), and related functions.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Yang Xiuwei <yangxiuwei@kylinos.cn>
+Fixes: 842dcff8e2d6 ("dt-bindings: gpio: Convert ti,twl4030-gpio to DT schema")
 
-Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
+
 
