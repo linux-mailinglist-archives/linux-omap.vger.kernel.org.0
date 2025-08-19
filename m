@@ -1,76 +1,78 @@
-Return-Path: <linux-omap+bounces-4262-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4263-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CF37B2C543
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 15:22:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A89CAB2C54F
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 15:22:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B2B9164F11
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 13:18:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 986CD196541D
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 13:18:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C7E2340D9D;
-	Tue, 19 Aug 2025 13:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB963431EF;
+	Tue, 19 Aug 2025 13:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rESsUOet"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OmwpHzI0"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66FC533CE8A
-	for <linux-omap@vger.kernel.org>; Tue, 19 Aug 2025 13:17:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E4533EAE8
+	for <linux-omap@vger.kernel.org>; Tue, 19 Aug 2025 13:17:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755609423; cv=none; b=XzFL/7EF1UK2HiVY00Le+enx2C8e5oXOj3mfqxBZURU5imyVau9rzibZYZBIE+OnL5Y9v/J+eGJ92MpMVPjx0PFH/6bHtFyWFiDsAP4+BIAiF2I+JwvX0h23PkpDQBswMQ+YSi5Kel3hS4RLFUFsIPdpNzkx7lgcinvJasXo3to=
+	t=1755609424; cv=none; b=e2YDMPv5O9zialZR38mTBGZtuIfOZIU9S6YE1CEvKI4EtHzV1RzfDOCtQzCHB08veCDfk2k6upflAQncr2R7sM3SoESPZNstGSEjT0off5+H8YTMACIYMRfVjBMP7I/soWNvP8NG1KMzhkoGvJIFO2ugNZ7WGZe1n1WhR0uEF1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755609423; c=relaxed/simple;
-	bh=+VLxqH0ESqnHDuk3E8kCPOtSdGHTD/8yFJeuZ9BiCYs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WVCshDGkAVmwexb5rcBixAvK/DkMLuXeeQ8hNXSjaeP/8He9PrGi2Tatdwy5qjPJfyOPmcnxHF8rVBjqpNPNaYL7md2mbieCjfpq5MTM25S/RmKETBameG2PfAAJeiYbjmnCcsnW6DAFkTsO0HI5tkzxR3FqvzITgBMU8bGCfhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rESsUOet; arc=none smtp.client-ip=209.85.218.44
+	s=arc-20240116; t=1755609424; c=relaxed/simple;
+	bh=DurH8t9HvSvsgH3oRg+Ms+SKw2PItKWRZVBe+tEhchQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rfOL8yVT/XHle2/QsYbRF1jlufbjHFeSQu4HcJ2Zwv6CIUlTbatgmPyK0N4YMYoNwPE/JD/mLYgrkiWOijaURvbylSkp1no/lOgtE7jtWJlvoLBv2ukSKuIyj8ugZjxBY1+ovhyMvP/751ZaibixvTQNrweY6Zym8WNHZDNNdug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OmwpHzI0; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-afcb7a5cff3so97916766b.3
-        for <linux-omap@vger.kernel.org>; Tue, 19 Aug 2025 06:17:01 -0700 (PDT)
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-afcb7ab87ffso83184166b.3
+        for <linux-omap@vger.kernel.org>; Tue, 19 Aug 2025 06:17:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755609420; x=1756214220; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qESptQ/dmYUlk6re8+r+sev9Qhuuz0N3hfWZa+wWogk=;
-        b=rESsUOetlTKYUMTap3LQaHi0BeKDzt6tMbLeLwxG91MOgdZA0DOhNof/J/LCMQ42KS
-         9tcqmwp5L3Tx7y/oO5+kJQZwAqzHX4kwGDHhjKEWzJk8r6tABn5e2TH7oTJLd2v7zqLi
-         GEYL9LCAhWxJu3k+ocT4UmiXSv6l0wq+8GDoksXvXtzp4DJlgRXfmeczzJQY0ZVyBSr5
-         wK0806TMywOFQH6OhLe8xywHA9fLhp5ODSxxJa51GxITKpSoirv2D6Q/XfSZmO3BAM7y
-         06r0muJB9z6L5EJ3TBUSoCob9OfXQhXe9jlp6fJsF9HXUYo6UctDW+rqQ3zeQmJ6K3eI
-         1zxw==
+        d=linaro.org; s=google; t=1755609421; x=1756214221; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=afUEtVliVjZtOeNo/hdpDwYyKku5Vsn6emnpI81Aarg=;
+        b=OmwpHzI0iQfw/Q6NF320MEznRekpy9ohE7RN7S4PD+CXIb/rqGYsgoqkwHhrxb9rCd
+         bSWYf/WeRW5NdZHafVFSuzwdtr9XvoUUcWPs50NpzWvNHYiQZw87wIx0qZew3a+qpY/4
+         8pGGemugyV9l5EVF5gQO14H68i8NqYTID/bj7IeqWTn4r9a3KDPyG9tg/Fo+akEaI/aT
+         gdMX3ZluojGwo2kKUOQGGtkY/pqlq1E4G1ZjIFFgEJZLx0hl2qgYps+KkW7CHMeFsmjt
+         JeAGDEAoaoM9WC9fxjVYFwU+V/9c4Ytu8i9cx4HTzUqESa4Vifn5/lCx4gdKa1nlUkFc
+         X4RA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755609420; x=1756214220;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qESptQ/dmYUlk6re8+r+sev9Qhuuz0N3hfWZa+wWogk=;
-        b=Mmthad0kGLQlrSJwQbqYnYEISw+W3Bnjk91mR+sdr+/tSAvUuA+B9BKsvPZ5icRhGo
-         qUk29eKD6MUGrD49kRAhxZBYQV/giNbY41TnIXbZAd+csoKfQPeinClVFajfMxIq+r+d
-         tWELKZcgxc7VE0TRDqvMY+sK8SKLjRxwDZuMFPFQVkLaFABlYFIw1yulJQykYulgyWid
-         SjzpQpayFJDBfRdVNLqubdmAJbwyelgEM+qo64PdICFH5F84yn989+62khx0jMhCHEYb
-         96t+cwR4Zz0DVkAA8xD5+p3E+kmqtN2rRIr0sKT2YD4kigoYHmj7f0GTvmXoWnrl9CX2
-         ObPw==
-X-Forwarded-Encrypted: i=1; AJvYcCVBUcp9PtQmpOD9IlFSdh6bzsVnPSBT/caPiu0T84HzxTCon1bgy6NgGa9hl6W7vff+FqUIoyvlfFUM@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIsKitKEIpY3CFkpgAbXDE2VtiX48Jjn/ZRoSk+rM/qKH9jYy3
-	+RurniNAFtYKDL5V3u/07S3J0V6L6Vza9buOIUnVcIguG6mXOeIsOdkJUcYACHs9VFo=
-X-Gm-Gg: ASbGncuFwtt+3TtPoJDAzq8Daju+HSmUdoPker/fy08jjVV+GZxEaJg8KQbxgTWYQa0
-	Q6UjLgRalV3HYX+IplP6dY6YEvRNOXuKVyw9cGoV9OuZhMRdr+gReVlWoFtbTJRKaXFNuWJXpv0
-	uZ8EUeWK2Lp0LbyFa1Jv/Yp0LTNbCosc2VjmmN8JWz0PpuJy33zgrwnnqCzQt2aPKm24wQYCb8J
-	sAHshdPXW8sEhsYrHqKbIRPE6mV5XroD/waZX0DqSRYrl1g/f0MKZy1FsaP/Ve6iCB8P2npgq8S
-	uAG/cZnG8+wUPlwGSud69J/rgTJsxBfQNKCu3Ys5P6iQHcYiBIvyylaMTuwfr2ykhxyP0kDWqEv
-	eH1ZhTK8LHIwlKCr3uXIbccVv12BXqEgMJQ==
-X-Google-Smtp-Source: AGHT+IEg8a2b47NedlvviLuwG8st+X2x0l+Y/YjWI2l2AzTIN3x0F4/UgFHHn1iSDfVurcfwrHIMew==
-X-Received: by 2002:a17:907:2dac:b0:ad8:8e05:e5e9 with SMTP id a640c23a62f3a-afddcb7f48fmr110735966b.2.1755609419572;
-        Tue, 19 Aug 2025 06:16:59 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755609421; x=1756214221;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=afUEtVliVjZtOeNo/hdpDwYyKku5Vsn6emnpI81Aarg=;
+        b=PeGB8JQXzWrrUk8Gr4suHitKZTXB5B9rGEUbHhkqprfG8zL/6YndYdrOnBrm95G4bR
+         9yOCtLf9pnaQ5iqDdTRup8N5Vi2qxHUIPxYEIRE7ve8LVke1hjkmhW7RguiHUCORJWUD
+         Oh02JpS70JmAhNubBv9H/8zwnfbmBUgfUntjlM9/XPdncMCle6OxLUHpmkFhDXjDKpWh
+         ulvWC2wED0L8wXmwWCRR7SzbbhKmtD/l0OHZLh8TePW3vpkJq7ml/4mgMOHm0mTY/jo+
+         3sp9mNRm/94MlX3OnPjoBtiEiE7fLanZT00DvHxGBy+vP1/aHd4m1tuA7pQRT7HWn4js
+         fR7w==
+X-Forwarded-Encrypted: i=1; AJvYcCXKvYvfml4qlK9OezZmLoGGcaasYZ/0d+i4bttJjL4h8WKejnDteQ9VObwHaFK3dIF2/WuI3AHzMLXt@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz77bDtiJruDcH7gpAqRf02CXhNBVX6WTbrRkgAXQcy4LrcUfAi
+	O6WLO2x21o7pXNRZb07xoyBQ9uPQEJImckZnxMKXdMVo+G5PjAHGRpX4oanIAg0hBzY=
+X-Gm-Gg: ASbGnctjljXcARZAxLJjD/eLmozDtYQ2y0rJtn96e7mB5QEexV/wjE6uP1LSc0rxuAp
+	0w/UrEQ7OtXzSMWxhVOI+s9E0GWLkp/bGrA8G3UZ6lCcJPy14x71LYlYZmRXFaGFeqbUlAqtwqY
+	CT6O2/f6PllmrXWai1qR3beoz81XcZUZTGIbBtvIQVIYwoDfLgBkyoUbbOAfpYErNJ0mhcwCdsI
+	gwVBxO08kcSAkEv0kZrMwY0MCZVdJ147aHf8sSb0bCJNpEk4f80ygCW/eY9ZV0i4/PpD3wO6V3F
+	SnMrpSqAhPmM57JwI1F2RX/1BJ3VgrMtSrB/wYBPpZ2iom3d3sqUuTEhhrpBDowaimm/wV5gkEd
+	ECW39jUMsAPaIXDr61Y1fSGRPdlXu5rLtkw==
+X-Google-Smtp-Source: AGHT+IGtLL/rMQjhxzJkRlPZlnKvsoJ1pZE187tn2bkOK0e/dPzM5466KD0MC8NA4ckzjg0aedgAGw==
+X-Received: by 2002:a17:907:60c9:b0:af8:fd22:6e28 with SMTP id a640c23a62f3a-afddd1f804fmr139748566b.7.1755609421010;
+        Tue, 19 Aug 2025 06:17:01 -0700 (PDT)
 Received: from kuoka.. ([178.197.219.123])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afcdcfccea7sm1005948066b.67.2025.08.19.06.16.58
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afcdcfccea7sm1005948066b.67.2025.08.19.06.16.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Aug 2025 06:16:58 -0700 (PDT)
+        Tue, 19 Aug 2025 06:17:00 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To: Tony Lindgren <tony@atomide.com>,
 	Rob Herring <robh@kernel.org>,
@@ -84,10 +86,12 @@ To: Tony Lindgren <tony@atomide.com>,
 	linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org
 Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 1/4] ARM: dts: omap: dm814x: Split 'reg' per entry
-Date: Tue, 19 Aug 2025 15:16:52 +0200
-Message-ID: <20250819131651.86569-5-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 2/4] ARM: dts: omap: dm816x: Split 'reg' per entry
+Date: Tue, 19 Aug 2025 15:16:53 +0200
+Message-ID: <20250819131651.86569-6-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250819131651.86569-5-krzysztof.kozlowski@linaro.org>
+References: <20250819131651.86569-5-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -95,18 +99,18 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Developer-Signature: v=1; a=openpgp-sha256; l=980; i=krzysztof.kozlowski@linaro.org;
- h=from:subject; bh=+VLxqH0ESqnHDuk3E8kCPOtSdGHTD/8yFJeuZ9BiCYs=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBopHlDEWYdXbyxtFtlpDztgTjcbe3aHp61Er42M
- sDr4UPxApaJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaKR5QwAKCRDBN2bmhouD
- 11jVD/9UYLfz5ELR6Fcra1tWfRFifgZ5ZybkjRh8OL+71XNyumO9EegMvfET0kkKjxUkuY4uT+U
- fCZsJMPevZYPepjPp+yuaWGL0EI8o+jxrOBKshhFfvl+Y6DTQ/FaNgMkrNWztTV6olKaZOVWTXw
- f+r2lj2mfZFsIP5LgfVsOdhuJAkYGZptmHb2hOTHbW3VPWjD6hHxbHBSOV/ENzWEl0T8/Gb++Uu
- IdbbFyDNR81ouf4Ff23mvNjZc73zVt54vwUgZKZWPCtEVWjCbBWe2S1FxgpSqZaW4gpbtXNgg68
- soBWg43YrHaT1TLCzjdpnlht5Mih0Y3EnHaLZTtWAvX4n+JW8gs6s7KuHzflipQqRqycNryh2Ua
- 4BijL9irYBIvIIOqEj0NKdRxciMJOEhbebiv9GLfqH4+UiBdUmYNBgZzg3rberIORc9lPQ3iHRr
- s0EadnuYQ7iIID1oIUD1ZElMN4iPJbctQl4rJmfRR09P83zOMcQp2spkwU/qqoEVx2uowOowHs/
- cJMDIRB37EnSpL+rHdyb8F1tFa1X945OECQupe3I3WRH6MLo34pDpN//wE1C8n7+0ZF2BB+zeTd
- FMUOWWgwBQ0CB6caKMfL7BJ69MiQiB3hA33MreO26vremnzLj5X0QQfwcf5UURmNT2b8E/rzieq wuCoQDSCL4jLtkA==
+ h=from:subject; bh=DurH8t9HvSvsgH3oRg+Ms+SKw2PItKWRZVBe+tEhchQ=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBopHlED2RNTR+gOn2Nk2+yeF1Ihk8AB0mmN+Q6A
+ BV9PMIiEuKJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaKR5RAAKCRDBN2bmhouD
+ 1yCQEACXqTIa98/3bq3O1JqYDp3gG6RAC1NUdM2KPR8Em28++Xh3z8FISafVDmkIsiK9DZGl/DG
+ eimvXk1Y8oHTqKOzA3SSL8lMcT+v/nn/l5BBZDTYv3jmrizFHdah18lX/Ay2MAcTD0Zd988g38P
+ 1aN+Q7fUFiCofVUskLHo4UgNOWab9pNsqP9aCdD4Y1xp8V1QZp50ExH3c0qKxPCjsQgmXZ1+9o2
+ jW/7FUo7ipHjHdmTNlH5X3ulXI4qRfcKU5NFleIH1BcBpTBEb7318kwlDSkuiaH6s9PuJ1bqFWW
+ QvV4e3sj0Bc50dYmjB+CM103UFaVy2uRw7i0LC5tWVYFPgeZrPbKYVRS7MY7o65OhtiJGMp2IVA
+ YPcBwDmDcphdcIm7ERMneVOe4GIBc377EuuhOcENPsu27Mcx492FNhIzXsY/2lpUvWm1ePqMbMW
+ +Fzdk6VswXWJFynrlOHJuwi56zY7Sd6jty3/Pwe/dYZ3we4czC4QzUNbpLNPgViNA02XaorY+Ne
+ yuZPBJFllB5Hf9ZbUc7/zhK2/DentWxlmgquwXCEVxxHQnbnxQEbRxktZKrebYFDyZUBwMN7ynq
+ KBQ9MCU9F1ijlY1iouBVP1kt/fg5Ek2iVfBPou9csJYu8Ev58kkHbgqKGRvfiXkJRq/2RT1cdIN oyHSeQgK4x/Rv0A==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 Content-Transfer-Encoding: 8bit
 
@@ -114,14 +118,14 @@ Multiple entries in 'reg' should be encoded in separate <>.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- arch/arm/boot/dts/ti/omap/dm814x.dtsi | 8 ++++----
+ arch/arm/boot/dts/ti/omap/dm816x.dtsi | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/ti/omap/dm814x.dtsi b/arch/arm/boot/dts/ti/omap/dm814x.dtsi
-index a8cd724ce4bc..27d1f35a31fd 100644
---- a/arch/arm/boot/dts/ti/omap/dm814x.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/dm814x.dtsi
-@@ -155,10 +155,10 @@ &cppi41dma 26 1 &cppi41dma 27 1
+diff --git a/arch/arm/boot/dts/ti/omap/dm816x.dtsi b/arch/arm/boot/dts/ti/omap/dm816x.dtsi
+index b68686f0643b..407d7bc5b13a 100644
+--- a/arch/arm/boot/dts/ti/omap/dm816x.dtsi
++++ b/arch/arm/boot/dts/ti/omap/dm816x.dtsi
+@@ -643,10 +643,10 @@ &cppi41dma 26 1 &cppi41dma 27 1
  
  			cppi41dma: dma-controller@47402000 {
  				compatible = "ti,am3359-cppi41";
