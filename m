@@ -1,149 +1,106 @@
-Return-Path: <linux-omap+bounces-4267-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4268-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DFF3B2CC12
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 20:32:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38862B2CC71
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 20:52:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C1AF568317
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 18:32:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8D201BC33A3
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 18:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D953112C6;
-	Tue, 19 Aug 2025 18:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51A4322C82;
+	Tue, 19 Aug 2025 18:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lb/nuauV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MZD+TihB"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB841E5205;
-	Tue, 19 Aug 2025 18:31:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728AF31E119;
+	Tue, 19 Aug 2025 18:52:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755628318; cv=none; b=ERUoNn+fmmXnx90iqxOfm3YTiUGSKTCPEsJS+P77rSBJ63xw9JqKRHcEjqu0U08uvpwWkymjmBXSPVqRUb3ry5hrEqVC1Akara0PuFfs/fGtuFO0c3F5yThb6Ncy/W2fFl/jd4Ta6yC2SQoadUmjyepF2XkjEWElkLOF+y/5rik=
+	t=1755629538; cv=none; b=pAiEf4Fzuq8RchM+Jo+mt6BHQLNp48ck7PuGy0AvUqC2ejUkCcISu+gQL3SpcQ5/p/Uc3I9ip2RsPQ4WJ94+l9kfmULP837SqzA7S3Ju4bQBVHLnRSgkIWyJBK1b03DocF1qc+wmjfeUWSxP3Z+YFjUDt37VcECNzfd44BB1xiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755628318; c=relaxed/simple;
-	bh=ELVk40zB/S/lTRU9qhJakzcG7jLCkklBrhAYe+KgKyc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZTLOYpBu7RdkBHqnVj0YndDydi9VdsbbblrY2WJm/lgYaoQ9itH8BbN+RDrlYj/A2zB2Ncjz967qz3UHGR98Zv+1G89zAceYkMcLS8cPNh+sKZz7D8IRvsHaBkFOvCPiNtxfhDroxWj83WsZjxXX2N8SDtyk8jn0kDI4QOy5G4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lb/nuauV; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-afcb7a16441so877193166b.2;
-        Tue, 19 Aug 2025 11:31:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755628315; x=1756233115; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nduGwRgCS4jl5SzExLMSPPD9EivCrI3lCOm2UzUncAk=;
-        b=Lb/nuauVa3mB1hQcUs3mokVUSOFxD4IG2+OShAQfjuzSpboc8/kx5vrsJSTANt0/vt
-         AkkeVaU7RjsI7DS3wqaUVaDQOJWuK+8bbGkvTlMeEk7w/Ya15bOEEhQA3fqc1JS2yXKp
-         txbYifraNLsYW7CWo4884+fC3NW+b7RKjpDLOQoiRSQLxHsM6T4AFti8abk8XKit2O/H
-         ksldjTMmFrYK1sQGPpDzAq6yQQ+bRhootlHuhczvO62y9N94Q4maxHiJDYg4bQmGjRPH
-         7b6AV3CmvsXle2GDGIOOHWZGAaiKeqtfUN6FLF0JawGgm2Ao3xJk5/wJtscKKoC6I7PF
-         rTZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755628315; x=1756233115;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nduGwRgCS4jl5SzExLMSPPD9EivCrI3lCOm2UzUncAk=;
-        b=vIpR3EF42eTfQV9uQ+dQuYp1KV4DazAqLsXKs2FvTg20MGHjnvjCRgsQ8T/YPKlM94
-         U61xKCjemH6Koj70krrxNrEfTIAxLoIdKdjFXSBfAhE8oWqBxKUmNY1y8KrczBOTH+5A
-         F4nWJqqwHAzlIH88Nwe6ybXci2txHAC6QihvAt0U2EripB/gLu2EzPTuD0Rs2V74lk27
-         R3d7vJKLM24jFPu0E0P4cQr8glHRcx2CRzzTZaF/52G518RiYUWKE8BO7L4q0R5Eu+El
-         9ryyrxd26udI4xjM1Yh6cUDV1L+Nl2+abAndL1FH414ak2aPwkvkXg1/FNagQDnqS7uK
-         AVJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUJGH9cbSwhPlxfznXJRuaRls/CJUgl7kYKWP4oFDGEAzkREeW06jR4Hoe0L/47AJjiKP/K8j5ForlUFh6nPQNS@vger.kernel.org, AJvYcCUy9b7pfZ/i+yuXse9SyY3J3rQchJMfXpARg37hSgdUxOGjb5FDXscImkXo+APB6QxFSFLcM1RhBPOeRX6jNHOq0/M=@vger.kernel.org, AJvYcCVJPG3PkzN5lv+299FoToobKy9WVmG9akr59YFi1lFPNRAByl6BgbxcRoCLhENMpC8FlhgtcC8R0jT0H6PE@vger.kernel.org, AJvYcCVneJrEjjglzE0ACDuBHfuhFxW+oK56Y4poVroPixkAYrkz9TxtzFHhximDa4m0FI4asi5aosAiWGrzHoEC@vger.kernel.org, AJvYcCX2YqUK8SHti24h1kl3lKkfzde38/37guEIv1V+T3byknebvzh9DOxi6vO9xr0HdzCnZluFfevK+/L7PQ==@vger.kernel.org, AJvYcCXK2L+MCTmoNsbJQfEq9zCS0eDX2lyc+aOqRdZeh4E2Kg27q8+SmqDu2GkoyUTwti+XSHxjv9s4DlVhxw==@vger.kernel.org, AJvYcCXUtG2v49MkuDuoCgeNGsZkwgxOLfipKfuX4vfk5W3YOWrJ2F+xIsdN0zZe5ZdEDKIwDTNCc7YSMJgEPw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyCGJ6euZfLCWv/rf2g/u0Kn1TGdvoGKwfEBOyJz8bQwpU1JvE
-	dONG3CmqeyojsRtJenM0gqZNkFoXpjUncknm/PWbScoKkHgd2c8YCzrb75nL5Mq2YHWTBdEEELO
-	Cqp5da0pq1wWbkib2cQZeQ+tXYs7Yy4Q=
-X-Gm-Gg: ASbGnctkfFLF5sQujSAdskvhoeXrB47+Gvf2ENbfPbgoi1ulaUQewBtUoJlL1+RgPDv
-	5/ntQhQjPG+5shuTvqeFRd578gJvoNwp2V8TCvi9fPfUu1A2zTPeOLMMlFBOxmXPcXmGwSJxLTz
-	qa0Pyck+DyX6saE/CQkeGuSvO3Ly3JXGw4uA2PMlLBSjWVRUCMybQF6p4GWH+9AvxmksE4hdMyK
-	oqSsnY=
-X-Google-Smtp-Source: AGHT+IF9qpemszLCjKdTIPsWz0t4GcsgIaQduXYK/rUO4127Ry+Cx5d3EXzVvEU87daLwDxw0y5nugBK0Rk2QA9qZjg=
-X-Received: by 2002:a17:906:dc8d:b0:af9:1be8:c2aa with SMTP id
- a640c23a62f3a-afddd1e42e4mr344769166b.45.1755628314808; Tue, 19 Aug 2025
- 11:31:54 -0700 (PDT)
+	s=arc-20240116; t=1755629538; c=relaxed/simple;
+	bh=Wkkw568iXoDJ0kw7A3ebaYw+w6YTHaGKsVwIET6hZh8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=npxyD3dU499kyCPnE2lQL67mKUU/RxpV8R9xBKxEFiQ89/BvkzNkyp65CCvXEZ/UWIMk49MBdT5oaYZH6dH7TlALkUhLoEOcoLZL8WrfaR+OPFrgYZfh/aSN/rwuuSOCBrT8GH2DmqtpNZ1oiZaNASkdZ9678q5ZgEx2kacOMSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MZD+TihB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A20C4CEF4;
+	Tue, 19 Aug 2025 18:52:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755629537;
+	bh=Wkkw568iXoDJ0kw7A3ebaYw+w6YTHaGKsVwIET6hZh8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=MZD+TihBFKBHZojf+8U75eK+gvYUBDbcrGGGh4FJ5Y+CLSCBS7IG+Lrf40p0UeCeu
+	 e5Pi+wAy5Cg5uN0wbc4PDzJHg2a9urWwjFKFSJwOm2pOZNQi5yELEvtUQ3NcSt3n8+
+	 GDh3fR8nGRptmcOU3CfIaWp0mpA6hI0Ggv14wKw+p67bcPdomUPFXaOyKIY4GyXiD6
+	 mYxVL0M/amD+dGy6lmA+o199wdf8h7uZzbjxqtPcG9+C8SM/xw49pJL/3eua01n5le
+	 loPommBtJ+r7acsAx3oF8ST75wq+cuC9bnWS4Mv4yR10yIWml27OVqF3T9ChG75yYz
+	 Oyg2vubv6Tn5Q==
+From: Mark Brown <broonie@kernel.org>
+To: Shree Ramamoorthy <s-ramamoorthy@ti.com>, 
+ Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
+ Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, linux-omap@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+In-Reply-To: <aKRGmVdbvT1HBvm8@stanley.mountain>
+References: <aKRGmVdbvT1HBvm8@stanley.mountain>
+Subject: Re: [PATCH] regulator: tps65219: regulator: tps65219: Fix error
+ codes in probe()
+Message-Id: <175562953472.246782.13325233916103955955.b4-ty@kernel.org>
+Date: Tue, 19 Aug 2025 19:52:14 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250815-pinctrl-gpio-pinfuncs-v5-0-955de9fd91db@linaro.org> <CACRpkdaDGmdhaik+1saRv7Ts4myQ+tg1aQqGU3xQyT7ma8dJFw@mail.gmail.com>
-In-Reply-To: <CACRpkdaDGmdhaik+1saRv7Ts4myQ+tg1aQqGU3xQyT7ma8dJFw@mail.gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 19 Aug 2025 21:31:17 +0300
-X-Gm-Features: Ac12FXzsYRtjNObv84CHy6T-R0DRBoqbq7I0xmmsDobIVB43mAqIdnnlLv2k1FE
-Message-ID: <CAHp75VephepLq61HrVy=PX2oKUQd5NK2qS-vOC5h_NR65td3Uw@mail.gmail.com>
-Subject: Re: [PATCH v5 00/15] pinctrl: introduce the concept of a GPIO pin
- function category
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Chen-Yu Tsai <wenst@chromium.org>, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-cff91
 
-On Tue, Aug 19, 2025 at 4:02=E2=80=AFPM Linus Walleij <linus.walleij@linaro=
-.org> wrote:
-> On Fri, Aug 15, 2025 at 11:09=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.=
-pl> wrote:
+On Tue, 19 Aug 2025 12:40:41 +0300, Dan Carpenter wrote:
+> There is a copy and paste error and we accidentally use "PTR_ERR(rdev)"
+> instead of "error".  The "rdev" pointer is valid at this point.
+> 
+> Also there is no need to print the error code in the error message
+> because dev_err_probe() already prints that.  So clean up the error
+> message a bit.
+> 
+> [...]
 
-...
+Applied to
 
-> >       devres: provide devm_kmemdup_const()
-> >       pinctrl: ingenic: use struct pinfunction instead of struct functi=
-on_desc
-> >       pinctrl: airoha: replace struct function_desc with struct pinfunc=
-tion
-> >       pinctrl: mediatek: mt7988: use PINCTRL_PIN_FUNCTION()
-> >       pinctrl: mediatek: moore: replace struct function_desc with struc=
-t pinfunction
-> >       pinctrl: imx: don't access the pin function radix tree directly
-> >       pinctrl: keembay: release allocated memory in detach path
-> >       pinctrl: keembay: use a dedicated structure for the pinfunction d=
-escription
-> >       pinctrl: constify pinmux_generic_get_function()
-> >       pinctrl: make struct pinfunction a pointer in struct function_des=
-c
-> >       pinctrl: qcom: use generic pin function helpers
-> >       pinctrl: allow to mark pin functions as requestable GPIOs
->
-> I applied these 12 patches as a starter so they can
-> stabilize in linux-next.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
 
-Hmm... I'm still sure that we don't need to have a separate flags
-field, but since I am on vacation and will be able to look at this
-closer next week, I can't look closer to it.
+Thanks!
 
+[1/1] regulator: tps65219: regulator: tps65219: Fix error codes in probe()
+      commit: 11cd7a5c21db020b8001aedcae27bd3fa9e1e901
 
---=20
-With Best Regards,
-Andy Shevchenko
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
 
