@@ -1,215 +1,149 @@
-Return-Path: <linux-omap+bounces-4266-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4267-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACB52B2C799
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 16:53:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DFF3B2CC12
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 20:32:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D83FD1BC3A6E
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 14:51:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C1AF568317
+	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 18:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E36C27F756;
-	Tue, 19 Aug 2025 14:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D953112C6;
+	Tue, 19 Aug 2025 18:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XdzC9lTx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lb/nuauV"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE1321772D;
-	Tue, 19 Aug 2025 14:51:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB841E5205;
+	Tue, 19 Aug 2025 18:31:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755615074; cv=none; b=roSGSQ7Nmkq556rsHpFIaw7vETOslsIbAR7hmWj2Fa8oACsWeRARHBV6w/sHJr80zkjDuPeQonx2qOme36YkZhHLQbYyQK8c1j4BErGXRIecneGCfmjP+u1HPG15srlm4E1m6Lx+yLsoIqXRpoKsNVLGrcYhmzbHnY4S1vDuRi0=
+	t=1755628318; cv=none; b=ERUoNn+fmmXnx90iqxOfm3YTiUGSKTCPEsJS+P77rSBJ63xw9JqKRHcEjqu0U08uvpwWkymjmBXSPVqRUb3ry5hrEqVC1Akara0PuFfs/fGtuFO0c3F5yThb6Ncy/W2fFl/jd4Ta6yC2SQoadUmjyepF2XkjEWElkLOF+y/5rik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755615074; c=relaxed/simple;
-	bh=eKOwK0qY0XlIYHG/mfv6JRGT834tGvbpGugdoJwXfiw=;
+	s=arc-20240116; t=1755628318; c=relaxed/simple;
+	bh=ELVk40zB/S/lTRU9qhJakzcG7jLCkklBrhAYe+KgKyc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XwJS/bUCRfST0w9SjKUZXWc7naqayJ1tYAzk5o7knUxNVAgm4Ycdti2y5thh6e7+jeferJKzcQvWeIT1DikL4R+b/rOCjYishrnwOF2KkmISlgoXY29F1Dvjb63LgTeoQfrB1sm9b6Ii715Yer4Jap0Ffd8m4suYiTD7AWh1iJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XdzC9lTx; arc=none smtp.client-ip=209.85.216.45
+	 To:Cc:Content-Type; b=ZTLOYpBu7RdkBHqnVj0YndDydi9VdsbbblrY2WJm/lgYaoQ9itH8BbN+RDrlYj/A2zB2Ncjz967qz3UHGR98Zv+1G89zAceYkMcLS8cPNh+sKZz7D8IRvsHaBkFOvCPiNtxfhDroxWj83WsZjxXX2N8SDtyk8jn0kDI4QOy5G4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lb/nuauV; arc=none smtp.client-ip=209.85.218.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-32326de9f4eso4716286a91.2;
-        Tue, 19 Aug 2025 07:51:12 -0700 (PDT)
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-afcb7a16441so877193166b.2;
+        Tue, 19 Aug 2025 11:31:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755615072; x=1756219872; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1755628315; x=1756233115; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=84JBC/K4prfKTVHBWmcQiE2Ae580xZlTp9zQ8TNTSNA=;
-        b=XdzC9lTxcPRY7N+Kabkp7vSPBem3WSlSNOEshPU6GORd84T7ObUDPJQbzgEytlWIpZ
-         b8EAwnVXR7bGkffTMlkb8tztOUw5qDAXsr/+VcU2wwyw7u2dbbtEnH3bR36RyK0WdZa8
-         N+fOxO1iViF9QOPFQZe9iyYHXmcWtrA4+CenTC2/qnIYkJlqK0z/QUF6Itr5VggV378M
-         FezOun4VLyRTIP19W3VHpcOAbVZXSp68ZbqxHhhBMwCSf1JyvjV+zSEtBFxnXRFFOs0I
-         Y6xX9bOdGRmpVcv+dZWzQJV6YZY/BPWga+KsXXvML0q30Pa+FT7pRk7/bt/zoJmY5UfD
-         OOXQ==
+        bh=nduGwRgCS4jl5SzExLMSPPD9EivCrI3lCOm2UzUncAk=;
+        b=Lb/nuauVa3mB1hQcUs3mokVUSOFxD4IG2+OShAQfjuzSpboc8/kx5vrsJSTANt0/vt
+         AkkeVaU7RjsI7DS3wqaUVaDQOJWuK+8bbGkvTlMeEk7w/Ya15bOEEhQA3fqc1JS2yXKp
+         txbYifraNLsYW7CWo4884+fC3NW+b7RKjpDLOQoiRSQLxHsM6T4AFti8abk8XKit2O/H
+         ksldjTMmFrYK1sQGPpDzAq6yQQ+bRhootlHuhczvO62y9N94Q4maxHiJDYg4bQmGjRPH
+         7b6AV3CmvsXle2GDGIOOHWZGAaiKeqtfUN6FLF0JawGgm2Ao3xJk5/wJtscKKoC6I7PF
+         rTZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755615072; x=1756219872;
+        d=1e100.net; s=20230601; t=1755628315; x=1756233115;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=84JBC/K4prfKTVHBWmcQiE2Ae580xZlTp9zQ8TNTSNA=;
-        b=PrW47UPbb+4uCfby/Km8RJ/8e4Jj25Ns0KsJiV5bTFlqlJAE+6VD7wyrhf+5ZiMejs
-         ah6sw9tjx2bMwTYWUpnSZzE1kZmiVSRm6OSh91/MbB67iackG49WT5wkTap6YSvNUlvP
-         +YCTUeVA2qinrPK9NZr1c8fIO2+nnTptyrOTetOp11geFoMYZmG6PH4KTJPiEEIrJdj2
-         NBsHhs6dR1tpVlX12JpOFfDEud/pNTDJbvN9Vr+wEDU0t4MM6Yqrx60fbOXY3rmOxR/i
-         BEe7S5/BPPa18Oc1Fb/7PUKqElKl/jhSggrovo4g+V6mpsV22TmITAkBiMlpvAjZClzO
-         yLzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU8F+0vySOpamRbWB4WbZtvAx0RUfP1tNdKcW4fd8NHoWzZGKpr3SRTCw/dlFDO3VnQ2BnHgPrZK9vm@vger.kernel.org, AJvYcCUMNPxlV51SSjs6jpID71dv2sq22lHK+zojmLiEdp3VqvstDlFzfpNJmTghlt+/sQIBSmjUzGREQCGG@vger.kernel.org, AJvYcCUXjKHFQxEh5Ry5NN6Evab2oE/TbrELeRdyihiPyMZ7AMrRLfFd349m/5SGz3OpiFBMjmD0geX5xM7hTg==@vger.kernel.org, AJvYcCUYVY3KNv8qU+LxsO3Vx8e+1n6w5FCpbW+WcQv0TSi6cPInA35WEAaFYG+D3aNf4v2f7G+P6pSfNkXYFZk=@vger.kernel.org, AJvYcCUqPgxIZK/i5BDL1sVPFnK5nVPL16xgGmw4cbngadDHXr5mbkM/90CQvALt175V/rdFVI22PdKeplr2@vger.kernel.org, AJvYcCWlwrj5HW9N/eGnok0i4T6KZGSgVF9VWVDMPWUd57SRxXN7GMA34DG2JEG3rlepwcTMu/aZirJJHhrLPLI=@vger.kernel.org, AJvYcCXscHSGQ+VNKQ1wVg11zKwO8hdefrj1pMJF2qdXJzjU/NFjoAhPvsKZcrupM1IUnrWHIHh9oDFMeDu59g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdpbGzsX4148l3IfsL/y1j+4+/bAyR9TN6H/HT7ST+UnL5m4E9
-	P+3OuIINNQiuecbqVsllY45dk9xArQu3mertCZk8rxRTitkC7Z7VYBq1cRq8hVBYJCLgcSTvtFJ
-	sEN0/h+i4XRH44/LLOoLL3o0k50da2w==
-X-Gm-Gg: ASbGnctYsyNVABx2OZB/+S+40W7KAvM/mNaFjqaGC0p0d1Jjw8BCTuvpR4UUNMsEA1F
-	BZYtqdRvQU9iKar9ahHJl3r5m5HhRLi4AWzFZMczblUSW2LymVG3jODtWqPcyRpyO5YQAZORFq0
-	Wo8nScz5QHYa8sVQpjF02ZNoJerNDBEmMXEqCEWRuDGPmrX251YY0qOVyQOSmtl/RYEP5U6baHW
-	A92Faw=
-X-Google-Smtp-Source: AGHT+IGFX3Kpa1nizieMl3Ixu9nhO8VijjVmgDz/D33VTEV/CrtZhkKtRMf84sQy3fytu82eKOQOb3mHib8daIX2DhE=
-X-Received: by 2002:a17:90b:134e:b0:311:df4b:4b7a with SMTP id
- 98e67ed59e1d1-32497102910mr3896605a91.29.1755615071705; Tue, 19 Aug 2025
- 07:51:11 -0700 (PDT)
+        bh=nduGwRgCS4jl5SzExLMSPPD9EivCrI3lCOm2UzUncAk=;
+        b=vIpR3EF42eTfQV9uQ+dQuYp1KV4DazAqLsXKs2FvTg20MGHjnvjCRgsQ8T/YPKlM94
+         U61xKCjemH6Koj70krrxNrEfTIAxLoIdKdjFXSBfAhE8oWqBxKUmNY1y8KrczBOTH+5A
+         F4nWJqqwHAzlIH88Nwe6ybXci2txHAC6QihvAt0U2EripB/gLu2EzPTuD0Rs2V74lk27
+         R3d7vJKLM24jFPu0E0P4cQr8glHRcx2CRzzTZaF/52G518RiYUWKE8BO7L4q0R5Eu+El
+         9ryyrxd26udI4xjM1Yh6cUDV1L+Nl2+abAndL1FH414ak2aPwkvkXg1/FNagQDnqS7uK
+         AVJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUJGH9cbSwhPlxfznXJRuaRls/CJUgl7kYKWP4oFDGEAzkREeW06jR4Hoe0L/47AJjiKP/K8j5ForlUFh6nPQNS@vger.kernel.org, AJvYcCUy9b7pfZ/i+yuXse9SyY3J3rQchJMfXpARg37hSgdUxOGjb5FDXscImkXo+APB6QxFSFLcM1RhBPOeRX6jNHOq0/M=@vger.kernel.org, AJvYcCVJPG3PkzN5lv+299FoToobKy9WVmG9akr59YFi1lFPNRAByl6BgbxcRoCLhENMpC8FlhgtcC8R0jT0H6PE@vger.kernel.org, AJvYcCVneJrEjjglzE0ACDuBHfuhFxW+oK56Y4poVroPixkAYrkz9TxtzFHhximDa4m0FI4asi5aosAiWGrzHoEC@vger.kernel.org, AJvYcCX2YqUK8SHti24h1kl3lKkfzde38/37guEIv1V+T3byknebvzh9DOxi6vO9xr0HdzCnZluFfevK+/L7PQ==@vger.kernel.org, AJvYcCXK2L+MCTmoNsbJQfEq9zCS0eDX2lyc+aOqRdZeh4E2Kg27q8+SmqDu2GkoyUTwti+XSHxjv9s4DlVhxw==@vger.kernel.org, AJvYcCXUtG2v49MkuDuoCgeNGsZkwgxOLfipKfuX4vfk5W3YOWrJ2F+xIsdN0zZe5ZdEDKIwDTNCc7YSMJgEPw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyCGJ6euZfLCWv/rf2g/u0Kn1TGdvoGKwfEBOyJz8bQwpU1JvE
+	dONG3CmqeyojsRtJenM0gqZNkFoXpjUncknm/PWbScoKkHgd2c8YCzrb75nL5Mq2YHWTBdEEELO
+	Cqp5da0pq1wWbkib2cQZeQ+tXYs7Yy4Q=
+X-Gm-Gg: ASbGnctkfFLF5sQujSAdskvhoeXrB47+Gvf2ENbfPbgoi1ulaUQewBtUoJlL1+RgPDv
+	5/ntQhQjPG+5shuTvqeFRd578gJvoNwp2V8TCvi9fPfUu1A2zTPeOLMMlFBOxmXPcXmGwSJxLTz
+	qa0Pyck+DyX6saE/CQkeGuSvO3Ly3JXGw4uA2PMlLBSjWVRUCMybQF6p4GWH+9AvxmksE4hdMyK
+	oqSsnY=
+X-Google-Smtp-Source: AGHT+IF9qpemszLCjKdTIPsWz0t4GcsgIaQduXYK/rUO4127Ry+Cx5d3EXzVvEU87daLwDxw0y5nugBK0Rk2QA9qZjg=
+X-Received: by 2002:a17:906:dc8d:b0:af9:1be8:c2aa with SMTP id
+ a640c23a62f3a-afddd1e42e4mr344769166b.45.1755628314808; Tue, 19 Aug 2025
+ 11:31:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250816021523.167049-1-jihed.chaibi.dev@gmail.com>
- <20250816021523.167049-2-jihed.chaibi.dev@gmail.com> <20250819-humongous-muscular-curassow-5accd5@kuoka>
-In-Reply-To: <20250819-humongous-muscular-curassow-5accd5@kuoka>
-From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Date: Tue, 19 Aug 2025 16:51:00 +0200
-X-Gm-Features: Ac12FXwysxyGsjAabyXw5_P1WV9yLN_7McwriOwmRdAXImPNCo-sOD4JlUKkl3s
-Message-ID: <CANBuOYr9Kmj7n664CSRuORKfxx70w+DHzO5kToyBnHyBv0SjNg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/6] dt-bindings: mfd: twl: Add missing sub-nodes for
- TWL4030 & TWL603x
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: linux-kernel@vger.kernel.org, andreas@kemnade.info, 
-	peter.ujfalusi@gmail.com, dmitry.torokhov@gmail.com, robh@kernel.org, 
-	krzk+dt@kernel.org, lgirdwood@gmail.com, tiwai@suse.com, conor+dt@kernel.org, 
-	lee@kernel.org, ukleinek@kernel.org, broonie@kernel.org, 
-	gregkh@linuxfoundation.org, linus.walleij@linaro.org, brgl@bgdev.pl, 
-	aaro.koskinen@iki.fi, khilman@baylibre.com, rogerq@kernel.org, 
-	tony@atomide.com, linux-gpio@vger.kernel.org, linux-input@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-pwm@vger.kernel.org, 
-	linux-sound@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-omap@vger.kernel.org, shuah@kernel.org
+References: <20250815-pinctrl-gpio-pinfuncs-v5-0-955de9fd91db@linaro.org> <CACRpkdaDGmdhaik+1saRv7Ts4myQ+tg1aQqGU3xQyT7ma8dJFw@mail.gmail.com>
+In-Reply-To: <CACRpkdaDGmdhaik+1saRv7Ts4myQ+tg1aQqGU3xQyT7ma8dJFw@mail.gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Tue, 19 Aug 2025 21:31:17 +0300
+X-Gm-Features: Ac12FXzsYRtjNObv84CHy6T-R0DRBoqbq7I0xmmsDobIVB43mAqIdnnlLv2k1FE
+Message-ID: <CAHp75VephepLq61HrVy=PX2oKUQd5NK2qS-vOC5h_NR65td3Uw@mail.gmail.com>
+Subject: Re: [PATCH v5 00/15] pinctrl: introduce the concept of a GPIO pin
+ function category
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Chen-Yu Tsai <wenst@chromium.org>, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 19, 2025 at 10:13=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.o=
-rg> wrote:
->
-> On Sat, Aug 16, 2025 at 04:15:18AM +0200, Jihed Chaibi wrote:
-> > Update the TI TWL family Device Tree binding to include additional
-> > subnodes for TWL4030, TWL6030, and TWL6032 devices.
-> >
-> > The simple power and PWM bindings (ti,twl4030-power, ti,twl-pwm, and
-> > ti,twl-pwmled) are now defined directly within this binding.
-> >
-> > Other child node definitions (audio, gpio, keypad, usb, etc.) are also
-> > added to the schema. These additions fix 'unevaluated properties'
-> > errors found during dtbs_check for boards like the omap3-beagle
-> > and improve the binding's overall completeness.
-> >
-> > Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-> >
-> > ---
-> > Changes in v3:
-> >  - New patch to consolidate simple bindings (power, pwm) and add
-> >    definitions for all child nodes to fix dtbs_check validation
-> >    errors found in v2.
-> > ---
-> >  .../devicetree/bindings/mfd/ti,twl.yaml       | 191 ++++++++++++++++++
-> >  .../devicetree/bindings/mfd/twl4030-power.txt |  48 -----
-> >  .../devicetree/bindings/pwm/ti,twl-pwm.txt    |  17 --
-> >  .../devicetree/bindings/pwm/ti,twl-pwmled.txt |  17 --
-> >  4 files changed, 191 insertions(+), 82 deletions(-)
-> >  delete mode 100644 Documentation/devicetree/bindings/mfd/twl4030-power=
-.txt
-> >  delete mode 100644 Documentation/devicetree/bindings/pwm/ti,twl-pwm.tx=
-t
-> >  delete mode 100644 Documentation/devicetree/bindings/pwm/ti,twl-pwmled=
-.txt
-> >
-> > diff --git a/Documentation/devicetree/bindings/mfd/ti,twl.yaml b/Docume=
-ntation/devicetree/bindings/mfd/ti,twl.yaml
-> > index f162ab60c..b0f1cb7b5 100644
-> > --- a/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-> > +++ b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
-> > @@ -76,6 +76,98 @@ allOf:
-> >            properties:
-> >              compatible:
-> >                const: ti,twl4030-wdt
-> > +
-> > +        audio:
-> > +          type: object
-> > +          $ref: /schemas/sound/ti,twl4030-audio.yaml#
-> > +          unevaluatedProperties: false
-> > +
-> > +        keypad:
-> > +          type: object
-> > +          $ref: /schemas/input/ti,twl4030-keypad.yaml#
-> > +          unevaluatedProperties: false
-> > +
-> > +        pwm:
-> > +          type: object
-> > +          $ref: /schemas/pwm/pwm.yaml#
-> > +          unevaluatedProperties: false
-> > +          description: |
-> > +            TWL4030 series: PWMA and PWMB (connected to LEDA and LEDB =
-terminals)
-> > +          properties:
-> > +            compatible:
-> > +              enum:
-> > +                - ti,twl4030-pwm
-> > +            '#pwm-cells':
-> > +              const: 2
-> > +          required:
-> > +            - compatible
-> > +            - '#pwm-cells'
-> > +
-> > +        pwmled:
-> > +          type: object
-> > +          $ref: /schemas/pwm/pwm.yaml#
-> > +          unevaluatedProperties: false
-> > +          description: |
-> > +            TWL4030 series: PWMA and PWMB (connected to LEDA and LEDB =
-terminals)
-> > +          properties:
-> > +            compatible:
-> > +              enum:
-> > +                - ti,twl4030-pwmled
-> > +            '#pwm-cells':
-> > +              const: 2
-> > +          required:
-> > +            - compatible
-> > +            - '#pwm-cells'
-> > +
-> > +        'twl4030-usb':
->
-> No need for quotes.
->
-> > +          type: object
-> > +          $ref: /schemas/usb/ti,twlxxxx-usb.yaml#
->
-> Are you sure your patchset is bsiectable? Apply this patch and test. You
-> will see errors and you must fix these. Even after fixing you have
-> strict dependencies so your cover letter must explain these (or merging
-> constraints)...
->
-> I suggest listing here only compatible with additionalProperties:true
-> and splitting entire patchset per different maintainers.
+On Tue, Aug 19, 2025 at 4:02=E2=80=AFPM Linus Walleij <linus.walleij@linaro=
+.org> wrote:
+> On Fri, Aug 15, 2025 at 11:09=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.=
+pl> wrote:
 
-Hi Krzysztof,
+...
 
-Thank you for the review. That additionalProperties
-suggestion is definitely helpful in this scenario.
+> >       devres: provide devm_kmemdup_const()
+> >       pinctrl: ingenic: use struct pinfunction instead of struct functi=
+on_desc
+> >       pinctrl: airoha: replace struct function_desc with struct pinfunc=
+tion
+> >       pinctrl: mediatek: mt7988: use PINCTRL_PIN_FUNCTION()
+> >       pinctrl: mediatek: moore: replace struct function_desc with struc=
+t pinfunction
+> >       pinctrl: imx: don't access the pin function radix tree directly
+> >       pinctrl: keembay: release allocated memory in detach path
+> >       pinctrl: keembay: use a dedicated structure for the pinfunction d=
+escription
+> >       pinctrl: constify pinmux_generic_get_function()
+> >       pinctrl: make struct pinfunction a pointer in struct function_des=
+c
+> >       pinctrl: qcom: use generic pin function helpers
+> >       pinctrl: allow to mark pin functions as requestable GPIOs
+>
+> I applied these 12 patches as a starter so they can
+> stabilize in linux-next.
 
-I will split (in v4) the patchset into smaller & independent
-series for each subsystem as recommended.
+Hmm... I'm still sure that we don't need to have a separate flags
+field, but since I am on vacation and will be able to look at this
+closer next week, I can't look closer to it.
 
-Thanks again for your guidance.
-Jihed
+
+--=20
+With Best Regards,
+Andy Shevchenko
 
