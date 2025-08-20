@@ -1,134 +1,108 @@
-Return-Path: <linux-omap+bounces-4304-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4305-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E818BB2E56E
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Aug 2025 21:05:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B44F0B2E7FD
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Aug 2025 00:18:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE4BE5E34C7
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Aug 2025 19:05:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6811E1CC15E2
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Aug 2025 22:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52AC2281351;
-	Wed, 20 Aug 2025 19:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6992D9EE2;
+	Wed, 20 Aug 2025 22:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eL7rr3br"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S5FB1aSb"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671F3275AEB;
-	Wed, 20 Aug 2025 19:05:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E331A2D3749;
+	Wed, 20 Aug 2025 22:17:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755716720; cv=none; b=Y/Hw96SqmvP64ndzIBg9WJSTtigYPeyWzP9Lon3jgcLTsD8qktculJTI7piXyWgkYmdCejhWOMpfWWxXX35xw/rowZSM0IrCC08jq9XivHR0TPG7ocO0bDW19OQDjCSaO5BXJkV4SP/sENGl0E8EU7FW0dtruFLepZ1G72SbHWc=
+	t=1755728264; cv=none; b=VCq15tOyN4CAs/M4xPOL6eVT6/XstBWpeLgHowYa6ASR4qOSPgNL0g4HX3lUdUyPB3WThHkGvS9j5aljj5y/w+qYJKm7ngPELwS1P+H0mbf/WB+mNcwVaHEi+vtyMSm9fL8k8w0nwMp+KJNgq8+cmvVLEIK3VrHl/90TwFt0a0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755716720; c=relaxed/simple;
-	bh=dqORxA01ddfu04i5AUCIuKJMwCymPmwnJNmkHBTnk70=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vamy5UGiToO/JhHVVprOzvQznSRMTvBZivAPEIK1NUMBYh5lvaEOXahpxvY81oPvV4bmtXca5Wj6b8DiruIU4ONzek6FlLuckB07iGXdYQ1Bv1zMxqwjMM8Rdel8wcsKLq+W7xxes/0dp9PVIh2pLKnoKIiEaadi7B3CcN9svls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eL7rr3br; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-61aa702c9ebso514433a12.3;
-        Wed, 20 Aug 2025 12:05:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755716717; x=1756321517; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dqORxA01ddfu04i5AUCIuKJMwCymPmwnJNmkHBTnk70=;
-        b=eL7rr3brxLEjsRY7DSOGpOHudpVZk+mxO+bQ0fcryc7sDEEnfQequlf1qNWDLoR12S
-         dHJHrRC5u/eSYWHAP0xbHnnczRWKES0QH/SsdkBZp9Kyvvdg9zFkdRJ6OGVflOq0f0jH
-         70GSVhbjLC8Fa6w3nh1kf526wq0C7XOPBIBU0uxsydynUe39Z7cNsvUJ/auz1ZAUKXiT
-         xPjCw48bSkwJ8kXf3XvOhLKXqP1162tUmZapSiHANq7oPObt17ZKfmxw8aGMujGye31V
-         ZITDqVjA4x9gODUHpaXHUGIS0JOXWjCvPcJPdqY1aWZj8HEcB+NuqHI2YjAITUN/xbVA
-         zhZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755716717; x=1756321517;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dqORxA01ddfu04i5AUCIuKJMwCymPmwnJNmkHBTnk70=;
-        b=psXH69mOMzngV8W619fRwDgDDr6IJ8C3ch6H+SmvPJBPtNVE1lOTz6vyqlDFiwi6mR
-         BzapoLcSwCVD3UnQ7QWBzdjv8kmBUpwI3WU/moLCzgn5HER/78R5pou2N7YnB9va6C6k
-         EUEanhe1rMIB/VBOoK2xMRjp/di4nyLLqakKQ2TwVKaPZY0FNEt2XGhgH+KI2wTN4eSp
-         64TXsgREdWOYsVHVFihTlEgvU6zHOrANGMIiJ2yt4Ni6T5kR7kO8S0wZ644FWQBB8c7s
-         Ad+n7/zrx0d9I59WuQdWegjImQC8q6AdCvjIWonsx6GjeK1qP0UlFfkuaCgscKngjGqF
-         OaOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVEOTQ/rBLiL3D0HxyhN/pfNpDyUv13D+dLzeF0QAshfS3LW/z7Wk9Y5VhnVYLs0btKjzY/jkigZdVfaRBc@vger.kernel.org, AJvYcCWhLdEdB/Jco43Y72rZuIjROW66lx8XezXSbrjVEsAGdvCHudQQxk+6s67G5d2dQ2lbxTQpkxRv40TF@vger.kernel.org, AJvYcCXvJ8d3XbFjc6MpqiAGM1eufDSu8Dd6DzcTjAkZ/ifg4z2uiN56jIxEZ4L31m4hhvx8v2W0vjLztH8VEg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYt+z6XALMpuZzmecQf95Z27iF6rmj1JGrCrzQcFmh9M/L2Vn0
-	hBb8e0Y5xy5FD3iiFFIuKz7KmZmK6waZfUbshPgG3aZcal1BswdOnJZ/DvDGm2By7mmgV5+TqCR
-	b4QKBa0bgnltkwiCEtyGi7Zx1L53Q0bM=
-X-Gm-Gg: ASbGncucWhc13uAYkDE4s381toW3Asu0g+elL4Ql7SI1NFb/tf1DNrtTlb3Hy+sfEM7
-	2KsgUZqgLutJybkyIjjYirfGgmurrM8pNQ3GGC9vc68F/Vyf16AD6iETAQzC1DhN9dyKzuZDwdi
-	b4cECR0WgwDGlr6V1sSsfXmJbDKmDpUIMRHu2B4f5+J2Q2ZzXeYY9UUc7eG/9rkTGvjHCsQqVjw
-	iPWPxbzTaz8gOCM0g==
-X-Google-Smtp-Source: AGHT+IHJiPRx0SngC7bjC2w4GtEgXQh9A32wKEsxcZ0CVXXlaP6DEiOwl/6IKq6V3wKbKch1kJfDHW692elgTcsQBhY=
-X-Received: by 2002:a17:907:94c3:b0:ae9:8dcb:4dac with SMTP id
- a640c23a62f3a-afdf00a8cf1mr325925166b.14.1755716716491; Wed, 20 Aug 2025
- 12:05:16 -0700 (PDT)
+	s=arc-20240116; t=1755728264; c=relaxed/simple;
+	bh=NIGjmvVU8M1e+ixa0lF6Va3Ega4zYBMltJN60T9Tr+s=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=PkgcC3cmJO40HthS0YUBNvsPA9qHCMbaSGgT/LptplQhzzeNkb15hlXrE8Q73MVKWog9ChCIoM8vNQvbfNa3/az/cY9Q7lQIIUS9HXpsIb7ox2gDZyISaHcphg9/SORUf87dYDbTfJSgiWP3sCdClhCVIAElL3qGQSWUI5B5YHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S5FB1aSb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF35C116C6;
+	Wed, 20 Aug 2025 22:17:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755728263;
+	bh=NIGjmvVU8M1e+ixa0lF6Va3Ega4zYBMltJN60T9Tr+s=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=S5FB1aSbCZQeLXevEo7lCKaC/6dC03HmYZWIwuPMMNp33qvb8Bf5Eiv6hEzOcdQSj
+	 bNX8FFHwxikg/eqrRxyVH4mRoIUI+XqRi3nCh+j1QAnsvlg6PXqJ0yXg6W7KkmlIty
+	 5SH13qWxCYu1c7Z5i0pu+PVRwv8FRQMrFBb7LwGY3FDxmvUvpkboUdpzuzsHx89wjZ
+	 qhtkSMQ3fy3p3v5xEwZWTFHk3vTmlK6M125u49z6X5vvAbsIc9hbJk/AKzXTFt1oWR
+	 iUcVFvpaWYxlRXCOHN3RVGCIoI8k4ORuREXLxhGszYvHe6wcOTCV4YQw51l7teuJ+Q
+	 0WuPVdGIawcbQ==
+From: Mark Brown <broonie@kernel.org>
+To: lgirdwood@gmail.com, robh@kernel.org, 
+ Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Cc: peter.ujfalusi@gmail.com, krzk+dt@kernel.org, conor+dt@kernel.org, 
+ devicetree@vger.kernel.org, linux-sound@vger.kernel.org, 
+ linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, shuah@kernel.org
+In-Reply-To: <20250819201302.80712-1-jihed.chaibi.dev@gmail.com>
+References: <20250819201302.80712-1-jihed.chaibi.dev@gmail.com>
+Subject: Re: [PATCH v4 0/2] ASoC: dt-bindings: Convert TI TWL4030 sound
+ bindings to schema
+Message-Id: <175572826140.300376.10438251274472224671.b4-ty@kernel.org>
+Date: Wed, 20 Aug 2025 23:17:41 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250820154037.22228-1-jszhang@kernel.org> <20250820154037.22228-2-jszhang@kernel.org>
- <CAHp75VfxSBPzvohrW4tywd4VS0r1_mp8WLvdKcN_yn=zNS49HQ@mail.gmail.com> <20250820191039.4f8af41e@barney>
-In-Reply-To: <20250820191039.4f8af41e@barney>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 20 Aug 2025 22:04:39 +0300
-X-Gm-Features: Ac12FXzx226wSucqjOB8xNIk2YZERgxrOlmASf3USK3y_yzf_ctFUIqwnOa-1u8
-Message-ID: <CAHp75Vdpgf3DUMQw0mYqhG=9UrYG8KWrobbd387QZapBor_LHg@mail.gmail.com>
-Subject: Re: [PATCH 01/16] gpio: dwapb: Use modern PM macros
-To: =?UTF-8?Q?Michael_B=C3=BCsch?= <mb@bues.ch>
-Cc: Jisheng Zhang <jszhang@kernel.org>, Doug Berger <opendmb@gmail.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Linus Walleij <linus.walleij@linaro.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Michael Buesch <m@bues.ch>, Hoan Tran <hoan@os.amperecomputing.com>, 
-	Andy Shevchenko <andy@kernel.org>, Daniel Palmer <daniel@thingy.jp>, 
-	Romain Perier <romain.perier@gmail.com>, Grygorii Strashko <grygorii.strashko@ti.com>, 
-	Santosh Shilimkar <ssantosh@kernel.org>, Kevin Hilman <khilman@kernel.org>, 
-	Robert Jarzmik <robert.jarzmik@free.fr>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>, 
-	Srinivas Neeli <srinivas.neeli@amd.com>, Michal Simek <michal.simek@amd.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, linux-gpio@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-omap@vger.kernel.org, linux@ew.tq-group.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-cff91
 
-On Wed, Aug 20, 2025 at 8:11=E2=80=AFPM Michael B=C3=BCsch <mb@bues.ch> wro=
-te:
->
-> On Wed, 20 Aug 2025 19:54:44 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
->
-> > > The dwapb_context structure is always embedded into struct
-> > > dwapb_gpio_port to simplify code. Sure this brings a tiny 36 bytes
-> > > data overhead for !CONFIG_PM_SLEP.
-> >
-> > I don't think it's a good approach to add a lot of data for peanuts in
-> > case of PM_SLEEP=3Dn.
->
-> It wastes 36 bytes in case of PM=3Dn.
+On Tue, 19 Aug 2025 22:13:00 +0200, Jihed Chaibi wrote:
+> This series converts the legacy TXT bindings for the TI TWL4030
+> sound-related modules to the modern YAML DT schema format.
+> 
+> This work was previously part of a larger series but is now being sent
+> as a focused submission for the ASoC subsystem.
+> 
+> Link to v3 discussion:
+> https://lore.kernel.org/all/20250816021523.167049-1-jihed.chaibi.dev@gmail.com/
+> 
+> [...]
 
-...per port.
+Applied to
 
-> The driver currently allocates the struct with kzalloc and stores a point=
-er to it
-> in case of PM=3Dy.
-> So this probably has an overhead in the same order of magnitude (pointer =
-+
-> malloc overhead/alignment/fragmentation) in case of PM=3Dy now.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-...per driver.
+Thanks!
 
-So, I can't say it's equal, but I leave this to maintainers to decide,
+[1/2] ASoC: dt-bindings: ti,twl4030-audio: convert to DT schema
+      commit: 04113322406b4763677922f80ba5ab44a8dae7bb
+[2/2] ASoC: dt-bindings: omap-twl4030: convert to DT schema
+      commit: c232495d28ca092d0c39b10e35d3d613bd2414ab
 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
---=20
-With Best Regards,
-Andy Shevchenko
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
 
