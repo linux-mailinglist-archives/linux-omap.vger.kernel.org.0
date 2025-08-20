@@ -1,115 +1,123 @@
-Return-Path: <linux-omap+bounces-4300-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4302-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9334B2E2C3
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Aug 2025 18:59:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9D07B2E3DB
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Aug 2025 19:29:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95D08188AC77
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Aug 2025 16:57:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7818C3B51B4
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Aug 2025 17:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F2D334379;
-	Wed, 20 Aug 2025 16:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDDDB33EAF9;
+	Wed, 20 Aug 2025 17:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UzXlOZgL"
+	dkim=pass (2048-bit key) header.d=bues.ch header.i=@bues.ch header.b="P3Ix/CG+"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.bues.ch (bues.ch [116.203.120.240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699F032A3E2;
-	Wed, 20 Aug 2025 16:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD13D33A02C;
+	Wed, 20 Aug 2025 17:19:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.120.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755709008; cv=none; b=mtSMENAQr9fNzS3ioFzlmjsmZOv1UxjktLEIT+ldNZNCVUWrtagQDYJLxaYIEWjWqkh5/kTbA+DmUxzQnUl+AyT7AAVQcmPbQJKF3BytTOLNS6U/jn/LgDiEjzvCfdi3wxxH5Wog70S21ilIEkCsSFoYl1ycGGw3q2YahZehUeY=
+	t=1755710401; cv=none; b=Ecx8UWHICNocnjoDGDUf1fD6EWIpgF1hqy0te//2vBSkaS6DWsJvzX9trUzBK1jyk1lU+Q4OnoxWftXpqHDIisWslz9WDogNiDsSxyOwOU4h9XLBXrEdn49oLHOT+vUbeFVMhaT6/YFjty7ME+5+EiEd8ZZ9ktOvUlDNhIYoFqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755709008; c=relaxed/simple;
-	bh=b1CQxA7NTMpHYXWDwB/GYYkioNL06ElZqxeWZtrZ6v0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UYTlFChANgJwANf/vA1l1+A/n5C9WEDI9zz9ev/oUJdQADIw7Qhhv/WETNK4Em3Y590/3RuU7zjBV4P3kFtwqtcRJNmkUBK9FoCDs1EVeDn+hfTeLEnKiTlmRG7JTyNuYwyIC9auTN07AzBw8rBgtI5idO+kezIdmHJsjNudyGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UzXlOZgL; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-333f8f9ace5so865611fa.1;
-        Wed, 20 Aug 2025 09:56:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755709003; x=1756313803; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b1CQxA7NTMpHYXWDwB/GYYkioNL06ElZqxeWZtrZ6v0=;
-        b=UzXlOZgL+DLb+h/ssrjvxWqaM89FHrLKexTPO/9F7bS1rSG2xIS7mD7X3zkIVR3n86
-         n+xbISquZLU77GJKp7+EndM7QWWdQv00F7St6fFPe2gfpKTys9wdoXZJasbkECL9SoQV
-         YLcTnZNBjUsACWViYVeGE4TGuXwNWyZ0ieWvWli7uint683zEuusE+cb/7Fl112QKrgv
-         xIn11oEf4Ht8uj72CbKad/E/f7CRDNsuNLP67MRE5KwAU88DouOO6obq30UOas8sNc5w
-         O4mmLd+eADSkB6p8DdVw/rX26XCcwnOFVTf643LKPBToDXaoTAf7oliH/IxIhwIp1l5y
-         98aQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755709003; x=1756313803;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b1CQxA7NTMpHYXWDwB/GYYkioNL06ElZqxeWZtrZ6v0=;
-        b=B6dXIYoqMrgTVIxD9GvItO5igz9DSg4HoCzfbeIYLDkt+RRw5bx+Bp2obHsXVyBpPE
-         wH6goXNwSHXiCQE/48imMTdtHBkMocO6aDopA89t2jIDqsbRPMFugwRFZ+ADW28wG2Xp
-         f/kO4cxrXHutnBxixZDkq2bb3/GQiUbXD7/byjibRS+WzqR4QdvlEXxPxAqSCdCDTuW9
-         DaNJshhNGscGLbOaBm8PudxNTbSUDfXEWLaWdtyYTFpffEE4Sv/TLGijJVW6+APb7iFP
-         OYLLA7PxgybUXpONHWO0jizNz/gQJ94onp/FeIjUvvlJA+FV7Onugu738LI93v4RqHtn
-         TJaA==
-X-Forwarded-Encrypted: i=1; AJvYcCViix4osRC8HQIMGL8XS+aMg69EAbvoOBpBBwSYKAVYavvs1muw44BlFozIDja+wQ7TlCZiHOdKThSB@vger.kernel.org, AJvYcCXhcOcOgqdEUSjOU6DEf0BlZNCj0Gs7rortNAY+N4lw6x9x7nqEjqdwpyL0CLgD2ioUdC6FCyZVVO3Mwg==@vger.kernel.org, AJvYcCXzZ5ul4bEngCO5gcB8yEcSO4jYiuVQyeJZG8fExT7KL+CoaIRsjQDFcxZ3K/EJU111ZDbzjhsQi4UiTRir@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYtA7824i8RrzrxBOy2DyAdDdUXMlQDWbxqz0WAmsw8cZrMV4x
-	A0Y9Xq2RfB6XReEBUlf7+4GAmo9dLpY0pcXuwHPHXeZWGf5ZC6P4+9g3I6yE0d9AcZr1lHjcARX
-	zEjSKkrpd2kfRoRMY9XcwDyjzXoSWD5A=
-X-Gm-Gg: ASbGncsElzCPHpx2YWGlNi+LbpMo6N2zF+0SwSSIVo3RHLJoNCZbLIkGJUtNxi5V9EJ
-	X+T4+i3b6tAMSCNE1qJRAbGZhZ6Zi2nRFE4ZXqFYpRByodKHe49YIHKk3yXA1TqxFrZnRNc2Jyx
-	bID8Rvf26M7YDnCnTabyF5gkkvvZe/Tqvn9czTiZubNccE1AiFGNqBh2mvyP8DPoKjDG0nOxBNq
-	1+EurnsgA==
-X-Google-Smtp-Source: AGHT+IFordkwi+zhqh14qMBLsS0rCZnAYtiWQK4SHByXpqr16/xqAHI6fvghj4M6wGzn1kjHGF8rYjLwee+S/KYPvX0=
-X-Received: by 2002:a2e:b888:0:b0:334:d4b:49b4 with SMTP id
- 38308e7fff4ca-3353be411c0mr11491871fa.29.1755709003200; Wed, 20 Aug 2025
- 09:56:43 -0700 (PDT)
+	s=arc-20240116; t=1755710401; c=relaxed/simple;
+	bh=qj64TOB/5TJyA+F8gnbV+C+TIwj10ue6VgL1vNx3FS4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rn/MqYEF2SmmFEsn0fjiU6XS/h3QWvqVB3M/mCbVSb4FZI9HU8ESjACD9njoWaUZqEfmXNb3lcrckPtHVZV7jpb4eiEC3/XiO9QsK3qA/eLvc56jmryWnqTwolxJYORRTnCLQwlUB037rK1SFiLqGRwuuRsKFAtv1c9JDto0CZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bues.ch; spf=pass smtp.mailfrom=bues.ch; dkim=pass (2048-bit key) header.d=bues.ch header.i=@bues.ch header.b=P3Ix/CG+; arc=none smtp.client-ip=116.203.120.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bues.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bues.ch
+Date: Wed, 20 Aug 2025 19:08:42 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bues.ch; s=main;
+	t=1755709874;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qj64TOB/5TJyA+F8gnbV+C+TIwj10ue6VgL1vNx3FS4=;
+	b=P3Ix/CG+bKZ8eCztNYX9NEzGOCjh+CB2q4tOL5YeBo77KZbDF0nesLo0UQkBq2PFEdFptx
+	7zlWS/a5OZIIYrA9U+JcHkT43UikkDhSYnSB5jfzuS9+q9jKViYj2mvgRdrDWhnGcra5pT
+	KuQd5+auScDpYTQDxekTeZa5BMSI+AbEW7T+4VMCptcEueWSKxPvLL8UFLBuYL2B03wtvy
+	8TAI/XLQ7J22VTHzPPKYoEF0YeuAXIREtK4oFPeF6yPj9IjVK3WlXoZsxWFLukuQFm5Ndf
+	mnTOs5b2AV7Zp7BfC5xJ7ze8LCo5AjtqhYaY+Wxx94n2KcOQHdczTnwR1g9K3g==
+From: Michael =?UTF-8?B?QsO8c2No?= <mb@bues.ch>
+To: Jisheng Zhang <jszhang@kernel.org>
+Cc: Doug Berger <opendmb@gmail.com>, Florian Fainelli
+ <florian.fainelli@broadcom.com>, Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Michael Buesch <m@bues.ch>, Hoan Tran
+ <hoan@os.amperecomputing.com>, Andy Shevchenko <andy@kernel.org>, Daniel
+ Palmer <daniel@thingy.jp>, Romain Perier <romain.perier@gmail.com>,
+ Grygorii Strashko <grygorii.strashko@ti.com>, Santosh Shilimkar
+ <ssantosh@kernel.org>, Kevin Hilman <khilman@kernel.org>, Robert Jarzmik
+ <robert.jarzmik@free.fr>, Kunihiko Hayashi
+ <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>, Srinivas Neeli
+ <srinivas.neeli@amd.com>, Michal Simek <michal.simek@amd.com>, Broadcom
+ internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+ linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux@ew.tq-group.com
+Subject: Re: [PATCH 03/16] gpio: bt8xx: Use modern PM macros
+Message-ID: <20250820190842.4e3c07ec@barney>
+In-Reply-To: <20250820154037.22228-4-jszhang@kernel.org>
+References: <20250820154037.22228-1-jszhang@kernel.org>
+ <20250820154037.22228-4-jszhang@kernel.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250820154037.22228-1-jszhang@kernel.org> <20250820154037.22228-8-jszhang@kernel.org>
-In-Reply-To: <20250820154037.22228-8-jszhang@kernel.org>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 20 Aug 2025 19:56:06 +0300
-X-Gm-Features: Ac12FXwH4g6oMn14HY8Y29rYZvc4OR3qKCO04rOR5qjEf-HjYlk-qdZaKMvaQ74
-Message-ID: <CAHp75Vdh6MQzEZi1aLf+7J7evSwd76ANKDk6WahWzEcLq1Ew4Q@mail.gmail.com>
-Subject: Re: [PATCH 07/16] gpio: ml-ioh: Use modern PM macros
-To: Jisheng Zhang <jszhang@kernel.org>
-Cc: Doug Berger <opendmb@gmail.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, Michael Buesch <m@bues.ch>, 
-	Hoan Tran <hoan@os.amperecomputing.com>, Andy Shevchenko <andy@kernel.org>, 
-	Daniel Palmer <daniel@thingy.jp>, Romain Perier <romain.perier@gmail.com>, 
-	Grygorii Strashko <grygorii.strashko@ti.com>, Santosh Shilimkar <ssantosh@kernel.org>, 
-	Kevin Hilman <khilman@kernel.org>, Robert Jarzmik <robert.jarzmik@free.fr>, 
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>, Srinivas Neeli <srinivas.neeli@amd.com>, 
-	Michal Simek <michal.simek@amd.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, linux-gpio@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-omap@vger.kernel.org, linux@ew.tq-group.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; boundary="Sig_/jlj+UyB8B0l7lUKjchj3xEt";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+
+--Sig_/jlj+UyB8B0l7lUKjchj3xEt
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 20, 2025 at 6:59=E2=80=AFPM Jisheng Zhang <jszhang@kernel.org> =
-wrote:
->
+On Wed, 20 Aug 2025 23:40:24 +0800
+Jisheng Zhang <jszhang@kernel.org> wrote:
+
 > Use the modern PM macros for the suspend and resume functions to be
 > automatically dropped by the compiler when CONFIG_PM or
-> CONFIG_PM_SLEEP are disabled, without having to use __maybe_unused
+> CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
+>=20
+> This has the advantage of always compiling these functions in,
+> independently of any Kconfig option. Thanks to that, bugs and other
+> regressions are subsequently easier to catch.
+>=20
+> Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 
-Acked-by: Andy Shevchenko <andy@kernel.org>
-in case Bart wants to take it inside the whole series.
-Otherwise I can take it via my tree.
+Acked-by: Michael B=C3=BCsch <m@bues.ch>
 
 --=20
-With Best Regards,
-Andy Shevchenko
+Michael B=C3=BCsch
+https://bues.ch/
+
+--Sig_/jlj+UyB8B0l7lUKjchj3xEt
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmimARsACgkQ9TK+HZCN
+iw53uxAAytnVanFnDDU72bYeydk9D/FlxnSQVlQplGz9Sv9WyFxKGYqow2qKqyDK
+AWlZAd4aMCkopCnzU53auLsQ47ye5gWiWtNpCysbLDY7U/iL6+cdKAvgJJBaf1fI
+hXEfKAvUQq8bjhSxfhxsbVa09xZGG7UEUhE5/dzRdsr4oK2F90PfaHwqMyiYibmf
+7kKpf3XYrBJTn7WAsIetWOx2NKglt8GWVpPCg9AqY2r6QbfAfKeqBi/qPEGRurFb
+zf0qtLTxoYUUyJti5aH0ClYQ0kZdB5HvOY3mIX4cP0ncLEE+kIoyHCtJjV02jgcA
+N2fza9GRVEG0adwvSP+iehkbQgKJpl5QifdS59uHmchgyV3ZorBLtrlKoeeVNohr
+DhbkJlrWH5qr9cmH2+mNE344zODtaL+nE5hg8Vc7hC7Mx0K4SrKebHNKlce//7bM
+RCkxTbZdQ4R2Q2nP/Q6cQlwps86kiveI3zRQYPldRNBzHZSGS7cTDRKGkTJoh3F6
+flGSi32S7a0v7jfJAY+hM8HKgyeMGu9FZawZVwmGBS6wQIbtLL+cDFjMW1HND5eJ
+bEQ5UOeRpFaLh4Czw7fvLPNVUFajyynwur5gFuBJns01Amdp5XlFf5I3c87x1IyU
+2vgv+kA/wr+dPwpJ5b2ZobRzUbBrsoYm1yOauIhH28EayNHHGII=
+=hcGT
+-----END PGP SIGNATURE-----
+
+--Sig_/jlj+UyB8B0l7lUKjchj3xEt--
 
