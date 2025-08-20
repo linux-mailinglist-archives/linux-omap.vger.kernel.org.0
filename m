@@ -1,360 +1,136 @@
-Return-Path: <linux-omap+bounces-4273-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4274-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57365B2CF2C
-	for <lists+linux-omap@lfdr.de>; Wed, 20 Aug 2025 00:17:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 328E4B2D3C8
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Aug 2025 07:57:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F63B58691A
-	for <lists+linux-omap@lfdr.de>; Tue, 19 Aug 2025 22:17:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20447582A49
+	for <lists+linux-omap@lfdr.de>; Wed, 20 Aug 2025 05:57:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E8B2E2298;
-	Tue, 19 Aug 2025 22:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18BD2BE7B8;
+	Wed, 20 Aug 2025 05:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="myRKS3Ep"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i1/hWcg0"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA10221ADCB;
-	Tue, 19 Aug 2025 22:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F03429ACFC;
+	Wed, 20 Aug 2025 05:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755641870; cv=none; b=U+PYd5o2TV1X0yiDP4By0jU5TKPJyKLE9tAdM6n1mRruCGNdQcX02HuO/hefa1bhF+GczfCxZXKz6uMKST4Ao6uveqUba/bjNPG7XOJT9sFR5A4f97A5s9yvprFPqrSZ+u0UmAGnQaVxktWSBoVAAGeuCSpe07ttRsXX7CfI4bU=
+	t=1755669444; cv=none; b=qr2gsY6YoAZNnFscyaYTYMRpbYKve/2wKVpiI+rjuGvjXScd2+BhKJlkoMLWO3nM9ddhPfAErrBtLFfx3wGcsbJ+iKQQS2zWxRcFMrqvLGebDzxXbOpf9rAtOFMcgppdS69r0uNzzRkjp3za6/HTDKamWnUPcsn4ykYZcdHM3Gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755641870; c=relaxed/simple;
-	bh=1JrAVDh/u7Or7cM+GzW7ht59rngYQArrkAFlU9OUDFk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=DnOF1XVN9iEoE9C+ajyANS1kgJToIGYLrV0hS0o7xMK3uhleNnNm62vSvU5biQdEAAkwesvFEOhgg++hVFoUlGMCIvbT6z4iijcJ0Nhgr9UbN2eQan06exViYkrYvyl5kE9UEsCQfI7/d1AifdtSLDnRxx8pdfN31kZBSWLvSyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=myRKS3Ep; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C2AC4CEF1;
-	Tue, 19 Aug 2025 22:17:49 +0000 (UTC)
+	s=arc-20240116; t=1755669444; c=relaxed/simple;
+	bh=Y+062joObmsol1gkoHoKktNswPMSOYB1ABAm6sd7nWo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MUAlUtTlPH9ollUMNTVDz40Nbb7vF6a/0gppuQV8d5o49kGrHs/nz+gr3i2cz7qGXe+kmOCPX12d42XT92uv0+x7F3bZmwK7Jyb0lHotE0PiG6K9aMs0WDt21Gm1oWYWMuB7C+Yqg5T+7Fm2VSbZad+gZNt6RBgmA6jJyHb0ukY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i1/hWcg0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B74C4CEEB;
+	Wed, 20 Aug 2025 05:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755641869;
-	bh=1JrAVDh/u7Or7cM+GzW7ht59rngYQArrkAFlU9OUDFk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=myRKS3Epcwhnu+JKihvMQhxUoukI8QoCauZA2CJRC1IrWULufH6OFgIC5bkObqvkF
-	 ACPMVqwcAjtPj+XR3bBu5IuI78nbe/L5U5Y7QarEZtlb7om7EvGRZ7pG5ur04h2Fh9
-	 qu+qIegnjT1hsqDxFO4552ooARGutvY/QYqr7L/prFP0svAMpHBSebFmqdV3uOXjCJ
-	 rOw/ca+QTHpaZdAmSwIPdXvt1DWyMrcgq40rWSQ4FFxuSMU5UnanJWdNeXrN1x9Cnp
-	 JVGOucm+WjK4QzXnyYVCRmmC2GhbZEKu6Lu6J7PgrdHJGDxmQ63FZgR8dHHKdKY0ua
-	 DrzhLDyZLaZWw==
-Date: Tue, 19 Aug 2025 17:17:48 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: lpieralisi@kernel.org, kwilczynski@kernel.org, mani@kernel.org,
-	robh@kernel.org, bhelgaas@google.com, kishon@kernel.org,
-	vigneshr@ti.com, stable@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, srk@ti.com
-Subject: Re: [PATCH v2] PCI: j721e: Fix programming sequence of "strap"
- settings
-Message-ID: <20250819221748.GA598958@bhelgaas>
+	s=k20201202; t=1755669443;
+	bh=Y+062joObmsol1gkoHoKktNswPMSOYB1ABAm6sd7nWo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=i1/hWcg0oXxgedGDs9KjrtglcEwNsrTrut3izxrXACCm9P0zu4NeOwzFQX/iBs1Ai
+	 ln5kfCMEwQgToHf7br9+tSkW04D24wQmuXdfabgarxqN1u1wb9CeZjGfRXi1IGHV68
+	 jFQ8x6sjaP6IjxNeiGf4Qd7yHiaSYdkXKqT2LQStSUdLtaP1PWR+zPVppgtOfAj+aU
+	 xRUZ0j0Fohp7Ib9Sr/MYaJhj/lysGt5D0vJDvCsk3buzO772Sn1Sto1L9zHVKoy1M/
+	 3pgniaoRYgIMWFjGb6AlzZN1wCjWRN5bkVbpCcN6H4w8zajy4NBAQQ7uiugbwIg4n6
+	 U12NwUktYflGg==
+Message-ID: <e0bec141-6aef-475f-b997-60fdf8234b82@kernel.org>
+Date: Wed, 20 Aug 2025 07:57:15 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250819101336.292013-1-s-vadapalli@ti.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/6] dt-bindings: mfd: twl: Add missing sub-nodes for
+ TWL4030 & TWL603x
+To: Andreas Kemnade <andreas@kemnade.info>
+Cc: Jihed Chaibi <jihed.chaibi.dev@gmail.com>, linux-kernel@vger.kernel.org,
+ peter.ujfalusi@gmail.com, dmitry.torokhov@gmail.com, robh@kernel.org,
+ krzk+dt@kernel.org, lgirdwood@gmail.com, tiwai@suse.com,
+ conor+dt@kernel.org, lee@kernel.org, ukleinek@kernel.org,
+ broonie@kernel.org, gregkh@linuxfoundation.org, linus.walleij@linaro.org,
+ brgl@bgdev.pl, aaro.koskinen@iki.fi, khilman@baylibre.com,
+ rogerq@kernel.org, tony@atomide.com, linux-gpio@vger.kernel.org,
+ linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-pwm@vger.kernel.org, linux-sound@vger.kernel.org,
+ linux-usb@vger.kernel.org, linux-omap@vger.kernel.org, shuah@kernel.org
+References: <20250816021523.167049-1-jihed.chaibi.dev@gmail.com>
+ <20250816021523.167049-2-jihed.chaibi.dev@gmail.com>
+ <20250819-humongous-muscular-curassow-5accd5@kuoka>
+ <20250819223157.0b271c74@akair>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250819223157.0b271c74@akair>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 19, 2025 at 03:43:35PM +0530, Siddharth Vadapalli wrote:
-> The Cadence PCIe Controller integrated in the TI K3 SoCs supports both
-> Root-Complex and Endpoint modes of operation. The Glue Layer allows
-> "strapping" the mode of operation of the Controller, the Link Speed
-> and the Link Width. This is enabled by programming the "PCIEn_CTRL"
-> register (n corresponds to the PCIe instance) within the CTRL_MMR
-> memory-mapped register space.
-> 
-> In the PCIe Controller's register space, the same set of registers
-> that correspond to the Root-Port configuration space when the
-> Controller is configured for Root-Complex mode of operation, also
-> correspond to the Physical Function configuration space when the
-> Controller is configured for Endpoint mode of operation. As a result,
-> the "reset-value" of these set of registers _should_ vary depending
-> on the selected mode of operation. This is the expected behavior
-> according to the description of the registers and their reset values
-> in the Technical Reference Manual for the SoCs.
-> 
-> However, it is observed that the "reset-value" seen in practice
-> do not match the description. To be precise, when the Controller
-> is configured for Root-Complex mode of operation, the "reset-value"
-> of the Root-Port configuration space reflect the "reset-value"
-> corresponding to the Physical Function configuration space.
-> This can be attributed to the fact that the "strap" settings play
-> a role in "switching" the "reset-value" of the registers to match
-> the expected values as determined by the selected mode of operation.
-> Since the "strap" settings are sampled the moment the PCIe Controller
-> is powered ON, the "reset-value" of the registers are setup at that
-> point in time. As a result, if the "strap" settings are programmed
-> at a later point in time, it _will not_ update the "reset-value" of
-> the registers. This will cause the Physical Function configuration
-> space to be seen when the Root-Port configuration space is accessed
-> after programming the PCIe Controller for Root-Complex mode of
-> operation.
-> 
-> Fix this by powering off the PCIe Controller before programming the
-> "strap" settings and powering it on after that. This will ensure
-> that the "strap" settings that have been sampled convey the intended
-> mode of operation, thereby resulting in the "reset-value" of the
-> registers being accurate.
+On 19/08/2025 22:31, Andreas Kemnade wrote:
+>>
+>>> +          type: object
+>>> +          $ref: /schemas/usb/ti,twlxxxx-usb.yaml#  
+>>
+>> Are you sure your patchset is bsiectable? Apply this patch and test. You
+>> will see errors and you must fix these. Even after fixing you have
+>> strict dependencies so your cover letter must explain these (or merging
+>> constraints)...
+>>
+> what are the rules here regarding bisectability? non-existing files
 
-This is a lot of text to convey the idea that:
+dt_binding_check.
 
-  - The PCIe controller powers on and latches reset values of several
-    registers
 
-  - Later, the driver programs Glue Layer "mode", which determines
-    those reset values
-
-  - Therefore, controller has latched the wrong values
-
-What does this problem look like to a user? 
-
-> Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-> ---
-> 
-> Hello,
-> 
-> This patch is based on commit
-> be48bcf004f9 Merge tag 'for-6.17-rc2-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux
-> of Mainline Linux.
-> 
-> v1 of this patch is at:
-> https://lore.kernel.org/r/20250716102851.121742-1-s-vadapalli@ti.com/
-> Changes since v1:
-> - Rebased patch on latest Mainline Linux.
-> 
-> Regards,
-> Siddharth.
-> 
->  drivers/pci/controller/cadence/pci-j721e.c | 82 ++++++++++++++--------
->  1 file changed, 53 insertions(+), 29 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-> index 6c93f39d0288..d5e7cb7277dc 100644
-> --- a/drivers/pci/controller/cadence/pci-j721e.c
-> +++ b/drivers/pci/controller/cadence/pci-j721e.c
-> @@ -19,6 +19,7 @@
->  #include <linux/of.h>
->  #include <linux/pci.h>
->  #include <linux/platform_device.h>
-> +#include <linux/pm_domain.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/regmap.h>
->  
-> @@ -173,10 +174,9 @@ static const struct cdns_pcie_ops j721e_pcie_ops = {
->  	.link_up = j721e_pcie_link_up,
->  };
->  
-> -static int j721e_pcie_set_mode(struct j721e_pcie *pcie, struct regmap *syscon,
-> -			       unsigned int offset)
-> +static int j721e_pcie_set_mode(struct j721e_pcie *pcie, struct device *dev,
-> +			       struct regmap *syscon, unsigned int offset)
->  {
-> -	struct device *dev = pcie->cdns_pcie->dev;
->  	u32 mask = J721E_MODE_RC;
->  	u32 mode = pcie->mode;
->  	u32 val = 0;
-> @@ -193,9 +193,9 @@ static int j721e_pcie_set_mode(struct j721e_pcie *pcie, struct regmap *syscon,
->  }
->  
->  static int j721e_pcie_set_link_speed(struct j721e_pcie *pcie,
-> +				     struct device *dev,
->  				     struct regmap *syscon, unsigned int offset)
->  {
-> -	struct device *dev = pcie->cdns_pcie->dev;
->  	struct device_node *np = dev->of_node;
->  	int link_speed;
->  	u32 val = 0;
-> @@ -214,9 +214,9 @@ static int j721e_pcie_set_link_speed(struct j721e_pcie *pcie,
->  }
->  
->  static int j721e_pcie_set_lane_count(struct j721e_pcie *pcie,
-> +				     struct device *dev,
->  				     struct regmap *syscon, unsigned int offset)
->  {
-> -	struct device *dev = pcie->cdns_pcie->dev;
->  	u32 lanes = pcie->num_lanes;
->  	u32 mask = BIT(8);
->  	u32 val = 0;
-> @@ -234,9 +234,9 @@ static int j721e_pcie_set_lane_count(struct j721e_pcie *pcie,
->  }
->  
->  static int j721e_enable_acspcie_refclk(struct j721e_pcie *pcie,
-> +				       struct device *dev,
->  				       struct regmap *syscon)
->  {
-> -	struct device *dev = pcie->cdns_pcie->dev;
->  	struct device_node *node = dev->of_node;
->  	u32 mask = ACSPCIE_PAD_DISABLE_MASK;
->  	struct of_phandle_args args;
-> @@ -263,9 +263,8 @@ static int j721e_enable_acspcie_refclk(struct j721e_pcie *pcie,
->  	return 0;
->  }
->  
-> -static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
-> +static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie, struct device *dev)
->  {
-> -	struct device *dev = pcie->cdns_pcie->dev;
->  	struct device_node *node = dev->of_node;
->  	struct of_phandle_args args;
->  	unsigned int offset = 0;
-> @@ -284,19 +283,19 @@ static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
->  	if (!ret)
->  		offset = args.args[0];
->  
-> -	ret = j721e_pcie_set_mode(pcie, syscon, offset);
-> +	ret = j721e_pcie_set_mode(pcie, dev, syscon, offset);
->  	if (ret < 0) {
->  		dev_err(dev, "Failed to set pci mode\n");
->  		return ret;
->  	}
->  
-> -	ret = j721e_pcie_set_link_speed(pcie, syscon, offset);
-> +	ret = j721e_pcie_set_link_speed(pcie, dev, syscon, offset);
->  	if (ret < 0) {
->  		dev_err(dev, "Failed to set link speed\n");
->  		return ret;
->  	}
->  
-> -	ret = j721e_pcie_set_lane_count(pcie, syscon, offset);
-> +	ret = j721e_pcie_set_lane_count(pcie, dev, syscon, offset);
->  	if (ret < 0) {
->  		dev_err(dev, "Failed to set num-lanes\n");
->  		return ret;
-> @@ -308,7 +307,7 @@ static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
->  	if (!syscon)
->  		return 0;
->  
-> -	return j721e_enable_acspcie_refclk(pcie, syscon);
-> +	return j721e_enable_acspcie_refclk(pcie, dev, syscon);
->  }
->  
->  static int cdns_ti_pcie_config_read(struct pci_bus *bus, unsigned int devfn,
-> @@ -469,6 +468,47 @@ static int j721e_pcie_probe(struct platform_device *pdev)
->  	if (!pcie)
->  		return -ENOMEM;
->  
-> +	pcie->mode = mode;
-> +
-> +	ret = of_property_read_u32(node, "num-lanes", &num_lanes);
-> +	if (ret || num_lanes > data->max_lanes) {
-> +		dev_warn(dev, "num-lanes property not provided or invalid, setting num-lanes to 1\n");
-> +		num_lanes = 1;
-> +	}
-> +
-> +	pcie->num_lanes = num_lanes;
-> +	pcie->max_lanes = data->max_lanes;
-> +
-> +	/*
-> +	 * The PCIe Controller's registers have different "reset-values" depending
-> +	 * on the "strap" settings programmed into the Controller's Glue Layer.
-> +	 * This is because the same set of registers are used for representing the
-> +	 * Physical Function configuration space in Endpoint mode and for
-> +	 * representing the Root-Port configuration space in Root-Complex mode.
-> +	 *
-> +	 * The registers latch onto a "reset-value" based on the "strap" settings
-> +	 * sampled after the Controller is powered on. Therefore, for the
-> +	 * "reset-value" to be accurate, it is necessary to program the "strap"
-> +	 * settings when the Controller is powered off, and power on the Controller
-> +	 * after the "strap" settings have been programmed.
-> +	 *
-> +	 * The "strap" settings are programmed by "j721e_pcie_ctrl_init()".
-> +	 * Therefore, power off the Controller before invoking "j721e_pcie_ctrl_init()",
-> +	 * program the "strap" settings, and then power on the Controller. This ensures
-> +	 * that the reset values are accurate and reflect the "strap" settings.
-
-Wrap to fit in 80 columns like the rest of the file.  And maybe
-shorten.
-
-> +	dev_pm_domain_detach(dev, true);
-> +
-> +	ret = j721e_pcie_ctrl_init(pcie, dev);
-
-This moves the "num-lanes" lookup and the call of
-j721e_pcie_ctrl_init() earlier, but I don't think that move is
-necessary.  Even before this patch, we don't actually touch anything
-in the hardware before j721e_pcie_ctrl_init().  The code between the
-new call location and the old call location is just memory allocation,
-data structure initialization, ioremap, DMA mask setting, etc.
-
-AFAICT, the important thing is to power off the PCIe controller before
-j721e_pcie_ctrl_init() programs the mode in the glue layer, and you
-should be able to do that without moving the call location.
-
-And that means you probably don't have to add the "struct device *dev"
-parameter to all those interfaces.
-
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = dev_pm_domain_attach(dev, true);
-
-dev_pm_domain_detach() takes a bool, but dev_pm_domain_attach() does
-not, so this doesn't look right.
-
-> +	if (ret < 0) {
-> +		dev_err(dev, "failed to power on device\n");
-> +		return ret;
-> +	}
-> +
->  	switch (mode) {
->  	case PCI_MODE_RC:
->  		if (!IS_ENABLED(CONFIG_PCI_J721E_HOST))
-> @@ -510,7 +550,6 @@ static int j721e_pcie_probe(struct platform_device *pdev)
->  		return 0;
->  	}
->  
-> -	pcie->mode = mode;
->  	pcie->linkdown_irq_regfield = data->linkdown_irq_regfield;
->  
->  	base = devm_platform_ioremap_resource_byname(pdev, "intd_cfg");
-> @@ -523,15 +562,6 @@ static int j721e_pcie_probe(struct platform_device *pdev)
->  		return PTR_ERR(base);
->  	pcie->user_cfg_base = base;
->  
-> -	ret = of_property_read_u32(node, "num-lanes", &num_lanes);
-> -	if (ret || num_lanes > data->max_lanes) {
-> -		dev_warn(dev, "num-lanes property not provided or invalid, setting num-lanes to 1\n");
-> -		num_lanes = 1;
-> -	}
-> -
-> -	pcie->num_lanes = num_lanes;
-> -	pcie->max_lanes = data->max_lanes;
-> -
->  	if (dma_set_mask_and_coherent(dev, DMA_BIT_MASK(48)))
->  		return -EINVAL;
->  
-> @@ -547,12 +577,6 @@ static int j721e_pcie_probe(struct platform_device *pdev)
->  		goto err_get_sync;
->  	}
->  
-> -	ret = j721e_pcie_ctrl_init(pcie);
-> -	if (ret < 0) {
-> -		dev_err_probe(dev, ret, "pm_runtime_get_sync failed\n");
-> -		goto err_get_sync;
-> -	}
-> -
->  	ret = devm_request_irq(dev, irq, j721e_pcie_link_irq_handler, 0,
->  			       "j721e-pcie-link-down-irq", pcie);
->  	if (ret < 0) {
-> @@ -680,7 +704,7 @@ static int j721e_pcie_resume_noirq(struct device *dev)
->  	struct cdns_pcie *cdns_pcie = pcie->cdns_pcie;
->  	int ret;
->  
-> -	ret = j721e_pcie_ctrl_init(pcie);
-> +	ret = j721e_pcie_ctrl_init(pcie, dev);
->  	if (ret < 0)
->  		return ret;
->  
-> -- 
-> 2.43.0
-> 
+Best regards,
+Krzysztof
 
