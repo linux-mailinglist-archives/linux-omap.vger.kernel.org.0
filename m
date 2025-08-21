@@ -1,128 +1,119 @@
-Return-Path: <linux-omap+bounces-4307-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4308-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8969B2F902
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Aug 2025 14:56:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4402B300B0
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Aug 2025 19:03:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39F461CE2A9D
-	for <lists+linux-omap@lfdr.de>; Thu, 21 Aug 2025 12:52:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 564E83B9AE4
+	for <lists+linux-omap@lfdr.de>; Thu, 21 Aug 2025 17:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35507315763;
-	Thu, 21 Aug 2025 12:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5C42FB61D;
+	Thu, 21 Aug 2025 17:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="buDC3VUv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OL94fan1"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306F42DC349;
-	Thu, 21 Aug 2025 12:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242AE1E8333;
+	Thu, 21 Aug 2025 17:02:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755780648; cv=none; b=l0KwkCfXdZP3Q605lAinfx3bvKBvX8bPYP33yuw0c3FqRspPOQZ4cpubosS0XFlYnEVZFuyqftCne2dfi9IibSqCgKBin8aTvzAGMKhm8dqEaYaF1SGF0LeNvvcdmm6XyV/IknY8YrTWQ2P15R4KJYrie9vNNDSERkSTPQsnxwA=
+	t=1755795733; cv=none; b=MbeFUDXWRrgBoLmPHHU162CWKcLk7qs9yWWMGQ9Nx89pRF5XnH69Eodqxg6IUI4rcW18iffJNiAiPP+WVsH+vD8Dw4nAwo+M0Klar1Gmhparpw1w0rvga9vm8DlaUvIBOm5hYktcoqA9+n7KRcGZqUbfGcavQ+d1hbT4X5VBctg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755780648; c=relaxed/simple;
-	bh=rXNuKnioQFz3rtqWC/tP7w8NaCHmc1EB5yrCK1qULiA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qUxmGd349BlDaqgOeascfVnyOTqmQKJNHSzGfhF4LZYIur4V5RDCOitfgtEBwr8zWARMN7JU2vMwMHXvtUE5myRJ7jFE5ph6hpOvaGArOFBX9ljXrKdrlLRmFIUHTow5QWg3fOUYb5uHf29M5eSQGEdFheba5k/EGbr/VtL8Wrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=buDC3VUv; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-afcb7ace3baso154749166b.3;
-        Thu, 21 Aug 2025 05:50:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755780645; x=1756385445; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rXNuKnioQFz3rtqWC/tP7w8NaCHmc1EB5yrCK1qULiA=;
-        b=buDC3VUvrqr7NJTCBpgToqs75kFMPD6NtAFw59w88S9swopOW4OJtETBLp2UMEpcGU
-         OfEf7dmkMmWG+IqjJp3+2IlwSx2dmDenxFdx3f4YjP2Gh1B7XGcOcDUz5n8lPSaz9QGF
-         8EjKRg9YzUBDYuMWk7qwWFCXm7HQBEDviJnbzrCkav6DdwsppNq+pMASVY4rFOeXg3A9
-         qgxVMSAFXYJV5pF0fAWeajRkfX6Z2HD6/2hME9NvXE/jlJfTSvTMpiIjRJr2WYiZ+vOX
-         csF/Jrp1c/YCEycfWXTbJrFmob2345V5TO4RcaaIid4p/OKpY5vI8eyc0zQaNqPuscnV
-         o9uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755780645; x=1756385445;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rXNuKnioQFz3rtqWC/tP7w8NaCHmc1EB5yrCK1qULiA=;
-        b=N3TAJYVi6L4Wj+rXKc6tTitiR2GVgm2wfrood/wmqMDop0sTpo9Jzpwq7s6ZM6m/wk
-         Dd9j2tkvoRvnBU7M5z7ufRUBw4DmmAdXLwYtq3kkf/u52iTmPHHzYJzv5nqYCDYFenAe
-         Mf+Y+LdO+2CBuyCgyZJse+bt6oN2rG20nEllIWjZ81TPTkqSNrK0cxTUtBvoGGdaw3W6
-         JpHi4RDOpw8sT5j1n0MiOqHQb8YGZIXfi5rWOB6P3onNb/p85bdQcPgHhU9OZC/u972s
-         SRo9eajHIPp7/AoXkI8tX/fxMJ7QyBOa2Rf4zugsYetHH1NUDyngt4cyBxgcSxNzzFf2
-         aq0g==
-X-Forwarded-Encrypted: i=1; AJvYcCVrQ+QE6xUSn/uAHZYIAJ2Luv+GWwxi2wuk8A/AptNC9UAx/GjI+zr/BoMIUJFMUNabKGHC35+vAD/tZw==@vger.kernel.org, AJvYcCX41En+8FOkNMyhvwIUOrd4TlE7KjReIQlxdSIsuMaEfj0XcD/PYVXpdLUUnTFrY9Bja6k3fzaDegOYsqh1@vger.kernel.org, AJvYcCX4ds4rSu+eL71/eknWbeSzMaH/yLuMdZ7q0DifXsjxEpT/Ess2tXsDswhQ2uMKliEgTLGIWjcFrp7c@vger.kernel.org
-X-Gm-Message-State: AOJu0YyC5XbG87H+Zb7oGuOjIcJ5wRFjE1FOZxvmA85NdUjfDHcriUgw
-	tDtDuaPxzGBFJl0QrF67XedXR3IVNzhS9HrNa2O8pN5Q7+w4g2gP2sNRiHhzVy8lZoK4zbw9uF5
-	/KXINJTp89z2EnWltC69NARtvM1f4LTk=
-X-Gm-Gg: ASbGncuCWW8/bPdEF/QHF2Wv6pVKxp1h7fpo4HH1t/Eelpl8ZHyK6UZ4DKaYEr5OBDe
-	WD2pkye5DNC3s6flRxrWCmRHVEFc1fZj/5/Ve2fazPgsSmznBkRCtfFGyph8fq9zDd6IcZDTMhf
-	h2+C6Y5GwFW9CL6R/97Kz25/sDtdl+f/27gcL40asM47mPjZZtM9RWDH1eGQBZ09WowWaqbCthk
-	rwyBjROFA==
-X-Google-Smtp-Source: AGHT+IFqLJzfxlE9IzrL92NoVUr6Ne6ykptrtie8d+0UYuYwU8A8dTBLaLR16KfvelH/Vi8PA7WIvYgckc571ZyT4n8=
-X-Received: by 2002:a17:906:4fc9:b0:af2:91c7:f2f8 with SMTP id
- a640c23a62f3a-afe07d3fba2mr219920066b.50.1755780645163; Thu, 21 Aug 2025
- 05:50:45 -0700 (PDT)
+	s=arc-20240116; t=1755795733; c=relaxed/simple;
+	bh=QlyP+EybHdG/BjvDs4e1GOTfEiPxKwv1SmW3xs+WcNU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PMNqmwDKNSiMv1wsR6lcHVsV1XMQfG9w2zwmX/hl833HI8oChYm7Pk5CNy/+pYeS8Czb1Cd1jmdXfWC3bpSSeJAyqDcky2CU2mzpYSalmezhwrIGFrhOyBi4R/4i/3k/DJHvnon1nOyAcwTVhs5/XAMGrwKNE9zmJHAO6hJ2U9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OL94fan1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F21C4CEEB;
+	Thu, 21 Aug 2025 17:02:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755795732;
+	bh=QlyP+EybHdG/BjvDs4e1GOTfEiPxKwv1SmW3xs+WcNU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OL94fan15xuckPr35axKla7h8MZtGA8yIcVd+buWXzAQSG05oIGUBiqEBb53XRhle
+	 JmeFYsuGXJGOunPKsS1Lbfbr70a40ig3+CNUml+LCM4CLjRStOkv9+PzortwXBztYv
+	 RkypUQ7qLmOuK0P5rdvLNOi1hBU/5yZ+GdWob8NfDtHKYfXYdCVz9UH0/XTolmBFCh
+	 kZoIzbEGtG9kun8xTlL20/iCNyBFn13AtJsXb/uF+eLHMoMU+MHvFu8nOb9qMCU/zR
+	 RqEipU7pPALnBOKvCOhPuQVSUaCq7k2Miy1P5EUFNH+taITrJVdEsun71ru50sR1kH
+	 9W8Udw2mBmj2A==
+Date: Fri, 22 Aug 2025 00:44:54 +0800
+From: Jisheng Zhang <jszhang@kernel.org>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Michael =?utf-8?B?QsO8c2No?= <mb@bues.ch>,
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, Michael Buesch <m@bues.ch>,
+	Hoan Tran <hoan@os.amperecomputing.com>,
+	Andy Shevchenko <andy@kernel.org>, Daniel Palmer <daniel@thingy.jp>,
+	Romain Perier <romain.perier@gmail.com>,
+	Grygorii Strashko <grygorii.strashko@ti.com>,
+	Santosh Shilimkar <ssantosh@kernel.org>,
+	Kevin Hilman <khilman@kernel.org>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
+	Srinivas Neeli <srinivas.neeli@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux@ew.tq-group.com
+Subject: Re: [PATCH 01/16] gpio: dwapb: Use modern PM macros
+Message-ID: <aKdNBhpNofchexgb@xhacker>
+References: <20250820154037.22228-1-jszhang@kernel.org>
+ <20250820154037.22228-2-jszhang@kernel.org>
+ <CAHp75VfxSBPzvohrW4tywd4VS0r1_mp8WLvdKcN_yn=zNS49HQ@mail.gmail.com>
+ <20250820191039.4f8af41e@barney>
+ <CAHp75Vdpgf3DUMQw0mYqhG=9UrYG8KWrobbd387QZapBor_LHg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250820154037.22228-1-jszhang@kernel.org> <20250820154037.22228-6-jszhang@kernel.org>
- <CACRpkdYQLqDxh=zqrZ+wK_Ky2wD5AUoVLmCV_JDfmaqJC4Yzqg@mail.gmail.com>
-In-Reply-To: <CACRpkdYQLqDxh=zqrZ+wK_Ky2wD5AUoVLmCV_JDfmaqJC4Yzqg@mail.gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 21 Aug 2025 15:50:07 +0300
-X-Gm-Features: Ac12FXzttMVTUGZEGb0vWnktV7PySLes6yhjoNd5Y9rUABfh--T1PQfOw84YMT0
-Message-ID: <CAHp75VfauP9=fkoZd8D-kGOXye_uE8TE0k47YTogPDSk18gDNA@mail.gmail.com>
-Subject: Re: [PATCH 05/16] gpio: pl061: Use modern PM macros
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Jisheng Zhang <jszhang@kernel.org>, Doug Berger <opendmb@gmail.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Michael Buesch <m@bues.ch>, Hoan Tran <hoan@os.amperecomputing.com>, 
-	Andy Shevchenko <andy@kernel.org>, Daniel Palmer <daniel@thingy.jp>, 
-	Romain Perier <romain.perier@gmail.com>, Grygorii Strashko <grygorii.strashko@ti.com>, 
-	Santosh Shilimkar <ssantosh@kernel.org>, Kevin Hilman <khilman@kernel.org>, 
-	Robert Jarzmik <robert.jarzmik@free.fr>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>, 
-	Srinivas Neeli <srinivas.neeli@amd.com>, Michal Simek <michal.simek@amd.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, linux-gpio@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-omap@vger.kernel.org, linux@ew.tq-group.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHp75Vdpgf3DUMQw0mYqhG=9UrYG8KWrobbd387QZapBor_LHg@mail.gmail.com>
 
-On Thu, Aug 21, 2025 at 2:52=E2=80=AFPM Linus Walleij <linus.walleij@linaro=
-.org> wrote:
-> On Wed, Aug 20, 2025 at 5:58=E2=80=AFPM Jisheng Zhang <jszhang@kernel.org=
-> wrote:
-
-...
-
-> > The pl061_context_save_regs structure is always embedded into struct
-> > pl061 to simplify code, so this brings a tiny 8 bytes memory overhead
-> > for !CONFIG_PM_SLEP.
+On Wed, Aug 20, 2025 at 10:04:39PM +0300, Andy Shevchenko wrote:
+> On Wed, Aug 20, 2025 at 8:11 PM Michael Büsch <mb@bues.ch> wrote:
 > >
-> > Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
->
-> Hm true, 8 bytes is not a big deal.
+> > On Wed, 20 Aug 2025 19:54:44 +0300
+> > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> >
+> > > > The dwapb_context structure is always embedded into struct
+> > > > dwapb_gpio_port to simplify code. Sure this brings a tiny 36 bytes
+> > > > data overhead for !CONFIG_PM_SLEP.
+> > >
+> > > I don't think it's a good approach to add a lot of data for peanuts in
+> > > case of PM_SLEEP=n.
+> >
+> > It wastes 36 bytes in case of PM=n.
+> 
+> ...per port.
+> 
+> > The driver currently allocates the struct with kzalloc and stores a pointer to it
+> > in case of PM=y.
+> > So this probably has an overhead in the same order of magnitude (pointer +
+> > malloc overhead/alignment/fragmentation) in case of PM=y now.
+> 
+> ...per driver.
 
-It's better to double check. This data is per GPIO chip, the Q is how
-many chips can be present on one system. Then the calculus will be N *
-8 bytes.
+Before the patch, struct dwapb_context *ctx is also per port.
 
-Knowing gpio-dwapb (and having even a HW with it) the commit message
-(there) seems like a slight manipulation as it doesn't clarify this
-detail.
+> 
+> So, I can't say it's equal, but I leave this to maintainers to decide,
 
---=20
-With Best Regards,
-Andy Shevchenko
+What in my mind now: this is linux rather than RTOS. After greping the
+the arm/arm64/riscv dts dir, the max port number is 6, the berlin2q
+soc families, so this means current we have wasted 216 bytes memory which
+is trivial compared to the system memory.
 
