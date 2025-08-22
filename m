@@ -1,123 +1,124 @@
-Return-Path: <linux-omap+bounces-4311-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4312-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4237B32319
-	for <lists+linux-omap@lfdr.de>; Fri, 22 Aug 2025 21:44:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C275B32509
+	for <lists+linux-omap@lfdr.de>; Sat, 23 Aug 2025 00:26:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE985627E80
-	for <lists+linux-omap@lfdr.de>; Fri, 22 Aug 2025 19:44:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73469189D2C4
+	for <lists+linux-omap@lfdr.de>; Fri, 22 Aug 2025 22:26:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C392D4B66;
-	Fri, 22 Aug 2025 19:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D3D2D322F;
+	Fri, 22 Aug 2025 22:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="cMb/1Qd4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ESv9/Sq+"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842EB26A1B9;
-	Fri, 22 Aug 2025 19:44:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F303723505F;
+	Fri, 22 Aug 2025 22:26:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755891884; cv=none; b=Ats7reOkxWPUf1GPtV5rHjdVAc4XBuH1o2hH8AwqBfMMv9x2sAC10QMB5y9HJJmh+yCYheNUqyT6rzJs5TEX0bFoHmZwzaNPKDv0zLd3qMQPVNB4WCTDJRvXNcD04R7NqREXK6Unt209OVAJs353vWQgNfh/dZXihGLcAA2JOSc=
+	t=1755901566; cv=none; b=ll8GKTHdkT2EOyMDZMmrJOPjNEZi7ogMo5M96nXtwwIawNTtCzGXDgLroT2r5kELrvAttxcLJcZkUqlAvcbVIkTGtCPoLTG440GCvlOXI15CfQxu2bC0Wd+1/R1kNO4VfV51+nkykUyI9gnjMcO64us6TqLSd+cpbf+jzgK6Pjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755891884; c=relaxed/simple;
-	bh=HRCJucDAxwR1vzK1TCRotaBhVputfowz8e0wsEsHu7w=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D2fE68WpJHK+u+Y8JfJ7deAta2IiMTsyKhr3WbzEmZ9q/KrIrxuKLtBUMgU6bhQHWtgpIxqqEpwGmDCdIVw7+WXgtLqDsaGH/ta7Iqsc1YPGYIXuAky7/LpgGQtCDPAF4mAG5JGmoaFwGMMHPJOT4xC8A/PCvhGfLGiZ2QHIY14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=cMb/1Qd4; arc=none smtp.client-ip=198.47.23.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57MJiTBu318936;
-	Fri, 22 Aug 2025 14:44:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1755891869;
-	bh=6vynMBNt9zHEV0YaHp/1iQ9KsKnJ3qZTQ8Qg8vs2o7c=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=cMb/1Qd4ZSGg4Tg4jM3n9AE66JJ0MHb0/GXlTGNueP01q3Sx0yxi8bHjPO9C0Hc0l
-	 GDDq9vhU0wSGl9iZBmkwz6mkQ3JYC2SR6SYD3uVRlo4PI8Lp21DykHtwZI8vCrXsnQ
-	 ae3yZErzds6H6nlnV9A+PC7ImB5toudFqtvOSHvc=
-Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
-	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57MJiTZn3834554
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Fri, 22 Aug 2025 14:44:29 -0500
-Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Fri, 22
- Aug 2025 14:44:29 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Fri, 22 Aug 2025 14:44:29 -0500
-Received: from localhost (uda0133052.dhcp.ti.com [128.247.81.232])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57MJiTXv123210;
-	Fri, 22 Aug 2025 14:44:29 -0500
-From: Nishanth Menon <nm@ti.com>
-To: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof
- Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Vignesh
- Raghavendra <vigneshr@ti.com>,
-        Tero Kristo <kristo@kernel.org>, <linux-omap@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-CC: Nishanth Menon <nm@ti.com>
-Subject: Re: (subset) [PATCH 1/4] ARM: dts: omap: dm814x: Split 'reg' per entry
-Date: Fri, 22 Aug 2025 14:44:27 -0500
-Message-ID: <175589184750.648983.14374917269820538529.b4-ty@ti.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20250819131651.86569-5-krzysztof.kozlowski@linaro.org>
-References: <20250819131651.86569-5-krzysztof.kozlowski@linaro.org>
+	s=arc-20240116; t=1755901566; c=relaxed/simple;
+	bh=T5U3T59xMxutbqhRQ80mhcOf2qZtze/ckJ399JrRFoo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bBUYCSDWNZEp9dWPEuQTlh8oecNBXeYruI+Q+JM98NxSW1ZpMxZQPB26Idcq+A6YT6l4RzPDwT/kIvMZHiELyNwcP+HU6hUuvOlnUIH1RiAX7twXC/O6EGdWTzfgAOlmluNO3ymRQJw+3CGQuVfVpd+85A0vyp11iH/nZe365Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ESv9/Sq+; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45a1b05d252so20308125e9.1;
+        Fri, 22 Aug 2025 15:26:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755901563; x=1756506363; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1yIf7UahS4pxZ1gqlZo5h06LoLmN0soC2fUAOI/fcBk=;
+        b=ESv9/Sq+HEn9fRM7+ndfKCD92JaMaMv6k8Wvgs8ImUho55+b9m817uK4t0otOkTYuh
+         1A9aHXpDjNohGHSYL0gkDd8EBUtuZcza75Mv254hgXd3hT5q8jk047+YJkr3uK49By4n
+         bq68LzooTl8IwBA/IVYvdCg3XJs5dHxcNUhJ0wZUdNhu5j7Jd54JtRcXkjdPZX1y/CHz
+         tL3S6wd0Zuu8V++7MBNRb0pT/k4ZnUvJJ2/kQDQowiIY9RCFdQCjt5J4fem8Qy1/BrrH
+         5jHVT7Vl7fkzYcvcHYMpCNW86TNSeMRUR4EUpU+RGw1P6y0/3RcxK/V+TWeljXujmmOk
+         jPyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755901563; x=1756506363;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1yIf7UahS4pxZ1gqlZo5h06LoLmN0soC2fUAOI/fcBk=;
+        b=LnyoenPowo/k/stBjvUx5GiJYkt07Hj6iOkbpBnbeINA5Zbv8yr4E5qwID2HvvA91I
+         8rYEUl1QuZldUnUUIItCcv62YUMoJYm518kU0Jc6KziqE6/0yssYRyGnlAf6dG15RmXa
+         6cM06MCumfscJDswnkZ11mcAYwC8XEwUSjO6GLw6qUMJG7iLDZy3aq+gzwwj7w3S6i2x
+         CeGLSQ+1dVg5E7EXVA9klZwF1OfaxfSJfORt1TClA6rzKWrrLryQQF4rsgqrE58NuPdR
+         NXG5xjur2FJrdvIx27IXIc/wKlLyTCLTVpulBtGDRXejAWlasE1rEcAOxykkJMR/fWOT
+         03dA==
+X-Forwarded-Encrypted: i=1; AJvYcCVHXA8/EqzEa8ngRUr4rRqPrl3lkcTg5Zv78Weto1weMmrEWHCRCoh3ShF3ACdHlfcItZwn2vYu0vLy@vger.kernel.org, AJvYcCWHSw3lzFgFjHif9AWu/Ov5eka/ffHlWQrQ9LYdrJ30oVc5e2WmFVj+MMlYY4fnQ+R5rUi8AN4AOS9tGqS7@vger.kernel.org, AJvYcCWjxlr2T0bKs+Zu31UqxwmnY/BgatynUX6gLuRNiocvdWXcjpoEVjMPTHpNR5wxtk6p/5AbWXxVeJVNxw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyq4hTNpL4Ku+ZRnN4CXrGajK+RcBg2Mx87V7efj0Md7Nebr/iS
+	iQ9P5Syj4c57BW/Mje/5I7rxh52yNQzkC0dasMmBztekGhQiQXKCHsQ=
+X-Gm-Gg: ASbGnct3Je/iIqct+Y0ONeamDfO56oGmWQMD42Mw+UpWJtjCfRy++wL3OpfqcbkxQbp
+	V5Xseijqz+XXWFCB7ECHiHT4dHOW9UC9Fmvea52tSqlO4d84nBSH2Z8UcbCn5XxzArgZ5otz3xr
+	7mZWY4U4JwCsvupcsIAupNkdWG6NbSwpkJNZ71SBU3r9VkZRaLSZDcMjZogI81j6/BkE2EeoKD2
+	hkVZT3IAomS7+QmO5c/XCJ7mZoFOTTdtg/q9eJGpodKEAtJSw7bFBbYZGkGa8WQnySd/dTu8xiK
+	LoXG5ZmsuJg0RwkvV07g4ez/oPrmcI+uvd1kmXgFvJfaz02jYThKGFkf0YlZbISeZ3RdqUG51+X
+	FORlBFQKzEbMxsx7aZCJLRNGQIAkt0mRuTiL2pYpa2NzuyQ==
+X-Google-Smtp-Source: AGHT+IEJMybfO8956xjyYvUhaELGFJCgGASiKmKJ7a5pJizulPbRSnIF/KoBKRBTVTDjZPCdLYkenA==
+X-Received: by 2002:a05:600c:4715:b0:458:aed1:f82c with SMTP id 5b1f17b1804b1-45b517d3b30mr34477415e9.22.1755901563145;
+        Fri, 22 Aug 2025 15:26:03 -0700 (PDT)
+Received: from localhost.localdomain ([2a0d:e487:58f:6d42:4e65:e74f:bc8e:3791])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b4e8f4552sm41226025e9.8.2025.08.22.15.26.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Aug 2025 15:26:02 -0700 (PDT)
+From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+To: tony@atomide.com
+Cc: krzk+dt@kernel.org,
+	robh@kernel.org,
+	conor+dt@kernel.org,
+	linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	shuah@kernel.org,
+	jihed.chaibi.dev@gmail.com
+Subject: [PATCH] ARM: dts: ti: omap: am335x-baltos: Fix ti,en-ck32k-xtal property in DTS to use correct boolean syntax
+Date: Sat, 23 Aug 2025 00:25:30 +0200
+Message-Id: <20250822222530.113520-1-jihed.chaibi.dev@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Hi Krzysztof Kozlowski,
+The ti,en-ck32k-xtal property, defined as a boolean in the Device Tree
+schema, was incorrectly assigned a value (<1>) in the DTS file, causing
+a validation error: "size (4) error for type flag". The driver uses
+of_property_read_bool(), expecting a boolean. Remove the value to fix
+the dtbs_check error.
 
-On Tue, 19 Aug 2025 15:16:52 +0200, Krzysztof Kozlowski wrote:
-> Multiple entries in 'reg' should be encoded in separate <>.
-> 
-> 
+Fixes: 262178b6b8e5
+Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+---
+ arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I have applied the following to branch ti-k3-dts-next on [1].
-Thank you!
-
-[4/4] arm64: dts: ti: k3-am6548: Minor whitespace cleanup
-      commit: 44189ccdfc2c96af4b06303c265030cda0e0bf51
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent up the chain during
-the next merge window (or sooner if it is a relevant bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi b/arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi
+index ae2e8dffb..ea47f9960 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi
++++ b/arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi
+@@ -269,7 +269,7 @@ &tps {
+ 	vcc7-supply = <&vbat>;
+ 	vccio-supply = <&vbat>;
+ 
+-	ti,en-ck32k-xtal = <1>;
++	ti,en-ck32k-xtal;
+ 
+ 	regulators {
+ 		vrtc_reg: regulator@0 {
 -- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
-https://ti.com/opensource
+2.39.5
 
 
