@@ -1,136 +1,123 @@
-Return-Path: <linux-omap+bounces-4310-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4311-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 048D4B30A94
-	for <lists+linux-omap@lfdr.de>; Fri, 22 Aug 2025 03:00:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4237B32319
+	for <lists+linux-omap@lfdr.de>; Fri, 22 Aug 2025 21:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 615E7727395
-	for <lists+linux-omap@lfdr.de>; Fri, 22 Aug 2025 01:00:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE985627E80
+	for <lists+linux-omap@lfdr.de>; Fri, 22 Aug 2025 19:44:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C52EC192B7D;
-	Fri, 22 Aug 2025 01:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C392D4B66;
+	Fri, 22 Aug 2025 19:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K5n3vX2k"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="cMb/1Qd4"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5778116FF44;
-	Fri, 22 Aug 2025 01:00:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842EB26A1B9;
+	Fri, 22 Aug 2025 19:44:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755824409; cv=none; b=Lw6R7uRxYIrtunkZR/n/SGvyBVEQvcqZLr3fkBDf6/0buDOx0WX8hJ4P6QuRo943DDyyjhAq8SQZ+UIwuUryeU7VJXqb23EF6loHwkRdKo1EDP/V9GrRDmJomcCu8Xapx7iQByU/NCqcilVFAt9M/KWhRlFi/5j4NcP5oyO7U1w=
+	t=1755891884; cv=none; b=Ats7reOkxWPUf1GPtV5rHjdVAc4XBuH1o2hH8AwqBfMMv9x2sAC10QMB5y9HJJmh+yCYheNUqyT6rzJs5TEX0bFoHmZwzaNPKDv0zLd3qMQPVNB4WCTDJRvXNcD04R7NqREXK6Unt209OVAJs353vWQgNfh/dZXihGLcAA2JOSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755824409; c=relaxed/simple;
-	bh=4QmFQZAQMP9vjeQfF2ag3DS7K0Vr+TO1FEWXKv49hsg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t7mhXk/kVxbhWhWvbS6Gq5Gs9ovybv++75ng1WaR9EG562KV8h+4QArtt1CPdRSZ92/i/sfFCNsDTl6h2kDlFEX8h9gkerU3eQxK7aX1fgP4Y06ERepqkOrgOZUGMfOXpEaPHOc5lSRWdxj7WkqX5xqWCHfdAH3YZuNi0mV6q0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K5n3vX2k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C94C4CEEB;
-	Fri, 22 Aug 2025 01:00:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755824408;
-	bh=4QmFQZAQMP9vjeQfF2ag3DS7K0Vr+TO1FEWXKv49hsg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=K5n3vX2kKdXYsM6H4LntwNJBFr3fTqnd/DUqFsHz4vzoqLSJx8ZT2rLZxBG7tfHJV
-	 4SgDJx4Xg4bXP34oG2B/yAOJyI2VlyI1sDIwuc5MiwRbqcWyXj7ILfscAL/uD4xc5l
-	 Rxoy7sr9klsTvEujwdMusk4vIcbUsXsYgIUwWgAu7caER1kZn9KRXkrvmQfoRvUiE6
-	 K5BqeIszZZYvHIYbUdEpkw9y1PoOBxr2eXTNzlVTRkCrFpoX9yEYKlZSdgGwuTD8KT
-	 KyG5llxpbxDJCDF07DoaEDjg7wR+W5MS2D8m8SoBx4CFi9lCUQbwusKTuSQ0gpm/vl
-	 XBFBSDO/Oq37Q==
-Date: Fri, 22 Aug 2025 08:42:51 +0800
-From: Jisheng Zhang <jszhang@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Michael =?utf-8?B?QsO8c2No?= <mb@bues.ch>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, Michael Buesch <m@bues.ch>,
-	Hoan Tran <hoan@os.amperecomputing.com>,
-	Andy Shevchenko <andy@kernel.org>, Daniel Palmer <daniel@thingy.jp>,
-	Romain Perier <romain.perier@gmail.com>,
-	Grygorii Strashko <grygorii.strashko@ti.com>,
-	Santosh Shilimkar <ssantosh@kernel.org>,
-	Kevin Hilman <khilman@kernel.org>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
-	Srinivas Neeli <srinivas.neeli@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux@ew.tq-group.com
-Subject: Re: [PATCH 01/16] gpio: dwapb: Use modern PM macros
-Message-ID: <aKe9C50Q3uHbdI4Y@xhacker>
-References: <20250820154037.22228-1-jszhang@kernel.org>
- <20250820154037.22228-2-jszhang@kernel.org>
- <CAHp75VfxSBPzvohrW4tywd4VS0r1_mp8WLvdKcN_yn=zNS49HQ@mail.gmail.com>
- <20250820191039.4f8af41e@barney>
- <CAHp75Vdpgf3DUMQw0mYqhG=9UrYG8KWrobbd387QZapBor_LHg@mail.gmail.com>
- <aKdNBhpNofchexgb@xhacker>
- <CAHp75VfG3mZsBMTeg0nwDJV2PKG=M+UAst4fy05oh+Df4YGL8Q@mail.gmail.com>
+	s=arc-20240116; t=1755891884; c=relaxed/simple;
+	bh=HRCJucDAxwR1vzK1TCRotaBhVputfowz8e0wsEsHu7w=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=D2fE68WpJHK+u+Y8JfJ7deAta2IiMTsyKhr3WbzEmZ9q/KrIrxuKLtBUMgU6bhQHWtgpIxqqEpwGmDCdIVw7+WXgtLqDsaGH/ta7Iqsc1YPGYIXuAky7/LpgGQtCDPAF4mAG5JGmoaFwGMMHPJOT4xC8A/PCvhGfLGiZ2QHIY14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=cMb/1Qd4; arc=none smtp.client-ip=198.47.23.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57MJiTBu318936;
+	Fri, 22 Aug 2025 14:44:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1755891869;
+	bh=6vynMBNt9zHEV0YaHp/1iQ9KsKnJ3qZTQ8Qg8vs2o7c=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=cMb/1Qd4ZSGg4Tg4jM3n9AE66JJ0MHb0/GXlTGNueP01q3Sx0yxi8bHjPO9C0Hc0l
+	 GDDq9vhU0wSGl9iZBmkwz6mkQ3JYC2SR6SYD3uVRlo4PI8Lp21DykHtwZI8vCrXsnQ
+	 ae3yZErzds6H6nlnV9A+PC7ImB5toudFqtvOSHvc=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57MJiTZn3834554
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Fri, 22 Aug 2025 14:44:29 -0500
+Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Fri, 22
+ Aug 2025 14:44:29 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Fri, 22 Aug 2025 14:44:29 -0500
+Received: from localhost (uda0133052.dhcp.ti.com [128.247.81.232])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57MJiTXv123210;
+	Fri, 22 Aug 2025 14:44:29 -0500
+From: Nishanth Menon <nm@ti.com>
+To: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof
+ Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Vignesh
+ Raghavendra <vigneshr@ti.com>,
+        Tero Kristo <kristo@kernel.org>, <linux-omap@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+CC: Nishanth Menon <nm@ti.com>
+Subject: Re: (subset) [PATCH 1/4] ARM: dts: omap: dm814x: Split 'reg' per entry
+Date: Fri, 22 Aug 2025 14:44:27 -0500
+Message-ID: <175589184750.648983.14374917269820538529.b4-ty@ti.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250819131651.86569-5-krzysztof.kozlowski@linaro.org>
+References: <20250819131651.86569-5-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHp75VfG3mZsBMTeg0nwDJV2PKG=M+UAst4fy05oh+Df4YGL8Q@mail.gmail.com>
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Thu, Aug 21, 2025 at 10:32:01PM +0300, Andy Shevchenko wrote:
-> On Thu, Aug 21, 2025 at 8:02 PM Jisheng Zhang <jszhang@kernel.org> wrote:
-> > On Wed, Aug 20, 2025 at 10:04:39PM +0300, Andy Shevchenko wrote:
-> > > On Wed, Aug 20, 2025 at 8:11 PM Michael Büsch <mb@bues.ch> wrote:
-> > > > On Wed, 20 Aug 2025 19:54:44 +0300
-> > > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > > >
-> > > > > > The dwapb_context structure is always embedded into struct
-> > > > > > dwapb_gpio_port to simplify code. Sure this brings a tiny 36 bytes
-> > > > > > data overhead for !CONFIG_PM_SLEP.
-> > > > >
-> > > > > I don't think it's a good approach to add a lot of data for peanuts in
-> > > > > case of PM_SLEEP=n.
-> > > >
-> > > > It wastes 36 bytes in case of PM=n.
-> > >
-> > > ...per port.
-> > >
-> > > > The driver currently allocates the struct with kzalloc and stores a pointer to it
-> > > > in case of PM=y.
-> > > > So this probably has an overhead in the same order of magnitude (pointer +
-> > > > malloc overhead/alignment/fragmentation) in case of PM=y now.
-> > >
-> > > ...per driver.
-> >
-> > Before the patch, struct dwapb_context *ctx is also per port.
-> 
-> OK. So the comparison is 4 or 8 bytes per port vs. 36 bytes per port, correct?
+Hi Krzysztof Kozlowski,
 
-yep, I think so
+On Tue, 19 Aug 2025 15:16:52 +0200, Krzysztof Kozlowski wrote:
+> Multiple entries in 'reg' should be encoded in separate <>.
 > 
-> > > So, I can't say it's equal, but I leave this to maintainers to decide,
-> >
-> > What in my mind now: this is linux rather than RTOS. After greping the
-> > the arm/arm64/riscv dts dir, the max port number is 6, the berlin2q
-> > soc families, so this means current we have wasted 216 bytes memory which
-> > is trivial compared to the system memory.
 > 
-> Maybe, but this should be clarified in the commit message. And again,
-> I have no strong objection on this part, but it needs to be described
-> accurately at bare minimum.
 
-Good idea, will do in v2.
+I have applied the following to branch ti-k3-dts-next on [1].
+Thank you!
 
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
+[4/4] arm64: dts: ti: k3-am6548: Minor whitespace cleanup
+      commit: 44189ccdfc2c96af4b06303c265030cda0e0bf51
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent up the chain during
+the next merge window (or sooner if it is a relevant bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
+-- 
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+https://ti.com/opensource
+
 
