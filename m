@@ -1,132 +1,165 @@
-Return-Path: <linux-omap+bounces-4335-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4336-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8920B3720F
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Aug 2025 20:20:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C2FFB37486
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Aug 2025 23:47:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72F76366599
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Aug 2025 18:20:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B63C1B27FB5
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Aug 2025 21:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60928362094;
-	Tue, 26 Aug 2025 18:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACF528D8E8;
+	Tue, 26 Aug 2025 21:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="ydmJeZUw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Iut+CaEi"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270963164DA
-	for <linux-omap@vger.kernel.org>; Tue, 26 Aug 2025 18:19:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20CB51C5D4B;
+	Tue, 26 Aug 2025 21:47:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756232392; cv=none; b=QJIsx8GNd05Ox+qmKCMjgzo/tTHej3dKd2+PXyX4AJ57O1ZWV7FihaBqBoPMc6Yvq6UZMyO2NSZtdUq9UvBqy62jM8Y24sg8Sjyzcmgueauh/N4xOUyx9WBjPDLTv57dXAJBVibR5RD+9TD0tM1OZWpNOMJdY8l2yVqTFC94O/I=
+	t=1756244844; cv=none; b=KE5X4+vcdagD1nAv8pTXJb9SRlYmNwwt6h3+z8tLk6y5qZUe7iLJHVOPiGUSOR1aAlavN0Ss/2cCnTiUF91lIfGktm29mFFETinhOX3E7KO/ax/IrQ8jVZC2oxqAwxj6pjRp9cUHZKuCHfbPizqpgwwy6NAljzELll+2MCg6XaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756232392; c=relaxed/simple;
-	bh=XQz/VrYK3cwCtAlJzmwCDIZSeNenI6Rm8ZKZbd4vuEk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FoYgS6JTSlbpEWU3WIKhghrJ3CzT/pGDVBgGvd1oaE0ccrC6poj5JADUeKktuF6nxw7vvfYov97xan+xPDQyJ6uJvKw1sme/aVgIkVkF293sJ98rmIMuKR/dILaO6hBD2Ls8OFqMUatMvTKs6GBc6YBgKjSnLTnBjsF5Km4QNJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=ydmJeZUw; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-55f4969c95aso2161956e87.0
-        for <linux-omap@vger.kernel.org>; Tue, 26 Aug 2025 11:19:49 -0700 (PDT)
+	s=arc-20240116; t=1756244844; c=relaxed/simple;
+	bh=7rZc4H6brtLrd8ymrzGf1cMDZcvIgN8NA8yiwzAbcNI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ko+kY4GKtZ1yPJgxk9AwvqG7QhEUFpGMrQfV9659AyqJ2Sx5cYJmeMksMrZpA3I6cIBVMNn/WoBXU21gz0qbfEr5FBARRgERCw7VmPnjIVDNfiBIqJzW9RWaqMUw7A+nb4iTcxTkZF7E4egv99e0smtOb4b+qbJ8MMT+Bk9p1sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Iut+CaEi; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4b2b859ab0dso36081231cf.1;
+        Tue, 26 Aug 2025 14:47:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756232388; x=1756837188; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XQz/VrYK3cwCtAlJzmwCDIZSeNenI6Rm8ZKZbd4vuEk=;
-        b=ydmJeZUwk65YNZNu/QlcHmZJjyvB7rwhDCI8hO9AxkeyxmXy4LrXAuRaLxz75GF+y2
-         +7b6//9ACJiy0CI2AMoXV8k3QgqLL5qA5uzGncNdN6kQMoV8l7oSRBq99YgDUUMGumz0
-         7RhwTtN2Wr6CfDOq2FH9ZUF2cxxh2JOwTuT60ddjMgBxtQAAi4QJGYUrPhP+im0IFdLn
-         wFhte6LTGGCQbSw1cTM4vKJRS8OgEGZwWUW7cH76qKeioOx0sUbXzsijBsQV5efTmC7p
-         wQJo+Lp1oW5heIE7m7jxqGga2PB3xOBumQf+HlFN9E/rDnACXY6nhsKLwCTWq8BuSSeN
-         B/cA==
+        d=gmail.com; s=20230601; t=1756244842; x=1756849642; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XkXCtZkNS4sQ1PyXjfM/RdJFG7EoG62SuYsDVUj0IR4=;
+        b=Iut+CaEi7BgMy8MceXxv9/6HZgjXxspQj/CyB3K+aXubF8hW/Vb8xJe+fhzLspb9cO
+         hzz/QI2R/twwqCjqHXxrdqqPJfVqSKIEd8iM+7weJVQ2B9BGpJ7GS/sT2dtbXfjYbnjs
+         dfiQo1OCJ37zATLZcDWPAb6YJICpUHNyWvok8/yd1R+U39dd3soJ+7SwNlK6PUwc96Pn
+         58pC6Tc01IV1Ivrkklqtc2TIWm/A42qPS5cH+79AWG22dyYkEUqsmXG3yfgVEjD/cQlO
+         Xtf3kvek01R0Y7iKpmNGOP0JxIqf70Riz2FOk7iySzchrbDcsycbfeshOLKn5k8a+n7y
+         AUag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756232388; x=1756837188;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XQz/VrYK3cwCtAlJzmwCDIZSeNenI6Rm8ZKZbd4vuEk=;
-        b=cGSU6EAjmCtTNpI9iuyuv/LedGSmtftSNMFU29ychUchzWKjSPpsQSt21MlZfuUSeY
-         XLbmDbZWNsMXUybc2dAfxPSwgYS7f27bZADY/vV31AwmwYm4vvTWY6Qvwkh4Csbc4UjK
-         nerRBiXZl/iZ3unQTeAtAX0ZqhHo/Q5rFQMu681IQF9ROc72jKFAUogIMW1/Bsq2PNzj
-         nMQQ475CfHREGcjVT2Ll/T5sgBtCmZ41+imESiacjjej25xbM/NXkbrfJYnOztTZjkbu
-         r1WFdxBd65NLhnQHesIYh/YwDrP9LsP+RqGjbMCHYHcZ+pV5Vl/NzUl+YEkwRoYRl9P9
-         0+pQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXPHoPRA+GxqENN1fuymFRh/DUVg1zMUL99GDS1KXaQSh/U9Gv2hG/1CcRyk3bFhfliasieETd+4iDy@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuT7jVmFrF+MjsmVGPl+FjOnyKS+Lg21EOf/hYIkP+UFU3lqvW
-	lLeFsrG33Jc5yPGv3KTNOlk6CgorH71UoKFkY4hCk/ii7NZQZKLSQ9u/aHHv4Q4qtbfEFTWAtAf
-	xWZ/9LyIt0EGiA2zvrNjkc62i3MELQIU4blqJ/H6+rw==
-X-Gm-Gg: ASbGnctlzSHU9lX2pLla/J4dD663Hkj2DTZ/RUJSLfs43YhCNcO4EsMl4pM/JZr0PVB
-	pGDYfbjgikayiQKGKxdyh5QN2yrX/dY2kO2HVbmcF+ggwiDISeN+ys5glC9YOIVQEWcuimkVIOG
-	kLI8tom632ENLWTIPnzM2BNYICCkH2szbPMOYK0SlIILUu+Pm1K1S/e0yRem+WBCAY4zAJqK8+b
-	17rjiYZwDnTzdVn8mKHvNnFD8uEtKnqG3wrF+IID/O1Ndgf/wHdUCV8eK26
-X-Google-Smtp-Source: AGHT+IH9/wDD1C5c1pzIo5M6703fhe2Ju79J3Cg57MCbuHB+kMzD9Ry2MpuHtwyxY9EgNTzhw0WfnDm8emGE0JQOveU=
-X-Received: by 2002:a05:6512:3d87:b0:55f:3d7c:387b with SMTP id
- 2adb3069b0e04-55f3d7c3badmr3365498e87.12.1756232388100; Tue, 26 Aug 2025
- 11:19:48 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756244842; x=1756849642;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XkXCtZkNS4sQ1PyXjfM/RdJFG7EoG62SuYsDVUj0IR4=;
+        b=j1bP80lTvUyWUwYsujvJy2mEONMHzs7sBdID98rQZhKbkXtJrwrBK+pmmYcHEaNWI8
+         xxy5zhLdoXCFIDk9yQmwNX8KfzTpMIXdAysJno/uoFR/GR/X6xqt5teTwAVYCG+G0R1/
+         u3TDYSpPKYBioeh5KIucLRAu9XC+oxtmrZ8Ik2qCLfZZ9odUPDnze5RIQ6x62KxibesE
+         97HtS55SpWUmFBk/8KL4SRMD+LbGVPyNQSvSfsZ/RBOSxwwsVfuSPXcnsx+5o0R9RyE2
+         KPNV86DLG95r9Ii22cuVr785iPbpOnCms8JoEW+wp1M6Qw87tV26vCD6JbaZgYN4cLO6
+         fyOA==
+X-Forwarded-Encrypted: i=1; AJvYcCUN6/D1HYy12CZll6jtp3P+DBL8a5IgVoZK37yNwszNWGq4h0pWueZfpYb+QC+U3vO29UH2z2ymvvIOoA==@vger.kernel.org, AJvYcCVv9P5HJ3hwEgd+k4TEPgtsBSQXEbvnBl4PQxgXH/9NJe4XH0U/pFHibmo0IUz30JJWwIXYN7QPTR3W@vger.kernel.org, AJvYcCW9XV2J/Omp8xrTQDkBtU3AWvCU/tmQxPmgLi6YALiANnLYvviTCsgMO4KMba7lYELXMQhasFDCZlSetWTw@vger.kernel.org
+X-Gm-Message-State: AOJu0YywFZ2CLev+VsuXNkCCEml2kvNn6ep5W1aMRzUb25OiLAkEuG5t
+	6X17UJtFW5qFTsysFTqO+Sjg9OFHfxKEzFduxK5j9tZYndusgWBFIHh4
+X-Gm-Gg: ASbGncuae3wmgWBHY15G88UM4Zvm1qTTab4Fc8WJUvgVGKUcjC+NwB/ottjZHpcMJvK
+	tHyP58BsJYeyGf+4uRBaEOzNBGXOfG1478/QorbDdfTSSPlLIF7/z1qIqycNRvRDiBIby/7l7Xh
+	NXglyG1a4V8NBmMQcJV0KBeLClKCJFnC53G5z04CWE/UAKroJAksfdohxg7wPGQi6vBj2JLtbSN
+	+uPPC6XwJmC63cfcgRLzgnpX3sKJt/DUsWbJkfPzyMGawmHxorXlYcmUGaAu5taepf+Ga2//TQ2
+	xU6Ff9qA3dAxGZsve3YrLmdVOg/G0ls/VMTwfhzm8/24P0fnicareXEiBdv6zCOWRjI+PbBc8oB
+	hO2bH4yASmuqwR+SGejYhb7AdTHoAn6rULiNNl06N+xPnOKrA
+X-Google-Smtp-Source: AGHT+IH/4BueP1i9uTaGBcioRqKWdWlLPnxhgjhYg/TT045qxzwvPNCGSAOghSI6A+lqXYcoj0Z8VQ==
+X-Received: by 2002:ac8:5f4d:0:b0:4b1:dd3:e397 with SMTP id d75a77b69052e-4b2aab56bacmr177029521cf.62.1756244841768;
+        Tue, 26 Aug 2025 14:47:21 -0700 (PDT)
+Received: from [10.69.40.168] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b2b8de5d37sm77448621cf.34.2025.08.26.14.47.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Aug 2025 14:47:21 -0700 (PDT)
+Message-ID: <e9aa8a07-4ed7-4a7f-a69a-ce496ede48cc@gmail.com>
+Date: Tue, 26 Aug 2025 14:47:30 -0700
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250815-pinctrl-gpio-pinfuncs-v5-0-955de9fd91db@linaro.org>
- <CACRpkdaDGmdhaik+1saRv7Ts4myQ+tg1aQqGU3xQyT7ma8dJFw@mail.gmail.com>
- <CAHp75VephepLq61HrVy=PX2oKUQd5NK2qS-vOC5h_NR65td3Uw@mail.gmail.com>
- <CACRpkda4soRCLF5=W=6R4wnwT3pjk743j022XfJxjTTQzuarAA@mail.gmail.com> <534ad082-08fa-42c0-9c24-f0c11af7d5b2@sirena.org.uk>
-In-Reply-To: <534ad082-08fa-42c0-9c24-f0c11af7d5b2@sirena.org.uk>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 26 Aug 2025 20:19:37 +0200
-X-Gm-Features: Ac12FXxAYIw0w_2T1YaN-IyY2JYcpKwwddZS_ZNL3wGJGwAsl60-M2w6oLQOL30
-Message-ID: <CAMRc=Mdn0_yPXyYq4sbvH4P9-h71vEc4arLPBfSk1PiEFaB7jQ@mail.gmail.com>
-Subject: Re: [PATCH v5 00/15] pinctrl: introduce the concept of a GPIO pin
- function category
-To: Mark Brown <broonie@kernel.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Andy Shevchenko <andy.shevchenko@gmail.com>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
-	Sean Wang <sean.wang@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Chen-Yu Tsai <wenst@chromium.org>, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/16] gpio: brcmstb: Use modern PM macros
+To: Jisheng Zhang <jszhang@kernel.org>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
+ <brgl@bgdev.pl>, Michael Buesch <m@bues.ch>,
+ Hoan Tran <hoan@os.amperecomputing.com>, Andy Shevchenko <andy@kernel.org>,
+ Daniel Palmer <daniel@thingy.jp>, Romain Perier <romain.perier@gmail.com>,
+ Grygorii Strashko <grygorii.strashko@ti.com>,
+ Santosh Shilimkar <ssantosh@kernel.org>, Kevin Hilman <khilman@kernel.org>,
+ Robert Jarzmik <robert.jarzmik@free.fr>,
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
+ Srinivas Neeli <srinivas.neeli@amd.com>, Michal Simek <michal.simek@amd.com>
+Cc: Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, linux-gpio@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-omap@vger.kernel.org, linux@ew.tq-group.com
+References: <20250820154037.22228-1-jszhang@kernel.org>
+ <20250820154037.22228-3-jszhang@kernel.org>
+Content-Language: en-US
+From: Doug Berger <opendmb@gmail.com>
+In-Reply-To: <20250820154037.22228-3-jszhang@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 20, 2025 at 8:41=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
-te:
->
-> On Wed, Aug 20, 2025 at 09:12:49AM +0200, Linus Walleij wrote:
->
-> > The qualcomm 32bit platforms fail in next anyway so I dropped the patch=
-es
-> > for now.
->
-> FWIW the i.MX8MP also seems to have been broken by this:
->
+On 8/20/2025 8:40 AM, Jisheng Zhang wrote:
+> Use the modern PM macros for the suspend and resume functions to be
+> automatically dropped by the compiler when CONFIG_PM or
+> CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
+> 
+> This has the advantage of always compiling these functions in,
+> independently of any Kconfig option. Thanks to that, bugs and other
+> regressions are subsequently easier to catch.
+> 
+> Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+> ---
+>   drivers/gpio/gpio-brcmstb.c | 12 +++---------
+>   1 file changed, 3 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/gpio/gpio-brcmstb.c b/drivers/gpio/gpio-brcmstb.c
+> index e29a9589b3cc..0ca3e0d8aa46 100644
+> --- a/drivers/gpio/gpio-brcmstb.c
+> +++ b/drivers/gpio/gpio-brcmstb.c
+> @@ -534,7 +534,6 @@ static void brcmstb_gpio_shutdown(struct platform_device *pdev)
+>   	brcmstb_gpio_quiesce(&pdev->dev, false);
+>   }
+>   
+> -#ifdef CONFIG_PM_SLEEP
+>   static void brcmstb_gpio_bank_restore(struct brcmstb_gpio_priv *priv,
+>   				      struct brcmstb_gpio_bank *bank)
+>   {
+> @@ -573,14 +572,9 @@ static int brcmstb_gpio_resume(struct device *dev)
+>   	return 0;
+>   }
+>   
+> -#else
+> -#define brcmstb_gpio_suspend	NULL
+> -#define brcmstb_gpio_resume	NULL
+> -#endif /* CONFIG_PM_SLEEP */
+> -
+>   static const struct dev_pm_ops brcmstb_gpio_pm_ops = {
+> -	.suspend_noirq	= brcmstb_gpio_suspend,
+> -	.resume_noirq = brcmstb_gpio_resume,
+> +	.suspend_noirq = pm_sleep_ptr(brcmstb_gpio_suspend),
+> +	.resume_noirq = pm_sleep_ptr(brcmstb_gpio_resume),
+>   };
+>   
+>   static int brcmstb_gpio_probe(struct platform_device *pdev)
+> @@ -747,7 +741,7 @@ static struct platform_driver brcmstb_gpio_driver = {
+>   	.driver = {
+>   		.name = "brcmstb-gpio",
+>   		.of_match_table = brcmstb_gpio_of_match,
+> -		.pm = &brcmstb_gpio_pm_ops,
+> +		.pm = pm_sleep_ptr(&brcmstb_gpio_pm_ops),
+>   	},
+>   	.probe = brcmstb_gpio_probe,
+>   	.remove = brcmstb_gpio_remove,
 
-I can't test it unfortunately - would you mind sharing some info on
-what's failing exactly?
-
-Bartosz
+Acked-by: Doug Berger <opendmb@gmail.com>
 
