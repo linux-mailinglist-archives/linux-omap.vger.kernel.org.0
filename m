@@ -1,169 +1,115 @@
-Return-Path: <linux-omap+bounces-4326-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4327-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B192B35048
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Aug 2025 02:32:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF862B365A0
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Aug 2025 15:49:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84DAD1A86309
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Aug 2025 00:33:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D458B1C20CA6
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Aug 2025 13:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C51E244663;
-	Tue, 26 Aug 2025 00:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C244733EAF2;
+	Tue, 26 Aug 2025 13:43:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="OzaksYkf";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="c2UEh1cn"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C432F23A9B3;
-	Tue, 26 Aug 2025 00:32:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74E828314A;
+	Tue, 26 Aug 2025 13:43:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756168370; cv=none; b=GUcz0LZD9r2Mx7GN+zKIU+50me2VkcgliWaUt5JKFLpI7aeOabHwQmmy90HwUkjQOCopeXWRIFy4115qTx0tjawZZ7ZCSq1Ni0a2bOKAKN89MQPE0Zj+ogViW0HD8SphlBFpUt7AJvasB/kT9gCy45a5cN1TrrS3I76GbQ7vFuk=
+	t=1756215807; cv=none; b=qE+VUl2g2nFhCUGmS+v7i3MLPPnPynVOKbGSFOfz2x1mw2YUsEuLs+/9sh299/nr+BFQ6s7/8NOfyj6vvWjZP8Xa/yHXvzYougZf6QXo7n1eZukyf1lrp6fW4TITQgXXG9pH0RVOPRYzVy1WIPrGbkCNCX7SmuZVVNaZFnnfpa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756168370; c=relaxed/simple;
-	bh=1gQOlc81YKUe90ZQFjQp7eCOJ/ImxquWbonEtlir5v4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EThkMMMIuxFQv03rn9EEJRcuTOE2bTcgp2SMEsOpWuOikzqwQOp8uxSO9MGdM9czonbnSz82UVmzPUDZvhsienRhsEqHMn4QPuiK1TZSCIF4lAj/2InoBClpVn34EE8hkOazhNj2047XPBMzDKqX2a9B738bWIClDYLjczV2G/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 2ca6c764821411f0b29709d653e92f7d-20250826
-X-CID-CACHE: Type:Local,Time:202508260830+08,HitQuantity:1
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:93f41485-b298-4e0a-83d4-23fda2463461,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:73c0f838f0cb681a0e66fa356d1f9674,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
-	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
-	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 2ca6c764821411f0b29709d653e92f7d-20250826
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 756320347; Tue, 26 Aug 2025 08:32:40 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 97707E008FA4;
-	Tue, 26 Aug 2025 08:32:40 +0800 (CST)
-X-ns-mid: postfix-68AD00A8-3459444
-Received: from [172.25.120.24] (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 3F6F9E008FA2;
-	Tue, 26 Aug 2025 08:32:33 +0800 (CST)
-Message-ID: <e91bec22-3e7a-4092-b44b-6a8946e6dea4@kylinos.cn>
-Date: Tue, 26 Aug 2025 08:32:32 +0800
+	s=arc-20240116; t=1756215807; c=relaxed/simple;
+	bh=lBvAypEUNGK3qFrs5QK5suJnmFI2ohd1rT2QMhkO124=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c3B93P1UL3TQ5V+5A+aI2py6LabjfRxSwfXIVA6Z4wvzQNlwmkJY0D4VbweufSGK1MqAUJ6gCthpazTZUBsnGLD7N3dtV7FkGN59svnVIbVO5Y2Z95ewh30ovc6XBMmN7rV08eNabre+s0mQyf+Q6HjtEG8uYKDyLobAKh0tbWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=OzaksYkf; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=c2UEh1cn reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1756215804; x=1787751804;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=95LpgcUmGtkG3/iEyBUu5q03Om8Kq4KfvufUeFFtQCY=;
+  b=OzaksYkfKM/v3ohu0Y8Wx1FzE78Kefg0BylDrWiZ1zq+InRWzaPURU6X
+   JDSYd9Au0KcEKFK7Tjp2G1BFNhjuXqWrdA8JFgtHtcbZ/MDbO6wAYxZcf
+   YaPyfFF/I/vlf/F8VOia8ao4g/npGBfm43rbUooOU0WUIsXs5CMEhsEt7
+   5P2PPMH1trQL0tVqqHM8aJpEG5mxZFdwB97ocpQC4+CrYIpeMQY38oUIZ
+   no6Pn5XwnybGqHXi5ymuW8676n1Rk0gNA0lo+uZ/S1U74X6liF3lVhr/U
+   7FKqK5zUUaYjZw9fVHBlolisnCe1h9EAuOqcHziyAvNipdWmlTTfl/m7/
+   Q==;
+X-CSE-ConnectionGUID: 4XwqTIUvQ/WEU0by7cKtVw==
+X-CSE-MsgGUID: 3gjJSHO1T6W0A+J4sWZGJw==
+X-IronPort-AV: E=Sophos;i="6.18,214,1751234400"; 
+   d="scan'208";a="45916685"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 26 Aug 2025 15:43:15 +0200
+X-CheckPoint: {68ADB9F2-33-9821D066-F5C64F68}
+X-MAIL-CPID: 2BE93F38BCBA60C3F85774E63EFF2C95_2
+X-Control-Analysis: str=0001.0A002101.68ADB9F4.0023,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 47B6816806C;
+	Tue, 26 Aug 2025 15:43:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1756215790; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=95LpgcUmGtkG3/iEyBUu5q03Om8Kq4KfvufUeFFtQCY=;
+	b=c2UEh1cnN5IEsOxX68kIv0W273uMiQj3CrlBToHhCnPyI0fKVSTtLnc0Ddi7MUo/VIeGWL
+	GAbCQ9PwdKYFtiFQV6iqtpnxhIAQAX2sWb6h32G7VZwvkq2RksvE/Mv9mG26/qZOSkv4Y1
+	4jpWT0kPBCc0GoyQYeWiqGAc8zujQm72EWoZyK2oFDMExIb/VNRcuch938L2g3sPG4myAs
+	s19wNVqgPPPww1suhqQSz+4DHdgFHZjVJcJZaZgclIeltnmen4mXuNo5XCzzbMDOqRmCPW
+	pMZurZ+hJLL6HuLk6v7gy9Q65AtrJZfGFMJjnlxhMUmyXj09Hgq4xUGGcxzxMw==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Tony Lindgren <tony@atomide.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] ARM: dts: tps65910: Add gpio & interrupt properties
+Date: Tue, 26 Aug 2025 15:42:57 +0200
+Message-ID: <20250826134259.2564191-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] cpufreq: use __free() for all cpufreq_cpu_get()
- references
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, Markus Mayer
- <mmayer@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
- <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- MyungJoo Ham <myungjoo.ham@samsung.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>,
- Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Lukasz Luba <lukasz.luba@arm.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
- <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
- Sumit Gupta <sumitg@nvidia.com>,
- Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
- Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
- linux-pm@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
- linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-samsung-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-tegra@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20250825092833.42441-1-zhangzihuan@kylinos.cn>
- <CAJZ5v0g7rJn=z5p4DuJJoPpZrR5ismYftpDWp5X=z74DqaGYBQ@mail.gmail.com>
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-In-Reply-To: <CAJZ5v0g7rJn=z5p4DuJJoPpZrR5ismYftpDWp5X=z74DqaGYBQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+The binding document ti,tps65910.yaml requires the controller and
+cells properties for both gpio and interrupts. As they have const and
+fixed values a default can be provided for all users.
 
-=E5=9C=A8 2025/8/25 22:13, Rafael J. Wysocki =E5=86=99=E9=81=93:
-> On Mon, Aug 25, 2025 at 11:29=E2=80=AFAM Zihuan Zhang <zhangzihuan@kyli=
-nos.cn> wrote:
->> This patch replaces all remaining uses of cpufreq_cpu_get() with
->> the __free(cpufreq_cpu_put) annotation.
->>
->> Motivation:
->> - Ensures automatic cleanup of policy references when they go out of s=
-cope,
->>    reducing the risk of forgetting to call cpufreq_cpu_put() on early =
-return
->>    or error paths.
->> - Brings the code in line with the latest kernel coding style and best
->>    practices for managing reference-counted objects.
->> - No functional changes are introduced; behavior remains the same,
->>    but reference counting is now safer and easier to maintain.
->>
->> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
->> ---
->>   arch/arm64/kernel/topology.c                  |  9 +++----
->>   arch/x86/kvm/x86.c                            | 10 ++++----
->>   drivers/acpi/processor_thermal.c              | 13 ++++------
->>   drivers/cpufreq/brcmstb-avs-cpufreq.c         |  4 +---
->>   drivers/cpufreq/cppc_cpufreq.c                |  4 +---
->>   drivers/cpufreq/intel_pstate.c                |  3 +--
->>   drivers/cpufreq/longhaul.c                    |  3 +--
->>   drivers/cpufreq/mediatek-cpufreq.c            |  6 ++---
->>   drivers/cpufreq/powernv-cpufreq.c             |  6 ++---
->>   drivers/cpufreq/s5pv210-cpufreq.c             |  3 +--
->>   drivers/cpufreq/tegra186-cpufreq.c            |  3 +--
->>   drivers/devfreq/governor_passive.c            | 19 ++++-----------
->>   drivers/gpu/drm/i915/gt/intel_llc.c           |  3 +--
->>   drivers/macintosh/windfarm_cpufreq_clamp.c    |  4 +---
->>   drivers/powercap/dtpm_cpu.c                   | 24 ++++++-----------=
---
->>   drivers/thermal/imx_thermal.c                 |  7 ++----
->>   .../ti-soc-thermal/ti-thermal-common.c        |  5 +---
->>   kernel/power/energy_model.c                   |  7 ++----
->>   18 files changed, 40 insertions(+), 93 deletions(-)
-> This changes different pieces of code maintained by different people
-> and the changes are not interdependent AFAICS, so better send it as a
-> series of separate patches.
->
-> Thanks!
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ arch/arm/boot/dts/tps65910.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Thanks for the suggestion.
-
-I agree, splitting it into a series will make the review much clearer.
+diff --git a/arch/arm/boot/dts/tps65910.dtsi b/arch/arm/boot/dts/tps65910.dtsi
+index a941d1e623280..161ce31085d1e 100644
+--- a/arch/arm/boot/dts/tps65910.dtsi
++++ b/arch/arm/boot/dts/tps65910.dtsi
+@@ -10,6 +10,10 @@
+ 
+ &tps {
+ 	compatible = "ti,tps65910";
++	interrupt-controller;
++	#interrupt-cells = <1>;
++	gpio-controller;
++	#gpio-cells = <2>;
+ 
+ 	regulators {
+ 		#address-cells = <1>;
+-- 
+2.43.0
 
 
