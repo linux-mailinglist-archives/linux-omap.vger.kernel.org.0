@@ -1,165 +1,141 @@
-Return-Path: <linux-omap+bounces-4336-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4337-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C2FFB37486
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Aug 2025 23:47:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC7AAB37570
+	for <lists+linux-omap@lfdr.de>; Wed, 27 Aug 2025 01:19:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B63C1B27FB5
-	for <lists+linux-omap@lfdr.de>; Tue, 26 Aug 2025 21:47:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DFE31BA17AD
+	for <lists+linux-omap@lfdr.de>; Tue, 26 Aug 2025 23:20:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACF528D8E8;
-	Tue, 26 Aug 2025 21:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF76305E0D;
+	Tue, 26 Aug 2025 23:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Iut+CaEi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WyJRIJAl"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20CB51C5D4B;
-	Tue, 26 Aug 2025 21:47:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2385E2264CE;
+	Tue, 26 Aug 2025 23:19:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756244844; cv=none; b=KE5X4+vcdagD1nAv8pTXJb9SRlYmNwwt6h3+z8tLk6y5qZUe7iLJHVOPiGUSOR1aAlavN0Ss/2cCnTiUF91lIfGktm29mFFETinhOX3E7KO/ax/IrQ8jVZC2oxqAwxj6pjRp9cUHZKuCHfbPizqpgwwy6NAljzELll+2MCg6XaM=
+	t=1756250386; cv=none; b=M4U4ZiuL9GvKrvdc9D0W1Lqe3A+ZRFixN8H6RN5vmCYSHCM2/f6ng5P2w3iYsa8VKAvYyu9Mkq5M8Ral2ntSlM79wkYEpBtLW63ZUx33V9zfAb782VPsVxZR8e7J/QAsABU1Y8AN2sMldTmgYl+moKiNs+4dZrAtcY2FHweYpdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756244844; c=relaxed/simple;
-	bh=7rZc4H6brtLrd8ymrzGf1cMDZcvIgN8NA8yiwzAbcNI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ko+kY4GKtZ1yPJgxk9AwvqG7QhEUFpGMrQfV9659AyqJ2Sx5cYJmeMksMrZpA3I6cIBVMNn/WoBXU21gz0qbfEr5FBARRgERCw7VmPnjIVDNfiBIqJzW9RWaqMUw7A+nb4iTcxTkZF7E4egv99e0smtOb4b+qbJ8MMT+Bk9p1sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Iut+CaEi; arc=none smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4b2b859ab0dso36081231cf.1;
-        Tue, 26 Aug 2025 14:47:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756244842; x=1756849642; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XkXCtZkNS4sQ1PyXjfM/RdJFG7EoG62SuYsDVUj0IR4=;
-        b=Iut+CaEi7BgMy8MceXxv9/6HZgjXxspQj/CyB3K+aXubF8hW/Vb8xJe+fhzLspb9cO
-         hzz/QI2R/twwqCjqHXxrdqqPJfVqSKIEd8iM+7weJVQ2B9BGpJ7GS/sT2dtbXfjYbnjs
-         dfiQo1OCJ37zATLZcDWPAb6YJICpUHNyWvok8/yd1R+U39dd3soJ+7SwNlK6PUwc96Pn
-         58pC6Tc01IV1Ivrkklqtc2TIWm/A42qPS5cH+79AWG22dyYkEUqsmXG3yfgVEjD/cQlO
-         Xtf3kvek01R0Y7iKpmNGOP0JxIqf70Riz2FOk7iySzchrbDcsycbfeshOLKn5k8a+n7y
-         AUag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756244842; x=1756849642;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XkXCtZkNS4sQ1PyXjfM/RdJFG7EoG62SuYsDVUj0IR4=;
-        b=j1bP80lTvUyWUwYsujvJy2mEONMHzs7sBdID98rQZhKbkXtJrwrBK+pmmYcHEaNWI8
-         xxy5zhLdoXCFIDk9yQmwNX8KfzTpMIXdAysJno/uoFR/GR/X6xqt5teTwAVYCG+G0R1/
-         u3TDYSpPKYBioeh5KIucLRAu9XC+oxtmrZ8Ik2qCLfZZ9odUPDnze5RIQ6x62KxibesE
-         97HtS55SpWUmFBk/8KL4SRMD+LbGVPyNQSvSfsZ/RBOSxwwsVfuSPXcnsx+5o0R9RyE2
-         KPNV86DLG95r9Ii22cuVr785iPbpOnCms8JoEW+wp1M6Qw87tV26vCD6JbaZgYN4cLO6
-         fyOA==
-X-Forwarded-Encrypted: i=1; AJvYcCUN6/D1HYy12CZll6jtp3P+DBL8a5IgVoZK37yNwszNWGq4h0pWueZfpYb+QC+U3vO29UH2z2ymvvIOoA==@vger.kernel.org, AJvYcCVv9P5HJ3hwEgd+k4TEPgtsBSQXEbvnBl4PQxgXH/9NJe4XH0U/pFHibmo0IUz30JJWwIXYN7QPTR3W@vger.kernel.org, AJvYcCW9XV2J/Omp8xrTQDkBtU3AWvCU/tmQxPmgLi6YALiANnLYvviTCsgMO4KMba7lYELXMQhasFDCZlSetWTw@vger.kernel.org
-X-Gm-Message-State: AOJu0YywFZ2CLev+VsuXNkCCEml2kvNn6ep5W1aMRzUb25OiLAkEuG5t
-	6X17UJtFW5qFTsysFTqO+Sjg9OFHfxKEzFduxK5j9tZYndusgWBFIHh4
-X-Gm-Gg: ASbGncuae3wmgWBHY15G88UM4Zvm1qTTab4Fc8WJUvgVGKUcjC+NwB/ottjZHpcMJvK
-	tHyP58BsJYeyGf+4uRBaEOzNBGXOfG1478/QorbDdfTSSPlLIF7/z1qIqycNRvRDiBIby/7l7Xh
-	NXglyG1a4V8NBmMQcJV0KBeLClKCJFnC53G5z04CWE/UAKroJAksfdohxg7wPGQi6vBj2JLtbSN
-	+uPPC6XwJmC63cfcgRLzgnpX3sKJt/DUsWbJkfPzyMGawmHxorXlYcmUGaAu5taepf+Ga2//TQ2
-	xU6Ff9qA3dAxGZsve3YrLmdVOg/G0ls/VMTwfhzm8/24P0fnicareXEiBdv6zCOWRjI+PbBc8oB
-	hO2bH4yASmuqwR+SGejYhb7AdTHoAn6rULiNNl06N+xPnOKrA
-X-Google-Smtp-Source: AGHT+IH/4BueP1i9uTaGBcioRqKWdWlLPnxhgjhYg/TT045qxzwvPNCGSAOghSI6A+lqXYcoj0Z8VQ==
-X-Received: by 2002:ac8:5f4d:0:b0:4b1:dd3:e397 with SMTP id d75a77b69052e-4b2aab56bacmr177029521cf.62.1756244841768;
-        Tue, 26 Aug 2025 14:47:21 -0700 (PDT)
-Received: from [10.69.40.168] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b2b8de5d37sm77448621cf.34.2025.08.26.14.47.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Aug 2025 14:47:21 -0700 (PDT)
-Message-ID: <e9aa8a07-4ed7-4a7f-a69a-ce496ede48cc@gmail.com>
-Date: Tue, 26 Aug 2025 14:47:30 -0700
+	s=arc-20240116; t=1756250386; c=relaxed/simple;
+	bh=V5+/7XEH4hLHcMPBz+Zh+CzV2IBqlOxEt53xo3DTfZE=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=kc2UxtnwuEm7T8K2aXXSsNVfop12thJC8q1obxK9GD4WO2TuyHjwUL7aMQq1Vr8BoACKEcFbdSB57a8ydy4SGaFSAcdeR0Xd4lxyjBhopHhUK1MxSLzePMGL1FNQbd3C/nydVwoRcd+wU4iXjr0gcC/CvnIN+D7HuOt6JAuDIF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WyJRIJAl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB81C4CEF1;
+	Tue, 26 Aug 2025 23:19:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756250385;
+	bh=V5+/7XEH4hLHcMPBz+Zh+CzV2IBqlOxEt53xo3DTfZE=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=WyJRIJAltpcqF4H0kfN2dPHSy1g5gDlTD30riJD+bz0LI5HIkCp4PG6eLEylKLH+V
+	 tQRMZ6ZAdMUBI7scoEmhOIR5r+fwcaTXC+6q0QuwCToO+fcmXzQ4d/dQsxdC35/OQm
+	 nq2LMCYX39HlzrLUi3LVFmYjI0lMNjWZ4RRsXcHn4tai1BuNcHzjRwnQy6be9E/eKk
+	 t4JQiV8YryEQfejroFA1Q4svIPRrhghBYXBqLCU0yIT/cFHtfI3Wkkh90lYIzqdbjZ
+	 J0mkPpkPbx2qw93wdICGX6hWPI0RqE1ZAtD+SPyCID59a/YSI3RfnPIrtIysTNS/xd
+	 Yk7PmgGd5ZDEQ==
+Date: Tue, 26 Aug 2025 18:19:44 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/16] gpio: brcmstb: Use modern PM macros
-To: Jisheng Zhang <jszhang@kernel.org>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
- <brgl@bgdev.pl>, Michael Buesch <m@bues.ch>,
- Hoan Tran <hoan@os.amperecomputing.com>, Andy Shevchenko <andy@kernel.org>,
- Daniel Palmer <daniel@thingy.jp>, Romain Perier <romain.perier@gmail.com>,
- Grygorii Strashko <grygorii.strashko@ti.com>,
- Santosh Shilimkar <ssantosh@kernel.org>, Kevin Hilman <khilman@kernel.org>,
- Robert Jarzmik <robert.jarzmik@free.fr>,
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
- Srinivas Neeli <srinivas.neeli@amd.com>, Michal Simek <michal.simek@amd.com>
-Cc: Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, linux-gpio@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-omap@vger.kernel.org, linux@ew.tq-group.com
-References: <20250820154037.22228-1-jszhang@kernel.org>
- <20250820154037.22228-3-jszhang@kernel.org>
-Content-Language: en-US
-From: Doug Berger <opendmb@gmail.com>
-In-Reply-To: <20250820154037.22228-3-jszhang@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, devicetree@vger.kernel.org, 
+ Tony Lindgren <tony@atomide.com>, linux-kernel@vger.kernel.org, 
+ linux-omap@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+In-Reply-To: <20250826134259.2564191-1-alexander.stein@ew.tq-group.com>
+References: <20250826134259.2564191-1-alexander.stein@ew.tq-group.com>
+Message-Id: <175625023024.716358.4095639193170110202.robh@kernel.org>
+Subject: Re: [PATCH 1/2] ARM: dts: tps65910: Add gpio & interrupt
+ properties
 
-On 8/20/2025 8:40 AM, Jisheng Zhang wrote:
-> Use the modern PM macros for the suspend and resume functions to be
-> automatically dropped by the compiler when CONFIG_PM or
-> CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
+
+On Tue, 26 Aug 2025 15:42:57 +0200, Alexander Stein wrote:
+> The binding document ti,tps65910.yaml requires the controller and
+> cells properties for both gpio and interrupts. As they have const and
+> fixed values a default can be provided for all users.
 > 
-> This has the advantage of always compiling these functions in,
-> independently of any Kconfig option. Thanks to that, bugs and other
-> regressions are subsequently easier to catch.
-> 
-> Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 > ---
->   drivers/gpio/gpio-brcmstb.c | 12 +++---------
->   1 file changed, 3 insertions(+), 9 deletions(-)
+>  arch/arm/boot/dts/tps65910.dtsi | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> diff --git a/drivers/gpio/gpio-brcmstb.c b/drivers/gpio/gpio-brcmstb.c
-> index e29a9589b3cc..0ca3e0d8aa46 100644
-> --- a/drivers/gpio/gpio-brcmstb.c
-> +++ b/drivers/gpio/gpio-brcmstb.c
-> @@ -534,7 +534,6 @@ static void brcmstb_gpio_shutdown(struct platform_device *pdev)
->   	brcmstb_gpio_quiesce(&pdev->dev, false);
->   }
->   
-> -#ifdef CONFIG_PM_SLEEP
->   static void brcmstb_gpio_bank_restore(struct brcmstb_gpio_priv *priv,
->   				      struct brcmstb_gpio_bank *bank)
->   {
-> @@ -573,14 +572,9 @@ static int brcmstb_gpio_resume(struct device *dev)
->   	return 0;
->   }
->   
-> -#else
-> -#define brcmstb_gpio_suspend	NULL
-> -#define brcmstb_gpio_resume	NULL
-> -#endif /* CONFIG_PM_SLEEP */
-> -
->   static const struct dev_pm_ops brcmstb_gpio_pm_ops = {
-> -	.suspend_noirq	= brcmstb_gpio_suspend,
-> -	.resume_noirq = brcmstb_gpio_resume,
-> +	.suspend_noirq = pm_sleep_ptr(brcmstb_gpio_suspend),
-> +	.resume_noirq = pm_sleep_ptr(brcmstb_gpio_resume),
->   };
->   
->   static int brcmstb_gpio_probe(struct platform_device *pdev)
-> @@ -747,7 +741,7 @@ static struct platform_driver brcmstb_gpio_driver = {
->   	.driver = {
->   		.name = "brcmstb-gpio",
->   		.of_match_table = brcmstb_gpio_of_match,
-> -		.pm = &brcmstb_gpio_pm_ops,
-> +		.pm = pm_sleep_ptr(&brcmstb_gpio_pm_ops),
->   	},
->   	.probe = brcmstb_gpio_probe,
->   	.remove = brcmstb_gpio_remove,
 
-Acked-by: Doug Berger <opendmb@gmail.com>
+
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+This patch series was applied (using b4) to base:
+ Base: attempting to guess base-commit...
+ Base: tags/next-20250825 (exact match)
+
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
+
+New warnings running 'make CHECK_DTBS=y for arch/arm/boot/dts/ti/' for 20250826134259.2564191-1-alexander.stein@ew.tq-group.com:
+
+arch/arm/boot/dts/ti/omap/am335x-pdu001.dtb: tps@2d (ti,tps65910): #interrupt-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/mfd/ti,tps65910.yaml#
+arch/arm/boot/dts/ti/omap/am335x-base0033.dtb: tps@2d (ti,tps65910): #interrupt-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/mfd/ti,tps65910.yaml#
+arch/arm/boot/dts/ti/omap/am335x-baltos-ir5221.dtb: tps@2d (ti,tps65910): #interrupt-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/mfd/ti,tps65910.yaml#
+arch/arm/boot/dts/ti/omap/am335x-regor-rdk.dtb: pmic@2d (ti,tps65910): #interrupt-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/mfd/ti,tps65910.yaml#
+arch/arm/boot/dts/ti/omap/am335x-netcom-plus-8xx.dtb: tps@2d (ti,tps65910): #interrupt-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/mfd/ti,tps65910.yaml#
+arch/arm/boot/dts/ti/omap/am335x-evm.dtb: tps@2d (ti,tps65910): #interrupt-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/mfd/ti,tps65910.yaml#
+arch/arm/boot/dts/ti/omap/am335x-evmsk.dtb: tps@2d (ti,tps65910): #interrupt-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/mfd/ti,tps65910.yaml#
+arch/arm/boot/dts/ti/omap/omap3-echo.dtb: tps@2d (ti,tps65910): #interrupt-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/mfd/ti,tps65910.yaml#
+arch/arm/boot/dts/ti/omap/am335x-moxa-uc-8100-me-t.dtb: tps@2d (ti,tps65910): #interrupt-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/mfd/ti,tps65910.yaml#
+arch/arm/boot/dts/ti/omap/am335x-icev2.dtb: power-controller@2d (ti,tps65910): #interrupt-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/mfd/ti,tps65910.yaml#
+arch/arm/boot/dts/ti/omap/am335x-phycore-rdk.dtb: pmic@2d (ti,tps65910): #interrupt-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/mfd/ti,tps65910.yaml#
+arch/arm/boot/dts/ti/omap/am3517-craneboard.dtb: tps@2d (ti,tps65910): #interrupt-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/mfd/ti,tps65910.yaml#
+arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dtb: tps@2d (ti,tps65910): #interrupt-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/mfd/ti,tps65910.yaml#
+arch/arm/boot/dts/ti/omap/am335x-netcan-plus-1xx.dtb: tps@2d (ti,tps65910): #interrupt-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/mfd/ti,tps65910.yaml#
+arch/arm/boot/dts/ti/omap/am335x-baltos-ir3220.dtb: tps@2d (ti,tps65910): #interrupt-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/mfd/ti,tps65910.yaml#
+arch/arm/boot/dts/ti/omap/am335x-wega-rdk.dtb: pmic@2d (ti,tps65910): #interrupt-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/mfd/ti,tps65910.yaml#
+arch/arm/boot/dts/ti/omap/am335x-baltos-ir2110.dtb: tps@2d (ti,tps65910): #interrupt-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/mfd/ti,tps65910.yaml#
+arch/arm/boot/dts/ti/omap/am335x-lxm.dtb: tps@2d (ti,tps65910): #interrupt-cells: 2 was expected
+	from schema $id: http://devicetree.org/schemas/mfd/ti,tps65910.yaml#
+
+
+
+
+
 
