@@ -1,40 +1,60 @@
-Return-Path: <linux-omap+bounces-4360-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4361-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B1F6B37DE1
-	for <lists+linux-omap@lfdr.de>; Wed, 27 Aug 2025 10:30:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6416DB37E28
+	for <lists+linux-omap@lfdr.de>; Wed, 27 Aug 2025 10:56:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46122188367E
-	for <lists+linux-omap@lfdr.de>; Wed, 27 Aug 2025 08:30:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52BBB46019B
+	for <lists+linux-omap@lfdr.de>; Wed, 27 Aug 2025 08:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426F233A023;
-	Wed, 27 Aug 2025 08:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F120334164A;
+	Wed, 27 Aug 2025 08:55:48 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512DD2F28F4;
-	Wed, 27 Aug 2025 08:30:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD48136E3F;
+	Wed, 27 Aug 2025 08:55:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756283427; cv=none; b=VuZiU6GnS/sTUmv3jhnH3O6thdzMVy4uYOJhnVRwk/71MITCGY0zX58zYX6kW64WoT2Fn/vA3T9/vKxZrSE/nU0LcNpnWE7sdFi/jSqTgXZv8NXSo+xR4CjYaedV7QheOABYlnd6zyEFY+r0bUzfzBUnogfJTBwjVqQRrJEhQek=
+	t=1756284948; cv=none; b=Q766DdLUjFUxh9pSci7S2JyDtc7uY89y296thDmxz3TtONZfDpX7o2wBI9EmSHcbJpQjJ3z5UoREbnQLzdhg4knaV0FAx9RAgnaGXgK0nQtf3E36ydAtMeWAGTnjM/4e6qLocVQQlyWdhm/3Fi5XBy/OM1CYn93mIpJU0rdqAYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756283427; c=relaxed/simple;
-	bh=Hk1XVBq87Wloo/8yCfniyVuXNqm9lv0mufttpAK51xA=;
+	s=arc-20240116; t=1756284948; c=relaxed/simple;
+	bh=HgVsG/Hy070L5WqkgWCzwAv69BRdtKr6C0vieqd2h8g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dpuAkaZXloYtH7G9BwO2wzd6Cpcwf4zwD5GmddNF03SQmLevsER5LO2jxINpVLqqeyM2BApwTT0aWfJ+3GgbFF1yyma7t0wo+iNd4bwILue6BkFWXPoTP0jMGUi5pUfGn36RYW7u27PQA/uMIvq/SwpSsuAYLRlQgpw+pIuRtgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 228811691;
-	Wed, 27 Aug 2025 01:30:16 -0700 (PDT)
-Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 31FA33F694;
-	Wed, 27 Aug 2025 01:30:15 -0700 (PDT)
-Message-ID: <70f4c2ce-1dbd-4596-af78-bca1cdbbb581@arm.com>
-Date: Wed, 27 Aug 2025 09:30:13 +0100
+	 In-Reply-To:Content-Type; b=gs2UCv+Q9O2FrAkNSQyN7Nhdm6xnW0SXg8sdqsDYzJjuIfcGF8Bv/OFU1jzt88q7VtJ8QS6xmWER697q6bk43q8573nUw/jBV2QVETf7RMZKRiqfDBS3yXk2HQHgStnoEm1RKIptSmgLIAyJEbTggODdX2Ug1ynDgB1M3kzsCzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 9b23d65e832311f0b29709d653e92f7d-20250827
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:70d8619f-3584-40b1-a2be-208945b1d5e9,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:b6893ef2cc39a23acafd880859b22dbf,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 9b23d65e832311f0b29709d653e92f7d-20250827
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1450849517; Wed, 27 Aug 2025 16:55:39 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 9192DE008FAA;
+	Wed, 27 Aug 2025 16:55:39 +0800 (CST)
+X-ns-mid: postfix-68AEC80B-467347751
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 74564E008FA3;
+	Wed, 27 Aug 2025 16:55:21 +0800 (CST)
+Message-ID: <57016487-0fee-4821-9cd5-d6e5fe80a65d@kylinos.cn>
+Date: Wed, 27 Aug 2025 16:55:20 +0800
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -44,9 +64,8 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 01/18] arm64: topology: Use __free(put_cpufreq_policy)
  for policy reference
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>,
- "Rafael J . wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
+To: Ben Horgan <ben.horgan@arm.com>, "Rafael J . wysocki"
+ <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Sean Christopherson <seanjc@google.com>, Paolo Bonzini
  <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
@@ -91,69 +110,81 @@ Cc: zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>,
  linux-kernel@vger.kernel.org
 References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
  <20250827023202.10310-2-zhangzihuan@kylinos.cn>
-From: Ben Horgan <ben.horgan@arm.com>
-Content-Language: en-US
-In-Reply-To: <20250827023202.10310-2-zhangzihuan@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <70f4c2ce-1dbd-4596-af78-bca1cdbbb581@arm.com>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <70f4c2ce-1dbd-4596-af78-bca1cdbbb581@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
-Hi Zihuan,
+Hi,
 
-On 8/27/25 03:31, Zihuan Zhang wrote:
-> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-> annotation for policy references. This reduces the risk of reference
-> counting mistakes and aligns the code with the latest kernel style.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-> ---
->  arch/arm64/kernel/topology.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
-> index 5d07ee85bdae..e3cb6d54f35b 100644
-> --- a/arch/arm64/kernel/topology.c
-> +++ b/arch/arm64/kernel/topology.c
-> @@ -307,17 +307,16 @@ int arch_freq_get_on_cpu(int cpu)
->  		 */
->  		if (!housekeeping_cpu(cpu, HK_TYPE_TICK) ||
->  		    time_is_before_jiffies(last_update + msecs_to_jiffies(AMU_SAMPLE_EXP_MS))) {
-> -			struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
-> +			struct cpufreq_policy *policy __free(put_cpufreq_policy);
-Based on the guidance, in include/linux/cleanup.h, I would expect the
-assignment to be done on this line.
+=E5=9C=A8 2025/8/27 16:30, Ben Horgan =E5=86=99=E9=81=93:
+> Hi Zihuan,
+>
+> On 8/27/25 03:31, Zihuan Zhang wrote:
+>> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+>> annotation for policy references. This reduces the risk of reference
+>> counting mistakes and aligns the code with the latest kernel style.
+>>
+>> No functional change intended.
+>>
+>> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+>> ---
+>>   arch/arm64/kernel/topology.c | 9 +++------
+>>   1 file changed, 3 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology=
+.c
+>> index 5d07ee85bdae..e3cb6d54f35b 100644
+>> --- a/arch/arm64/kernel/topology.c
+>> +++ b/arch/arm64/kernel/topology.c
+>> @@ -307,17 +307,16 @@ int arch_freq_get_on_cpu(int cpu)
+>>   		 */
+>>   		if (!housekeeping_cpu(cpu, HK_TYPE_TICK) ||
+>>   		    time_is_before_jiffies(last_update + msecs_to_jiffies(AMU_SAMP=
+LE_EXP_MS))) {
+>> -			struct cpufreq_policy *policy =3D cpufreq_cpu_get(cpu);
+>> +			struct cpufreq_policy *policy __free(put_cpufreq_policy);
+> Based on the guidance, in include/linux/cleanup.h, I would expect the
+> assignment to be done on this line.
+>
+> "...the recommendation is to always define and assign variables in one
+>   * statement and not group variable definitions at the top of the
+>   * function when __free() is used."
 
-"...the recommendation is to always define and assign variables in one
- * statement and not group variable definitions at the top of the
- * function when __free() is used."
->  			int ref_cpu;
->  
-> +			policy = cpufreq_cpu_get(cpu);
->  			if (!policy)
->  				return -EINVAL;
->  
->  			if (!cpumask_intersects(policy->related_cpus,
-> -						housekeeping_cpumask(HK_TYPE_TICK))) {
-> -				cpufreq_cpu_put(policy);
-> +						housekeeping_cpumask(HK_TYPE_TICK)))
->  				return -EOPNOTSUPP;
-> -			}
->  
->  			for_each_cpu_wrap(ref_cpu, policy->cpus, cpu + 1) {
->  				if (ref_cpu == start_cpu) {
-> @@ -329,8 +328,6 @@ int arch_freq_get_on_cpu(int cpu)
->  					break;
->  			}
->  
-> -			cpufreq_cpu_put(policy);
-> -
->  			if (ref_cpu >= nr_cpu_ids)
->  				/* No alternative to pull info from */
->  				return -EAGAIN;
 
-Thanks,
+The reason I split the assignment into multiple lines is because=20
+scripts/checkpatch.pl gave a warning about the line being too long.
 
-Ben
+But if you think a single-line assignment is better, I will modify it=20
+accordingly.
 
+>>   			int ref_cpu;
+>>  =20
+>> +			policy =3D cpufreq_cpu_get(cpu);
+>>   			if (!policy)
+>>   				return -EINVAL;
+>>  =20
+>>   			if (!cpumask_intersects(policy->related_cpus,
+>> -						housekeeping_cpumask(HK_TYPE_TICK))) {
+>> -				cpufreq_cpu_put(policy);
+>> +						housekeeping_cpumask(HK_TYPE_TICK)))
+>>   				return -EOPNOTSUPP;
+>> -			}
+>>  =20
+>>   			for_each_cpu_wrap(ref_cpu, policy->cpus, cpu + 1) {
+>>   				if (ref_cpu =3D=3D start_cpu) {
+>> @@ -329,8 +328,6 @@ int arch_freq_get_on_cpu(int cpu)
+>>   					break;
+>>   			}
+>>  =20
+>> -			cpufreq_cpu_put(policy);
+>> -
+>>   			if (ref_cpu >=3D nr_cpu_ids)
+>>   				/* No alternative to pull info from */
+>>   				return -EAGAIN;
+> Thanks,
+>
+> Ben
+>
 
