@@ -1,147 +1,184 @@
-Return-Path: <linux-omap+bounces-4370-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4371-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84651B39785
-	for <lists+linux-omap@lfdr.de>; Thu, 28 Aug 2025 10:52:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DC77B3989F
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Aug 2025 11:43:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FE877AF2E0
-	for <lists+linux-omap@lfdr.de>; Thu, 28 Aug 2025 08:50:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24E9C1C821B7
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Aug 2025 09:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9359D2EB86A;
-	Thu, 28 Aug 2025 08:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4282EDD62;
+	Thu, 28 Aug 2025 09:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CxUz4OE7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JJ89yqsM"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C0430CD89;
-	Thu, 28 Aug 2025 08:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DA82EB84B;
+	Thu, 28 Aug 2025 09:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756371111; cv=none; b=CF1a4N1/A0WlYKH4O2WfhYeLjcOvy57cx8ISulJJBeeVnq/Rkb3GLRm+WDdTv3DOwLPbULPRtszQ6GVRpBPdbgSQwUNvQ7RGYwKeO1FU1o99t/dRoM5hUXYDWE32xRTHOQF2WTma24uSlpn5EiKad2fJu1a4ytT2LaC9Dm7AoHQ=
+	t=1756374016; cv=none; b=iwEIK4KeeaGfMHdEU8Lj1tFeodlS6BEiMM6yWI5BUC5hf3TC8n8Tz+HBx1lItXruWPZ7llX7sbdAN1cyJ9VBpvM9Mk2/zQkV+4nCoQ++x/J4zLblpTYfFImS6ZY93C3NIZ0m+Bu3sCzchPtgNDiybSFOhtS6mSHDpFqzLq/MVrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756371111; c=relaxed/simple;
-	bh=3YzdMt4Qw41h9On9I6WWC7I2bIUYtljay6e0dtrlQB0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N9NnpuXbBnwSXIcIu2u23R/XRyrjdiogzPrL5rpKpTYtdQEDM30Bn123ZmbgZuqNh8tDZSivVJmd2ZwAPi1D036B5qDEUApKX9GHCydqvzIuBQ5/4SdWp73OGbFp/aqwrb9LJ6WjQIAbm+3B/m2CEeUlCgwAmL0Ye8bc9TCUm0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CxUz4OE7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA74C4CEEB;
-	Thu, 28 Aug 2025 08:51:49 +0000 (UTC)
+	s=arc-20240116; t=1756374016; c=relaxed/simple;
+	bh=Cl0m1kDKpWeagimjoCyJC2nNVcFJOKHXK8N9AWWvIRE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PWjtMwHik0IV1dxaOdgqBsNcnTrTTzRXi0xgmGTD70kRkbs85J1F6ZZl0+Qt+6t8HMN0NpxvqxK1HGg0ONZmXhDIPAE+X64uh+FnnERGPWPFsphMPWTReCE+VzzXEOoU2OLQnTao2V0WJuIVE7KflxadzHBZr67z9z3IPUyUOpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JJ89yqsM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4004EC4CEFC;
+	Thu, 28 Aug 2025 09:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756371110;
-	bh=3YzdMt4Qw41h9On9I6WWC7I2bIUYtljay6e0dtrlQB0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CxUz4OE7D1NGKWLHEwzYtKgtTZECCDgFwxLLFeEJiE5hR7TF/HdMp0veLk2o6qfDv
-	 KrmFmQeAKMvmoCGTsN2QEpErm2Z/n46G4CUgdan/vOqQ9+XQ8CHs5YjX+RarjPGWNt
-	 4fgJOJt8RG0sXbgl0kwnayykHV1vIbocYp6VitOqSIqH+RSsoJuBA8wtGEelQ3uPo5
-	 xCNZZZqIFBHNQnmi6rQHhugNHWi8N0tBMVwx+A651+DQ29n0lH/uQg909DvdKUppWS
-	 TcZgiGOplL37u0h/PshdhvyJVU8d5z8Os53O2PwwUjdkj2x+Ik0u8cPM+8bvR7rx0x
-	 zclGiA7ZwYXog==
-Date: Thu, 28 Aug 2025 10:51:44 +0200
-From: Mark Brown <broonie@kernel.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Sean Wang <sean.wang@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
-	imx@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v5 00/15] pinctrl: introduce the concept of a GPIO pin
- function category
-Message-ID: <aLAYoDyz8Xie4Dhb@finisterre.sirena.org.uk>
-References: <20250815-pinctrl-gpio-pinfuncs-v5-0-955de9fd91db@linaro.org>
- <CACRpkdaDGmdhaik+1saRv7Ts4myQ+tg1aQqGU3xQyT7ma8dJFw@mail.gmail.com>
- <CAHp75VephepLq61HrVy=PX2oKUQd5NK2qS-vOC5h_NR65td3Uw@mail.gmail.com>
- <CACRpkda4soRCLF5=W=6R4wnwT3pjk743j022XfJxjTTQzuarAA@mail.gmail.com>
- <534ad082-08fa-42c0-9c24-f0c11af7d5b2@sirena.org.uk>
- <CAMRc=Mdn0_yPXyYq4sbvH4P9-h71vEc4arLPBfSk1PiEFaB7jQ@mail.gmail.com>
- <1804d9dc-8814-47d4-af88-c819c3f17bc0@sirena.org.uk>
- <CAMRc=MdKgqa+vjhHvD2+Tjw5NwBtFv-0aUivi5UuEQd+n4KxmA@mail.gmail.com>
+	s=k20201202; t=1756374016;
+	bh=Cl0m1kDKpWeagimjoCyJC2nNVcFJOKHXK8N9AWWvIRE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=JJ89yqsM/siAb1VR6ZJU3bEFaUkNGoy0qdWneQKwaNTbKw9v5mNgvGxJA28E63mh8
+	 Upq25haYXC1EwPZL5mZ2pA6J2O7jYs80WZygAwabYpOC504atc6SOmn/XDviZLtv/u
+	 Dkhv5fJWuapG9S8NjjHS5krDPTFQktzMc6uGIyrrf1CtjntEwSY+BeVohNBKzjYck9
+	 vc8aBvirQTUlJJbQyNuCJvdcB69O+ndDUle/uzIu+YrtfNIQ654vov6hDZekcrOcRL
+	 5uf6Pz1m20Ccro9eZRk6B2A29o17/4zQC0wXfU4vOxKUBk+cvk6B8LwZnfbzjU2bLw
+	 ryOgMyPpw3vEg==
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-30cceb3be82so715373fac.2;
+        Thu, 28 Aug 2025 02:40:16 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUiFB/UFu1N0ZnTKqAR7jDshLPTAg829ij5rlYHMqEp0u+M0AexWFNC6Z0A9xtUVlB/4C/t5aWw7p4=@vger.kernel.org, AJvYcCUkdycEW+9kHgwCMXHAfsTYsQg7+nVyxfoFXzHpuCA+6wOzZEwyqCsaVnYfeP5Futxnp8PQ6yp3HMNYu4FfKrA40zo=@vger.kernel.org, AJvYcCUonPOnRlFo0mcqL06BWkPneOaJaoFtYJ/3pQN0UaQa5GX5CuGhNTkeor21j6cm+pnvKn4sX+9bjW6FmA==@vger.kernel.org, AJvYcCVg0FZ36TSQTocwz39aZnj+tMLerFOnWM3RSBcdmaywU++sUxnJfshcvJgh6ban6qTKwTY=@vger.kernel.org, AJvYcCVrAlxbM0F2b08GxzUuVtkTqrn/qpsDWwFWiyYTQCIewtyl8sQJHizLCHbKu0B66FT6nZIHLFGG7vta7Ks=@vger.kernel.org, AJvYcCWAbMVIHu07tKcHSJf7ms/QsimIqVEov6fjquvTp0vh00re5kqmzTR0L1XlpvcvTc2U22108FxeAThheWon@vger.kernel.org, AJvYcCWWvyVqMAfLAIERec1CbZopIXgz3939IyGJrvhnG3XBoclOzEZ0BCOI0IdGIAtQDt1iu+kKGsopsAJ5Xg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcYOLKt6QaZkOk/lPYhKCw6defQgFSYtvm2N5RzBzJ07O9zzjl
+	5pYX8kCJtJOVz0HeV+mYwNTVRO9VgoOrFcR79jcXMGiKKD/9Il3lGjNBfgjyzybS6RGjje//IpG
+	HpxPet1FnS7beFeV5beoUZ6unk9N4U0g=
+X-Google-Smtp-Source: AGHT+IGV4ScW5OAU3iglUFz6GOl/SaxSbnlEKhbCLP2wFA8xAwCena16hSLRSa/lAp17g1juuguW4VQdAzFwj9/LUxc=
+X-Received: by 2002:a05:6870:9710:b0:310:b613:5fdb with SMTP id
+ 586e51a60fabf-314dcb575e6mr9287838fac.7.1756374014938; Thu, 28 Aug 2025
+ 02:40:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="CMe5mpL7NfxBkMEj"
-Content-Disposition: inline
-In-Reply-To: <CAMRc=MdKgqa+vjhHvD2+Tjw5NwBtFv-0aUivi5UuEQd+n4KxmA@mail.gmail.com>
-X-Cookie: Filmed before a live audience.
-
-
---CMe5mpL7NfxBkMEj
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+References: <20250827023202.10310-1-zhangzihuan@kylinos.cn> <20250827023202.10310-4-zhangzihuan@kylinos.cn>
+In-Reply-To: <20250827023202.10310-4-zhangzihuan@kylinos.cn>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 28 Aug 2025 11:40:03 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jA7HjNc6VQWdjuwLnmd751kV01NXC4v8Pyn8h-r70BzQ@mail.gmail.com>
+X-Gm-Features: Ac12FXyk8AzMIpXHgrT8Z1UHGDrWUNjtTLP9mZxojpyASBCiNu69qRn54WdH-2Y
+Message-ID: <CAJZ5v0jA7HjNc6VQWdjuwLnmd751kV01NXC4v8Pyn8h-r70BzQ@mail.gmail.com>
+Subject: Re: [PATCH v2 03/18] ACPI: processor: thermal: Use
+ __free(put_cpufreq_policy) for policy reference
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Markus Mayer <mmayer@broadcom.com>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	MyungJoo Ham <myungjoo.ham@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
+	Chanwoo Choi <cw00.choi@samsung.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>, Zhang Rui <rui.zhang@intel.com>, 
+	Len Brown <lenb@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Lukasz Luba <lukasz.luba@arm.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
+	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, x86@kernel.org, 
+	kvm@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org, 
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	imx@lists.linux.dev, linux-omap@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 27, 2025 at 06:46:28PM +0200, Bartosz Golaszewski wrote:
-> On Wed, Aug 27, 2025 at 12:22=E2=80=AFPM Mark Brown <broonie@kernel.org> =
-wrote:
+On Wed, Aug 27, 2025 at 4:33=E2=80=AFAM Zihuan Zhang <zhangzihuan@kylinos.c=
+n> wrote:
+>
+> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> annotation for policy references. This reduces the risk of reference
+> counting mistakes and aligns the code with the latest kernel style.
+>
+> No functional change intended.
+>
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> ---
+>  drivers/acpi/processor_thermal.c | 12 +++---------
+>  1 file changed, 3 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_th=
+ermal.c
+> index 1219adb11ab9..f99ed0812934 100644
+> --- a/drivers/acpi/processor_thermal.c
+> +++ b/drivers/acpi/processor_thermal.c
+> @@ -64,17 +64,13 @@ static int phys_package_first_cpu(int cpu)
+>
+>  static int cpu_has_cpufreq(unsigned int cpu)
+>  {
+> -       struct cpufreq_policy *policy;
+> +       struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>
+>         if (!acpi_processor_cpufreq_init)
+>                 return 0;
+>
+>         policy =3D cpufreq_cpu_get(cpu);
+> -       if (policy) {
+> -               cpufreq_cpu_put(policy);
+> -               return 1;
+> -       }
+> -       return 0;
+> +       return !!policy;
 
-> > I've just got the log I linked above.
+If you want to make this change, please also change the return type of
+the function to bool.
 
-> So, I've been looking at this bisect email and clicking the links to
-> LAVA jobs and I can't find anything. Does it fail to build? Fail at
-> run-time? I'm not sure how to read this.
+>  }
+>
+>  static int cpufreq_get_max_state(unsigned int cpu)
+> @@ -95,7 +91,7 @@ static int cpufreq_get_cur_state(unsigned int cpu)
+>
+>  static int cpufreq_set_cur_state(unsigned int cpu, int state)
+>  {
+> -       struct cpufreq_policy *policy;
+> +       struct cpufreq_policy *policy __free(put_cpufreq_policy);
 
-It's failing prior to putting any output on the console.  I was also
-seeing an issue on i.MX6 so it might be all i.MX boards, same issue:
+This isn't correct AFAICS at least formally because the scope of the
+variable is the whole function, so it won't get out of scope at the
+point where you want cpufreq_cpu_put() to be called.
 
-   https://lava.sirena.org.uk/scheduler/job/1697667
+The policy variable should be defined in the block following the "for"
+loop (and actually all of the local variables except for "i" can be
+defined there).
 
-so it's possibly all the i.MX platforms failing.
+Or better still, please move that block to a separate function
+containing all of the requisite local variable definitions and call
+that function for each online CPU.
 
---CMe5mpL7NfxBkMEj
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmiwGJ8ACgkQJNaLcl1U
-h9Dgwgf/cCYgHVux4WcIOpHZVKvbhmDSDtzns435zt8WkkHs0HTefX6c8qkduloE
-AKCQvlOXq4w9mLYUJB73eu5lR2UZ9F/crY4Skm4QKJSl7xbmcTrUKkDh4anAgPCr
-TzCuAz0wBXpZDV6rbgGsv50bHpga2TkeYe4ILfO9i5WsXq884j6qH3q37x3LK9nk
-lbgltpZaBfzXdFk8ofMDg7QZQI/JDl0cR+6rsMZ60fSoehdmCHlO3Yk1ce8K2PMt
-jeC24eNQXFrAPZojnEdcSiHf7+AGirU7we0+4EPcomJRcfJDrf5lr4Mj/c5ofgNV
-ElALxe39ERW5FGeRn5q9m5nQ+3/dMQ==
-=cP5U
------END PGP SIGNATURE-----
-
---CMe5mpL7NfxBkMEj--
+>         struct acpi_processor *pr;
+>         unsigned long max_freq;
+>         int i, ret;
+> @@ -127,8 +123,6 @@ static int cpufreq_set_cur_state(unsigned int cpu, in=
+t state)
+>                 max_freq =3D (policy->cpuinfo.max_freq *
+>                             (100 - reduction_step(i) * cpufreq_thermal_re=
+duction_pctg)) / 100;
+>
+> -               cpufreq_cpu_put(policy);
+> -
+>                 ret =3D freq_qos_update_request(&pr->thermal_req, max_fre=
+q);
+>                 if (ret < 0) {
+>                         pr_warn("Failed to update thermal freq constraint=
+: CPU%d (%d)\n",
+> --
 
