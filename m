@@ -1,142 +1,253 @@
-Return-Path: <linux-omap+bounces-4367-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4368-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E98CBB387F9
-	for <lists+linux-omap@lfdr.de>; Wed, 27 Aug 2025 18:46:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B578B390F3
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Aug 2025 03:18:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAD144636CB
-	for <lists+linux-omap@lfdr.de>; Wed, 27 Aug 2025 16:46:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C99A8460EC6
+	for <lists+linux-omap@lfdr.de>; Thu, 28 Aug 2025 01:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 350612BE7A5;
-	Wed, 27 Aug 2025 16:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="Y2tS2rwK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2C21E98F3;
+	Thu, 28 Aug 2025 01:18:29 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A6A2773F6
-	for <linux-omap@vger.kernel.org>; Wed, 27 Aug 2025 16:46:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F44171CD;
+	Thu, 28 Aug 2025 01:18:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756313203; cv=none; b=kRvBEdtzgbmIlIYK12wIQ/t6LyDljQDE99Ej3jjCE0pg0e3fa5UH61S3VdEUSUTLNF508Ny0Ur22SXfBum57xK3jwhrhfV1y3v/LTvCMj6zVI1htVvOIx+EWrmg/sn5dNzWbfuPO3ks7/zQq7eLmeljbAkwzhJ7m/AXDOn7+IsI=
+	t=1756343909; cv=none; b=HMDsn2Y/PBg6VtuA2PZMLCAI/TvvwsyXAAU7W43pnZaPob1htbkGzYGm4lcnugXE9n2l9JVFUhM87sI4ZCDZWXb5RzBUp17wGb9aaWE3uxShhUM5a34tUEl9oulnlGv2z9Ax27aU03Vuj/uljoIJBC20YgaUOsrgbfSQeC3xtLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756313203; c=relaxed/simple;
-	bh=/Oe8mL8TjjkGnR2jG5Rxs9VLauseuU6oqwYerqQXRro=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SXVegh48XytBWHwLxhe0TOhJXQUTJ9D4/9Y2s7u3e5PyiPP/RyrTXtNLIuIoiqIvO/lz/pDRHiIQQaP0JKvvrJaQ0T36ncuMlilLHZd8jQXmmlngWhJ99pj23aQxLO5I7rw/5/HCveAMBdhwzdcIShThU4bCHhoiLMIQC8pJTtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=Y2tS2rwK; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-55f469ad067so85160e87.0
-        for <linux-omap@vger.kernel.org>; Wed, 27 Aug 2025 09:46:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756313200; x=1756918000; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/Oe8mL8TjjkGnR2jG5Rxs9VLauseuU6oqwYerqQXRro=;
-        b=Y2tS2rwKaOZMyZh9ka58faXvzXrL50njDDYSugjXepp16GhbLbrRDic1EMKDEsQu7A
-         Jo8yPVvxwUMzfjzBwV2r9dxBxeTg8sgMMKdtJapvfsRogNaVdSQnnGdOH4To/VCgFtyC
-         CUbfx+Y3/frlByut4tTXIzvdnS1NQ/u3KJM1Vskoxza1szm03/bmnwdDzpkH5RArG2My
-         2gh4gwuP36bc8X5O0lejMIEvU5eBN5SnnfgCUXUpwA1NBXYKXNpIyGPt8sbzR72Jml1z
-         UlSgYZSxDKJluIOqB94vh/N4j9nleZMEJMlr/u6VmGxhfKuC3Q0WKTQtytRdteJ+0JV5
-         cE1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756313200; x=1756918000;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/Oe8mL8TjjkGnR2jG5Rxs9VLauseuU6oqwYerqQXRro=;
-        b=E11rsr2oZOyuexBIubUMGQ3LQnDJIiCSOpkbb1QnNn9MvsaeQBvCkON9/2JOeR4HuW
-         31CCaHlS/7xARAUmD/dD9It94AmPGsIxfAgP8X6m904NSkS75d3gJvJj/G+zxvpF6RrW
-         zZEjGTN8brz75j/sMzWYLS+laPLkcPB4rTv0sRQgVnFyefLKmtHP/tmxxlNzaNB3Tu2v
-         7NiUdTN19U93t8PDYY4zxUd2YQYdMqtQKc8LLtvbew2TuQtT7VS43xbtDxuuyhrTkXAl
-         lwoXQoCOtE1lzBtrqbPVbMg+wu2yINfa8DMgn3dlr2wHYbkr4UdJGRf4hRd5Zh6BU0GQ
-         xp4g==
-X-Forwarded-Encrypted: i=1; AJvYcCX9nPXy4hapLtf0YtJsfmJe/GScGzji8MVVXzvZbWm1XKH+qa0zQGKW48eqpgyNoPstnEYgCvXYC2aL@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNNn2dTn98wxFZXdK6mcmdJHv4HBb9VexoY51PhWX0NPkIQWKN
-	bWDi4u4aT4a6IiCQicUt8IPjg4f4mVroLwjr0QpbyFkPJyCqx4FI19zmqMDlyepYUwV/ZY34GCK
-	e+OHl0dy2Ai3uIxAMpukhMwUPJVcDHn7sYAbmRyMacA==
-X-Gm-Gg: ASbGncsxUYh9dt1yy7V2mN4g0oSgP12VVqt5hJy4sDgfR6NYFsZYKQ4NIu6+Jc+5XCF
-	ZaCkIFgnQUy1KgnZSXiIWeiIoVZkW6oreSE5sNUMFfC+y34vUxq8S5sHyhLik29qwRVqNSIrIlw
-	9i23pMdbsR3SyrFuhEBZBAL4MCfp3R/OH7lPyqqrHZcH+aoxaZnWKhAtu0CEMF7165DrnCJaObu
-	nxcKC/HRYS7OFVz87I1dl9fxwTHGqrDRxqsL50bcssvxTQxEA==
-X-Google-Smtp-Source: AGHT+IH2vScJrK3ld667OkWoypLYcKly6TqnbjFjPvpTB4KCLVEthUMwQrvNGz6iiIbdkdd5rCAEnq3AM7MI6KeEyo4=
-X-Received: by 2002:a05:6512:138c:b0:553:2969:1d6d with SMTP id
- 2adb3069b0e04-55f4f4c6a98mr2026962e87.13.1756313200214; Wed, 27 Aug 2025
- 09:46:40 -0700 (PDT)
+	s=arc-20240116; t=1756343909; c=relaxed/simple;
+	bh=myl0EaGXtPN9ag/FBmAimw3CQLTYe4gU8K8nL8q3iWY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uhSPHNUsT/ccEBUUFSDYMo+Mj8JSEIR/1A5e3mdvVVhKTaCqYBUYRlaSJB2ogZkYGcTBik5FZYGewVtU6I2j2mHLlX0W7zvxe/obssD2aIsP7J0A96rLtBLDoQWgG5MHaM35u96yKeE3XCeDQ/TqDOFEHNP/1YXtaOKD4k9mnHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: deda1fd283ac11f0b29709d653e92f7d-20250828
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:313dc0fa-5767-4174-8339-9d5292a4d083,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:782deb1ffb303a915a22c188ccfd91f7,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: deda1fd283ac11f0b29709d653e92f7d-20250828
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1864367721; Thu, 28 Aug 2025 09:18:14 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id BC284E008FAC;
+	Thu, 28 Aug 2025 09:18:13 +0800 (CST)
+X-ns-mid: postfix-68AFAE55-102998148
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id A869CE008FAB;
+	Thu, 28 Aug 2025 09:18:00 +0800 (CST)
+Message-ID: <874d821e-8ea3-40ac-921b-c19bb380a456@kylinos.cn>
+Date: Thu, 28 Aug 2025 09:17:59 +0800
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250815-pinctrl-gpio-pinfuncs-v5-0-955de9fd91db@linaro.org>
- <CACRpkdaDGmdhaik+1saRv7Ts4myQ+tg1aQqGU3xQyT7ma8dJFw@mail.gmail.com>
- <CAHp75VephepLq61HrVy=PX2oKUQd5NK2qS-vOC5h_NR65td3Uw@mail.gmail.com>
- <CACRpkda4soRCLF5=W=6R4wnwT3pjk743j022XfJxjTTQzuarAA@mail.gmail.com>
- <534ad082-08fa-42c0-9c24-f0c11af7d5b2@sirena.org.uk> <CAMRc=Mdn0_yPXyYq4sbvH4P9-h71vEc4arLPBfSk1PiEFaB7jQ@mail.gmail.com>
- <1804d9dc-8814-47d4-af88-c819c3f17bc0@sirena.org.uk>
-In-Reply-To: <1804d9dc-8814-47d4-af88-c819c3f17bc0@sirena.org.uk>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Wed, 27 Aug 2025 18:46:28 +0200
-X-Gm-Features: Ac12FXzUBjVjZcm1OFCa8B8Pt22rGMmSNEEFj8GwunzU7aycJyqw28vaNlWwNSA
-Message-ID: <CAMRc=MdKgqa+vjhHvD2+Tjw5NwBtFv-0aUivi5UuEQd+n4KxmA@mail.gmail.com>
-Subject: Re: [PATCH v5 00/15] pinctrl: introduce the concept of a GPIO pin
- function category
-To: Mark Brown <broonie@kernel.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Andy Shevchenko <andy.shevchenko@gmail.com>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
-	Sean Wang <sean.wang@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Chen-Yu Tsai <wenst@chromium.org>, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/18] KVM: x86: Use __free(put_cpufreq_policy) for
+ policy reference
+To: Sean Christopherson <seanjc@google.com>
+Cc: "Rafael J . wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Markus Mayer
+ <mmayer@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>,
+ Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Lukasz Luba <lukasz.luba@arm.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
+ <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+ Sumit Gupta <sumitg@nvidia.com>,
+ Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
+ linux-pm@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-samsung-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-tegra@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
+ <20250827023202.10310-3-zhangzihuan@kylinos.cn> <aK8Sd30K64mbN1Nt@google.com>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <aK8Sd30K64mbN1Nt@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 27, 2025 at 12:22=E2=80=AFPM Mark Brown <broonie@kernel.org> wr=
-ote:
->
-> On Tue, Aug 26, 2025 at 08:19:37PM +0200, Bartosz Golaszewski wrote:
-> > On Wed, Aug 20, 2025 at 8:41=E2=80=AFPM Mark Brown <broonie@kernel.org>=
- wrote:
-> > > On Wed, Aug 20, 2025 at 09:12:49AM +0200, Linus Walleij wrote:
->
-> > > > The qualcomm 32bit platforms fail in next anyway so I dropped the p=
-atches
-> > > > for now.
->
-> > > FWIW the i.MX8MP also seems to have been broken by this:
->
-> > I can't test it unfortunately - would you mind sharing some info on
-> > what's failing exactly?
->
-> I've just got the log I linked above.
+Hi,
 
-So, I've been looking at this bisect email and clicking the links to
-LAVA jobs and I can't find anything. Does it fail to build? Fail at
-run-time? I'm not sure how to read this.
+=E5=9C=A8 2025/8/27 22:13, Sean Christopherson =E5=86=99=E9=81=93:
+> On Wed, Aug 27, 2025, Zihuan Zhang wrote:
+>> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+>> annotation for policy references. This reduces the risk of reference
+>> counting mistakes and aligns the code with the latest kernel style.
+>>
+>> No functional change intended.
+>>
+>> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+>> ---
+>>   arch/x86/kvm/x86.c | 10 ++++------
+>>   1 file changed, 4 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+>> index a1c49bc681c4..2a825f4ec701 100644
+>> --- a/arch/x86/kvm/x86.c
+>> +++ b/arch/x86/kvm/x86.c
+>> @@ -9492,16 +9492,14 @@ static void kvm_timer_init(void)
+>>   		max_tsc_khz =3D tsc_khz;
+>>  =20
+>>   		if (IS_ENABLED(CONFIG_CPU_FREQ)) {
+>> -			struct cpufreq_policy *policy;
+>> +			struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>>   			int cpu;
+>>  =20
+>>   			cpu =3D get_cpu();
+>>   			policy =3D cpufreq_cpu_get(cpu);
+>> -			if (policy) {
+>> -				if (policy->cpuinfo.max_freq)
+>> -					max_tsc_khz =3D policy->cpuinfo.max_freq;
+>> -				cpufreq_cpu_put(policy);
+>> -			}
+>> +			if (policy && policy->cpuinfo.max_freq)
+>> +				max_tsc_khz =3D policy->cpuinfo.max_freq;
+>> +
+>>   			put_cpu();
+> Hmm, this is technically buggy.  __free() won't invoke put_cpufreq_poli=
+cy() until
+> policy goes out of scope, and so using __free() means the code is effec=
+tively:
+>
+> 		if (IS_ENABLED(CONFIG_CPU_FREQ)) {
+> 			struct cpufreq_policy *policy;
+> 			int cpu;
+>
+> 			cpu =3D get_cpu();
+> 			policy =3D cpufreq_cpu_get(cpu);
+> 			if (policy && policy->cpuinfo.max_freq)
+> 				max_tsc_khz =3D policy->cpuinfo.max_freq;
+> 			put_cpu();
+>
+> 			if (policy)
+> 				cpufreq_cpu_put(policy);
+> 		}
+>
+> That's "fine" because the policy isn't truly referenced after preemptio=
+n is
+> disabled, the lifecycle of the policy doesn't rely on preemption being =
+disabled,
+> and KVM doesn't actually care which CPU is used to get the max frequenc=
+y, i.e.
+> this would technically be "fine" too:
+>
+> 		if (IS_ENABLED(CONFIG_CPU_FREQ)) {
+> 			struct cpufreq_policy *policy;
+> 			int cpu;
+>
+> 			cpu =3D get_cpu();
+> 			policy =3D cpufreq_cpu_get(cpu);
+> 			put_cpu();
+>
+> 			if (policy && policy->cpuinfo.max_freq)
+> 				max_tsc_khz =3D policy->cpuinfo.max_freq;
+>
+> 			if (policy)
+> 				cpufreq_cpu_put(policy);
+> 		}
+>
+> But given that the code we have today is perfectly readable, I don't se=
+e any
+> reason to switch to __free() given that's it's technically flawed.  So =
+I'm very
+> strongly inclined to skip this patch and keep things as-is.
 
-Bart
+
+Yes, this will indeed change the execution order.
+Can you accept that? Personally, I don=E2=80=99t think it=E2=80=99s ideal=
+ either.
+
+		if (IS_ENABLED(CONFIG_CPU_FREQ)) {
+  			int cpu;
+			cpu =3D get_cpu();
+			{
+				struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq_=
+cpu_get(cpu);
+				if (policy && policy->cpuinfo.max_freq)
+					max_tsc_khz =3D policy->cpuinfo.max_freq;
+			}
+			put_cpu();
+
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 }
+
+Other places may also have the same issue,
+
+maybe we should consider introducing a macro to handle this properly,
+so that initialization and cleanup are well defined without changing
+the existing order unexpected.
+
+like this:
+
+#define WITH_CPUFREQ_POLICY(cpu) {\
+
+for(struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D  \
+			cpufreq_cpu_get(cpu);			\
+			policy;)
+
+Then Use it:
+
+		if (IS_ENABLED(CONFIG_CPU_FREQ)) {
+  			int cpu;
+			cpu =3D get_cpu();
+			WITH_CPUFREQ_POLICY(cpu){
+				if (policy->cpuinfo.max_freq)
+					max_tsc_khz =3D policy->cpuinfo.max_freq;
+			}
+			put_cpu();
+
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 }
+
 
