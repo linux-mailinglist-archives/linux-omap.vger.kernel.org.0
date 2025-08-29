@@ -1,69 +1,69 @@
-Return-Path: <linux-omap+bounces-4407-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4406-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB21B3B782
-	for <lists+linux-omap@lfdr.de>; Fri, 29 Aug 2025 11:31:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42C63B3B77D
+	for <lists+linux-omap@lfdr.de>; Fri, 29 Aug 2025 11:30:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F34C71CC0451
-	for <lists+linux-omap@lfdr.de>; Fri, 29 Aug 2025 09:31:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1125F1608D7
+	for <lists+linux-omap@lfdr.de>; Fri, 29 Aug 2025 09:30:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74F6305045;
-	Fri, 29 Aug 2025 09:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77671F55F8;
+	Fri, 29 Aug 2025 09:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="ZYXAHabK"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Xn2fRGkq"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5472E54D7;
-	Fri, 29 Aug 2025 09:30:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADF02E54D7;
+	Fri, 29 Aug 2025 09:30:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756459826; cv=none; b=U4KLLmZKtBDgfG9c0hKxWzoONiKTTI8sEHM+ZsJPinPussC2IaRLBMUUSqQGdgaSZi2kt5QEgdzkMpvkR9YMb/bOMIdZT1fQkROdahVTUO1eRyb9hSUD3ucoq1CuyZ4aqLZ7ub8dtiU+nVxIarZmaACjtnk8QDkv71JcEuyH92c=
+	t=1756459821; cv=none; b=KA93X9MAeF69LgIIlJKDaWIXl1nJlH3F4bu9Xp13/sSo5ikZDVo/hb1hWBAyosEUybMgwaxQEWjyomtrPGCf16N7y7Bq4xmHf37VMLYa28+do2o0uFC1vd/NFwSx6PsF2+PLoM62KDp663tNAQWzqMQ3ZRjeCzykClHwxhQBzfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756459826; c=relaxed/simple;
-	bh=RoBNXreDZ6pTrLjQsO3vOZ3KrVen9ONPBvH66SoF78I=;
+	s=arc-20240116; t=1756459821; c=relaxed/simple;
+	bh=JyT5kYYmgplTJlEdqGb9doRZjniA9Dx+SfuFojrRXvo=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WW/0KqOEr7uRfnRgYvXKe0SllsyovnyjSZm8LXrjzcTnwNJMoXJ/fcutc9eM2Ls6pYwiFjeIMIGOE8FvM4nrgDniMtEgFR/BaPwbFdxNQhjhGaUurD/Z4bG1Z5ypaRTavnJanHpoOqRfQGrGeZ+ZnjlNpnRJAHbXZIMGUnOtdmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=ZYXAHabK; arc=none smtp.client-ip=198.47.23.234
+	 MIME-Version:Content-Type; b=e86CoTfs7dm/+G7bcaVuofsUCm3IvrDCvbxMeMG/jeUsCEzew8UWkLiEJcYl83q1LJL5ZrU14NNayajoqj3QMWAbKRS0pnmj+tMNCNchzxhtXB/02JazZevkJKCQDjmmQeY1efHXvnqyGFx/dF2JrAvH98Qp6GYdjGeTS2zXOvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Xn2fRGkq; arc=none smtp.client-ip=198.47.19.245
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllvem-sh03.itg.ti.com ([10.64.41.86])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57T9TtNu1775756;
-	Fri, 29 Aug 2025 04:29:55 -0500
+Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
+	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57T9Twoe1724452;
+	Fri, 29 Aug 2025 04:29:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1756459795;
-	bh=Q0MMljDmDK3QxLk1J9FQAb5zxayhQ3u81WbdXJkTp5U=;
+	s=ti-com-17Q1; t=1756459798;
+	bh=QdD3YyXBddKPw0BZcTG597jUpO1a09jAxJyXMWptNoE=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=ZYXAHabKnPrGmYmSe0ORRiCrdKSVpJYDIDeAlby3tEPRvIx5Xc/0F5ZAN4iFT9qEu
-	 sqaY8NblF8t8JZuMenB9cDrd4usb2eVjoe8hdX3yrxdEU5cmzOOOcWeP9w9mezhgdC
-	 0pHcv7xchfqvEpXTZ4ewRKh4LqH8dRQOhQv81sk8=
-Received: from DFLE102.ent.ti.com (dfle102.ent.ti.com [10.64.6.23])
-	by fllvem-sh03.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57T9Ttvm3918837
+	b=Xn2fRGkqYB9eiV/zbYDTQFVLbTm/zxKcs9saOpMH01l3aLEaTZPKpCh4isHwH01zW
+	 o+XQP9w1oTPPLVqLcFY8DtL8SR0/TPYSY1/N+/+Iq+p6B7O1/YYbgGso5LNH7nUDci
+	 9px/JtssOSzQ1jEBXktsgJD7/fLOQYs+v4M5niZc=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57T9TwtL4125120
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Fri, 29 Aug 2025 04:29:55 -0500
-Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE102.ent.ti.com
- (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+	Fri, 29 Aug 2025 04:29:58 -0500
+Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Fri, 29
- Aug 2025 04:29:54 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ Aug 2025 04:29:57 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Fri, 29 Aug 2025 04:29:54 -0500
+ Frontend Transport; Fri, 29 Aug 2025 04:29:58 -0500
 Received: from a-dutta.dhcp.ti.com (a-dutta.dhcp.ti.com [10.24.68.237])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57T9Tmoi1850123;
-	Fri, 29 Aug 2025 04:29:52 -0500
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57T9Tmoj1850123;
+	Fri, 29 Aug 2025 04:29:55 -0500
 From: Anurag Dutta <a-dutta@ti.com>
 To: <aaro.koskinen@iki.fi>, <andreas@kemnade.info>, <khilman@baylibre.com>,
         <rogerq@kernel.org>, <tony@atomide.com>
 CC: <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <u-kumar1@ti.com>, <vigneshr@ti.com>
-Subject: [PATCH 1/2] bus: ti-sysc: Add DRA7 SoC matching
-Date: Fri, 29 Aug 2025 14:59:46 +0530
-Message-ID: <20250829092947.855974-2-a-dutta@ti.com>
+Subject: [PATCH 2/2] arm: dts: Use DMTimer as Clocksource instead of counter_32k
+Date: Fri, 29 Aug 2025 14:59:47 +0530
+Message-ID: <20250829092947.855974-3-a-dutta@ti.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250829092947.855974-1-a-dutta@ti.com>
 References: <20250829092947.855974-1-a-dutta@ti.com>
@@ -79,40 +79,48 @@ X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
 From: Sinthu Raja <sinthu.raja@ti.com>
 
-Kernel Commit 25de4ce5ed02 ("clocksource/drivers/timer-ti-dm: Handle
-dra7 timer wrap errata i940") states that "There is a timer wrap issue
-on dra7 and as a work around, we need to use timer-ti-dm percpu timers
-instead. So, configure dmtimer3 and 4 as percpu timers by default." In
-this commit, the author has used ti,no-reset-on-init and ti,no-idle quirks.
-
-The sysc_check_active_timer() checks for these quirks and accordingly,
-returns EBUSY error if the quirks match. Because of this, the timer
-modules fail to probe as can be observed during bootup :"ti-sysc
-4882c000.target-module: probe with driver ti-sysc failed with error -16"
-
-Return 'ENXIO' instead of 'EBUSY' for DRA7 SoC, so that the error is set
-to ENXIO and the module gets probed under "certain conditions".
+Clock drift of approximately 500 ppm is observed with 'counter_32k'
+as clocksource. Clock drift is seen because 'counter_32k' is running
+with 32786Hz frequency instead it should run with 32768Hz. Use DMTimer as
+clocksource, which is running at 32768Hz to fix the clock drift issue.
 
 Signed-off-by: Sinthu Raja <sinthu.raja@ti.com>
 Signed-off-by: Anurag Dutta <a-dutta@ti.com>
 ---
- drivers/bus/ti-sysc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/ti/omap/am57xx-beagle-x15.dts | 9 +++++++++
+ arch/arm/boot/dts/ti/omap/dra7-l4.dtsi          | 2 +-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 5566ad11399e..90766f804706 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -3117,7 +3117,8 @@ static int sysc_check_active_timer(struct sysc *ddata)
- 	 * can be dropped if we stop supporting old beagleboard revisions
- 	 * A to B4 at some point.
- 	 */
--	if (sysc_soc->soc == SOC_3430 || sysc_soc->soc == SOC_AM35)
-+	if (sysc_soc->soc == SOC_3430 || sysc_soc->soc == SOC_AM35 ||
-+					 sysc_soc->soc == SOC_DRA7)
- 		error = -ENXIO;
- 	else
- 		error = -EBUSY;
+diff --git a/arch/arm/boot/dts/ti/omap/am57xx-beagle-x15.dts b/arch/arm/boot/dts/ti/omap/am57xx-beagle-x15.dts
+index 0a8b16505ed9..83009883277e 100644
+--- a/arch/arm/boot/dts/ti/omap/am57xx-beagle-x15.dts
++++ b/arch/arm/boot/dts/ti/omap/am57xx-beagle-x15.dts
+@@ -36,3 +36,12 @@ &mmc2 {
+ &phy1 {
+ 	max-speed = <100>;
+ };
++
++&timer12_target {
++	ti,no-reset-on-init;
++	ti,no-idle;
++};
++
++&counter32k {
++	status = "disabled";
++};
+diff --git a/arch/arm/boot/dts/ti/omap/dra7-l4.dtsi b/arch/arm/boot/dts/ti/omap/dra7-l4.dtsi
+index ba7fdaae9c6e..a6ac4fd43b54 100644
+--- a/arch/arm/boot/dts/ti/omap/dra7-l4.dtsi
++++ b/arch/arm/boot/dts/ti/omap/dra7-l4.dtsi
+@@ -4439,7 +4439,7 @@ segment@20000 {					/* 0x4ae20000 */
+ 			 <0x0000c000 0x0002c000 0x001000>,	/* ap 29 */
+ 			 <0x0000f000 0x0002f000 0x001000>;	/* ap 32 */
+ 
+-		target-module@0 {			/* 0x4ae20000, ap 19 08.0 */
++		timer12_target: target-module@0 {			/* 0x4ae20000, ap 19 08.0 */
+ 			compatible = "ti,sysc-omap4-timer", "ti,sysc";
+ 			reg = <0x0 0x4>,
+ 			      <0x10 0x4>;
 -- 
 2.34.1
 
