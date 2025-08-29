@@ -1,219 +1,236 @@
-Return-Path: <linux-omap+bounces-4392-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4393-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1CDB3A787
-	for <lists+linux-omap@lfdr.de>; Thu, 28 Aug 2025 19:16:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C64CB3B043
+	for <lists+linux-omap@lfdr.de>; Fri, 29 Aug 2025 03:09:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0469E1C86F4A
-	for <lists+linux-omap@lfdr.de>; Thu, 28 Aug 2025 17:16:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBA9C987AC7
+	for <lists+linux-omap@lfdr.de>; Fri, 29 Aug 2025 01:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2D2340D88;
-	Thu, 28 Aug 2025 17:15:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EJzdxybn"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5256F1E0DE8;
+	Fri, 29 Aug 2025 01:09:44 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFCB340D83
-	for <linux-omap@vger.kernel.org>; Thu, 28 Aug 2025 17:15:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272BC288A2;
+	Fri, 29 Aug 2025 01:09:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756401322; cv=none; b=IF75RVbXEAjZA7SHCsItz9FAm9TWxFUfdfuHuiGLBNtJ9LSOTEB3tMGUd+ZYgE8ft84oeWWxXuNsMlZf10fD2IQa9EheagWeoYeeQVB+FcDRTTgKhqpANqLgmaAXgdrhnpJJ2qKdsNxub8C0pE/vFbE2O8TRd55NCTT0P+iStIw=
+	t=1756429784; cv=none; b=nlKME0fI8BMF69DdbmRg5OPNpl+dLKyQjah/2s6Mlhrgzfn1VU8zmacbwrYUtYc79qvWzesV1ENGzEb7aOgiz5xEFtrYR2TPrXuSf9swUTvq4N5O4QOUx3BwiF/RAQvzoHMp+BR0GAil7sOQtlhmVnsiqUFc6WQoFPPJ9f9rLcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756401322; c=relaxed/simple;
-	bh=tjLq4yotJVvrKtVjK5XLYb7jE1fQQx1FF/sxrbky9es=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Y41qkiwGt2sCXod4ZFSI8pvbN8hYlxM2KwI10p2CuQTXooF2bsLO6rEssIEM3AKPmcdNtR/ZZAmySe8yanCr/P5zXqt+YdAx4x4sbQlU+8LqAurvtySsCv2ng2Sx7GIECWWB8okwMNzwGhm2KA7rg0/dph3QceaAiYvltOJSSQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EJzdxybn; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3235e45b815so1393688a91.0
-        for <linux-omap@vger.kernel.org>; Thu, 28 Aug 2025 10:15:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756401319; x=1757006119; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=g/D1R1ws5ojuN4WG3pCUGyU24UMqyGj6lojr+YSYQ0c=;
-        b=EJzdxybnyxlQrk6qJR558wtNekNbgws953L2pneIZYbmyp9tAmsnaz2aSuhIUBM5zr
-         yym6Q3hOD+h86ma+8fB5UYxWC0FsSh8WsgByN6NGuhj5XPnYnWvTGq97mGOESOdqxB8M
-         UO5/YFoyUcXdWdRme2wq/ulZFp8KXOMX/N5wcNQCirgFPfS9pE37lzw+nKFk5IrmnDbO
-         G5sw2Dwq2cicHF4lperkYSyAoX2g6OycdnZ1FjYe/p8IEgXy13BJvrhiJGJwM3VA8ugT
-         uPqiFjyVbr8N6oCUmphfD2rJa6OFoETW3Ncm5ZacDEJ+l20U+VrrmUTHcEPjkrroNkNZ
-         4tIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756401319; x=1757006119;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=g/D1R1ws5ojuN4WG3pCUGyU24UMqyGj6lojr+YSYQ0c=;
-        b=hfU4CzYAxkjPl52COdj5Dl2ijya/M55kVQf4cpSf0VusBcvZiqMlY7Xh0ZpcLQ3lhG
-         Jue7AKlKVrVeANhgfW3sGnDZEcrllcgyfiHMTHLpDi+vb7pxaXcc5Y1e8HnrDWpmXPWQ
-         O0OrcsKnbHiod4FSvZPp4wsccByy1yHltJlQ19RpfVbHsLaskDdlWsq9LwZSPmyocyFB
-         XPqbPsUZ+zwCJihwf8ZIIO/nkhXlcNF81H+M4nE147Yr4v+dT6ZS7ESkizUeCEU2VrsQ
-         flmhm0pqsxlvM6gRtTG7arsB0rs4xen0ZbyUun0bWaF7VmfV1jzjk3hwoz5LZE3BiWMT
-         XvjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX73x6Nq8vaogcCOoScOg5ra0B/GvtmpNva2n/sEOmywgr6n0oeEudJo1m5ncTEngpzL3jhLoXDritu@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJ8yF4/+OKU4hcQww+Yrsa8O4p+Nrq5SekV3fRDdWtsaW9Ige4
-	HDPuTcZd4uzVWcHQM1ktUG0FwsSdL9oj8RN36u6sBXRKUwH2wySLwduErZUVYEjE8wsaybST2cY
-	l7Pc9jQ==
-X-Google-Smtp-Source: AGHT+IEgfCMAj/kPGbx0Dj2C82B+XByTzBEnlSaJgGQHGzaozLp7T19v0PG28aEIfyLg5E6WkydfWYNcBOM=
-X-Received: from pjhk31.prod.google.com ([2002:a17:90a:4ca2:b0:327:9b90:7a79])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1dc3:b0:327:cec7:b8c6
- with SMTP id 98e67ed59e1d1-327cec7cb53mr1738031a91.32.1756401318775; Thu, 28
- Aug 2025 10:15:18 -0700 (PDT)
-Date: Thu, 28 Aug 2025 10:15:17 -0700
-In-Reply-To: <874d821e-8ea3-40ac-921b-c19bb380a456@kylinos.cn>
+	s=arc-20240116; t=1756429784; c=relaxed/simple;
+	bh=m00FXfC5AvlmbqZAyUgp1KXeas5N5BfdbJdDwYWe0jw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TmTVn00/p3YVUhUG3LYV+ecr14xyLN7KwlPfc0XeaWhVW/HfDsByQ5akOR7b2BqTE3t82WN28Use98gvb3Domsh5Hr5VKYTe7fWIonz1thHxhEj/cSIitEyJsLjqScXbK6fHAbXp9AeJ7cslbh9EmY/vv+lEpb61nqIeQGlHMd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: d15de1d6847411f0b29709d653e92f7d-20250829
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:8dbc4808-f76e-4028-b1fe-ddd256e8a420,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:9ffa5254c19a668fe3315a601f1f36b0,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: d15de1d6847411f0b29709d653e92f7d-20250829
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 299742101; Fri, 29 Aug 2025 09:09:31 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id F0024E008FA3;
+	Fri, 29 Aug 2025 09:09:30 +0800 (CST)
+X-ns-mid: postfix-68B0FDCA-85694742
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 37FF9E008FA2;
+	Fri, 29 Aug 2025 09:09:19 +0800 (CST)
+Message-ID: <6174bcc8-30f5-479b-bac6-f42eb1232b4d@kylinos.cn>
+Date: Fri, 29 Aug 2025 09:09:18 +0800
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 03/18] ACPI: processor: thermal: Use
+ __free(put_cpufreq_policy) for policy reference
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Markus Mayer
+ <mmayer@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>,
+ Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Lukasz Luba <lukasz.luba@arm.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
+ <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+ Sumit Gupta <sumitg@nvidia.com>,
+ Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
+ linux-pm@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-samsung-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-tegra@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ linux-kernel@vger.kernel.org
 References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
- <20250827023202.10310-3-zhangzihuan@kylinos.cn> <aK8Sd30K64mbN1Nt@google.com> <874d821e-8ea3-40ac-921b-c19bb380a456@kylinos.cn>
-Message-ID: <aLCOpfNkcQN9P-Wa@google.com>
-Subject: Re: [PATCH v2 02/18] KVM: x86: Use __free(put_cpufreq_policy) for
- policy reference
-From: Sean Christopherson <seanjc@google.com>
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Markus Mayer <mmayer@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	MyungJoo Ham <myungjoo.ham@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
-	Chanwoo Choi <cw00.choi@samsung.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Len Brown <lenb@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
-	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, x86@kernel.org, 
-	kvm@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org, 
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	imx@lists.linux.dev, linux-omap@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+ <20250827023202.10310-4-zhangzihuan@kylinos.cn>
+ <CAJZ5v0jA7HjNc6VQWdjuwLnmd751kV01NXC4v8Pyn8h-r70BzQ@mail.gmail.com>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <CAJZ5v0jA7HjNc6VQWdjuwLnmd751kV01NXC4v8Pyn8h-r70BzQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 28, 2025, Zihuan Zhang wrote:
-> > Hmm, this is technically buggy.  __free() won't invoke put_cpufreq_poli=
-cy() until
-> > policy goes out of scope, and so using __free() means the code is effec=
-tively:
-> >=20
-> > 		if (IS_ENABLED(CONFIG_CPU_FREQ)) {
-> > 			struct cpufreq_policy *policy;
-> > 			int cpu;
-> >=20
-> > 			cpu =3D get_cpu();
-> > 			policy =3D cpufreq_cpu_get(cpu);
-> > 			if (policy && policy->cpuinfo.max_freq)
-> > 				max_tsc_khz =3D policy->cpuinfo.max_freq;
-> > 			put_cpu();
-> >=20
-> > 			if (policy)
-> > 				cpufreq_cpu_put(policy);
-> > 		}
 
-...
+=E5=9C=A8 2025/8/28 17:40, Rafael J. Wysocki =E5=86=99=E9=81=93:
+> On Wed, Aug 27, 2025 at 4:33=E2=80=AFAM Zihuan Zhang <zhangzihuan@kylin=
+os.cn> wrote:
+>> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+>> annotation for policy references. This reduces the risk of reference
+>> counting mistakes and aligns the code with the latest kernel style.
+>>
+>> No functional change intended.
+>>
+>> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+>> ---
+>>   drivers/acpi/processor_thermal.c | 12 +++---------
+>>   1 file changed, 3 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor=
+_thermal.c
+>> index 1219adb11ab9..f99ed0812934 100644
+>> --- a/drivers/acpi/processor_thermal.c
+>> +++ b/drivers/acpi/processor_thermal.c
+>> @@ -64,17 +64,13 @@ static int phys_package_first_cpu(int cpu)
+>>
+>>   static int cpu_has_cpufreq(unsigned int cpu)
+>>   {
+>> -       struct cpufreq_policy *policy;
+>> +       struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>>
+>>          if (!acpi_processor_cpufreq_init)
+>>                  return 0;
+>>
+>>          policy =3D cpufreq_cpu_get(cpu);
+>> -       if (policy) {
+>> -               cpufreq_cpu_put(policy);
+>> -               return 1;
+>> -       }
+>> -       return 0;
+>> +       return !!policy;
+> If you want to make this change, please also change the return type of
+> the function to bool.
+Thanks for pointing this out.
+>>   }
+>>
+>>   static int cpufreq_get_max_state(unsigned int cpu)
+>> @@ -95,7 +91,7 @@ static int cpufreq_get_cur_state(unsigned int cpu)
+>>
+>>   static int cpufreq_set_cur_state(unsigned int cpu, int state)
+>>   {
+>> -       struct cpufreq_policy *policy;
+>> +       struct cpufreq_policy *policy __free(put_cpufreq_policy);
+> This isn't correct AFAICS at least formally because the scope of the
+> variable is the whole function, so it won't get out of scope at the
+> point where you want cpufreq_cpu_put() to be called.
+>
+> The policy variable should be defined in the block following the "for"
+> loop (and actually all of the local variables except for "i" can be
+> defined there).
 
-> Yes, this will indeed change the execution order.
-> Can you accept that?=20
 
-No, because it's buggy.
+Sorry for the mistake =E2=80=94 I did this correctly in other places, but=
+ forgot=20
+here.
 
-> Personally, I don=E2=80=99t think it=E2=80=99s ideal either.
->=20
-> 		if (IS_ENABLED(CONFIG_CPU_FREQ)) {
->  			int cpu;
-> 			cpu =3D get_cpu();
-> 			{
-> 				struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq_=
-cpu_get(cpu);
-> 				if (policy && policy->cpuinfo.max_freq)
-> 					max_tsc_khz =3D policy->cpuinfo.max_freq;
-> 			}
-> 			put_cpu();
->=20
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 }
->=20
-> Other places may also have the same issue,
->=20
-> maybe we should consider introducing a macro to handle this properly,
-> so that initialization and cleanup are well defined without changing
-> the existing order unexpected.
->=20
-> like this:
->=20
-> #define WITH_CPUFREQ_POLICY(cpu) {\
->=20
-> for(struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D  \
-> 			cpufreq_cpu_get(cpu);			\
-> 			policy;)
->=20
-> Then Use it:
->=20
-> 		if (IS_ENABLED(CONFIG_CPU_FREQ)) {
->  			int cpu;
-> 			cpu =3D get_cpu();
-> 			WITH_CPUFREQ_POLICY(cpu){
-> 				if (policy->cpuinfo.max_freq)
-> 					max_tsc_khz =3D policy->cpuinfo.max_freq;
-> 			}
-> 			put_cpu();
+> Or better still, please move that block to a separate function
+> containing all of the requisite local variable definitions and call
+> that function for each online CPU.
 
-This all feels very forced, in the sense that we have a shiny new tool and =
-are
-trying to use it everywhere without thinking critically about whether or no=
-t
-doing so is actually an improvement.
 
-At a glance, this is literally the only instance in the entire kernel where=
- the
-CPU to use is grabbed immediately before the policy.
-=20
-  $ git grep -B 20 cpufreq_cpu_get | grep -e get_cpu -e smp_processor_id
-  arch/x86/kvm/x86.c-			cpu =3D get_cpu();
-  drivers/cpufreq/cppc_cpufreq.c-static int cppc_get_cpu_power(struct devic=
-e *cpu_dev,
-  drivers/cpufreq/cppc_cpufreq.c-static int cppc_get_cpu_cost(struct device=
- *cpu_dev, unsigned long KHz,
-  drivers/cpufreq/mediatek-cpufreq-hw.c-mtk_cpufreq_get_cpu_power(struct de=
-vice *cpu_dev, unsigned long *uW,
+ =C2=A0In fact, I have realized that we cannot always use __free for clea=
+nup=20
+directly.
 
-Probably because KVM's usage is rather bizarre and honestly kind of dumb.  =
-But
-KVM has had this behavior for 15+ years, so as weird as it is, I'm not incl=
-ined
-to change it without a really, really strong reason to do so, e.g. to itera=
-te
-over all CPUs or something.
+The issue is that the release only happens at the end of the variable=E2=80=
+=99s=20
+lifetime, while in some cases we want to drop the reference immediately=20
+after use.
 
-So given that this is the only intance of the problem patter, I think it ma=
-kes
-sense to leave KVM as-is, and not spend a bunch of time trying to figure ou=
-t how
-to make KVM's usage play nice with __free().
+To address this, I=E2=80=99m considering introducing a helper macro in=20
+include/linux/cpufreq.h that would make this more explicit and allow=20
+safe cleanup at the right point.
+
+
+Before moving forward, I=E2=80=99d like to hear your opinion on this appr=
+oach:
+
+#define WITH_CPUFREQ_POLICY(cpu) \
+for(struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D \
+     cpufreq_cpu_get(cpu);;)
+
+
+Then we can use it for all code :
+
+	WITH_CPUFREQ_POLICY(cpu) {
+			if(!policy)
+				return XXX; // error handing
+		=09
+			//code use policy here
+		} // equal origin 'cpufreq_cpu_put' here
+         ;;
+        //left code
+
+>>          struct acpi_processor *pr;
+>>          unsigned long max_freq;
+>>          int i, ret;
+>> @@ -127,8 +123,6 @@ static int cpufreq_set_cur_state(unsigned int cpu,=
+ int state)
+>>                  max_freq =3D (policy->cpuinfo.max_freq *
+>>                              (100 - reduction_step(i) * cpufreq_therma=
+l_reduction_pctg)) / 100;
+>>
+>> -               cpufreq_cpu_put(policy);
+>> -
+>>                  ret =3D freq_qos_update_request(&pr->thermal_req, max=
+_freq);
+>>                  if (ret < 0) {
+>>                          pr_warn("Failed to update thermal freq constr=
+aint: CPU%d (%d)\n",
+>> --
 
