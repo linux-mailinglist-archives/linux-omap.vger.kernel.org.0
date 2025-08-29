@@ -1,79 +1,78 @@
-Return-Path: <linux-omap+bounces-4401-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4402-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32649B3B35A
-	for <lists+linux-omap@lfdr.de>; Fri, 29 Aug 2025 08:26:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5185B3B365
+	for <lists+linux-omap@lfdr.de>; Fri, 29 Aug 2025 08:30:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D17A816FD16
-	for <lists+linux-omap@lfdr.de>; Fri, 29 Aug 2025 06:26:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D07C1894017
+	for <lists+linux-omap@lfdr.de>; Fri, 29 Aug 2025 06:30:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D5323F40C;
-	Fri, 29 Aug 2025 06:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7796023B60A;
+	Fri, 29 Aug 2025 06:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tRxUklAE"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DY+dr7/5"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA52721C194
-	for <linux-omap@vger.kernel.org>; Fri, 29 Aug 2025 06:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155E9126BF7
+	for <linux-omap@vger.kernel.org>; Fri, 29 Aug 2025 06:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756448789; cv=none; b=DvkuYeQcNJ+QsQerYb7OvPxHcB8PD4vIeg8zO90fGmtXDL288Njup5q93jjt5E9vURj3phDgGMUtL6fLwXIrK9VPZgh9mU/s23DYoitUccLbPFb7WOg+He6lyiWToW5BZK5YE4/o+pMeKkFDjlGM2ZfFjo9uhJWAnIRpaSHaG54=
+	t=1756448997; cv=none; b=eEeiqFaCCB+gXVsRdkIvOLiyGyROw1+x+9dNBv9oxOVEgNEI0P+9oj3DoYWt3nZAkDiHUFbw8w8qZddcWp4dHtTOP/kyDl0iIRjb1i9JjiRkLcaEKyZmjrnznRhNUc31Fivjx2xZGORdb7Dw7aNJ05ncIirLaxXlpAIYIVqRUPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756448789; c=relaxed/simple;
-	bh=fAwq717gxOG/gzksvHcfVeqsyH5k6BHHvFVv/kB6CwU=;
+	s=arc-20240116; t=1756448997; c=relaxed/simple;
+	bh=tGwSjGcSe128TtD7AHOwtP4PhJjbYMmvmFE0Ow3n7qo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kzQYy8dSwQsk+R7T1wPAm+5+GDN7KYjaxFPw8BKkV/dTFgDzzTyXGXfr8ZxGhPjsH/5g0x9dKRamTY7qyE8h2zH9YZyuq2Ujis2XwA3lmdNKGU1ESMaw0w2WX1IDI4kzasVTy+oLONgQVn60cfR1caDf1dKFv75BzY8cErfrq4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tRxUklAE; arc=none smtp.client-ip=209.85.216.50
+	 Content-Type:Content-Disposition:In-Reply-To; b=bdBuLwLTjnP1MsmC15GvwTiuT4FQeV9MT+YqnnWUjua1CUFy3hUR/FIN01yCEE7ATV7QWuRJqpB6l6eyrAGtNsc6Q9ITzc/NMWET62fVbdIn28ZqDZGUu3DWh3ODP49HTKjghR395hIPszkMSvzJRK0bGiSYg1g1UtMjBfDQog4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DY+dr7/5; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-32326e2f0b3so1420898a91.2
-        for <linux-omap@vger.kernel.org>; Thu, 28 Aug 2025 23:26:27 -0700 (PDT)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2445826fd9dso21220245ad.3
+        for <linux-omap@vger.kernel.org>; Thu, 28 Aug 2025 23:29:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756448787; x=1757053587; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=FcWNphyv+aV6VigruYXsycpBhyL4rRdrU3NDODM9P5A=;
-        b=tRxUklAEuzasI1s6Lx3jlhz8OcQE+0enb6h0YDY5HN2tcCHLotxk3ezgMcqrkt3Knk
-         awzj2x6qCHsapRtXpBizhUz/o+aTOuw+Lhri5MMTlXuwQeMbaIfE4FQ/ErAIk1xDMN99
-         BKAvR4KmbqeteBgOpx8B5F6mC4+9BN6gVvuvTyjeumqUOlLnaB9tTwTNEsYnCASWeh81
-         rqcMxpcOjttiJDuNQ58rSn1WG9GF49dFTULEtamhoAp9q1G4xOTYsVdHB7FW5Jswf5bM
-         6m7I7xNOtFa1txrICmEztSRnWOwZCC2/zHc34Bk0svK6asUIm9/dET3VBtZ9uDN96ZJ5
-         bWwA==
+        d=linaro.org; s=google; t=1756448994; x=1757053794; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CokGLX1/yeX4DJMWAz1LmKt9I3G7o4FsQeoqSBuvVPY=;
+        b=DY+dr7/5AYifsOB2jkD7YJAsc3EkrlaD87ZXXamuk9eRkkMJ9bpnQ9NtXMZ/m51IKQ
+         W/hX2Lw6m0Rt0MhX1aPSSTW9JLm86s5TQ2RzZMEmZ6dh+fP2B/0WD9sedlLY6U8vdemg
+         vgJUR7AoHH7XBq150ld8OwdWMrwMMWJaGceCKAQYyBPtm8a0Smyv6A0n34uMtGDaORO2
+         4mlx/LccHp7VeojfM7fpq5uP73YyvyuPTazRWuYKAV0afPy8ZOr5NJXQbO3+97peg41E
+         17fE3BWXly2lo/ybsuFDeSDci0+y8pU02yXE3h2KSXlPDpZfYhFvtBGsh6qu/Oee6ZBB
+         Xd7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756448787; x=1757053587;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FcWNphyv+aV6VigruYXsycpBhyL4rRdrU3NDODM9P5A=;
-        b=YGPvY0D5Y7JWgxk3bK+ANRAaQwpKDkg7dBpQ3e1P4h9L9HfZEXTysf9CItme2EnOBY
-         kbsqBExlRu3lwJ1x1NIP0a5g7JbMMcDVo3hMA3CLycL8wyqgVYEOKxdi2n/XiuTrc55F
-         OuUejdBu9XRW35Wu3dIPv8eAvLEC5Uq53+VF9Re4eXo0Iw/WeYsIUz471fphcFEbjZDJ
-         WSyaXoXOoz1GDWUhxbHPUTVj2w8brjXtRkr80AVqnz4IjdckbkVVrYbSXb/bNWqmLZpG
-         02lrtSrK48LI9ixWJT3C2N0CSvfRjUnyZTQWrP1N662pXKsI5pZuv+lQQoI8bhYQuYxr
-         fZ2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVydQPCq0lQHLjp2n1+sVQAVTlBcr/umstwanoJ2wHPU93JkV6ZcQGndhWM6w4N2S3vm31MJWxxUZSK@vger.kernel.org
-X-Gm-Message-State: AOJu0YzkAaqKASxWe87wNLKxnTCGlOZMknVOj1LAvSzYVU4vMymZdz/p
-	lIxY4QPD4UKv48ybfRi9RMt0tSbz1UqS/SzYCht7bWC4W8CClUD5/p5DGlZKVmqldHc=
-X-Gm-Gg: ASbGncspx6CPK0XKQMqMOAXgjq9CtfMqUlGWbIvXyKZYOyYxCroj1XEYMbFtz0EH6GP
-	xBPfD4Z3bIdijIGtfsldtZ7KeTnbYfBYeEu3/GLFx8ApIS2iBEwYQtHz0OuZ6YB98ey6+nb0CJd
-	Grqh3nI5m0iAfbk0EjwpezTGr4vkrawJx72Z2Q/iLhvoAHLJFT4A3NHk/KELh7o3ilbGJd0oOpK
-	brfF/qyB9sCM0EYyb5D0OHUivduyfESQSEO4I8ge7IXBFpyj6NjyChlWddEYjLKe8L26EVX9vay
-	zUtupf10SdpYdwBocN2xu+CNdbTTFJ9vYwYOCbykQJUyXaK3Y2OBGnr6Nnx1kh82Atw1MRXbE7Y
-	HC6Gt5aVzy/EuXncjJIIKpgSb
-X-Google-Smtp-Source: AGHT+IFHYb22k9tJefksk8Ol8WzLcbkUpFNWBPL7w5JQ2Y92t38N6cXrTs0utCYM4huh3xQWCdkxbA==
-X-Received: by 2002:a17:90b:57ce:b0:31f:210e:e34a with SMTP id 98e67ed59e1d1-32515eacfddmr32147827a91.8.1756448787009;
-        Thu, 28 Aug 2025 23:26:27 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756448994; x=1757053794;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CokGLX1/yeX4DJMWAz1LmKt9I3G7o4FsQeoqSBuvVPY=;
+        b=MX4ReSZAUOLbTJ7hAShcu3GNyxZvZBwj8iOs1H3v7GtNFsumIejQRIshc2TOnHF9l0
+         pSgBnvJO6pxXuH6DW67Xo6xqufSjjo61VYauUzsgUJU12ghnCLJNx9AQIVXJmB8kmHj+
+         6wHjIxLgk7VybFyz2rVUgEISn7EPAuTVYi2IRAWhFqqwXDL4BcvMPNlnAUDA6mzDGHIS
+         eaSN1Xi5oM0KIJh6X8JS8IIS2pxwtirMuESmNAOTW75e8mtrGpat89e76txCbrCDMSnA
+         sV430z1Z4KB2SCIzVGvCLLgsPYKHnTKhLpOzc9crKo1gKTDezFEU90698W6LNywp9qRm
+         pT3g==
+X-Forwarded-Encrypted: i=1; AJvYcCVsGXG2KPEa+WLEurpjbafo7xY/GAHcI6Jw/kIlyvvaxgEfYT94YtxZH9BuMdtpjFVST02ujYl0pDoM@vger.kernel.org
+X-Gm-Message-State: AOJu0YxB3NpwqJVxlgkZNaNFIbYf4+QFMOYq+UDTlB/NFk+usoedfbzc
+	Bg512bp5f1jiCTBl+JudfKmto/zBoZ5ViV2nrtflZjNVHXOXxWCoexD8cziB7VZtPd4=
+X-Gm-Gg: ASbGncvOZvZBeULJKppXI3KzNEnyOu8/35Wq8GcULggzXilB6nGspgxg0VJZif/lAQ7
+	/uO5ViuOCu0MUhtillflcPYBCsdbc3NRQfiS37KQvpvKrjJudLyLH1wBvTswy1sXK14WUUzZuOo
+	vxgxZaX92zNR1ngwgkGEEifjDwkQPM/OowiQxHCd0AIA0Vq19yAY9Mx4nwLSn9oKhso3znM5bjp
+	SFGjTrZ0nl5Ob5R3iad7Oweogh59b6KUBe7qfexCKWdaHcaWdeaxjUzDLTGSOZDnxCrshgWiZUM
+	RCLjc5cvI7XxLI9bnKqZjOjpyQkyPYfkoURWH4dtf3pGs1fO8hCQteJutfWKauEk0OShqcZNwbv
+	RtnLu8QnBWwpUlqn+ofEvQweN
+X-Google-Smtp-Source: AGHT+IFbX3s0aoe3pqEivfWfaakWxvchfFFbfgXfyIlcOqslqMMZIBk7FeaK/V2UaSwtVV106XuK4Q==
+X-Received: by 2002:a17:902:ec89:b0:245:fa00:6e25 with SMTP id d9443c01a7336-2462ef1ea0bmr386065885ad.28.1756448994426;
+        Thu, 28 Aug 2025 23:29:54 -0700 (PDT)
 Received: from localhost ([122.172.87.165])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3276fcd4bd6sm6984417a91.15.2025.08.28.23.26.25
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24903705be3sm14571325ad.18.2025.08.28.23.29.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Aug 2025 23:26:26 -0700 (PDT)
-Date: Fri, 29 Aug 2025 11:56:24 +0530
+        Thu, 28 Aug 2025 23:29:53 -0700 (PDT)
+Date: Fri, 29 Aug 2025 11:59:51 +0530
 From: Viresh Kumar <viresh.kumar@linaro.org>
 To: Zihuan Zhang <zhangzihuan@kylinos.cn>
 Cc: "Rafael J . wysocki" <rafael@kernel.org>,
@@ -125,39 +124,75 @@ Cc: "Rafael J . wysocki" <rafael@kernel.org>,
 	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
 	imx@lists.linux.dev, linux-omap@vger.kernel.org,
 	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 04/18] cpufreq: brcmstb-avs-cpufreq: Use
+Subject: Re: [PATCH v2 11/18] cpufreq: tegra186: Use
  __free(put_cpufreq_policy) for policy reference
-Message-ID: <20250829062624.jalqqsigs7hanf7i@vireshk-i7>
+Message-ID: <20250829062951.ximauv2so442q4gv@vireshk-i7>
 References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
- <20250827023202.10310-5-zhangzihuan@kylinos.cn>
- <20250829055944.ragfnh62q2cuew3e@vireshk-i7>
- <4bd55a08-62bb-46c4-bfb6-a3375ce37e79@kylinos.cn>
+ <20250827023202.10310-12-zhangzihuan@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4bd55a08-62bb-46c4-bfb6-a3375ce37e79@kylinos.cn>
+In-Reply-To: <20250827023202.10310-12-zhangzihuan@kylinos.cn>
 
-On 29-08-25, 14:16, Zihuan Zhang wrote:
-> Thanks for applying the patch!
+On 27-08-25, 10:31, Zihuan Zhang wrote:
+> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> annotation for policy references. This reduces the risk of reference
+> counting mistakes and aligns the code with the latest kernel style.
 > 
-> I’ve been thinking further — instead of using __free directly, maybe we
-> could introduce a small macro wrapper around it to make the release scope
-> more controllable and consistent.
+> No functional change intended.
 > 
-> Link:
-> https://lore.kernel.org/all/6174bcc8-30f5-479b-bac6-f42eb1232b4d@kylinos.cn/
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> ---
+>  drivers/cpufreq/tegra186-cpufreq.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> Do you think this would be a better approach, or should we just stick with
-> the current use of __free?
+> diff --git a/drivers/cpufreq/tegra186-cpufreq.c b/drivers/cpufreq/tegra186-cpufreq.c
+> index cbabb726c664..4d71e262a729 100644
+> --- a/drivers/cpufreq/tegra186-cpufreq.c
+> +++ b/drivers/cpufreq/tegra186-cpufreq.c
+> @@ -105,7 +105,7 @@ static unsigned int tegra186_cpufreq_get(unsigned int cpu)
+>  {
+>  	struct tegra186_cpufreq_data *data = cpufreq_get_driver_data();
+>  	struct tegra186_cpufreq_cluster *cluster;
+> -	struct cpufreq_policy *policy;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  	unsigned int edvd_offset, cluster_id;
+>  	u32 ndiv;
+>  
+> @@ -117,7 +117,6 @@ static unsigned int tegra186_cpufreq_get(unsigned int cpu)
+>  	ndiv = readl(data->regs + edvd_offset) & EDVD_CORE_VOLT_FREQ_F_MASK;
+>  	cluster_id = data->cpus[policy->cpu].bpmp_cluster_id;
+>  	cluster = &data->clusters[cluster_id];
+> -	cpufreq_cpu_put(policy);
+>  
+>  	return (cluster->ref_clk_khz * ndiv) / cluster->div;
 
-Lets keep it simple for now and use __free directly. And keep this
-similar with other parts of the kernel.
+Merged with:
+
+diff --git a/drivers/cpufreq/tegra186-cpufreq.c b/drivers/cpufreq/tegra186-cpufreq.c
+index 4d71e262a729..4270686fc3e3 100644
+--- a/drivers/cpufreq/tegra186-cpufreq.c
++++ b/drivers/cpufreq/tegra186-cpufreq.c
+@@ -103,13 +103,12 @@ static int tegra186_cpufreq_set_target(struct cpufreq_policy *policy,
+ 
+ static unsigned int tegra186_cpufreq_get(unsigned int cpu)
+ {
++       struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpu);
+        struct tegra186_cpufreq_data *data = cpufreq_get_driver_data();
+        struct tegra186_cpufreq_cluster *cluster;
+-       struct cpufreq_policy *policy __free(put_cpufreq_policy);
+        unsigned int edvd_offset, cluster_id;
+        u32 ndiv;
+ 
+-       policy = cpufreq_cpu_get(cpu);
+        if (!policy)
+                return 0;
+ 
 
 -- 
 viresh
