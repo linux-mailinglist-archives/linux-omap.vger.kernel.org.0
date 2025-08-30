@@ -1,167 +1,127 @@
-Return-Path: <linux-omap+bounces-4411-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4412-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2D5B3C940
-	for <lists+linux-omap@lfdr.de>; Sat, 30 Aug 2025 10:20:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DA2FB3CFB2
+	for <lists+linux-omap@lfdr.de>; Sun, 31 Aug 2025 00:00:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B67605813AC
-	for <lists+linux-omap@lfdr.de>; Sat, 30 Aug 2025 08:20:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E12DF5E3432
+	for <lists+linux-omap@lfdr.de>; Sat, 30 Aug 2025 22:00:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8CC27932F;
-	Sat, 30 Aug 2025 08:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8DF32571C5;
+	Sat, 30 Aug 2025 22:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LFdO8Tty"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bUMz72mQ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A115B23D289;
-	Sat, 30 Aug 2025 08:19:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D9C1AA7A6;
+	Sat, 30 Aug 2025 22:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756541998; cv=none; b=pT9az0lN1TOdygsitLHwri2zPpuw6Fz7TavQrZb5jiYOK5bhgUNW2khKryPieV58zUith/c2BEqUrYGYnv94ftV1tz3mYwGf7VyY52pv0Ox066r3ZFbFfzYNXlg0yRz2bDwVEqwxGOTmou8VS3l6kP43JuYEnuNiot7vuaI1ge8=
+	t=1756591244; cv=none; b=gsb+ARwfhc2tIjVW7tCb6ZZhY6qhGa9jPcfpWCypGdJR0h86A0KltQDSzpKXI8ajRdul/QE1JKdGuHXXb/hJ/GeJG1cwpLzVHIek6HRMy+nUk7dIb4tJ4umG+U67T81sgnUJjMb2gCPg/hiCFbog4rV89mn1vjkLOxrXFEJxUVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756541998; c=relaxed/simple;
-	bh=VJVktYbtJWttedpN2IBIAHp9NC8Jjxgesn2RhZArsks=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nuQ2MluADFZROrkAG/6iPEoeLvOwCKCZ6KgEx5Odx5+BFuYL9SFqkr0sC6iUb4oXdKmIMWTRnsYsOLXFSX1MqxDLbHr9qteEZoQXaPNwfBUc6XNh61gC2PC8JWflfyXuYXqatgkt3muDbhEudDqSMhRcm0oz8nhryTbkUF4JGK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LFdO8Tty; arc=none smtp.client-ip=209.85.218.51
+	s=arc-20240116; t=1756591244; c=relaxed/simple;
+	bh=nAB6LEZueakEVzPxQwTu5mscsF9D4yS7uK9HPeecuJk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QshibIA3vqdxyqOpFKcUtswCTPWTnIj5Kg4oowdXi+BiYHyULNyCH7mCnbKHNJ4FCAS97B93Sh00/Z79CY41GWWpcw9YdBJ0dWzMSQNtgDHZEG6Z4vLStc9jRFC9ZHVB3KD4R91v0eCSHFpSg/SBoO58vMZdZYZl4vNHE/dK2Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bUMz72mQ; arc=none smtp.client-ip=209.85.222.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-afefc7be9d4so253245166b.1;
-        Sat, 30 Aug 2025 01:19:56 -0700 (PDT)
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7f8ea864d63so315765885a.0;
+        Sat, 30 Aug 2025 15:00:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756541995; x=1757146795; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4yz+gNr9wnP1FuUv8NASxp4fC8wPUaxLjhsHiXAOzrk=;
-        b=LFdO8Tty3gUHLAzXcZW1zpY1k+aBFmSZ2AOh6hFX1COXyze8PvW0vuIGCBxGScXflf
-         IVRrnwNVl8VvJa02d8nAyNqf54Q0WjGylCcRfjLxEF7j3ggCXzoF0VuMQDJn9cu4MvhG
-         8jXS2gkUjkVHEYAlHmTtVlJFPsPOBNff2hgAVKMkxYc16HD0VpkcO2sJ/d9ok/hQVNXz
-         bfksyuAB2zHqWrhEDDlnF8efyt2QnyA2Fj0DQSsHMPHKy+cFIk3lob8mNM4qeCMCh8ar
-         z0qhCqtmRRyYg8t5GZKUlD8LFrwfdQqxIFFUVdxWYFynUTcJkRN//dMkGsBVooatm3sO
-         0Yow==
+        d=gmail.com; s=20230601; t=1756591242; x=1757196042; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0VBdpteMs7U9MIP94cCFTa1pDDiQfM2f/G157H7iQG4=;
+        b=bUMz72mQrM4wJR1aHBQABtCWNXd9ILDMBqLWgqFligcxlq9J02Ej4f9STpQ/WBFhDE
+         dOko4Fsdtk8dlU4As3ClA1qVFldEGQIAPhcUDNp6NIFCDJvRJwU9skwVKPEtbhn/SyQu
+         80M+FTEoi6O8a2hSg5xZJ0yiHZuR8icW7tpOTItkcg88V/HTI94PNntKROsQNjryraTi
+         b5KMo+PzLW6NvAioeeexh3kUwH+nxoNquZjS1pp/49Osl7y1RurF+fmuHyIrEQdfNy51
+         46YUZKbbfjvNZjeFpNiCwEx+2p2caz5dpXjsRpHHtLKa1loFkOUTWSCyXRrum9jiID2H
+         jZfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756541995; x=1757146795;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4yz+gNr9wnP1FuUv8NASxp4fC8wPUaxLjhsHiXAOzrk=;
-        b=pgM1GkC9BG08N65egOq+9nVePZxyWpoLEToS973kN07u4yaNfmH+JzljNg2kR6F9DS
-         DNm6hC1iZtYxL4CUL5GJ1H4DQ7BIT5bKW+A5MDA7Nc6y3eGctmfIJrS2WaFVAyKqwn2W
-         O0Le3b0SRURIszM0xQzVCmsoJ6EBenPYlQtXvgCGRjRdCGEmK/z5aNFo6+8v6IVXlG0+
-         r0Vg7k5Azw3yhzhR9EJqibSxaapSg+zfQvezzIcR4bZudwzzvUJKx1733FZQgrnDCHNQ
-         i8eyaHaoP4OjlCR1CovMQL3OlWYrpWwAA4uma41/2+S6vYuQvnP681tKPmV36RsAjGpc
-         gmYA==
-X-Forwarded-Encrypted: i=1; AJvYcCUBzCvwx4PiucpbyZlSNtM2nc312fIyPqJRCVyThB7plGtVzMugm5ndiVbUheyBxJkvCLGmXE28NZYXVUsYs2Sr@vger.kernel.org, AJvYcCUDdc2RYLLXvqcJb5f1fKz7d4PcY6+LWLIt0QOfSYxFbUf0nsjvfHoTzW7OSYBWMPqoQERzC2OjGhxU+Q==@vger.kernel.org, AJvYcCUXfBNpurnurFL+cuQTU84WtFsrIBWllzErMkFnHNKKPBTmIPhEaplbTBDsI8MfHuuTilrz6uJS+VnUSJLxreJ1v+s=@vger.kernel.org, AJvYcCVp2cJ7gHO02+8ALWKT2gBcGJZ/b+Rk49QYSy/+ttnnGlKX0ZKEIZIvW0KnCSxl255gdAE2v+h7EeuqTw==@vger.kernel.org, AJvYcCWXNyfBau4/FE/XFNILdkU1ENmeFPPZ9mAKR7ukI+xogDdNwz5ErseXDKfyhTNIkpC83/M9PpYB7GtheZ3q@vger.kernel.org, AJvYcCWlYN75wzqyAbUNsZo7BXnqyb754i7cN3VuKBGXYVd4I38gqNcgoQWxdIhmoyt66U6iGmLwv0QFxZoZAg==@vger.kernel.org, AJvYcCXAAHdhi07F/Wd+pUXV5PCFeZPDnSS1wffTW58iJEbE40WEDQrBJOoKmoi6rbINcXdC1CwTleWCo62FsTwh@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYaURFSemV6gQcw3YomRw5YPUhpqiAjlulVv8y/5SRzYCWhZ4n
-	pr3L3SoZM/VVHefs9gkms1b4nyysCt8EnDLqv+UbWpQAZ7ROjCwV4ESZpORWuhsJrog12mKmxJq
-	+I0m7Djgy8NDAvWgPwVZJBJAKPJ0bwC4=
-X-Gm-Gg: ASbGnctlAk3pCQUsyot/4598sC5iNXm80xxKYzgCXSlOKLp+SnKRthviTxFldNMuMEm
-	R6ycUjwdqY+yqX+OJcYtMvHrwRX10mLShYVSpFmiZSVd6Z6ilrSwcjsJtB5bF8WdINddcAB+GYn
-	aoMePyGTamHGSq22gSrR8mhMa0RlB6pnV04sxv0YZOkoeO/FyAaBldEH+lXqnBOu7jdnA2+0dUL
-	2EPYKSwPDYze7vcZA==
-X-Google-Smtp-Source: AGHT+IFZ0wex4nlRzxOc5BG8ARrUjGz7n83ilxsIj2vkPtuKrq3/+IPw3T+K7YRUGhLq8JMm7BCY/eJH8jBRTGRUUSA=
-X-Received: by 2002:a17:907:d88:b0:afe:764d:6b24 with SMTP id
- a640c23a62f3a-b01d8a6a72cmr138313266b.14.1756541994858; Sat, 30 Aug 2025
- 01:19:54 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756591242; x=1757196042;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0VBdpteMs7U9MIP94cCFTa1pDDiQfM2f/G157H7iQG4=;
+        b=wNWgITfoKi9fvgX4u23xnbwFAK+2f4j2fy8kgd2FW9rk7bmhKDUXcwy6wpf+RcGydW
+         hD6DPZdJGZUiQvKKEr7vqbJDevmdVK3nfJ857pQrkEgVTG6ybTcbU9vQnFG/BAeRYTOu
+         PBR8hTrcrxqIljbGZP1RX2BMd7Ehmj25FwV59lvgdnzxCunApG7Ekkc29IE3gtjNBZKK
+         sGpnTvLE4KcmXwcISepaTQGVUQya2NAAeHaHQxA7KbwKKdZK5A3IPvCzjMEwZJZUhzC4
+         e15aoIxbV4+O9CPlhItyGbqh1tiw9NBa5EtmLg1/Yt5lt8JX8cduoZqJyV9wz2UVucFp
+         Ywlw==
+X-Forwarded-Encrypted: i=1; AJvYcCXSqeNGnzZgnbqg2QDA05Bgi80k7coNVyUzeuyOEdFwphFloTRxfF0wGhY1I9JrspG0ChlgTnw//6V1@vger.kernel.org, AJvYcCXaX90Wo1McrxMqNnjN6qv6q9QSCi4JkfInS9isRFAwLD07XVY27CJUig2wf/Q6yuhDXzSneICixJpQNK3Q@vger.kernel.org, AJvYcCXgMb8mhevWRNjdCo6rPDVIUUfmcrPnmw/SEDy5YBekI1e9pkzPzijlz1BdBIriaVZlxX5gc5g6mY44yA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxH281fGBFCE3NMK/h2qRvRr38j1kK4x74xgLjvTCLWauOVXZgQ
+	hY9jxTXBjvjpBXI/EQ46YfIhYRTXUGyhDkJvurTF1CvyoWc7cQA5Oao=
+X-Gm-Gg: ASbGncvlqJVf3U0L7+dQaVSWGXTNDNcx2JMlKoeBRuacoHGApdslZYuVhqpbU2qjZZI
+	xc9xdsH7cpPyE5+fJKkHGulrVYYIh8r0Q6X9tyqREOCiswQ8qG+HoDhqlmMHZbFcELMAkL3vGOA
+	+td/r25l8MofhnUNMCm3CsFIOs9Y9udRVtYNY7iy0alc3EBkCIlCt1gzipwnuReQfxiEzW4ACVi
+	/QWfHCfb6d/4Lj3ZSbFC9i9eCfgtj8Py1wNnRVbA2iNaoOdorba7gezfS4KsuTKtkbXCU5WvLbn
+	+YgAGtBvp7RayUmEqyyE88JGSftaNpEArZGYcNHIKkvLlWUinnfZdNkJfwjGe+10eA3vl53tEzQ
+	9cw5FacFEBwXDaknLf6Vth60RZu9xUTwrhOSpI8wpPEYBtSklND2hYBFy
+X-Google-Smtp-Source: AGHT+IHzGtCaxvJ/JvP2YwIhp9GD92z1hO7NN8MsMB+bENsjEt5g/P1jzGsqxnL/5uw5ru5XZpCceg==
+X-Received: by 2002:a05:620a:199d:b0:7fe:a33d:a205 with SMTP id af79cd13be357-7ff27b1f7femr352026485a.27.1756591241879;
+        Sat, 30 Aug 2025 15:00:41 -0700 (PDT)
+Received: from localhost.localdomain ([2a0d:e487:68e:c28d:1818:9595:da56:53b9])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7fc16341f1asm420896085a.65.2025.08.30.15.00.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 30 Aug 2025 15:00:41 -0700 (PDT)
+From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+To: tony@atomide.com,
+	robh@kernel.org
+Cc: uri.mashiach@compulab.co.il,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	shuah@kernel.org,
+	jihed.chaibi.dev@gmail.com
+Subject: [PATCH] ARM: dts: omap: am335x-cm-t335: Remove unused mcasp num-serializer property
+Date: Sat, 30 Aug 2025 23:59:57 +0200
+Message-Id: <20250830215957.285694-1-jihed.chaibi.dev@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250828-pinctrl-gpio-pinfuncs-v6-0-c9abb6bdb689@linaro.org>
-In-Reply-To: <20250828-pinctrl-gpio-pinfuncs-v6-0-c9abb6bdb689@linaro.org>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sat, 30 Aug 2025 11:19:18 +0300
-X-Gm-Features: Ac12FXwW6CW7deBsm3Aef2wv7I2Olg4IsebLLUGVz2bUvR7gVeqwu6XUXgRk6VE
-Message-ID: <CAHp75Vd+q5NZ=4YSouU-EdbR4TZf7S8PGqR0B0HJG8DkVKKtAg@mail.gmail.com>
-Subject: Re: [PATCH v6 00/15] pinctrl: introduce the concept of a GPIO pin
- function category
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Chen-Yu Tsai <wenst@chromium.org>, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 28, 2025 at 7:00=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
- wrote:
->
-> Problem: when pinctrl core binds pins to a consumer device and the
-> pinmux ops of the underlying driver are marked as strict, the pin in
-> question can no longer be requested as a GPIO using the GPIO descriptor
-> API. It will result in the following error:
->
-> [    5.095688] sc8280xp-tlmm f100000.pinctrl: pin GPIO_25 already request=
-ed by regulator-edp-3p3; cannot claim for f100000.pinctrl:570
-> [    5.107822] sc8280xp-tlmm f100000.pinctrl: error -EINVAL: pin-25 (f100=
-000.pinctrl:570)
->
-> This typically makes sense except when the pins are muxed to a function
-> that actually says "GPIO". Of course, the function name is just a string
-> so it has no meaning to the pinctrl subsystem.
->
-> We have many Qualcomm SoCs (and I can imagine it's a common pattern in
-> other platforms as well) where we mux a pin to "gpio" function using the
-> `pinctrl-X` property in order to configure bias or drive-strength and
-> then access it using the gpiod API. This makes it impossible to mark the
-> pin controller module as "strict".
->
-> This series proposes to introduce a concept of a sub-category of
-> pinfunctions: GPIO functions where the above is not true and the pin
-> muxed as a GPIO can still be accessed via the GPIO consumer API even for
-> strict pinmuxers.
->
-> To that end: we first clean up the drivers that use struct function_desc
-> and make them use the smaller struct pinfunction instead - which is the
-> correct structure for drivers to describe their pin functions with. We
-> also rework pinmux core to not duplicate memory used to store the
-> pinfunctions unless they're allocated dynamically.
->
-> First: provide the kmemdup_const() helper which only duplicates memory
-> if it's not in the .rodata section. Then rework all pinctrl drivers that
-> instantiate objects of type struct function_desc as they should only be
-> created by pinmux core. Next constify the return value of the accessor
-> used to expose these structures to users and finally convert the
-> pinfunction object within struct function_desc to a pointer and use
-> kmemdup_const() to assign it. With this done proceed to add
-> infrastructure for the GPIO pin function category and use it in Qualcomm
-> drivers. At the very end: make the Qualcomm pinmuxer strict.
+The dtbs_check validation for am335x-cm-t335.dtb flags an error
+for an unevaluated 'num-serializer' property in the mcasp0 node.
 
-Note mainly for Linus and Bart:
-I agree with the patches 1..11, but starting from 12 needs more
-discussion. That said, I hope Linus can apply the first 11 ones to
-make it easier to continue with the rest.
+This property is obsolete; it is not defined in the davinci-mcasp-audio
+schema and is not used by the corresponding (or any) driver.
 
---=20
-With Best Regards,
-Andy Shevchenko
+Remove this unused property to fix the schema validation warning.
+
+Fixes: 48ab364478e77 ("ARM: dts: cm-t335: add audio support")
+Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+---
+ arch/arm/boot/dts/ti/omap/am335x-cm-t335.dts | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-cm-t335.dts b/arch/arm/boot/dts/ti/omap/am335x-cm-t335.dts
+index 06767ea164b..ece7f7854f6 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-cm-t335.dts
++++ b/arch/arm/boot/dts/ti/omap/am335x-cm-t335.dts
+@@ -483,8 +483,6 @@ &mcasp1 {
+ 
+ 		op-mode = <0>;          /* MCASP_IIS_MODE */
+ 		tdm-slots = <2>;
+-		/* 16 serializers */
+-		num-serializer = <16>;
+ 		serial-dir = <  /* 0: INACTIVE, 1: TX, 2: RX */
+ 			0 0 2 1 0 0 0 0 0 0 0 0 0 0 0 0
+ 		>;
+-- 
+2.39.5
+
 
