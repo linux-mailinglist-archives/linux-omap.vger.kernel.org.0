@@ -1,138 +1,126 @@
-Return-Path: <linux-omap+bounces-4409-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4410-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F189B3BD8A
-	for <lists+linux-omap@lfdr.de>; Fri, 29 Aug 2025 16:26:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 961A9B3C905
+	for <lists+linux-omap@lfdr.de>; Sat, 30 Aug 2025 10:05:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29AD6A60848
-	for <lists+linux-omap@lfdr.de>; Fri, 29 Aug 2025 14:26:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54500207DB4
+	for <lists+linux-omap@lfdr.de>; Sat, 30 Aug 2025 08:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D41A53203A0;
-	Fri, 29 Aug 2025 14:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9511286408;
+	Sat, 30 Aug 2025 08:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="mnW7oRCJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OWCttz1i"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A040B32039B;
-	Fri, 29 Aug 2025 14:26:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA02F21B185;
+	Sat, 30 Aug 2025 08:05:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756477567; cv=none; b=XVjVT4YdnyKcoosJJSEOp6MI18wQCGfIQOhE4Ep0jLLLSiXSYwaq6ybVaSC4QHpHBLpmhJeBEgXpWaK38Jd6/4+a61dGgfAZYpuyx0MDxXroeJIy8VpBqkHjq0T+udvjGvA55fm68fQuCk1FuQkYq5wVmasPyKUjK8C7JYsmlzA=
+	t=1756541117; cv=none; b=beMi2nv1wxvcZ/XkMcgbSqa1YM7ExmFzUlpbBPh4cB8dIRDk+ICDW2jMQUueJBXOjwH0F5B8W7kwXpROJCqpXINA38FySSt5zYkhWUAth7pjNV5kQtX7rRo3nPMSvt3t5+h+24A41n7f19SxCklDgGSicObV2UihcPCGPqE7iUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756477567; c=relaxed/simple;
-	bh=ytJh8ZCy8tEaP76386T3hFJ2OXwDtsERk0uOeSU53jM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=hAKBNM6e5jKq4NdkJgsJcn/vTyC/KAjjAli9aga0n0eVQjF4e+5LNGYijmO7Kw3izN5jH2Vgbn6NzJtx4gXnaSVDctwZkLuzj8anpBpEm+6B/DQ6Tqhaza69yJovWG5ZZ9+K3LzRjrY0HxxrtI8IadcKRvZcxHwCvtqA9QCacCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=mnW7oRCJ; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57TEPeK62231821;
-	Fri, 29 Aug 2025 09:25:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1756477540;
-	bh=gbrsqx4gDML3+k24eHm3pe6l6WAxFCQb8s7HbzOlaxk=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=mnW7oRCJ4ahfphYVqeap1E7m+qt+4GpsOSMK2pL9/GnuqLUhIM8tM+SMeQjelwySO
-	 rHUmTxKFn5ELJHHt6pAItRGxECrMDg68G/TQPcGDTqar+bhz6g1hPK9fUmz7fXZak5
-	 j2be4mmkBnlK3piuSHUsFrqWoMTnyjDm3GqZ1DiU=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57TEPeBE3704761
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Fri, 29 Aug 2025 09:25:40 -0500
-Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Fri, 29
- Aug 2025 09:25:40 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Fri, 29 Aug 2025 09:25:40 -0500
-Received: from [10.249.141.75] ([10.249.141.75])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57TEPaJ12196116;
-	Fri, 29 Aug 2025 09:25:37 -0500
-Message-ID: <bea3ce38-b78a-4ed2-a128-3f6643308adb@ti.com>
-Date: Fri, 29 Aug 2025 19:55:36 +0530
+	s=arc-20240116; t=1756541117; c=relaxed/simple;
+	bh=E+3FytFWpN13QNaZlIP9PT23YkoDdof1b13hg+sNa10=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KXg9bYg2G4O+N7Si7/3SCG4M2xFcY0/qDX/Goahhb0fG9vvJkl+bFoqYZ7AkGnG3QxWiYxj6LyavefyNbZ96W+x+WOv/+dMXHmoVVIAhR/arJSZ5kUw6jqB4yV9nljm85LRb9yWt6sFiyrvcWgC1U3amD2ovTl8HwzboZixd79I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OWCttz1i; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-afeceee8bb1so421738966b.3;
+        Sat, 30 Aug 2025 01:05:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756541114; x=1757145914; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E+3FytFWpN13QNaZlIP9PT23YkoDdof1b13hg+sNa10=;
+        b=OWCttz1idIoD0VnsSHFGIawRXJFYgGlr1IsFW5L65nEQ2+rYy0cZ31g5jNyBrLABOo
+         5hbz+t8YtsXhYYiuNy1ZlRlFXMqfzEBx6XgAPA8pjWkUM72j2g6BVF+160+JVuC6vhmN
+         fpnRCewYZujadFszMCKLa382P8UIVOIOsUKAJeqTpW4f9gMw54tEIpem1kc/DIzQnMyv
+         CWGdfilRifCnzpNS3iJiATZtxTJsYoJBuaptC328zBxTQ3EZBQqEQUDGZeeSyXh8Oz3d
+         bf7ONrj/gb2xfcoekvf2DiOUO/bX13LtqJL5TW55DUsnZ2brvp1pYbverT/kaj/cGKdt
+         m5PQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756541114; x=1757145914;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=E+3FytFWpN13QNaZlIP9PT23YkoDdof1b13hg+sNa10=;
+        b=VcAhQPrfOLv8LXg3m0EZQWxedyNB0S0CjLiZQqK1Mz+ACiNYyaVURxvW6Yzc2auDaD
+         FCsVC89+3519zmw5uEb8jhfKipgWld2FfxisQz+7mdu3Ee95vitwBiZxaYPTKHIZdGdD
+         UEDK+9alQifsAdxc+tPMcE2hxmceJFWqWDokhSykzwxLm7SmaIA0w9Xm2LTwd24hr1tE
+         9uBGjD5i+gVWl2klDIcVATWXpBMp9MKNbAVxKKd7dzEtc66elTG0VvhKsLBpxyL6icpx
+         BP02yivy/uiksDHEocZ2OhwxAI95F9kPhALBtK9ZNC3bb3jxVTczSf9XpGjlEJo87NtB
+         Pjbg==
+X-Forwarded-Encrypted: i=1; AJvYcCU+wP2t9w4C9MDx8bCjeG9XxWAAo/8b6AVfUxeOXlkK7ppQO+kDDwEycAW5SolbktEhVEoRG2UysjC0fUbB@vger.kernel.org, AJvYcCUXI+sPMYtg485TDQanhuYWVwMyKVr8MF4t+LSN4ED5s2EcAjaqC5OaHGHQTTQ8WMRRuFjWk82tuCoboykf+wyk@vger.kernel.org, AJvYcCUmmXCsQ+TSou4R/2bwtDRhDPGoD6wZ+FG3ntD3IZYu1PcvIa17n2vUR/tY4tptv5gfvElGvB2Jlqwilw==@vger.kernel.org, AJvYcCVjZO+WVMqoeuVyXw4GRTqCB/3rauHwTuW0mr10JhvyC7ViLrxRfq0k+FTgNAxRhkTx2rN8cakc53wcFA==@vger.kernel.org, AJvYcCWCoy0HamBYezqdodix7IQo5nOBMmfkbfGTznwitFUoJIKnkZ5gWZGa0dVW0I6+lIFIKbcFsbzG1ed2JExD1J6+A00=@vger.kernel.org, AJvYcCXi1qMLwiJ9uzcUURLMIvHXQndaUtuQe+Euwr0uzQLKyHGoDpj4kMDq/n7Jyk6xFxIYE2Uh5ARnw/RIEA==@vger.kernel.org, AJvYcCXvaxj+NXAiZMudh1Od+pz4mgmWAdl28dX6/IoZucd7DoFqzy8JAzHjHEg5lHBHXu/H+kNe7946F2M2/lMY@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3A7v62H8aMswOsoCZQXYkweYah+OfSh/udtmcXJvQWHAkk0GY
+	ZeafaQKNicV1nil93d8BmEEgAQYixGYwNV7rYiiA1tUUPzdFK5bJTLM1gmXd61Z1rYYDFnC2Fl5
+	RI9g79Ny5xfM4jjmSUETESjUvdVk4UgU=
+X-Gm-Gg: ASbGncubCSj6ETjgY1Zef7OBfHA0X2Mg3K8kCNROOFhuySp7lY2p9LHAzsc+VvsedaN
+	IA/Z/m/nlFHyFSZfwDoeBLO8UQYDkVUxvSAgPHlWIFQkn5YhfXcCnR+SjKk39O/p75A1UrLvoau
+	Z3XBA93wLiWDbh005j47p6l85RR3bBsIXbypWOJ4pyA0qE4KqmOIGhovj3MHZx5CsKk0K+Inpv/
+	caekSU=
+X-Google-Smtp-Source: AGHT+IGzflFMFHhQCk11BPmcxfewbn8R9ACv8Yo0SSn9TtnTW1JgawjqxVwsmdBQr0ZCbodUJMXZIPy39a0Dt37TD0k=
+X-Received: by 2002:a17:907:7244:b0:af9:6e2b:f30c with SMTP id
+ a640c23a62f3a-b01d972f530mr112838566b.34.1756541113922; Sat, 30 Aug 2025
+ 01:05:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] arm: dts: Use DMTimer as Clocksource instead of
- counter_32k
-To: Anurag Dutta <a-dutta@ti.com>, <aaro.koskinen@iki.fi>,
-        <andreas@kemnade.info>, <khilman@baylibre.com>, <rogerq@kernel.org>,
-        <tony@atomide.com>
-CC: <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <vigneshr@ti.com>, <u-kumar1@ti.com>
-References: <20250829092947.855974-1-a-dutta@ti.com>
- <20250829092947.855974-3-a-dutta@ti.com>
-Content-Language: en-US
-From: "Kumar, Udit" <u-kumar1@ti.com>
-In-Reply-To: <20250829092947.855974-3-a-dutta@ti.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+References: <20250828-pinctrl-gpio-pinfuncs-v6-0-c9abb6bdb689@linaro.org> <20250828-pinctrl-gpio-pinfuncs-v6-4-c9abb6bdb689@linaro.org>
+In-Reply-To: <20250828-pinctrl-gpio-pinfuncs-v6-4-c9abb6bdb689@linaro.org>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sat, 30 Aug 2025 11:04:37 +0300
+X-Gm-Features: Ac12FXzW7SA_uUOkcPEFLfZfGLYsYzzZVOKlWfYhU6akvDLYnA0W6YgK2rZDIDs
+Message-ID: <CAHp75Vci1uAcA9ahofn95hxufa+Yi1Fjt4w74HSObQq-Rz5zMQ@mail.gmail.com>
+Subject: Re: [PATCH v6 04/15] pinctrl: mediatek: mt7988: use PINCTRL_PIN_FUNCTION()
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Chen-Yu Tsai <wenst@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-On 8/29/2025 2:59 PM, Anurag Dutta wrote:
-> From: Sinthu Raja <sinthu.raja@ti.com>
-
-Please check subject of patch
-
-
-> Clock drift of approximately 500 ppm is observed with 'counter_32k'
-> as clocksource. Clock drift is seen because 'counter_32k' is running
-> with 32786Hz frequency instead it should run with 32768Hz. Use DMTimer as
-> clocksource, which is running at 32768Hz to fix the clock drift issue.
+On Thu, Aug 28, 2025 at 7:00=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
+ wrote:
 >
-> Signed-off-by: Sinthu Raja <sinthu.raja@ti.com>
-> Signed-off-by: Anurag Dutta <a-dutta@ti.com>
-> ---
->   arch/arm/boot/dts/ti/omap/am57xx-beagle-x15.dts | 9 +++++++++
->   arch/arm/boot/dts/ti/omap/dra7-l4.dtsi          | 2 +-
->   2 files changed, 10 insertions(+), 1 deletion(-)
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 >
-> diff --git a/arch/arm/boot/dts/ti/omap/am57xx-beagle-x15.dts b/arch/arm/boot/dts/ti/omap/am57xx-beagle-x15.dts
-> index 0a8b16505ed9..83009883277e 100644
-> --- a/arch/arm/boot/dts/ti/omap/am57xx-beagle-x15.dts
-> +++ b/arch/arm/boot/dts/ti/omap/am57xx-beagle-x15.dts
-> @@ -36,3 +36,12 @@ &mmc2 {
->   &phy1 {
->   	max-speed = <100>;
->   };
-> +
-> +&timer12_target {
-> +	ti,no-reset-on-init;
-> +	ti,no-idle;
-> +};
-> +
-> +&counter32k {
-> +	status = "disabled";
-> +};
-> diff --git a/arch/arm/boot/dts/ti/omap/dra7-l4.dtsi b/arch/arm/boot/dts/ti/omap/dra7-l4.dtsi
-> index ba7fdaae9c6e..a6ac4fd43b54 100644
-> --- a/arch/arm/boot/dts/ti/omap/dra7-l4.dtsi
-> +++ b/arch/arm/boot/dts/ti/omap/dra7-l4.dtsi
-> @@ -4439,7 +4439,7 @@ segment@20000 {					/* 0x4ae20000 */
->   			 <0x0000c000 0x0002c000 0x001000>,	/* ap 29 */
->   			 <0x0000f000 0x0002f000 0x001000>;	/* ap 32 */
->   
-> -		target-module@0 {			/* 0x4ae20000, ap 19 08.0 */
-> +		timer12_target: target-module@0 {			/* 0x4ae20000, ap 19 08.0 */
+> We have a dedicated initializer macro for defining pin functions for
+> mediatek drivers so use it here.
 
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
 
-you can reduce tab between { and comments
-
-
->   			compatible = "ti,sysc-omap4-timer", "ti,sysc";
->   			reg = <0x0 0x4>,
->   			      <0x10 0x4>;
+--=20
+With Best Regards,
+Andy Shevchenko
 
