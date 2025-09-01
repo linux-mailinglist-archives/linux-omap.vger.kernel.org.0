@@ -1,180 +1,101 @@
-Return-Path: <linux-omap+bounces-4431-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4432-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6396BB3DD78
-	for <lists+linux-omap@lfdr.de>; Mon,  1 Sep 2025 11:02:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A10F9B3DFE2
+	for <lists+linux-omap@lfdr.de>; Mon,  1 Sep 2025 12:15:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9AE57AE9D2
-	for <lists+linux-omap@lfdr.de>; Mon,  1 Sep 2025 09:00:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FDA7178B53
+	for <lists+linux-omap@lfdr.de>; Mon,  1 Sep 2025 10:15:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7453D3009D9;
-	Mon,  1 Sep 2025 08:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EF9B301493;
+	Mon,  1 Sep 2025 10:15:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="QA3NRp8a"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C343002DC;
-	Mon,  1 Sep 2025 08:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483901AB6F1;
+	Mon,  1 Sep 2025 10:15:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756717153; cv=none; b=W7ACWeXGCjk1Vv+2xRpZCmUXteXTuf7xN8Tv/7eWJ8TgvdEG1BB3V3yJ0ZZqL5RRDce6YHrFc3IYqH1YvgQikZCD80RdjYd4Zd7ssh9Qoyes9JlzWZjfrWxndpOyY1d65Nvr9ApC654ZD00zp9oBBloH5XHxcdqJg4hjIZG8sSc=
+	t=1756721747; cv=none; b=kfHKEhmyBBC4/dYYpDtmTqNMmUtflRMr+rXDcgVMNt2h27odg7F7tX4IU+feNXGn6vQvQhihBCPOxgfXDXxUXApiOuMe9nXhT6KSMSY7yQgV12bo3E6IaMQJt609u/wAHGmIfG151nAAOzJdFavS/gb26nS+7af/o1X3xsz2uVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756717153; c=relaxed/simple;
-	bh=4tj3hkSdGBHU2nCv4WncFZkMvmh6Z1BDT7S6gxT4ks0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mxA8AlW/SpI8yYB8+UVet4rd3W+0C5s2wPRXRTApBHxvzkwqBq05I75nmyswhm4W3HkaBI0cJCZ5leczyB58Bu9OpopGJtbz4PRg8XF1iSxd07pPo18L8uXcj8IZ/xn9zlarj/QSlyygGCTlb4Os2YGyC6DO2qwFWkf0i0cLRR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: e86bfae4871111f0b29709d653e92f7d-20250901
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:9856c3cb-6274-461f-bd60-bd9e3453544a,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:6493067,CLOUDID:1f38d007408be91faa64e7344a36a8e5,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850,TC:nil,Content:0|50,EDM:-3
-	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
-	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: e86bfae4871111f0b29709d653e92f7d-20250901
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1266094301; Mon, 01 Sep 2025 16:59:03 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id B89CBE008FA7;
-	Mon,  1 Sep 2025 16:59:02 +0800 (CST)
-X-ns-mid: postfix-68B56055-952872770
-Received: from localhost.localdomain (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id C0DDDE008FA8;
-	Mon,  1 Sep 2025 16:58:52 +0800 (CST)
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-To: "Rafael J . wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Eduardo Valentin <edubezval@gmail.com>,
-	Keerthy <j-keerthy@ti.com>
-Cc: Ben Horgan <ben.horgan@arm.com>,
-	zhenglifeng <zhenglifeng1@huawei.com>,
-	Zhang Rui <rui.zhang@intel.com>,
-	Len Brown <lenb@kernel.org>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Beata Michalska <beata.michalska@arm.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Pavel Machek <pavel@kernel.org>,
-	Sumit Gupta <sumitg@nvidia.com>,
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	linux-pm@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	intel-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Zihuan Zhang <zhangzihuan@kylinos.cn>
-Subject: [PATCH v3 12/12] PM: EM: Use scope-based cleanup helper
-Date: Mon,  1 Sep 2025 16:57:48 +0800
-Message-Id: <20250901085748.36795-13-zhangzihuan@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
-References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
+	s=arc-20240116; t=1756721747; c=relaxed/simple;
+	bh=jOcRK6379zTJfEh897Z9q5lHmAZiy5/QlE4nfFHAOTE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=i+9Pn+cdP6PBIJPSpf48bQ9cnHVdEJw5Ei2JXb/GFNsZyB0nZ6Ky8FnjsNK43SrxZ7EWsvcoWFS4fwgjLX5H+wvr6h4D7q3yO1iseSoEq7LVK8utFONIjzVeNw1AocY2bWweRW6+HipbAV3ZCWkTNuwoRoNxtvCj6PGrGAvZfJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=QA3NRp8a; arc=none smtp.client-ip=198.47.19.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
+	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 581AFTdC2293495;
+	Mon, 1 Sep 2025 05:15:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1756721729;
+	bh=iHiF28Jb+6m7hdcjEM9alaxSTeWIxEGd2Xv92zrZtJ4=;
+	h=From:To:CC:Subject:Date;
+	b=QA3NRp8a/Zzst4gQ5MA20xx+Bk5+xyjfnVMd8zAtBnSD9vfxIJCQKx6sXPaeCPgrI
+	 B6kPFzLNZm0BinydFYEq5S/1KmrEODyVdYmBu7nJfSGeqtmHIyI3JMhMlP/RqekbrM
+	 WULXDK22ybRboUwHdtbZepSmgF8ZxY+yVL671x5o=
+Received: from DFLE110.ent.ti.com (dfle110.ent.ti.com [10.64.6.31])
+	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 581AFT871475706
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Mon, 1 Sep 2025 05:15:29 -0500
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Mon, 1
+ Sep 2025 05:15:29 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Mon, 1 Sep 2025 05:15:29 -0500
+Received: from a-dutta.dhcp.ti.com (a-dutta.dhcp.ti.com [10.24.68.237])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 581AFPrY2047319;
+	Mon, 1 Sep 2025 05:15:26 -0500
+From: Anurag Dutta <a-dutta@ti.com>
+To: <aaro.koskinen@iki.fi>, <andreas@kemnade.info>, <khilman@baylibre.com>,
+        <rogerq@kernel.org>, <tony@atomide.com>
+CC: <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <u-kumar1@ti.com>, <vigneshr@ti.com>
+Subject: [PATCH v2 0/2] AM57 timer fixes
+Date: Mon, 1 Sep 2025 15:45:23 +0530
+Message-ID: <20250901101525.1090334-1-a-dutta@ti.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-annotation for policy references. This reduces the risk of reference
-counting mistakes and aligns the code with the latest kernel style.
+Hi all
+This series introduces a couple of fixes for the am57 board viz.
+1. Add DRA7 SoC matching to avoid probe failures for timers
+2. Use DMtimer as clocksource to avoid using 32k counter due to
+incorrect frequency.
 
-No functional change intended.
+logs:
+https://gist.github.com/anuragdutta731/9366b4e582f7adb86e40ede1add1c79c
 
-Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
----
- kernel/power/energy_model.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+Changelog: v1:
+1. Modified commit messages and subject according to review comments
 
-diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
-index ea7995a25780..852d48039ce2 100644
---- a/kernel/power/energy_model.c
-+++ b/kernel/power/energy_model.c
-@@ -451,7 +451,7 @@ static void
- em_cpufreq_update_efficiencies(struct device *dev, struct em_perf_state =
-*table)
- {
- 	struct em_perf_domain *pd =3D dev->em_pd;
--	struct cpufreq_policy *policy;
-+	struct cpufreq_policy *policy __free(put_cpufreq_policy);
- 	int found =3D 0;
- 	int i, cpu;
-=20
-@@ -479,8 +479,6 @@ em_cpufreq_update_efficiencies(struct device *dev, st=
-ruct em_perf_state *table)
- 			found++;
- 	}
-=20
--	cpufreq_cpu_put(policy);
--
- 	if (!found)
- 		return;
-=20
-@@ -787,21 +785,20 @@ static void em_check_capacity_update(void)
-=20
- 	/* Check if CPUs capacity has changed than update EM */
- 	for_each_possible_cpu(cpu) {
--		struct cpufreq_policy *policy;
-+		struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
-+			cpufreq_cpu_get(cpu);
- 		struct em_perf_domain *pd;
- 		struct device *dev;
-=20
- 		if (cpumask_test_cpu(cpu, cpu_done_mask))
- 			continue;
-=20
--		policy =3D cpufreq_cpu_get(cpu);
- 		if (!policy) {
- 			pr_debug("Accessing cpu%d policy failed\n", cpu);
- 			schedule_delayed_work(&em_update_work,
- 					      msecs_to_jiffies(1000));
- 			break;
- 		}
--		cpufreq_cpu_put(policy);
-=20
- 		dev =3D get_cpu_device(cpu);
- 		pd =3D em_pd_get(dev);
---=20
-2.25.1
+Sinthu Raja (2):
+  bus: ti-sysc: Add DRA7 SoC matching
+  ARM: dts: ti: omap: Use DMTimer as Clocksource instead of counter_32k
+
+ arch/arm/boot/dts/ti/omap/am57xx-beagle-x15.dts | 9 +++++++++
+ arch/arm/boot/dts/ti/omap/dra7-l4.dtsi          | 2 +-
+ drivers/bus/ti-sysc.c                           | 3 ++-
+ 3 files changed, 12 insertions(+), 2 deletions(-)
+
+-- 
+2.34.1
 
 
