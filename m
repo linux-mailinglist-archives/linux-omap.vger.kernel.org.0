@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-4483-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4484-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0730B4091B
-	for <lists+linux-omap@lfdr.de>; Tue,  2 Sep 2025 17:38:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2AC9B409E8
+	for <lists+linux-omap@lfdr.de>; Tue,  2 Sep 2025 17:57:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48032162A8D
-	for <lists+linux-omap@lfdr.de>; Tue,  2 Sep 2025 15:38:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96217542E52
+	for <lists+linux-omap@lfdr.de>; Tue,  2 Sep 2025 15:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08AF5322C95;
-	Tue,  2 Sep 2025 15:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6D53314AC;
+	Tue,  2 Sep 2025 15:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zh70MZgO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QCpm0nFA"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BB825EFBF;
-	Tue,  2 Sep 2025 15:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0BA32779E;
+	Tue,  2 Sep 2025 15:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756827518; cv=none; b=daAJtnJvr5z/X7bllSGTeDcE24DPdHUJ71brlnWJaYzsDrv+j8+/xpeHmXrmpQ1nHM3C9x6ZGcOul7YYVy5fXxRcnnJrKoW701RH27+5OjvkdCgf69XgkGWVKXHpZVpjOQEuevBbkAxiEy9jWQZK1AyKbRTdOEVVKAlMINTe6qw=
+	t=1756828655; cv=none; b=fzteJQ1ZF8DwHUO9qnuqMbpkIGwJwELvuQKgJsu5ynrboPaYPBlSBHam+Ip1MkbiUYRQYSsEfTcFMur2jcwes4qRzXN7iT0bSYQul2xJpN+bNDQNoJFB/jx7FzQal6oZs+BMBgXPJZvi140g2DA/HGKrwCoiiUkePbj4lhw7YXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756827518; c=relaxed/simple;
-	bh=v+DuYfBUiGbE23dCrrZocBSYiEeU9i6PmQBrfDGbt+c=;
+	s=arc-20240116; t=1756828655; c=relaxed/simple;
+	bh=oulaMx6/URE69aku7O02WZT2LJyGeZwWW9oibZaXKh0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ou0TzRA4lX6dB1qFaYy02kTJO24tBLrVfdgoSpztcPVtaiAmofWb50ubIHxDCZhJM7LnFFSeHUgPpQrPVcYHInY4Gws3eB7uoFxn9bKnF60IWzeO8vhGFZlfSpAMywAAg2rcEChgMwYG4mlzRkQCMMMzb/YStALLr1mX18rBFq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zh70MZgO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9DD3C4CEED;
-	Tue,  2 Sep 2025 15:38:26 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=Zvtr+hnPa7gX0qTPIceTHPsCYpjnvCRl72rlm/jkeVVVs1g5mf/Pk/TtDjiaPYHLKs7ZmKmGusSRqM2a+Li35gay3aP+JGlQ6Bbbm4ju0xNEhUw5MOwPKfRxIS45RDZx6iK2i4uKkulx1gWwvM9/1OloiOj5agpCYewuE2J3Voc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QCpm0nFA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E22BC4CEED;
+	Tue,  2 Sep 2025 15:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756827517;
-	bh=v+DuYfBUiGbE23dCrrZocBSYiEeU9i6PmQBrfDGbt+c=;
+	s=k20201202; t=1756828655;
+	bh=oulaMx6/URE69aku7O02WZT2LJyGeZwWW9oibZaXKh0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Zh70MZgOxvxIxj6UMkzT706dj4grAuw+KArw+LrHivUyAmevwHRbmzsy8tdhtqckQ
-	 ctnQW14LrxH7lpGTWRcPysIxgPyheRuMy9Tnoya1qMd019iqz8ogyz/ZzskmCsRTY4
-	 F6vO7VOs9YxEPQ4KZXd48LQZlpVHk12uvjES7uMNnLSDH8kOAWc5bmmaMvxzgl8PYT
-	 QFuBANh8pcFrndFTx8KlSmz3GDHmSM2T49B2D/EK+RnKYtzD4IBBt8MHQCCaSTZdMa
-	 hyyllZ2BaEg7ss7qp0XMJFqiosZEUGgYOmQQXbvtOguQ5wDzIV/4TdwKF//sOzHuI/
-	 Cne8GehwJZyYw==
-Message-ID: <5c9f8c2e-6785-4464-b2cf-f8a6aeec42ea@kernel.org>
-Date: Tue, 2 Sep 2025 17:38:24 +0200
+	b=QCpm0nFA8OqlHw6hwDFdaR8n/MIxwCN7Hw7zPhbdV6ZnbaNRJrTDjnrK/f5OwvFCT
+	 o2fFMEgMXc3hP3ka9oJ7VgzD2MqmAi8WWtVmOCSMhGhwTDsFB7YAP1VlwEjrGxPkR0
+	 gRA0UvBQ+XMzjFv4lfHerXM5WYN0Xcsgf4uKQK1to/OuErcmrpqCNytqX9WsdTyt2y
+	 E2Ih4GmHi+UWU7owB15MuvtFfe9iwZ7xNSwYUYaZV+VTyXJMz+j0QAk9slfWfssatR
+	 FJ8iDpnwplN1DbuphLguGPmAm8UCYCJHsvu++drLD1gX65CO+pRhvzSpsCyP9a83Ef
+	 jjWNnJzVIkRRg==
+Message-ID: <b38e64cc-4971-4e71-931c-820453aa91a7@kernel.org>
+Date: Tue, 2 Sep 2025 17:57:22 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -50,44 +50,39 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 12/16] pinctrl: qcom: use generic pin function helpers
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
- Linus Walleij <linus.walleij@linaro.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Alexey Klimov <alexey.klimov@linaro.org>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
- Andy Shevchenko <andy@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
- Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>,
+Subject: Re: [PATCH v3 12/12] PM: EM: Use scope-based cleanup helper
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>,
+ "Rafael J . wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Alim Akhtar
+ <alim.akhtar@samsung.com>, Thierry Reding <thierry.reding@gmail.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>
+Cc: Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
+ Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+ Lukasz Luba <lukasz.luba@arm.com>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- NXP S32 Linux Team <s32@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Tony Lindgren <tony@atomide.com>, Haojian Zhuang
- <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Neil Armstrong <neil.armstrong@linaro.org>, Mark Brown <broonie@kernel.org>,
- linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
- linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev,
- linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <20250902-pinctrl-gpio-pinfuncs-v7-12-bb091daedc52@linaro.org>
- <aLbt2euqYQM5xXuZ@smile.fi.intel.com>
- <1034c70a-da67-4914-b23c-8d006b7611bf@kernel.org>
- <aLcM58IEH8hGYLnx@smile.fi.intel.com>
+ Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
+ <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+ Sumit Gupta <sumitg@nvidia.com>,
+ Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
+ linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
+ <20250901085748.36795-13-zhangzihuan@kylinos.cn>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -133,44 +128,41 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <aLcM58IEH8hGYLnx@smile.fi.intel.com>
+In-Reply-To: <20250901085748.36795-13-zhangzihuan@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 02/09/2025 17:27, Andy Shevchenko wrote:
-> On Tue, Sep 02, 2025 at 05:12:24PM +0200, Krzysztof Kozlowski wrote:
->> On 02/09/2025 15:15, Andy Shevchenko wrote:
->>> On Tue, Sep 02, 2025 at 01:59:21PM +0200, Bartosz Golaszewski wrote:
+On 01/09/2025 10:57, Zihuan Zhang wrote:
+> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> annotation for policy references. This reduces the risk of reference
+> counting mistakes and aligns the code with the latest kernel style.
 > 
-> ...
+> No functional change intended.
 > 
->>>> +	for (i = 0; i < soc_data->nfunctions; i++) {
->>>> +		func = &soc_data->functions[i];
->>>> +
->>>> +		ret = pinmux_generic_add_pinfunction(pctrl->pctrl, func, NULL);
->>>> +		if (ret < 0)
->>>
->>> Why not simply
->>>
->>> 		if (ret)
->>
->> Because existing code is as readable?
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> ---
+>  kernel/power/energy_model.c | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
 > 
-> I don't agree on this. And Bart explained why. So, it's an API requirement
-> after all.
+> diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
+> index ea7995a25780..852d48039ce2 100644
+> --- a/kernel/power/energy_model.c
+> +++ b/kernel/power/energy_model.c
+> @@ -451,7 +451,7 @@ static void
+>  em_cpufreq_update_efficiencies(struct device *dev, struct em_perf_state *table)
+>  {
+>  	struct em_perf_domain *pd = dev->em_pd;
+> -	struct cpufreq_policy *policy;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
 
-If pinmux_generic_add_pinfunction() was returning 0 or error code, which
-I assume you thought this function is doing, then your suggestion was
-nitpicking and existing code would be readable. Requesting (ret) for
-such case is really not helping.
+You are not improving the source code here. This is not how to use
+__free() and you clearly do not understand the source code.
 
-If, as it turns out if you looked at the code,
-pinmux_generic_add_pinfunction() returns non-error for success, your
-comment was even wrong.
+What's more, you did not use standard tools which would tell you this is
+buggy and wrong.
 
-So either you are nitpicking which is not helpful or you are finding
-fake issues which is counter productive.
-
+Don't introduce cleanup.h if you do not understand how it works.
 Best regards,
 Krzysztof
+
 
