@@ -1,74 +1,74 @@
-Return-Path: <linux-omap+bounces-4490-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4491-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D214B40EC1
-	for <lists+linux-omap@lfdr.de>; Tue,  2 Sep 2025 22:47:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA1F6B40FEB
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 00:18:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A75E11B65638
-	for <lists+linux-omap@lfdr.de>; Tue,  2 Sep 2025 20:47:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6748E700F0E
+	for <lists+linux-omap@lfdr.de>; Tue,  2 Sep 2025 22:18:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655542E88A6;
-	Tue,  2 Sep 2025 20:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 287E523B63B;
+	Tue,  2 Sep 2025 22:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T8Y7Gnac"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tV1oCHyr"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343622DECB4;
-	Tue,  2 Sep 2025 20:46:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B2A26AA93
+	for <linux-omap@vger.kernel.org>; Tue,  2 Sep 2025 22:18:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756846018; cv=none; b=obDxSM3gyLOWPJ8mVgQAx4isqFEYCnnjvl3AFMJMU6hnu4m2Ahbkol/+oY+eSs5vUsq7QMek5cz2bdyOuf4dRqlhVn8fkXNAp4uZhLz8y9i1xyZikmMyu9pqZSX0Fh1x3vq7LvIuKTHHORQyifz7WyQAXxSsB0bqb7duHrbmKn0=
+	t=1756851513; cv=none; b=NmBEUNjKYhAd1ihzlcRDUvvMeo9LtTdO1RDsMKExdPKRzdyDaBb+Iz/ZNL2xO7gqm0cEmC6ep+6K+WYXYPPpC4t7a/cS9Tr1ji/AKR68XLo3HV6XWyaD8GX5gSUmQGfQygMLDnWBlu3KRK6f7l3EETFbJWZvTPJWE4V8SucIaF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756846018; c=relaxed/simple;
-	bh=kutjVkpcvEETb1qEj2HY122cngSwuEsceeDMIRlTOiM=;
+	s=arc-20240116; t=1756851513; c=relaxed/simple;
+	bh=li67uZ6xqKQCADV810jgcapd5oaTXRr3DZZuD3FIP0o=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YlDj1sPeQt0ch6tyzhVrGFGtbT2wHzg8Ykpx+k8C6337FfzOQT6QN3gzSU/5wx91MdWJ6S9XDdpizGjiLzoG/pH54O1aameCZV4Q6i7Vz/uRQmKrn7yymQbUbr5j2u5TE22sSDZbAnr2nKTFXfbDmBXoGoBQnGv15wbw5O3FYPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T8Y7Gnac; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-afcb7ace3baso440904166b.3;
-        Tue, 02 Sep 2025 13:46:56 -0700 (PDT)
+	 To:Cc:Content-Type; b=eU/MWUxLG0sf5u4Ja4B6jK90fd3wAqkOu/vm8uR1IghnfPS485qPwXIgClO/wZQu+cuPCGAikVjLHHyZosfbzw8BTIZsE87NGK2rjVIHo4ETknU8Iyyzemvv1LYaVIUQAKnrKLEtqCqIic9RsmU6TNnO2cVPLU3mFG7VAQ6A3Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tV1oCHyr; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-55f6bb0a364so5096193e87.1
+        for <linux-omap@vger.kernel.org>; Tue, 02 Sep 2025 15:18:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756846015; x=1757450815; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1756851510; x=1757456310; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kutjVkpcvEETb1qEj2HY122cngSwuEsceeDMIRlTOiM=;
-        b=T8Y7Gnacmq4vOiGY8YqsBkmMTB3Tq4pHX6BLsj+eL8A7Yq0rXmwFbT7amtInhH2IPO
-         Yl9eB9W0SRTOM3yCvwMh8/TEVmmapxjCyGZlJOJ5mVWhUCOm+EHC96sPLSRLz0mf45hr
-         ml1me73jxUtHCB/aNPOip7svo8Frg+JLQTi4E9FysfNaIg8uasZ87S/+67txw9e9Lkep
-         qZEjHgj5EWbSQDBui5vlZh17Mn87AUud00YFD3yKrFywJ9NhVqKNBeyClKNYaTl/Fv7n
-         Rw6giI4jUeL5w/kEIBWz4vJfqJtc9MZ79Itb/GKpnooXI9lTZwK6a5lxp5S/aWBGyqNu
-         F5YQ==
+        bh=li67uZ6xqKQCADV810jgcapd5oaTXRr3DZZuD3FIP0o=;
+        b=tV1oCHyrfYmjhrmPLH533BARsrpxRbaJMmIKMNpiBU+cBcoAjdS61zjvYBmxUNSWSE
+         aLQlV49Fpv/lyTrHOgiCRClCVrQmVfAYwYrPsVja3Cz8n6w5wQljG6AStH2AXIaaAkWh
+         357LGU4MIEiI1ubmGF0VLgK+FaxVBli9M0d3co6QlJKjUJrgHwHnL9NEZVuUznqwc9CP
+         S+j1UgUlrXACUZa1nKRyhUNvDBnwf3uB1+8Wthz8opS0iYw7ry0PGN1Vq3T9FzCoyRaj
+         PFlMqIw9ZZCGI6EFQ/qIAeNKWYnpnLly2XhKcY6P5fOUspO4X9L4qxrNK5K6r/0qV1ZY
+         GXOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756846015; x=1757450815;
+        d=1e100.net; s=20230601; t=1756851510; x=1757456310;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kutjVkpcvEETb1qEj2HY122cngSwuEsceeDMIRlTOiM=;
-        b=MeXiP+dWOvp+Qvn+4P21IayjVCclGsSWtSrppFuw8lMmZwkqO5n0U68+qM/QZao6U0
-         xfBzj/fuB/AjNIZ8B6744IJx7ECSQgfwXeKixaIDk32CKrIlZYXMGHf9VZu3/s5Ytb0Q
-         ibFTS08cBLhxHn6aYJXBowzx9lhdXQRVBdyk4MLt1Gbcue6B2dYC8NwvsE20PITyMLmS
-         V99LL+5Z5LLNlD7u2mg4pVZIllvjIIdXXanbjxBqjtWNzNFn8HDpWfqsQNL+D0iTpU3v
-         DVifrilFttYrDPgenb8Gfl+c2jUMFJ3gzryuXiEeZzbJ7ZC7bYp1lbkaFnLuakmtSj6V
-         iUsw==
-X-Forwarded-Encrypted: i=1; AJvYcCU1TvCmK+n7id47Z415vcSXbK/8tf7XIG5+Y6nt3V+RzWKGgtxIMb8CDsHFUpqBmpIVgYETfxThi0c02l57@vger.kernel.org, AJvYcCVOX1dHAk8aIZIWF8UfE8AzM3dAQ82sjDmR582LD/TXJcgUAzLyUpkJPrB0dSdzSCLd05ox2zTlesrsEg==@vger.kernel.org, AJvYcCVpacStE7ESxxu+OLaLrNSkp4Y/7HeorGOKsQoTXWACcTE97LNn5p0yZ1r6FyThuBaXkGNNxyrsiP8Yww==@vger.kernel.org, AJvYcCW3K1eKLORm8BIahs8gFOcvpYxlqzipmXGB+KioQwn0aI++2kT7AhZB/E2/6CRAHVHxoqcgIWFrXyFv23q6@vger.kernel.org, AJvYcCWJDjcgX+lR/Yjk5CvZxBdaBKc0hSODdIgYao1RvTq0lg/JnMqi6tXjrBLjxdl5R0QPLONY2gWGRry9YGNkuZrS@vger.kernel.org, AJvYcCWzE2hR8/HtmQU7JNzDCGZ+qOi+WSbU2HNWovH5HuCgB7hdAx7JxcppoRols3BUGsHvdo7nRZK5lMv4z9p5akQq/T8=@vger.kernel.org, AJvYcCXhYLdvVXghPyBZ4bXGdhP6Xi6EFTmIqcNrjPbKexUlsfpmgx1DH0SfYPfml+Yi6tb73sgxdah4ol39Hw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzt8Hm2y3HRY9md8l5/peqTgNLAxdNL301e/CsrijbLxSUEB29f
-	FUj8pVRqotcgoyNN9QxHVxtdbGIFo9PsyIHPhoOktUeZGSEJNbgzxmZIUf0cxbI6fAvCjC3b4+f
-	bVt8Jc1ImuLaPECVyM3KzQjxfWCmnSrw=
-X-Gm-Gg: ASbGncsoYLFieQjMd+7fkkaXNtrVv8BNuZH9au/9u3+5xgQqknnkg2CSGgd7ZxbJezj
-	h2FZrxTDfUTaVyaqMI3jrIGqbHDc7/556ASrU0dg0XFtm9pQfOYHymgYwG4SxZoP9EdZTNQ3U+w
-	dPdVas31u4BjPivkpkuAhO6xBaZKbJMHNyrF4ZkPhoAK+JfOLqw3LX78gGzJFy0X0U6+JqVPwMs
-	RMq4rd7aBaGjRVUwQ==
-X-Google-Smtp-Source: AGHT+IG4zlhdZMe5YSuufGeqwlIQK8acaeuuvg5xL+VVOl3StpGEjjD0yfcY2w04cC3rT7k1Cl4bbDXfAthjT80xlmI=
-X-Received: by 2002:a17:906:4fca:b0:b04:6546:347e with SMTP id
- a640c23a62f3a-b0465463a5bmr50237566b.51.1756846015338; Tue, 02 Sep 2025
- 13:46:55 -0700 (PDT)
+        bh=li67uZ6xqKQCADV810jgcapd5oaTXRr3DZZuD3FIP0o=;
+        b=JuYolkXjO8e9YG1pfsvtEIM2GYMxu+0LW/+rOJCwIzJbyp6veScBCftYfRt84V9AIs
+         8KoLqCbcCjLqnr2nZ5QsZKG99PMJDAJWuVzKTksXJ/kG6wysgU6iTR8guUi7hM+Kai5G
+         rXKLjuLWYwIPQIZQZFH659LijVYWf/vv+1geWoHR7xrMKLrebWsZSbds/Ze4TVcgcegP
+         2fP2Xy9WSNh5TsFT7agpyW9V3IUvYcP22nn4k7VcNBEqNgBeL9M4HF+zYjaan+3F/9kz
+         WIndxnTSMpdfyS1+boNC3X7U8UNmuqV0piPD5nv81mxaJVUDt0HBQz7XUEO8d64p6Bsk
+         4AKw==
+X-Forwarded-Encrypted: i=1; AJvYcCWpd+w+2C7rnxjz4sCGJMqIpF1Zfh4BNdp9n0ZkKZNBKi4l9ozY9jScxU0lhsw4s6hfA74+NfBWvohs@vger.kernel.org
+X-Gm-Message-State: AOJu0YynUSiLwqmxIOBpoSVzjbiH8iV7gk3xZCirGnocGWTFe5O2U1zN
+	waxNqM4V94H2uB1JFPM6DfNCohlfdt9IB7xFSph91cOul+SDzaroK1fLEuPAynndzLokzdpScu0
+	A+3K4yKp6PhBL7lsBQ9usWih+yfriwQC+tIbkVD4TQw==
+X-Gm-Gg: ASbGncu4NWqh97GXBjoAaSV/qhskUejXePspyZ1pjsXO/BHpOqb7Kti0owNdIMSHxx/
+	xZEDl3nX7KMSI7wUqXsNPUhKzRlhTIs6oIyPMYAB/vgSG1l2awQZy+CUHXK/0wAs7aUcgiN5VAt
+	zNLiWrzejbeZzptVR/k6PS0Fl0zVtSDgldBliz0YGJTznQ0H9o1/oWQDNDv6dypwTBCpo2c/mbC
+	VLzFwQAS2I3xhqUdQ==
+X-Google-Smtp-Source: AGHT+IFb5FJ4SVuaW/MZYjqlxiCtjVdy/Gs9hCmULK5gWsYMbnHTDsvg0XfXKbqBDAFJs9xAYF0giEeS6uNYA+ao+FQ=
+X-Received: by 2002:a05:6512:3d11:b0:55f:65fc:8db5 with SMTP id
+ 2adb3069b0e04-55f708b9c56mr3711945e87.23.1756851510074; Tue, 02 Sep 2025
+ 15:18:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -76,17 +76,15 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <20250902-pinctrl-gpio-pinfuncs-v7-16-bb091daedc52@linaro.org>
- <aLcBcjvMbrxoDYoC@smile.fi.intel.com> <CAMRc=MfcFMgkNqWNZV5o0NxkAvxBTjC3vv56Cr98n0R2CkxuPw@mail.gmail.com>
-In-Reply-To: <CAMRc=MfcFMgkNqWNZV5o0NxkAvxBTjC3vv56Cr98n0R2CkxuPw@mail.gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 2 Sep 2025 23:46:18 +0300
-X-Gm-Features: Ac12FXzQiEATdvX4DXbIt31zcGrGliq36XoLvlgsSrCLd-DIw99Mu03fZo98CMc
-Message-ID: <CAHp75VcgaqnDrPH27wxfgyK6zz4RAKJQB0r7G2vbTONTxkEzTw@mail.gmail.com>
-Subject: Re: [PATCH v7 16/16] pinctrl: qcom: make the pinmuxing strict
+In-Reply-To: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 3 Sep 2025 00:18:18 +0200
+X-Gm-Features: Ac12FXw-1tPuaZxU9kVS8RfwbL5AeZ_YF1A5IdRwoR4crjvnC6JAL_oHeKPOKoA
+Message-ID: <CACRpkdZ-Toq9MziPisZCcT7zcL3rosQYZ1Jw=RWCH1KZTbeBug@mail.gmail.com>
+Subject: Re: [PATCH v7 00/16] pinctrl: introduce the concept of a GPIO pin
+ function category
 To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Linus Walleij <linus.walleij@linaro.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
 	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
 	Sean Wang <sean.wang@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
@@ -108,37 +106,37 @@ Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Linus Walleij <linus.walleij@
 	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
 	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
 	linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org, 
+	Chen-Yu Tsai <wenst@chromium.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 2, 2025 at 8:42=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl> =
+On Tue, Sep 2, 2025 at 1:59=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl> =
 wrote:
->
-> On Tue, Sep 2, 2025 at 4:38=E2=80=AFPM Andy Shevchenko
-> <andriy.shevchenko@intel.com> wrote:
-> >
-> > On Tue, Sep 02, 2025 at 01:59:25PM +0200, Bartosz Golaszewski wrote:
-> > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > >
-> > > The strict flag in struct pinmux_ops disallows the usage of the same =
-pin
-> > > as a GPIO and for another function. Without it, a rouge user-space
-> > > process with enough privileges (or even a buggy driver) can request a
-> > > used pin as GPIO and drive it, potentially confusing devices or even
-> > > crashing the system. Set it globally for all pinctrl-msm users.
-> >
-> > How does this keep (or allow) I=E6=B6=8E generic recovery mechanism to =
-work?
->
-> What even is the "generic recovery mechanism"? That's the first time
-> I'm hearing this name.
 
-"I=C2=B2C generic recovery mechanism" (I dunno why you put away the I=C2=B2=
-C keyword).
+> We have many Qualcomm SoCs (and I can imagine it's a common pattern in
+> other platforms as well) where we mux a pin to "gpio" function using the
+> `pinctrl-X` property in order to configure bias or drive-strength and
+> then access it using the gpiod API. This makes it impossible to mark the
+> pin controller module as "strict".
+>
+> This series proposes to introduce a concept of a sub-category of
+> pinfunctions: GPIO functions where the above is not true and the pin
+> muxed as a GPIO can still be accessed via the GPIO consumer API even for
+> strict pinmuxers.
 
---=20
-With Best Regards,
-Andy Shevchenko
+This is what I want for pin control, and fixes an ages old issue
+that pin control has no intrinsic awareness of if a pin is muxed
+to a function providing GPIO.
+So patches applied!
+
+Any remaining code nitpicks can be fixed in-tree, I need this
+to be able to apply the much desired Broadcom STB driver,
+so this needs to go into -next now for cooking.
+
+I also want to strictify some drivers using this, bringing GPIO
+function awareness into them, which is a good thing!
+
+Yours,
+Linus Walleij
 
