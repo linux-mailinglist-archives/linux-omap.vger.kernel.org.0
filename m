@@ -1,140 +1,147 @@
-Return-Path: <linux-omap+bounces-4447-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4448-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4BADB3FBED
-	for <lists+linux-omap@lfdr.de>; Tue,  2 Sep 2025 12:11:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4CDEB3FC8E
+	for <lists+linux-omap@lfdr.de>; Tue,  2 Sep 2025 12:33:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A26972C1916
-	for <lists+linux-omap@lfdr.de>; Tue,  2 Sep 2025 10:11:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 606454E3650
+	for <lists+linux-omap@lfdr.de>; Tue,  2 Sep 2025 10:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3134A2F3634;
-	Tue,  2 Sep 2025 10:11:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qZrp67rN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA7E2820B9;
+	Tue,  2 Sep 2025 10:33:10 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F222F360F
-	for <linux-omap@vger.kernel.org>; Tue,  2 Sep 2025 10:11:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FFC2ED148;
+	Tue,  2 Sep 2025 10:33:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756807865; cv=none; b=fNcr4L4upRGPaghZTggFRbIR9aWBJOjMh/BJsyx63ZhBRPaXVeeC/3qJI4sQCmltzHcOoBPZwtDF8DzSL3R5hMAjzl4loe1iQ/2eLDaoy3yrW8fFzA8H7YjIKiOjcbCaOzSViH/OaIIlew/4/LjaA+I1Q9667y0q6Kw3x3uWIII=
+	t=1756809190; cv=none; b=dfHHfdQ3hoh3LSRxxLZKZ4TWVjDDWJJ/aiH3H2HN+lKJaCvk2CsXrrgMZuDzn/Rp2h67h888fIhX2PhVmEcIgkpzu5TFpnK+h43UrT0zfze0rD8M64oiMWEo2VsP/5TAhfeD2860XOREhbod1BbZGNfggNNEQYJqYZJj4uFNh5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756807865; c=relaxed/simple;
-	bh=f4FSCQOOsa/4OCBJBGTowZPZFe3uwXyHE8EAIbJ1KzA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nZHGNoXyWgQJ9iZ9We3iT+ofqyNhIkbZd/iw3vk2Icbk4/Yy5AHTjIuaCNm32swmdQ/zkckhIbghPGFYzXWPoBKybCHjAr9s8PU6AkB4nm4m8IYGJlek44SxM/yCzuBN3qunkJzUBSGO3Qxw8bqySZHsqYpLyJg5gY8VVvyR2hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qZrp67rN; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-55f7ad815ceso2159659e87.3
-        for <linux-omap@vger.kernel.org>; Tue, 02 Sep 2025 03:11:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756807862; x=1757412662; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=S9/dg3rMdImtSDs9qVPDpc7idBTBiPszJRQRzWERi5Y=;
-        b=qZrp67rN8XplLKcepeAzOZpBM2vkxbddlAxns88NOS75WkWMp5a7tftIC5j31G/gZN
-         vpDQ/U8CedvYpuOl5mU5/0UiKJntFTiucGBTT5etoEDlCR/Cw768+vOUWL0oR7rtsg3X
-         ILfUyWmomFtemqMgb8+kwfc9WWGvbm507EDkPbJ0m5OrQdn4fM4jn2AXsdLIb2sROcX2
-         BMb4IDp1xaSol6aVBAs6D13/rZGFPjqgbd1ItJD6mxwj8K+XE4uoADFV/FZqioEopMwF
-         I3ojUVK6h5kNN0XS7Ib9AxJwDLyUyhe6adhZFeg2Eyo8CDhG8DFl/jFORKWPrWXxVsPf
-         dBWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756807862; x=1757412662;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=S9/dg3rMdImtSDs9qVPDpc7idBTBiPszJRQRzWERi5Y=;
-        b=akSpcYvDbQU71/y+CRvjvGEuXhhuCAFXGeS6Ah5YM3LZ2HlOZgPugXr2Do7Z2LnRIb
-         K95oxHtFpLq3EJ12N5gal0OvXi1bH9vOnAJX0UZ166BB3+yXJZjhD240GOgLlDcjHOOC
-         QMuM79TaDvS52sczNlm01WJ7v05IdG1pr9iwtMWUkMKY0QNReBPlhneWS5i+SRV5hzp7
-         AlnD8c7RrL9nC4rkFHMVtSdAwxdAZjOqy+/NI408/PsM+KzziZCcj8uibspjGA9dzwM2
-         M8fdvdFQIYvCohK1sTpCd5aV2uS/pEJIByf6alM8kO4Cqsv4uFF15xthkyuU6uFO1iaA
-         e7GQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXOvF9iItY5WLs5VZxkJtGhZ3Fv2y+QxuFBR6sD65qa9EvO9Er/UtTT15P7HHxW5cT36FnoqpAuHpgX@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFPE7qHAK8QYQlGGTRkU4YFrrCbA8R0fER4XXL+ZxG8AgrMOnV
-	IJ9Ac8WCrZlFqGCmfURzBXhZqmK2bhKQHNX2ncv6kZkTKcGZYVbz+aqhfZ7HLnPMFzCxK5fJkwZ
-	tWVlNf7OhVUtYIs5WLTcLNT3W0wiALUwqrsOPz31D2A==
-X-Gm-Gg: ASbGncu6O5P3hoFbToGSTlGvKiXT7jTMHmJ3Y3oBpblw1gOIizr2QKoQa7qSdLDxRre
-	dqJQd0/vvmAsdZiuDXk/GFygqcHIwHTe8ZJ8nQ4krZD09bzT5gK9kEBZsH0TeMu07zXMbNrg1n8
-	hbhdmlFIz4nqEoPe1qKMkKqFJk5KwjfOozUdUU2z3RQOkCXtx6pRIXfQ2QZbwCFyFaIdWKddcx9
-	gOaSA0=
-X-Google-Smtp-Source: AGHT+IGvJOVNe+LUFvOCbgL5wgN/h/Cjvl043KlTfsb1COy3EuiSQw/TerVuRTUEwrGuUBs+VE/GG3RycL486iAnqi4=
-X-Received: by 2002:a05:6512:250d:b0:55f:34e8:b1a4 with SMTP id
- 2adb3069b0e04-55f709dda1amr3184317e87.56.1756807861583; Tue, 02 Sep 2025
- 03:11:01 -0700 (PDT)
+	s=arc-20240116; t=1756809190; c=relaxed/simple;
+	bh=L8JaUs3SOhVHk302t291gHlKh5NKD5qAHGAnGijZbM4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=azXb57iSNxQajeST1qYtisZ3/3TIw215OeN1HolMp7qM+G+mSjXWrOn9KWpf9/zQgxVXA2aUUD+dybgk03VeZ3k10jX6TqJDHSyB035OI7r4p2BXiuXbPAmkIxBXMxzIX0lIcjqbpZQHnpSPAueAD857K1tLQps5KoDiBSRPnv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 3107081c87e811f0b29709d653e92f7d-20250902
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:3fbf43f8-ebc9-4b27-884e-79c619713230,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:7ac0a2afc203774c376dc034898cbd81,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 3107081c87e811f0b29709d653e92f7d-20250902
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1546738643; Tue, 02 Sep 2025 18:32:57 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id A718FE008FA3;
+	Tue,  2 Sep 2025 18:32:56 +0800 (CST)
+X-ns-mid: postfix-68B6C7D8-5510786
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 589C2E008FA2;
+	Tue,  2 Sep 2025 18:32:48 +0800 (CST)
+Message-ID: <29890791-4ddf-49c7-a4f2-0ac83e6d53c6@kylinos.cn>
+Date: Tue, 2 Sep 2025 18:32:47 +0800
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250828-pinctrl-gpio-pinfuncs-v6-0-c9abb6bdb689@linaro.org>
- <20250828-pinctrl-gpio-pinfuncs-v6-6-c9abb6bdb689@linaro.org>
- <61bad868-d976-4f49-805c-8d14d4d8b3e4@sirena.org.uk> <CAMRc=MfB_3e0sjCpV+XaKcKvit7Opk5LczH2wsxO=RftrAabjg@mail.gmail.com>
- <4a633387-08a9-43c8-81d7-488e7222aeda@sirena.org.uk> <CAMRc=Mf0dOvwsWb6uraCQXeauLYP0TqY6xsQnV3fM0w=wROW+Q@mail.gmail.com>
-In-Reply-To: <CAMRc=Mf0dOvwsWb6uraCQXeauLYP0TqY6xsQnV3fM0w=wROW+Q@mail.gmail.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 2 Sep 2025 12:10:50 +0200
-X-Gm-Features: Ac12FXw4LKCvHHNtKGBjLfwABtGCHq93WPj_v3YPD6EUsw9OMGyVKBEoUj5pgYE
-Message-ID: <CACRpkdbrRc6E5idzkdN53QPDCSGpPUfdjmFmEFsS3g+v=cB6LA@mail.gmail.com>
-Subject: Re: [PATCH v6 06/15] pinctrl: imx: don't access the pin function
- radix tree directly
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
-	Mark Brown <broonie@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 03/12] cpufreq: intel_pstate: Use scope-based cleanup
+ helper
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+ Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
+ Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+ Lukasz Luba <lukasz.luba@arm.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
+ <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+ Sumit Gupta <sumitg@nvidia.com>,
+ Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
+ linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
+ <20250901085748.36795-4-zhangzihuan@kylinos.cn>
+ <CAJZ5v0hu48NrMr6Vkjn_UyHywJMx7F5N6yWf2LiXxykZF79EKA@mail.gmail.com>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <CAJZ5v0hu48NrMr6Vkjn_UyHywJMx7F5N6yWf2LiXxykZF79EKA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 1, 2025 at 9:22=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl> =
-wrote:
-> On Mon, Sep 1, 2025 at 4:37=E2=80=AFPM Mark Brown <broonie@kernel.org> wr=
-ote:
-> > On Mon, Sep 01, 2025 at 03:20:44PM +0200, Bartosz Golaszewski wrote:
-> >
-> > > That's not a lot of info but it fails in strcmp() which - I suppose -
-> > > is the one in pinmux_func_name_to_selector(). Any chance you could
-> > > check what the value of np->name is in imx_pinctrl_parse_functions()?
-> > > Is it NULL for some reason?
-> >
-> > [    0.628245] imx8mp-pinctrl 30330000.pinctrl: np->name pinctrl
-> >
-> > https://lava.sirena.org.uk/scheduler/job/1758947#L705
->
-> Linus,
->
-> FYI: I reproduced the bug on qemu with an older ARMv7 IMX SoC. Should
-> be able to debug it and figure it out shortly.
 
-Awesome, thanks a lot for your perseverance on this important
-patch series.
+=E5=9C=A8 2025/9/1 23:17, Rafael J. Wysocki =E5=86=99=E9=81=93:
+> On Mon, Sep 1, 2025 at 10:58=E2=80=AFAM Zihuan Zhang <zhangzihuan@kylin=
+os.cn> wrote:
+>> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+>> annotation for policy references. This reduces the risk of reference
+>> counting mistakes and aligns the code with the latest kernel style.
+>>
+>> No functional change intended.
+>>
+>> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+>> ---
+>>   drivers/cpufreq/intel_pstate.c | 8 +++-----
+>>   1 file changed, 3 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_ps=
+tate.c
+>> index f366d35c5840..4abc1ef2d2b0 100644
+>> --- a/drivers/cpufreq/intel_pstate.c
+>> +++ b/drivers/cpufreq/intel_pstate.c
+>> @@ -1502,9 +1502,8 @@ static void __intel_pstate_update_max_freq(struc=
+t cpufreq_policy *policy,
+>>
+>>   static bool intel_pstate_update_max_freq(struct cpudata *cpudata)
+>>   {
+>> -       struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D c=
+pufreq_cpu_get(cpudata->cpu);
+>>
+>> -       policy =3D cpufreq_cpu_get(cpudata->cpu);
+>>          if (!policy)
+>>                  return false;
+> The structure of the code is intentional here and there's no reason to
+> change it.
 
-Linus
+
+Got it. Thanks for clarifying.
+
+So for this case the current structure is intentional -
+
+should I also avoid similar changes in other drivers?
+
 
