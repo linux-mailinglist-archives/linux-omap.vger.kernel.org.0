@@ -1,136 +1,200 @@
-Return-Path: <linux-omap+bounces-4443-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4444-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35566B3EE69
-	for <lists+linux-omap@lfdr.de>; Mon,  1 Sep 2025 21:22:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDFA6B3F425
+	for <lists+linux-omap@lfdr.de>; Tue,  2 Sep 2025 07:05:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94EB61B212A9
-	for <lists+linux-omap@lfdr.de>; Mon,  1 Sep 2025 19:23:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A98D77A6A3B
+	for <lists+linux-omap@lfdr.de>; Tue,  2 Sep 2025 05:03:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E00132A828;
-	Mon,  1 Sep 2025 19:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3DF22DF15F;
+	Tue,  2 Sep 2025 05:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="t900PpJz"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="g2UQ3clM"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A422E6CDE
-	for <linux-omap@vger.kernel.org>; Mon,  1 Sep 2025 19:22:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13CD635;
+	Tue,  2 Sep 2025 05:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756754558; cv=none; b=k38WpuqUcJcMggwtYKpZ2Z2LW7qCqbWnYCSlOFoOzvhIesm755hpTsV3gh6CRAYp73qnnEkivAQFlcnekn284LtmdNdO63gDHPiJhw+VcZN29FqS5tbbFfuDw1hmlDeuQAFC8QH5bqNF8yPn9DnDj5RzIYYWqq84eFnjNsWGxFk=
+	t=1756789512; cv=none; b=gZQ9U7o5WXXEvN12shv9zkQRJn2+StmoCCwGCW2ywZd8WHSJy5jn+YXYu8xc5mRkFEEm8FDv8LcY32z+chuERslIl7gajd+BfqNycrfuBz1xlGkoxLnI62LorBjpDhQUCrgzTJQUHrCX47rrMuTWouvvEsv9UVDFWUYiZjfAzCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756754558; c=relaxed/simple;
-	bh=bEgP0yvmX9KvAOyKB8kFlw77eqxGqe3qY7fzx2tEl08=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FxBUSkclh65wnrA++W2TS2RV516z6p7pW+mmk+45KsBSMLDncMtjM2wtHT8IDeZCgk/GB7oJqAX58cXCGR1xjFBRcNH5ugSaW38gkaMz9FM0aOV7Amm0RTKzJ9/BPqhK5MMxnMmTF7cDo8YwjFX2+VQX56jnrL7HAD/qgI+sANA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=t900PpJz; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-55f7ab2a84eso1389205e87.1
-        for <linux-omap@vger.kernel.org>; Mon, 01 Sep 2025 12:22:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756754554; x=1757359354; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i7ewcbrPHINPUvrYPT4zyhNXGIzXoRLTJHpyb8YY7mI=;
-        b=t900PpJzwxzqo3Y1GxMEGOx/cIe6LnRWPfzvbNBzJxqMURjGzVgSFAzYzWdMr16D6U
-         7W1w7wZZ0HJMoXPz7GyCCq/BsiYBWRPDcW5htfmxqYhnN8F6mlZGM+gEK1EdJOlHaYrJ
-         WKsNWBvJa6cSDSWG5CJEPYfjCdeMTcxE8h6u8zH1OFaPbiqdpDWntKrdNsePjKoODtIN
-         i7EjbzVPr6zp+ZOKNAovXYeyJnDfUoATQx54RbmBAOEuC4eAHvTFTxXZfPHolWh5NQFL
-         8Sf+gNRnIGv0aTxL4C6dmSroWmqXlYsIh7L7kcBhqrOzxxF+2OV0DrALd7xXf64j3fDu
-         MdQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756754554; x=1757359354;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i7ewcbrPHINPUvrYPT4zyhNXGIzXoRLTJHpyb8YY7mI=;
-        b=A2HoIrWbkWcbaEmS1hasKKGaCAzR1pCAOEoG4S7JzhlAdv9lOat0wRMB7lLbJWNDht
-         M+8ultBw1FLdKYLGNFScSxPGbLdfjpVx5Sak6abaNSiEMFPjH9AfgCgJN4dYtoU4x/8F
-         3jBC/UyJuPrToUXlHyKEAwIvFULId2M5zCfUfMcvcEEx0sZaJQO+rwbRutgL3LXCb6ZT
-         j8JQ7EkD0qcbUDR6wdbK/UbKjwC0yA0ykZZTcC/1taP0f+Bpd3yUBqeJV7+whYTDNwWX
-         C3BWckgdjAEDl55D+PIqjElWZ/khyW1YzBNxsnTx09BaksRvflk8cFr2aBewS9sjo/fl
-         NU4w==
-X-Forwarded-Encrypted: i=1; AJvYcCUvnjEd3nooH+jfzwTjPtLZjoT5y+mBJuFwredxyBnuW6aqv8n4sWjmrXIg0/kj6rFMqKzRz6/SPWZE@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBSniRhaxb8M0O013Pu4S+15Q+DJJUcEcAu3ibsVQpdxcdJp4V
-	MytR62vN5zFXevvP/dgHegzEFI2VbJuuSiL1gLe5JfaHuBQMvOd3ViHnXayGETmDsR4FNFwp4z4
-	gVvLB6I8Md1SOFFGSEI1J54mwl1cWjlZGiLlFP/x0nA==
-X-Gm-Gg: ASbGncsT6VbOQrUrdwGocQmM6recy00H0eXSBWeOhSxJexrjA2p60vyn79q2cdname1
-	jA8e1qEmuoebU8k/On3UAHspmwHO86eBMwBei/cVbV/u2R5cicAg1M4rrO2F9x5RE/gKtSAHMWP
-	vFcfoQP5hdVp4ZTujVel0Foqdj0CkbwK9Y+IIQG1I5p7sZOkJ361Iq8GDmIZhBZF3s3BfXIVyme
-	3Dqbkar4QrVMDhtPgeFg21hK+c28A5ApE/6xtsGLJ6Uh0msXQ==
-X-Google-Smtp-Source: AGHT+IFcWj/MxjmrVdPmxch8QritOIaLTRMlhZkDbys4s6fntW4mvCl/nwD9FPfF52jhBYUT32dL+MvS1Koz6TeQoRU=
-X-Received: by 2002:a05:6512:1051:b0:55f:4f46:9f2a with SMTP id
- 2adb3069b0e04-55f708b5e26mr2212325e87.19.1756754554484; Mon, 01 Sep 2025
- 12:22:34 -0700 (PDT)
+	s=arc-20240116; t=1756789512; c=relaxed/simple;
+	bh=4Uoz/TuOXbA3W3vKtblJsBp1uKjF8Y65YHLvdHQ3NrY=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aMVuNksFitIGlULsrlcnMaJEO+kduMUVPT4bMddJ/+liYrCYgYbAo/heTyTwjiqyfAH7YrEVdbDszB09FEKWSB0fjIikF1Bs5O2tb/ljAaQYwbzSJ1+4S6qTa5DcJPZNtm62qbrQtXJyZKb8UTTFm4+XnJNxcvI8ULYWH/sj+Yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=g2UQ3clM; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 58254rTF2907370;
+	Tue, 2 Sep 2025 00:04:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1756789493;
+	bh=KiCSG+FWn7wT91Kqc9IfCxj4YVRksH0HnJ9uZhIZXZk=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=g2UQ3clMuq7E4+YaBXRfrQeyFcjGu2XGZ63cr/Xa9Fb7qmAGyBug0jrL9nyc6FQ1/
+	 lnTgJ3XrhmFo+SGzGz3iz6j3JLAjy1NMVZ8SHv2jvomzWMDRraCrZ2g0zb4CtPFw47
+	 ccfjCfrVzsrftizgbk2+JUbIhLXj8aOc7R99tdhU=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 58254rhf3227998
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Tue, 2 Sep 2025 00:04:53 -0500
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Tue, 2
+ Sep 2025 00:04:52 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Tue, 2 Sep 2025 00:04:53 -0500
+Received: from localhost (uda0492258.dhcp.ti.com [172.24.231.84])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 58254pJh3519022;
+	Tue, 2 Sep 2025 00:04:52 -0500
+Date: Tue, 2 Sep 2025 10:34:51 +0530
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: Manivannan Sadhasivam <mani@kernel.org>
+CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <lpieralisi@kernel.org>,
+        <kwilczynski@kernel.org>, <robh@kernel.org>, <bhelgaas@google.com>,
+        <helgaas@kernel.org>, <kishon@kernel.org>, <vigneshr@ti.com>,
+        <stable@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>
+Subject: Re: [PATCH v3] PCI: j721e: Fix programming sequence of "strap"
+ settings
+Message-ID: <08b87b5f-838b-4f40-ae90-10ded134356e@ti.com>
+References: <20250829091707.2990211-1-s-vadapalli@ti.com>
+ <oztilfun77apxtjxumx4tydkcd2gsalsak4m2rvsry2oooqjna@2yvcx6cnuemm>
+ <b2fb9252-6bfc-45da-973a-31cdfcc86b3d@ti.com>
+ <z3ubracmtlq23yicbrhqjgnzrfoqheffm6cvhfnawlvbu4cmmp@ddu2o7xhw5tz>
+ <48e9d897-2cd3-48ef-b46a-635ae75f5ac6@ti.com>
+ <3wc3t6y5gzzspgfeklsqo3bupfp6gsfy6mls6t66hflcqlqsfk@cu26wv3sow4y>
+ <9d2bba15-52e4-432a-8f7f-a0f5d7c2e4ad@ti.com>
+ <7hxdcjm7evlphkldct7seytno4is7rjkx5vquvtfhpdkzxdhu6@yocrjgzciwu3>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250828-pinctrl-gpio-pinfuncs-v6-0-c9abb6bdb689@linaro.org>
- <20250828-pinctrl-gpio-pinfuncs-v6-6-c9abb6bdb689@linaro.org>
- <61bad868-d976-4f49-805c-8d14d4d8b3e4@sirena.org.uk> <CAMRc=MfB_3e0sjCpV+XaKcKvit7Opk5LczH2wsxO=RftrAabjg@mail.gmail.com>
- <4a633387-08a9-43c8-81d7-488e7222aeda@sirena.org.uk>
-In-Reply-To: <4a633387-08a9-43c8-81d7-488e7222aeda@sirena.org.uk>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Mon, 1 Sep 2025 21:22:23 +0200
-X-Gm-Features: Ac12FXzmS2jWw7xFpjYhhy0Ln3t9KFQZe_l3JIooPobPNCmkv86DLX_8q8OSWPk
-Message-ID: <CAMRc=Mf0dOvwsWb6uraCQXeauLYP0TqY6xsQnV3fM0w=wROW+Q@mail.gmail.com>
-Subject: Re: [PATCH v6 06/15] pinctrl: imx: don't access the pin function
- radix tree directly
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
-	Mark Brown <broonie@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <7hxdcjm7evlphkldct7seytno4is7rjkx5vquvtfhpdkzxdhu6@yocrjgzciwu3>
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Mon, Sep 1, 2025 at 4:37=E2=80=AFPM Mark Brown <broonie@kernel.org> wrot=
-e:
->
-> On Mon, Sep 01, 2025 at 03:20:44PM +0200, Bartosz Golaszewski wrote:
->
-> > That's not a lot of info but it fails in strcmp() which - I suppose -
-> > is the one in pinmux_func_name_to_selector(). Any chance you could
-> > check what the value of np->name is in imx_pinctrl_parse_functions()?
-> > Is it NULL for some reason?
->
-> [    0.628245] imx8mp-pinctrl 30330000.pinctrl: np->name pinctrl
->
-> https://lava.sirena.org.uk/scheduler/job/1758947#L705
+On Mon, Sep 01, 2025 at 08:15:24PM +0530, Manivannan Sadhasivam wrote:
+> On Mon, Sep 01, 2025 at 04:50:02PM GMT, Siddharth Vadapalli wrote:
+> > On Mon, Sep 01, 2025 at 12:14:51PM +0530, Manivannan Sadhasivam wrote:
+> > > On Mon, Sep 01, 2025 at 11:51:33AM GMT, Siddharth Vadapalli wrote:
 
-Linus,
+[...]
 
-FYI: I reproduced the bug on qemu with an older ARMv7 IMX SoC. Should
-be able to debug it and figure it out shortly.
+> > > > 
+> > > > If I understand correctly, are you suggesting the following?
+> > > > 
+> > > > j721e_pcie_probe()
+> > > > 	pm_runtime_set_active()
+> > > > 	pm_runtime_enable()
+> > > > 	ret = j721e_pcie_ctrl_init(pcie);
+> > > > 		/*
+> > > > 		 * PCIe Controller should be powered off here, but is there
+> > > > 		 * a way to ensure that it has been powered off?
+> > > > 		 */
+> > > > 		=> Program the strap settings and return to
+> > > > 		j721e_pcie_probe()
+> > > > 	/* Power on the PCIe Controller now */
+> > > > 	ret = pm_runtime_get_sync(dev);
+> > > 
+> > > This pm_runtime_get_sync() should be part of j721e_pcie_ctrl_init() where you
+> > > do power off, program strap and power on.
+> > > 
+> > > This should not be part of probe() as by that time, controller is already
+> > > powered on. So pm_runtime_set_active() and pm_runtime_enable() should be enough
+> > > to convey the state of the device to PM core.
+> > 
+> > I have tried out the suggestion in the following manner:
+> > 
+> > 	j721e_pcie_probe()
+> > 		...
+> > 		pm_runtime_set_active(dev);
+> > 		pm_runtime_enable(dev);
+> > 		ret = j721e_pcie_ctrl_init(pcie);
+> > 			... within j721e_pcie_ctrl_init()
+> > 			ret = pm_runtime_put_sync(dev);
+> > 			/* Program Strap Settings */
+> > 			ret = pm_runtime_get_sync(dev);
+> > 			...
+> > 		...
+> > 		exit probe
+> > 
+> > Since a 'pm_runtime_get_sync()' hasn't yet been invoked prior to the
+> > section where 'pm_runtime_put_sync()' is invoked, it leads to a ref-count
+> > underflow error at runtime. Please let me know if I am missing
+> > something.
+> > 
+> 
+> Doh... At the start of probe(), device PM usage_count will be 0. So we cannot
+> decrement it without incrementing it.
+> 
+> Could you try below sequence?
+> 
+> 	probe()
+> 	...
+> 	pm_runtime_set_active()
+> 	pm_runtime_enable()
+> 	j721e_pcie_ctrl_init()
+> 		...
+> 		pm_runtime_get() /* Just increment usage_count */
+> 		pm_runtime_put_sync() /* ask PM core to turn off */
+> 		/* program strap setting */
+> 		pm_runtime_get_sync() /* ask PM core to turn on */
+> 		pm_runtime_put_noidle() /* balance the usage_count without
+> 						suspending the device */
+> 	...
 
-Bart
+The above sequence powers off the controller at the point in time that
+the strap settings are programmed. 'pm_runtime_get_sync()' is powering
+on the controller afterwards. However, the 'pm_runtime_put_noidle()'
+at the end is causing the controller to be powered off again leading to
+a crash. Removing 'pm_runtime_put_noidle()' results in a functional
+sequence.
+
+Please consider the existing sequence prior to this patch:
+
+probe()
+	...
+	pm_runtime_enable()
+	pm_runtime_get_sync() => usage_count is 1
+	...
+	exit probe
+
+With the suggested sequence above, we have:
+
+probe()
+	...
+	pm_runtime_set_active()
+	pm_runtime_enable()
+	j721e_pcie_ctrl_init()
+		...
+		pm_runtime_get() => usage_count is 1
+		pm_runtime_put_sync() => usage_count is 0
+		/* Controller is powered off now */
+		/* Strap settings are programmed */
+		pm_runtime_get_sync() => usage_count is 1
+		/* Controller is powered on now */
+		pm_runtime_put_noidle() => usage_count is 0
+		/* Controller is powered off in a while */
+	...
+	/* Crash is observed aroung this point before probe finishes */
+
+Please let me know if the fix is to drop 'pm_runtime_put_noidle()'
+from the above sequence.
+
+Regards,
+Siddharth.
 
