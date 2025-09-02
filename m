@@ -1,149 +1,127 @@
-Return-Path: <linux-omap+bounces-4469-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4470-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E014B4026E
-	for <lists+linux-omap@lfdr.de>; Tue,  2 Sep 2025 15:17:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBC8BB4029F
+	for <lists+linux-omap@lfdr.de>; Tue,  2 Sep 2025 15:20:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2E2516E6BD
-	for <lists+linux-omap@lfdr.de>; Tue,  2 Sep 2025 13:15:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1343B188C543
+	for <lists+linux-omap@lfdr.de>; Tue,  2 Sep 2025 13:20:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 823E8303C87;
-	Tue,  2 Sep 2025 13:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4883093B8;
+	Tue,  2 Sep 2025 13:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FTIEpFsu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D15DdxP8"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A000F2FF65C;
-	Tue,  2 Sep 2025 13:15:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC8C3054E6;
+	Tue,  2 Sep 2025 13:18:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756818922; cv=none; b=pkKK5o2J1+AXdKz9feaqzrcIhbV00LC/txcbTkh8eZbQqUeeNJ3L9/EgIxo6HQU8kP/XzUgTyabpkh1+Dcw+64mcw+xkWaY/pOwcTft+QHso4wHLPHkVgpeH7Qh9Tq2M6YHEBtj2dnRW2Szxg3ZeX5/s4THD3/Ix/61g0WwjJ7g=
+	t=1756819104; cv=none; b=fX+olIjPVH+hedQPUSPy0NdRlqTrefmPi1RjVQuYVqOxb/+LHVY1E+GyWlpIwMJzcEdx8NZn7/v/9c4FwiQWkAPXthwbTOjPHKJFKtbRbR2a2ObxHMcFQ518kDscek0OrKlr569qLfTi/Dk5sm0503LIbax8UAEo2HN268m9/mA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756818922; c=relaxed/simple;
-	bh=cIei6RTUCtT55QsspDgWfZe1lPcqVs/yM9oKakcEt4M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TXBHgUDxrKAMhdJ+xv+iCQU7gWJAgdbNDB8NPRfpevifiqbSegzkdeGrlqQpUl2Nv9if77tO2tj20oFcSXao2NkNtMGEP+FOTpYOnWVXxBj0vJS/PBFgl4B/rWXKgPEkqnJM3EUi20g102aoPQIUv12yeW5nUxipkMVurAqPtTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FTIEpFsu; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756818921; x=1788354921;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=cIei6RTUCtT55QsspDgWfZe1lPcqVs/yM9oKakcEt4M=;
-  b=FTIEpFsuLv9mZ8+akStrwqn7q0K3h49PXIrkbx8Ksykja4UHhcl3M19D
-   17n1cfItwZn1D8DdsKTTZI0bt/JL4cdyAPrNIS85yJI6QthMY7z1YydGm
-   8KgU3djf9M1El7zJfFU5cvIlFcppF2cX9hvLExudeCXLxkSakQE3i6/Vj
-   JzExbneItCn/D61gR4vI3G+b+y0WOdH6FOPZmmXRlke7rgUONOG4K/UdC
-   I/0AgEAUzAsqbQsdAZZwjzR1lhvlEIb5+zowvYzjlzaulzFuILzghyDAi
-   GoW6bvSER5qEPqyrrxD18t9xJQn4yoPKnpAzVo4kHBQ7XY2ubSvFC2gVP
-   Q==;
-X-CSE-ConnectionGUID: by+Coq1TTI29NWGTOE1Uqw==
-X-CSE-MsgGUID: 1B+y3jNcRey3auUzx9UVsg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59041796"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="59041796"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 06:15:20 -0700
-X-CSE-ConnectionGUID: QF8sMWo2SGOcClSTfRIdKw==
-X-CSE-MsgGUID: FLZgbnm/Swu9LSfjg8Kdhw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="170530232"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 06:15:09 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1utQqn-0000000AhVQ-1jBt;
-	Tue, 02 Sep 2025 16:15:05 +0300
-Date: Tue, 2 Sep 2025 16:15:05 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Sean Wang <sean.wang@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
-	imx@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v7 12/16] pinctrl: qcom: use generic pin function helpers
-Message-ID: <aLbt2euqYQM5xXuZ@smile.fi.intel.com>
-References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <20250902-pinctrl-gpio-pinfuncs-v7-12-bb091daedc52@linaro.org>
+	s=arc-20240116; t=1756819104; c=relaxed/simple;
+	bh=pxvrqysOOoKqI9I+KTJC9i/jW9YZYq9VAnn8Rz0UXLU=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=tBy3FtH1X0dBGdaA26zs2MVZLjblodUOVDx1WI53PCbhekmV+iDRXhzJAOU4byAM+V92LK9UFo/LPT3zIeLpSl1mjB9b3Ul+MPiipDVgI3NsxZavHpIni/w8CPSsS+ADkXsNQY7fp3qtPLbKuNWqfQOknCYmucoSXkT+aerbx6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D15DdxP8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE23C4CEED;
+	Tue,  2 Sep 2025 13:18:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756819103;
+	bh=pxvrqysOOoKqI9I+KTJC9i/jW9YZYq9VAnn8Rz0UXLU=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=D15DdxP8SeI9EQl5M7JfcRrBRPvnfeYiorL3aDE01p9e+lOV3T8A7H+efeqmjE4lM
+	 IiWM3Nh0U1MHMhEq/tNLYaXzrDX95+zPQaSAo8hOueZAkzT1ysk7ievz2XLd848vvR
+	 UWrmZ9nuPcoIve5PDAhKCho4qHvUIsZGvSn+nkDaktl7oysEU4kZJhiGqrq6C3ghOJ
+	 P5KSxSCCqJwOEw2F985PmRaZEllhHxD4/O1pMLiyZqROU6sGJvzOlEvzbUJK2B5qSQ
+	 fpY+HJBosPRXFC9k3+7L7n8Exe4eAGJuMBkeQM+UhrWg/mJEL/bSaAf9CfAAvIHDOB
+	 h0X5wJc4QOiAQ==
+Date: Tue, 02 Sep 2025 08:18:21 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250902-pinctrl-gpio-pinfuncs-v7-12-bb091daedc52@linaro.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: tony@atomide.com, u-kumar1@ti.com, linux-omap@vger.kernel.org, 
+ andreas@kemnade.info, linux-kernel@vger.kernel.org, aaro.koskinen@iki.fi, 
+ rogerq@kernel.org, khilman@baylibre.com, vigneshr@ti.com
+To: Anurag Dutta <a-dutta@ti.com>
+In-Reply-To: <20250901101525.1090334-1-a-dutta@ti.com>
+References: <20250901101525.1090334-1-a-dutta@ti.com>
+Message-Id: <175678731411.878123.6451560095367275756.robh@kernel.org>
+Subject: Re: [PATCH v2 0/2] AM57 timer fixes
 
-On Tue, Sep 02, 2025 at 01:59:21PM +0200, Bartosz Golaszewski wrote:
+
+On Mon, 01 Sep 2025 15:45:23 +0530, Anurag Dutta wrote:
+> Hi all
+> This series introduces a couple of fixes for the am57 board viz.
+> 1. Add DRA7 SoC matching to avoid probe failures for timers
+> 2. Use DMtimer as clocksource to avoid using 32k counter due to
+> incorrect frequency.
 > 
-> With the pinmux core no longer duplicating memory used to store the
-> struct pinfunction objects in .rodata, we can now use the existing
-> infrastructure for storing and looking up pin functions in qualcomm
-> drivers. Remove hand-crafted callbacks.
+> logs:
+> https://gist.github.com/anuragdutta731/9366b4e582f7adb86e40ede1add1c79c
+> 
+> Changelog: v1:
+> 1. Modified commit messages and subject according to review comments
+> 
+> Sinthu Raja (2):
+>   bus: ti-sysc: Add DRA7 SoC matching
+>   ARM: dts: ti: omap: Use DMTimer as Clocksource instead of counter_32k
+> 
+>  arch/arm/boot/dts/ti/omap/am57xx-beagle-x15.dts | 9 +++++++++
+>  arch/arm/boot/dts/ti/omap/dra7-l4.dtsi          | 2 +-
+>  drivers/bus/ti-sysc.c                           | 3 ++-
+>  3 files changed, 12 insertions(+), 2 deletions(-)
+> 
+> --
+> 2.34.1
+> 
+> 
+> 
 
-...
 
-> +	for (i = 0; i < soc_data->nfunctions; i++) {
-> +		func = &soc_data->functions[i];
-> +
-> +		ret = pinmux_generic_add_pinfunction(pctrl->pctrl, func, NULL);
-> +		if (ret < 0)
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-Why not simply
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
-		if (ret)
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
 
-> +			return ret;
-> +	}
+  pip3 install dtschema --upgrade
 
--- 
-With Best Regards,
-Andy Shevchenko
+
+This patch series was applied (using b4) to base:
+ Base: attempting to guess base-commit...
+ Base: tags/next-20250829 (exact match)
+
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
+
+New warnings running 'make CHECK_DTBS=y for arch/arm/boot/dts/ti/' for 20250901101525.1090334-1-a-dutta@ti.com:
+
+arch/arm/boot/dts/ti/omap/am57xx-beagle-x15.dtb: serial@0 (ti,dra742-uart): {'compatible': ['ti,dra742-uart'], 'reg': [[0, 256]], 'interrupts': [[0, 69, 4]], 'clock-frequency': 48000000, 'status': ['okay'], 'dmas': [[153, 53], [153, 54]], 'dma-names': ['tx', 'rx'], 'interrupts-extended': [[1, 0, 69, 4], [154, 1016]], 'phandle': 390, '$nodename': ['serial@0']} is valid under each of {'required': ['interrupts-extended']}, {'required': ['interrupts']}
+	from schema $id: http://devicetree.org/schemas/serial/8250_omap.yaml#
+arch/arm/boot/dts/ti/omap/am57xx-beagle-x15-revc.dtb: serial@0 (ti,dra742-uart): {'compatible': ['ti,dra742-uart'], 'reg': [[0, 256]], 'interrupts': [[0, 69, 4]], 'clock-frequency': 48000000, 'status': ['okay'], 'dmas': [[153, 53], [153, 54]], 'dma-names': ['tx', 'rx'], 'interrupts-extended': [[1, 0, 69, 4], [154, 1016]], 'phandle': 389, '$nodename': ['serial@0']} is valid under each of {'required': ['interrupts-extended']}, {'required': ['interrupts']}
+	from schema $id: http://devicetree.org/schemas/serial/8250_omap.yaml#
+arch/arm/boot/dts/ti/omap/dra76-evm.dtb: ocmcram@40400000 (mmio-sram): $nodename:0: 'ocmcram@40400000' does not match '^sram(@.*)?'
+	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
+
+
+
 
 
 
