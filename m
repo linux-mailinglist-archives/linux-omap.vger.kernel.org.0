@@ -1,198 +1,191 @@
-Return-Path: <linux-omap+bounces-4522-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4523-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78C0DB4213B
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 15:23:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50CA8B42144
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 15:24:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BA7A1BC2863
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 13:23:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7D691BC29F3
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 13:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C423074B1;
-	Wed,  3 Sep 2025 13:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC993090D2;
+	Wed,  3 Sep 2025 13:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BnRrxS0J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XAqaziDS"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6072F7449;
-	Wed,  3 Sep 2025 13:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33381308F1D;
+	Wed,  3 Sep 2025 13:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756905683; cv=none; b=friwGBT28w5r1o57QfT2JpQEBmU69iociYSVIiPSYLlBh7/CZ8bPKNjwQ+O/YgqOUFwYllVmq6BTWQHGh/5XTCaFczgHZwgS6juo2H/JRHGxcVlxBZabm/MBoFTckSmjzuT+70yz2WXHJtLSukQQ3Qp2J5esruym5H1U1onhQFE=
+	t=1756905720; cv=none; b=dVkZi4K6HjnJ5IpZ00vTrqWeFcZPsoe3b3Jn4FLr8bnQCAoYGjpefjB2PTQJGaVcKjSGxzZFy0XnU/JStrHm+x7rvw7wOjG6VYwB3O+OnS7VfBYpcetInx054G+g9FpIANI6ylqWvrpQ/fnm8XNYOuudoLJJTJ0s76+cup3PiHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756905683; c=relaxed/simple;
-	bh=lBZol3zBpE9PLURdaNvaImTKk9Qw5lA3TBKTVi4cHhw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rSZ+6whA9eNl2xVq85DyKpMIt+yI+paGsERb91crBlpNqlql6OoMBkDOjNPlHm6T5c4/7dxQ7nQgmFpigm/OqXtT9bSdxmXiF3NVTxYLeA9nwn+Tq/kk5T5jy8JA1rpMmeMR2vIe1VU+VuTOqpfA5KY/P5UNMtch5ZgOaaJbJ/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BnRrxS0J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C89C4CEF0;
-	Wed,  3 Sep 2025 13:21:18 +0000 (UTC)
+	s=arc-20240116; t=1756905720; c=relaxed/simple;
+	bh=omzG/tfscg/AH0Geyyzx8NtLVl0A/Mk4tDyTPdZBMg4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NnEgVJ52V+i0qhrUuvF/6h2LD/lRK4Dn191ar4FeMPH2P3EdJynEuZZJhiuJV9PO/loNAA6Jp2r7slq+eWIIYIzRRuuvNh1rEEdQSS164+EO2yPtK+c/9jcxN62xlkVtapPsMtCW2SqsB+I5BBog59Bbi4S/q3Mn53gB1fvrayY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XAqaziDS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DCFC4CEF5;
+	Wed,  3 Sep 2025 13:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756905683;
-	bh=lBZol3zBpE9PLURdaNvaImTKk9Qw5lA3TBKTVi4cHhw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BnRrxS0Jw0KWz4Vhi0qzEoQdScbrpFv0Tv0DbeulUAa0+/CM3cfCRiifWOJb2Qkv5
-	 p5g7m85ViSnSKw0b12Ci1Nbgpt7C4K2keLr5ulinYAnVcAuJ8KqMWisiULe1hvuKMS
-	 OCjUVbnpCiVOGwQF3hejsvTlwrV7pNBWIppU1CJH2wy+nm+KasxAClb3gbp3w3XAZ1
-	 JI43v2rSwwBt3tknYO2acreeqKbJ10G7f3176exCOMt4N7RsC/zz8366Hp0ZnCIrMI
-	 EpSLpEi57i56aZHoesr2K8ErO9PacVQCXhgYHlCAr0Xyvj6Q//YsEQmscItIcSM/1Y
-	 tpIrrRCxoFyFA==
-Date: Wed, 3 Sep 2025 18:51:14 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: lpieralisi@kernel.org, kwilczynski@kernel.org, robh@kernel.org, 
-	bhelgaas@google.com, helgaas@kernel.org, kishon@kernel.org, vigneshr@ti.com, 
-	stable@vger.kernel.org, linux-pci@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, srk@ti.com
-Subject: Re: [PATCH v3] PCI: j721e: Fix programming sequence of "strap"
- settings
-Message-ID: <whinfqhjgqbbvlnuzgbukklqi6gocjji4gakqyycovrse4qq6s@6xq5imqbzvux>
-References: <20250829091707.2990211-1-s-vadapalli@ti.com>
- <oztilfun77apxtjxumx4tydkcd2gsalsak4m2rvsry2oooqjna@2yvcx6cnuemm>
- <b2fb9252-6bfc-45da-973a-31cdfcc86b3d@ti.com>
- <z3ubracmtlq23yicbrhqjgnzrfoqheffm6cvhfnawlvbu4cmmp@ddu2o7xhw5tz>
- <48e9d897-2cd3-48ef-b46a-635ae75f5ac6@ti.com>
- <3wc3t6y5gzzspgfeklsqo3bupfp6gsfy6mls6t66hflcqlqsfk@cu26wv3sow4y>
- <9d2bba15-52e4-432a-8f7f-a0f5d7c2e4ad@ti.com>
- <7hxdcjm7evlphkldct7seytno4is7rjkx5vquvtfhpdkzxdhu6@yocrjgzciwu3>
- <08b87b5f-838b-4f40-ae90-10ded134356e@ti.com>
+	s=k20201202; t=1756905719;
+	bh=omzG/tfscg/AH0Geyyzx8NtLVl0A/Mk4tDyTPdZBMg4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XAqaziDSzarlfzYhn5cPBv/P1v8z34aE1+HWNY2XifIx9e0qPG/6l4e5OskQCK9BN
+	 jwRYatbSFQmGHdWtNFQZoZtYe7gvVCOInQ7lWmNh/6WxOgVSV7YGKhFK1MyjwM8/d/
+	 KYQUA919ODtB8DOUyly2eyFB+C7LG5gD+dLU1qqFfFErf0ptuci/lMJnYtDjb3MmsL
+	 rYYYfkrPsd+3M9WoI/MgRpyV0ALNb4oxdXXDb/0GndgXqtA1Rwr/ZwlQsaIAZjEFVt
+	 4zztWGfyYcxwWVWFwu1yUjnrqrb2d0z7HeJswr0yrm1Tj+03KU2EkX1S0j+zrSHBrr
+	 aVkzyT9CK1cfg==
+Message-ID: <34b5e01e-2f4a-4d57-93ca-ab4549681b17@kernel.org>
+Date: Wed, 3 Sep 2025 15:21:48 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <08b87b5f-838b-4f40-ae90-10ded134356e@ti.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 10/10] PM: EM: Use scope-based cleanup helper
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>,
+ "Rafael J . wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Alim Akhtar
+ <alim.akhtar@samsung.com>, Thierry Reding <thierry.reding@gmail.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>
+Cc: Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
+ Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+ Lukasz Luba <lukasz.luba@arm.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
+ <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+ Sumit Gupta <sumitg@nvidia.com>,
+ Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
+ linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
+ <20250903131733.57637-11-zhangzihuan@kylinos.cn>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250903131733.57637-11-zhangzihuan@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 02, 2025 at 10:34:51AM GMT, Siddharth Vadapalli wrote:
-> On Mon, Sep 01, 2025 at 08:15:24PM +0530, Manivannan Sadhasivam wrote:
-> > On Mon, Sep 01, 2025 at 04:50:02PM GMT, Siddharth Vadapalli wrote:
-> > > On Mon, Sep 01, 2025 at 12:14:51PM +0530, Manivannan Sadhasivam wrote:
-> > > > On Mon, Sep 01, 2025 at 11:51:33AM GMT, Siddharth Vadapalli wrote:
+On 03/09/2025 15:17, Zihuan Zhang wrote:
+> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> annotation for policy references. This reduces the risk of reference
+> counting mistakes and aligns the code with the latest kernel style.
 > 
-> [...]
+> No functional change intended.
 > 
-> > > > > 
-> > > > > If I understand correctly, are you suggesting the following?
-> > > > > 
-> > > > > j721e_pcie_probe()
-> > > > > 	pm_runtime_set_active()
-> > > > > 	pm_runtime_enable()
-> > > > > 	ret = j721e_pcie_ctrl_init(pcie);
-> > > > > 		/*
-> > > > > 		 * PCIe Controller should be powered off here, but is there
-> > > > > 		 * a way to ensure that it has been powered off?
-> > > > > 		 */
-> > > > > 		=> Program the strap settings and return to
-> > > > > 		j721e_pcie_probe()
-> > > > > 	/* Power on the PCIe Controller now */
-> > > > > 	ret = pm_runtime_get_sync(dev);
-> > > > 
-> > > > This pm_runtime_get_sync() should be part of j721e_pcie_ctrl_init() where you
-> > > > do power off, program strap and power on.
-> > > > 
-> > > > This should not be part of probe() as by that time, controller is already
-> > > > powered on. So pm_runtime_set_active() and pm_runtime_enable() should be enough
-> > > > to convey the state of the device to PM core.
-> > > 
-> > > I have tried out the suggestion in the following manner:
-> > > 
-> > > 	j721e_pcie_probe()
-> > > 		...
-> > > 		pm_runtime_set_active(dev);
-> > > 		pm_runtime_enable(dev);
-> > > 		ret = j721e_pcie_ctrl_init(pcie);
-> > > 			... within j721e_pcie_ctrl_init()
-> > > 			ret = pm_runtime_put_sync(dev);
-> > > 			/* Program Strap Settings */
-> > > 			ret = pm_runtime_get_sync(dev);
-> > > 			...
-> > > 		...
-> > > 		exit probe
-> > > 
-> > > Since a 'pm_runtime_get_sync()' hasn't yet been invoked prior to the
-> > > section where 'pm_runtime_put_sync()' is invoked, it leads to a ref-count
-> > > underflow error at runtime. Please let me know if I am missing
-> > > something.
-> > > 
-> > 
-> > Doh... At the start of probe(), device PM usage_count will be 0. So we cannot
-> > decrement it without incrementing it.
-> > 
-> > Could you try below sequence?
-> > 
-> > 	probe()
-> > 	...
-> > 	pm_runtime_set_active()
-> > 	pm_runtime_enable()
-> > 	j721e_pcie_ctrl_init()
-> > 		...
-> > 		pm_runtime_get() /* Just increment usage_count */
-> > 		pm_runtime_put_sync() /* ask PM core to turn off */
-> > 		/* program strap setting */
-> > 		pm_runtime_get_sync() /* ask PM core to turn on */
-> > 		pm_runtime_put_noidle() /* balance the usage_count without
-> > 						suspending the device */
-> > 	...
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> ---
+>  kernel/power/energy_model.c | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
 > 
-> The above sequence powers off the controller at the point in time that
-> the strap settings are programmed. 'pm_runtime_get_sync()' is powering
-> on the controller afterwards. However, the 'pm_runtime_put_noidle()'
-> at the end is causing the controller to be powered off again leading to
-> a crash. Removing 'pm_runtime_put_noidle()' results in a functional
-> sequence.
-> 
-> Please consider the existing sequence prior to this patch:
-> 
-> probe()
-> 	...
-> 	pm_runtime_enable()
-> 	pm_runtime_get_sync() => usage_count is 1
-> 	...
-> 	exit probe
-> 
-> With the suggested sequence above, we have:
-> 
-> probe()
-> 	...
-> 	pm_runtime_set_active()
-> 	pm_runtime_enable()
-> 	j721e_pcie_ctrl_init()
-> 		...
-> 		pm_runtime_get() => usage_count is 1
-> 		pm_runtime_put_sync() => usage_count is 0
-> 		/* Controller is powered off now */
-> 		/* Strap settings are programmed */
-> 		pm_runtime_get_sync() => usage_count is 1
-> 		/* Controller is powered on now */
-> 		pm_runtime_put_noidle() => usage_count is 0
-> 		/* Controller is powered off in a while */
-> 	...
-> 	/* Crash is observed aroung this point before probe finishes */
-> 
-> Please let me know if the fix is to drop 'pm_runtime_put_noidle()'
-> from the above sequence.
-> 
+> diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
+> index ea7995a25780..99401678e809 100644
+> --- a/kernel/power/energy_model.c
+> +++ b/kernel/power/energy_model.c
+> @@ -451,7 +451,7 @@ static void
+>  em_cpufreq_update_efficiencies(struct device *dev, struct em_perf_state *table)
+>  {
+>  	struct em_perf_domain *pd = dev->em_pd;
+> -	struct cpufreq_policy *policy;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy) = NULL;
 
-I thought put_noidle() will just reduce the refcount and not invoke the
-idle/suspend callbacks, but I seem to be wrong here.
+This is not really correct coding style. Please read how to use
+cleanup.h expressed in that header. You should have here proper
+constructor or this should be moved. Or this should not be __free()...
 
-Anyway, I guess we have no option here other than to drop the
-pm_runtime_put_noidle() call. This will keep refcount as 1 and will prevent the
-parent (genpd) to not enter runtime suspend, but we have to live with it (this
-was also the previous beahvior as well).
 
-Btw, pm_runtime_set_active/enable change belongs to a separate patch.
+>  	int found = 0;
+>  	int i, cpu;
+>  
+> @@ -479,8 +479,6 @@ em_cpufreq_update_efficiencies(struct device *dev, struct em_perf_state *table)
+>  			found++;
+>  	}
+>  
+> -	cpufreq_cpu_put(policy);
+> -
+>  	if (!found)
+>  		return;
+>  
+> @@ -787,7 +785,7 @@ static void em_check_capacity_update(void)
+>  
+>  	/* Check if CPUs capacity has changed than update EM */
+>  	for_each_possible_cpu(cpu) {
+> -		struct cpufreq_policy *policy;
+> +		struct cpufreq_policy *policy __free(put_cpufreq_policy) = NULL;
 
-- Mani
+Same problem here.
 
--- 
-மணிவண்ணன் சதாசிவம்
+I don't think you really paid attention to my feedback last time.
+
+Cleanup.h requires knowing what you do, not just blindly adding __free()
+here and there.
+
+Best regards,
+Krzysztof
 
