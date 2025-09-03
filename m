@@ -1,173 +1,198 @@
-Return-Path: <linux-omap+bounces-4521-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4522-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72573B4211F
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 15:21:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78C0DB4213B
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 15:23:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 988001BC1D51
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 13:21:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BA7A1BC2863
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 13:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F00308F1C;
-	Wed,  3 Sep 2025 13:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C423074B1;
+	Wed,  3 Sep 2025 13:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BnRrxS0J"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FB1307AE4;
-	Wed,  3 Sep 2025 13:18:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6072F7449;
+	Wed,  3 Sep 2025 13:21:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756905521; cv=none; b=mbBXtNNgUYZUdTsKMOrEDtNt5NveBHAaEO/mQ3bRWsCqPCIzKyj4pWYt8cGdsfQ/IUy2+vwMmhZh0yLEIJHACVxxIl6JBS0/aS8Wiiq840mu6/DsJ73h3uX8AAS9Mh0D9BGRiBGgLG5PelEIrhw84G8fUiPJxJF7CWEjUF6OEdQ=
+	t=1756905683; cv=none; b=friwGBT28w5r1o57QfT2JpQEBmU69iociYSVIiPSYLlBh7/CZ8bPKNjwQ+O/YgqOUFwYllVmq6BTWQHGh/5XTCaFczgHZwgS6juo2H/JRHGxcVlxBZabm/MBoFTckSmjzuT+70yz2WXHJtLSukQQ3Qp2J5esruym5H1U1onhQFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756905521; c=relaxed/simple;
-	bh=fBao4LDrH9xBp2D7IbGTgxizvkgLdt++Jefm+pPe6/g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DTcOygEZAqOw5/sv+S8n6qmxMltpqEjh+OLXCx29DQiTulLf7I1DMTpM9kV0nG23mxjr21rtwUrbG2wnDy8sAI52JMatFZpRSy+6fMcZ4nSYmpxmtwPE4hwj2qVKNe17OGlyzYmcd/YwAklEw2G0boHl4zO5lGsBDrmtGcKyi4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 7da87c9c88c811f0b29709d653e92f7d-20250903
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:2ff8d2a4-2ba3-43cb-a1ff-0465a59439e3,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:ee6b8f0128955488e4eb76d27f0f3de0,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850,TC:nil,Content:0|50,EDM:-3
-	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
-	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 7da87c9c88c811f0b29709d653e92f7d-20250903
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 363581621; Wed, 03 Sep 2025 21:18:33 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id C4D2EE008FA2;
-	Wed,  3 Sep 2025 21:18:32 +0800 (CST)
-X-ns-mid: postfix-68B84028-62733312
-Received: from localhost.localdomain (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 164D5E008FA4;
-	Wed,  3 Sep 2025 21:18:29 +0800 (CST)
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-To: "Rafael J . wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Eduardo Valentin <edubezval@gmail.com>,
-	Keerthy <j-keerthy@ti.com>
-Cc: Ben Horgan <ben.horgan@arm.com>,
-	zhenglifeng <zhenglifeng1@huawei.com>,
-	Zhang Rui <rui.zhang@intel.com>,
-	Len Brown <lenb@kernel.org>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Beata Michalska <beata.michalska@arm.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Pavel Machek <pavel@kernel.org>,
-	Sumit Gupta <sumitg@nvidia.com>,
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	linux-pm@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	intel-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Zihuan Zhang <zhangzihuan@kylinos.cn>
-Subject: [PATCH v4 10/10] PM: EM: Use scope-based cleanup helper
-Date: Wed,  3 Sep 2025 21:17:33 +0800
-Message-Id: <20250903131733.57637-11-zhangzihuan@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
-References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
+	s=arc-20240116; t=1756905683; c=relaxed/simple;
+	bh=lBZol3zBpE9PLURdaNvaImTKk9Qw5lA3TBKTVi4cHhw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rSZ+6whA9eNl2xVq85DyKpMIt+yI+paGsERb91crBlpNqlql6OoMBkDOjNPlHm6T5c4/7dxQ7nQgmFpigm/OqXtT9bSdxmXiF3NVTxYLeA9nwn+Tq/kk5T5jy8JA1rpMmeMR2vIe1VU+VuTOqpfA5KY/P5UNMtch5ZgOaaJbJ/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BnRrxS0J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C89C4CEF0;
+	Wed,  3 Sep 2025 13:21:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756905683;
+	bh=lBZol3zBpE9PLURdaNvaImTKk9Qw5lA3TBKTVi4cHhw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BnRrxS0Jw0KWz4Vhi0qzEoQdScbrpFv0Tv0DbeulUAa0+/CM3cfCRiifWOJb2Qkv5
+	 p5g7m85ViSnSKw0b12Ci1Nbgpt7C4K2keLr5ulinYAnVcAuJ8KqMWisiULe1hvuKMS
+	 OCjUVbnpCiVOGwQF3hejsvTlwrV7pNBWIppU1CJH2wy+nm+KasxAClb3gbp3w3XAZ1
+	 JI43v2rSwwBt3tknYO2acreeqKbJ10G7f3176exCOMt4N7RsC/zz8366Hp0ZnCIrMI
+	 EpSLpEi57i56aZHoesr2K8ErO9PacVQCXhgYHlCAr0Xyvj6Q//YsEQmscItIcSM/1Y
+	 tpIrrRCxoFyFA==
+Date: Wed, 3 Sep 2025 18:51:14 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: lpieralisi@kernel.org, kwilczynski@kernel.org, robh@kernel.org, 
+	bhelgaas@google.com, helgaas@kernel.org, kishon@kernel.org, vigneshr@ti.com, 
+	stable@vger.kernel.org, linux-pci@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, srk@ti.com
+Subject: Re: [PATCH v3] PCI: j721e: Fix programming sequence of "strap"
+ settings
+Message-ID: <whinfqhjgqbbvlnuzgbukklqi6gocjji4gakqyycovrse4qq6s@6xq5imqbzvux>
+References: <20250829091707.2990211-1-s-vadapalli@ti.com>
+ <oztilfun77apxtjxumx4tydkcd2gsalsak4m2rvsry2oooqjna@2yvcx6cnuemm>
+ <b2fb9252-6bfc-45da-973a-31cdfcc86b3d@ti.com>
+ <z3ubracmtlq23yicbrhqjgnzrfoqheffm6cvhfnawlvbu4cmmp@ddu2o7xhw5tz>
+ <48e9d897-2cd3-48ef-b46a-635ae75f5ac6@ti.com>
+ <3wc3t6y5gzzspgfeklsqo3bupfp6gsfy6mls6t66hflcqlqsfk@cu26wv3sow4y>
+ <9d2bba15-52e4-432a-8f7f-a0f5d7c2e4ad@ti.com>
+ <7hxdcjm7evlphkldct7seytno4is7rjkx5vquvtfhpdkzxdhu6@yocrjgzciwu3>
+ <08b87b5f-838b-4f40-ae90-10ded134356e@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <08b87b5f-838b-4f40-ae90-10ded134356e@ti.com>
 
-Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-annotation for policy references. This reduces the risk of reference
-counting mistakes and aligns the code with the latest kernel style.
+On Tue, Sep 02, 2025 at 10:34:51AM GMT, Siddharth Vadapalli wrote:
+> On Mon, Sep 01, 2025 at 08:15:24PM +0530, Manivannan Sadhasivam wrote:
+> > On Mon, Sep 01, 2025 at 04:50:02PM GMT, Siddharth Vadapalli wrote:
+> > > On Mon, Sep 01, 2025 at 12:14:51PM +0530, Manivannan Sadhasivam wrote:
+> > > > On Mon, Sep 01, 2025 at 11:51:33AM GMT, Siddharth Vadapalli wrote:
+> 
+> [...]
+> 
+> > > > > 
+> > > > > If I understand correctly, are you suggesting the following?
+> > > > > 
+> > > > > j721e_pcie_probe()
+> > > > > 	pm_runtime_set_active()
+> > > > > 	pm_runtime_enable()
+> > > > > 	ret = j721e_pcie_ctrl_init(pcie);
+> > > > > 		/*
+> > > > > 		 * PCIe Controller should be powered off here, but is there
+> > > > > 		 * a way to ensure that it has been powered off?
+> > > > > 		 */
+> > > > > 		=> Program the strap settings and return to
+> > > > > 		j721e_pcie_probe()
+> > > > > 	/* Power on the PCIe Controller now */
+> > > > > 	ret = pm_runtime_get_sync(dev);
+> > > > 
+> > > > This pm_runtime_get_sync() should be part of j721e_pcie_ctrl_init() where you
+> > > > do power off, program strap and power on.
+> > > > 
+> > > > This should not be part of probe() as by that time, controller is already
+> > > > powered on. So pm_runtime_set_active() and pm_runtime_enable() should be enough
+> > > > to convey the state of the device to PM core.
+> > > 
+> > > I have tried out the suggestion in the following manner:
+> > > 
+> > > 	j721e_pcie_probe()
+> > > 		...
+> > > 		pm_runtime_set_active(dev);
+> > > 		pm_runtime_enable(dev);
+> > > 		ret = j721e_pcie_ctrl_init(pcie);
+> > > 			... within j721e_pcie_ctrl_init()
+> > > 			ret = pm_runtime_put_sync(dev);
+> > > 			/* Program Strap Settings */
+> > > 			ret = pm_runtime_get_sync(dev);
+> > > 			...
+> > > 		...
+> > > 		exit probe
+> > > 
+> > > Since a 'pm_runtime_get_sync()' hasn't yet been invoked prior to the
+> > > section where 'pm_runtime_put_sync()' is invoked, it leads to a ref-count
+> > > underflow error at runtime. Please let me know if I am missing
+> > > something.
+> > > 
+> > 
+> > Doh... At the start of probe(), device PM usage_count will be 0. So we cannot
+> > decrement it without incrementing it.
+> > 
+> > Could you try below sequence?
+> > 
+> > 	probe()
+> > 	...
+> > 	pm_runtime_set_active()
+> > 	pm_runtime_enable()
+> > 	j721e_pcie_ctrl_init()
+> > 		...
+> > 		pm_runtime_get() /* Just increment usage_count */
+> > 		pm_runtime_put_sync() /* ask PM core to turn off */
+> > 		/* program strap setting */
+> > 		pm_runtime_get_sync() /* ask PM core to turn on */
+> > 		pm_runtime_put_noidle() /* balance the usage_count without
+> > 						suspending the device */
+> > 	...
+> 
+> The above sequence powers off the controller at the point in time that
+> the strap settings are programmed. 'pm_runtime_get_sync()' is powering
+> on the controller afterwards. However, the 'pm_runtime_put_noidle()'
+> at the end is causing the controller to be powered off again leading to
+> a crash. Removing 'pm_runtime_put_noidle()' results in a functional
+> sequence.
+> 
+> Please consider the existing sequence prior to this patch:
+> 
+> probe()
+> 	...
+> 	pm_runtime_enable()
+> 	pm_runtime_get_sync() => usage_count is 1
+> 	...
+> 	exit probe
+> 
+> With the suggested sequence above, we have:
+> 
+> probe()
+> 	...
+> 	pm_runtime_set_active()
+> 	pm_runtime_enable()
+> 	j721e_pcie_ctrl_init()
+> 		...
+> 		pm_runtime_get() => usage_count is 1
+> 		pm_runtime_put_sync() => usage_count is 0
+> 		/* Controller is powered off now */
+> 		/* Strap settings are programmed */
+> 		pm_runtime_get_sync() => usage_count is 1
+> 		/* Controller is powered on now */
+> 		pm_runtime_put_noidle() => usage_count is 0
+> 		/* Controller is powered off in a while */
+> 	...
+> 	/* Crash is observed aroung this point before probe finishes */
+> 
+> Please let me know if the fix is to drop 'pm_runtime_put_noidle()'
+> from the above sequence.
+> 
 
-No functional change intended.
+I thought put_noidle() will just reduce the refcount and not invoke the
+idle/suspend callbacks, but I seem to be wrong here.
 
-Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
----
- kernel/power/energy_model.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+Anyway, I guess we have no option here other than to drop the
+pm_runtime_put_noidle() call. This will keep refcount as 1 and will prevent the
+parent (genpd) to not enter runtime suspend, but we have to live with it (this
+was also the previous beahvior as well).
 
-diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
-index ea7995a25780..99401678e809 100644
---- a/kernel/power/energy_model.c
-+++ b/kernel/power/energy_model.c
-@@ -451,7 +451,7 @@ static void
- em_cpufreq_update_efficiencies(struct device *dev, struct em_perf_state =
-*table)
- {
- 	struct em_perf_domain *pd =3D dev->em_pd;
--	struct cpufreq_policy *policy;
-+	struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D NULL;
- 	int found =3D 0;
- 	int i, cpu;
-=20
-@@ -479,8 +479,6 @@ em_cpufreq_update_efficiencies(struct device *dev, st=
-ruct em_perf_state *table)
- 			found++;
- 	}
-=20
--	cpufreq_cpu_put(policy);
--
- 	if (!found)
- 		return;
-=20
-@@ -787,7 +785,7 @@ static void em_check_capacity_update(void)
-=20
- 	/* Check if CPUs capacity has changed than update EM */
- 	for_each_possible_cpu(cpu) {
--		struct cpufreq_policy *policy;
-+		struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D NULL;
- 		struct em_perf_domain *pd;
- 		struct device *dev;
-=20
-@@ -801,7 +799,6 @@ static void em_check_capacity_update(void)
- 					      msecs_to_jiffies(1000));
- 			break;
- 		}
--		cpufreq_cpu_put(policy);
-=20
- 		dev =3D get_cpu_device(cpu);
- 		pd =3D em_pd_get(dev);
---=20
-2.25.1
+Btw, pm_runtime_set_active/enable change belongs to a separate patch.
 
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
