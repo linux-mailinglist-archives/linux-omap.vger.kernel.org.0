@@ -1,133 +1,179 @@
-Return-Path: <linux-omap+bounces-4510-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4512-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035BFB41E71
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 14:09:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72130B420D1
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 15:18:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B35487BA52A
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 12:07:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 556011BC0F2D
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 13:18:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FD12FD7A4;
-	Wed,  3 Sep 2025 12:07:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ixEbLi2A"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3C22FF64B;
+	Wed,  3 Sep 2025 13:18:13 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F042FCC19;
-	Wed,  3 Sep 2025 12:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F2715B0EC;
+	Wed,  3 Sep 2025 13:18:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756901265; cv=none; b=SoEPM6qinUKV3y0K14LI0mvlcgBtfwr/UW4fsWyezhqCKLOf0pUmR9R8GuwkdKvrtUJcYGyJIgqH0W9SgJBR4PyZkisZCr/v8EZnnd3Jfzushlb5cahjCPXEFkEHKNfJXJzczwoXs1yNa/fLwsTipHaMdMfnSOTxTTbiGUZmIkc=
+	t=1756905492; cv=none; b=N//YMjcRhN0KsDRZBzPCP2KdiZwl1hi8X1NG/jX7uJPtidpQq2skwfVUmVLHFkTKOxEjCsF71pqqlEtJ6kZOqN00vuBUo2eX3dEDcKejJI9nRUkR5j/xwgUn0yCFaPvlByXqFD34LbIonbssk57fJMWWK38JhZ6ELILeks+v+HI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756901265; c=relaxed/simple;
-	bh=m1Ang/Ev5msbe29qUOK0afUPlJKTCWi4jjZ05SuuqY8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tkz5RMO6xnxhaYAQ+dijHgeEGIKYmizdfSPIttTsgo0clz4aA0F1aT5o2LWkx/IPkgMYh/lNPdTLEZaBNc/76cLoC+cSlhLmInij2XyVu9jXuP+tGg0V3jSDHrlSbn8Scc2IxInk/WuU62TXXhpaVCXpKD/xr137/9uPWwYNCK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ixEbLi2A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5248CC4CEF0;
-	Wed,  3 Sep 2025 12:07:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756901264;
-	bh=m1Ang/Ev5msbe29qUOK0afUPlJKTCWi4jjZ05SuuqY8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ixEbLi2A6jjg3LDOMR+jiLI0kr10I8xn9VvAhh0P7/z4DH0i1kyknq5gSkeU0VCh5
-	 i7tl5kkxInZ+7hYu+tRelEpYAuP8FN2uFIlm5P42FO3SelGzylxnLKF/pNSR2m1aFw
-	 RE/5Os5QrL3UByY4KoMftxBxXI8nABa43VeNvttCKTwJnSRMLLSkAAqu3VLPfLy7vD
-	 AeMa8NriBmA/D6erdbbe4fr51rNUQY9oaQtg+HQjcR31u8e8fIRtxBTyJgVpc39MZw
-	 KS0+rKXi8YwhnPg5XMTY+J7MPSqIPKFVJNPfLuAXIVPCyL2HDJsMj/a8wFJkAKiMQ+
-	 b2BQwIrvDUtwA==
-Date: Wed, 3 Sep 2025 13:07:33 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Sean Wang <sean.wang@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>,
+	s=arc-20240116; t=1756905492; c=relaxed/simple;
+	bh=aUpHyIkA6IRKScoX6aepW5QYg+CYo5eKLwuIId41vTs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jY8O7yHzLvChAvPOcRzQXsA6LGPDyehzlzYhI2ajkMY212QNG/YIxFUnqpEqSLtM7j0xqKj77OW0X6dLTzhwJX+BsRtb4o8AVHjkB6gOH46pebqoqYOM4O0fXMVqGyEq+BuE3OL1i/FZ+qR2r3f0Yq/hyPDL2IyxFRTueTU/pSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 6680d70888c811f0b29709d653e92f7d-20250903
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:d056df0d-9490-46b5-b02b-45f4d6409240,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:b3d8cc48d38f17ba8c0258a26b8c30c8,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|850,TC:nil,Content:0|50,EDM:-3,IP:ni
+	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 6680d70888c811f0b29709d653e92f7d-20250903
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 431355095; Wed, 03 Sep 2025 21:17:54 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id DD192E008FA4;
+	Wed,  3 Sep 2025 21:17:53 +0800 (CST)
+X-ns-mid: postfix-68B84000-2111002
+Received: from localhost.localdomain (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 86984E008FA2;
+	Wed,  3 Sep 2025 21:17:43 +0800 (CST)
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+To: "Rafael J . wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
-	imx@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH v7 07/16] pinctrl: imx: don't access the pin function
- radix tree directly
-Message-ID: <bfb9a2f0-92b4-4f68-ba54-2c01e93eee97@sirena.org.uk>
-References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <20250902-pinctrl-gpio-pinfuncs-v7-7-bb091daedc52@linaro.org>
+	Shawn Guo <shawnguo@kernel.org>,
+	Eduardo Valentin <edubezval@gmail.com>,
+	Keerthy <j-keerthy@ti.com>
+Cc: Ben Horgan <ben.horgan@arm.com>,
+	zhenglifeng <zhenglifeng1@huawei.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Len Brown <lenb@kernel.org>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Beata Michalska <beata.michalska@arm.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pavel Machek <pavel@kernel.org>,
+	Sumit Gupta <sumitg@nvidia.com>,
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	linux-pm@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	intel-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Zihuan Zhang <zhangzihuan@kylinos.cn>
+Subject: [PATCH v4 00/10] cpufreq: use __free() for all cpufreq_cpu_get() references
+Date: Wed,  3 Sep 2025 21:17:23 +0800
+Message-Id: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="LMkJw+F2UT+cDaFZ"
-Content-Disposition: inline
-In-Reply-To: <20250902-pinctrl-gpio-pinfuncs-v7-7-bb091daedc52@linaro.org>
-X-Cookie: You were s'posed to laugh!
-
-
---LMkJw+F2UT+cDaFZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 02, 2025 at 01:59:16PM +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->=20
-> The radix tree containing pin function descriptors should not be
-> accessed directly by drivers. There are dedicated functions for it. I
-> suppose this driver does it so that the memory containing the function
-> description is not duplicated but we're going to address that shortly so
-> convert it to using generic pinctrl APIs.
+This patchset converts all remaining cpufreq users to rely on the
+__free(put_cpufreq_policy) annotation for policy references, instead of
+calling cpufreq_cpu_put() manually.
 
-Tested-by: Mark Brown <broonie@kernel.org>
+Motivation:
+- Reduce the chance of reference counting mistakes
+- Make the code more consistent with the latest kernel style
+- behavior remains the same, but reference counting is now safer=20
+  and easier to maintain.
 
---LMkJw+F2UT+cDaFZ
-Content-Type: application/pgp-signature; name="signature.asc"
+The changes are split into 12 patches as they touch different subsystems
+and are maintained by different people. There is no functional change.
 
------BEGIN PGP SIGNATURE-----
+V4:
+ - Fix compile error in topology.c
+ - drop 2 patches
+ - Move code into a function in processor_thermal.c
+ - Move code into a function in intel_pstate.c
+ - Move policy declare in dtpm_cpu.c
+ - Fix compile error in imx_thermal.c
+ - Fix compile error in ti-thermal-common.c
+ - Fix compile error in energy_model.c
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmi4L4QACgkQJNaLcl1U
-h9Cofgf+Nx2+OT+tp4D5FUxhtTOmhW7sSoV0qG4ncMEPM9CqTpXL04wbbzyJxjJi
-x44Lzl7dhYejlq1ljZcrLRtyyOEx2GJmVq+XHynLGl0+WRR2yx5BIF/VZUKrpjdp
-Rd7Wd/4PDIWu+9AdKJ05UjqdXCojpVhxUDMFoha24910w0dlC3/GOS+5CLd3t5nP
-o8DekdJ0fH6kx1PD4bw8qgA54bkwX/A1xWWTNxpAg/4zlmNuqFrT48Nuyz9AxY7W
-KRh+JFWffC6f3gBQeYYoJOJsaSojIuYpDVDTTwkkrtr0ZmxbYGan3Gfw+uDC2O8W
-SI38WHTPgNA+BpMaBE3K/SB/spudUA==
-=Wljw
------END PGP SIGNATURE-----
+V3:
+ - drop patch 'KVM: x86: Use __free(put_cpufreq_policy) for policy refere=
+nce'
+ - removed 5 patches which has been applied
+ - Consolidate CPUFreq policy assignments and allocations into one line,
+   suggested by Ben Horgan
+ - Change cpu_has_cpufreq() return type to bool, following Rafael's sugge=
+stion
+ - Change the title to 'Use scope-based cleanup helper'
 
---LMkJw+F2UT+cDaFZ--
+V2:
+ - Fix compile error in powernv-cpufreq.c
+ - Split patch to separate logical changes
+
+Zihuan Zhang (10):
+  arm64: topology: Use scope-based cleanup helper
+  ACPI: processor: thermal: Use scope-based cleanup helper
+  cpufreq: intel_pstate: Use scope-based cleanup helper
+  cpufreq: powernv: Use scope-based cleanup helper
+  PM / devfreq: Use scope-based cleanup helper
+  drm/i915: Use scope-based cleanup helper
+  powercap: dtpm_cpu: Use scope-based cleanup helper
+  thermal: imx: Use scope-based cleanup helper
+  thermal/drivers/ti-soc-thermal: Use scope-based cleanup helper
+  PM: EM: Use scope-based cleanup helper
+
+ arch/arm64/kernel/topology.c                  |  9 ++---
+ drivers/acpi/processor_thermal.c              | 37 +++++++++++--------
+ drivers/cpufreq/intel_pstate.c                | 19 ++++++----
+ drivers/cpufreq/powernv-cpufreq.c             | 11 +++---
+ drivers/devfreq/governor_passive.c            | 25 +++++-------
+ drivers/gpu/drm/i915/gt/intel_llc.c           |  4 +-
+ drivers/powercap/dtpm_cpu.c                   | 30 ++++++---------
+ drivers/thermal/imx_thermal.c                 | 14 +++----
+ .../ti-soc-thermal/ti-thermal-common.c        | 13 ++-----
+ kernel/power/energy_model.c                   |  7 +---
+ 10 files changed, 73 insertions(+), 96 deletions(-)
+
+--=20
+2.25.1
+
 
