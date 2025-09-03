@@ -1,198 +1,212 @@
-Return-Path: <linux-omap+bounces-4506-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4507-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 645F6B41D3F
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 13:43:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 154B0B41DBB
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 13:55:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EE0A34E057C
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 11:43:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FDA3188F993
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 11:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F9752FB977;
-	Wed,  3 Sep 2025 11:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84A572FF641;
+	Wed,  3 Sep 2025 11:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZpjrJSUQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WwwQj+ZQ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85732C178E;
-	Wed,  3 Sep 2025 11:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CF82FC874;
+	Wed,  3 Sep 2025 11:51:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756899811; cv=none; b=g6MvAxaCQWMutv1kHOlar6rZf7EBsFHXrm5e6sCxWr7QteToLUGVT4v5PfZxYfgyTE6a1VK2mcms95GFs9tVNRGkLXsGIWDfBJZl+yHsvMQ5wKAsjHqQsB6Fx9SNVfzgXeT1j6Kjq8sImuNc93d6JvjrIbPE3kLa8J00vKlMy6M=
+	t=1756900283; cv=none; b=TS9ygs5naXv2AyojqHIm3c3pbx17u3eRNasTbQ5ENMMaNeq+hzizAJH1RuKlgx2lswhqoM2YsWlXVoMki0onOhZWjzuXcnCjG4IYSeMw4dNpsijJU1jvrifHqWvxylbfhLeTzgXIeXqTh7PtMrUqfUx3ZOQrluAdvXrrh5BUqJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756899811; c=relaxed/simple;
-	bh=vKQkkEhiJ1pWIqj+5+l0nwZXdLd03e23W2MiNNRAENI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=La3q3jRIuIMf9xvlEYXYDekNcLTUfbNq2eFsVTnfcQ9R9bXcV7tzQCeiVAX5H16dTsDmrNxe20BWaKNStytQ/nGgwxUeyF9ici8OYymGYrMYbR46kCeLfK1eAfr0P9aXnr0J/WgHRhU3/Kfnmp8I+mqB6cuHMlPu97OLsNTkln8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZpjrJSUQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E255C4CEFC;
-	Wed,  3 Sep 2025 11:43:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756899811;
-	bh=vKQkkEhiJ1pWIqj+5+l0nwZXdLd03e23W2MiNNRAENI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ZpjrJSUQT1mjo/GMosxVE9BlKGzz1qGPGvR96j4+cgvYWF0u5LAVlwLWXP3ABf9xh
-	 emKGoXYpzikhccqTWnXBUrcQPaehl9+DjtD8mRrCZAUG0qMfiELP4YWuYF1/F3FhRs
-	 aW14nUDCO+/AYANfE36disnrS+dbIk61uVm2aK4DwbZr4D6ZklHcUzH8AB5VT4ETkI
-	 oemvw0KIyTt5h9EWGtcRYHX1XymPMBJ5M8rR/7taIhWazv9RCHjo2E6MQK1ZSFsIft
-	 KMXYcw8DilfLBcBV9GtUI2eD4qkQH6J3a3mK4SaX7Nes6EUJ273H+CqQgGGZuh4kFd
-	 y6ffvET3JkSjQ==
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-61e334007dbso1481080eaf.0;
-        Wed, 03 Sep 2025 04:43:31 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUwvme+Cl2Of/GPNFGfBWeldeni0Ho+HqTzWfM7sK3d+EyfDNZV1kwOCzHOGc5qekfXtd156iVZvKo=@vger.kernel.org, AJvYcCX3o0eOscC7e1Z++/CM0MTTF8PyuH8H4n8mBd2Fn9PWuZe0P52i5zB+saTxTqPFCwqIL+G7664TuEv3@vger.kernel.org, AJvYcCXYv7Wk69UNWBeHoXryolRSW3jwobLFlPpmIyCpJiYE3e7Ogl8Fl1qHox0ijyOwhhMgTeTt+Nq3PhVQ2u8p@vger.kernel.org, AJvYcCXgokYL2tcGj4ZmPVQ+TL+VmvaHYP76h+Jdoydzf9SeIVmk3f4yicheFYxc7dJp/YnyYN4lKgo37BTGjw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDfXuiKxHHIz27p/n/rdIuFjKQkETzm2KQRf8xfuqjnIWnUK1R
-	b0ZZFXuBAbEFpWqHrH651oC+f/Zxv2QkkgdAM7hY5tdFUS2cKfaIrM1qr8PQIk39ow/wRe7P8p5
-	/hk7Y178fIaPpII7Ukw2lPd85gfnuBiw=
-X-Google-Smtp-Source: AGHT+IFudXZ/fyz4UQ3WH+8GjEXukDIGbLh/LZigzEMBTf0gXA3YZsKNByr0Anw/wDvM05EPCnSrOq7ywW0PFfzffo4=
-X-Received: by 2002:a05:6820:1694:b0:619:7d9b:3f0b with SMTP id
- 006d021491bc7-61e33740f82mr7219508eaf.5.1756899810069; Wed, 03 Sep 2025
- 04:43:30 -0700 (PDT)
+	s=arc-20240116; t=1756900283; c=relaxed/simple;
+	bh=nDvbAiY6rHd3SKV/DYo7HnX4lUjAZdHwuJei+GGsRW8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u1DbPP2WGFUSLNSDO6h4efG+WSOfOc7mKqEz1pflQFtyieGV0H4KPDUaNCp4Y3WyHssX2GRESmTRyzHGT7s35YiOs/Zs9qUvtmyi6/DPFTpuoCwvK3HyK6MJW4HDm6Mupvk3H7bTI1qwXUinGscMm4AOij/6fJP/FXXbXrQpd74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WwwQj+ZQ; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756900281; x=1788436281;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=nDvbAiY6rHd3SKV/DYo7HnX4lUjAZdHwuJei+GGsRW8=;
+  b=WwwQj+ZQYt/6BqYvYcHz7lWjbLg26wheztfaS2gTmdYfpxM5/MgwvfII
+   BmBMFbCNBcsh5Kaz8VDNYj0d6DKUYdeoTgPIJF59OT97w0hNdf6OJCy+W
+   Pm3y1faZw5lyBEJNILax+qF7ro175aFBhLXz3Xiq4j+hik6TNgODxwJCR
+   v1tEek+nGSDaFEq73+53KqX9N/TV/bCocuy+74h+pIcloDSoU/uOc1zSe
+   J2xfobxUZr6sjyb8IVIz/m622/2hadnvpNc+D9ZSuDiHC5ghUXlhrZqjt
+   /e631TOHFuerOOohDB/7jIdZxxzlOJ1Q2l6ZGLnqsDYZe+IMmXz1TcwiE
+   g==;
+X-CSE-ConnectionGUID: cpzLltgHSHCTGRqOo9j6CQ==
+X-CSE-MsgGUID: Sqg7Ly4pR+awcUjJMbSaIA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="69822588"
+X-IronPort-AV: E=Sophos;i="6.18,235,1751266800"; 
+   d="scan'208";a="69822588"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 04:51:19 -0700
+X-CSE-ConnectionGUID: IwmxuAerSUCIeLGnj4/KSA==
+X-CSE-MsgGUID: exSghXJzT32WBa3jKCspRQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,235,1751266800"; 
+   d="scan'208";a="195199401"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 04:51:09 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1utm13-0000000AyQC-2iW1;
+	Wed, 03 Sep 2025 14:51:05 +0300
+Date: Wed, 3 Sep 2025 14:51:05 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Sean Wang <sean.wang@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Tony Lindgren <tony@atomide.com>,
+	Haojian Zhuang <haojian.zhuang@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
+	imx@lists.linux.dev, linux-omap@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: [PATCH v7 16/16] pinctrl: qcom: make the pinmuxing strict
+Message-ID: <aLgrqZETNLmuMHhv@smile.fi.intel.com>
+References: <aLcBcjvMbrxoDYoC@smile.fi.intel.com>
+ <CAMRc=MfcFMgkNqWNZV5o0NxkAvxBTjC3vv56Cr98n0R2CkxuPw@mail.gmail.com>
+ <CAHp75VcgaqnDrPH27wxfgyK6zz4RAKJQB0r7G2vbTONTxkEzTw@mail.gmail.com>
+ <CAMRc=MfhhX2NJ0fhhX8u+7=sdyUy0G27n7caGf9=TpHxUDJVxg@mail.gmail.com>
+ <aLgW7J-j4nn0u8uo@smile.fi.intel.com>
+ <CAMRc=MdA21fwnamymG6YhqBjKDso_nJs_4xefPNONQNfEcPHXA@mail.gmail.com>
+ <aLgaoivmBUgoeO6B@smile.fi.intel.com>
+ <CAMRc=Me84OX=UEmAXxmwE8oOH=1UBsyHe-7XmU0c8a2gG9JnCA@mail.gmail.com>
+ <aLgeDNLABpmkShIU@smile.fi.intel.com>
+ <CAMRc=MdD9g4WiBCP0qYGuy5e3pnQf5MUHTqkUOnrUvcWUYK27A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250901085748.36795-1-zhangzihuan@kylinos.cn> <20250901085748.36795-10-zhangzihuan@kylinos.cn>
-In-Reply-To: <20250901085748.36795-10-zhangzihuan@kylinos.cn>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 3 Sep 2025 13:43:17 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gwpefQt8VJ3XUyFy7u7rFhvPT=sXqG-1gHobw=1NgJpw@mail.gmail.com>
-X-Gm-Features: Ac12FXwdhTUIKZ7oynz9F8Wzgqo7R3jPRBfEv1CLslQcvLPWz0YXuuodu9R2gpg
-Message-ID: <CAJZ5v0gwpefQt8VJ3XUyFy7u7rFhvPT=sXqG-1gHobw=1NgJpw@mail.gmail.com>
-Subject: Re: [PATCH v3 09/12] powercap: dtpm_cpu: Use scope-based cleanup helper
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
-	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, 
-	zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
-	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=MdD9g4WiBCP0qYGuy5e3pnQf5MUHTqkUOnrUvcWUYK27A@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, Sep 1, 2025 at 10:58=E2=80=AFAM Zihuan Zhang <zhangzihuan@kylinos.c=
-n> wrote:
->
-> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-> annotation for policy references. This reduces the risk of reference
-> counting mistakes and aligns the code with the latest kernel style.
->
-> No functional change intended.
->
-> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-> ---
->  drivers/powercap/dtpm_cpu.c | 26 +++++++-------------------
->  1 file changed, 7 insertions(+), 19 deletions(-)
->
-> diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
-> index 99390ec1481f..5e18438782f8 100644
-> --- a/drivers/powercap/dtpm_cpu.c
-> +++ b/drivers/powercap/dtpm_cpu.c
-> @@ -144,19 +144,15 @@ static int update_pd_power_uw(struct dtpm *dtpm)
->  static void pd_release(struct dtpm *dtpm)
->  {
->         struct dtpm_cpu *dtpm_cpu =3D to_dtpm_cpu(dtpm);
-> -       struct cpufreq_policy *policy;
-> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpuf=
-req_cpu_get(dtpm_cpu->cpu);
->
->         if (freq_qos_request_active(&dtpm_cpu->qos_req))
->                 freq_qos_remove_request(&dtpm_cpu->qos_req);
->
-> -       policy =3D cpufreq_cpu_get(dtpm_cpu->cpu);
+On Wed, Sep 03, 2025 at 01:05:27PM +0200, Bartosz Golaszewski wrote:
+> On Wed, Sep 3, 2025 at 12:53 PM Andy Shevchenko
+> <andriy.shevchenko@intel.com> wrote:
+> > On Wed, Sep 03, 2025 at 12:41:48PM +0200, Bartosz Golaszewski wrote:
+> > > On Wed, Sep 3, 2025 at 12:38 PM Andy Shevchenko
+> > > <andriy.shevchenko@intel.com> wrote:
+> > > > On Wed, Sep 03, 2025 at 12:34:00PM +0200, Bartosz Golaszewski wrote:
+> > > > > On Wed, Sep 3, 2025 at 12:22 PM Andy Shevchenko
+> > > > > <andriy.shevchenko@intel.com> wrote:
+> > > > > > On Wed, Sep 03, 2025 at 09:33:34AM +0200, Bartosz Golaszewski wrote:
+> > > > > > > On Tue, Sep 2, 2025 at 10:46 PM Andy Shevchenko
+> > > > > > > <andy.shevchenko@gmail.com> wrote:
+> > > > > > > > On Tue, Sep 2, 2025 at 8:42 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+> > > > > > > > > On Tue, Sep 2, 2025 at 4:38 PM Andy Shevchenko
+> > > > > > > > > <andriy.shevchenko@intel.com> wrote:
+> > > > > > > > > > On Tue, Sep 02, 2025 at 01:59:25PM +0200, Bartosz Golaszewski wrote:
 
-Since policy is not needed earlier, you may as well declare it here.
+...
 
-> -       if (policy) {
-> +       if (policy)
->                 for_each_cpu(dtpm_cpu->cpu, policy->related_cpus)
->                         per_cpu(dtpm_per_cpu, dtpm_cpu->cpu) =3D NULL;
->
-> -               cpufreq_cpu_put(policy);
-> -       }
-> -
->         kfree(dtpm_cpu);
->  }
->
-> @@ -192,7 +188,7 @@ static int cpuhp_dtpm_cpu_online(unsigned int cpu)
->  static int __dtpm_cpu_setup(int cpu, struct dtpm *parent)
->  {
->         struct dtpm_cpu *dtpm_cpu;
-> -       struct cpufreq_policy *policy;
-> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpuf=
-req_cpu_get(cpu);
->         struct em_perf_state *table;
->         struct em_perf_domain *pd;
->         char name[CPUFREQ_NAME_LEN];
-> @@ -202,21 +198,16 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *p=
-arent)
->         if (dtpm_cpu)
->                 return 0;
->
-> -       policy =3D cpufreq_cpu_get(cpu);
+> > > > > > > > > > > The strict flag in struct pinmux_ops disallows the usage of the same pin
+> > > > > > > > > > > as a GPIO and for another function. Without it, a rouge user-space
+> > > > > > > > > > > process with enough privileges (or even a buggy driver) can request a
+> > > > > > > > > > > used pin as GPIO and drive it, potentially confusing devices or even
+> > > > > > > > > > > crashing the system. Set it globally for all pinctrl-msm users.
+> > > > > > > > > >
+> > > > > > > > > > How does this keep (or allow) I²C generic recovery mechanism to work?
+> > > > > > >
+> > > > > > > Anyway, what is your point? I don't think it has any impact on this.
+> > > > > >
+> > > > > > If we have a group of pins that are marked as I²C, and we want to use recovery
+> > > > > > via GPIOs, would it be still possible to request as GPIO when controller driver
+> > > > > > is in the strict mode?
+> > > > >
+> > > > > Yes, if you mark that function as a "GPIO" function in the pin
+> > > > > controller driver.
+> > > >
+> > > > How would it prevent from requesting from user space?
+> > >
+> > > It wouldn't, we don't discriminate between user-space and in-kernel
+> > > GPIO users. A function either is a GPIO or isn't. Can you point me to
+> > > the driver you're thinking about or is this a purely speculative
+> > > question?
+> >
+> > The recovery mechanism is in I²C core and many drivers use that.
+> > I'm not aware of Qualcomm drivers in particular. But mechanism is
+> > in use in I²C DesignWare which is distributed a lot among platforms,
+> > so using word 'purely' is incorrect, and word 'speculative' is a bit
+> > strong, but you can think of the issue coming later on when somebody
+> > does something like this.
+> >
+> > The same applies to the in-band wakeup UART mechanism.
+> >
+> > Which means that with this series we will relax it back anyway for
+> > the above mentioned cases.
+> >
+> > (Not sure, but SPI DesignWare requires programming SPI native chip selects even
+> >  if the GPIO is used for that, this might have also some implications, but here
+> >  it's for real 'purely speculative'.)
+> 
+> The high-level answer is: yes, a pin that will be used by GPIOLIB
+> needs the function it's muxed to, to be marked as "GPIOable" in its
+> parent pin controller if it's strict. That's still better than the
+> current situation.
+> 
+> I can imagine we could differentiate between in-kernel and user-space
+> users of GPIOs and then make it impossible for the latter to request
+> certain pins while they could still be requested in the kernel but
+> that's outside of the scope of this series.
+> 
+> I don't see why this would stop these patches though, as they don't
+> break anything unless you decide to make your pin controller strict in
+> which situation you'd need to verify which functions can GPIOs anyway.
 
-Ditto.
+It can't anyway, Linus already applied :-)
 
->         if (!policy)
->                 return 0;
->
->         pd =3D em_cpu_get(cpu);
-> -       if (!pd || em_is_artificial(pd)) {
-> -               ret =3D -EINVAL;
-> -               goto release_policy;
-> -       }
-> +       if (!pd || em_is_artificial(pd))
-> +               return -EINVAL;
->
->         dtpm_cpu =3D kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
-> -       if (!dtpm_cpu) {
-> -               ret =3D -ENOMEM;
-> -               goto release_policy;
-> -       }
-> +       if (!dtpm_cpu)
-> +               return -ENOMEM;
->
->         dtpm_init(&dtpm_cpu->dtpm, &dtpm_ops);
->         dtpm_cpu->cpu =3D cpu;
-> @@ -239,7 +230,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *par=
-ent)
->         if (ret < 0)
->                 goto out_dtpm_unregister;
->
-> -       cpufreq_cpu_put(policy);
->         return 0;
->
->  out_dtpm_unregister:
-> @@ -251,8 +241,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *par=
-ent)
->                 per_cpu(dtpm_per_cpu, cpu) =3D NULL;
->         kfree(dtpm_cpu);
->
-> -release_policy:
-> -       cpufreq_cpu_put(policy);
->         return ret;
->  }
->
-> --
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
