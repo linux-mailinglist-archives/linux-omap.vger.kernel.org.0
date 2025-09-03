@@ -1,204 +1,136 @@
-Return-Path: <linux-omap+bounces-4525-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4526-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6839B42181
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 15:28:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36DD9B4222D
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 15:42:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 838DE580B59
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 13:25:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20D847BC46E
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 13:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E7C303C83;
-	Wed,  3 Sep 2025 13:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1977430C35F;
+	Wed,  3 Sep 2025 13:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fppeuxr2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gREu3S3c"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF6930100A;
-	Wed,  3 Sep 2025 13:25:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9834130BF6A;
+	Wed,  3 Sep 2025 13:41:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756905936; cv=none; b=sq0RyJsnf4UnvQ0aLJYjsYXBAyX528o20iI/lGIT3cdsO3NdzCtZKljP/MgQHr0JzFWONTnGFLpfYzIwEUktu9KhOPvZiJZM+LCWmZWCZwfSE981h4/+N6IRYrzREYvzu8XmTufG7CRnEydyKBG/j0iWdYlW5LGnEzK1UcpYwYI=
+	t=1756906899; cv=none; b=SFVLLA1CNLMmc0IIt1E3XCjQM5Ic0bOJBOKonqiyi3+Cp3TUwXYPiShhpiwvgOjPWctbA+NyG6a2WgTuejcmfoXKASrQ0P8RxNzLD5A8rDaAEgnd2CfEsclApNeEQS6wMDg9SkpmiqggH95foAztDy8QfeteXEk1uoAUY+/Tt1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756905936; c=relaxed/simple;
-	bh=LahPxxsFg6l59qbeOzrTE1d/6xGMndEUs1/iv+M2mpA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G10cb2mxduVLZXnKmhl+zq9h38ke1qmSNbAB8HV4jRD0BDbrcVJhzxEDxgsxDPRWETDauguhZreKHeZO6u031I5vQa5KqUixhYnZk8AiSxApSXyFUYNrAO4uq9zO3SNydZ9T61F/NoUAhWQU0rjYq6+h7VTX1luj5WfF1UMkJkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fppeuxr2; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756905934; x=1788441934;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LahPxxsFg6l59qbeOzrTE1d/6xGMndEUs1/iv+M2mpA=;
-  b=Fppeuxr25Ur/Z86f2B3WugWG/a9vqhM6uvfRHXNCVETvWuj2c1PrxP/X
-   FhRQZNigdx/JacuH5W0C1ScU2k7yDDjUwATX49Xv1S+kA8xT+GuDhqaMW
-   h5iiHc3Vfwna6EmsDZ3UZQKUuGD+A0nZGi+j+bEZ8mnbcyga/New4VrPd
-   yVqtFBY9xQ8yrerEfzXkl/RJ/37NNucRVBT0VCQJeImoveyiw7HIE8Znw
-   Y87BM+BsLOMkUe/FbnijKWIgZx9ETFZV2K8HMMlriPqtkTv9ZtQx3nqyQ
-   wwu6H7LOeiCE/kGnVDythBzTV4tMw66Vxx3n2stJ8V5eGgGsidkPGi/Oo
-   g==;
-X-CSE-ConnectionGUID: TJoSgmhTRq2o2hIPytUdiA==
-X-CSE-MsgGUID: hsJDom0/TQ2YMiF43BhqsA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="70647392"
-X-IronPort-AV: E=Sophos;i="6.18,235,1751266800"; 
-   d="scan'208";a="70647392"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 06:25:33 -0700
-X-CSE-ConnectionGUID: Ma4BX8/rSESlgghxFULMkw==
-X-CSE-MsgGUID: QBju9m/qQcWUy7qJM1NEGg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,235,1751266800"; 
-   d="scan'208";a="195226899"
-Received: from cpetruta-mobl1.ger.corp.intel.com (HELO mdjait-mobl) ([10.245.244.22])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 06:25:20 -0700
-Date: Wed, 3 Sep 2025 15:25:12 +0200
-From: Mehdi Djait <mehdi.djait@linux.intel.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: linux-media@vger.kernel.org, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Andi Shyti <andi.shyti@kernel.org>, =?utf-8?B?QW5kcsOp?= Apitzsch <git@apitzsch.eu>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Arec Kao <arec.kao@intel.com>, Benjamin Mugnier <benjamin.mugnier@foss.st.com>, 
-	Bingbu Cao <bingbu.cao@intel.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Bryan O'Donoghue <bod@kernel.org>, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Daniel Scally <djrscally@gmail.com>, devicetree@vger.kernel.org, 
-	Dongcheng Yan <dongcheng.yan@intel.com>, Dongchun Zhu <dongchun.zhu@mediatek.com>, 
-	Fabio Estevam <festevam@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Hans de Goede <hansg@kernel.org>, Hans Verkuil <hverkuil@kernel.org>, 
-	Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>, imx@lists.linux.dev, Jacopo Mondi <jacopo@jmondi.org>, 
-	Jason Chen <jason.z.chen@intel.com>, Jimmy Su <jimmy.su@intel.com>, 
-	Jingjing Xiong <jingjing.xiong@intel.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Leon Luo <leonl@leopardimaging.com>, 
-	Liam Girdwood <lgirdwood@gmail.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-i2c@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
-	Loic Poulain <loic.poulain@oss.qualcomm.com>, Magnus Damm <magnus.damm@gmail.com>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Mark Brown <broonie@kernel.org>, Matthew Majewski <mattwmajewski@gmail.com>, 
-	Mikhail Rudenko <mike.rudenko@gmail.com>, Nicolas Dufresne <nicolas.dufresne@collabora.com>, 
-	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>, Pavel Machek <pavel@kernel.org>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Robert Foss <rfoss@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Shawn Guo <shawnguo@kernel.org>, Shunqian Zheng <zhengsq@rock-chips.com>, 
-	Sylvain Petinot <sylvain.petinot@foss.st.com>, Sylwester Nawrocki <s.nawrocki@samsung.com>, 
-	Tarang Raval <tarang.raval@siliconsignals.io>, Tianshu Qiu <tian.shu.qiu@intel.com>, 
-	Todor Tomov <todor.too@gmail.com>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
-	Tony Lindgren <tony@atomide.com>, Zhi Mao <zhi.mao@mediatek.com>
-Subject: Re: [PATCH v2 00/72] media: i2c: Reduce cargo-cult
-Message-ID: <64alk4uwvdw6cejheukim7pfz7pabccuaqxlerr7mul6mqi5lf@feuimtlm4vxe>
-References: <20250812214620.30425-1-laurent.pinchart@ideasonboard.com>
+	s=arc-20240116; t=1756906899; c=relaxed/simple;
+	bh=GdyS+4iaGJbGIJ9ctC+uFtQbJ57ANyqF8rmhb7Dc65Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qFbJ0Le3PUFkOrJqEengX1MF4dIUeITZjfS2KHRpKUSSBtNYfGzVlUfN858Rfs+iJXw/vmTuKBjYMk6rp06aigOX6FtzoKiQ2140HwYHTTC5iplO/OkNQzCN8gPtd5BHf2RyLHeeDnX24cCFN41qfmbSQiIRhBTQLrm1QsifT9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gREu3S3c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61503C116B1;
+	Wed,  3 Sep 2025 13:41:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756906899;
+	bh=GdyS+4iaGJbGIJ9ctC+uFtQbJ57ANyqF8rmhb7Dc65Y=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=gREu3S3cIIExxWuJPsc+munhlGaJtSwRMnS15DA4v0a6bQz6CWCrmik3TzYj/QUJj
+	 3ZloY/8FCzhwS85PBka4CYNFeEOJbr7uVgfvXPdZeoAikj7Uo0dnGkAxWxGkG+5qsO
+	 Ubyh/2IuzT8yKsZ/kPtNv09e6T7qhzcGrsaH6Y8fwLeZyjglfWVXXhr2JNPe5wC7Yw
+	 F1Qxtcff4RNjFLRfNMG69ZKoOHxIslevyytvdomIhf8ZQZp2ywnG4IJCrefXprlYQy
+	 PWeQU1n7TY41TrGtpOURB7CSxfyFAU/wyFf1li3R+PGyBGvuiJDKyH0k8eoNUsZlzO
+	 OT60wNUwudvhQ==
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-74526ca7a46so2280712a34.2;
+        Wed, 03 Sep 2025 06:41:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW/p3a8EPDERcHmI1P6qQVw4oZR8D+lWTKE43U+I9nGKd3Bh0yjBpEFvhwNHgKYcfmeJnMeD1vPvewG@vger.kernel.org, AJvYcCWUZ364SPGBPTe4/uoklpvIx02dg8SQ2eRopy8vOqlAm2kLWbHdNbv9o8/em/EE5wGcgD5snmBrBKV76TZe@vger.kernel.org, AJvYcCWl37KVHw2ojYCCgcwTASgdJmwX255FBTU1XgtzYiZ8whtRGdqJa7ULenXBj489Qa666aBvAVbXfckt6Q==@vger.kernel.org, AJvYcCXMlh2r5ia4HZ3BdH5MxYUtWVSHP4GG2grYrDLb+sMMUxRD1pRbrmcG5zMYyJO9HLlG1HeGi8EbHII=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAawdUAm1JBb2LnhBMTNKOlEpoBxbl0Kn0G5Cbpgu+vy5U9Tqr
+	frL+WbFbN2DxC/aIPpAOdyngsOljStXfU0lioCGN415p/B2EzzfU/ywfm2YXwOMdlevDOQEZDzA
+	y3kazovhWLfR2sfY183BUdWK2kBMRcYA=
+X-Google-Smtp-Source: AGHT+IE8CKY9R9M90mIkT56C6rGxrcA7dBv19VhPe7gEVCnw2r6FCP2pLXabMt9+rlKIM6nRFLb5/otuT90mPVIOHdY=
+X-Received: by 2002:a05:6808:8219:b0:434:97b:5eb9 with SMTP id
+ 5614622812f47-437f7d74afbmr6249755b6e.28.1756906898553; Wed, 03 Sep 2025
+ 06:41:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250812214620.30425-1-laurent.pinchart@ideasonboard.com>
+References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
+ <20250903131733.57637-11-zhangzihuan@kylinos.cn> <34b5e01e-2f4a-4d57-93ca-ab4549681b17@kernel.org>
+In-Reply-To: <34b5e01e-2f4a-4d57-93ca-ab4549681b17@kernel.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 3 Sep 2025 15:41:26 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hisM6vfdNXaY7qCGtcMb1FENGxiBb=E=tkqDbRyjs=bA@mail.gmail.com>
+X-Gm-Features: Ac12FXyg097RI81OLcVmXs8LtZCLVL9SQzq0jRH5EJZq7nDwUhDORw8eege7vFE
+Message-ID: <CAJZ5v0hisM6vfdNXaY7qCGtcMb1FENGxiBb=E=tkqDbRyjs=bA@mail.gmail.com>
+Subject: Re: [PATCH v4 10/10] PM: EM: Use scope-based cleanup helper
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Zihuan Zhang <zhangzihuan@kylinos.cn>, "Rafael J . wysocki" <rafael@kernel.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Alim Akhtar <alim.akhtar@samsung.com>, Thierry Reding <thierry.reding@gmail.com>, 
+	MyungJoo Ham <myungjoo.ham@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
+	Chanwoo Choi <cw00.choi@samsung.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Daniel Lezcano <daniel.lezcano@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Shawn Guo <shawnguo@kernel.org>, Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, 
+	Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>, 
+	Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
+	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Laurent,
+On Wed, Sep 3, 2025 at 3:22=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.org=
+> wrote:
+>
+> On 03/09/2025 15:17, Zihuan Zhang wrote:
+> > Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> > annotation for policy references. This reduces the risk of reference
+> > counting mistakes and aligns the code with the latest kernel style.
+> >
+> > No functional change intended.
+> >
+> > Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> > ---
+> >  kernel/power/energy_model.c | 7 ++-----
+> >  1 file changed, 2 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
+> > index ea7995a25780..99401678e809 100644
+> > --- a/kernel/power/energy_model.c
+> > +++ b/kernel/power/energy_model.c
+> > @@ -451,7 +451,7 @@ static void
+> >  em_cpufreq_update_efficiencies(struct device *dev, struct em_perf_stat=
+e *table)
+> >  {
+> >       struct em_perf_domain *pd =3D dev->em_pd;
+> > -     struct cpufreq_policy *policy;
+> > +     struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D NULL=
+;
+>
+> This is not really correct coding style. Please read how to use
+> cleanup.h expressed in that header. You should have here proper
+> constructor or this should be moved. Or this should not be __free()...
 
-Thank you for the patches!
+I gather that this is what you mean (quoted verbatim from cleanup.h)
 
-On Wed, Aug 13, 2025 at 12:45:08AM +0300, Laurent Pinchart wrote:
+ * Given that the "__free(...) =3D NULL" pattern for variables defined at
+ * the top of the function poses this potential interdependency problem
+ * the recommendation is to always define and assign variables in one
+ * statement and not group variable definitions at the top of the
+ * function when __free() is used.
 
-[..]
-
-> Laurent Pinchart (72):
->   dt-bindings: media: Deprecate clock-frequency property for camera
->     sensors
->   dt-bindings: media: et8ek8: Deprecate clock-frequency property
->   dt-bindings: media: imx258: Make clocks property required
->   dt-bindings: media: imx274: Make clocks property required
->   media: i2c: mt9v022: Drop unused mt9v022.h header
->   media: i2c: mt9v032: Replace client->dev usage
->   media: i2c: mt9v032: Drop support for platform data
->   media: i2c: mt9v111: Do not set clock rate manually
->   media: i2c: ov6650: Drop unused driver
->   media: i2c: hi556: Replace client->dev usage
->   media: i2c: hi556: Use V4L2 sensor clock helper
->   media: i2c: hi847: Replace client->dev usage
->   media: i2c: hi847: Use V4L2 sensor clock helper
->   media: i2c: imx208: Replace client->dev usage
->   media: i2c: imx208: Use V4L2 sensor clock helper
->   media: i2c: imx319: Replace client->dev usage
->   media: i2c: imx319: Use V4L2 sensor clock helper
->   media: i2c: imx355: Replace client->dev usage
->   media: i2c: imx335: Use V4L2 sensor clock helper
->   media: i2c: og01a1b: Replace client->dev usage
->   media: i2c: og01a1b: Use V4L2 sensor clock helper
->   media: i2c: ov02c10: Replace client->dev usage
->   media: i2c: ov02c10: Use V4L2 sensor clock helper
->   media: i2c: ov02e10: Replace client->dev usage
->   media: i2c: ov02e10: Use V4L2 sensor clock helper
->   media: i2c: ov08d10: Replace client->dev usage
->   media: i2c: ov08d10: Use V4L2 sensor clock helper
->   media: i2c: ov08x40: Replace client->dev usage
->   media: i2c: ov08x40: Use V4L2 sensor clock helper
->   media: i2c: ov13858: Replace client->dev usage
->   media: i2c: ov13858: Use V4L2 sensor clock helper
->   media: i2c: ov13b10: Replace client->dev usage
->   media: i2c: ov13b10: Use V4L2 sensor clock helper
->   media: i2c: ov2740: Replace client->dev usage
->   media: i2c: ov2740: Use V4L2 sensor clock helper
->   media: i2c: ov4689: Use V4L2 sensor clock helper
->   media: i2c: ov5670: Replace client->dev usage
->   media: i2c: ov5670: Use V4L2 sensor clock helper
->   media: i2c: ov5675: Replace client->dev usage
->   media: i2c: ov5675: Use V4L2 sensor clock helper
->   media: i2c: ov5693: Use V4L2 sensor clock helper
->   media: i2c: ov7251: Use V4L2 sensor clock helper
->   media: i2c: ov9734: Replace client->dev usage
->   media: i2c: ov9734: Use V4L2 sensor clock helper
->   media: v4l2-common: Add legacy camera sensor clock helper
->   media: i2c: et8ek8: Drop support for per-mode external clock frequency
->   media: i2c: et8ek8: Use V4L2 legacy sensor clock helper
->   media: i2c: gc05a2: Use V4L2 legacy sensor clock helper
->   media: i2c: gc08a3: Use V4L2 legacy sensor clock helper
->   media: i2c: imx258: Replace client->dev usage
->   media: i2c: imx258: Use V4L2 legacy sensor clock helper
->   media: i2c: imx290: Use V4L2 legacy sensor clock helper
->   media: i2c: ov02a10: Replace client->dev usage
->   media: i2c: ov02a10: Use V4L2 legacy sensor clock helper
->   media: i2c: ov2685: Use V4L2 legacy sensor clock helper
->   media: i2c: ov5645: Use V4L2 legacy sensor clock helper
->   media: i2c: ov5695: Use V4L2 legacy sensor clock helper
->   media: i2c: ov8856: Replace client->dev usage
->   media: i2c: ov8856: Use V4L2 legacy sensor clock helper
->   media: i2c: s5c73m3: Use V4L2 legacy sensor clock helper
->   media: i2c: s5k5baf: Use V4L2 legacy sensor clock helper
->   media: i2c: s5k6a3: Use V4L2 legacy sensor clock helper
->   ARM: dts: samsung: exynos4210-i9100: Replace clock-frequency in camera
->     sensor node
->   ARM: dts: samsung: exynos4412-midas: Replace clock-frequency in camera
->     sensor node
->   ARM: dts: ti: omap3-n950: Replace clock-frequency in camera sensor
->     node
->   ARM: dts: ti: omap3-n9: Replace clock-frequency in camera sensor node
->   ARM: dts: ti: omap3-n900: Replace clock-frequency in camera sensor
->     node
->   ARM: dts: nxp: imx6qdl-pico: Replace clock-frequency in camera sensor
->     node
->   ARM: dts: nxp: imx6qdl-wandboard: Replace clock-frequency in camera
->     sensor node
->   arm64: dts: qcom: sdm845-db845c-navigation-mezzanine: Replace
->     clock-frequency in camera sensor node
->   arm64: dts: renesas: aistarvision-mipi-adapter-2.1: Drop
->     clock-frequency from camera sensor node
->   arm64: dts: renesas: rzg2l-smarc: Drop clock-frequency from camera
->     sensor node
-
-Reviewed-by: Mehdi Djait <mehdi.djait@linux.intel.com>
-
---
-Kind Regards
-Mehdi Djait
+and thanks for pointing this out!
 
