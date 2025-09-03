@@ -1,145 +1,156 @@
-Return-Path: <linux-omap+bounces-4494-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4495-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C151B414BD
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 08:11:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99DEFB416B2
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 09:34:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 518C6167E69
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 06:11:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF2617C0219
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 07:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E22C12D77F1;
-	Wed,  3 Sep 2025 06:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF6B2DA74D;
+	Wed,  3 Sep 2025 07:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OhG5GB8k"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="or+O9yqi"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6977014A9B;
-	Wed,  3 Sep 2025 06:11:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2D52D836D
+	for <linux-omap@vger.kernel.org>; Wed,  3 Sep 2025 07:33:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756879884; cv=none; b=Zgzdbz6ipTNQqxQhNpB/yv5prUeNfNYtUesg/g98hcy35PtrkB9/ldfp7JcgkPDQgKCKvh/AehNLpRePni4mIQSNDwTRrxphHEp/WRQ7PEZO3m8A8q35zNNpLkv7we1vOOD9tq+y/NYq28Qh0am5miBExgCSmgTl9ZKG2o/pqiE=
+	t=1756884830; cv=none; b=DFYZUCidBHsXX638UgSBkvpQaToMowA/YTyt+OMzRrJF37A+lTRG698CdMbInzqDP3wI5BGwiP8WeG9cSh5zOZvZbDvoasL6JQOm21QeFcPsREJJgwa4CQtPCR42MMwhd0PNQdHxjIGh9U5VvY05SVehxZbN1NGOSJFkp4wwnaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756879884; c=relaxed/simple;
-	bh=DEWGVqilbGOs6UgUqJ9p5sDy7a3JODRL7uL+KLdqaDM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OPnVd3hRkVLVhRB/XvU8TtxT8JJhKuRF7IMLT+GLHTxTKQ2ft66vlUdG4xTSq1CJarohMPt/bQ3CgZNZNSRfluRDWiP7D9CrPG+Jn5QwIcmWXw/aDoIpv1pDYJclMI/pAo2/T7N1PEHLhhzfDCt9xmYKl1Jr+m21yWZn3dHxOqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OhG5GB8k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C74C4CEF0;
-	Wed,  3 Sep 2025 06:11:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756879884;
-	bh=DEWGVqilbGOs6UgUqJ9p5sDy7a3JODRL7uL+KLdqaDM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OhG5GB8keEQ58YNgxAI/Sjc1rocLhOfxCLl/XZwlEzS1WCwat/fRihODLk7ZhvcWr
-	 H3XYzOgamWZw2UP1IcvzjzFaTBdCBESmwBjW57Q0I4QlZ/cxF1rW0y5KmmG5aM1SZs
-	 0uwLCKpyV6hM1ZLubZDbjoGbQOQY4z6fZm3zXiREW8Xa2eaDBHXBu8+MrVOXj9aNfo
-	 pqJnCWRxzZG176Yw/RX5egzLS+IB1ebxgjYZCtkELZ6V0YgtZVtdAYK9klO4OCqnRM
-	 DQ1ON/yN8nE1oOUXnkRR5ccXnOp7joOzEV/f+6jB4MMYU965FZbZcYRzziTXfVhat1
-	 LzBIkLuy7dzZg==
-Message-ID: <04ca5584-b10e-465d-bbda-627b7f743ce9@kernel.org>
-Date: Wed, 3 Sep 2025 08:11:12 +0200
+	s=arc-20240116; t=1756884830; c=relaxed/simple;
+	bh=YNYvzh/kc3+s5XJiH2jNySFaGPSj6mlg48FZqtmCTZw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ulj+FndezMFygK+VG8+DX5KmYKmUj9nRgRuBJ7hQfW19xW3re6obE/z64OffuEiJwOb3NOqwP7GEU4RfMo/wJeQIofXv/E/Ku5ETgCldDFOYadlaVkH8YJmbiZIQGJJN6KQE9XBG0+rB24c+9ojiY4I6GH+fkcJbO1fxAse+r/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=or+O9yqi; arc=none smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-333f92a69d4so48037691fa.2
+        for <linux-omap@vger.kernel.org>; Wed, 03 Sep 2025 00:33:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756884826; x=1757489626; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YNYvzh/kc3+s5XJiH2jNySFaGPSj6mlg48FZqtmCTZw=;
+        b=or+O9yqi+Fme2yw28jrJWT8dtYwgRPniIwPzJq/SW1Nz+gCVTeyG6kXv/ETbj6pAhP
+         PfQwrdCC0J8IPpaDld0dGTwBdTo8HgnCEkfxiGdnUigPylEtYkHH2IXCnVKHreljZ7Nk
+         yHXifcsd/RJwRpJCpaQE+Sf2RjCLIX11vWitdQbTjymxY5bZipIdoVLk6nUFtZwlsSaz
+         vVuiSathFGm9kWh20Hjen/wxlqVIDx0Hhapdh62TMS/Az+TzXdY6phHYf1p4+FACfmNQ
+         a33uBd4f12xTbiEtFTsqIEUUIOQCbxgmPtVspR8B+qHxFZeR4C9svVPCUa/bD4YF8ja4
+         SW7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756884826; x=1757489626;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YNYvzh/kc3+s5XJiH2jNySFaGPSj6mlg48FZqtmCTZw=;
+        b=IPk8/VTkOUon3ZY1xL+b7GFe0s3QUql8ogZTeorpD4aG/FGRFSxofxv13uIXLPycr2
+         XgjnHp/bPLyeWkYlo8z21FY4O14q/1BCk0ogaXFpkQClgcnJv8kEBsscS/2BXCyGweyw
+         9gLP+WiL3EdxEZ2yBVAdeMNot1VNhrL63BjyJNIhcz0NyCETxzVq+3hvrxEeZJIXMNp0
+         hV8dcRiZf/h06IdZA5gjnxY5KCBGlsAnOkJlEFyrocDVJUblaJvQhmdMtFJ39ivETEO4
+         OgMM3ehXw6Sxaxbajcp1WWYKvjatVkwDHWHmPSYgQoyEJ0zx6DeXIZ96PBJpv6EJOenf
+         HemA==
+X-Forwarded-Encrypted: i=1; AJvYcCUa2dcoEP/LkwtkHGu1DxZDJwGgcOzZCC9Vh3ERQt39Xyuo9z8eU+esa2QTZLmOCWVTwfisTN+JL4wO@vger.kernel.org
+X-Gm-Message-State: AOJu0Yylxo+FfCuoFS+HE1fSY+GKxsNsi+hetxu+TpVPHhQtvA9cKiSO
+	XCMNp5o3a7sQ6bK0ErSvXIEDkWWlkF4gTtipmfqkXXLZHTV+Ii1H3J8Q3LCup7qJqkMgIz7EPLY
+	TGALPUSkS1FEahFcDMDrrhBMMzsgStdILafgfYCronw==
+X-Gm-Gg: ASbGncuVCnBmlU2vVW5dc+URoq5hbOVRfnqD8GJJA0CBHlWt+zCXfxQwel43cHwahoU
+	H9rXiy8mOOvRX9ftxyvKMBKXnvK+OFAzOX5fpzpXptdMDmHhiB7m2pa3D367s5kFgIVjZaBc6Vr
+	dywlnWXAh/ZUwmLjNIfvbz2vstFxpcEAmQu6CjqCzvWAf3TSAbRxIn77ApAcYjiipDABErW8KRr
+	bGTWQ7yRoXEqFrAMQ/qKxZAcGOWuk4eskEH5w7lnnLVR+xtXg==
+X-Google-Smtp-Source: AGHT+IHQMDojBvXdcYFr83Du1enPEHK0Ti//rRC94x6rK+6MbJgsPNbFLU1zOeSW5BOM5GJv9hHYWvwxYnse2nh/rU8=
+X-Received: by 2002:a2e:a58a:0:b0:337:9e3b:895f with SMTP id
+ 38308e7fff4ca-3379e3b9b47mr24730131fa.0.1756884826262; Wed, 03 Sep 2025
+ 00:33:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 12/12] PM: EM: Use scope-based cleanup helper
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: airlied@gmail.com, alim.akhtar@samsung.com, beata.michalska@arm.com,
- ben.horgan@arm.com, bp@alien8.de, catalin.marinas@arm.com,
- cw00.choi@samsung.com, daniel.lezcano@kernel.org,
- dave.hansen@linux.intel.com, dri-devel@lists.freedesktop.org,
- edubezval@gmail.com, festevam@gmail.com, imx@lists.linux.dev,
- intel-gfx@lists.freedesktop.org, j-keerthy@ti.com,
- jani.nikula@linux.intel.com, kernel@pengutronix.de,
- kyungmin.park@samsung.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-omap@vger.kernel.org, linux-pm@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, lukasz.luba@arm.com, mpe@ellerman.id.au,
- myungjoo.ham@samsung.com, pavel@kernel.org, ptsm@linux.microsoft.com,
- rafael@kernel.org, rodrigo.vivi@intel.com, rui.zhang@intel.com,
- s.hauer@pengutronix.de, shawnguo@kernel.org, simona@ffwll.ch,
- srinivas.pandruvada@linux.intel.com, sudeep.holla@arm.com,
- sumitg@nvidia.com, thierry.reding@gmail.com, tursulin@ursulin.net,
- viresh.kumar@linaro.org, will@kernel.org, yangyicong@hisilicon.com,
- zhenglifeng1@huawei.com
-References: <b38e64cc-4971-4e71-931c-820453aa91a7@kernel.org>
- <20250903021230.1044454-1-zhangzihuan@kylinos.cn>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250903021230.1044454-1-zhangzihuan@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
+ <20250902-pinctrl-gpio-pinfuncs-v7-16-bb091daedc52@linaro.org>
+ <aLcBcjvMbrxoDYoC@smile.fi.intel.com> <CAMRc=MfcFMgkNqWNZV5o0NxkAvxBTjC3vv56Cr98n0R2CkxuPw@mail.gmail.com>
+ <CAHp75VcgaqnDrPH27wxfgyK6zz4RAKJQB0r7G2vbTONTxkEzTw@mail.gmail.com>
+In-Reply-To: <CAHp75VcgaqnDrPH27wxfgyK6zz4RAKJQB0r7G2vbTONTxkEzTw@mail.gmail.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Wed, 3 Sep 2025 09:33:34 +0200
+X-Gm-Features: Ac12FXwfTFesdkv2AsVGJLh1I6xBKdxxPYffotwRnf3CookQp3k-WXkxYMLzaTo
+Message-ID: <CAMRc=MfhhX2NJ0fhhX8u+7=sdyUy0G27n7caGf9=TpHxUDJVxg@mail.gmail.com>
+Subject: Re: [PATCH v7 16/16] pinctrl: qcom: make the pinmuxing strict
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
+	Sean Wang <sean.wang@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 03/09/2025 04:12, Zihuan Zhang wrote:
->> You are not improving the source code here. This is not how to use
->>  __free() and you clearly do not understand the source code.
-> 
-> Sorry for the problem, policy should be assigned after cpumask_test_cpu().
-> 
-> I actually realized earlier that __free() only frees at the end of the variable’s lifetime. 
-> I had suggested using a braced macro in cpufreq.h to allow immediate release after use, 
-> but I understand the maintainer’s advice to “keep it simple” and will follow that.
-> 
->> What's more, you did not use standard tools which would tell you this is
->> buggy and wrong.
-> 
-> Could you please let me know which standard tools you recommend for detecting such issues? 
-> 
-> I’d like to use them to avoid similar mistakes in the future.
-All standard tools used for kernel development, sparse, smatch, clang,
-coccinelle, see my talk from OSSE25.
+On Tue, Sep 2, 2025 at 10:46=E2=80=AFPM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Tue, Sep 2, 2025 at 8:42=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl=
+> wrote:
+> >
+> > On Tue, Sep 2, 2025 at 4:38=E2=80=AFPM Andy Shevchenko
+> > <andriy.shevchenko@intel.com> wrote:
+> > >
+> > > On Tue, Sep 02, 2025 at 01:59:25PM +0200, Bartosz Golaszewski wrote:
+> > > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > > >
+> > > > The strict flag in struct pinmux_ops disallows the usage of the sam=
+e pin
+> > > > as a GPIO and for another function. Without it, a rouge user-space
+> > > > process with enough privileges (or even a buggy driver) can request=
+ a
+> > > > used pin as GPIO and drive it, potentially confusing devices or eve=
+n
+> > > > crashing the system. Set it globally for all pinctrl-msm users.
+> > >
+> > > How does this keep (or allow) I=E6=B6=8E generic recovery mechanism t=
+o work?
+> >
+> > What even is the "generic recovery mechanism"? That's the first time
+> > I'm hearing this name.
+>
+> "I=C2=B2C generic recovery mechanism" (I dunno why you put away the I=C2=
+=B2C keyword).
+>
 
-Best regards,
-Krzysztof
+For some reason it was displayed like that[1] in my client. I see it's
+correct in lore though.
+
+Anyway, what is your point? I don't think it has any impact on this.
+
+Bartosz
+
+[1] https://postimg.cc/7GFtxzzR
 
