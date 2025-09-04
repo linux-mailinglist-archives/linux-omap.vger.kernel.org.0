@@ -1,158 +1,217 @@
-Return-Path: <linux-omap+bounces-4532-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4533-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8365BB43952
-	for <lists+linux-omap@lfdr.de>; Thu,  4 Sep 2025 12:55:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49DCBB43CDB
+	for <lists+linux-omap@lfdr.de>; Thu,  4 Sep 2025 15:17:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 955E97AF86C
-	for <lists+linux-omap@lfdr.de>; Thu,  4 Sep 2025 10:54:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3FA33B4745
+	for <lists+linux-omap@lfdr.de>; Thu,  4 Sep 2025 13:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BAE92FB613;
-	Thu,  4 Sep 2025 10:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0222B2EC57F;
+	Thu,  4 Sep 2025 13:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QHD9Wfe9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rSeeYMQC"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDA02F6182;
-	Thu,  4 Sep 2025 10:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823361C1AAA;
+	Thu,  4 Sep 2025 13:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756983335; cv=none; b=Dy0AAFU22+MB0zSP1RQl7y22zrGQyyVfHoDA8cKAuMxKoYcAO3ETsWhosrY8K/bVilQ/T82hPtdjeO9o/F8e9+k9j6V2hrsXSljyftaARA4WiVHT69YXDlrXgKXlHmD5HFd2SrYkxKjVpXpikK7VMRS34IAVePxOPjQKVMFqLs4=
+	t=1756991858; cv=none; b=GQVCYyNj4/awWFsTiIoyJfiuvNyL7Qc/AhlQ7pXVr4+SOFPNdVbQ5Jcksm+XZFs/KqDI+2t2KMAuyxMIbiFHHx6z3mzz+PSnD0ItPw2U4FDMtjXwjz6GJ/4zy/O8HHM70c8hWnGfhb5RZUk2kUMDHkvCNk5BUYYwId5fyQhwnjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756983335; c=relaxed/simple;
-	bh=IsvPPeqV8POyoYunxkhkVNbHZma0NTrLqcfEJ8H1vOg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=be1fxuFiD54fqN74FXHx3tGk5fyN5y0gOA7jjrcfbDB5GiZKekOE3jh1KK6iqqiANrUB/V2w3mS9wCl9T6lkHRQZIuT5JglqbIzZFMSYQSTMXKVImtbp5KkoIpbdK8kUD5/ZGN0QzgbrdAGLKRCn3QSYErj0XZRHk5hDo7ZDR/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QHD9Wfe9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EBC1C4CEF0;
-	Thu,  4 Sep 2025 10:55:25 +0000 (UTC)
+	s=arc-20240116; t=1756991858; c=relaxed/simple;
+	bh=J37h8zaAlmHnvnALjyhUgHlYpkvFqaV8s8bqNB0XjFQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UMbjhuMhaMMuRyxNuNrATaJFQRGcySWC6azi+O8eE7CnNZiYoAnUwsN6T+Z//OgPeZgsgZZuymlLYKlc1PXpbj22zvAYsY1GR6f/qvQchpnVdvelN54OLUexh5/tRiKUYjFpWZ5Z9jTmUi80wlf1seIzxdED+DPuvEsxvqI4AUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rSeeYMQC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A4EC113D0;
+	Thu,  4 Sep 2025 13:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756983335;
-	bh=IsvPPeqV8POyoYunxkhkVNbHZma0NTrLqcfEJ8H1vOg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QHD9Wfe9pl81KaKyYx3q2f/4xdKdSE4GTZg14n1v3R0PxBM2ZlnaHOp2M9mEmpnQ5
-	 nUlqo58kaXVT5TT+pkv8cdyMVTGaoBvtxf38tWncUX2yB0f3CxtRqy561mgeJRWNQo
-	 Zhv/Z1n+OkYOqJfBS08e434/Ym6augQuxit6SOa8DpY9qyOg6llKU1Rh607HpYBBA2
-	 L7AwBCP5Q+3XlTax5HRY96wjwpovkEbeP+5SnEeWTzW84jrlXkStyQ4pBCLZHIU+w6
-	 JNDzKYYrJgjrAbpK3rgqdSGP9hdCr746owEOPUcBO2xvQnEcg93ncOsWSJTeG3AvsC
-	 pUyvVC5JHBs5w==
-Message-ID: <818b7848-1b34-49dc-87bd-0438a82f2ebf@kernel.org>
-Date: Thu, 4 Sep 2025 12:55:23 +0200
+	s=k20201202; t=1756991858;
+	bh=J37h8zaAlmHnvnALjyhUgHlYpkvFqaV8s8bqNB0XjFQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=rSeeYMQC35U85BwNUUpTccZq+hmNBZVbOybxyuurDfaGkCAOruDMl/BJ+6V3r+u6h
+	 58CWTnMu+bkN110RdLUvsucq93Jc3d5+kS4frgCgo3FVx3GWK1mqvcgH10uQaLNdrC
+	 SjzoQa4PZZYmq/Cxf5GId4h0wwWgehrTcd3/KL9uaLs131Bk/JxcPE98Jb6fe/jKYz
+	 z9ZzUD2u+kcZHrqVDT3DoVuv24+ayotdgqIP+Ft/7HhGElCcWzJX7QOvWcqV7tq8AE
+	 Dyj7Rt7r/bwUN6zrO9NKAoaO0vQbLGPtbHKeSIOKcrHhUaGW45oySjjKxi6/1oZJq4
+	 26vW+iK8JHIJQ==
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-74382048b8cso694965a34.3;
+        Thu, 04 Sep 2025 06:17:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUyNtr/4aJdyhytaK1Vm3P7NTTrCm4FkihQDdxcRjI7QIqwuFm856bDIb+aXTg3U/auaqZBL4snWJsz@vger.kernel.org, AJvYcCVBTfLz6W1afH+IsCZDhs/lyAOpCN2pnhlESQO9cOiR7PWmUhU6VwKJagQIxaYKSJWxPQ22q+ioKEE=@vger.kernel.org, AJvYcCVNG4KhjHY/kwv1dhs/46Pss98DXzhP7RhTWkRbh3X/3dxZit6ACKADJUjI0v8YjFCcFVLpcwwWmfpKiA==@vger.kernel.org, AJvYcCWI+z+OpfeGTfScCyvXsNCebwjyjIg5ZnNfIxah9MZ/jma+0Pp6ikaD74JflPMKI8css+d9VtE89UMdRzYn@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvJvpwyxGuV+F8otscqaMZh3d/WzksYSbbDnXvxZCOUcp2bfyj
+	rtV8MNO47haC+7dQMQu5St9fVDW4o7qok4gOPInJS0ELON4ep2rVltqj3qIjq8m+/J2HY98OF+f
+	6lEN1Rm5bSFI3JeezQ8urQTGNLZKEU7o=
+X-Google-Smtp-Source: AGHT+IEjDfW+3hJPUPYu26F2xz+pxJ+KiqPGjYP79H7T0/I1zIoWql1eDpgpdg2oH+VBSzMp/G1t2kU5l5bZBE+Bi2g=
+X-Received: by 2002:a05:6830:4901:b0:73e:8c8b:749 with SMTP id
+ 46e09a7af769-74569c6739fmr14127345a34.0.1756991857138; Thu, 04 Sep 2025
+ 06:17:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/10] powercap: dtpm_cpu: Use scope-based cleanup
- helper
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>,
- "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Alim Akhtar
- <alim.akhtar@samsung.com>, Thierry Reding <thierry.reding@gmail.com>,
- MyungJoo Ham <myungjoo.ham@samsung.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
- Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
- Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
- Lukasz Luba <lukasz.luba@arm.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
- <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
- Sumit Gupta <sumitg@nvidia.com>,
- Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
- Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
- linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
- <20250903131733.57637-8-zhangzihuan@kylinos.cn>
- <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
+ <20250903131733.57637-8-zhangzihuan@kylinos.cn> <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
  <52e322e5-2dd4-488c-a98e-3a4018f0c323@kylinos.cn>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
 In-Reply-To: <52e322e5-2dd4-488c-a98e-3a4018f0c323@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 4 Sep 2025 15:17:26 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0g__9g_dfA3=4GVi351f4CKBegKkW9nU81j+Qu=2Hfg1Q@mail.gmail.com>
+X-Gm-Features: Ac12FXwmEGaidQr8PE8Gnv5hzk4SwGXFsXwEgV1BR4I0F2oh9v2_Dsc7pRXgYnA
+Message-ID: <CAJZ5v0g__9g_dfA3=4GVi351f4CKBegKkW9nU81j+Qu=2Hfg1Q@mail.gmail.com>
+Subject: Re: [PATCH v4 07/10] powercap: dtpm_cpu: Use scope-based cleanup helper
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
+	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
+	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, 
+	zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, 
+	Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
+	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 04/09/2025 12:37, Zihuan Zhang wrote:
->>   * Lastly, given that the benefit of cleanup helpers is removal of
->>   * "goto", and that the "goto" statement can jump between scopes, the
->>   * expectation is that usage of "goto" and cleanup helpers is never
->>   * mixed in the same function. I.e. for a given routine, convert all
->>   * resources that need a "goto" cleanup to scope-based cleanup, or
->>   * convert none of them.
-> 
-> 
+On Thu, Sep 4, 2025 at 12:38=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylinos.c=
+n> wrote:
+>
+>
+> =E5=9C=A8 2025/9/3 21:45, Rafael J. Wysocki =E5=86=99=E9=81=93:
+> > On Wed, Sep 3, 2025 at 3:18=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylino=
+s.cn> wrote:
+> >> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> >> annotation for policy references. This reduces the risk of reference
+> >> counting mistakes and aligns the code with the latest kernel style.
+> >>
+> >> No functional change intended.
+> >>
+> >> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> >> ---
+> >>   drivers/powercap/dtpm_cpu.c | 30 +++++++++++-------------------
+> >>   1 file changed, 11 insertions(+), 19 deletions(-)
+> >>
+> >> diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
+> >> index 99390ec1481f..f76594185fa2 100644
+> >> --- a/drivers/powercap/dtpm_cpu.c
+> >> +++ b/drivers/powercap/dtpm_cpu.c
+> >> @@ -144,19 +144,17 @@ static int update_pd_power_uw(struct dtpm *dtpm)
+> >>   static void pd_release(struct dtpm *dtpm)
+> >>   {
+> >>          struct dtpm_cpu *dtpm_cpu =3D to_dtpm_cpu(dtpm);
+> >> -       struct cpufreq_policy *policy;
+> >>
+> >>          if (freq_qos_request_active(&dtpm_cpu->qos_req))
+> >>                  freq_qos_remove_request(&dtpm_cpu->qos_req);
+> >>
+> >> -       policy =3D cpufreq_cpu_get(dtpm_cpu->cpu);
+> >> -       if (policy) {
+> >> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
+> >> +               cpufreq_cpu_get(dtpm_cpu->cpu);
+> >> +
+> >> +       if (policy)
+> >>                  for_each_cpu(dtpm_cpu->cpu, policy->related_cpus)
+> >>                          per_cpu(dtpm_per_cpu, dtpm_cpu->cpu) =3D NULL=
+;
+> >>
+> >> -               cpufreq_cpu_put(policy);
+> >> -       }
+> >> -
+> >>          kfree(dtpm_cpu);
+> >>   }
+> >>
+> >> @@ -192,7 +190,6 @@ static int cpuhp_dtpm_cpu_online(unsigned int cpu)
+> >>   static int __dtpm_cpu_setup(int cpu, struct dtpm *parent)
+> >>   {
+> >>          struct dtpm_cpu *dtpm_cpu;
+> >> -       struct cpufreq_policy *policy;
+> >>          struct em_perf_state *table;
+> >>          struct em_perf_domain *pd;
+> >>          char name[CPUFREQ_NAME_LEN];
+> >> @@ -202,21 +199,19 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm=
+ *parent)
+> >>          if (dtpm_cpu)
+> >>                  return 0;
+> >>
+> >> -       policy =3D cpufreq_cpu_get(cpu);
+> >> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
+> >> +               cpufreq_cpu_get(cpu);
+> >> +
+> >>          if (!policy)
+> >>                  return 0;
+> >>
+> >>          pd =3D em_cpu_get(cpu);
+> >> -       if (!pd || em_is_artificial(pd)) {
+> >> -               ret =3D -EINVAL;
+> >> -               goto release_policy;
+> >> -       }
+> >> +       if (!pd || em_is_artificial(pd))
+> >> +               return -EINVAL;
+> >>
+> >>          dtpm_cpu =3D kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
+> >> -       if (!dtpm_cpu) {
+> >> -               ret =3D -ENOMEM;
+> >> -               goto release_policy;
+> >> -       }
+> >> +       if (!dtpm_cpu)
+> >> +               return -ENOMEM;
+> >>
+> >>          dtpm_init(&dtpm_cpu->dtpm, &dtpm_ops);
+> >>          dtpm_cpu->cpu =3D cpu;
+> >> @@ -239,7 +234,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *=
+parent)
+> >>          if (ret < 0)
+> >>                  goto out_dtpm_unregister;
+> > So this change kind of goes against another recommendation given in cle=
+anup.h:
+> >
+> >   * Lastly, given that the benefit of cleanup helpers is removal of
+> >   * "goto", and that the "goto" statement can jump between scopes, the
+> >   * expectation is that usage of "goto" and cleanup helpers is never
+> >   * mixed in the same function. I.e. for a given routine, convert all
+> >   * resources that need a "goto" cleanup to scope-based cleanup, or
+> >   * convert none of them.
+>
+>
 > Should I replace all the memory allocation cleanups here with `__free`?
 > That would allow us to drop all the `goto`s, but since this function has
-> quite a few of them, I’m concerned it might introduce new issues. What’s
+> quite a few of them, I=E2=80=99m concerned it might introduce new issues.=
+ What=E2=80=99s
 > your recommendation?
 
-If you keep asking this, I have doubts you really know how to use
-cleanup.h. Don't blindly convert code to cleanup.h. It's very odd syntax
-and it is not even welcomed everywhere.
+Frankly, don't use __free() in this code at all, at least for the time bein=
+g.
 
-Best regards,
-Krzysztof
+There is a problem with dropping the reference to policy at the end of
+__dtpm_cpu_setup() because that policy may be subsequently indirectly
+used in set_pd_power_limit() which calls
+freq_qos_update_request(&dtpm_cpu->qos_req, freq) and
+dtpm_cpu->qos_req->qos is policy->constraints, so using it will cause
+policy->constraints to be dereferenced in freq_qos_apply() which will
+crash and burn if the policy goes away in the meantime.  So AFAICS
+__dtpm_cpu_setup() shouldn't call cpufreq_cpu_put() at all and the
+policy should be released in pd_release() without acquiring a new
+reference to it.
+
+You may as well try to fix this if you have free cycles.
 
