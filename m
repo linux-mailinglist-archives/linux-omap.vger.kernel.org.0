@@ -1,205 +1,130 @@
-Return-Path: <linux-omap+bounces-4528-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4529-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 328CEB42254
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 15:45:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50134B431E9
+	for <lists+linux-omap@lfdr.de>; Thu,  4 Sep 2025 08:03:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE1CE56384E
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Sep 2025 13:45:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04B1F48147E
+	for <lists+linux-omap@lfdr.de>; Thu,  4 Sep 2025 06:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F32030BF79;
-	Wed,  3 Sep 2025 13:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D821758B;
+	Thu,  4 Sep 2025 06:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EtV1vxk9"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="eM4xdPD4"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1D872618;
-	Wed,  3 Sep 2025 13:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A608227EAA;
+	Thu,  4 Sep 2025 06:03:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756907130; cv=none; b=dXU1Uq/RGcUSaPC/RSE4b/uNd/YgKjV40lv/5nd50GHCGF4ursOkLw2dYR10JmGH9ELS/9aQoFVQVxOvkmL2QF/SVbUIfWBLNtZDuQB9MFZnf3abunhLyrRL1BDaw1B05Fzji+2CVyhgkQFmo8zyjB79QHKVKiLBmCtfbdyLUy8=
+	t=1756965791; cv=none; b=hIwIo/YleoESsUoa+PUG/cODHQDXyPKurL8e6+Ume0GQBUGUCEEljU5aKM7AGk8cdHlDE/5GVTBNTQQbIIF3iKRzYlJocvhhNllTHb0RMNWzUimlkxpUO9WesM1XQRue12/mqZdLcM4eXiSwcCWi1gHuTc7GMV8lHYEtOcze4gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756907130; c=relaxed/simple;
-	bh=6Bp49XvIiL/gpcZUSJHbjfPDkjkxFuVv8aVM1mwkppM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ncAJg4mfq0B75xF6ONlw6yYpPHFicpTUwi5+8AUqGNztUzbLLIzi1c6+pYc2XDCwNG3X0DghGma7SFpKdj6GOemgMfd5eHGxcyDfhXyXk010qvfe1FeBHi/i4I3GIW78b1XGex6QSNEYjF5dW31UpT47ByoCVuLH3vml7iO4g4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EtV1vxk9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B88B2C4CEFE;
-	Wed,  3 Sep 2025 13:45:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756907129;
-	bh=6Bp49XvIiL/gpcZUSJHbjfPDkjkxFuVv8aVM1mwkppM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=EtV1vxk9Knh7vuhM8x4HkCnMMQg77LBHWAZjfHt0hykdAtk0J7zkljpn1dRo8ALRy
-	 nJBjQbGoGlt335lc6Yejbwt37hjTv6p8SfDTunaRiW2oQzHQJq0rlhZtQ1LRmN6+mL
-	 IGnwxZAwUAyqQhCdqcZjg6unlXq+oHZaIHgAwNaLEtGxgemHO0ZOaXw9RabH2oRHjO
-	 1NAsUX1pvy8xvLLbjRFOhcQ7OcGTcv3rYRTxHcZtSDX9/AS365g+6AYkmZe7Gug6n+
-	 egQHkiSWI1KySu6kre/fm/A9KyjZ9fyn2Wecsk4AkYcdc4XAKirge13OlUIx7BdFSr
-	 JLHu0DYRXsxWw==
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-74382048b8cso4085416a34.3;
-        Wed, 03 Sep 2025 06:45:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU7mEeVQ8ID3EM2uvimvABgR5DEJPM8H2+TKiJl624j3/toRsNvUWGtgSHTmfrEsc3D4ft0bkMecAA=@vger.kernel.org, AJvYcCUNH1JaNwu50mHa7UCnsmuTy/zwyQtfKvQh2I1RkQ94Jqbbl/jBzs2vfLAlQIJwoZ7kocx47mh2YvQFqg==@vger.kernel.org, AJvYcCUPKgNgUxsgKTXeiA/XKh7oZDWbwHcmPo+SG5IzKakbFRGBWWIoWr901e58It41NatomCCR2VLKheVF@vger.kernel.org, AJvYcCUnpH0fe9ODPV8mftWp7RgSL+qnQYEayKq0cQPQ5YvYAo7DuPgOfYfmXbzi4lPGzLax1XCIxSB8kJaGy2mX@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3oF7TQS+N82BAXvSkGK32/PGxbanOKNRFcyl1bUiqAbtcZGOv
-	NUKvPIQhUkoKV9Nxv+hwgUhqhlWxn0ELbNxREK0AZlm6k5CdbzjFI3ht69oecG8dfMTjK8q+dTk
-	jgFRnJidB0YPLW1krR0ceZDDLKDM0FOI=
-X-Google-Smtp-Source: AGHT+IFj7tJ0lfFEWygwFa+BeDrtHlIidd3MSLvzw4pQoHyU3fN8psDlEaELWcEJ9+cmnisQYq8U5lt0bInRpr2lJAs=
-X-Received: by 2002:a05:6830:6682:b0:745:9ba6:d32c with SMTP id
- 46e09a7af769-7459ba6d61bmr1062886a34.2.1756907128976; Wed, 03 Sep 2025
- 06:45:28 -0700 (PDT)
+	s=arc-20240116; t=1756965791; c=relaxed/simple;
+	bh=Na8D2F1M+Ubbv95BCr971DlBbYNRDFst0cUsqLAgIgY=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QMCblKc640T4WPRlNWonCJaqlBKEdLXbrgewNHqd6S2yjqjqkA7hVwwUaNHdQeMaxckv690soAjdtSo0oFwg6kLMjY0iw6rCLmT3RA+1+qdPARODB6wKPSI5elVp6oQdsprtMQDcVmf7hfB0E6MSSoreRhwU7MGlbhRBGjBiLZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=eM4xdPD4; arc=none smtp.client-ip=198.47.23.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTP id 5846328V3441617;
+	Thu, 4 Sep 2025 01:03:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1756965782;
+	bh=fM8vAY0Q85Z9EMSXf59mCDlpv1x4CnX0CGNGXY1eJU0=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=eM4xdPD4AD/A7nqAs4IOXS9dyQxjN+IwfGqB5NLeMLtTsDQxr1V76Dd3PYdto9XGW
+	 y9QCqXLhvA1hho7Zpf0jNMyeyWiRltJWhFzzrCIzr/WnKDRnetXNouYjJ2gSRCxTKb
+	 1pSVzkG9SuPdTep53JAWued/gM2XnmQFBsoWYT7Q=
+Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
+	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 584632br4155145
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Thu, 4 Sep 2025 01:03:02 -0500
+Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Thu, 4
+ Sep 2025 01:03:02 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Thu, 4 Sep 2025 01:03:01 -0500
+Received: from localhost (uda0492258.dhcp.ti.com [172.24.231.84])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 584630uh2789507;
+	Thu, 4 Sep 2025 01:03:01 -0500
+Date: Thu, 4 Sep 2025 11:33:00 +0530
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: Manivannan Sadhasivam <mani@kernel.org>
+CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <lpieralisi@kernel.org>,
+        <kwilczynski@kernel.org>, <robh@kernel.org>, <bhelgaas@google.com>,
+        <helgaas@kernel.org>, <kishon@kernel.org>, <vigneshr@ti.com>,
+        <stable@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>
+Subject: Re: [PATCH v3] PCI: j721e: Fix programming sequence of "strap"
+ settings
+Message-ID: <a0e1d273-239b-44e5-8ccc-0ba83b2b5839@ti.com>
+References: <20250829091707.2990211-1-s-vadapalli@ti.com>
+ <oztilfun77apxtjxumx4tydkcd2gsalsak4m2rvsry2oooqjna@2yvcx6cnuemm>
+ <b2fb9252-6bfc-45da-973a-31cdfcc86b3d@ti.com>
+ <z3ubracmtlq23yicbrhqjgnzrfoqheffm6cvhfnawlvbu4cmmp@ddu2o7xhw5tz>
+ <48e9d897-2cd3-48ef-b46a-635ae75f5ac6@ti.com>
+ <3wc3t6y5gzzspgfeklsqo3bupfp6gsfy6mls6t66hflcqlqsfk@cu26wv3sow4y>
+ <9d2bba15-52e4-432a-8f7f-a0f5d7c2e4ad@ti.com>
+ <7hxdcjm7evlphkldct7seytno4is7rjkx5vquvtfhpdkzxdhu6@yocrjgzciwu3>
+ <08b87b5f-838b-4f40-ae90-10ded134356e@ti.com>
+ <whinfqhjgqbbvlnuzgbukklqi6gocjji4gakqyycovrse4qq6s@6xq5imqbzvux>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250903131733.57637-1-zhangzihuan@kylinos.cn> <20250903131733.57637-8-zhangzihuan@kylinos.cn>
-In-Reply-To: <20250903131733.57637-8-zhangzihuan@kylinos.cn>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 3 Sep 2025 15:45:17 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
-X-Gm-Features: Ac12FXwBQmIxy8zPXuaWqJJ1Bp0qaxbUEME_ozpvMpdmoYPanY06xkhRVAoy8ys
-Message-ID: <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
-Subject: Re: [PATCH v4 07/10] powercap: dtpm_cpu: Use scope-based cleanup helper
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
-	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, 
-	zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
-	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <whinfqhjgqbbvlnuzgbukklqi6gocjji4gakqyycovrse4qq6s@6xq5imqbzvux>
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Wed, Sep 3, 2025 at 3:18=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylinos.cn=
-> wrote:
->
-> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-> annotation for policy references. This reduces the risk of reference
-> counting mistakes and aligns the code with the latest kernel style.
->
-> No functional change intended.
->
-> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-> ---
->  drivers/powercap/dtpm_cpu.c | 30 +++++++++++-------------------
->  1 file changed, 11 insertions(+), 19 deletions(-)
->
-> diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
-> index 99390ec1481f..f76594185fa2 100644
-> --- a/drivers/powercap/dtpm_cpu.c
-> +++ b/drivers/powercap/dtpm_cpu.c
-> @@ -144,19 +144,17 @@ static int update_pd_power_uw(struct dtpm *dtpm)
->  static void pd_release(struct dtpm *dtpm)
->  {
->         struct dtpm_cpu *dtpm_cpu =3D to_dtpm_cpu(dtpm);
-> -       struct cpufreq_policy *policy;
->
->         if (freq_qos_request_active(&dtpm_cpu->qos_req))
->                 freq_qos_remove_request(&dtpm_cpu->qos_req);
->
-> -       policy =3D cpufreq_cpu_get(dtpm_cpu->cpu);
-> -       if (policy) {
-> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
-> +               cpufreq_cpu_get(dtpm_cpu->cpu);
-> +
-> +       if (policy)
->                 for_each_cpu(dtpm_cpu->cpu, policy->related_cpus)
->                         per_cpu(dtpm_per_cpu, dtpm_cpu->cpu) =3D NULL;
->
-> -               cpufreq_cpu_put(policy);
-> -       }
-> -
->         kfree(dtpm_cpu);
->  }
->
-> @@ -192,7 +190,6 @@ static int cpuhp_dtpm_cpu_online(unsigned int cpu)
->  static int __dtpm_cpu_setup(int cpu, struct dtpm *parent)
->  {
->         struct dtpm_cpu *dtpm_cpu;
-> -       struct cpufreq_policy *policy;
->         struct em_perf_state *table;
->         struct em_perf_domain *pd;
->         char name[CPUFREQ_NAME_LEN];
-> @@ -202,21 +199,19 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *p=
-arent)
->         if (dtpm_cpu)
->                 return 0;
->
-> -       policy =3D cpufreq_cpu_get(cpu);
-> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
-> +               cpufreq_cpu_get(cpu);
-> +
->         if (!policy)
->                 return 0;
->
->         pd =3D em_cpu_get(cpu);
-> -       if (!pd || em_is_artificial(pd)) {
-> -               ret =3D -EINVAL;
-> -               goto release_policy;
-> -       }
-> +       if (!pd || em_is_artificial(pd))
-> +               return -EINVAL;
->
->         dtpm_cpu =3D kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
-> -       if (!dtpm_cpu) {
-> -               ret =3D -ENOMEM;
-> -               goto release_policy;
-> -       }
-> +       if (!dtpm_cpu)
-> +               return -ENOMEM;
->
->         dtpm_init(&dtpm_cpu->dtpm, &dtpm_ops);
->         dtpm_cpu->cpu =3D cpu;
-> @@ -239,7 +234,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *par=
-ent)
->         if (ret < 0)
->                 goto out_dtpm_unregister;
+On Wed, Sep 03, 2025 at 06:51:14PM +0530, Manivannan Sadhasivam wrote:
 
-So this change kind of goes against another recommendation given in cleanup=
-.h:
+[...]
 
- * Lastly, given that the benefit of cleanup helpers is removal of
- * "goto", and that the "goto" statement can jump between scopes, the
- * expectation is that usage of "goto" and cleanup helpers is never
- * mixed in the same function. I.e. for a given routine, convert all
- * resources that need a "goto" cleanup to scope-based cleanup, or
- * convert none of them.
+> 
+> I thought put_noidle() will just reduce the refcount and not invoke the
+> idle/suspend callbacks, but I seem to be wrong here.
+> 
+> Anyway, I guess we have no option here other than to drop the
+> pm_runtime_put_noidle() call. This will keep refcount as 1 and will prevent the
+> parent (genpd) to not enter runtime suspend, but we have to live with it (this
+> was also the previous beahvior as well).
+> 
+> Btw, pm_runtime_set_active/enable change belongs to a separate patch.
 
->
-> -       cpufreq_cpu_put(policy);
->         return 0;
->
->  out_dtpm_unregister:
-> @@ -251,8 +245,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *par=
-ent)
->                 per_cpu(dtpm_per_cpu, cpu) =3D NULL;
->         kfree(dtpm_cpu);
->
-> -release_policy:
-> -       cpufreq_cpu_put(policy);
->         return ret;
->  }
->
-> --
+I will work on and post the v4 patch with the following change:
+- The commit message and the comment in the code will be updated to
+  indicate that the runtime PM APIs are used to cause 'genpd' to power off
+  and power on the controller.
+
+I assume that the driver changes can remain as they are in this patch given
+that the existing behavior has to be preserved. As j721e_pcie_ctrl_init()
+programs the strap settings, powering off the controller via
+pm_runtime_put_sync() and powering it on via pm_runtime_get_sync() shall
+be implemented within j721e_pcie_ctrl_init() itself leaving the rest of the
+probe function as-is. To summarize, the driver changes will be:
+
+	j721e_pcie_ctrl_init()
+		...Existing code...
+	+	Add pm_runtime_put_sync() here to power off controller
+		...Existing code to program strap settings...
+	+	Add pm_runtime_get_sync() here to power on controller
+		...Existing code...
+
+Please let me know what you think.
+
+Regards,
+Siddharth.
 
