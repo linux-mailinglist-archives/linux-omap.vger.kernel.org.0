@@ -1,214 +1,130 @@
-Return-Path: <linux-omap+bounces-4579-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4580-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FE62B46489
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Sep 2025 22:18:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90520B46546
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Sep 2025 23:15:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77C83A021BD
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Sep 2025 20:18:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5263A168B94
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Sep 2025 21:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F4E2BE05E;
-	Fri,  5 Sep 2025 20:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBF32EFD82;
+	Fri,  5 Sep 2025 21:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uIKc5zt2"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="dKugqIPh"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4A52472A4;
-	Fri,  5 Sep 2025 20:17:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A94284886;
+	Fri,  5 Sep 2025 21:14:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757103459; cv=none; b=P0zEBIuNjCWsawEENSMocYkyKtd98NLTalO7IR6kSLABZrhlI90QmCeKbYGNBPjos7t8ad3q7BDvA2iWGLPzcFpJtgG1vxjteGejUh1VEyozYZVJDDoTl7pMEqCESCDhAwaSyfq5TsXbG8lkljo5NRF0F+UPU9BWl++aVaKx4f8=
+	t=1757106891; cv=none; b=dNzKa7Y9oNDdfu3Iw5Z0d8aQFs4RGgFwBRUo5791QvSXa0eMffE/ILe8+Kab/ZBmHzJDwuPBdOXBQUlQ2i6SBaaritqSQS3PCYI1okpYyR0mftyO1MN2eD70lB0HQfdUKUwqv4mz9IDVE9WDaQWyhzM1+ax603Uzd0Xx0cBuG14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757103459; c=relaxed/simple;
-	bh=VCWnUGzPf6mLuDmms/YZCG2llaFLvKJwA1gnXCCbRdk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KOUO0m7vCBcbqM44yiOHQESKRCp4tdJ6id8+gMrinGrE1+hrgCXSodgzPqQb3VLz6ZLM0iSNerlbQcTzq9WRyKJRf0N861lhjc7rrjJTmRC3Bsa2E4Uw9209d/tnBaD+mCw8LzfqZw+5FKMQqt1J+EkIdRfd74XPX3HyxPdFU+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uIKc5zt2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C78C19424;
-	Fri,  5 Sep 2025 20:17:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757103458;
-	bh=VCWnUGzPf6mLuDmms/YZCG2llaFLvKJwA1gnXCCbRdk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=uIKc5zt24/XZwP7JYEqTfBfFRmX6Wk9YHD8HxEi0IvUGCXmYhq0zMpSm8supQ0Fb5
-	 iJGS/xoCTwpWx6B21zvCyX58JiG6wKZeHnfKV9PrzdFD8g77UCWMhwV/+VxR8kAvlQ
-	 yPVyT4akXZx6QFmh+sC2ZrMWYx9v4XhPjX4ZqEzVtRypqr58ssUWkgaJb/JjbHDIS4
-	 Q06psN5PW+ZumYVyodesqKh7Uj5j1bR2yhf3Z/vTbdtMhbmMxPQZsd1C7tcDa8a8kX
-	 RxRMOqOPKJoPYzcqOhn1uU/Cd9d8rzzAEwXshP6QHtlDLuGvIqnZfJzgThdRl7C/Wq
-	 nxK2iLAKYjwYQ==
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-61bd4ad64c7so801135eaf.0;
-        Fri, 05 Sep 2025 13:17:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUraKzGHcjXYxM1x/+9H6tiER1I4b50o6C7rUX/4wtqzr/VOG9IGoSfNrhGWomA7QzUlxwix5GfGIZm@vger.kernel.org, AJvYcCVzPIiU1SNvKJUtQ7YeeoPzVxX8J3LFk/kijiUVPzVkeIPTZs21lE3YeABzKz60w9gIDNdsdUoF6YA=@vger.kernel.org, AJvYcCW33R3KoX3K4Z9WBena+05xnJDAfGRhXR2g/Wowh0HXWGpPiCqW+hzlMAqNPF9F88GHzcIRhzhUO2CIUQ==@vger.kernel.org, AJvYcCWeIQnyZ7xMarkvd48XpvBIVuEdVJfUwZ26Pr1xRpgQxQ/Z0BY8p9NaRaBsro6l1EQw7aA+SAa2AX6r4Bkz@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxup4JkUgMLv2/to1UB8LLZENstzPjwt63ZTbRR96PJDlopYiIe
-	CQWuKrqR0CD/5cFOCPYxe9c6F+LeuqbayCBOvLK1ZJs48u/6jo3MCVzJaCJ8/0nSzAe1UKOD7X1
-	lfCdSUaQJfhS1zwtBXVQQa1ifj4vdEc0=
-X-Google-Smtp-Source: AGHT+IEfq1HNckIyyDDXquy0XLtyGZg1XWmotG9HdXFUDIR4D+v0h/9IrUo3g6diO4+f6WOXTRuaooZELa2e+VnSV5o=
-X-Received: by 2002:a05:6820:809:b0:61f:f932:8d64 with SMTP id
- 006d021491bc7-61ff9329264mr2455383eaf.1.1757103457768; Fri, 05 Sep 2025
- 13:17:37 -0700 (PDT)
+	s=arc-20240116; t=1757106891; c=relaxed/simple;
+	bh=wT8x2IGgVEao6/cCmkDlAreApT8kXJlKNuy8RcfE5kU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dii/bb7O3pUynsskugGgtSXH09/ogzpCHWnOJutVkuvb5M8gazPH4sDeVInDLIFC68RIT68Hcg5GSKBpKLL1XGLNuDLY9ubzCmWJzjpOG+pBS3UgIVQthS4mPJ/87aZwmu0d8ejD/u3I4jTpdKb1CyTkcAOdSCm1WDAyPoYXSWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=dKugqIPh; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 585LEe1h000688;
+	Fri, 5 Sep 2025 21:14:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=MNTVaRidqIqXgAKjCzr+BWLK86N6w
+	+7fH73KgXvjBA0=; b=dKugqIPhq9ZC+89Ri9k61+v/Yno3dFKMTAsRVWZHfTcQW
+	j6VnbAulUJW4u6GsEP4VG9nbIWCLrhJEFevcbtHge8ppYtqASWh2BifrpqNRITaS
+	hE8RFhZUVZDk0wulv+mxPtTvUHIrK5rAWb/FXkc3xrDakp2u3F8GTeK7Ux4Bd56T
+	1hMZpR+buEhGlmgZINmDiB7TVNPT63icoryfDQPO6alWbcfOxSwi1K1gnL6y2OHT
+	NcnNvqRf5Y3wKA7aKylL6oceZhF16jnb+QJRT3GuPadC8/S88sVeZc6vZAxKZbrX
+	trnovOtZUBlrox6fNfbqOfv/SAkmgHmuyyiufEkOQ==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4907ktg004-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 05 Sep 2025 21:14:40 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 585JoCav033333;
+	Fri, 5 Sep 2025 21:14:39 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48uqrd4qvc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 05 Sep 2025 21:14:39 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 585LEcuq038219;
+	Fri, 5 Sep 2025 21:14:38 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 48uqrd4quv-1;
+	Fri, 05 Sep 2025 21:14:38 +0000
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
+To: vigneshr@ti.com, s-vadapalli@ti.com, lpieralisi@kernel.org,
+        kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org,
+        bhelgaas@google.com, linux-omap@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: alok.a.tiwari@oracle.com, linux-kernel@vger.kernel.org
+Subject: [PATCH] PCI: j721e: Fix incorrect error message in probe
+Date: Fri,  5 Sep 2025 14:14:34 -0700
+Message-ID: <20250905211436.3048282-1-alok.a.tiwari@oracle.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250905132413.1376220-1-zhangzihuan@kylinos.cn> <20250905132413.1376220-3-zhangzihuan@kylinos.cn>
-In-Reply-To: <20250905132413.1376220-3-zhangzihuan@kylinos.cn>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 5 Sep 2025 22:17:26 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iTdgM5BBi2ysiJxfA2c=MQ0fjLsEvVct9stxomvEe=4Q@mail.gmail.com>
-X-Gm-Features: Ac12FXw3PBjsIjj4AtBsEfmKTR7PfZEmevzc6Jwe0zbtA2TuWwqukJr66Nf1sL8
-Message-ID: <CAJZ5v0iTdgM5BBi2ysiJxfA2c=MQ0fjLsEvVct9stxomvEe=4Q@mail.gmail.com>
-Subject: Re: [PATCH v5 2/6] ACPI: processor: thermal: Use scope-based cleanup helper
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Jonathan Cameron <jonathan.cameron@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
-	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, 
-	zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
-	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-05_07,2025-09-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 spamscore=0
+ malwarescore=0 mlxlogscore=999 phishscore=0 suspectscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
+ definitions=main-2509050209
+X-Proofpoint-GUID: yjoYByN9Zdo31DNY6AEfeu0WOeY1RLep
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA1MDIwOSBTYWx0ZWRfX7Dv9FNCmvvf3
+ in+cAPNtPOam6g7FcUOaEcgI3VwbLkiSCe/oFlLyTSltTsosiFhdfA3mlqQ1W2qnIIyYLNaA9lA
+ EUMuGNdm7e7yy8MzV7ZQbOH+g9C124Njm6iHHx7Z1UgzM3sFb6kIre95FiPEeY0JmSgkuYxZuu8
+ U6RqbJ3t8zpLiONRxnpHnfCXu9NS6AHIr4pE2fZMvxKLY3Y1PQnpotyD2D6ZyUTJ0tZg9ywein3
+ MyHxJR2gsfsDorJy6WdkkHk+sKyofb9KEcdz9fsZzIeJ5IqfFsGpWplyjKYsHK2+osRVJh3bauL
+ eC1maQsYSv0c71zxSdAXCe7QBP2c66EXq/PweM4Y/U+UGJmRNl9Cpf+w2qrcMXUrFcac0f7BQzG
+ qlybUAoN
+X-Proofpoint-ORIG-GUID: yjoYByN9Zdo31DNY6AEfeu0WOeY1RLep
+X-Authority-Analysis: v=2.4 cv=P9Y6hjAu c=1 sm=1 tr=0 ts=68bb52c0 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=yJojWOMRYYMA:10 a=yPCof4ZbAAAA:8 a=kyFhivpCSvuUZvO-LAYA:9
 
-On Fri, Sep 5, 2025 at 3:24=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylinos.cn=
-> wrote:
->
-> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-> annotation for policy references. This reduces the risk of reference
-> counting mistakes and aligns the code with the latest kernel style.
->
-> No functional change intended.
->
-> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-> ---
->  drivers/acpi/processor_thermal.c | 52 +++++++++++++++++---------------
->  1 file changed, 27 insertions(+), 25 deletions(-)
->
-> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_th=
-ermal.c
-> index 1219adb11ab9..460713d1414a 100644
-> --- a/drivers/acpi/processor_thermal.c
-> +++ b/drivers/acpi/processor_thermal.c
-> @@ -62,19 +62,14 @@ static int phys_package_first_cpu(int cpu)
->         return 0;
->  }
->
-> -static int cpu_has_cpufreq(unsigned int cpu)
-> +static bool cpu_has_cpufreq(unsigned int cpu)
->  {
-> -       struct cpufreq_policy *policy;
-> -
->         if (!acpi_processor_cpufreq_init)
->                 return 0;
->
-> -       policy =3D cpufreq_cpu_get(cpu);
-> -       if (policy) {
-> -               cpufreq_cpu_put(policy);
-> -               return 1;
-> -       }
-> -       return 0;
-> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpuf=
-req_cpu_get(cpu);
-> +
-> +       return policy !=3D NULL;
->  }
->
->  static int cpufreq_get_max_state(unsigned int cpu)
+The probe function printed "pm_runtime_get_sync failed" when
+j721e_pcie_ctrl_init() returned an error. This is misleading since
+the failure was not from pm_runtime but from the controller init
+routine. Update the error message to correctly reflect the source.
 
-The changes above are fine and can be sent as a separate patch.
+No functional changes.
 
-> @@ -93,12 +88,31 @@ static int cpufreq_get_cur_state(unsigned int cpu)
->         return reduction_step(cpu);
->  }
->
-> +static bool cpufreq_update_thermal_limit(unsigned int cpu, struct acpi_p=
-rocessor *pr)
-> +{
-> +       unsigned long max_freq;
-> +       int ret;
-> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpuf=
-req_cpu_get(cpu);
-> +
-> +       if (!policy)
-> +               return false;
-> +
-> +       max_freq =3D (policy->cpuinfo.max_freq *
-> +               (100 - reduction_step(cpu) * cpufreq_thermal_reduction_pc=
-tg)) / 100;
-> +
-> +       ret =3D freq_qos_update_request(&pr->thermal_req, max_freq);
-> +       if (ret < 0) {
-> +               pr_warn("Failed to update thermal freq constraint: CPU%d =
-(%d)\n",
-> +         pr->id, ret);
-> +       }
+Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+---
+Not sure if a Fixes tag is required here
+---
+ drivers/pci/controller/cadence/pci-j721e.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-But this silently fixes a bug in the original code which needs to be
-documented with a Fixes: tag (and it would be better to fix the bug
-separately before the using the __free()-based cleanup TBH) and
-introduces some whitespace breakage.
+diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+index 6c93f39d0288..5e445a7bda33 100644
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -549,7 +549,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+ 
+ 	ret = j721e_pcie_ctrl_init(pcie);
+ 	if (ret < 0) {
+-		dev_err_probe(dev, ret, "pm_runtime_get_sync failed\n");
++		dev_err_probe(dev, ret, "j721e_pcie_ctrl_init failed\n");
+ 		goto err_get_sync;
+ 	}
+ 
+-- 
+2.50.1
 
-> +
-> +       return true;
-> +}
-> +
->  static int cpufreq_set_cur_state(unsigned int cpu, int state)
->  {
-> -       struct cpufreq_policy *policy;
->         struct acpi_processor *pr;
-> -       unsigned long max_freq;
-> -       int i, ret;
-> +       int i;
->
->         if (!cpu_has_cpufreq(cpu))
->                 return 0;
-> @@ -120,20 +134,8 @@ static int cpufreq_set_cur_state(unsigned int cpu, i=
-nt state)
->                 if (unlikely(!freq_qos_request_active(&pr->thermal_req)))
->                         continue;
->
-> -               policy =3D cpufreq_cpu_get(i);
-> -               if (!policy)
-> +               if (!cpufreq_update_thermal_limit(i, pr))
->                         return -EINVAL;
-> -
-> -               max_freq =3D (policy->cpuinfo.max_freq *
-> -                           (100 - reduction_step(i) * cpufreq_thermal_re=
-duction_pctg)) / 100;
-> -
-> -               cpufreq_cpu_put(policy);
-> -
-> -               ret =3D freq_qos_update_request(&pr->thermal_req, max_fre=
-q);
-> -               if (ret < 0) {
-> -                       pr_warn("Failed to update thermal freq constraint=
-: CPU%d (%d)\n",
-> -                               pr->id, ret);
-> -               }
->         }
->         return 0;
->  }
-> --
 
