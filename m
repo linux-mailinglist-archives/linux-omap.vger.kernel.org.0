@@ -1,130 +1,110 @@
-Return-Path: <linux-omap+bounces-4580-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4581-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90520B46546
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Sep 2025 23:15:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 741E1B46572
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Sep 2025 23:23:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5263A168B94
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Sep 2025 21:15:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73C697BAF1D
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Sep 2025 21:22:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBF32EFD82;
-	Fri,  5 Sep 2025 21:14:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="dKugqIPh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05BE32EFD82;
+	Fri,  5 Sep 2025 21:23:46 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A94284886;
-	Fri,  5 Sep 2025 21:14:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395FB28137A
+	for <linux-omap@vger.kernel.org>; Fri,  5 Sep 2025 21:23:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757106891; cv=none; b=dNzKa7Y9oNDdfu3Iw5Z0d8aQFs4RGgFwBRUo5791QvSXa0eMffE/ILe8+Kab/ZBmHzJDwuPBdOXBQUlQ2i6SBaaritqSQS3PCYI1okpYyR0mftyO1MN2eD70lB0HQfdUKUwqv4mz9IDVE9WDaQWyhzM1+ax603Uzd0Xx0cBuG14=
+	t=1757107425; cv=none; b=e65/gwxG5BfxJxl9z5lQArfF8mmli2ukr5AAdcGf/eo1jxn5or3PJLNXOkKbI4wNSYPilbRY+VGNX+3VdjBkwghi/UF6Xj1f4n/fSSsz6GZKMOG7Z9shjtBBnJabjSD5hRnY0qWeYybubCL4fIUpHF9E/IEmqEfUxyq12JhHUwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757106891; c=relaxed/simple;
-	bh=wT8x2IGgVEao6/cCmkDlAreApT8kXJlKNuy8RcfE5kU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dii/bb7O3pUynsskugGgtSXH09/ogzpCHWnOJutVkuvb5M8gazPH4sDeVInDLIFC68RIT68Hcg5GSKBpKLL1XGLNuDLY9ubzCmWJzjpOG+pBS3UgIVQthS4mPJ/87aZwmu0d8ejD/u3I4jTpdKb1CyTkcAOdSCm1WDAyPoYXSWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=dKugqIPh; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 585LEe1h000688;
-	Fri, 5 Sep 2025 21:14:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=MNTVaRidqIqXgAKjCzr+BWLK86N6w
-	+7fH73KgXvjBA0=; b=dKugqIPhq9ZC+89Ri9k61+v/Yno3dFKMTAsRVWZHfTcQW
-	j6VnbAulUJW4u6GsEP4VG9nbIWCLrhJEFevcbtHge8ppYtqASWh2BifrpqNRITaS
-	hE8RFhZUVZDk0wulv+mxPtTvUHIrK5rAWb/FXkc3xrDakp2u3F8GTeK7Ux4Bd56T
-	1hMZpR+buEhGlmgZINmDiB7TVNPT63icoryfDQPO6alWbcfOxSwi1K1gnL6y2OHT
-	NcnNvqRf5Y3wKA7aKylL6oceZhF16jnb+QJRT3GuPadC8/S88sVeZc6vZAxKZbrX
-	trnovOtZUBlrox6fNfbqOfv/SAkmgHmuyyiufEkOQ==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4907ktg004-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 05 Sep 2025 21:14:40 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 585JoCav033333;
-	Fri, 5 Sep 2025 21:14:39 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48uqrd4qvc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 05 Sep 2025 21:14:39 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 585LEcuq038219;
-	Fri, 5 Sep 2025 21:14:38 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 48uqrd4quv-1;
-	Fri, 05 Sep 2025 21:14:38 +0000
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
-To: vigneshr@ti.com, s-vadapalli@ti.com, lpieralisi@kernel.org,
-        kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org,
-        bhelgaas@google.com, linux-omap@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Cc: alok.a.tiwari@oracle.com, linux-kernel@vger.kernel.org
-Subject: [PATCH] PCI: j721e: Fix incorrect error message in probe
-Date: Fri,  5 Sep 2025 14:14:34 -0700
-Message-ID: <20250905211436.3048282-1-alok.a.tiwari@oracle.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1757107425; c=relaxed/simple;
+	bh=o/PqQhK0PKkxH5IBGjaZ5xFiBra8PzKV7+1t1tFVm/g=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lnO5C6NZaKO5owBnBrkg9mOFZASYeRmoSPto4+FJpy/IIMPsPaHOSyK4q4xIO2uh9aV8kjzaQUhrQP8uJqfh0EEKjKEGfSV8wCwbpcnuadsfVKS7/pHvonK8npW4S0pSdAXKl41x3RZf91DLwIf5jXv5cFV5qHEfk1kZ6z2vJ4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=baylibre.com; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-77251d7cca6so2183065b3a.3
+        for <linux-omap@vger.kernel.org>; Fri, 05 Sep 2025 14:23:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757107423; x=1757712223;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=W6wZ9HgdgMtQgRD7Hr86g025jE/p6E3Wse2CcjqMIiw=;
+        b=uTNyrDU8lsWGEKj7KAOGkVaZ6j6OgErSB7UIpHuno3lxEJZM1JJ0+qE+l0DesmghbY
+         LWKMTVs/rnkdM38DNR9SPvXZyUPIC8UzuH9is6hcju780icNrTD+6rboKcp9TicHqCNy
+         Orp8zweiK54Nf899XeSM8wcYW1LvjmMsK7O+rgvVkn0w2hsx6Xn3gEhz7+ewf2+vpijN
+         PBQH3qm1n7KKY4FsmXG5QLRyiAgVLfC0l+r51k4+8sAu65rPQHQCk38CErIB8wqS4dWO
+         a/0Aon0Cjt/2AxcKpNbF/k59sgFhip3/PXDyIepg9uDJlmzHtDM+2yweZrS6D5q1E3ao
+         cZ6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV7kJEqq5zb/RaqVOWf7jsOSS99cRSGajY43B2jLlo03TZCqn12ZAJEh1p5fRMMm33Tq4Bk3q+1ZqDD@vger.kernel.org
+X-Gm-Message-State: AOJu0YyeIL9CqV3mZCEK/tiPXxALFmo5EXJws9fg/LwoawTSPzDXzMr2
+	+7pSqxuSxa+UEpjjplUtg21aeolMXG6dyyzW4YRc7umBercCHH06MjwVZ8BZqzH9PWw=
+X-Gm-Gg: ASbGncuH5UpndgOI/Xa0NSXrjDXBjpsU9ky06CSMVc60EH5GbZkyboGLA1tVJ/hd8dS
+	fXHtda1CSqFb6MI4muNoCBrT63PG2JUsCG31Izyl2I9R1XiFPEX+agBxnOsr8qcU8dlzJDVdHEp
+	YPjAw8iVMhOyKTWh1lFSeHQKE/Rft2iZ2DaFYmTh1ejCs+7Q2KCbCsU6aCcAyfJ99nFfrZbs27y
+	lJz3S5gZqd5v2WYvDq407SGEFcjfcijQ7IZAo6MDJbf0WYa+TWMS/1mHRLwESe7ggVVz+6gQeYi
+	xNsZ+PKQDx1zGnW4pA4GEwkzAVMzCNBaTJqwcn1ycvu+f+4oMvU++BLbecUxhLQm4VIN4WX8bgp
+	Fl+HNX8Me8j8SfiVPgHh1
+X-Google-Smtp-Source: AGHT+IECEsSQkwfBCZIu4aCVdg/6xbbfhAHy0KA5ITM5kpE6xl3JxGGtEoATFjZl9SBoRxWqA+Li6A==
+X-Received: by 2002:a05:6a20:3d89:b0:246:f1:bec3 with SMTP id adf61e73a8af0-25344415094mr362891637.42.1757107423576;
+        Fri, 05 Sep 2025 14:23:43 -0700 (PDT)
+Received: from localhost ([71.212.208.158])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7722a4bf561sm23001252b3a.59.2025.09.05.14.23.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Sep 2025 14:23:43 -0700 (PDT)
+From: Kevin Hilman <khilman@kernel.org>
+To: Andreas Kemnade <andreas@kemnade.info>, Brian Masney <bmasney@redhat.com>
+Cc: Tero Kristo <kristo@kernel.org>, Michael Turquette
+ <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Maxime Ripard
+ <mripard@kernel.org>, linux-omap@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/7] clk: ti: convert from clk round_rate() to
+ determine_rate()
+In-Reply-To: <20250814094527.29745592@akair>
+References: <20250811-b4-clk-ti-round-rate-v1-0-cc0840594a49@redhat.com>
+ <20250814094527.29745592@akair>
+Date: Fri, 05 Sep 2025 14:23:42 -0700
+Message-ID: <7hseh0a90h.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-05_07,2025-09-04_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 spamscore=0
- malwarescore=0 mlxlogscore=999 phishscore=0 suspectscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
- definitions=main-2509050209
-X-Proofpoint-GUID: yjoYByN9Zdo31DNY6AEfeu0WOeY1RLep
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA1MDIwOSBTYWx0ZWRfX7Dv9FNCmvvf3
- in+cAPNtPOam6g7FcUOaEcgI3VwbLkiSCe/oFlLyTSltTsosiFhdfA3mlqQ1W2qnIIyYLNaA9lA
- EUMuGNdm7e7yy8MzV7ZQbOH+g9C124Njm6iHHx7Z1UgzM3sFb6kIre95FiPEeY0JmSgkuYxZuu8
- U6RqbJ3t8zpLiONRxnpHnfCXu9NS6AHIr4pE2fZMvxKLY3Y1PQnpotyD2D6ZyUTJ0tZg9ywein3
- MyHxJR2gsfsDorJy6WdkkHk+sKyofb9KEcdz9fsZzIeJ5IqfFsGpWplyjKYsHK2+osRVJh3bauL
- eC1maQsYSv0c71zxSdAXCe7QBP2c66EXq/PweM4Y/U+UGJmRNl9Cpf+w2qrcMXUrFcac0f7BQzG
- qlybUAoN
-X-Proofpoint-ORIG-GUID: yjoYByN9Zdo31DNY6AEfeu0WOeY1RLep
-X-Authority-Analysis: v=2.4 cv=P9Y6hjAu c=1 sm=1 tr=0 ts=68bb52c0 cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=yJojWOMRYYMA:10 a=yPCof4ZbAAAA:8 a=kyFhivpCSvuUZvO-LAYA:9
+Content-Type: text/plain
 
-The probe function printed "pm_runtime_get_sync failed" when
-j721e_pcie_ctrl_init() returned an error. This is misleading since
-the failure was not from pm_runtime but from the controller init
-routine. Update the error message to correctly reflect the source.
+Andreas Kemnade <andreas@kemnade.info> writes:
 
-No functional changes.
+> Am Mon, 11 Aug 2025 08:48:05 -0400
+> schrieb Brian Masney <bmasney@redhat.com>:
+>
+>> The round_rate() clk ops is deprecated in the clk framework in favor
+>> of the determine_rate() clk ops. The first two patches in this series
+>> drops the round_rate() function since a determine_rate() function is
+>> already implemented. The remaining patches convert the drivers using
+>> the Coccinelle semantic patch posted below. I did a few minor cosmetic
+>> cleanups of the code in a few cases.
+>> 
+>> I want to call out the changes to the dpll driver since a fair number
+>> of changes had to be done outside of Coccinelle. I unfortunately don't
+>> have this particular hardware on hand, so I was not able to test it.
+>> I broke the changes to this driver up into smaller chunks to make it
+>> easier to review.
+>> 
+> Tested-by: Anddreas Kemnade <andreas@kemnade.info> # OMAP3 GTA04, OMAP4 Panda
+>
+> No new scary things seen on boot. Can someone check this on AM3, too?
 
-Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
----
-Not sure if a Fixes tag is required here
----
- drivers/pci/controller/cadence/pci-j721e.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I gave this a basic boot test on am335x-boneblack.  All is well.
 
-diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index 6c93f39d0288..5e445a7bda33 100644
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -549,7 +549,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
- 
- 	ret = j721e_pcie_ctrl_init(pcie);
- 	if (ret < 0) {
--		dev_err_probe(dev, ret, "pm_runtime_get_sync failed\n");
-+		dev_err_probe(dev, ret, "j721e_pcie_ctrl_init failed\n");
- 		goto err_get_sync;
- 	}
- 
--- 
-2.50.1
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Tested-by: Kevin Hilman <khilman@baylibre.com>
 
+Kevin
 
