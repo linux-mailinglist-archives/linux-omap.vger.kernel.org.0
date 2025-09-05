@@ -1,70 +1,70 @@
-Return-Path: <linux-omap+bounces-4578-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4579-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D821B463E8
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Sep 2025 21:47:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FE62B46489
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Sep 2025 22:18:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C5031B278C2
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Sep 2025 19:47:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77C83A021BD
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Sep 2025 20:18:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2026327A92D;
-	Fri,  5 Sep 2025 19:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F4E2BE05E;
+	Fri,  5 Sep 2025 20:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G9qmJFw1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uIKc5zt2"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2991E55A;
-	Fri,  5 Sep 2025 19:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4A52472A4;
+	Fri,  5 Sep 2025 20:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757101616; cv=none; b=bhcsTvN08m6K1gYjbTWdut/RFcnhYxRtIrdUFke4+Szyb2auuprzgpwm0d/3hnIiS+2NamV3bleU50/1+aNYBtuZrNHcDK3UQiGaF0cCBLMDd2hHFuGtq7B70yvZt3zRm2rQjVHuUchyIRRHf3XNUEcTZ1Rw1KeNzRHv9LH3NOU=
+	t=1757103459; cv=none; b=P0zEBIuNjCWsawEENSMocYkyKtd98NLTalO7IR6kSLABZrhlI90QmCeKbYGNBPjos7t8ad3q7BDvA2iWGLPzcFpJtgG1vxjteGejUh1VEyozYZVJDDoTl7pMEqCESCDhAwaSyfq5TsXbG8lkljo5NRF0F+UPU9BWl++aVaKx4f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757101616; c=relaxed/simple;
-	bh=H8MVjkz4o17difHvr2cD8D+8FZU1fUcKjhpmn4rwijw=;
+	s=arc-20240116; t=1757103459; c=relaxed/simple;
+	bh=VCWnUGzPf6mLuDmms/YZCG2llaFLvKJwA1gnXCCbRdk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WdL+FXdXaV4Vxv2rgURKF2t1691RLE4C4e51qrtP2E70rrprfSrDEJLYKVsOBcfc63Y49tsj4kNvFjtTY5BaZS5VyV/XEru6mx2QEKL+GE9XV1/NXHF/Uv/8+28pO25p3ahOKIz81N58Byk52Rhex83GnDQAye1GiUSF1JfCvNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G9qmJFw1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548FBC4CEFD;
-	Fri,  5 Sep 2025 19:46:56 +0000 (UTC)
+	 To:Cc:Content-Type; b=KOUO0m7vCBcbqM44yiOHQESKRCp4tdJ6id8+gMrinGrE1+hrgCXSodgzPqQb3VLz6ZLM0iSNerlbQcTzq9WRyKJRf0N861lhjc7rrjJTmRC3Bsa2E4Uw9209d/tnBaD+mCw8LzfqZw+5FKMQqt1J+EkIdRfd74XPX3HyxPdFU+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uIKc5zt2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C78C19424;
+	Fri,  5 Sep 2025 20:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757101616;
-	bh=H8MVjkz4o17difHvr2cD8D+8FZU1fUcKjhpmn4rwijw=;
+	s=k20201202; t=1757103458;
+	bh=VCWnUGzPf6mLuDmms/YZCG2llaFLvKJwA1gnXCCbRdk=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=G9qmJFw1HIMkEhpfwD6F7o3JbvpRO1V95WZ/oUz3+r2CZmbDws6CbBgur6Wekx+qi
-	 ldlGPU37Uj/fIsJfq8C0T5mwgtAEI7Vqo36+np24YoWw6Q+UqAD0c8vsYKdD1WmilJ
-	 I5H7EyGxJaGj6hrAng2kuUlTjEtq88UjwDYdjemQkTgF2roSvOtH1g1Vers9Vmn/8H
-	 hFTpK0+yBM6BJf93iSTpneRiwZTgqB03L5VCqcDIKq1c7x0wnA4m2OtzWFieeGFXd2
-	 UYnynJnuCo/OhHIYLgJZetquSD940EGwlIBAqodji7zBapVVl2I0pI39J7QYdGVk0c
-	 YFNdRZkp+5nBw==
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-61bf9ef4cc0so1504532eaf.0;
-        Fri, 05 Sep 2025 12:46:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVlApuecRYOSAKujtolI5t41KBULgOai196UHtAyH8Lyuw3Wpr4ePMpVvWugsN/BTd2cRNWHosQBCGEfqJw@vger.kernel.org, AJvYcCVz65MaQFbPFT6bDVbFcc9JE1ZZklCtf/+p9fxInyMsAIMsX2X6YH/aOpD2XT0XyEa23HfYS6rSjo8=@vger.kernel.org, AJvYcCWhtLKgt9nRXwikPAE3Erg/ML44bLMJzbadQUDCNGbj2YD6OuHEscsU7z6s5RbAQsT/E5JKNoned0Vv@vger.kernel.org, AJvYcCXhyZwRL+VFnghEngsCXpSnXYdycazofSlZ6vO7Ah5A7iLMC4HHjljrKg9Mga56e21iumMcVbm4n6KKhg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5HyrX1RPVPTjUVTgnoRb8P1sTB1djd6Usn2Y6vGdpM8A+30Yp
-	KmYAqp5E6LygVhTjWPE7amIg90+CKETa0BTxIRRJD5QdrGmDbmoLKaLwVl6wfD/6igs9X8jvMs4
-	xx8+XmP/4ubc3Wks+jTTMRjY9t9nLxSk=
-X-Google-Smtp-Source: AGHT+IEKuvslbgpS+jFT9kCZO9ZHrI6mBjYptsMiCaePE1pyVsHfodMLw3nmAqVy7Bw/fuUlRNZZYUO91WEjIayPMsY=
-X-Received: by 2002:a05:6820:548:b0:621:71c3:eab8 with SMTP id
- 006d021491bc7-62171c3ecffmr1197889eaf.3.1757101615563; Fri, 05 Sep 2025
- 12:46:55 -0700 (PDT)
+	b=uIKc5zt24/XZwP7JYEqTfBfFRmX6Wk9YHD8HxEi0IvUGCXmYhq0zMpSm8supQ0Fb5
+	 iJGS/xoCTwpWx6B21zvCyX58JiG6wKZeHnfKV9PrzdFD8g77UCWMhwV/+VxR8kAvlQ
+	 yPVyT4akXZx6QFmh+sC2ZrMWYx9v4XhPjX4ZqEzVtRypqr58ssUWkgaJb/JjbHDIS4
+	 Q06psN5PW+ZumYVyodesqKh7Uj5j1bR2yhf3Z/vTbdtMhbmMxPQZsd1C7tcDa8a8kX
+	 RxRMOqOPKJoPYzcqOhn1uU/Cd9d8rzzAEwXshP6QHtlDLuGvIqnZfJzgThdRl7C/Wq
+	 nxK2iLAKYjwYQ==
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-61bd4ad64c7so801135eaf.0;
+        Fri, 05 Sep 2025 13:17:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUraKzGHcjXYxM1x/+9H6tiER1I4b50o6C7rUX/4wtqzr/VOG9IGoSfNrhGWomA7QzUlxwix5GfGIZm@vger.kernel.org, AJvYcCVzPIiU1SNvKJUtQ7YeeoPzVxX8J3LFk/kijiUVPzVkeIPTZs21lE3YeABzKz60w9gIDNdsdUoF6YA=@vger.kernel.org, AJvYcCW33R3KoX3K4Z9WBena+05xnJDAfGRhXR2g/Wowh0HXWGpPiCqW+hzlMAqNPF9F88GHzcIRhzhUO2CIUQ==@vger.kernel.org, AJvYcCWeIQnyZ7xMarkvd48XpvBIVuEdVJfUwZ26Pr1xRpgQxQ/Z0BY8p9NaRaBsro6l1EQw7aA+SAa2AX6r4Bkz@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxup4JkUgMLv2/to1UB8LLZENstzPjwt63ZTbRR96PJDlopYiIe
+	CQWuKrqR0CD/5cFOCPYxe9c6F+LeuqbayCBOvLK1ZJs48u/6jo3MCVzJaCJ8/0nSzAe1UKOD7X1
+	lfCdSUaQJfhS1zwtBXVQQa1ifj4vdEc0=
+X-Google-Smtp-Source: AGHT+IEfq1HNckIyyDDXquy0XLtyGZg1XWmotG9HdXFUDIR4D+v0h/9IrUo3g6diO4+f6WOXTRuaooZELa2e+VnSV5o=
+X-Received: by 2002:a05:6820:809:b0:61f:f932:8d64 with SMTP id
+ 006d021491bc7-61ff9329264mr2455383eaf.1.1757103457768; Fri, 05 Sep 2025
+ 13:17:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250905132413.1376220-1-zhangzihuan@kylinos.cn> <20250905132413.1376220-7-zhangzihuan@kylinos.cn>
-In-Reply-To: <20250905132413.1376220-7-zhangzihuan@kylinos.cn>
+References: <20250905132413.1376220-1-zhangzihuan@kylinos.cn> <20250905132413.1376220-3-zhangzihuan@kylinos.cn>
+In-Reply-To: <20250905132413.1376220-3-zhangzihuan@kylinos.cn>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 5 Sep 2025 21:46:43 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0izu1_xVe_pGeJiXZqEXLxg_o30NkEjMiwzDgeU4mOGmA@mail.gmail.com>
-X-Gm-Features: Ac12FXylOWQRbtZy4tXGis9fcvrx9xAWhEYFwKXiKvA-TbpGOjwSaXBXEfvwt6M
-Message-ID: <CAJZ5v0izu1_xVe_pGeJiXZqEXLxg_o30NkEjMiwzDgeU4mOGmA@mail.gmail.com>
-Subject: Re: [PATCH v5 6/6] PM: EM: Use scope-based cleanup helper
+Date: Fri, 5 Sep 2025 22:17:26 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iTdgM5BBi2ysiJxfA2c=MQ0fjLsEvVct9stxomvEe=4Q@mail.gmail.com>
+X-Gm-Features: Ac12FXw3PBjsIjj4AtBsEfmKTR7PfZEmevzc6Jwe0zbtA2TuWwqukJr66Nf1sL8
+Message-ID: <CAJZ5v0iTdgM5BBi2ysiJxfA2c=MQ0fjLsEvVct9stxomvEe=4Q@mail.gmail.com>
+Subject: Re: [PATCH v5 2/6] ACPI: processor: thermal: Use scope-based cleanup helper
 To: Zihuan Zhang <zhangzihuan@kylinos.cn>
 Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
 	Jonathan Cameron <jonathan.cameron@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
@@ -92,7 +92,7 @@ Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 5, 2025 at 3:25=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylinos.cn=
+On Fri, Sep 5, 2025 at 3:24=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylinos.cn=
 > wrote:
 >
 > Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
@@ -103,74 +103,112 @@ On Fri, Sep 5, 2025 at 3:25=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylinos.cn=
 >
 > Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
 > ---
->  kernel/power/energy_model.c | 9 ++-------
->  1 file changed, 2 insertions(+), 7 deletions(-)
+>  drivers/acpi/processor_thermal.c | 52 +++++++++++++++++---------------
+>  1 file changed, 27 insertions(+), 25 deletions(-)
 >
-> diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
-> index ea7995a25780..5ec63b3e7d85 100644
-> --- a/kernel/power/energy_model.c
-> +++ b/kernel/power/energy_model.c
-> @@ -451,7 +451,6 @@ static void
->  em_cpufreq_update_efficiencies(struct device *dev, struct em_perf_state =
-*table)
+> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_th=
+ermal.c
+> index 1219adb11ab9..460713d1414a 100644
+> --- a/drivers/acpi/processor_thermal.c
+> +++ b/drivers/acpi/processor_thermal.c
+> @@ -62,19 +62,14 @@ static int phys_package_first_cpu(int cpu)
+>         return 0;
+>  }
+>
+> -static int cpu_has_cpufreq(unsigned int cpu)
+> +static bool cpu_has_cpufreq(unsigned int cpu)
 >  {
->         struct em_perf_domain *pd =3D dev->em_pd;
 > -       struct cpufreq_policy *policy;
->         int found =3D 0;
->         int i, cpu;
->
-> @@ -465,7 +464,7 @@ em_cpufreq_update_efficiencies(struct device *dev, st=
-ruct em_perf_state *table)
->                 return;
->         }
+> -
+>         if (!acpi_processor_cpufreq_init)
+>                 return 0;
 >
 > -       policy =3D cpufreq_cpu_get(cpu);
+> -       if (policy) {
+> -               cpufreq_cpu_put(policy);
+> -               return 1;
+> -       }
+> -       return 0;
 > +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpuf=
 req_cpu_get(cpu);
->         if (!policy) {
->                 dev_warn(dev, "EM: Access to CPUFreq policy failed\n");
->                 return;
-> @@ -479,8 +478,6 @@ em_cpufreq_update_efficiencies(struct device *dev, st=
-ruct em_perf_state *table)
->                         found++;
->         }
+> +
+> +       return policy !=3D NULL;
+>  }
 >
-> -       cpufreq_cpu_put(policy);
-> -
->         if (!found)
->                 return;
+>  static int cpufreq_get_max_state(unsigned int cpu)
+
+The changes above are fine and can be sent as a separate patch.
+
+> @@ -93,12 +88,31 @@ static int cpufreq_get_cur_state(unsigned int cpu)
+>         return reduction_step(cpu);
+>  }
 >
+> +static bool cpufreq_update_thermal_limit(unsigned int cpu, struct acpi_p=
+rocessor *pr)
+> +{
+> +       unsigned long max_freq;
+> +       int ret;
+> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpuf=
+req_cpu_get(cpu);
+> +
+> +       if (!policy)
+> +               return false;
+> +
+> +       max_freq =3D (policy->cpuinfo.max_freq *
+> +               (100 - reduction_step(cpu) * cpufreq_thermal_reduction_pc=
+tg)) / 100;
+> +
+> +       ret =3D freq_qos_update_request(&pr->thermal_req, max_freq);
+> +       if (ret < 0) {
+> +               pr_warn("Failed to update thermal freq constraint: CPU%d =
+(%d)\n",
+> +         pr->id, ret);
+> +       }
 
-The above changes are fine now and can be a separate patch.
+But this silently fixes a bug in the original code which needs to be
+documented with a Fixes: tag (and it would be better to fix the bug
+separately before the using the __free()-based cleanup TBH) and
+introduces some whitespace breakage.
 
-> @@ -787,21 +784,19 @@ static void em_check_capacity_update(void)
+> +
+> +       return true;
+> +}
+> +
+>  static int cpufreq_set_cur_state(unsigned int cpu, int state)
+>  {
+> -       struct cpufreq_policy *policy;
+>         struct acpi_processor *pr;
+> -       unsigned long max_freq;
+> -       int i, ret;
+> +       int i;
 >
->         /* Check if CPUs capacity has changed than update EM */
->         for_each_possible_cpu(cpu) {
-
-But I'd prefer the code in this loop to be moved into a separate
-function, in a separate patch, before the __free()-based
-simplification of it.
-
-> -               struct cpufreq_policy *policy;
->                 struct em_perf_domain *pd;
->                 struct device *dev;
->
->                 if (cpumask_test_cpu(cpu, cpu_done_mask))
+>         if (!cpu_has_cpufreq(cpu))
+>                 return 0;
+> @@ -120,20 +134,8 @@ static int cpufreq_set_cur_state(unsigned int cpu, i=
+nt state)
+>                 if (unlikely(!freq_qos_request_active(&pr->thermal_req)))
 >                         continue;
 >
-> -               policy =3D cpufreq_cpu_get(cpu);
-> +               struct cpufreq_policy *policy __free(put_cpufreq_policy) =
-=3D cpufreq_cpu_get(cpu);
->                 if (!policy) {
->                         pr_debug("Accessing cpu%d policy failed\n", cpu);
->                         schedule_delayed_work(&em_update_work,
->                                               msecs_to_jiffies(1000));
->                         break;
->                 }
+> -               policy =3D cpufreq_cpu_get(i);
+> -               if (!policy)
+> +               if (!cpufreq_update_thermal_limit(i, pr))
+>                         return -EINVAL;
+> -
+> -               max_freq =3D (policy->cpuinfo.max_freq *
+> -                           (100 - reduction_step(i) * cpufreq_thermal_re=
+duction_pctg)) / 100;
+> -
 > -               cpufreq_cpu_put(policy);
->
->                 dev =3D get_cpu_device(cpu);
->                 pd =3D em_pd_get(dev);
+> -
+> -               ret =3D freq_qos_update_request(&pr->thermal_req, max_fre=
+q);
+> -               if (ret < 0) {
+> -                       pr_warn("Failed to update thermal freq constraint=
+: CPU%d (%d)\n",
+> -                               pr->id, ret);
+> -               }
+>         }
+>         return 0;
+>  }
 > --
 
