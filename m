@@ -1,120 +1,148 @@
-Return-Path: <linux-omap+bounces-4564-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4565-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D542B4546E
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Sep 2025 12:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E39CB45524
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Sep 2025 12:45:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DDF81C86AB1
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Sep 2025 10:21:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14FDE188F559
+	for <lists+linux-omap@lfdr.de>; Fri,  5 Sep 2025 10:45:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722BC2D592B;
-	Fri,  5 Sep 2025 10:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C0A2EBDC7;
+	Fri,  5 Sep 2025 10:42:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FJb78JN9"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1667D2D4813;
-	Fri,  5 Sep 2025 10:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28642D5C6C;
+	Fri,  5 Sep 2025 10:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757067686; cv=none; b=lbW7tEUS5/D3x90FWf06EXNdqZx7LwAoVJSTJmE5sVTqSqTZZdo07nCx0RvEqJcK+lv/lWj7Hw/nAgnr6Q/XmV/yQKcQSvCWIqBiHicDtdDNF88gvltTL93YShoTRkUZrBAfNmEb7bbWidoBfGUx62B2l9dfP7ZI1Z0TRQQOwh8=
+	t=1757068956; cv=none; b=NIJvHLJa29szJJ0JnUHMJ5+Fy7W66I8PyFUD7xniygAqvfJ2/pID653DFD3rvFUAXGFzLDfvq5aIvcztupXpWt4FQQ+EILgkVLJ8YWXc4aM8E6xSU/iLE2sRYBJsBwEkbY9b3MuwB0x52uLC1WK872U/BEpmpyN5SK8GJkQulPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757067686; c=relaxed/simple;
-	bh=OfTOMWX66TbAfkqnKGzCFdhIOFRb5l9VXCVY15B8Ww4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rJjsovBX2u6NXwmH3Xd8kizvWTQ6QzRiO8n7G06pUNe/LfxeJkjU06CxVj0Xr5Ov0NCQ9rglEeStn/lTo8qeSnB5ribsWKJpWkwLFxYxKLDg0njWQkj7lh36o4GQUMM5WmDhknD3lwJ0EBkqNvNSvfVGIxm4rR3n1HJnXz9lfAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 0e7797928a4211f0b29709d653e92f7d-20250905
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:14f482f1-1678-4861-8721-a3d21e06eb8e,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:6493067,CLOUDID:91ab872eaa9ae72f0b505e024ab096ae,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|83|102,TC:nil,Content:0|52,EDM:-3,
-	IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:
-	0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 0e7797928a4211f0b29709d653e92f7d-20250905
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 829448159; Fri, 05 Sep 2025 18:21:16 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id E4DD9E008FA4;
-	Fri,  5 Sep 2025 18:21:15 +0800 (CST)
-X-ns-mid: postfix-68BAB99B-76698910
-Received: from [172.25.120.24] (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 96DA5E008FA3;
-	Fri,  5 Sep 2025 18:21:07 +0800 (CST)
-Message-ID: <59305500-9ecf-4eeb-b4dc-9c9eed02454f@kylinos.cn>
-Date: Fri, 5 Sep 2025 18:21:06 +0800
+	s=arc-20240116; t=1757068956; c=relaxed/simple;
+	bh=+I+6Ob8PFYzlZ0UQk3wSgdfHmrOiugnSzIZKb8fhQEk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nH24OTQ5/53JFbLpARH9vl4IsdQWpCgF+/E666Cv7FtI3Gj8Y/B1DIAigK3gvg4/4GnUqOEMHnWNNRxQ8ptVCGUZxIJbVS9TtYgIBUrVyO/3eLGMk4RieILOBel5N8Tq0MiU8EN9/68WleOCdSHpLaJuNpTHMSRL0SsHJLFJAsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FJb78JN9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C01C4CEF1;
+	Fri,  5 Sep 2025 10:42:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757068955;
+	bh=+I+6Ob8PFYzlZ0UQk3wSgdfHmrOiugnSzIZKb8fhQEk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FJb78JN9Aubn7l+hWFWK2KhL4xncFQiznSU1O+VqVeYoJWONHp4RcAOCsvHduuTfN
+	 +nudQ518QxKtrWwCOfBIzTxEEJAGpU/jUCrDlsuwWXRXBBl2j3vBt1Ltw4szB1n87y
+	 h7x6GKYVobYJ3QTWpsrKBMfGZ15EnA7yYfTpXWUhfEXV1WWfuuJ0vS7hs6fM/OGabb
+	 EOWmFuoLcS3oeA8aB09KPBnxvbJrH5hUgrl3aMa2r81N5UzhAZ8Ke81VM3YcHVbnvU
+	 RJi3JEAJOsT+TM9h+WPDYgQX6anuQ91U155dHwC08dgE3WTQvlLfDX33vEVEuA2/m4
+	 2N9AdUNBEKQBA==
+Date: Fri, 5 Sep 2025 11:42:15 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Xichao Zhao <zhao.xichao@vivo.com>
+Cc: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	Guillaume La Roque <glaroque@baylibre.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+	Markus Mayer <mmayer@broadcom.com>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	zhanghongchen <zhanghongchen@loongson.cn>,
+	Yinbo Zhu <zhuyinbo@loongson.cn>, Amit Kucheria <amitk@kernel.org>,
+	Thara Gopinath <thara.gopinath@gmail.com>,
+	Niklas =?iso-8859-1?Q?S=F6derlund?= <niklas.soderlund@ragnatech.se>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Talel Shenhar <talel@amazon.com>,
+	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	"open list:HARDWARE MONITORING" <linux-hwmon@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+	"moderated list:ARM/Allwinner sunXi SoC support" <linux-arm-kernel@lists.infradead.org>,
+	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
+	"open list:THERMAL" <linux-pm@vger.kernel.org>,
+	"open list:THERMAL DRIVER FOR AMLOGIC SOCS" <linux-amlogic@lists.infradead.org>,
+	"moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" <linux-rpi-kernel@lists.infradead.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"open list:QUALCOMM TSENS THERMAL DRIVER" <linux-arm-msm@vger.kernel.org>,
+	"open list:RENESAS R-CAR THERMAL DRIVERS" <linux-renesas-soc@vger.kernel.org>,
+	"open list:ARM/Rockchip SoC support" <linux-rockchip@lists.infradead.org>,
+	"open list:SAMSUNG THERMAL DRIVER" <linux-samsung-soc@vger.kernel.org>,
+	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>,
+	"open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
+	"open list:TI BANDGAP AND THERMAL DRIVER" <linux-omap@vger.kernel.org>
+Subject: Re: [PATCH 04/12] regulator: max8973: Remove redundant error log
+ prints
+Message-ID: <2f060139-7446-4cb1-910d-791918b28f51@sirena.org.uk>
+References: <20250905072423.368123-1-zhao.xichao@vivo.com>
+ <20250905072423.368123-5-zhao.xichao@vivo.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 08/10] thermal: imx: Use scope-based cleanup helper
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
- <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- MyungJoo Ham <myungjoo.ham@samsung.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
- Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
- Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
- Lukasz Luba <lukasz.luba@arm.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
- <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
- Sumit Gupta <sumitg@nvidia.com>,
- Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
- Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
- linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
- <20250903131733.57637-9-zhangzihuan@kylinos.cn>
- <20250905110551.00006588@huawei.com>
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-In-Reply-To: <20250905110551.00006588@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="hSBr52yOin/qCY9V"
+Content-Disposition: inline
+In-Reply-To: <20250905072423.368123-5-zhao.xichao@vivo.com>
+X-Cookie: He who laughs, lasts.
 
 
-=E5=9C=A8 2025/9/5 18:05, Jonathan Cameron =E5=86=99=E9=81=93:
-> This radically changes the lifetime of the reference to policy.
-> If that is valid, then I'd expect a lot more description of why!
+--hSBr52yOin/qCY9V
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
+On Fri, Sep 05, 2025 at 03:23:56PM +0800, Xichao Zhao wrote:
+> devm_thermal_of_zone_register() prints error log messages when
+> it fails, so there is no need to print error log messages again.
 
-Thanks for your comment.
+Acked-by: Mark Brown <broonie@kernel.org>
 
-Initially I thought policy was only used within this function, so I=20
-moved it here.
-After your feedback, I realize that this change might affect the=20
-reference lifetime in ways I didn=E2=80=99t fully consider. I need to rev=
-iew it=20
-further to ensure it=E2=80=99s safe.
+--hSBr52yOin/qCY9V
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmi6vocACgkQJNaLcl1U
+h9A9Ggf8DfcaSZB9QDgKG3CTzMYN6dA03Qdzw6VmLM9o81xSSlRvqsWSYEm0G86q
+z/jyW0esF1zaS9pQ+ni9mgIUQQvCBr6/d1pY2UJpJd3z1xw2eJUWIgNHIfLsaKDk
+ZIixofNJ8unn3ayIaYKW6fWIhZcoMRY+yXMtvdtUD2vxzMFOerQ1dFKakBEsu9Nj
+JTQTup0slsEXR1tzi/4HBQfftUi+24MUDaRkOnfPfOn1D5gmUaZ6c07B1fGp9dmM
+5c73MTNcN3xonK265AHjzWrgi4sJoXEeqfN7SmvHqspnq6df5zHeKUvFD9Jx+lEw
+n/HlWMMkt3wAlpDVMMsmqqlWaSrGcA==
+=sWAM
+-----END PGP SIGNATURE-----
+
+--hSBr52yOin/qCY9V--
 
