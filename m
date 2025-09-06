@@ -1,116 +1,114 @@
-Return-Path: <linux-omap+bounces-4592-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4593-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49BBCB466A3
-	for <lists+linux-omap@lfdr.de>; Sat,  6 Sep 2025 00:23:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C92B5B46812
+	for <lists+linux-omap@lfdr.de>; Sat,  6 Sep 2025 03:48:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 016FE1CC1E29
-	for <lists+linux-omap@lfdr.de>; Fri,  5 Sep 2025 22:23:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F6287C58B4
+	for <lists+linux-omap@lfdr.de>; Sat,  6 Sep 2025 01:48:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163342877C5;
-	Fri,  5 Sep 2025 22:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A8E17B425;
+	Sat,  6 Sep 2025 01:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="wwU+PRLJ"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="aMPgdkMy"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0279288C36
-	for <linux-omap@vger.kernel.org>; Fri,  5 Sep 2025 22:22:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547051CD2C;
+	Sat,  6 Sep 2025 01:48:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757110941; cv=none; b=iGk0FVw3Zupi1+i3J8iIQUS+//juaxErm6NTAmBHkRoLoU5uecqTYOLjYU5oT6yPjtVPPqHVq00xRXMgxPbJOgaB2cIkY2v8p1ZfOAHVQPK4UDyIvnXIA5ySSfQwTd9Fg7mCnYOw+2errCB+kJbrAMt7qg4yHOuB2cllKPX6088=
+	t=1757123284; cv=none; b=QXQR9YcDKz4GFwtssUuZzBZyTsfwc7+o57YL4rZBXwNeoNp3++q+ZovffVffsIOy6WibAZx4lCASpa1ZkcBnrYuTVMHgBNAuKDShVDGzuOHXn4zrgNZ3dvjR/iWsMFPmAyRDSwqbXACCh0JP4tiKxd5IEP0G4tOMUibgWwv3x/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757110941; c=relaxed/simple;
-	bh=659ccuPtSirr1zl00uU5A9iv2ysWSzQ97IzY0N3/LQ8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=MXDu3LoGRJkU3kcFACsaDfgclMjuKEHkuJ9cvQJWIZc1EGOJLkw9Md6JXZXmwcnIvARFuy3z3LaWqpegh955h1aqEBTehe3UE4Fkuh2WrPKtDuKzeXp4rSP9ZYHbppehfHXk1gTNqy1zca3Ka0pz6e2VRsadjDUrmE6ynMihoZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=wwU+PRLJ; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2445824dc27so26497205ad.3
-        for <linux-omap@vger.kernel.org>; Fri, 05 Sep 2025 15:22:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1757110939; x=1757715739; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sg9V7A+vveZVwEgb6/4ZFeGTdbh9RAwHCgZXiFP+1HU=;
-        b=wwU+PRLJ6cY93mx72ruoWa+plZJfmNDw0FkrC9Uc3/03PufF8FtvLY2XeuhSB7NAt3
-         I2tWnWFVUPRcsxUq/PVK2UBRHRpuxjxQyfP/UQEpvy/8DSzilbQKtsbA218l09M6/w6l
-         6qhW1vvgFCKC3HKhvs3ye5JaAGeNAsKf/eqvtGjE3dlZGY7TMCIx5CyIzHjSalI6yVzJ
-         RG2Vvz6Md/bIq1Vl5O+F3Ai5sbhMUYLfrLGsW6ZRsw5Gh/UVFGasPqglA3KzMN8zBEc1
-         eVVza+kQYfInl845IV6eOevZ0hHa3NljwUy7zE2XGTwKI/h/z9ggMrAylUEx6PjsUTcw
-         HyKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757110939; x=1757715739;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sg9V7A+vveZVwEgb6/4ZFeGTdbh9RAwHCgZXiFP+1HU=;
-        b=Q9MCv1OCCLSJfgXUl8X3MGVt5P/mrw62CuM8KQ9fACKR3e79hAnJCVdO7Bf7PeUjrG
-         cz2mSJGe5pqpbtzstDGDwAImrnkGFPwXB9aSZCmhGMMZj4xB2bxNU4ZNJfz2XRBNsi8G
-         87UcHWn7T26lceuYwxGS0kmhW1cl/CguYdii5/KDWeXrcm1RLC6wONNdOVGcz8rfvGlx
-         WXCMofAIaXhyJNFI/XzRSjqkDH6bF6Q5YYWoxl7S4Id0eJaOH6wnuoErXEzIdfj7DHfb
-         lobq3PcOBux7rqeCfqvZVCOYeM2sN6E2C8R9HFHJZMyjTeStOXEwFVGn3j/MYCGpiCEE
-         opLw==
-X-Forwarded-Encrypted: i=1; AJvYcCV0f2lWvJyXC+TvpPHNAcrl72GcDN7C0wx5bomURUFjbaaG8T2UdfuDY2DablcwJttno8BTNQPbOY/9@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzxb2JeVrbTBSEJ25GrimbTq3CYjpFlk0TrcB5fPCdAehrJuZs0
-	QojVs/0HO1jWCWRMuT+qjbtIwosX8XfP9vClrrwLqHTeyHvnhG3ehZeKllXvuYO6xew=
-X-Gm-Gg: ASbGncs8cqPj8xrd48LfgnG+tdU+FOX3MMYXiwVZSLXK+4F2YLd/8w2I0t1CBRGCRT7
-	jRkfuzQPm70Ufk5sJ/mbsVCGc7ZUac90Zjk5EkJtLP2okICjYk0qb/cKTE2SPsYH3oSVmV231p7
-	Wb9WbFt0x+ZzmRsZKB3vna3xE4BRpJN2eWEvLnm3zbZoBnngFKmfonSbdQW2X6uxSYdJ8gVY96L
-	vsD6s0G8/YMM9hwJzaNl4xVXj3VBSMNP8/7w8iMAl/9IMBdNkoGyOIc0ar2xr+dbuGBiU/3WdHP
-	ZnEGAizMAwPEwMfRjAD6MQw19MMOECH/G5jQZ5IZ1cQ/zqeufYcdji8787Vy+gFwPZ4OsZWROPR
-	4m2GPTqIw8KjuWQMj+a245BXnnqkGmq8=
-X-Google-Smtp-Source: AGHT+IEgDKOlBK6x0QOw3W3CHGpa5Cc8uz1T8qU/XEUIc8y0zuEtK7ONrjwU8Ktw48bTs0lLqjmlXw==
-X-Received: by 2002:a17:903:3bc7:b0:24e:e5c9:ed02 with SMTP id d9443c01a7336-25174470d47mr3109805ad.54.1757110939089;
-        Fri, 05 Sep 2025 15:22:19 -0700 (PDT)
-Received: from localhost ([71.212.208.158])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-329cb6a2ec2sm13579564a91.21.2025.09.05.15.22.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Sep 2025 15:22:18 -0700 (PDT)
-From: Kevin Hilman <khilman@baylibre.com>
-To: Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Andreas Kemnade <andreas@kemnade.info>, Roger Quadros <rogerq@kernel.org>, 
- Tony Lindgren <tony@atomide.com>, Russell King <linux@armlinux.org.uk>, 
- Santosh Shilimkar <ssantosh@kernel.org>, linux-omap@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Miaoqian Lin <linmq006@gmail.com>
-Cc: stable@vger.kernel.org
-In-Reply-To: <20250902075943.2408832-1-linmq006@gmail.com>
-References: <20250902075943.2408832-1-linmq006@gmail.com>
-Subject: Re: [PATCH] ARM: OMAP2+: pm33xx-core: ix device node reference
- leaks in amx3_idle_init
-Message-Id: <175711093813.666031.2668373270360080348.b4-ty@baylibre.com>
-Date: Fri, 05 Sep 2025 15:22:18 -0700
+	s=arc-20240116; t=1757123284; c=relaxed/simple;
+	bh=A2D2aSftdcMZeG+xPlUYbYdg82HvTTXUJvhglE5jKag=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q07W/N2mnofBl8MlopJ4QnQpWZS7MeMn/tCCagUGNBgBlnqMDuIwNa2WY45zR2Tqm7UQEkOfuVVQAG1DPH/VwG9QHaaJCr6UHwzeoqLp/49MPu99aW4oluiA1URKueuTTHha/Dxs8qLd83vmZRSF37MAjdXMlb6rjFuWzhNWjXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=aMPgdkMy; arc=none smtp.client-ip=198.47.23.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 5861lplt3440581;
+	Fri, 5 Sep 2025 20:47:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1757123271;
+	bh=L7F0n7D432kI/8TDM2zzfMQeAXcSFxDGIcCb60S29Ag=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=aMPgdkMyU0tQsAXg6Z67kzB+8r9scFyKT3o5TgOgy+IJrss8I7NQAhNyKI/MWV8vt
+	 licxwf4EraFKp2U2gpVfNpe7cAhm/8w4RWzyZsTVqHYGHC1AWqA61xaWzIXMtAef78
+	 SPKmKULN0QmAOJ2JKPUMkCzqH6Wj24BMCBoDRzSk=
+Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
+	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 5861lpko2051501
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Fri, 5 Sep 2025 20:47:51 -0500
+Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Fri, 5
+ Sep 2025 20:47:51 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Fri, 5 Sep 2025 20:47:51 -0500
+Received: from localhost (uda0492258.dhcp.ti.com [172.24.231.84])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 5861lnUb1300100;
+	Fri, 5 Sep 2025 20:47:50 -0500
+Date: Sat, 6 Sep 2025 07:17:49 +0530
+From: s-vadapalli <s-vadapalli@ti.com>
+To: Alok Tiwari <alok.a.tiwari@oracle.com>
+CC: <vigneshr@ti.com>, <s-vadapalli@ti.com>, <lpieralisi@kernel.org>,
+        <kwilczynski@kernel.org>, <mani@kernel.org>, <robh@kernel.org>,
+        <bhelgaas@google.com>, <linux-omap@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] PCI: j721e: Fix incorrect error message in probe
+Message-ID: <22e63c06-ec7f-4afe-8fc2-f90d49004ce9@ti.com>
+References: <20250905211436.3048282-1-alok.a.tiwari@oracle.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3-dev-d7477
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20250905211436.3048282-1-alok.a.tiwari@oracle.com>
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-
-On Tue, 02 Sep 2025 15:59:43 +0800, Miaoqian Lin wrote:
-> Add missing of_node_put() calls to release
-> device node references obtained via of_parse_phandle().
+On Fri, Sep 05, 2025 at 02:14:34PM -0700, Alok Tiwari wrote:
+> The probe function printed "pm_runtime_get_sync failed" when
+> j721e_pcie_ctrl_init() returned an error. This is misleading since
+> the failure was not from pm_runtime but from the controller init
+> routine. Update the error message to correctly reflect the source.
 > 
+> No functional changes.
 > 
+> Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
+> Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+> ---
+> Not sure if a Fixes tag is required here
+> ---
+>  drivers/pci/controller/cadence/pci-j721e.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+> index 6c93f39d0288..5e445a7bda33 100644
+> --- a/drivers/pci/controller/cadence/pci-j721e.c
+> +++ b/drivers/pci/controller/cadence/pci-j721e.c
+> @@ -549,7 +549,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+>  
+>  	ret = j721e_pcie_ctrl_init(pcie);
+>  	if (ret < 0) {
+> -		dev_err_probe(dev, ret, "pm_runtime_get_sync failed\n");
+> +		dev_err_probe(dev, ret, "j721e_pcie_ctrl_init failed\n");
+>  		goto err_get_sync;
+>  	}
 
-Applied, thanks!
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[1/1] ARM: OMAP2+: pm33xx-core: ix device node reference leaks in amx3_idle_init
-      commit: 74139a64e8cedb6d971c78d5d17384efeced1725
-
-Best regards,
--- 
-Kevin Hilman <khilman@baylibre.com>
-
+Regards,
+Siddharth.
 
