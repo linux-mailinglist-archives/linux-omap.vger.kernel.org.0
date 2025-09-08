@@ -1,164 +1,180 @@
-Return-Path: <linux-omap+bounces-4604-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4605-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E41B4884F
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Sep 2025 11:25:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B72B48CDE
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Sep 2025 14:08:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9397C4E1533
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Sep 2025 09:25:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AE653ABC7D
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Sep 2025 12:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477C32F0C6F;
-	Mon,  8 Sep 2025 09:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2562FABFE;
+	Mon,  8 Sep 2025 12:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Z1nkeBvp"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="cH41MGOT"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8631C4A13;
-	Mon,  8 Sep 2025 09:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DE12253F2;
+	Mon,  8 Sep 2025 12:08:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757323532; cv=none; b=J4xi/qPr142ckd4BnEb9U5uRxOVP9VGyt+AFUDUyexPzN5Sm6DJr2XPZUReFnDW8wL1rRYO3MHUBhz5WCKJAteTiTvY49YZIjJhdltFthTkxvMegGtbz3bGdqFXLBhXajL0rtp5AfKMdTFVgsD3nrySgTj7+KcR4eY1CAvXJ2Y4=
+	t=1757333324; cv=none; b=m92oxmjapak81KBKECXAI4R8zGIjhm5hyqQRuwyEH/9bmaME4B7ZcCkvsgBs8O9g3b86YUpiugBdOO0VU4+wkub7Di0pzBqP1vmdP3oRnavy4S3DSAqRkVu0F+DQFdo5AO+PdUnqN6BS8zIurZg6yaSGRn1s0122eIZqL/JzRWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757323532; c=relaxed/simple;
-	bh=54WIjGXn+e12vG4j7roz9vOc3xWeWTD/9qMG6rU+YCg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=atZmWpwvPKcn4AaTfViU5Uf/5CXW+kdWtiPqTAaIQhCsllcyd+h+SBhD8rgtLYfOdGC211RNPPf9G+ZHfraEpao77BMEKCgJLZYRAVhqGIWlaZWPVGnkNss8HtvWCp4EiKyncluj1i85MFjUb+ItFe2QW4U5lSWYHhswfeUYKDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Z1nkeBvp reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5A4A540E01A5;
-	Mon,  8 Sep 2025 09:25:28 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 7s5Yx-duyol7; Mon,  8 Sep 2025 09:25:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1757323514; bh=u4qtBOrEcvr/i1pRga+z9xPfqiyhYrJPtEKHxUcFniQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z1nkeBvpkTu/gPHOzI97EwwiHRI7x3O51S+p47ynJaKa/2OfHrSM5QWYiW2UiVAIt
-	 wd/I/t7Wh1HKSVqq1gCC6DP0E9GzPK3sUY45wa9dYIEeydLxr+69khpMfelB2Dtaiz
-	 hayVfNfCmR36yqf3bFCdT9cqwEvt0tqnh8pqElC6k8buRuuLlsYWd3L/Vg/RRhZibs
-	 fvACbsKvnsrnG/nQHyQ6AT6YgVvv2eRhd2BM5efqUoe98v8j+k+JfC6eGToUEFh26m
-	 CC3oPbeXihbUlL94uWW64uf6AmahwU7tVVBMsFuElETGqadl3V0S7SlOfOBNKdVTem
-	 sYO7HTRFc5UE637PQOylo33PzUweaKlEyjFpspvqqN28cxVUbHk3Kj1qWIHjqiekVu
-	 oO+Kr0+RjtVcpJLM0K9136+LsA0njAwUueUvEuWDULVLo334z8BqmTwTNLzcTGLKJB
-	 3+qxsYjOtKUut0NL1dbW+e6HVSMGUgCQACDXeWflbQTMEVzrc2L+knWE/QA6U4TexK
-	 qpMeHMwbGxxuIOiL2QL7y31nAnoyA5HTNx6Ei2IQYVJAybBVhOdC4P2d/JfRNBSY2d
-	 R4NTEihlGI7QqgtMDXc4MPyrWVmvQruflOcWHSp4JrTZP03/f8MdouGoxRzw25AyVK
-	 VeW1t/QnT4N790FqN/m5Jg/M=
-Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 4182740E01A3;
-	Mon,  8 Sep 2025 09:24:27 +0000 (UTC)
-Date: Mon, 8 Sep 2025 11:24:24 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
-	Ben Horgan <ben.horgan@arm.com>,
-	zhenglifeng <zhenglifeng1@huawei.com>,
-	Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Beata Michalska <beata.michalska@arm.com>,
-	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
-	Sumit Gupta <sumitg@nvidia.com>,
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 0/6] cpufreq: use __free() for all cpufreq_cpu_get()
- references
-Message-ID: <20250908092424.GEaL6gyNdH8oa_oTyq@fat_crate.local>
-References: <20250905132413.1376220-1-zhangzihuan@kylinos.cn>
- <20250905174928.GFaLsiqKV36JDowX94@fat_crate.local>
- <a968c6da-265a-405c-8f79-cf0474c80bc5@kylinos.cn>
+	s=arc-20240116; t=1757333324; c=relaxed/simple;
+	bh=I89Hv3yeVpwjbp1lraO7l/J2a32/rDCCCIMK44RbBjE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IaDAl4a00OR5oC30YYwPCK9DfFLFc+XydEdHaU/mJ40SfIUiwxgWVKmMY4Khi4rucX2Y4S+DiqgQTqwDfBl4mBiZ+bpu+KTCkTnZrNmLv+HDUNH50lPV58RI5TshCjDOiVjrwWXTNgpXdr+poOYpNTHL800O4QGZouGThYEVtQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=cH41MGOT; arc=none smtp.client-ip=198.47.19.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
+	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 588C8YIe3786822;
+	Mon, 8 Sep 2025 07:08:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1757333314;
+	bh=iUiA6fxcXUKSJaWYaaDgfDZskuzN62xZP78qNVsUopI=;
+	h=From:To:CC:Subject:Date;
+	b=cH41MGOTqPOq8g4rFFlUK6slXVV+xVPMk7aqdvjodB0h2LGYeSc6jJK7ifqNsC6SV
+	 X07uwSp9mqzo+8e8/Tsh1ekquN80Sv/vZgAHuj2hi05qFq1+AlfJnwYMamdt5VOCqa
+	 eEDAuc887IR1s7MNb7CAb9407GyTvg/efucW4hoo=
+Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
+	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 588C8Yxq2390582
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Mon, 8 Sep 2025 07:08:34 -0500
+Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Mon, 8
+ Sep 2025 07:08:33 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Mon, 8 Sep 2025 07:08:33 -0500
+Received: from uda0492258.dhcp.ti.com (uda0492258.dhcp.ti.com [172.24.231.84])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 588C8S0P867319;
+	Mon, 8 Sep 2025 07:08:29 -0500
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: <lpieralisi@kernel.org>, <kwilczynski@kernel.org>, <mani@kernel.org>,
+        <robh@kernel.org>, <bhelgaas@google.com>, <helgaas@kernel.org>,
+        <kishon@kernel.org>, <vigneshr@ti.com>
+CC: <stable@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>,
+        <s-vadapalli@ti.com>
+Subject: [PATCH v4] PCI: j721e: Fix programming sequence of "strap" settings
+Date: Mon, 8 Sep 2025 17:38:27 +0530
+Message-ID: <20250908120828.1471776-1-s-vadapalli@ti.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <a968c6da-265a-405c-8f79-cf0474c80bc5@kylinos.cn>
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Mon, Sep 08, 2025 at 05:12:37PM +0800, Zihuan Zhang wrote:
-> > From: Documentation/process/submitting-patches.rst
-> >=20
-> > Don't get discouraged - or impatient
-> > ------------------------------------
-> >=20
-> > After you have submitted your change, be patient and wait.  Reviewers=
- are
-> > busy people and may not get to your patch right away.
-> >=20
-> > Once upon a time, patches used to disappear into the void without com=
-ment,
-> > but the development process works more smoothly than that now.  You s=
-hould
-> > receive comments within a week or so; if that does not happen, make s=
-ure
-> > that you have sent your patches to the right place.  Wait for a minim=
-um of
-> > one week before resubmitting or pinging reviewers - possibly longer d=
-uring
-> > busy times like merge windows.
-> Sorry for the noise. I=E2=80=99ll split the patchset and avoid CC=E2=80=
-=99ing unnecessary
-> people in the future.
+The Cadence PCIe Controller integrated in the TI K3 SoCs supports both
+Root-Complex and Endpoint modes of operation. The Glue Layer allows
+"strapping" the Mode of operation of the Controller, the Link Speed
+and the Link Width. This is enabled by programming the "PCIEn_CTRL"
+register (n corresponds to the PCIe instance) within the CTRL_MMR
+memory-mapped register space. The "reset-values" of the registers are
+also different depending on the mode of operation.
 
-I don't think you read what I sent you. Lemme spell it out: you're suppos=
-ed to
-*wait* to gather review feedback, at least a week. While waiting,
-*incorporate* or *address* all that feedback and *then* send a new set.
+Since the PCIe Controller latches onto the "reset-values" immediately
+after being powered on, if the Glue Layer configuration is not done while
+the PCIe Controller is off, it will result in the PCIe Controller latching
+onto the wrong "reset-values". In practice, this will show up as a wrong
+representation of the PCIe Controller's capability structures in the PCIe
+Configuration Space. Some such capabilities which are supported by the PCIe
+Controller in the Root-Complex mode but are incorrectly latched onto as
+being unsupported are:
+- Link Bandwidth Notification
+- Alternate Routing ID (ARI) Forwarding Support
+- Next capability offset within Advanced Error Reporting (AER) capability
 
-If you keep spamming people like that, you'll accomplish the opposite of =
-what
-you're trying to do.
+Fix this by powering off the PCIe Controller before programming the "strap"
+settings and powering it on after that. The runtime PM APIs namely
+pm_runtime_put_sync() and pm_runtime_get_sync() will decrement and
+increment the usage counter respectively, causing GENPD to power off and
+power on the PCIe Controller.
 
-And while waiting you can read our documentation on the community process=
- so
-that you know what to do in the future.
+Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+---
 
---=20
-Regards/Gruss,
-    Boris.
+Hello,
 
-https://people.kernel.org/tglx/notes-about-netiquette
+This patch is based on commit
+76eeb9b8de98 Linux 6.17-rc5
+of Mainline Linux.
+
+v3 of this patch is at:
+https://lore.kernel.org/r/20250829091707.2990211-1-s-vadapalli@ti.com/
+Changes since v3:
+- The commit message and the comment have been updated to state that the
+  runtime PM APIs being added by the patch change the usage counter for the
+  PCIe Controller causing GENPD to power it off and power it on.
+
+This patch has been tested on the J7200-EVM since the issue being fixed
+by the patch is seen on the J7200 SoC. Test Logs:
+https://gist.github.com/Siddharth-Vadapalli-at-TI/38b403f4bb974c51ebf3d0d2ad0fa7b8
+
+Regards,
+Siddharth.
+
+ drivers/pci/controller/cadence/pci-j721e.c | 25 ++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+index 6c93f39d0288..29ffaf2bae10 100644
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -284,6 +284,25 @@ static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
+ 	if (!ret)
+ 		offset = args.args[0];
+ 
++	/*
++	 * The PCIe Controller's registers have different "reset-values"
++	 * depending on the "strap" settings programmed into the PCIEn_CTRL
++	 * register within the CTRL_MMR memory-mapped register space.
++	 * The registers latch onto a "reset-value" based on the "strap"
++	 * settings sampled after the PCIe Controller is powered on.
++	 * To ensure that the "reset-values" are sampled accurately, power
++	 * off the PCIe Controller before programming the "strap" settings
++	 * and power it on after that. The runtime PM APIs namely
++	 * pm_runtime_put_sync() and pm_runtime_get_sync() will decrement and
++	 * increment the usage counter respectively, causing GENPD to power off
++	 * and power on the PCIe Controller.
++	 */
++	ret = pm_runtime_put_sync(dev);
++	if (ret < 0) {
++		dev_err(dev, "Failed to power off PCIe Controller\n");
++		return ret;
++	}
++
+ 	ret = j721e_pcie_set_mode(pcie, syscon, offset);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to set pci mode\n");
+@@ -302,6 +321,12 @@ static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
+ 		return ret;
+ 	}
+ 
++	ret = pm_runtime_get_sync(dev);
++	if (ret < 0) {
++		dev_err(dev, "Failed to power on PCIe Controller\n");
++		return ret;
++	}
++
+ 	/* Enable ACSPCIE refclk output if the optional property exists */
+ 	syscon = syscon_regmap_lookup_by_phandle_optional(node,
+ 						"ti,syscon-acspcie-proxy-ctrl");
+-- 
+2.43.0
+
 
