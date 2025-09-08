@@ -1,138 +1,122 @@
-Return-Path: <linux-omap+bounces-4599-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4600-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A53D9B471AB
-	for <lists+linux-omap@lfdr.de>; Sat,  6 Sep 2025 17:00:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BAF0B48539
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Sep 2025 09:29:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DF7058171E
-	for <lists+linux-omap@lfdr.de>; Sat,  6 Sep 2025 15:00:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24DE97A7109
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Sep 2025 07:27:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513392EB842;
-	Sat,  6 Sep 2025 15:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C394C2E7651;
+	Mon,  8 Sep 2025 07:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WOo1/vM/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P8/g5uyV"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428B2277C90;
-	Sat,  6 Sep 2025 15:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFC72DEA6A;
+	Mon,  8 Sep 2025 07:28:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757170804; cv=none; b=S9rqOhntYfWh7Ig3b97QqRDgnRbOX3vg6ekxRGCbJ+mL+Q0i74ToyNcbXKVsAglrdDZEttc2Ax4O1wbI8Kv59EiL6PH6q+FEr9Y37HJ8ZNj8i+4c5aqw2iu8FUN663bwjbKLM/g9l0JbNgmAjF7OiTvT63DFIgggDtXRFPQtWHw=
+	t=1757316539; cv=none; b=R/0/D1/f88pqn9VFM/7b7s5FA63Q7SGhOnTjt/3P6IncvfXIdHGcdHlfru9qdnlHzULCadCaTB06itTFTJo8/QfRHjIL+DyNJZtveoXqWOeDiRhRA6o3UHJSbMmT7+4WDAj4jnC0K0e0xWE/cZBn/DD1vjk2M2OUTIM4MoMf6Kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757170804; c=relaxed/simple;
-	bh=PtR1bvFj895j2XEu618br+oRUVaTipfK6VlIJI11CJ8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OHjm4cedC2fggwHk3jVcUDeXBBXPwQXjvmIVw08iK0JJWgcOS7JHChTz7v2BGyaLPahwMBOcFBq4aDyO/5SSvoecxpKe5q99fa/p53ycuH3xuB10QMBqHr6T2Yl98kaN90Fd8b+IMtfH7Zkrzr4oh+OYzZD+PKRWdZOkhcTKQsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WOo1/vM/; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3dae49b117bso2518331f8f.1;
-        Sat, 06 Sep 2025 08:00:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757170802; x=1757775602; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Y5exdFFeMfs6pXJOU4JQGRUGWMk+GuCzkezUi2o0S8o=;
-        b=WOo1/vM/3jDtv4mJMMIFxY2QefEsg9v6yw4Um9dB5H5Z97IdDLlKOc5nadOr+YnswI
-         vu52axDcIU8MOjQn276g1yeGD+F3N4KBJtQRm//7KSph3mGxA06kmG7raJ8a1SAP/ate
-         9XW5nN9ps9Zs/hqYNFYjg9quyFMAByjbrWxLQTOQDjlEzZkAy1Aa53Lm+i4EkvR1B5+n
-         4AVyxT2hjYUN9dIfu0mQMKVRjztG2sxs2Lh0+I4MdRoqR8IJxq7tTS4O0CnEZvhIF2+W
-         u+gasDOEhkCFcSltndsWqjLTngfcpi6Xv12OpFOOqKOkITdKc2Vdu6tHds7EGo8YIYh4
-         h3Sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757170802; x=1757775602;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Y5exdFFeMfs6pXJOU4JQGRUGWMk+GuCzkezUi2o0S8o=;
-        b=PEmAqkHjfQfsOEeuKyD2LhPqKDH6jLFCTDgKNttT+x1KDO0SAWnnPIMN7mC1Io9HkK
-         4z6wHenmc5YK62qvMuvnmHXiGz0lg3RwRJ4W6U/rc2AF9Tc+nIFUJQwwnBjyB+v668E1
-         W9ym4SQzMNaEsP/hjEyAZB0dOUIl7+1AcDSyN/0u8V2jYSnb7pmedT5529YY7FaYcFhG
-         n6ITOt+39gO9n21sSxd1zyEyCQinIP3YkM2ZCDXlD46uP9GmhjE9HoRekKVeob5yz0Uq
-         cZ+hYTc5T5fkD8X8x5jDLbYm3czMtWyFZ09pJsl6Ly0dBbjsz/Wcq/0LuFxPd9+NC8G9
-         dPsg==
-X-Forwarded-Encrypted: i=1; AJvYcCURA4tVTTps27ogEqNmWSqFLGBnHgQqIAdF/As8yUVpmjilPXWWB2AqADXqO+bFBCyDLxWky0u+yKhj@vger.kernel.org, AJvYcCVOqtbqDzyDg5FNVxw68S1pIt0w2Iv4ekFXr6TwEi2suY7fW1RCMPHXquSUurLy0FXSM+2wejNYqjSO@vger.kernel.org, AJvYcCWtZv63MLgEwe5QcsUVj3lgqyYeejjL1Rv/ffUypEkgRe/4kUu1F3WxR0/nTID0Tr1zbo7vyYkn8dUgfw==@vger.kernel.org, AJvYcCXmVzHVF83sMpvlaThXm5dlD8rdwek1299ewACrdbTKBfpG9buOW5CKjj/gAyDo5aGOX4lAhe8+MmJeW3AS@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVqaIajXWnaNjLDo/ZKpQFvvUkHYnk304qnjU0RuLhnIhbCrJ1
-	HEVWMf9zX/hrX1n3/GaC3Jz8b5+oI4ctPwa6mE9j8c4JiQ+RyZtj6A8=
-X-Gm-Gg: ASbGncvczgx8XvZNTv3CgWco5OChIHrKN5zG+NfJAFMDsP+5yyYWD+ry0dw+S+IstHM
-	t5vwFqdaOTTS8mHfEgp+epjz9k0MvwDJGVv6GxObXAwpn+9LMZBAeWStzZTL7JM6GhJRbROnpVL
-	Ac1OLlLbMa4lfF0mkx6GsVb4j5Tb0fpBv5uEjM7LuybgIFwcTSOKZhpGdHjBUDM9BSxdmG2NrwO
-	WoBl4NhUC12nH0oJ6Iw+p/ZsDkSCB4DkHORYF1Y34XELYBZB9F5B+/XtXaZZmwYOBwPBvcI6g1G
-	zhyKckhlZSUfNFCcUHg60YJlfDv9HAQ9brJJ4+aWrYtCYWCaXyfqtl2lAG+bKJXgVxlr9Au7eGm
-	dGQpwVrQ8l57NkCewROukt11KgNfO0mn3uT1EfTagzFoBmwbZMHqj3tvi5A==
-X-Google-Smtp-Source: AGHT+IHkfCr/GUbB7Zg0ZVNuXkqzZKgkN3YIlt8oR9MJWtco+KeawFHG3DBPAGLJ8R/YPYvxkX0eYQ==
-X-Received: by 2002:a05:6000:184d:b0:3e7:4265:66de with SMTP id ffacd0b85a97d-3e742656b0emr369915f8f.8.1757170801463;
-        Sat, 06 Sep 2025 08:00:01 -0700 (PDT)
-Received: from localhost.localdomain ([2a0d:e487:143f:cf9:d8da:f38a:fb6d:ea])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf33fba9fbsm35106544f8f.50.2025.09.06.08.00.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 06 Sep 2025 08:00:00 -0700 (PDT)
-From: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-To: robh@kernel.org,
-	andreas@kemnade.info
-Cc: lee@kernel.org,
-	krzk+dt@kernel.org,
-	tony@atomide.com,
-	conor+dt@kernel.org,
-	ukleinek@kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pwm@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	jihed.chaibi.dev@gmail.com
-Subject: [PATCH v6 3/3] ARM: dts: omap3: n900: Correct obsolete TWL4030 power compatible
-Date: Sat,  6 Sep 2025 16:59:05 +0200
-Message-Id: <20250906145905.93845-4-jihed.chaibi.dev@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250906145905.93845-1-jihed.chaibi.dev@gmail.com>
-References: <20250906145905.93845-1-jihed.chaibi.dev@gmail.com>
+	s=arc-20240116; t=1757316539; c=relaxed/simple;
+	bh=RDvvo3xdx4TsaQjK5xSMvu9RP3KZphhm9dRO9PYFaHE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CY60jocSqb4vHmxusTFp2p1s/fRSSuo1oWiKwsvW/N6DWQcJND35g8wM5BmC24bN+nAaLLpKrK4gvDXU3NJoaBEhPBMrII0rRoTcrq0fOK3tm7fIWBXpXoBr2hvpLwTzRiodLXvqMfUtu+rKRpd9guwa16EBdDlPgJ0ZoOHmj50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P8/g5uyV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0EB2C4CEF1;
+	Mon,  8 Sep 2025 07:28:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757316538;
+	bh=RDvvo3xdx4TsaQjK5xSMvu9RP3KZphhm9dRO9PYFaHE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=P8/g5uyVIQHXN0e5mPL9I3N+5Fn6il5f2SU5KOSKgX89LWRmezpwmscDnBQlomDrA
+	 aEBCNkVUN1lBdnEclWHE3VhOKuYCntWCldDEu7gJ74ZJ9iay1o8qfCECrOKrtsjbGl
+	 bGirtqLfDtyXx11f2dN0SAZzmnwm/DDg3vBpdgF0GvG6VOktkr+VY9TvNLQVO7esmr
+	 j0srYDy770j88l60UxOBdJi20ZbMBqydj40KYf73dg1BBvfz7YVDkKQ6iQegnXPX/f
+	 9y4eynU6UU84qnbeQYveWvRhShVUzT4Fb/JsxJgLihah1qp66vbvLIcB1kCz9GfyQ9
+	 RYU+pKsc7qzsg==
+Date: Mon, 8 Sep 2025 12:58:51 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: lpieralisi@kernel.org, kwilczynski@kernel.org, robh@kernel.org, 
+	bhelgaas@google.com, helgaas@kernel.org, kishon@kernel.org, vigneshr@ti.com, 
+	stable@vger.kernel.org, linux-pci@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, srk@ti.com
+Subject: Re: [PATCH v3] PCI: j721e: Fix programming sequence of "strap"
+ settings
+Message-ID: <wvrouqouhrpoexmggwbc6vjz4xflnylzxrb2ffw3ai7656ehrt@keb53gb2tm2o>
+References: <oztilfun77apxtjxumx4tydkcd2gsalsak4m2rvsry2oooqjna@2yvcx6cnuemm>
+ <b2fb9252-6bfc-45da-973a-31cdfcc86b3d@ti.com>
+ <z3ubracmtlq23yicbrhqjgnzrfoqheffm6cvhfnawlvbu4cmmp@ddu2o7xhw5tz>
+ <48e9d897-2cd3-48ef-b46a-635ae75f5ac6@ti.com>
+ <3wc3t6y5gzzspgfeklsqo3bupfp6gsfy6mls6t66hflcqlqsfk@cu26wv3sow4y>
+ <9d2bba15-52e4-432a-8f7f-a0f5d7c2e4ad@ti.com>
+ <7hxdcjm7evlphkldct7seytno4is7rjkx5vquvtfhpdkzxdhu6@yocrjgzciwu3>
+ <08b87b5f-838b-4f40-ae90-10ded134356e@ti.com>
+ <whinfqhjgqbbvlnuzgbukklqi6gocjji4gakqyycovrse4qq6s@6xq5imqbzvux>
+ <a0e1d273-239b-44e5-8ccc-0ba83b2b5839@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <a0e1d273-239b-44e5-8ccc-0ba83b2b5839@ti.com>
 
-The "ti,twl4030-power-n900" compatible string is obsolete and is not
-supported by any in-kernel driver. Currently, the kernel falls back to
-the second entry, "ti,twl4030-power-idle-osc-off", to bind a driver to
-this node.
+On Thu, Sep 04, 2025 at 11:33:00AM GMT, Siddharth Vadapalli wrote:
+> On Wed, Sep 03, 2025 at 06:51:14PM +0530, Manivannan Sadhasivam wrote:
+> 
+> [...]
+> 
+> > 
+> > I thought put_noidle() will just reduce the refcount and not invoke the
+> > idle/suspend callbacks, but I seem to be wrong here.
+> > 
+> > Anyway, I guess we have no option here other than to drop the
+> > pm_runtime_put_noidle() call. This will keep refcount as 1 and will prevent the
+> > parent (genpd) to not enter runtime suspend, but we have to live with it (this
+> > was also the previous beahvior as well).
+> > 
+> > Btw, pm_runtime_set_active/enable change belongs to a separate patch.
+> 
+> I will work on and post the v4 patch with the following change:
+> - The commit message and the comment in the code will be updated to
+>   indicate that the runtime PM APIs are used to cause 'genpd' to power off
+>   and power on the controller.
+> 
+> I assume that the driver changes can remain as they are in this patch given
+> that the existing behavior has to be preserved. As j721e_pcie_ctrl_init()
+> programs the strap settings, powering off the controller via
+> pm_runtime_put_sync() and powering it on via pm_runtime_get_sync() shall
+> be implemented within j721e_pcie_ctrl_init() itself leaving the rest of the
+> probe function as-is. To summarize, the driver changes will be:
+> 
+> 	j721e_pcie_ctrl_init()
+> 		...Existing code...
+> 	+	Add pm_runtime_put_sync() here to power off controller
+> 		...Existing code to program strap settings...
+> 	+	Add pm_runtime_get_sync() here to power on controller
+> 		...Existing code...
+> 
+> Please let me know what you think.
 
-Make this fallback explicit by removing the obsolete board-specific
-compatible. This preserves the existing functionality while making the
-DTS compliant with the new, stricter 'ti,twl.yaml' binding.
+I would've preferred changing the runtime PM calls as I suggested initially, but
+still we would keep it incremented which brings the net effect to the same.
 
-Fixes: daebabd578647 ("mfd: twl4030-power: Fix PM idle pin configuration to not conflict with regulators")
-Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+So you can drop my initial comment and post just this patch with improved patch
+description.
 
----
-Changes in v6:
- - This patch was added in this version
----
- arch/arm/boot/dts/ti/omap/omap3-n900.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+- Mani
 
-diff --git a/arch/arm/boot/dts/ti/omap/omap3-n900.dts b/arch/arm/boot/dts/ti/omap/omap3-n900.dts
-index c50ca572d1b..7db73d9bed9 100644
---- a/arch/arm/boot/dts/ti/omap/omap3-n900.dts
-+++ b/arch/arm/boot/dts/ti/omap/omap3-n900.dts
-@@ -508,7 +508,7 @@ twl_audio: audio {
- 	};
- 
- 	twl_power: power {
--		compatible = "ti,twl4030-power-n900", "ti,twl4030-power-idle-osc-off";
-+		compatible = "ti,twl4030-power-idle-osc-off";
- 		ti,use_poweroff;
- 	};
- };
 -- 
-2.39.5
-
+மணிவண்ணன் சதாசிவம்
 
