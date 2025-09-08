@@ -1,141 +1,149 @@
-Return-Path: <linux-omap+bounces-4601-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4602-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02D1DB4865F
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Sep 2025 10:06:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E337B48802
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Sep 2025 11:13:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF06816A022
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Sep 2025 08:06:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96D931887978
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Sep 2025 09:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065752E92B0;
-	Mon,  8 Sep 2025 08:06:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="qCVR9Clp"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1082EFD9E;
+	Mon,  8 Sep 2025 09:13:02 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5AD1D63EF;
-	Mon,  8 Sep 2025 08:06:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874C71FF1BF;
+	Mon,  8 Sep 2025 09:12:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757318785; cv=none; b=TdKpZeCNEaPzaC1P6X1EOJ28TnLcKW/tAkF+gkySYbL21O1bATiDxkf9Q4e27keWoby2FMAgCFPE7avYS/l4360fd9kuT0bL4w21zYeNQGEnUnsdgs3xTdp3E2cCE4285hh9+ZLffETvy5QXSLlbT3UU7i9xU0Il9PXzhYEtOOQ=
+	t=1757322782; cv=none; b=QYgF87ua7zRwdeNN+JSGIX6TMByJbcPWBh6iRAAZtnXmy7ymNBAALzfIyOSlQYZmPrnmPcuw8S5YfohQIoSBvNvfsMA0u9/AwoOOHsKm4B82SR2JupDKz2TFXwg4IN+m2H4B+jHUaqnfWdRq2xND/iNyJr/RkS2RSXXo5BVJfso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757318785; c=relaxed/simple;
-	bh=AADTfuXK3QYcRRdYSB8hq9lZrJCS1ZTo9xHteQZpwig=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ObwekjLn7rzvrJ0fpnkU1gcbGd64AWkOb99Gba9s5x06HJyj/lii1JqEkWbC7ojrFc9nFziBt+ZA9Lqi2yXAsfsB9tEZNEimUzmlovABm3nVW4RM/I7OQ46mmiZxpzQJ/4kSTqn46QbOiOA9a08JXVS6l4vWKFFc4lvbTFa7fZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=qCVR9Clp; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 58886BF8009467;
-	Mon, 8 Sep 2025 03:06:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1757318771;
-	bh=5100fgc6dG24IM2sWni8imeShu+6586F+2SnyRoG2QM=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=qCVR9ClpjJQu9QVcDplCWEXMZM6+VSGyNZRyzZ9Tfx9I3VLcDobIhc117PBYWVPMz
-	 VUZFOqc8U2vqfgHV0fxKRM86qLVnMMEx/jjtXtA+91lUptuRcSTn0b3jTljOQ+/kk2
-	 wtRtEyoU0+B7jjVmOxgWNZQ6qje5RrsQ/lzYHCi8=
-Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
-	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 58886BHa3621244
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Mon, 8 Sep 2025 03:06:11 -0500
-Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Mon, 8
- Sep 2025 03:06:11 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Mon, 8 Sep 2025 03:06:11 -0500
-Received: from localhost (uda0492258.dhcp.ti.com [172.24.231.84])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 58886AW6553673;
-	Mon, 8 Sep 2025 03:06:10 -0500
-Date: Mon, 8 Sep 2025 13:36:09 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Manivannan Sadhasivam <mani@kernel.org>
-CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <lpieralisi@kernel.org>,
-        <kwilczynski@kernel.org>, <robh@kernel.org>, <bhelgaas@google.com>,
-        <helgaas@kernel.org>, <kishon@kernel.org>, <vigneshr@ti.com>,
-        <stable@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>
-Subject: Re: [PATCH v3] PCI: j721e: Fix programming sequence of "strap"
- settings
-Message-ID: <578e5125-21d8-40c8-aaeb-389599cdd32b@ti.com>
-References: <b2fb9252-6bfc-45da-973a-31cdfcc86b3d@ti.com>
- <z3ubracmtlq23yicbrhqjgnzrfoqheffm6cvhfnawlvbu4cmmp@ddu2o7xhw5tz>
- <48e9d897-2cd3-48ef-b46a-635ae75f5ac6@ti.com>
- <3wc3t6y5gzzspgfeklsqo3bupfp6gsfy6mls6t66hflcqlqsfk@cu26wv3sow4y>
- <9d2bba15-52e4-432a-8f7f-a0f5d7c2e4ad@ti.com>
- <7hxdcjm7evlphkldct7seytno4is7rjkx5vquvtfhpdkzxdhu6@yocrjgzciwu3>
- <08b87b5f-838b-4f40-ae90-10ded134356e@ti.com>
- <whinfqhjgqbbvlnuzgbukklqi6gocjji4gakqyycovrse4qq6s@6xq5imqbzvux>
- <a0e1d273-239b-44e5-8ccc-0ba83b2b5839@ti.com>
- <wvrouqouhrpoexmggwbc6vjz4xflnylzxrb2ffw3ai7656ehrt@keb53gb2tm2o>
+	s=arc-20240116; t=1757322782; c=relaxed/simple;
+	bh=ukh9KltCtNWgocUMmE8ReWaVb4Wu7TjADySQktith44=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EItMxjE6jTQzBFe2Zf3knvo2qS5GnelrWs7rUvoxPfu/NqdsRRnEQwbHqsOWFDwHnuZyUflevrzQvaoXQlNpLtDzCNxhsbQ5ZWAKeFyBb1ha8axGkrhcr5NcUELG53G22zeFMuzp+VVGfEB3T8UcXyhMWusSiaDQe+GHUSHDBKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: ff62280e8c9311f0b29709d653e92f7d-20250908
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:e2fab22a-c7aa-4216-90ca-404e6fb63c6d,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:046415f91e77839f7ce3c5f8880d4853,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: ff62280e8c9311f0b29709d653e92f7d-20250908
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 2046176838; Mon, 08 Sep 2025 17:12:52 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id A0BDEE008FA7;
+	Mon,  8 Sep 2025 17:12:51 +0800 (CST)
+X-ns-mid: postfix-68BE9E13-43449476
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 8B40BE008FA3;
+	Mon,  8 Sep 2025 17:12:38 +0800 (CST)
+Message-ID: <a968c6da-265a-405c-8f79-cf0474c80bc5@kylinos.cn>
+Date: Mon, 8 Sep 2025 17:12:37 +0800
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <wvrouqouhrpoexmggwbc6vjz4xflnylzxrb2ffw3ai7656ehrt@keb53gb2tm2o>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/6] cpufreq: use __free() for all cpufreq_cpu_get()
+ references
+To: Borislav Petkov <bp@alien8.de>
+Cc: "Rafael J . wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+ Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
+ Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+ Lukasz Luba <lukasz.luba@arm.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
+ <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+ Sumit Gupta <sumitg@nvidia.com>,
+ Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
+ linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250905132413.1376220-1-zhangzihuan@kylinos.cn>
+ <20250905174928.GFaLsiqKV36JDowX94@fat_crate.local>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <20250905174928.GFaLsiqKV36JDowX94@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 08, 2025 at 12:58:51PM +0530, Manivannan Sadhasivam wrote:
-> On Thu, Sep 04, 2025 at 11:33:00AM GMT, Siddharth Vadapalli wrote:
-> > On Wed, Sep 03, 2025 at 06:51:14PM +0530, Manivannan Sadhasivam wrote:
-> > 
-> > [...]
-> > 
-> > > 
-> > > I thought put_noidle() will just reduce the refcount and not invoke the
-> > > idle/suspend callbacks, but I seem to be wrong here.
-> > > 
-> > > Anyway, I guess we have no option here other than to drop the
-> > > pm_runtime_put_noidle() call. This will keep refcount as 1 and will prevent the
-> > > parent (genpd) to not enter runtime suspend, but we have to live with it (this
-> > > was also the previous beahvior as well).
-> > > 
-> > > Btw, pm_runtime_set_active/enable change belongs to a separate patch.
-> > 
-> > I will work on and post the v4 patch with the following change:
-> > - The commit message and the comment in the code will be updated to
-> >   indicate that the runtime PM APIs are used to cause 'genpd' to power off
-> >   and power on the controller.
-> > 
-> > I assume that the driver changes can remain as they are in this patch given
-> > that the existing behavior has to be preserved. As j721e_pcie_ctrl_init()
-> > programs the strap settings, powering off the controller via
-> > pm_runtime_put_sync() and powering it on via pm_runtime_get_sync() shall
-> > be implemented within j721e_pcie_ctrl_init() itself leaving the rest of the
-> > probe function as-is. To summarize, the driver changes will be:
-> > 
-> > 	j721e_pcie_ctrl_init()
-> > 		...Existing code...
-> > 	+	Add pm_runtime_put_sync() here to power off controller
-> > 		...Existing code to program strap settings...
-> > 	+	Add pm_runtime_get_sync() here to power on controller
-> > 		...Existing code...
-> > 
-> > Please let me know what you think.
-> 
-> I would've preferred changing the runtime PM calls as I suggested initially, but
-> still we would keep it incremented which brings the net effect to the same.
-> 
-> So you can drop my initial comment and post just this patch with improved patch
-> description.
 
-Thank you for the clarification. I will implement the above in the v4
-patch.
+=E5=9C=A8 2025/9/6 01:49, Borislav Petkov =E5=86=99=E9=81=93:
+> On Fri, Sep 05, 2025 at 09:24:07PM +0800, Zihuan Zhang wrote:
+>> This patchset converts all remaining cpufreq users to rely on the
+>> __free(put_cpufreq_policy) annotation for policy references, instead o=
+f
+>> calling cpufreq_cpu_put() manually.
+> Sep 01 Zihuan Zhang ( :8.6K|) [PATCH v3 00/12] cpufreq: use __free() fo=
+r all cpufreq_cpu_get() references
+> Sep 03 Zihuan Zhang ( :  65|) [PATCH v4 00/10] cpufreq: use __free() fo=
+r all cpufreq_cpu_get() references
+> Sep 05 Zihuan Zhang ( :8.3K|) [PATCH v5 0/6] cpufreq: use __free() for =
+all cpufreq_cpu_get() references
+>
+> Please stop the spamming. While waiting, go read how this kernel proces=
+s thing
+> works:
+>
+> From: Documentation/process/submitting-patches.rst
+>
+> Don't get discouraged - or impatient
+> ------------------------------------
+>
+> After you have submitted your change, be patient and wait.  Reviewers a=
+re
+> busy people and may not get to your patch right away.
+>
+> Once upon a time, patches used to disappear into the void without comme=
+nt,
+> but the development process works more smoothly than that now.  You sho=
+uld
+> receive comments within a week or so; if that does not happen, make sur=
+e
+> that you have sent your patches to the right place.  Wait for a minimum=
+ of
+> one week before resubmitting or pinging reviewers - possibly longer dur=
+ing
+> busy times like merge windows.
+Sorry for the noise. I=E2=80=99ll split the patchset and avoid CC=E2=80=99=
+ing=20
+unnecessary people in the future.
 
-Regards,
-Siddharth.
+Thanks for the reminder!
 
