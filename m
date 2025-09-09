@@ -1,210 +1,80 @@
-Return-Path: <linux-omap+bounces-4613-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4614-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1C7B497AA
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Sep 2025 19:56:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 870F4B4A35B
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Sep 2025 09:20:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70B3A7A897D
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Sep 2025 17:54:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E65A717BFD8
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Sep 2025 07:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B07A314A8C;
-	Mon,  8 Sep 2025 17:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E4B0303A03;
+	Tue,  9 Sep 2025 07:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dLkL6IyG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hzUfhKoG"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32CE19A288;
-	Mon,  8 Sep 2025 17:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FB9256C76;
+	Tue,  9 Sep 2025 07:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757354153; cv=none; b=BbRXK2UcUMho3kbf3CWe5cexA1o8GF4NUVEqkSVGbL/0fuxcf6+MnUBz7bQFa0MM2MEbQgXtJsvhFSiJweed/pO5aPC+gAFzwh0O3+XpQzmzZx6TrlENRiePAOA4EeDkb27SqGL9y9oxVkQm8NpVlAdHNhUFLfztyb3UOTp6wos=
+	t=1757402423; cv=none; b=goXW+6INyLN+YdzgP4+IYTC0alhvuOFqdIAfz58/wksdEEsJ+6VlrF2TEKO6QFuIav86GdXY+W93264qD6FCgFHSfnQJuFP+m47+LgESg/gKYnQBZSuKrECZSi029E4H/uMXlcJG88vameiWUuQYgsmqSxVhIFTTO0qFPHiD/gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757354153; c=relaxed/simple;
-	bh=z211wSU9k+wQQZV8T70JLX0guTp2A3fKrmuOqpzLycw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sEWzPD2Ldq+5MKzav1XznE2pebn1Q8rHEdUPSg3w+yDg/+2teb6EFG4A7ZiD1L95DGEf24SgLEIa3atjdBpImL9BYBNAVR7dtWVizy+dJRKgWCqFw2yFKT73YWBVoaNw73AnEgNNY8btfN6xDph95KkCiNZCFNj9BLI1BO/nnuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dLkL6IyG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5FAC4CEF1;
-	Mon,  8 Sep 2025 17:55:53 +0000 (UTC)
+	s=arc-20240116; t=1757402423; c=relaxed/simple;
+	bh=rJIPYrjDUWAPVFJhg8IR2N2TLTeJ2YBveAY2HJgHK2w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=heBicDI5JB6U5aJxh95yog8QO4/MSsNOCtm+FeAruorCoGwLsUTVvV59rCAHPjTAU74pA3J7Iy5zBWyFe/K38xqHPRjP4vr/yD7hogv9pSAqKQbAcCI0114Gt/FE5RQq5aOPeCCp9iJVNG6VJBbHvtUu8kRcpMKDBYb49w867Oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hzUfhKoG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9D7C4CEF4;
+	Tue,  9 Sep 2025 07:20:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757354153;
-	bh=z211wSU9k+wQQZV8T70JLX0guTp2A3fKrmuOqpzLycw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=dLkL6IyGSzVs97Dn2zc5CR0vuYMwwXdjTpXsdcSc7FK6RgMbAehryO6P2g4tfH2wN
-	 xVBncyAAs5yAarohKHABq0i5Gv00ASROSKqjSXO2bVQIWMZS9y0Z6t8i2QjWyeaXHY
-	 06vK7d/zNLUQBtGYZnKUW9wqcNaLQdz5WQ1ZdOvVxNGq2KhsDve7cqUBFLg4XWlAfS
-	 1647C2TbbdfyBkW/71duf/CJg8w2awwvmiYvSPPP5P/UaZlhFVCmHjvHYRgw8KF36f
-	 SMqJDZsbwXeNxg83fl2u3O848CM+s/zcBNmqLkBc6+GxW6RUrToKpOd2AZIpqy6uFk
-	 f4ItmibaFkVhQ==
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-435d3a45a3fso2632050b6e.1;
-        Mon, 08 Sep 2025 10:55:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUVnXxQqqYrwYLNR3TLe5I6oODOP8Rl+grXxS6ldJbkTPJCJK9rKNo19y948CkykIOLPAkYglB8lI0+kENO@vger.kernel.org, AJvYcCVLm8zBQ0rkR4teEII+De8G6CUsVOvwAGIkjoe09V4zLptBNmM10/wK7K3lO10+X9PIf2M2NfiWu7M=@vger.kernel.org, AJvYcCVuox+W9pkeQgQHgtulziGHL+bQ3RmigpSNjzW14xhK+tp1QaMrBXynMo0NOc840PYxc2xegy+XGS8Z@vger.kernel.org, AJvYcCXvRn16m9a2HROgN2oiLvu12Mz9Jgxl8wON6qWgJxQifSRGNrooF/HDHuRMfbhKxlmJZc/sqOD+3Yo21g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8uCunu6GOnc/JhQiM5uul+oaVShoMHMzL4pgwDQuEPU0tkxwG
-	7wLP1PgtuGeuZneW9K+c3k4UYCLVApMRQdka/R0L5mPP0er4pHRSiHDT0jwzQdNX+tsKvwCac62
-	fpsyFnBRNvNqhHLpW7FJHSuW82RFtGNw=
-X-Google-Smtp-Source: AGHT+IFczhoCSnnG5YLUZfh7wkMCNzRn78TlsoAFyrDZq9bCKjUOefg3nxoG74Oz37mTKBW6389SIILJkVhhZvHpYYM=
-X-Received: by 2002:a05:6808:68d3:10b0:43b:503e:6ecb with SMTP id
- 5614622812f47-43b503ec4f4mr623073b6e.13.1757354152690; Mon, 08 Sep 2025
- 10:55:52 -0700 (PDT)
+	s=k20201202; t=1757402423;
+	bh=rJIPYrjDUWAPVFJhg8IR2N2TLTeJ2YBveAY2HJgHK2w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hzUfhKoGT4E9fhtttkXp5Hvw7tj1Tqw/kd1F/8YMnrMGlrvc8QXk2VUnTO/KLs/NJ
+	 0iXPFD/Tg4N7+1wGSfxRS5dfRAwhs9BNNvCqTqT/wA0w03K9+nYqcqwm8baOSoZ9AQ
+	 kPfyXSWoyAVUtivlpwliyUsVwjP3EKiRLXJkz56crQkvmqRAgc1BfnwmyQjb3/N8EZ
+	 70pMzrvBztg2nx5cyxydIhXVZ1sgy6BKUxxvJwt3S+gT6aGOoesMrmzSIfIkpd5XLi
+	 Oe2CIq1ZNFxWYY1iL+P1ldbqWhi4Lr+vXR2Y3CQO23CopN9Vxlgarn1EqTxN4ot0Nv
+	 99wsNtQQceTNw==
+Date: Tue, 9 Sep 2025 09:20:20 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Charan Pedumuru <charan.pedumuru@gmail.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Paul Barker <paul.barker@sancloud.com>, Marc Murphy <marc.murphy@sancloud.com>, 
+	Tony Lindgren <tony@atomide.com>, Kishon Vijay Abraham I <kishon@kernel.org>, 
+	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-omap@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] arm: dts: ti: omap: Drop unnecessary or unused
+ properties
+Message-ID: <20250909-uptight-fluorescent-markhor-4639db@kuoka>
+References: <20250908-ti-sdhci-omap-v2-0-72927890482f@gmail.com>
+ <20250908-ti-sdhci-omap-v2-1-72927890482f@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250905132413.1376220-1-zhangzihuan@kylinos.cn> <20250905132413.1376220-3-zhangzihuan@kylinos.cn>
-In-Reply-To: <20250905132413.1376220-3-zhangzihuan@kylinos.cn>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 8 Sep 2025 19:55:41 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gsH1PoGNUpxNE7oEBxJ3dBHBLrkeRE0h-DsF25NFKqQA@mail.gmail.com>
-X-Gm-Features: Ac12FXxYXLTfmPsZZpVrMXtRDtGdwPa34ts6sBOi7tLf54i6Za0SxLIO-pbCGrE
-Message-ID: <CAJZ5v0gsH1PoGNUpxNE7oEBxJ3dBHBLrkeRE0h-DsF25NFKqQA@mail.gmail.com>
-Subject: Re: [PATCH v5 2/6] ACPI: processor: thermal: Use scope-based cleanup helper
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Jonathan Cameron <jonathan.cameron@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
-	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, 
-	zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
-	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250908-ti-sdhci-omap-v2-1-72927890482f@gmail.com>
 
-On Fri, Sep 5, 2025 at 3:24=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylinos.cn=
-> wrote:
->
-> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-> annotation for policy references. This reduces the risk of reference
-> counting mistakes and aligns the code with the latest kernel style.
->
-> No functional change intended.
->
-> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-> ---
->  drivers/acpi/processor_thermal.c | 52 +++++++++++++++++---------------
->  1 file changed, 27 insertions(+), 25 deletions(-)
->
-> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_th=
-ermal.c
-> index 1219adb11ab9..460713d1414a 100644
-> --- a/drivers/acpi/processor_thermal.c
-> +++ b/drivers/acpi/processor_thermal.c
-> @@ -62,19 +62,14 @@ static int phys_package_first_cpu(int cpu)
->         return 0;
->  }
->
-> -static int cpu_has_cpufreq(unsigned int cpu)
-> +static bool cpu_has_cpufreq(unsigned int cpu)
->  {
-> -       struct cpufreq_policy *policy;
-> -
->         if (!acpi_processor_cpufreq_init)
->                 return 0;
->
-> -       policy =3D cpufreq_cpu_get(cpu);
-> -       if (policy) {
-> -               cpufreq_cpu_put(policy);
-> -               return 1;
-> -       }
-> -       return 0;
-> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpuf=
-req_cpu_get(cpu);
-> +
-> +       return policy !=3D NULL;
->  }
->
->  static int cpufreq_get_max_state(unsigned int cpu)
-> @@ -93,12 +88,31 @@ static int cpufreq_get_cur_state(unsigned int cpu)
->         return reduction_step(cpu);
->  }
->
-> +static bool cpufreq_update_thermal_limit(unsigned int cpu, struct acpi_p=
-rocessor *pr)
-> +{
-> +       unsigned long max_freq;
-> +       int ret;
-> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpuf=
-req_cpu_get(cpu);
-> +
-> +       if (!policy)
-> +               return false;
-> +
-> +       max_freq =3D (policy->cpuinfo.max_freq *
-> +               (100 - reduction_step(cpu) * cpufreq_thermal_reduction_pc=
-tg)) / 100;
-> +
-> +       ret =3D freq_qos_update_request(&pr->thermal_req, max_freq);
-> +       if (ret < 0) {
-> +               pr_warn("Failed to update thermal freq constraint: CPU%d =
-(%d)\n",
-> +         pr->id, ret);
-> +       }
-> +
-> +       return true;
-> +}
-> +
->  static int cpufreq_set_cur_state(unsigned int cpu, int state)
->  {
-> -       struct cpufreq_policy *policy;
->         struct acpi_processor *pr;
-> -       unsigned long max_freq;
-> -       int i, ret;
-> +       int i;
->
->         if (!cpu_has_cpufreq(cpu))
->                 return 0;
-> @@ -120,20 +134,8 @@ static int cpufreq_set_cur_state(unsigned int cpu, i=
-nt state)
->                 if (unlikely(!freq_qos_request_active(&pr->thermal_req)))
->                         continue;
->
-> -               policy =3D cpufreq_cpu_get(i);
-> -               if (!policy)
-> +               if (!cpufreq_update_thermal_limit(i, pr))
->                         return -EINVAL;
-> -
-> -               max_freq =3D (policy->cpuinfo.max_freq *
-> -                           (100 - reduction_step(i) * cpufreq_thermal_re=
-duction_pctg)) / 100;
-> -
-> -               cpufreq_cpu_put(policy);
-> -
-> -               ret =3D freq_qos_update_request(&pr->thermal_req, max_fre=
-q);
-> -               if (ret < 0) {
-> -                       pr_warn("Failed to update thermal freq constraint=
-: CPU%d (%d)\n",
-> -                               pr->id, ret);
-> -               }
->         }
->         return 0;
->  }
-> --
+On Mon, Sep 08, 2025 at 04:17:12PM +0000, Charan Pedumuru wrote:
+> Remove unnecessary properties like ti,needs-special-reset,
+> ti,needs-special-hs-handling and cap-mmc-dual-data-rate from the DTS
+> files as there is no user of them.
 
-Applied as 6.18 material under a new subject, with some minor edits in
-the changelog, and with some minor whitespace breakage fixed.
+No user? That's not true:
 
-Thanks!
+git grep ti,needs-special-reset
+
+Best regards,
+Krzysztof
+
 
