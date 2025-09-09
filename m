@@ -1,80 +1,118 @@
-Return-Path: <linux-omap+bounces-4614-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4615-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 870F4B4A35B
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Sep 2025 09:20:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84788B4A577
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Sep 2025 10:36:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E65A717BFD8
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Sep 2025 07:20:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40A883A2856
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Sep 2025 08:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E4B0303A03;
-	Tue,  9 Sep 2025 07:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8938A2522A8;
+	Tue,  9 Sep 2025 08:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hzUfhKoG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uQimaebM"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FB9256C76;
-	Tue,  9 Sep 2025 07:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D00E24A047;
+	Tue,  9 Sep 2025 08:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757402423; cv=none; b=goXW+6INyLN+YdzgP4+IYTC0alhvuOFqdIAfz58/wksdEEsJ+6VlrF2TEKO6QFuIav86GdXY+W93264qD6FCgFHSfnQJuFP+m47+LgESg/gKYnQBZSuKrECZSi029E4H/uMXlcJG88vameiWUuQYgsmqSxVhIFTTO0qFPHiD/gg=
+	t=1757406990; cv=none; b=rQw/cDMnRbgFKPSXX1Uwpyxhb57QLaKPk2fJGlUWudD2h8i9D6l3mkSs4XedLfFEPc5JeA5y5MWxC8rLq4WXmbNMcC51ahgncPDG0vI8qctKWM8inPMnZZEeeXX6sIzou2YsxqZdXTuHn2Ys49u/euWKqhq6ixsKLCAPEQWHUVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757402423; c=relaxed/simple;
-	bh=rJIPYrjDUWAPVFJhg8IR2N2TLTeJ2YBveAY2HJgHK2w=;
+	s=arc-20240116; t=1757406990; c=relaxed/simple;
+	bh=ggVURUfp1YoriDykwYtbM1jFe9i/1p9HTTWhCQeLOpM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=heBicDI5JB6U5aJxh95yog8QO4/MSsNOCtm+FeAruorCoGwLsUTVvV59rCAHPjTAU74pA3J7Iy5zBWyFe/K38xqHPRjP4vr/yD7hogv9pSAqKQbAcCI0114Gt/FE5RQq5aOPeCCp9iJVNG6VJBbHvtUu8kRcpMKDBYb49w867Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hzUfhKoG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9D7C4CEF4;
-	Tue,  9 Sep 2025 07:20:22 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=o45z7sTVsb9tJzTcOYlcB5ah2PC19UK/XEzL/1Mnyns9C4fNLxrnc5WP/klRydbfZ+Pa8f2ElwNAOn533PdnsyLzdylJkqx74zPC4EYsVB4nbKl5yNPBZcIlFnwAf8h3tPL21ZUPsUxYxjKOSQ5Kk6D3AN5n8NX25l5vie2nH9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uQimaebM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0556EC4CEF4;
+	Tue,  9 Sep 2025 08:36:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757402423;
-	bh=rJIPYrjDUWAPVFJhg8IR2N2TLTeJ2YBveAY2HJgHK2w=;
+	s=k20201202; t=1757406988;
+	bh=ggVURUfp1YoriDykwYtbM1jFe9i/1p9HTTWhCQeLOpM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hzUfhKoGT4E9fhtttkXp5Hvw7tj1Tqw/kd1F/8YMnrMGlrvc8QXk2VUnTO/KLs/NJ
-	 0iXPFD/Tg4N7+1wGSfxRS5dfRAwhs9BNNvCqTqT/wA0w03K9+nYqcqwm8baOSoZ9AQ
-	 kPfyXSWoyAVUtivlpwliyUsVwjP3EKiRLXJkz56crQkvmqRAgc1BfnwmyQjb3/N8EZ
-	 70pMzrvBztg2nx5cyxydIhXVZ1sgy6BKUxxvJwt3S+gT6aGOoesMrmzSIfIkpd5XLi
-	 Oe2CIq1ZNFxWYY1iL+P1ldbqWhi4Lr+vXR2Y3CQO23CopN9Vxlgarn1EqTxN4ot0Nv
-	 99wsNtQQceTNw==
-Date: Tue, 9 Sep 2025 09:20:20 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Charan Pedumuru <charan.pedumuru@gmail.com>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Paul Barker <paul.barker@sancloud.com>, Marc Murphy <marc.murphy@sancloud.com>, 
-	Tony Lindgren <tony@atomide.com>, Kishon Vijay Abraham I <kishon@kernel.org>, 
-	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	b=uQimaebMsXuc56rqD30mXBr4L+2Sx/Egij/Pwshh/S9DDvVfQmPLcipzuWQRYQZGZ
+	 b+ttpcWEu08xvZppqEGaTPiTsfdjEzYD/6dKPdfqDttbTXq7SXH8jkrn973CGkLXWC
+	 t9s5Mgzt5Z/5pDbi8AEFwG4LmhWnsBIUzMJM1cx7uWTCyFS92tnGTwnAncY71Jq9Ni
+	 FzpRDp1TR6l9qEF0w4Z3D8G6Ub/L+Jqn8T0eiJXYMO2H9UdlzaFsIu8Bj1oWzfw92i
+	 Nma/PBrG7Cf/WnoKFzYspHb0IvA1mLHD00pw2OxnzHYlH1xLvyiU37ne9LT+XpA0jP
+	 p17kbJbZQk6jw==
+Date: Tue, 9 Sep 2025 10:36:25 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Cc: robh@kernel.org, andreas@kemnade.info, lee@kernel.org, 
+	krzk+dt@kernel.org, tony@atomide.com, conor+dt@kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org, 
 	linux-omap@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] arm: dts: ti: omap: Drop unnecessary or unused
- properties
-Message-ID: <20250909-uptight-fluorescent-markhor-4639db@kuoka>
-References: <20250908-ti-sdhci-omap-v2-0-72927890482f@gmail.com>
- <20250908-ti-sdhci-omap-v2-1-72927890482f@gmail.com>
+Subject: Re: [PATCH v6 1/3] dt-bindings: mfd: twl: Add missing sub-nodes for
+ TWL4030 & TWL603x
+Message-ID: <f6sppn34p4f5rxwtp7hygukh2bqxzb7uxy3xurznfbmop55w6p@mturvxxitkfz>
+References: <20250906145905.93845-1-jihed.chaibi.dev@gmail.com>
+ <20250906145905.93845-2-jihed.chaibi.dev@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="levdglp5q4pwvgch"
 Content-Disposition: inline
-In-Reply-To: <20250908-ti-sdhci-omap-v2-1-72927890482f@gmail.com>
+In-Reply-To: <20250906145905.93845-2-jihed.chaibi.dev@gmail.com>
 
-On Mon, Sep 08, 2025 at 04:17:12PM +0000, Charan Pedumuru wrote:
-> Remove unnecessary properties like ti,needs-special-reset,
-> ti,needs-special-hs-handling and cap-mmc-dual-data-rate from the DTS
-> files as there is no user of them.
 
-No user? That's not true:
+--levdglp5q4pwvgch
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v6 1/3] dt-bindings: mfd: twl: Add missing sub-nodes for
+ TWL4030 & TWL603x
+MIME-Version: 1.0
 
-git grep ti,needs-special-reset
+Hello,
 
-Best regards,
-Krzysztof
+On Sat, Sep 06, 2025 at 04:59:03PM +0200, Jihed Chaibi wrote:
+>  .../devicetree/bindings/mfd/ti,twl.yaml       | 221 +++++++++++++++++-
+>  .../devicetree/bindings/mfd/twl4030-power.txt |  48 ----
+>  .../devicetree/bindings/pwm/ti,twl-pwm.txt    |  17 --
+>  .../devicetree/bindings/pwm/ti,twl-pwmled.txt |  17 --
+>  4 files changed, 210 insertions(+), 93 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/mfd/twl4030-power.t=
+xt
+>  delete mode 100644 Documentation/devicetree/bindings/pwm/ti,twl-pwm.txt
+>  delete mode 100644 Documentation/devicetree/bindings/pwm/ti,twl-pwmled.t=
+xt
 
+Acked-by: Uwe Kleine-K=F6nig <ukleinek@kernel.org>
+
+for folding Documentation/devicetree/bindings/pwm/ti,twl-pwm*.txt into
+ti,twl.yaml.
+
+I assume this will eventually go via Lee's mfd tree, I don't expect any
+conflicts and from my side there is no need for a branch to merge this
+back into my PWM tree.
+
+Best regards
+Uwe
+
+--levdglp5q4pwvgch
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmi/5wYACgkQj4D7WH0S
+/k4Niwf/Y5CFIBUM+NX02ofsrtkvqQtLCdbAh3EANYXaWRzJKQ+grDHLtczabsxT
+442FIO4WZ9rPoiZhAJvWEeVXCqSeSwJiVng5FohvZVZS607pQNIX8yWCy3m+d20l
+ZIJjqeJSQ3bCjbav2au83N4+x1Z6y9OvAWGTvwO0hK6pKTTUsWHQd9LDahL+QBzg
+fJEJz0nhh9UJNXM7HmaLhY+mjaJgrxOl35D4Y3h7skZ9BMHKcszNbce8EC5vSLbC
+AMrw2K83+UsUdbXDHkHxl0yhr6uI+319xCpnK5Q9wGIS568v+V1ejCq+qKXdeTzU
+jS9Ihkk6wG/oz9eKQHwYmJgUt95Nqw==
+=zs2J
+-----END PGP SIGNATURE-----
+
+--levdglp5q4pwvgch--
 
