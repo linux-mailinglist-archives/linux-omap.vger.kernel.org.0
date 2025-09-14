@@ -1,127 +1,129 @@
-Return-Path: <linux-omap+bounces-4632-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4633-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0FA6B5629B
-	for <lists+linux-omap@lfdr.de>; Sat, 13 Sep 2025 20:49:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC94B56840
+	for <lists+linux-omap@lfdr.de>; Sun, 14 Sep 2025 14:05:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DC927A6140
-	for <lists+linux-omap@lfdr.de>; Sat, 13 Sep 2025 18:47:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFDD53BEDB7
+	for <lists+linux-omap@lfdr.de>; Sun, 14 Sep 2025 12:05:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4560125A9;
-	Sat, 13 Sep 2025 18:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34011487BE;
+	Sun, 14 Sep 2025 12:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bLn3vU3e"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HmW7IKij"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BB122B8BD
-	for <linux-omap@vger.kernel.org>; Sat, 13 Sep 2025 18:49:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749921B4141
+	for <linux-omap@vger.kernel.org>; Sun, 14 Sep 2025 12:04:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757789364; cv=none; b=k+Gbozn9CgL7j02ckukwYUuWIdgAWL+NSIDwH0xMPGM4vGt3NFAN376TPU9Fd108jqZJjlzphlnXfTxkuVboH5sJ5itZYVI/uVzbGCNzffZbTpijvt/FhKiVPw54DQ5WgTY2l68nS54xoKKCCVWFAFBW0//KZDTqJDHyYxW1+5I=
+	t=1757851498; cv=none; b=Dwp7JxM3zL/xNNiyeU05Ksj2HrmFMOP6zD2SeAe9fL656QwaA0EOvPDQHPki8g20XyJPBmxaP5l72jEpdIRchrdWfnwdvHFdr70U4lmU2fzriA45NYkcLDgaiig8RwIs7moBDGFtRV7CEVn5PkLu93kwUtYRnJzYDDn/JcxBWbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757789364; c=relaxed/simple;
-	bh=If4Dx8GnGsI9EAn+Csky6KF5QogT6E3JWcOUF8Exyug=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T9nAsHFe3xR5gBNQnstQMrlNIBy6oxAj9QeqepnJ8+HUz5HhFSoPGPxBiqkZ2Ck8XqpH1c9gOazySV20XPhT+7s2c9j/l3s/Yr3ggrQ0qQU0t5NpHCn+mPUqMuVesnWmhzUw3ZNd3IUisKioGtv20v5/DvRPx+jA4o/xxKeAuHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bLn3vU3e; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7726c7ff7e5so2561578b3a.3
-        for <linux-omap@vger.kernel.org>; Sat, 13 Sep 2025 11:49:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757789362; x=1758394162; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rF3GBCGcRqV69CZBLaKsXGjUvkwSYhGDg0qUaj1ycYE=;
-        b=bLn3vU3e8T50AEZHqvp91RBvtEh7tO2VWyN4zSS1BsInQyQho0KLVaPw4gtwgkT5O5
-         IpNJ1A6lkpgBOgTP5JYiGZzjnIJNPWhzE5IzW+WtiRmR20AqB5IH83CuoX1KKRvTCCGc
-         FLrMqSArEmXsge8MoS2c3VcGiop0OoCpEDuHlyKfgCgK+E87YH1o+L3isZzVDqWyB3x/
-         uXcrXZaHhFacnJs1DbdzFI2FZoEMcbzHp7MksLrjbOj0Y0CjjJckObUAkRr+2hq2BaZg
-         fIGzShRt+rUUc9//cn8goyALhqAXbwQoLh5sQ3pqd1Dt59nlKj7AivgjS2XMgqTsCLQg
-         sLhw==
+	s=arc-20240116; t=1757851498; c=relaxed/simple;
+	bh=x6/x/F9H1jnt9+oD8dGb+mTu5SQ8wNiEgVuCPP1souw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gkJ6w1LGV71VMXVLj6rsaDkj03ybpQ7y9xtlrzvK5+NBXfJi6FGksV2avwcIwc4EL3A055Cdc+FgsRnLn68kBBXHiISrJCLbttH9Jr+cMe5UoyhrKiZ8lPee0qXTmRAmM+zMD4/NyQNcbsJupFM+DaUs4vdJ4ICOsm9qcNrY5Ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HmW7IKij; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757851496;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=x6/x/F9H1jnt9+oD8dGb+mTu5SQ8wNiEgVuCPP1souw=;
+	b=HmW7IKijo9YBtew6ZyocKIXibVimANFTyoqu9R7DcAalTq3dLYAMDgHKIkrq+X3LbRpN0h
+	u0YWzuDOwUaE4s93NYAnPa00ac+pP4aYBnKIUA5OBukvKHCpUusZDkT4XYHVINkpF9unc3
+	QLNP1rCjzDx/0G1c+eyY7i6bgDC4KLk=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-339-lYjFsFk-OyKv9UfbUJiTIA-1; Sun, 14 Sep 2025 08:04:55 -0400
+X-MC-Unique: lYjFsFk-OyKv9UfbUJiTIA-1
+X-Mimecast-MFC-AGG-ID: lYjFsFk-OyKv9UfbUJiTIA_1757851495
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-77ef97f684eso6827996d6.1
+        for <linux-omap@vger.kernel.org>; Sun, 14 Sep 2025 05:04:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757789362; x=1758394162;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rF3GBCGcRqV69CZBLaKsXGjUvkwSYhGDg0qUaj1ycYE=;
-        b=aainnPCYRqUZgtJZZUFdVqSx4lhtlKXhWiErnY6DgxphmMV7HiUSTkW5IvsOmaXvyg
-         V3s5eMZ7/3P3LxyZNBs54xAh0JKRU/YQdBZHfOo6YViLnrlWEYR/N7O33LlgBAq4fyfm
-         D3YjdwHtA4kjGKGcJyw56t8hvFepZXSXFngYApuBvZF6h+6x2JBjHd8WEEVJXXT2uvte
-         3Gi72/pXYqlr2v3hOSvt+G0NsEBWtHdUzrg/Uy5wPDOR0BC+qofaQYzJBu0XUyzJhoKF
-         h2ON3X1xQwd+sa1j70Iydizns5rUvqy51b8iKiREFqmsP4LmgiSCtM07oiHkvb8zfx0W
-         h3BA==
-X-Forwarded-Encrypted: i=1; AJvYcCWCDwXU7bf8GM+Qmr+FTH6/0tgrSB/eXvxGaK7lKsP9q/YUlr3mwxWmfPkJG8uPXYc9HKNtx1zCOO8G@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyok4lcazpPZ4yYEEAd4phLMhSzzmWCD22tomjtdkYqlLeHChb0
-	G+w3PWd78t8x50+d1Xn97qU0uWyzUiWVqJLacGp73Mfo0dw7Q0GRqmPb
-X-Gm-Gg: ASbGncu/gAAJCMRnwKwLe2mn5OHxdEsT0mkBefgT22RMeCGvW5lutvKWrg7Fd3cAFck
-	xS7giYaFsRt+0Rm1zGhNd9VQoetjesFaIIxbnZ10pYXYNzjqhRVnGNrGSDwt8f1ldywLVZdNeKu
-	NG377JsDM2TraK+TQv658oMiYOcD7TaJPodRA5+8VVDnvdguJo0GVhvZy+ovhIURedEqhN4yWNh
-	up7yxdeZ5DURCeMOpT3UiizJN6owwEvLOrjcu4sAQkq4DXD4nAjLG6Lc/Nqd39fP+9t8oTEZDbj
-	97pzRg8qUqz24Ux63e6l/uLVyXWfE9IKgNQJ2X7JaTBdiskZ8o3Skd/PcjVryODNteQE0W1BDct
-	G9c+0dopqY0kjiTXO+OgwLsJA9mMyoVQziTK8KvmmwSmWlWD1iGbzGSfHBw==
-X-Google-Smtp-Source: AGHT+IER3H6K6+0dTJYxwoJBwqd4juH0cQSJgRMY2gXd9jT2iPi/p7I16dBYJ0ZSS5sqJlCrdMRqag==
-X-Received: by 2002:a05:6a20:2449:b0:252:f0b6:be9 with SMTP id adf61e73a8af0-26027c23f4fmr9459029637.0.1757789362176;
-        Sat, 13 Sep 2025 11:49:22 -0700 (PDT)
-Received: from [192.168.1.6] ([223.181.119.30])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b54b03cf65csm4920585a12.16.2025.09.13.11.49.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 13 Sep 2025 11:49:21 -0700 (PDT)
-Message-ID: <501a4e0a-2d6e-4a57-9006-91413bd2ebb4@gmail.com>
-Date: Sun, 14 Sep 2025 00:19:15 +0530
+        d=1e100.net; s=20230601; t=1757851495; x=1758456295;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=x6/x/F9H1jnt9+oD8dGb+mTu5SQ8wNiEgVuCPP1souw=;
+        b=H2doe3f3Uho6z723a/tKOKD8xA/4wnl0C/+68lFbT/yTmQAf5b8IFtZW8TwdvOKf+a
+         s8BO89bexYVkPY6RKOjoLmztndyUAaXcI6BwnyDj3wMdb9EQHtsZ9WCl4tx4XjGU3AQn
+         82y+/1+CKfMUO9NGK1xVWrq9QEFUOQEm9C4J8eDrFsxg5ekx1x7cYNAMMXaIcyI5O2R4
+         MWTU3GlHbA7Q92Jzsp/JiES2iLSyHUtmWQN4+Oo2IOUBDhUm9ymUU2/8X+Y0BcgpL/2a
+         PsOd4TAbv6cIeRm+wUX6IlVEApQw95UWpsE5xozvjjOce640Drfl4b3avuxgM9xww7cd
+         0JwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX30E8hPpQLNfowabnyq1eXiROKtjbFyMsLapcbBtOw+o1w5urcQynRMYBttq1P6b5cL19kdoA3cwxv@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJS5RLjLxHoft8a5PAF4brKCgUH4d9L2GVcA1+oXTzqmpoEPE8
+	e2PXkx6bscy6UxmDfLOhNIIqd3EFMoXvnpqZhJACcQS4R1OLuEfeaXS2TAfHJ3jHKYOc/0zrMPA
+	MbLy4s9GQB5nuV3C7nAdgy1C8hKSkCX8uZx1PjV5DaZsTKpcSjQoXLCwYyWUKnXk=
+X-Gm-Gg: ASbGncsYjx+bSddo5ar6B/pOiHZoWM55ZpDlBboZVEiPJf7sKRiIHNO34UVjhFVA4mp
+	klf7dGEq9H+REPsRjfX86Z8O1cLCJEsQshxdo1TdxvBVJdEJwgN7u1kQqUDH4dwGtIjGzYz7nOp
+	lDrgXp6KPZ12RHUoq4GVVSqnzueBpYfuPny2fK2+F/0KMF5RcrtL7I01jWbXIKK0wSBQ/iBP+6J
+	re3jkLuEhzoqUtb37wqMUAlMP6a8v2Ixu382Vs/dQdoK+1wGEubXcEZ4X1Z+TBKavQSDL4p5gik
+	/QmKWYV4sldx9UI4XAUkUNrvpc0NAiOfe5TNwwlic75uj7Mw3UeUodtE2Be5ocEv5q3AcKbywrd
+	rQGHRyjDmLhsY+yMEgqALCpk8Ie7/1zA=
+X-Received: by 2002:a05:6214:a54:b0:77b:dd92:d8d3 with SMTP id 6a1803df08f44-77bdd92dc85mr17330166d6.7.1757851494627;
+        Sun, 14 Sep 2025 05:04:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IECmPphlLafTRPXos3E/qMQLqgcw4g6SL9e96QNHBNQO+FV4Ve60CSx7PadzySEh8hyBowFVw==
+X-Received: by 2002:a05:6214:a54:b0:77b:dd92:d8d3 with SMTP id 6a1803df08f44-77bdd92dc85mr17330016d6.7.1757851494267;
+        Sun, 14 Sep 2025 05:04:54 -0700 (PDT)
+Received: from redhat.com (c-73-183-52-120.hsd1.pa.comcast.net. [73.183.52.120])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-778d99113d1sm16067766d6.68.2025.09.14.05.04.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 14 Sep 2025 05:04:53 -0700 (PDT)
+Date: Sun, 14 Sep 2025 08:04:51 -0400
+From: Brian Masney <bmasney@redhat.com>
+To: Paul Walmsley <paul@pwsan.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>, Stephen Boyd <sboyd@kernel.org>
+Cc: linux-clk@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] ARM: convert from clk round_rate() to
+ determine_rate()
+Message-ID: <aMavYz5z_CXMh8MD@redhat.com>
+References: <20250710-arm32-clk-round-rate-v1-0-a9146b77aca9@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] arm: dts: ti: omap: Drop unnecessary or unused
- properties
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Paul Barker <paul.barker@sancloud.com>,
- Marc Murphy <marc.murphy@sancloud.com>, Tony Lindgren <tony@atomide.com>,
- Kishon Vijay Abraham I <kishon@kernel.org>, linux-mmc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-omap@vger.kernel.org
-References: <20250908-ti-sdhci-omap-v2-0-72927890482f@gmail.com>
- <20250908-ti-sdhci-omap-v2-1-72927890482f@gmail.com>
- <20250909-uptight-fluorescent-markhor-4639db@kuoka>
-Content-Language: en-US
-From: Charan Pedumuru <charan.pedumuru@gmail.com>
-In-Reply-To: <20250909-uptight-fluorescent-markhor-4639db@kuoka>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250710-arm32-clk-round-rate-v1-0-a9146b77aca9@redhat.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
 
+Hi all,
 
+On Thu, Jul 10, 2025 at 07:42:15PM -0400, Brian Masney wrote:
+> The round_rate() clk ops is deprecated in the clk framework in favor
+> of the determine_rate() clk ops, so let's go ahead and convert the
+> drivers in the arm32 subsystem using the Coccinelle semantic patch
+> posted below. I did a few minor cosmetic cleanups of the code in a
+> few cases.
 
-On 09-09-2025 12:50, Krzysztof Kozlowski wrote:
-> On Mon, Sep 08, 2025 at 04:17:12PM +0000, Charan Pedumuru wrote:
->> Remove unnecessary properties like ti,needs-special-reset,
->> ti,needs-special-hs-handling and cap-mmc-dual-data-rate from the DTS
->> files as there is no user of them.
-> 
-> No user? That's not true:
-> 
-> git grep ti,needs-special-reset
+Would it be possible to get this picked up for v6.18? I'd like to remove
+this API from drivers/clk in v6.19.
 
-Should I remove ti,needs-special-reset property for the compatibles "ti,am335-sdhci" and "ti,am437-sdhci" instead of removing for all mmc nodes? ti,needs-special-hs-handling and cap-mmc-dual-data-rate were defined for board specific, so these two properties should be defined in the YAML file to resolve dtb_check errors or can I remove those properties for those boards too?
+Thanks,
 
-> 
-> Best regards,
-> Krzysztof
-> 
-
--- 
-Best Regards,
-Charan.
+Brian
 
 
