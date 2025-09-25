@@ -1,87 +1,86 @@
-Return-Path: <linux-omap+bounces-4645-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4646-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F31B9B8E850
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Sep 2025 00:12:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36AB1B9F135
+	for <lists+linux-omap@lfdr.de>; Thu, 25 Sep 2025 14:02:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62FBC16D7E6
-	for <lists+linux-omap@lfdr.de>; Sun, 21 Sep 2025 22:12:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CF211C20969
+	for <lists+linux-omap@lfdr.de>; Thu, 25 Sep 2025 12:03:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9790A28F935;
-	Sun, 21 Sep 2025 22:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E30C2EBB99;
+	Thu, 25 Sep 2025 12:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="a+siZ4Yo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="imDAzvPI"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EEC312F5A5;
-	Sun, 21 Sep 2025 22:12:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997E21114;
+	Thu, 25 Sep 2025 12:02:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758492773; cv=none; b=QkQNijNqXNfr9DcNrUb8r3kbgndkSBjFFp9jm4YlN1QSVQMXtomgFFlX6MMJSdCZxvGkJs0B50D7nSuHNJNT4s/+xzS86OorgpmOOhmtsp3RWvq9Yo0BsjlRnwKFyISve3CPE/FbqIcCTZOebaGsDrxNo4McxPwneUmMimGX4Kw=
+	t=1758801768; cv=none; b=aJ+6CN0E//WmvXwo1L4gVj7EDeBIPoZU6O7oTKZZT78TyNYIdoezumhBWGpDjb6thkRm/JnGM3/URcQPybSduPjqw3bxEOt3r0M9uVIgJ6A6Q7dxhozshGyVbD9FqXNesINAAPFgbYL/dBaIqI3R4EEiy9F5Q704GtpyFJTbUVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758492773; c=relaxed/simple;
-	bh=CaMFqxK4P+edoKm7IoaR9E43eWXX4ELaNvNg+hxBplg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eFqsbDzCSRiwBNqXLLSgRB0LfKl6QlSnkAA4avv98huYNuaANZ0m/ogaF6SeqVcQHC9YzSvainB++ET4qqr8ZtvRm7cYIVQaejs8yGbzhb41vv9lC9fENMnLHAfC2B3LhutrkvaB/5/P1I6d32uzUqISgCR1o0dBkK/3eLIwGTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=a+siZ4Yo; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=CaMFqxK4P+edoKm7IoaR9E43eWXX4ELaNvNg+hxBplg=; b=a+siZ4Yoga+wMKE2p+IAPnLMXy
-	w3uyqhmJbaa7IH0Aw7rm13Ms+ran2tqxzowavsRJwrhGJDdqhGM2onaxSt7/YPGDIsIn5QSyfz2aB
-	pTPB3OeZKAjAVZ/iutAUT6LYQylpToTcrtBdbAdwD2Sv10+wZe3vPNMsEbEeGjfHfjZ7yaLM+PvbI
-	TQvDRMfYJ7DjlXfDHW07Jhdjrm1Y4BnIe9FJ/T9RWLmXEB2tR2jexFaUKY2zpIM4OehdH41quGIq+
-	sirIOIRiqW2YtSXAaIDoQuFB8iIg3ky0mKg4ZpCzmQrra+/B3mdmbyDwPrwqEs+aWMA0QYRMM9+b2
-	Idy/K+gQ==;
-Date: Mon, 22 Sep 2025 00:12:44 +0200
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Cc: lee@kernel.org, krzk+dt@kernel.org, tony@atomide.com, robh@kernel.org,
- conor+dt@kernel.org, ukleinek@kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+	s=arc-20240116; t=1758801768; c=relaxed/simple;
+	bh=tuE6xflWcaKmFJf9w+lu6caRXbN9sSiQ2vruiq3nDlA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=UDwRdsmO5jenE1hwTqjrFpBMjpDY9ecxXnKlPcf3JMGLoiKFPCXTtAgEiYJUxQbHhS8wVSK97X/zl0s9AKIOemzh+qkolKFYOqtLv0kQhhNEUTqiA1TQz51Bx3HXZKVpIe9rbjLeYe+c8esCziGF5/KhSyY8M+AmMOkooymj3rY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=imDAzvPI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08781C4CEF0;
+	Thu, 25 Sep 2025 12:02:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758801768;
+	bh=tuE6xflWcaKmFJf9w+lu6caRXbN9sSiQ2vruiq3nDlA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=imDAzvPIZpb/SDOQqQFIbV1Lz4Osr21Qi3ZwUjiC/tAwLnypuE3DIEp/MW2x88O+n
+	 Kkzqvepy61elkOvFfWCf0oNDOL7uzdcApfOvICwEfTQGfj3chHdO+lh+z5iyA894cW
+	 pjHvdXVXYRMybKxPQdYXRCWMwz6ZNsgL7M13G32fNUMsX0DxIzNkQheOMOVAEzi8nu
+	 l7hDqoJlyAX7rUZEvxKQgmjxt5jsvJyx+mQSk69J8VB7GdXLYcGKPD4GvngdESDWdp
+	 O2XJDckPmLOyY6Wn+dSIX6j2BPssWwm9ZpUJ+AIU77NVjLH+w+T553QYVblm3bZfyX
+	 Ava5+/3OSwu/Q==
+From: Lee Jones <lee@kernel.org>
+To: andreas@kemnade.info, Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Cc: lee@kernel.org, krzk+dt@kernel.org, tony@atomide.com, robh@kernel.org, 
+ conor+dt@kernel.org, ukleinek@kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org, 
  linux-omap@vger.kernel.org
-Subject: Re: [PATCH v8 1/3] dt-bindings: mfd: twl: Add missing sub-nodes for
- TWL4030 & TWL603x
-Message-ID: <20250922001244.298cb24a@kemnade.info>
 In-Reply-To: <20250914192516.164629-2-jihed.chaibi.dev@gmail.com>
 References: <20250914192516.164629-1-jihed.chaibi.dev@gmail.com>
  <20250914192516.164629-2-jihed.chaibi.dev@gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; aarch64-unknown-linux-gnu)
+Subject: Re: (subset) [PATCH v8 1/3] dt-bindings: mfd: twl: Add missing
+ sub-nodes for TWL4030 & TWL603x
+Message-Id: <175880176577.636753.11273046302452228673.b4-ty@kernel.org>
+Date: Thu, 25 Sep 2025 13:02:45 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.15-dev-459a0
 
-On Sun, 14 Sep 2025 21:25:14 +0200
-Jihed Chaibi <jihed.chaibi.dev@gmail.com> wrote:
-
+On Sun, 14 Sep 2025 21:25:14 +0200, Jihed Chaibi wrote:
 > Update the main TI TWL-family binding to be self-contained and to fix
 > pre-existing validation errors.
->=20
+> 
 > To ensure future patches are bisectable, child nodes whose bindings
 > are in other patches (audio, keypad, usb, etc.) are now defined using
 > a flexible 'additionalProperties: true' pattern. This removes hard
 > dependencies between the MFD and subsystem bindings.
->=20
-> The complete dtbs_check for this binding is clean except for two
-> warnings originating from pre-existing bugs in the OMAP DTS files,
-> for which fixes have already been submitted separately [1][2].
->=20
-> Reviewed-by: Rob Herring <robh@kernel.org>
-> Acked-by: Uwe Kleine-K=C3=B6nig <ukleinek@kernel.org>
-> Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
->=20
-Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
+> 
+> [...]
+
+Applied, thanks!
+
+[1/3] dt-bindings: mfd: twl: Add missing sub-nodes for TWL4030 & TWL603x
+      commit: 44232889ce7769dd957972df773b6bd639400b41
+
+--
+Lee Jones [李琼斯]
+
 
