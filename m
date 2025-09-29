@@ -1,59 +1,58 @@
-Return-Path: <linux-omap+bounces-4646-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4647-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36AB1B9F135
-	for <lists+linux-omap@lfdr.de>; Thu, 25 Sep 2025 14:02:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A43BAA3FD
+	for <lists+linux-omap@lfdr.de>; Mon, 29 Sep 2025 20:06:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CF211C20969
-	for <lists+linux-omap@lfdr.de>; Thu, 25 Sep 2025 12:03:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52BC91660A6
+	for <lists+linux-omap@lfdr.de>; Mon, 29 Sep 2025 18:06:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E30C2EBB99;
-	Thu, 25 Sep 2025 12:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74F992264D9;
+	Mon, 29 Sep 2025 18:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="imDAzvPI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="klcrZ7ZU"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997E21114;
-	Thu, 25 Sep 2025 12:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037B1D515;
+	Mon, 29 Sep 2025 18:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758801768; cv=none; b=aJ+6CN0E//WmvXwo1L4gVj7EDeBIPoZU6O7oTKZZT78TyNYIdoezumhBWGpDjb6thkRm/JnGM3/URcQPybSduPjqw3bxEOt3r0M9uVIgJ6A6Q7dxhozshGyVbD9FqXNesINAAPFgbYL/dBaIqI3R4EEiy9F5Q704GtpyFJTbUVU=
+	t=1759169187; cv=none; b=n5wAk+kJVSseGf6BMVU4BxHgBhEvvV1eQFtW7C0Uc11cK94f4+ypfwbqCNEeL3vSNXtLxM0cqL5MBHtiHj80B+A32zl3VgLW7vqewIAVKOWurhD2u6t6by4oODulMCG1XklIzDjNkVbQ6ao6Ly/XHmBde4xjubU/u0w4xWPVw4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758801768; c=relaxed/simple;
-	bh=tuE6xflWcaKmFJf9w+lu6caRXbN9sSiQ2vruiq3nDlA=;
+	s=arc-20240116; t=1759169187; c=relaxed/simple;
+	bh=aXF6dblNZTmlNaQRE73OUxEz9KeOhfncEzYh4mOBv34=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=UDwRdsmO5jenE1hwTqjrFpBMjpDY9ecxXnKlPcf3JMGLoiKFPCXTtAgEiYJUxQbHhS8wVSK97X/zl0s9AKIOemzh+qkolKFYOqtLv0kQhhNEUTqiA1TQz51Bx3HXZKVpIe9rbjLeYe+c8esCziGF5/KhSyY8M+AmMOkooymj3rY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=imDAzvPI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08781C4CEF0;
-	Thu, 25 Sep 2025 12:02:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ucGUCPxhTJfgp0hipdIpVlIWAJdwmWxbsMgQdBo2TTUfQKQqrZ6xfEiRzd8GA/wjKB7ciUbqKIkB3roMX09rZF3kXOUKShCTe2CZLXCxFgLrVehugViYDyOHhjPcpE438l584xNAkLFkFs9vuyLeu8pbsydd3L+TqjN9/j5uPts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=klcrZ7ZU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA06C4CEF4;
+	Mon, 29 Sep 2025 18:06:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758801768;
-	bh=tuE6xflWcaKmFJf9w+lu6caRXbN9sSiQ2vruiq3nDlA=;
+	s=k20201202; t=1759169186;
+	bh=aXF6dblNZTmlNaQRE73OUxEz9KeOhfncEzYh4mOBv34=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=imDAzvPIZpb/SDOQqQFIbV1Lz4Osr21Qi3ZwUjiC/tAwLnypuE3DIEp/MW2x88O+n
-	 Kkzqvepy61elkOvFfWCf0oNDOL7uzdcApfOvICwEfTQGfj3chHdO+lh+z5iyA894cW
-	 pjHvdXVXYRMybKxPQdYXRCWMwz6ZNsgL7M13G32fNUMsX0DxIzNkQheOMOVAEzi8nu
-	 l7hDqoJlyAX7rUZEvxKQgmjxt5jsvJyx+mQSk69J8VB7GdXLYcGKPD4GvngdESDWdp
-	 O2XJDckPmLOyY6Wn+dSIX6j2BPssWwm9ZpUJ+AIU77NVjLH+w+T553QYVblm3bZfyX
-	 Ava5+/3OSwu/Q==
-From: Lee Jones <lee@kernel.org>
-To: andreas@kemnade.info, Jihed Chaibi <jihed.chaibi.dev@gmail.com>
-Cc: lee@kernel.org, krzk+dt@kernel.org, tony@atomide.com, robh@kernel.org, 
- conor+dt@kernel.org, ukleinek@kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org, 
- linux-omap@vger.kernel.org
-In-Reply-To: <20250914192516.164629-2-jihed.chaibi.dev@gmail.com>
-References: <20250914192516.164629-1-jihed.chaibi.dev@gmail.com>
- <20250914192516.164629-2-jihed.chaibi.dev@gmail.com>
-Subject: Re: (subset) [PATCH v8 1/3] dt-bindings: mfd: twl: Add missing
- sub-nodes for TWL4030 & TWL603x
-Message-Id: <175880176577.636753.11273046302452228673.b4-ty@kernel.org>
-Date: Thu, 25 Sep 2025 13:02:45 +0100
+	b=klcrZ7ZUFDGA8KX4HAryBRfyd2QyRv0g2WQkq8/HCU1OXGe0kN2UlS3NIhlkE0t6/
+	 PyzM7dnrMjhVj3pvZcDwQ1ev2pM3Za7lVGjZxumRHVZtZLO7gXrpDcAr2DJA+vsbS8
+	 xrRAxEY7SJxWX7StZzS1p2tgG9bQIKV83TYAn3cSDNTZ+T7DC7gFAu1vMZgg6T1frf
+	 FfwVNOM61NC4z3KVG2ji9CrFe1Ub/BSvvEn6ONz+39nlfHG8Qw0icDCpEyiulhzPkA
+	 BlK4aQ1jUULq8sEUbx5zjK6QYVEHk1VSjGy+nPvLHMZ1CWjTOkaakOR3op/Vo2Pdgl
+	 zRVDCXJRnaYwA==
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: vigneshr@ti.com, s-vadapalli@ti.com, lpieralisi@kernel.org, 
+ kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com, 
+ linux-omap@vger.kernel.org, linux-pci@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, 
+ Alok Tiwari <alok.a.tiwari@oracle.com>
+Cc: linux-kernel@vger.kernel.org
+In-Reply-To: <20250905211436.3048282-1-alok.a.tiwari@oracle.com>
+References: <20250905211436.3048282-1-alok.a.tiwari@oracle.com>
+Subject: Re: [PATCH] PCI: j721e: Fix incorrect error message in probe
+Message-Id: <175916918016.21534.16971810252510733613.b4-ty@kernel.org>
+Date: Mon, 29 Sep 2025 23:36:20 +0530
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -61,26 +60,27 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.15-dev-459a0
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 
-On Sun, 14 Sep 2025 21:25:14 +0200, Jihed Chaibi wrote:
-> Update the main TI TWL-family binding to be self-contained and to fix
-> pre-existing validation errors.
+
+On Fri, 05 Sep 2025 14:14:34 -0700, Alok Tiwari wrote:
+> The probe function printed "pm_runtime_get_sync failed" when
+> j721e_pcie_ctrl_init() returned an error. This is misleading since
+> the failure was not from pm_runtime but from the controller init
+> routine. Update the error message to correctly reflect the source.
 > 
-> To ensure future patches are bisectable, child nodes whose bindings
-> are in other patches (audio, keypad, usb, etc.) are now defined using
-> a flexible 'additionalProperties: true' pattern. This removes hard
-> dependencies between the MFD and subsystem bindings.
+> No functional changes.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/3] dt-bindings: mfd: twl: Add missing sub-nodes for TWL4030 & TWL603x
-      commit: 44232889ce7769dd957972df773b6bd639400b41
+[1/1] PCI: j721e: Fix incorrect error message in probe
+      commit: cfcd6cab2f33c24a68517f9e3131480b4000c2be
 
---
-Lee Jones [李琼斯]
+Best regards,
+-- 
+Manivannan Sadhasivam <mani@kernel.org>
 
 
