@@ -1,182 +1,110 @@
-Return-Path: <linux-omap+bounces-4648-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4649-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E473FBAE233
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Sep 2025 19:08:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 215D1BAF32A
+	for <lists+linux-omap@lfdr.de>; Wed, 01 Oct 2025 08:14:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B9C67AC26A
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Sep 2025 17:06:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D56B74A5575
+	for <lists+linux-omap@lfdr.de>; Wed,  1 Oct 2025 06:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B9D3081B2;
-	Tue, 30 Sep 2025 17:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3328B2D77F6;
+	Wed,  1 Oct 2025 06:14:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uh/fxsUD"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6DAFBF6
-	for <linux-omap@vger.kernel.org>; Tue, 30 Sep 2025 17:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D99B27FB2F
+	for <linux-omap@vger.kernel.org>; Wed,  1 Oct 2025 06:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759252082; cv=none; b=p3vL65u61+14puZUUOjENofxdz1Jjm4TwEtkGt33D4RWxTnrLMd/lasNq0Gnl0KiYtJ8n+ZRj0FJjMJL7+wt3u4JvxG4qMBDCCtMREn0/ApbG+2zY7GcRFRjhi+9jLfjD6EHkjjbyFfOuhxkwtQYn6uJ5Kq00QhzKU2yJpWt92o=
+	t=1759299280; cv=none; b=pmcs3qtK1ne9l22GEAaYBNaI0qnz6NduYmcE1/8xMrKGA0Mk0Jsgl37FNcx8y5DTrYeXj3hEI0BFyjLUjcqhC8w6FqxcK2RqFk1YApA1pBZYIswOltVTe1qt+QvjQhtBH5pVOShROFSnYPuGI06LanSm/msVBYBEcNKGBV3dKco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759252082; c=relaxed/simple;
-	bh=mtP+NQ+ubBB2KD6NiDsu/L2uuOD0QdKYw0OQB1pbNmA=;
+	s=arc-20240116; t=1759299280; c=relaxed/simple;
+	bh=9+pLrX0Q4NwZE9lEirGuVWH9jUzrol+ZXQHzqv0t/Tw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RzMOQVePCQzNnBV9CjM16JUuvA7Khc9reE6R+2V3akcjlksZMZVvdRL16P+pZodubBrr4deqG8hRydwDepk6dh3tuhW9gL6SOtm0oee43I17ET5gdrp9G0hL/IvJkmpKhyWWRD6dGmQJuJoBISCNVAJESaAR1pEmuCKlCpxrmYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-51d14932f27so3156034137.2
-        for <linux-omap@vger.kernel.org>; Tue, 30 Sep 2025 10:07:59 -0700 (PDT)
+	 To:Cc:Content-Type; b=XRy5X24R7gp/emZ5nKPtzwkRM0jgtB7DjNEnUDgmQtlLhPf3hveO5imwtnsdofCLAqlwifIriKuYesH8aAiyVCPoRHtAW/mGAbq5ftk+BsnPELDkvVZVfsEWk+EZVh4xVaQc5MsfYyzwnuKNsgaMHU5pmnF4oZ0FUyT0fH3c/fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uh/fxsUD; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5821dec0408so6036733e87.1
+        for <linux-omap@vger.kernel.org>; Tue, 30 Sep 2025 23:14:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1759299277; x=1759904077; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9+pLrX0Q4NwZE9lEirGuVWH9jUzrol+ZXQHzqv0t/Tw=;
+        b=uh/fxsUDUmuawGTGXKM3Osh5B3xk0Z/svX9F8nBDYyBWVx3CSsGuXqrCd1TYba+cnK
+         qU+lz32fzQaXpaBwU/8ZoEgPCAnW9b6xLDVi7t1X52BEKgyge8Ai2m/4WHHNlKendJ96
+         cTFM3O+RiFp+xa28EIvyrn5EoN76sdZzUjTuzY86aeNAKJCY3K8vAE4uDC6CyWUBH0gE
+         azrZmUZxlSkeu0kbBOTdClim7pbPOVfuBBWztGIakLvFuGmGfDr7VgOF3aQzPPLkp38P
+         rPPm6/z5u3rSPCjEN3YXWIsUbEA1aKYnrlep5+gn1CGrJcVM47s0MSc/JQCIZd1tcnkE
+         l6qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759252079; x=1759856879;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2UldwRtCYqtIMyzHUgGGSi2dCQvDGYWicTSQaZYgBsI=;
-        b=jMJMuDfaI/BfihwMjJ2XZKoq3NtuJ5wIE7XMj8JuoCWp+QiN3SSP0aoxN2RqiN0LUF
-         FlwdIvHQISJwxBwL+yrj4KnZOkyRBHymOrMPNu0LPNuQU0uZ8Wl3c3ZpzQQRfleMBkFW
-         gzPcB2cHSrXnWCeIz3I8GifH2cRrGv48aUNGpMdkXGfoCPbNcIIyAD71xLjuuYFcrYyx
-         /dkUlzcsHwjMIkp9zVHHONx0RlxvBQrr+0q+zXsilhNKlhuMuqvcJfBD2F1IRJmWq4zI
-         RebM1Mq+f2t7rBnWH23bF20dmPgVxYuKcpS+7DQm0X3PBdcBjxQGCkQNnZcSEGhULTVR
-         Kacg==
-X-Gm-Message-State: AOJu0YzNtqiNgXMiWQvhoCu8JUeiMY1X5TqRe9vy7UjqzMVtFHCRazQK
-	rU0HJeSvCecLR3X0XKhpBcVH8Ug2T+UKDcgPt3sYNMkGsvyo0dcXi/l1onwMmD9f
-X-Gm-Gg: ASbGncsOH6rREGiii4b+Pagvd9HP1dX7846lSRlqPcAZx1Ob8gbOI4rHsHJwry3yu2h
-	4EZKmw/N/1k8ArE8mSC8LZx9Lio5C099j9vTBntIIo61vDm7np6ZlFrBTFpH8JayxA9u/ilkcJ1
-	IDTDl3ldkwt3T2cwLMBI9JdSMrEaJoUN8lUKGN6A5LN/9u9/c69LdbaUyNgCoYQcMxR/yoj4AAf
-	Kt+/CfMZU4toyBM+NOypsuCi5XRgWKAAm45jHnaEgHPW4xqcJkBCsW1M18wehtOf/R6KXy7qqdO
-	WfHrBc3rj8MS6ZZX3FYx4ISK2LGntqnchEkR2dALMpw4yk2ArBdwejBcbCygkGJus5LjpDnjcmJ
-	TdubjRDQYeOP0bF7YTewcYNZ2GgJfve7uOVymrmv9QU/7+nC2F7L4r17XDrTSrvhzJ861Tx3tPH
-	d2LKVkNBKgdlGVRLJaODA=
-X-Google-Smtp-Source: AGHT+IGGDjouaZXOA5LqaY2CyeoFQn/TVCVdMmh6feXN3NQbUzPJijsYc5rY7BtXHxj7/DtPMBtraQ==
-X-Received: by 2002:a05:6102:cc8:b0:522:86ea:42c with SMTP id ada2fe7eead31-5d3fe4f8ea3mr219693137.11.1759252078619;
-        Tue, 30 Sep 2025 10:07:58 -0700 (PDT)
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com. [209.85.217.54])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5cc4abefcc9sm1513375137.3.2025.09.30.10.07.58
-        for <linux-omap@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Sep 2025 10:07:58 -0700 (PDT)
-Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-5c72dce3201so1130509137.3
-        for <linux-omap@vger.kernel.org>; Tue, 30 Sep 2025 10:07:58 -0700 (PDT)
-X-Received: by 2002:a05:6102:161e:b0:5b9:ee05:dfff with SMTP id
- ada2fe7eead31-5d3fe6af95dmr165339137.23.1759252077947; Tue, 30 Sep 2025
- 10:07:57 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1759299277; x=1759904077;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9+pLrX0Q4NwZE9lEirGuVWH9jUzrol+ZXQHzqv0t/Tw=;
+        b=it+FZd24lmKMio1/w9u3hNofaRQmLuCToDMNbLNUnxztCLron5fWgZ10HJPYdwKuGe
+         8e5A1jOR2OarWp/dk9zA+HjJpl3ZaVvLKJMgnKU0ri+rQg5YLGGm3awBXUCCY6VBRazy
+         eYix97VBgFMAgWb3Jb8hu5VaMZZ3QRf9NpRXag/Gzq+yXWUxL+HKgrlxuCqIWnQRlagl
+         zGiPURNqtVjF8fHdKFZmOqoJmzWoAVEE4dbD9NzDR/hWmApufBwCsL8aKWsJ3M/uoELl
+         tsSw9alAXdNKuiaoGyapXj8cw/JfTB0HgAMKykLYgXnAHqolgr1R7+wlQiUKXdUJly91
+         6n1w==
+X-Forwarded-Encrypted: i=1; AJvYcCVexmodTrp70mKm9QAbQy2S/7m8QxhEZFGciDNSaRtB7ombxWJb0pXvergjd3LRAqBlPCAQzYbijxE1@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYvuTAN1E3MBZPHFz7cyLLkLtAc29ZGG1i/PcP5BrM3lDbfnlz
+	hX1wzqOuwZnQqfSOnNMn6qJwk57wJrxxdqBwiKHeljDVOoOD/TmO1hDf3e1BWPjjDoJia4mgzzo
+	s2rxEAsoJ8UpUyunxUkuRecuFILckAHc128EnBonzfQ==
+X-Gm-Gg: ASbGncuORAOVhu/nNJHehrz0qWk20C1VaE4cBlEl36qffgDDUS+8RPdEPXYXE6vYBqg
+	WtEODEaU/2CEGUJ0YQVs7rxBOKndq+Vi/mXPhXTYFGNJBPemoMpUPSxa07njUy3hF6OYsQ/u9Af
+	rub0nl3XP7cv9uYmQdtCm30tyWoqrhKyAocqiCvteuHad0Iiw0Db8RgYwjvS5Zz41ZimkQ7Epgp
+	hCyrC762iiHYGNGpA9KxmygHrYek00=
+X-Google-Smtp-Source: AGHT+IG2GQMXvM5wXsx6CzkWWALkmKJo7n9m32peMSwizZiLBt3hdl4uunMSSjoXjLkgjaoaZY2YYv9fSHpGi6xLHvU=
+X-Received: by 2002:a05:6512:12c9:b0:58a:f88b:25a1 with SMTP id
+ 2adb3069b0e04-58af9ed287cmr658282e87.5.1759299277410; Tue, 30 Sep 2025
+ 23:14:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250721173741.6369-1-bruno.thomsen@gmail.com>
-In-Reply-To: <20250721173741.6369-1-bruno.thomsen@gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 30 Sep 2025 19:07:46 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUb7Jb2=GqK3=Rn+Gv5G9KogcQieqDvjDCkJA4zyX4VcA@mail.gmail.com>
-X-Gm-Features: AS18NWDVvdSwN0uw_XPlk-OYICeK8kZm9oSwW7ZF3dGIkCYLyqPBpxL42XEEWf8
-Message-ID: <CAMuHMdUb7Jb2=GqK3=Rn+Gv5G9KogcQieqDvjDCkJA4zyX4VcA@mail.gmail.com>
-Subject: Re: [PATCH] ARM: dts: am33xx-l4: fix UART compatible
-To: Bruno Thomsen <bruno.thomsen@gmail.com>
-Cc: linux-omap@vger.kernel.org, devicetree@vger.kernel.org, 
-	Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Judith Mendez <jm@ti.com>
+References: <20250710-arm32-clk-round-rate-v1-0-a9146b77aca9@redhat.com> <20250710-arm32-clk-round-rate-v1-3-a9146b77aca9@redhat.com>
+In-Reply-To: <20250710-arm32-clk-round-rate-v1-3-a9146b77aca9@redhat.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 1 Oct 2025 08:14:26 +0200
+X-Gm-Features: AS18NWCsR4raMo4wbunxRFTWZtDHnEXvF9gNLQU5m7trixs7xTJv_rQ_r124Pjg
+Message-ID: <CACRpkdar_4UR-HtBb88dKLWbaM-p_vx_Z7RBEg5szPTMbdLN4Q@mail.gmail.com>
+Subject: Re: [PATCH 3/3] ARM: versatile: clock: convert from round_rate() to determine_rate()
+To: Brian Masney <bmasney@redhat.com>
+Cc: Paul Walmsley <paul@pwsan.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>, 
+	Russell King <linux@armlinux.org.uk>, Andreas Kemnade <andreas@kemnade.info>, 
+	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
+	Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Maxime Ripard <mripard@kernel.org>, 
+	Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Bruno,
+On Fri, Jul 11, 2025 at 1:42=E2=80=AFAM Brian Masney <bmasney@redhat.com> w=
+rote:
 
-On Mon, 21 Jul 2025 at 19:38, Bruno Thomsen <bruno.thomsen@gmail.com> wrote:
-> Fixes the following dtschema check warning:
+> The round_rate() clk ops is deprecated, so migrate this driver from
+> round_rate() to determine_rate() using the Coccinelle semantic patch
+> on the cover letter of this series.
 >
-> serial@0 (ti,am3352-uart): compatible: 'oneOf' conditional failed, one must be fixed:
->         ['ti,am3352-uart', 'ti,omap3-uart'] is too long
->         'ti,am3352-uart' is not one of ['ti,am64-uart', 'ti,j721e-uart']
->         'ti,am654-uart' was expected
->         from schema $id: http://devicetree.org/schemas/serial/8250_omap.yaml#
->
-> Signed-off-by: Bruno Thomsen <bruno.thomsen@gmail.com>
+> Signed-off-by: Brian Masney <bmasney@redhat.com>
 
-Thanks for your patch, which is now commit ca8be8fc2c306efb ("ARM:
-dts: am33xx-l4: fix UART compatible") in soc/for-next.
+I signed off the patch and sent it separately to the SoC tree.
 
-This commit broke the serial console on BeagleBone Black.
-Upon closer look, my .config had CONFIG_SERIAL_OMAP (for
-"ti,omap3-uart") enabled instead of CONFIG_SERIAL_8250_OMAP (for
-"ti,am3352-uart").  However, replacing CONFIG_SERIAL_OMAP by
-CONFIG_SERIAL_8250_OMAP does not help: the serial driver now probes,
-but I still get no output nor a login prompt.
-
-The same issue is present when using omap2plus_defconfig, which has
-both serial options enabled.
-
-> --- a/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi
-> +++ b/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi
-> @@ -200,7 +200,7 @@ SYSC_OMAP2_SOFTRESET |
->                         ranges = <0x0 0x9000 0x1000>;
->
->                         uart0: serial@0 {
-> -                               compatible = "ti,am3352-uart", "ti,omap3-uart";
-> +                               compatible = "ti,am3352-uart";
->                                 clock-frequency = <48000000>;
->                                 reg = <0x0 0x1000>;
->                                 interrupts = <72>;
-> @@ -1108,7 +1108,7 @@ SYSC_OMAP2_SOFTRESET |
->                         ranges = <0x0 0x22000 0x1000>;
->
->                         uart1: serial@0 {
-> -                               compatible = "ti,am3352-uart", "ti,omap3-uart";
-> +                               compatible = "ti,am3352-uart";
->                                 clock-frequency = <48000000>;
->                                 reg = <0x0 0x1000>;
->                                 interrupts = <73>;
-> @@ -1139,7 +1139,7 @@ SYSC_OMAP2_SOFTRESET |
->                         ranges = <0x0 0x24000 0x1000>;
->
->                         uart2: serial@0 {
-> -                               compatible = "ti,am3352-uart", "ti,omap3-uart";
-> +                               compatible = "ti,am3352-uart";
->                                 clock-frequency = <48000000>;
->                                 reg = <0x0 0x1000>;
->                                 interrupts = <74>;
-> @@ -1770,7 +1770,7 @@ SYSC_OMAP2_SOFTRESET |
->                         ranges = <0x0 0xa6000 0x1000>;
->
->                         uart3: serial@0 {
-> -                               compatible = "ti,am3352-uart", "ti,omap3-uart";
-> +                               compatible = "ti,am3352-uart";
->                                 clock-frequency = <48000000>;
->                                 reg = <0x0 0x1000>;
->                                 interrupts = <44>;
-> @@ -1799,7 +1799,7 @@ SYSC_OMAP2_SOFTRESET |
->                         ranges = <0x0 0xa8000 0x1000>;
->
->                         uart4: serial@0 {
-> -                               compatible = "ti,am3352-uart", "ti,omap3-uart";
-> +                               compatible = "ti,am3352-uart";
->                                 clock-frequency = <48000000>;
->                                 reg = <0x0 0x1000>;
->                                 interrupts = <45>;
-> @@ -1828,7 +1828,7 @@ SYSC_OMAP2_SOFTRESET |
->                         ranges = <0x0 0xaa000 0x1000>;
->
->                         uart5: serial@0 {
-> -                               compatible = "ti,am3352-uart", "ti,omap3-uart";
-> +                               compatible = "ti,am3352-uart";
->                                 clock-frequency = <48000000>;
->                                 reg = <0x0 0x1000>;
->                                 interrupts = <46>;
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Yours,
+Linus Walleij
 
