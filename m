@@ -1,256 +1,155 @@
-Return-Path: <linux-omap+bounces-4651-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4652-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC89EBB384E
-	for <lists+linux-omap@lfdr.de>; Thu, 02 Oct 2025 11:53:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E76B7BB388C
+	for <lists+linux-omap@lfdr.de>; Thu, 02 Oct 2025 12:01:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 618D53BB99D
-	for <lists+linux-omap@lfdr.de>; Thu,  2 Oct 2025 09:53:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5572E18940C7
+	for <lists+linux-omap@lfdr.de>; Thu,  2 Oct 2025 10:01:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9539F305970;
-	Thu,  2 Oct 2025 09:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CFF33081AB;
+	Thu,  2 Oct 2025 10:01:22 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510882E2DF4;
-	Thu,  2 Oct 2025 09:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D935307AE6
+	for <linux-omap@vger.kernel.org>; Thu,  2 Oct 2025 10:01:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759398808; cv=none; b=RSXynEWBvjh1593tf4Zg4Io0bInKANoOpwJdPG1B6k35X9NGaT8l9FfqfKlNoCSC/IRQ/Y7uBbIDheqTQcQ7igki+oqaFWJZjR2Hjgdi5HD2Sro0cAkcL6zLBuIEsAU7doTwPXaxT2VBo3nCprzOBE9hjDKqlQhhIpiWrYgTQ4M=
+	t=1759399282; cv=none; b=JKuBnLell5GWbSx0TO2fJR6riCPpqakMYZtyspXdgmjslcdBr/cW3XYfQ3nQw9pT61u/TSKPN5bg92rTg9i1piMp1PnZzO2wZGehTrcn8YGAKPm0+KFWTcyMigU4dRu5iI8BP+EeIFQQTT7f3hbdtchfGi4Xg4oFuD8RHhEUN04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759398808; c=relaxed/simple;
-	bh=4kfuvC13t63S84C7ovIfJYDka4R+IiFQly82xuAWVE4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oCAO6tBc+WgYHppA/1n0BbdVwLK6s+2Y06qyEC5Prd1xaz59Ldbq5FNETHoGkoqCvhktdaASYU5mO6xlwPkc8BpqeO5j6aJDf3YcaEy/5jXVb4Gxb/6RaLpuxn/OvT0bOo1gIFcvB8HTERRxtDu2L5KJPRKK4iEG4YTRLj6HGwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06357C4CEF4;
-	Thu,  2 Oct 2025 09:53:25 +0000 (UTC)
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-To: Tony Lindgren <tony@atomide.com>,
-	Bruno Thomsen <bruno.thomsen@gmail.com>,
-	Judith Mendez <jm@ti.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: linux-omap@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] ARM: dts: am33xx: Add missing serial console speed
-Date: Thu,  2 Oct 2025 11:53:05 +0200
-Message-ID: <63cef5c3643d359e8ec13366ca79377f12dd73b1.1759398641.git.geert+renesas@glider.be>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1759399282; c=relaxed/simple;
+	bh=qwdrYHsBvQB14wz2U6J8ch7KCqaJXYov7V2ZknrzUZw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EZgorBGgqS7fs3IIHTzEQFFoZAgzcZDZYODPyX6423kCEs3NWfAOCDWGjUn+lgS25vEAikr13M1yxwXpPeg1+Et5B8yCK8IC4CfGE5YNyHzeY496feW415sGNWWmYgnjVD6V4UKJ8mSnfmvtUBp53/yj/gKCIc49F7N6teizHUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-8eafd5a7a23so820752241.1
+        for <linux-omap@vger.kernel.org>; Thu, 02 Oct 2025 03:01:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759399279; x=1760004079;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/RofOWkGuskT0pThBBpcV4K5QWIKwV7pHTHUt6UmS6o=;
+        b=PLVVJyz927N0UXQ05qeTOZ7t8thvCOEEpjcQHXEf7aDeOqHoLfsSOXqY7bVfOFrhiq
+         q4YgNTODFCyLncyEpklHjwIMyuhvnmYG4gQ5C+Nov2Ve7fdhh58GVlsgKInBLcZqzgS7
+         c8Ey3LJXpzk5+5VrqiYFW1WHRmXwbfORZF+30DKS7xr1iorn75Szl2+AwQkjBujwqTsc
+         qBWdJEH2m2+3tJDFGvuhpccCD098exZkb6y3/pIFxzlk1KifgAV41W45bj/67DmKCJec
+         G47/7dhcq2ElR7lkS38XtrDNrhlCVNJJY3u+fX+6YmTcy/kS145HgGCFrz51buS4mNp/
+         PYeg==
+X-Gm-Message-State: AOJu0YwMSJVSbgYbYsrgDlYdNV3QGUlqPA8V763VYPWtOmyVxVajmbFp
+	gwAdYtIET5pthK4utEwONOitQPRbMN4ppdNnf7rdhAAhOAJxSLLojjUolucAVg7e
+X-Gm-Gg: ASbGncszo+X/GCC5Wyahe60yLdVLXUHTI4WEAS9rX6GO0R05guSIy540Jw2j31NVdA1
+	FJYSiYhLMxeHnJA2aCsDqzqXkV+4bQ9OkBp734p+1HeJfGlIN8NfYcpmQh6FxxZlUgH7clGpM3v
+	t5L1Zw9LlzbLmULfK5Qb7JQTxfHXqngOb8JcwpYWHPCN3j+St77B6yI1IhdVixyzT6/IeBo8lXX
+	79NKOjKRKEzJ1nKV+22VfVMSlc8t1ENfOWeGI650XdkTqq/9Sdo9Fmp5IAu0OH8esetxhDNU1kl
+	u3rTzYPdCk6kO5Z8Re5Uo8wudRaXyuY7kzzv+uuLfbFtfBUf47xGDgj3oxNbZV3Jmv9Kk2KT9th
+	L423IPo6nUZUQMCKaMX5DZ0Bd4qyvGnrGaN8JAjMZF+VkJY+dtltlafbSo6RukW4RNQqxTICJ+Q
+	P4uQvHJWBofL/8+VGLdlk=
+X-Google-Smtp-Source: AGHT+IF1YKkYTFWZrgPhbLMUNgwQoKKL7OUm2nq0TEvRhRx+aYdp1OoAJuZStBMoTkwsdp9bJWo+2w==
+X-Received: by 2002:a05:6102:d8d:b0:57d:9305:63f0 with SMTP id ada2fe7eead31-5d40c06532bmr1378452137.10.1759399278952;
+        Thu, 02 Oct 2025 03:01:18 -0700 (PDT)
+Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com. [209.85.222.51])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5d40c505950sm506901137.5.2025.10.02.03.01.18
+        for <linux-omap@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Oct 2025 03:01:18 -0700 (PDT)
+Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-8e286a1afc6so498434241.1
+        for <linux-omap@vger.kernel.org>; Thu, 02 Oct 2025 03:01:18 -0700 (PDT)
+X-Received: by 2002:a05:6102:3221:b0:5ca:714b:2dcd with SMTP id
+ ada2fe7eead31-5d40c0b1b14mr975153137.10.1759399278022; Thu, 02 Oct 2025
+ 03:01:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250721173741.6369-1-bruno.thomsen@gmail.com>
+ <CAMuHMdUb7Jb2=GqK3=Rn+Gv5G9KogcQieqDvjDCkJA4zyX4VcA@mail.gmail.com> <CAH+2xPAKa6TWiEbS8Xk3UfSyNk9N1+C+Vy64vzduU450OdgSwA@mail.gmail.com>
+In-Reply-To: <CAH+2xPAKa6TWiEbS8Xk3UfSyNk9N1+C+Vy64vzduU450OdgSwA@mail.gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 2 Oct 2025 12:01:07 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXahZ5aeqCuUTQa8t2SO=Q3Ktb5ivGATsL5On+8mbqVvQ@mail.gmail.com>
+X-Gm-Features: AS18NWA1XHQIaaAGiIEKupXiBQ5KMzxQEIBWDGvGReBFkof8-7P39i7WrjhBWQo
+Message-ID: <CAMuHMdXahZ5aeqCuUTQa8t2SO=Q3Ktb5ivGATsL5On+8mbqVvQ@mail.gmail.com>
+Subject: Re: [PATCH] ARM: dts: am33xx-l4: fix UART compatible
+To: Bruno Thomsen <bruno.thomsen@gmail.com>
+Cc: linux-omap@vger.kernel.org, devicetree@vger.kernel.org, 
+	Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Kevin Hilman <khilman@baylibre.com>, Judith Mendez <jm@ti.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Without a serial console speed specified in chosen/stdout-path in the
-DTB, the serial console uses the default speed of the serial driver,
-unless explicitly overridden in a legacy console= kernel command-line
-parameter.
+Hi Bruno,
 
-After dropping "ti,omap3-uart" from the list of compatible values in DT,
-AM33xx serial ports can no longer be used with the legacy OMAP serial
-driver, but only with the OMAP-flavored 8250 serial driver (which is
-mutually-exclusive with the former).  However, replacing
-CONFIG_SERIAL_OMAP=y by CONFIG_SERIAL_8250_OMAP=y (with/without enabling
-CONFIG_SERIAL_8250_OMAP_TTYO_FIXUP) may not be sufficient to restore
-serial console functionality: the legacy OMAP serial driver defaults to
-115200 bps, while the 8250 serial driver defaults to 9600 bps, causing
-no visible output on the serial console when no appropriate console=
-kernel command-line parameter is specified.
+On Wed, 1 Oct 2025 at 21:30, Bruno Thomsen <bruno.thomsen@gmail.com> wrote:
+> Den tirs. 30. sep. 2025 kl. 19.08 skrev Geert Uytterhoeven
+> <geert@linux-m68k.org>:
+> > On Mon, 21 Jul 2025 at 19:38, Bruno Thomsen <bruno.thomsen@gmail.com> wrote:
+> > > Fixes the following dtschema check warning:
+> > >
+> > > serial@0 (ti,am3352-uart): compatible: 'oneOf' conditional failed, one must be fixed:
+> > >         ['ti,am3352-uart', 'ti,omap3-uart'] is too long
+> > >         'ti,am3352-uart' is not one of ['ti,am64-uart', 'ti,j721e-uart']
+> > >         'ti,am654-uart' was expected
+> > >         from schema $id: http://devicetree.org/schemas/serial/8250_omap.yaml#
+> > >
+> > > Signed-off-by: Bruno Thomsen <bruno.thomsen@gmail.com>
+> >
+> > Thanks for your patch, which is now commit ca8be8fc2c306efb ("ARM:
+> > dts: am33xx-l4: fix UART compatible") in soc/for-next.
+> >
+> > This commit broke the serial console on BeagleBone Black.
+> > Upon closer look, my .config had CONFIG_SERIAL_OMAP (for
+> > "ti,omap3-uart") enabled instead of CONFIG_SERIAL_8250_OMAP (for
+> > "ti,am3352-uart").  However, replacing CONFIG_SERIAL_OMAP by
+> > CONFIG_SERIAL_8250_OMAP does not help: the serial driver now probes,
+> > but I still get no output nor a login prompt.
+>
+> You properly need to enable CONFIG_SERIAL_8250_OMAP_TTYO_FIXUP
+> if using an existing console= kernel argument from the bootloader as UARTs
+> will change to ttyS from ttyO.
 
-Fix this for all AM33xx boards by adding ":115200n8" to
-chosen/stdout-path.  This requires replacing the "&uartN" reference by
-the corresponding "serialN" DT alias.
+I did notice that option, and thought it wouldn't hurt to enable it.
+Still, I do not use console=, as I rely on chosen/stdout-path.
 
-Fixes: ca8be8fc2c306efb ("ARM: dts: am33xx-l4: fix UART compatible")
-Fixes: 077e1cde78c3f904 ("ARM: omap2plus_defconfig: Enable 8250_OMAP")
-Closes: https://lore.kernel.org/CAMuHMdUb7Jb2=GqK3=Rn+Gv5G9KogcQieqDvjDCkJA4zyX4VcA@mail.gmail.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
-Tested on BeagleBone Black.
-I only updated DTS files affected by commit ca8be8fc2c306efb.
-Probably more DTS files for other SoCs should be updated, too.
----
- arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi   | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-boneblue.dts       | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-chiliboard.dts     | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-evm.dts            | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-evmsk.dts          | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-guardian.dts       | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-icev2.dts          | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts   | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-osd3358-sm-red.dts | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-pdu001.dts         | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts   | 2 +-
- arch/arm/boot/dts/ti/omap/am335x-sl50.dts           | 2 +-
- 12 files changed, 12 insertions(+), 12 deletions(-)
+> Switching the UART driver on am33xx based products fixed UART issues
+> we were seeing in our CD test pipelines.
 
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi b/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
-index ad1e60a9b6fde8f9..b75dabfa56ae7605 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
-@@ -16,7 +16,7 @@ memory@80000000 {
- 	};
- 
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = "serial0:115200n8";
- 	};
- 
- 	leds {
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-boneblue.dts b/arch/arm/boot/dts/ti/omap/am335x-boneblue.dts
-index f579df4c2c540dd7..d430f0bef1653782 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-boneblue.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-boneblue.dts
-@@ -13,7 +13,7 @@ / {
- 	compatible = "ti,am335x-bone-blue", "ti,am33xx";
- 
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = "serial0:115200n8";
- 	};
- 
- 	leds {
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-chiliboard.dts b/arch/arm/boot/dts/ti/omap/am335x-chiliboard.dts
-index 648e97fe1dfd5e5b..ae5bc589849722f5 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-chiliboard.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-chiliboard.dts
-@@ -12,7 +12,7 @@ / {
- 		     "ti,am33xx";
- 
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = "serial0:115200n8";
- 	};
- 
- 	leds {
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-evm.dts b/arch/arm/boot/dts/ti/omap/am335x-evm.dts
-index 20222f82f21bfd9d..856fa1191ed24ea3 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-evm.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-evm.dts
-@@ -23,7 +23,7 @@ memory@80000000 {
- 	};
- 
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = "serial0:115200n8";
- 	};
- 
- 	vbat: fixedregulator0 {
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-evmsk.dts b/arch/arm/boot/dts/ti/omap/am335x-evmsk.dts
-index eba888dcd60e7fa2..d8baccdf8bc46302 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-evmsk.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-evmsk.dts
-@@ -30,7 +30,7 @@ memory@80000000 {
- 	};
- 
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = "serial0:115200n8";
- 	};
- 
- 	vbat: fixedregulator0 {
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-guardian.dts b/arch/arm/boot/dts/ti/omap/am335x-guardian.dts
-index 4b070e634b28100b..6ce3a2d029eedc8c 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-guardian.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-guardian.dts
-@@ -14,7 +14,7 @@ / {
- 	compatible = "bosch,am335x-guardian", "ti,am33xx";
- 
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = "serial0:115200n8";
- 		tick-timer = &timer2;
- 	};
- 
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-icev2.dts b/arch/arm/boot/dts/ti/omap/am335x-icev2.dts
-index 6f0f4fba043b96e9..ba488bba6925dec3 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-icev2.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-icev2.dts
-@@ -22,7 +22,7 @@ memory@80000000 {
- 	};
- 
- 	chosen {
--		stdout-path = &uart3;
-+		stdout-path = "serial3:115200n8";
- 	};
- 
- 	vbat: fixedregulator0 {
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts b/arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts
-index 06a352f98b220bc4..476a6bdaf43f38e4 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-myirtech-myd.dts
-@@ -15,7 +15,7 @@ / {
- 	compatible = "myir,myd-am335x", "myir,myc-am335x", "ti,am33xx";
- 
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = "serial0:115200n8";
- 	};
- 
- 	clk12m: clk12m {
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-osd3358-sm-red.dts b/arch/arm/boot/dts/ti/omap/am335x-osd3358-sm-red.dts
-index d28d397288476504..23caaaabf35134a6 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-osd3358-sm-red.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-osd3358-sm-red.dts
-@@ -147,7 +147,7 @@ simple-audio-card,codec {
- 	};
- 
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = "serial0:115200n8";
- 	};
- 
- 	leds {
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts b/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
-index c9ccb9de21ad7b10..9f611debc209072c 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
-@@ -21,7 +21,7 @@ / {
- 	compatible = "ti,am33xx";
- 
- 	chosen {
--		stdout-path = &uart3;
-+		stdout-path = "serial3:115200n8";
- 	};
- 
- 	cpus {
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts b/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts
-index 78ce860e59b3de4f..24d9f90fad01f768 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-pocketbeagle.dts
-@@ -15,7 +15,7 @@ / {
- 	compatible = "ti,am335x-pocketbeagle", "ti,am335x-bone", "ti,am33xx";
- 
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = "serial0:115200n8";
- 	};
- 
- 	leds {
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-sl50.dts b/arch/arm/boot/dts/ti/omap/am335x-sl50.dts
-index f3524e5ee43e276d..1dc4e344efd63e4e 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-sl50.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-sl50.dts
-@@ -25,7 +25,7 @@ memory@80000000 {
- 	};
- 
- 	chosen {
--		stdout-path = &uart0;
-+		stdout-path = "serial0:115200n8";
- 	};
- 
- 	leds {
--- 
-2.43.0
+I have found the issue: in the absence of a (legacy) console= parameter,
+the serial console reles on the driver's default speed, which is
+115200 bps (good) for omap-serial, but 9600 bps (bad) for 8250 serial.
+I have submitted a fix "[PATCH] ARM: dts: am33xx: Add missing serial
+console speed"[1].
 
+> > The same issue is present when using omap2plus_defconfig, which has
+> > both serial options enabled.
+
+Correction: CONFIG_SERIAL_OMAP is no longer enabled in the defconfig
+(and IIRC, I had noticed before the serial console was broken with
+ that config, but didn't bother, as my config still worked ;-)
+
+> I did not check if any defconfigs needed to be updated.
+
+After my patch, omap2plus_defconfig works again, too.
+
+[1] https://lore.kernel.org/63cef5c3643d359e8ec13366ca79377f12dd73b1.1759398641.git.geert+renesas@glider.be
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
