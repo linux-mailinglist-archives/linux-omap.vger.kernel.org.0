@@ -1,135 +1,130 @@
-Return-Path: <linux-omap+bounces-4654-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4655-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F15D6BB4FB0
-	for <lists+linux-omap@lfdr.de>; Thu, 02 Oct 2025 21:19:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03506BBD748
+	for <lists+linux-omap@lfdr.de>; Mon, 06 Oct 2025 11:35:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF0B43C7A4C
-	for <lists+linux-omap@lfdr.de>; Thu,  2 Oct 2025 19:19:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D0571895B5A
+	for <lists+linux-omap@lfdr.de>; Mon,  6 Oct 2025 09:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADFF5284880;
-	Thu,  2 Oct 2025 19:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1792F1F462C;
+	Mon,  6 Oct 2025 09:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WtMB58od"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="Zw+fS4MR"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB0727B34F
-	for <linux-omap@vger.kernel.org>; Thu,  2 Oct 2025 19:19:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E331F131A
+	for <linux-omap@vger.kernel.org>; Mon,  6 Oct 2025 09:35:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759432762; cv=none; b=dbHoCgs8jUHdmYwaqva+6KQTIZadt4WWYTHWs1EUIpS04kn/AX1xUide19WA3/HC9en8PRJm+9iz26Vzq0/jaKFaylhtps5PKJ5/4EXVdOHd9iGv/1vVefl2mdVMmQqLrEA+2IJcHW3mFofTaMK7E4KDZkhLfcPVZ9KyKxvjxU0=
+	t=1759743335; cv=none; b=Xbb0DbBqlakb9Elu+6onWa69XHG6I0y69PDRnn6ep4RV/3WSr7m82OsZj6ADN8IJxhipapgg1jW6VkdBzSt44Vl3dkkq8FCAyExu3AXx46HEDrAHCVl0ZL6AQLUtbtvwC7U9DmdfintHR0PaXNnuJFnfD5zH9Z9qM/qprdonqe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759432762; c=relaxed/simple;
-	bh=EYCmAP2B58rza1pmO67EikNUlQoH1ubGX1nFMa61uJQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=f7+5rm8OEWp8uykFmeh2uUjdWDy6l7oPrCH246pfhUFVE40wlsN8YwJoYMhReyKtY4fLgQYs/ma5Yq5wYO6rORl9RnsVbaNym0RMx2eGEilWPpWVXxtCxIHo6wDw8NDhmMlJp4jeWhggY4jFTTgxDxlUz0O7D23eGDgIazfo8Eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WtMB58od; arc=none smtp.client-ip=74.125.224.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-63b95594efeso478043d50.3
-        for <linux-omap@vger.kernel.org>; Thu, 02 Oct 2025 12:19:19 -0700 (PDT)
+	s=arc-20240116; t=1759743335; c=relaxed/simple;
+	bh=2TJUfjySb4YZUCd58TZgP7GJPQnecggYuJMcLyTBYgM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BHdV/wgl5OH9H5dRBgkHofYyP6nAgwlRLAqs65utEs5nfVoDgKAz4CyH7yVo8MYZeVLPu01QI2wTKkZJTadzT5/kdWVnbfcTR2Qj14xL2xmbmy05lHwZv9cDdi2QIgQJGbX1ucy7DmFaTfaN9NsawHte+DSKeVmiidiw62k/eKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=Zw+fS4MR; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-628f29d68ecso11561234a12.3
+        for <linux-omap@vger.kernel.org>; Mon, 06 Oct 2025 02:35:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759432759; x=1760037559; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=iTEm/KM3nO+P6ZFw8LYiN73U+Rr4Kx1wTBiXsd/aQ7Y=;
-        b=WtMB58odEWZ5lKUPKP0ZuHD+BODAqKSIgH8YbY6oS6NDs6l7ugOXh50R4BnUDy03Uc
-         zAM1IhnzlvY3edhqr+waCdqymVm1NidAyhWAXDS1CKwB3vcs1hPzV9D6QZ26ITju+Ptq
-         RM9ft9e7AyFiUnHij4u/+NgOquWomaIkm4qfnjR42f4N7qZPh0E8H6CHmKy8UiCoqZmv
-         yVDQ2Pqnt2JAn/hocstSpE6GdsCpztsq3akPL+t/6PBwMjoWxGyojKMtWS3gZyacbYmS
-         otf0UiCOhTkGCMQ7FTXgGtRbEaZbvk79/P/IO/yYhLVP8WhUaV8fwSX1YjDy+ZVncRMF
-         49sw==
+        d=googlemail.com; s=20230601; t=1759743331; x=1760348131; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=d6AqdaoZXPrDITnhyYtxNcdvaNUCH13ctl0+xFiOf1w=;
+        b=Zw+fS4MRJyBM4KB383eS91O70V26lpAFvfeUyCsS7QBeG4W8jYP9gOibzCFJpGkvxe
+         z2LltdBiGfNlyK0y65nZ+72k8HdSc7N8Elz6ttxAJ/TKQAq3SZ37jAbZGDTuQ3k6bysS
+         TjYS65AMQip49nEFKDl81Cn3S1tZWrthph+oorW2CZ4Nv88Z4EQ92ObW4WlwHfgPc9dK
+         PEgze6eETcq0hKYeSdyTU/BecMCzFNa8gb/nNdc9xUGi4NyPFGWQMPj0SehfM+YPd9+n
+         PwoRplqsw/CPQD/+d9APpj/XM7tnIszzfmNiec9Stgr6GltPkZSFlLLtoimrOUDgAlNE
+         MkhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759432759; x=1760037559;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1759743331; x=1760348131;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=iTEm/KM3nO+P6ZFw8LYiN73U+Rr4Kx1wTBiXsd/aQ7Y=;
-        b=GLqfQkuOxSQciAhQuxchYmxR/Rd9vax9k5nQLKJXeUXPEr/HkVvhOgwf4+KeMaHm4G
-         FSuNHGMyBUMZLRECkttvQFWWcsH8Onr+VP2PEmmYc3HcROBDxy+tsX5Cr5EA41QGwziv
-         DFVixC1cQFf7/c7sqccjvgxmtMUVVLzOUAIxONpnpcmHUAsBDnBteQXMA6xy2JKqIsJx
-         j1fIzNlPuRp6oU3har+0V7MQ41YKhRhgTupzPvlBM6BhPmOxNH5zdzwq5AarjKQUD9Mu
-         lwqrQDI91UCUUum/QKQhV1Jmyk2GWTiFADNWtkSES44uRkjCGIZWSbgbRm8OnQY/nQ/u
-         3s3w==
-X-Forwarded-Encrypted: i=1; AJvYcCWEUnOVtD2wM3sP/J4FQgID15S0oq4JPj3sz8t7xUcMFRdRUXze10RTNMHDAdWDnnjsLcVfcPpeJR6B@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0GNJNYDF880PoLk9F51RuVZRZLj+u9AMpK/4filtrB3kehqAY
-	EBlwmc7S7MVb/S/NmgxJE4MtCKbtK7TEDhXxfNEw0AB6WiV14VJxm+THDi7kl7gYz1nlpq+LZxQ
-	r/D1KXjjUbrAlDUOQ73y2hEAnVFZKpeE=
-X-Gm-Gg: ASbGncu66dntg9amU9v/8LKDhYhB7f2puwh/XIzKqlN2PiNEH4jAOhoIhlFqVf23LMc
-	yyu9hfs7prdjlgy/aSNhTid1Ur06hHKAneMxK8sWwmKv9wbbKyCAAzBluVF8paYzXtH3QdST39p
-	/6TOfpCOH/ZFYb8EkLKa3ZRb0C1OKNrpAPBknH31C5/JGaze6EO87VIQfWj9sx+8G3cQ/6HGSgb
-	yxG4Oi6e8Ep97N9KR7981ypMySwt0IbQPkne/QHQA==
-X-Google-Smtp-Source: AGHT+IEVtvbFpBLouDHWhbnJwj9NSB8Pq7ept+0Odbowddpf/FU0e2Uma5u5HxHffyYlalF9KHMt5Jw9aECDeN/zoBQ=
-X-Received: by 2002:a53:b10f:0:b0:635:4ecd:5fd2 with SMTP id
- 956f58d0204a3-63b9a10a963mr341381d50.47.1759432758769; Thu, 02 Oct 2025
- 12:19:18 -0700 (PDT)
+        bh=d6AqdaoZXPrDITnhyYtxNcdvaNUCH13ctl0+xFiOf1w=;
+        b=VynORwDSg2r/j5yI/kw9pB70CyjgeT6G5BJuLA5ugojMFan5Whg+tK11wOZpehaJ+5
+         WARyT8d0RYuf+76hv3iPWjPbG3KWXzSBj9IP/zxQbZfr4sX4SRtBkBPASqzoPSWnxB0s
+         eFVX8cMUQTYtmmv7Lk4krkhbI/9pWbqMvB6ojVP/q5cWuA1rVoaKN+bTz9NFMWelXw+W
+         xG9gWzzAJQU4CNDmBC0b0xQtc/iJ4hZgpLNjM9Q+VgNqNb/yZwQPTqq5O5QzLqfH0q9g
+         Cg9PAnphwMj82TQhHrWEaVHmXglwzaf48v3x5j+spBYc9+AoiMwUs+NFH1qovZfzRPsk
+         bEzA==
+X-Gm-Message-State: AOJu0YyO5A6Pm70IihXrmoSZBgGqq6ZjZnGu0/OKPyLntzu29YwVUsyH
+	2tkAUYWWhX9ljlCdoszIT3ZdKq8vqs5FDlmpsMmvKaHZVL1m2wCFcHRJ
+X-Gm-Gg: ASbGncuH5NVCg3xYUSu/duspTqD8RjM6gyIeSyocMamFLJBAbPwnJ8COpknL7HfpPcG
+	RP1W98bL7x7IlLGo8B34cVsH4yChOsLC/1wiuE/MuPifefCge0JKc5ZaBWcIq5pi5iTYEpQ0qvJ
+	gmY+zkZp/SxXhIhayO9ZUeUe9KKLePat75V5ZBBK3yxpilW8PS/Spl09BG1WFaCAqZkTEitB2t8
+	HmS33W3EbxUmg3KKZRmVJrCnETuRkEQZxL+DH9INVKOSZmA/xU5JT/BIDnTDJv8dr15iscIUbTT
+	kmXnWa9J4JsclQNZS34aVZN6paBr4zU6+SrV61nKRk+R/z3JP4oZtzbdh7zmjbq24YWbhzMZ2B6
+	byh8pMMfBjciXBeEyxLNQZHeflRDIkpBa5xeIKTt90uPke75FQjJz37v7rezTCnZC0xNal7dbOi
+	spI3U7zAdEW/Gw4YaoAwkr4Bsi9k8rCrhuBEvXiQ==
+X-Google-Smtp-Source: AGHT+IHWpv7Wht2VS4TzuT2fp0+Kf65+amyLNs6YlnRTJHV3prWTZi1zk2GnRQ2EqJuhQDSO+45SCw==
+X-Received: by 2002:a17:907:868d:b0:b2e:6b3b:fbe7 with SMTP id a640c23a62f3a-b49be9906f3mr1565134166b.0.1759743331109;
+        Mon, 06 Oct 2025 02:35:31 -0700 (PDT)
+Received: from development2.visionsystems.local (mail.visionsystems.de. [213.209.99.202])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b486a174a6dsm1109176866b.90.2025.10.06.02.35.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Oct 2025 02:35:30 -0700 (PDT)
+From: yegorslists@googlemail.com
+To: devicetree@vger.kernel.org
+Cc: linux-omap@vger.kernel.org,
+	tony@atomide.com,
+	robh@kernel.org,
+	Yegor Yefremov <yegorslists@googlemail.com>
+Subject: [PATCH] ARM: dts: omap: rework Baltos LED nodes
+Date: Mon,  6 Oct 2025 11:35:17 +0200
+Message-Id: <20251006093517.3075431-1-yegorslists@googlemail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <63cef5c3643d359e8ec13366ca79377f12dd73b1.1759398641.git.geert+renesas@glider.be>
- <609ec2e6-c877-4fc5-95b7-935ae2549b3a@gmail.com>
-In-Reply-To: <609ec2e6-c877-4fc5-95b7-935ae2549b3a@gmail.com>
-From: Bruno Thomsen <bruno.thomsen@gmail.com>
-Date: Thu, 2 Oct 2025 21:19:02 +0200
-X-Gm-Features: AS18NWDGIVU_xL1fm5D1v8Yjg5VdVlAOAuUPKHvGlBNPozwO0Loo6YBnGyRj8GE
-Message-ID: <CAH+2xPBmWkb-m2S68SybAakJsFRizX-0T0YtXiHGFt+2Q=kpvA@mail.gmail.com>
-Subject: Re: [PATCH] ARM: dts: am33xx: Add missing serial console speed
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>, Tony Lindgren <tony@atomide.com>, Judith Mendez <jm@ti.com>, 
-	Kevin Hilman <khilman@baylibre.com>, Arnd Bergmann <arnd@arndb.de>, linux-omap@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Den tors. 2. okt. 2025 kl. 14.32 skrev Matti Vaittinen
-<mazziesaccount@gmail.com>:
->
-> On 02/10/2025 12:53, Geert Uytterhoeven wrote:
-> > Without a serial console speed specified in chosen/stdout-path in the
-> > DTB, the serial console uses the default speed of the serial driver,
-> > unless explicitly overridden in a legacy console= kernel command-line
-> > parameter.
-> >
-> > After dropping "ti,omap3-uart" from the list of compatible values in DT,
-> > AM33xx serial ports can no longer be used with the legacy OMAP serial
-> > driver, but only with the OMAP-flavored 8250 serial driver (which is
-> > mutually-exclusive with the former).  However, replacing
-> > CONFIG_SERIAL_OMAP=y by CONFIG_SERIAL_8250_OMAP=y (with/without enabling
-> > CONFIG_SERIAL_8250_OMAP_TTYO_FIXUP) may not be sufficient to restore
-> > serial console functionality: the legacy OMAP serial driver defaults to
-> > 115200 bps, while the 8250 serial driver defaults to 9600 bps, causing
-> > no visible output on the serial console when no appropriate console=
-> > kernel command-line parameter is specified.
-> >
-> > Fix this for all AM33xx boards by adding ":115200n8" to
-> > chosen/stdout-path.  This requires replacing the "&uartN" reference by
-> > the corresponding "serialN" DT alias.
-> >
-> > Fixes: ca8be8fc2c306efb ("ARM: dts: am33xx-l4: fix UART compatible")
-> > Fixes: 077e1cde78c3f904 ("ARM: omap2plus_defconfig: Enable 8250_OMAP")
-> > Closes: https://lore.kernel.org/CAMuHMdUb7Jb2=GqK3=Rn+Gv5G9KogcQieqDvjDCkJA4zyX4VcA@mail.gmail.com
-> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
->
-> Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> Tested-by: Matti Vaittinen <mazziesaccount@gmail.com>
+From: Yegor Yefremov <yegorslists@googlemail.com>
 
-Reviewed-by: Bruno Thomsen <bruno.thomsen@gmail.com>
+Add labels to the Baltos LED nodes.
 
->
-> (Tested booting on Beaglebone black with a config and kernel command
-> line which were NOT affected by the issue. Well, prints do still get
-> through the UART to my minicom, so things seem to work for me after this
-> change as well :) )
->
-> The change does also look Ok to me.
->
-> Yours,
->         -- Matti
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+---
+ arch/arm/boot/dts/ti/omap/am335x-baltos-leds.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-baltos-leds.dtsi b/arch/arm/boot/dts/ti/omap/am335x-baltos-leds.dtsi
+index 049fd8e1b40f..ed194469973e 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-baltos-leds.dtsi
++++ b/arch/arm/boot/dts/ti/omap/am335x-baltos-leds.dtsi
+@@ -17,18 +17,18 @@ leds {
+ 
+ 		compatible = "gpio-leds";
+ 
+-		led-power {
++		led_power: led-power {
+ 			label = "onrisc:red:power";
+ 			linux,default-trigger = "default-on";
+ 			gpios = <&gpio3 0 GPIO_ACTIVE_LOW>;
+ 			default-state = "on";
+ 		};
+-		led-wlan {
++		led_wlan: led-wlan {
+ 			label = "onrisc:blue:wlan";
+ 			gpios = <&gpio0 16 GPIO_ACTIVE_HIGH>;
+ 			default-state = "off";
+ 		};
+-		led-app {
++		led_app: led-app {
+ 			label = "onrisc:green:app";
+ 			gpios = <&gpio0 17 GPIO_ACTIVE_HIGH>;
+ 			default-state = "off";
+-- 
+2.34.1
+
 
