@@ -1,85 +1,85 @@
-Return-Path: <linux-omap+bounces-4656-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4657-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id A666CBC0C7E
-	for <lists+linux-omap@lfdr.de>; Tue, 07 Oct 2025 10:50:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0BE3BC1082
+	for <lists+linux-omap@lfdr.de>; Tue, 07 Oct 2025 12:39:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 52EEE34DA93
-	for <lists+linux-omap@lfdr.de>; Tue,  7 Oct 2025 08:50:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69E9B3BEF21
+	for <lists+linux-omap@lfdr.de>; Tue,  7 Oct 2025 10:39:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8FAC2D594D;
-	Tue,  7 Oct 2025 08:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC1E26057A;
+	Tue,  7 Oct 2025 10:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="Gn1bR3mQ"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="Vd3OHpdF"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68AD158874
-	for <linux-omap@vger.kernel.org>; Tue,  7 Oct 2025 08:50:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F491230BCC
+	for <linux-omap@vger.kernel.org>; Tue,  7 Oct 2025 10:38:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759827049; cv=none; b=DnxaViUXq83aZqDARkwACSME0++iLzU0EEDjQIKprqiaClwHhHMBQ0qU5YcAK0ZohbTVvl7deVr9rTnUmE1Dnh8xgzfrTAtbxK3g7FF8iv/pQpxPyVmAr82MDZSVSZBjFBD1hrMN3SB369hyRrPciBreqVGHdd0mv3s+iff4K0c=
+	t=1759833540; cv=none; b=j/sGw6JYKQ+vTQWL+J9zBFdMJGOZGEZbFUkuhNNxS3Nocg3aGmRW5rl4nLPSz4jWcA4E3UKVOCArPs6GnR1h5bdJElXES/MaX9EviWd8+mbz9WqPdPpsqS9TE1AJral8p/j9o0NLlaraPTH9h6xuMDkS7U/7yzwZRVpcOc0oUAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759827049; c=relaxed/simple;
-	bh=lFQQD1kfwmUI6v7i/ui2xsw2z6+nFOrNxxiZr8pKY5o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=guFhm4SHXD93ELTouHjLixaUvF4BTz/+VDWe4YQspBoapr7S5h+eJGDZ4/wLFyOdjbkFGHpVgkynoo1kM7tQWIWs2EYlZtQvFF0sFP9Ak6DZkiUnKtDL3/9WiG1yZTJtkG/oF+MiOWhwpmQ0obT4wh0qYIafsVscVNYHQGrdzek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=Gn1bR3mQ; arc=none smtp.client-ip=209.85.208.54
+	s=arc-20240116; t=1759833540; c=relaxed/simple;
+	bh=6MiEMqAqQwyLlqu9lDFaGlJxC3WSjjssQQx1VLQ0+/E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=i/NlxFXppVzwDphYkagiEshC4w06zZmUc3JOuIJO8em9T/4CsE3xWPZrOwU7sdDhqLSUG+/u67P4hOblvlEomkkv9Lx5nVb0N6s1Q1D0H1+kd1OYgkc+op11G0Sc5lPWLlbEEBGw9ERgM0R/3KDtL/ABe1W12aSaX8lDV5vjwng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=Vd3OHpdF; arc=none smtp.client-ip=209.85.208.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6349e3578adso10857786a12.1
-        for <linux-omap@vger.kernel.org>; Tue, 07 Oct 2025 01:50:46 -0700 (PDT)
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-637e9f9f9fbso9687431a12.0
+        for <linux-omap@vger.kernel.org>; Tue, 07 Oct 2025 03:38:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1759827045; x=1760431845; darn=vger.kernel.org;
+        d=googlemail.com; s=20230601; t=1759833536; x=1760438336; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9RR0C/JB1d7ykj+jJFgkQc/kXwCszluvkRpWmLXUJs8=;
-        b=Gn1bR3mQy9eUlIj+VzHszpb1YkD6usAjNuhC9P7AfkOMARVIw+EuthV5IIY53WIqdA
-         hQBxDsBnwiuZSn5dHuwrkmWckGzHmbIf/2K8ucSHEgrjbVMlW1ebD1BG4H83+EWoKwBg
-         AzXlTCCCqgL3k9TWdJKXQEe0ElG0gdGcqzMXAKP1DWPzILKplnbwsqw2XS8UqfXVwRJ0
-         dKFyZCcp6gz+ANa3qhZ5IDftAQcqXfWFoYsRTdsQSoQmov+Pi7BuYdVP/uLSTy2vDTv7
-         qv9YeOdwSVL/SbBSCMon9Dg2iU4IZcdQ/jzqXJTYWd9jQH6GW6Kud14ivevbpn9LuMQX
-         wcHw==
+        bh=6dzB7w8JnCDqEzwBnnCgaQpM3AmShd/iZntpdkG+0HA=;
+        b=Vd3OHpdFopCFHYTtZH9JH2O1UUSEUTT2YiEulhJf++lLs0YlKAMW60rqM9NISZA/S2
+         dlKbnrLFboYn0bIjRKARd8cJ3rao270mAUKJFAH0O8JkEH83Rw5Alt3EQn+EEv5ERE/J
+         pPu7c2YRkHMvXbFnharCZBGw9qgEH1gKbeSfmierllYTqTCoCYs8j/1AVuWjmG8VIlhd
+         TUUgslnIALZSelAqd6mGawA8kie+c82tEB/AsioHutST6MQQ3PdDcYi6P0zj2JSBExrU
+         cnwPuco8VO6dO4bIWoDdgtRBEyK6XZcUCR2o8b+N/pJOEaxeS1riI0nJOTqzF6uOfLwu
+         SgLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759827045; x=1760431845;
+        d=1e100.net; s=20230601; t=1759833536; x=1760438336;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=9RR0C/JB1d7ykj+jJFgkQc/kXwCszluvkRpWmLXUJs8=;
-        b=b/5CNUBNGqL/Hljf7pgwnfnvZ+GhjLFtB5WkjVKvocoAqc90RXrNotWIkuGDQ9lhQY
-         KRHdHo4yJ4yvVuvgGh58SFBCXsUkVnP5vKkhkMksTlJLPQjztCHyr7ku1NzF/XJ4q9Ey
-         eLBr107GbBwX9c87GkAKGnUT3VuZw2zhaMqwPrCsL8JdHhsfCrZwp8osRWCfMExnhovO
-         rK5wYKUg5JZYVd8OJOnrvwI1xYuZ75LWdnapstTPG/dbg6e45jnMwvBrrRmMFsE/hD/t
-         tQYawRvao0HUhSzufbJBECE48oNIyYkoojr5689pc8caETotD1KPWjxR+vtX2xQ47l9u
-         3jDg==
-X-Gm-Message-State: AOJu0YxUtVrC1ADH3TYkUdNylFa07B3oxTWZ44WWDG3aN1aHoS1dH74w
-	qEIhpfqBQ8NADZkBUrGYQuMTDdTdTl015QVtySvra3QpC4N4t40f7yEN97JQ5w==
-X-Gm-Gg: ASbGncu4P1VV0Tg7KYeFDlsGtaR9VZIIxVPWqnT7ERiGZd2KVlNYkA8IT2B/8MbXN57
-	EIOGFDOlUwm0ev0Ka7IoY5weh9+tjcO5UhX0QblhKNPgXCx28U6i/ZHyPnI0xjO4T84OdzGLeLM
-	hp7ByjwRWp9GnBnRVHghwK5LC4gEvs9yq+zTXOfi/bSNyXAlSiYpmpoj5lzVplqR48AD2d+wvjA
-	Yz3GdNciIDYEVzx2S0teAegONkP8bdCPpnuP1wqrmjJq2/uHj6lUCN/3aIj5oCaZWTZ35/bmrQD
-	bsbiP3OiDu8LHDOhjbFTY7dfLm04LSFe7lk/wWrYYfvdjpj4z794RHgbgHeLTZ3hVAL+C0QkYZt
-	snoyN+lEkxproR+oZ/UDATGu8T8XHGzyxmfcCqq8zcSnE7pZSkPW7U3sZK/paok932GNFY9OkZ2
-	d5c3ryj1I1aMp5Mw0S5euPcMvTt8o=
-X-Google-Smtp-Source: AGHT+IE5I6pAehl64dLI+tk+cDMSA/nXs9NV/Qr4tTYFn4D1sGRgfc5sdTa3WnU/2IhzWgfZzzbt9w==
-X-Received: by 2002:a17:907:3ccc:b0:b3d:c42d:6655 with SMTP id a640c23a62f3a-b49c429b4b2mr2133994966b.54.1759827045051;
-        Tue, 07 Oct 2025 01:50:45 -0700 (PDT)
+        bh=6dzB7w8JnCDqEzwBnnCgaQpM3AmShd/iZntpdkG+0HA=;
+        b=RGwcg74ZLYyQK1n5SmzY3leHqfMUKDeUos5/Vg7Qb1DLOgZrn2Al3ZlHkBJk6Aoq+S
+         +clwmfiW8UTU5uiLd72ion47l2xIZuAIgL5GMqa0LSAPCEQEz1XdSFAaAbcgT1BSC9c2
+         HGU71gt4HzhSJXDYD3m98AhXW4czvg4W3Xh12/s72IUULeLqm5NLCUsIN0sqC0f3B67b
+         aXMdYpmRB6HTo6vMJW0iX1utaMFoL7CJDBsdVVPAvtVM8JHz7qT0FKHfDzkOnBFV9GZN
+         G07saZDo1cRL06BUZyPa8eMGxnVdbSwEL4+cdp5mYZcufXqu/EWtpPKQolZ3Cx5ipA4p
+         gdUw==
+X-Gm-Message-State: AOJu0YzmWe9f7CkfQq/2xz9h1fqLZogEVr0npzh1Xniqlu2/R1ceUm+Q
+	vLZ/83J7vJt2GNNkEMrVBe5fWz/2d+XxYPCv7PQCx/4+T63PhmUWVSzpUUDyjw==
+X-Gm-Gg: ASbGnctc66wRh6jram9t+SyYXb3E3c8ENA/QLF/Pa0P6OMY8qNUqL6FkGLoYHw0Fn9p
+	fxQThrxX4TLOUK0SSyKz2PZRse+4hh5R6hicGnDZi+Pe3Th7B56uTb8sn0AJPK5aUjdN4XqLmHr
+	2rMPEsEkICBUWqJj+sDSyUBi7eiMoSwm9x5XDTclv6yCLUGbfDeVGZ7SgjhCvT9KI0ADfG7HniW
+	F+K8jv4lmdlh1ybFE8ML+tQcnLhQi6rlyKOagOm/GHltgn0uXYUgwW1NIltOD4kdoS0imf1SWdA
+	WRqOXZKIWFjZBLis+2XbzyNC1hAigosU5nJgmnGTImgEzkH3nY//fvL3hLedf4KZVT0NBN4acvi
+	CdHsSGnUqFF0mGfk31+NDyp4XFOGm1WtuVXX5QkghgdlzQpuYo9vUBdAySfucjDbtWOvgWWBkND
+	Bzsorhk5Djru4zfuRz52Z9A4YUOV8=
+X-Google-Smtp-Source: AGHT+IHHAQtjOIHEDbfkHEKG2NfHrgaRmrEgmgbaSUEGGCfJ/unMbpSGdEUv0xTl6RK/QLenVxoU3w==
+X-Received: by 2002:a05:6402:3508:b0:639:102b:b8db with SMTP id 4fb4d7f45d1cf-63939c20419mr16928471a12.24.1759833536384;
+        Tue, 07 Oct 2025 03:38:56 -0700 (PDT)
 Received: from development2.visionsystems.local (mail.visionsystems.de. [213.209.99.202])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b4869b4e49esm1339090966b.72.2025.10.07.01.50.43
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6376b3aa9f1sm12026832a12.8.2025.10.07.03.38.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Oct 2025 01:50:44 -0700 (PDT)
+        Tue, 07 Oct 2025 03:38:55 -0700 (PDT)
 From: yegorslists@googlemail.com
 To: devicetree@vger.kernel.org
 Cc: linux-omap@vger.kernel.org,
 	tony@atomide.com,
 	robh@kernel.org,
 	Yegor Yefremov <yegorslists@googlemail.com>
-Subject: [PATCH] ARM: dts: ti: omap: am335x-baltos: add a regulator for the mPCIe slot
-Date: Tue,  7 Oct 2025 10:50:37 +0200
-Message-Id: <20251007085037.3605676-1-yegorslists@googlemail.com>
+Subject: [PATCH] ARM: dts: am335x-netcom-plus-2xx: add missing GPIO labels
+Date: Tue,  7 Oct 2025 12:38:51 +0200
+Message-Id: <20251007103851.3765678-1-yegorslists@googlemail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -91,44 +91,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Yegor Yefremov <yegorslists@googlemail.com>
 
-Baltos device provide a mPCIe slot that can be power cycled via a GPIO.
-
-Add a userspace consumer mpcie-power-switch that references a fixed
-regulator attached to the GPIO3_4.
+Fixes: 8e9d75fd2ec2 ("ARM: dts: am335x-netcom: add GPIO names for NetCom Plus 2-port devices")
 
 Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
 ---
- arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dts | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi b/arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi
-index ea47f9960c35..afb38f023b83 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/am335x-baltos.dtsi
-@@ -45,6 +45,23 @@ wl12xx_vmmc: fixedregulator2 {
- 		startup-delay-us = <70000>;
- 		enable-active-high;
- 	};
-+
-+	mpcie_regulator: mpcie-regulator {
-+		compatible = "regulator-fixed";
-+		regulator-name = "mpcie-regulator";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		gpio = <&gpio3 4 0>;
-+		enable-active-high;
-+		regulator-boot-on;
-+	};
-+
-+	mpcie_power_switch: mpcie-power-switch {
-+		compatible = "regulator-output";
-+		regulator-name = "mpcie-power-switch";
-+		regulator-supplies = "vcc";
-+		vout-supply = <&mpcie_regulator>;
-+	};
- };
- 
- &am33xx_pinmux {
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dts b/arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dts
+index f66d57bb685e..f0519ab30141 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dts
++++ b/arch/arm/boot/dts/ti/omap/am335x-netcom-plus-2xx.dts
+@@ -222,10 +222,10 @@ &gpio3 {
+ 		"ModeA1",
+ 		"ModeA2",
+ 		"ModeA3",
+-		"NC",
+-		"NC",
+-		"NC",
+-		"NC",
++		"ModeB0",
++		"ModeB1",
++		"ModeB2",
++		"ModeB3",
+ 		"NC",
+ 		"NC",
+ 		"NC",
 -- 
 2.34.1
 
