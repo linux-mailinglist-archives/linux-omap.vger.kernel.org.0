@@ -1,98 +1,93 @@
-Return-Path: <linux-omap+bounces-4679-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4680-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F6EBD900F
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Oct 2025 13:27:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6021BD90C9
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Oct 2025 13:32:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6899C352405
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Oct 2025 11:27:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 627493AA96D
+	for <lists+linux-omap@lfdr.de>; Tue, 14 Oct 2025 11:32:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B4930F81B;
-	Tue, 14 Oct 2025 11:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDF830E0DB;
+	Tue, 14 Oct 2025 11:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WfRUCQeJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aLDNKlCe"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8F130CDA0
-	for <linux-omap@vger.kernel.org>; Tue, 14 Oct 2025 11:26:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E1230C625
+	for <linux-omap@vger.kernel.org>; Tue, 14 Oct 2025 11:32:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760441184; cv=none; b=bd+QvlSZNY/vX4F1wqpbo0mo09wwaMH/cjnBMfvKAxXiCK8AEXaTZlMaZqq8hXOscO2Eur/e98+YVIujyiDl1igmChfs/PmeDtqpuAVQpySgYXGgSh/ajX8e0dtMmZQi+jFaGaHj9lKTS9aLJD1jDhKCuubx46Z55YUNq4eYAyM=
+	t=1760441565; cv=none; b=k3tm+Cu/HCQRyx71tnMrBUOeQFUzJUyNCRjXlrM/FGpYiNNQw5j72sf4ljqdXW3A7ACFQjDRaZqKfyNAu7U+Pinp8jld23GzULXmmDfh/s2tYi1Gm2WJGSaAnVIDNXxO3mte7Oipy8Igd3H9vMztXHmgvEe6KhDNIf4VC20baJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760441184; c=relaxed/simple;
-	bh=WBNPAOl1IiO5eOs4BLPmth1N0JvusJem9fVKugbEi0w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQcGjFLUtXRBptQXvzOxxwNAjhAmmHtNb8mwkdsngAub16AGP6AhJWx9e6E5IgGitc/v57db7hekWRwj2Aa9kXNIyv9ta8DI90jf2t2Ya5n5ul/S4NvjZRppp6/1fzMXRmMpkn2vb62iQeP3vYSNZJmRkae6NyqNa2vaVD5Rklo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WfRUCQeJ; arc=none smtp.client-ip=209.85.128.47
+	s=arc-20240116; t=1760441565; c=relaxed/simple;
+	bh=ger5yta4kuizbC1oqevE5vf2viR2j52bwfv7+Byb+Gg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lu+wLGJnIC1ZbbpPFAZ7g3YGQGU/SaG0lPXcFXkNeCO2W79aDfx9cdFp2HWuLEqHvTpuDFRQ76wBJ2xa96GhSziuxMXrc4rPPjIeV0k7fiqVs9f3SgWSHwUfY0GXMxbnrS1BkPB1vjFzg5/x/zwiZZw7uOGkF4rorYrtMId7GrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aLDNKlCe; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-46e430494ccso29978355e9.1
-        for <linux-omap@vger.kernel.org>; Tue, 14 Oct 2025 04:26:22 -0700 (PDT)
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-32eb45ab7a0so5595995a91.0
+        for <linux-omap@vger.kernel.org>; Tue, 14 Oct 2025 04:32:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760441181; x=1761045981; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EbYmHynLeWlw8u23NecrRWs1rFP/nnkTB1+gQnuvcng=;
-        b=WfRUCQeJz/EQhr0GFi0+c8JpNb5W1PvgyGqLwmPyxI6XKo/Fh21ZWEgYBTEgy8eazz
-         XkTsIoivhJzCbrm2BKaCLOUzY6v40vViafiTFxHf/LnJTkmOBy1eQlIIc/uj3Tke27Ev
-         R8eSuYCNbGVaVq4b+t4GuRm/20UFZxUl1/UQ9JEsTl0WwMSEh3AuOEujAokfemtHbbCP
-         r6Zx+VprRTQU+lSlLzLVaT8JaEiHg6wZBilGITHZViclqJcKGWcfyYrra0SmqZXokS15
-         BZ5XmAd2MrSXb0hn/L6q+uSafm3FuHl7V+AhqSisMhU2NFaWMcRthYo/Zbxj+Proj4OD
-         JYHQ==
+        d=gmail.com; s=20230601; t=1760441562; x=1761046362; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=h0C3j15Yugc04L5diekbYBCyapTdq2v/4isDBpQOj5g=;
+        b=aLDNKlCeNGAS0D91pz8FuQxsI3DaNq2eRK9akzUk7JQWO646OcyogTCG2wUhrItO6Z
+         0vnuupyLJlb3z3aFRbLtdCtxOqbxBybcF8SOUv73dUJFhhIy59KyiggAxL0p9+Cy6G8w
+         TjiDu2JJc0ZFdyGgw6lrSN2tJtPQ3FPEVWYT3A7/sneUdxP12fw8bFBRcp5ZnMeeg0nw
+         KS1jnkAPznWsHfeftoy1yPvmlT1y1mQxXxx5GZgu5Fr1cawVaaTC6W5V/Au9IoEscjAn
+         kBasgYL0VJo45avGcN4V5hlM6wrhFtXKTVWHC5F/57TI009C6cjjo1Z8dZO2DjSHV+e1
+         QLQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760441181; x=1761045981;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EbYmHynLeWlw8u23NecrRWs1rFP/nnkTB1+gQnuvcng=;
-        b=JcCzeOM5jSgn/Cuphr154eO3ml2UMEWnXeXz46MFZSSlrnmd1+3uLLkEG07pKoyXvq
-         7O3CLWfdTreTjmZfacJfLvrPv/OVqVHjXSz4yngQVYZ08RBmFr5HrtTWXyVkigpq1hSD
-         d+z+yr8LO+b5XluhBzQwu91zxqiEgtq7tCUSdFJRtNpx6hOQBeVLLTGoimY4K1pbBVzf
-         Q9jjspTOEzcBJprWYOnpqG/US4GoRE93zJ+qLqsIvBV72+P2JPpPGuqt58Oskp9wHmhr
-         DjQehWEW4ee9jfoK83nyRNMUZ0JLEQnpW8EubKzt8v+a5+4/xaPmeLaAatny9RtPAMqd
-         /+Vg==
-X-Forwarded-Encrypted: i=1; AJvYcCX9SKM12nwXXh+b6bX6wxfBxR+QH64+B6Ta8MZ6Rdl0gPtv/RSOq1Qye0jL14zXJufa31jfdsuNCa0H@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsCP63cs7o2J4a1E5v4E12Sj10YbDInpMaDfZa2/I0K+jlT3mo
-	FN9UQHccKbTfNVKIDmYiGsh8dTHehIFBQeUdhzppKhGsyKURznpBF1dF
-X-Gm-Gg: ASbGncvuhfoS2Ow3oWD7cfvhUaLb8z12kWUkPheEeJ0QtkahJZsQcEHhmRgiBpwBKRi
-	nh/lyM7n0RfzEiQssUztfWMcQ4wxq+d1d7Z0yStiiXDVZC9QLpOp04pW9xgmKG0mk+hu+shgfpm
-	MavP62OLb7cBP8so9pgJzftHwbyHrxehAlxaVluvoXYq3S6shuHQMHoLaMa7UAvLEPM6hp3uXag
-	mXO/3yCSB0uZVKULhUjgaKpgTZhO8die6SC/Cb394628fc3oqaRNZd9OPwAYen5sEjeZSxPWeEU
-	vQEnmlI6I0Zeg7FIEZmqB1Z3n0xe7Wc1ikpyZZb3XK+MoK1oVL1uyJkGxpsgE/GKPVoD2up09HQ
-	2EG7RBoXPR04xTXyi6JQ/On5EBCMSoSRR/8cvupyvqo5ucNyIq2aGgu8/tw==
-X-Google-Smtp-Source: AGHT+IFO2uKjeUaYUKbnwXbbO+Xo/HgCqYDDA6YUTOMYT5kkkih/xh4BWfPVSZJs7SLyBcg2m31Icw==
-X-Received: by 2002:a05:600c:4745:b0:46d:cfc9:1d0f with SMTP id 5b1f17b1804b1-46fa9af30e5mr188941035e9.19.1760441180577;
-        Tue, 14 Oct 2025 04:26:20 -0700 (PDT)
-Received: from vitor-nb (bl19-170-125.dsl.telepac.pt. [2.80.170.125])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb492e6ddsm265829845e9.0.2025.10.14.04.26.19
+        d=1e100.net; s=20230601; t=1760441562; x=1761046362;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=h0C3j15Yugc04L5diekbYBCyapTdq2v/4isDBpQOj5g=;
+        b=mp84XAzH32MgxR3Sqp9fU9o7Gy93Ad1Jzcb5+FWYzXQByeIiTsQz+ozRgSm61e+JGX
+         2QnEIw99aRqlSR6EBGVarm34xPyylHJ3FDpGOb+EgCVJJnx1I6/wAEe2uzTZ8Le1PAGd
+         7CaI2ohj6lSL5zJApqD+o0/Kwo/uyu+T/9UG+010Ybgb4YSxvzGKIM0BvW1b9AgoiF8m
+         Gfh6ri6NTomjpFswJsCPN9cKZQjH2UDvMz2ivbzVQAndYm63rNLWNIg2cmB6hEI1FqKa
+         4EJpAKGgXjo26Cv/ijoJM40+eT+XtbiBMVtI+SRObSFTqRbwryPHooF3MnnWPAvdGG6P
+         SF5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVlsVF0djWaByflDhi0GIBifozng4ggwYpmifXe+LHf03+qTX9rj5soSuZQIvUgevpIjryPFGOhxRyn@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyfb4AKXpKXjIhOTtD9X819NIuhFTLzZKsR1myp6lwanYHpTTHy
+	WoLmzX2ITYW63uet6C/WpTu0pZKwHznhw40S7fpZphPkpsuTvnmUyxpz
+X-Gm-Gg: ASbGncshygmEHeFsMWus7gJqetxZJIQbXJcTFyji78UQ6EHA5PKP+EmxSso7b6IEQYW
+	fLmq9bWyXx1nGutt1sKsxmOE3yUGIRO5ClsPBhjZnS3nzvZVgnYddk6uHPFwUzjaWodhgGFqOWG
+	XLCgTpBGUGTvCkz00uyELsKQB/nYI+4ArQbBHGK3d6qQ/9Fzta40+DgEHzGE8Tgd6NBIbztWfGs
+	E850xO7GTzutATTlUYQW1eBYYn2rg1Hl2tGVKX+GjhPD1fr1XI8GOBPdZnEeIue7ZTAnvsWqBPT
+	66pDAabcVP3yeYTyPP/H+IEyb+KVXWT9bBIioFBYiTTjpddeDMBLyoNfDZeu2oUGxQOLYdZl3Q9
+	z4PvmKbkl1An1PPeTQ+vP8KzkF4+pxUsSPGBIw6Y=
+X-Google-Smtp-Source: AGHT+IFOXw7annfzhh83UINHXYFo00qKcPjKDkiEC3wElyWcHBIp7o3ZfuqFZw3zUefrPIrk44z91w==
+X-Received: by 2002:a17:90b:1652:b0:32d:d4fa:4c3 with SMTP id 98e67ed59e1d1-33b513cd9damr31858712a91.31.1760441562336;
+        Tue, 14 Oct 2025 04:32:42 -0700 (PDT)
+Received: from rockpi-5b ([45.112.0.108])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7992d0965c3sm14871383b3a.52.2025.10.14.04.32.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Oct 2025 04:26:20 -0700 (PDT)
-From: Vitor Soares <ivitro@gmail.com>
+        Tue, 14 Oct 2025 04:32:41 -0700 (PDT)
+From: Anand Moon <linux.amoon@gmail.com>
 To: Vignesh Raghavendra <vigneshr@ti.com>,
 	Siddharth Vadapalli <s-vadapalli@ti.com>,
 	Lorenzo Pieralisi <lpieralisi@kernel.org>,
 	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Manivannan Sadhasivam <mani@kernel.org>,
 	Rob Herring <robh@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Cc: Vitor Soares <vitor.soares@toradex.com>,
-	linux-omap@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	ivitro@gmail.com
-Subject: [PATCH v1 2/2] PCI: j721e: Add support for optional regulator supplies
-Date: Tue, 14 Oct 2025 12:25:49 +0100
-Message-ID: <20251014112553.398845-3-ivitro@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251014112553.398845-1-ivitro@gmail.com>
-References: <20251014112553.398845-1-ivitro@gmail.com>
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linux-omap@vger.kernel.org (open list:PCI DRIVER FOR TI DRA7XX/J721E),
+	linux-pci@vger.kernel.org (open list:PCI DRIVER FOR TI DRA7XX/J721E),
+	linux-arm-kernel@lists.infradead.org (moderated list:PCI DRIVER FOR TI DRA7XX/J721E),
+	linux-kernel@vger.kernel.org (open list)
+Cc: Anand Moon <linux.amoon@gmail.com>
+Subject: [PATCH v1 0/3] PCI: j721e: A couple of cleanups
+Date: Tue, 14 Oct 2025 17:02:26 +0530
+Message-ID: <20251014113234.44418-1-linux.amoon@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -101,68 +96,35 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Vitor Soares <vitor.soares@toradex.com>
+Refactor the J721e probe function to use devres helpers for resource
+management. This replaces manual clock handling with
+devm_clk_get_optional_enabled() and assigns the reset GPIO directly
+to the struct members, eliminating unnecessary local variables.
 
-Some boards require external regulators to power PCIe endpoints.
-Add support for optional 1.5V, 3.3V, and 12V supplies, which may be
-defined in the device tree as vpcie1v5-supply, vpcie3v3-supply, and
-vpcie12v-supply.
+These patches have been compile-tested only, as I do not have access
+to the hardware for runtime verification.
 
-Use devm_regulator_get_enable_optional() to obtain and enable each
-supply, so it will be automatically disabled when the driver is
-removed.
+Changes
+   Add new patch for dev_err_probe return.
+   dropped unsesary clk_disable_unprepare as its handle by
+   devm_clk_get_optional_enabled.
+    
+RFC v1: https://lore.kernel.org/all/20251013101727.129260-1-linux.amoon@gmail.com/
 
-Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
----
- drivers/pci/controller/cadence/pci-j721e.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+Thanks
+-Anand
 
-diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index 5bc5ab20aa6d..f29ce2aef04e 100644
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -21,6 +21,7 @@
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/regmap.h>
-+#include <linux/regulator/consumer.h>
- 
- #include "../../pci.h"
- #include "pcie-cadence.h"
-@@ -467,6 +468,10 @@ static const struct of_device_id of_j721e_pcie_match[] = {
- };
- MODULE_DEVICE_TABLE(of, of_j721e_pcie_match);
- 
-+static const char * const j721e_pcie_supplies[] = {
-+	"vpcie12v", "vpcie3v3", "vpcie1v5"
-+};
-+
- static int j721e_pcie_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -480,6 +485,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
- 	struct gpio_desc *gpiod;
- 	void __iomem *base;
- 	struct clk *clk;
-+	unsigned int i;
- 	u32 num_lanes;
- 	u32 mode;
- 	int ret;
-@@ -565,6 +571,13 @@ static int j721e_pcie_probe(struct platform_device *pdev)
- 	if (irq < 0)
- 		return irq;
- 
-+	for (i = 0; i < ARRAY_SIZE(j721e_pcie_supplies); i++) {
-+		ret = devm_regulator_get_enable_optional(dev, j721e_pcie_supplies[i]);
-+		if (ret < 0 && ret != -ENODEV)
-+			return dev_err_probe(dev, ret, "can't enable regulator %s\n",
-+					     j721e_pcie_supplies[i]);
-+	}
-+
- 	dev_set_drvdata(dev, pcie);
- 	pm_runtime_enable(dev);
- 	ret = pm_runtime_get_sync(dev);
+Anand Moon (3):
+  PCI: j721e: Propagate dev_err_probe return value
+  PCI: j721e: Use devm_clk_get_optional_enabled() to get the clock
+  PCI: j721e: Use inline reset GPIO assignment and drop local variable
+
+ drivers/pci/controller/cadence/pci-j721e.c | 39 ++++++++--------------
+ 1 file changed, 14 insertions(+), 25 deletions(-)
+
+
+base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
 -- 
-2.51.0
+2.50.1
 
 
