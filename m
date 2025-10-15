@@ -1,101 +1,63 @@
-Return-Path: <linux-omap+bounces-4684-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4685-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BA05BD9216
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Oct 2025 13:53:46 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6283ABDEB08
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Oct 2025 15:14:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52B835434B5
-	for <lists+linux-omap@lfdr.de>; Tue, 14 Oct 2025 11:52:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A6F25506391
+	for <lists+linux-omap@lfdr.de>; Wed, 15 Oct 2025 13:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DABA3101B6;
-	Tue, 14 Oct 2025 11:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC79732BF25;
+	Wed, 15 Oct 2025 13:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="lHlc4Mk/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jShSKbgo"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9EF3101BF
-	for <linux-omap@vger.kernel.org>; Tue, 14 Oct 2025 11:52:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2DD2F5A01;
+	Wed, 15 Oct 2025 13:11:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760442759; cv=none; b=oLBcHyHzeE90h9tJiXgqB7Bmny0QzIBWzLqO6uTdjcJDIUJRDcy14qsAln7ehojBoYhIDQKMDgjuuMkBdPL4arnKkw5jQHdqYpPTo/m3uYtTI6bP6yVWZ5kX/6D98FzB38HXc6VTcpdedB+6UrD03qlL+I1G3R1t98JojIrCNx4=
+	t=1760533909; cv=none; b=cv/8nwliXqoXvsXX03WEnOJg6kEZc4a77rW/SWJhOo5jivmj6FFzbzpPRpvxt49eWZ0z4hXH3i3EG3nwg4rxnaZ8kuLU8vGb7nPHBjuN7A3Gm4FA9YsIHlr5VTMXnVPHm8PG71y7cDLi2BBcuglEC9BlUgNrgSbjhFSHWdHcW/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760442759; c=relaxed/simple;
-	bh=x1brUYGY3NW2WQ2EAUXI9/nXmf4kZlLdpbpO/yh7tw4=;
+	s=arc-20240116; t=1760533909; c=relaxed/simple;
+	bh=YMcaKLHJu+qHEbscCu4PYBYwemy0TdAJrZY1GyASnwM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rwWDJAT0R4XFfUgz4cEh14oBNcMbHvv8+mWaWL6wXNhNdcRfhjMsgBUAlkskBX80TRc2Ucpm32iaOg84Y7I/DoCyXU9Hn2H4makHnZSaeuCLLFWsjS9H8ki5qFzfH7Rt7GR4sryz7Y2/KCxhn2njSv3DnCV0TE35ZxatRGyi3ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=lHlc4Mk/; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=vZpO
-	rc8jIqdudWaU55WhDn+MoeYiJWe7gJ48hDY+d1M=; b=lHlc4Mk/T4KsX8seSNJQ
-	vvL90nUOyuUxzJ/sq5J3piw1hVW61or4bFrdau3nnoyj3BFHrxN3871raQO/I1my
-	Bz2hxNc6FqCtd7PgKMnKFKb4zz5l0ZkRZrRwumRqR9BKuI1SJ2ADJNcz2IFKsFdU
-	7nuBCXwtqXb1hDr3WwWQTUQ9u509yeoTAuKhGd6ojJX525GWTZA+l2Y1cCCedxki
-	RoGYmMz1ynzbjCONDddHsTpxmDfBZnv+OBHrb9nSx93bzg7mxVHuiXUmbzunV9v2
-	qfLQ147EJ76zXvWtGcSHT5C/ArHdi6hIp1iJlb+s0EIXecC51hGviWUiT95BVFMO
-	+g==
-Received: (qmail 2951131 invoked from network); 14 Oct 2025 13:52:28 +0200
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 14 Oct 2025 13:52:28 +0200
-X-UD-Smtp-Session: l3s3148p1@0cGqBB1B1OIgAwDPXwQHAL/S9V79e5yL
-Date: Tue, 14 Oct 2025 13:52:28 +0200
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Elie Morisse <syniurge@gmail.com>,
-	Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Michal Simek <michal.simek@amd.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Jan Dabros <jsd@semihalf.com>, Jean Delvare <jdelvare@suse.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Ajay Gupta <ajayg@nvidia.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Vignesh R <vigneshr@ti.com>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Robert Foss <rfoss@kernel.org>,
-	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-	Viken Dadhaniya <quic_vdadhani@quicinc.com>,
-	Chris Brandt <chris.brandt@renesas.com>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-omap@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 23/80] i2c: Remove redundant pm_runtime_mark_last_busy()
- calls
-Message-ID: <aO45fBIEqFyRq3_k@shikoro>
-References: <20250704075225.3212486-1-sakari.ailus@linux.intel.com>
- <20250704075415.3218608-1-sakari.ailus@linux.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=p63TI4+8hcBNfmDKOafyxpZDMqFntcbFbelbMlLhba7Z78ANcji9s0v0pt7DOJf4fS/n/E6V6j6Gte3dapkE68svuvbw8Vn9C34zbv4MQQUJtu6mqzE8NPB/xFJpCJg+3T7AoZN9yI7u6kJiGAvCZtm7GWFZL0EarSFmL+HW3xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jShSKbgo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77804C4CEF8;
+	Wed, 15 Oct 2025 13:11:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760533907;
+	bh=YMcaKLHJu+qHEbscCu4PYBYwemy0TdAJrZY1GyASnwM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jShSKbgo0043mtGtnxIS8E2Kp/UjfwAeEoyAAoepCfZ++Mp7ale1wbbAM1F2Fh+CM
+	 JoL6cZlisKdlsK1vASuWJ9z3NcORVFpHOff0SYfKv/F2+k5XAKNvPRUp+nAyUznn6T
+	 5fJ8UOz88wxZ8N8sABCBxiYjOhBk91JZ8ISblkmLE2duD0qvAmhV6GXXJQx+caVvg2
+	 LIa5M5jfmrSN59GT7/ve3l/yIVg9IusEhu3RgEM5e9/jLLpCPopRAQfbl9jbfGnvNe
+	 W8ruTvVTjYcKqbm0CsZ8juQIE+aTWGabD/QIY8W9H965CVB25e/x7D41Jj3uLoUqZh
+	 373UFz5oreNNQ==
+Date: Wed, 15 Oct 2025 08:11:45 -0500
+From: Rob Herring <robh@kernel.org>
+To: Charan Pedumuru <charan.pedumuru@gmail.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Paul Barker <paul.barker@sancloud.com>,
+	Marc Murphy <marc.murphy@sancloud.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] dt-bindings: mmc: ti,omap2430-sdhci: convert to
+ DT schema
+Message-ID: <20251015131145.GA3232873-robh@kernel.org>
+References: <20251011-ti-sdhci-omap-v3-0-9487ef2de559@gmail.com>
+ <20251011-ti-sdhci-omap-v3-2-9487ef2de559@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -104,18 +66,164 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250704075415.3218608-1-sakari.ailus@linux.intel.com>
+In-Reply-To: <20251011-ti-sdhci-omap-v3-2-9487ef2de559@gmail.com>
 
-On Fri, Jul 04, 2025 at 10:54:15AM +0300, Sakari Ailus wrote:
-> pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
-> pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
-> to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
-> pm_runtime_mark_last_busy().
+On Sat, Oct 11, 2025 at 08:40:24AM +0000, Charan Pedumuru wrote:
+> Convert TI OMAP SDHCI Controller binding to YAML format.
+> Changes during Conversion:
+> - Define new properties like "clocks", "clock-names",
+>   "ti,needs-special-reset", "ti,needs-special-hs-handling",
+>   "pbias-supply", "cap-mmc-dual-data-rate" and "power-domains" to
+>   resolve dtb_check errors.
+> - Remove "pinctrl-names" and "pinctrl-<n>"
+>   from required as they are not necessary for all DTS files.
+> - Remove "ti,hwmods" property entirely from the YAML as the
+>   DTS doesn't contain this property for the given compatibles and the
+>   text binding is misleading.
+> - Add "clocks", "clock-names", "max-frequency" and "ti,needs-special-reset"
+>   to the required properties based on the compatible and the text binding
+>   doesn't mention these properties as required.
+> - Add missing strings like "default-rev11", "sdr12-rev11", "sdr25-rev11",
+>   "hs-rev11", "sdr25-rev11" and "sleep" to pinctrl-names string array
+>   to resolve errors detected by dtb_check.
 > 
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> Acked-by: Andi Shyti <andi.shyti@kernel.org>
+> Signed-off-by: Charan Pedumuru <charan.pedumuru@gmail.com>
+> ---
+>  .../devicetree/bindings/mmc/sdhci-omap.txt         |  43 -----
+>  .../devicetree/bindings/mmc/ti,omap2430-sdhci.yaml | 202 +++++++++++++++++++++
+>  2 files changed, 202 insertions(+), 43 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-omap.txt b/Documentation/devicetree/bindings/mmc/sdhci-omap.txt
+> deleted file mode 100644
+> index f91e341e6b36c410275e6f993dd08400be3fc1f8..0000000000000000000000000000000000000000
+> --- a/Documentation/devicetree/bindings/mmc/sdhci-omap.txt
+> +++ /dev/null
+> @@ -1,43 +0,0 @@
+> -* TI OMAP SDHCI Controller
+> -
+> -Refer to mmc.txt for standard MMC bindings.
+> -
+> -For UHS devices which require tuning, the device tree should have a "cpu_thermal" node which maps to the appropriate thermal zone. This is used to get the temperature of the zone during tuning.
+> -
+> -Required properties:
+> -- compatible: Should be "ti,omap2430-sdhci" for omap2430 controllers
+> -	      Should be "ti,omap3-sdhci" for omap3 controllers
+> -	      Should be "ti,omap4-sdhci" for omap4 and ti81 controllers
+> -	      Should be "ti,omap5-sdhci" for omap5 controllers
+> -	      Should be "ti,dra7-sdhci" for DRA7 and DRA72 controllers
+> -	      Should be "ti,k2g-sdhci" for K2G
+> -	      Should be "ti,am335-sdhci" for am335x controllers
+> -	      Should be "ti,am437-sdhci" for am437x controllers
+> -- ti,hwmods: Must be "mmc<n>", <n> is controller instance starting 1
+> -	     (Not required for K2G).
+> -- pinctrl-names: Should be subset of "default", "hs", "sdr12", "sdr25", "sdr50",
+> -		 "ddr50-rev11", "sdr104-rev11", "ddr50", "sdr104",
+> -		 "ddr_1_8v-rev11", "ddr_1_8v" or "ddr_3_3v", "hs200_1_8v-rev11",
+> -		 "hs200_1_8v",
+> -- pinctrl-<n> : Pinctrl states as described in bindings/pinctrl/pinctrl-bindings.txt
+> -
+> -Optional properties:
+> -- dmas:		List of DMA specifiers with the controller specific format as described
+> -		in the generic DMA client binding. A tx and rx specifier is required.
+> -- dma-names:	List of DMA request names. These strings correspond 1:1 with the
+> -		DMA specifiers listed in dmas. The string naming is to be "tx"
+> -		and "rx" for TX and RX DMA requests, respectively.
+> -
+> -Deprecated properties:
+> -- ti,non-removable: Compatible with the generic non-removable property
+> -
+> -Example:
+> -	mmc1: mmc@4809c000 {
+> -		compatible = "ti,dra7-sdhci";
+> -		reg = <0x4809c000 0x400>;
+> -		ti,hwmods = "mmc1";
+> -		bus-width = <4>;
+> -		vmmc-supply = <&vmmc>; /* phandle to regulator node */
+> -		dmas = <&sdma 61 &sdma 62>;
+> -		dma-names = "tx", "rx";
+> -	};
+> diff --git a/Documentation/devicetree/bindings/mmc/ti,omap2430-sdhci.yaml b/Documentation/devicetree/bindings/mmc/ti,omap2430-sdhci.yaml
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..7683481204b2e222847244b67f9ae2684db93028
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mmc/ti,omap2430-sdhci.yaml
+> @@ -0,0 +1,202 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/mmc/ti,omap2430-sdhci.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: TI OMAP SDHCI Controller
+> +
+> +maintainers:
+> +  - Kishon Vijay Abraham I <kishon@ti.com>
+> +
+> +description:
+> +  For UHS devices which require tuning, the device tree should have a
+> +  cpu_thermal node which maps to the appropriate thermal zone. This
+> +  is used to get the temperature of the zone during tuning.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - ti,omap2430-sdhci
+> +      - ti,omap3-sdhci
+> +      - ti,omap4-sdhci
+> +      - ti,omap5-sdhci
+> +      - ti,dra7-sdhci
+> +      - ti,k2g-sdhci
+> +      - ti,am335-sdhci
+> +      - ti,am437-sdhci
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 2
+> +
+> +  clock-names:
+> +    items:
+> +      - const: fck
+> +      - const: mmchsdb_fck
+> +
+> +  dmas:
+> +    maxItems: 2
+> +
+> +  dma-names:
+> +    items:
+> +      - const: tx
+> +      - const: rx
+> +
+> +  pinctrl-names:
+> +    $ref: /schemas/types.yaml#/definitions/string-array
 
-With the dependencies being upstream now, applied to for-current,
-thanks!
+Drop. Already has a type.
 
+> +    minItems: 1
+> +    maxItems: 14
+> +    items:
+> +      enum:
+> +        - default
+> +        - default-rev11
+> +        - hs
+> +        - sdr12
+> +        - sdr12-rev11
+> +        - sdr25
+> +        - sdr25-rev11
+> +        - sdr50
+> +        - ddr50-rev11
+> +        - sdr104-rev11
+> +        - ddr50
+> +        - sdr104
+> +        - ddr_1_8v-rev11
+> +        - ddr_1_8v
+> +        - ddr_3_3v
+> +        - hs-rev11
+> +        - hs200_1_8v-rev11
+> +        - hs200_1_8v
+> +        - sleep
 
