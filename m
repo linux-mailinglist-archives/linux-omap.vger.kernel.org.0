@@ -1,154 +1,101 @@
-Return-Path: <linux-omap+bounces-4687-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4688-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A42BDEC33
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Oct 2025 15:29:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4EB4BE8BB8
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Oct 2025 15:06:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A839E19C3FD1
-	for <lists+linux-omap@lfdr.de>; Wed, 15 Oct 2025 13:30:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7AC93BACF4
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Oct 2025 13:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A1DD200BAE;
-	Wed, 15 Oct 2025 13:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CE993451B3;
+	Fri, 17 Oct 2025 13:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="AoLPHUbg"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=debtmanager.org header.i=@debtmanager.org header.b="XSiKaj81"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from server.couthit.com (server.couthit.com [162.240.164.96])
+Received: from manage.vyzra.com (unknown [104.128.60.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F6B1F2361;
-	Wed, 15 Oct 2025 13:29:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C47342C8A
+	for <linux-omap@vger.kernel.org>; Fri, 17 Oct 2025 13:05:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=104.128.60.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760534975; cv=none; b=XKVVtLRmdQuNgYeJMUWrAVe+xeFIJfeOcASscAd3V5j7j2lyUQB4FznE3JyVFMdL5knpunhRpczdD8dKnGn/A2a8RRFHwBFQzQyJPu9tDtRKjOaCPOTAQHjFr6XHGT++x6M2/4JXSOv5JuopafS1SegFEQFInLrUmdURcM8aPck=
+	t=1760706310; cv=none; b=IHLX8j0CVPnbyK5b4aC4z8UJs9qB7v+g3u8PDuCmnxn2Vl6Ur3FsW1FDb/1faUpcrSn5YPFa2NBYtq2schQNXoiVU96sDhTZTGCcGACrg5DcxEeD8tW/w8RScpom8wiEgtm5tyR4zl6mlKFb36SZebFvmYCKEqngM1ea7+9C460=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760534975; c=relaxed/simple;
-	bh=2hmMvyH8KAC2yhT2Ax5Nx8K1FAV9uq1Qg41rzGl0+Sg=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=dSGqucfgzpH+kHQMep12DH2k3FvR8MnPfe9oqV9M08qyCaCS6qVdcaSaP/Y45eQ/GLsPfAhcDeT71EXrBI2fgE0Ds+z+t2VOMFJ3CvKSVJdV9flZTvPuhattmPa3bNgyWAkaCLzAaSBJktTbckCplfO6Mf7K1W5gkKPd/bqX6xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=AoLPHUbg; arc=none smtp.client-ip=162.240.164.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
-	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=s2K7GHGVKyAUUpmTe3FDfYNRYK/z1701QaUyzv3V8Bk=; b=AoLPHUbgLksgoj0K49hCkx+uRb
-	qARH+UxQl33YfSHLev1gfxrnblxG7tOE+50CzE5Vt+ceUCU+GGPIIu88Q7OPjmaifo8/m2mkdvyb+
-	Ap5R0k1VrOZiblWEM8ZyqOtw8mbU4bL/hfYHwEHjirrQQn1h4p6r5EYAzQ93WrYy+eZqoZ/l9TJFt
-	nFDBoZNcqE6ETJphRGP40R7dtZqpZQ3KV/ayLxhxFmmJNvOYuF7FRbaDagJOSjFkZbygu+YKs428U
-	at6+zbWmwH7K64Fu48WMla9D0+XzIcAiTMkcGcnZsTXdTI0JhzYGy6Kp3MKPpwJP/5EtXNsG9whdM
-	BnYuZ0gw==;
-Received: from [122.175.9.182] (port=34500 helo=zimbra.couthit.local)
-	by server.couthit.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.1)
-	(envelope-from <parvathi@couthit.com>)
-	id 1v91ZK-00000006HKz-2vEc;
-	Wed, 15 Oct 2025 09:29:30 -0400
-Received: from zimbra.couthit.local (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTPS id 92F2F17823F4;
-	Wed, 15 Oct 2025 18:59:26 +0530 (IST)
-Received: from localhost (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTP id 7C0F617820AC;
-	Wed, 15 Oct 2025 18:59:26 +0530 (IST)
-Received: from zimbra.couthit.local ([127.0.0.1])
-	by localhost (zimbra.couthit.local [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id DEQ94I0dxhEn; Wed, 15 Oct 2025 18:59:26 +0530 (IST)
-Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
-	by zimbra.couthit.local (Postfix) with ESMTP id EF5711781F3C;
-	Wed, 15 Oct 2025 18:59:25 +0530 (IST)
-Date: Wed, 15 Oct 2025 18:59:25 +0530 (IST)
-From: Parvathi Pudi <parvathi@couthit.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: parvathi <parvathi@couthit.com>, tony <tony@atomide.com>, 
-	robh <robh@kernel.org>, krzk+dt <krzk+dt@kernel.org>, 
-	conor+dt <conor+dt@kernel.org>, 
-	richardcochran <richardcochran@gmail.com>, 
-	linux-omap <linux-omap@vger.kernel.org>, 
-	devicetree <devicetree@vger.kernel.org>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	netdev <netdev@vger.kernel.org>, danishanwar <danishanwar@ti.com>, 
-	pratheesh <pratheesh@ti.com>, Prajith Jayarajan <prajith@ti.com>, 
-	Vignesh Raghavendra <vigneshr@ti.com>, praneeth <praneeth@ti.com>, 
-	srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
-	krishna <krishna@couthit.com>, mohan <mohan@couthit.com>, 
-	pmohan <pmohan@couthit.com>, basharath <basharath@couthit.com>, 
-	afd <afd@ti.com>, m-karicheri2 <m-karicheri2@ti.com>
-Message-ID: <1064878067.81811.1760534965853.JavaMail.zimbra@couthit.local>
-In-Reply-To: <8cfc5ece-6c2e-48d9-a65c-3edbcc9edc39@lunn.ch>
-References: <20251013125401.1435486-1-parvathi@couthit.com> <20251013125401.1435486-2-parvathi@couthit.com> <8cfc5ece-6c2e-48d9-a65c-3edbcc9edc39@lunn.ch>
-Subject: Re: [PATCH 1/2] arm: dts: ti: Adds device tree nodes for PRU Cores,
- IEP and eCAP modules of PRU-ICSS2 Instance.
+	s=arc-20240116; t=1760706310; c=relaxed/simple;
+	bh=biLnUx9jTTyVdIbdiavoTAgEZeIqqOihfb373MH/e18=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eVMwMjWP+Fna+tr+c08bVkeWSvhhUpxd/ioIbqRS9XcEgywKefNtuxyyNuzfv0FEwGfhZ76zt5GEbxHcz0ynpguHFB6EYg0v4MGscdksKafzvLbHrF6ukSoRDeY3zOYJyc+4s8teTZG2IQByVIyosnTjtl7+lhlbBkwnP40CP0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debtmanager.org; spf=none smtp.mailfrom=manage.vyzra.com; dkim=fail (0-bit key) header.d=debtmanager.org header.i=@debtmanager.org header.b=XSiKaj81 reason="key not found in DNS"; arc=none smtp.client-ip=104.128.60.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debtmanager.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=manage.vyzra.com
+Received: from debtmanager.org (unknown [103.237.86.103])
+	by manage.vyzra.com (Postfix) with ESMTPA id 471BA533803E
+	for <linux-omap@vger.kernel.org>; Fri, 17 Oct 2025 07:45:34 -0500 (CDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=debtmanager.org;
+	s=DKIM2021; t=1760705134; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=Aj8bDacQlJB5qNMC5+yWWged1+K/M8YReXQkzUminbQ=;
+	b=XSiKaj814AK5TJFkN72/kBhtEw+aDdehjyRvlYUumagxR3zjjP9zqyFLsjEhvUzzcJCNyj
+	piwVDpqxWllyxwvSFM9qu8WaFz9Lr6L5cZgZDUU3uY+v8dzYtCgUufKawPId86G/K+kesd
+	FdcEdB8x20XZCFSRauH+lHJa20igwkFNOfYQxU2Sj8+7Uq6kazYi4FJCdlmicEOI6geCTJ
+	dojpUDNxexlKHKpROD5T8EBdw9UhLLZkeor1q2H1iXL8qdos0/wmyKpEgO0Sbbe/Hn+WpZ
+	gHvhkS+T/r0kQUZnzbBRB1H6oZ9zZPN2HSnXS8SW7xbM0NyVXRU8eIzB2tFg5w==
+Reply-To: vlad.dinu@rdslink.ro
+From: "Vlad Dinu" <info@debtmanager.org>
+To: linux-omap@vger.kernel.org
+Subject: *** Urgent Change ***
+Date: 17 Oct 2025 05:45:33 -0700
+Message-ID: <20251017054533.4021FCE5ACC34F41@debtmanager.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: Zimbra 8.8.15_GA_3968 (ZimbraWebClient - GC138 (Linux)/8.8.15_GA_3968)
-Thread-Topic: Adds device tree nodes for PRU Cores, IEP and eCAP modules of PRU-ICSS2 Instance.
-Thread-Index: E3LIn1f4mOg6FaK5tJjNCk6cQUoE5Q==
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.couthit.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: smtp@couthit.com
-X-Authenticated-Sender: server.couthit.com: smtp@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Score: -0.10
 
-Hi,
+Hello,
 
->> +				interrupt-names = "rx", "emac_ptp_tx",
->> +								"hsr_ptp_tx";
-> 
-> Something looks wrong with the indentation here. The same happens in
-> at least one other place.
-> 
+I am Vlad Dinu, the newly appointed Director of IMF Legal=20
+Affairs, Security and Investigation. I have been given the=20
+responsibility to look into all the payments that are still=20
+pending and owed to fund beneficiaries / scam victims worldwide.
 
-we will correct the indentation of the interrupt-names property to properly
-align the continuation line as shown below.
+This action was taken because there have been issues with some=20
+banks not being able to send or release money to the correct=20
+beneficiary accounts. We have found out that some directors in=20
+different organizations are moving pending funds to their own=20
+chosen accounts instead of where they should go.
 
-interrupt-names = "rx", "emac_ptp_tx",
-                  "hsr_ptp_tx";
+During my investigation, I discovered that an account was=20
+reported to redirect your funds to a bank in Sweden.
+The details of that account are provided below. I would like you=20
+to confirm if you are aware of this new information, as we are=20
+now planning to send the payment to the account mentioned.
 
-We will make sure to address this in all the applicable places and include
-this fix in the next version.
+NAME OF BENEFICIARY: ERIK KASPERSSON
+BANK NAME: SWEDBANK AB
+ADDRESS: REPSLAGAREGATAN 23A, 582 22 LINK=C3=96PING, SWEDEN
+SWIFT CODE: SWEDSESS
+ACCOUNT NUMBER: 84806-31282205
 
 
->> +&pruss2_mdio {
->> +	status = "okay";
->> +	pruss2_eth0_phy: ethernet-phy@0 {
->> +		reg = <0>;
->> +		interrupt-parent = <&gpio3>;
->> +		interrupts = <30 IRQ_TYPE_EDGE_FALLING>;
->> +	};
->> +
->> +	pruss2_eth1_phy: ethernet-phy@1 {
->> +		reg = <1>;
->> +		interrupt-parent = <&gpio3>;
->> +		interrupts = <31 IRQ_TYPE_EDGE_FALLING>;
->> +	};
-> 
-> 
-> PHY interrupts are 99% level, not edge, because they represent an
-> interrupt controller in the PHY, and you need to clear all the
-> interrupts in the controller before it deasserts the interrupt pin.
-> 
->    Andrew
+A payment instruction has been issued by the Department of=20
+Treasury for an immediate release of your payment to the bank=20
+account above without further prejudice. We cannot approve or=20
+schedule payment to the 
 
+given bank account without your confirmation. May we proceed with=20
+the transfer to the Beneficiary: Erik Kaspersson, bank account in=20
+Sweden?
 
-Sure, we will check and come back with more details on this.
+I await your urgent response.
 
-
-Thanks and Regards,
-Parvathi.
+Mr. Vlad Dinu.
 
