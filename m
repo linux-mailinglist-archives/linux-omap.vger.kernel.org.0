@@ -1,83 +1,83 @@
-Return-Path: <linux-omap+bounces-4690-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4691-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBF84BEBB51
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Oct 2025 22:41:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D66BDBEBB57
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Oct 2025 22:41:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5911A34B37C
-	for <lists+linux-omap@lfdr.de>; Fri, 17 Oct 2025 20:41:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AEE4744A93
+	for <lists+linux-omap@lfdr.de>; Fri, 17 Oct 2025 20:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA0C264A76;
-	Fri, 17 Oct 2025 20:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C84259CB6;
+	Fri, 17 Oct 2025 20:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YLqvfo6G"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ISCZrYbp"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E486C233155
-	for <linux-omap@vger.kernel.org>; Fri, 17 Oct 2025 20:40:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D73233155
+	for <linux-omap@vger.kernel.org>; Fri, 17 Oct 2025 20:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760733654; cv=none; b=m5Qbc8rX1H9k77z0wFHoUjaUOd4iwK76FTUTZltuVVKGPEwdwp3T7L2DIXir4tdgnCVqoDRypBMOWFQJexqIvWasugxU4x59xPcMc0S3tej34tVojWAECdtX9ipJNId6kGh4Ikr0Cy8Cu9j1t1+ik050jXpR9CdrrP5+5xvFNwE=
+	t=1760733696; cv=none; b=daIh5Up03cbF76LRE6gLyjuHENfVpxkYN3LEGuCkFhUWe3AW0+iIgXPU1PPAK83+ph/tchy1FRJKV2Pi8U7asVncEvuGx9I8/O/bM/TCZ2df50oaki6vlKniW82DldoX7uncctLE4PBzQ0k8vQ/riJRZ2bA5+fsdodaVRbNbh38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760733654; c=relaxed/simple;
-	bh=8dhd1HXzFActeTedsUZUHugfOjaScZqGphRCS6J2J0w=;
+	s=arc-20240116; t=1760733696; c=relaxed/simple;
+	bh=BGiVnMLbtqlCCpk8Sdq/wy6wp1bxSfi30ih0VOLl6Co=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=tAgtob2pqHfFFBlBc73DWuWfHb5b+sKBfCFB3DNlTbbNt7hB2J6pU7LmgiEjJKjH1TMMgeYz8u3wM1EzL/w/7O4nBGu4TfgX5p4d57zDNjeeTCjfgsl+EIR4CU/IgjqaOPUqZU6UKUgHa/MdUMJJsB2AMeTgfrpUqP/uRXY+WzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YLqvfo6G; arc=none smtp.client-ip=209.85.221.53
+	 In-Reply-To:Content-Type; b=QqaolAZhC/wV1dhE/srEZOdU18bUE6x4a1XLNFXJfBoamHUN736ayFrfmPpDGUiXuWF/kos2pzB3qGf8SuT5zwEx2iy+g7S+te+ya+qQAtfDq+DTkBAG8+oGYnLRLRXZk09Mq/sFx9KLvv+o7RQXv5DzJcS7wJxW7S++7XYiv5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ISCZrYbp; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3ee64bc6b85so2602080f8f.3
-        for <linux-omap@vger.kernel.org>; Fri, 17 Oct 2025 13:40:52 -0700 (PDT)
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-427015003eeso1539605f8f.0
+        for <linux-omap@vger.kernel.org>; Fri, 17 Oct 2025 13:41:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760733651; x=1761338451; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1760733693; x=1761338493; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=FbWi40dvkp8CFY0Wjk1kGU5vumCQD6DLglX3zNBQstg=;
-        b=YLqvfo6GPWXdaP+bTle/blH2/anaBklXamdg21V45uBosOw6+NBfc+qwqTTFJwyesk
-         1bc4MZeN6XCei5x4QeUuY6u+DUedxWd9qly2t9oifnC2OyH9XVhhh/ZKP2l28vufbiT4
-         ZUMb7zdjySHl0F6PcJQHq4cULWH1fvkKWLLhQ3870dYLSdhDqAAN0ci1GToqPetuBhVw
-         dsJlQ2fP5ounepXPUQNNdiNR1XhUbLKGdnP7e2WkdfL+pwIvnfL/vBYJ67BUgWtfQUB/
-         E99UMYlonCURCpJsak45Nvm9od+X0Osk7cjnUty0IpDe3mPhb79qWqjVlkPLDn7Tc10R
-         p1xA==
+        bh=LpJhQhDADsZmTmFM++s6//8HsKHRIc9kPRXzu/W2/fQ=;
+        b=ISCZrYbpxRvhgEdqRf7HBivfaFy2SB3Wd2DSOdniDS8EX19/hfwyfyYZN00gn9tORj
+         zIL56fQ7tBNjVLMpHowjct3bUb6+gKahqCWvT/qdPrsOZANlMNy4RACVqraC8NynGgQI
+         ot3B/Z6GiLyOh+Uh5oEsBZJ1M+NSzIgeqUgJ8+pziTphWHDaejjjOGUcrqYuYl6TwmVW
+         TUJ2m0Uplnw36YD2qgXNi1wKFT5TspA+ITdceZrtGVn4G7UPnHxlNsTn7xaG0QaNdObe
+         Ut34N6MzRbzEwKMxvcZic1vCrqE6BXfdx2VXQtRaMwJSJxP5rvrahUArtSzd7BdCMwSZ
+         XFyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760733651; x=1761338451;
+        d=1e100.net; s=20230601; t=1760733693; x=1761338493;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=FbWi40dvkp8CFY0Wjk1kGU5vumCQD6DLglX3zNBQstg=;
-        b=jwrzAToX6f8M5RQFUVBAppIRT6+dOKFBy6BFpZa8Qbk9DCg/taERRuFNx8C+UysVzW
-         Dd1ln1ow8XAw3/420X3EC8dVnj2I3qR8l2O6v1noXMh4Z3Iryg/61PX7m1EdyDXRxpkp
-         YZmd/RPyyv8GZpADX4eyWNQDpUPH5xLBB/2l/3IQz0CUpi+44t+qzBILmTbnEwlJPds5
-         jGoeDsJfB6MIWlpUd47DioAzmSuwxD+rRY89qiqNWJp6OUHRmlTstQadCtMn5zZZ2zSN
-         y+zpVPEN90dIgNZgE8qg56Zp5/hsh1JQxM9zJ9r5zHEtNG5sPBMEyNFTvXhP11g+NA46
-         fH+w==
-X-Forwarded-Encrypted: i=1; AJvYcCVb91drrQJmEbFR1jDFq4y6ryQfC0W17N0n+cFepJIMolqF2qiqK5ViCZU2MXJu5w4KEjeYUQGR22rj@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPHm1mp/aHcThakUGuLeW7Xr6yrmalmEPCWZ8cmh4L+FSUsvYJ
-	LecoGMqh1gR0FRT+ImmKLyaWJBuFFoPdevtO+uPb62yTaxj1CXoqLD6i
-X-Gm-Gg: ASbGncsM4SYoFpp6BI9++bU2A2nd3iD9GAGwbEMYRFmoT/uymbYNWXMLTGQEypFeyO1
-	J3ShPYBJKWo3r2Y01Wo0QhZQkLCGAxD/MlB8l/gkyYuskRmJ++RNvAj0AWReJAkgU3eijfreR2Z
-	qYQneFvTLNP9b/LMgm098rv4e4QhhWmH5RaJeC10BIaBwewYJOdK3qPhDvF4kAEwZrI0+uuyDyO
-	rtd9KwDI6MeG7MSroUfIbouZjJnMRAbk7iaRnbk2WBGyB5/CsQi6zCotK5URPEx7s7qO5aH1G2x
-	EKu5asUm36xItr4thNZO448lZ6cPKLb/BafRiJxlcOgAdyGxr/EFx4kxBwvYCb+HpYYa5uH13AN
-	idwoq14GyQpyFyT+w8U5tjpw19dyYq8CVUH1jRh8/XnuUyndN8RHuDgmEO87ZXLrC1XKYV/4GEb
-	bXKlH0TjNAB0V0b/UtapqSFruVX6pLVnULvwR/bPTERxcG9gAFWWdQdz8YokWhM+FmZF9ULSSSm
-	58eE88K2FxsnP9tWOkd3ZoZHCTlnaYgCOeOjJx5souBE/IVD8I=
-X-Google-Smtp-Source: AGHT+IHjTYPZJL+g/HWuD/r0IbHdpjbAXn8TX9jhRHNkV2dhyqZ6ULzINTbC+hXeGu3b5YCOlCwWfg==
-X-Received: by 2002:a5d:5f82:0:b0:426:fb28:7962 with SMTP id ffacd0b85a97d-42704dd3690mr3960957f8f.61.1760733651138;
-        Fri, 17 Oct 2025 13:40:51 -0700 (PDT)
+        bh=LpJhQhDADsZmTmFM++s6//8HsKHRIc9kPRXzu/W2/fQ=;
+        b=dt95eShB/SsMpqR7qusuSN6eGwBnRDE6uw04L06wRSzeuMkhmExkAcjDAQH3CACIHd
+         fdCVULTVaSdISHjNmAkYi+XH2TNb+U67CMxZtLflOcuLlq/24G42UWDCwVvZ0MixBZ9I
+         UcubFX1UzoLiNnHzDIUfP7OL4Jdm3VCAyD81R0GhYDQQtLKb6dGIrS/Qno0A8MN90Uz2
+         yADH1koeFpUq3zMqyks1s1YkkyUj+QN5gywLK1CAwGe8Dtkd8zRR1tGXPOjBnyJcr7e7
+         HuIhrtjU6cv7V3zeYtL0G33djHCtvLY30mmhSZJcG29qI1uZqmkjFZu77npbHWgQw4M0
+         lSJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVKq6grw9g2u4LgC1hkTyHBrEwim3aKiLPKWn88jvXqOmq8KJToyoY6dkzxKtyMLN2wD5jr+jdo8Vc0@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1R399SdAqanRd40xaVNWcyqHjqWJoCpbnd/mD6Z/HAerZjh5A
+	OvsOyHImX6mDizIHX2jAxYOEu8PumPb29JNxcsKOwkQx5EBHoGieQQP7
+X-Gm-Gg: ASbGncvHOCoJRr4EUmpuJGFcp6SraY3lvp86QTU4VM2t8MucSQ5mfdGPVsfG+521nOH
+	SSZOPNNuTC4Eqvd1+eWuIAtgMqDU5aAgM+aXMROErHnP2udYfw4Npv0MvPCyH/CJ+3ofifGbOHj
+	rB2wgJaMkQhIqRRhMaYPaII4tmoaZelAGv5dv8OnNCEY9pLMs1/Cpi0Q0Sfg9y+4ev1Xrnj4GU9
+	EUrqUUgZDtGTNc+oAaxSYPLCcgnZZ80TA3AjwTBBUve77x9SbxWeGr33s1TPUwKtsQtGERzvdiR
+	d87z+ugCqNZBaNR3PhJF4K57fD5wxZ1/ItWZXcxXvgp8SJl7huIP0eKE9maLNyfMXieaZ4J6Yir
+	NbcNulL/hHLXeerHzrbf9CL8VOGTm9hbP7wIURAW4eC0iE8sbknwyHolmai4Gb1SOlF/23kbFAB
+	Z/cVEarDNrvBZwjIym88Z1OTy67y03Oo79c5gSo6/Hb0EsMvcpYwlhRjeogy3OdY6JQpUNBA4wM
+	5/zVT1gG1rrNkKlzBWKFzAK1xthKWuF5Qj8ZhnffGIPwRUuUmE=
+X-Google-Smtp-Source: AGHT+IHR40r25W7TuVEpMpyN+jZYzxcY0yZnooGo4wtoIODSkS2ymVjTUTayX3owebBrwLbPcCD9Wg==
+X-Received: by 2002:a05:6000:4205:b0:401:70eb:eec7 with SMTP id ffacd0b85a97d-42704db8ccbmr3334249f8f.43.1760733693305;
+        Fri, 17 Oct 2025 13:41:33 -0700 (PDT)
 Received: from ?IPV6:2003:ea:8f33:9c00:f581:27c5:5f61:b9b? (p200300ea8f339c00f58127c55f610b9b.dip0.t-ipconnect.de. [2003:ea:8f33:9c00:f581:27c5:5f61:b9b])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-427f00ce678sm1228595f8f.51.2025.10.17.13.40.49
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-427f009a993sm1102757f8f.24.2025.10.17.13.41.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Oct 2025 13:40:50 -0700 (PDT)
-Message-ID: <7d33ee44-8558-40d9-b258-2942b2caf95f@gmail.com>
-Date: Fri, 17 Oct 2025 22:41:12 +0200
+        Fri, 17 Oct 2025 13:41:31 -0700 (PDT)
+Message-ID: <fff4a855-d7d4-4543-a11b-e3e1f6611196@gmail.com>
+Date: Fri, 17 Oct 2025 22:41:53 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -85,7 +85,7 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH net-next 1/4] net: phy: add iterator phy_for_each
+Subject: [PATCH net-next 2/4] net: fec: use new iterator phy_for_each
 From: Heiner Kallweit <hkallweit1@gmail.com>
 To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
  Clark Wang <xiaoning.wang@nxp.com>, Siddharth Vadapalli
@@ -145,78 +145,39 @@ In-Reply-To: <68a7779c-acc2-45fc-b262-14d52e929b01@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Add an iterator for all PHY's on a MII bus, and phy_find_next()
-as a prerequisite.
+Use new iterator phy_for_each() to simplify the code.
 
 Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 ---
- drivers/net/phy/phy_device.c | 14 +++++++-------
- include/linux/phy.h          | 11 ++++++++++-
- 2 files changed, 17 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 7a67c900e..72d58b38d 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1214,22 +1214,22 @@ int phy_get_c45_ids(struct phy_device *phydev)
- EXPORT_SYMBOL(phy_get_c45_ids);
- 
- /**
-- * phy_find_first - finds the first PHY device on the bus
-+ * phy_find_next - finds the next PHY device on the bus
-  * @bus: the target MII bus
-+ * @pos: cursor
-  */
--struct phy_device *phy_find_first(struct mii_bus *bus)
-+struct phy_device *phy_find_next(struct mii_bus *bus, struct phy_device *pos)
- {
--	struct phy_device *phydev;
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 1edcfaee6..d7c39ef2d 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -2552,7 +2552,6 @@ static int fec_enet_mii_init(struct platform_device *pdev)
+ 	int err = -ENXIO;
+ 	u32 mii_speed, holdtime;
+ 	u32 bus_freq;
 -	int addr;
-+	for (int addr = pos ? pos->mdio.addr + 1 : 0;
-+	     addr < PHY_MAX_ADDR; addr++) {
-+		struct phy_device *phydev = mdiobus_get_phy(bus, addr);
  
+ 	/*
+ 	 * The i.MX28 dual fec interfaces are not equal.
+@@ -2667,11 +2666,8 @@ static int fec_enet_mii_init(struct platform_device *pdev)
+ 	of_node_put(node);
+ 
+ 	/* find all the PHY devices on the bus and set mac_managed_pm to true */
 -	for (addr = 0; addr < PHY_MAX_ADDR; addr++) {
--		phydev = mdiobus_get_phy(bus, addr);
- 		if (phydev)
- 			return phydev;
- 	}
- 	return NULL;
- }
--EXPORT_SYMBOL(phy_find_first);
-+EXPORT_SYMBOL_GPL(phy_find_next);
+-		phydev = mdiobus_get_phy(fep->mii_bus, addr);
+-		if (phydev)
+-			phydev->mac_managed_pm = true;
+-	}
++	phy_for_each(fep->mii_bus, phydev)
++		phydev->mac_managed_pm = true;
  
- /**
-  * phy_prepare_link - prepares the PHY layer to monitor link status
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 3c7634482..b0497f47b 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -1848,7 +1848,7 @@ int phy_sfp_probe(struct phy_device *phydev,
- 	          const struct sfp_upstream_ops *ops);
- struct phy_device *phy_attach(struct net_device *dev, const char *bus_id,
- 			      phy_interface_t interface);
--struct phy_device *phy_find_first(struct mii_bus *bus);
-+struct phy_device *phy_find_next(struct mii_bus *bus, struct phy_device *pos);
- int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
- 		      u32 flags, phy_interface_t interface);
- int phy_connect_direct(struct net_device *dev, struct phy_device *phydev,
-@@ -1875,6 +1875,15 @@ bool phy_check_valid(int speed, int duplex, unsigned long *features);
- int phy_restart_aneg(struct phy_device *phydev);
- int phy_reset_after_clk_enable(struct phy_device *phydev);
+ 	mii_cnt++;
  
-+static inline struct phy_device *phy_find_first(struct mii_bus *bus)
-+{
-+	return phy_find_next(bus, NULL);
-+}
-+
-+#define phy_for_each(_bus, _phydev)			\
-+	for (_phydev = phy_find_first(_bus); _phydev;	\
-+	     _phydev = phy_find_next(_bus, _phydev))
-+
- #if IS_ENABLED(CONFIG_PHYLIB)
- int phy_start_cable_test(struct phy_device *phydev,
- 			 struct netlink_ext_ack *extack);
 -- 
 2.51.1.dirty
 
