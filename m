@@ -1,196 +1,156 @@
-Return-Path: <linux-omap+bounces-4710-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4711-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8675ABEE392
-	for <lists+linux-omap@lfdr.de>; Sun, 19 Oct 2025 13:12:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03F73BEE5D5
+	for <lists+linux-omap@lfdr.de>; Sun, 19 Oct 2025 15:05:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 370723E4974
-	for <lists+linux-omap@lfdr.de>; Sun, 19 Oct 2025 11:12:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E5853A5E68
+	for <lists+linux-omap@lfdr.de>; Sun, 19 Oct 2025 13:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C0B2E6CC2;
-	Sun, 19 Oct 2025 11:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C430C2E8B76;
+	Sun, 19 Oct 2025 13:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="dPL6RzAy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ndGk4N3M"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6ECF2E62BE;
-	Sun, 19 Oct 2025 11:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6FF2E7F30
+	for <linux-omap@vger.kernel.org>; Sun, 19 Oct 2025 13:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760872353; cv=none; b=LmNjIXJNrrs1Wlj3MG44qctNow5uXUHU7QcUW+IKUvs/uP7oz+5zEud8SsL1TohObd7Wh409cV7Q7nIFhbr4SIPzWOOkVU/9KWemPsX/J4hTgujEQQ8uUelk9bPaCiNajOFCb73qwtyDVhGuy7DNHgeyTm34uCwlSoUmZS3X0d0=
+	t=1760879132; cv=none; b=kH8eInk+w5AXxu93Jh0OnaFwcb5LUwdQRmgElTCaJIE8QMBwEsvaB1EtFzCVJuKnaWH3aC4f4jyBM04gVavQwCkkve2hh+UFRBUrfjIE4cI2xH0VVtCNbLzjB3MtmhaYakX4s37vC+frm7pYu8LedM8DqOFu9GReyjurJJD64cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760872353; c=relaxed/simple;
-	bh=1paPyNj04xoI6ha9hU/vt29fUuulXWhJpWDYQejClt8=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=kkN32MfD6DBhqoW+L97BAmCx/JdNxJSZybW+8Qtu5EU8vQe37qWcBwP+WBEsDIiz5PDk+ZAILAE0M+qpl3bAEFX9QNeEzfjXktRHot7YCnQYYDVLYqaqEXpxtATiezjqV51ufCxqZk1T7RC7wRCmJou0UvDH+goEzEgkQx7QJj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=dPL6RzAy; arc=none smtp.client-ip=212.227.17.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1760872334; x=1761477134; i=markus.elfring@web.de;
-	bh=QF+J3sTNdj7X3xzkQck6o9geEOA7NGWyFJ0esyAMLGc=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:Subject:To:
-	 Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=dPL6RzAykKO9vyz2kyLRmH4l/aNDWk0AYkBlNc4daCXDHw11m0juyn1Bz0hTa4Ch
-	 WoG0Z4AKjtl+N86V5d+WdCyr9oxIFqXlN77CucKKCv7egH85Gz2lpMxdK58+l1uFJ
-	 V0G7oTPySzoGeEoZGygTGk5fTMY4iCALiohQ8dXdTxPnJVRGZzAMAQTQT5bRZZiAR
-	 +VdcCpH/3QTz8EPXcgE58v3wCZPUThwMkCVmkSCp/4b/GfDSIZ08RfwkNIu/bJTPk
-	 ctXLi7okxX6vT2I6kYRDLCOmFHor2l36Ua41+pJ0ZFKCc72ESTAbbNJC7gp/eCHvZ
-	 Nwi3TPw5uX9jrTEnvg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.69.180]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mv3Yg-1uJR8f3mL2-01243O; Sun, 19
- Oct 2025 13:12:13 +0200
-Message-ID: <55920694-04e2-480f-a67c-c0dc1604a4b8@web.de>
-Date: Sun, 19 Oct 2025 13:12:12 +0200
+	s=arc-20240116; t=1760879132; c=relaxed/simple;
+	bh=XeiX41298GHe1VGBLl245vB0i8bT1WGg++sJ7ssT2f0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Jhr7tM1TlfV5hZnIBbk9NWjiy1UbGSO2qrK6rhEYAD91wkQdmD4jcxrdWQYu9FzD/0+YJw7cxKeCqYozQheQddgG9vsahd3yFA/wUmrVJKjC7TPd4nLPRyLK0+DB21KiUpx6vhN1Z9a71/W+DJfdb1bd6KbG91VqRmtEv3AHo7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ndGk4N3M; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-29292eca5dbso1880645ad.0
+        for <linux-omap@vger.kernel.org>; Sun, 19 Oct 2025 06:05:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760879130; x=1761483930; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3eco81BCPWW5IMb7bDbdtrmACgQPc8H8S6TsCnyrvFo=;
+        b=ndGk4N3MxpSwvVrzeDuw7GXOZcPH22K7lG4UWaTGsJgSv/A49SVXqUmKQv5Nu1NqOJ
+         gIe5IUhPgFsRP3KFQF3V+LmHbrpyt465ckeEqtxT61E2Kxb/EUiyhxlhXN8u2G/XP4SQ
+         fqiqppfFpJfmgTThb66vxMu5PuvHDJMfV2whRxfZDRKNN4Rl89k724JfxAx3a03+TeDK
+         thij7AzUOat+j+WHJhOACnZIXOtJpLXyYeKGzvd1hgu2ANsgNzKP2Rtfo2kb8wRPXmTv
+         cK3BJhTW9AWkuOLNAwqTA/GV84quIhF8mOi5TxIyRVpx7iSjFQPKXN2H2HkLMPhBNLID
+         8E/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760879130; x=1761483930;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3eco81BCPWW5IMb7bDbdtrmACgQPc8H8S6TsCnyrvFo=;
+        b=wbMgLRSVf8J/HmXLNH26bVucL6ACUOJ538f9bxlfFPyuAEVNQ8k1zEaxrS5xtnArT5
+         uRE/9JlOpF5+ugb+2sM+19DhEo4MWA8F7H2vSLeuG8AQ9pdpPDPs7V7gFgkPCsHMaG6o
+         4+swAlFbI+2c7Cjf9cXx1zPNepM7QGHbdn291BYsfERsCXd9KuycSgcxsOKBPucNdvTS
+         4W54cxr6g16dttI6al15BZs4d3C36DIbtsLSeJDqmuX1vlBGjMayhEVeTnoKCK+z8chh
+         8/VOB1odLwNJulWDM+1N14AC8fbrljfCa4E5UGZHbBXr9nnlP2q1v65lgthW5+nz2Rvz
+         2RsA==
+X-Forwarded-Encrypted: i=1; AJvYcCXaIg3i6x/4VfiA9EDMX85wUnlZM1GrCsmJgYR/UZKee2okEpJNbWaYP5/XBnr3XzW33CjvY2hDugu8@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjQxDt/ecAeVa6FxnY/8BTl38ujTOmFbZAyhnwMapnL9yIFLuU
+	ry/d1RERkr88n1W4cblM68c1vO0TnVHqjqp3+XapmyDBlv1u3TK+J4TA
+X-Gm-Gg: ASbGncvipJaISqf6Txkgi1CQqK5WqsApL2bj5SMHkaBVW8w/zztH2Fx8iElSGQragjQ
+	SoG9cu3RYyN5MXXCd53pdCQ3aPoBFGES6iQ4wSOCw0e6MYQIejzM37OSYkQk2X33m6b0I9LpjfD
+	/kC/BNRq+RdokvGLYVTQpA00ITMhUdjZ+WxnI2w8cukAvr7XGHf/rdGE5BpqCFxqeVd9gVaLOsx
+	7JaIl1p1884Zf0kWzuM1c8N2i6VVzu5522qfU0PfX0FOL++cQOpFAZvGzGqN4cP5w/vBczm3/+e
+	HiYT6o4jHuPmlEpncM2UaE3qdvpnbkb8KyISX4H1Zg+qajIDSpB836MqB/usEbm6N8mXKanAZjL
+	r6iXhK1vEvV3O1r85S4k53vOD+I9CyPoRvAX6ga2mlAqy5iXt2JXXCHB4M/Foh+hQe88q+Nd19c
+	BfxaSgVhN9CyaD27XFWHdWBPGCmC5V5fy1Qd0NvTnD9bnfDQ==
+X-Google-Smtp-Source: AGHT+IE/NeeSqi4ivYvwA/AtfAx8j3c+jGg0ZuqE8hIvxZZL3v91DQ4eRBI2Fd2i+xXD/lVzrMfA0g==
+X-Received: by 2002:a17:903:1a4c:b0:27e:f201:ec90 with SMTP id d9443c01a7336-290c9ce63b3mr115807545ad.25.1760879129895;
+        Sun, 19 Oct 2025 06:05:29 -0700 (PDT)
+Received: from Black-Pearl.localdomain ([223.181.116.113])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-292471d5c33sm52842425ad.73.2025.10.19.06.05.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Oct 2025 06:05:29 -0700 (PDT)
+From: Charan Pedumuru <charan.pedumuru@gmail.com>
+Subject: [PATCH v4 0/2] dt-bindings: mmc: ti,omap2430-sdhci: Add json
+ schema for the text binding
+Date: Sun, 19 Oct 2025 13:04:36 +0000
+Message-Id: <20251019-ti-sdhci-omap-v4-0-fdc63aaeb083@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Markus Elfring <Markus.Elfring@web.de>
-Subject: Re: [1/3] PCI: j721e: Propagate dev_err_probe return value
-To: Anand Moon <linux.amoon@gmail.com>, linux-pci@vger.kernel.org,
- linux-omap@vger.kernel.org
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>,
- Siddharth Vadapalli <s-vadapalli@ti.com>,
- Vignesh Raghavendra <vigneshr@ti.com>, LKML <linux-kernel@vger.kernel.org>,
- kernel-janitors@vger.kernel.org
-References: <20251014113234.44418-2-linux.amoon@gmail.com>
- <a2cefc72-de44-4a23-92d2-44b58c8c13fe@web.de>
- <CANAwSgTtaAtCxtF+DGS-Ay4O3_9JMwk-fJ27yoijhWWbF2URrg@mail.gmail.com>
- <cf656a57-bb2f-447e-ac6c-0ab118606dc9@web.de>
- <CANAwSgT0jSQ3pFR3MQo-ENziqrm=yn-rFBTdHegmknMeFd44OQ@mail.gmail.com>
-Content-Language: en-GB, de-DE
-In-Reply-To: <CANAwSgT0jSQ3pFR3MQo-ENziqrm=yn-rFBTdHegmknMeFd44OQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:JP+0ZCKMYOjR8aO1oTsJPEz86qXToNlpnCsO4IX9JCEs5JYrmBp
- 2dL/tnFt2kFigzJ8jLxDdT4BGjU6hRSc4N1vuNhrNRioQr9krKPE7AN/QVieicESqyC+sb5
- wReBFp6p4ti7pWpQWBn+9nRjSPsQ2jWTbnMQ2SRaXgaYun7xENwJAh81nQUfHCIPOKtkwqR
- wR5wWfcsg8NNOPxxS1JWA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:yrJ98Oku78I=;qkEjbJmoDEDsERfZ28/Ij7VzFZQ
- Ut2nQv1BbpvXEgDnYfZvy4JKBcDPIPsfS6orEOuoUH1eq+YrGKqBLzWAtK+unbr5pR0GeDf2a
- JFa1J3FL7ZIOE8CPXO2LSdWF9YUmhspqJh9NsD2yX7gSMQ6pSsskAIJL1hOwx3TLpk/Jms3YV
- jsWtxYs8dlevsTYxjcCm+dcAxA2ygrSstN8q7yOeTMtl4inB8gEENLBZ7PQ+h1G/bWg94xOZ2
- p5EkY9thr8pcMtTaDqIXFn90pJop6olOBv7t+t2hvbYcvOh4sE9dG8KX3dBA/gp3D5qON6bzB
- XE6OVowUHqGDNgE7UCe5dDidfS8eA7gBXlmQ0iTD7rkcIVB138H4KiY+aCYckKnYr+05GPFV3
- xkJe5xQBJJtykV1x7O1Ht1Izhhg4eePVb2EeLo2wVmWCFpQ/OQonEjCCBgqscDc/8kNS7YYid
- nXSfx2fal9cupd33pz+PXbKqHmxvYgZtms4ZA3KH6LvwVMFbfxzFZvU+eOCyNuBTBSVJMbSAD
- yQFuupvzDvKJTvDn3+tPrNJs1B8dOpSpZWX0/dGIpLGlB2qW0TwE42bWat6l7a6onB9rOFxVp
- MtOIDSa5SDuAeY+FcJaGoU3bo+S3mnjFChRY165EpZ6vCg3bQurEoKNIdwWrRwmShMmBjjZZi
- wXekXi0c7no1/0TqRYKsX4LS/X3AFF5AUG6ohVywmRp8E6lM2vUh9h2ORmFs1AYkEZdVTOWzo
- RKr40xrxwlLKeO6kQ0scUl8G6qk09hN5LeCsJghT9iKwkyoYKAoxI0VVm92DQUD+sAy1hWYyE
- mw1OPQ0dj/9wSs+q5FDt/0uYRZScHARYlRXDv7Yd1omvk2Q+h9hBC8wCWW+ZsI4yVxmWX37ZX
- 7K6a+sn9kcNBdELiZvvERG6sJi0OBIez0mcYzb70MqObGBf/sOVid+Hyixy0wMR+zokKwDB+A
- 4GptKzDanaJP4F1JdQMm5j3h4P2QyH/9FJjl/C73sT01UMhD0oMy/eHhXu6GusOPaYN/rCXXQ
- i0bI2RGVp0auhc9qC14gMRl1/rBk0EQTDOwyIShfEamWV3Pon7/3+I577FXnXu6xUVtAXe48X
- ZPoyBzRHnw6I5qQq77dMBsf8zb7wfP0NPAr/4tauZujaeyJv9oJBV7KdeV8Ino9CTKEXrSBRY
- Kf92D0WkjqxBtTuG9Gh92V4euomoa4nkc6kg658ct44xPJH7xwwMGUhgzz25V1QpznPMHbCtq
- q8LSaTJwsZxtnjE74NMhnMZMqvGbxpKsGf0g3htdF+9Ze0cQVqIlkmkuwUB+pf++r6q7UIr5d
- VBAsgK9gBFoSdmvZLnCmHgovdSRD5DGRepA997agfKo9M/+CSboiS07HQBXCbfvipqWLYA9EW
- k/JAYifMkUdFiSj+NKiMwDDRJimITk6+UJ3ppMXpRBfxgu5bpWHcIN3kUpcuX+kKQ6+fFgmng
- vkwLGke7p0KgZIXg7BlTiEom0UKA+VgrnlxqO1VRhGSJpodVoZ2HSS1ewHIu0wHTR4GnZhkk4
- fTog9CK7roB4TaKGOXdRNb+NYg/6ydkz1bnP7vHpnk1eooiisEnjs/TGWPnBhEeQ4yPvEF4Lz
- 9uairvEVV5akjJ0wFupOgyDTWNfnTn4Wn757HoPrDZyiw8hLH59+KM+B1xhHUJdEEof95o9Vw
- pfIexhNzg3WQ/+QC+fvYZEWUTybi5ROuo2kVIumsJTMfYt6nPn/qjkIobKqljI51w4AcHtPTr
- 9IkuW7kWYXrDktcBT06ZqkaIEmXfZbLY8i0ZJbPfWlqImC9r1WASAe8loU+su9otQEUQhyZIl
- dKLHhNDAPwgbGTYWenT9UOtbJiHdw2VBrIVdv3dkSSOVFbz7F99uGUgamMnRdmJbs7T0r7DG/
- Sswy8yD838sZ3iR5DJdnbbJ0ZvoFGEjs6WzzLnKZLrf4RpA9LZgGsFd54r/G6vWm3BZqt8ao0
- UuLIYVQL0tRGvofhHAhxjl87UgVUV5vV9SO1i6f4OAAMyI5XNz/ZBOeKjMDyVM9FtJ4MFSJaH
- /jRMRo6ChGm5arkJOVlQS0VulNnLYr5NmcLlr+VJeUcSD4+JZKkVH9FLKPtQmkgeM4c4ANP29
- FMSDwG6v0OcIBOh9lRejblCX3p3Ra15248nyEa+iT2V1KuDhJsGch6htarQsfkBOv5YKkD+P5
- 6KbHexxw9+KBQXEbqqT/jE2imBLxT7aeTEaBFLWnroYzsa93NJUdHQpK9YImMZWxdGrOb3csz
- sZZaMh5R68cwa7UPJ0vVHf5At/63PZRyWB0OutlPQuZzx35jTZrsCqYxmyxB3rrGwjWZHvzv6
- YhywS3BcBJbCXWqvjcu9O9FUFM5y2WAt9GdJUrqhcT78Drty72l4KIfMerdJ0FrNRFLs48UX3
- /dGtR3bP+qaZ/QXQeNl+YbQslBI5Cg9oUeWAS3C9q/+tV8NVxge0OySrUHOpX0dvVoEnr/q+E
- WXQSeRX2MrD+L3M5YwE9gcQ/fOe/7oVPSWB8bgcqeFfOl1ddUvUiDT/UuNncufv1p1UFQk+4n
- 2aibMe42mmf7AhASoSsKidiweDxlbH7WISq/0IoXmTn/I3RWPwAGhzfp5Nrykpp+NX+LmFpRA
- bVgEobZAKDtBnHjA0hrZjK9PsOgA1t12h2Us1sQo9AZUUMq4wZ3yfQqj6FY7EgnTwhB8VEnYS
- mEbLISmSMr+PiQFvqfrZ5eclg190BHBWJSVh8NaLmM2JkNlk8uLQ7JoGFWl2qMNOv6Eovnq0C
- ypcroL/prLO/utF92KGR7s3v9/5iaPsJowwe+MsbvvVeoR5JpYglF8tVwAr2sThn8eccBG72y
- VxLnA+JvPUcNa7AEDf0bvJy6izaGfGvJP95ulkS9GTKXNv3oCZDK64/U7aFz9M7DA3CqRJkO0
- LLVSQE2InC2C8Me4QM5lxKAAvagXHn7ehSA6U9XnKVsm1KLiB0YS7deU0fuaCepY94giAiUz9
- JhKQyomYAFofOsKuvbVq/Xmuvx9yRtvuLkXyQYIwlN8blktSH5zucc5YhIugnuSYiaJK3BZqq
- DucXkpX7K6/Z1d3f8eudbuBOf59O7L4lzcroPZ00Zx5HyJ1Mg9qifNTevLph3b6QFiANvK0MO
- 8TtAPSpCw+a2Ojm+F0hHmxXNSBnw1YefBAXL1AEH6jGJ8zR0iQmu6YN85GMYpdz5bKLaK/m7I
- 29H3fVVrSkKN0Uqf3y2Gbr4r9P1+BibbHMWe7n2zlnOAs4pd1uGIKjiZyni4SF0r/FYvxSbAj
- 7HFTJZtmZQDRVhllloLobdDtrlwVWYS3oYvuoecaePO2STdLZ19xqwse4K0+4tVC/jDlokIRV
- BM/lELWwNwksOb14E6cxF9811GuOZN+HyIEIjxRkbEjYeGO28WK3XT9fdhay0UYWOwWXv2zVW
- K+nKD87/277zyN35+cFuf68ADCD1r1veuwXeeaPZPmB6NEuqrxiuwT2jlJKAWeNUGnkZ67bPT
- GLXdiIJK3K8+BkipXd/1EXsP8/EErU7ClgSDkzX7RuxwqEHERqTmHvbnLGW/K1HrywwYKlwxI
- bIkD6MiaVbqLhLO1ETXEXSzT0OfD5YpFHR+MCmbMY7DTg4Oqbxqb8T7gyrH68lPAs2PzIhse5
- lpvRDgovF7d3yf02FVs4l+yB8Yc60IQE0J0WzxmtviaJ5OcIS4RbBMhabVos1bFpyvJKtDwZa
- QjBB5VwJJl2ojPV/EDGEQpPpjOsSRdedm/3t9me+xvrps1e4KaPIVPksRtOh74Invhq+m5bip
- IuxdKNqhCZNq9Jsp732sVdVIOdjgHoMpkzZY13+7rJJq9nOS24j7E7Uf6oFgNLbFuUYeLHeEe
- /UQ/vXrEyEsr7cYY//AyIif2c9XnZ0OMg+VJZzVwIUZYVwcjOt7KNVdEgbnt9vlBlUocALn9l
- 1v6sk84+hKVTD/XeKwgCXsj7rMO9hAytq4vSheM7pHRuN+zPl+Cact7s9RCoZsEmPWF2JBON0
- plfEgV99gin0FR9Wvl7EPytHgmIFzbXOJHK6QAkgUQEQuqwMHyVPLJlHdxO837rf97XaRU87L
- v889DBVsH2EQfn3X7dwPZZZest0bJx4Oa7uU+2phvpkWaMwpwLzuVxkQiYEU18xze7oBz4uX9
- k1Z+EKVJFrMIKgmJ32H/YWFA3SLNl9ZwsrEeaEpvM7AbngSs2amwb5J6PaLIEdFtOvFZU0U4/
- 9iuhFjN9u2NJjziVpBbzxt5narHHHUlHiJfgaLl6VrRvyJDKmofNo1ZRAKiy1dIIxvrD3QaoR
- GPYJ+F+G2zHa6zhsdV+Cuy/SFV7PfFuHIOwkVb0b2zLRB10AavZv85M3Ap5uT9zPf7H/x8gwe
- m+p2H9K7sfyLx1E9PjJIV7H7ebKYiQSyPYozLEaf6c7LkY+nVYH+QTWkJwTLl/3GQVFN+O6pK
- JFgmjkxiaavzp1rytNPxnNykQL8eQGSI4rcuRTsqaLUCVvjCNcbdfSPuxoveF68G6rnucjw7W
- ydli/+kn+MjhbukYv9kAyf0Bo/tMp0QuC5CClXRW5jQPQbhhraN52gb+Pr+q2ChfsImm8d4nS
- fXSxTp1K2r7NaYsEZu+cR0t8mFvCUJlc4RuC8ZWL96qOh95b4hfLrt6C0OZpk28epEAF+koCI
- O6RG4isO/d+c++oIuQaWGupHa6q4adI/Buh7nZpAfmnwudq9BZGIMT+jOVpXZT8QBMLjuXBDE
- dIFRvKkgcToS8EaB5q1ZYXK45nV83CeGnTKa9rtgBGk7cTrM37h8kLPiJBdIuyat5Y+Tz2WhW
- aqU71rkqx03LDTOAJ9F8nSEVqXeoBwaGl7GO0QkRXRo792S0Wn/Pz2xAbC5mQpghltFOtd6r9
- 3ywWFPI0AVeVDSeKA8DXvr4qvVMRiKpfUl+/3EbwzdbDbkq4K9v977YAsoWxuBwMaEshQiOxI
- uTv4L6ts/XuvEwRvxoV3crzJVcGZTIVxZRXRaPJB2O7+dFcb8skBk0PQsmktjIXQnRuNprQ83
- oxyUAAV8S7dKZ3bEbh8LnaowA1fg3CaTN2o=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOTh9GgC/13M0QqCMBTG8VeJXXdiOzq3ddV7RBcyz/RApjiRQ
+ nz3pkSFl98Hv/8sIg1MUZwPsxho4sjdI438eBC+KR81AVdpC5SopVYORoZYNZ6ha8senDTB5iY
+ YnUmRTD9Q4OfWu97SbjiO3fDa8pNa308Js11pUqCgcNoXRKU3xl7qtuT7yXetWEsT/rSTdq8RJ
+ Bh0aKyTucWw19lXK6nUXmdJu9waCliR1u5fL8vyBu9zwqYmAQAA
+X-Change-ID: 20250519-ti-sdhci-omap-907f847f7530
+To: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Paul Barker <paul.barker@sancloud.com>, 
+ Marc Murphy <marc.murphy@sancloud.com>, Tony Lindgren <tony@atomide.com>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>
+Cc: linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, 
+ Charan Pedumuru <charan.pedumuru@gmail.com>
+X-Mailer: b4 0.14.2
 
->>>> I propose to take another source code transformation approach better =
-into account.
->>>> https://elixir.bootlin.com/linux/v6.17.1/source/drivers/base/core.c#L=
-5031-L5075
->>>>
->>>> Example:
->>>> https://elixir.bootlin.com/linux/v6.17.1/source/drivers/pci/controlle=
-r/cadence/pci-j721e.c#L444-L636
->>>>
->>>>         ret =3D dev_err_probe(dev, cdns_pcie_init_phy(dev, cdns_pcie)=
-, "Failed to init phy\n");
->>>>         if (ret)
->>>>                 goto err_get_sync;
->>>>
->>> No, the correct code ensures that dev_err_probe() is only called when
->>> an actual error
->>> has occurred, providing a clear and accurate log entry. =E2=80=A6
->>
->> Where do you see undesirable technical differences?
->=20
-> The primary issue I wanted to confirm was the function execution order.
+Create a YAML binding for ti,omap2430-sdhci and fix vmmc-supply
+property typo for a DTS file.
 
-The desired control flow can be clarified in some ways.
+Signed-off-by: Charan Pedumuru <charan.pedumuru@gmail.com>
+---
+Note: The property "ti,needs-special-reset" was not removed from DTS cause it will
+      disrupt the compilation for other compatibles as the node &mmc is used for all
+      compatibles for some DTS files.
 
+Changes in v4:
+- Removed type for the property pinctrl-names.
+- Link to v3: https://lore.kernel.org/r/20251011-ti-sdhci-omap-v3-0-9487ef2de559@gmail.com
 
-> since cdns_pcie_init_phy within dev_err_probe function
+Changes in v3:
+- Reverted the changes on removing ti,needs-special-reset, ti,needs-special-hs-handling
+  cap-mmc-dual-data-rate from the DTS.
+- Fixed a typo to resolve the errors identified by dtb_check.
+- Changed commit message to justify the modified changes.
+- Defined if-then statements for compatibles to add required properties.
+- Removed "ti-hwmods" property from the YAML.
+- Link to v2: https://lore.kernel.org/r/20250908-ti-sdhci-omap-v2-0-72927890482f@gmail.com
 
-One function should be executed before its return value will be directly p=
-assed
-to a subsequent function call, shouldn't it?
+Changes in v2:
+- Changed MAINTAINERS to "Kishon Vijay Abraham".
+- Renamed the YAML file name to "ti,omap2430-sdhci.yaml" from
+  "sdhci-omap.yaml".
+- Dropped unnecessary or unused properties from DTS and made these
+  changes as a seperate commit as there is no user of it.
+- Removed previously defined properties like ti,needs-special-reset,
+  ti,needs-special-hs-handling and cap-mmc-dual-data-rate from the YAML.
+- Changed the commit message to elaborate the reasons for modifications.
+- Removed the pattern property for pinctrl and redefined it in a regular format.
+- Modified the description of the property "clock-frequency".
+- Changed the subject line for the binding patch.
+- Link to v1: https://lore.kernel.org/r/20250523-ti-sdhci-omap-v1-1-695c6eeac778@gmail.com
 
+---
+Charan Pedumuru (2):
+      arm: dts: ti: omap: am335x-pepper: Fix vmmc-supply property typo
+      dt-bindings: mmc: ti,omap2430-sdhci: convert to DT schema
 
-> If other developers agree with the approach, I will modify this in a
-> separate patch
+ .../devicetree/bindings/mmc/sdhci-omap.txt         |  43 -----
+ .../devicetree/bindings/mmc/ti,omap2430-sdhci.yaml | 201 +++++++++++++++++++++
+ arch/arm/boot/dts/ti/omap/am335x-pepper.dts        |   2 +-
+ 3 files changed, 202 insertions(+), 44 deletions(-)
+---
+base-commit: ed61cb3d78d585209ec775933078e268544fe9a4
+change-id: 20250519-ti-sdhci-omap-907f847f7530
 
-There might be special coding style preferences involved (for a while).
+Best regards,
+-- 
+Charan Pedumuru <charan.pedumuru@gmail.com>
 
-Regards,
-Markus
 
