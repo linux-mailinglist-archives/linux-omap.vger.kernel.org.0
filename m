@@ -1,48 +1,81 @@
-Return-Path: <linux-omap+bounces-4730-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4731-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25A23BF5AA5
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Oct 2025 11:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D066EBF7AAC
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Oct 2025 18:31:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4D25D4E24F5
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Oct 2025 09:59:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 070334ECBE9
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Oct 2025 16:31:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05EC12EBB9B;
-	Tue, 21 Oct 2025 09:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD9F70824;
+	Tue, 21 Oct 2025 16:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fVbRG9Gb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Il/ciA+O"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4532E303A0F;
-	Tue, 21 Oct 2025 09:58:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77301531C1
+	for <linux-omap@vger.kernel.org>; Tue, 21 Oct 2025 16:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761040734; cv=none; b=jLwytwa06xFsGWvsPE0i0LzIiq5Im2Em66EhujMhBHrP6QRw3AFEHCFRSxQbGrGJ15D7v6oW+HWFT8LUFRRq86lG5flXYjW3ZXB5+KnwWR1rXUhA84UT15A9YRPxrEK+2Z0Sfk7LzlqWEgvPAkTO3yK+OtY1D8Dje+/iVWnCZFQ=
+	t=1761064257; cv=none; b=abEi6Te/C7sI7xdlRS+B4KqwVOZ9P/XkwBNGJryc8RMPNfuFSL7LvOvkPMVYsRCebIgmby8Z3Q7TxM5LY41i0GXxGPE65+yAWCKRhWal3rFvmj8DUFuWOFwwDzXZg1pZ51HDyDs3i/PQNpRoE5AmLumqAa2PI6Y93KIiB1hLans=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761040734; c=relaxed/simple;
-	bh=VhDUw5yaJciCbjfTsfry0m5nlobkCPkxCtvaLJ84lD4=;
+	s=arc-20240116; t=1761064257; c=relaxed/simple;
+	bh=SVNlz68IIT8b9yVQw+xofp80WWKKo5MkKmms7Dm2ptk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XzowYOP7bPD8stO14+MwPnoxzbnca9cvvqIPv959/mAzgMSG7mxOm0fsdcjdvZeSB1EGufaJSWn3j0IF11x2VdHIczaei9OoEu8zeZhdBnJRGaw4oNfBwENqXV7SAd8dJsRiMnwwpJlhrTnM1ZBcedOBN8vZAoPwdw3K6gqBfwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fVbRG9Gb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3EE6C4CEF1;
-	Tue, 21 Oct 2025 09:58:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761040733;
-	bh=VhDUw5yaJciCbjfTsfry0m5nlobkCPkxCtvaLJ84lD4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fVbRG9GbDK6/ieSHto40kPeuu6XPHaOIOH1TfPp40DLh04ClrQkXcLAfMYi15nrWM
-	 RF0gYHXtjcSOV/g4Ol9W7n0kedJjQc8fS5E/b13RsIS5VqiP2YbOB8m8ZOa/ApqoY5
-	 HVv2Tg2YBVcLJXZqjL60S6XYyvaSbexkpc/5kPcHv+2npHbB5ShUhs4/S8q8Zc/BH9
-	 hHn2s2GExtwi5f6dMh55LaVpxSlG9OxYP1YKkxTD2l/xL86/4M8cjVdfLojesC8ZQb
-	 +FTS8ecxs5ibaaCvzDvjMPF48DgwTv2WOE8QVA7yKBhT4RPOD20fIdjj8Z37HlWYa7
-	 +RaO3UewzxrVg==
-Message-ID: <beabb9f7-fcf4-4c1d-a259-6c48e82fbcf5@kernel.org>
-Date: Tue, 21 Oct 2025 11:58:49 +0200
+	 In-Reply-To:Content-Type; b=XVFNPOJplTkS48sAEXMeuxf0IXSzRAjQltb8EktV8gdPAEs4EcqL25QURquMRkR7Xeui/SQ6UBoe4683XNKAoIufd7IlS1ahKrjAQ4r3Y3l40A2PmYER34S9GvkE/19fPBXIh2vDdNCeLswnf62YCFr2ySajGxZYexkMndHMfMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Il/ciA+O; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b60971c17acso4676283a12.3
+        for <linux-omap@vger.kernel.org>; Tue, 21 Oct 2025 09:30:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761064255; x=1761669055; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZRzcTIyAA7EaA4ukA0+FnZHqzvKfstN5UrKhh4GSmJw=;
+        b=Il/ciA+OBTkfdgQbCWgKDDpQF7jYH4XHbEaRhtaIpuPtn9USg+JaRK17kB0vBTFacR
+         keb0A0nYw2zKppXKDNonPAFa4cvJP+vBpeYf18R6VkGq5j5QOpIEGSQpCeocCZmho2Vt
+         zVrTuURN4KOmRmwNXbqPZLtLHwnNqS/q+W+PNpubPUqSbXJ9AZcZwVFw3OM86EGZe0dK
+         xncq3HHqNISPWHkZl3aVHsp3KPEGnSMCqeA+vbUX+/1eUD3wlqHAZvRsvkJExTotsOXE
+         0oxuwxZvPRRFJVidAKsbVUkOHpXOLxnYZBYle+B0U+3+zw3yUsHV+BYRIhXFd19YIom2
+         LSsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761064255; x=1761669055;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZRzcTIyAA7EaA4ukA0+FnZHqzvKfstN5UrKhh4GSmJw=;
+        b=E6IvSfby+wIile9LYR/lS5oyQ3c+tMDHQU6MulzZ+Vjs6k58qUndSK8ORdCnSrAeVX
+         5yYX9Y50GpF+fR+zRbX3gmRWlhHUiAGNWssmn5Tiv8mNdXTHNQ05onExZhLiJ1HmF6IO
+         8MZpejyyClwwLs+UNFZWquibxzMVI8ZHoBRPE6Hd/PvXANDpc5iU2p7b84Hr0diK0yWD
+         EgTgfnnYXn67dpABrhGhAnXIEJ9cSg1fOkgfyT7YryKJsomSIVvO6Q1199sZTxWfsxmx
+         5ITa0izXCY5AfbH25sUVVpbRLqhv4PKm7jQswJGhl23vm7RP0v/5cYxim/uL2mTQbNGH
+         U7Ng==
+X-Forwarded-Encrypted: i=1; AJvYcCWDBIw7J62e9YOs+0qBphPdhvZRJzCAH3pQGZGGJ6zbS0qvBZedgnNA6COv9UyoOOzN2DIMfSAQQmCS@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjIrPrXGQG+pc7s/uz1eRO5J2nySu6FasDK/Dv92ua5TklRADH
+	tc6un3lBZ4v0vsRPWxB57ygycU8d1OKG/eE6czl50R9sea5ixlkkbmqN
+X-Gm-Gg: ASbGnctj0Rpy4+WH9XfOqwm9ygzSuA9vQiCoCdzjr0TQu2ztV8cTFKS5gX4UbA+fDhV
+	iQF0FR7lxyYGVx+SUgxI5S/Av06ooIX6bIawjmyiAIJzGWdT9QlXFWr1xygjHaOc4/Y/SN8oDGs
+	xwu7m9pQpXNEbDqMY+bNTfSachwcnsghnR7iKuvtHUfGvuianMLUfW4CX86/pfGOHYXEGhZuBqS
+	8e/T41Pob57ePGYc0V3IWdpDllN4w2mneAOHTTatwTBIb8Za9PV36m20Dc5FiuVB58Yp50RmYFB
+	M27/cY4VCVwiYQlwx9DfF/vgm73mqiwoKQaoNI2zcKM9wqTwhNVi2HcI+6Zy56j4qHqlkpJnJdy
+	AdxDRwVsnwAHJspTfs/qGRu0sLTgWFmWsZ66BRofmS9BKUCuj85XLvxmGxvc+qnU9ctmfbXPxS2
+	+o+3NWO/mKmfYyaZMGeh07mxe2nWzIQdnb120c
+X-Google-Smtp-Source: AGHT+IE/VQ5Q/ofHnJ/j4KGul/sNoONvhN8n2T0Y/oKQlZXIOL9+d55LsvXpf3gZePHh+6OlOX6FiQ==
+X-Received: by 2002:a17:902:d4c4:b0:26e:7468:8a99 with SMTP id d9443c01a7336-290ca121e99mr250476425ad.36.1761064254788;
+        Tue, 21 Oct 2025 09:30:54 -0700 (PDT)
+Received: from [192.168.1.4] ([223.181.116.113])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29246ebce3asm113645985ad.17.2025.10.21.09.30.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Oct 2025 09:30:54 -0700 (PDT)
+Message-ID: <df11a312-0e1a-44b4-9781-54cbc8396da8@gmail.com>
+Date: Tue, 21 Oct 2025 22:00:48 +0530
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -50,135 +83,79 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] dt-bindings: mfd: twl: enable power button also for
- twl603x
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: akemnade@kernel.org, Lee Jones <lee@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, Tony Lindgren
- <tony@atomide.com>, Kevin Hilman <khilman@kernel.org>,
+Subject: Re: [PATCH v4 0/2] dt-bindings: mmc: ti,omap2430-sdhci: Add json
+ schema for the text binding
+To: Rob Herring <robh@kernel.org>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Paul Barker <paul.barker@sancloud.com>,
+ Marc Murphy <marc.murphy@sancloud.com>, Tony Lindgren <tony@atomide.com>,
+ Kishon Vijay Abraham I <kishon@kernel.org>, linux-mmc@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-input@vger.kernel.org, linux-omap@vger.kernel.org
-References: <20251020-twl6030-button-v1-0-93e4644ac974@kernel.org>
- <20251020-twl6030-button-v1-1-93e4644ac974@kernel.org>
- <5fd43d2c-3a08-4a51-abb6-38883ee86bf2@kernel.org>
- <20251021104515.5e25bec1@kemnade.info>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ linux-omap@vger.kernel.org
+References: <20251019-ti-sdhci-omap-v4-0-fdc63aaeb083@gmail.com>
+ <20251020142710.GA576827-robh@kernel.org>
+ <46aa84cd-63cc-4263-9061-021fa3205b87@gmail.com>
+ <CAL_JsqKH2NTvXGPoimpVp=-yvcQgbXSoxKY6AO16WgJHSeOT5A@mail.gmail.com>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251021104515.5e25bec1@kemnade.info>
+From: Charan Pedumuru <charan.pedumuru@gmail.com>
+In-Reply-To: <CAL_JsqKH2NTvXGPoimpVp=-yvcQgbXSoxKY6AO16WgJHSeOT5A@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 21/10/2025 10:45, Andreas Kemnade wrote:
-> On Tue, 21 Oct 2025 09:10:28 +0200
-> Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> 
->> On 20/10/2025 14:31, akemnade@kernel.org wrote:
->>> From: Andreas Kemnade <andreas@kemnade.info>
+
+
+On 20-10-2025 21:28, Rob Herring wrote:
+> On Mon, Oct 20, 2025 at 10:44 AM Charan Pedumuru
+> <charan.pedumuru@gmail.com> wrote:
+>>
+>>
+>>
+>> On 20-10-2025 19:57, Rob Herring wrote:
+>>> On Sun, Oct 19, 2025 at 01:04:36PM +0000, Charan Pedumuru wrote:
+>>>> Create a YAML binding for ti,omap2430-sdhci and fix vmmc-supply
+>>>> property typo for a DTS file.
+>>>>
+>>>> Signed-off-by: Charan Pedumuru <charan.pedumuru@gmail.com>
+>>>> ---
+>>>> Note: The property "ti,needs-special-reset" was not removed from DTS cause it will
+>>>>       disrupt the compilation for other compatibles as the node &mmc is used for all
+>>>>       compatibles for some DTS files.
 >>>
->>> TWL603x has also a power button, so add the corresponding subnode.  
+>>> I don't understand. AFIACT, "ti,needs-special-reset" is only used for
+>>> the hsmmc driver/binding. But this series for for the sdhci
+>>> driver/binding. So shouldn't the property be removed from sdhci nodes
+>>> (and the binding), but kept for hsmmc nodes?
 >>
->> No, we don't add subnodes just because there is a power button. This
->> needs broader explanation, see also my further comment.
 >>
-> Hmm, what is the general pattern to follow if a mfd device has some
-> functionality which depends on some optional external components?
-
-Please describe it better - how these nodes depend on external
-component? The power button logic/IC is in this device always. It is not
-optional.
-
-> The might be a power button connected to it or not. I find it ugly
-> to have non-existent stuff in the system.
-> In general, yes I understand the argument against the subnode.
+>> Yes we can remove that property from sdhci , but &mmc node in DTS is common for all mmc drivers and this "ti,needs-special-reset" property is defined there for one board, so even when I remove it from DTSI for sdhci nodes, the DTS file still contains this property in &mmc node which is also common for other mmc drivers, so even if we remove that property for sdhci node, we still need to define it in YAML to resolve dtb_check. The issue here is not removing the property from sdhci node in DTSI file, but to remove it from &mmc node from a DTS file which is common to all mmc drivers.
+>>
+>> Here is the DTS node (ti/omap/am5729-beagleboneai.dts) which contain that property and is common for all mmc drivers.
+>> &mmc2 {
+>>         status = "okay";
+>>         vmmc-supply = <&vdd_1v8>;
+>>         vqmmc-supply = <&vdd_1v8>;
+>>         bus-width = <8>;
+>>         ti,non-removable;
+>>         non-removable;
+>>         mmc-pwrseq = <&emmc_pwrseq>;
+>>
+>>         ti,needs-special-reset;
+>>         dmas = <&sdma_xbar 47>, <&sdma_xbar 48>;
+>>         dma-names = "tx", "rx";
+>>
+>> };
 > 
->>>
->>> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
->>> ---
->>>  Documentation/devicetree/bindings/mfd/ti,twl.yaml | 40 ++++++++++++++++++-----
->>>  1 file changed, 32 insertions(+), 8 deletions(-)
->>>
->>> diff --git a/Documentation/devicetree/bindings/mfd/ti,twl.yaml b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
->>> index 776b04e182cb2..3527fee32cb07 100644
->>> --- a/Documentation/devicetree/bindings/mfd/ti,twl.yaml
->>> +++ b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
->>> @@ -55,6 +55,15 @@ allOf:
->>>  
->>>          gpadc: false
->>>  
->>> +        pwrbutton:
->>> +          properties:
->>> +            compatible:
->>> +              const: ti,twl4030-pwrbutton
->>> +            interrupts:
->>> +              items:
->>> +                - items:
->>> +                    const: 8  
->>
->> What is the point of defining const interrupts? If they are const, then
->> it is implied by compatible and defined in the driver.
->>
->> Anyway, double items does not look right here. This is an odd syntax.
->>
-> Quoting Rob:
-> As 'interrupts' is a matrix, this needs to be:
+> I'm pretty sure that's not how &mmc2 works and you are confused. I
+> would suggest you do a dtb->dts pass and compare the results.
+
+Okay, then I will remove ti,needs-special-reset property for sdhci node, above mentioned DTS and from YAML too.
+
 > 
-> interrupts:
->   items:
->     - items:
->         - const: 8
-> 
-> https://lore.kernel.org/linux-omap/20240318150750.GA4000895-robh@kernel.org/
+> Rob
 
+-- 
+Best Regards,
+Charan.
 
-OK, this answers second part but I don't understand why even having this
-in DT. If this is fixed, should be implied by the compatible?
-
-
-Best regards,
-Krzysztof
 
