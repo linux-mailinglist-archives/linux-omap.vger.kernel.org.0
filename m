@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-4727-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4728-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D164BF4D19
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Oct 2025 09:08:01 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7304BF4E31
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Oct 2025 09:15:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3998318C1535
-	for <lists+linux-omap@lfdr.de>; Tue, 21 Oct 2025 07:08:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 971CD501352
+	for <lists+linux-omap@lfdr.de>; Tue, 21 Oct 2025 07:11:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA7A273805;
-	Tue, 21 Oct 2025 07:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743FC274FE3;
+	Tue, 21 Oct 2025 07:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ouR3sGLV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R5nfTjW7"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E0D1A3166;
-	Tue, 21 Oct 2025 07:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E8F27381C;
+	Tue, 21 Oct 2025 07:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761030473; cv=none; b=qe02Vxqq+qli/UEYCM4tmux8QzbBlguBStYQVnwYJS/j8R6IrZY3KW+FNN4+C/J2hemHdVkOMC9UfrS26KJyeMXYv3M7eVM5YAhDQt8ODcN0H/CsjyhQa+AHeW7MOBOSm5VqQeV5P/X8+sh5bcgDHeojc27JhA5BvpfODweXnaY=
+	t=1761030634; cv=none; b=dDsjFTv2t+uP5stSqTCGO6CmVy+Voqi5oZvHo7OuLoBPj2aM+hkqj/JoTuRbglL70ikIRXHFWn6Zrz5pa/KKNoqL/VVre/QXsB/OlUF1hd+xjRFqsK3Rk0WmpZ1rIQuYVJIKpYhOG7pMQU0Kren9x5RffsWx4fh6pK2XcgfRrug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761030473; c=relaxed/simple;
-	bh=s1K4Ls6o27DPdNTDdt+xPD5GiT0t0JCDpQyybGPS+VU=;
+	s=arc-20240116; t=1761030634; c=relaxed/simple;
+	bh=IexipIKPz84paGV54JGuViZnlN5Ti5JlqTrlKqDNRGc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OQKCs9LfUfhcxIH4PGoANDicREN7t7lT6e/gjec0+d44n/LWSAI8NMsmSJXIoKpQ5g+GJLCUCeKLcB9K/wtm3oSyW41m0hgMCK8i9qIAH4RI6HLemM7TwiFRkYRrexRJG097y4Bn2BEP1L/zy75AgnvxxXB6aBjkASXxl60yZbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ouR3sGLV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CAA2C4CEF1;
-	Tue, 21 Oct 2025 07:07:49 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=aPZcRu6hg2VjndcbuypgDKUeb0E8VmxoiFhpb5+2YFu09TZPqDa+SX2ucp7po5JF2aGUuHfzaf6bnS65Y2I3oFm3f6h2B2NezsPIRC7ZVXDYpV/WzmQDpxHfpKwMvLzonlf/gzEdLJoI3US32IPAYzJPxs9PzL63I2BQv2WWQ98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R5nfTjW7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A467BC4CEF1;
+	Tue, 21 Oct 2025 07:10:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761030472;
-	bh=s1K4Ls6o27DPdNTDdt+xPD5GiT0t0JCDpQyybGPS+VU=;
+	s=k20201202; t=1761030633;
+	bh=IexipIKPz84paGV54JGuViZnlN5Ti5JlqTrlKqDNRGc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ouR3sGLVmejtPlxj5NwaeX9L9f+AXZdWsjbaFZ/Gg9ywnEI+zpTGd/OyTuNl/BO7v
-	 lJQpeOKntmG5gutoTuyUb/cgo9G7poST+hh0pe0umlTc7roOtmL6yG3DWWkCjRrKUa
-	 Uz8bXXbRPUIe+xQ94SGvzA48xtVdShMUj5o3qfzuRZ0D0SETrJ/7uEDz2kpi4PAscz
-	 b2C/eA6Obiuvx0yiJs6Nv09gaP8R/oK6L872GvCP9MqcoSbNIuMQKz5aJvkIZ4xZnW
-	 zM9YLf1NF/gHfo60md/PAkyGMKXeIxJtrvhRTElhICBrlKaoiXbfSk4guKR47OY1IY
-	 Q9A2t1KTX961w==
-Message-ID: <7a21fb48-0795-4f2f-bb66-8c6c31e71e5d@kernel.org>
-Date: Tue, 21 Oct 2025 09:07:47 +0200
+	b=R5nfTjW7JOAMQiRnB4KgDvGf1N7KIvBzpdiew7DDnt/6/upan9vZ2Xeh2Sq3j6qHZ
+	 RDwzLCSIrugu99iJVlisBmMnMu4z1CZICq54RgzadKKmbRiPgD7i9gh47aSAKw1lef
+	 2KiSRT6fTc9+DbDi3np5dcV7CK25pKJWh7rQk4rLvWrKo7JBIjp/Z8gW8cQIHg7Pex
+	 ATR1ViliWqzY1KAUOfsh080zuLLStqrSTwqHhP8nA1Q3F+Uv+6vLpbUnTPq14bWpsh
+	 8LDZ+TiDV6a1gjiXcHiSVq1GwlrZaQ9eLJ+6c/NXTczNQmMvw1k6G/GfeMxTXf9anp
+	 0lItMAMTZ2ckA==
+Message-ID: <5fd43d2c-3a08-4a51-abb6-38883ee86bf2@kernel.org>
+Date: Tue, 21 Oct 2025 09:10:28 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -50,7 +50,8 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] Input: add TWL603x power button
+Subject: Re: [PATCH 1/3] dt-bindings: mfd: twl: enable power button also for
+ twl603x
 To: akemnade@kernel.org, Lee Jones <lee@kernel.org>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Andreas Kemnade <andreas@kemnade.info>,
@@ -59,7 +60,7 @@ To: akemnade@kernel.org, Lee Jones <lee@kernel.org>,
 Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-input@vger.kernel.org, linux-omap@vger.kernel.org
 References: <20251020-twl6030-button-v1-0-93e4644ac974@kernel.org>
- <20251020-twl6030-button-v1-2-93e4644ac974@kernel.org>
+ <20251020-twl6030-button-v1-1-93e4644ac974@kernel.org>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -105,42 +106,68 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20251020-twl6030-button-v1-2-93e4644ac974@kernel.org>
+In-Reply-To: <20251020-twl6030-button-v1-1-93e4644ac974@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 20/10/2025 14:31, akemnade@kernel.org wrote:
-> +static const struct of_device_id twl6030_pwrbutton_dt_match_table[] = {
-> +	{ .compatible = "ti,twl6030-pwrbutton" },
-> +	{},
-> +};
-> +MODULE_DEVICE_TABLE(of, twl6030_pwrbutton_dt_match_table);
-> +
-> +static struct platform_driver twl6030_pwrbutton_driver = {
-> +	.probe		= twl6030_pwrbutton_probe,
-> +	.remove		= twl6030_pwrbutton_remove,
-> +	.driver		= {
-> +		.name	= "twl6030_pwrbutton",
-> +		.of_match_table = of_match_ptr(twl6030_pwrbutton_dt_match_table),
-
-Drop of match ptr, you have a warning here.
-
-> +	},
-> +};
-> +module_platform_driver(twl6030_pwrbutton_driver);
-> +
-> +MODULE_ALIAS("platform:twl6030_pwrbutton");
-
-You should not need MODULE_ALIAS() in normal cases. If you need it,
-usually it means your device ID table is wrong (e.g. misses either
-entries or MODULE_DEVICE_TABLE()). MODULE_ALIAS() is not a substitute
-for incomplete ID table.
-
-
-> +MODULE_DESCRIPTION("Phoenix Power Button");
-> +MODULE_LICENSE("GPL");
+> From: Andreas Kemnade <andreas@kemnade.info>
 > 
+> TWL603x has also a power button, so add the corresponding subnode.
 
+No, we don't add subnodes just because there is a power button. This
+needs broader explanation, see also my further comment.
+
+> 
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> ---
+>  Documentation/devicetree/bindings/mfd/ti,twl.yaml | 40 ++++++++++++++++++-----
+>  1 file changed, 32 insertions(+), 8 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/mfd/ti,twl.yaml b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+> index 776b04e182cb2..3527fee32cb07 100644
+> --- a/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+> +++ b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+> @@ -55,6 +55,15 @@ allOf:
+>  
+>          gpadc: false
+>  
+> +        pwrbutton:
+> +          properties:
+> +            compatible:
+> +              const: ti,twl4030-pwrbutton
+> +            interrupts:
+> +              items:
+> +                - items:
+> +                    const: 8
+
+What is the point of defining const interrupts? If they are const, then
+it is implied by compatible and defined in the driver.
+
+Anyway, double items does not look right here. This is an odd syntax.
+
+> +
+>          usb-comparator: false
+>  
+>    - if:
+> @@ -95,7 +104,14 @@ allOf:
+>              compatible:
+>                const: ti,twl6030-gpadc
+>  
+> -        pwrbutton: false
+> +        pwrbutton:
+> +          properties:
+> +            compatible:
+> +              const: ti,twl6030-pwrbutton
+> +            interrupts:
+> +              items:
+> +                - items:
+> +                    const: 0
+
+So everywhere interrupt is defined by parent compatible.
+
+BTW, you do not have any resources here, so the child node should be
+folded into the parent.
 
 Best regards,
 Krzysztof
