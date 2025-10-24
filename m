@@ -1,177 +1,167 @@
-Return-Path: <linux-omap+bounces-4744-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4745-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09CC2C045C3
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Oct 2025 07:07:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90785C04EC9
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Oct 2025 10:03:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AB6D64E1D44
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Oct 2025 05:07:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5056C401385
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Oct 2025 07:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556E7245023;
-	Fri, 24 Oct 2025 05:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3EF2F7AD7;
+	Fri, 24 Oct 2025 07:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KrEj62U+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZP5q4gcC"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630E327453
-	for <linux-omap@vger.kernel.org>; Fri, 24 Oct 2025 05:07:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D732F7AB9
+	for <linux-omap@vger.kernel.org>; Fri, 24 Oct 2025 07:57:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761282435; cv=none; b=ra3xtgHuU/UV7sXwsP6IAkC9q9JGrAVKRe0vuNKGHKmsq0yu362bXPIxy9jNavtSDDGjvSAzUL+YPKOUMv1d1DYlyaJq8rbjdcN7RIXISGkODTlS3mrcqgrRmYSF96Bz5ldTzxVG/wPX1Js9xY7hPuu2tmVa/0/rIrEqgL3QVUM=
+	t=1761292643; cv=none; b=iLjVgu8pdRe++lzKHzoD9V/VhXb1Ryytj3G89dJNa6t8dOGbszgxTQEhNPODSzTVrAOYvtK5HTpFEGHYpn1ejLudSRxG/KXoc2SsBi9OS93As7pIa3k2XummjU432OtBlBHFZPQ5zPIx3AwHN7a23jxR8JQvarIzD/02hWLRYi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761282435; c=relaxed/simple;
-	bh=KOf5eTT11tPiB1wFmIqqQb2LaNMmdMl4equqT2XQSgo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c5eN5IW/hEmgtcq55f/QTIszP6Cxp4EH6YoyBxFnszxNesSEcvWQeV0cMc7NcVCdJ+iJFf+GMG7E5BowJ6rQ7Tmlh+oeuC7CKffF0uQ9y5tOlWttDH4mSBmqpFFnuuzYTbySeqrB37W1So2IE2lQMvj1KynQBvPyouZy6d3VzmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KrEj62U+; arc=none smtp.client-ip=209.85.214.174
+	s=arc-20240116; t=1761292643; c=relaxed/simple;
+	bh=TJaSEjKE+CKYl2acjXXkTcFRDFXy50ypbA4mzY0NH34=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=kJFK7gFTYn/4/8ehPSK8gISeaX+ymrBEv/TiEh0XkVuooJV9/3PuKIGlpU8U9oSA1TlXCVTeKkToB5X4VUI8kiI1gWuKwx0aTRIjGdAeqDdDq9cnwltnBQVnZvTTGhBhWamoLVimKbrQhOnDiWosHoEkY8FOMIP+HyED4HpM31Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZP5q4gcC; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-29470bc80ceso17383675ad.1
-        for <linux-omap@vger.kernel.org>; Thu, 23 Oct 2025 22:07:13 -0700 (PDT)
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-290aaff555eso17453165ad.2
+        for <linux-omap@vger.kernel.org>; Fri, 24 Oct 2025 00:57:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761282433; x=1761887233; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4dG92IcCVVEabZWYsVaYXSiYtILZo3vNbT6RrXxXUAA=;
-        b=KrEj62U+wZCAW4o0pOqJ3kxshHA+YGyvNmEmi9+BTecmG32HaeA38Mi/UNkUstlQEQ
-         ErApVwqZsVg2gFi36uwH6suFiTqt/F01iuQyCkLQnJK15icYyfhGhKQmX8EXL/mU2q7A
-         /tgwmSrUG1O/6x99cqtbjA/Nho3+gSNNwY38qq3q+Sm9pqZyFEVrFBs2An4OPrg8PPvI
-         +EBbH6iUVsakG0PoE8FlwkZs5xzqV2LJ1CRhR4luzD4kFT1xGmjJFPUkUwSU+zh/1XM1
-         nh0S2sFziglqDoXYYNY7QjpaIcvuw+oMuuNFtC68Bf3whNX4I8E9shCRnxyCiVx2tVay
-         UY2g==
+        d=gmail.com; s=20230601; t=1761292640; x=1761897440; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=s87dYxMf5XJtMF4s03dPIhXUNwiwE7LkdwCFsT1npMU=;
+        b=ZP5q4gcC3LSh6fJQQ85cMsl7bxppXPLHfNYddjsG0af6n4jP0Dc3q8Nfl/2viNFiYa
+         O+Etl9RqCFto7gkF1eTpD/hgIsgqVghg5vevZWX991MuDhDI760Si2hxkDfwtUgJvaK3
+         BqQsn/4/RY9bEcHl9aM9zaU8Po00rhKhus8ElAV06Dqu1tWePZdrCFbbSf4TBJMvT2Nj
+         Rzo0IonbvFZQ/hzSXDXJmCU5aZSm/ZEcikjzIEQaELergGpW/b4LeODvZ+K7U+bLDHiw
+         K+y61wf+q1UyHyfySZY4r3mKrKv3dKDm1FxVGkx1+ogDVLH7zsaP5ivJnncNCllelIO7
+         2bIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761282433; x=1761887233;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4dG92IcCVVEabZWYsVaYXSiYtILZo3vNbT6RrXxXUAA=;
-        b=psS71ITy9G91GvWWTqKFSSnpUH+z/EsGZjWDmPjnVFJWyuzpt9A9RylpYPbGZec4Xc
-         lb6jI9DXBI5hrA5g4h7lnR45QX0czfAfnof0mLvCPIqz6tCY9vMyqfhqARrD5XTPwGR/
-         5hHiTq7HwzkzSRpQIeq3AuNMCY/NFHL4gxR58qzLbb6n1XaqPQ0sXqs/BLD0mRfyS7tq
-         y4F+BUSAgOFrDOoSUfBivFYXSpg1C0uM5kSfTaRYmfvLLPB1HZosXwxgP7IDReMxV4Mv
-         G4vfDorPO5GS8JfswjN83sqTQsv5w6YVYN6Qb0S9PuQFsy19g2sIVGRU26dRPMssPdzt
-         a6Pg==
-X-Forwarded-Encrypted: i=1; AJvYcCVs0NjdlQAzoL1ddhlV2QbsF7ubjzjpUdDePTzWHjcB0kPZhdmAubr9J6id5xjAxC42AVjVzKTvbUY1@vger.kernel.org
-X-Gm-Message-State: AOJu0YyU1Iwt769xQRGO/XMQ7M5IsclQXXGxBNwl2TkDBR+tgpqU5EyV
-	d4upk/Fvpn/ooKFCCvUKxCIQmWNXbnMz4QT/9vcmOitFYJXSoYFopasU
-X-Gm-Gg: ASbGncuhVMZDN6+yIQPbg05KSjSiZRfd7Gyq2oJWbUbmKEAQ5IsIgpRY7d5PURYTvAB
-	5xkcm1YLHAcj5zD73+p/+681rLmYysbXCpSxhrfS0P7agw1OjLFyWILCozxKfXQ6l5t+nXaunSW
-	qDfjtEc+lj6kjmwca+HMWq96kJPIhTeDIckfMV7xwCxFM5UZzmRIqQheuRbKDuMyZm7mcF2Nh5w
-	hJWGlohtQRw/cDMMPrcA/SYOEspEmbLv6gz1AGysyCLjduHzSus4qEF4rOwbhBG3g6FKDPZjJnd
-	x70FwrJHWdoCZZvWjbWW8NmbR69WAL3iizaXizK8O9k1/d1qvCP89zBLoU161G4L6e3I9ZnBj/r
-	fiU4oeVhcSRSDaUtyGsJhvBQjGI38e8pRhW9PZ8C33NGdf/xvsr2lbxTnS0/nQqEitkFWuGjhig
-	5ELEqyY5+OuhEqGnZCI5mmQPNKAv6hzzz0
-X-Google-Smtp-Source: AGHT+IGBgs2rmcQIySneHl58HLdSVRyoiObGynjzZrftZshrhpjwRJbzVvC89kZLGHBalw0a0P9C5w==
-X-Received: by 2002:a17:903:1ae3:b0:267:cdc1:83e with SMTP id d9443c01a7336-29489e10c88mr17625235ad.15.1761282432595;
-        Thu, 23 Oct 2025 22:07:12 -0700 (PDT)
-Received: from [192.168.1.5] ([27.7.191.116])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2946e9dd105sm40716945ad.24.2025.10.23.22.07.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Oct 2025 22:07:12 -0700 (PDT)
-Message-ID: <cc3ff4ce-1ea5-42a5-810b-c330b1fbb3a4@gmail.com>
-Date: Fri, 24 Oct 2025 10:37:06 +0530
+        d=1e100.net; s=20230601; t=1761292640; x=1761897440;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=s87dYxMf5XJtMF4s03dPIhXUNwiwE7LkdwCFsT1npMU=;
+        b=wjiXmMVdUNU0Nb3UFWpJkRQdaVECKKk4Wz0O2g2wLDAr1xdbtF95SAVQdwpxuupR2p
+         5t8fYQP8QRpt9wi7n/6kVXjY3Zp3elZ8hI5Um2JhKgTOsxlCEiAqK3PNlWPbD2A685nl
+         AU7w/5lTMtoAx8hsiiX/bGiVSt+61xBnRzOUa9b479w1m9ZvpccLrHyUTwBeZv3LeK5F
+         JFmsVQR59ZFm5uamA3fyzpMYmqP3pxF8YW80XIJncvofS0AFOKU0OGnFkxwr9R6uquLG
+         5z/pnU4lFB3sSYkZv27Nhqfqva09mBtUHJ4v6Fz09B8Y85SUj42LlSN13MPh0wAJS2N2
+         ZNFA==
+X-Forwarded-Encrypted: i=1; AJvYcCUc6UPHatHwYb/51Vab0u2hRlfLFGVaFOSBCrl3HJK4EQC8e1nYDmpKt8j5hrXJSqy4kyfKNIa61aho@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3cfhyoE97HjxPO5wbGj8/CijLrfu06WMvnYBCaFsN1mTXeBVd
+	6uVEGHPakjzgLlUoLoR/zIoznsbjzcqCC8Go5Fqv4qqZ0MP7Vm0Os5zc3D2PzA==
+X-Gm-Gg: ASbGncukNnYXS8IIrPRSry+XJ4pYz59j8HAmN1Tbv9GBn8THENLqfmjgT8yAf1JLZYJ
+	upkuRAKgCDb+N2iwU9tau0nX0vsMGKVDU9UFNZUPdvT5w7nzdmD4SlmhgPpNTUJj0Yn7YlvNtPu
+	uDaySxL9BqORTdLxAvsAUkpK6lstDF1DI142IDa5xBoq9ar03y1oHHBlSmlX5nxQcbJJgkIgxVn
+	A3RRaxBrPYlxPJHaPsagUDSKQQP0CVMymdFL/aNDcjG4FrYhVLDy7qNIbUjqH5rhRu6VDUVETHt
+	ZKBv2lfsSRL3BgIR8R5+i4qgJTfnS3/NMsHdOBumSQxLjMuTl5l8lLdVsafXVDtIe3lACMHV97g
+	qioLmKyFWoqmrm3K/rvcs+jEiXi1gdfSTqyhV4XGdIEZKdno0sEbaTiNqLy8i5ehmf0gPJLU/aT
+	j4N/P78UQLvjTpfEOcNnMhOx4P91RMJzg=
+X-Google-Smtp-Source: AGHT+IEdrf9PFaVdu2IVtpCx1gbcOMrajzzsslPU/SnB8ZKTCBPtAF+KqI/4qBnjQdn1ghA3PMmmeA==
+X-Received: by 2002:a17:903:8c7:b0:26b:3aab:f6bf with SMTP id d9443c01a7336-290cc2f83fcmr355173915ad.42.1761292640576;
+        Fri, 24 Oct 2025 00:57:20 -0700 (PDT)
+Received: from Black-Pearl.localdomain ([27.7.191.116])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2946dfd045esm46608205ad.64.2025.10.24.00.57.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Oct 2025 00:57:20 -0700 (PDT)
+From: Charan Pedumuru <charan.pedumuru@gmail.com>
+Subject: [PATCH v5 0/3] dt-bindings: mmc: ti,omap2430-sdhci: Add json
+ schema for the text binding
+Date: Fri, 24 Oct 2025 07:57:07 +0000
+Message-Id: <20251024-ti-sdhci-omap-v5-0-df5f6f033a38@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/2] dt-bindings: mmc: ti,omap2430-sdhci: Add json
- schema for the text binding
-To: Rob Herring <robh@kernel.org>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Paul Barker <paul.barker@sancloud.com>,
- Marc Murphy <marc.murphy@sancloud.com>, Tony Lindgren <tony@atomide.com>,
- Kishon Vijay Abraham I <kishon@kernel.org>, linux-mmc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-omap@vger.kernel.org
-References: <20251019-ti-sdhci-omap-v4-0-fdc63aaeb083@gmail.com>
- <20251020142710.GA576827-robh@kernel.org>
- <46aa84cd-63cc-4263-9061-021fa3205b87@gmail.com>
- <CAL_JsqKH2NTvXGPoimpVp=-yvcQgbXSoxKY6AO16WgJHSeOT5A@mail.gmail.com>
- <879da8d0-1ea5-4495-90e5-03b55aa91362@gmail.com>
- <CAL_Jsq+ZmvVHvmLYKQD0fn74+9WcnmDVAqC1Q48HFLVN35tuFQ@mail.gmail.com>
-Content-Language: en-US
-From: Charan Pedumuru <charan.pedumuru@gmail.com>
-In-Reply-To: <CAL_Jsq+ZmvVHvmLYKQD0fn74+9WcnmDVAqC1Q48HFLVN35tuFQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFQx+2gC/13QwWoDIRDG8VcJnjtBR121p75H6MG6Y3agmw1rk
+ JSw714TShM8fgO//2FuotDKVMT77iZWqlx4ObVh33YiTfF0JOCxbYESrbQqwIWhjFNiWOZ4hiB
+ d9sZlZ7UUzZxXynx99A6fbU9cLsv688hXdb/+lVB3papAwRBsGohics5/HOfI3/u0zOJeqvjUQ
+ fpeI0hwGND5II3H3Gv9r5VUqte66WC8o4wjWRt6bV51/4Nqms5jGnSM9CW9ftXbtv0CjbTk9mQ
+ BAAA=
+X-Change-ID: 20250519-ti-sdhci-omap-907f847f7530
+To: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Paul Barker <paul.barker@sancloud.com>, 
+ Marc Murphy <marc.murphy@sancloud.com>, Tony Lindgren <tony@atomide.com>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>
+Cc: linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, 
+ Charan Pedumuru <charan.pedumuru@gmail.com>
+X-Mailer: b4 0.14.3
 
+Create a YAML binding for ti,omap2430-sdhci and fix vmmc-supply
+property typo for a DTS file.
 
+Signed-off-by: Charan Pedumuru <charan.pedumuru@gmail.com>
+---
+Changes in v5:
+- Removed "ti,needs-special-reset", "ti,needs-special-hs-handling" and
+  "cap-mmc-dual-data-rate" properties from sdhci node and YAML.
+- Removed if conditon for the property "ti,needs-special-reset" from YAML.
+- Link to v4: https://lore.kernel.org/r/20251019-ti-sdhci-omap-v4-0-fdc63aaeb083@gmail.com
 
-On 23-10-2025 23:52, Rob Herring wrote:
-> On Thu, Oct 23, 2025 at 10:40 AM Charan Pedumuru
-> <charan.pedumuru@gmail.com> wrote:
->>
->>
->>
->> On 20-10-2025 21:28, Rob Herring wrote:
->>> On Mon, Oct 20, 2025 at 10:44 AM Charan Pedumuru
->>> <charan.pedumuru@gmail.com> wrote:
->>>>
->>>>
->>>>
->>>> On 20-10-2025 19:57, Rob Herring wrote:
->>>>> On Sun, Oct 19, 2025 at 01:04:36PM +0000, Charan Pedumuru wrote:
->>>>>> Create a YAML binding for ti,omap2430-sdhci and fix vmmc-supply
->>>>>> property typo for a DTS file.
->>>>>>
->>>>>> Signed-off-by: Charan Pedumuru <charan.pedumuru@gmail.com>
->>>>>> ---
->>>>>> Note: The property "ti,needs-special-reset" was not removed from DTS cause it will
->>>>>>       disrupt the compilation for other compatibles as the node &mmc is used for all
->>>>>>       compatibles for some DTS files.
->>>>>
->>>>> I don't understand. AFIACT, "ti,needs-special-reset" is only used for
->>>>> the hsmmc driver/binding. But this series for for the sdhci
->>>>> driver/binding. So shouldn't the property be removed from sdhci nodes
->>>>> (and the binding), but kept for hsmmc nodes?
->>>>
->>>>
->>>> Yes we can remove that property from sdhci , but &mmc node in DTS is common for all mmc drivers and this "ti,needs-special-reset" property is defined there for one board, so even when I remove it from DTSI for sdhci nodes, the DTS file still contains this property in &mmc node which is also common for other mmc drivers, so even if we remove that property for sdhci node, we still need to define it in YAML to resolve dtb_check. The issue here is not removing the property from sdhci node in DTSI file, but to remove it from &mmc node from a DTS file which is common to all mmc drivers.
->>>>
->>>> Here is the DTS node (ti/omap/am5729-beagleboneai.dts) which contain that property and is common for all mmc drivers.
->>>> &mmc2 {
->>>>         status = "okay";
->>>>         vmmc-supply = <&vdd_1v8>;
->>>>         vqmmc-supply = <&vdd_1v8>;
->>>>         bus-width = <8>;
->>>>         ti,non-removable;
->>>>         non-removable;
->>>>         mmc-pwrseq = <&emmc_pwrseq>;
->>>>
->>>>         ti,needs-special-reset;
->>>>         dmas = <&sdma_xbar 47>, <&sdma_xbar 48>;
->>>>         dma-names = "tx", "rx";
->>>>
->>>> };
->>>
->>> I'm pretty sure that's not how &mmc2 works and you are confused. I
->>> would suggest you do a dtb->dts pass and compare the results.
->>
->> So, I can remove ti,needs-special-hs-handling and cap-mmc-dual-data-rate properties from a similar DTS file along with ti,needs-special-reset as these properties are not used for sdhci-omap driver and are no longer in use, I will remove these properties from YAML too, if this is true. Can you confirm this?
-> 
-> If the properties are not used in drivers or .dts files, then yes they
-> don't need to be in the schema.
-> 
-> I think you just need what you had previously and just drop the
-> changes to hsmmc nodes.
+Changes in v4:
+- Removed type for the property pinctrl-names.
+- Link to v3: https://lore.kernel.org/r/20251011-ti-sdhci-omap-v3-0-9487ef2de559@gmail.com
 
-Yes, I understood now, thanks for the clarification.
+Changes in v3:
+- Reverted the changes on removing ti,needs-special-reset, ti,needs-special-hs-handling
+  cap-mmc-dual-data-rate from the DTS.
+- Fixed a typo to resolve the errors identified by dtb_check.
+- Changed commit message to justify the modified changes.
+- Defined if-then statements for compatibles to add required properties.
+- Removed "ti-hwmods" property from the YAML.
+- Link to v2: https://lore.kernel.org/r/20250908-ti-sdhci-omap-v2-0-72927890482f@gmail.com
 
-> 
-> Rob
+Changes in v2:
+- Changed MAINTAINERS to "Kishon Vijay Abraham".
+- Renamed the YAML file name to "ti,omap2430-sdhci.yaml" from
+  "sdhci-omap.yaml".
+- Dropped unnecessary or unused properties from DTS and made these
+  changes as a seperate commit as there is no user of it.
+- Removed previously defined properties like ti,needs-special-reset,
+  ti,needs-special-hs-handling and cap-mmc-dual-data-rate from the YAML.
+- Changed the commit message to elaborate the reasons for modifications.
+- Removed the pattern property for pinctrl and redefined it in a regular format.
+- Modified the description of the property "clock-frequency".
+- Changed the subject line for the binding patch.
+- Link to v1: https://lore.kernel.org/r/20250523-ti-sdhci-omap-v1-1-695c6eeac778@gmail.com
 
+---
+Charan Pedumuru (3):
+      arm: dts: ti: omap: am335x-pepper: Fix vmmc-supply property typo
+      arm: dts: ti: omap: Drop unnecessary properties for SDHCI node
+      dt-bindings: mmc: ti,omap2430-sdhci: convert to DT schema
+
+ .../devicetree/bindings/mmc/sdhci-omap.txt         |  43 ------
+ .../devicetree/bindings/mmc/ti,omap2430-sdhci.yaml | 169 +++++++++++++++++++++
+ arch/arm/boot/dts/ti/omap/am335x-pepper.dts        |   2 +-
+ .../ti/omap/am335x-sancloud-bbe-extended-wifi.dts  |   1 -
+ arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi           |   2 -
+ arch/arm/boot/dts/ti/omap/am33xx.dtsi              |   1 -
+ arch/arm/boot/dts/ti/omap/am4372.dtsi              |   1 -
+ arch/arm/boot/dts/ti/omap/am437x-l4.dtsi           |   2 -
+ arch/arm/boot/dts/ti/omap/am5729-beagleboneai.dts  |   2 -
+ arch/arm/boot/dts/ti/omap/am57xx-cl-som-am57x.dts  |   1 -
+ 10 files changed, 170 insertions(+), 54 deletions(-)
+---
+base-commit: ed61cb3d78d585209ec775933078e268544fe9a4
+change-id: 20250519-ti-sdhci-omap-907f847f7530
+
+Best regards,
 -- 
-Best Regards,
-Charan.
+Charan Pedumuru <charan.pedumuru@gmail.com>
 
 
