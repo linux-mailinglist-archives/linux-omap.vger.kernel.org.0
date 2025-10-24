@@ -1,83 +1,83 @@
-Return-Path: <linux-omap+bounces-4751-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4752-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BD7EC080C8
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Oct 2025 22:25:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BCF9C080CB
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Oct 2025 22:25:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68A67403686
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Oct 2025 20:23:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE5404052B3
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Oct 2025 20:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A5A2F25EF;
-	Fri, 24 Oct 2025 20:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131762F39CE;
+	Fri, 24 Oct 2025 20:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fngjUa+H"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dIRD2yCW"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DDE2F1FD5
-	for <linux-omap@vger.kernel.org>; Fri, 24 Oct 2025 20:22:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D882F39AF
+	for <linux-omap@vger.kernel.org>; Fri, 24 Oct 2025 20:23:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761337374; cv=none; b=Qc+6FdKxt+HOH5t8pgFJ7Up1jtg1Mrr1IPouhU/hwac330akaF3Q3IxPJ0iFEC4OVxJpdCODYHPqztrXLDZn19qDjtlT+Fzf6yVG0B5x7aDPwIHDORtt3wBlJjp2r8gr7+uolanJ3/7xTuuSLwdlGJ+Ll5RWpRRumHO1WO8IktA=
+	t=1761337415; cv=none; b=Rm5XFEV17ciAludcs5xel9msTi+16QhoLcfNu5JsnTi1AqNrx57Ht2ztTDY6Q/J/RcRrzHUi/VIamyiE31I4w5Yst0mqgM3R1j4uwgToF5MQVecU90H607yCnXsc/1nIsMaTejtPpwAQ5ZRtM+jXoYPdjkpaUL+ZsOhOvDMYOW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761337374; c=relaxed/simple;
-	bh=r+DKdsODkadGXvvNZ/S8XJoz2FiQFDPW4f1v2XCikQ0=;
+	s=arc-20240116; t=1761337415; c=relaxed/simple;
+	bh=OhJd8xXPcEcT0DW7ngFFIodfptbKL3zNA9AKjslt5I0=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Ud3R2AnKrmJVH2yd8xKjwk6/qMmafGI+LzCh5j2tm/VvZ9ECMrPDJqsDBaOy9LIqxD69TlfRQ3jmx2ykamlLy87W3Eks/H331xCDL2B6A8Tnx16Z35Nysr7d6JKsRBRKnh4EQj6udnHPOEkG/lOFSymYhA/5UhUissNxw+S9g08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fngjUa+H; arc=none smtp.client-ip=209.85.128.53
+	 In-Reply-To:Content-Type; b=qMLjj/Q01SEuYDnGBFD260sgRhHauXf9hQA7geFTwuS4B6BcsPibEOESqEd+Odu2wrFB4SB+xvLlZn4TskU+fCxsF5R4Jfg/CEGlMJ7J+BPNtDXrQZR0tvvCCzujPfmT33oImWYCKsCOxJGtUKazIcXlcJADYWgxpAU/dR37Ffk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dIRD2yCW; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-475dbc3c9efso1089695e9.0
-        for <linux-omap@vger.kernel.org>; Fri, 24 Oct 2025 13:22:52 -0700 (PDT)
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-42420c7de22so1237650f8f.1
+        for <linux-omap@vger.kernel.org>; Fri, 24 Oct 2025 13:23:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761337370; x=1761942170; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761337411; x=1761942211; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=98yfEBiDPGFeXKIHXMIyU3z8Qaq+Qc8MiRUCJmNKTJo=;
-        b=fngjUa+H2VEUkNkVFXQQY10HjxYRk0p/9De4y7NHaGvF2sG5WhwWYcH0oB9L3bXSFl
-         XtKOdWetUC7cs+vDzE5V5K5Qq19W1fKGAsZVhmrPz3KpwiI3jieLJbARJQy+NHt0EEEG
-         CJvjog/nGTuDgj1yd1XkdxhyJUPjqrNQUiuv5UY7PCV/+H6hnjblvwQAvUmX9j+kNi8i
-         A5TkxQoAcXIghWBbkvByUjgNEPcUwI2ZGpWgUhDORo9ZC2vE78T/ZUCVs2lWjTJVXMEE
-         jTcx1ITw9OmfT08SBUSogTwgQojFBZztt5oBkqxMf5h1L34PndxNIQ6/fr+uWjA7jBKk
-         3NMg==
+        bh=nbS3pF4SQlN6nJst9gf1MGtul+xJiXycghgmgoEvhFA=;
+        b=dIRD2yCWD6StOh7R+Qh7jrTNF6yoZ3bOMX/xwLowdB5I5CWwzfaEFnwWa9tG0a28yw
+         DFZMBOFHX0FPwFqVypdVdiY0x6t3lO/w6szVCoZwWFmbqtJHq1FfUhIIEIxZBVUXEPYu
+         EDjE6Bsp6caAxgaG7VGAIIR0UFMb0MiFeE9xFv0BOEAcVhKbUEXcAYJPT2RBPD1Mqj0f
+         jFVt/TyJcSuQWuIm0EeeiaVRzngwzFeJTo6ai3/F0GGQGpOXabhccsm/j0v/s8ySBFEQ
+         KoaDnr8SAEpj9UGj+bpNm+VdgAk2MmT/5uwOnv4ggJxaqE0SkxqfeFFxUbjECVSvJXh8
+         k9mA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761337370; x=1761942170;
+        d=1e100.net; s=20230601; t=1761337411; x=1761942211;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=98yfEBiDPGFeXKIHXMIyU3z8Qaq+Qc8MiRUCJmNKTJo=;
-        b=Ti1x6lTop+B8VFIa3SeMMa5COAntNvjvtOgdIRc8b3d7E8/oHS+iXI3l4fgCJ2jsOx
-         Xp18YMquhc4WblXVlnpyzQYQ9D05YZQIx7yintQnw8Cbqjkmrdur27s3O9Zy5CQ6sdnv
-         eSLHTAQMBDs1lAY6oit1V+s12BOlCXnyiOQks4iRyniMlKUmPMpGZOF9JQ59qwkG5UQ6
-         l9VpxGjWSy7rFGnCgZUoBO/hwKTcOmIgs+u5AGlXoqMWekFm72v0AekkaYt/zNT2AQ3S
-         4eqBMwMqQVS+E8Z5svwMOW4CVqBqn2Ph1G2LJF7hDSiIlRvJTYaLeLmB8/rARmCKlDB1
-         P5cw==
-X-Forwarded-Encrypted: i=1; AJvYcCUp0ccqdEfk3EDcBZJKfJ6YR2iWF1GHDBr4ZO6UHQoDURMxx0SCP491k4Lyo8hOsXOT29SDDkAkPQHB@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGFiNCJjbEo7rq9Adr8ykXvm+et4rfEMw8ebdDu6gv7GWQcZFy
-	/VhlBb0XVb9aIkKPR18vrRY2Zvj1UB5/RiSL0OEmT+cTUXPwxMt4ET/4
-X-Gm-Gg: ASbGnctfjesDmRXFQDj08lJWoBNMb47/MMZkvADwm69rOroUd33h89guhmnrYUQ6fTA
-	dSJDLDuVbm74BSzkaPLcUKAAPziDtHU1ssG83fSiWNUz3SwmCrx1lE3cru5GB9VJ8vDRw8Fg5rF
-	Z7Ba8qxfEaoXytomeaUScwF3/WYdkSJPYR26AipVYSwMMhkN6JcclwFduU+mGu92S8vUQQaxrNI
-	Qn+LWVGAO1jnjeVkXYEl2ZcPEISVovTQWufKnZwA7gLrRpkwZb/Va2mfupRXaAYIwdA/dDNnUDD
-	3QopMrvgZsA4Ko+sRHlZ41cROQMjmf9LvasXdOWJ/OpufkQUfZlU7imocJuyfCJB1A9HhxuCBzx
-	7LevGDK08yk36LxeyS5gE3cHT/KIWb+rT/o6Mwiw5JStB3H4Md7FcKgjUboNxgr/boEIdJrEmOU
-	cjXZtAd8rotVBD2veG0KP31ZExc+n0ZhY4V5ykiPRCQ7db+gSqQ56im3nTG2hiIJZ3stZsQgVUM
-	UyfWD/zEUhVtcUe1xpVuUgokLg+gAGAA07qoFICVnz6T1z8+e/Pjg==
-X-Google-Smtp-Source: AGHT+IFYApnb67wcQhUKsoVC6e8tnd8QFhs9l10jTecq7fAub815ccCMResZz1o6OFB6CD7wsvh7Aw==
-X-Received: by 2002:a05:600c:34d0:b0:45f:2922:2aef with SMTP id 5b1f17b1804b1-47117911751mr240229345e9.28.1761337370481;
-        Fri, 24 Oct 2025 13:22:50 -0700 (PDT)
+        bh=nbS3pF4SQlN6nJst9gf1MGtul+xJiXycghgmgoEvhFA=;
+        b=mEKBdJOONrBvhyhThPdm7OspFObINRX4Lrx9TppUiLAk4U/lXzXIAhK8aM1tGASIW4
+         diaPwPz8iLf/CqCF7Rl243RzjfsPyR1VQnie6z7lq2iLkfe1m3HqvYzKoh/25kSg6Ou0
+         ji5nDFBELxMqTvE+qFWo+m8w3YNlu9izghj8WkUqn8S1Tv/TOEgqUxEXt4nkpmr+abb3
+         ox+0mmDwIMKgxcK4XGsgw7kma6ideiquJ8RXNe8zxmnAplCtfWNGmKBaA4Eosiexogl+
+         H4wfu72YqPP26Z7tw9I5CVD4vrblnzlFea6EPxkPxZUEF+bYT2tyyiUzCypTM/gl6+Sa
+         Hurg==
+X-Forwarded-Encrypted: i=1; AJvYcCWWuP94pVT1OoqU5UO46ydqU8iAPpa668bRv+bwuth1yC75MsRKLfqtVMsLP3LXMkXZMM0Fi2PIKn7c@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMa2uGAvN17K4IxyEJFxy7S4fTgxHmgFqNGXNrCXZ/+ylP7i01
+	qguITDJ01eXfiTe+UEe3Am30+SsNexs04rMpReADULt5Sp856wN272dS
+X-Gm-Gg: ASbGncsQfxPXGkc5O51KJj+sM5i3kVCyYrzA048G3xm8ecFt3yubEee7HCvPbHrfk+Q
+	tFjcbajJLiWdtO5nlPAo9A+IKrO9uVMLD7NLuoRtiNqXRMDMBLESfXILYWzTz/3NCdMlxZOVB65
+	Nh6UuxEMAbzqZIoQmP6bl4yKn0NFnrhFiYdhHMagXuMRfnti9g+X0Mk9Nsq9aKhAl491jNryEpN
+	7ZP/AkaYniaQUpz0bPU2dWjy/SE0276WeSED7oFBMHn2MX4Xact8nlam6vqGzrDj2pIgMzIERN+
+	5KpWbsWgkhSDMGU5CCsTm+j/NwTLsVrZmQyWZar3I6cdQwiyCeZ1B4QE5y7+7wu/Negr+NbM1iX
+	M9wWXL7WKo9avlVNz6aI/EOd+bBTvILXPD14SNB59FIdTOjtOB6gBm2XDjWVPR7mQgI5iEAQNbF
+	K9hfWegNU3rJvsgMhZQZcHDibXH91NBjWuFfXEHbflp1Txz141eezndDCJKJETGR2lrE/2+sFeT
+	G+jBzTX2OxBS81jzxzZO1vXZ7z/vX2vo4mZFdajJPA=
+X-Google-Smtp-Source: AGHT+IG4IY+grum2RAe/4ZPmFWxqYrPxM8oPy0gbReq+19TlrgCjDXVWLsTj+qAjoigdXYkviWwGPw==
+X-Received: by 2002:a05:6000:400a:b0:425:8133:ec6c with SMTP id ffacd0b85a97d-42704d1460fmr16419521f8f.9.1761337411112;
+        Fri, 24 Oct 2025 13:23:31 -0700 (PDT)
 Received: from ?IPV6:2003:ea:8f20:af00:7cba:4f15:bb68:cf78? (p200300ea8f20af007cba4f15bb68cf78.dip0.t-ipconnect.de. [2003:ea:8f20:af00:7cba:4f15:bb68:cf78])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-475dcbb4001sm364425e9.0.2025.10.24.13.22.48
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-429952de5f9sm169628f8f.38.2025.10.24.13.23.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Oct 2025 13:22:49 -0700 (PDT)
-Message-ID: <de5345e1-6561-4b75-92af-5b6af0bae94a@gmail.com>
-Date: Fri, 24 Oct 2025 22:22:59 +0200
+        Fri, 24 Oct 2025 13:23:30 -0700 (PDT)
+Message-ID: <aadd3bd7-5cc5-45f5-b14d-d0b63629d612@gmail.com>
+Date: Fri, 24 Oct 2025 22:23:41 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -85,7 +85,7 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH v2 net-next 2/4] net: fec: use new iterator
+Subject: [PATCH v2 net-next 3/4] net: davinci_mdio: use new iterator
  mdiobus_for_each_phy
 From: Heiner Kallweit <hkallweit1@gmail.com>
 To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
@@ -150,34 +150,41 @@ Use new iterator mdiobus_for_each_phy() to simplify the code.
 
 Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/ti/davinci_mdio.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 1edcfaee6..c60ed8bac 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -2552,7 +2552,6 @@ static int fec_enet_mii_init(struct platform_device *pdev)
- 	int err = -ENXIO;
- 	u32 mii_speed, holdtime;
- 	u32 bus_freq;
--	int addr;
+diff --git a/drivers/net/ethernet/ti/davinci_mdio.c b/drivers/net/ethernet/ti/davinci_mdio.c
+index 68507126b..713ed4ef6 100644
+--- a/drivers/net/ethernet/ti/davinci_mdio.c
++++ b/drivers/net/ethernet/ti/davinci_mdio.c
+@@ -548,8 +548,8 @@ static int davinci_mdio_probe(struct platform_device *pdev)
+ 	struct davinci_mdio_data *data;
+ 	struct resource *res;
+ 	struct phy_device *phy;
+-	int ret, addr;
+ 	int autosuspend_delay_ms = -1;
++	int ret;
  
- 	/*
- 	 * The i.MX28 dual fec interfaces are not equal.
-@@ -2667,11 +2666,8 @@ static int fec_enet_mii_init(struct platform_device *pdev)
- 	of_node_put(node);
+ 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
+ 	if (!data)
+@@ -652,14 +652,10 @@ static int davinci_mdio_probe(struct platform_device *pdev)
+ 		goto bail_out;
  
- 	/* find all the PHY devices on the bus and set mac_managed_pm to true */
+ 	/* scan and dump the bus */
 -	for (addr = 0; addr < PHY_MAX_ADDR; addr++) {
--		phydev = mdiobus_get_phy(fep->mii_bus, addr);
--		if (phydev)
--			phydev->mac_managed_pm = true;
+-		phy = mdiobus_get_phy(data->bus, addr);
+-		if (phy) {
+-			dev_info(dev, "phy[%d]: device %s, driver %s\n",
+-				 phy->mdio.addr, phydev_name(phy),
+-				 phy->drv ? phy->drv->name : "unknown");
+-		}
 -	}
-+	mdiobus_for_each_phy(fep->mii_bus, phydev)
-+		phydev->mac_managed_pm = true;
++	mdiobus_for_each_phy(data->bus, phy)
++		dev_info(dev, "phy[%d]: device %s, driver %s\n",
++			 phy->mdio.addr, phydev_name(phy),
++			 phy->drv ? phy->drv->name : "unknown");
  
- 	mii_cnt++;
+ 	return 0;
  
 -- 
 2.51.1
