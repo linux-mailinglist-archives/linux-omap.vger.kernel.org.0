@@ -1,50 +1,50 @@
-Return-Path: <linux-omap+bounces-4756-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4757-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0A1C081AC
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Oct 2025 22:47:02 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2289BC081AF
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Oct 2025 22:47:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 205143A03F0
-	for <lists+linux-omap@lfdr.de>; Fri, 24 Oct 2025 20:46:50 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 93C8B357D21
+	for <lists+linux-omap@lfdr.de>; Fri, 24 Oct 2025 20:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764DD2FC002;
-	Fri, 24 Oct 2025 20:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93EE42FCBF3;
+	Fri, 24 Oct 2025 20:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qfEkBc30"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QIWPZYgH"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070D82FBDF4;
-	Fri, 24 Oct 2025 20:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1842FC893;
+	Fri, 24 Oct 2025 20:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761338777; cv=none; b=a5ymNkcZTl+ZyujktwJtctrZboK1tmuSjyiuhuVg99Vrxh/UHLB7Sv7wcv2ADWzmI37C1u6KpP/yb0GqWaI3OpV7Cd0EZ22XaiNcN47Dnm9xDZlUEeirygSXrl2N2tfS8exO05Rs+ub13NdmTKr/vNJ3rU8c55ThLHQPFr7WItE=
+	t=1761338780; cv=none; b=L1RWjtqc9NKJMw1p3YRbN8DP6oYCnU1iMstxXAPfo3Jte0jA2+Z9XODKwHPa8bLs98jn7bsj+Ds57e3P9JWLSaUew/s3abdOsKj+2WtSc/Qjgfn0pNSFqF8JUpnXAJVSaZfjFtMNzk+ViWzxpZ3P/uDuVuEACs5zUo/u53QrSo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761338777; c=relaxed/simple;
-	bh=i8q7dEZiiJ1a8p5k8OATPXo0h7mF6Jxue5/RExPUox4=;
+	s=arc-20240116; t=1761338780; c=relaxed/simple;
+	bh=VproYPN/It1JURWA/m4TsPnS5S/rti+LRb1lbwdpJxU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gmUwyBNIxaRoft8i3AEIefGXWE1WuyvXZVYIVShszZGCQFIyfQws+aiVYLEe7jaSCguo5jr8OaSxbXOhlpjAJGXfyqyoPzW/q0617ZA2uFWz3NHEXwvCBmV2gTDiWVPf77OZIhHX56G6qwbmN6Wrf+Yz3PlKqiYXhvNoorECsEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qfEkBc30; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00FFC4CEF7;
-	Fri, 24 Oct 2025 20:46:13 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=ufUpkEbDsaXoK8IYn4MK2vBJffj0jvUNMtX+4/oVVASzYuE9DFj+az+rpSOYzK5n1sTeF9zk4BDrMm+idBQGaRtMnYIIg7XCWSXIBYt5M1jn2/S9WdIcR7Qs7QQKauNj/keeur+w5K2nXSvqqXqpFqnFKBd0SqTlEg/+yLNBJlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QIWPZYgH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD7FC4CEF1;
+	Fri, 24 Oct 2025 20:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761338776;
-	bh=i8q7dEZiiJ1a8p5k8OATPXo0h7mF6Jxue5/RExPUox4=;
+	s=k20201202; t=1761338779;
+	bh=VproYPN/It1JURWA/m4TsPnS5S/rti+LRb1lbwdpJxU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=qfEkBc30K9+0dbZqW3Ui8NAhVLLLz7mtf6XFgtAF58m6uudiibxxSm7CvehppUsuR
-	 PsvC/ldR9uA0t5D+bBvRp8nnayMZiwOIgFs+q8LPA1KAYdteGM0SUxaFzq7l8ho0GK
-	 SoE0HMo8pJOzWCtKnj/TPFfKRIX3Cc6nCZqaPe7kXhFXC57dWHVRkR+RcVfMOEcibo
-	 AhumJx3mZa6jQrhzc47XCALB7kX0B7YkeLQYupixOY9ZP7etVL+eKQOyxU5qAgZCP7
-	 Tzbh7tMhb+BR/CiUFSGo/KoX5lnCvq46I3Ic0V/9N3lC0FNqmaK9jbsu0XhfmzW1Em
-	 lmwxdcQ54/ryg==
+	b=QIWPZYgHwtGNqjD1IsJs733BeokyN5PTF5PubwnP16laIrQM/APKKTwH4bDvFJRXN
+	 FMUM71paazQNT3wVZJ3D7b/aX1exaze6Y3Rku6UX3ZlQiD4TX0E8jNW70+27RrgrWX
+	 vbgRcBa5u4WowoqvH7sKj3eKDaUDyWzJ9NROyS0f6AaQB5TGSiuwdA2pT8wvazgl/x
+	 AJCCrNB7Vjn75memhZxtdRJObjBFC2or65JpnBLFymc1EoYTBF0JTweEGTfkXC6Azl
+	 Pn0kgOJKR8umFKAo5vNXLS1AUyurCl3iQM64Bpxoywwz8aSlBbNqnYIGFElZap22Cr
+	 1kDJWgptyZfGA==
 From: Roger Quadros <rogerq@kernel.org>
-Date: Fri, 24 Oct 2025 23:46:01 +0300
-Subject: [PATCH net-next v5 2/9] net: ethernet: ti: cpsw_ale: return ALE
- index in cpsw_ale_add_vlan()
+Date: Fri, 24 Oct 2025 23:46:02 +0300
+Subject: [PATCH net-next v5 3/9] net: ethernet: ti: cpsw_ale: return ALE
+ index in cpsw_ale_vlan_add_modify()
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251024-am65-cpsw-rx-class-v5-2-c7c2950a2d25@kernel.org>
+Message-Id: <20251024-am65-cpsw-rx-class-v5-3-c7c2950a2d25@kernel.org>
 References: <20251024-am65-cpsw-rx-class-v5-0-c7c2950a2d25@kernel.org>
 In-Reply-To: <20251024-am65-cpsw-rx-class-v5-0-c7c2950a2d25@kernel.org>
 To: Siddharth Vadapalli <s-vadapalli@ti.com>, 
@@ -64,92 +64,143 @@ To: Siddharth Vadapalli <s-vadapalli@ti.com>,
 Cc: srk@ti.com, linux-omap@vger.kernel.org, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Roger Quadros <rogerq@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2642; i=rogerq@kernel.org;
- h=from:subject:message-id; bh=i8q7dEZiiJ1a8p5k8OATPXo0h7mF6Jxue5/RExPUox4=;
- b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBo++WOZU6NYoEgZFZRjNhjRf12CJAM5dxtC8Bv5
- DXjte3EeXOJAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCaPvljgAKCRDSWmvTvnYw
- kxrBD/4x5h9nj3jUS8NUCxgsDPL3K4zNZ3u2XZVwya1/zVXSi5fFQpHqkA7sZMah6c2YNsEya3m
- vrY/efWwZit4Mvkk5Bqu7beGOIrgjOM8/XpOHx2nLx1W+FtOY4bHdPffxPiGkQeIvb9TPE5JKuY
- ymoIHqspA60yroyzWIbpmZrMPOhg4CXi8DcfgMx+QNod6/lCvcix0odA3fE5dtzvxDI3IKgXWHO
- CcS+zf6nIS7XqTiN/m125fJaHnbU7i5GKqeC+US9/NIGWVvWkuQOvLU78ffGZ5LkCaRcQe9q2eO
- uzwEPist8x2vOLBsHf3MYX9lnEjwgqR7PM0eUqjd/lvnh9nctVVioM02mrmxv0/nj6t2yU3QnkB
- EZGNda98kXxJEsM8KBR0wm4xaNcCC6+fLHgQRFn5LwAhs2fUbVcQqI1UMtnhMPujUf/4g/kH6tM
- OzDuUMMWS50MYuaDr8GQwobqe7mHmhcl6n0+BX1jXK/QQwIEcSW6SmEbWaTvTvDiT2EnZoHIa5S
- fDy6K1iMrmH4EvifUTN8zhHZX/rSUqXhQIoJ0YOe0Ufc+EvaFW1W0hjNMZE7UID4Zm60s1M6i+p
- y8RlqhyqmFL8/IcdVW3JDXXxhpPVmlxzbqd240/9pYv0arvyQ+7QYtS9NCS57PM7m4+8KSVRfSB
- tjLa7iNNcehaHzQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4787; i=rogerq@kernel.org;
+ h=from:subject:message-id; bh=VproYPN/It1JURWA/m4TsPnS5S/rti+LRb1lbwdpJxU=;
+ b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBo++WOrGUTHoiKuYAud5ObYVWB0lyuW3I17e+7Q
+ 3EXzwLQTjuJAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCaPvljgAKCRDSWmvTvnYw
+ k9iIEAC0Hd9RBv+Pd52F9HtMSNMS1NxgW1fgPvwM1WGfhBBpSs737P52QTV4hqwV0KE9cn2dbbY
+ L1XzCTbiUuYtxTMsylcGfOfOje9aF2NHTj8A64Bq9zbgtFUUTuHrLZWZYir6h/txVYGRX5WOmBX
+ 6L2DO6QKGDikUkTVd77v/XMV51tOLoXnl0ukZGoX1St+We6uucqk2hgsuyHrBK2j+YCxFRL7lRY
+ uqQ84hGTtrJuk/+qcN1Yv/ZxcVNfC+lh+qwKmVGyrCMxkvsYVQO6jDiVqn+c+CmPpedaH48M4EM
+ OW+ZKW5xSSKL8il3ETqvGjkx3jr2k+JEn0Gc72nEzhFD5yYsWHn98fQJCgRxtebf7pdhPQve0T9
+ 9ov/6KFCPQCYwXuTNOUIGWWlxY1BgKF32uXmepKPTkJFKqmRo6kR6nnBBRHYifpUPuJ+cxMnnET
+ jYsA/GCTE6dVg+eF8lmhLnL+8vp5e+auNHqdvQSEuP+00sd08EVZvz0ZBwfaCdWt3ZloCgjkmMA
+ aSyB1pQESUNjbZc02pLXMdG6IUFuHuk+qi2CXDssh8pOOFzuRU0oscJNwGTKzUAwTDuRYcFgIDs
+ FSfF+lyYpWhi5TMEjV9Xkv54ZuUShEpWmEtn1sdVq3PrniKVy2abYnUdFWYJelBb9929dd35W++
+ UqAcOrSZNCo3u7g==
 X-Developer-Key: i=rogerq@kernel.org; a=openpgp;
  fpr=412165D44C9F52780FAB1058D25A6BD3BE763093
 
-Policer helpers will be interested to know what ALE index was used
-for the added VLAN entry. So return the ALE index instead of zero
+Policer helpers will need to know what ALE index was used for
+the added VLAN entry. So return the ALE index instead of zero
 on success.
 
 Modify existing users to check for less than zero as error case.
 
 Signed-off-by: Roger Quadros <rogerq@kernel.org>
 ---
- drivers/net/ethernet/ti/cpsw.c     | 2 +-
- drivers/net/ethernet/ti/cpsw_ale.c | 6 +++---
- drivers/net/ethernet/ti/cpsw_new.c | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c      |  2 ++
+ drivers/net/ethernet/ti/am65-cpsw-switchdev.c |  6 +++---
+ drivers/net/ethernet/ti/cpsw_ale.c            | 10 +++++-----
+ drivers/net/ethernet/ti/cpsw_switchdev.c      |  6 +++---
+ 4 files changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
-index 54c24cd3d3be639c90111856efaf154cd77f7ee4..11ee08b52cc102673187ac921a7e23b1cb9e631d 100644
---- a/drivers/net/ethernet/ti/cpsw.c
-+++ b/drivers/net/ethernet/ti/cpsw.c
-@@ -1026,7 +1026,7 @@ static inline int cpsw_add_vlan_ale_entry(struct cpsw_priv *priv,
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index d5f358ec982050751a63039e73887bf6e7f684e7..977f32962cd0bc63528718e47a4bfae813676f01 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -321,6 +321,8 @@ static int am65_cpsw_nuss_ndo_slave_add_vid(struct net_device *ndev,
+ 	dev_info(common->dev, "Adding vlan %d to vlan filter\n", vid);
+ 	ret = cpsw_ale_vlan_add_modify(common->ale, vid, port_mask,
+ 				       unreg_mcast, port_mask, 0);
++	if (ret > 0)
++		ret = 0;
  
- 	ret = cpsw_ale_add_vlan(cpsw->ale, vid, port_mask, 0, port_mask,
- 				unreg_mcast_mask);
--	if (ret != 0)
-+	if (ret < 0)
- 		return ret;
+ 	pm_runtime_put(common->dev);
+ 	return ret;
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-switchdev.c b/drivers/net/ethernet/ti/am65-cpsw-switchdev.c
+index d4c56da98a6aac1b90dca475fc49fb1f0ce5dd5e..b284202bf480d22c4722f8ab5114ff7e7ecaf7b9 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-switchdev.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-switchdev.c
+@@ -175,7 +175,7 @@ static int am65_cpsw_port_vlan_add(struct am65_cpsw_port *port, bool untag, bool
  
- 	ret = cpsw_ale_add_ucast(cpsw->ale, priv->mac_addr,
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index 2e294fea999f3ba9545a68f6884c313feb35c587..166de524d22a78a93d2f8c995f62e8c93b145943 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.c
-+++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -680,7 +680,7 @@ int cpsw_ale_add_vlan(struct cpsw_ale *ale, u16 vid, int port_mask, int untag,
- 		return -ENOMEM;
- 
- 	cpsw_ale_write(ale, idx, ale_entry);
--	return 0;
-+	return idx;
- }
- 
- static void cpsw_ale_vlan_del_modify_int(struct cpsw_ale *ale,  u32 *ale_entry,
-@@ -803,14 +803,14 @@ int cpsw_ale_vlan_add_modify(struct cpsw_ale *ale, u16 vid, int port_mask,
- 
- 	ret = cpsw_ale_add_vlan(ale, vid, vlan_members, untag_members,
- 				reg_mcast_members, unreg_mcast_members);
+ 	ret = cpsw_ale_vlan_add_modify(cpsw->ale, vid, port_mask, untag_mask,
+ 				       reg_mcast_mask, unreg_mcast_mask);
 -	if (ret) {
 +	if (ret < 0) {
- 		dev_err(ale->params.dev, "Unable to add vlan\n");
+ 		netdev_err(port->ndev, "Unable to add vlan\n");
  		return ret;
  	}
- 	dev_dbg(ale->params.dev, "port mask 0x%x untag 0x%x\n", vlan_members,
- 		untag_mask);
+@@ -184,14 +184,14 @@ static int am65_cpsw_port_vlan_add(struct am65_cpsw_port *port, bool untag, bool
+ 		cpsw_ale_add_ucast(cpsw->ale, port->slave.mac_addr,
+ 				   HOST_PORT_NUM, ALE_VLAN | ALE_SECURE, vid);
+ 	if (!pvid)
+-		return ret;
++		return 0;
+ 
+ 	am65_cpsw_set_pvid(port, vid, 0, 0);
+ 
+ 	netdev_dbg(port->ndev, "VID add: %s: vid:%u ports:%X\n",
+ 		   port->ndev->name, vid, port_mask);
  
 -	return ret;
 +	return 0;
  }
  
+ static int am65_cpsw_port_vlan_del(struct am65_cpsw_port *port, u16 vid,
+diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+index 166de524d22a78a93d2f8c995f62e8c93b145943..d46b14e87d836c9da190b5a27dde3fb85760080e 100644
+--- a/drivers/net/ethernet/ti/cpsw_ale.c
++++ b/drivers/net/ethernet/ti/cpsw_ale.c
+@@ -780,7 +780,7 @@ int cpsw_ale_vlan_add_modify(struct cpsw_ale *ale, u16 vid, int port_mask,
+ 	u32 ale_entry[ALE_ENTRY_WORDS] = {0, 0, 0};
+ 	int reg_mcast_members, unreg_mcast_members;
+ 	int vlan_members, untag_members;
+-	int idx, ret = 0;
++	int idx;
+ 
+ 	idx = cpsw_ale_match_vlan(ale, vid);
+ 	if (idx >= 0)
+@@ -801,16 +801,16 @@ int cpsw_ale_vlan_add_modify(struct cpsw_ale *ale, u16 vid, int port_mask,
+ 	reg_mcast_members = (reg_mcast_members & ~port_mask) | reg_mask;
+ 	unreg_mcast_members = (unreg_mcast_members & ~port_mask) | unreg_mask;
+ 
+-	ret = cpsw_ale_add_vlan(ale, vid, vlan_members, untag_members,
++	idx = cpsw_ale_add_vlan(ale, vid, vlan_members, untag_members,
+ 				reg_mcast_members, unreg_mcast_members);
+-	if (ret < 0) {
++	if (idx < 0) {
+ 		dev_err(ale->params.dev, "Unable to add vlan\n");
+-		return ret;
++		return idx;
+ 	}
+ 	dev_dbg(ale->params.dev, "port mask 0x%x untag 0x%x\n", vlan_members,
+ 		untag_mask);
+ 
+-	return 0;
++	return idx;
+ }
+ 
  void cpsw_ale_set_unreg_mcast(struct cpsw_ale *ale, int unreg_mcast_mask,
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index 8b9e2078c6025a099e0f90d4d80395b7622cf0f6..adde50e7731d16af1a7f68bf3f8f8626fbe8b037 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -417,7 +417,7 @@ static int cpsw_add_vlan_ale_entry(struct cpsw_priv *priv,
+diff --git a/drivers/net/ethernet/ti/cpsw_switchdev.c b/drivers/net/ethernet/ti/cpsw_switchdev.c
+index ce85f7610273e6d66d8a6350216feb64aeb55982..c767a47b2039accbac01a5f25fdbf5a5e94525f2 100644
+--- a/drivers/net/ethernet/ti/cpsw_switchdev.c
++++ b/drivers/net/ethernet/ti/cpsw_switchdev.c
+@@ -191,7 +191,7 @@ static int cpsw_port_vlan_add(struct cpsw_priv *priv, bool untag, bool pvid,
  
- 	ret = cpsw_ale_add_vlan(cpsw->ale, vid, port_mask, 0, port_mask,
- 				unreg_mcast_mask);
--	if (ret != 0)
-+	if (ret < 0)
+ 	ret = cpsw_ale_vlan_add_modify(cpsw->ale, vid, port_mask, untag_mask,
+ 				       reg_mcast_mask, unreg_mcast_mask);
+-	if (ret) {
++	if (ret < 0) {
+ 		dev_err(priv->dev, "Unable to add vlan\n");
  		return ret;
+ 	}
+@@ -200,13 +200,13 @@ static int cpsw_port_vlan_add(struct cpsw_priv *priv, bool untag, bool pvid,
+ 		cpsw_ale_add_ucast(cpsw->ale, priv->mac_addr,
+ 				   HOST_PORT_NUM, ALE_VLAN, vid);
+ 	if (!pvid)
+-		return ret;
++		return 0;
  
- 	ret = cpsw_ale_add_ucast(cpsw->ale, priv->mac_addr,
+ 	cpsw_set_pvid(priv, vid, 0, 0);
+ 
+ 	dev_dbg(priv->dev, "VID add: %s: vid:%u ports:%X\n",
+ 		priv->ndev->name, vid, port_mask);
+-	return ret;
++	return 0;
+ }
+ 
+ static int cpsw_port_vlan_del(struct cpsw_priv *priv, u16 vid,
 
 -- 
 2.34.1
