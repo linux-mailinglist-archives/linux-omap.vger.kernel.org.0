@@ -1,146 +1,141 @@
-Return-Path: <linux-omap+bounces-4776-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4777-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B7DC09ECE
-	for <lists+linux-omap@lfdr.de>; Sat, 25 Oct 2025 20:53:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEEBCC0AB15
+	for <lists+linux-omap@lfdr.de>; Sun, 26 Oct 2025 15:50:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E0DC1B25084
-	for <lists+linux-omap@lfdr.de>; Sat, 25 Oct 2025 18:53:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD10D18A08E5
+	for <lists+linux-omap@lfdr.de>; Sun, 26 Oct 2025 14:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 457F7303A29;
-	Sat, 25 Oct 2025 18:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641D12E8E08;
+	Sun, 26 Oct 2025 14:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GZO4qKC5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IkoJEIkM"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51728302758
-	for <linux-omap@vger.kernel.org>; Sat, 25 Oct 2025 18:52:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18DD21255B;
+	Sun, 26 Oct 2025 14:50:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761418380; cv=none; b=D36TmiC4ZLhCEKDeHmZBCPm88gOtg1g14fSjMwPrSL9NV77dB5YcGVtOeqUhWgqa5DhSkZmFcVCiLN7MNVgzNGmaxAQOrQjArf88eiVLO5LOVs/E48LTFCHpNwuX9rRFK9KTslZZLlSfu6ZtNVVCUX9baDcSQnfEUb0Tt8GL+V8=
+	t=1761490228; cv=none; b=R1ZfRMwfJVoRl2yPvYtJGzcp1/FvBoKWn+bhnroUC8jKd8cJzn0nZnanbJVnMzu/TWmG2eimO8Qo07tGTbhcghh+pV9t5n+/20jof14xoiyTY4um/tohZMS8LtKSXGaLZeRhq6fA6TQ8IfOS0wsMS9NOH5DtIrv0i2EvwPtu1rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761418380; c=relaxed/simple;
-	bh=++qhl4KSNWgMDQx7EKaOxJp4oYwDNeFiiI+BE3om2D0=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=ItxZJE2XW2undAepGonfqmJ+XFHzDApcfaKjGwfLg1hSQKMvqs/mi5WPQc6V3pBWC8kj88zDR0vRnsBYFqkEJdSr8xOMkaKG8ObJpCf2Do28Fkx/B7kCkBGoJA/h4Q5LaNexKcAaNNXR4C8sP02SVL5UT3C6/fV70VTHDvje7rQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GZO4qKC5; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-426f1574a14so2054542f8f.3
-        for <linux-omap@vger.kernel.org>; Sat, 25 Oct 2025 11:52:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761418378; x=1762023178; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=rioMXLIytYS2vDdWj/lGi+EnzevNN/0HrVqMOMW5YCw=;
-        b=GZO4qKC5D2lL11tAL4EnhVD4WSzMIC0bkomTeb7tAIPui4CRsQ8fEkJWo17jgFtjy8
-         he9O7U4Prz0NSOqqPwIjiRbieWPWKwty3Js7j+5siXSGBs7euA97A//cU9s7TDDi5sgs
-         zrMUpJ7xy8YJY1ww8mifC03yyrlU+bUg8rhXbMJpkjhnerpiOhEVgmfgsJbQUvLe6PNu
-         YX5ouMw/MelavN8XFstKowe3vkaHS/FAn2P79WWA3SO3+1Um5BUzGQethhIV9XfMj93U
-         l3eA97iEfAtRMOBNBkge0B8FFSq/JjJlWU2nJliZ+0qB2R1rG9oHru1NQWVuB8UKdmu1
-         3+VQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761418378; x=1762023178;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rioMXLIytYS2vDdWj/lGi+EnzevNN/0HrVqMOMW5YCw=;
-        b=Q2lfAcYsPDHU4fZqSHymazbuAhG7vBtcnpno8OBrRlhaX0hIoUiNgQlvY9n+vFa2HP
-         9IRm9Qvzap6vmnJjRE2EnHlyikLvMTDVTzGzhnRRnlycg59uZ5D2GanlNRfuNjBqGGA0
-         sgWpITwxlvKR32pJnX0vBM2wL6uz6N+FrEgwN/IOStb2HTp6q0/OZhRM0TI+tYgFbjmc
-         vTIXW8uwgfqcpFlao//1Rsb4vEtpd2EfWU+6k6nea6e9r+ZOAwZTazHegyEyW4KOXAV0
-         Ke7QZk1F2jlh/t6Q0eMaSQiqvXmOyTYpuaXhRybVa9bt6mlW6/WYZTSm7z9nUn0OnVRY
-         WtkA==
-X-Forwarded-Encrypted: i=1; AJvYcCW1DwD/KOnRx7uiu41RlcOgg/JkbIgmv7q82D1ZH0Zgkk3Icrwul1euXTciATnOe0bLO+hyWADdrbBs@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQ4XTBzL0DHESfxr0pZzOAMlrV1aJ6S+qmo+YN/EqCQhm3Q0L+
-	TqbHY1z3s5SzjcTKSXA42f+g3sdmt+YH5Sf39UetOxFzdHHQqqVkn9U0
-X-Gm-Gg: ASbGncsOaj9NwQJvh/bZ14Cc7Cmvm9rqU03TZE7oaDQDNxwP+XMNybV4xc0Xks3yA/z
-	FkJ4InWLbFU00MXICF8kw0QCiE+a8gx5Z4osa2y+3PXzpCl2EVDDq53RSGjTa+Z9GPaPYN1BdTu
-	drj+/JV5XTIuI6kx7Zs3d6roYBF0M0c0YY5wBOu1kVweqNRjuh1UrujBkvr8qOgj4cGQm9E4YCO
-	p4TN4FH6p3GboaU0hoSP+8vPGlV2I/QpelhRHrRzHllk5MCFpKjf3YySggeAcvx43LqmyriUB9W
-	JYHJgmDrqV6pkdpbeb323G69t7JCVAxFFe7CGk5f+XmH6b2Oxjj4slQ0NKq2vLIQNOKerl3C0JV
-	vIZawejZZQCpXNXi8VCwchSab2zYEgRc8Rp6dkZLW4/YcW+UMFSGxa9G6EqRwP7X7eOPl+5DEFK
-	UES1LcaAquMTLA3wBkxEwHjnk9PzWOfncviee/TqVMFDhxlGdljblgnNkUhMkjHhXGNhecjUOQQ
-	ibqgN9GdFcesYXNb+Iq8DLEIkWQ82WkxSTtMdxa83w=
-X-Google-Smtp-Source: AGHT+IFje2vw71LCSYtKx715VjGao8U1JqPzcYNORegl3cXgFepLRp8cL8qgkSfxNKDPItoF8ydqmw==
-X-Received: by 2002:a05:6000:24ca:b0:428:3fa7:77ff with SMTP id ffacd0b85a97d-4298a04e599mr7818417f8f.14.1761418377510;
-        Sat, 25 Oct 2025 11:52:57 -0700 (PDT)
-Received: from ?IPV6:2003:ea:8f39:8b00:d401:6211:9005:e76e? (p200300ea8f398b00d40162119005e76e.dip0.t-ipconnect.de. [2003:ea:8f39:8b00:d401:6211:9005:e76e])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952cb55asm4956750f8f.17.2025.10.25.11.52.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 25 Oct 2025 11:52:57 -0700 (PDT)
-Message-ID: <6d792b1e-d23d-4b7e-a94f-89c6617b620f@gmail.com>
-Date: Sat, 25 Oct 2025 20:52:56 +0200
+	s=arc-20240116; t=1761490228; c=relaxed/simple;
+	bh=yvUYs4SLZPYGpHto3wjMTtbzd/25aLTBF4Ho2HzVyY4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=COA7zCPhmgmvptaRbyuTwsZP8fiMAOnwUGiYbvyIrGzwGfsujUwq4wcJcp3UF6d8CO9KriBxciJ8hWEJaPk6KoMTBs1hb+evjiTH19ANDCzXroUiUgNKqYzTFZKEZEskgJFb+UYQxW8h7WEzXJuU9JTgikHcK9TiN7Viwu+ATw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IkoJEIkM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79AA8C4CEE7;
+	Sun, 26 Oct 2025 14:50:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761490227;
+	bh=yvUYs4SLZPYGpHto3wjMTtbzd/25aLTBF4Ho2HzVyY4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=IkoJEIkMFX0SoPlOpjBienAr0mImZkXnkIiinNmAZSvLMrbDbcetcHYfRdsNW42qx
+	 xnz7sbc1h9ZaoZ5K+QBcI6owXCmpZKTRV3SvhCMUfAPcqrxd8TotSeyyGvYj5oBYYK
+	 K4kYabV9z785WIgrxQmX2s/EH1i4lkF77i6jwGCRhs1hZiTR2PjqHK5M2RGpj+9GQd
+	 +j3dgtsGpSKJCOlfj9tzF9yrNbJzdn/yaSqCgB01uazZ2aX1qb82cSQRnG4b0YRVko
+	 s9wUh0G14UPYt8XWJ2binXzVOJ+BingcchnZQHBpv15zqFHvrgRbC5nABGmIEHGZXz
+	 wRmQAFijGZkHw==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Matthias Schiffer <matthias.schiffer@tq-group.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	kristo@kernel.org,
+	alexandre.f.demers@gmail.com,
+	linux-omap@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.17-5.15] clk: ti: am33xx: keep WKUP_DEBUGSS_CLKCTRL enabled
+Date: Sun, 26 Oct 2025 10:48:52 -0400
+Message-ID: <20251026144958.26750-14-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251026144958.26750-1-sashal@kernel.org>
+References: <20251026144958.26750-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH v3 net-next 4/4] net: phy: use new iterator
- mdiobus_for_each_phy in mdiobus_prevent_c45_scan
-From: Heiner Kallweit <hkallweit1@gmail.com>
-To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
- Clark Wang <xiaoning.wang@nxp.com>, Siddharth Vadapalli
- <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>,
- Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Eric Dumazet <edumazet@google.com>, David Miller <davem@davemloft.net>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- linux-omap@vger.kernel.org, imx@lists.linux.dev
-References: <07fc63e8-53fd-46aa-853e-96187bba9d44@gmail.com>
-Content-Language: en-US
-In-Reply-To: <07fc63e8-53fd-46aa-853e-96187bba9d44@gmail.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.17.5
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Use new iterator mdiobus_for_each_phy() to simplify the code.
+From: Matthias Schiffer <matthias.schiffer@tq-group.com>
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+[ Upstream commit 1e0d75258bd09323cb452655549e03975992b29e ]
+
+As described in AM335x Errata Advisory 1.0.42, WKUP_DEBUGSS_CLKCTRL
+can't be disabled - the clock module will just be stuck in transitioning
+state forever, resulting in the following warning message after the wait
+loop times out:
+
+    l3-aon-clkctrl:0000:0: failed to disable
+
+Just add the clock to enable_init_clks, so no attempt is made to disable
+it.
+
+Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Acked-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mdio_bus_provider.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/phy/mdio_bus_provider.c b/drivers/net/phy/mdio_bus_provider.c
-index a2391d4b7..4b0637405 100644
---- a/drivers/net/phy/mdio_bus_provider.c
-+++ b/drivers/net/phy/mdio_bus_provider.c
-@@ -249,20 +249,15 @@ static int mdiobus_scan_bus_c45(struct mii_bus *bus)
-  */
- static bool mdiobus_prevent_c45_scan(struct mii_bus *bus)
- {
--	int i;
-+	struct phy_device *phydev;
- 
--	for (i = 0; i < PHY_MAX_ADDR; i++) {
--		struct phy_device *phydev;
--		u32 oui;
--
--		phydev = mdiobus_get_phy(bus, i);
--		if (!phydev)
--			continue;
--		oui = phydev->phy_id >> 10;
-+	mdiobus_for_each_phy(bus, phydev) {
-+		u32 oui = phydev->phy_id >> 10;
- 
- 		if (oui == MICREL_OUI)
- 			return true;
- 	}
-+
- 	return false;
- }
- 
+LLM Generated explanations, may be completely bogus:
+
+YES: The change simply marks WKUP_DEBUGSS as an always-on clock so the
+driver no longer violates the AM335x erratum.
+
+- `drivers/clk/ti/clk-33xx.c:261` now lists `l3-aon-clkctrl:0000:0` in
+  `enable_init_clks`, explicitly keeping WKUP_DEBUGSS enabled as
+  mandated by Errata Advisory 1.0.42; without this, the init sequence
+  still tries to gate the module and hits the hardware deadlock
+  described in the advisory.
+- Today the disable path waits for the module to idle, times out, and
+  prints `l3-aon-clkctrl:0000:0: failed to disable`
+  (`drivers/clk/ti/clkctrl.c:194`), so every boot (and any later
+  clk_disable_unused run) produces user-visible errors while leaving the
+  clock stuck in “transitioning”; the patch stops that erroneous
+  transition request entirely.
+- Effect scope is tiny: one entry in an SoC-specific static list,
+  matching how other errata workarounds (e.g. `l3-clkctrl:00bc:0`) are
+  handled; the hardware already refuses to power down the block, so
+  forcing it on introduces no new behaviour or power regression.
+- No API or structural change, only affects AM33xx clock init, and it
+  backports cleanly to older kernels using the same
+  `omap2_clk_enable_init_clocks()` helper.
+
+Suggested follow-up once backported: boot an AM335x board with
+`clk_ignore_unused` removed to confirm the “failed to disable” warning
+is gone.
+
+ drivers/clk/ti/clk-33xx.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/clk/ti/clk-33xx.c b/drivers/clk/ti/clk-33xx.c
+index 85c50ea39e6da..9269e6a0db6a4 100644
+--- a/drivers/clk/ti/clk-33xx.c
++++ b/drivers/clk/ti/clk-33xx.c
+@@ -258,6 +258,8 @@ static const char *enable_init_clks[] = {
+ 	"dpll_ddr_m2_ck",
+ 	"dpll_mpu_m2_ck",
+ 	"l3_gclk",
++	/* WKUP_DEBUGSS_CLKCTRL - disable fails, AM335x Errata Advisory 1.0.42 */
++	"l3-aon-clkctrl:0000:0",
+ 	/* AM3_L3_L3_MAIN_CLKCTRL, needed during suspend */
+ 	"l3-clkctrl:00bc:0",
+ 	"l4hs_gclk",
 -- 
-2.51.1
-
-
+2.51.0
 
 
