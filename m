@@ -1,155 +1,117 @@
-Return-Path: <linux-omap+bounces-4799-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4800-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0801FC13020
-	for <lists+linux-omap@lfdr.de>; Tue, 28 Oct 2025 06:46:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C7E3C133D6
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Oct 2025 08:07:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F30754EA795
-	for <lists+linux-omap@lfdr.de>; Tue, 28 Oct 2025 05:46:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 970DB1AA013C
+	for <lists+linux-omap@lfdr.de>; Tue, 28 Oct 2025 07:07:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F512877F6;
-	Tue, 28 Oct 2025 05:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 704822C3248;
+	Tue, 28 Oct 2025 07:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SKIkt7/t"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kzwFJfSV"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD6F2AD3D;
-	Tue, 28 Oct 2025 05:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7932C0293
+	for <linux-omap@vger.kernel.org>; Tue, 28 Oct 2025 07:06:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761630402; cv=none; b=NXe73usk56Y3JK9NQ1WytHfanw9jVCPoiOO/swCPUOVSd3dZ+CXEOYfPwP8QduYdanZgnk+YoQbmpdOhHiI0iTrU+yNeZw7akHlnxEcU+FWS8kJCDc0XTN+5Hgg4M/VUitKe0hbjmugzSNBl/1m5RRCGoGkO5RSowNRZUAQIS0g=
+	t=1761635221; cv=none; b=BbFBG/OWv291y4vk7e9/IzDcvUPjXbP+w5RqH8Ka8wrV3yn/L4F8FrmS6NkFz8Cw2uNoSBtUzJV2TyX36Bnqu0PAwNy9y1qb3MEh8JSdS+SlPaQSm6CDD6X2KpDncfbhjA3GRYrzEclG2lTnlUD9G6AoaVzvyP+dBYhl/4GpP5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761630402; c=relaxed/simple;
-	bh=GIhQbgstKqKNQsX/bs0Wtz1Bd+P3U6ihgvZLbC5Zffk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mOGLSgb0RdKeleMAyHjNXDDdDaOmE+V8OMeSCdxE6bpjpMxRT+Eh2UAbyqA1cxiAneOnfstdK90MK6iGmEtdH3H04b9N09xQg9QIkl+gtyN2vtMh50/F/9vFpQdSo3eEtOSw5U3GCBXVN1eSju4rtjVGMTt5o3OnUKHuE+4xD3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SKIkt7/t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9E3C4CEE7;
-	Tue, 28 Oct 2025 05:46:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761630402;
-	bh=GIhQbgstKqKNQsX/bs0Wtz1Bd+P3U6ihgvZLbC5Zffk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SKIkt7/tnQBjx1ozQ6sp7zdz8KisgToH5jMgNOiVLFpVvd8vpHFRVxzjwDhOa2Jr7
-	 6vrGO9AkZZdDTdEw8iunpiu6Xm/Itn/uSiHd6p86nTwsdHX78rlWIPGvXnO1XHteC9
-	 Nb/lLYeM0G7korAuDwRe3PJ+XGDyoHO5VPp75QoUXYuT4YmF024DDE3JgG7BJuSoOp
-	 6qvSuRYZWJOo4OlPhTDcfvLjTBGY4jIaxGq2vxrcINr4Mw+a8stNwG/svOE52cAcZa
-	 Fb6aRzCajsje6BiH744MAOwebTEgTE5EWSwyzbOAjeuoMhyRDAvgD6fC+eoRfHU6yq
-	 HSGnr5z4IOO7g==
-Date: Tue, 28 Oct 2025 11:16:29 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Vitor Soares <ivitro@gmail.com>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>, 
-	Siddharth Vadapalli <s-vadapalli@ti.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Vitor Soares <vitor.soares@toradex.com>, 
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 2/2] PCI: j721e: Add support for optional regulator
- supplies
-Message-ID: <5ogtnqbf32fy4rprcsthip5byl4dtgybsys2ur3ph6mc77q7po@apfcl7olp4zj>
-References: <20251014112553.398845-1-ivitro@gmail.com>
- <20251014112553.398845-3-ivitro@gmail.com>
- <p3l2p2raecqqkpdjswiddkthpxzvhm3rl4cw56y2epgcxfiwbb@gsieef3yqvpk>
- <91e8f4346a677a2ea46a210d7422adb99e70b3be.camel@gmail.com>
+	s=arc-20240116; t=1761635221; c=relaxed/simple;
+	bh=R5PmlZtWzHHZKGgXjshm44Mpf/Tt3lSzAseSYL5jpRs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fzucOB/8XnyIYVJpA02DhiE5mDCd104PopDpROPewnTxOpzS5tQ+DsPUeKVEzbWHQ/EylSYVS/pOgnwpF3ytcv0n/DZMk0U5p8c1328gAuepmD0YXp9W/DqHWnIoFqLhc7BQLJUY1t+Kys6UWxh7wc5c0pB0WrhgEBqBYCuQbpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kzwFJfSV; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-63b9da57cecso8561167a12.0
+        for <linux-omap@vger.kernel.org>; Tue, 28 Oct 2025 00:06:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761635217; x=1762240017; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=R5PmlZtWzHHZKGgXjshm44Mpf/Tt3lSzAseSYL5jpRs=;
+        b=kzwFJfSVlUIRSBkvPFV9cszKPEb5MmzumJf8w0+XB3pXNnxZv/a41B52lnt0FtfbyN
+         F0jiWYoilHFD+EALeQxuTk9V1f8EpBHo0zbFKa4wuhUJ7sBjffc5ifCcXzuAq7K+eBlL
+         CSjIQD+pKxpQimtjkX6h76APknIU7CohXlMemLCNc589+VSIAigrnVCtfRWopcSvSwBK
+         skiPnUu5I+OvjuRuc4jNBjIWraXPw6UNpSnAXjpH+ze4mWrGFMP1F2wAWpGonz31Xhv8
+         lGtwpyiBo63SfG5W2QAKj388T5jKkfbnqSXlIemloVX/us5My5X5u4+vFw7kwhYMNJMa
+         BzEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761635217; x=1762240017;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=R5PmlZtWzHHZKGgXjshm44Mpf/Tt3lSzAseSYL5jpRs=;
+        b=NaVOujAX3qG3FAXIv6kr6jxMcSxS5eusc0T6Hn367n0+K0O67yGUD3XhFo+3DpY8b/
+         LEAy5pcy2GhJcVSxfQUxngUPYmEIb9XdIu4mUSJ6KXVDbY0YPCvcv2/0K99NSxIav5wl
+         3oZmLJNF90O91EVEHciE/LiVDsYNkSLE86xRFmNh4uOuZ6oR0Gld4qvYuqRuDpChpji+
+         UfYb+B71q6bFPAfyNqi0d0BcQd6AjDrJgGTYCS6fsH0J3GPzhqi7XQFgOf7fnfyDd5yV
+         dcXSQr3EUx3DsCUEb4ZvcqyxNhXgcH26mdHDRl63ewapFlr2TzOaxKXiNgd330SxaMD+
+         JPGg==
+X-Gm-Message-State: AOJu0YwYZlOF2zGg40DilBWx/r2C9Ardh4e6jg81SPC4DEatjOFmKGr3
+	RZ65rUSXY7Dmyo1RZ4F2ioNRHrDgdYmDcqknlrj8rHv67Tl2HsIUks8ZcnjXrevkP7wTPoWATVR
+	3A0t1HQQa94NUz2qpG2CJutQhDzoHvTc=
+X-Gm-Gg: ASbGncsgDV9AcMyxIraHWhb15dDS8NsYFJpIGSuZccNXF8ObMI8sTMQJfl/7L11gTUR
+	zNqhLo59C9T7Pmbh2qTBJ2+2Mc0zOfH62OCTG/+vySnFi2awh/mUkCwfblgq5SzsSxOvG0o/bEd
+	GAqLdj6zfa+XrtEqyAsGzeFmBxIXf6EuQasZMk/NWnd3oqh58qdiSGdsDOLqS3f1iFsuCyPfth7
+	/QB9jKLMM+WDwqs/xl+izz87shqy53Fw7f1D6H+9dAb6fCcxgDZJczA9mU=
+X-Google-Smtp-Source: AGHT+IFqdZ7449/+gCSESKkn4OY2k6KiWRXks4E+V02E2uPaH6yPU4wF8iJFvFXAm8oiIsJdQKeuKoRJ7jR1cSg+eCI=
+X-Received: by 2002:a05:6402:5208:b0:63c:45da:2878 with SMTP id
+ 4fb4d7f45d1cf-63ed8262ceemr2111325a12.25.1761635216475; Tue, 28 Oct 2025
+ 00:06:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <91e8f4346a677a2ea46a210d7422adb99e70b3be.camel@gmail.com>
+References: <20251027090310.38999-1-linux.amoon@gmail.com> <20251027090310.38999-3-linux.amoon@gmail.com>
+ <f36a77b1-79ce-4bd4-ba4a-b9260bae7f11@web.de>
+In-Reply-To: <f36a77b1-79ce-4bd4-ba4a-b9260bae7f11@web.de>
+From: Anand Moon <linux.amoon@gmail.com>
+Date: Tue, 28 Oct 2025 12:36:39 +0530
+X-Gm-Features: AWmQ_bnM6F6BzTGQqX_h0Uqm5Thyd0JbiSKKhO1nlm1lVvxcnt-IMVp2PL8CDLw
+Message-ID: <CANAwSgT43rsi+DxaMF3T-gsVoAAGSSDEL6s+TE2yZ+q+W3bRsQ@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] PCI: j721e: Use inline reset GPIO assignment and
+ drop local variable
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: linux-omap@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, Bjorn Helgaas <bhelgaas@google.com>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Siddharth Vadapalli <s-vadapalli@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>, 
+	LKML <linux-kernel@vger.kernel.org>, Dan Carpenter <dan.carpenter@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Oct 27, 2025 at 08:24:12PM +0000, Vitor Soares wrote:
-> Hello Mani,
-> 
-> Thank you for the feedback.
-> 
-> On Tue, 2025-10-21 at 07:36 +0530, Manivannan Sadhasivam wrote:
-> > On Tue, Oct 14, 2025 at 12:25:49PM +0100, Vitor Soares wrote:
-> > > From: Vitor Soares <vitor.soares@toradex.com>
-> > > 
-> > > Some boards require external regulators to power PCIe endpoints.
-> > > Add support for optional 1.5V, 3.3V, and 12V supplies, which may be
-> > > defined in the device tree as vpcie1v5-supply, vpcie3v3-supply, and
-> > > vpcie12v-supply.
-> > > 
-> > > Use devm_regulator_get_enable_optional() to obtain and enable each
-> > > supply, so it will be automatically disabled when the driver is
-> > > removed.
-> > > 
-> > > Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
-> > > ---
-> > >  drivers/pci/controller/cadence/pci-j721e.c | 13 +++++++++++++
-> > >  1 file changed, 13 insertions(+)
-> > > 
-> > > diff --git a/drivers/pci/controller/cadence/pci-j721e.c
-> > > b/drivers/pci/controller/cadence/pci-j721e.c
-> > > index 5bc5ab20aa6d..f29ce2aef04e 100644
-> > > --- a/drivers/pci/controller/cadence/pci-j721e.c
-> > > +++ b/drivers/pci/controller/cadence/pci-j721e.c
-> > > @@ -21,6 +21,7 @@
-> > >  #include <linux/platform_device.h>
-> > >  #include <linux/pm_runtime.h>
-> > >  #include <linux/regmap.h>
-> > > +#include <linux/regulator/consumer.h>
-> > >  
-> > >  #include "../../pci.h"
-> > >  #include "pcie-cadence.h"
-> > > @@ -467,6 +468,10 @@ static const struct of_device_id of_j721e_pcie_match[]
-> > > = {
-> > >  };
-> > >  MODULE_DEVICE_TABLE(of, of_j721e_pcie_match);
-> > >  
-> > > +static const char * const j721e_pcie_supplies[] = {
-> > > +       "vpcie12v", "vpcie3v3", "vpcie1v5"
-> > > +};
-> > 
-> > Please don't hardcode the supplies in driver. The DT binding should make sure
-> > the relevant supplies are passed (including the optional ones). Just use
-> > of_regulator_bulk_get_all() to acquire all the passed supplies.
-> > 
-> > - Mani
-> > 
-> 
-> I checked the bulk regulator APIs as suggested and of_regulator_bulk_get_all()
-> does handle optional supplies correctly, however it is not a managed function
-> and doesn't enable the  regulators automatically.
-> 
-> To use of_regulator_bulk_get_all(), I would need to:
-> - Manually enable regulators with regulator_bulk_enable()
-> - Add cleanup/disable logic in remove path
-> - Handle error cleanup path manually
-> 
-> This would actually make the code more complex and error-prone compared to the
-> current approach using devm_regulator_get_enable_optional(), which provides
-> managed cleanup and automatic enable for optional supplies.
-> 
-> I also checked devm_regulator_bulk_get_enable(), it treats all supplies as
-> required and needs the supplies name as well.
-> 
-> Unless there is a devm_regulator_bulk_get_optional_enable() API I'm not aware
-> of, the current per-supply approach is the standard kernel pattern for this use
-> case. Would you still prefer the bulk approach despite these limitations?
-> 
+Hi Markus,
 
-Fine then. If you do not have a reason to manualy turn off/on the supplies
-(during suspend/resume), then it might be better to use
-devm_regulator_get_enable_optional() for now.
+Thanks for your review comments.
 
-I'd love to add the managed version of of_regulator_bulk_get_all(), but I guess
-Mark wouldn't want it.
+On Mon, 27 Oct 2025 at 19:13, Markus Elfring <Markus.Elfring@web.de> wrote:
+>
+> > The result of devm_gpiod_get_optional() is now assigned directly
+> > assigned to pcie->reset_gpio. This removes a superfluous local gpiod
+> > variable, improving code readability and compactness. The functionality
+> > remains unchanged, but the code is now more streamlined
+>
+> Would a corresponding imperative wording become helpful for an improved change description?
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.18-rc3#n94
+>
+Assign the result of devm_gpiod_get_optional() directly to pcie->reset_gpio.
+This removes a superfluous local variable, improving code clarity without
+altering the driver's behavior.
 
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
+Is this ok with you?
+> Regards,
+> Markus
+Thanks
+-Anand
 
