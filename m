@@ -1,100 +1,102 @@
-Return-Path: <linux-omap+bounces-4811-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4812-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D83A0C1E116
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Oct 2025 02:57:29 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B73EDC1E195
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Oct 2025 03:10:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6C68534CD75
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Oct 2025 01:57:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6003A4E5627
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Oct 2025 02:10:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569752E9EB9;
-	Thu, 30 Oct 2025 01:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5ADA2FB618;
+	Thu, 30 Oct 2025 02:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gh4ILMBq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NQOgDPuR"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EB72E762D;
-	Thu, 30 Oct 2025 01:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DFD286D7D;
+	Thu, 30 Oct 2025 02:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761789415; cv=none; b=VVvkO6nWzozsPV+GwVJQ8Vu19iAwe0IKuAPKhnRuSPO/NPdXcOtR3LlfLA3ymmC2MZzYh4KhUVJD4kIwGUBLKDttPLksEdLrgMbFuihtVVMJ4OUg5eE6/40UeyOuN3CTbF3CuGDV7mNM+3ef8HP5AFriL63laHgKTajibhrOhMY=
+	t=1761790234; cv=none; b=pVcYwHommUHTiRpT8VAVkIW1FTStD+PQV5kroH0R6OFMJVg54aYazfJ/x1PCYtvfvjmoMGhvaOilJ195rlh55v9Jt6ZgjcKCNii948jj1YgrkOSJNF+vTItk+XRe780P3m3RSWq/oYlIgb8Xcdh7SP6FBntFmOf0h5x523MJkyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761789415; c=relaxed/simple;
-	bh=HRpBacWvcERcW6Qv0x09GJHb3Ah9hMytMcYGZZIFbVc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GbxQ4BJH8kBJVOw88ekca6+JHxeKM9UwuPtZvkuCqh6uFQUEBmUBk/7Zkl/8izyM40hbp4U44kcJNpA5lB6QQW47/XpQ8UnpvbmfTyIlmJKVvHBFSpX1TUUENLIDWhVgN1t/oUC3kB2qenCfl1uXAnlcxuzMIW2isfrefHtkBPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gh4ILMBq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF82EC4CEFD;
-	Thu, 30 Oct 2025 01:56:53 +0000 (UTC)
+	s=arc-20240116; t=1761790234; c=relaxed/simple;
+	bh=qYrpYpN6+1EHjkbZwU9+wYqpCq+V6IjQpvO7dJMl1JU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Z8WrCIKI1/Q/l0yZPB/upE4IZ2fwVDulS+fTSUac9ujXw3SzHG077cCnRgBHW3EmsGx/O1bGKTda6WpxdB8OmrorJZSAxdQF3yX5hQnFTESQ4wDH/CLCNdtEQWgB13gJXqHri925S5notB9xh5bfEaVtNv9Mj+ucYPVxVFNwDcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NQOgDPuR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 433DEC4CEF7;
+	Thu, 30 Oct 2025 02:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761789415;
-	bh=HRpBacWvcERcW6Qv0x09GJHb3Ah9hMytMcYGZZIFbVc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Gh4ILMBqEHUxbzVxPNqMOyFKoBk1D/2dQepMJwwn7MC+LxPe8bWzlFc0eOlE3GmMs
-	 GjyszMZWKU+BKnqE3gljkkBM8c2E3CgG2lA3V8BGoiqAsrCoiDbdpA4LmayHj9+2ct
-	 btpzGcp+9t29UohHNXRtpOZ22usFiprhf4Q0VHOdumxE8QVL/n8lNGeWrnDzN98pwL
-	 o96amkoTXFSNP+m+eKA5tRAB0mUJXoaZMs/1ZkRbVT+miZRfxHASMkTAxQ6wyGwkfx
-	 bw9x/TVL5KywwZOQnv89h5iDMO1jIqg+5uAiBwFh8onEhOd2lCVQWvC35MEHJiKewk
-	 AdpETnV8lF1Xw==
-Date: Wed, 29 Oct 2025 18:56:52 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Niklas =?UTF-8?B?U8O2ZGVybHVuZA==?= <niklas.soderlund@ragnatech.se>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, netdev@vger.kernel.org,
- Nicolas Ferre <nicolas.ferre@microchip.com>, Claudiu Beznea
- <claudiu.beznea@tuxon.dev>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Wei Fang <wei.fang@nxp.com>, Shenwei Wang
- <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Paul Barker
- <paul@pbarker.dev>, Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros
- <rogerq@kernel.org>, Alex Elder <elder@kernel.org>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Stephan Gerhold <stephan@gerhold.net>, Loic
- Poulain <loic.poulain@oss.qualcomm.com>, Sergey Ryazanov
- <ryazanov.s.a@gmail.com>, Johannes Berg <johannes@sipsolutions.net>,
- Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>, Chiranjeevi
- Rapolu <chiranjeevi.rapolu@linux.intel.com>, Liu Haijun
- <haijun.liu@mediatek.com>, Ricardo Martinez
- <ricardo.martinez@linux.intel.com>, "Dr. David Alan Gilbert"
- <linux@treblig.org>, Ingo Molnar <mingo@kernel.org>, Thomas Gleixner
- <tglx@linutronix.de>, Michael Nemanov <michael.nemanov@ti.com>, Kalle Valo
- <kvalo@kernel.org>, Andreas Kemnade <andreas@kemnade.info>, Roopni
- Devanathan <quic_rdevanat@quicinc.com>, Thomas =?UTF-8?B?V2Vpw59zY2h1aA==?=
- <linux@weissschuh.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jeff Johnson <jeff.johnson@oss.qualcomm.com>, Christophe JAILLET
- <christophe.jaillet@wanadoo.fr>, imx@lists.linux.dev,
- linux-renesas-soc@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH RESEND 1/4] net: ethernet: Remove redundant
- pm_runtime_mark_last_busy() calls
-Message-ID: <20251029185652.14483c58@kernel.org>
-In-Reply-To: <20251027120559.GA365372@ragnatech.se>
-References: <20251027115022.390997-1-sakari.ailus@linux.intel.com>
-	<20251027120559.GA365372@ragnatech.se>
+	s=k20201202; t=1761790234;
+	bh=qYrpYpN6+1EHjkbZwU9+wYqpCq+V6IjQpvO7dJMl1JU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=NQOgDPuRkaHdL7Nj6GetaxC2vpgxqU34qHLhL+fbZXZ2z5QonDKq2SlwT+VxjKVUV
+	 r9PKPqUPu6KK6qK4/usOSFXDJ3BJEENNTRbTMzY9aOABqPMkkljk76DrY22lhwAouh
+	 NHOC7ABvvWISGy3nU0KG39EBCIYmXwvF1x5ntVw4KlAcnZNxYdcAscoFds6wnq+uKt
+	 SoDGhttFSm3/1v86XhShuC0xnFWuLNsQDn/7ogUWTvmQyLvMi75Oq5RUWt/NZl/XAl
+	 Aeee9yf7LA8gGPkv/jNWVchP/kK9y6k7vB/RiSMER3KIMN02aPCuSS9vtt37/+9+9k
+	 iQghuWLYZm3Mw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70DCB3A55ED9;
+	Thu, 30 Oct 2025 02:10:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 net-next 0/4] net: phy: add iterator
+ mdiobus_for_each_phy
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176179021125.3284947.14137231536759252044.git-patchwork-notify@kernel.org>
+Date: Thu, 30 Oct 2025 02:10:11 +0000
+References: <07fc63e8-53fd-46aa-853e-96187bba9d44@gmail.com>
+In-Reply-To: <07fc63e8-53fd-46aa-853e-96187bba9d44@gmail.com>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: wei.fang@nxp.com, shenwei.wang@nxp.com, xiaoning.wang@nxp.com,
+ s-vadapalli@ti.com, rogerq@kernel.org, andrew@lunn.ch, andrew+netdev@lunn.ch,
+ linux@armlinux.org.uk, pabeni@redhat.com, kuba@kernel.org,
+ edumazet@google.com, davem@davemloft.net, netdev@vger.kernel.org,
+ linux-omap@vger.kernel.org, imx@lists.linux.dev
 
-On Mon, 27 Oct 2025 13:05:59 +0100 Niklas S=C3=B6derlund wrote:
-> >  out_rpm_put:
-> >  	if (!priv->wol_enabled) {
-> > -		pm_runtime_mark_last_busy(dev);
-> >  		pm_runtime_put_autosuspend(dev);
-> >  	} =20
->=20
-> You could drop the { } here. With this fixed for RAVB,
+Hello:
 
-fixed when applying, the wireless patch needs to go to linux-wireless.
-You may want to repost that once again if it's not in linux-next by
-next week.
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Sat, 25 Oct 2025 20:48:20 +0200 you wrote:
+> Add and use an iterator for all PHY's on a MII bus, and phy_find_next()
+> as a prerequisite.
+> 
+> v2:
+> - rename iterator to mdiobus_for_each_phy
+> v3:
+> - add missing return value description for phy_find_next
+> 
+> [...]
+
+Here is the summary with links:
+  - [v3,net-next,1/4] net: phy: add iterator mdiobus_for_each_phy
+    https://git.kernel.org/netdev/net-next/c/26888de97b2f
+  - [v3,net-next,2/4] net: fec: use new iterator mdiobus_for_each_phy
+    https://git.kernel.org/netdev/net-next/c/0514010d553a
+  - [v3,net-next,3/4] net: davinci_mdio: use new iterator mdiobus_for_each_phy
+    https://git.kernel.org/netdev/net-next/c/4575875065de
+  - [v3,net-next,4/4] net: phy: use new iterator mdiobus_for_each_phy in mdiobus_prevent_c45_scan
+    https://git.kernel.org/netdev/net-next/c/d4780abb8cce
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
