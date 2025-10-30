@@ -1,102 +1,120 @@
-Return-Path: <linux-omap+bounces-4812-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4813-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73EDC1E195
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Oct 2025 03:10:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C130DC1E65E
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Oct 2025 06:14:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6003A4E5627
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Oct 2025 02:10:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 621163B45AF
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Oct 2025 05:14:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5ADA2FB618;
-	Thu, 30 Oct 2025 02:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FF132863E;
+	Thu, 30 Oct 2025 05:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NQOgDPuR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eGFn7QQS"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DFD286D7D;
-	Thu, 30 Oct 2025 02:10:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6EE30CD8D
+	for <linux-omap@vger.kernel.org>; Thu, 30 Oct 2025 05:14:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761790234; cv=none; b=pVcYwHommUHTiRpT8VAVkIW1FTStD+PQV5kroH0R6OFMJVg54aYazfJ/x1PCYtvfvjmoMGhvaOilJ195rlh55v9Jt6ZgjcKCNii948jj1YgrkOSJNF+vTItk+XRe780P3m3RSWq/oYlIgb8Xcdh7SP6FBntFmOf0h5x523MJkyM=
+	t=1761801257; cv=none; b=NR0CRmCXCpyh5O5BpCIAV7rwxaEyckkEFORz4n0YMOupmYXW6EtX20+Cdxd8VnYkW2DhbJBKHNvXEySIEw7sZYY/F35+x29N437Kl+B0QZBSaNPfDEV8UylB7IBo+Bf8jKKYjVUckPIcFtQ9eDTNIGwhPv64XQJmSaDjPCw58/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761790234; c=relaxed/simple;
-	bh=qYrpYpN6+1EHjkbZwU9+wYqpCq+V6IjQpvO7dJMl1JU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Z8WrCIKI1/Q/l0yZPB/upE4IZ2fwVDulS+fTSUac9ujXw3SzHG077cCnRgBHW3EmsGx/O1bGKTda6WpxdB8OmrorJZSAxdQF3yX5hQnFTESQ4wDH/CLCNdtEQWgB13gJXqHri925S5notB9xh5bfEaVtNv9Mj+ucYPVxVFNwDcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NQOgDPuR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 433DEC4CEF7;
-	Thu, 30 Oct 2025 02:10:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761790234;
-	bh=qYrpYpN6+1EHjkbZwU9+wYqpCq+V6IjQpvO7dJMl1JU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=NQOgDPuRkaHdL7Nj6GetaxC2vpgxqU34qHLhL+fbZXZ2z5QonDKq2SlwT+VxjKVUV
-	 r9PKPqUPu6KK6qK4/usOSFXDJ3BJEENNTRbTMzY9aOABqPMkkljk76DrY22lhwAouh
-	 NHOC7ABvvWISGy3nU0KG39EBCIYmXwvF1x5ntVw4KlAcnZNxYdcAscoFds6wnq+uKt
-	 SoDGhttFSm3/1v86XhShuC0xnFWuLNsQDn/7ogUWTvmQyLvMi75Oq5RUWt/NZl/XAl
-	 Aeee9yf7LA8gGPkv/jNWVchP/kK9y6k7vB/RiSMER3KIMN02aPCuSS9vtt37/+9+9k
-	 iQghuWLYZm3Mw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70DCB3A55ED9;
-	Thu, 30 Oct 2025 02:10:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1761801257; c=relaxed/simple;
+	bh=T9QHSB+KZkLl9uHgRXc5ETf3HFmGTKOuyoZXK7i7tR4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tSonxRJy6sGRNrSoB0+42oefAvq5Q4+V+P8d7PkTcEvfc3GdZQlVX1DMwPmK5XXjkTnyyRsP48iKRKKzRGraUbgtm66prWXDQhVdPh44PSr/7F+Ck3aoalPOjQylQNPhrFUkvX9hH/vNTuwxDI+jHIlwubxjSzetKDcaMzm7Sjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eGFn7QQS; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-63bad3cd668so1083045a12.3
+        for <linux-omap@vger.kernel.org>; Wed, 29 Oct 2025 22:14:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761801254; x=1762406054; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5tq0yxGv6yRvwde5HLaH1HkY7PXCLMaOxQayqcCSGMU=;
+        b=eGFn7QQSkw44XxcgW/Ly0VCFciycqennQ+atdW4fBXjZ1cZ9cdRDeY7Oz/Gn4gp8v3
+         /vRAqqxqyiNmzyjDhwAkW4C92sd7ykz/+f32KhZipOM3HATm2jUIFj7ejVYnkmDvmc80
+         l+A4Af+xRkIFg8nAFh46Ql1ZwWvmU++Szxnioa6fChxC5UvsonCd5+45dVuE3lwpNFFs
+         goW3UrOAKf1Zrv/21FjXX4QWMuOsYe9PK1lGzb3B1NVo0yXklwkg/Q1wTHSjMEDKAUcn
+         L/jqp7Gy0/aKe3GBuoTpDYPs5zOo8ZIUqOQdTXy6eXSbuA22XmgqG3Z4paE5Upg95KHT
+         3x7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761801254; x=1762406054;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5tq0yxGv6yRvwde5HLaH1HkY7PXCLMaOxQayqcCSGMU=;
+        b=MPyhR5vETgtWSqlQwwilqGHUeBACsL2ldaFdhy+iRc+YUqmA2UNlvF0a0J/UKzo0GY
+         N7WDRtABg/rn3jbWXsLvHOZsN5c41rQfhI8QCMGO4gKjIzOWWszJYokp2WFVZq190qE/
+         X4z/Z5EBPBtxZZDYqrT9ihrDE8e4+osHCnW/LTPd/MHy2CsiezTu0P3744bhxvYLP9yN
+         oTpIskF4TKyQKY7GpqJ7bbj+TG+MJjkJYShSIOMWgmpN++JgowWCISLvZETVDL7G14Ra
+         Kv3qoZiNUKaaBpKu6X5gul1paqdwuc7aWNcnM/A5TAgAztv3PPXXmGxwlVKvBZWz0wI8
+         wTTQ==
+X-Gm-Message-State: AOJu0Yygiah155zrTKyTv2FigwJeimPHwmTkPZRACGI21UG2F/v9Vveu
+	CPCNY2EwGrijh4jPJvSuZY3rpeHhUa87kjm4DrMazIYSQHgGuhtm70RLpbi94Lcq26R3cIw8k/E
+	27Dyxjq31b+Ll+8MgxolSt87ABJko9FI=
+X-Gm-Gg: ASbGncurZbsGrLYvdDtR5QULtir0CzQ7PpYiW/iFvXx9nKq3NlzwHy/r88ftpYF9+1+
+	LmEb3Yi95hCo5H+w0jMWgktAtUJgelig7+0ElHIItzzGBe9enJqiSXDn+cn3uALzUYDbSdXHh+5
+	NT6ZlPktG0YA0WlaTOq7uVSTcIKNACf+xBGeXZ1uSrc2bqcdz4m5z78NG6I+Yy8SI/WJumDbLBB
+	LzoKZLfqv9kQHI1ESjP9Ykg8BA6HfigBiHGV458aFwseQTGlv+6GXWKWI0=
+X-Google-Smtp-Source: AGHT+IFDCMfSXrIL3bjIKZw2IhpHFG1U5RsQXDbZl1lPFfpuAvA594DxUOaln1JvXCqNQSfMK0dolS63NIEWPJif8rE=
+X-Received: by 2002:a05:6402:50c8:b0:63b:f3a9:f5f1 with SMTP id
+ 4fb4d7f45d1cf-640441c2092mr4444447a12.14.1761801254315; Wed, 29 Oct 2025
+ 22:14:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3 net-next 0/4] net: phy: add iterator
- mdiobus_for_each_phy
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176179021125.3284947.14137231536759252044.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Oct 2025 02:10:11 +0000
-References: <07fc63e8-53fd-46aa-853e-96187bba9d44@gmail.com>
-In-Reply-To: <07fc63e8-53fd-46aa-853e-96187bba9d44@gmail.com>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: wei.fang@nxp.com, shenwei.wang@nxp.com, xiaoning.wang@nxp.com,
- s-vadapalli@ti.com, rogerq@kernel.org, andrew@lunn.ch, andrew+netdev@lunn.ch,
- linux@armlinux.org.uk, pabeni@redhat.com, kuba@kernel.org,
- edumazet@google.com, davem@davemloft.net, netdev@vger.kernel.org,
- linux-omap@vger.kernel.org, imx@lists.linux.dev
+References: <20251028154229.6774-1-linux.amoon@gmail.com> <24319a9a-ccf8-48a9-8b5d-3a846976afcd@web.de>
+In-Reply-To: <24319a9a-ccf8-48a9-8b5d-3a846976afcd@web.de>
+From: Anand Moon <linux.amoon@gmail.com>
+Date: Thu, 30 Oct 2025 10:43:56 +0530
+X-Gm-Features: AWmQ_bl9cBL27Bidm95xNfiwXFieCJ3byhHw0tTbL2X_4Wmj8VImOI2xhqIIeMc
+Message-ID: <CANAwSgTO2s8LA=e5CVYnpJ95_DLdkiot5Zbz1hFaejV=kTK2_w@mail.gmail.com>
+Subject: Re: [PATCH v? 0/2] PCI: j721e: A couple of cleanups
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: linux-omap@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, Bjorn Helgaas <bhelgaas@google.com>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Siddharth Vadapalli <s-vadapalli@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>, 
+	LKML <linux-kernel@vger.kernel.org>, Dan Carpenter <dan.carpenter@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sat, 25 Oct 2025 20:48:20 +0200 you wrote:
-> Add and use an iterator for all PHY's on a MII bus, and phy_find_next()
-> as a prerequisite.
-> 
-> v2:
-> - rename iterator to mdiobus_for_each_phy
-> v3:
-> - add missing return value description for phy_find_next
-> 
-> [...]
-
-Here is the summary with links:
-  - [v3,net-next,1/4] net: phy: add iterator mdiobus_for_each_phy
-    https://git.kernel.org/netdev/net-next/c/26888de97b2f
-  - [v3,net-next,2/4] net: fec: use new iterator mdiobus_for_each_phy
-    https://git.kernel.org/netdev/net-next/c/0514010d553a
-  - [v3,net-next,3/4] net: davinci_mdio: use new iterator mdiobus_for_each_phy
-    https://git.kernel.org/netdev/net-next/c/4575875065de
-  - [v3,net-next,4/4] net: phy: use new iterator mdiobus_for_each_phy in mdiobus_prevent_c45_scan
-    https://git.kernel.org/netdev/net-next/c/d4780abb8cce
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Hi Markus,
 
 
+On Wed, 29 Oct 2025 at 01:21, Markus Elfring <Markus.Elfring@web.de> wrote:
+>
+> =E2=80=A6> Changes
+> > v4  : Improve the commit message.
+>
+> Would an other version number be more appropriate for the subject prefixe=
+s
+> of this patch series?
+>
+Yes, if there are some more review comments on these patches,
+Or they get lost in emails.
+>
+> =E2=80=A6> v1:
+> =E2=80=A6>    dropped unsesary clk_disable_unprepare as its handle by
+> =E2=80=A6
+>
+>              unnecessary?
+>
+> Regards,
+> Markus
+>
+Thanks
+-Anand
 
