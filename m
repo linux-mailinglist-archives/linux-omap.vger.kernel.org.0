@@ -1,120 +1,105 @@
-Return-Path: <linux-omap+bounces-4813-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4814-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C130DC1E65E
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Oct 2025 06:14:26 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F49C21DF7
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Oct 2025 20:10:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 621163B45AF
-	for <lists+linux-omap@lfdr.de>; Thu, 30 Oct 2025 05:14:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8675F4E82B6
+	for <lists+linux-omap@lfdr.de>; Thu, 30 Oct 2025 19:10:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FF132863E;
-	Thu, 30 Oct 2025 05:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66E2036CE0E;
+	Thu, 30 Oct 2025 19:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eGFn7QQS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ldNniPL3"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6EE30CD8D
-	for <linux-omap@vger.kernel.org>; Thu, 30 Oct 2025 05:14:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5D12594BD;
+	Thu, 30 Oct 2025 19:10:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761801257; cv=none; b=NR0CRmCXCpyh5O5BpCIAV7rwxaEyckkEFORz4n0YMOupmYXW6EtX20+Cdxd8VnYkW2DhbJBKHNvXEySIEw7sZYY/F35+x29N437Kl+B0QZBSaNPfDEV8UylB7IBo+Bf8jKKYjVUckPIcFtQ9eDTNIGwhPv64XQJmSaDjPCw58/k=
+	t=1761851445; cv=none; b=RnNZtE8qffxVyrJaTFWpbV/YMeDh+l67VRs+Yl0txKUNdk+DXdIw2Bydvuijd+mXgPYxpSQHH7/kxj18dB/X8MpEOyiJltgBy8wgm8+oW6qplwVc+qyuVupo0+CgW7Gv0C2nXzceQJruHmVnXKAz17DSsYvfZilluyPPC476viE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761801257; c=relaxed/simple;
-	bh=T9QHSB+KZkLl9uHgRXc5ETf3HFmGTKOuyoZXK7i7tR4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tSonxRJy6sGRNrSoB0+42oefAvq5Q4+V+P8d7PkTcEvfc3GdZQlVX1DMwPmK5XXjkTnyyRsP48iKRKKzRGraUbgtm66prWXDQhVdPh44PSr/7F+Ck3aoalPOjQylQNPhrFUkvX9hH/vNTuwxDI+jHIlwubxjSzetKDcaMzm7Sjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eGFn7QQS; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-63bad3cd668so1083045a12.3
-        for <linux-omap@vger.kernel.org>; Wed, 29 Oct 2025 22:14:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761801254; x=1762406054; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5tq0yxGv6yRvwde5HLaH1HkY7PXCLMaOxQayqcCSGMU=;
-        b=eGFn7QQSkw44XxcgW/Ly0VCFciycqennQ+atdW4fBXjZ1cZ9cdRDeY7Oz/Gn4gp8v3
-         /vRAqqxqyiNmzyjDhwAkW4C92sd7ykz/+f32KhZipOM3HATm2jUIFj7ejVYnkmDvmc80
-         l+A4Af+xRkIFg8nAFh46Ql1ZwWvmU++Szxnioa6fChxC5UvsonCd5+45dVuE3lwpNFFs
-         goW3UrOAKf1Zrv/21FjXX4QWMuOsYe9PK1lGzb3B1NVo0yXklwkg/Q1wTHSjMEDKAUcn
-         L/jqp7Gy0/aKe3GBuoTpDYPs5zOo8ZIUqOQdTXy6eXSbuA22XmgqG3Z4paE5Upg95KHT
-         3x7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761801254; x=1762406054;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5tq0yxGv6yRvwde5HLaH1HkY7PXCLMaOxQayqcCSGMU=;
-        b=MPyhR5vETgtWSqlQwwilqGHUeBACsL2ldaFdhy+iRc+YUqmA2UNlvF0a0J/UKzo0GY
-         N7WDRtABg/rn3jbWXsLvHOZsN5c41rQfhI8QCMGO4gKjIzOWWszJYokp2WFVZq190qE/
-         X4z/Z5EBPBtxZZDYqrT9ihrDE8e4+osHCnW/LTPd/MHy2CsiezTu0P3744bhxvYLP9yN
-         oTpIskF4TKyQKY7GpqJ7bbj+TG+MJjkJYShSIOMWgmpN++JgowWCISLvZETVDL7G14Ra
-         Kv3qoZiNUKaaBpKu6X5gul1paqdwuc7aWNcnM/A5TAgAztv3PPXXmGxwlVKvBZWz0wI8
-         wTTQ==
-X-Gm-Message-State: AOJu0Yygiah155zrTKyTv2FigwJeimPHwmTkPZRACGI21UG2F/v9Vveu
-	CPCNY2EwGrijh4jPJvSuZY3rpeHhUa87kjm4DrMazIYSQHgGuhtm70RLpbi94Lcq26R3cIw8k/E
-	27Dyxjq31b+Ll+8MgxolSt87ABJko9FI=
-X-Gm-Gg: ASbGncurZbsGrLYvdDtR5QULtir0CzQ7PpYiW/iFvXx9nKq3NlzwHy/r88ftpYF9+1+
-	LmEb3Yi95hCo5H+w0jMWgktAtUJgelig7+0ElHIItzzGBe9enJqiSXDn+cn3uALzUYDbSdXHh+5
-	NT6ZlPktG0YA0WlaTOq7uVSTcIKNACf+xBGeXZ1uSrc2bqcdz4m5z78NG6I+Yy8SI/WJumDbLBB
-	LzoKZLfqv9kQHI1ESjP9Ykg8BA6HfigBiHGV458aFwseQTGlv+6GXWKWI0=
-X-Google-Smtp-Source: AGHT+IFDCMfSXrIL3bjIKZw2IhpHFG1U5RsQXDbZl1lPFfpuAvA594DxUOaln1JvXCqNQSfMK0dolS63NIEWPJif8rE=
-X-Received: by 2002:a05:6402:50c8:b0:63b:f3a9:f5f1 with SMTP id
- 4fb4d7f45d1cf-640441c2092mr4444447a12.14.1761801254315; Wed, 29 Oct 2025
- 22:14:14 -0700 (PDT)
+	s=arc-20240116; t=1761851445; c=relaxed/simple;
+	bh=naMvRg+jiLIrCXBRw75nBlNgeBZSLRLff3Z2tNMap9Q=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ZzjT9xz6InoSwUQ1K+LkDQy0DzSj9/FC0d77bUi9Mkh7bSQTOpnQI+DLRu5kfi4EUnGCaXEKsb2HhMwulZ7xI9pujEr0k9SyLbilOrl8QrpUJlsLh2qPdh+TJv+DJFXqdEhtJXOZfWbx0TtgwlVLSCHdsPKYr1ol7hav2dDowaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ldNniPL3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6734C4CEF1;
+	Thu, 30 Oct 2025 19:10:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761851444;
+	bh=naMvRg+jiLIrCXBRw75nBlNgeBZSLRLff3Z2tNMap9Q=;
+	h=From:Subject:Date:To:Cc:From;
+	b=ldNniPL3Cc0f1rrQCaRSSaIY+akdszPnenKqRcKL+h8ZL/MVHb47YJW9bKBrbO1BV
+	 SxlWIgz4ipokOTxuS1Mr1BvCYrY90MtE0lyooovCr9nVHQBxaA34Mt2nVovHxqf9AC
+	 8c9f55OUB8IlU31uxb2sr9LSpj3/+U1BReM8FK+Ab5Rz+6/gcGMMW8nAz6rSH0QFGl
+	 VjYUD0BUdMx4ip3zOWrBxDzKPnvK4ODrds3SBqOrQIMZ3NApFfh0PLDMs8QiCJTgJz
+	 eXX/ZtZb69WOjyaXUhy4ugW2ZWaXO77rrgQC6UTg6hxeE5AnO9Be59IEYpOMjVYz80
+	 4NO5E3SI3qARw==
+From: akemnade@kernel.org
+Subject: [PATCH v2 0/3] mfd: twl603x: add power button
+Date: Thu, 30 Oct 2025 20:10:33 +0100
+Message-Id: <20251030-twl6030-button-v2-0-09653d05a2b1@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251028154229.6774-1-linux.amoon@gmail.com> <24319a9a-ccf8-48a9-8b5d-3a846976afcd@web.de>
-In-Reply-To: <24319a9a-ccf8-48a9-8b5d-3a846976afcd@web.de>
-From: Anand Moon <linux.amoon@gmail.com>
-Date: Thu, 30 Oct 2025 10:43:56 +0530
-X-Gm-Features: AWmQ_bl9cBL27Bidm95xNfiwXFieCJ3byhHw0tTbL2X_4Wmj8VImOI2xhqIIeMc
-Message-ID: <CANAwSgTO2s8LA=e5CVYnpJ95_DLdkiot5Zbz1hFaejV=kTK2_w@mail.gmail.com>
-Subject: Re: [PATCH v? 0/2] PCI: j721e: A couple of cleanups
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: linux-omap@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, Bjorn Helgaas <bhelgaas@google.com>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Siddharth Vadapalli <s-vadapalli@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>, 
-	LKML <linux-kernel@vger.kernel.org>, Dan Carpenter <dan.carpenter@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACm4A2kC/3XMSw7CIBSF4a00dyzm8ii1jtyH6aCPa0tswACip
+ mHvYucO/5Ocb4NA3lCAc7WBp2SCcbaEOFQwLr2diZmpNAgUNUeBLL5WjRLZ8IzRWXaSU1O3A2o
+ kDeX08HQz7x28dqUXE6Lzn91P/Lf+pRJnyFpJSivVj22jLnfyltaj8zN0OecvcUJqf60AAAA=
+X-Change-ID: 20251020-twl6030-button-83d759b060e6
+To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Andreas Kemnade <andreas@kemnade.info>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Tony Lindgren <tony@atomide.com>, Kevin Hilman <khilman@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-input@vger.kernel.org, linux-omap@vger.kernel.org, 
+ Andreas Kemnade <akemnade@kernel.org>
+X-Mailer: b4 0.15-dev-50721
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1022; i=akemnade@kernel.org;
+ h=from:subject:message-id; bh=naMvRg+jiLIrCXBRw75nBlNgeBZSLRLff3Z2tNMap9Q=;
+ b=owGbwMvMwCUm/rzkS6lq2x3G02pJDJnMO3SbnvX+Xeio/o67s1F0/+pTO/maPiXmGtawnAyPO
+ hj68mVpRykLgxgXg6yYIssvawW3TyrPcoOnRtjDzGFlAhnCwMUpABOZNpeRYUq9fdyWP8ujpZx2
+ X5d0XCM7Ne8+75Ij+c87d6mue9099wcjw/a4Z6tzlNXPvFBfcGXFQz03h1W68x+u+PH1XmO0neW
+ fySwA
+X-Developer-Key: i=akemnade@kernel.org; a=openpgp;
+ fpr=EEC0DB858E66C0DA70620AC07DBD6AC74DE29324
 
-Hi Markus,
+Like the TWL4030, the TWL603x also has a power button feature,
+so extend the TWL4030 power button driver to support TWL603x.
 
+Signed-off-by: Andreas Kemnade <akemnade@kernel.org>
+---
+Changes in v2:
+- integrate driver into existing TWL4030 driver
+- improve commit messages
+- Link to v1: https://lore.kernel.org/r/20251020-twl6030-button-v1-0-93e4644ac974@kernel.org
 
-On Wed, 29 Oct 2025 at 01:21, Markus Elfring <Markus.Elfring@web.de> wrote:
->
-> =E2=80=A6> Changes
-> > v4  : Improve the commit message.
->
-> Would an other version number be more appropriate for the subject prefixe=
-s
-> of this patch series?
->
-Yes, if there are some more review comments on these patches,
-Or they get lost in emails.
->
-> =E2=80=A6> v1:
-> =E2=80=A6>    dropped unsesary clk_disable_unprepare as its handle by
-> =E2=80=A6
->
->              unnecessary?
->
-> Regards,
-> Markus
->
-Thanks
--Anand
+---
+Andreas Kemnade (3):
+      dt-bindings: mfd: twl: enable power button also for twl603x
+      Input: twl4030 - add TWL603x power button
+      ARM: dts: ti/omap: omap4-epson-embt2ws: add powerbutton
+
+ Documentation/devicetree/bindings/mfd/ti,twl.yaml | 40 ++++++++++++---
+ arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts |  5 ++
+ drivers/input/misc/twl4030-pwrbutton.c            | 61 +++++++++++++++++++++--
+ 3 files changed, 94 insertions(+), 12 deletions(-)
+---
+base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+change-id: 20251020-twl6030-button-83d759b060e6
+
+Best regards,
+--  
+Andreas Kemnade <akemnade@kernel.org>
+
 
