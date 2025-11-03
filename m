@@ -1,130 +1,188 @@
-Return-Path: <linux-omap+bounces-4821-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4822-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9EC2C2644E
-	for <lists+linux-omap@lfdr.de>; Fri, 31 Oct 2025 18:04:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75682C2B6BC
+	for <lists+linux-omap@lfdr.de>; Mon, 03 Nov 2025 12:37:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 732454F1DE3
-	for <lists+linux-omap@lfdr.de>; Fri, 31 Oct 2025 17:02:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16FE53BA83E
+	for <lists+linux-omap@lfdr.de>; Mon,  3 Nov 2025 11:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3C330214A;
-	Fri, 31 Oct 2025 17:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C4E2FDC24;
+	Mon,  3 Nov 2025 11:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Lma9lMk6"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="FxDwCxq/"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from server.couthit.com (server.couthit.com [162.240.164.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE462FD684;
-	Fri, 31 Oct 2025 17:02:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A4C3054CE;
+	Mon,  3 Nov 2025 11:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761930156; cv=none; b=t9f6yoAQfatOFTT1X5TiUDSfW8RI+n1bHBpDZddnRmMMCv6psvjJKyJOKRgmaam9ojGdx6ls6XpEmbM+ARa1/AwmuQk+xP54R/tCrhiTN+TtiEac2V+Dlx7S88p82nb6CJDHZGv5qH5r7JeBR0gK7Vn7U8XX4qk2FGrPBHidq24=
+	t=1762169408; cv=none; b=dE3HKoRDKDX210XAh0I+MkoYuIP5zL91NKBBqthcd8QfzVv/IquGDe2xXOksPxTiboekSVBwu+D6kF9QpK8q9BsFdtGaxyGFwqmYcCyhQCu2lbvlZA6ky16RlueZCHVK4YBIXDD6NR8y3SNs+VZMgqrM3pHKmQFO7DiPyGYjAQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761930156; c=relaxed/simple;
-	bh=xBrRg5gnKGkW3B8XP6rpJw1tbT54300fN3/BrYXoe+o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j9uP0Tb9ydAUhrpd5VkvJFX0pmOK8wGKd7OnyzZsAURK/7NYyhN5urA4r+uKP0dBg7JMeI4mnm7B9pahuMcZp1XH7AfIpUJzdspOlxE1baemvDEHIQg5uE7R37bYutggobQMUoQ7OStqcMZSH3yNaVMsTc+7xQ9g7RxzJEzgq0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Lma9lMk6; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761930155; x=1793466155;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xBrRg5gnKGkW3B8XP6rpJw1tbT54300fN3/BrYXoe+o=;
-  b=Lma9lMk6fwafyitW9KDq8JNZ+QtBtpMG1Mudzi0OedI1BwkSulAtjqws
-   iInP4luoD+J2Z66Ix8zJibqd1kC5GDripLfQUMaNVH/7d9YFXdPjkXqca
-   Auinpcf0ndLE1kxbJ7S705xPQGkIeryJ3UdpY0u1UbrvhUzCAX7W969mh
-   /w25EAWkKhJHHoPx3TQ69pMeksXtsZVmBvgvUzoktkHt54g3iPjEBTrkA
-   /Ge5FtyEsFHtdZ9bNos7PLWusXyXubxnsSGxhDxxGWO+vKMGIKC9HcAAP
-   MawvomwlTNtSKb/p4RsK7uxkm+VEO54i+n5Os19gXl9rqT7fbo4SSYrwN
-   A==;
-X-CSE-ConnectionGUID: LjTz6QYpQa+UzAfi1SSdUQ==
-X-CSE-MsgGUID: i0RO0dLlTh2ODri0JAsmyA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64022383"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="64022383"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 10:02:35 -0700
-X-CSE-ConnectionGUID: x68roOhWTn6lqkp9QuvNGA==
-X-CSE-MsgGUID: ZjElhhxgQQ6EulK2irEIZQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="190629319"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by orviesa004.jf.intel.com with ESMTP; 31 Oct 2025 10:02:32 -0700
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vEsWC-000NUK-34;
-	Fri, 31 Oct 2025 17:02:28 +0000
-Date: Sat, 1 Nov 2025 01:02:26 +0800
-From: kernel test robot <lkp@intel.com>
-To: akemnade@kernel.org, Lee Jones <lee@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Tony Lindgren <tony@atomide.com>, Kevin Hilman <khilman@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-omap@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] Input: twl4030 - add TWL603x power button
-Message-ID: <202511010024.4O4b58oK-lkp@intel.com>
-References: <20251030-twl6030-button-v2-2-09653d05a2b1@kernel.org>
+	s=arc-20240116; t=1762169408; c=relaxed/simple;
+	bh=hjqkskP7rEKOpC0HAWlWuk9UR+qmbWyNfX49a8doCqI=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=k6sOHmnm56FI/KaHJ7AwvvZpCxU0T7i3D/N+3gMOclWXghx0CdfVt4hCWt4v65IzIKy5NGs/pxXLhmjryWHYHq/tOE2IGhcpQcIjblS+t8CqcsILa7fPmeeqzcNUSkqa6RwKuhOpBpZqeFbbKp4xPABzCF5Hdsa6p8JnoEHhwVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=FxDwCxq/; arc=none smtp.client-ip=162.240.164.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
+	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=pO1e3BxesOLdXFEMiUspsLON2Xgnazr0oTkpXmKAlXc=; b=FxDwCxq/M161NLrVbAViDNd8lQ
+	2j9qnONIOgOVEimJgVCyJbB1vse1/oEIP5AWFuE8ZycmGTQw5B43b+PGAVsOJTcMZhO23oEaAQwhZ
+	k07V3tshvT8pQyDdkaOK7DGSCC7BQSEKgS9XrV0qfsmK4kYhEHWUP7IjUZOsQgRPQ/GXIM7Byw5BI
+	E8HbXLvPLRo/5kL7E8yF1TgK5rxEinLcwa9uyCQbo4NZSTyz6ALv4Y2jxvBTUpU1OCcN1UhKgFzF2
+	QGfZ+czSAR4V2yBFWm1SQi/OhpdII0jhWNByO0kmu90W8OyifHI4y2PMLfwRoO27ULhPOBSi2b8Ip
+	iqAADrxg==;
+Received: from [122.175.9.182] (port=20643 helo=zimbra.couthit.local)
+	by server.couthit.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.1)
+	(envelope-from <parvathi@couthit.com>)
+	id 1vFsQO-00000006Pzf-2Y0s;
+	Mon, 03 Nov 2025 06:08:37 -0500
+Received: from zimbra.couthit.local (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTPS id 7A72F1784032;
+	Mon,  3 Nov 2025 16:38:31 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTP id 65CF21781F6A;
+	Mon,  3 Nov 2025 16:38:31 +0530 (IST)
+Received: from zimbra.couthit.local ([127.0.0.1])
+	by localhost (zimbra.couthit.local [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id hg8Tri1-CFlx; Mon,  3 Nov 2025 16:38:31 +0530 (IST)
+Received: from zimbra.couthit.local (zimbra [10.10.10.103])
+	by zimbra.couthit.local (Postfix) with ESMTP id 3EC801781698;
+	Mon,  3 Nov 2025 16:38:31 +0530 (IST)
+Date: Mon, 3 Nov 2025 16:38:31 +0530 (IST)
+From: Parvathi Pudi <parvathi@couthit.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: tony <tony@atomide.com>, robh <robh@kernel.org>, 
+	krzk+dt <krzk+dt@kernel.org>, conor+dt <conor+dt@kernel.org>, 
+	richardcochran <richardcochran@gmail.com>, 
+	linux-omap <linux-omap@vger.kernel.org>, 
+	devicetree <devicetree@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	netdev <netdev@vger.kernel.org>, danishanwar <danishanwar@ti.com>, 
+	pratheesh <pratheesh@ti.com>, Prajith Jayarajan <prajith@ti.com>, 
+	Vignesh Raghavendra <vigneshr@ti.com>, praneeth <praneeth@ti.com>, 
+	srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
+	krishna <krishna@couthit.com>, mohan <mohan@couthit.com>, 
+	pmohan <pmohan@couthit.com>, basharath <basharath@couthit.com>, 
+	afd <afd@ti.com>, m-karicheri2 <m-karicheri2@ti.com>
+Message-ID: <1460283559.152037.1762168111145.JavaMail.zimbra@couthit.local>
+In-Reply-To: <1064878067.81811.1760534965853.JavaMail.zimbra@couthit.local>
+References: <20251013125401.1435486-1-parvathi@couthit.com> <20251013125401.1435486-2-parvathi@couthit.com> <8cfc5ece-6c2e-48d9-a65c-3edbcc9edc39@lunn.ch> <1064878067.81811.1760534965853.JavaMail.zimbra@couthit.local>
+Subject: Re: [PATCH 1/2] arm: dts: ti: Adds device tree nodes for PRU Cores,
+ IEP and eCAP modules of PRU-ICSS2 Instance.
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251030-twl6030-button-v2-2-09653d05a2b1@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 8.8.15_GA_3968 (ZimbraWebClient - GC141 (Mac)/8.8.15_GA_3968)
+Thread-Topic: Adds device tree nodes for PRU Cores, IEP and eCAP modules of PRU-ICSS2 Instance.
+Thread-Index: E3LIn1f4mOg6FaK5tJjNCk6cQUoE5cdujhE/
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.couthit.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: smtp@couthit.com
+X-Authenticated-Sender: server.couthit.com: smtp@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
 Hi,
 
-kernel test robot noticed the following build warnings:
+>>> +				interrupt-names = "rx", "emac_ptp_tx",
+>>> +								"hsr_ptp_tx";
+>> 
+>> Something looks wrong with the indentation here. The same happens in
+>> at least one other place.
+>> 
+> 
+> we will correct the indentation of the interrupt-names property to properly
+> align the continuation line as shown below.
+> 
+> interrupt-names = "rx", "emac_ptp_tx",
+>                  "hsr_ptp_tx";
+> 
+> We will make sure to address this in all the applicable places and include
+> this fix in the next version.
+> 
+> 
+>>> +&pruss2_mdio {
+>>> +	status = "okay";
+>>> +	pruss2_eth0_phy: ethernet-phy@0 {
+>>> +		reg = <0>;
+>>> +		interrupt-parent = <&gpio3>;
+>>> +		interrupts = <30 IRQ_TYPE_EDGE_FALLING>;
+>>> +	};
+>>> +
+>>> +	pruss2_eth1_phy: ethernet-phy@1 {
+>>> +		reg = <1>;
+>>> +		interrupt-parent = <&gpio3>;
+>>> +		interrupts = <31 IRQ_TYPE_EDGE_FALLING>;
+>>> +	};
+>> 
+>> 
+>> PHY interrupts are 99% level, not edge, because they represent an
+>> interrupt controller in the PHY, and you need to clear all the
+>> interrupts in the controller before it deasserts the interrupt pin.
+>> 
+>>    Andrew
+> 
+> 
+> Sure, we will check and come back with more details on this.
+> 
+> 
 
-[auto build test WARNING on 3a8660878839faadb4f1a6dd72c3179c1df56787]
+We have reviewed and analysed the code, and confirmed that level
+low can be used for the PHY interrupt, which seems to be a better
+option than using the edge falling.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/akemnade-kernel-org/dt-bindings-mfd-twl-enable-power-button-also-for-twl603x/20251031-031300
-base:   3a8660878839faadb4f1a6dd72c3179c1df56787
-patch link:    https://lore.kernel.org/r/20251030-twl6030-button-v2-2-09653d05a2b1%40kernel.org
-patch subject: [PATCH v2 2/3] Input: twl4030 - add TWL603x power button
-config: x86_64-randconfig-123-20251031 (https://download.01.org/0day-ci/archive/20251101/202511010024.4O4b58oK-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251101/202511010024.4O4b58oK-lkp@intel.com/reproduce)
+As shown below, the current interrupt configuration reflects a
+level-triggered setup:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511010024.4O4b58oK-lkp@intel.com/
+root@am57xx-evm:~# cat /proc/interrupts
+           CPU0       CPU1    
+163:          2          0 48057000.gpio  30 Level     4b2b2400.mdio:00
+164:          2          0 48057000.gpio  31 Level     4b2b2400.mdio:01
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/input/misc/twl4030-pwrbutton.c:44:31: sparse: sparse: symbol 'twl4030_chipdata' was not declared. Should it be static?
->> drivers/input/misc/twl4030-pwrbutton.c:49:31: sparse: sparse: symbol 'twl6030_chipdata' was not declared. Should it be static?
+We can see the IRQ has been changed to Level and the count is incremented
+for every link event.
 
-vim +/twl4030_chipdata +44 drivers/input/misc/twl4030-pwrbutton.c
+We will update the interrupt type to IRQ_TYPE_LEVEL_LOW as shown below and
+share the next version.
 
-    43	
-  > 44	struct twl_pwrbutton_chipdata twl4030_chipdata = {
-    45		STS_HW_CONDITIONS_4030,
-    46		false,
-    47	};
-    48	
-  > 49	struct twl_pwrbutton_chipdata twl6030_chipdata = {
-    50		STS_HW_CONDITIONS_6030,
-    51		true,
-    52	};
-    53	
++&pruss2_mdio {
++       status = "okay";
++       pruss2_eth0_phy: ethernet-phy@0 {
++               reg = <0>;
++               interrupt-parent = <&gpio3>;
++               interrupts = <30 IRQ_TYPE_LEVEL_LOW>;
++       };
++
++       pruss2_eth1_phy: ethernet-phy@1 {
++               reg = <1>;
++               interrupt-parent = <&gpio3>;
++               interrupts = <31 IRQ_TYPE_LEVEL_LOW>;
++       };
++};
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+
+Thanks and Regards,
+Parvathi.
 
