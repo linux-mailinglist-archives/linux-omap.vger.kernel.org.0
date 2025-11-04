@@ -1,90 +1,86 @@
-Return-Path: <linux-omap+bounces-4838-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4839-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F414C33538
-	for <lists+linux-omap@lfdr.de>; Wed, 05 Nov 2025 00:07:21 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D702C3353C
+	for <lists+linux-omap@lfdr.de>; Wed, 05 Nov 2025 00:07:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 659E74EC83E
-	for <lists+linux-omap@lfdr.de>; Tue,  4 Nov 2025 23:06:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 014414EE62E
+	for <lists+linux-omap@lfdr.de>; Tue,  4 Nov 2025 23:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7A02D878D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEBFA2DEA72;
 	Tue,  4 Nov 2025 23:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ZrTTXPbJ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Rs1LOw2L"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000B62609DC
-	for <linux-omap@vger.kernel.org>; Tue,  4 Nov 2025 23:06:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C9472604
+	for <linux-omap@vger.kernel.org>; Tue,  4 Nov 2025 23:06:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762297615; cv=none; b=osNOrxy3iGWQpsnzExY029PXpjhdZEiaMZhw3XGXjJ0+UOWlIpjKYjS+MphDQ/4wmj5YPNcGPG9rMGeYHPRk/5XTuE6njbMPkwbsSnGOYNeu2ew68f4Bb1RozflY2ZLL3LGlnFKmiQYajSIej8bMP70CVvSCD9lB0oCb9VtgUTY=
+	t=1762297615; cv=none; b=qqNLJR7d3m+YNG3ygXZjw+KzN9IKbIQVVRtP4Pds8DYZCN+zpgB3+2kUiI/rFEX6s2y1aakgclXdN5L9/QBmLqJ/r/IRjkp+LTP95MZ1GANs+1MLO4moI3TAO2gOM8ecKOC1R/YTFguaq1YkjjMVEjTU306yVLYyjWfYJrRUGpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1762297615; c=relaxed/simple;
-	bh=12vGFUcZemOMh5QBaAJfQHOdmFM8hY1UyGUKJ7JDXKw=;
+	bh=QJ847FhBTFOXl3rS58U8cqQ+LD+SFOtAjEolRkbcjsk=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=J2twhDkfz4mFN+kB6TvwsEksvitLpNJSFqLhquipxg222zxagTIUw4UH9W5FYcuiXkvDsadAP6KWOLZehlXPHUf1Gc4XxxEG201kSFYKw9W/2Sh6AnP1vNHqtUsuWAEBXKuiLOtDg1xtq0fhD0NCa8lWvIlTMho4bUfVJRNOikg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ZrTTXPbJ; arc=none smtp.client-ip=209.85.214.178
+	 MIME-Version:Content-Type; b=DvOC3x3ihAuAqRVqc9LTYvMMZzjttntQoeo4f30NeHh4KBfmG2tPe1IeuEFcLo2TBV9UKT84pdcj3zgqH9oNVU3I6d2VagxdGI8I0rutjVwPBGch/c6cx7r44s8kdznmM2Um5ya/y4xr8NmkWhWU/a2QpkfIlTpV+KA4B8eO73o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Rs1LOw2L; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2953b321f99so44130425ad.1
-        for <linux-omap@vger.kernel.org>; Tue, 04 Nov 2025 15:06:52 -0800 (PST)
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2957850c63bso3230885ad.0
+        for <linux-omap@vger.kernel.org>; Tue, 04 Nov 2025 15:06:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1762297612; x=1762902412; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1762297613; x=1762902413; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:date:message-id:subject
          :references:in-reply-to:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5rLeRaREaYFNIk98QRUcTfCmsFgqK+8yNycFcHOEqW8=;
-        b=ZrTTXPbJ/uPRGAhHaD/bwiMG7sKuU0zhwATXvdgry+h6V0uJI75VDJbxn8St53ZfKi
-         0nc2tSoHLXSV6Nffd7l+gMCEmtbgKrDml9aQJZZ/1tVaK7qrQOOTmAvEFqkWpwrHcSZF
-         Ooso+7fwEkvyw60Icat7XGXDmhhJL9a1MhMG2Gcc0ATJw4Qfj5hW7tCxCv6vEP1/JjbU
-         Szr23QIHqkVTDig+DAAIsEgoJMG3xRECwIUkqj/XgKmMrLmdI0sOTm7Pl7jNxGfmNa0X
-         kA5wK1VgilHTgms6Pi+V++YKUEk5QIs4u9cFH11EGp9zAg6CDHhAzyibYA0HjVETQeIL
-         17PQ==
+        bh=JksZ5o2lwKHDUecYiEPxGzs4V/o270DnmDoI1y8aqwA=;
+        b=Rs1LOw2L+DrT9mYXwC9V31w4hLwnREy+jwRhDIIU6IzfCD4tOH60+2atb5kHS4o6jo
+         62hPTPPTKSyR9THHDPkXT4tuO6v1PQj+xU6LQAu2khP7NhigMTT48dOucCQfJz91H8za
+         n/RycZ5grYbsrbNzhF3SRRnuycqoZdFqi+p/ZOgmhxEf6DTX6g3Os4K/7O2cIae/logt
+         imBNQxJT6j14BLIPlgn1Uy5j/Il1utwrvw0iFJ4Y11jEgo9hQW7KAI7Zkwq2VE8PMbc8
+         okRJh7g01wT/ZC1gTXLMg/SS1pZKxLGQd/pnGBfE5ooDs+M03DUemaeqvH7oTm0yUYrA
+         +s+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762297612; x=1762902412;
+        d=1e100.net; s=20230601; t=1762297613; x=1762902413;
         h=content-transfer-encoding:mime-version:date:message-id:subject
          :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5rLeRaREaYFNIk98QRUcTfCmsFgqK+8yNycFcHOEqW8=;
-        b=Sq/gnsaVJnNQu4XQ3bSQPyTY+i0Q69Pkl9UTAaUDoz3FYYshvYGNHqifSFYDgBZlMw
-         2YxRq5m+H4E5EH8Pb/7ZC3qTUyp/RcfqTuISpTizxmJ7omXsreUeLJS444rcdeTnHAsm
-         JAuOYJXwHsuGU9px+DmLGnE7VZO/+hAwL7SzFDu/GEr0BRP4ePZXNvz6lP//9J8aCdBX
-         9p7nRVJN6iY6ZUqEBB3NRQXF/qkgI7YrN28blMxhfQG/3sCduh8YOC7ZF1TVok4pqTlE
-         Wwb3Dv+p7TAtTSCaRj5HnKHLxx72KWrJfqYh6NLa90EorJs2rYKlKJJ7N2z80Ox9/AAC
-         OG0w==
-X-Gm-Message-State: AOJu0YzZbNhaNcKq9GzFMwmEO36A/jP7uNto1P9KURwL0YdS9xJRR7QP
-	0C1/3ygzn5NxGWYK+RXKVNeUwhq7BRyYdAPgEuBRav70ytfjQ68P7Oy0vmQ4kJ3WTHc=
-X-Gm-Gg: ASbGncuyVP8auC0bpZP3672LZHJWwlh3BMm0ugfWrMtKLgg/d2pGL0nrCEAT/o/3jD2
-	lrYdtRScolQw+iocqVY/lhmjGlqiZ7Rw1694f2zzXuvphHDconhE9QIF4Xsg2x6yF8auftCOmel
-	vXrHhKwkQC/L7/IyjVl54avmxpzxK5tItQbJTIjzbqNe/GYa9muwr2FIcsQbs0/KXLBvy8JKGNT
-	PIh9AM6mhuobJOC/457p9TKKp/i81e3KkSeqjaoi0DHiabB1dAK1oFN9YaAAJnZsW/QrWZcrzqr
-	/CeWK0O1+CO8TW9igaSg210VOhvhJsSK6+02O4xYpYFWckux3GGQ3uIB8x/Q7cuikwEL4N4TyFl
-	fWJsg4LRmKGOGqvTVmrSNmesb0a989bX3GgB9Fu27aEL4Ylq78iRqkd8BrFTY+psYS4gBt4V5+f
-	H0b4nqNSia
-X-Google-Smtp-Source: AGHT+IEqAInSq7/OcKAz3KBjMGwdkltgrZQ5n2MVBtC0iSVzd8WVSTSxnKY4wAu8Z/1kBaGkPjKa7w==
-X-Received: by 2002:a17:902:d2cf:b0:295:c2e8:dabd with SMTP id d9443c01a7336-2962ad3c9femr17882525ad.26.1762297612348;
-        Tue, 04 Nov 2025 15:06:52 -0800 (PST)
+        bh=JksZ5o2lwKHDUecYiEPxGzs4V/o270DnmDoI1y8aqwA=;
+        b=tTCHdh42OqsOs1tUefmTK0kDc0iTjjuFnIfhFXkRq4pdCzKd7OLdCyOxx8+D+y6df0
+         zscbGhPFD8Y2md60QjCYZchIO1d4uhn2m89Wo3dP3aBbhpf+lMEC13XlGq8WirqyfSPj
+         W5DWUmUp+Jj9XsGYqLrTWCGWeZCjL1tF20jjuorp5H6fWh8CbMojJMk1VBrvaLLf2kw1
+         muDlXokguI/f5H4z9SpyG1vV028DvmA163skIAeODT8/mkukta/hq7om5mIkYFu8rDNR
+         jFgd2nIpa+8ONu2enZTpoS/ejki82Zmh4vwaFDq7BNC9E4U8cTvcCBzIzdtiOHKxp/f0
+         ZxJQ==
+X-Gm-Message-State: AOJu0YyX9vUWDQe7O2BasbCG/8cZFX/Nhj86aKg43rXFmKfGiniyEP7o
+	BBDDFnap60H8PP24P20y9PyV6odIXuheMuabGprMx8mOexOdMUwvRIzJpii8iPy8raU=
+X-Gm-Gg: ASbGncsXFR1e8+y22Nx6SN+MAhtJG4C0CLxNC/KpCIr7gKdYdPenqZea9+0yuDjs78F
+	9T5vgZI4PHl3ZcjJo8Z0vMhbJDlP7g47op76mxwfKIYni0BGNN+m0HVCSeuslKRTk73VAGwGhew
+	IEOTxOjA/EhjRPqE+hxzcq1i4rlKVAg2fzBP2P+Jo2Onk4WrfCcE8GjV8gbSBdZ+c7J3wXRC57r
+	8A+O1VBZ8SiZrmofLuN2uqxqS4QLOGIGIKFFU0P6+EpxmCVQ2OqQ924Fd082lVCnwewAkHYvj1p
+	WM7cnQEgenru4hLJIbQbe5bYL65c0RLlnNS8cMMfccVWmBbBVJf6m2/9W4nECjUcn6e86GYx0kn
+	AUroC2nxks2PvY2Svkj6aFPFn8Yp/0V9W+F6sUTi6hi/SyBWzx9UPImdJqDvrbr0iOoHVUmHHew
+	==
+X-Google-Smtp-Source: AGHT+IHgBsxoU/B15KIiSeBgrpUmGN8tjd9N+/uuPPIkB4RHWM+GjdD2qRRDjV+JNmhejAOd2Mqa3Q==
+X-Received: by 2002:a17:902:c952:b0:292:9ac7:2608 with SMTP id d9443c01a7336-295f938f88dmr64337615ad.8.1762297613341;
+        Tue, 04 Nov 2025 15:06:53 -0800 (PST)
 Received: from localhost ([71.212.208.158])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29601a50e8fsm39573235ad.79.2025.11.04.15.06.51
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ba1f87a6155sm3462327a12.29.2025.11.04.15.06.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Nov 2025 15:06:51 -0800 (PST)
+        Tue, 04 Nov 2025 15:06:52 -0800 (PST)
 From: Kevin Hilman <khilman@baylibre.com>
-To: Tony Lindgren <tony@atomide.com>, 
- Bruno Thomsen <bruno.thomsen@gmail.com>, Judith Mendez <jm@ti.com>, 
- Arnd Bergmann <arnd@arndb.de>, Matti Vaittinen <mazziesaccount@gmail.com>, 
- Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: linux-omap@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <63cef5c3643d359e8ec13366ca79377f12dd73b1.1759398641.git.geert+renesas@glider.be>
-References: <63cef5c3643d359e8ec13366ca79377f12dd73b1.1759398641.git.geert+renesas@glider.be>
-Subject: Re: [PATCH] ARM: dts: am33xx: Add missing serial console speed
-Message-Id: <176229761135.2840692.14067519312360759831.b4-ty@baylibre.com>
-Date: Tue, 04 Nov 2025 15:06:51 -0800
+To: devicetree@vger.kernel.org, yegorslists@googlemail.com
+Cc: linux-omap@vger.kernel.org, tony@atomide.com, robh@kernel.org
+In-Reply-To: <20251006093517.3075431-1-yegorslists@googlemail.com>
+References: <20251006093517.3075431-1-yegorslists@googlemail.com>
+Subject: Re: [PATCH] ARM: dts: omap: rework Baltos LED nodes
+Message-Id: <176229761250.2840692.11737049086914044356.b4-ty@baylibre.com>
+Date: Tue, 04 Nov 2025 15:06:52 -0800
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -96,29 +92,15 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-56183
 
 
-On Thu, 02 Oct 2025 11:53:05 +0200, Geert Uytterhoeven wrote:
-> Without a serial console speed specified in chosen/stdout-path in the
-> DTB, the serial console uses the default speed of the serial driver,
-> unless explicitly overridden in a legacy console= kernel command-line
-> parameter.
+On Mon, 06 Oct 2025 11:35:17 +0200, yegorslists@googlemail.com wrote:
+> Add labels to the Baltos LED nodes.
 > 
-> After dropping "ti,omap3-uart" from the list of compatible values in DT,
-> AM33xx serial ports can no longer be used with the legacy OMAP serial
-> driver, but only with the OMAP-flavored 8250 serial driver (which is
-> mutually-exclusive with the former).  However, replacing
-> CONFIG_SERIAL_OMAP=y by CONFIG_SERIAL_8250_OMAP=y (with/without enabling
-> CONFIG_SERIAL_8250_OMAP_TTYO_FIXUP) may not be sufficient to restore
-> serial console functionality: the legacy OMAP serial driver defaults to
-> 115200 bps, while the 8250 serial driver defaults to 9600 bps, causing
-> no visible output on the serial console when no appropriate console=
-> kernel command-line parameter is specified.
 > 
-> [...]
 
 Applied, thanks!
 
-[1/1] ARM: dts: am33xx: Add missing serial console speed
-      commit: 9c95fc710b0d05f797db9e26d56524efa74f8978
+[1/1] ARM: dts: omap: rework Baltos LED nodes
+      commit: 905664e27647224b2f5f29a1825c3d6bff3fc49c
 
 Best regards,
 -- 
