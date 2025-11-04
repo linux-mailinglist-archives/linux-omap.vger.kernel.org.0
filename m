@@ -1,94 +1,92 @@
-Return-Path: <linux-omap+bounces-4847-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4848-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC585C3357A
-	for <lists+linux-omap@lfdr.de>; Wed, 05 Nov 2025 00:09:23 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DBDAC33583
+	for <lists+linux-omap@lfdr.de>; Wed, 05 Nov 2025 00:09:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 56A1B4F6ADE
-	for <lists+linux-omap@lfdr.de>; Tue,  4 Nov 2025 23:08:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DCCC04F1BC4
+	for <lists+linux-omap@lfdr.de>; Tue,  4 Nov 2025 23:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B708347BB3;
-	Tue,  4 Nov 2025 23:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F90347FC4;
+	Tue,  4 Nov 2025 23:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="MfeTqO1D"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="L+gDBIOj"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF352DC332
-	for <linux-omap@vger.kernel.org>; Tue,  4 Nov 2025 23:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E0C346FBF
+	for <linux-omap@vger.kernel.org>; Tue,  4 Nov 2025 23:07:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762297624; cv=none; b=dPhLhIRY29itDZszOf38Xp0x3q4YPZszyYCkSAQPf8SBRdJbpn2scCexIq507TjgPagDeyCsBTGL5z1bA2rsSCUPmBfnuOKtmQUit9eZ8jmhLkHjWpej9epIyzKdzKYSbZ1q8l1+KUCXyHtd9xBKsSaXxZbZi0LzxMZBdtjRknA=
+	t=1762297624; cv=none; b=lGE6732Rf7u9cPYSQiiubyKzvc2/4Bxe6yu54QcHOfrH8U04R24+BZgqJKDi/VnqAHHQduk1OVpKKKfuXvRWRAxR3cTX3+SCDzNX9J+4opLx1UtGQrGV5VYS9awWPinKudMIfWkrSaSVj3GEV0kf2gR/CU+Osyxp5X9wvnHR3JM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1762297624; c=relaxed/simple;
-	bh=yHkKXPbR33zJA3OGgfovSgAEgZn+oC9vSJyjIjciccM=;
+	bh=zm4ajFWLAvXc6tDsBMzDloo5DMNFuXxBUvESaJIps2U=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=uQ4fWwEp9w5rbyB6djszgQqv4G5KTfGu0mQWaFs+5qU5Ky13Fcv/IrXHepmo9Y5mXj/xf4KWvNUkf9oo1aVrS2JmQ5/lfgqbuJFUkUv0DCpSG7YNSMdkD2diS6/977fMUkQK+z41vlgkgFaN2tNZueB9o2ZEIWaY5crp+CYTvKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=MfeTqO1D; arc=none smtp.client-ip=209.85.210.181
+	 MIME-Version:Content-Type; b=a9MONCY2LqprbEV+UaTPmqMO87AYXc/cncKJ+0JD8Qka2EKiyd4Qq5G80L7/gG4dl+g/YHzsElePcOCq1hhRl38KFS0R/NCKNsMMkMp6ydm9/JLHm0vOv8dX4Z1FHzC1Xb6a4GshTmNaNP3bOMjZcsoRsNNORXWpt0NGqhkxXyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=L+gDBIOj; arc=none smtp.client-ip=209.85.215.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-781206cce18so302298b3a.0
-        for <linux-omap@vger.kernel.org>; Tue, 04 Nov 2025 15:07:02 -0800 (PST)
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b996c8db896so3194674a12.3
+        for <linux-omap@vger.kernel.org>; Tue, 04 Nov 2025 15:07:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1762297621; x=1762902421; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1762297622; x=1762902422; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:date:message-id:subject
          :references:in-reply-to:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jIQrxW79ZVgRUN8Wsqvx7zHmiYo35lAP7L+li0aZHjA=;
-        b=MfeTqO1Dvc8gouY2B2MNvQcXsm2O8X03r/Lixk7jAziZuiOeFhg1SyTpjWVkEfhz2c
-         ykr5/EWl1hFW0yrRt4PwJSX0mQM41w0zLhfHoSCSnTsyOdbTo1cWUwTVDhaPTjEKLh/z
-         ePtdeekuC4Izp31jNFWLrTMOhjG45oNDA1nWzLqSH50VqtF2UvWck1mM8Ovd1eq9Vl+m
-         Spg/mMZhTfOC0Hsjeluohu0OthqwbSBMu1AtrV9WlWt6DmZs+wXruxjfvw33I9DYuuyy
-         dEX8kbwO+W7F386i6Yy5GaK5ir8IowSDJypN+Jmvih8uFABlGmi8V01o9QBNC8IidIOT
-         J9Rw==
+        bh=7z8AC+yiHAIwmarbixp3f4qrcLuRr1Vhyqm82NW6W2M=;
+        b=L+gDBIOj6gWlLMXiLUzY/HYxfn8Ooea1+n0ZDytiGZUVEjMNY+JqQ/QTlUoSVMXnUx
+         lWYEgO2v1DMn0mM+EbLS0666ooZMUDnYZrOUGi4xL2IvnPrb/PppBZCtd49KEs51KJae
+         fhwecyXAPgC7OVAuferGUO2KmpMBOeZd+z8siYGQTdT8o4Gji276cQkzSwHPW/ONvq4x
+         RMd1i1y6+JbnoVoNyqQ6K/KXW+Kb0oTiMgHFi2Jpf70ZJ+U0W1ggrKQ7vpE8wD1/NR+S
+         CUlW+7zyDNhu/HohaX91UCcFcy/EbBrX0v7RboRistX5rVGWBCRkajNc+MkrMXHrNsV+
+         cJxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762297621; x=1762902421;
+        d=1e100.net; s=20230601; t=1762297622; x=1762902422;
         h=content-transfer-encoding:mime-version:date:message-id:subject
          :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jIQrxW79ZVgRUN8Wsqvx7zHmiYo35lAP7L+li0aZHjA=;
-        b=tqcgjkFY6DWjgGXwNEmCi/QFKYWmo4FS+5PVVPrIV2RAs/4VJ5EigHAv4z3S7KgYnR
-         uXu01gQOn5lnAn+WgsRj13VKIjfQyUWsXBR4bTP+6r7ZVXg47shfjGWj2wagumRZna7X
-         Hqpeq2Sy+sdvf9aW8PXtnRxHVPaVemT5Dy3RG3eG8MTwzCAWkiHJ2+vQ00jb7HM754Kr
-         eFY8jcDOXrKslDpaxJ1B+yCq1PaAyE/eamy23TBz31yLJByailjj+9GTGuEj/yWWMgjt
-         X/7caxv0aqtWhbExtQvdGPPatpe5vh6GlJgCePQbZdi+w9TtJt4m9rkeQF7n5S34PPxE
-         sgEg==
-X-Forwarded-Encrypted: i=1; AJvYcCXOZq4VWNDyV468+9sgKIHWmj8tjsgLPFIpXvdSkkF87u+McQkuVbxnAxZxZUB/61oZahBU/ETxAS5q@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKNiGHuMiKu1XZaEj6z1r4FAQIWSRdijJAmm5kQaMkRTQS9sRK
-	Ogzbuw2CYLxwgY/bmBRutdSVX8Wbz6TuZGGG2le8gMfYTHwyzgkbwMN3/fkLuUNl8Z4=
-X-Gm-Gg: ASbGnctz5cWGlxuiAJ+tZIoV2HmrmXN5H5FhL+Fa1fmSufBMCafwZs7Fef2hwkT2SlW
-	R7r4ATM0LK4Dnnwih7LwAj2EpE/dvnInTDKnbGIvQwyvHLPszRyuZT+VvPTfKXwFzdvPbL0mIgj
-	uuU1r/DtmA3vebvZXGzghGooOMqnjvDzZ0wi8MAKhJsxUBSeQBo4hNa67ELbdSgx3ezaTYPbEJp
-	3MojMBI5QfmSqBb+A6HejNFVciE1ojStcyg1Y8aHbyIqBVvrgMyBv1jI+SBuwxVufneDF2CwuRp
-	M18/UjqKU97OWBfevHeJ2wU0dw1+CQtuswg8BvyUFI/pyB/BQal99ABZzU7ocz7cUyyt5nibkTK
-	2wd+pgtWDNDdOAnd8b+1gHBT2KNkO9uO3EZu6Z0US2jOXaLHl8XB4PCrjJtYcDVRwcMDzwCPUAw
+        bh=7z8AC+yiHAIwmarbixp3f4qrcLuRr1Vhyqm82NW6W2M=;
+        b=b4f9ni7sLlDyJ5GRKxm4Pt+I90G9kO5M56pF/z3ArIIrMlup7wUxZxm9iWfz4YYGpp
+         IKCQRC1QnPGq7XN3S7YfVIVyr4uvML0HqkVbHw1VeNlbyLALfvCC7vE7lM/o7ni5uDy9
+         CJPKTGziRdBgMBZhp5VNZN5BIWmkDl/Xt7gE4Y9fkr2vklr9HeaznPcxL7qzV7Od1mq7
+         4YVSjr9G9qZyf7oOR9J7R6bRhdStDYQ5uVjlyy7FAMMuNB74DPC2QFW9od1hMarQ5eRJ
+         1kOrwLrqP08G5CeYQTOEFZ0X70HSzmDOiMkdmah/4p3F5I9ZLDDE8azenWjGuKGR4aIS
+         f5aw==
+X-Gm-Message-State: AOJu0YyZHSoFCdtfigqDutzFnYu4PWfO1FeDY0yHkdZFsMFttmEZiwi3
+	v17Tg6K7YEaGh5lWeDKe3PqTFgVtc/N4BYBrO5ENwtf9soijxqbNrEz9H0eDYRiVwmQ=
+X-Gm-Gg: ASbGncs3gdGwapLm4rVDG+AkTLSQ6I6nsAm0PIZlxggmq/NeWP8x9tu36oYl/Y0TnhH
+	akm0c5/gy47Hvm/3WPGfLk+3PcszESmT2zQQ+eraj9rIREdG6nsfnOOXMhh7wfuerChZa2Qm3Bt
+	TuYw6prrfT6ORQlcn/e6fIRSTq6pbXM1pyx/8xdEbzkTXVORADIrwnad0mn1d4vekHaSJThIYoy
+	/60TKXHJY3clGKN6hNkG5G93tb870OEWTvQ/rOPW2TqTzYlGr26qCma/KVQ9uLYv7Qrk183mDVO
+	UpeZ+1bgUMf3IL4z4DIU0xbhRaZkdsEbOuING/bey7tHVyJi9+tqyri/ZrDoq1UtlEOZDM9kbeN
+	NXrYiEXDQo8NhFNKMz9PiaoprF3o9g42CON0bYTMS2TAqgi85kFv0RPSRUoDDDsEjVd/7ZAwYoQ
 	==
-X-Google-Smtp-Source: AGHT+IGGdQvgI/Vf/KKbauI1cOuwqSxlp39uLs0QpL5udfp/2y8wBHW57wYN3h5DJcHi+fIfaHZvoA==
-X-Received: by 2002:a05:6a00:9515:b0:7a9:7887:f0fa with SMTP id d2e1a72fcca58-7ae035df724mr1524948b3a.1.1762297621600;
-        Tue, 04 Nov 2025 15:07:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEmNKJYP343ceTj40sn2ysBbxZxF2rHm3xoHDdRm81PPZZipomUwb5FT4ZE7dqDQV5SPUTNhQ==
+X-Received: by 2002:a05:6a21:32a2:b0:2ff:3752:8375 with SMTP id adf61e73a8af0-34f85f23b25mr1132220637.45.1762297622638;
+        Tue, 04 Nov 2025 15:07:02 -0800 (PST)
 Received: from localhost ([71.212.208.158])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7acd5d5797dsm4147472b3a.49.2025.11.04.15.07.01
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7acd633bf6bsm4132570b3a.56.2025.11.04.15.07.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Nov 2025 15:07:01 -0800 (PST)
+        Tue, 04 Nov 2025 15:07:02 -0800 (PST)
 From: Kevin Hilman <khilman@baylibre.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Paul Barker <paul.barker@sancloud.com>, 
- Marc Murphy <marc.murphy@sancloud.com>, Tony Lindgren <tony@atomide.com>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, 
- Charan Pedumuru <charan.pedumuru@gmail.com>
-Cc: linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-In-Reply-To: <20251024-ti-sdhci-omap-v5-0-df5f6f033a38@gmail.com>
-References: <20251024-ti-sdhci-omap-v5-0-df5f6f033a38@gmail.com>
-Subject: Re: [PATCH v5 0/3] dt-bindings: mmc: ti,omap2430-sdhci: Add json
- schema for the text binding
-Message-Id: <176229762078.2840692.12323662945445152208.b4-ty@baylibre.com>
-Date: Tue, 04 Nov 2025 15:07:00 -0800
+To: nm@ti.com, vigneshr@ti.com, aaro.koskinen@iki.fi, andreas@kemnade.info, 
+ rogerq@kernel.org, tony@atomide.com, Parvathi Pudi <parvathi@couthit.com>
+Cc: linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, danishanwar@ti.com, pratheesh@ti.com, 
+ j-rameshbabu@ti.com, praneeth@ti.com, srk@ti.com, rogerq@ti.com, 
+ krishna@couthit.com, mohan@couthit.com, pmohan@couthit.com, 
+ basharath@couthit.com
+In-Reply-To: <20251103125451.1679404-1-parvathi@couthit.com>
+References: <20251103125451.1679404-1-parvathi@couthit.com>
+Subject: Re: [RESEND PATCH] ARM: multi_v7_defconfig: Enable TI PRU Ethernet
+ driver
+Message-Id: <176229762178.2840692.4781785513910576373.b4-ty@baylibre.com>
+Date: Tue, 04 Nov 2025 15:07:01 -0800
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -100,20 +98,21 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-56183
 
 
-On Fri, 24 Oct 2025 07:57:07 +0000, Charan Pedumuru wrote:
-> Create a YAML binding for ti,omap2430-sdhci and fix vmmc-supply
-> property typo for a DTS file.
+On Mon, 03 Nov 2025 18:24:51 +0530, Parvathi Pudi wrote:
+> The Programmable Real-time Unit and Industrial Communication Subsystem
+> Megabit (ICSSM) is a microcontroller subsystem in TI SoCs such as
+> AM57x, AM437x, and AM335x. It provides real-time processing
+> capabilities for industrial communication and custom peripheral interfaces.
 > 
+> Currently, EVMs based on AM57x, AM437x, and AM335x use the ICSSM driver
+> for PRU-based Ethernet functionality.
 > 
+> [...]
 
 Applied, thanks!
 
-[1/3] arm: dts: ti: omap: am335x-pepper: Fix vmmc-supply property typo
-      commit: bb2ffb47d82229a4f54ca6a83784fa288914803b
-[2/3] arm: dts: ti: omap: Drop unnecessary properties for SDHCI node
-      commit: 9485ba8ab325c4b420ec92661f15ed14741bb9d1
-[3/3] dt-bindings: mmc: ti,omap2430-sdhci: convert to DT schema
-      commit: 333fa35fbd1f20b0d8a4af3b236fd9f52f3431b2
+[1/1] ARM: multi_v7_defconfig: Enable TI PRU Ethernet driver
+      commit: 7d9ebbffc545033897aeb30f2a0a45ead1668bf1
 
 Best regards,
 -- 
