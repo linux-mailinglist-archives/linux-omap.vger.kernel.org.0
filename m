@@ -1,109 +1,127 @@
-Return-Path: <linux-omap+bounces-4837-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4838-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C6B3C32C36
-	for <lists+linux-omap@lfdr.de>; Tue, 04 Nov 2025 20:23:24 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F414C33538
+	for <lists+linux-omap@lfdr.de>; Wed, 05 Nov 2025 00:07:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51855426C2E
-	for <lists+linux-omap@lfdr.de>; Tue,  4 Nov 2025 19:22:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 659E74EC83E
+	for <lists+linux-omap@lfdr.de>; Tue,  4 Nov 2025 23:06:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE722DC328;
-	Tue,  4 Nov 2025 19:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7A02D878D;
+	Tue,  4 Nov 2025 23:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B+/TZv1X"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ZrTTXPbJ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757742DA74D;
-	Tue,  4 Nov 2025 19:22:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000B62609DC
+	for <linux-omap@vger.kernel.org>; Tue,  4 Nov 2025 23:06:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762284138; cv=none; b=OiD0w+lOqDPz3+Nr9KdiNQ9JBmo5nDHPsq1kB98/wVBhTkJS6inKvrm+p5+kG4dQg8pyyMSGCf8tl9UxcSKwA8m2QWEgqNpUThlmvNoNINJAo8+/pLHvYcmEwt2tFGLK+H0/AaRsj4roUqwc/2iFL+gvTGwp2lLb3YLzm7Di8XM=
+	t=1762297615; cv=none; b=osNOrxy3iGWQpsnzExY029PXpjhdZEiaMZhw3XGXjJ0+UOWlIpjKYjS+MphDQ/4wmj5YPNcGPG9rMGeYHPRk/5XTuE6njbMPkwbsSnGOYNeu2ew68f4Bb1RozflY2ZLL3LGlnFKmiQYajSIej8bMP70CVvSCD9lB0oCb9VtgUTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762284138; c=relaxed/simple;
-	bh=+lf7dW++l2EW9+9yEsAcle5UBElW4w+UfVpXaHOHW2Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iiXUsgGjyXkPOmTLbUdAwSAhSJw+J8rDINuC46XCevETeFXg8hNauXVgEqYixPs/vraNT9hBxELvcYLV8PGkjuG2uubnb9FcbNgdtGypSqrPLNWFsaDElJjUYYoC1XBXLGmHUwzBru2CPfBaOGlJLFta5QUL/TZb2N1ccyM6qgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B+/TZv1X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A88DC16AAE;
-	Tue,  4 Nov 2025 19:22:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762284138;
-	bh=+lf7dW++l2EW9+9yEsAcle5UBElW4w+UfVpXaHOHW2Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=B+/TZv1XRq0zzd5NbGu3Z9bN5OyQZnNOsope6laxMrWxA3/9XRg7VX+3PhsjNe7lW
-	 5cbgxn6SqwRaVkJbyodTHSn0LdeO5DaMLbCFV/YkdMgryijwrq6LyocnrsiVuNyhLv
-	 xHsrmZselWKpvNIRQMjhLTdiIa0VnfoixY52BS0uFlEVig1wBgEFGzD/T3bGyB56e6
-	 1l8b7lD0a36nrmABwnEvq70bPZRM5IzkSVy7iTQN+TPjab7k/GpzkYFUllJxth410q
-	 4+JiRU+f29KNZ9lJy0ZuU0cQlh4AQfIsQMj0TIhuqexc7SbGFrZJBc5IimM07mEMvE
-	 R1RZeW1bSnP0w==
-Date: Tue, 4 Nov 2025 11:22:14 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: Daniel Zahka <daniel.zahka@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jonathan Corbet
- <corbet@lwn.net>, Srujana Challa <schalla@marvell.com>, Bharat Bhushan
- <bbhushan2@marvell.com>, Herbert Xu <herbert@gondor.apana.org.au>, Brett
- Creeley <brett.creeley@amd.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Michael Chan <michael.chan@broadcom.com>, Pavan Chebbi
- <pavan.chebbi@broadcom.com>, Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>, Sunil Goutham
- <sgoutham@marvell.com>, Linu Cherian <lcherian@marvell.com>, Geetha
- sowjanya <gakula@marvell.com>, Jerin Jacob <jerinj@marvell.com>, hariprasad
- <hkelam@marvell.com>, Subbaraya Sundeep <sbhatta@marvell.com>, Tariq Toukan
- <tariqt@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky
- <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>, Ido Schimmel
- <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, Manish Chopra
- <manishc@marvell.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, Siddharth Vadapalli
- <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>, Loic Poulain
- <loic.poulain@oss.qualcomm.com>, Sergey Ryazanov <ryazanov.s.a@gmail.com>,
- Johannes Berg <johannes@sipsolutions.net>, Vladimir Oltean
- <olteanv@gmail.com>, Michal Swiatkowski
- <michal.swiatkowski@linux.intel.com>, Aleksandr Loktionov
- <aleksandr.loktionov@intel.com>, Dave Ertman <david.m.ertman@intel.com>,
- Vlad Dumitrescu <vdumitrescu@nvidia.com>, "Russell King (Oracle)"
- <rmk+kernel@armlinux.org.uk>, Alexander Sverdlin
- <alexander.sverdlin@gmail.com>, Lorenzo Bianconi <lorenzo@kernel.org>,
- netdev@vger.kernel.org, linux-doc@vger.kernel.org,
- intel-wired-lan@lists.osuosl.org, linux-rdma@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/2] net/mlx5: implement swp_l4_csum_mode
- via devlink params
-Message-ID: <20251104112214.7f60b252@kernel.org>
-In-Reply-To: <mhm4hkz52gmqok56iuiukdcz2kaowvppbqrfi3zxuq67p3otit@5fhpgu2axab2>
-References: <20251103194554.3203178-1-daniel.zahka@gmail.com>
-	<20251103194554.3203178-3-daniel.zahka@gmail.com>
-	<mhm4hkz52gmqok56iuiukdcz2kaowvppbqrfi3zxuq67p3otit@5fhpgu2axab2>
+	s=arc-20240116; t=1762297615; c=relaxed/simple;
+	bh=12vGFUcZemOMh5QBaAJfQHOdmFM8hY1UyGUKJ7JDXKw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=J2twhDkfz4mFN+kB6TvwsEksvitLpNJSFqLhquipxg222zxagTIUw4UH9W5FYcuiXkvDsadAP6KWOLZehlXPHUf1Gc4XxxEG201kSFYKw9W/2Sh6AnP1vNHqtUsuWAEBXKuiLOtDg1xtq0fhD0NCa8lWvIlTMho4bUfVJRNOikg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ZrTTXPbJ; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2953b321f99so44130425ad.1
+        for <linux-omap@vger.kernel.org>; Tue, 04 Nov 2025 15:06:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1762297612; x=1762902412; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5rLeRaREaYFNIk98QRUcTfCmsFgqK+8yNycFcHOEqW8=;
+        b=ZrTTXPbJ/uPRGAhHaD/bwiMG7sKuU0zhwATXvdgry+h6V0uJI75VDJbxn8St53ZfKi
+         0nc2tSoHLXSV6Nffd7l+gMCEmtbgKrDml9aQJZZ/1tVaK7qrQOOTmAvEFqkWpwrHcSZF
+         Ooso+7fwEkvyw60Icat7XGXDmhhJL9a1MhMG2Gcc0ATJw4Qfj5hW7tCxCv6vEP1/JjbU
+         Szr23QIHqkVTDig+DAAIsEgoJMG3xRECwIUkqj/XgKmMrLmdI0sOTm7Pl7jNxGfmNa0X
+         kA5wK1VgilHTgms6Pi+V++YKUEk5QIs4u9cFH11EGp9zAg6CDHhAzyibYA0HjVETQeIL
+         17PQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762297612; x=1762902412;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5rLeRaREaYFNIk98QRUcTfCmsFgqK+8yNycFcHOEqW8=;
+        b=Sq/gnsaVJnNQu4XQ3bSQPyTY+i0Q69Pkl9UTAaUDoz3FYYshvYGNHqifSFYDgBZlMw
+         2YxRq5m+H4E5EH8Pb/7ZC3qTUyp/RcfqTuISpTizxmJ7omXsreUeLJS444rcdeTnHAsm
+         JAuOYJXwHsuGU9px+DmLGnE7VZO/+hAwL7SzFDu/GEr0BRP4ePZXNvz6lP//9J8aCdBX
+         9p7nRVJN6iY6ZUqEBB3NRQXF/qkgI7YrN28blMxhfQG/3sCduh8YOC7ZF1TVok4pqTlE
+         Wwb3Dv+p7TAtTSCaRj5HnKHLxx72KWrJfqYh6NLa90EorJs2rYKlKJJ7N2z80Ox9/AAC
+         OG0w==
+X-Gm-Message-State: AOJu0YzZbNhaNcKq9GzFMwmEO36A/jP7uNto1P9KURwL0YdS9xJRR7QP
+	0C1/3ygzn5NxGWYK+RXKVNeUwhq7BRyYdAPgEuBRav70ytfjQ68P7Oy0vmQ4kJ3WTHc=
+X-Gm-Gg: ASbGncuyVP8auC0bpZP3672LZHJWwlh3BMm0ugfWrMtKLgg/d2pGL0nrCEAT/o/3jD2
+	lrYdtRScolQw+iocqVY/lhmjGlqiZ7Rw1694f2zzXuvphHDconhE9QIF4Xsg2x6yF8auftCOmel
+	vXrHhKwkQC/L7/IyjVl54avmxpzxK5tItQbJTIjzbqNe/GYa9muwr2FIcsQbs0/KXLBvy8JKGNT
+	PIh9AM6mhuobJOC/457p9TKKp/i81e3KkSeqjaoi0DHiabB1dAK1oFN9YaAAJnZsW/QrWZcrzqr
+	/CeWK0O1+CO8TW9igaSg210VOhvhJsSK6+02O4xYpYFWckux3GGQ3uIB8x/Q7cuikwEL4N4TyFl
+	fWJsg4LRmKGOGqvTVmrSNmesb0a989bX3GgB9Fu27aEL4Ylq78iRqkd8BrFTY+psYS4gBt4V5+f
+	H0b4nqNSia
+X-Google-Smtp-Source: AGHT+IEqAInSq7/OcKAz3KBjMGwdkltgrZQ5n2MVBtC0iSVzd8WVSTSxnKY4wAu8Z/1kBaGkPjKa7w==
+X-Received: by 2002:a17:902:d2cf:b0:295:c2e8:dabd with SMTP id d9443c01a7336-2962ad3c9femr17882525ad.26.1762297612348;
+        Tue, 04 Nov 2025 15:06:52 -0800 (PST)
+Received: from localhost ([71.212.208.158])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29601a50e8fsm39573235ad.79.2025.11.04.15.06.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Nov 2025 15:06:51 -0800 (PST)
+From: Kevin Hilman <khilman@baylibre.com>
+To: Tony Lindgren <tony@atomide.com>, 
+ Bruno Thomsen <bruno.thomsen@gmail.com>, Judith Mendez <jm@ti.com>, 
+ Arnd Bergmann <arnd@arndb.de>, Matti Vaittinen <mazziesaccount@gmail.com>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: linux-omap@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <63cef5c3643d359e8ec13366ca79377f12dd73b1.1759398641.git.geert+renesas@glider.be>
+References: <63cef5c3643d359e8ec13366ca79377f12dd73b1.1759398641.git.geert+renesas@glider.be>
+Subject: Re: [PATCH] ARM: dts: am33xx: Add missing serial console speed
+Message-Id: <176229761135.2840692.14067519312360759831.b4-ty@baylibre.com>
+Date: Tue, 04 Nov 2025 15:06:51 -0800
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-56183
 
-On Tue, 4 Nov 2025 11:14:03 +0100 Jiri Pirko wrote:
-> >@@ -548,6 +703,12 @@ static const struct devlink_param mlx5_nv_param_devlink_params[] = {
-> > 			     mlx5_nv_param_devlink_cqe_compress_get,
-> > 			     mlx5_nv_param_devlink_cqe_compress_set,
-> > 			     mlx5_nv_param_devlink_cqe_compress_validate),
-> >+	DEVLINK_PARAM_DRIVER(MLX5_DEVLINK_PARAM_ID_SWP_L4_CSUM_MODE,
-> >+			     "swp_l4_csum_mode", DEVLINK_PARAM_TYPE_STRING,  
+
+On Thu, 02 Oct 2025 11:53:05 +0200, Geert Uytterhoeven wrote:
+> Without a serial console speed specified in chosen/stdout-path in the
+> DTB, the serial console uses the default speed of the serial driver,
+> unless explicitly overridden in a legacy console= kernel command-line
+> parameter.
 > 
-> I still think that even unlikely this will be implemented in other
-> driver, it is generic param. Could you please treat it as such?
+> After dropping "ti,omap3-uart" from the list of compatible values in DT,
+> AM33xx serial ports can no longer be used with the legacy OMAP serial
+> driver, but only with the OMAP-flavored 8250 serial driver (which is
+> mutually-exclusive with the former).  However, replacing
+> CONFIG_SERIAL_OMAP=y by CONFIG_SERIAL_8250_OMAP=y (with/without enabling
+> CONFIG_SERIAL_8250_OMAP_TTYO_FIXUP) may not be sufficient to restore
+> serial console functionality: the legacy OMAP serial driver defaults to
+> 115200 bps, while the 8250 serial driver defaults to 9600 bps, causing
+> no visible output on the serial console when no appropriate console=
+> kernel command-line parameter is specified.
+> 
+> [...]
 
-We need a clearer definition of what this does then.
+Applied, thanks!
 
-Is it basically disabling silicon validation of L4 checksum and allows
-for the FW to compute the L4 checksum? Which may negatively impact
-performance? (hence disabled by default?)
+[1/1] ARM: dts: am33xx: Add missing serial console speed
+      commit: 9c95fc710b0d05f797db9e26d56524efa74f8978
+
+Best regards,
+-- 
+Kevin Hilman <khilman@baylibre.com>
+
 
