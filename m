@@ -1,49 +1,50 @@
-Return-Path: <linux-omap+bounces-4851-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4852-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0782C378E5
-	for <lists+linux-omap@lfdr.de>; Wed, 05 Nov 2025 20:52:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E1DDC37945
+	for <lists+linux-omap@lfdr.de>; Wed, 05 Nov 2025 20:55:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD7BB18811D2
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Nov 2025 19:53:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81F233BDB78
+	for <lists+linux-omap@lfdr.de>; Wed,  5 Nov 2025 19:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83A6344057;
-	Wed,  5 Nov 2025 19:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A1613451C4;
+	Wed,  5 Nov 2025 19:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rTJv6PKw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i349puz6"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DBA6344030;
-	Wed,  5 Nov 2025 19:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF7C342CB6;
+	Wed,  5 Nov 2025 19:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762372369; cv=none; b=E+vv7fL5yI2R5vxvW/70GOrErltdYklkCHcRGcoccSLg0L5k67/1iG6KifNt8ENO+vC3Kw1pBSXJ3WAb+KYnbePHm6nH/XaZiyfHLZ2xe8Y83IsnMUxPWIFrhdV/872jYy5IhIWSvkxwMglfuTNyoPSTBb+XCiobh1GWyjdYolw=
+	t=1762372373; cv=none; b=BDBS5rdmYtJaRB8qwSLQ3fDySY7APXSmWEOCQRv2F2jGvw3FkjaD7X9bhW0A4L7h1FSoYPE0g6C8Wq+G6187R2hh9q/NoS4FVqDpRnw/ie+CoRcZz29tlMHKVZFgKGEix5xjFyC8bcW0BcPkhnSNa5Y90/TZIcBy9ZYnn5+mmo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762372369; c=relaxed/simple;
-	bh=2Gd4bL1SBDUivBOmoFrzqDCjyb7m9dtwkO2F4EvzbII=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Wah82bv4x0VJLlSLkOG9GlybxpQu8xeVXEjL6LL/WRNl4M5q9wyiyFvRImKiVI+AEgoU6xUtFomSinb6yJKVJTaCJXcDSodNt4ZJMKebRyf9/H7YjLAH7Rq7k2OWxK/wpA/5wqbFOPItFJf2IXIGP3/4/WOWQDchKbtHJUVnquI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rTJv6PKw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0259AC4CEF5;
-	Wed,  5 Nov 2025 19:52:45 +0000 (UTC)
+	s=arc-20240116; t=1762372373; c=relaxed/simple;
+	bh=0+mhj7rfyq0ihaynFxab7j2Zxin8YIpJjYpan11euhs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Ft6K2GlulzmcBFet2MnhZtyl1X++zMYaihix1KJPuwqe9i70Of3qhSk2Ccj0UFFsue6v3VNtuXpfk4ioS4LfBdKfR0rBeL0bY7d/7euP5LqBxuXqK8uVbjTER3bu9Wc85hmrqSGYWGEswLlGzKUF6/Fta5tiaVvog5ZzRMDjknM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i349puz6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B46AC116B1;
+	Wed,  5 Nov 2025 19:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762372368;
-	bh=2Gd4bL1SBDUivBOmoFrzqDCjyb7m9dtwkO2F4EvzbII=;
-	h=From:Subject:Date:To:Cc:From;
-	b=rTJv6PKwb5YInAQVdLAEHkhSo1VCLYTmmgXIMD1TQAj5HME6ygowiTUlxzQSoYCU9
-	 4XmZZhTB/5ooBhqK8vv9YKrvK9HLS4ElznROmhVwnM1vBgrk/CEomVz/WXvTVoqq8g
-	 E+GWemsGv5veZIaAlvbNteYMlsDDa/1Q4q7PfclA79CZioKiUuC8QQ4Rrx6/4Fl+fZ
-	 Y5G7Fw/qun+GywvDgv+PMJeTTDS3RXQWExmIOAquZvWM0vykWbL+3qVkPgYbMFlk+Z
-	 WXx7rVTJcNDcWMTjOiYU8bCpep3Iou35rHN1fBAouVp9kmMO/ecqBC42kgsdOr5KYB
-	 2c8Tf7mFv3cyQ==
+	s=k20201202; t=1762372371;
+	bh=0+mhj7rfyq0ihaynFxab7j2Zxin8YIpJjYpan11euhs=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=i349puz6NdzMj0uApX4+zA88cw6tQGEn+rj4vpudj5i6PS+v3QiyiEVwiYxRVvNMc
+	 ZGw1I3oghyJTOpfbXH9HJugfzuxjgeKwTskU+gbxUEcYzWilwoD5Dol75LETxOW8eF
+	 SJPaWbsL51/Fj2gDoww+FIPltLQCFCAjiFtWNrY+kpTY6XpPLLeF+Hr3izQIllH+4l
+	 suscSrQHOL6vyFTSt3vBIdsIIRQfEuT9woXFHU9Vc3Xl15X/owr8x6r9f5td7ux+J4
+	 5Bnw4pxi9oj/OGM2WmGWL/jeQiuryCxnc6AXNnkMNIjRrMuofB1FENXMhMXd9c26Yo
+	 HUqT8fJHy5ZqA==
 From: akemnade@kernel.org
-Subject: [PATCH v3 0/3] mfd: twl603x: add power button
-Date: Wed, 05 Nov 2025 20:52:34 +0100
-Message-Id: <20251105-twl6030-button-v3-0-9b37eb2b0989@kernel.org>
+Date: Wed, 05 Nov 2025 20:52:35 +0100
+Subject: [PATCH v3 1/3] dt-bindings: mfd: twl: enable power button also for
+ twl603x
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -52,11 +53,9 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAKrC2kC/3XMSwrCMBSF4a2UjI3cPGscuQ9x0Me1DUoiSYxK6
- d5NO1LE4Tnw/ROJGCxGsq8mEjDbaL0rQ2wq0o2NG5DavmzCgSsGHGh6XDUIoO09Je/oTvS1Mi1
- oQE0KugU82+caPJ7KHm1MPrzWfmbL+zeVGQVqBEotZdOZWh4uGBxetz4MZGll/uHFr+fFg9FK9
- KAa3rIvP8/zGwsFepjtAAAA
-X-Change-ID: 20251020-twl6030-button-83d759b060e6
+Message-Id: <20251105-twl6030-button-v3-1-9b37eb2b0989@kernel.org>
+References: <20251105-twl6030-button-v3-0-9b37eb2b0989@kernel.org>
+In-Reply-To: <20251105-twl6030-button-v3-0-9b37eb2b0989@kernel.org>
 To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Andreas Kemnade <andreas@kemnade.info>, 
@@ -66,46 +65,111 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-input@vger.kernel.org, linux-omap@vger.kernel.org, 
  Andreas Kemnade <akemnade@kernel.org>
 X-Mailer: b4 0.15-dev-a6db3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1211; i=akemnade@kernel.org;
- h=from:subject:message-id; bh=2Gd4bL1SBDUivBOmoFrzqDCjyb7m9dtwkO2F4EvzbII=;
- b=owGbwMvMwCUm/rzkS6lq2x3G02pJDJncq7lcra5m10m8UFa0mCV/IWJBPrNKo5+UTfESO1PZs
- 3LrXz3tKGVhEONikBVTZPllreD2SeVZbvDUCHuYOaxMIEMYuDgFYCISXxkZtv7j77dlDvvAvXZn
- gNURrm/n54kuNp/iN53HcVmA96sj3Az/1PPNnJpnnDxRJ7Fizcfi5I2SAbO/NXItrN01dfoD11O
- fWQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2582; i=akemnade@kernel.org;
+ h=from:subject:message-id; bh=5e8dspO3eC9P6aN13/cWN/AxzNfhJQvtiM4MO48925g=;
+ b=owGbwMvMwCUm/rzkS6lq2x3G02pJDJncq3lLljetb13P2viDVaws+NzkDSf/F7Zxzvs7Y5qP8
+ 7Gsc88udpSyMIhxMciKKbL8slZw+6TyLDd4aoQ9zBxWJpAhDFycAjCRhVsZGe4cyPzrVRm6R/4J
+ M4dA9d29mYu1LtRz90wL3nXPoiDyxUNGhr1MjIYJsSxdDVFVTXu4v3EIN+1NnXboYu1S2zq/Xwr
+ zuQE=
 X-Developer-Key: i=akemnade@kernel.org; a=openpgp;
  fpr=EEC0DB858E66C0DA70620AC07DBD6AC74DE29324
 
-Like the TWL4030, the TWL603x also has a power button feature,
-so extend the TWL4030 power button driver to support TWL603x.
+From: Andreas Kemnade <andreas@kemnade.info>
 
-Signed-off-by: Andreas Kemnade <akemnade@kernel.org>
+TWL603x has also a power button function, so add the corresponding subnode.
+As not in all cases there is a power button connected to the corresponding
+pad of the TWL603x, the functionality can be disabled by
+status = "disabled" or simply not adding the subnode.
+To keep things simple, follow the established design pattern of using const
+interrupts as used also by the other subdevices.
+
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
 ---
-Changes in v3:
-- static definition of chipdata
-- stricter rules in common part of binding
-- Link to v2: https://lore.kernel.org/r/20251030-twl6030-button-v2-0-09653d05a2b1@kernel.org
+ Documentation/devicetree/bindings/mfd/ti,twl.yaml | 40 +++++++++++++++++++----
+ 1 file changed, 34 insertions(+), 6 deletions(-)
 
-Changes in v2:
-- integrate driver into existing TWL4030 driver
-- improve commit messages
-- Link to v1: https://lore.kernel.org/r/20251020-twl6030-button-v1-0-93e4644ac974@kernel.org
+diff --git a/Documentation/devicetree/bindings/mfd/ti,twl.yaml b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+index 776b04e182cb..045fd07f476e 100644
+--- a/Documentation/devicetree/bindings/mfd/ti,twl.yaml
++++ b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+@@ -55,6 +55,15 @@ allOf:
+ 
+         gpadc: false
+ 
++        pwrbutton:
++          properties:
++            compatible:
++              const: ti,twl4030-pwrbutton
++            interrupts:
++              items:
++                - items:
++                    const: 8
++
+         usb-comparator: false
+ 
+   - if:
+@@ -95,7 +104,14 @@ allOf:
+             compatible:
+               const: ti,twl6030-gpadc
+ 
+-        pwrbutton: false
++        pwrbutton:
++          properties:
++            compatible:
++              const: ti,twl6030-pwrbutton
++            interrupts:
++              items:
++                - items:
++                    const: 0
+ 
+         madc: false
+ 
+@@ -146,7 +162,14 @@ allOf:
+             compatible:
+               const: ti,twl6032-gpadc
+ 
+-        pwrbutton: false
++        pwrbutton:
++          properties:
++            compatible:
++              const: ti,twl6030-pwrbutton
++            interrupts:
++              items:
++                - items:
++                    const: 0
+ 
+         madc: false
+ 
+@@ -226,11 +249,11 @@ properties:
+ 
+     properties:
+       compatible:
+-        const: ti,twl4030-pwrbutton
++        enum:
++          - ti,twl4030-pwrbutton
++          - ti,twl6030-pwrbutton
+       interrupts:
+-        items:
+-          - items:
+-              const: 8
++        maxItems: 1
+ 
+   watchdog:
+     type: object
+@@ -459,6 +482,11 @@ examples:
+           #io-channel-cells = <1>;
+         };
+ 
++        pwrbutton {
++          compatible = "ti,twl6030-pwrbutton";
++          interrupts = <0>;
++        };
++
+         rtc {
+           compatible = "ti,twl4030-rtc";
+           interrupts = <8>;
 
----
-Andreas Kemnade (3):
-      dt-bindings: mfd: twl: enable power button also for twl603x
-      Input: twl4030 - add TWL603x power button
-      ARM: dts: ti/omap: omap4-epson-embt2ws: add powerbutton
-
- Documentation/devicetree/bindings/mfd/ti,twl.yaml | 40 ++++++++++++---
- arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts |  5 ++
- drivers/input/misc/twl4030-pwrbutton.c            | 61 +++++++++++++++++++++--
- 3 files changed, 96 insertions(+), 10 deletions(-)
----
-base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
-change-id: 20251020-twl6030-button-83d759b060e6
-
-Best regards,
---  
-Andreas Kemnade <akemnade@kernel.org>
+-- 
+2.47.3
 
 
