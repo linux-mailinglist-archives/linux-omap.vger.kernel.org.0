@@ -1,162 +1,117 @@
-Return-Path: <linux-omap+bounces-4859-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4860-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3557C382A2
-	for <lists+linux-omap@lfdr.de>; Wed, 05 Nov 2025 23:18:24 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44235C38811
+	for <lists+linux-omap@lfdr.de>; Thu, 06 Nov 2025 01:40:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1B55189B5A1
-	for <lists+linux-omap@lfdr.de>; Wed,  5 Nov 2025 22:18:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 12E694EAABA
+	for <lists+linux-omap@lfdr.de>; Thu,  6 Nov 2025 00:40:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC832F1FC8;
-	Wed,  5 Nov 2025 22:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 328961C3F0C;
+	Thu,  6 Nov 2025 00:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ayjMRaPz"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="zlTTeiu1"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87912EE5FE
-	for <linux-omap@vger.kernel.org>; Wed,  5 Nov 2025 22:18:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021191A9FBD
+	for <linux-omap@vger.kernel.org>; Thu,  6 Nov 2025 00:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762381095; cv=none; b=OM9CArd0RklL8Rv5flW39Ma7VocML+yhkxMOY0o1ethrjTkudJDCyqi6SJE9yc4dtaBZS7oikMoGbzt01OloTviZNBWkveQ/TjVHZy2OB5FlVs/29kqR69+HEFG7jQlbutwz7Uiqw24LTfIwbPcV4UnbHGhTPNgVaVLS/5erQ4Q=
+	t=1762389614; cv=none; b=k30iqEjy1C6n39AKi5RKfFDXgUQmKqbo2wWnfZYBLW/JP9+mAmvUpRbbFbbvWHhTMZA8FviHNGRVBguR8AdTr6e+7qKvcCGmUUwfAz4h5S9sX2iIgo4FcAIIU6byO+0mxebCFikGfmdzO2ZnlErb5oIrvdfa+rAGO7+uT4lMsA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762381095; c=relaxed/simple;
-	bh=FgSHmdWK8fD86bwRD+NZMD0W0N6z+nayNo+9iUVv+Ak=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ok8eYwt2yVK5pPlKQO+KqFQ/MmHkRvFHn0r+8LWdcWkWcDV2+Pb7E+NN/R4pSyoFvRzMjwvtxBIQoaeh54gEh8x5QDIr8HWMWt3/j+PAvOkrYfBv0SdrGdofBv3netOamjmE8sKUmf1dTFKpZTxZ3lWGjyvRxZuScm0A2VYIKXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ayjMRaPz; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-34188ba567eso319440a91.1
-        for <linux-omap@vger.kernel.org>; Wed, 05 Nov 2025 14:18:12 -0800 (PST)
+	s=arc-20240116; t=1762389614; c=relaxed/simple;
+	bh=8qq2ZhbRV2og48zRUPnewAaBEr0HlLuurubKZsklLAk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=PxnlvFGFUzFzAbayozxCbZbegZdv6HWxI6mAY23j/CiE8Ua5DFKf0wEfMt8vMb5pllTafT/lCj9e6bnZ8UgJ7WTzIbGX870lsutYkQ/RF0X8kAMV6Mkxp1PfU5L+UFpsV9nkEEOMNOP+6agkYi+buNLfL++OleSi5/32NnLpWwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=zlTTeiu1; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-29599f08202so5184985ad.3
+        for <linux-omap@vger.kernel.org>; Wed, 05 Nov 2025 16:40:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762381092; x=1762985892; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Im7C/yPVX9MxQ3wIFuOi8MGfdZ4IZni92LwvcWpKIGs=;
-        b=ayjMRaPzv1xu7dmY/OaJsI/1A7EsC3QCEOV7CGR0Bg6ZTRXjC7dBZa0y6B9KjqsQrU
-         1+2wZr+jYdfRCNMS+zbe1nRoorC9EztQ+ppXTe2gX0tkfhV1LaDZ4nTd0xAI5MPmro0R
-         4eiPeOOs1vNV23BdWGi9+Sd9OTX/ja7ja24wvfvquPmjXw0cvft5biFO1yAEpwZ1CLTs
-         LHoHKSBzNNRFmYXnJKfQOyFF9GVqpA6xpfGG/ZKGMdZaCOhdR5VWAgTHu262I7Zqu0S1
-         QkX93ekiQZyUe+h9akbySFOP2AXbRaLbF6CNBMOBSgUlyH2JSj4OOqimdEXf2kU3uP04
-         BFpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762381092; x=1762985892;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1762389612; x=1762994412; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Im7C/yPVX9MxQ3wIFuOi8MGfdZ4IZni92LwvcWpKIGs=;
-        b=HU8WQP4bpjhQRZqvVa7vPVUggoIrV2VdB/Q8Lri2ogZjyPD8+gWG4Bl4DRTU5UC6pY
-         wq8MKeZAlOrKjmqFGJklHtDj0q4ek3dhkPb3nx5SrnpvjOH+5jHaw7tEQT9lxDs12n0Q
-         gu1R7mpfK0F9u9e+L7VilvKtdpiM2uKwij85xtfLtGhjdAOAKDSptXdM+CTnNP8FWw8t
-         1SkpryZoYlC/6nCA8JzOD4Z5X1ab0jDU1vImO/WbnYZ8cGLNjkXffx82FOOkpOhPbtQk
-         StHD9g3FZN3IiOWN3vmTFay6awrz/uTUmC6uJJdo1mDGf3mA8Clvvpo+TD0xVRfMEp4n
-         AY7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUxxyH7pkrhzgdRVy1BCqg5tM71vS3q/PXxer0JV54/LBGBOS7twM4a14SP4cTfW9aWDq4G/OrxR0XQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJtoV9ZrSBp+W31UrNwGKIG5StsUFghtwC1I/AQXsjjm3QSbMX
-	2qcBn5rHtphR3GDLHHfs9UrinOXEJcLvKR+invCz+tPVQqfC/uzeBSzkkrajPw==
-X-Gm-Gg: ASbGnct6x1M8KA25Hk6OWEHt47sUl95QVGo9jcE8iSGXyyxFd/rNcv2HhkHyvpf846D
-	zBqmhtMVc/JZhiksyhPcTDENISZhytk6I+JsEFFK24dQT5y6C9/yZOIsdSJnCltk0XiGF8E0JmL
-	zRt9P4E82OaK+ar6YNnjvBtoDRrEyXw8tjCuFTfhV/IjSGVkgs+hQsL6tTRe2Vqqn6dsNIfS2O5
-	alPVh8zGM094kjI4RlRT/Krxw+sDJiRBFtWsi1fvulhYAG4p6Sp7UR/ewSd+/Gpyr8wBUj/IxeQ
-	+6EcdZaGwu+Lwmv8eQfrfrvPFZom5UfPtA8lZp+VfYMiGe633lCepUOAb8/bTWbkvUnniuaGfoM
-	rPlyrDy9BVE+gdQT9scgm/rXhTMeGZ2vWDgqeEBlDYl5CkuraZbPwwwUSSlMOLdcnG98spCufJU
-	c1esoCdZADHQvbHSn2ghFtZWq//Hgy2A8f8Ywf3a+5dLlIJDZAclcx
-X-Google-Smtp-Source: AGHT+IGMYKxUc+yFWPCSR1IktVa+NNpsyxMZ4O/wnRPrxacZqCnZibSpr1AmWZE5WIphsK5cnjwcSA==
-X-Received: by 2002:a17:90b:5250:b0:340:c179:3666 with SMTP id 98e67ed59e1d1-341a6c1e314mr6059131a91.8.1762381092040;
-        Wed, 05 Nov 2025 14:18:12 -0800 (PST)
-Received: from google.com ([2a00:79e0:2ebe:8:35dd:7def:e1d1:adfe])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-341d05c982dsm238658a91.20.2025.11.05.14.18.10
+        bh=NkU2FfTGJiTCARoq1SWVEP1uooasHwQC6BBNqtcJeJc=;
+        b=zlTTeiu1LQoSWLFwszQsSVn4KTF9VO2hCgrTCQ2kIhO+GZEhqQC1RkivUgA4cYxWYo
+         gCKOknAqLf7cE23kCSjzYG2d0pBGBDve3cOEd7aYIuBRKRRi+BIe60Cpfq2i5sUtnhZ9
+         QNlrG528s3XnRa6uXZFjJT7A8dRqs2hsMkIn6U/XXT4+s5ueprfwXSl656Tau/djgC+x
+         +FO+JZKDFCZJAjsD6HItEzF8Ge5bYxlStbhrIJeF6TDD/liJKCxcfxZfThNOEHSn/OL3
+         C00V1iSmSAiWZTW4bUHwVGEByebxOccdrN6QUbgyZdqN46bLT3yPyubIonWJ1x7hbNbd
+         +w7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762389612; x=1762994412;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NkU2FfTGJiTCARoq1SWVEP1uooasHwQC6BBNqtcJeJc=;
+        b=GhIgIZRR2y/4lYx+dSj/lmaZgfupctQ4GKeyVHRPr2AM/S1RL+KU2fxncuwGejLL48
+         trAVN6q42loEQCEJK9TZ2hsk2/92kg6/8baf7L2BCohvxtGqAVVQKiC/l3Srx99VAYC2
+         yxTGX1Uxz9meQiutOHuPzrqHVnYvqlLEEOKKfumBgpLB4kSKlY39Y81DjDw4gDWBGyRW
+         0K5C0ncq+Vi1kuAQejPZYBMCXvZClO7kwv/GCsEhSoWcwzRHjZ+Ag88E7M1oHFD+azyV
+         uDmmha/r/eVLztPRBP6USboVquHKTNT1P8jUGA7GCMTJTUEfOZtj1LR0lCL4p5lsBcBp
+         7ZEA==
+X-Forwarded-Encrypted: i=1; AJvYcCWzkjbxqmdbF/X43vAalz+h8qbcj5Ml3hhFL9XvyoiiMM4pMzUzR6KCpC55zLnfQyXMInZqb9Z44ibM@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOSJU83r61TDfv6qyOAEssUFh6jc104sEOaitgD5RC+J5Ggl3y
+	HtO7/TM+itCW3+HKscmnwC/CMflVBaYQt80+V0Bl3uOF3BObR+9Kjj5f7GGi/ZHA5Ts=
+X-Gm-Gg: ASbGncthXqnABxb0tYR8HVAkIpxFdhbkCHkhQcOpFzg6Z5cQbDLIQE3z3ZBdLDGikKO
+	ACCiqje2SP2depWblz/K6ygxw5b+BZfAIkwNWuFJCSbhwr5A4aufJ8aNnniJku6/ZWQOO0T1K07
+	0dHF+Zk2i0iEywhIClZmaTg9a3EQeNrXI7RXR1/zWk1HjJ2Dy34otFL4sDCEcf6CYyi1FANHcvL
+	gIgAgaV1tWKvGAnYZrrfd/nxMtMPnvykfIIA1ZOhXkYk7D+/uE0RCdTUxqO4fs4JHw45fekRMzV
+	Rlcxwa9jfI5J3amLQWlv7FnCv3OWsCFDVvRo23quJlXUY0cDFGBR9cuP8G4Ndmat9pno4GgmENo
+	MaARD0+6BumeLJthQyPfy01VVIb3mVzd0LKa6MMYIT9y5RnfHO2Ekkg8Rs54ZKEF4tP8Bt/RISA
+	==
+X-Google-Smtp-Source: AGHT+IElJ2Zmd/6qjx4CDLzUHtLcy82LmsapEHCX/tbNElSc+kGmtRslt0CXVghdlIDwLr/630JIWg==
+X-Received: by 2002:a17:902:ce90:b0:296:4e0c:8031 with SMTP id d9443c01a7336-2964e0c8139mr23358505ad.17.1762389612288;
+        Wed, 05 Nov 2025 16:40:12 -0800 (PST)
+Received: from localhost ([71.212.208.158])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29651c7c5ccsm7482495ad.57.2025.11.05.16.40.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Nov 2025 14:18:11 -0800 (PST)
-Date: Wed, 5 Nov 2025 14:18:08 -0800
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: akemnade@kernel.org
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Andreas Kemnade <andreas@kemnade.info>, Tony Lindgren <tony@atomide.com>, 
-	Kevin Hilman <khilman@kernel.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-input@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] Input: twl4030 - add TWL603x power button
-Message-ID: <tyx4vvapd4pca6e236rcjkbxecor5kderzoinbwyuecdclzcix@jgksmvfioc4x>
-References: <20251105-twl6030-button-v3-0-9b37eb2b0989@kernel.org>
- <20251105-twl6030-button-v3-2-9b37eb2b0989@kernel.org>
+        Wed, 05 Nov 2025 16:40:11 -0800 (PST)
+From: Kevin Hilman <khilman@baylibre.com>
+To: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Matthias Schiffer <matthias.schiffer@tq-group.com>, 
+ Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: linux@ew.tq-group.com, linux-omap@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20251105083422.1010825-1-alexander.stein@ew.tq-group.com>
+References: <20251105083422.1010825-1-alexander.stein@ew.tq-group.com>
+Subject: Re: [PATCH 1/1] ARM: dts: omap: am335x-tqma335x/mba335x: Fix MicIn
+ routing
+Message-Id: <176238961131.3045323.8626140069542181620.b4-ty@baylibre.com>
+Date: Wed, 05 Nov 2025 16:40:11 -0800
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251105-twl6030-button-v3-2-9b37eb2b0989@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-56183
 
-Hi Andreas,
 
-On Wed, Nov 05, 2025 at 08:52:36PM +0100, akemnade@kernel.org wrote:
-> From: Andreas Kemnade <andreas@kemnade.info>
+On Wed, 05 Nov 2025 09:34:20 +0100, Alexander Stein wrote:
+> 'Mic Jack' is connected to IN3_L and 'Mic Bias' is connected to 'Mic Jack'
+> Adjust routing accordingly.
 > 
-> Like the TWL4030, these PMICs also have a power button feature, so extend
-> the TWL4030 power button driver. As the irqchip of the TWL6030 mfd driver
-> does not provide mask, unmask finctions, do it manually.
 > 
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-> ---
->  drivers/input/misc/twl4030-pwrbutton.c | 61 +++++++++++++++++++++++++++++++---
->  1 file changed, 57 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/input/misc/twl4030-pwrbutton.c b/drivers/input/misc/twl4030-pwrbutton.c
-> index f85cc289c053..b72fba9a1b2c 100644
-> --- a/drivers/input/misc/twl4030-pwrbutton.c
-> +++ b/drivers/input/misc/twl4030-pwrbutton.c
-> @@ -25,22 +25,40 @@
->  #include <linux/kernel.h>
->  #include <linux/errno.h>
->  #include <linux/input.h>
-> +#include <linux/bits.h>
 
-Move to the top of includes please.
+Applied, thanks!
 
->  #include <linux/interrupt.h>
->  #include <linux/of.h>
->  #include <linux/platform_device.h>
->  #include <linux/mfd/twl.h>
->  
-> -#define PWR_PWRON_IRQ (1 << 0)
-> +#define PWR_PWRON_IRQ BIT(0)
->  
-> -#define STS_HW_CONDITIONS 0xf
-> +#define STS_HW_CONDITIONS_4030 0xf
-> +#define STS_HW_CONDITIONS_6030 0x2
+[1/1] ARM: dts: omap: am335x-tqma335x/mba335x: Fix MicIn routing
+      commit: c1d5c2026969efa372b759aefb2f3e63eff29aa3
 
-Probably no need for these defines, just use numbers in structure
-instances.
-
-> +
-> +struct twl_pwrbutton_chipdata {
-> +	u8 status_reg;
-> +	bool need_manual_irq;
-> +};
-> +
-> +static const struct twl_pwrbutton_chipdata twl4030_chipdata = {
-> +	STS_HW_CONDITIONS_4030,
-> +	false,
-
-I am a big fan of named initializers, so maybe
-
-	.status_reg = 0x0f,
-	.need_manual_irq = false,
-
-?
-
-Otherwise looks good.
-
-Thanks.
-
+Best regards,
 -- 
-Dmitry
+Kevin Hilman <khilman@baylibre.com>
+
 
