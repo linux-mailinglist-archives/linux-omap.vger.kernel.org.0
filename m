@@ -1,406 +1,207 @@
-Return-Path: <linux-omap+bounces-4876-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4878-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 497C5C419BF
-	for <lists+linux-omap@lfdr.de>; Fri, 07 Nov 2025 21:44:12 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25FAEC41C6D
+	for <lists+linux-omap@lfdr.de>; Fri, 07 Nov 2025 22:25:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3562A3BBE0E
-	for <lists+linux-omap@lfdr.de>; Fri,  7 Nov 2025 20:44:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 133424E6722
+	for <lists+linux-omap@lfdr.de>; Fri,  7 Nov 2025 21:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF34B305E27;
-	Fri,  7 Nov 2025 20:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C362F4A19;
+	Fri,  7 Nov 2025 21:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DspA49r3"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="dfkQqhzQ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011046.outbound.protection.outlook.com [52.101.62.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4EB30F55F
-	for <linux-omap@vger.kernel.org>; Fri,  7 Nov 2025 20:43:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762548235; cv=none; b=u679HXaDnrxg91YjeH3mayW5bXaM5N0FEHWgAsmqwqf5dJ57mYIHONLsI3spps6FhFZpobl0A83uQl27q9PoA/vA773QnGMn3GBD7/9WIdt3BKd3PGWg0ya4Ih1jzlMi+8Y79w8qY4TJdw6qpp9G4i+seJHbHSZOdoedxOKPELs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762548235; c=relaxed/simple;
-	bh=QsWGhTEv5o5MmhceuHSHYM4Lx5h1hcZORNffawLbY1U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b8xkpABPBrcBp2TSG/zpdzeS5rDYYmMdO4EZdBcwMgdojs7KJEz9GLSzj5JgNTwmTf7IwtCsmWV1uN8Os+J1t+AoGZej4mLnwqpin3rpZ8f6Lxc7OA8veuhzI6eFFNBPbPdxwI8aggOQKTJ7sYlAckOHoXHG1uB08rXWR9FBj8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DspA49r3; arc=none smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-71d71bcab6fso11613547b3.0
-        for <linux-omap@vger.kernel.org>; Fri, 07 Nov 2025 12:43:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762548232; x=1763153032; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JRbS6VI2bNTHm/o6rxRH2I/vNUA+a3DGv8cXb7Is3Tw=;
-        b=DspA49r3tFYTrhmBNybZrF/Yd2TjNJEfnuLq6ABrJHho4uFwORzqJ24Yb3oFG1YsIL
-         3BAQO1+StBAc3GoniKhaYNmz/zr+glIlBZcEdJtcj6vqx8agtuTkxG/WWXYyYXCp7g5b
-         NytO6R/UwfxbHhe1ekraEZFD/HqRE/TGoz6VxMPG0QmyTf84N4JTHK6vRHFygdKd8XER
-         OmK+AXgU6IpzXR/hQN+39vz2KOup05ubU3OitD5s+HrINjlUZdqWXVZga9jdjJSlR4na
-         AnEVY1zF5rKJRC3axCfvelmMgdYjyn/qdTJyL5XAe9MbWaNOa0Sxpad36P+Z7GNZ3Cti
-         lqCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762548232; x=1763153032;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=JRbS6VI2bNTHm/o6rxRH2I/vNUA+a3DGv8cXb7Is3Tw=;
-        b=s+wgS2SNR+ZWcsE05nYEpNRXVCgp580CpZsQd4qhUid02H7umOrnacdx0z0RnKtkIP
-         8SvljrGFrlq6zEXjMBawvUV0BpDQL8ZDH499T6p3gwo0YHQ0Ct8ckLkUR73eT7Rw3WeA
-         mfj9VmtI9cj5Jl8vc9jeQn/n2s1myXqxbJc92Q6kZtavoBPoc1VW9qMTiDM70wb5NMcv
-         lHLcTESKNIcpcEnAlpZxBe+xeCSFynfMCSaSIrI9blELWzDL/ACSIUfIzd8ATtbgrIx7
-         bgsNcO3ifmA1nvjme17ACAb8ji56ZDj7dTbaHfFtg2dDAEXNkIITDLXIZJLEBlWJm0JX
-         +Mpg==
-X-Forwarded-Encrypted: i=1; AJvYcCUudGZIG8o5Dk6rzpHgRArtICBIJk/ad+1ckbp4vXhbhy5SFMBbDiv27PobLfrFTIbAMs1AN7iPoYGG@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzprp38Zj1vB5CYufE+bvxMO8wru0X+4igZpfD+twJP8OljbbTj
-	CAEhiR3pQ+pvbfV7yVcK+ZijWyPPoxYMRMsDluGiOtmi+TZ9YYlJfljn
-X-Gm-Gg: ASbGncsw19xMAjkUkjp9smEoZ/mPjgi4eRKnOBi+jhLIEOUkIkNl5wHYqpYzuOyVa1d
-	qzPwwKT+FVsljHiaB/B3Yad1kEIn65nV7gh1xuTrHXyEIEUHyp04XorNd0UbO7epYa8ZXl52fWG
-	vvSjnb0oKgyXFZas4ywcAQ3n/hJl1j8tzLGCrtYk0F/83luCDvcy4be6FjnILUOhKlXP6gzhx5F
-	yra3IBB/VWEoSz8mMj54ed531mz77eP96rDatVWNlIeqwTnkTYKBrTni86HY8vHG3CcqiAjyV6n
-	9buHLElxxx/dB0njjEi5oAjfT/5Fe4yvEt8mNgQJJY7gZ6nJRMCIjiz2YORXUKSrPAo4e9/q+AQ
-	lClXHhSjhhdptlCg/oYfm//buPYHviF18wpeJ9mmywPt5s2/6yCu76NKJiJThoq2vMYukOoB3FI
-	dttMHtQV80Aw==
-X-Google-Smtp-Source: AGHT+IE0Ugc4C6NPSk5vUZlI98wOMo4Ff0U+yawpaKDpCc1QgQFDLIe3p4+5eXnHVHgkKJ3wKPJQDw==
-X-Received: by 2002:a05:690c:6ac9:b0:785:cbf4:72cd with SMTP id 00721157ae682-787d53524b1mr8282087b3.3.1762548232348;
-        Fri, 07 Nov 2025 12:43:52 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:73::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-787d6809e07sm856687b3.3.2025.11.07.12.43.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Nov 2025 12:43:51 -0800 (PST)
-From: Daniel Zahka <daniel.zahka@gmail.com>
-To: Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Srujana Challa <schalla@marvell.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Sunil Goutham <sgoutham@marvell.com>,
-	Linu Cherian <lcherian@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Jerin Jacob <jerinj@marvell.com>,
-	hariprasad <hkelam@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Manish Chopra <manishc@marvell.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org,
-	linux-rdma@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-omap@vger.kernel.org
-Subject: [PATCH net-next v3 2/2] net/mlx5: implement swp_l4_csum_mode via devlink params
-Date: Fri,  7 Nov 2025 12:43:46 -0800
-Message-ID: <20251107204347.4060542-3-daniel.zahka@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251107204347.4060542-1-daniel.zahka@gmail.com>
-References: <20251107204347.4060542-1-daniel.zahka@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2157624DD1F;
+	Fri,  7 Nov 2025 21:25:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762550718; cv=fail; b=VAmx08JLpvwGJ0Pdi6VL2O1VnEaU3uKinjYSQr0b0oPT7fy9Z7qAKWYHTjadyv6HxGWtQOPwIq3UMmMICniZBWPlyxiN6/XEeG8+spLmsGDCMp8KPeAwvdHYTrd+jShbvobxGNP45xojLPRGD7Ecg8Xs1vnLpwthugCr6l6+lCQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762550718; c=relaxed/simple;
+	bh=KaO9vJ0vTzlZWgGZB3iWwMjx8FFGnPHH97qu1VoYD3w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=m7+x3jykWvHrrLZ3+Bxp10vfGXJZkXELDUrXATcRVb6E0nspUylDHe91jXO5R2D5jVmDqzt1tKrtbBPy486SYjYVsOByONdqrQeQptCjOZeGhiJAANfJtEnJVXfsLpHzRoVC7Ahzb7n5RI9WbM9waZVdZKI5i5KQYMBm3Qn21xc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=dfkQqhzQ; arc=fail smtp.client-ip=52.101.62.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ovu2H2buTgWc4DkotrlVOt1sF16LbQ4ETHf5jW8zQLUhj7pLCVTnWygMGYjhP89dX39i4Z/LEgkizNXtCA6nGNE9wERyz0mXhIFGvgVLfnX9dvWDMRv+y0UrRf3NZ5eMLY/7QxWehJKm4H8vVciE8bFi43XJ3KchXxVBHRNE9rxtoyysbMEJAz79KaBw3HNDpR5fAmRXV9HBut5Z1HJ0Ml/WCECaoGMKQYqjGfCG7HlRxJJHydPSGNk2WMOPSZtgiPrjdrVmjkcRzRLj2AuIG+xYUz9hDpofHgK9sL4NGcYhc6vxIT4VDh0weEFNDLRRx0P4WDh7MsaSdsJGJvqC0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=49f/dsrE0aeRW4jFyUv4zhu7dsTAIMmUkRxf8KHWCuA=;
+ b=fs39GV1WCB11jUtFFUrg2qGQB4IBlNrGX86e71T4gzSYaRxC4lH3GZxjQQvNlOpz1NbNNGGdWhhseuYKM553I199CPeZ/OQ7BeT20PuxY2GmbAR2TnwevqSlMZUzxFVs/vtAvVj8FBClWAGQOAX1pXl7AHG0Ro33fOjCGmyiO2FkFzG1jUVHnBDaGi/QoW61HrWB+SvyBjuXveOGSK6mHOCvSb3rdQJGyVoSHpY8lUrcqTgE5J0xWwtB0puSzLe95DE71e2Ctp4CAWuno0ImIMqL7G+CNcXDep/9ERtUXf7Pyw44XH2mRO35OLScJnN8YyraP8BAm+ecibCMCus2pA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.23.194) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=49f/dsrE0aeRW4jFyUv4zhu7dsTAIMmUkRxf8KHWCuA=;
+ b=dfkQqhzQI4FhRcviJEB6c25BzUyljOLOxL4B6FiPKnKjKrJduNy1cPRQGuna405+ezoCW/3DmHCxl3Cp8onaaE8aEJtnU85dOZr8+OB1c1nJ9U4H8QnbLMLzOCOaBmNwXxy0z8K12mRBoCyczMegkgmQiV+rjfQegyLJbgoc3+M=
+Received: from DM6PR11CA0029.namprd11.prod.outlook.com (2603:10b6:5:190::42)
+ by DM3PPFA09EE1970.namprd10.prod.outlook.com (2603:10b6:f:fc00::c3b) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.12; Fri, 7 Nov
+ 2025 21:25:12 +0000
+Received: from DS1PEPF0001709B.namprd05.prod.outlook.com
+ (2603:10b6:5:190:cafe::7a) by DM6PR11CA0029.outlook.office365.com
+ (2603:10b6:5:190::42) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9298.13 via Frontend Transport; Fri,
+ 7 Nov 2025 21:25:12 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.194)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.23.194 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.23.194; helo=lewvzet200.ext.ti.com; pr=C
+Received: from lewvzet200.ext.ti.com (198.47.23.194) by
+ DS1PEPF0001709B.mail.protection.outlook.com (10.167.18.105) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9298.6 via Frontend Transport; Fri, 7 Nov 2025 21:25:12 +0000
+Received: from DLEE212.ent.ti.com (157.170.170.114) by lewvzet200.ext.ti.com
+ (10.4.14.103) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 7 Nov
+ 2025 15:25:07 -0600
+Received: from DLEE203.ent.ti.com (157.170.170.78) by DLEE212.ent.ti.com
+ (157.170.170.114) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 7 Nov
+ 2025 15:25:07 -0600
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE203.ent.ti.com
+ (157.170.170.78) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Fri, 7 Nov 2025 15:25:07 -0600
+Received: from [10.249.35.170] ([10.249.35.170])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 5A7LP6r73649310;
+	Fri, 7 Nov 2025 15:25:06 -0600
+Message-ID: <76078ce8-aec3-4a3c-b866-926fc284692e@ti.com>
+Date: Fri, 7 Nov 2025 15:25:06 -0600
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] Enable 1GHz OPP am335x-bonegreen-eco
+To: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>, Aaro Koskinen
+	<aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman
+	<khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, Tony Lindgren
+	<tony@atomide.com>, Lee Jones <lee@kernel.org>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>
+CC: Andrew Davis <afd@ti.com>, Bajjuri Praneeth <praneeth@ti.com>, "Thomas
+ Petazzoni" <thomas.petazzoni@bootlin.com>, <linux-omap@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<stable@vger.kernel.org>
+References: <20251106-fix_tps65219-v2-0-a7d608c4272f@bootlin.com>
+Content-Language: en-US
+From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+In-Reply-To: <20251106-fix_tps65219-v2-0-a7d608c4272f@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS1PEPF0001709B:EE_|DM3PPFA09EE1970:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6f2c3631-08e7-448e-ea15-08de1e4422d0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|82310400026|1800799024|36860700013|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?OFFIK3BKOEo0bnVyM3loUk03bVp5ZmFCdUZySHUrL3pGd3FUa3lYSndXY01M?=
+ =?utf-8?B?ZXdFRDMyNXVxemdnVEFyOGhsbytWZzZ0eXFlT0pHYzhFYWZUcyt6QmxTeXRC?=
+ =?utf-8?B?RXJLakNBaWFTVzlQZGtiSVRtOHNPYnprSmIvYmwyampxTzhuU00yN05rSElV?=
+ =?utf-8?B?WXYza05ncDdmd01QSEo5VVdFYjNPV1dkcDBEalFJMU1qLyswaEtuTG9Kb2hp?=
+ =?utf-8?B?NjRGeHR6bXpab1d2c0h0OGxGZTFIb2U5QmVaeHhWUUxZeDFySmtNTlB2NHVn?=
+ =?utf-8?B?Ums1VlhVTlIycnphOVU2dytlWXBSbWhkbks1cmFvK00vSjlvYTkvZjU1Zm5x?=
+ =?utf-8?B?ZytqRzVFNTU3UGlyTWZWTWdSUVJha0h5d015V25ndUpaMTlqSjY5cWNaamVP?=
+ =?utf-8?B?OTZmUXplckNIRWN6MXpLUUkxMzhGS0I3L0pYTTVHakIzQ0UyZy9mWUc2NlUv?=
+ =?utf-8?B?V1lETHZSUDBUMG9tekk0M2NTZm1Pa2l3VzNaWjhoRHM1WDlIZnlRSlNKL0JK?=
+ =?utf-8?B?V0RGWGMvd0c1eUVQdkM1Q0QyWlZvZ2F1UDV2bE05K0hRSm1SbmcrRFBaRXE4?=
+ =?utf-8?B?TzZrMVhPdWZET3h4SDRrSTcxaGZFL3V2NkN5dWVHbzVBcElmdERkTE9GSnht?=
+ =?utf-8?B?RmNEUXg3VU9XSDBpTGVqakgrV2NmY3RyRGJDejdUM3JQc3dXZUJVdm4xNy83?=
+ =?utf-8?B?Rlh6Z0cwT3ZkbHpFNmZSbUlCemZZbDN2SnMzQlV0U1IxcjVUZStYc1JoWUli?=
+ =?utf-8?B?K3BFTFZ2b3h2aXE3SGk3S01aa3BVTnF0anN1ZG42Y01FQk1vT3ZvaEI0dWVk?=
+ =?utf-8?B?akhnWTgxRUVpS042NTV2UjE4dXR3SXBTcXhkenVmYTFEUmRQUzNFMDhGangv?=
+ =?utf-8?B?VWtOa3dFa1MrcE16c0tDT0VhWlBmcnoxQ1hOUGlPMU9hMnlXSTVTWjRTVi80?=
+ =?utf-8?B?elluWXpIeDhvZElzSG52TmZsVHI5cEtkNzBEMjUvc09pTHZodUJGTm1xbWlF?=
+ =?utf-8?B?RzZiazZjRlhNWEZxOFc2c3d0YXR5QWg1ZlJEekVKYm1iRlBJbW1ydHpRWUE5?=
+ =?utf-8?B?Tk0wOWgyWnE4ZEwxV1ozRDlSL0JEdVhNeEVlVUdrNE1tdDVhWm13QmNtWHZN?=
+ =?utf-8?B?V2pKUW9oUVpBUGswOVBhTnNrc3ZTMWxscjNTSnVOVlcva1NidTVkN0ZFNnJm?=
+ =?utf-8?B?eGVaYVVWbGJoaDU2a1ZYNTRtbU1oTjVSYUY0ZHhFeFFEZ1EvZG1LKzFtQ2Zn?=
+ =?utf-8?B?M0JYeU1hQ0ltVytGUlpXbG5HeWJOZTQ2K0pwVmJpSGFyM3RCVThPczNIeFEr?=
+ =?utf-8?B?WVQ5dnNCUnRNSHVEekFoUGQveFdaS3RzRU1EY0lpVkplcVZZMnhScy80bHJv?=
+ =?utf-8?B?NStzYWM1Z01zc1pDOHIzNGpMTlpjdXdlNkVoYVhMa2Zic1RNKzI1b1VDZUdz?=
+ =?utf-8?B?UTcycVlTMUZVTkhOZXNzWUIzVllYeHBLL3d0MnpQcGMvbUI1TEhsY1lHK01w?=
+ =?utf-8?B?Um00SmZYMmM2UEJpdVh2aCswUlpuUk5QMmhrYzZZN0JMb2JjcDBTY2NIU3o2?=
+ =?utf-8?B?VENaTGZpQkFsVjBsb3pxMkkxTXhsYkdxUFRjZ2pIQy82UjJ0NlAzTDJRaXBy?=
+ =?utf-8?B?eWVoTEo3aCtmS09LU0VPeGtNYUpXV0U5R3dTVHpBZDJ3ZWY1RGhrZ3F1aW1w?=
+ =?utf-8?B?ODJnSmlneEJ5bGJrODFJN0R5bU95S3ZSV1N1dFk2bFBXTmlHRGpkNlYrVENz?=
+ =?utf-8?B?amNpeDV4cGorTFZSekZtK2wyMmNpR1hZamN1dkZjZVJlam8zL3dnZ2lMc3Ix?=
+ =?utf-8?B?ZVdSd1dRZmNISnlMdDhlcDI2UHJnY2dhQXR0R0tWUjFCZXVKZ0VidTNsdm55?=
+ =?utf-8?B?N1ZCY3J1c2Vlay9NNGVMTVJUVDI1eU1JM2Zoa3AxNHFUeXNBREdkYm1MYm5l?=
+ =?utf-8?B?N1BhbUVObWtId3dSWjY0Uk1vOVZDWmcrZzNaY2hMUDVVMkpyelpPTkRuNkRJ?=
+ =?utf-8?B?QVROVEFITDROWXhWMzdYeVMxYkRFdmVXcnVHTjMwaHJRRW5lci94UHlEaTQr?=
+ =?utf-8?B?YW1PckxnQmE5ckRYODlvd3pBRkMxWlg4N3AyeTVlVkZVQ2VnWG5URlpBZURD?=
+ =?utf-8?Q?6Zk4HblER7cvLjjeDDgJHMEmZ?=
+X-Forefront-Antispam-Report:
+	CIP:198.47.23.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet200.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(1800799024)(36860700013)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 21:25:12.3334
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6f2c3631-08e7-448e-ea15-08de1e4422d0
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.194];Helo=[lewvzet200.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS1PEPF0001709B.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPFA09EE1970
 
-swp_l4_csum_mode controls how L4 transmit checksums are computed when
-using Software Parser (SWP) hints for header locations.
+Hi Kory,
 
-Supported values:
-  1. device_default: use device default setting.
-  2. full_csum: calculate L4 checksum with the pseudo-header.
-  3. l4_only: calculate L4 checksum without the pseudo-header. Only
-     available when swp_l4_csum_mode_l4_only is set in
-     mlx5_ifc_nv_sw_offload_cap_bits.
+On 11/6/2025 4:49 AM, Kory Maincent (TI.com) wrote:
+> The vdd_mpu regulator maximum voltage was previously limited to 1.2985V,
+> which prevented the CPU from reaching the 1GHz operating point. This
+> limitation was put in place because voltage changes were not working
+> correctly, causing the board to stall when attempting higher frequencies.
+> Increase the maximum voltage to 1.3515V to allow the full 1GHz OPP to be
+> used.
+>
+> Add a TPS65219 PMIC driver fixes that properly implement the LOCK register
+> handling, to make voltage transitions work reliably.
+>
+> Changes in v2:
+> - Setup a custom regmap_bus only for the TPS65214 instead of checking
+>   the chip_id every time reg_write is called.
+> - Add the am335x-bonegreen-eco devicetree change in the same patch
+>   series.
 
-The l4_only setting is a dependency for PSP initialization in
-mlx5e_psp_init().
+Reviewed-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
 
-Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
----
-
-Notes:
-    v2:
-    - use extack in mlx5_nv_param_devlink_swp_l4_csum_mode_get()
-    - fix indentation issue in mlx5.rst entry
-
- Documentation/networking/devlink/mlx5.rst     |   9 +
- .../net/ethernet/mellanox/mlx5/core/devlink.h |   3 +-
- .../mellanox/mlx5/core/lib/nv_param.c         | 161 ++++++++++++++++++
- 3 files changed, 172 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/networking/devlink/mlx5.rst b/Documentation/networking/devlink/mlx5.rst
-index 0e5f9c76e514..675b5a1ec625 100644
---- a/Documentation/networking/devlink/mlx5.rst
-+++ b/Documentation/networking/devlink/mlx5.rst
-@@ -218,6 +218,15 @@ parameters.
-        * ``balanced`` : Merges fewer CQEs, resulting in a moderate compression ratio but maintaining a balance between bandwidth savings and performance
-        * ``aggressive`` : Merges more CQEs into a single entry, achieving a higher compression rate and maximizing performance, particularly under high traffic loads
- 
-+   * - ``swp_l4_csum_mode``
-+     - string
-+     - permanent
-+     - Configure how the L4 checksum is calculated by the device when using
-+       Software Parser (SWP) hints for header locations.
-+       * ``device_default`` : Use the device's default checksum calculation mode
-+       * ``full_csum`` : Calculate full checksum including the pseudo-header
-+       * ``l4_only`` : Calculate L4-only checksum, excluding the pseudo-header
-+
- The ``mlx5`` driver supports reloading via ``DEVLINK_CMD_RELOAD``
- 
- Info versions
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.h b/drivers/net/ethernet/mellanox/mlx5/core/devlink.h
-index c9555119a661..43b9bf8829cf 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.h
-@@ -26,7 +26,8 @@ enum mlx5_devlink_param_id {
- 	MLX5_DEVLINK_PARAM_ID_PCIE_CONG_IN_HIGH,
- 	MLX5_DEVLINK_PARAM_ID_PCIE_CONG_OUT_LOW,
- 	MLX5_DEVLINK_PARAM_ID_PCIE_CONG_OUT_HIGH,
--	MLX5_DEVLINK_PARAM_ID_CQE_COMPRESSION_TYPE
-+	MLX5_DEVLINK_PARAM_ID_CQE_COMPRESSION_TYPE,
-+	MLX5_DEVLINK_PARAM_ID_SWP_L4_CSUM_MODE,
- };
- 
- struct mlx5_trap_ctx {
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/nv_param.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/nv_param.c
-index 3d2195338d39..3dc5b899a5fb 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/nv_param.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/nv_param.c
-@@ -8,6 +8,8 @@ enum {
- 	MLX5_CLASS_0_CTRL_ID_NV_GLOBAL_PCI_CONF               = 0x80,
- 	MLX5_CLASS_0_CTRL_ID_NV_GLOBAL_PCI_CAP                = 0x81,
- 	MLX5_CLASS_0_CTRL_ID_NV_SW_OFFLOAD_CONFIG             = 0x10a,
-+	MLX5_CLASS_0_CTRL_ID_NV_SW_OFFLOAD_CAP                = 0x10b,
-+	MLX5_CLASS_0_CTRL_ID_NV_SW_ACCELERATE_CONF            = 0x11d,
- 
- 	MLX5_CLASS_3_CTRL_ID_NV_PF_PCI_CONF                   = 0x80,
- };
-@@ -123,6 +125,17 @@ struct mlx5_ifc_nv_sw_offload_conf_bits {
- 	u8         lro_log_timeout0[0x4];
- };
- 
-+struct mlx5_ifc_nv_sw_offload_cap_bits {
-+	u8         reserved_at_0[0x19];
-+	u8         swp_l4_csum_mode_l4_only[0x1];
-+	u8         reserved_at_1a[0x6];
-+};
-+
-+struct mlx5_ifc_nv_sw_accelerate_conf_bits {
-+	u8         swp_l4_csum_mode[0x2];
-+	u8         reserved_at_2[0x3e];
-+};
-+
- #define MNVDA_HDR_SZ \
- 	(MLX5_ST_SZ_BYTES(mnvda_reg) - \
- 	 MLX5_BYTE_OFF(mnvda_reg, configuration_item_data))
-@@ -195,6 +208,30 @@ mlx5_nv_param_read_sw_offload_conf(struct mlx5_core_dev *dev, void *mnvda,
- 	return mlx5_nv_param_read(dev, mnvda, len);
- }
- 
-+static int
-+mlx5_nv_param_read_sw_offload_cap(struct mlx5_core_dev *dev, void *mnvda,
-+				  size_t len)
-+{
-+	MLX5_SET_CFG_ITEM_TYPE(global, mnvda, type_class, 0);
-+	MLX5_SET_CFG_ITEM_TYPE(global, mnvda, parameter_index,
-+			       MLX5_CLASS_0_CTRL_ID_NV_SW_OFFLOAD_CAP);
-+	MLX5_SET_CFG_HDR_LEN(mnvda, nv_sw_offload_cap);
-+
-+	return mlx5_nv_param_read(dev, mnvda, len);
-+}
-+
-+static int
-+mlx5_nv_param_read_sw_accelerate_conf(struct mlx5_core_dev *dev, void *mnvda,
-+				      size_t len)
-+{
-+	MLX5_SET_CFG_ITEM_TYPE(global, mnvda, type_class, 0);
-+	MLX5_SET_CFG_ITEM_TYPE(global, mnvda, parameter_index,
-+			       MLX5_CLASS_0_CTRL_ID_NV_SW_ACCELERATE_CONF);
-+	MLX5_SET_CFG_HDR_LEN(mnvda, nv_sw_accelerate_conf);
-+
-+	return mlx5_nv_param_read(dev, mnvda, len);
-+}
-+
- static const char *const
- 	cqe_compress_str[] = { "balanced", "aggressive" };
- 
-@@ -269,6 +306,124 @@ mlx5_nv_param_devlink_cqe_compress_set(struct devlink *devlink, u32 id,
- 	return mlx5_nv_param_write(dev, mnvda, sizeof(mnvda));
- }
- 
-+enum swp_l4_csum_mode {
-+	SWP_L4_CSUM_MODE_DEVICE_DEFAULT = 0,
-+	SWP_L4_CSUM_MODE_FULL_CSUM = 1,
-+	SWP_L4_CSUM_MODE_L4_ONLY = 2,
-+};
-+
-+static const char *const
-+	swp_l4_csum_mode_str[] = { "device_default", "full_csum", "l4_only" };
-+
-+static int
-+mlx5_nv_param_devlink_swp_l4_csum_mode_get(struct devlink *devlink, u32 id,
-+					   struct devlink_param_gset_ctx *ctx,
-+					   struct netlink_ext_ack *extack)
-+{
-+	struct mlx5_core_dev *dev = devlink_priv(devlink);
-+	u32 mnvda[MLX5_ST_SZ_DW(mnvda_reg)] = {};
-+	u8 value = U8_MAX;
-+	void *data;
-+	int err;
-+
-+	err = mlx5_nv_param_read_sw_accelerate_conf(dev, mnvda, sizeof(mnvda));
-+	if (err) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Failed to read sw_accelerate_conf mnvda reg");
-+		return err;
-+	}
-+
-+	data = MLX5_ADDR_OF(mnvda_reg, mnvda, configuration_item_data);
-+	value = MLX5_GET(nv_sw_accelerate_conf, data, swp_l4_csum_mode);
-+
-+	if (value >= ARRAY_SIZE(swp_l4_csum_mode_str)) {
-+		NL_SET_ERR_MSG_FMT_MOD(extack,
-+				       "Invalid swp_l4_csum_mode value %u read from device",
-+				       value);
-+		return -EINVAL;
-+	}
-+
-+	strscpy(ctx->val.vstr, swp_l4_csum_mode_str[value],
-+		sizeof(ctx->val.vstr));
-+	return 0;
-+}
-+
-+static int
-+mlx5_nv_param_devlink_swp_l4_csum_mode_validate(struct devlink *devlink, u32 id,
-+						union devlink_param_value val,
-+						struct netlink_ext_ack *extack)
-+{
-+	struct mlx5_core_dev *dev = devlink_priv(devlink);
-+	u32 cap[MLX5_ST_SZ_DW(mnvda_reg)] = {};
-+	void *data;
-+	int err, i;
-+
-+	for (i = 0; i < ARRAY_SIZE(swp_l4_csum_mode_str); i++) {
-+		if (!strcmp(val.vstr, swp_l4_csum_mode_str[i]))
-+			break;
-+	}
-+
-+	if (i >= ARRAY_SIZE(swp_l4_csum_mode_str)) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Invalid value, supported values are device_default/full_csum/l4_only");
-+		return -EINVAL;
-+	}
-+
-+	if (i == SWP_L4_CSUM_MODE_L4_ONLY) {
-+		err = mlx5_nv_param_read_sw_offload_cap(dev, cap, sizeof(cap));
-+		if (err) {
-+			NL_SET_ERR_MSG_MOD(extack,
-+					   "Failed to read sw_offload_cap");
-+			return err;
-+		}
-+
-+		data = MLX5_ADDR_OF(mnvda_reg, cap, configuration_item_data);
-+		if (!MLX5_GET(nv_sw_offload_cap, data, swp_l4_csum_mode_l4_only)) {
-+			NL_SET_ERR_MSG_MOD(extack,
-+					   "l4_only mode is not supported on this device");
-+			return -EOPNOTSUPP;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int
-+mlx5_nv_param_devlink_swp_l4_csum_mode_set(struct devlink *devlink, u32 id,
-+					   struct devlink_param_gset_ctx *ctx,
-+					   struct netlink_ext_ack *extack)
-+{
-+	struct mlx5_core_dev *dev = devlink_priv(devlink);
-+	u32 mnvda[MLX5_ST_SZ_DW(mnvda_reg)] = {};
-+	void *data;
-+	u8 value;
-+	int err;
-+
-+	if (!strcmp(ctx->val.vstr, "device_default"))
-+		value = SWP_L4_CSUM_MODE_DEVICE_DEFAULT;
-+	else if (!strcmp(ctx->val.vstr, "full_csum"))
-+		value = SWP_L4_CSUM_MODE_FULL_CSUM;
-+	else
-+		value = SWP_L4_CSUM_MODE_L4_ONLY;
-+
-+	err = mlx5_nv_param_read_sw_accelerate_conf(dev, mnvda, sizeof(mnvda));
-+	if (err) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Failed to read sw_accelerate_conf mnvda reg");
-+		return err;
-+	}
-+
-+	data = MLX5_ADDR_OF(mnvda_reg, mnvda, configuration_item_data);
-+	MLX5_SET(nv_sw_accelerate_conf, data, swp_l4_csum_mode, value);
-+
-+	err = mlx5_nv_param_write(dev, mnvda, sizeof(mnvda));
-+	if (err)
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Failed to write sw_accelerate_conf mnvda reg");
-+
-+	return err;
-+}
-+
- static int mlx5_nv_param_read_global_pci_conf(struct mlx5_core_dev *dev,
- 					      void *mnvda, size_t len)
- {
-@@ -548,6 +703,12 @@ static const struct devlink_param mlx5_nv_param_devlink_params[] = {
- 			     mlx5_nv_param_devlink_cqe_compress_get,
- 			     mlx5_nv_param_devlink_cqe_compress_set,
- 			     mlx5_nv_param_devlink_cqe_compress_validate),
-+	DEVLINK_PARAM_DRIVER(MLX5_DEVLINK_PARAM_ID_SWP_L4_CSUM_MODE,
-+			     "swp_l4_csum_mode", DEVLINK_PARAM_TYPE_STRING,
-+			     BIT(DEVLINK_PARAM_CMODE_PERMANENT),
-+			     mlx5_nv_param_devlink_swp_l4_csum_mode_get,
-+			     mlx5_nv_param_devlink_swp_l4_csum_mode_set,
-+			     mlx5_nv_param_devlink_swp_l4_csum_mode_validate),
- };
- 
- int mlx5_nv_param_register_dl_params(struct devlink *devlink)
--- 
-2.47.3
-
+>
+> Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
+> ---
+> Kory Maincent (TI.com) (2):
+>       mfd: tps65219: Implement LOCK register handling for TPS65214
+>       ARM: dts: am335x-bonegreen-eco: Enable 1GHz OPP by increasing vdd_mpu voltage
+>
+>  arch/arm/boot/dts/ti/omap/am335x-bonegreen-eco.dts |  2 +-
+>  drivers/mfd/tps65219.c                             | 51 +++++++++++++++++++++-
+>  include/linux/mfd/tps65219.h                       |  2 +
+>  3 files changed, 53 insertions(+), 2 deletions(-)
+> ---
+> base-commit: 1c353dc8d962de652bc7ad2ba2e63f553331391c
+> change-id: 20251106-fix_tps65219-dd62141d22cf
+>
+> Best regards,
 
