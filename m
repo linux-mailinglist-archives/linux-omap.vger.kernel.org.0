@@ -1,162 +1,195 @@
-Return-Path: <linux-omap+bounces-4874-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4875-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3DECC41567
-	for <lists+linux-omap@lfdr.de>; Fri, 07 Nov 2025 19:47:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8454C4199C
+	for <lists+linux-omap@lfdr.de>; Fri, 07 Nov 2025 21:43:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CD303AE8BD
-	for <lists+linux-omap@lfdr.de>; Fri,  7 Nov 2025 18:47:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CBD51894C9C
+	for <lists+linux-omap@lfdr.de>; Fri,  7 Nov 2025 20:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429323346B7;
-	Fri,  7 Nov 2025 18:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B8130EF6C;
+	Fri,  7 Nov 2025 20:43:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P/EUxcwY"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8D62765E3
-	for <linux-omap@vger.kernel.org>; Fri,  7 Nov 2025 18:47:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE0F30E85F
+	for <linux-omap@vger.kernel.org>; Fri,  7 Nov 2025 20:43:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762541262; cv=none; b=oJv1Ch874kECQlURxBKy32HxOKCxhZiMfw9Rw4xsWCaRZqKMMOiBvbmJSFlrflS1T/OFKnwHYMpbbKakdZjGPmfl2tN0w8eUecz3j+0j8rvQASLdL3xz9W/fEmYwdhNqIzjykUk1Ur30l6wU4iJkkEflEOwJ1GgUf0aHgjnA3yA=
+	t=1762548231; cv=none; b=fSEOc8c2So1lR988qMoHtUuDIJB7SB7/b5E473SQ1t8lZiQhsSa2Mzq31/C3U/eavp/eYSJIc0+hPIU5GcJjxPacsACopczyTaEWlwkN4F6kOgW7l8wf4hpIICcJPXKIbXY7n9/12iCZKENPINp9FUyt06OGJHfLTfTmbgEeiRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762541262; c=relaxed/simple;
-	bh=3wL2Fx1GM+1qPw2Dwp+GpV6ZmRbeZuisDU0PcVxgC9M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R7USbCClUI9qJOFg2t3Y1lJrsNceeDwAkFKxHZN11jmCWcqiiPE0+1l8Uhx60uYXuEf37qptrrLrmc066vmVPF3uzfycOCWyNpCY1+oOO2YwzOYVTcgmyiwga8EJCSpjJoLyip9Drc2OpCqUS38mw55mxHgN1A2qzeBXXJP/ufw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vHRUm-0006Ym-31; Fri, 07 Nov 2025 19:47:36 +0100
-Message-ID: <91f764ab-bec1-4791-b01b-3ba0803ce8f8@pengutronix.de>
-Date: Fri, 7 Nov 2025 19:47:34 +0100
+	s=arc-20240116; t=1762548231; c=relaxed/simple;
+	bh=qFvHlFClaLB3SpilbePUPYNZu398dyd+SrzdKJ5UzVw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Zf9yNOVbqii/sqkLPi1vue9hjurURdqLTBfKiCjqQxz5Cz2/i5DTq0timBnpUQJcKnpdagkimz90Ahz2QOjxoQlqAo02KOyk7dywfnLEZ2X1jA7uXgSpEG5FxlhH5lr3p5iDVeBHXHZR03dTcje/f0YCHeS7aX1ymQYMSrVz9Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P/EUxcwY; arc=none smtp.client-ip=74.125.224.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-63e393c4a8aso998718d50.2
+        for <linux-omap@vger.kernel.org>; Fri, 07 Nov 2025 12:43:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762548229; x=1763153029; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hiMcVVi9rEIv/j5eQ05ENk15pvqtAPzV3c3AT9Vw3fI=;
+        b=P/EUxcwYNFj3smgfH3m7jnXYnCZVlsnr615JUTpLxM9QGQ9uvSNW7Sz1H0G1GzNRum
+         0b2Q2DdYwbZAWRB8JrzzPWGOe75JjYFaWKtLvhcZMnDwuGZfwO5a+HSUb29rHO9bNjIQ
+         t9yG0sgt8IZSRy+mX1ZBnuBfzQwU9AYZ2QdEo+kNntSGTfmNeRUwSnUFLxtkqsXA94El
+         +ON80Ojrdp7CgimyWwUcD2ItF2PEmV8aui1pWFqKR47Qn43a0M+oxK/rzLgQfaeDE0tA
+         ib+oA12Ytw3XRDYp6HffpyYxODXX8Zrh699RkXPXErP6KN6J4trQZkJRkOaLbvtbM6IH
+         ZVYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762548229; x=1763153029;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hiMcVVi9rEIv/j5eQ05ENk15pvqtAPzV3c3AT9Vw3fI=;
+        b=wN6syGc8TFdm16VC1ftfmVQpDzLB5buNgpnM/TZvWsbpYacq9PQzhXnKMVK4rG4oQD
+         dFcKifcb0C9goi7pjt9TtRrgo8dv/PXe5CkNhP8Ipv61f7NRSpxf8vzaKdyKLPv0tAEq
+         vNdnQN614Gf1pKh5GNGhJtlSeDB8V2kYf3WTwiUlUbq8qDPEsQA6/IUxh9dBCiFuAcvO
+         UaoUTrK09ykn8YvWI3h+Hniure4N505W+DGDSVI+5BdIYdG0/LgMTvQp/8fW7BUkwSGO
+         Q+fx0qpySO2WV7E93wSTRS7aSSkTOgEqEGVtWiCxN2yXJ42vJqvEMJcEYQ2dxl13Ewjl
+         1ggQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWR6lhF56+WWtG+nCnlP+jXQFt5bRNAXda43gBpoC+0yHT7WDSoFCO4Nvh4Qm5pB5pNNtawOxN0giya@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCDKzJH8dV1xs3Xc+hptcTruyq1hC8EZbPizasU83pkiloqgva
+	WTbd6tJbFK63Poxosg+LgvTQk9oRNgdaUUMB6BgzWimuoec9PYpG/siA
+X-Gm-Gg: ASbGncu3L3PZcRmv4RgIjkSuqJ1CI2t4WYtgJLqaoKVhJiTbSYFOun/PX6xSPZ+L7+/
+	H3JuZ7jT88a598G3MKj3egyFJdoV8U2npjwaA1Ea+0njm1+30+3hthxuSfj5qZWHaeDi2dDDnEO
+	Ahn7+IHHDItAJ6wU0n5I8DaU0SH4CtR5MBC4rAzAIrjfEfsfmqkRSFVkOU4GXECjRgFOPJvgqvu
+	SI8opS3LeMAnRX5zTVklI0gRZi50FopId9EYovFPWQYJfev8cpMIxxhuF//ckASllYRbJlS+eq0
+	JkAi95CVv0f/kmNPbGr5NqC6kXK5SQbXU7ku8HL1QiDeOV6cPr28kgLbmg5K+N7eVDKygz5QOsk
+	yHZum6R8a49WR9NYx+BVrlj8ZUcUrtyezB9bC2R7HBo+mCJpcQ+OCIQgFOf4WoRTU9tWbWlUyqz
+	ahbNoLwJ2hIAD4reJuA2Y=
+X-Google-Smtp-Source: AGHT+IFI8VG0P0n7qrm0zcp7SSN4eaMEgytqB19PsfLf5CxPVrAGvs9YLrEVD7m3nAlBeq12jFghtw==
+X-Received: by 2002:a05:690e:160f:b0:63f:a4d7:b523 with SMTP id 956f58d0204a3-640d45527c6mr354482d50.28.1762548228918;
+        Fri, 07 Nov 2025 12:43:48 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:b::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-640b5d81427sm2087281d50.18.2025.11.07.12.43.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Nov 2025 12:43:48 -0800 (PST)
+From: Daniel Zahka <daniel.zahka@gmail.com>
+To: Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Srujana Challa <schalla@marvell.com>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Sunil Goutham <sgoutham@marvell.com>,
+	Linu Cherian <lcherian@marvell.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Jerin Jacob <jerinj@marvell.com>,
+	hariprasad <hkelam@marvell.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Manish Chopra <manishc@marvell.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org,
+	linux-rdma@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-omap@vger.kernel.org
+Subject: [PATCH net-next v3 0/2] devlink: net/mlx5: implement swp_l4_csum_mode via devlink params
+Date: Fri,  7 Nov 2025 12:43:44 -0800
+Message-ID: <20251107204347.4060542-1-daniel.zahka@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: DT compatibility break for am335x (Was: Re: [PATCH] ARM: dts:
- am33xx-l4: fix UART compatible)
-To: Bruno Thomsen <bruno.thomsen@gmail.com>, linux-omap@vger.kernel.org,
- devicetree@vger.kernel.org
-Cc: Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-References: <20250721173741.6369-1-bruno.thomsen@gmail.com>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250721173741.6369-1-bruno.thomsen@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-omap@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 
-Hello Bruno,
+This series contains two patches. The first is a pure refactor that
+passes through the extack to devlink_param::get() implementations. The
+second introduces a permanent devlink param to the mlx5 driver for
+controlling tx csum behavior.
 
-On 21.07.25 19:37, Bruno Thomsen wrote:
-> Fixes the following dtschema check warning:
-> 
-> serial@0 (ti,am3352-uart): compatible: 'oneOf' conditional failed, one must be fixed:
-> 	['ti,am3352-uart', 'ti,omap3-uart'] is too long
-> 	'ti,am3352-uart' is not one of ['ti,am64-uart', 'ti,j721e-uart']
-> 	'ti,am654-uart' was expected
-> 	from schema $id: http://devicetree.org/schemas/serial/8250_omap.yaml#
-> 
-> Signed-off-by: Bruno Thomsen <bruno.thomsen@gmail.com>
+Enabling extack for devlink_param::get() allows drivers to provide
+more information in cases when reading parameters from hardware can
+result in errors or unexpected values.
 
-I tripped over this patch, because it broke the console in barebox after the
-device tree sync with Linux v6.18-rc1, fortunately caught before release.
+The mlx5 swp_l4_csum_mode devlink param is necessary for initializing
+PSP on CX7 NICs.
 
-I believe the correct resolution for the DT binding warning would have been
-to extend the compatible list in the binding with ti,omap3-uart if they are
-indeed compatible.
+CHANGES:
+v3:
+  - fix warnings about undocumented param in intel ice driver
+v2: https://lore.kernel.org/netdev/20251103194554.3203178-1-daniel.zahka@gmail.com/
+  - fix indentation issue in new mlx5.rst entry
+  - use extack in mlx5_nv_param_devlink_swp_l4_csum_mode_get()
+  - introduce extack patch.
+v1: https://lore.kernel.org/netdev/20251022190932.1073898-1-daniel.zahka@gmail.com/
 
-I have submitted a patch to add the now sole compatible to the barebox driver[1],
-but please keep DT compatibility in mind with similar changes in future.
+Daniel Zahka (2):
+  devlink: pass extack through to devlink_param::get()
+  net/mlx5: implement swp_l4_csum_mode via devlink params
 
-[1]: https://lore.kernel.org/barebox/20251107182805.3367244-1-a.fatoum@pengutronix.de/T/#u
-
-Thanks,
-Ahmad
-
-
-> ---
->  arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi b/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi
-> index d6a143abae5f..cef24aafed1a 100644
-> --- a/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi
-> +++ b/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi
-> @@ -200,7 +200,7 @@ SYSC_OMAP2_SOFTRESET |
->  			ranges = <0x0 0x9000 0x1000>;
->  
->  			uart0: serial@0 {
-> -				compatible = "ti,am3352-uart", "ti,omap3-uart";
-> +				compatible = "ti,am3352-uart";
->  				clock-frequency = <48000000>;
->  				reg = <0x0 0x1000>;
->  				interrupts = <72>;
-> @@ -1108,7 +1108,7 @@ SYSC_OMAP2_SOFTRESET |
->  			ranges = <0x0 0x22000 0x1000>;
->  
->  			uart1: serial@0 {
-> -				compatible = "ti,am3352-uart", "ti,omap3-uart";
-> +				compatible = "ti,am3352-uart";
->  				clock-frequency = <48000000>;
->  				reg = <0x0 0x1000>;
->  				interrupts = <73>;
-> @@ -1139,7 +1139,7 @@ SYSC_OMAP2_SOFTRESET |
->  			ranges = <0x0 0x24000 0x1000>;
->  
->  			uart2: serial@0 {
-> -				compatible = "ti,am3352-uart", "ti,omap3-uart";
-> +				compatible = "ti,am3352-uart";
->  				clock-frequency = <48000000>;
->  				reg = <0x0 0x1000>;
->  				interrupts = <74>;
-> @@ -1770,7 +1770,7 @@ SYSC_OMAP2_SOFTRESET |
->  			ranges = <0x0 0xa6000 0x1000>;
->  
->  			uart3: serial@0 {
-> -				compatible = "ti,am3352-uart", "ti,omap3-uart";
-> +				compatible = "ti,am3352-uart";
->  				clock-frequency = <48000000>;
->  				reg = <0x0 0x1000>;
->  				interrupts = <44>;
-> @@ -1799,7 +1799,7 @@ SYSC_OMAP2_SOFTRESET |
->  			ranges = <0x0 0xa8000 0x1000>;
->  
->  			uart4: serial@0 {
-> -				compatible = "ti,am3352-uart", "ti,omap3-uart";
-> +				compatible = "ti,am3352-uart";
->  				clock-frequency = <48000000>;
->  				reg = <0x0 0x1000>;
->  				interrupts = <45>;
-> @@ -1828,7 +1828,7 @@ SYSC_OMAP2_SOFTRESET |
->  			ranges = <0x0 0xaa000 0x1000>;
->  
->  			uart5: serial@0 {
-> -				compatible = "ti,am3352-uart", "ti,omap3-uart";
-> +				compatible = "ti,am3352-uart";
->  				clock-frequency = <48000000>;
->  				reg = <0x0 0x1000>;
->  				interrupts = <46>;
-> 
-> base-commit: 89be9a83ccf1f88522317ce02f854f30d6115c41
-
+ Documentation/networking/devlink/mlx5.rst     |   9 +
+ .../marvell/octeontx2/otx2_cpt_devlink.c      |   6 +-
+ drivers/net/ethernet/amd/pds_core/core.h      |   3 +-
+ drivers/net/ethernet/amd/pds_core/devlink.c   |   3 +-
+ .../net/ethernet/broadcom/bnxt/bnxt_devlink.c |   6 +-
+ .../net/ethernet/intel/ice/devlink/devlink.c  |  14 +-
+ .../marvell/octeontx2/af/rvu_devlink.c        |  15 +-
+ .../marvell/octeontx2/nic/otx2_devlink.c      |   6 +-
+ drivers/net/ethernet/mellanox/mlx4/main.c     |   6 +-
+ .../net/ethernet/mellanox/mlx5/core/devlink.h |   3 +-
+ .../net/ethernet/mellanox/mlx5/core/eswitch.c |   3 +-
+ .../mellanox/mlx5/core/eswitch_offloads.c     |   3 +-
+ .../net/ethernet/mellanox/mlx5/core/fs_core.c |   3 +-
+ .../ethernet/mellanox/mlx5/core/fw_reset.c    |   3 +-
+ .../mellanox/mlx5/core/lib/nv_param.c         | 170 +++++++++++++++++-
+ .../mellanox/mlxsw/spectrum_acl_tcam.c        |   3 +-
+ .../ethernet/netronome/nfp/devlink_param.c    |   3 +-
+ drivers/net/ethernet/qlogic/qed/qed_devlink.c |   3 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c |   3 +-
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c      |   3 +-
+ drivers/net/ethernet/ti/cpsw_new.c            |   6 +-
+ drivers/net/wwan/iosm/iosm_ipc_devlink.c      |   3 +-
+ include/net/devlink.h                         |   3 +-
+ include/net/dsa.h                             |   3 +-
+ net/devlink/param.c                           |  19 +-
+ net/dsa/devlink.c                             |   3 +-
+ 26 files changed, 259 insertions(+), 46 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.47.3
+
 
