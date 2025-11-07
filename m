@@ -1,154 +1,152 @@
-Return-Path: <linux-omap+bounces-4872-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4873-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F691C3D938
-	for <lists+linux-omap@lfdr.de>; Thu, 06 Nov 2025 23:19:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CC3C40488
+	for <lists+linux-omap@lfdr.de>; Fri, 07 Nov 2025 15:19:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 157CA188B77F
-	for <lists+linux-omap@lfdr.de>; Thu,  6 Nov 2025 22:19:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A06223AC6B7
+	for <lists+linux-omap@lfdr.de>; Fri,  7 Nov 2025 14:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A632630BB9A;
-	Thu,  6 Nov 2025 22:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8744B2D660D;
+	Fri,  7 Nov 2025 14:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UxYMr0GZ"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="IQ3laIxc"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F742F5A1F;
-	Thu,  6 Nov 2025 22:19:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A822B9B9
+	for <linux-omap@vger.kernel.org>; Fri,  7 Nov 2025 14:19:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762467545; cv=none; b=Mfwa+4aKhZ37qkMiAzm+O5hNXf8H5lvOyG6a2mC7v4Pv+pftRhrZLt9PEgnTE6WUDNPWD/5JEK9EMFX/DlEMUUIk1FidbrNUW7LEQclD+SVpD8k5yO/rd92IZHkZM7DpiKhyW6ihvrxTgT+JMWqizZawz/0LJ9ygA2ivgD8rnog=
+	t=1762525157; cv=none; b=g9x4KAslvHP2fjCd3w2ITbDe5Y/eB5Nsvq2j2Flrsv81xeQEwJosQx1SuIy7fZEculMYuET4hmWNws0eoPKitmyXuJ0raKjT66CV1Up5tJvX6d1hJqdQfp5pa7TTTCumYG4+aZzGRORs81iHhVo64UqwOGNBvie9iZVL/qm9dlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762467545; c=relaxed/simple;
-	bh=ku2NGfimp72vXCQLrT9QSjrzqIzlPkhz0qCVVu/Kt4k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e62dD5dN38DMGn7RDMGCiccUZZlSob7zsP2zrB7ybwhMI+kyCwhWvh2M1oYWCwiXQsC39FfuCD0xG7KB03VwVlJHZovu5Wg4qERcAG4AXoYJWTCmhnXpLDTKBUp83IcyMr4RznlQw2ANUhnCaVBIV7Z2ovhDQhjsZFpZzLUTYTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UxYMr0GZ; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762467544; x=1794003544;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ku2NGfimp72vXCQLrT9QSjrzqIzlPkhz0qCVVu/Kt4k=;
-  b=UxYMr0GZV/8c8QF7N1KV5XXlv2NSKRH6z/uUSRFrE8QStj8BfYRjA/YR
-   bXiuwT8MDQTgul5mN/mDixf9O5Z2+tKRuWzag++a459MSivdsnJLLHyN/
-   nUPJuQ+dShOey6DJ2RTWfTxiLmU3qfRhDeMuTVUu57Syp7kYS+Md9sGjR
-   83fJBc3dACvOP/faERMAgV8pX0ykRABj3DARggiOTtrbR9w4hMCNmek6y
-   xpJ322PH9puBhRdPZbTI8c75R7s+Q6hxXWyY29FZ4FgKBJGloDralkM8c
-   X4duyzMAcMXMLbqhYkxXcvKaeuWpo+wFjdmYabsaXfpP2PMfciawU75B/
-   Q==;
-X-CSE-ConnectionGUID: t4cHfqi5QuCAcKhPnAlsNQ==
-X-CSE-MsgGUID: ggGIHikDTS27aShoSrQZHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64525277"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="64525277"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 14:19:03 -0800
-X-CSE-ConnectionGUID: lBzv9szdR2OCNKtzHh4Iog==
-X-CSE-MsgGUID: ZiLLDryOQ86qbAA/p2vl1g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,285,1754982000"; 
-   d="scan'208";a="211327684"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by fmviesa002.fm.intel.com with ESMTP; 06 Nov 2025 14:18:59 -0800
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vH8JX-000UOa-03;
-	Thu, 06 Nov 2025 22:18:49 +0000
-Date: Fri, 7 Nov 2025 06:18:16 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	Lee Jones <lee@kernel.org>,
-	Shree Ramamoorthy <s-ramamoorthy@ti.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, Andrew Davis <afd@ti.com>,
-	Bajjuri Praneeth <praneeth@ti.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	"Kory Maincent (TI.com)" <kory.maincent@bootlin.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] mfd: tps65219: Implement LOCK register handling
- for TPS65214
-Message-ID: <202511070607.Il9q9meO-lkp@intel.com>
-References: <20251106-fix_tps65219-v2-1-a7d608c4272f@bootlin.com>
+	s=arc-20240116; t=1762525157; c=relaxed/simple;
+	bh=jCYKhr1kX0Hg4QzRhHflP6OrqpUQR4791saqDTc52U0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ej6gFbwpi9pY8cZ3IZTg/BVj/k2i8Rm8bgr6NywT5/wxkNMZPZ0a8d2ZzlBl/eY45Q1nL21KmgMpFeoJ5+Gw6zP/+u3CL76PGQ5Nch4oX9mbUtCnG3tSZlz5qbeG+eBaqVbmYNncCRSYDXR/gM5bTVrdxpeNsPHX3EMVrh+yVaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=IQ3laIxc; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-47755de027eso5716495e9.0
+        for <linux-omap@vger.kernel.org>; Fri, 07 Nov 2025 06:19:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1762525153; x=1763129953; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z3JtYpkQpGswXvZK8VCxneoBHV3vIkWcBIrbrAdQki4=;
+        b=IQ3laIxc5MDZhq0kNxa3vRaVIoo2BNVJV7HiIEQf6IW6CgHTlIudOJBCyYyqNee2Yx
+         jw1QY4h0qgFxTwRAdICZyAhceCeL+f2j542b1xzVpZ6mPonG6h0IYSwKsMT5H8NE0WHn
+         8aa+H5SMqaML30li5LeEjHenZVrj6Qa9uSxiPYcdWzDfFS9RaQBIyZZrw8AeAYPUgJ3q
+         rxRlwQvRywBI20dl8etirb3iMrd41WMlWdh5CwGx80cKXTqVqQ1anhDDZ9EcGYHT0HP6
+         tk24MlgfD3madGpzxEC06+qHgkNbGn/YsMR0yPq3D4gxnh+vLlvF9KwDNumIAlGeS6O7
+         Ji/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762525153; x=1763129953;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z3JtYpkQpGswXvZK8VCxneoBHV3vIkWcBIrbrAdQki4=;
+        b=s+Yx5qEu3tWVRLC0lMS/vPIBoqs+3ahg2k1DRfo8zL2UwygER2yIQFLhmrUikct6LN
+         em5VTCRvEhY8XawaAvnYlC4jsvdQegVzVcpP89WK8psoLc6fj4AZvryn3z8A4ICxQU46
+         lTbT8CsbyrDmS9PsnSDo8ML1Rg/5T+3/EZ4Y9WR0MwrQ9HV2qqIWcYDKzmHxL631gmMb
+         lAICIHS0WsiVpUadGzDn37aat4v5rUnopx+qt+HwzSltLSG1LJBzydKRJy2hmPGLWwyD
+         /8Gxrsk5LndZj/AKPsRP1hbMHaMPcs92zJKxc+VG/A6M6RqPKrgdnWSaXlWM3OZcIOiu
+         JHGw==
+X-Forwarded-Encrypted: i=1; AJvYcCUq1GM23aodcRNW6D+bXMspFo9yJ/LQgnlb59hqv7xqz2Sg/KWaBp8p62sov2m3Q/xQK/x1qUAst0Ax@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmET44B3QvMo3GzaZWsEHI1o5daId951/dg0LGNxQsaM9u6EAD
+	Xgvo9Wu4QfB5m/YkgohfqY0czBl8St/YGoRFrlXn0fk7huKST2zh1voxsr8HAeXH8uY=
+X-Gm-Gg: ASbGncuWlK1+O82vUVwRCX5XZXkGmRyvGps8VNbA3HvtvDq1EShuBAw7kXGiougsowV
+	MdeHsGhrXPKQayKoeqNreayxbpkxnYw4wtn2Fib/q7bR6vCvBihlnq2yG9+vyhu/3eslaIFvxX6
+	S8q0rzpg6+VT2UIeowwIMrH/73Bj2se8mLLcttKHCMSNpUkorwg+C4D8PcOquHsEg/QJyfcSz4+
+	76EdVxB45c0Np1gNSRvMUf+R88jeANvwMZE/N+hPzc+R6kHWu6s7tKCLZvd6uCE4FDCB+Xc6Xu+
+	hrEXO9JAdPow3DLyDgTPYDNXCi7hz4BU66fuXWeiPtNw3RUYCS4Ye5/792YgDYSMD/n/fZNObjE
+	fadtNBD5uZ4s93/OUr1eTAry0gMfQHEwFHPkchcRK2lYaa3q9Ab6cI6zniIAxxnXWayJHUp5jx6
+	PNVSPscozBhfg89dfHjWNQU0JO
+X-Google-Smtp-Source: AGHT+IH37Au8aet7V82ZM9z8/ovCarJgLYRwpuhLBnJNCo/JFhaSvNC80oCEjo8MjD+qazemNPFSbw==
+X-Received: by 2002:a05:600c:1d12:b0:477:63db:283f with SMTP id 5b1f17b1804b1-4776bcc7346mr26051305e9.37.1762525153461;
+        Fri, 07 Nov 2025 06:19:13 -0800 (PST)
+Received: from localhost.localdomain ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477640fb801sm41441845e9.11.2025.11.07.06.19.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Nov 2025 06:19:13 -0800 (PST)
+From: Marco Crivellari <marco.crivellari@suse.com>
+To: linux-kernel@vger.kernel.org,
+	linux-mmc@vger.kernel.org,
+	linux-omap@vger.kernel.org
+Cc: Tejun Heo <tj@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH] mmc: omap: add WQ_PERCPU to alloc_workqueue users
+Date: Fri,  7 Nov 2025 15:19:07 +0100
+Message-ID: <20251107141907.229119-1-marco.crivellari@suse.com>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251106-fix_tps65219-v2-1-a7d608c4272f@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Kory,
+Currently if a user enqueues a work item using schedule_delayed_work() the
+used wq is "system_wq" (per-cpu wq) while queue_delayed_work() use
+WORK_CPU_UNBOUND (used when a cpu is not specified). The same applies to
+schedule_work() that is using system_wq and queue_work(), that makes use
+again of WORK_CPU_UNBOUND.
+This lack of consistency cannot be addressed without refactoring the API.
 
-kernel test robot noticed the following build warnings:
+alloc_workqueue() treats all queues as per-CPU by default, while unbound
+workqueues must opt-in via WQ_UNBOUND.
 
-[auto build test WARNING on 1c353dc8d962de652bc7ad2ba2e63f553331391c]
+This default is suboptimal: most workloads benefit from unbound queues,
+allowing the scheduler to place worker threads where they’re needed and
+reducing noise when CPUs are isolated.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Kory-Maincent-TI-com/mfd-tps65219-Implement-LOCK-register-handling-for-TPS65214/20251106-185551
-base:   1c353dc8d962de652bc7ad2ba2e63f553331391c
-patch link:    https://lore.kernel.org/r/20251106-fix_tps65219-v2-1-a7d608c4272f%40bootlin.com
-patch subject: [PATCH v2 1/2] mfd: tps65219: Implement LOCK register handling for TPS65214
-config: i386-buildonly-randconfig-003-20251107 (https://download.01.org/0day-ci/archive/20251107/202511070607.Il9q9meO-lkp@intel.com/config)
-compiler: gcc-13 (Debian 13.3.0-16) 13.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251107/202511070607.Il9q9meO-lkp@intel.com/reproduce)
+This continues the effort to refactor workqueue APIs, which began with
+the introduction of new workqueues and a new alloc_workqueue flag in:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511070607.Il9q9meO-lkp@intel.com/
+commit 128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")
+commit 930c2ea566af ("workqueue: Add new WQ_PERCPU flag")
 
-All warnings (new ones prefixed by >>):
+This change adds a new WQ_PERCPU flag to explicitly request
+alloc_workqueue() to be per-cpu when WQ_UNBOUND has not been specified.
 
-   drivers/mfd/tps65219.c: In function 'tps65214_reg_write':
->> drivers/mfd/tps65219.c:479:26: warning: variable 'tps' set but not used [-Wunused-but-set-variable]
-     479 |         struct tps65219 *tps;
-         |                          ^~~
+With the introduction of the WQ_PERCPU flag (equivalent to !WQ_UNBOUND),
+any alloc_workqueue() caller that doesn’t explicitly specify WQ_UNBOUND
+must now use WQ_PERCPU.
 
+Once migration is complete, WQ_UNBOUND can be removed and unbound will
+become the implicit default.
 
-vim +/tps +479 drivers/mfd/tps65219.c
+Suggested-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
+---
+ drivers/mmc/host/omap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-   475	
-   476	static int tps65214_reg_write(void *context, unsigned int reg, unsigned int val)
-   477	{
-   478		struct i2c_client *i2c = context;
- > 479		struct tps65219 *tps;
-   480		int ret;
-   481	
-   482		if (val > 0xff || reg > 0xff)
-   483			return -EINVAL;
-   484	
-   485		tps = i2c_get_clientdata(i2c);
-   486		ret = i2c_smbus_write_byte_data(i2c, TPS65214_REG_LOCK,
-   487						TPS65214_LOCK_ACCESS_CMD);
-   488		if (ret)
-   489			return ret;
-   490	
-   491		ret = i2c_smbus_write_byte_data(i2c, reg, val);
-   492		if (ret)
-   493			return ret;
-   494	
-   495		return i2c_smbus_write_byte_data(i2c, TPS65214_REG_LOCK, 0);
-   496	}
-   497	
-
+diff --git a/drivers/mmc/host/omap.c b/drivers/mmc/host/omap.c
+index 52ac3f128a1c..4a13111e1698 100644
+--- a/drivers/mmc/host/omap.c
++++ b/drivers/mmc/host/omap.c
+@@ -1477,7 +1477,7 @@ static int mmc_omap_probe(struct platform_device *pdev)
+ 	host->nr_slots = pdata->nr_slots;
+ 	host->reg_shift = (mmc_omap7xx() ? 1 : 2);
+ 
+-	host->mmc_omap_wq = alloc_workqueue("mmc_omap", 0, 0);
++	host->mmc_omap_wq = alloc_workqueue("mmc_omap", WQ_PERCPU, 0);
+ 	if (!host->mmc_omap_wq) {
+ 		ret = -ENOMEM;
+ 		goto err_plat_cleanup;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.51.1
+
 
