@@ -1,148 +1,212 @@
-Return-Path: <linux-omap+bounces-4895-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4896-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93194C4E92E
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Nov 2025 15:49:13 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC8DC4EB9E
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Nov 2025 16:16:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22E1218C1316
-	for <lists+linux-omap@lfdr.de>; Tue, 11 Nov 2025 14:43:57 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 23FC334C88F
+	for <lists+linux-omap@lfdr.de>; Tue, 11 Nov 2025 15:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BABC342522;
-	Tue, 11 Nov 2025 14:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD0C3363C5B;
+	Tue, 11 Nov 2025 15:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="yYVwXie2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gtABr9gX"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B83332909
-	for <linux-omap@vger.kernel.org>; Tue, 11 Nov 2025 14:40:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4583590C5
+	for <linux-omap@vger.kernel.org>; Tue, 11 Nov 2025 15:15:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762872022; cv=none; b=MBg8mfvGxndvAf9wddeRHCNhm9kDr+VzOQmGtYHlcVEepWH0dYzTVCpNVFWS54l9f0ZXk757KJxfZVEVHc5aYMjKlzI03ZrPzrQEo/a5TIZMArJwiuVLfniSJdXqb8maxaSMuHY7zmeDKgkn6Nsnp4ye6+ispYxJU2fgM3VS5C4=
+	t=1762874138; cv=none; b=ayqH5n9rMVpApxiSgZs+FmYhdx/rOYTjAsEru6rwoISZH7DXI8PLfiR7UgKdO1jFTHd1383X0sR4ssmB5bIYkLXZ99zaAlAOdxaeJem1qoQX39tF/A/ujcPpBIrfemsWUGES2X/iIOZ9jzJnN9d57BrsVVRwCGDQeQQHc37xC+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762872022; c=relaxed/simple;
-	bh=FDghw0stYO+xXzak6/os7CYsSWNSrEWAcIyBf08OugE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B7sn9ep1XBmqY7nb7WS77JVJ+VMqBiz0UxryTJ62tYwGcvTkAtowfG1a9pkeD6EHzkaykm/ASlGr2k9WVcYRaP65E5P+vQBSlHCk9OR8i7eebQchRp6MeX1ODtpeny25TW/D6wXGeFb7KkKqlx6wzltrCTz1+6TBV0HQrE1ualw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=yYVwXie2; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-47777000dadso20563385e9.1
-        for <linux-omap@vger.kernel.org>; Tue, 11 Nov 2025 06:40:20 -0800 (PST)
+	s=arc-20240116; t=1762874138; c=relaxed/simple;
+	bh=QW+FQHkpVOwBzm5HQos1lTGedke4NV0wMV1kgnsEBbE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gLf02ORAC7E0ZnAfFkT6rrkNEK6ji4TaWKHQDBiRLBqHxVqFBdwR9EJD7BK8Dw3nL+sExzJohNatIn5yys0pEOF7XQ+tLWWPZVwO2GyRx+4QEUKjIIzpieLOvH/7HfsuyAV+3T1Vb2liHP1+1Z59jO/Gs+PaIQP7pHElxpWcVs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gtABr9gX; arc=none smtp.client-ip=209.85.128.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-787da30c53dso27154667b3.0
+        for <linux-omap@vger.kernel.org>; Tue, 11 Nov 2025 07:15:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1762872019; x=1763476819; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qp5l9CleBH+90IDb02IwKlf8FOy6cwp5KCYKsO335Ps=;
-        b=yYVwXie22ay4B75FFgRUarW3PAbtunWdYtW0npAqsN0gNo4Ome1Ov9DFLbh5G5QwTS
-         kqkle+QZuAdfcMJY2GIVbAgcpbacNnfEDC8O2EG18jtW4udYOaIgkwN9J6bjeRqLmftb
-         3Mv+Ee5G0ZQ83nrj7CtMSnWKsUuNpM9xUZRVcn5awdCR5WSPk7hSVfgY0nBMcUnve3f0
-         qWb+/di3TRfuxzgcddGS5lBe0tWyh67fDG6fZh/Nj2bOI4lHSB+4Sn9iD7X/tujuyqcH
-         8sImNhACyxwSd/ARQxYzW7d9IDdIcfaTssP5PI4LMnnzKfOAZojnSIiVjy4IpKcMwO3m
-         l0Vw==
+        d=gmail.com; s=20230601; t=1762874135; x=1763478935; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=/5T34NcDSf0NcUNTCeoFfYpJ8wi/jPOz/B8hX2HjaVs=;
+        b=gtABr9gXmhq/3wtJZT5T5z/Tt3keKBh0z7ulqwjiR3j8ycta51WxmdglKXb35pNd+x
+         FZ6PDxQpBMva3oh8yebeABgFnekpaD+lQ4P7IyeqBLxODAxxhvX5waIaFRMxaoaxRS7q
+         quA3G3e8nnrr4huslrK8rSrnhOJrlJCzlsFcB9J/o67Cbu6G2GImGJloy6/2FYGNco0m
+         gEZdMsrcHrPOSeSHejiF6GpQNZpaXHz4U+6RrWuODkn696UnsOWM6Slk8TbptIXZAALS
+         N7F0/j8LcstC8Vxyh8Gd9lGk1xlPfNWEkA5bhVMYr03FFAtGI2wjW2n0nv+xITIBaoOu
+         Nn+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762872019; x=1763476819;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qp5l9CleBH+90IDb02IwKlf8FOy6cwp5KCYKsO335Ps=;
-        b=C9nJhlNueWjvaQtFPLfyvWWNR0H0v/44MTaZVv6Qly5fjX5nkJPu4lxSEfqJbgVoyf
-         aS0l8LoBxzgyK7TF9xs1KZo+wuK02p8U6PaIqlxFMSTY6J9xNkCU5aD13+zgJLOdt82y
-         pGK7WEOxun+G4EQRxNJlkYD+nLc2vdexSwsZ06YIbP+4UW3Yzy3N6MtLMQQ8u/DZNkxr
-         imYC01k5O236AB/fvm8S1kJSeRwVwtRUh/tMK5cJ6vuWCovivCsBomBzkEk6U0krtPao
-         MlhAUh4U0a62UqiNxFa8rRYjw4gcD4/3L3kcHwkzNwEfArWRHcGjC1q/lMQZPhTV1gZY
-         ULEw==
-X-Forwarded-Encrypted: i=1; AJvYcCUVw5vX/NjCTd0uiisGO6PYNcue08nMNUAUVtQTEyh2WVyYTg4L3p7/u/qnfIpkxBE8+qvL7mFNTOBB@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSyrpZhmu/xG14ogPs75nORfh04dyifxuQW4dNzWAHzgc/JwK0
-	es+oAe9Yg4JB3EIeVoKjN4nIJJDJgjG6ozea+hIHTk5Fe/bnnXPND0qS/Gd4lBdwLaE=
-X-Gm-Gg: ASbGncvES97r7MJl321N4nzGBcPApw6BSkyBmVvXQh7ZP/TGb0Nv+0yPr2zF/G25cgj
-	kfaPeU4azaePqOKP3okcH34EcVC4w1QcSiGq5MAiM1Hlh3d106c3jKFz7SmEly9exnidliCrvJn
-	1u2RIVpMtSmmTRcWnTiO/WbvYPDGkzTpZDbhux/BL08BPizBcuPLzTS+v13jyWJX/pnjJyGIH9N
-	3+6EafiP81bGyOnRm5aE0oWjelvjaYxAOkdv9zOci5GcLK/qZluUQYvSQx5q2y7NGlpesSgnpGT
-	K8kFyVZPIgkgdfwh1PwuEMPasU8s/qv4Md8d/o/9BmWMcH18ktOCAGrbTS/krFUnOZmWKRD28Fg
-	t+OmDYofH4+7XCfmr9IZhtpOjQsdwh3gCJ9PWUoZgtlrkBej26E+kqIkGskqbpoDfQcA5jmRYz3
-	FpKSOuDJhvSORMj1m1QjU=
-X-Google-Smtp-Source: AGHT+IHiizBIJOZcrq74AaefcmPGJqcFfS/u1VH/cPNz5auadvSnqgCV70GeJMtA2paFsPgExMwhBQ==
-X-Received: by 2002:a05:600c:4508:b0:477:7bd2:693f with SMTP id 5b1f17b1804b1-4777bd28628mr69798945e9.6.1762872019298;
-        Tue, 11 Nov 2025 06:40:19 -0800 (PST)
-Received: from jiri-mlt ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4775ce211d8sm392840305e9.11.2025.11.11.06.40.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Nov 2025 06:40:18 -0800 (PST)
-Date: Tue, 11 Nov 2025 15:40:15 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Daniel Zahka <daniel.zahka@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Srujana Challa <schalla@marvell.com>, 
-	Bharat Bhushan <bbhushan2@marvell.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	Brett Creeley <brett.creeley@amd.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	Michael Chan <michael.chan@broadcom.com>, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Sunil Goutham <sgoutham@marvell.com>, Linu Cherian <lcherian@marvell.com>, 
-	Geetha sowjanya <gakula@marvell.com>, Jerin Jacob <jerinj@marvell.com>, 
-	hariprasad <hkelam@marvell.com>, Subbaraya Sundeep <sbhatta@marvell.com>, 
-	Tariq Toukan <tariqt@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Leon Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>, Ido Schimmel <idosch@nvidia.com>, 
-	Petr Machata <petrm@nvidia.com>, Manish Chopra <manishc@marvell.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>, 
-	Loic Poulain <loic.poulain@oss.qualcomm.com>, Sergey Ryazanov <ryazanov.s.a@gmail.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Vladimir Oltean <olteanv@gmail.com>, 
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>, Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
-	Dave Ertman <david.m.ertman@intel.com>, Vlad Dumitrescu <vdumitrescu@nvidia.com>, 
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, Alexander Sverdlin <alexander.sverdlin@gmail.com>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
-	intel-wired-lan@lists.osuosl.org, linux-rdma@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH net-next v3 2/2] net/mlx5: implement swp_l4_csum_mode via
- devlink params
-Message-ID: <xmqe3svfethqm3sqnu2ay27k65gx4njptvs7firsfqn57cwjat@ho3cox3ip2fq>
-References: <20251107204347.4060542-1-daniel.zahka@gmail.com>
- <20251107204347.4060542-3-daniel.zahka@gmail.com>
- <mfuluoi4nebyc4avj52gkfs4nqikn6uwhqnkf4o6xfswtpceuq@zhpokcx6bb6l>
- <25ebaf18-f009-45de-a3e4-fe440c42ef19@gmail.com>
- <20251110145831.15872b86@kernel.org>
+        d=1e100.net; s=20230601; t=1762874135; x=1763478935;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/5T34NcDSf0NcUNTCeoFfYpJ8wi/jPOz/B8hX2HjaVs=;
+        b=UExPbskB+SvraUBIXQmABhVLzDxEED4IJ4IghSqd8DKA4tVAwLK7t1pF2fjAHpjjNe
+         lufgbGwAl53DVtv6qm/NjYnEAF/yRRCwfSRR0Ze1NUN1bVV7ANlfTIGP5BXADhWRL9Rz
+         9t/3UQ7WuY0XXpCaJ9tRk7U670GrGkUox9LyGiQ2QsKYsPcel7VqdZEjsKqDFpxAN82y
+         n/jo+6DTW9GDmLrrQyvwLZScaOWQ0Kk4NYFts+pUMmFlZuB8fn61kXtM+dbcygP8M+1u
+         TJ2xz/lsY68yrZlCmbEm9lfsjpPzT6pM9bdR26vQlwxb5tqEMDFQHoJgPVePvKPTOAgh
+         9fJw==
+X-Gm-Message-State: AOJu0YyUnrDO5Fs1LSDGvTtG4m7ukjZPibk4REOzCR9BFUbgssz1omRv
+	QhqYV7FPBNxC0HAqZJsoF5+4NS74e5H3rbs6HHoWsKB2SdhDp8U/neBxcXNfzULE1d1rFMrEGgT
+	efbeibebH1BFJutO1/akl6chDh5S6rz8=
+X-Gm-Gg: ASbGncv9cMUrV2T28YXuU+LOKdHPyxB6TPalcnVNHy2zvIlhOifOls5sgE27iuQeJZj
+	TNpIq0rN+2fgoheldkOt0xzONjSL2wO0/DWYQF8rCpS5HbtsDaco6nBZnlWLJkOM3pKT14qrwCL
+	t2sA9/GDaYan+PHTHbOO4qBlv/Tme37XbY8kbznB10Tj/1fsGnDtc+9K8F9hLW5IdugdoO5r0vf
+	3644Wcmoh9ccioRqY5Dua+OlSiUHIGxu22tmaXiQ1tfRNnCwi5VqQ1C3HnqqVR7fX9lh4qoBefW
+	vkXpNw==
+X-Google-Smtp-Source: AGHT+IH1ZANQnDb/QepbD9r5B5e+jnx89rdM9hgTNu9CJVXCBgvCpdFSimBaCfGVIwQ/5R99klaJNMY8v+RkouI9HDQ=
+X-Received: by 2002:a05:690c:9419:10b0:787:f72d:2a57 with SMTP id
+ 00721157ae682-787f72d4c2cmr47926737b3.15.1762874135446; Tue, 11 Nov 2025
+ 07:15:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251110145831.15872b86@kernel.org>
+References: <20250721173741.6369-1-bruno.thomsen@gmail.com> <91f764ab-bec1-4791-b01b-3ba0803ce8f8@pengutronix.de>
+In-Reply-To: <91f764ab-bec1-4791-b01b-3ba0803ce8f8@pengutronix.de>
+From: Bruno Thomsen <bruno.thomsen@gmail.com>
+Date: Tue, 11 Nov 2025 16:15:18 +0100
+X-Gm-Features: AWmQ_bllRvQR9MEWmHVmNTd1JuBEwZSL3HXa1q1ZdirDbTD_TO7cfsGydt3FKHQ
+Message-ID: <CAH+2xPAEAfJW+yy-45Y8EpOWb-8vvaNf27GXe1Ch0Xj8ZuLZHA@mail.gmail.com>
+Subject: Re: DT compatibility break for am335x (Was: Re: [PATCH] ARM: dts:
+ am33xx-l4: fix UART compatible)
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: linux-omap@vger.kernel.org, devicetree@vger.kernel.org, 
+	Tony Lindgren <tony@atomide.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Mon, Nov 10, 2025 at 11:58:31PM +0100, kuba@kernel.org wrote:
->On Mon, 10 Nov 2025 08:05:57 -0500 Daniel Zahka wrote:
->> On 11/9/25 5:39 AM, Jiri Pirko wrote:
->> > Daniel, I asked twice if this could be a non-driver param. Jakub asked
->> > for clearer definition of this know in that context.
->> >
->> > Not sure why you are ignoring this :/
->> >  
->> 
->> My apologies. I think there was a miscommunication. I assumed Jakub's 
->> question was directed towards you. I have no objection to making it a 
->> generic param; I will do so in v4. It sounded to me like Jakub was 
->> wanting more information on what exactly this setting does beyond what I 
->> was able to provide in the commit message and mlx5 devlink 
->> documentation. My understanding is that this setting pertains to tx 
->> csums and how the device expects the driver to prepare partial csums 
->> when doing tx cso. I don't really know more than that. Especially not 
->> something like what the FW's role in implementing this is.
->
->Right, per To: field of my email I as asking Jiri for clarifications.
->
->Since we struggle to understand the semantics nack on making this
->generic. Chances are whoever reuses the "generic" param will have a
->different interpretation of its meaning, so what's the point of making
->it generic.
+Hi Ahmad,
 
-Okay, I don't mind that much.
+Den fre. 7. nov. 2025 kl. 19.47 skrev Ahmad Fatoum <a.fatoum@pengutronix.de>:
+>
+> Hello Bruno,
+>
+> On 21.07.25 19:37, Bruno Thomsen wrote:
+> > Fixes the following dtschema check warning:
+> >
+> > serial@0 (ti,am3352-uart): compatible: 'oneOf' conditional failed, one must be fixed:
+> >       ['ti,am3352-uart', 'ti,omap3-uart'] is too long
+> >       'ti,am3352-uart' is not one of ['ti,am64-uart', 'ti,j721e-uart']
+> >       'ti,am654-uart' was expected
+> >       from schema $id: http://devicetree.org/schemas/serial/8250_omap.yaml#
+> >
+> > Signed-off-by: Bruno Thomsen <bruno.thomsen@gmail.com>
+>
+> I tripped over this patch, because it broke the console in barebox after the
+> device tree sync with Linux v6.18-rc1, fortunately caught before release.
+
+Sorry to have caused you issues in barebox, that was not my intention.
+
+>
+> I believe the correct resolution for the DT binding warning would have been
+> to extend the compatible list in the binding with ti,omap3-uart if they are
+> indeed compatible.
+
+I can see that I forgot to include the full reason for the change in the commit
+message. We have some products based on ti,am33xx soc and the serial
+the console had many quirks when using the ti,omap3-uart that we did not
+see on other soc families. The console did not like opening vi or htop but
+could only handle simple kernel log. Switching to ti,am3352-uart fixed these
+issues, so that was why I changed the device trees and not the schema.
+
+>
+> I have submitted a patch to add the now sole compatible to the barebox driver[1],
+> but please keep DT compatibility in mind with similar changes in future.
+
+Thank you for maintaining barebox. On our new platforms we only use barebox
+as a bootloader as it provides a much easier board boot then u-boot.
+
+/Bruno
+
+>
+> [1]: https://lore.kernel.org/barebox/20251107182805.3367244-1-a.fatoum@pengutronix.de/T/#u
+>
+> Thanks,
+> Ahmad
+>
+>
+> > ---
+> >  arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi | 12 ++++++------
+> >  1 file changed, 6 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi b/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi
+> > index d6a143abae5f..cef24aafed1a 100644
+> > --- a/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi
+> > +++ b/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi
+> > @@ -200,7 +200,7 @@ SYSC_OMAP2_SOFTRESET |
+> >                       ranges = <0x0 0x9000 0x1000>;
+> >
+> >                       uart0: serial@0 {
+> > -                             compatible = "ti,am3352-uart", "ti,omap3-uart";
+> > +                             compatible = "ti,am3352-uart";
+> >                               clock-frequency = <48000000>;
+> >                               reg = <0x0 0x1000>;
+> >                               interrupts = <72>;
+> > @@ -1108,7 +1108,7 @@ SYSC_OMAP2_SOFTRESET |
+> >                       ranges = <0x0 0x22000 0x1000>;
+> >
+> >                       uart1: serial@0 {
+> > -                             compatible = "ti,am3352-uart", "ti,omap3-uart";
+> > +                             compatible = "ti,am3352-uart";
+> >                               clock-frequency = <48000000>;
+> >                               reg = <0x0 0x1000>;
+> >                               interrupts = <73>;
+> > @@ -1139,7 +1139,7 @@ SYSC_OMAP2_SOFTRESET |
+> >                       ranges = <0x0 0x24000 0x1000>;
+> >
+> >                       uart2: serial@0 {
+> > -                             compatible = "ti,am3352-uart", "ti,omap3-uart";
+> > +                             compatible = "ti,am3352-uart";
+> >                               clock-frequency = <48000000>;
+> >                               reg = <0x0 0x1000>;
+> >                               interrupts = <74>;
+> > @@ -1770,7 +1770,7 @@ SYSC_OMAP2_SOFTRESET |
+> >                       ranges = <0x0 0xa6000 0x1000>;
+> >
+> >                       uart3: serial@0 {
+> > -                             compatible = "ti,am3352-uart", "ti,omap3-uart";
+> > +                             compatible = "ti,am3352-uart";
+> >                               clock-frequency = <48000000>;
+> >                               reg = <0x0 0x1000>;
+> >                               interrupts = <44>;
+> > @@ -1799,7 +1799,7 @@ SYSC_OMAP2_SOFTRESET |
+> >                       ranges = <0x0 0xa8000 0x1000>;
+> >
+> >                       uart4: serial@0 {
+> > -                             compatible = "ti,am3352-uart", "ti,omap3-uart";
+> > +                             compatible = "ti,am3352-uart";
+> >                               clock-frequency = <48000000>;
+> >                               reg = <0x0 0x1000>;
+> >                               interrupts = <45>;
+> > @@ -1828,7 +1828,7 @@ SYSC_OMAP2_SOFTRESET |
+> >                       ranges = <0x0 0xaa000 0x1000>;
+> >
+> >                       uart5: serial@0 {
+> > -                             compatible = "ti,am3352-uart", "ti,omap3-uart";
+> > +                             compatible = "ti,am3352-uart";
+> >                               clock-frequency = <48000000>;
+> >                               reg = <0x0 0x1000>;
+> >                               interrupts = <46>;
+> >
+> > base-commit: 89be9a83ccf1f88522317ce02f854f30d6115c41
+>
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
