@@ -1,110 +1,154 @@
-Return-Path: <linux-omap+bounces-4913-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4914-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE210C56AEB
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Nov 2025 10:49:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C74CC572B7
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Nov 2025 12:26:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 694823BD912
-	for <lists+linux-omap@lfdr.de>; Thu, 13 Nov 2025 09:42:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDC663AA4AB
+	for <lists+linux-omap@lfdr.de>; Thu, 13 Nov 2025 11:21:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822C62DF3D1;
-	Thu, 13 Nov 2025 09:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E7C33B943;
+	Thu, 13 Nov 2025 11:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="qRdW/brx"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="lule7x3c"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from server.couthit.com (server.couthit.com [162.240.164.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A522C3774
-	for <linux-omap@vger.kernel.org>; Thu, 13 Nov 2025 09:42:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35632D5C6C;
+	Thu, 13 Nov 2025 11:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763026945; cv=none; b=AM/gOuLQgijFWZspubIr/hckKJOOO0+Zk4VoN85rJo+UHgy88HZsH+CKqeb3aO7lUkAnHnfUI96L8Qdp6l2F4sGkfVMpz5NlP6EohEERlyWzgp18LtLNAAVt5GrQ9SVxt/4Fpb1z0/j6XTv7ALNDZcMvfEyUjE3pBPmWQzeDeZM=
+	t=1763032879; cv=none; b=Edqnq74hyEISfnQf5Eivit3z4+eAjf2amgvW+sxVTXGST7oOssCt3f0J7bhemQA9uaoxYNxxGMNCMpJo0AVFhAgEk6/ISdKPdF8F6ZRF91U+XztVgIzOgQgmnT8SMuOMHV1awvczfcq9R+I3xbTbTe/4O0dfBl7e5aNHiZsjPXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763026945; c=relaxed/simple;
-	bh=sNqs3FP+z5pIzH1Qj0HoESAdOO4RLvu2LM8P11JAub0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p4+9gLuslbfCgDGaLOdEklIRTvKm7Vijx22miY7JmN+JDwDiQvWDWx6REt1HvjOMt9rvtUiWS/iMm/9YuYnJrhuZeJYcBsF3tovjOYoyjKkjIcoj+fSnxaiJkEFCzgJjSXN2WWy4uqnCmj71JuKgEvq2f8vKHAO9Rb5siyMKgWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=qRdW/brx; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id BAA82C0F57C;
-	Thu, 13 Nov 2025 09:41:59 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5B66B6068C;
-	Thu, 13 Nov 2025 09:42:21 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B3A54102F21A5;
-	Thu, 13 Nov 2025 10:42:17 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1763026940; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=sNqs3FP+z5pIzH1Qj0HoESAdOO4RLvu2LM8P11JAub0=;
-	b=qRdW/brxLaDrAAX5eLMUKNF0WYNOIVPrQnukcfi2R01MsrsycSX4IxT1g9P+4hVrIp1ZJc
-	Zv2F/1W3JvJZBM4YGP/okOFx/vEKRY0XN4xZosiCk4mTtt8OHdoqA0PU72yBEs85//qAbO
-	P/BOAYfgu3tOGWlHnJCMBMu55DIxiwp5awYgJOi1mc5j8Ea4sJ3eI3Dy/kVN1Q0R6NAPuN
-	M8el5J554pldmuFjEKZ4azBrbseLsAinXffXJVi3PKzHwcwrS2RRrbShAk2PN/arlgjdSJ
-	kWLPCB19+v0aRhrg10+e4TiB72R/nfXt832xjqfR3ADu2igz0/cFiDUJW60mQQ==
-Date: Thu, 13 Nov 2025 10:42:15 +0100
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Andrew Davis <afd@ti.com>
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade
- <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, Roger Quadros
- <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, Lee Jones
- <lee@kernel.org>, Shree Ramamoorthy <s-ramamoorthy@ti.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Bajjuri Praneeth <praneeth@ti.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, <linux-omap@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <stable@vger.kernel.org>
-Subject: Re: [PATCH v4 1/2] mfd: tps65219: Implement LOCK register handling
- for TPS65214
-Message-ID: <20251113104215.7da3b846@kmaincent-XPS-13-7390>
-In-Reply-To: <454220b7-81cc-4450-812c-06bfbe527ee2@ti.com>
-References: <20251112-fix_tps65219-v4-0-696a0f55d5d8@bootlin.com>
-	<20251112-fix_tps65219-v4-1-696a0f55d5d8@bootlin.com>
-	<454220b7-81cc-4450-812c-06bfbe527ee2@ti.com>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1763032879; c=relaxed/simple;
+	bh=8CHqPv7wXWbkwcfY8JwF/tXEnpUTJdKgfHsxA2V8yvM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S+5oUR6inrcJsXL6TizNMgtPkXHy3etLyXWk8HRfi0f2whiw7T5vN23GhIEswSAU1kPA5F7YrdFX4l4no3i6JR0xSdW5eOwhWwOZtJaWg9Fk2bNQStb7eZ5ctYvHxyBKaUnpa09bxJdwQA06eqHRFoMM9DKNRg6jigv9D71Rj9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=lule7x3c; arc=none smtp.client-ip=162.240.164.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject
+	:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=byDR1fe+RkZbydORahZWwZfPNqQzlEtpY91gu23avaI=; b=lule7x3colzf8Odh4dD0x9UGHv
+	z97LhXsxKEAAzbAH2RETlW3PakkbDniWny6bAs5HkJKq6Lw7V5pSxp+3Yen4Q4J3sSmtVCwoGxwpm
+	B5xX4ZealQMuNNDh85q3vXNkOB1UeZZkhlWSPjXHGBAV9XQxT0CyrFFKrHHTAGdnk9SLvxCWObbNK
+	M6cAuskheyMtRKCmaFL6ORtckmVPnC1x/vKRzmu1Z8J6qzcp6x+kB0aTMhTyQ2kKXF1qGFrpB152/
+	sZLpLLbUXFP3lT1EhHHNW1oFWhjhVkxrHKai5t1y3ZKkgu+0ppkyxepW/OXOieID5d8oHpgO4+tVa
+	Y+lfAm1w==;
+Received: from [122.175.9.182] (port=53373 helo=cypher.couthit.local)
+	by server.couthit.com with esmtpa (Exim 4.98.1)
+	(envelope-from <parvathi@couthit.com>)
+	id 1vJVO7-0000000Geg5-0y02;
+	Thu, 13 Nov 2025 06:21:15 -0500
+From: Parvathi Pudi <parvathi@couthit.com>
+To: nm@ti.com,
+	vigneshr@ti.com,
+	afd@ti.com,
+	tony@atomide.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	richardcochran@gmail.com
+Cc: andrew@lunn.ch,
+	linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	danishanwar@ti.com,
+	pratheesh@ti.com,
+	j-rameshbabu@ti.com,
+	praneeth@ti.com,
+	srk@ti.com,
+	rogerq@ti.com,
+	krishna@couthit.com,
+	mohan@couthit.com,
+	pmohan@couthit.com,
+	basharath@couthit.com,
+	parvathi@couthit.com
+Subject: [PATCH v3 0/2] Add support for ICSSM Ethernet on AM57x, AM437x, and AM335x
+Date: Thu, 13 Nov 2025 16:46:01 +0530
+Message-ID: <20251113112049.676806-1-parvathi@couthit.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.couthit.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: parvathi@couthit.com
+X-Authenticated-Sender: server.couthit.com: parvathi@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Wed, 12 Nov 2025 13:03:22 -0600
-Andrew Davis <afd@ti.com> wrote:
+Hi,
 
-> On 11/12/25 9:14 AM, Kory Maincent (TI.com) wrote:
-> > The TPS65214 PMIC variant has a LOCK_REG register that prevents writes =
-to
-> > nearly all registers when locked. Unlock the registers at probe time and
-> > leave them unlocked permanently.
-> >=20
-> > This approach is justified because:
-> > - Register locking is very uncommon in typical system operation
-> > - No code path is expected to lock the registers during runtime =20
->=20
-> Any other entity in the system that could re-lock these registers?
-> How about low power modes or other PM handling?
+This series adds support for ICSSM Ethernet on Texas Instruments AM57x,
+AM437x and AM335x platforms.
 
-No there is no reason to re-lock these registers. It will be locked again o=
-nly
-if the PMIC is reset.
-In any case, if one case appears that needs to lock these register (even
-if I think it is unlikely) we could come back to the regmap custom write
-design.=20
+The AM57x and AM437x IDKs support two PRU-ICSS instances, each consisting
+of two PRU cores, with each PRU-ICSS instance capable of handling two
+Ethernet ports. For the AM57x platforms, the PRU-ICSS2 node has been added
+to the am57xx-idk-common.dtsi, while for the AM437x platform, the PRU-ICSS1
+node has been added to the am437x-idk-evm.dts.
 
-Regards,
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+The AM335x ICE features a single PRU-ICSS instance. A new device tree overlay
+source file, am335x-icev2-prueth-overlay.dtso, has been introduced to define the
+PRU-ICSS node for the AM335x platform.
+
+This is v3 of the patch series [v1]. It addresses comments made on [v2].
+This series is based on the latest next-20251113 linux-next.
+
+Changes from v2 to v3 :
+
+*) Addressed Andrew Davis's comment by placing PRUETH nodes in a new overlay file
+am335x-icev2-prueth-overlay.dtso.
+*) Rebased the series on latest linux-next.
+
+Changes from v1 to v2 :
+
+*) Addressed Andrew Lunn's comment on patch 1 of the series.
+*) Addressed MD Danish Anwar comment on patch 1 of the series.
+*) Rebased the series on latest linux-next.
+
+[v1] https://lore.kernel.org/all/20251013125401.1435486-1-parvathi@couthit.com/
+[v2] https://lore.kernel.org/all/20251103124820.1679167-1-parvathi@couthit.com/
+
+Thanks and Regards,
+Parvathi.
+
+Roger Quadros (2):
+  arm: dts: ti: Adds device tree nodes for PRU Cores, IEP and eCAP
+    modules of PRU-ICSS2 Instance.
+  arm: dts: ti: Adds support for AM335x and AM437x
+
+ arch/arm/boot/dts/ti/omap/Makefile            |   5 +
+ .../ti/omap/am335x-icev2-prueth-overlay.dtso  | 190 ++++++++++++++++++
+ arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi      |  11 +
+ arch/arm/boot/dts/ti/omap/am4372.dtsi         |  11 +
+ arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts  | 137 ++++++++++++-
+ arch/arm/boot/dts/ti/omap/am57-pruss.dtsi     |  11 +
+ arch/arm/boot/dts/ti/omap/am571x-idk.dts      |   8 +-
+ arch/arm/boot/dts/ti/omap/am572x-idk.dts      |  10 +-
+ arch/arm/boot/dts/ti/omap/am574x-idk.dts      |  10 +-
+ .../boot/dts/ti/omap/am57xx-idk-common.dtsi   |  61 ++++++
+ 10 files changed, 444 insertions(+), 10 deletions(-)
+ create mode 100644 arch/arm/boot/dts/ti/omap/am335x-icev2-prueth-overlay.dtso
+
+-- 
+2.43.0
+
 
