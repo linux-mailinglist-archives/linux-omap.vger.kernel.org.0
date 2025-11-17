@@ -1,82 +1,82 @@
-Return-Path: <linux-omap+bounces-4924-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4925-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EA52C6585E
-	for <lists+linux-omap@lfdr.de>; Mon, 17 Nov 2025 18:34:15 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAF81C6587C
+	for <lists+linux-omap@lfdr.de>; Mon, 17 Nov 2025 18:35:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 60BCB4F15C8
-	for <lists+linux-omap@lfdr.de>; Mon, 17 Nov 2025 17:28:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 019E54F4785
+	for <lists+linux-omap@lfdr.de>; Mon, 17 Nov 2025 17:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744132BE657;
-	Mon, 17 Nov 2025 17:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D219309EE4;
+	Mon, 17 Nov 2025 17:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="i0mQ5we8"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="IapA3aa3"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB0E275864
-	for <linux-omap@vger.kernel.org>; Mon, 17 Nov 2025 17:28:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9529D307481
+	for <linux-omap@vger.kernel.org>; Mon, 17 Nov 2025 17:29:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763400524; cv=none; b=V3dxRgm2wQovjaKzj4jOWlO6j9nEl6l7q30MBNZbGmVGBTD3vTtIS9qN+lQ2Qbhh7zWCOpswytShgWKrOapDLaNs6qxYzCYo6HXM2gTxyteJ8mR0Mcx2YvH5z++4X78VOdh2M0R3p32eGusou0XB1H0/wCbnSjlmQtY32RkjCuE=
+	t=1763400578; cv=none; b=BNbI6Qpm63iZzlPKtmiPedMzgg3oRXXjbQRJ/60WNpT7jt86h/DiKdzIweW5jiOTDs+J/McbHWsYbR4P391g1rz2ew3TEHQdQsK+53g3XocJnElCEFt6kuvFsxgMXFJ5dViM7H1Uc/YXeZgux3XrrOCZVCEet4U3ZV9HXaJYjXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763400524; c=relaxed/simple;
-	bh=kDPsXivH00xRQlXERSN4T6T1lscUspSNZe53c/pLOQE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GTj+4a2BvQoWX+H6a4crCXZ3hepZBzbEBisB0OC9J0GSF4ggz+4HEHHP/qRka4C2lRI34RQBySF1UiVSaRshi2PG1cLptMWDYYB6J89lp70vTiPBtTRByXDYVIJGo20nBn/r8ZNIHr7KckFVpIVKKtndnEdiMxzscP3iQijTGBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=i0mQ5we8; arc=none smtp.client-ip=209.85.216.51
+	s=arc-20240116; t=1763400578; c=relaxed/simple;
+	bh=eOWVoBy6VqXtHjNgx4XgUnlNbU1DJtIXlJJOYQmQGHk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=j5jTw0VvWNaBd4ElRZcbGtz0aBZ8ljDsCFME5j2s2/iZWq1ZREzwwwAAZcvEynQJIV3duePfagVsHH6R26pNwCTN3Uk12el5Pcf3NKIP5P7Aij71IVX6KMgM4HIZM9yqg01GwxpCR5dtGW74iv4Va8BKwv6ro1QNuNL+RyLEWoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=IapA3aa3; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-343dfb673a8so4341356a91.0
-        for <linux-omap@vger.kernel.org>; Mon, 17 Nov 2025 09:28:42 -0800 (PST)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-29555415c5fso52632355ad.1
+        for <linux-omap@vger.kernel.org>; Mon, 17 Nov 2025 09:29:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1763400522; x=1764005322; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1763400576; x=1764005376; darn=vger.kernel.org;
         h=mime-version:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=Y7wt65Eh0qxK+FXODcyVSRUfC2/FGp7c38rfv83jttw=;
-        b=i0mQ5we8zCrHlNDxzAAt72OyegYe+oLGrcD/1T/4xj63BSlWfS7dd5gSzm/B6NucUh
-         I72iUw5DdiCWUriK+xp2PRxaP641Ni2ikDZ4kKbo0/u3K/dzdfGCECG/YrXpCXqjB9Sb
-         5Xdo+BAKRrH+5u6e6CEzpp3+ktfqYEYP9cgz/wEmzwcLloUeBo3poXu/gZl0lGT9ieTK
-         shkbnBKQ3GnkEIV5rXc54/uhObw+9KaJteDKzojIhYmDvkvZPIELEXPumb2kNDBsfa39
-         20weLfVKjnGwYI93l63u+jKteJWKpElr6HH9dS1K2iWNdPmf5cD/ofntltDCyF9yXFf5
-         MIuA==
+        bh=hR9EM2z6sHnGhlsEZZ88mJGrfMpYr2YCoYJvLqYoDdQ=;
+        b=IapA3aa3RGWsr6FrkpuoFSlSmxmpXxWRf75h8etYshvRUPc9FX9jRMAz9IuI5B9gWy
+         nH5C0E3S3p3EWlUpivFAXoxuMFt4LXJatA9OC0sGqs18vnO3Q6wAqZfPX+V44+fmzka2
+         mHzDAr5Sl20uc0aHO9ahMf9eB89H6YroqfmbDuIvWovkRKubh7Cj9MNYrmB7DES2uBDb
+         TxYmiRUE6KuOvprkHPs4FuwMPtFzPfLlwPRs0wcxdB0/XyE3Idbtdq+kA1AIXyyw6iB7
+         wZzLkGk/Qcdk/43fif/38YFkScF66TRmlIukyMDCo3QB/To4JwtYTYS5RKUmvnfTWw+/
+         oYNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763400522; x=1764005322;
+        d=1e100.net; s=20230601; t=1763400576; x=1764005376;
         h=mime-version:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y7wt65Eh0qxK+FXODcyVSRUfC2/FGp7c38rfv83jttw=;
-        b=BiGxCxzf1/SVPCM7rir4CHEJocScJDkfHjRg54I5HMf7RcAQqT69ZqRAaZ0FxDszND
-         7ztS7EC15FgYw/bwlrF66O2Ub0+f8FBHCDvxzsHl2y2tJsah2KM3fVSUMfyAb3WhcyQ7
-         mx3SNnOV4DyseQ+Bw3zNUumSHWQtOqI7+uZpqknP/vy8zmhuIaLe5Mv98/Ifs1BPHaCq
-         AHi3R4ZhdBTjs91lgwNX4sSvLpkRNqsUH/vMWBEdyYk/SlKefCoptQ1e1osIOIEghEXC
-         t/7YXOajMyHg4FFzk1DZdXlFM0ZmXG7zHF+LUhqX0ab3b26K0RAVQRH1cHr54wmNhVWI
-         iHIA==
-X-Gm-Message-State: AOJu0YwDFVHOPpQDBFbbLqCbNQKiXDNnp+25xjPYj6ByXj4NOEVnU5Vd
-	enX3YqfLS5wWFAHZ3JRSNYvOxo1u7jOYSzUsn76EXOk8I24qrfrWC7cUqbR2MhhoHjVUs1ZVHSk
-	fxnln1mI=
-X-Gm-Gg: ASbGncspO5FHtT8QOeWlNWR+HtFYuMgtvRfWWJxOG2QwoMZ1Y4SBg1JGvIbj3eoRizg
-	xShn5Nu9HylDIIONtyglQpSrZ3l+SJjVRrb3US17gZfARx9qFUKOHCqY48Jqre4T/vwzaKpNgYF
-	hpyqy/vVGvUDfdJ2eJYXugyY+lxInDX99MqeFksC5p8KpvZBh8AiS+uxjnGPljScFxktlSPWU1s
-	jPNGiyRuAiejcXmbJiqtaUGegykbxbzrszV7BnJls9vJ2WZBvVoxQx0xP3OC9ZviyaqBzFCZnYx
-	Xgfd38jeKp7wze3n2L2YdFxM9nqcdlAVqR8qrbMM6pqGCU4e6pWC1oI/mZcN9x378MFih4lk2Cl
-	KPlR0d+L6MIAbJshMdKKyjcjnVOS+tk9hB66B0yGrZ7UxmzYeE6q+GpEXFFBcZspD5An3d2A0Zw
+        bh=hR9EM2z6sHnGhlsEZZ88mJGrfMpYr2YCoYJvLqYoDdQ=;
+        b=PJ5WAqG7VLctJ3pppm1nwmI04nq6XaOP161nesWlEPtYnKUfcwtUJ+qJE16zGZ2hVU
+         aveR0g3AfTP/ylyXOpCz/YCifkjD5vnca5miAwrVI5XSjhu+qiOmijbNH+bvbVSIg8CN
+         LJNXxfelfABtdOt8QS5ao95OIslCjxhSCEQoFvKRuu6Wc0Jxyy9V1EOxT++uFQEUR+8o
+         HMZamaESJB1UYM7hYe06dcayR6wAlircjYqeSWPHgxSiP+fVhSqhULQAcfzM8STAIU8+
+         9Lv5Yl5wHdJ4KbwZtWSFk9PkflbV5eAF20X2QdH6BlFI7BR1I/uXSWsvG5iETCS5AidZ
+         KhNg==
+X-Gm-Message-State: AOJu0YzjsVegSUj03I84GIfpgv9kSOCytA6PQwZj+5nHJoKADsrLxkEj
+	Nldw/KN8YPstetyFdWKB7gu9dRGT2j3HL5ub7XURmMm5/Jh3i69TDe1Y6Ys5IsMGBjUIOgNaapQ
+	rzVrgJA8=
+X-Gm-Gg: ASbGncttOP9rzqTCW5xhslwjNEAPnjRTVyjbo+C/aw2LWFInualU8dqm9wl9A8lBsvT
+	XHlce1PjoIiN9LpXCG7zyzb68SSLj1v1M7yWhZqjyUIcPu6JR7tbTjiPYk/QPzv1NxKq0gapg5B
+	FujRjG6RxXDDxKi0hFhXJ5faWrE6UpZHShZa+RCTU8mClDFabd0JvzZBPV4gX5NCDzKEDVkJdCn
+	r05iVkNfDUMbc+mGZ96x/qScIF+A4WkOfc9zXWZrM3urk/UL0WmQhQ2E9vVDts1W1JkC9MEa+5n
+	PyE6C66rg9vjqlrLkAxmmD9OhlE/4dy++VguS+jGcMLofqyLDpTBgbPhH4Wl2cLB7/WafOYgv5C
+	F4CI9eIhyaq+Gxp6XDh9Gn9Ho3bGXV248vFPCLnrgjraFieU+tLr32y8u2BlpXmLgNWjbQ4TcIQ
 	==
-X-Google-Smtp-Source: AGHT+IHYbjHg19oozELCuH1Sepl41Hl6vXq0kA2LdsYPKUkCrFNp41EV5hBuCCfJikNQi6qXu7K8CQ==
-X-Received: by 2002:a17:90b:1d0e:b0:340:f05a:3ecb with SMTP id 98e67ed59e1d1-343fa74fccdmr13709653a91.28.1763400521875;
-        Mon, 17 Nov 2025 09:28:41 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF9V/dBvlwYAdM9IAYen85Y0K9dLfQidM8wPheh0H+XYjGDt3ZMEs/v4nT38ZUHffpu7c/I9Q==
+X-Received: by 2002:a17:902:dacb:b0:298:33c9:ed99 with SMTP id d9443c01a7336-2986a7414e3mr169566815ad.30.1763400575878;
+        Mon, 17 Nov 2025 09:29:35 -0800 (PST)
 Received: from localhost ([71.212.208.158])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-343e0794ed1sm18965400a91.12.2025.11.17.09.28.41
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2bed23sm146031965ad.87.2025.11.17.09.29.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Nov 2025 09:28:41 -0800 (PST)
+        Mon, 17 Nov 2025 09:29:35 -0800 (PST)
 From: Kevin Hilman <khilman@baylibre.com>
 To: soc@lists.linux.dev
 Cc: linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [GIT PULL] soc/drivers: OMAP updates for v6.19
-Date: Mon, 17 Nov 2025 09:28:40 -0800
-Message-ID: <7hzf8kk1pz.fsf@baylibre.com>
+Subject: [GIT PULL] soc/defconfig: OMAP updates for v6.19
+Date: Mon, 17 Nov 2025 09:29:35 -0800
+Message-ID: <7hv7j8k1og.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -91,19 +91,19 @@ The following changes since commit 3a8660878839faadb4f1a6dd72c3179c1df56787:
 
 are available in the Git repository at:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/khilman/linux-omap.git tags/omap-for-v6.19/drivers-signed
+  git://git.kernel.org/pub/scm/linux/kernel/git/khilman/linux-omap.git tags/omap-for-v6.19/defconfig-signed
 
-for you to fetch changes up to 3f61783920504b2cf99330b372d82914bb004d8e:
+for you to fetch changes up to 393f40ef96628f603b40e97b6da9847d20a904c0:
 
-  ti-sysc: allow OMAP2 and OMAP4 timers to be reserved on AM33xx (2025-11-04 14:48:47 -0800)
-
-----------------------------------------------------------------
-ti-sysc: allow OMAP2 and OMAP4 timers to be reserved on AM33xx
+  ARM: multi_v7_defconfig: Enable TI PRU Ethernet driver (2025-11-17 08:53:20 -0800)
 
 ----------------------------------------------------------------
-Matthias Schiffer (1):
-      ti-sysc: allow OMAP2 and OMAP4 timers to be reserved on AM33xx
+multi_v7_defconfig: Enable TI PRU Ethernet driver
 
- drivers/bus/ti-sysc.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+----------------------------------------------------------------
+Parvathi Pudi (1):
+      ARM: multi_v7_defconfig: Enable TI PRU Ethernet driver
+
+ arch/arm/configs/multi_v7_defconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
