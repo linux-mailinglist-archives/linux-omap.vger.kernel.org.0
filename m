@@ -1,119 +1,117 @@
-Return-Path: <linux-omap+bounces-4948-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4949-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF97C6B6E9
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Nov 2025 20:28:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B012C6BCE2
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Nov 2025 23:04:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4DCF94E4119
-	for <lists+linux-omap@lfdr.de>; Tue, 18 Nov 2025 19:28:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ECEAD4E53FE
+	for <lists+linux-omap@lfdr.de>; Tue, 18 Nov 2025 22:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EAA02E540B;
-	Tue, 18 Nov 2025 19:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C19642FE574;
+	Tue, 18 Nov 2025 22:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="TvOPYDBk"
+	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="k+MokbRh"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp1-g21.free.fr (smtp1-g21.free.fr [212.27.42.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2EF2E173E
-	for <linux-omap@vger.kernel.org>; Tue, 18 Nov 2025 19:27:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144BF29C343;
+	Tue, 18 Nov 2025 22:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763494077; cv=none; b=kYCjKpGlcvYoktT7fptTL8TpCw+G9hbTF1n9EpkmYEpwnoPbnDSqvlHekgIIUIRgiMKRH/d+hh8L4ELhjnPko8QfZDXZUIMjlbmAEa5oGL/AmYR4iWKCq4pC/KRjqdUlqC+fsBobE7UO6g57j9V1KzUm+rjl2d3sYlro/+/+/Wo=
+	t=1763503458; cv=none; b=uWS0SAUIXoiiT6ieC5tlDfwTtUQ25H6L14RChCA1qlAfGGLwA13ET8SQd0I8Z5/2QjCkCNMCfx+84RDn+ZF86YrroD12NxPKfu9ZHtcaGU97dRf7/Gs7Pv3cVH2vrNTJzB/TTxJo4h0hWf7tmhOdSaxhmJ/x1B3COivYm71GS14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763494077; c=relaxed/simple;
-	bh=S0ioR2sIrAXpv29q2x5WdPHoyTiEWckgQi7HP1uVvBw=;
+	s=arc-20240116; t=1763503458; c=relaxed/simple;
+	bh=wA7xapN4wn55TAXjCx/XtytYfW/c1kqwNEm55jTd8j4=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=X1LDpXrt5UjtGLpXFzh0R4cIBs9YELpEwJ6GLAEiB6TPs1pz30ppv/L+f7muOtc+dtJDnqwMdGf8wSumc66PODdP7pzC0kCQ+nYNbisYop2z+4YT1Q39yeKgP5lXDNM+zZIAZS+ep15TGDyTj4ZY9JyPDc6gn7ecQfkWQY8aZP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=TvOPYDBk; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-299d40b0845so48107185ad.3
-        for <linux-omap@vger.kernel.org>; Tue, 18 Nov 2025 11:27:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1763494075; x=1764098875; darn=vger.kernel.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zuGTGce5+ejRcy2UUHdlfkw4cxpc0fpfUZqTyg0JihY=;
-        b=TvOPYDBkifL2GDd+hfIiyqWA+0JgBVIrc081E314Pov/6UqerPQogrbBr9gOEqxA5O
-         A9d0yeafz2CbyJCRVt7H3sfOQHG0PvNn9ogN6ar2Vgb0DN+povWYbXRwZnjrhr8T7byJ
-         RgUGdsFWe8FZJ3PXfmD+j9Pm/QIC66EzXZh+ZJ3FFdfvJkYghfHdkXcXc/vViMXwkEDr
-         Cf5ffXpLHFESVcm1y43HUjbnsolUKcWE29Gar550FFN0WLKkmotZUVWpF/vHLgoj5oB/
-         f3xo3eavp9moxc89cN97jrfTZ2f31aTTWEeD36vFpkMFhY3pHY64qL0Hg2AF3n6FW2s6
-         iHvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763494075; x=1764098875;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zuGTGce5+ejRcy2UUHdlfkw4cxpc0fpfUZqTyg0JihY=;
-        b=mj/rP5bpISLZZSno5I526cWTv4PtodlpFlPz1G5aTZkqQLqIiCVOV4Y6gEBOaBBWRO
-         ZIkkxM18ZBwp9LAEPhQBjAlWgINreMFdQUv6Mg8y32K4oGDTq166Qrl3xpDzyLqv58Kn
-         1hoNKVFovA6bLCmnKnZsMnqj07ouwGEveDNCeyNWN6dPaeoTJc1gVdp3H/R0doKA2uzr
-         k/mIR9jMUPf0x+E1GqlpdcCgUkt8sO3PjdB9BqsW/i/Tvh9c8ydqYraRzQ5u8uhziDG5
-         29GH06GW4lD8ICgnUp6L0/GrOz1DO+x3SdOKYLiE5H77CNq1M9FLUPhrAxB9GwSfqP9o
-         b4WA==
-X-Forwarded-Encrypted: i=1; AJvYcCVXeI1ra+yAZDZvfFsMBpYwoHYTkn6+UpPwUnI0HntZJoJXtS5XGhI5flA1bq0xD62SXoAMPglGXnu+@vger.kernel.org
-X-Gm-Message-State: AOJu0YydGVZc7j43Ivbf++ciqCgEBYB1yjJFqQLMXk8E1KEz3GrgXtJK
-	hF/7NyrfuhRu2dfZvtMuwg2SNIDz/ObvMaClueAL4qAinhtb4w4mimGONKRmqBosVuz0PTLojsA
-	hiwVyp0s=
-X-Gm-Gg: ASbGncu5azrcWZRs1z4fmzqexhLZkgheEUrnRRlwunlJ8uUhNHWB6rMkWfg+CGq2H9A
-	b0PqgNKYK2V06PX84jEa90o++PkUBk6298t1y+GSZ5f50Lav26oWjHPNepT6W403duBgSfp2ozT
-	Lw6GJ+iuBV2pdo6PDPR7Jozzi1c8FErfatbB46EgaOOVxMKuFBfnNUhww2SNG+HAxjM5et2MbOQ
-	jrP9MBBGAVt0TWmm4idCDuwdP6ywcMKlNef235mXQnOq3c3A4/IyVBJMnVPGnkVCrK9ysNhtvg5
-	aLYP9rNJlvXVg6f6K8kQfjADg8AKtxNg0YDM75p1DDkxJ3Zrl1efdyw50hIhlSKkWy8h5MeoFZT
-	RRK+ZqLgbrK8QSBFLnoWdhLJFdu5k/+E7Zj76OsUrFjAK5fE+psaRrSe2GB66vcfyOjxa+0lHkK
-	70s3mQ3zy3
-X-Google-Smtp-Source: AGHT+IGZ3c+wfhKHUB5FsGWWCStrD2y40OQWGybbUtr3wa2hWFhXVzhRdqJOVDIYfn5kzvcKCFZSLA==
-X-Received: by 2002:a17:903:1a83:b0:24c:c8e7:60b5 with SMTP id d9443c01a7336-2986a6d0be5mr184151895ad.16.1763494075493;
-        Tue, 18 Nov 2025 11:27:55 -0800 (PST)
-Received: from localhost ([71.212.208.158])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2b106bsm182419515ad.58.2025.11.18.11.27.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Nov 2025 11:27:55 -0800 (PST)
-From: Kevin Hilman <khilman@baylibre.com>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: linux-kernel@vger.kernel.org, Tony Lindgren <tony@atomide.com>, Aaro
- Koskinen <aaro.koskinen@iki.fi>, Roger Quadros <rogerq@kernel.org>,
- linux-omap@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH] MAINTAINERS: sync omap devicetree maintainers with omap
- platform
-In-Reply-To: <20251117195301.05f17649@kemnade.info>
-References: <20240915195321.1071967-1-andreas@kemnade.info>
- <7hed5cpwrc.fsf@baylibre.com> <20251117195301.05f17649@kemnade.info>
-Date: Tue, 18 Nov 2025 11:27:54 -0800
-Message-ID: <7hjyznf8ed.fsf@baylibre.com>
+	 MIME-Version:Content-Type; b=HCQ7VfVmzF8M35jK/fxaJPN5Jgr//AEFurdStxMGHjTejnWKZYe0v1FgBRlMJ8NehQLryi0nrD4PGs+wRqXEs266IwyyG6PA0SHL9MxR6JmsGEURzQFuQnMU0FOpoHcO5qCSg5fp4mc7WyMz8KaJhDwRnQHJft9NRsg503VFQbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=k+MokbRh; arc=none smtp.client-ip=212.27.42.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
+Received: from belgarion.local (unknown [IPv6:2a01:e0a:a6a:5f90:ec95:b1d9:10ea:943d])
+	(Authenticated sender: robert.jarzmik@free.fr)
+	by smtp1-g21.free.fr (Postfix) with ESMTPSA id EB86FB0055E;
+	Tue, 18 Nov 2025 23:03:41 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
+	s=smtp-20201208; t=1763503447;
+	bh=wA7xapN4wn55TAXjCx/XtytYfW/c1kqwNEm55jTd8j4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=k+MokbRhkgwcsNI0tp5xAlYiPRulfdlAz6xLIzd/wMar+D8P8zrCPv235UaJL+LUE
+	 +xLqP/W4qlRxZUPr6/PB4tUfkVSHOlQ2hDlrxGnB3d2g4hL6uLYVicBhBRRFI9aBB4
+	 NdB3dbh9wZDbXxFZJ4s9WpzmPDFFSyjPiQEhEPRz3Fmla6UmxqbVcPKmJ16Xv+8A/A
+	 rm/KjL9H6Pwsq7TFHe/VgckcBnEJAIcWNAJTCOqBVvlpLjfnO8iKDHnPzrp2jpwBzP
+	 nCkVH4UlygAGCc8UAgwVnNzhgmI3w5oC5o1y+l0Dfc0ogMtJ6rDLr1SaKDz/BteBn9
+	 TtxnSIfHmSV6A==
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Jisheng Zhang <jszhang@kernel.org>,  Doug Berger <opendmb@gmail.com>,
+  Florian Fainelli <florian.fainelli@broadcom.com>,
+  bcm-kernel-feedback-list@broadcom.com,  Linus Walleij
+ <linus.walleij@linaro.org>,  Bartosz Golaszewski <brgl@bgdev.pl>,  Hoan
+ Tran <hoan@os.amperecomputing.com>,  Andy Shevchenko <andy@kernel.org>,
+  Daniel Palmer <daniel@thingy.jp>,  Romain Perier
+ <romain.perier@gmail.com>,  Grygorii Strashko <grygorii.strashko@ti.com>,
+  Santosh Shilimkar <ssantosh@kernel.org>,  Kevin Hilman
+ <khilman@kernel.org>,  Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+  Masami Hiramatsu <mhiramat@kernel.org>,  Shubhrajyoti Datta
+ <shubhrajyoti.datta@amd.com>,  Srinivas Neeli <srinivas.neeli@amd.com>,
+  Michal Simek <michal.simek@amd.com>,  linux-gpio@vger.kernel.org,
+  linux-arm-kernel@lists.infradead.org,  linux-kernel@vger.kernel.org,
+  linux-omap@vger.kernel.org
+Subject: Re: [PATCH v2 05/15] gpio: pxa: Use modern PM macros
+In-Reply-To: <CAHp75VevWmB4X_Mh+st_NLChAYZw5V-b3pM9Yrcd-ofa9xYvDQ@mail.gmail.com>
+	(Andy Shevchenko's message of "Tue, 18 Nov 2025 14:06:34 +0200")
+References: <20251118003229.26636-1-jszhang@kernel.org>
+	<20251118003229.26636-6-jszhang@kernel.org>
+	<CAHp75VevWmB4X_Mh+st_NLChAYZw5V-b3pM9Yrcd-ofa9xYvDQ@mail.gmail.com>
+User-Agent: mu4e 1.12.13; emacs 29.4
+Date: Tue, 18 Nov 2025 23:03:41 +0100
+Message-ID: <m2ecpvm20y.fsf@free.fr>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
-Hi Andreas,
+Andy Shevchenko <andy.shevchenko@gmail.com> writes:
 
-> On Sat, 21 Sep 2024 13:39:03 -0700
-> Kevin Hilman <khilman@baylibre.com> wrote:
+> On Tue, Nov 18, 2025 at 2:50=E2=80=AFAM Jisheng Zhang=20
+> <jszhang@kernel.org> wrote:
+>>
+>> Use the modern PM macros for the suspend and resume functions=20
+>> to be
+>> automatically dropped by the compiler when CONFIG_PM or
+>> CONFIG_PM_SLEEP are disabled, without having to use #ifdef=20
+>> guards.
+...zip...
 >
->> Andreas Kemnade <andreas@kemnade.info> writes:
->> 
->> > Both used to go through Tony's branches, so lets keep things together.
->> > This was missed at the time when Co-Maintainers were added.
->> >
->> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>  
->> 
->> Acked-by: Kevin Hilman <khilman@baylibre.com>
->> 
-> this seem to get lost, what about updating/sending another maintainer pull
-> request?
+>> -#ifdef CONFIG_PM
+>>         unsigned long   saved_gplr;
+>>         unsigned long   saved_gpdr;
+>>         unsigned long   saved_grer;
+>>         unsigned long   saved_gfer;
+>> -#endif
 
-Oops, I had already sent PRs for v6.19, including maintainers changes.
-So instead, I'll just send this directly to SoC maintainers to apply
-directly.  Hopefully it gets in for v6.19.
+Actually this is not equivalent to what was there before.
 
-Kevin
+With Jisheng's patch, with CONFIG_PM disabled, he adds 16 bytes to=20
+the
+structure. You might thing today, 16 bytes is nothing. True, but=20
+on a
+64MB RAM devices, it's something.
+
+That might not be a reason to reject the patch, but it's not only=20
+a
+"modernisation patch".
+
+Cheers.
+
+--
+Robert
 
