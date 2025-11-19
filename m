@@ -1,171 +1,144 @@
-Return-Path: <linux-omap+bounces-4958-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4959-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4FD0C6F218
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Nov 2025 15:06:03 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EEB0C6F8D6
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Nov 2025 16:10:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 5D37128B79
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Nov 2025 14:06:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ED6234FBD65
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Nov 2025 15:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A3FA35A13F;
-	Wed, 19 Nov 2025 14:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5386228A72B;
+	Wed, 19 Nov 2025 15:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F9wcXE6H"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="icaJvE12"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F89123EA9D
-	for <linux-omap@vger.kernel.org>; Wed, 19 Nov 2025 14:05:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFDE28727E;
+	Wed, 19 Nov 2025 15:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763561153; cv=none; b=K/VdbwSLJ7LS6O7+zspXkOZagrkd+987umeAle0SOW7NMi5pQYRBcNA+4OA+LcXghl9A8AcY1xH+NA0dRuBpJUX9ZKMZXP9KjAVCxRk6lydf9zU76TLeQ9rWM10FC6uj2ZCbawzfZi7U2y2zYrJPgH1d2q5CyHISgIi2wcYD6/I=
+	t=1763564483; cv=none; b=BuR4EKb9SIaB7DMww/MTZg6cZ4Mjtu5ZXTKNhLYlmhvRXCTBc6Ay5k9MB2CrDK8c9c+C3bKjKgk90VjwodO3JSUxmec1Ki4I9ynnmOEb43P8m1wfsBfRL+sX1JbqVP5MoVG2sqkbTKAq3E+38VxOYIruYC/WSF9UdzFfoTyRjH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763561153; c=relaxed/simple;
-	bh=6pSPX7H04kSMS8rAxUHjKxKVRcHpXKh4E29bdqrASu4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U5ZjG/MRjwo6leAjLfOFXK7f3RI4jXL7d5oiK/kbxWEalF1vT8QZu/lGj8pU9o8pG79GoFadnhOdH4qoy0QTXleaHKb1Pl77vaBMuSKTlGRMvA5tWiwft5V8EpndKZQ7YgBVGwqvvSbHCEUX/CgOudiKzgTME30LXttPqgArmXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F9wcXE6H; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b713c7096f9so890602566b.3
-        for <linux-omap@vger.kernel.org>; Wed, 19 Nov 2025 06:05:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763561149; x=1764165949; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6pSPX7H04kSMS8rAxUHjKxKVRcHpXKh4E29bdqrASu4=;
-        b=F9wcXE6H0X2hDutrbNe4FhN0CJ52jYhJs4Tcl8L78Krd+COFiiC2533GvhkH9PCn2F
-         gB3Pvcei5yU8GrjL7OkiZ3I0xeA/R00nYS+7qQIfjZeuSwD4ZeVVcIBQT67JszFaE38z
-         ia0GNn5BHWziYtf0C2Bw9TSFrmX7Gc6bbI5n2/jhv/ixc3Zo0HEaMY+xro2wB8M8Wjud
-         35TX5GQYPFDj84IeCDMOUDZA0T1ANp1KcVWTCrwV4wOf9UGTdfrh/ZwG297CAFfdq8I5
-         9zLKIjWdk0Btt9y7BIHEd1rjp3s4HqB7hCaE/U+uYJ+KJxUxJfjKxcK51TYe9pwQrxN0
-         q3+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763561149; x=1764165949;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6pSPX7H04kSMS8rAxUHjKxKVRcHpXKh4E29bdqrASu4=;
-        b=meT24B8BtmGbhdg8tIZ4eMi3CnvkVuWgaz/jZDD+53fJ5wzHPZFkWm48JaaxIF863M
-         foadgTGPPb5UXNZkbopdW2qf85EthLsRdwYy++nk/pbgXNpuXJtmjSmWeDf/varluBQq
-         fI58xroj5XYdf6PtFnE5rWZo1J/IVGGb6pWHCEX8iSOR5Jt2p0dDvr3Vn7ez2TWSBvrU
-         +qhPjMo4m3M7Q8oy7ME3cXpTxpZ/XhM9CPCA8Z9JBG2H9XjhcdUFk2E4Bf0o1JWHFG0u
-         lxxInXMiWbywiGg1tvxjdTNOqU2Git8V2QTpnNP9zgeIul2Q/N031WbRzRkOJhOM/UNO
-         1dtg==
-X-Forwarded-Encrypted: i=1; AJvYcCUEQ7mkVxm6Gt+L5uukRI+qELsmu2yjMMFAHQtV0bNVKspjjiyNiOSP9zMXnsLVVztxhbypHM/ONRbw@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKZZTo3un51Bvddid4WpR72vvi86GV1CRTtk4gMjlmv7pFrUP7
-	9aIWDZT4VaGDW6x6Hh53ksnS9Ip8PK+vstjraAVb7hVlbzcLQAcjp30i/GRXRNW46wu9OD/xHV7
-	yCJnA8AoofLMoRW/H1bxSeetfoCWxdtc=
-X-Gm-Gg: ASbGncvBL533JLX7iXUL8dtwRSwWIwwQMECcc99ho1Z4X9+FA4qDOC68Dg+q2RttBzh
-	lwzPcFwkcAQIcS7ROkldI56rVZckAZE63KNBC+LrU6CjwliW1x5I1PNZvZniH7WYLjvIattIYV5
-	7JyDFSQ1/a54iUofbH8OGuXwsuRZOe4bdn8p8Lz3BRbZBFabPAG6ftSXneFgfKOwGgLl7EbwTSN
-	O2OvWA1fdktWeusK3ij/41FCWMkkuNa3NJAUvayFj5mdPbv9WEEb3qJsmRyCY+o1t/vakQdkfjQ
-	iwxzVbTUI6fdStaAVqNLqJc5gRlZ5BaaZshFD2Fn9oRHwzhHZN/uGygDFxJpllbX72cJpWr9Oqd
-	gJJiUow==
-X-Google-Smtp-Source: AGHT+IG8awJqy+8Ui6cefioX+4jm3vcNE88fJTiAMy61wvD7oGhSHtnMD+PT7NnOtEIiRkUEf89EKMIWq7eejZMxgBc=
-X-Received: by 2002:a17:907:7e9c:b0:b73:a0b9:181a with SMTP id
- a640c23a62f3a-b73a0b927b2mr1144919066b.54.1763561149008; Wed, 19 Nov 2025
- 06:05:49 -0800 (PST)
+	s=arc-20240116; t=1763564483; c=relaxed/simple;
+	bh=I25En5LD+Rgn1la9GosNeUD7eVzXVOvwTMaO+VOfWt0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eOv/7zrviwpGgvR0+t5RMZnLE/nOYGsU9GS2k7mrtGtHKagjjFc2IJPAMTUOxBIgPMGOrZpM6p5ld0lcDNUU27PHaDEvtTKGc5qt3zeM6nQiq+h3OEAnZQ5M9q0n6AvaQeQxp9Ulrvr1RQwl18Q7tJW1kd1RZTgEGXV9zVtmMl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=icaJvE12; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C06C2BCB0;
+	Wed, 19 Nov 2025 15:01:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763564483;
+	bh=I25En5LD+Rgn1la9GosNeUD7eVzXVOvwTMaO+VOfWt0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=icaJvE12VlQBkp2vo9qf/g4pQgLCAW3i44Lh+QiZTzKgc+y2eScqAaZ+r6qpJ6Oli
+	 bBeniY+RmYnAV4p2v+BT22ll55kJCTZWydGbnZPjsKiRpGWm25KBJn/RJnYHZga9jN
+	 rbBe5CTwdlLBYcgjnlKOY6gtrppkovbWTgPTUMsLr0SJ8z81kDk1apLTpm1pL19MMZ
+	 bN4fGnWNf3o904ulUzgBGHPi7+i2xdw4OA41lB5nfTEI3F+5q+NsyiOmkCRbNjwf4Z
+	 mckPWQaGCQH/e+9wiq8wS8C2NsqFxqRsz+PSHUxxZOKzu5xVhs7vwNMmuaiHm07qoH
+	 7fa4lv1PU183Q==
+From: Jisheng Zhang <jszhang@kernel.org>
+To: Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	bcm-kernel-feedback-list@broadcom.com,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Hoan Tran <hoan@os.amperecomputing.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Daniel Palmer <daniel@thingy.jp>,
+	Romain Perier <romain.perier@gmail.com>,
+	Grygorii Strashko <grygorii.strashko@ti.com>,
+	Santosh Shilimkar <ssantosh@kernel.org>,
+	Kevin Hilman <khilman@kernel.org>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
+	Srinivas Neeli <srinivas.neeli@amd.com>,
+	Michal Simek <michal.simek@amd.com>
+Cc: linux-gpio@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org
+Subject: [PATCH v3 00/15] gpio: Use modern PM macros
+Date: Wed, 19 Nov 2025 22:43:12 +0800
+Message-ID: <20251119144327.13345-1-jszhang@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251118003229.26636-1-jszhang@kernel.org> <20251118003229.26636-2-jszhang@kernel.org>
- <CAHp75VeB1L5ZwQx=uKqaCMsij1ghFH+Kw3jsLa4qFxnWV1vTyw@mail.gmail.com>
- <aR27HcbvUgvCEK2Z@xhacker> <aR2_GVi6E5gLeS47@xhacker>
-In-Reply-To: <aR2_GVi6E5gLeS47@xhacker>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 19 Nov 2025 16:05:12 +0200
-X-Gm-Features: AWmQ_bmmJ9JQn42u_VLQ6DVd6n4Jc0ZCk1wPnB_lbNfGkoqWEByKgBUa10U4KmY
-Message-ID: <CAHp75Vd8ODnr+GE0kxvZ+anR31Fyou9g-zT6HC7BSARhoKD4vg@mail.gmail.com>
-Subject: Re: [PATCH v2 01/15] gpio: dwapb: Use modern PM macros
-To: Jisheng Zhang <jszhang@kernel.org>
-Cc: Doug Berger <opendmb@gmail.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
-	bcm-kernel-feedback-list@broadcom.com, 
-	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Hoan Tran <hoan@os.amperecomputing.com>, Andy Shevchenko <andy@kernel.org>, 
-	Daniel Palmer <daniel@thingy.jp>, Romain Perier <romain.perier@gmail.com>, 
-	Grygorii Strashko <grygorii.strashko@ti.com>, Santosh Shilimkar <ssantosh@kernel.org>, 
-	Kevin Hilman <khilman@kernel.org>, Robert Jarzmik <robert.jarzmik@free.fr>, 
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>, Srinivas Neeli <srinivas.neeli@amd.com>, 
-	Michal Simek <michal.simek@amd.com>, linux-gpio@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 19, 2025 at 3:17=E2=80=AFPM Jisheng Zhang <jszhang@kernel.org> =
-wrote:
-> On Wed, Nov 19, 2025 at 08:42:05PM +0800, Jisheng Zhang wrote:
-> > On Tue, Nov 18, 2025 at 12:15:35PM +0200, Andy Shevchenko wrote:
-> > > On Tue, Nov 18, 2025 at 2:50=E2=80=AFAM Jisheng Zhang <jszhang@kernel=
-.org> wrote:
-> > > >
-> > > > Use the modern PM macros for the suspend and resume functions to be
-> > > > automatically dropped by the compiler when CONFIG_PM or
-> > > > CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
-> > > >
-> > > > This has the advantage of always compiling these functions in,
-> > > > independently of any Kconfig option. Thanks to that, bugs and other
-> > > > regressions are subsequently easier to catch.
-> > > >
-> > > > The dwapb_context structure is always embedded into struct
-> > > > dwapb_gpio_port to simplify code. Sure this brings a tiny 36 bytes
-> > > > data overhead for !CONFIG_PM_SLEP. After greping the arm/arm64/risc=
-v
-> > >
-> > > SLEEP
-> > > grepping
-> > >
-> > > > dts dir, the max port number is 6, the berlin2q soc families, so th=
-is
-> > > > means current we have wasted 216 bytes memory which is trivial
-> > >
-> > > currently
-> > >
-> > > > compared to the system memory.
-> > >
-> > > I still think the embedding is not related to this change and should
-> > > be justified in a separate patch. W/o that part the rest looks fine.
-> >
-> > I got your mind now: it looks like you prefer a seperate patch for the
-> > embedding. Let me explain why I have the embedding within this patch:
-> > the pm_ptr() or pm_sleep_ptr() just optimizes out the PM functions, but=
- the
-> > PM funtions are still compiled, so w/o the embedding, it's impossible
-> > to clean up the code with the modern PM macros.
+Use the modern PM macros for the suspend and resume functions to be
+automatically dropped by the compiler when CONFIG_PM or
+CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards or
+__maybe_unused.
 
-It's possible, but it will require some other refactoring most likely.
+This has the advantage of always compiling these functions in,
+independently of any Kconfig option. Thanks to that, bugs and other
+regressions are subsequently easier to catch.
 
-...
+Almost all drivers are converted, only gpio-tegra and gpio-mlxbf are
+left as is, because the memory for saving HW context is not trivial,
+if we convert them, then the two drivers' users may complain for
+!CONFIG_PM && !CONFIG_PM_SLEEP case. So I didn't touch them.
 
-> For dwapb, I can still acchieve the clean up w/ only embedding the
-> pointer. But I'm not sure whether embedding the struture deserve a sepera=
-te
-> patch.
+patch to gpio-dwapb.c is tested on real HW, others are compile-tested only.
 
-> BTW: as Michael mentioned during v1 review, the driver allocates the
-> struct with kzalloc and stores a pointer to it, so considering the
-> pointer itself and the kmalloc overhead/alignment etc, current gpio-dwapb
-> have an overhead in the same order of magnitude when PM=3Dy
+since v2:
+  - collect Acked-by, Reviewed-by tags.
+  - move the embeddng the structure for pm in gpio-dwapb out, will send
+    it as a separate patch.
 
-This is a good point. Was it mentioned in the commit message?
+since v1:
+  - rebase on the latest gpio/for-next branch.
+  - collect Acked-by, Reviewed-by tags.
+  - clarify the trival memory wasted numbers with CONFIG_PM=n in the
+    dwapb's patch commit message as suggested by Andy.
+  - drop patch to bt8xxx since the clean up is acchieved when switching
+    to generic PCI pm framework.
 
-...
+Jisheng Zhang (15):
+  gpio: dwapb: Use modern PM macros
+  gpio: brcmstb: Use modern PM macros
+  gpio: htc-egpio: Use modern PM macros
+  gpio: pl061: Use modern PM macros
+  gpio: pxa: Use modern PM macros
+  gpio: ml-ioh: Use modern PM macros
+  gpio: mlxbf2: Use modern PM macros
+  gpio: msc313: Use modern PM macros
+  gpio: omap: Use modern PM macros
+  gpio: pch: Use modern PM macros
+  gpio: tqmx86: Use modern PM macros
+  gpio: uniphier: Use modern PM macros
+  gpio: xgene: Use modern PM macros
+  gpio: xilinx: Use modern PM macros
+  gpio: zynq: Use modern PM macros
 
-Okay, I am not going to tag this patch, I leave it for Bart to decide,
-but I don't like the idea of blowing the run-time memory footprint
-just because we may need it in CONFIG_PM=3Dy case.
+ drivers/gpio/gpio-brcmstb.c   | 12 +++---------
+ drivers/gpio/gpio-dwapb.c     | 18 ++++--------------
+ drivers/gpio/gpio-htc-egpio.c | 21 ++++++++-------------
+ drivers/gpio/gpio-ml-ioh.c    | 12 ++++++------
+ drivers/gpio/gpio-mlxbf2.c    |  8 ++++----
+ drivers/gpio/gpio-msc313.c    |  8 ++++----
+ drivers/gpio/gpio-omap.c      | 15 +++++++--------
+ drivers/gpio/gpio-pch.c       | 12 ++++++------
+ drivers/gpio/gpio-pl061.c     | 17 ++---------------
+ drivers/gpio/gpio-pxa.c       | 12 ++----------
+ drivers/gpio/gpio-tqmx86.c    |  9 ++++-----
+ drivers/gpio/gpio-uniphier.c  |  9 ++++-----
+ drivers/gpio/gpio-xgene.c     |  8 ++++----
+ drivers/gpio/gpio-xilinx.c    | 15 +++++++--------
+ drivers/gpio/gpio-zynq.c      | 15 +++++++--------
+ 15 files changed, 72 insertions(+), 119 deletions(-)
 
---=20
-With Best Regards,
-Andy Shevchenko
+-- 
+2.51.0
+
 
