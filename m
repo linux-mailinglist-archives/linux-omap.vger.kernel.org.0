@@ -1,77 +1,124 @@
-Return-Path: <linux-omap+bounces-4951-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4952-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C222C6D7EE
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Nov 2025 09:45:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2CFC6E86A
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Nov 2025 13:42:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 58B8A4F3C0F
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Nov 2025 08:37:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 47B0028B51
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Nov 2025 12:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF7831B133;
-	Wed, 19 Nov 2025 08:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02F2354ACA;
+	Wed, 19 Nov 2025 12:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trivon.pl header.i=@trivon.pl header.b="XxAKcG5G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ci5QtFfP"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.trivon.pl (mail.trivon.pl [162.19.75.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11EA329E70
-	for <linux-omap@vger.kernel.org>; Wed, 19 Nov 2025 08:37:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.19.75.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A5E2BE04C;
+	Wed, 19 Nov 2025 12:40:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763541471; cv=none; b=hZHVESiWKEOuG1r2mWjL2EzwNSBIP6W+vP9SXKoy6CTTqFONl3PBqRVtosmwsRAuL/Xz+nlFKJgUchkGQGQNJIKqmkzFTwvo4JrbeX/6g47a+FVIfCBn7p0so71ydlAdYEOGQI9fAGsgASOIr26RruL/tam/oR+E49DAn43wEC4=
+	t=1763556011; cv=none; b=go1Kzftu0hogMbeHa/A0GTs24zwOFgHZjzoTxWnkfn7fIMeZ43m8cf8eKy3pymN5u2lh6EQAFeriB/BlYSWl0S8HV6hYTi+gT3wcXYyqc7ChYT/tCDsLMYtCmRAzlJ2wbebjklXyLeYtJ40KL/yEDH3mqapyYHoNyQChxSX9lXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763541471; c=relaxed/simple;
-	bh=t9u0uALWYElGP2X9SRe6Z5tIGVEq7OYmZhNakwP9JUU=;
-	h=Message-ID:Date:From:To:Subject:MIME-Version:Content-Type; b=LfbbE5JVACJPqTwxjfiTo5Lqi4DFbA8ovn/KA/a94nyPhPvHd0ztXGjqSbvpyV36zrY27tJrqn9jFTcf+Hg1HqarrvOUK5TTrFd0M+nEJa6yI98yhdaNr0t/Ss/FNrNe3Xy57YPlrgo0gIAWuzRkLsNb4u3HK05MkaVlLhnHB4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trivon.pl; spf=pass smtp.mailfrom=trivon.pl; dkim=pass (2048-bit key) header.d=trivon.pl header.i=@trivon.pl header.b=XxAKcG5G; arc=none smtp.client-ip=162.19.75.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trivon.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trivon.pl
-Received: by mail.trivon.pl (Postfix, from userid 1002)
-	id D09D24D689; Wed, 19 Nov 2025 09:36:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=trivon.pl; s=mail;
-	t=1763541459; bh=t9u0uALWYElGP2X9SRe6Z5tIGVEq7OYmZhNakwP9JUU=;
-	h=Date:From:To:Subject:From;
-	b=XxAKcG5GIGKpJWwTMXt4rGk93DLxvEDGs11yNdorDBvfFHZMQoKnNiR3220mTggBm
-	 FgZn+1o7caTzX+1z0QLmgf7748531NLRuEn7ciN+5gPoWeEXrcvx5uomUM8d0lXyHW
-	 rn1xO2ZKkvsQig/an+sVZaHrHOEnU0ufkV6+tGy3Fj/Mb5W6+PmC2hC05PqrnSY+tg
-	 Rqwzr6/DylxL3doh5QsC+unqmypLw7SGJmiFcdzwduBGwocoygr99CyzcR86MQ92Kk
-	 SKrBIezMRInSdpybbgI+H02zfQBf6QQ6djdaeFW2lNCJw5WuPkOC5HMmgsXt1+DdP5
-	 MwcayXDVSDrqQ==
-Received: by mail.trivon.pl for <linux-omap@vger.kernel.org>; Wed, 19 Nov 2025 08:35:58 GMT
-Message-ID: <20251119084132-0.1.c5.2ph99.0.20adcqfq5h@trivon.pl>
-Date: Wed, 19 Nov 2025 08:35:58 GMT
-From: "Damian Sumera" <damian.sumera@trivon.pl>
-To: <linux-omap@vger.kernel.org>
-Subject: =?UTF-8?Q?Zobowi=C4=85zanie?=
-X-Mailer: mail.trivon.pl
+	s=arc-20240116; t=1763556011; c=relaxed/simple;
+	bh=5i6z2W6q1iTm22YvLzIETMkmV4YtGu9mjO0O0P0maVg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ipVC/AYJb0UisiypD8sdRKGZfY5j6O61HiNNjo2ordNGTdtX5YUH9oMeIkhV6AUCldEmiy8tnTafjZKqVpvcHKPkCXo7+FgbSQwi4NI+eFey+UireSqrdbeU2AUrmTeBpSziVn0Yz9YLMX6uKVZnyici1ynKpj1aTRaNofLsowM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ci5QtFfP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2717C2BCB0;
+	Wed, 19 Nov 2025 12:40:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763556010;
+	bh=5i6z2W6q1iTm22YvLzIETMkmV4YtGu9mjO0O0P0maVg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ci5QtFfPtrKrHOdXGKcUNsTjO9cHr3lNsAUrNAlN3Z1GAlKaG51bJsT60eqdMZ5cD
+	 43/kIqazOsoffMtV03DC1AmwtydQ/NCc3+kLIGhftBvAR5USTyvvtnuorrC894QtJO
+	 qqUZGL5bDDRlfmt5ZmvFr+kPKcl0SdWmeJCqmNaalQ2X+M+GRzGIi2awYNfohfP3Lu
+	 i3xNEAS5kQ9Jh5AcGJ5zOCyYVCwBV0a5IVhj93O6wGDxi1gkIyGWfqBuob9W1ggy5x
+	 T5yxwcXGSPWusWi8enUpDcxMKcf7EBBDocBdP/tc+fwZSGvvYs+3TfUTAbj9dnhrGN
+	 Y5+HZWfLFdI3g==
+Date: Wed, 19 Nov 2025 20:22:13 +0800
+From: Jisheng Zhang <jszhang@kernel.org>
+To: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	bcm-kernel-feedback-list@broadcom.com,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Hoan Tran <hoan@os.amperecomputing.com>,
+	Andy Shevchenko <andy@kernel.org>, Daniel Palmer <daniel@thingy.jp>,
+	Romain Perier <romain.perier@gmail.com>,
+	Grygorii Strashko <grygorii.strashko@ti.com>,
+	Santosh Shilimkar <ssantosh@kernel.org>,
+	Kevin Hilman <khilman@kernel.org>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
+	Srinivas Neeli <srinivas.neeli@amd.com>,
+	Michal Simek <michal.simek@amd.com>, linux-gpio@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org
+Subject: Re: [PATCH v2 05/15] gpio: pxa: Use modern PM macros
+Message-ID: <aR22decsE0DYDUnS@xhacker>
+References: <20251118003229.26636-1-jszhang@kernel.org>
+ <20251118003229.26636-6-jszhang@kernel.org>
+ <CAHp75VevWmB4X_Mh+st_NLChAYZw5V-b3pM9Yrcd-ofa9xYvDQ@mail.gmail.com>
+ <m2ecpvm20y.fsf@free.fr>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <m2ecpvm20y.fsf@free.fr>
 
-Dzie=C5=84 dobry,
+On Tue, Nov 18, 2025 at 11:03:41PM +0100, Robert Jarzmik wrote:
+> Andy Shevchenko <andy.shevchenko@gmail.com> writes:
+> 
+> > On Tue, Nov 18, 2025 at 2:50 AM Jisheng Zhang <jszhang@kernel.org>
+> > wrote:
+> > > 
+> > > Use the modern PM macros for the suspend and resume functions to be
+> > > automatically dropped by the compiler when CONFIG_PM or
+> > > CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
+> ...zip...
+> > 
+> > > -#ifdef CONFIG_PM
+> > >         unsigned long   saved_gplr;
+> > >         unsigned long   saved_gpdr;
+> > >         unsigned long   saved_grer;
+> > >         unsigned long   saved_gfer;
+> > > -#endif
+> 
+> Actually this is not equivalent to what was there before.
+> 
+> With Jisheng's patch, with CONFIG_PM disabled, he adds 16 bytes to the
+> structure. You might thing today, 16 bytes is nothing. True, but on a
+> 64MB RAM devices, it's something.
 
-czy potrzebuj=C4=85 Pa=C5=84stwo zredukowa=C4=87 do minimum swoje zobowi=C4=
-=85zania finansowe?
+hmm, each controller adds 16bytes, then even on 100 controller platforms
+1600bytes. 1600 Bytes/64MB ~= 0.238%. it's trival. And is there such platform?
 
-Z powodzeniem prowadz=C4=99 takie sprawy dla podmiot=C3=B3w gospodarczych=
- z Pa=C5=84stwa regionu. Pomog=C5=82em anulowa=C4=87 zobowi=C4=85zania ba=
-nkowe i pozabankowe skutecznie przeprowadzi=C4=87 proces restrukturyzacji=
-=2E Reprezentuj=C4=99 wyspecjalizowan=C4=85 w tym zakresie kancelari=C4=99=
- prawn=C4=85.
+From another side, recently UP support is removed from the core sched,
+that removing adds more .text and .data overhead, so if the users really
+care about this kind of 16bytes, it means he(she) can't afford even the
+16Bytes overhead, then I bet he(she) the always SMP in core sched, so
+why not stick with the old kernel? What do you think?
 
-Je=C5=BCeli chcieliby Pa=C5=84stwo um=C3=B3wi=C4=87 si=C4=99 na niezobowi=
-=C4=85zuj=C4=85c=C4=85 konsultacj=C4=99, prosz=C4=99 o kontakt.
-
-
-Pozdrawiam
-Damian Sumera
+> 
+> That might not be a reason to reject the patch, but it's not only a
+> "modernisation patch".
+> 
+> Cheers.
+> 
+> --
+> Robert
 
