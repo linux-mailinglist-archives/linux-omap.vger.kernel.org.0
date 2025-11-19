@@ -1,126 +1,121 @@
-Return-Path: <linux-omap+bounces-4956-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-4957-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44D9AC6F089
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Nov 2025 14:50:14 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6400C6F43C
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Nov 2025 15:25:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E698D3518D5
-	for <lists+linux-omap@lfdr.de>; Wed, 19 Nov 2025 13:41:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 97BBF4F7A4A
+	for <lists+linux-omap@lfdr.de>; Wed, 19 Nov 2025 13:59:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 769563563E0;
-	Wed, 19 Nov 2025 13:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB2953612C0;
+	Wed, 19 Nov 2025 13:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XiCf8snx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PhdH4gPH"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6E3355815
-	for <linux-omap@vger.kernel.org>; Wed, 19 Nov 2025 13:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2AA034844F
+	for <linux-omap@vger.kernel.org>; Wed, 19 Nov 2025 13:59:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763559658; cv=none; b=c0+10ENRFRqQ386VH3HNL7n+bjc4zDLgJdxImm7dWTANmBRTQCYfY32CW/Sd6iNLXmCCNW6HPuQgsLfFjLz+DZvdZvK6IUemLsTujUcASEXd3MF/lAeFb1zgSVSSfHoeRuu1pn1to6EPzZb5RPr7deLVcnIGS+d+v3tA0B36pEI=
+	t=1763560765; cv=none; b=lXiUSxLHralZyuvUnRjXCveoWUmmSmV6ZQbo7aOitsAs+XlJOYfXu9vMtAivTb4kBLOExJChQfIHQG4LFi442es+13NvmMQ/RVYOHF7mazk1IilZRUIwXYVPdjKcWmybB9GPErfKUg3ybN9EJAUKpkCoYeIbDQyShzsJxkiVlw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763559658; c=relaxed/simple;
-	bh=p1VeUzD38gPmtyIu7qtbXNax1D8JulnLI68nD5CrDU0=;
+	s=arc-20240116; t=1763560765; c=relaxed/simple;
+	bh=/za41zUvsjTNwKhGeH5ufFsQKpXwXaeXVAYiU780DDQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bu1Rdq3Stu4csngg6PbpiSIKIgxzaYCk1u/aITrU9ZMCHXYDK0gAPPNCCvfKYGNYVBV2jcmC8YV+ALyCGrD7pYkKWWsoyMgu0rS4cWLBslQpJBJXl8lC/h/3vz3cQW0ZGPedIK31umtPIz3051Q8gjTq0BaaUzHNrklvyw+c6rM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XiCf8snx; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-59428d2d975so7264274e87.3
-        for <linux-omap@vger.kernel.org>; Wed, 19 Nov 2025 05:40:56 -0800 (PST)
+	 To:Cc:Content-Type; b=bpzD93N3mWRsifcyMUPWcr+6YpjeiVWQyvm741izcTiiV4A268IzRADIJJPz5AA7noDEmM/3o6A8vhIQx1y5SNGITtcX80771zRZbu53Nae/RdiAieNIZXX6ZC112ACoN4OnydZ/itiUhmA/cQlaPYKU3antmkjW5iTq5mZdAOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PhdH4gPH; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-64165cd689eso1374221a12.0
+        for <linux-omap@vger.kernel.org>; Wed, 19 Nov 2025 05:59:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1763559655; x=1764164455; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1763560762; x=1764165562; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=p1VeUzD38gPmtyIu7qtbXNax1D8JulnLI68nD5CrDU0=;
-        b=XiCf8snxqVcz+bMzd5MLFfQXPyEiwMTSyJ0McqqwKfZF3pd7XYsGEi4M+ppJCV7koF
-         pWGlqe2FWDYc+4juEWHNKVB0D/BsZWd5400+G80200tpjXb9jJ3fWw0OzZeXEBHXuNHi
-         4FvZZ+01rLNBPza3XAI4lW+Uhn9pQVZOo3Q5R6aG55pn2QOcLwxBZbJpyXZSn4jv+R86
-         aL7957Cki8isOkPGx7+uUKHiwFz8VPzcU3/Xr4Yz/q3f0FzQ8dTjAAtSNT7YnKVOmdLa
-         0fZP7P2SMMc0CWrZUS5A+hHrzrpxRym0nsChlYPGjLhzFPJgfmKpU1zhxgYEbsKo+qak
-         W3sg==
+        bh=/za41zUvsjTNwKhGeH5ufFsQKpXwXaeXVAYiU780DDQ=;
+        b=PhdH4gPH0+6EzH6occOmGLbJy09FqCoD4YcjmumwxyunZSd0m7UH2f1bVcbKS4JDXR
+         qwYh/SyyXCHS/GZXAXJVxdXi3GM5YUjjgmHXXm73N2tQgnsyWDlrF066XiYMb8b+Vgr6
+         L7p95ee+4nLiaqjnUorCPcpyMJR9akOv8Ilny7QYdNIPFEorj/XeEoM/MzNrgN9SugEb
+         isILYvpV/Ix8fN95FvKHdNXGOfYYxUkkab3oGb3fYLy2HmtfteirWgSXQKrYj93bBUbf
+         JrKrN5GmRbyG6mj2CDRvzUFbbdtk7L8l5ZaBO1sGcQ8S5Qa63qWJDfNzn6uZAM3HM7+X
+         YXxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763559655; x=1764164455;
+        d=1e100.net; s=20230601; t=1763560762; x=1764165562;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=p1VeUzD38gPmtyIu7qtbXNax1D8JulnLI68nD5CrDU0=;
-        b=g7tOJCraCVMF9tgl03NlgHdOP0plY691tMK8uUd2GNoQJERGer4sCyFQr8mVhpTXfy
-         f2zuleIaPGDwuaV6UvsnqK3+IKeKOkfd/HQH/WRBtqHw2d8iRo38qPFcEnaVbQnEm2el
-         NAxoIsBNQSkXb4G84k1ZGaLMCU8GlkypnWWYrh0CbmcpsFFwauncwedhEG1CXkXj0L4+
-         yr/06MEDu+B+GsC8kaKhPbECL2XcJFKrvmvLO+eANFILHkthxS7GZjqXl5djRmQ2uY8r
-         y/MCjLKT0GKGLrIfbKob+eClWgnKJnXZCkWX2TPpRDKU/d0uZ5PjyIr2BNH0bfjAcS00
-         tolg==
-X-Forwarded-Encrypted: i=1; AJvYcCXBoHyKeoVC14frJYRO7cKiHN/nECMEWSRllbwlNtyiBX5HzdENA45Wz3nFiHZVW6CSgnRYsrblAAV9@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRdMvAJYMjd5IGufKbrP7jY5t8pykh4iZpPunx2sLxAOLY8BZn
-	psMGnCAeJiutq+EMOsUyOLUVdnZXu6Le5Narfmm/jBRi+pHokCZEVtk1h5eg9zWUkaUy9Ol12Bk
-	xEfTrLRzjmEDoPsY5SQ3bvvPZn7i9/s2rIOWJddnO6Q==
-X-Gm-Gg: ASbGncvI0wE2GqnsZv4g6AkOcPiTOYCrquiEuBTO56wZcxZaXEDFtqE/24+hJX0GK80
-	yqh+t8NJubZZyzfYlNsj2665BRyJ/bSdKwhI9KDmA/N1adwYSS0xqvplDEql1rjyQBRI19ZImv+
-	V9ChnO016RmLYZIr5YULrrlO/66IKqx+Zrt6BZtV0cskKFQIJF/fMLd6DHjKr21/oJDLMxXezaz
-	pddKHGC1BfXxa9AxAVzSBNnW28mEcLTJcf0pFxQp+KB+YjVHZcieYPYSSrmcjgb0zncn62kSRcQ
-	1uD4pQ==
-X-Google-Smtp-Source: AGHT+IHJqn3Q9sPhFEgzMw/vukdNcUT/GVv4BESPUPflJb4Mu3DDqG55U/y6YAHksU0FJOcXRT5fsp/raa2CukOp/os=
-X-Received: by 2002:a05:6512:689:b0:594:341a:ab1e with SMTP id
- 2adb3069b0e04-595841fbd7emr8740927e87.31.1763559654402; Wed, 19 Nov 2025
- 05:40:54 -0800 (PST)
+        bh=/za41zUvsjTNwKhGeH5ufFsQKpXwXaeXVAYiU780DDQ=;
+        b=c7LrPjJPO92glAubrZfuDDJFCWzqVzAz6kpr/O3a6FWF1Hg3ummoQpokq+u/CimMD2
+         1gIKtPJA0yIRlxQ9RElwgd8DV2Cx0sdDs0JW7W1KD1Lk10ldiztYo7tuTX/rvHq4+lyX
+         VBFO7QY6pCK7EFTe6FT0AsuElGxMlW5bKR0PRo7zDQ+6hZixej6pDTV/B9F3RH6M5XjL
+         Cit9iGMZYyhpUYk/xpVL18MMS2vKP3icBPEZ0eT2EuMukXoobpo0I89xUIKf11dj+n4H
+         VolOXi53onv93PAXsvAE8drAm+Iwlpo0tmgyAPLz/P1lGFTn7208zBQNEJDhlcCXJam9
+         8qGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUR3Z5Eo8ukAltHSDbaa3QbJBt8j4j0f0QW5hGj8bTX6BOo8EYrZERvkBe/4NVmvOX/Vg7bTQC+tU0k@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzmECN4HLZnsIa2xhRcUVPO37+w56WhZRMkYVuRoo7Ag0jVLR8
+	AmZ1lgT6yEAqIkypZcJuyf44CYXF3WVjzLIeanu581LCu/xFex/PhXjz5eNpuyjIxjXwVkqbjeo
+	8wMrLOtxX8jdmoWCDwBoXaYl6ofWA5M8=
+X-Gm-Gg: ASbGnctxmpvh2Z/qN1JsMgpsrCQkCYHK/Ul+asCuBfZlXavmnN0ySQWRMaCfVL6E+gN
+	M0ZaQyxlkquvsNDvE9wSdJ66SP84q28/UGlr1txC8OSN66v3JAgSdc8rTW78llz9egGpDGYb1Fk
+	vwI+YMP/VjlL3NQkxwmzIxQ2aOPxYM8jIyH9S4ZVW2KvHbz30mpHxTJARsXwwkmGZCU8PCsQmlT
+	R3gBf/hZzMV1f3VN2UNVLeWhBqrPS2PkVODooC1JlXnzvumvepXxsVZI+iZwMgv7naTK2yOQt+Z
+	nSI15lmLA33RqivFjm/LAeI4d4ql2MGQdDAIA4siN2hulGiit2cDcZzlxNxOewNu+oVj6gY=
+X-Google-Smtp-Source: AGHT+IG8ULbZ2gakwAe+AEo25vXjOIbyjJHqtq9Z7iOt7eHBk90Bam96Us9dXGPQT1lyjruKv6oC+ZwWggEZWRjTk/E=
+X-Received: by 2002:a17:906:7952:b0:b72:d577:11cc with SMTP id
+ a640c23a62f3a-b7638d97082mr264614266b.12.1763560761898; Wed, 19 Nov 2025
+ 05:59:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251118003229.26636-1-jszhang@kernel.org>
-In-Reply-To: <20251118003229.26636-1-jszhang@kernel.org>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Wed, 19 Nov 2025 14:40:29 +0100
-X-Gm-Features: AWmQ_bme-apOhLTLN0FLgYrYqF5_wu51DsT5ZOn-gWqBj2C9VIwE3ootHtgkuJw
-Message-ID: <CACRpkda8GmEbFeSmGexcs-5aaFHiUigPhQfF_ynJRN1ix2f6nA@mail.gmail.com>
-Subject: Re: [PATCH v2 00/15] gpio: Use modern PM macros
+References: <20251118003229.26636-1-jszhang@kernel.org> <20251118003229.26636-6-jszhang@kernel.org>
+ <CAHp75VevWmB4X_Mh+st_NLChAYZw5V-b3pM9Yrcd-ofa9xYvDQ@mail.gmail.com>
+ <m2ecpvm20y.fsf@free.fr> <CAHp75Vf=HYugUGDOPdXGaMo9tDLcji0H9ZX7NehN0NoBGYjO+w@mail.gmail.com>
+ <aR28aq0xHQOOISYq@xhacker>
+In-Reply-To: <aR28aq0xHQOOISYq@xhacker>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Wed, 19 Nov 2025 15:58:44 +0200
+X-Gm-Features: AWmQ_bmVZ5aFiHmgx4Eep-EcRGLL1HO2Ewhh8OL2t0SuZRjUtbzyv0Nheh72k40
+Message-ID: <CAHp75VfA-N70QY4o=GbB0s0+L_o=+YKgCwdLUK56ggc-tKO+-g@mail.gmail.com>
+Subject: Re: [PATCH v2 05/15] gpio: pxa: Use modern PM macros
 To: Jisheng Zhang <jszhang@kernel.org>
-Cc: Doug Berger <opendmb@gmail.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
-	bcm-kernel-feedback-list@broadcom.com, Bartosz Golaszewski <brgl@bgdev.pl>, 
+Cc: Robert Jarzmik <robert.jarzmik@free.fr>, Doug Berger <opendmb@gmail.com>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, bcm-kernel-feedback-list@broadcom.com, 
+	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
 	Hoan Tran <hoan@os.amperecomputing.com>, Andy Shevchenko <andy@kernel.org>, 
 	Daniel Palmer <daniel@thingy.jp>, Romain Perier <romain.perier@gmail.com>, 
 	Grygorii Strashko <grygorii.strashko@ti.com>, Santosh Shilimkar <ssantosh@kernel.org>, 
-	Kevin Hilman <khilman@kernel.org>, Robert Jarzmik <robert.jarzmik@free.fr>, 
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>, Srinivas Neeli <srinivas.neeli@amd.com>, 
-	Michal Simek <michal.simek@amd.com>, linux-gpio@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-omap@vger.kernel.org
+	Kevin Hilman <khilman@kernel.org>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>, 
+	Srinivas Neeli <srinivas.neeli@amd.com>, Michal Simek <michal.simek@amd.com>, 
+	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 18, 2025 at 1:50=E2=80=AFAM Jisheng Zhang <jszhang@kernel.org> =
+On Wed, Nov 19, 2025 at 3:05=E2=80=AFPM Jisheng Zhang <jszhang@kernel.org> =
 wrote:
+> On Wed, Nov 19, 2025 at 09:56:12AM +0200, Andy Shevchenko wrote:
 
-> Use the modern PM macros for the suspend and resume functions to be
-> automatically dropped by the compiler when CONFIG_PM or
-> CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards or
-> __maybe_unused.
->
-> This has the advantage of always compiling these functions in,
-> independently of any Kconfig option. Thanks to that, bugs and other
-> regressions are subsequently easier to catch.
->
-> Almost all drivers are converted, only gpio-tegra and gpio-mlxbf are
-> left as is, because the memory for saving HW context is not trivial,
-> if we convert them, then the two drivers' users may complain for
-> !CONFIG_PM && !CONFIG_PM_SLEEP case. So I didn't touch them.
->
-> patch to gpio-dwapb.c is tested on real HW, others are compile-tested onl=
-y.
+...
 
-The series:
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
+> I have explained the reason of embedding within the cleanup/modernize
+> patch. Could you plz check?
 
-Yours,
-Linus Walleij
+I already proposed a compromise. I like the new PM macros and less
+ifdeffery in the code, but let's decouple that one from the
+refactoring of the data types. You may send them separately with the
+cover letter describing the reasoning.
+
+--=20
+With Best Regards,
+Andy Shevchenko
 
