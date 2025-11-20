@@ -1,47 +1,47 @@
-Return-Path: <linux-omap+bounces-5007-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5008-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E709C71946
-	for <lists+linux-omap@lfdr.de>; Thu, 20 Nov 2025 01:42:41 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id F39E7C71982
+	for <lists+linux-omap@lfdr.de>; Thu, 20 Nov 2025 01:47:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 94FC54E2DBF
-	for <lists+linux-omap@lfdr.de>; Thu, 20 Nov 2025 00:42:34 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9226C344AAE
+	for <lists+linux-omap@lfdr.de>; Thu, 20 Nov 2025 00:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3741891A9;
-	Thu, 20 Nov 2025 00:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCDC61E832A;
+	Thu, 20 Nov 2025 00:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TBv7UVMv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UnJQBFzn"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0530F19992C;
-	Thu, 20 Nov 2025 00:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555CD846F;
+	Thu, 20 Nov 2025 00:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763599347; cv=none; b=amJoAwOiGAzlVNZ9p06PrjynKDzVWmTUXdw3DTt3O4tzRFW0bVrW/xxCzMgKjGBmKAURUqjmTtIAPaJywtMiw7qHEoUVFIRWZCdGVsyr4WCdUDfPZrorx/yepNUVnbjnn+aUyC3Qi8U8duZiURFxbzLzPQl3eLLIXmQZpUlBLf4=
+	t=1763599575; cv=none; b=sgePFjS68kqQ2N7qIvJlwjySNQ/nvDXTrf+2HArnzutunIF9c83o/49P5OW/keWaS/9YUZ4QXJLKcaQCEdrva7kFfUvTGnG2ev2YDAc4AlcCTFeAkc74+6gnfAHCe3BUR70LgoZbWgmGy+pQgKU0YZWUL8ZW7doNjOURhqejvLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763599347; c=relaxed/simple;
-	bh=Ajyj6guw9ILg0uUELthy7g4sRzTM7I8Q8BpMXUy4Zz4=;
+	s=arc-20240116; t=1763599575; c=relaxed/simple;
+	bh=V+lbau4ImiiyPpelZNyUjrC1edHPTz1Ab2ur4WE0RJA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uXCJupxo3HdXuvOMqkzeGBRjs+C9dL9gmGMt4fnLFxmoSC5ELLGfsQNxT3pInwIr6QlypuwKqcJzFwBWCgIXpWPUfTR/jWuRQnbHQ+7oROfLY1qKzegbcT1OfclezB8vKPokE+gY329pk7C9DMCbtTodyCQv64jSLmU+AWkx0AU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TBv7UVMv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD29FC4CEF5;
-	Thu, 20 Nov 2025 00:42:22 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=bCj4HPppvDLbdRaSC7z3aUB7mJcVvuIw46086nbD33XpcLRe2WZ9DAagsQ+KsyW12zFMEVhA4kOigm+qz/tEERNN/UTvcZbjqP62yijodsBvBWt+4yM3uE5Ivj2YwbtihHhJEuIqaY7bD4MG2qh649fdYE7BVjeG+qBf90rhkMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UnJQBFzn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DCD4C4CEF5;
+	Thu, 20 Nov 2025 00:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763599346;
-	bh=Ajyj6guw9ILg0uUELthy7g4sRzTM7I8Q8BpMXUy4Zz4=;
+	s=k20201202; t=1763599574;
+	bh=V+lbau4ImiiyPpelZNyUjrC1edHPTz1Ab2ur4WE0RJA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TBv7UVMvJZ3EzYmsKQgv29nHMgeiNXyoojfczj2R/qu5jqzsBbMQT8ucyfYaHHlo3
-	 95aVG23IdkWHwM1omBHQ+OP05obSG0tjm+7Oe1lX+PodT7CFz/bWJJPfHZZEXIEmpm
-	 OdRJZIJlqg75wz5p+/jdgkIUKMz+azSmG15FG7dtEGQksbMv/lbiNL+r8Puoj9qp6l
-	 vVMg6Tu9T+0u6WweiHLH9QE8kg7iOMXtDJ7TeFqT0/1lFAJMUQd5PMixCf4kGCP803
-	 5Eid7MvPVPXbsZ9Ye+s8mTo9UuskLEf4epxvxm9twCwIRyB0+DdCMTvXlA2/RjiGVW
-	 3vhNbj75aM2Gg==
-Date: Thu, 20 Nov 2025 08:24:34 +0800
+	b=UnJQBFzneWDiAgLExO/LCxn62DHBVvuSu8IeCo094JIS7t8nW5OKL+fekyx6XZ1nN
+	 P0Pxfk6AvPK+q67YosInlD3k4aXkiqTK/go3gGfVhwYw8hkqbA1HIGSjYKw9yWDn6l
+	 UVYKZ98zZOUDkoTztJrAuVlM3fDU+hQGzzRqsVRg/7sYx8k00rgn6Q/X8Xlt+mRgJH
+	 YtSA0rt+/6siBRGtO+zvpUHWI4kjmzDuOk4Ar+DaznKSFsSfAunJyj2UVyByH3lkM2
+	 V/TgfWRtyaxwz139B0GW7PIR9Y0TGEVBu6YApjZdp3KnYhLd4FNtT+6FYSR8QF7cY7
+	 SYNEItuNm7Igg==
+Date: Thu, 20 Nov 2025 08:28:22 +0800
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Andy Shevchenko <andriy.shevchenko@intel.com>
 Cc: Doug Berger <opendmb@gmail.com>,
@@ -63,11 +63,11 @@ Cc: Doug Berger <opendmb@gmail.com>,
 	Michal Simek <michal.simek@amd.com>, linux-gpio@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	linux-omap@vger.kernel.org
-Subject: Re: [PATCH v4 05/15] gpio: pxa: Use modern PM macros
-Message-ID: <aR5fwvGYqf1MAbq7@xhacker>
+Subject: Re: [PATCH v4 02/15] gpio: brcmstb: Use modern PM macros
+Message-ID: <aR5gpsbw_r-y4JdS@xhacker>
 References: <20251119163327.16306-1-jszhang@kernel.org>
- <20251119163327.16306-6-jszhang@kernel.org>
- <aR4BWLo4BdyKhnlI@smile.fi.intel.com>
+ <20251119163327.16306-3-jszhang@kernel.org>
+ <aR4CLQ_2-kUM-e2F@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -76,10 +76,10 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aR4BWLo4BdyKhnlI@smile.fi.intel.com>
+In-Reply-To: <aR4CLQ_2-kUM-e2F@smile.fi.intel.com>
 
-On Wed, Nov 19, 2025 at 07:41:44PM +0200, Andy Shevchenko wrote:
-> On Thu, Nov 20, 2025 at 12:33:17AM +0800, Jisheng Zhang wrote:
+On Wed, Nov 19, 2025 at 07:45:17PM +0200, Andy Shevchenko wrote:
+> On Thu, Nov 20, 2025 at 12:33:14AM +0800, Jisheng Zhang wrote:
 > > Use the modern PM macros for the suspend and resume functions to be
 > > automatically dropped by the compiler when CONFIG_PM or
 > > CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
@@ -90,26 +90,15 @@ On Wed, Nov 19, 2025 at 07:41:44PM +0200, Andy Shevchenko wrote:
 > 
 > ...
 > 
-> >  static struct syscore_ops pxa_gpio_syscore_ops = {
-> > -	.suspend	= pxa_gpio_suspend,
-> > -	.resume		= pxa_gpio_resume,
-> > +	.suspend	= pm_ptr(pxa_gpio_suspend),
-> > +	.resume		= pm_ptr(pxa_gpio_resume),
-> >  };
+> >  static const struct dev_pm_ops brcmstb_gpio_pm_ops = {
+> > -	.suspend_noirq	= brcmstb_gpio_suspend,
+> > -	.resume_noirq = brcmstb_gpio_resume,
+> > +	.suspend_noirq = pm_sleep_ptr(brcmstb_gpio_suspend),
+> > +	.resume_noirq = pm_sleep_ptr(brcmstb_gpio_resume),
 > 
-> I believe this needs to be thoroughly checked and thought through as
-> this is *not* a dev_pm_ops.
+> Can it be DEFINE_NOIRQ_DEV_PM_OPS() / NOIRQ_SYSTEM_SLEEP_PM_OPS()?
 
-pm_ptr()/pm_sleep_ptr() is defined in pm.h, so I think we can make use
-of it for syscore_ops as well.
-E.g This patch makes use of pm_ptr() to optimize out .suspend/.resume when !PM
-while get in them when PM. Thus the same result can be acchieved between
-before and after this patch.
-
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
+Yep I agree with you. But IMHO, it's better to make the
+DEFINE_NOIRQ_DEV_PM_OPS() switching as a seperate patch and merge this
+series which wants to clean up various #ifdef #endif usages
 
