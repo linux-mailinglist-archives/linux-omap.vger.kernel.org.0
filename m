@@ -1,117 +1,103 @@
-Return-Path: <linux-omap+bounces-5028-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5029-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76FC7C7F423
-	for <lists+linux-omap@lfdr.de>; Mon, 24 Nov 2025 08:52:14 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4A12C7FFB8
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Nov 2025 11:48:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E19CD3A1B92
-	for <lists+linux-omap@lfdr.de>; Mon, 24 Nov 2025 07:51:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9FC4D4E45D2
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Nov 2025 10:48:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D5E2E03F0;
-	Mon, 24 Nov 2025 07:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EabSMIdt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE972550D5;
+	Mon, 24 Nov 2025 10:48:18 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2492550D4;
-	Mon, 24 Nov 2025 07:51:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373103BB5A;
+	Mon, 24 Nov 2025 10:48:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763970714; cv=none; b=OMymg8sRELsrBAEx7Sr571YwQ4UQHsoYz5mSpvoeOc8SwbYHxEITd00u8m0OVPDc4Wo4qmczaS6fdx5H5NT7xMJ+4httJXIx/QOmCxPrZsN+hSC99vK7jU2tA9C/aWpe0fBciTNIMLWfFb65/faRzJ1nTymcGb8s9USVcOzDTRU=
+	t=1763981298; cv=none; b=BY/QhTbEyjNETZVhyCtgeoHsMv6x7442cQWA9b4fN3Il7CIZz94iuTRUbSkxXOIIlhq+xtoq1wEaghNE8cZffpt+AkGPYd1CC+wfzVC7FfJJGPZc4wJxlLn/++5I22C99SFVGXl6QKJND+DGUe6uGP6YT8tVONc43TSVMDCpBIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763970714; c=relaxed/simple;
-	bh=FXdcsNT83bzISlwMMljD1n6AKms9qZXmDn9X2sjfCng=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GQdi0QbXBDIQgXXcpbyFxZBCfcu7K1mn2QZBJr3KUT3NNjCwEQqWNm2nBWa1FKpaG7o4rYSXD2ijkgsJBmBKxPXqzdBrUXhDlu96J60FXc2lR9wwPleoCklD6H7Fbad09TYVnXER/IEma0ZV4bGsFJuq3IdlwiOwEZO9jsBTCsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EabSMIdt; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763970712; x=1795506712;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FXdcsNT83bzISlwMMljD1n6AKms9qZXmDn9X2sjfCng=;
-  b=EabSMIdt75hfEJy/3Yg1c5DIGvenK4uQDz0J+hG5ssZPqKihJ+ZPwLdf
-   vUPTaYSGjuoHs8KqBUqn9GJXeyjYH2M9AkkRYN+7KbcqYtS3jCadzQeAg
-   su/AQZ54WUlHS1Hc/KCVKVK6nxfVDGwC5IS5G5m2XOeELYA3IfmvQ7p6D
-   XhRhcP7eg/z7QxBG9RBpsLPezI061uGUXy7TpFVH5ZYjUzt7KLeHvN2s0
-   A5vz+tRf6uglbHwRBJ98qwUgs1l1BR4v27Y8P560dTX0shw5F3sq8y/Ny
-   nxY7hMCuCnjPrH6BESO+JnnssUGLNEzq3FSIww8xVBE6IefGobz/Fi4ef
-   g==;
-X-CSE-ConnectionGUID: 14ObPUaJS6C9lmA3dyOFnA==
-X-CSE-MsgGUID: zMTr96dDT5SBrUbV7dc7MA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11622"; a="76576948"
-X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
-   d="scan'208";a="76576948"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2025 23:51:51 -0800
-X-CSE-ConnectionGUID: ksLs+7wdSoqwQVozj0FSGg==
-X-CSE-MsgGUID: 3C/TwgOxSCGblUyziKv2mQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
-   d="scan'208";a="215612518"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.244.5])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2025 23:51:47 -0800
-Date: Mon, 24 Nov 2025 09:51:44 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Jisheng Zhang <jszhang@kernel.org>
-Cc: Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	bcm-kernel-feedback-list@broadcom.com,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Hoan Tran <hoan@os.amperecomputing.com>,
-	Andy Shevchenko <andy@kernel.org>, Daniel Palmer <daniel@thingy.jp>,
-	Romain Perier <romain.perier@gmail.com>,
-	Grygorii Strashko <grygorii.strashko@ti.com>,
-	Santosh Shilimkar <ssantosh@kernel.org>,
-	Kevin Hilman <khilman@kernel.org>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
-	Srinivas Neeli <srinivas.neeli@amd.com>,
-	Michal Simek <michal.simek@amd.com>, linux-gpio@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org
-Subject: Re: [PATCH v5 02/14] gpio: brcmstb: Use modern PM macros
-Message-ID: <aSQOkP0fPZfFEytq@smile.fi.intel.com>
-References: <20251124002105.25429-1-jszhang@kernel.org>
- <20251124002105.25429-3-jszhang@kernel.org>
+	s=arc-20240116; t=1763981298; c=relaxed/simple;
+	bh=dGk0+jMn4JTZB8duViqRYmM0wMvJqsPQj5OZTsHW0hs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pHHcL5Jc5GtYTa45nFdTyhJGvBleaCzcKzmMclIdmz1+9Ouc93UKhW81cYIijHcJtpRoo2VZ/SviTfYnYFjoA+ms578McJOis3pN76uBxbN7cMxjN+ki771PMmXN1P9jBaT9mRVL//52RcUWk3fqP8raOKJzPr2AxXNNrym2dLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from DESKTOP-L0HPE2S (unknown [124.16.141.245])
+	by APP-01 (Coremail) with SMTP id qwCowACXKsrpNyRptRXcAQ--.19738S2;
+	Mon, 24 Nov 2025 18:48:11 +0800 (CST)
+From: Haotian Zhang <vulab@iscas.ac.cn>
+To: andersson@kernel.org
+Cc: baolin.wang@linux.alibaba.com,
+	linux-omap@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haotian Zhang <vulab@iscas.ac.cn>
+Subject: [PATCH] hwspinlock: omap: Handle devm_pm_runtime_enable() errors
+Date: Mon, 24 Nov 2025 18:48:05 +0800
+Message-ID: <20251124104805.135-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251124002105.25429-3-jszhang@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowACXKsrpNyRptRXcAQ--.19738S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7GF45CF4rAw1UGr1kAw4ruFg_yoW8Jr1rpr
+	WkXF9akryxK348Zw4DtFnaqFy5Can7K34UAryUWa4UZFyrZr18tas5JFyYva1vyr98JF9r
+	Ww1xJw4xCFy5CFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkl14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
+	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
+	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjO6pDUUUU
+	U==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwoQA2kj-2bYuwAAsu
 
-On Mon, Nov 24, 2025 at 08:20:53AM +0800, Jisheng Zhang wrote:
-> Use the modern PM macros for the suspend and resume functions to be
-> automatically dropped by the compiler when CONFIG_PM or
-> CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
-> 
-> This has the advantage of always compiling these functions in,
-> independently of any Kconfig option. Thanks to that, bugs and other
-> regressions are subsequently easier to catch.
+Although unlikely, devm_pm_runtime_enable() can fail due to memory
+allocations. Without proper error handling, the subsequent
+pm_runtime_resume_and_get() call may operate on incorrectly
+initialized runtime PM state.
 
-I think converting to the respective macros for NO_IRQ case makes sense in
-the same patch. But I leave this to Bart, I'm not going to give tag here
-due to the above.
+Add error handling to check the return value of
+devm_pm_runtime_enable() and return on failure.
 
+Fixes: 25f7d74d4514 ("hwspinlock: omap: Use devm_pm_runtime_enable() helper")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+---
+ drivers/hwspinlock/omap_hwspinlock.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/hwspinlock/omap_hwspinlock.c b/drivers/hwspinlock/omap_hwspinlock.c
+index 27b47b8623c0..2d8de835bc24 100644
+--- a/drivers/hwspinlock/omap_hwspinlock.c
++++ b/drivers/hwspinlock/omap_hwspinlock.c
+@@ -88,7 +88,9 @@ static int omap_hwspinlock_probe(struct platform_device *pdev)
+ 	 * make sure the module is enabled and clocked before reading
+ 	 * the module SYSSTATUS register
+ 	 */
+-	devm_pm_runtime_enable(&pdev->dev);
++	ret = devm_pm_runtime_enable(&pdev->dev);
++	if (ret)
++		return ret;
+ 	ret = pm_runtime_resume_and_get(&pdev->dev);
+ 	if (ret < 0)
+ 		return ret;
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.50.1.windows.1
 
 
