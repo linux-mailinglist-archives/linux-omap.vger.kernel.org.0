@@ -1,55 +1,73 @@
-Return-Path: <linux-omap+bounces-5027-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5028-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DBEEC7EB68
-	for <lists+linux-omap@lfdr.de>; Mon, 24 Nov 2025 01:42:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76FC7C7F423
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Nov 2025 08:52:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 09D4B4E1717
-	for <lists+linux-omap@lfdr.de>; Mon, 24 Nov 2025 00:42:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E19CD3A1B92
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Nov 2025 07:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E1E14B96E;
-	Mon, 24 Nov 2025 00:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D5E2E03F0;
+	Mon, 24 Nov 2025 07:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eUur5oNj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EabSMIdt"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91DBC14A60F;
-	Mon, 24 Nov 2025 00:39:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2492550D4;
+	Mon, 24 Nov 2025 07:51:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763944799; cv=none; b=hRSxER8sbvg0DYNWtH2u7vJT+hA0rdimaDv5emtoCpRTEyyh7xpQ0/4Kw041zTJQo0XDOLqglyABNU/ASn+cLyZGqp8eLdMiE9mTpowE6Gvzgk55/d+KQ8p76YJzXCL4S1Zucl5aC9TFIObjUz3P5mBUI/gn9Lx7ueDtxODf1Y8=
+	t=1763970714; cv=none; b=OMymg8sRELsrBAEx7Sr571YwQ4UQHsoYz5mSpvoeOc8SwbYHxEITd00u8m0OVPDc4Wo4qmczaS6fdx5H5NT7xMJ+4httJXIx/QOmCxPrZsN+hSC99vK7jU2tA9C/aWpe0fBciTNIMLWfFb65/faRzJ1nTymcGb8s9USVcOzDTRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763944799; c=relaxed/simple;
-	bh=59dk9hx3CmiQzssyFO/uVMRkm/znXuNpXQsoz9Ju1v4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m+yXyCR07K0m/SUmTIQFWw9LXUJ7Rgl3gkQfdCCKQ/1AnKeZDBfBfskWNNzjcIcx965iDMufbFd+KqVdtlHtwHwA7nopGx3wfdvx7oHOZMW1dzoF57NOlx99qqSU5+GoYb/gUa2WFqX2/EXViSaI5ocKqjl/y/qTO/kB3C2AgZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eUur5oNj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33965C16AAE;
-	Mon, 24 Nov 2025 00:39:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763944799;
-	bh=59dk9hx3CmiQzssyFO/uVMRkm/znXuNpXQsoz9Ju1v4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eUur5oNjmxtcf4hxClFd72vx7xSlcJlWZv3a2cGpXd9ZweM8caP4vuTHt26Dkk1ST
-	 l03zsuZWGwyVEnWhfgao0jFv9kQb9FUFsWQ6xOFctSu8wQN09fXB2fCaPVlQ4dD6es
-	 OEQCeIVpDF4ZlpQTb3GLdF7oI0Jjbea/HX36T5B8KqVeLkJw2DoT6NVZ9IymvrUIAF
-	 vpFAvQOiawC81th0Qybi0jXxL0Y4B+acgJw+8fY0twpctgmgJ0Yen1t/7rtpSyoxv4
-	 KgI260pZ0BC7R0mizvQODUG2XaIM207DFKEhkISDdTvWVFxqLywTTx8MLXANZX/5rw
-	 6F7tIhuOWPzhA==
-From: Jisheng Zhang <jszhang@kernel.org>
-To: Doug Berger <opendmb@gmail.com>,
+	s=arc-20240116; t=1763970714; c=relaxed/simple;
+	bh=FXdcsNT83bzISlwMMljD1n6AKms9qZXmDn9X2sjfCng=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GQdi0QbXBDIQgXXcpbyFxZBCfcu7K1mn2QZBJr3KUT3NNjCwEQqWNm2nBWa1FKpaG7o4rYSXD2ijkgsJBmBKxPXqzdBrUXhDlu96J60FXc2lR9wwPleoCklD6H7Fbad09TYVnXER/IEma0ZV4bGsFJuq3IdlwiOwEZO9jsBTCsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EabSMIdt; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763970712; x=1795506712;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FXdcsNT83bzISlwMMljD1n6AKms9qZXmDn9X2sjfCng=;
+  b=EabSMIdt75hfEJy/3Yg1c5DIGvenK4uQDz0J+hG5ssZPqKihJ+ZPwLdf
+   vUPTaYSGjuoHs8KqBUqn9GJXeyjYH2M9AkkRYN+7KbcqYtS3jCadzQeAg
+   su/AQZ54WUlHS1Hc/KCVKVK6nxfVDGwC5IS5G5m2XOeELYA3IfmvQ7p6D
+   XhRhcP7eg/z7QxBG9RBpsLPezI061uGUXy7TpFVH5ZYjUzt7KLeHvN2s0
+   A5vz+tRf6uglbHwRBJ98qwUgs1l1BR4v27Y8P560dTX0shw5F3sq8y/Ny
+   nxY7hMCuCnjPrH6BESO+JnnssUGLNEzq3FSIww8xVBE6IefGobz/Fi4ef
+   g==;
+X-CSE-ConnectionGUID: 14ObPUaJS6C9lmA3dyOFnA==
+X-CSE-MsgGUID: zMTr96dDT5SBrUbV7dc7MA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11622"; a="76576948"
+X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
+   d="scan'208";a="76576948"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2025 23:51:51 -0800
+X-CSE-ConnectionGUID: ksLs+7wdSoqwQVozj0FSGg==
+X-CSE-MsgGUID: 3C/TwgOxSCGblUyziKv2mQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
+   d="scan'208";a="215612518"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.244.5])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2025 23:51:47 -0800
+Date: Mon, 24 Nov 2025 09:51:44 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Jisheng Zhang <jszhang@kernel.org>
+Cc: Doug Berger <opendmb@gmail.com>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
 	bcm-kernel-feedback-list@broadcom.com,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Bartosz Golaszewski <brgl@bgdev.pl>,
 	Hoan Tran <hoan@os.amperecomputing.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Daniel Palmer <daniel@thingy.jp>,
+	Andy Shevchenko <andy@kernel.org>, Daniel Palmer <daniel@thingy.jp>,
 	Romain Perier <romain.perier@gmail.com>,
 	Grygorii Strashko <grygorii.strashko@ti.com>,
 	Santosh Shilimkar <ssantosh@kernel.org>,
@@ -59,99 +77,41 @@ To: Doug Berger <opendmb@gmail.com>,
 	Masami Hiramatsu <mhiramat@kernel.org>,
 	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
 	Srinivas Neeli <srinivas.neeli@amd.com>,
-	Michal Simek <michal.simek@amd.com>
-Cc: linux-gpio@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@intel.com>
-Subject: [PATCH v5 14/14] gpio: zynq: Use modern PM macros
-Date: Mon, 24 Nov 2025 08:21:05 +0800
-Message-ID: <20251124002105.25429-15-jszhang@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251124002105.25429-1-jszhang@kernel.org>
+	Michal Simek <michal.simek@amd.com>, linux-gpio@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org
+Subject: Re: [PATCH v5 02/14] gpio: brcmstb: Use modern PM macros
+Message-ID: <aSQOkP0fPZfFEytq@smile.fi.intel.com>
 References: <20251124002105.25429-1-jszhang@kernel.org>
+ <20251124002105.25429-3-jszhang@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251124002105.25429-3-jszhang@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Use the modern PM macros for the suspend and resume functions to be
-automatically dropped by the compiler when CONFIG_PM or
-CONFIG_PM_SLEEP are disabled, without having to use __maybe_unused
+On Mon, Nov 24, 2025 at 08:20:53AM +0800, Jisheng Zhang wrote:
+> Use the modern PM macros for the suspend and resume functions to be
+> automatically dropped by the compiler when CONFIG_PM or
+> CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
+> 
+> This has the advantage of always compiling these functions in,
+> independently of any Kconfig option. Thanks to that, bugs and other
+> regressions are subsequently easier to catch.
 
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
----
- drivers/gpio/gpio-zynq.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+I think converting to the respective macros for NO_IRQ case makes sense in
+the same patch. But I leave this to Bart, I'm not going to give tag here
+due to the above.
 
-diff --git a/drivers/gpio/gpio-zynq.c b/drivers/gpio/gpio-zynq.c
-index 0ffd76e8951f..97780c57ab56 100644
---- a/drivers/gpio/gpio-zynq.c
-+++ b/drivers/gpio/gpio-zynq.c
-@@ -735,7 +735,7 @@ static void zynq_gpio_restore_context(struct zynq_gpio *gpio)
- 	}
- }
- 
--static int __maybe_unused zynq_gpio_suspend(struct device *dev)
-+static int zynq_gpio_suspend(struct device *dev)
- {
- 	struct zynq_gpio *gpio = dev_get_drvdata(dev);
- 	struct irq_data *data = irq_get_irq_data(gpio->irq);
-@@ -756,7 +756,7 @@ static int __maybe_unused zynq_gpio_suspend(struct device *dev)
- 	return 0;
- }
- 
--static int __maybe_unused zynq_gpio_resume(struct device *dev)
-+static int zynq_gpio_resume(struct device *dev)
- {
- 	struct zynq_gpio *gpio = dev_get_drvdata(dev);
- 	struct irq_data *data = irq_get_irq_data(gpio->irq);
-@@ -779,7 +779,7 @@ static int __maybe_unused zynq_gpio_resume(struct device *dev)
- 	return 0;
- }
- 
--static int __maybe_unused zynq_gpio_runtime_suspend(struct device *dev)
-+static int zynq_gpio_runtime_suspend(struct device *dev)
- {
- 	struct zynq_gpio *gpio = dev_get_drvdata(dev);
- 
-@@ -788,7 +788,7 @@ static int __maybe_unused zynq_gpio_runtime_suspend(struct device *dev)
- 	return 0;
- }
- 
--static int __maybe_unused zynq_gpio_runtime_resume(struct device *dev)
-+static int zynq_gpio_runtime_resume(struct device *dev)
- {
- 	struct zynq_gpio *gpio = dev_get_drvdata(dev);
- 
-@@ -814,9 +814,8 @@ static void zynq_gpio_free(struct gpio_chip *chip, unsigned int offset)
- }
- 
- static const struct dev_pm_ops zynq_gpio_dev_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(zynq_gpio_suspend, zynq_gpio_resume)
--	SET_RUNTIME_PM_OPS(zynq_gpio_runtime_suspend,
--			   zynq_gpio_runtime_resume, NULL)
-+	SYSTEM_SLEEP_PM_OPS(zynq_gpio_suspend, zynq_gpio_resume)
-+	RUNTIME_PM_OPS(zynq_gpio_runtime_suspend, zynq_gpio_runtime_resume, NULL)
- };
- 
- static const struct zynq_platform_data versal_gpio_def = {
-@@ -1022,7 +1021,7 @@ static void zynq_gpio_remove(struct platform_device *pdev)
- static struct platform_driver zynq_gpio_driver = {
- 	.driver	= {
- 		.name = DRIVER_NAME,
--		.pm = &zynq_gpio_dev_pm_ops,
-+		.pm = pm_ptr(&zynq_gpio_dev_pm_ops),
- 		.of_match_table = zynq_gpio_of_match,
- 	},
- 	.probe = zynq_gpio_probe,
 -- 
-2.51.0
+With Best Regards,
+Andy Shevchenko
+
 
 
