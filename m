@@ -1,154 +1,169 @@
-Return-Path: <linux-omap+bounces-5033-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5034-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06654C81276
-	for <lists+linux-omap@lfdr.de>; Mon, 24 Nov 2025 15:52:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 839FFC813A3
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Nov 2025 16:05:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 70C8C4E60C1
-	for <lists+linux-omap@lfdr.de>; Mon, 24 Nov 2025 14:49:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F10773A359D
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Nov 2025 15:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 209F82F83CB;
-	Mon, 24 Nov 2025 14:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42ED930C62E;
+	Mon, 24 Nov 2025 15:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M2U0TgBO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="by9I3/9R"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02E328C862;
-	Mon, 24 Nov 2025 14:49:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CCD296BBE
+	for <linux-omap@vger.kernel.org>; Mon, 24 Nov 2025 15:05:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763995750; cv=none; b=tl7RHI8HdfU82//x3dCnl530t5CuBd+aGc+1QtOjA71AQ99sBfdk11oh104KnNlbA1ltTDwcAvIQ+le+t72Uz/VePZxNsYi/3nRARq91C8LbfvKCPSF70GewBDrlFbEs7ueHRriXmyCGXF+3T7b+rT4Ce3lTvr3UAnHH5YK2kf8=
+	t=1763996743; cv=none; b=gyVXzCVKfGlpRQ7wL9ureLKyvcecaK2VHO42LpecN0khpdfqSC6awtXBFV6BfhpUjNoQcqMGFr+aGRGlDGHvQunJV4/ttEqSpu5vlgQQQ5s8fSkga181qL7v0wOr1FOHwzJWzasmie4XJFgnl57rklXbGyp4Cz9DcDxCjPIObE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763995750; c=relaxed/simple;
-	bh=LNf4WNIHIFdssBgMpM3fnvo7unwtTh5Go5hNJc/SF7k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eX+DaXvmq765zaTptw5SXyZC7YdyFTqcGhgJkA5883+cL5B56NFcPKgYDRCCrHgYOTH8TQke7ZVLlJYqTgwpuQD2WF51b/kD61lAg1xdd8TQSNTOj+gjQ+3EHUn4UNLUT25m/5DCrbJM8RbDtPXAA1XcN5HoyBPJXedLDMd13HQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M2U0TgBO; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763995749; x=1795531749;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=LNf4WNIHIFdssBgMpM3fnvo7unwtTh5Go5hNJc/SF7k=;
-  b=M2U0TgBOImJCIdtBZwS9GzdLS2cdsVsfgo8gZsnnPIG03AK9QiPfOWTl
-   oT3DvRfnsw5I36/IuvSZmk8+CvSMZC0G13j7ZsZfpy1vNWd4CzB2Q/sb6
-   BHDiwhW9nqargLeJCvo8lT7UMgB+0nWx3CAFJN2/WDvPQ5fnUBGSKd818
-   ywlnSi/MszuDqMuBeE7nTfV5501/qj8/Ua4FxspfT1sqZk7OHLS041t/J
-   eBxQY8OemqqNiATvJhHywObu5Cxjwlh7VaCKk5Sy28dqxDJqulq4UDs1F
-   QiKnqPpyZL4U7pA3748JG3VCUWyU8sjMx/eTZ/SOmJD78+I3dMpDxUE/+
-   w==;
-X-CSE-ConnectionGUID: 3Nab82xmSvCoAaUFrLZ1pw==
-X-CSE-MsgGUID: kRS3B4RlQjSOrdT7NmMJGg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="64996483"
-X-IronPort-AV: E=Sophos;i="6.20,223,1758610800"; 
-   d="scan'208";a="64996483"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 06:49:08 -0800
-X-CSE-ConnectionGUID: GBdErrPpTACXKcxnLzLfgw==
-X-CSE-MsgGUID: Mi0Pd/9wRjyTH3ysTkVOhw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,223,1758610800"; 
-   d="scan'208";a="192815282"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.244.5])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 06:49:03 -0800
-Date: Mon, 24 Nov 2025 16:49:00 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Jonas Gorski <jonas.gorski@gmail.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Jisheng Zhang <jszhang@kernel.org>, Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	bcm-kernel-feedback-list@broadcom.com,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Hoan Tran <hoan@os.amperecomputing.com>,
-	Andy Shevchenko <andy@kernel.org>, Daniel Palmer <daniel@thingy.jp>,
-	Romain Perier <romain.perier@gmail.com>,
-	Grygorii Strashko <grygorii.strashko@ti.com>,
-	Santosh Shilimkar <ssantosh@kernel.org>,
-	Kevin Hilman <khilman@kernel.org>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
-	Srinivas Neeli <srinivas.neeli@amd.com>,
-	Michal Simek <michal.simek@amd.com>, linux-gpio@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org
-Subject: Re: [PATCH v5 02/14] gpio: brcmstb: Use modern PM macros
-Message-ID: <aSRwXCfG1RimQZxX@smile.fi.intel.com>
-References: <20251124002105.25429-1-jszhang@kernel.org>
- <20251124002105.25429-3-jszhang@kernel.org>
- <CAOiHx==ttP2T=VLsSE9nLr5Cai_D+Khr6ePJVdOEim8ThWSdmA@mail.gmail.com>
- <CAHp75VcRWODpL2DjAiPm0=bhTJfjs6RdNgtroRbvEW7ong3ALg@mail.gmail.com>
- <CAOiHx==5TkW_-3yoqN_MzhdLKbMFvXRj-pWpuS5ahTM_ccVekw@mail.gmail.com>
+	s=arc-20240116; t=1763996743; c=relaxed/simple;
+	bh=PoLSXyv2cpCoYbZIQThrylYB7NYUdBsOThYAfuP3GX4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=p002k/kk5G2IAFqF10Fc/zBN9xLNdA5/atfmaB1sgEg0MSvBaFGgB/TFPOS/83XJYFTh88AuYLdEStAto/tPLFGDs+sjdpQlQYaEiynTsJe0EhizUnrgX5T9AZQldCM8sCOrG0SFDWQA5KReDcrCx0HYNqz2P3riVAKbGatBXrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=by9I3/9R; arc=none smtp.client-ip=74.125.224.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-6420c08f886so4695757d50.3
+        for <linux-omap@vger.kernel.org>; Mon, 24 Nov 2025 07:05:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763996741; x=1764601541; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aP3c9SMShxEOwyq3nLN0BBLkAiPxhUwRn01NB/RvErU=;
+        b=by9I3/9RfPD3+2nqYts0uqjeNTDqcIxm+CMg+kSb5+qPyFOuOmnZ75ISWpjv/ISZ1Q
+         B2hliRUNPp0o/QEk/1J6udXd+ob1SEZk8Yq+/ryydOsUqQN5EbvyVZyAh/Mg5W1C5KgP
+         Vu2dfVZfKS1gtPNTSdczp24PiuK7Ju0wyK4JaW94N7izxKyH6qdi0kO5NXG3My+m5bKR
+         y1T/wjAiXHgJ8T4++Z+6csigOE6G35NVLjUyv35uoeQgEbPgigEEk7tfXJX3Me38ZTPo
+         qG+qjF0I/JUthopmpjDHxIUw9jWK+LQfbOF6M/NgGiLbMXwT/1rDrVMibwMjfCrZ/7ql
+         ZGsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763996741; x=1764601541;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=aP3c9SMShxEOwyq3nLN0BBLkAiPxhUwRn01NB/RvErU=;
+        b=W1PadQDTSQGwlaMWmPSmVc9mpmjRfXXB7dSueEESw9dyRjoF9SEcX0DqBhM1G/RIi0
+         9OS6bGQR+SHrVT5lXgqmvl7bYctWgHDKPUviYKL4WkoHdHljYgzzktdGOWPJ3TWZyG5z
+         0NN3bDik1oIZZe2JqrcaC2rXaxHJ76TYiLjwYmMspJNOqH6yGEz7TCmkunMI7ErHNxw1
+         SgxEMFyR2njTV+fpI4qKEyOUwK7H9buKQ6sp/kGaRUjCxBXMu9h6eb0lxLbhY5zOlc0Z
+         5pxFa5u8IFVZNI9S914DnIstgxXvLI6i9yPVSwFdu9MrMaLJkWz25ZiXZj+WZ9UoZtfl
+         p8QA==
+X-Forwarded-Encrypted: i=1; AJvYcCWS4za9Ruu0Qt4dijrqYimNkywDbJ98b/HKv+D2QiYOOjYczonGeR8wz5rEPBHxqDY7qBiGr3ND58mJ@vger.kernel.org
+X-Gm-Message-State: AOJu0Yypw046uH0P2HHLJvpUxweNt2OUVrrNCCF9scKNQ7lcrUV9Mw2s
+	z8+O29bNkgLHXRd3xRpJNtwlGLJFGq/7ERKrLZhiVRM28a11UdDLF1J3f0ED8ILoIfcagcK3MHW
+	xTi++DpL3m01TimH2/paW045PyiOH7aw=
+X-Gm-Gg: ASbGncuACsklmUFQHO4rno8mGEO/sCfDyStF4T6JEwjcWYYeeMVYUG4JSwcBSB5kMhB
+	x8cTnEX8904Y2SV7WMW/r1pyLu0J/PNx1bIRcUgXWq+ZLt70Ob+cU4vSMR+DPA94Fy2SDJpbnWO
+	76J92KLhfZKWOC3adz5xtDnBJlgZbSfjN5k7vnhx5imlihIZ94qASKwRhM11PA5kGTPs9UDKEue
+	fRmatLiTwsjLginq1QqbWc/RntQBY10VkiEVtVLkk5T920ZpzIpcQ/c0yE43vWXi2doZMyCw1VE
+	OQvn
+X-Google-Smtp-Source: AGHT+IFcExc3fv4iwEnjwdVElQfQ9ZjwdK/2sF8WqvaZYhh0951LGPDi6Qt6Ua7iwje0oVX+jz1IhOPYeDB7if/Vs7I=
+X-Received: by 2002:a53:8547:0:b0:63e:17d8:d985 with SMTP id
+ 956f58d0204a3-64302ac3230mr6411404d50.53.1763996741097; Mon, 24 Nov 2025
+ 07:05:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOiHx==5TkW_-3yoqN_MzhdLKbMFvXRj-pWpuS5ahTM_ccVekw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+References: <20251124002105.25429-1-jszhang@kernel.org> <20251124002105.25429-3-jszhang@kernel.org>
+ <CAOiHx==ttP2T=VLsSE9nLr5Cai_D+Khr6ePJVdOEim8ThWSdmA@mail.gmail.com>
+ <CAHp75VcRWODpL2DjAiPm0=bhTJfjs6RdNgtroRbvEW7ong3ALg@mail.gmail.com>
+ <CAOiHx==5TkW_-3yoqN_MzhdLKbMFvXRj-pWpuS5ahTM_ccVekw@mail.gmail.com> <aSRwXCfG1RimQZxX@smile.fi.intel.com>
+In-Reply-To: <aSRwXCfG1RimQZxX@smile.fi.intel.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
+Date: Mon, 24 Nov 2025 16:05:29 +0100
+X-Gm-Features: AWmQ_blzotQnnPxsn4ZXGglW8dyTnG1bAcKi8OqUcRNMcebAISg0ref3oiKykrg
+Message-ID: <CAOiHx==4NSMNVdW163nE-vYf_FtDjS5aHfj5chPr3n6D2Mt9Nw@mail.gmail.com>
+Subject: Re: [PATCH v5 02/14] gpio: brcmstb: Use modern PM macros
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, Jisheng Zhang <jszhang@kernel.org>, 
+	Doug Berger <opendmb@gmail.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	bcm-kernel-feedback-list@broadcom.com, 
+	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Hoan Tran <hoan@os.amperecomputing.com>, Andy Shevchenko <andy@kernel.org>, 
+	Daniel Palmer <daniel@thingy.jp>, Romain Perier <romain.perier@gmail.com>, 
+	Grygorii Strashko <grygorii.strashko@ti.com>, Santosh Shilimkar <ssantosh@kernel.org>, 
+	Kevin Hilman <khilman@kernel.org>, Robert Jarzmik <robert.jarzmik@free.fr>, 
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>, Srinivas Neeli <srinivas.neeli@amd.com>, 
+	Michal Simek <michal.simek@amd.com>, linux-gpio@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-omap@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 24, 2025 at 03:20:00PM +0100, Jonas Gorski wrote:
-> On Mon, Nov 24, 2025 at 2:52 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> > On Mon, Nov 24, 2025 at 2:40 PM Jonas Gorski <jonas.gorski@gmail.com> wrote:
-> > > On Mon, Nov 24, 2025 at 1:39 AM Jisheng Zhang <jszhang@kernel.org> wrote:
+On Mon, Nov 24, 2025 at 3:49=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@intel.com> wrote:
+>
+> On Mon, Nov 24, 2025 at 03:20:00PM +0100, Jonas Gorski wrote:
+> > On Mon, Nov 24, 2025 at 2:52=E2=80=AFPM Andy Shevchenko
+> > <andy.shevchenko@gmail.com> wrote:
+> > > On Mon, Nov 24, 2025 at 2:40=E2=80=AFPM Jonas Gorski <jonas.gorski@gm=
+ail.com> wrote:
+> > > > On Mon, Nov 24, 2025 at 1:39=E2=80=AFAM Jisheng Zhang <jszhang@kern=
+el.org> wrote:
+>
+> ...
+>
+> > > > >  static const struct dev_pm_ops brcmstb_gpio_pm_ops =3D {
+> > > > > -       .suspend_noirq  =3D brcmstb_gpio_suspend,
+> > > > > -       .resume_noirq =3D brcmstb_gpio_resume,
+> > > > > +       .suspend_noirq =3D pm_sleep_ptr(brcmstb_gpio_suspend),
+> > > > > +       .resume_noirq =3D pm_sleep_ptr(brcmstb_gpio_resume),
+> > > > >  };
+>
+> ...
+>
+> > > > > -               .pm =3D &brcmstb_gpio_pm_ops,
+> > > > > +               .pm =3D pm_sleep_ptr(&brcmstb_gpio_pm_ops),
+> > > >
+> > > > won't this cause a "brcmstb_gpio_pm_ops is unused" compile warning =
+for
+> > > > !CONFIG_PM_SLEEP?
+> > > >
+> > > > You probably need to add a __maybe_unused to brcmstb_gpio_pm_ops
+> > > > (which incidentally DEFINE_NOIRQ_DEV_PM_OPS() also doesn't set, but
+> > > > all other *_DEV_PM_OPS() macros do).
+>
+> Do they? I mean the modern ones and not that are deprecated.
+>
+> > > Shouldn't it be covered by the same trick as pm_sleep_ptr() does for =
+functions?
+> >
+> > pm_sleep_ptr() becomes NULL for !CONFIG_PM_SLEEP, so there is no
+> > reference then anymore to brcmstb_gpio_pm_ops. You would need a
+> > wrapper for brcmstb_gpio_pm_ops itself to conditionally define it to
+> > avoid the warning, or add __maybe_unused to it to silence it.
+>
+> PTR_IF() magic is exactly to make sure compiler will have a visibility wh=
+ile
+> dropping a dead code. Did I miss anything?
 
-...
+No, I just was working with old assumptions, so my bad. I faintly
+remember that they used to work that way, but maybe I also
+misremember. TIL. So disregard my comment.
 
-> > > >  static const struct dev_pm_ops brcmstb_gpio_pm_ops = {
-> > > > -       .suspend_noirq  = brcmstb_gpio_suspend,
-> > > > -       .resume_noirq = brcmstb_gpio_resume,
-> > > > +       .suspend_noirq = pm_sleep_ptr(brcmstb_gpio_suspend),
-> > > > +       .resume_noirq = pm_sleep_ptr(brcmstb_gpio_resume),
-> > > >  };
+> > Note how SIMPLE_DEV_PM_OPS() and UNIVERSAL_DEV_PM_OPS() tag the struct
+> > with it (for that reason I assume).
+>
+> Both are deprecated. Not a good orienteer.
+> None of the new approach uses __maybe_unused. (See DEFINE_*() macros in p=
+m.h.)
 
-...
+Maybe that some were using it was confusing me into thinking it is required=
+.
 
-> > > > -               .pm = &brcmstb_gpio_pm_ops,
-> > > > +               .pm = pm_sleep_ptr(&brcmstb_gpio_pm_ops),
-> > >
-> > > won't this cause a "brcmstb_gpio_pm_ops is unused" compile warning for
-> > > !CONFIG_PM_SLEEP?
-> > >
-> > > You probably need to add a __maybe_unused to brcmstb_gpio_pm_ops
-> > > (which incidentally DEFINE_NOIRQ_DEV_PM_OPS() also doesn't set, but
-> > > all other *_DEV_PM_OPS() macros do).
-
-Do they? I mean the modern ones and not that are deprecated.
-
-> > Shouldn't it be covered by the same trick as pm_sleep_ptr() does for functions?
-> 
-> pm_sleep_ptr() becomes NULL for !CONFIG_PM_SLEEP, so there is no
-> reference then anymore to brcmstb_gpio_pm_ops. You would need a
-> wrapper for brcmstb_gpio_pm_ops itself to conditionally define it to
-> avoid the warning, or add __maybe_unused to it to silence it.
-
-PTR_IF() magic is exactly to make sure compiler will have a visibility while
-dropping a dead code. Did I miss anything?
-
-> Note how SIMPLE_DEV_PM_OPS() and UNIVERSAL_DEV_PM_OPS() tag the struct
-> with it (for that reason I assume).
-
-Both are deprecated. Not a good orienteer.
-None of the new approach uses __maybe_unused. (See DEFINE_*() macros in pm.h.)
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Best regards,
+Jonas
 
