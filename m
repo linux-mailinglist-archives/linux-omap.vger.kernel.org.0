@@ -1,140 +1,152 @@
-Return-Path: <linux-omap+bounces-5012-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5013-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 580E0C78207
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Nov 2025 10:23:33 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BC19C7EAED
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Nov 2025 01:39:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 5540E32DA3
-	for <lists+linux-omap@lfdr.de>; Fri, 21 Nov 2025 09:23:27 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 14250344A94
+	for <lists+linux-omap@lfdr.de>; Mon, 24 Nov 2025 00:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D66C43396E9;
-	Fri, 21 Nov 2025 09:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5109B3EA8D;
+	Mon, 24 Nov 2025 00:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F+mo7+UC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="poPtU+RQ"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5A7342519;
-	Fri, 21 Nov 2025 09:20:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D2A182D0;
+	Mon, 24 Nov 2025 00:38:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763716817; cv=none; b=UzSwk0N35XseQw6nFUWP8xEHIQfSkGdWQkjZyNMy5eg0XXLiscTIxzi7HdrnkpEn6DGRKaZ+0JT2ZzERgrOs4mQSKbZjfpRXYkWZUEt4s7Kx90bwQt0yNidJxVpVib37m6I70Uy5V8uEPz35KU4Gdv8MEV9tFTzY5kfrVGFhNQk=
+	t=1763944740; cv=none; b=Clz7wdVmEY63gHGmegnLPdOabz0DuDMcg+G4CJW6zgWTdgrrINJ/Nv26ltRkCbPwEKxFdyTo7KcE6Os0wKv29nA/hkx6pnawE2eEdxx94QP8e1Wz6YjQ4nMc7cRi2mpYiMxCOuChR0KyAlw9qTyw2OH5zAvJhQDr+i7Glz5PiBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763716817; c=relaxed/simple;
-	bh=UIAMIZ0sD0LbqFA5wDFNCQuWZ6L0827P8gGkWTNvHMw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZKQ5IZaZsJGOsUneewDQE0fZbAfO6tMQtIEXAY6zW6qfXLW02nVyDLh4Ktp3bz4cpLiwOhpPoeE9ET4qpK/G3bsuhNzZYfSTjg6VT1GtpQLcMDLXxqJRenS5oDT5VOy2F3RxsmVZU2bvNjuIKugYLtaoD4xpeISUnrtzIT6geuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F+mo7+UC; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763716816; x=1795252816;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=UIAMIZ0sD0LbqFA5wDFNCQuWZ6L0827P8gGkWTNvHMw=;
-  b=F+mo7+UCUqoVXdDFoO7mMpQXdv613x3jC5E64neuv6rHN1CACOsHiKZ8
-   5C+7WXSIGq/Zbi09udsgHE/t9L1SWEVSf51cQWGoNL8OE66IQqAKKos65
-   UsNK4Z5xMidrgEUmkhRsPXTY+rmsvdfVA/K8dlHuu4sf8IXpoGwlSKaUr
-   izKpzz+hdxoZb7QpXbAnLrys/nioWmLOUIecm+oxExlx36XCpKM9PX+al
-   ZejASFBzhmoN7j1TN81xz86D85vD9iBcK68tD9db3l9HVG3HsbeTL8hRb
-   h5PXqOh5VZEHiAMo7nfvFEyxj12RpSwXU9QRh2Kit9mot/qCqj6+BXbeE
-   Q==;
-X-CSE-ConnectionGUID: tEWgwM+PRIaYBKg69AE6TQ==
-X-CSE-MsgGUID: dcFwOkGvRO6I0F0T5uSlKg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="65842354"
-X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; 
-   d="scan'208";a="65842354"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 01:20:15 -0800
-X-CSE-ConnectionGUID: Q13u732IQoKmAyiDHRVh9w==
-X-CSE-MsgGUID: Th/xPFcITrmd6Q892tAdkg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; 
-   d="scan'208";a="228939278"
-Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.4])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 01:20:10 -0800
-Date: Fri, 21 Nov 2025 11:20:07 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: Jisheng Zhang <jszhang@kernel.org>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Doug Berger <opendmb@gmail.com>,
+	s=arc-20240116; t=1763944740; c=relaxed/simple;
+	bh=ZhoNPDXJHC7TiqZOtG3ztIsi7d4KbS0+5ZUx4cRA0g4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aIZPGDmgUr3kDBDCO03gpUAy9W2EBfVSZ86wR7VX2ct2Sbwd145cVxQ3osy6picKE75gkeCGjgwDNsMR2vLwvh0acOizimEKV8/AjHw4LOiPbmfo+LHslHEi761zy7klDSPgwCvoKLxSaH5g2XO8MnoMFsjngqDdpwZCH6hDC8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=poPtU+RQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B998C113D0;
+	Mon, 24 Nov 2025 00:38:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763944739;
+	bh=ZhoNPDXJHC7TiqZOtG3ztIsi7d4KbS0+5ZUx4cRA0g4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=poPtU+RQO8RjB8GAMlOW7WNtJYy88FQzbJTa8a406xYJnr+5Pg7+01FdDO75ny0Fc
+	 pk/FW2DdD6RwWMEpB/c7Dpbw6CWOQ/EDJE5ByAmyxjN2CcejqDm/Bh13A387bqsdYT
+	 vD7i9x8YVpE+sSge4pyEHfTi28cibFjDS0p6mP7pA3iCpOCaUoR9EkEHpG7OrHZVUj
+	 U4hLU3bA1bPNLD0D9L/8xTU4nXzGnj8S7ckfiTeZoKmht7gwW3aCU0WJPxyw6PwabZ
+	 77Hla0Evtr0vhITWuBYFzM4A9KKbTAketkHaryUAMXHpIFx4PfX3P3H64eXAlECS0O
+	 UO2zJ5Mb4JfIw==
+From: Jisheng Zhang <jszhang@kernel.org>
+To: Doug Berger <opendmb@gmail.com>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
 	bcm-kernel-feedback-list@broadcom.com,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Bartosz Golaszewski <brgl@bgdev.pl>,
 	Hoan Tran <hoan@os.amperecomputing.com>,
-	Andy Shevchenko <andy@kernel.org>, Daniel Palmer <daniel@thingy.jp>,
+	Andy Shevchenko <andy@kernel.org>,
+	Daniel Palmer <daniel@thingy.jp>,
 	Romain Perier <romain.perier@gmail.com>,
 	Grygorii Strashko <grygorii.strashko@ti.com>,
 	Santosh Shilimkar <ssantosh@kernel.org>,
 	Kevin Hilman <khilman@kernel.org>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
 	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
 	Masami Hiramatsu <mhiramat@kernel.org>,
 	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
 	Srinivas Neeli <srinivas.neeli@amd.com>,
-	Michal Simek <michal.simek@amd.com>, linux-gpio@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Michal Simek <michal.simek@amd.com>
+Cc: linux-gpio@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
 	linux-omap@vger.kernel.org
-Subject: Re: [PATCH v2 05/15] gpio: pxa: Use modern PM macros
-Message-ID: <aSAux4n-1hzHfD6L@smile.fi.intel.com>
-References: <20251118003229.26636-1-jszhang@kernel.org>
- <20251118003229.26636-6-jszhang@kernel.org>
- <CAHp75VevWmB4X_Mh+st_NLChAYZw5V-b3pM9Yrcd-ofa9xYvDQ@mail.gmail.com>
- <m2ecpvm20y.fsf@free.fr>
- <aR22decsE0DYDUnS@xhacker>
- <m28qg0mnvl.fsf@free.fr>
+Subject: [PATCH v5 00/14] gpio: Use modern PM macros
+Date: Mon, 24 Nov 2025 08:20:51 +0800
+Message-ID: <20251124002105.25429-1-jszhang@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <m28qg0mnvl.fsf@free.fr>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 20, 2025 at 09:48:30PM +0100, Robert Jarzmik wrote:
-> Jisheng Zhang <jszhang@kernel.org> writes:
-> > On Tue, Nov 18, 2025 at 11:03:41PM +0100, Robert Jarzmik wrote:
-> > 
-> > hmm, each controller adds 16bytes, then even on 100 controller platforms
-> > 1600bytes. 1600 Bytes/64MB ~= 0.238%. it's trival. And is there such
-> > platform?
-> Yes, actually most of them have around 64MB, at least the pxa25x and pxa27x.
-> The pxa3xx might have more (thing 128MB, maybe 256MB).
-> There are very old platforms, we're in 2003/2004 there ...
-> 
-> > From another side, recently UP support is removed from the core sched,
-> > that removing adds more .text and .data overhead, so if the users really
-> > care about this kind of 16bytes, it means he(she) can't afford even the
-> > 16Bytes overhead, then I bet he(she) the always SMP in core sched, so
-> > why not stick with the old kernel? What do you think?
-> I think I would go with Andy's proposal, decouple the changes :
-> - keep your changes in the PM callbaks
-> - remove your change (put back the ifdef) in the data structure
+Use the modern PM macros for the suspend and resume functions to be
+automatically dropped by the compiler when CONFIG_PM or
+CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards or
+__maybe_unused.
 
-It can't be done like this, unfortunately.
+This has the advantage of always compiling these functions in,
+independently of any Kconfig option. Thanks to that, bugs and other
+regressions are subsequently easier to catch.
 
-Either we need to waste a pointer and kmalloc() overheads at runtime, or keep
-these bytes for !PM cases.
+Almost all drivers are converted, only gpio-tegra and gpio-mlxbf are
+left as is, because the memory for saving HW context is not trivial,
+if we convert them, then the two drivers' users may complain for
+!CONFIG_PM && !CONFIG_PM_SLEEP case. So I didn't touch them.
 
-Alternatively we can drop this change and simply add a comment explaining
-the memory requirements and why we don't want to always waste those bytes.
+patch to gpio-dwapb.c is tested on real HW, others are compile-tested only.
 
-Ideally would be good to have some kind of struct_group() macro that is
-dependent on IS_ENABLED() case. It may help in many cases like this then.
+since v4:
+  - collect Reviewed-by tags.
+  - use pm_ptr() instead of pm_sleep_ptr() for gpio-tqmx86 
+  - drop patch5 for gpio-pxa due to maintainer's conern with memory waste
+
+since v3:
+  - fix typos.
+  - fix the stray change in gpio-pxa driver.
+
+since v2:
+  - collect Acked-by, Reviewed-by tags.
+  - move the embeddng the structure for pm in gpio-dwapb out, will send
+    it as a separate patch.
+
+since v1:
+  - rebase on the latest gpio/for-next branch.
+  - collect Acked-by, Reviewed-by tags.
+  - clarify the trival memory wasted numbers with CONFIG_PM=n in the
+    dwapb's patch commit message as suggested by Andy.
+  - drop patch to bt8xxx since the clean up is acchieved when switching
+    to generic PCI pm framework.
+
+
+Jisheng Zhang (14):
+  gpio: dwapb: Use modern PM macros
+  gpio: brcmstb: Use modern PM macros
+  gpio: htc-egpio: Use modern PM macros
+  gpio: pl061: Use modern PM macros
+  gpio: ml-ioh: Use modern PM macros
+  gpio: mlxbf2: Use modern PM macros
+  gpio: msc313: Use modern PM macros
+  gpio: omap: Use modern PM macros
+  gpio: pch: Use modern PM macros
+  gpio: tqmx86: Use modern PM macros
+  gpio: uniphier: Use modern PM macros
+  gpio: xgene: Use modern PM macros
+  gpio: xilinx: Use modern PM macros
+  gpio: zynq: Use modern PM macros
+
+ drivers/gpio/gpio-brcmstb.c   | 12 +++---------
+ drivers/gpio/gpio-dwapb.c     | 18 ++++--------------
+ drivers/gpio/gpio-htc-egpio.c | 21 ++++++++-------------
+ drivers/gpio/gpio-ml-ioh.c    | 12 ++++++------
+ drivers/gpio/gpio-mlxbf2.c    |  8 ++++----
+ drivers/gpio/gpio-msc313.c    |  8 ++++----
+ drivers/gpio/gpio-omap.c      | 15 +++++++--------
+ drivers/gpio/gpio-pch.c       | 12 ++++++------
+ drivers/gpio/gpio-pl061.c     | 17 ++---------------
+ drivers/gpio/gpio-tqmx86.c    |  9 ++++-----
+ drivers/gpio/gpio-uniphier.c  |  9 ++++-----
+ drivers/gpio/gpio-xgene.c     |  8 ++++----
+ drivers/gpio/gpio-xilinx.c    | 15 +++++++--------
+ drivers/gpio/gpio-zynq.c      | 15 +++++++--------
+ 14 files changed, 70 insertions(+), 109 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.51.0
 
 
