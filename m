@@ -1,57 +1,57 @@
-Return-Path: <linux-omap+bounces-5042-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5043-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6124DC8B401
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Nov 2025 18:40:12 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74CC9C8B40A
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Nov 2025 18:40:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C9859359E59
-	for <lists+linux-omap@lfdr.de>; Wed, 26 Nov 2025 17:39:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 35FFB4ED8D3
+	for <lists+linux-omap@lfdr.de>; Wed, 26 Nov 2025 17:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29400341051;
-	Wed, 26 Nov 2025 17:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3E5342160;
+	Wed, 26 Nov 2025 17:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="kdjWgvyT"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="01lxaJvy"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BE434105A
-	for <linux-omap@vger.kernel.org>; Wed, 26 Nov 2025 17:36:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9244E341AAF;
+	Wed, 26 Nov 2025 17:37:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764178621; cv=none; b=nAA8gXllr0XYLU3CpDCkDS6fxNGUpT9VQKL3TKpuvvdbG1j+O7WSDtH32MuEYL26IzMIvsy8XwIUhqKTjSltpSQ7ZhLkP7jMJKGiAv/gJpN9+SKb8dY/pSBYvjpIHxkAypb9epZPG3eccYqBpTxUy9b3+w2QItGjuqflHaDsk5g=
+	t=1764178625; cv=none; b=IOHHXrq/5vbsELrwAw2Q+X2wg7JvpnqherNAjLWYe2t3pesn7HpYmOeFEQouUIheArT7lpperGlPLfjXupMo7WiE4z2+dz3S5lDM2ts6fpNlFnd24xdaDQyOcHoCAipvjqpKKhPk2Xo7fsC7eJK1EAt1TeFkZ/4dqcp7Hq+ltNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764178621; c=relaxed/simple;
-	bh=8blJez7i4Fn96hRmGT3fk01aEuuuF8djkxEza+VvMD0=;
+	s=arc-20240116; t=1764178625; c=relaxed/simple;
+	bh=yGJZLhtU9LGuj3EZLEvn+KKXmdNJNoy0C7Oib1INZdE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=knIyHc2eYSEAbayzUti47LpiDGu8iMmDS/mh8fjQv4hBqfBlxEc8vQuANW1xnQ7abrI9020/rdSMWb9FwuFe49zwKCItgDsZQTHKbdBsIDHwi6alRruiPmhRYM0L6ENlUMGjS5e6b/ZRRGsrmW2uzX0uuZA3yjBP1LuuDrhq9FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=kdjWgvyT; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:To:Cc; b=t5hWo24ua7B6aGAOXCZ6aSbXqf7+ZFLyn6ODufoU4BaGb2cfe4T3Oiczd5wj7TIXElB9tl3FrnQiPXWucR+828LM9JWzh4QGyK1ULlSkw6sUg1sg9V/mMxbNTqax9qcqwaF1wuNZsbIae0xJSTJAQsK1kDAndNUOH1QXlIZ7a4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=01lxaJvy; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 345D74E418DB;
-	Wed, 26 Nov 2025 17:36:58 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 2F2551A1D85;
+	Wed, 26 Nov 2025 17:37:01 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0326A60721;
-	Wed, 26 Nov 2025 17:36:58 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DBCB6102F221D;
-	Wed, 26 Nov 2025 18:36:53 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0359460721;
+	Wed, 26 Nov 2025 17:37:01 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E57BA102F22B1;
+	Wed, 26 Nov 2025 18:36:56 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1764178616; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1764178619; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=/0rPK6beH6AckUJmL2vrwOQlS80WMvwhCKTP9WHJs4k=;
-	b=kdjWgvyTz00gcyMZ6nHqPphHqp8JXUsfKKrV8SynMj3/cweCesoFg5Y3Uu2GEpEuMK68Z+
-	+7K0nb55DueYUOtLI3SvfbOgqcfcf9keAfKvszVCp7Cas6SHnuzNkcRFwBVBTrpSu+351Q
-	xNI+SR4KfG0DHb6u9ycsBmXONtaetbrrD4oar1sH0+A0Gy23dMORwJ6NrYrBO9oAiqQpeV
-	KKvA8dO5TvEhhf59Moiu4cSqi3ByZy9TF+0mC2i0OCdRrjAzNj6QgSRZmbXORo6avc7K+j
-	OYv5XrrOq4nbwg8XefASzfwdAy6LoalgC6iBe1eacbjBr6gZdHboGNjSNn3KLQ==
+	bh=IJWtf2kIy8lCBpcz/JyBziECbeFa7hVjHuwMzNqnPPg=;
+	b=01lxaJvy4NvnD7Bd7na8RY3i95UleIWUh8amKU6GPWbeGPSOgB6sIoOBbKxdQPfJvJuvAg
+	B4gll/zh9mLakH7nQjwwJ9dPhtOCmGs+4uIVsaVx+26avrGtGArYrNAR72Mxg/iTZcEGdI
+	4SF3dWBYfcrC1hj7IQnDBQatbJ4BM10+4yJSSGFUOBSTE8GRwSYPZCMvTo7IVV2wBky1Xo
+	thBSdQwQR5wp9SYaDT9g/AjY7xzr8fqaRPYB1PvS2YUTui3bfSWKoarRBGgqcTXUTERybS
+	XaJLTRjpIJYpVVzuOSoN0EFVeddiy8URdVKQ1UyxCx0gHYvLxQRJQF1C7cSNcw==
 From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
-Date: Wed, 26 Nov 2025 18:35:46 +0100
-Subject: [PATCH 04/21] drm/tilcdc: Add support for DRM bus flags and
- simplify panel config
+Date: Wed, 26 Nov 2025 18:35:47 +0100
+Subject: [PATCH 05/21] ARM: dts: omap: Bind panel to panel-dpi instead of
+ ti,tilcdc,panel driver
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251126-feature_tilcdc-v1-4-49b9ef2e3aa0@bootlin.com>
+Message-Id: <20251126-feature_tilcdc-v1-5-49b9ef2e3aa0@bootlin.com>
 References: <20251126-feature_tilcdc-v1-0-49b9ef2e3aa0@bootlin.com>
 In-Reply-To: <20251126-feature_tilcdc-v1-0-49b9ef2e3aa0@bootlin.com>
 To: Jyri Sarha <jyri.sarha@iki.fi>, 
@@ -87,141 +87,344 @@ Cc: Markus Schneider-Pargmann <msp@baylibre.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-Migrate CRTC mode configuration to use standard DRM bus flags in
-preparation for removing the tilcdc_panel driver and its custom
-tilcdc_panel_info structure.
-
-Add support for DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE and
-DRM_BUS_FLAG_SYNC_DRIVE_NEGEDGE flags to control pixel clock and sync
-signal edge polarity, while maintaining backward compatibility with the
-existing tilcdc panel info structure.
-
-Simplify several hardware parameters by setting them to fixed defaults
-based on common usage across existing device trees:
-- DMA burst size: 16 (previously configurable via switch statement)
-- AC bias frequency: 255 (previously panel-specific)
-- FIFO DMA request delay: 128 (previously panel-specific)
-
-These parameters show no variation in real-world usage, so hardcoding
-them simplifies the driver without losing functionality.
-
-Preserve FIFO threshold configurability by adding a new "fifo-threshold"
-device tree property at the display controller level, as this parameter
-varies across different display configurations in existing device trees.
+Use panel-dpi driver instead of the deprecated tilcdc-panel driver in
+preparation for removing the tilcdc-panel driver and binding.
 
 Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
 ---
- drivers/gpu/drm/tilcdc/tilcdc_crtc.c | 48 ++++++++++++++----------------------
- drivers/gpu/drm/tilcdc/tilcdc_drv.c  |  2 ++
- drivers/gpu/drm/tilcdc/tilcdc_drv.h  |  2 ++
- 3 files changed, 22 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_crtc.c b/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
-index b06b1453db2dd..1b5475c48f6ad 100644
---- a/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
-@@ -285,27 +285,15 @@ static void tilcdc_crtc_set_mode(struct drm_crtc *crtc)
+This patch is not tested. It would be nice if someone with one of this
+board could test and validate it.
+---
+ arch/arm/boot/dts/ti/davinci/da850-evm.dts    | 26 +++++++++++++-------------
+ arch/arm/boot/dts/ti/omap/am335x-guardian.dts | 25 +++++++++----------------
+ arch/arm/boot/dts/ti/omap/am335x-pdu001.dts   | 21 ++++++++++-----------
+ arch/arm/boot/dts/ti/omap/am335x-pepper.dts   | 22 +++++++++++-----------
+ arch/arm/boot/dts/ti/omap/am335x-sbc-t335.dts | 25 +++++++++++++------------
+ arch/arm/boot/dts/ti/omap/am335x-sl50.dts     | 25 ++++++++++++-------------
+ 6 files changed, 68 insertions(+), 76 deletions(-)
+
+diff --git a/arch/arm/boot/dts/ti/davinci/da850-evm.dts b/arch/arm/boot/dts/ti/davinci/da850-evm.dts
+index 38a191fb04149..79cca1f6205ef 100644
+--- a/arch/arm/boot/dts/ti/davinci/da850-evm.dts
++++ b/arch/arm/boot/dts/ti/davinci/da850-evm.dts
+@@ -40,7 +40,7 @@ backlight: backlight-pwm {
+ 	};
  
- 	/* Configure the Burst Size and fifo threshold of DMA: */
- 	reg = tilcdc_read(dev, LCDC_DMA_CTRL_REG) & ~0x00000770;
--	switch (info->dma_burst_sz) {
--	case 1:
--		reg |= LCDC_DMA_BURST_SIZE(LCDC_DMA_BURST_1);
--		break;
--	case 2:
--		reg |= LCDC_DMA_BURST_SIZE(LCDC_DMA_BURST_2);
--		break;
--	case 4:
--		reg |= LCDC_DMA_BURST_SIZE(LCDC_DMA_BURST_4);
--		break;
--	case 8:
--		reg |= LCDC_DMA_BURST_SIZE(LCDC_DMA_BURST_8);
--		break;
--	case 16:
--		reg |= LCDC_DMA_BURST_SIZE(LCDC_DMA_BURST_16);
--		break;
--	default:
--		dev_err(dev->dev, "invalid burst size\n");
--		return;
-+	/* Use 16 bit DMA burst size by default */
-+	reg |= LCDC_DMA_BURST_SIZE(LCDC_DMA_BURST_16);
-+	if (priv->fifo_th) {
-+		int fifo_th_val = const_ilog2(priv->fifo_th) - 3;
-+
-+		reg |= (fifo_th_val << 8);
-+	} else {
-+		reg |= (info->fifo_th << 8);
- 	}
--	reg |= (info->fifo_th << 8);
- 	tilcdc_write(dev, LCDC_DMA_CTRL_REG, reg);
- 
- 	/* Configure timings: */
-@@ -321,8 +309,8 @@ static void tilcdc_crtc_set_mode(struct drm_crtc *crtc)
- 
- 	/* Set AC Bias Period and Number of Transitions per Interrupt: */
- 	reg = tilcdc_read(dev, LCDC_RASTER_TIMING_2_REG) & ~0x000fff00;
--	reg |= LCDC_AC_BIAS_FREQUENCY(info->ac_bias) |
--		LCDC_AC_BIAS_TRANSITIONS_PER_INT(info->ac_bias_intrpt);
-+	/* Use 255 AC Bias Pin Frequency by default */
-+	reg |= LCDC_AC_BIAS_FREQUENCY(255);
- 
- 	/*
- 	 * subtract one from hfp, hbp, hsw because the hardware uses
-@@ -392,20 +380,20 @@ static void tilcdc_crtc_set_mode(struct drm_crtc *crtc)
- 			return;
- 		}
- 	}
--	reg |= info->fdd << 12;
-+	/* Use 128 FIFO DMA Request Delay by default */
-+	reg |= 128 << 12;
- 	tilcdc_write(dev, LCDC_RASTER_CTRL_REG, reg);
- 
--	if (info->invert_pxl_clk)
-+	if (info->invert_pxl_clk ||
-+	    mode->flags == DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE)
-+
- 		tilcdc_set(dev, LCDC_RASTER_TIMING_2_REG, LCDC_INVERT_PIXEL_CLOCK);
- 	else
- 		tilcdc_clear(dev, LCDC_RASTER_TIMING_2_REG, LCDC_INVERT_PIXEL_CLOCK);
- 
--	if (info->sync_ctrl)
--		tilcdc_set(dev, LCDC_RASTER_TIMING_2_REG, LCDC_SYNC_CTRL);
--	else
--		tilcdc_clear(dev, LCDC_RASTER_TIMING_2_REG, LCDC_SYNC_CTRL);
+ 	panel {
+-		compatible = "ti,tilcdc,panel";
++		compatible = "panel-dpi";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&lcd_pins>;
+ 		/*
+@@ -50,17 +50,10 @@ panel {
+ 		 */
+ 		status = "okay";
+ 		enable-gpios = <&gpio 40 GPIO_ACTIVE_HIGH>; /* lcd_panel_pwr */
 -
--	if (info->sync_edge)
-+	tilcdc_set(dev, LCDC_RASTER_TIMING_2_REG, LCDC_SYNC_CTRL);
-+	if (info->sync_edge ||
-+	    mode->flags == DRM_BUS_FLAG_SYNC_DRIVE_NEGEDGE)
- 		tilcdc_set(dev, LCDC_RASTER_TIMING_2_REG, LCDC_SYNC_EDGE);
- 	else
- 		tilcdc_clear(dev, LCDC_RASTER_TIMING_2_REG, LCDC_SYNC_EDGE);
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.c b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-index 3dcbec312bacb..76eb336b5d4e7 100644
---- a/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-@@ -309,6 +309,8 @@ static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
+-		panel-info {
+-			ac-bias = <255>;
+-			ac-bias-intrpt = <0>;
+-			dma-burst-sz = <16>;
+-			bpp = <16>;
+-			fdd = <0x80>;
+-			sync-edge = <0>;
+-			sync-ctrl = <1>;
+-			raster-order = <0>;
+-			fifo-th = <1>;
++		port {
++			panel_in: endpoint {
++				remote-endpoint = <&lcdc_out>;
++			};
+ 		};
  
- 	DBG("Maximum Pixel Clock Value %dKHz", priv->max_pixelclock);
+ 		display-timings {
+@@ -222,6 +215,13 @@ &rtc0 {
+ };
  
-+	of_property_read_u32(node, "fifo-threshold", &priv->fifo_th);
+ &lcdc {
++	fifo-threshold = <16>;
 +
- 	ret = tilcdc_crtc_create(ddev);
- 	if (ret < 0) {
- 		dev_err(dev, "failed to create crtc\n");
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.h b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-index 3aba3a1155ba0..79078b4ae7393 100644
---- a/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-@@ -61,6 +61,8 @@ struct tilcdc_drm_private {
++	port {
++		lcdc_out: endpoint {
++			remote-endpoint = <&panel_in>;
++		};
++	};
+ 	status = "okay";
+ };
+ 
+@@ -459,7 +459,7 @@ &vpif {
+ 	pinctrl-0 = <&vpif_capture_pins>, <&vpif_display_pins>;
+ 	/*
+ 	 * The vpif and the LCD are mutually exclusive.
+-	 * To enable VPIF, disable the ti,tilcdc,panel then
++	 * To enable VPIF, disable the panel-dpi then
+ 	 * change the status below to 'okay'
  	 */
- 	uint32_t max_width;
+ 	status = "disabled";
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-guardian.dts b/arch/arm/boot/dts/ti/omap/am335x-guardian.dts
+index 4b070e634b281..f38ce9be2c106 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-guardian.dts
++++ b/arch/arm/boot/dts/ti/omap/am335x-guardian.dts
+@@ -68,10 +68,15 @@ gpio-poweroff {
+ 	};
  
-+	u32 fifo_th;
+ 	panel {
+-		compatible = "ti,tilcdc,panel";
++		compatible = "panel-dpi";
+ 		pinctrl-names = "default", "sleep";
+ 		pinctrl-0 = <&lcd_pins_default &lcd_disen_pins>;
+ 		pinctrl-1 = <&lcd_pins_sleep>;
++		port {
++			panel_in: endpoint {
++				remote-endpoint = <&lcdc_out>;
++			};
++		};
+ 
+ 		display-timings {
+ 			timing-320x240 {
+@@ -86,21 +91,9 @@ timing-320x240 {
+ 				clock-frequency = <9000000>;
+ 				hsync-active    = <0>;
+ 				vsync-active    = <0>;
++				pixelclk-active = <1>;
+ 			};
+ 		};
+-		panel-info {
+-			ac-bias           = <255>;
+-			ac-bias-intrpt    = <0>;
+-			dma-burst-sz      = <16>;
+-			bpp               = <24>;
+-			bus-width         = <16>;
+-			fdd               = <0x80>;
+-			sync-edge         = <0>;
+-			sync-ctrl         = <1>;
+-			raster-order      = <0>;
+-			fifo-th           = <0>;
+-		};
+-
+ 	};
+ 
+ 	guardian_beeper: pwm-7 {
+@@ -265,8 +258,8 @@ &lcdc {
+ 	blue-and-red-wiring = "crossed";
+ 	status = "okay";
+ 	port {
+-		lcdc_0: endpoint@0 {
+-			remote-endpoint = <0>;
++		lcdc_out: endpoint@0 {
++			remote-endpoint = <&panel_in>;
+ 		};
+ 	};
+ };
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts b/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
+index c9ccb9de21ad7..2c5229d05ade7 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
++++ b/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
+@@ -50,20 +50,14 @@ lis3_reg: fixedregulator@1 {
+ 	};
+ 
+ 	panel {
+-		compatible = "ti,tilcdc,panel";
++		compatible = "panel-dpi";
+ 		status = "okay";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&lcd_pins_s0>;
+-		panel-info {
+-			ac-bias           = <255>;
+-			ac-bias-intrpt    = <0>;
+-			dma-burst-sz      = <16>;
+-			bpp               = <16>;
+-			fdd               = <0x80>;
+-			sync-edge         = <0>;
+-			sync-ctrl         = <1>;
+-			raster-order      = <0>;
+-			fifo-th           = <0>;
++		port {
++			panel_in: endpoint {
++				remote-endpoint = <&lcdc_out>;
++			};
+ 		};
+ 
+ 		display-timings {
+@@ -395,6 +389,11 @@ &rtc {
+ 
+ &lcdc {
+ 	status = "okay";
++	port {
++		lcdc_out: endpoint {
++			remote-endpoint = <&panel_in>;
++		};
++	};
+ };
+ 
+ &elm {
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-pepper.dts b/arch/arm/boot/dts/ti/omap/am335x-pepper.dts
+index e7d561a527fdd..2760c0eab50c2 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-pepper.dts
++++ b/arch/arm/boot/dts/ti/omap/am335x-pepper.dts
+@@ -31,7 +31,7 @@ leds: user-leds-pins {
+ 	};
+ 
+ 	panel: lcd_panel {
+-		compatible = "ti,tilcdc,panel";
++		compatible = "panel-dpi";
+ 	};
+ 
+ 	sound: sound_iface {
+@@ -189,16 +189,10 @@ &panel {
+ 	status = "okay";
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&lcd_pins>;
+-	panel-info {
+-		ac-bias = <255>;
+-		ac-bias-intrpt = <0>;
+-		dma-burst-sz = <16>;
+-		bpp = <32>;
+-		fdd = <0x80>;
+-		sync-edge = <0>;
+-		sync-ctrl = <1>;
+-		raster-order = <0>;
+-		fifo-th = <0>;
++	port {
++		panel_in: endpoint {
++			remote-endpoint = <&lcdc_out>;
++		};
+ 	};
+ 	display-timings {
+ 		native-mode = <&timing0>;
+@@ -214,12 +208,18 @@ timing0: timing-480x272 {
+ 			vsync-len = <10>;
+ 			hsync-active = <1>;
+ 			vsync-active = <1>;
++			pixelclk-active = <1>;
+ 		};
+ 	};
+ };
+ 
+ &lcdc {
+ 	status = "okay";
++	port {
++		lcdc_out: endpoint {
++			remote-endpoint = <&panel_in>;
++		};
++	};
+ };
+ 
+ &am33xx_pinmux {
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-sbc-t335.dts b/arch/arm/boot/dts/ti/omap/am335x-sbc-t335.dts
+index 2841e95d9a094..25ee855dd21a7 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-sbc-t335.dts
++++ b/arch/arm/boot/dts/ti/omap/am335x-sbc-t335.dts
+@@ -13,23 +13,17 @@ / {
+ 
+ 	/* DRM display driver */
+ 	panel {
+-		compatible = "ti,tilcdc,panel";
++		compatible = "panel-dpi";
+ 		status = "okay";
+ 		pinctrl-names = "default", "sleep";
+ 		pinctrl-0 = <&lcd_pins_default>;
+ 		pinctrl-1 = <&lcd_pins_sleep>;
+-
+-		panel-info {
+-			ac-bias           = <255>;
+-			ac-bias-intrpt    = <0>;
+-			dma-burst-sz      = <16>;
+-			bpp               = <32>;
+-			fdd               = <0x80>;
+-			sync-edge         = <0>;
+-			sync-ctrl         = <1>;
+-			raster-order      = <0>;
+-			fifo-th           = <0>;
++		port {
++			panel_in: endpoint {
++				remote-endpoint = <&lcdc_out>;
++			};
+ 		};
 +
- 	/* Supported pixel formats */
- 	const uint32_t *pixelformats;
- 	uint32_t num_pixelformats;
+ 		display-timings {
+ 			/* Timing selection performed by U-Boot */
+ 			timing0: lcd {/* 800x480p62 */
+@@ -44,6 +38,7 @@ timing0: lcd {/* 800x480p62 */
+ 				vsync-len = <2>;
+ 				hsync-active = <1>;
+ 				vsync-active = <1>;
++				pixelclk-active = <1>;
+ 			};
+ 			timing1: dvi { /* 1024x768p60 */
+ 				clock-frequency = <65000000>;
+@@ -57,6 +52,7 @@ timing1: dvi { /* 1024x768p60 */
+ 				vsync-len = <6>;
+ 				hsync-active = <0>;
+ 				vsync-active = <0>;
++				pixelclk-active = <1>;
+ 			};
+ 		};
+ 	};
+@@ -173,4 +169,9 @@ lcd-ena-hog {
+ /* Display */
+ &lcdc {
+ 	status = "okay";
++	port {
++		lcdc_out: endpoint {
++			remote-endpoint = <&panel_in>;
++		};
++	};
+ };
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-sl50.dts b/arch/arm/boot/dts/ti/omap/am335x-sl50.dts
+index f3524e5ee43e2..b4b2b6d18d646 100644
+--- a/arch/arm/boot/dts/ti/omap/am335x-sl50.dts
++++ b/arch/arm/boot/dts/ti/omap/am335x-sl50.dts
+@@ -123,22 +123,14 @@ audio_mclk: audio_mclk_gate@0 {
+ 	};
+ 
+ 	panel: lcd_panel {
+-		compatible = "ti,tilcdc,panel";
++		compatible = "panel-dpi";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&lcd_pins>;
+ 
+-		panel-info {
+-			ac-bias = <255>;
+-			ac-bias-intrpt = <0>;
+-			dma-burst-sz = <16>;
+-			bpp = <16>;
+-			fdd = <0x80>;
+-			tft-alt-mode = <0>;
+-			mono-8bit-mode = <0>;
+-			sync-edge = <0>;
+-			sync-ctrl = <1>;
+-			raster-order = <0>;
+-			fifo-th = <0>;
++		port {
++			panel_in: endpoint {
++				remote-endpoint = <&lcdc_out>;
++			};
+ 		};
+ 
+ 		display-timings {
+@@ -157,6 +149,8 @@ timing0: 960x128 {
+ 				vfront-porch = <8>;
+ 				vsync-len = <4>;
+ 				vsync-active = <0>;
++
++				pixelclk-active = <1>;
+ 			};
+ 		};
+ 	};
+@@ -711,6 +705,11 @@ &ehrpwm1 {
+ 
+ &lcdc {
+ 	status = "okay";
++	port {
++		lcdc_out: endpoint {
++			remote-endpoint = <&panel_in>;
++		};
++	};
+ };
+ 
+ &tscadc {
 
 -- 
 2.43.0
