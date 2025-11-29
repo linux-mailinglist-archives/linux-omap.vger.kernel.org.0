@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-5072-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5073-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5492CC940B2
-	for <lists+linux-omap@lfdr.de>; Sat, 29 Nov 2025 16:25:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB7D8C940BB
+	for <lists+linux-omap@lfdr.de>; Sat, 29 Nov 2025 16:26:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 003DC346DD8
-	for <lists+linux-omap@lfdr.de>; Sat, 29 Nov 2025 15:25:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86FF73A56B6
+	for <lists+linux-omap@lfdr.de>; Sat, 29 Nov 2025 15:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C43C1C860C;
-	Sat, 29 Nov 2025 15:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5798A1D6194;
+	Sat, 29 Nov 2025 15:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GBmpQYWr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SZPCcuBD"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255EB1A9FAC;
-	Sat, 29 Nov 2025 15:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5AEC1A9FAC;
+	Sat, 29 Nov 2025 15:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764429934; cv=none; b=MPdxZj2mUqDa6Gm3NVFfBpRDE0Wr+dYD8SQRNSQlyDXntaO9XNpMPbZkXjisaqrS4AKSpqVpRNnirrpm+k4iJz8PftesQioxA2N91165ZDaq1XhNCh8dtxcZA+ngnFWpypEk98u7TQz70tl92GT//Zr4MBKu8tGFXZdedFkpPac=
+	t=1764429986; cv=none; b=VD/EF3W0fXZGYa+1tWf21WhMAEzuupgOxpA4BOJxSN2p4mZL5tS2RfdJKzPdRAsR2ncS6aExIWeXladLe/tZBB8A+e/SVweEggwves09kZikoKv8tzOMPYt8kOlsvJcbuUJoIx3bCKU1+YJoiQFfnONz8tV/PGIgjBbGLQieDkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764429934; c=relaxed/simple;
-	bh=FDfNfdjZAK1CRX+PZryTBYkcC38g8MKCrpLm485korQ=;
+	s=arc-20240116; t=1764429986; c=relaxed/simple;
+	bh=6dN8T9mrZqcvOCUZ7MOfz/qCe+22J1EQndGJjdwc064=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aS8jeRw0FWN8v/PMCkiBLENsAQEVLnh9zv2m7KgF4m7XudlXSh2YNB1u/6zkyLq6IxGEgY5yHBZ7wbjSOdP1xNidnyoIDfBj3A+AAvS6b3VNJTqqb/ltOMz24McK9jE11MNDIMuG/UkHgd4Y2DiRdyJhLfxxGISVBaUp5Lv1rF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GBmpQYWr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8849C4CEF7;
-	Sat, 29 Nov 2025 15:25:29 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=HW1wDjFSp66xU/c0Ytk9ZjN5S/nHSKX6wBF2P6h5k3O7jNJULppft8/+Qxjd61M0w1YpGK5x3UyHatrh8q8xWGXTdtFN3S+g77K/eGuI9vCXZDHJBlN/Azn5NbRTOu+JXSSw58YDpQ01G28htPiRp/Jk90EDMnAJDaVOsZIvjlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SZPCcuBD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA82C4CEF7;
+	Sat, 29 Nov 2025 15:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764429933;
-	bh=FDfNfdjZAK1CRX+PZryTBYkcC38g8MKCrpLm485korQ=;
+	s=k20201202; t=1764429985;
+	bh=6dN8T9mrZqcvOCUZ7MOfz/qCe+22J1EQndGJjdwc064=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GBmpQYWr80Ajy6bRs3lLVE2ZsOP+GszaDMDxdeUyZVzD8z0yQ960oPHxMqUIzd+FG
-	 upVxMvjKHMt6TAq2lXL4Xmw0MZng5Ax/I0/0CB12Czndo4NqnvxSvoS9chZrHtVU9L
-	 yR/K4P99KsMcnLxbaYmkKZNNzqykxebdpKj7XLPsd69bd72ATNtV5K0MQQFtve1I3x
-	 dROQ6HnlG1NzjqoD6Ol2tw/YBbb3n4c59a7pgUOcbQO74eLJMQfMdlOh5YdncdwPrv
-	 ANTwFEuB+C3phNjh7LGu6Tcaculmb1wP5Qup0q5KeW6a786kW+fjeYzuM66TAWPs4G
-	 RQxuXOxvYrg8w==
-Message-ID: <58ccca49-f30c-4461-b4aa-4985f72c89fb@kernel.org>
-Date: Sat, 29 Nov 2025 16:25:28 +0100
+	b=SZPCcuBDSA5kEqEUB/k3PAX71SHq6hh7MHQH6uiDcx+kW0XtkZjIPD2EGAtU7tJTy
+	 IR2kXRQKg96v2b2DMIyWK9m+8e3oERsGQPeKsgvtXz337DflK90U2radOMuQAVGxhx
+	 +JsLvI4uuASc999okkY9EpqOg8FKyGDvzbs2fSaqQfr3lzUiboPsyq72eq8y3BA6VP
+	 KhUBesFhjXCcZcTE63rYMzhB1sYM9qFUE7L2P/0W2xv2CdnEoo13XVdr4sJk2NGgGM
+	 WullJK28wP4vSqLgg5ODFOP7NeZv++1BV7+bcDeV39AD5zSPRnHARabZEgHtDuC08o
+	 fUsY8NStXevpw==
+Message-ID: <e775d0be-d4d8-429b-bfd1-05872f141832@kernel.org>
+Date: Sat, 29 Nov 2025 16:26:19 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -50,7 +50,8 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] syscon: Wire up has-inaccessible-regs
+Subject: Re: [PATCH 4/4] arm: dts: omap: Mark various register maps as
+ dangerous
 To: Richard Weinberger <richard@nod.at>, linux-kernel@vger.kernel.org
 Cc: linux-omap@vger.kernel.org, devicetree@vger.kernel.org, arnd@arndb.de,
  lee@kernel.org, dakr@kernel.org, rafael@kernel.org,
@@ -59,7 +60,7 @@ Cc: linux-omap@vger.kernel.org, devicetree@vger.kernel.org, arnd@arndb.de,
  aaro.koskinen@iki.fi, conor+dt@kernel.org, krzk+dt@kernel.org,
  robh@kernel.org
 References: <20251129142042.344359-1-richard@nod.at>
- <20251129142042.344359-4-richard@nod.at>
+ <20251129142042.344359-5-richard@nod.at>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -105,40 +106,27 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20251129142042.344359-4-richard@nod.at>
+In-Reply-To: <20251129142042.344359-5-richard@nod.at>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 29/11/2025 15:20, Richard Weinberger wrote:
-> Evaluate the has-inaccessible-regs device tree property to disable
-> debugfs access if a register map contains dangerous/harmful registers.
-> 
-> Signed-off-by: Richard Weinberger <richard@nod.at>
-> ---
->  drivers/mfd/syscon.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-> index ae71a2710bed8..73fff0df3f42f 100644
-> --- a/drivers/mfd/syscon.c
-> +++ b/drivers/mfd/syscon.c
-> @@ -70,6 +70,16 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
->  	else if (of_property_read_bool(np, "native-endian"))
->  		syscon_config.val_format_endian = REGMAP_ENDIAN_NATIVE;
->  
-> +
-> +	/*
-> +	 * Disable debugfs access if a register map has various inaccessible
-> +	 * registers.
-> +	 * In such a case the device driver has to know exactly how and when
-> +	 * access is allowed but general access via userspace can cause harm.
-> +	 */
-> +	if (of_property_read_bool(np, "has-inaccessible-regs"))
-> +		syscon_config.debugfs_disable = true;
+> index 711ce4c31bb1f..1b1f31608d37e 100644
+> --- a/arch/arm/boot/dts/ti/omap/dra7.dtsi
+> +++ b/arch/arm/boot/dts/ti/omap/dra7.dtsi
+> @@ -359,6 +359,7 @@ bandgap: bandgap@4a0021e0 {
+>  		dsp1_system: dsp_system@40d00000 {
+>  			compatible = "syscon";
 
-So you mark ENTIRE device like that? Then you don't need the property.
-Your compatible already tells you that (IOW, this is fully deducible
-from the compatible).
+Oh, no no, sorry, but buggy/incomplete/legacy DT is not an excuse for
+new properties. You cannot have such compatible alone in the first place.
+
+>  			reg = <0x40d00000 0x100>;
+> +			has-inaccessible-regs;
+>  		};
+
+
+
 
 Best regards,
 Krzysztof
