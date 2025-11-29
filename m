@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-5071-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5072-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40C46C940A0
-	for <lists+linux-omap@lfdr.de>; Sat, 29 Nov 2025 16:23:35 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5492CC940B2
+	for <lists+linux-omap@lfdr.de>; Sat, 29 Nov 2025 16:25:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D85EA3A566F
-	for <lists+linux-omap@lfdr.de>; Sat, 29 Nov 2025 15:23:33 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 003DC346DD8
+	for <lists+linux-omap@lfdr.de>; Sat, 29 Nov 2025 15:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 715841F4262;
-	Sat, 29 Nov 2025 15:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C43C1C860C;
+	Sat, 29 Nov 2025 15:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oD0sTHCq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GBmpQYWr"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316261C860B;
-	Sat, 29 Nov 2025 15:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255EB1A9FAC;
+	Sat, 29 Nov 2025 15:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764429808; cv=none; b=JJ2YSzAdk1oFLiMPtbfT1xKzhXNLxLVpDJ965VfYKEgwKRdltgtFppBMgU5acTeCn3CM8LHJc4CIhMT8dBhj1hkCVgdFKhX9hp2q/ygzO9ggqCLGSARe/hAPiWNkl84glI3E0gb0ZCU65FlQsd7esLNkfIHQ3RgxrVir7C07FY0=
+	t=1764429934; cv=none; b=MPdxZj2mUqDa6Gm3NVFfBpRDE0Wr+dYD8SQRNSQlyDXntaO9XNpMPbZkXjisaqrS4AKSpqVpRNnirrpm+k4iJz8PftesQioxA2N91165ZDaq1XhNCh8dtxcZA+ngnFWpypEk98u7TQz70tl92GT//Zr4MBKu8tGFXZdedFkpPac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764429808; c=relaxed/simple;
-	bh=LCD4QgFTmEeRxc6V2ljf2oIBpKOh3/Fe9xyk7FWVCC8=;
+	s=arc-20240116; t=1764429934; c=relaxed/simple;
+	bh=FDfNfdjZAK1CRX+PZryTBYkcC38g8MKCrpLm485korQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sPfcHEJYHyvBX8fmPAEkbLjbpqURCCw+RdHcoZefUR/xU1HcrH5ucU7vmxyT8bSCq7zKWcU7Wg9EcpYbx92tv7WvKHTz73d1BnyUG6xyRMXrqErXRClyiKYQflofCd5ztw5nyagD/19i8XUwnpUBKdBbuJ3nLk/lvT5TVIb+GSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oD0sTHCq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96DE1C4CEF7;
-	Sat, 29 Nov 2025 15:23:23 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=aS8jeRw0FWN8v/PMCkiBLENsAQEVLnh9zv2m7KgF4m7XudlXSh2YNB1u/6zkyLq6IxGEgY5yHBZ7wbjSOdP1xNidnyoIDfBj3A+AAvS6b3VNJTqqb/ltOMz24McK9jE11MNDIMuG/UkHgd4Y2DiRdyJhLfxxGISVBaUp5Lv1rF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GBmpQYWr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8849C4CEF7;
+	Sat, 29 Nov 2025 15:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764429807;
-	bh=LCD4QgFTmEeRxc6V2ljf2oIBpKOh3/Fe9xyk7FWVCC8=;
+	s=k20201202; t=1764429933;
+	bh=FDfNfdjZAK1CRX+PZryTBYkcC38g8MKCrpLm485korQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oD0sTHCq81zANh+lgD97MIoh0RlfamBhrGl0ZW+rweA4kMRYkAs69z6Am+E49yP5G
-	 ycPwEnOOYrmZfAigDVdAi4HvyGID5Urs7AB1i1TpxKLjrALNSJjNoFY1Ued2uWbnJF
-	 Q/qW3BW+lUbmu9qcgdw4kpTRFn2LAp0KxB7EcW0sPh5ulyhlD24VYwkktlnY3acf8U
-	 s6n/zGWZZ+8DJmhshHaabM+uQLjfcF9ZryafpJBIpjXVXetvtFH1AtRFkoqboDDswk
-	 F0NsxlFW+oYWIhyLhmRDnyDu3a2znJfYalyRvVitG8KiwjdkT67osOfaKG9rIXD1QU
-	 h4cNXmqbyxDTw==
-Message-ID: <7d9fcf24-5ad5-48cf-b36d-83025976f3aa@kernel.org>
-Date: Sat, 29 Nov 2025 16:23:21 +0100
+	b=GBmpQYWr80Ajy6bRs3lLVE2ZsOP+GszaDMDxdeUyZVzD8z0yQ960oPHxMqUIzd+FG
+	 upVxMvjKHMt6TAq2lXL4Xmw0MZng5Ax/I0/0CB12Czndo4NqnvxSvoS9chZrHtVU9L
+	 yR/K4P99KsMcnLxbaYmkKZNNzqykxebdpKj7XLPsd69bd72ATNtV5K0MQQFtve1I3x
+	 dROQ6HnlG1NzjqoD6Ol2tw/YBbb3n4c59a7pgUOcbQO74eLJMQfMdlOh5YdncdwPrv
+	 ANTwFEuB+C3phNjh7LGu6Tcaculmb1wP5Qup0q5KeW6a786kW+fjeYzuM66TAWPs4G
+	 RQxuXOxvYrg8w==
+Message-ID: <58ccca49-f30c-4461-b4aa-4985f72c89fb@kernel.org>
+Date: Sat, 29 Nov 2025 16:25:28 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -50,8 +50,7 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] dt-bindings: Document new common property:
- has-inaccessible-regs
+Subject: Re: [PATCH 3/4] syscon: Wire up has-inaccessible-regs
 To: Richard Weinberger <richard@nod.at>, linux-kernel@vger.kernel.org
 Cc: linux-omap@vger.kernel.org, devicetree@vger.kernel.org, arnd@arndb.de,
  lee@kernel.org, dakr@kernel.org, rafael@kernel.org,
@@ -60,7 +59,7 @@ Cc: linux-omap@vger.kernel.org, devicetree@vger.kernel.org, arnd@arndb.de,
  aaro.koskinen@iki.fi, conor+dt@kernel.org, krzk+dt@kernel.org,
  robh@kernel.org
 References: <20251129142042.344359-1-richard@nod.at>
- <20251129142042.344359-2-richard@nod.at>
+ <20251129142042.344359-4-richard@nod.at>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -106,28 +105,40 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20251129142042.344359-2-richard@nod.at>
+In-Reply-To: <20251129142042.344359-4-richard@nod.at>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 29/11/2025 15:20, Richard Weinberger wrote:
-> This property is used to denote that a certain register map contains
-> registers that are inaccessible under conditions only a device driver
-> can know.
+> Evaluate the has-inaccessible-regs device tree property to disable
+> debugfs access if a register map contains dangerous/harmful registers.
+> 
+> Signed-off-by: Richard Weinberger <richard@nod.at>
+> ---
+>  drivers/mfd/syscon.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+> index ae71a2710bed8..73fff0df3f42f 100644
+> --- a/drivers/mfd/syscon.c
+> +++ b/drivers/mfd/syscon.c
+> @@ -70,6 +70,16 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
+>  	else if (of_property_read_bool(np, "native-endian"))
+>  		syscon_config.val_format_endian = REGMAP_ENDIAN_NATIVE;
+>  
+> +
+> +	/*
+> +	 * Disable debugfs access if a register map has various inaccessible
+> +	 * registers.
+> +	 * In such a case the device driver has to know exactly how and when
+> +	 * access is allowed but general access via userspace can cause harm.
+> +	 */
+> +	if (of_property_read_bool(np, "has-inaccessible-regs"))
+> +		syscon_config.debugfs_disable = true;
 
-So device driver controls fully their exposure via sysfs.
-
-Binding cannot help here at all.
-
-> The purpose of this property is to disable register access through debug
-> facilities outside of the device driver.
-
-You described OS policy which is not suitable for bindings at all. Plus
-commit msg really mixes up two separate points - buggy driver which
-fails to properly set regmap (or other facility) with some DT-based
-restrictions.
-
-
+So you mark ENTIRE device like that? Then you don't need the property.
+Your compatible already tells you that (IOW, this is fully deducible
+from the compatible).
 
 Best regards,
 Krzysztof
