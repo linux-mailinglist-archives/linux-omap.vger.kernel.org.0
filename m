@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-5076-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5077-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BF27C94169
-	for <lists+linux-omap@lfdr.de>; Sat, 29 Nov 2025 16:44:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3081EC94178
+	for <lists+linux-omap@lfdr.de>; Sat, 29 Nov 2025 16:49:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 404724E2550
-	for <lists+linux-omap@lfdr.de>; Sat, 29 Nov 2025 15:44:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12BCD3A55B1
+	for <lists+linux-omap@lfdr.de>; Sat, 29 Nov 2025 15:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADE3C205E25;
-	Sat, 29 Nov 2025 15:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C711F4262;
+	Sat, 29 Nov 2025 15:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZXoS9j/q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BHUQIrxf"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EAF936B;
-	Sat, 29 Nov 2025 15:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177BC199FB0;
+	Sat, 29 Nov 2025 15:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764431091; cv=none; b=OWHSbD+YOjc9cemR4A8O2AZ8mvBJBO1/6jyfwnt93UCaIl2sZ41kaoa14g588+5CtHGnV6T5VrkoK833HS9O5PACoNMcELtfE5QfMAURnpH0xRNn+9W0L9SI4wakf8l1YyqZ0XmX6WSPyk449br90320uZSQBWRIZ6QFIaaszIw=
+	t=1764431358; cv=none; b=Qhvd3oTFifBrszBFnBImYwSJzVnkxrv5kMfm4RpKaElR502Zf2BdkUR9sOXkSoYy/4K+fISGlrmlD8qS5hEtFmHdJ9Zo+Now+D40nb2+Sr0jI8QdM5Ms9g6o4ML160KMsEm4dXiZsXNNnB4o/kVXNe7hmCKotDG3+g9ppbMT56o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764431091; c=relaxed/simple;
-	bh=0UANz+DgS6lbWIrceFwDIral2u/fvRmP+7PtS4MXcYI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iAHs8dlh0qRdUrXQx9x4dBL9GJsyn7FDpT7cBnrjyJN38vmiWQ/sm7DtBkn9MG91tOZBz4KV5MPkM5LTdlRFDIYWprVTHJ+fk1mAW6wjDQVg7TCtoKYWpzAfFleQQo7qAH61EUfy0EnSFMunkiKewf/ZYRO+34bOiHQ19c3zh2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZXoS9j/q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD81DC4CEF7;
-	Sat, 29 Nov 2025 15:44:46 +0000 (UTC)
+	s=arc-20240116; t=1764431358; c=relaxed/simple;
+	bh=kUDQK7LsFbW6tKS4w6wKtujHmLnMGNcZcAB8uTgRxwc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Qx6uXpGJAXROsmmCIyb3FYipthmifigc/IBab35q0TeiTxWEwoa0kaZ8IjGzvVwFN4mkFHgBdWDwrrkRgHRwjtsUf+OYFGf/jKbtXtdoHa69Ck6MrR04sOC/hEBIats8RJ7OAjMalhlKn2JcM2Yk01MgsETmeni4/57M4pwhv58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BHUQIrxf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D0DC4CEF7;
+	Sat, 29 Nov 2025 15:49:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764431090;
-	bh=0UANz+DgS6lbWIrceFwDIral2u/fvRmP+7PtS4MXcYI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZXoS9j/q72buF0f1wJAPgpewZ8Lz6+0apL/gWGY5ZRMgeutubTa77wj7A8FXqYjz5
-	 SQufS3a6jc5W2Cze5kzp+FxmaY+xMyK3ZfkyzOeoeb9IpTYriE2tyVYwomTOWBPbwl
-	 vtwBU14yKtVvP07LNvPRdz1DuEhMaXnURAvbyJELmDLAn2iTesmoMcWOKt7pK4L/ZN
-	 t7e3/7DlPJfZfK06X2R/d5E9sK5JsRNv8F0EFSPKcjW8A9obxOPPAF0yFp9idATvqC
-	 2xOW46FNTsnGm4b0G/tv7g6TujvwZm8uhNgF4y13h0KXjW3woPYs0MNfjSiMn7mA+/
-	 Hd2b0K2loMoKQ==
-Message-ID: <8b0e2b8a-314f-40ee-8f30-c281f3799705@kernel.org>
-Date: Sat, 29 Nov 2025 16:44:44 +0100
+	s=k20201202; t=1764431357;
+	bh=kUDQK7LsFbW6tKS4w6wKtujHmLnMGNcZcAB8uTgRxwc=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=BHUQIrxf4CNnImbndAGLIAjLGuVUWW4mNbCd6bCiRbHpnkei8uoHoFRjQ9+lEzizh
+	 2tF4NSnBMIIIp3mK7MJoprJXCwTmQ0KaXIAW7PVgR72Z9EcTd3Lcb9uWYHm1LVHn8p
+	 XCFrFeFL+lCiy37ZHodb9SvUhFQxK7He7AFteA9FVmjX6q5yjU4y3lxyP+a3U1tbgn
+	 A3qkYTFvmYTdBAdUe4tKckTV0ykdUBleCwqFnI8nQv3Xftk5R4vgf3twcTrdtHQjeb
+	 9GiUalZKbxd3VzZyPMRG5z8+H6+hq4/6WwkQ6MuWIquTaAVudXOIzFa6TDKhPUqSpm
+	 d++G3tA2DTJPw==
+Message-ID: <4fc059f0-8aab-4bd2-a7a2-33a532117e71@kernel.org>
+Date: Sat, 29 Nov 2025 16:49:11 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -52,6 +52,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/4] dt-bindings: Document new common property:
  has-inaccessible-regs
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Richard Weinberger <richard@nod.at>
 Cc: linux-kernel <linux-kernel@vger.kernel.org>,
  linux-omap <linux-omap@vger.kernel.org>,
@@ -68,7 +69,7 @@ References: <20251129142042.344359-1-richard@nod.at>
  <20251129142042.344359-2-richard@nod.at>
  <7d9fcf24-5ad5-48cf-b36d-83025976f3aa@kernel.org>
  <771947541.4509.1764430418744.JavaMail.zimbra@nod.at>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <8b0e2b8a-314f-40ee-8f30-c281f3799705@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -113,82 +114,39 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <771947541.4509.1764430418744.JavaMail.zimbra@nod.at>
+In-Reply-To: <8b0e2b8a-314f-40ee-8f30-c281f3799705@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 29/11/2025 16:33, Richard Weinberger wrote:
-> ----- Ursprüngliche Mail -----
->> Von: "Krzysztof Kozlowski" <krzk@kernel.org>
->> On 29/11/2025 15:20, Richard Weinberger wrote:
->>> This property is used to denote that a certain register map contains
->>> registers that are inaccessible under conditions only a device driver
->>> can know.
+On 29/11/2025 16:44, Krzysztof Kozlowski wrote:
+>>         scm_conf_clocks: clocks {
+>>                 #address-cells = <1>;
+>>                 #size-cells = <0>;
+>>         };      
+>> };
 >>
->> So device driver controls fully their exposure via sysfs.
+>> So, drivers like ti,pbias-dra7 or ti,dra7xx-phy-gmii-sel touch only registers
+>> they know about and this works well.
+>> But syscon manages the whole register map via regmap, and regmap exposes it all
+>> via debugfs.
 >>
->> Binding cannot help here at all.
+>> What solution do you propose?
+>> Splitting reg = <0x0 0x1400> into many tiny fractions and not using an mfd anymore?
 > 
-> The driver does not expose them via sysfs, it's the regmap framework via debugfs.
+> Fix the driver. In your case, the syscon driver.
 
-Driver always tells the regmap which registers are valid. This is not a
-new problem, we had it in several devices and fixed drivers.
+BTW, the state of existing TI DRA code is so poor that you don't have
+many choices... or rather every choice has drawbacks. If this was proper
+DTS, then I would say - define register map, used by regmap, for your
+compatible either in syscon driver or dedicated driver (thus new driver
+will be the syscon provider for you, just like Google GS101 syscon is
+special).
 
->  
->>> The purpose of this property is to disable register access through debug
->>> facilities outside of the device driver.
->>
->> You described OS policy which is not suitable for bindings at all. Plus
->> commit msg really mixes up two separate points - buggy driver which
->> fails to properly set regmap (or other facility) with some DT-based
->> restrictions.
-> 
-> I kind of expected this answer. ;-)
-> 
-> Currently arch/arm/boot/dts/ti/omap/dra7-l4.dtsi binds CTRL_MODULE_CORE to the syscon mfd driver
-> and various child nodes bind to subranges.
-> e.g.
-> scm_conf: scm_conf@0 {
->         compatible = "syscon", "simple-bus";
->         reg = <0x0 0x1400>;
->         #address-cells = <1>;
->         #size-cells = <1>;
->         ranges = <0 0x0 0x1400>;
->         has-inaccessible-regs;
-> 
->         pbias_regulator: pbias_regulator@e00 {
->                 compatible = "ti,pbias-dra7", "ti,pbias-omap";
->                 reg = <0xe00 0x4>;
->                 syscon = <&scm_conf>;
->                 pbias_mmc_reg: pbias_mmc_omap5 {
->                         regulator-name = "pbias_mmc_omap5";
->                         regulator-min-microvolt = <1800000>;
->                         regulator-max-microvolt = <3300000>;
->                 };      
->         };      
-> 
->         phy_gmii_sel: phy-gmii-sel@554 {
->                 compatible = "ti,dra7xx-phy-gmii-sel";
->                 reg = <0x554 0x4>;
->                 #phy-cells = <1>;
->         };      
-> 
->         scm_conf_clocks: clocks {
->                 #address-cells = <1>;
->                 #size-cells = <0>;
->         };      
-> };
-> 
-> So, drivers like ti,pbias-dra7 or ti,dra7xx-phy-gmii-sel touch only registers
-> they know about and this works well.
-> But syscon manages the whole register map via regmap, and regmap exposes it all
-> via debugfs.
-> 
-> What solution do you propose?
-> Splitting reg = <0x0 0x1400> into many tiny fractions and not using an mfd anymore?
+Or maybe this is not syscon at all!
 
-Fix the driver. In your case, the syscon driver.
-
+Remember that syscon is a collection of miscellaneous system controller
+registers. You should not use syscon for other things, like devices with
+incomplete hardware description.
 
 Best regards,
 Krzysztof
