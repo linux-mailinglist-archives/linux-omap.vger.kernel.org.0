@@ -1,474 +1,122 @@
-Return-Path: <linux-omap+bounces-5091-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5092-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A4EEC97CB9
-	for <lists+linux-omap@lfdr.de>; Mon, 01 Dec 2025 15:14:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECCB7C992F3
+	for <lists+linux-omap@lfdr.de>; Mon, 01 Dec 2025 22:35:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6B8E84E2B7E
-	for <lists+linux-omap@lfdr.de>; Mon,  1 Dec 2025 14:13:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABD323A47F7
+	for <lists+linux-omap@lfdr.de>; Mon,  1 Dec 2025 21:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD44311588;
-	Mon,  1 Dec 2025 14:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="JsmkxqW8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDD47274FEF;
+	Mon,  1 Dec 2025 21:35:00 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from lithops.sigma-star.at (mailout.nod.at [116.203.167.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81420319859;
-	Mon,  1 Dec 2025 14:13:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8027D1E3DED;
+	Mon,  1 Dec 2025 21:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.167.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764598409; cv=none; b=CSSUOsmvdLVQtAJ94mklKG6LIt983I7X1VMob94P62QM8F3z3DfJJDmnfOl1fflyX+0ZZ5Kd5XzBX3gHIQqJpjfScVPOjjFjPibc0KKWEfs59fMKci/zC6Cg+5GrCfFURqAaRh5Hl0DFHnlgnhtHGFD1sMK2r5yemVd2G2B8Enk=
+	t=1764624900; cv=none; b=qYIrMO1We2/e+yBdvbMUAzyWeNxgDwQWXq/VuFWvSnRs24CCi4i+S2Q1+hoIMzYiqsfqE8F/9z8eqT9ePY2xaATj7aVmAiOmmS5bg3O7CKrLsJU6OhUEkfMPcNK4gKmopgpqAF4RzB6MuV7FFoCwwQ8en2CTpqIkyIfimZU0h70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764598409; c=relaxed/simple;
-	bh=ERO00CYF2jt86k6vPGoPpd3u3B8oGPoi+ij5ehgCHx4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PZ9oGOee4lb7sfleXWacIEczA/BCJa5KMM4DbvFMdgWHU3a9c8KaFcit0lo+MRvRs6iaimNBHJG1kWkGa8WGY8BKkTbwzYAGWcs1dghB3Vy8TnGSE6lBStetDIMu0KNUxFaLXdVIKyrgfNaeB0QPyIWi3Qe4KbgsVXgKiIbzD2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=JsmkxqW8; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 702E66AC;
-	Mon,  1 Dec 2025 15:11:07 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1764598268;
-	bh=ERO00CYF2jt86k6vPGoPpd3u3B8oGPoi+ij5ehgCHx4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JsmkxqW8Fm+G8HLBckYKYetZ95hcPdDuQj1rY2fz4jjHDv2MxhALzIrVUfvN3q9QE
-	 Myo2ZIfOtRsXjP68qDHf2XQEzabyOLJS338/7Gy9tUP6qSMeSxsfr5jRLXs4OjmHqX
-	 dakVddeeKLrci4RRmv0hVCTJqZOsMDRvNbD4Yn50=
-Message-ID: <96b1b7bf-ddbe-4213-a201-dc89cf2998dd@ideasonboard.com>
-Date: Mon, 1 Dec 2025 16:13:16 +0200
+	s=arc-20240116; t=1764624900; c=relaxed/simple;
+	bh=zwfk/25xOFSDWC2KwAr9y83Wr04bK1M28Zaxfy2HmdA=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=k/VtA0LquwlTl0EydLMbPaUUbBj84Hz6xG082cn9wxWHzyaQWz2o/R9gGqsBW+HIJbOGOLAvbGnaEKEwdmiGpSzz11J6yLBUJGFPBUM74K6L2FsxCmivnsEsgInANCR8ke+gZ8j9euAD+S1fnBU6Lq5cpAzR5j2S7/fgq2WGM4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at; spf=fail smtp.mailfrom=nod.at; arc=none smtp.client-ip=116.203.167.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nod.at
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id C7E7B11C038;
+	Mon,  1 Dec 2025 22:34:48 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id wlcMB6fWRIpW; Mon,  1 Dec 2025 22:34:47 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 5288C2ABFDC;
+	Mon,  1 Dec 2025 22:34:47 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id SI9weaq8LT06; Mon,  1 Dec 2025 22:34:47 +0100 (CET)
+Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 126D411C038;
+	Mon,  1 Dec 2025 22:34:47 +0100 (CET)
+Date: Mon, 1 Dec 2025 22:34:46 +0100 (CET)
+From: Richard Weinberger <richard@nod.at>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-kernel <linux-kernel@vger.kernel.org>, 
+	linux-omap <linux-omap@vger.kernel.org>, 
+	devicetree <devicetree@vger.kernel.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Lee Jones <lee@kernel.org>, 
+	dakr <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Mark Brown <broonie@kernel.org>, tony <tony@atomide.com>, 
+	rogerq <rogerq@kernel.org>, khilman <khilman@baylibre.com>, 
+	Andreas Kemnade <andreas@kemnade.info>, 
+	aaro koskinen <aaro.koskinen@iki.fi>, 
+	Conor Dooley <conor+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, robh <robh@kernel.org>
+Message-ID: <2010740416.11902.1764624886863.JavaMail.zimbra@nod.at>
+In-Reply-To: <c303a5f3-4283-445e-9e0e-053fab32a468@kernel.org>
+References: <20251129142042.344359-1-richard@nod.at> <20251129142042.344359-2-richard@nod.at> <7d9fcf24-5ad5-48cf-b36d-83025976f3aa@kernel.org> <771947541.4509.1764430418744.JavaMail.zimbra@nod.at> <8b0e2b8a-314f-40ee-8f30-c281f3799705@kernel.org> <1810160052.4618.1764431802423.JavaMail.zimbra@nod.at> <c303a5f3-4283-445e-9e0e-053fab32a468@kernel.org>
+Subject: Re: [PATCH 1/4] dt-bindings: Document new common property:
+ has-inaccessible-regs
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/21] ARM: dts: omap: Bind panel to panel-dpi instead of
- ti,tilcdc,panel driver
-To: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
-Cc: Markus Schneider-Pargmann <msp@baylibre.com>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Louis Chauvet <louis.chauvet@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Miguel Gazquez <miguel.gazquez@bootlin.com>,
- dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-omap@vger.kernel.org, Jyri Sarha <jyri.sarha@iki.fi>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Bartosz Golaszewski <brgl@bgdev.pl>, Tony Lindgren <tony@atomide.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>
-References: <20251126-feature_tilcdc-v1-0-49b9ef2e3aa0@bootlin.com>
- <20251126-feature_tilcdc-v1-5-49b9ef2e3aa0@bootlin.com>
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Content-Language: en-US
-Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
- 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
-In-Reply-To: <20251126-feature_tilcdc-v1-5-49b9ef2e3aa0@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF144 (Linux)/8.8.12_GA_3809)
+Thread-Topic: dt-bindings: Document new common property: has-inaccessible-regs
+Thread-Index: pQQN9ocrW7HjRbxVTVNaLA3sT0UvTg==
 
-Hi Kory,
+----- Urspr=C3=BCngliche Mail -----
+> Von: "Krzysztof Kozlowski" <krzk@kernel.org>
+>>>> What solution do you propose?
+>>>> Splitting reg =3D <0x0 0x1400> into many tiny fractions and not using =
+an mfd
+>>>> anymore?
+>>>
+>>> Fix the driver. In your case, the syscon driver.
+>>=20
+>> Please help me to understand what the desired behavior of the driver is.
+>>=20
+>> Currently syscon creates one regmap for everything and passes this regma=
+p
+>> to the individual syscon users.
+>> These users have to know what offset within the regmap is their playgrou=
+nd.
+>> If I understand correctly, it would be better if every syscon user would
+>> register their own regmap?
+>=20
+> I don't think so. This device driver, so the syscon, creates the regmap
+> and knows EXACTLY which registers are valid or not. It is not
+> responsibility of the consumer to tell the syscon what this syscon is.
+> Syscon knows that...
 
-On 26/11/2025 19:35, Kory Maincent (TI.com) wrote:
-> Use panel-dpi driver instead of the deprecated tilcdc-panel driver in
-> preparation for removing the tilcdc-panel driver and binding.
-> 
-> Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
-> ---
-> 
-> This patch is not tested. It would be nice if someone with one of this
-> board could test and validate it.
-> ---
->  arch/arm/boot/dts/ti/davinci/da850-evm.dts    | 26 +++++++++++++-------------
->  arch/arm/boot/dts/ti/omap/am335x-guardian.dts | 25 +++++++++----------------
->  arch/arm/boot/dts/ti/omap/am335x-pdu001.dts   | 21 ++++++++++-----------
->  arch/arm/boot/dts/ti/omap/am335x-pepper.dts   | 22 +++++++++++-----------
->  arch/arm/boot/dts/ti/omap/am335x-sbc-t335.dts | 25 +++++++++++++------------
->  arch/arm/boot/dts/ti/omap/am335x-sl50.dts     | 25 ++++++++++++-------------
->  6 files changed, 68 insertions(+), 76 deletions(-)
-> 
+How to configure this in syscon?
+AFAIK it takes only a single reg property.
+Are you suggesting to add many more syscon nodes to the DT to skip the hole=
+s?
 
-Doesn't this, or rather the following patches, break DTB compatibility
-with all the above boards?
+Currently the scm_conf@0 DT node defines the first 0x1400 bytes
+of the CTRL_MODULE_CORE register[0].
 
- Tomi
+Reading from register 0x180 triggers an async data abort here.
+The manual describes it as "RESERVED" of type "R".
+Lots of other offsets in CTRL_MODULE_CORE are reserved, but reading works.
 
-> diff --git a/arch/arm/boot/dts/ti/davinci/da850-evm.dts b/arch/arm/boot/dts/ti/davinci/da850-evm.dts
-> index 38a191fb04149..79cca1f6205ef 100644
-> --- a/arch/arm/boot/dts/ti/davinci/da850-evm.dts
-> +++ b/arch/arm/boot/dts/ti/davinci/da850-evm.dts
-> @@ -40,7 +40,7 @@ backlight: backlight-pwm {
->  	};
->  
->  	panel {
-> -		compatible = "ti,tilcdc,panel";
-> +		compatible = "panel-dpi";
->  		pinctrl-names = "default";
->  		pinctrl-0 = <&lcd_pins>;
->  		/*
-> @@ -50,17 +50,10 @@ panel {
->  		 */
->  		status = "okay";
->  		enable-gpios = <&gpio 40 GPIO_ACTIVE_HIGH>; /* lcd_panel_pwr */
-> -
-> -		panel-info {
-> -			ac-bias = <255>;
-> -			ac-bias-intrpt = <0>;
-> -			dma-burst-sz = <16>;
-> -			bpp = <16>;
-> -			fdd = <0x80>;
-> -			sync-edge = <0>;
-> -			sync-ctrl = <1>;
-> -			raster-order = <0>;
-> -			fifo-th = <1>;
-> +		port {
-> +			panel_in: endpoint {
-> +				remote-endpoint = <&lcdc_out>;
-> +			};
->  		};
->  
->  		display-timings {
-> @@ -222,6 +215,13 @@ &rtc0 {
->  };
->  
->  &lcdc {
-> +	fifo-threshold = <16>;
-> +
-> +	port {
-> +		lcdc_out: endpoint {
-> +			remote-endpoint = <&panel_in>;
-> +		};
-> +	};
->  	status = "okay";
->  };
->  
-> @@ -459,7 +459,7 @@ &vpif {
->  	pinctrl-0 = <&vpif_capture_pins>, <&vpif_display_pins>;
->  	/*
->  	 * The vpif and the LCD are mutually exclusive.
-> -	 * To enable VPIF, disable the ti,tilcdc,panel then
-> +	 * To enable VPIF, disable the panel-dpi then
->  	 * change the status below to 'okay'
->  	 */
->  	status = "disabled";
-> diff --git a/arch/arm/boot/dts/ti/omap/am335x-guardian.dts b/arch/arm/boot/dts/ti/omap/am335x-guardian.dts
-> index 4b070e634b281..f38ce9be2c106 100644
-> --- a/arch/arm/boot/dts/ti/omap/am335x-guardian.dts
-> +++ b/arch/arm/boot/dts/ti/omap/am335x-guardian.dts
-> @@ -68,10 +68,15 @@ gpio-poweroff {
->  	};
->  
->  	panel {
-> -		compatible = "ti,tilcdc,panel";
-> +		compatible = "panel-dpi";
->  		pinctrl-names = "default", "sleep";
->  		pinctrl-0 = <&lcd_pins_default &lcd_disen_pins>;
->  		pinctrl-1 = <&lcd_pins_sleep>;
-> +		port {
-> +			panel_in: endpoint {
-> +				remote-endpoint = <&lcdc_out>;
-> +			};
-> +		};
->  
->  		display-timings {
->  			timing-320x240 {
-> @@ -86,21 +91,9 @@ timing-320x240 {
->  				clock-frequency = <9000000>;
->  				hsync-active    = <0>;
->  				vsync-active    = <0>;
-> +				pixelclk-active = <1>;
->  			};
->  		};
-> -		panel-info {
-> -			ac-bias           = <255>;
-> -			ac-bias-intrpt    = <0>;
-> -			dma-burst-sz      = <16>;
-> -			bpp               = <24>;
-> -			bus-width         = <16>;
-> -			fdd               = <0x80>;
-> -			sync-edge         = <0>;
-> -			sync-ctrl         = <1>;
-> -			raster-order      = <0>;
-> -			fifo-th           = <0>;
-> -		};
-> -
->  	};
->  
->  	guardian_beeper: pwm-7 {
-> @@ -265,8 +258,8 @@ &lcdc {
->  	blue-and-red-wiring = "crossed";
->  	status = "okay";
->  	port {
-> -		lcdc_0: endpoint@0 {
-> -			remote-endpoint = <0>;
-> +		lcdc_out: endpoint@0 {
-> +			remote-endpoint = <&panel_in>;
->  		};
->  	};
->  };
-> diff --git a/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts b/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
-> index c9ccb9de21ad7..2c5229d05ade7 100644
-> --- a/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
-> +++ b/arch/arm/boot/dts/ti/omap/am335x-pdu001.dts
-> @@ -50,20 +50,14 @@ lis3_reg: fixedregulator@1 {
->  	};
->  
->  	panel {
-> -		compatible = "ti,tilcdc,panel";
-> +		compatible = "panel-dpi";
->  		status = "okay";
->  		pinctrl-names = "default";
->  		pinctrl-0 = <&lcd_pins_s0>;
-> -		panel-info {
-> -			ac-bias           = <255>;
-> -			ac-bias-intrpt    = <0>;
-> -			dma-burst-sz      = <16>;
-> -			bpp               = <16>;
-> -			fdd               = <0x80>;
-> -			sync-edge         = <0>;
-> -			sync-ctrl         = <1>;
-> -			raster-order      = <0>;
-> -			fifo-th           = <0>;
-> +		port {
-> +			panel_in: endpoint {
-> +				remote-endpoint = <&lcdc_out>;
-> +			};
->  		};
->  
->  		display-timings {
-> @@ -395,6 +389,11 @@ &rtc {
->  
->  &lcdc {
->  	status = "okay";
-> +	port {
-> +		lcdc_out: endpoint {
-> +			remote-endpoint = <&panel_in>;
-> +		};
-> +	};
->  };
->  
->  &elm {
-> diff --git a/arch/arm/boot/dts/ti/omap/am335x-pepper.dts b/arch/arm/boot/dts/ti/omap/am335x-pepper.dts
-> index e7d561a527fdd..2760c0eab50c2 100644
-> --- a/arch/arm/boot/dts/ti/omap/am335x-pepper.dts
-> +++ b/arch/arm/boot/dts/ti/omap/am335x-pepper.dts
-> @@ -31,7 +31,7 @@ leds: user-leds-pins {
->  	};
->  
->  	panel: lcd_panel {
-> -		compatible = "ti,tilcdc,panel";
-> +		compatible = "panel-dpi";
->  	};
->  
->  	sound: sound_iface {
-> @@ -189,16 +189,10 @@ &panel {
->  	status = "okay";
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&lcd_pins>;
-> -	panel-info {
-> -		ac-bias = <255>;
-> -		ac-bias-intrpt = <0>;
-> -		dma-burst-sz = <16>;
-> -		bpp = <32>;
-> -		fdd = <0x80>;
-> -		sync-edge = <0>;
-> -		sync-ctrl = <1>;
-> -		raster-order = <0>;
-> -		fifo-th = <0>;
-> +	port {
-> +		panel_in: endpoint {
-> +			remote-endpoint = <&lcdc_out>;
-> +		};
->  	};
->  	display-timings {
->  		native-mode = <&timing0>;
-> @@ -214,12 +208,18 @@ timing0: timing-480x272 {
->  			vsync-len = <10>;
->  			hsync-active = <1>;
->  			vsync-active = <1>;
-> +			pixelclk-active = <1>;
->  		};
->  	};
->  };
->  
->  &lcdc {
->  	status = "okay";
-> +	port {
-> +		lcdc_out: endpoint {
-> +			remote-endpoint = <&panel_in>;
-> +		};
-> +	};
->  };
->  
->  &am33xx_pinmux {
-> diff --git a/arch/arm/boot/dts/ti/omap/am335x-sbc-t335.dts b/arch/arm/boot/dts/ti/omap/am335x-sbc-t335.dts
-> index 2841e95d9a094..25ee855dd21a7 100644
-> --- a/arch/arm/boot/dts/ti/omap/am335x-sbc-t335.dts
-> +++ b/arch/arm/boot/dts/ti/omap/am335x-sbc-t335.dts
-> @@ -13,23 +13,17 @@ / {
->  
->  	/* DRM display driver */
->  	panel {
-> -		compatible = "ti,tilcdc,panel";
-> +		compatible = "panel-dpi";
->  		status = "okay";
->  		pinctrl-names = "default", "sleep";
->  		pinctrl-0 = <&lcd_pins_default>;
->  		pinctrl-1 = <&lcd_pins_sleep>;
-> -
-> -		panel-info {
-> -			ac-bias           = <255>;
-> -			ac-bias-intrpt    = <0>;
-> -			dma-burst-sz      = <16>;
-> -			bpp               = <32>;
-> -			fdd               = <0x80>;
-> -			sync-edge         = <0>;
-> -			sync-ctrl         = <1>;
-> -			raster-order      = <0>;
-> -			fifo-th           = <0>;
-> +		port {
-> +			panel_in: endpoint {
-> +				remote-endpoint = <&lcdc_out>;
-> +			};
->  		};
-> +
->  		display-timings {
->  			/* Timing selection performed by U-Boot */
->  			timing0: lcd {/* 800x480p62 */
-> @@ -44,6 +38,7 @@ timing0: lcd {/* 800x480p62 */
->  				vsync-len = <2>;
->  				hsync-active = <1>;
->  				vsync-active = <1>;
-> +				pixelclk-active = <1>;
->  			};
->  			timing1: dvi { /* 1024x768p60 */
->  				clock-frequency = <65000000>;
-> @@ -57,6 +52,7 @@ timing1: dvi { /* 1024x768p60 */
->  				vsync-len = <6>;
->  				hsync-active = <0>;
->  				vsync-active = <0>;
-> +				pixelclk-active = <1>;
->  			};
->  		};
->  	};
-> @@ -173,4 +169,9 @@ lcd-ena-hog {
->  /* Display */
->  &lcdc {
->  	status = "okay";
-> +	port {
-> +		lcdc_out: endpoint {
-> +			remote-endpoint = <&panel_in>;
-> +		};
-> +	};
->  };
-> diff --git a/arch/arm/boot/dts/ti/omap/am335x-sl50.dts b/arch/arm/boot/dts/ti/omap/am335x-sl50.dts
-> index f3524e5ee43e2..b4b2b6d18d646 100644
-> --- a/arch/arm/boot/dts/ti/omap/am335x-sl50.dts
-> +++ b/arch/arm/boot/dts/ti/omap/am335x-sl50.dts
-> @@ -123,22 +123,14 @@ audio_mclk: audio_mclk_gate@0 {
->  	};
->  
->  	panel: lcd_panel {
-> -		compatible = "ti,tilcdc,panel";
-> +		compatible = "panel-dpi";
->  		pinctrl-names = "default";
->  		pinctrl-0 = <&lcd_pins>;
->  
-> -		panel-info {
-> -			ac-bias = <255>;
-> -			ac-bias-intrpt = <0>;
-> -			dma-burst-sz = <16>;
-> -			bpp = <16>;
-> -			fdd = <0x80>;
-> -			tft-alt-mode = <0>;
-> -			mono-8bit-mode = <0>;
-> -			sync-edge = <0>;
-> -			sync-ctrl = <1>;
-> -			raster-order = <0>;
-> -			fifo-th = <0>;
-> +		port {
-> +			panel_in: endpoint {
-> +				remote-endpoint = <&lcdc_out>;
-> +			};
->  		};
->  
->  		display-timings {
-> @@ -157,6 +149,8 @@ timing0: 960x128 {
->  				vfront-porch = <8>;
->  				vsync-len = <4>;
->  				vsync-active = <0>;
-> +
-> +				pixelclk-active = <1>;
->  			};
->  		};
->  	};
-> @@ -711,6 +705,11 @@ &ehrpwm1 {
->  
->  &lcdc {
->  	status = "okay";
-> +	port {
-> +		lcdc_out: endpoint {
-> +			remote-endpoint = <&panel_in>;
-> +		};
-> +	};
->  };
->  
->  &tscadc {
-> 
+Long story short, please tell me how to model it in DT and I'll do so.
 
+Thanks,
+//richard
+
+[0] https://www.ti.com/lit/ug/spruhz6l/spruhz6l.pdf 18.5.2.1 CTRL_MODULE_CO=
+RE Register Summary
 
