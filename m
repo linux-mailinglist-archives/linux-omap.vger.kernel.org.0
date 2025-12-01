@@ -1,48 +1,48 @@
-Return-Path: <linux-omap+bounces-5093-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5094-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA346C9938C
-	for <lists+linux-omap@lfdr.de>; Mon, 01 Dec 2025 22:42:13 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D6C5C993E3
+	for <lists+linux-omap@lfdr.de>; Mon, 01 Dec 2025 22:46:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CAEA74E2E4B
-	for <lists+linux-omap@lfdr.de>; Mon,  1 Dec 2025 21:42:08 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9680F3450E7
+	for <lists+linux-omap@lfdr.de>; Mon,  1 Dec 2025 21:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1522A285C8C;
-	Mon,  1 Dec 2025 21:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6D4285CBA;
+	Mon,  1 Dec 2025 21:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jih3YmpY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZHZeyGnX"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC6A79CF;
-	Mon,  1 Dec 2025 21:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D589281508;
+	Mon,  1 Dec 2025 21:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764625316; cv=none; b=XOyfH9agZUI7oyHgUq9Wk/ukcHprXKvGSxdfxSjVgCdEoX9wWbOJGRVtH2LiRhcFgZwmGWMvMdvyuDH8VKQ8Spn+CEmJ7HjZ3MvEQJkykxfZEtqdGep1eA0Uj75kLuDqohq8qAvji4jXN7nIOKp1kYfgKvDyasEEHqUuy/SsEnk=
+	t=1764625574; cv=none; b=bnaM5bu0efJIWgKmVY9DrqGTMnr5wYZ1fnoI6/0P18f2pi0ioaknDV2pr1sSMPwVVGVNCRzJad81Znsrtdwij+wQPgVjy/LINDWWy9JHhDukovIfjFbE2JAg7U8SjF6KVkXcxBAIx3GLTfVYYqLnCv/4d1PNTxZv8jJ7S5RK4/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764625316; c=relaxed/simple;
-	bh=6N+9tgFMH9jHHEA69cM/Gh06aTNX2GJ1DraSpzZnQIQ=;
+	s=arc-20240116; t=1764625574; c=relaxed/simple;
+	bh=VLLU6Fk7P3OG6KYCxQGd9OElcUAY4ZD7P6cn13H2jiM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mB3+YeDHEsTmkOHDuuP9BXh4swBgLFI4TOmWW4PKCgI2R57UNMfxLXiqnOyb1YhAXFREbqrjBAs4qqfKpDQ6kC444e+3p9gUjj8oFCijU6exEqjdUSetVn/wvm8SRK8dfznN4ubCxQCChxzzr+rCCuUB5W+H3HGO+ZbHUm+N3Xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jih3YmpY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C2F9C4CEF1;
-	Mon,  1 Dec 2025 21:41:49 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=P0hgO6sDHfEfmlAhCw8HgkVJO7svL90RFJjpuikXBNpSx+BrmfPy+nWFj21QymxhRTOkMX4knZpb6wtk0WobX+/Ne7cvqKImP//+3ilrD7VghyEc0SMb4Y1S6BRUvtx0W/LyT1NOnXVpC6bpV78ZZyS0VbuTzL6TheBCa4jXGvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZHZeyGnX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3335AC4CEF1;
+	Mon,  1 Dec 2025 21:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764625316;
-	bh=6N+9tgFMH9jHHEA69cM/Gh06aTNX2GJ1DraSpzZnQIQ=;
+	s=k20201202; t=1764625574;
+	bh=VLLU6Fk7P3OG6KYCxQGd9OElcUAY4ZD7P6cn13H2jiM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jih3YmpY6bvMk2F8zAU1VcAefP10RhKh9GeNLYeUaWFIieTUuhw0K2Ak1o4+mOjNZ
-	 WesKfsh2yAQuOU1E51fTfucFavXW/KeVuZBkndwUfQe+EdeZfie84KcccbuDoNG78A
-	 KxfIYs9GHi/u4diCR1v8Xb+KFPgu7zPow2MdjPikvqIS9Tae6UoLb6XGdIdaq8oWQI
-	 VadUmtX95g3QFPSvG82KmRDeXce52fJlFsUrMeb4C+PfmJpGj8y552Ez2z9Ge0qMyH
-	 m698sk1rGXusCsm2FpUz+cTsT0dAKRX699CWnphLe6gr1Tp1lJpwVsaOPDfvS25Du3
-	 GW1M7qGQkRf1A==
-Message-ID: <b89cf979-b2b2-4534-a633-648dc640e3ad@kernel.org>
-Date: Mon, 1 Dec 2025 22:41:45 +0100
+	b=ZHZeyGnX53fuJ+TFcphgGSaCsDCJhwYeaA57v4UgoTroDE1bNBiA+AEBgK6TWk4PP
+	 StgMzwo6oxSb3Di3nUAj39dfRtVry2Wghasn0rtlszjDZ0b0OIc7DgBquFet90WHED
+	 ehtfNAglh2SiPiEaAwI9a0/EJQobw2hmwPQIq0V9K84uSkvqYOlmByaMD+eio2ZZ2G
+	 yt3YHi9/JGIleOqhXNXcVEzMu9wN0MPTXcRHzFrJgDHbSa7zwK4yDWuN9GQCtGx8+C
+	 XLDzaT0uptyRyeOLkxSEy9O1+HUv0wd+Nhq+nhmh0O1OrAiNU53CBX3C/P0z6wenKo
+	 UCNSbv44STpbQ==
+Message-ID: <3bc5bf92-05c3-4841-ab28-9bab2bb31cd5@kernel.org>
+Date: Mon, 1 Dec 2025 22:46:01 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -50,28 +50,31 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] dt-bindings: Document new common property:
- has-inaccessible-regs
-To: Richard Weinberger <richard@nod.at>
-Cc: linux-kernel <linux-kernel@vger.kernel.org>,
- linux-omap <linux-omap@vger.kernel.org>,
- devicetree <devicetree@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Lee Jones <lee@kernel.org>, dakr <dakr@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Mark Brown <broonie@kernel.org>, tony <tony@atomide.com>,
- rogerq <rogerq@kernel.org>, khilman <khilman@baylibre.com>,
- Andreas Kemnade <andreas@kemnade.info>, aaro koskinen
- <aaro.koskinen@iki.fi>, Conor Dooley <conor+dt@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, robh <robh@kernel.org>
-References: <20251129142042.344359-1-richard@nod.at>
- <20251129142042.344359-2-richard@nod.at>
- <7d9fcf24-5ad5-48cf-b36d-83025976f3aa@kernel.org>
- <771947541.4509.1764430418744.JavaMail.zimbra@nod.at>
- <8b0e2b8a-314f-40ee-8f30-c281f3799705@kernel.org>
- <1810160052.4618.1764431802423.JavaMail.zimbra@nod.at>
- <c303a5f3-4283-445e-9e0e-053fab32a468@kernel.org>
- <2010740416.11902.1764624886863.JavaMail.zimbra@nod.at>
+Subject: Re: [PATCH 05/21] ARM: dts: omap: Bind panel to panel-dpi instead of
+ ti,tilcdc,panel driver
+To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
+Cc: Markus Schneider-Pargmann <msp@baylibre.com>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Louis Chauvet <louis.chauvet@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Miguel Gazquez <miguel.gazquez@bootlin.com>,
+ dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-omap@vger.kernel.org, Jyri Sarha <jyri.sarha@iki.fi>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Tony Lindgren <tony@atomide.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>
+References: <20251126-feature_tilcdc-v1-0-49b9ef2e3aa0@bootlin.com>
+ <20251126-feature_tilcdc-v1-5-49b9ef2e3aa0@bootlin.com>
+ <96b1b7bf-ddbe-4213-a201-dc89cf2998dd@ideasonboard.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -117,61 +120,40 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <2010740416.11902.1764624886863.JavaMail.zimbra@nod.at>
+In-Reply-To: <96b1b7bf-ddbe-4213-a201-dc89cf2998dd@ideasonboard.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 01/12/2025 22:34, Richard Weinberger wrote:
-> ----- Ursprüngliche Mail -----
->> Von: "Krzysztof Kozlowski" <krzk@kernel.org>
->>>>> What solution do you propose?
->>>>> Splitting reg = <0x0 0x1400> into many tiny fractions and not using an mfd
->>>>> anymore?
->>>>
->>>> Fix the driver. In your case, the syscon driver.
->>>
->>> Please help me to understand what the desired behavior of the driver is.
->>>
->>> Currently syscon creates one regmap for everything and passes this regmap
->>> to the individual syscon users.
->>> These users have to know what offset within the regmap is their playground.
->>> If I understand correctly, it would be better if every syscon user would
->>> register their own regmap?
+On 01/12/2025 15:13, Tomi Valkeinen wrote:
+> Hi Kory,
+> 
+> On 26/11/2025 19:35, Kory Maincent (TI.com) wrote:
+>> Use panel-dpi driver instead of the deprecated tilcdc-panel driver in
+>> preparation for removing the tilcdc-panel driver and binding.
 >>
->> I don't think so. This device driver, so the syscon, creates the regmap
->> and knows EXACTLY which registers are valid or not. It is not
->> responsibility of the consumer to tell the syscon what this syscon is.
->> Syscon knows that...
+>> Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
+>> ---
+>>
+>> This patch is not tested. It would be nice if someone with one of this
+>> board could test and validate it.
+>> ---
+>>  arch/arm/boot/dts/ti/davinci/da850-evm.dts    | 26 +++++++++++++-------------
+>>  arch/arm/boot/dts/ti/omap/am335x-guardian.dts | 25 +++++++++----------------
+>>  arch/arm/boot/dts/ti/omap/am335x-pdu001.dts   | 21 ++++++++++-----------
+>>  arch/arm/boot/dts/ti/omap/am335x-pepper.dts   | 22 +++++++++++-----------
+>>  arch/arm/boot/dts/ti/omap/am335x-sbc-t335.dts | 25 +++++++++++++------------
+>>  arch/arm/boot/dts/ti/omap/am335x-sl50.dts     | 25 ++++++++++++-------------
+>>  6 files changed, 68 insertions(+), 76 deletions(-)
+>>
 > 
-> How to configure this in syscon?
-> AFAIK it takes only a single reg property.
-> Are you suggesting to add many more syscon nodes to the DT to skip the holes?
-> 
-> Currently the scm_conf@0 DT node defines the first 0x1400 bytes
-> of the CTRL_MODULE_CORE register[0].
-> 
-> Reading from register 0x180 triggers an async data abort here.
-> The manual describes it as "RESERVED" of type "R".
-> Lots of other offsets in CTRL_MODULE_CORE are reserved, but reading works.
-> 
-> Long story short, please tell me how to model it in DT and I'll do so.
+> Doesn't this, or rather the following patches, break DTB compatibility
+> with all the above boards?
 
-I already told you:
+Stuffing DTS change in the middle of the driver change tries to hide
+impact, which is not nice on its own.
 
-"...we had it in several devices and fixed drivers."
-
-"Fix the driver. In your case, the syscon driver."
-
-and finally:
-
-"BTW, the state of existing TI DRA code is so poor that you don't have
-many choices... or rather every choice has drawbacks. If this was proper
-DTS, then I would say - define register map, used by regmap, for your
-compatible either in syscon driver or dedicated driver (thus new driver
-will be the syscon provider for you, just like Google GS101 syscon is
-special)."
-
-What to say more? This is the instruction/proposal.
+Please follow soc maintainer profile and submitting patches in DT
+regarding DTS patches.
 
 Best regards,
 Krzysztof
