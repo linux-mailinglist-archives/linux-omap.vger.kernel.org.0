@@ -1,150 +1,119 @@
-Return-Path: <linux-omap+bounces-5083-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5084-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B736EC94C41
-	for <lists+linux-omap@lfdr.de>; Sun, 30 Nov 2025 09:18:02 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE84C9683F
+	for <lists+linux-omap@lfdr.de>; Mon, 01 Dec 2025 10:59:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 561903A4F50
-	for <lists+linux-omap@lfdr.de>; Sun, 30 Nov 2025 08:18:00 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D487634495F
+	for <lists+linux-omap@lfdr.de>; Mon,  1 Dec 2025 09:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8801A23D2A3;
-	Sun, 30 Nov 2025 08:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A5D302CB5;
+	Mon,  1 Dec 2025 09:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MFr0xogQ"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="WVdUrAXY"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out203-205-221-153.mail.qq.com (out203-205-221-153.mail.qq.com [203.205.221.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D06B1391;
-	Sun, 30 Nov 2025 08:17:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CFF3016FF;
+	Mon,  1 Dec 2025 09:55:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764490676; cv=none; b=VTjXKechCoUAgF+gOC0Twaff7/3LQDacA8mnvTUKRlmL3KaMvLTjdUPwrBZwPfgI99VCkJGPI8xS2FWIluups1JibWC6/n5IEFqqeFAI2afdGkH20NtsHQ6ae1vCsNotZ9SMGHenxOkQb//Z9/tHMQbgHLAshSRFZOXldOwfE9Q=
+	t=1764582944; cv=none; b=Rf7j78uoY9SVqy/8iZILjgN36be9JM+3AgSiW3QCjh4WAcwVWMZjIA5sqgR0ssInJ9nF9vdW71AgTgdnvjkuICBprjlUUitCswnIHsPBPHiNk/8tkaMp9Usia5HyTRj0tD7gdCOxDwqZet7Bz7GZH6TWsxS6qb5AL0ZXmy+PQ90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764490676; c=relaxed/simple;
-	bh=Wa7NrDli8507PyZklIg9dfEmRf5sWneKGLxAt1oDo3o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MKq5RKBvM5WcOq0pEZjesIrPiBCUYU632O4hlVdN5BJiOWBsex6tWzTn8q8qE7G2fAkDyNPdFOTgKb4rLXrL/8d1pGfiUlmaiaZVOFfQg80VFgjCeh4x5wOtd/3jvghFwrEtcHuI119V0MPx9PW7hgXG0hcQNkkSGEO/HPU0PSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MFr0xogQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17ABC4CEF8;
-	Sun, 30 Nov 2025 08:17:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764490675;
-	bh=Wa7NrDli8507PyZklIg9dfEmRf5sWneKGLxAt1oDo3o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MFr0xogQckUJLmKcfBwGxWN9xT8Dic17bGBab8/QVQnQSz3eNJM5qyPttt8FBwJOB
-	 eixHt6Nfyv0+v5Z+s8KUcfoy+9HRmeqh8j9Q76hUSJhZ6rOn+xDN2yNcRCoWL1Cwoh
-	 ntqNDjY3SQYldefMbbnvyDC8m7JnJ9eex/qmyNh54ekwGvMXmcARdO+SSGsUBEjVnT
-	 8aaVqh4Jn9CI/9fdsv8hkfs/Ln61NeIP1y5OrLsoHwQwliMQP1ihZ3UCaNG8LaLbsL
-	 /uz7oomy5527wCMSz9+7dc+ACYZYvWBIO/ziHvimzW7JbRngLSAyBxwgp77x74PKwQ
-	 vCmKDq/WNpicg==
-Message-ID: <c303a5f3-4283-445e-9e0e-053fab32a468@kernel.org>
-Date: Sun, 30 Nov 2025 09:17:49 +0100
+	s=arc-20240116; t=1764582944; c=relaxed/simple;
+	bh=Fjn5G33dLs36qZWDHd4Y/0bElxdBaBbkQE7jFjxrIls=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version:Content-Type; b=o8XNN7sn0UBDIhCNNqqioqXkTSytB/CPtOfzZmoHXg7t9RAxBqKhhbCBy4jxBXkdyt4Me3/1fOMjwkaksmss4wxYqLAxeHBeNHEYX6rqLrxde5r15dQFsUMgLQ/kraF1L017Po6ZhkIqRSkikq+ptSxub6fAcRtK9OabbIM/9/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=WVdUrAXY; arc=none smtp.client-ip=203.205.221.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1764582939; bh=F4ypkbwvm4Q9S7nmJVek0k9aPuBktitqiceLOZ/SIR8=;
+	h=From:To:Cc:Subject:Date;
+	b=WVdUrAXYzH74UhSqDowKBpiEVJfmFNex18EzcotkOWh0axtvDygmLHXNjaz8tZCVN
+	 fxMyoAfIZ2TFTDTj+UyLl1KdlmY08zBdx9iTUpyxpiLpyIxFHZnHqCtOZHxx8TJeeD
+	 gJgbPN9F19tLaClJLnyXgxd/nCvzsvlZVbUxR7i0=
+Received: from cjz-VMware-Virtual-Platform.localdomain ([110.176.100.65])
+	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
+	id D9839A40; Mon, 01 Dec 2025 17:54:24 +0800
+X-QQ-mid: xmsmtpt1764582864tfs9rzkb4
+Message-ID: <tencent_BB49A52B7796EBAFEC293B0B5203602BD608@qq.com>
+X-QQ-XMAILINFO: OIIfS09wav6ntm171Bh8TAbzw8wRDtAnNF8Ko1/n+ir6MZx2xqXdFIXHrudTyN
+	 IbBBax303iksMi33/3Ei3MxoMDfHrNJDLjJRASLA6hFGRaxa5F50ekZZfyV2ClbswKYXwgopT0gB
+	 BeOH2iK91+tKEN5XztCO1N22sesEzvI1whPvzHWmLL0otcc5vuLj7C/lAtsLx9AjaSFNdlNx/qWN
+	 67mLGWKNntwylyjUfeaVYZyBZk4AXKconXTplfeFcgQGMEPjf0BJBdlrZJYGBaPJZyTTd91+qLfv
+	 zf1B7PIWjK7BpPZo1rVZ0jxbodfhUMs6zZANDXCgNqg48gJvHf1FqQClp+KpuNMDXF91h4GCe6HE
+	 0dkCCXiyMlCaa88w7vmRhup8M4vTu5gYckhZHeD+9nkwnrNrlMn/B9OaJFZmn6LJurrMtOqUg3IV
+	 QxMgQ+dpyXDqAEVBfXGyGgcRJn6sevnA3hMLD56ipsS1U+fI5hUCA4uuI3TMFqTcBrNAlak0tp3A
+	 Hc/XvjsG3jw8v3SRyF4xkUIxeSu0TtNc4QCSDNm6lyZx0NHYeSUdYVA7zN/JBB6mIKjgs+MUnhDl
+	 MY4jCjmKTF0X07uvbVm+BemjwsBnttgp3du6Xy8XHaAxw0ZZKe3XWx56K0AzONFhLCKORpqkMeD0
+	 vhNVsj6z5JEcW7yWTPfqlob1uE4u8vuhHMPTbMhFHA6bTqvX8oULNVApOfIvaj0SrK/FHfQIOZ8R
+	 Cp/d9YT5KBzPOvUoEU1eVgpxDftkVgU4geabVzXa/wHnEtsKlfkdMxaWIJlVX5k5OR6TlEaJeWek
+	 GmZpDO31UssAl0aubZ7zM2jahmogQq65nmx5Td6H+oF6Ib5/ao14wNkH7SiU/W5uhR3Wvxn0syPF
+	 ugHd/gFt5kPHa101v1bPO4zkXjxyrtwhY8mavLxQrBQH4d5+oHNj6+OQ5Gi1UkQYGs+lkfLPRVQf
+	 cHBd/VPLeT4cUZkNd5CkzILllsPEF7Fy2v4N+NBqouKcYJ9Z+AE3/G0ywBtfH0E5m+E/chTSSFEq
+	 jWbVlwLreCFrC483TiPKczpGVNog0=
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+From: cjz <guagua210311@qq.com>
+To: linux-gpio@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Grygorii.Strashko@ti.com,
+	ssantosh@kernel.org,
+	khilman@kernel.org,
+	linus.walleij@linaro.org,
+	brgl@kernel.org,
+	guagua210311@qq.com
+Subject: [PATCH] gpio: omap: add kernel-doc comment for omap_gpio_get()
+Date: Mon,  1 Dec 2025 17:54:21 +0800
+X-OQ-MSGID: <20251201095421.17069-1-guagua210311@qq.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] dt-bindings: Document new common property:
- has-inaccessible-regs
-To: Richard Weinberger <richard@nod.at>
-Cc: linux-kernel <linux-kernel@vger.kernel.org>,
- linux-omap <linux-omap@vger.kernel.org>,
- devicetree <devicetree@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Lee Jones <lee@kernel.org>, dakr <dakr@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Mark Brown <broonie@kernel.org>, tony <tony@atomide.com>,
- rogerq <rogerq@kernel.org>, khilman <khilman@baylibre.com>,
- Andreas Kemnade <andreas@kemnade.info>, aaro koskinen
- <aaro.koskinen@iki.fi>, Conor Dooley <conor+dt@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, robh <robh@kernel.org>
-References: <20251129142042.344359-1-richard@nod.at>
- <20251129142042.344359-2-richard@nod.at>
- <7d9fcf24-5ad5-48cf-b36d-83025976f3aa@kernel.org>
- <771947541.4509.1764430418744.JavaMail.zimbra@nod.at>
- <8b0e2b8a-314f-40ee-8f30-c281f3799705@kernel.org>
- <1810160052.4618.1764431802423.JavaMail.zimbra@nod.at>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <1810160052.4618.1764431802423.JavaMail.zimbra@nod.at>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 29/11/2025 16:56, Richard Weinberger wrote:
-> ----- Ursprüngliche Mail -----
->> Von: "Krzysztof Kozlowski" <krzk@kernel.org>
->>> So, drivers like ti,pbias-dra7 or ti,dra7xx-phy-gmii-sel touch only registers
->>> they know about and this works well.
->>> But syscon manages the whole register map via regmap, and regmap exposes it all
->>> via debugfs.
->>>
->>> What solution do you propose?
->>> Splitting reg = <0x0 0x1400> into many tiny fractions and not using an mfd
->>> anymore?
->>
->> Fix the driver. In your case, the syscon driver.
-> 
-> Please help me to understand what the desired behavior of the driver is.
-> 
-> Currently syscon creates one regmap for everything and passes this regmap
-> to the individual syscon users.
-> These users have to know what offset within the regmap is their playground.
-> If I understand correctly, it would be better if every syscon user would register their own regmap?
+From: changjunzheng <guagua210311@qq.com>
 
-I don't think so. This device driver, so the syscon, creates the regmap
-and knows EXACTLY which registers are valid or not. It is not
-responsibility of the consumer to tell the syscon what this syscon is.
-Syscon knows that...
+omap_gpio_get() is a core function for reading OMAP GPIO pin level, but it lacks complete kernel-doc comment (no function description, parameter explanation, or return value说明). This causes gcc W=1 warning and reduces code readability.
 
-Best regards,
-Krzysztof
+Add standard kernel-doc comment to fix the warning and improve maintainability.
+
+Signed-off-by: changjunzheng <guagua210311@qq.com>
+---
+ drivers/gpio/gpio-omap.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
+index a268c76bdca6..ad69892e9d98 100644
+--- a/drivers/gpio/gpio-omap.c
++++ b/drivers/gpio/gpio-omap.c
+@@ -861,6 +861,17 @@ static int omap_gpio_input(struct gpio_chip *chip, unsigned offset)
+ 	return 0;
+ }
+ 
++/**
++ * omap_gpio_get - Get the logic level of an OMAP GPIO pin
++ * @chip: Pointer to the GPIO chip instance
++ * @offset: Offset of the GPIO pin within the chip's pin range
++ *
++ * Read the current logic level of the specified OMAP GPIO pin. If the pin is
++ * configured as input, read the actual pin level; if configured as output, read
++ * the last set output level.
++ *
++ * Return: 0 if the pin is at low level, 1 if at high level
++ */
+ static int omap_gpio_get(struct gpio_chip *chip, unsigned offset)
+ {
+ 	struct gpio_bank *bank = gpiochip_get_data(chip);
+-- 
+2.43.0
+
 
