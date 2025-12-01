@@ -1,117 +1,100 @@
-Return-Path: <linux-omap+bounces-5085-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5086-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BD79C96B65
-	for <lists+linux-omap@lfdr.de>; Mon, 01 Dec 2025 11:48:18 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8B04C972C2
+	for <lists+linux-omap@lfdr.de>; Mon, 01 Dec 2025 13:04:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64F3E3A34CD
-	for <lists+linux-omap@lfdr.de>; Mon,  1 Dec 2025 10:47:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6527B4E18C3
+	for <lists+linux-omap@lfdr.de>; Mon,  1 Dec 2025 12:04:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CB0304BB9;
-	Mon,  1 Dec 2025 10:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A87B93090D5;
+	Mon,  1 Dec 2025 12:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="Z/TYHLBz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2Te497I"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A095F303A2D;
-	Mon,  1 Dec 2025 10:46:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FD4308F39;
+	Mon,  1 Dec 2025 12:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764585977; cv=none; b=KCZI0X5S25UQvar63GKv+zwYOq3HAjz5Woy16fxEFR09OWEXjRbB7jtS+epRc0IPXPJmhVCrx6ouAPE+ZSTkwDTiuTCZo9WVbQILN5R2VLyKqdHGkUyi3jARZasm9m9ugA7evVzACeBVWMpPQo5OoG8SDEqZ/R/eD9LDMX5A9/I=
+	t=1764590639; cv=none; b=LRjHAhXTBViihaFeFxNUj5lbK8tIMzuTL+12CTrt7k4BaxLJLzhCx+VopiuL8PQ/EwVhxR+4uYGDLbl/Lt0dFrFfy2dQxt0K+N/ToTTqukf/sz7/M5WewWhtAUfYk+dajKVE0JSZxrKIjW51Qy71dxl72+cHKArEoc30r8hcnRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764585977; c=relaxed/simple;
-	bh=iAbzMU/aa8DktfQl0YYqV0IRav4AodZLgHJzSAoGutI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p2Yc+MKXqjkqK8F1VzG6emTMqzVbek4AbWWiAGRTlMxz8t0Zk50xfvNN8cjFJZoXQW04WM6Fp+mf/Kv3u8g1bsS0mW4w6KjUFCZXELGtWWzc2Jg6UHbOySrvEKCTRGYBiMS0eXI1vMsq+JWSNdX58w+9mozriUIxTnAFqXL5kg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=Z/TYHLBz; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=lHyTIw/aF8t1SzGYdif3Q6mjMcYrehiOc7i7hAL3cq4=; b=Z/TYHLBzwdAY0NfPDiSsJAvB3l
-	zR4jZkSgbInAzA6bFYSpkHeYrgeiYtCGHwdMOfN940MBCVerKWccgogO39bbGZo4JYr8sZeDfTU4H
-	IKEQleb/B30Mza9cTceeLSwLgDLosQrLWJ6xPEY+4OHe4dVtPz6JqCFEFe0UsHByCHznkhzq4z/3w
-	GaYp/d+Itpcm1bKmCbLQopAzYbZnB4Ni7/cNTg0h3qFP0xvQacusitiZ2Wa+CB1x2YkDWuZ88PtPc
-	nJcc7lxJVdaxhS6iPrlT62y8++wwzqzzdGkXLXmjVVsy6eki8RTyVQsYcEG7gJpMA/3pmVeK+m+wZ
-	qwVf2YvQ==;
-Date: Mon, 1 Dec 2025 11:46:02 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: cjz <guagua210311@qq.com>
-Cc: linux-gpio@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-kernel@vger.kernel.org, Grygorii.Strashko@ti.com,
- ssantosh@kernel.org, khilman@kernel.org, linus.walleij@linaro.org,
- brgl@kernel.org
-Subject: Re: [PATCH] gpio: omap: add kernel-doc comment for omap_gpio_get()
-Message-ID: <20251201114602.094dce74@kemnade.info>
-In-Reply-To: <tencent_BB49A52B7796EBAFEC293B0B5203602BD608@qq.com>
-References: <tencent_BB49A52B7796EBAFEC293B0B5203602BD608@qq.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; aarch64-unknown-linux-gnu)
+	s=arc-20240116; t=1764590639; c=relaxed/simple;
+	bh=HsnxspOP0ytJTgvmrETEMOyHpUyWsOGGK66P/iykhuE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DMj2YJLv8KucG+p7hS3WLzreaplJ/AkqGsaoWDE8pKWuB22PmOYpuabYl8OrHWohywvASyqqccRCp1PGqS8bTH+13uFe17oCh3SJgPd7v8hoLqZ0Gwlj7FzMvN+fXOGDNH6UHWa1OGIUgdoGcMbg7vthVLgn8aDtFEQqTEnoHFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2Te497I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2218CC4CEF1;
+	Mon,  1 Dec 2025 12:03:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764590638;
+	bh=HsnxspOP0ytJTgvmrETEMOyHpUyWsOGGK66P/iykhuE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=f2Te497ID6w+uIqP9p3fwxKaPIfANNSf8PQPccECG4jw/DxNZS6c+MgjtJdfNmKzy
+	 d1FcsgjCmE3FJLe439Y9PjH6/G5eSd93sCsWaG009xLnZ9EcGPP5d/9Rxp5zxagVtO
+	 Mp0SZ3fYV8qxFBEmrvy4BhGDUcRaKqYZp48K+Hh9B5tVYS3yHAx4IubxOU4aRIHzC7
+	 TwruhXwB5JigcsqiKRKqYZvI4TQmHNNNpCdo97/BEOisr22i/5w6s+7z0l8RP7Lw2H
+	 +ELi8FAnIAn/iuUjunvKmbKO3EMfZOVC2nJiPlX+kZK/qOo9S5Txy4dbk4tMWwAU6h
+	 KR+a5vFQBmoXA==
+Date: Mon, 1 Dec 2025 12:03:45 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Richard Weinberger <richard@nod.at>
+Cc: linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org, arnd@arndb.de, lee@kernel.org,
+	dakr@kernel.org, rafael@kernel.org, gregkh@linuxfoundation.org,
+	tony@atomide.com, rogerq@kernel.org, khilman@baylibre.com,
+	andreas@kemnade.info, aaro.koskinen@iki.fi, conor+dt@kernel.org,
+	krzk+dt@kernel.org, robh@kernel.org
+Subject: Re: [PATCH 2/4] regmap: Allow disabling debugfs via regmap_config
+Message-ID: <7e44c326-1b5d-46fc-a5b2-8845ebbb32d5@sirena.org.uk>
+References: <20251129142042.344359-1-richard@nod.at>
+ <20251129142042.344359-3-richard@nod.at>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="FSPOjhEldnzgd6PE"
+Content-Disposition: inline
+In-Reply-To: <20251129142042.344359-3-richard@nod.at>
+X-Cookie: Mene, mene, tekel, upharsen.
 
-Hi,
 
-On Mon,  1 Dec 2025 17:54:21 +0800
-cjz <guagua210311@qq.com> wrote:
+--FSPOjhEldnzgd6PE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> From: changjunzheng <guagua210311@qq.com>
->=20
-> omap_gpio_get() is a core function for reading OMAP GPIO pin level, but i=
-t lacks complete kernel-doc comment (no function description, parameter exp=
-lanation, or return value=E8=AF=B4=E6=98=8E). This causes gcc W=3D1 warning=
- and reduces code readability.
->=20
-> Add standard kernel-doc comment to fix the warning and improve maintainab=
-ility.
->=20
-Can you elaborate on how this improves maintainability to document
-obvious parameters of a local function? And why for this local function and
-not for others? So why omap_gpio_runtime_suspend() which is also used
-as function pointer does not need such comments?
-=20
-Citing coding-style.rst:
-"Do not add boilerplate
-kernel-doc which simply reiterates what's obvious from the signature
-of the function."
+On Sat, Nov 29, 2025 at 03:20:40PM +0100, Richard Weinberger wrote:
+> Regmap already disables register access via debugfs as soon as a register
+> map is used without taking locks.
+> Go a step further and allow disabling debugfs via regmap_config such that
+> device drivers can decide on their own whether uncontrolled register access
+> via debugfs is harmful.
 
-If that is just about compliance to some rule or make a compiler happy
-in W=3D1, than do not disguise that and add fake arguments for your change.
+What's the use case for this?  Drivers can already mark registers as
+unreadable and precious to stop spurious reads.
 
-BTW: =20
-andi@akm1:~/linux$ touch drivers/gpio/gpio-omap.c=20
-andi@akm1:~/linux$ make LLVM=3D1 ARCH=3Darm W=3D1
-  CALL    scripts/checksyscalls.sh
-  CC      drivers/gpio/gpio-omap.o
-  AR      drivers/gpio/built-in.a
-  AR      drivers/built-in.a
+--FSPOjhEldnzgd6PE
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Silence....
-with gcc again:
-andi@akm1:~/linux$ make ARCH=3Darm CROSS_COMPILE=3Darm-linux-gnueabihf- zIm=
-age modules dtbs W=3D1
-  CALL    scripts/checksyscalls.sh
-  CC      drivers/gpio/gpio-omap.o
-  AR      drivers/gpio/built-in.a
-  AR      drivers/built-in.a
-  AR      built-in.a
-  AR      vmlinux.a
-  LD      vmlinux.o
+-----BEGIN PGP SIGNATURE-----
 
-Also silence.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkthCAACgkQJNaLcl1U
+h9A/qQf/QMnnBvIv3N7Hn8beIIL1Dxq/r/nnN377G5ybwMvQpVVf9ilnNjzVw3aH
+OWJWek4Bw8hLCt3Asa2bTsVL8FqcMEJUvCRM7gamVk/cB+bjMy2YKINQRSPZfZ2a
+WjB0UfpMYkUysrYWmVsyPzkhXIIuTqLn7mHl7OkiVpfsNgbb4rpjPOwgFBgPe/9h
+v0afunPnk7EeyNPLoKf1R4W03ptkrqOa8ysufF7YWXWpobRLY53X9wKRXeQMpmBD
+lRVg3tFBju9n4JMpw6rpxmq9xLvmWzDNw4x8ZyVAAvml1Y7rS8IK3eqvQEKqOP3u
+fh2Cst8DTPWu1F7O+ED8EK1IDP7gxA==
+=ey46
+-----END PGP SIGNATURE-----
 
-Regards,
-Andreas
+--FSPOjhEldnzgd6PE--
 
