@@ -1,105 +1,126 @@
-Return-Path: <linux-omap+bounces-5095-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5096-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEDA9C9966D
-	for <lists+linux-omap@lfdr.de>; Mon, 01 Dec 2025 23:40:28 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DCD1C9A995
+	for <lists+linux-omap@lfdr.de>; Tue, 02 Dec 2025 09:01:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 59A3E4E2186
-	for <lists+linux-omap@lfdr.de>; Mon,  1 Dec 2025 22:40:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C64F04E3258
+	for <lists+linux-omap@lfdr.de>; Tue,  2 Dec 2025 08:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83338284662;
-	Mon,  1 Dec 2025 22:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C53302CAA;
+	Tue,  2 Dec 2025 08:01:00 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lithops.sigma-star.at (mailout.nod.at [116.203.167.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A8379CF;
-	Mon,  1 Dec 2025 22:40:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.167.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1686521883E;
+	Tue,  2 Dec 2025 08:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764628823; cv=none; b=LGq9Ow90wgEMuVsweM7AcpkQC6kMklzVs5W9oW+ZHgVAP6+F6zlFLOPasj3JB9draoHqzJnanzCxE/Kf3I/pgYOiCH6ByLvj2LytjA+Y0VrdARk/ToHYqW6PiYMjUqvAMCmdNryD/Ly0RDBNPkTqxDrDD7+89S2t0d4sHzHuhko=
+	t=1764662460; cv=none; b=ScoSICbDAlCXPSV5H0tel7culGYHf3avuqtKEZ9ZsUcWkMmWFBOLSUxdIMIhhlv8arrI1saXBdeGd9nIEATdk3XggYR/kreUqMJp353Q1GWgANpegM2yhItw9pj5r77DMmZuxiD+gh8K8DC6C1Z6IOfj8p7ON0QsfFvxVyUI7bA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764628823; c=relaxed/simple;
-	bh=GzbdnygHwWJk87qWRVmt40NqZsFkZZozdsaOyLKJPuo=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=LSip+8Ysd0Ct8Qibxy4Xs2GXsR+ht0ChvC7WF7iH8026Vjn8Rd/ygSCKGgOzvHIKG/mhSVQwkQfURkKN+YSihis9+kfM5JgVYL8S/3JT3iXDOJ7mGTQU1t7QluVqXM+COSRCfiPWU/xZ72ybFOj4e2eS9LAwJc50ex8ZhIOf348=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at; spf=fail smtp.mailfrom=nod.at; arc=none smtp.client-ip=116.203.167.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nod.at
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id BBB292CE365;
-	Mon,  1 Dec 2025 23:40:17 +0100 (CET)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id QOoWhd2BASWw; Mon,  1 Dec 2025 23:40:17 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 5F92D2CE378;
-	Mon,  1 Dec 2025 23:40:17 +0100 (CET)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id mm1WchJhuFoG; Mon,  1 Dec 2025 23:40:17 +0100 (CET)
-Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 004502CE365;
-	Mon,  1 Dec 2025 23:40:16 +0100 (CET)
-Date: Mon, 1 Dec 2025 23:40:16 +0100 (CET)
-From: Richard Weinberger <richard@nod.at>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: linux-kernel <linux-kernel@vger.kernel.org>, 
-	linux-omap <linux-omap@vger.kernel.org>, 
-	devicetree <devicetree@vger.kernel.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Lee Jones <lee@kernel.org>, 
-	dakr <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Mark Brown <broonie@kernel.org>, tony <tony@atomide.com>, 
-	rogerq <rogerq@kernel.org>, khilman <khilman@baylibre.com>, 
-	Andreas Kemnade <andreas@kemnade.info>, 
-	aaro koskinen <aaro.koskinen@iki.fi>, 
-	Conor Dooley <conor+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, robh <robh@kernel.org>
-Message-ID: <453565649.12135.1764628816633.JavaMail.zimbra@nod.at>
-In-Reply-To: <b89cf979-b2b2-4534-a633-648dc640e3ad@kernel.org>
-References: <20251129142042.344359-1-richard@nod.at> <7d9fcf24-5ad5-48cf-b36d-83025976f3aa@kernel.org> <771947541.4509.1764430418744.JavaMail.zimbra@nod.at> <8b0e2b8a-314f-40ee-8f30-c281f3799705@kernel.org> <1810160052.4618.1764431802423.JavaMail.zimbra@nod.at> <c303a5f3-4283-445e-9e0e-053fab32a468@kernel.org> <2010740416.11902.1764624886863.JavaMail.zimbra@nod.at> <b89cf979-b2b2-4534-a633-648dc640e3ad@kernel.org>
-Subject: Re: [PATCH 1/4] dt-bindings: Document new common property:
- has-inaccessible-regs
+	s=arc-20240116; t=1764662460; c=relaxed/simple;
+	bh=4+3G7wgD6VoCVjoPq6TA+9JR5eXz7qy4YIhoRFijXS4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=F9soL67lCoj7qVbDPs8k5ERoL6pnvpefid/LsZVvExDZvh6OvYixcU6BtPNTjoyHz9TZkk0TY/iEBY+DHX7LNwf4w7rsEYcJM5yqGfIfjzDWJW7iON+lpEnPCx8WHnZ33C1MDX/ahbD1IYaOrn+fACTAAtJjtyAzwFYFNk32WVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from DESKTOP-L0HPE2S (unknown [124.16.141.245])
+	by APP-01 (Coremail) with SMTP id qwCowADHXc2snC5pZarVAg--.27319S2;
+	Tue, 02 Dec 2025 16:00:48 +0800 (CST)
+From: Haotian Zhang <vulab@iscas.ac.cn>
+To: stern@rowland.harvard.edu,
+	gregkh@linuxfoundation.org
+Cc: linux-usb@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haotian Zhang <vulab@iscas.ac.cn>
+Subject: [PATCH] USB: ehci-omap: Fix missing usb_phy_init() error handling
+Date: Tue,  2 Dec 2025 16:00:27 +0800
+Message-ID: <20251202080027.1124-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF144 (Linux)/8.8.12_GA_3809)
-Thread-Topic: dt-bindings: Document new common property: has-inaccessible-regs
-Thread-Index: IaxBEQt6r6rF11GTvHeDkfo8bmAWDw==
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowADHXc2snC5pZarVAg--.27319S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7urWDuryUtr1kXw4DKr4rXwb_yoW8AF1kpF
+	WqqF4Ygrn3Krs7trZ8Jr18ZF1rCw48trWj9a9rGa4fuw1UJr4qgr1Uta4FkF1rZFs5Ga1U
+	tas0qF95uF4UuaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvq14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
+	AVWUtwCY02Avz4vE14v_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr
+	1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE
+	14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7
+	IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E
+	87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0x
+	ZFpf9x0JU8PE-UUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBg0EA2kuX3bfHQAAsg
 
------ Urspr=C3=BCngliche Mail -----
-> Von: "Krzysztof Kozlowski" <krzk@kernel.org>
->> Long story short, please tell me how to model it in DT and I'll do so.
->=20
-> I already told you:
->=20
-> "...we had it in several devices and fixed drivers."
->=20
-> "Fix the driver. In your case, the syscon driver."
->=20
-> and finally:
->=20
-> "BTW, the state of existing TI DRA code is so poor that you don't have
-> many choices... or rather every choice has drawbacks. If this was proper
-> DTS, then I would say - define register map, used by regmap, for your
-> compatible either in syscon driver or dedicated driver (thus new driver
-> will be the syscon provider for you, just like Google GS101 syscon is
-> special)."
->=20
-> What to say more? This is the instruction/proposal.
+usb_phy_init() may fail if the PHY clock or regulator setup fails,
+but ehci_hcd_omap_probe() does not check its return value,
+potentially causing later operations to act on an uninitialized PHY.
 
-I'm still chewing.
-Let me do more research before I come back with more questions.
+Add proper error checking for usb_phy_init() calls. Add a new
+error label to properly remove the hcd.
 
-Thanks,
-//richard
+Fixes: 4e5c9e6fa2d2 ("USB: ehci-omap: Tweak PHY initialization sequence")
+Fixes: 49f092198f4f ("USB: ehci-omap: Fix detection in HSIC mode")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+---
+ drivers/usb/host/ehci-omap.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/usb/host/ehci-omap.c b/drivers/usb/host/ehci-omap.c
+index db4a1acb27da..30b3586fd696 100644
+--- a/drivers/usb/host/ehci-omap.c
++++ b/drivers/usb/host/ehci-omap.c
+@@ -166,7 +166,11 @@ static int ehci_hcd_omap_probe(struct platform_device *pdev)
+ 		omap->phy[i] = phy;
+ 
+ 		if (pdata->port_mode[i] == OMAP_EHCI_PORT_MODE_PHY) {
+-			usb_phy_init(omap->phy[i]);
++			ret = usb_phy_init(omap->phy[i]);
++			if (ret) {
++				dev_err(dev, "Failed to init PHY %d\n", i);
++				goto err_phy;
++			}
+ 			/* bring PHY out of suspend */
+ 			usb_phy_set_suspend(omap->phy[i], 0);
+ 		}
+@@ -205,13 +209,19 @@ static int ehci_hcd_omap_probe(struct platform_device *pdev)
+ 		     pdata->port_mode[i] == OMAP_EHCI_PORT_MODE_PHY)
+ 			continue;
+ 
+-		usb_phy_init(omap->phy[i]);
++		ret = usb_phy_init(omap->phy[i]);
++		if (ret) {
++			dev_err(dev, "Failed to init PHY %d\n", i);
++			goto err_remove_hcd;
++		}
+ 		/* bring PHY out of suspend */
+ 		usb_phy_set_suspend(omap->phy[i], 0);
+ 	}
+ 
+ 	return 0;
+ 
++err_remove_hcd:
++	usb_remove_hcd(hcd);
+ err_pm_runtime:
+ 	pm_runtime_put_sync(dev);
+ 	pm_runtime_disable(dev);
+-- 
+2.50.1.windows.1
+
 
