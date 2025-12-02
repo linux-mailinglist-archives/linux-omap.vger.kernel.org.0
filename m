@@ -1,173 +1,156 @@
-Return-Path: <linux-omap+bounces-5107-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5108-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A279C9B881
-	for <lists+linux-omap@lfdr.de>; Tue, 02 Dec 2025 13:56:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12A8BC9C1A8
+	for <lists+linux-omap@lfdr.de>; Tue, 02 Dec 2025 17:07:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE4043A7575
-	for <lists+linux-omap@lfdr.de>; Tue,  2 Dec 2025 12:56:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6180E3AA4DC
+	for <lists+linux-omap@lfdr.de>; Tue,  2 Dec 2025 16:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75543128D0;
-	Tue,  2 Dec 2025 12:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980D5288522;
+	Tue,  2 Dec 2025 16:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ffvFEagv"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="KQIFYGTn"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E121F27E7EC;
-	Tue,  2 Dec 2025 12:56:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2E72857C1
+	for <linux-omap@vger.kernel.org>; Tue,  2 Dec 2025 16:05:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764680182; cv=none; b=eLfFu3uQG5y6fnabEtb75JDMCX7YrUDfTw1Q2grtsLBUnfCIru7q2GgNtQ2wGX9an4S9Wj8SA171CuzxVKLyN5UAq14q6aHmZKvsTXf8Mg7vA4/LmCS8R5dJhbGJDZ2vNvkPLDcTOceAhE2hkrQraDwg+qVmt9I2cS7eA9WhI6Y=
+	t=1764691551; cv=none; b=vGeRcTzgg1lo7U0Wys6+C/syej5CHhoQ8k4ADsox44bB09Dj0Bl5GIvsr3VkFrnQPRMOzjlXMcSldHXOtOTr6zx28dmKRyU+n2MDtHdodEo9iqw7HHfBWQKG8uezSDrxcGPuUjw3oPhqiFnuSUU5edjebi+O30iWomRg7q4I114=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764680182; c=relaxed/simple;
-	bh=QFgcSxDwjQGmQohC290QGXRTuVmXVyuOEalaNkjC4ws=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UEMwG8LjW1tqIBhLFv2tuSe2ZTfgjOqsOoY8N5zl8wtkBzBa13YxHqTr3Fh1zK44zxGoFg4er9F7jE4uVyhgRY9jv0Hd1KW6sP2YPLydEexfmf37/TTCp51ws0vq92VZKbPqFJzRGAiohFPbV67eZCONiCvEE8EQP74bCpuKLxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ffvFEagv; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 28A3B1A1EC8;
-	Tue,  2 Dec 2025 12:56:18 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E0331606D3;
-	Tue,  2 Dec 2025 12:56:17 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BDFCC119197A7;
-	Tue,  2 Dec 2025 13:56:07 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1764680176; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=QFgcSxDwjQGmQohC290QGXRTuVmXVyuOEalaNkjC4ws=;
-	b=ffvFEagvHMxcxYiWtdroyPQNdvLv1ifz3VFkmfX4Ma1/lCwCnkcQ1z5TloYCThJtsNEbVR
-	Tl/HXf05ZSSsQobwVSpvnrzOwTaoF2ngm/scJqKUw4cv0uYRkdxjpM1gD8kqvNzOsB7587
-	mJ0C7A89FtwW3hcIYb3WEx0KSbOMoDe2FjigWHBimIoYM7Y08gzh8unAKgbBlc/8Y2Ts11
-	Apq5W3jhmeRmm2svhWKmIIw4sHHpyUfjA7BCBRKtOdMPEnAR6VoYOa4zbh4TFL1Dd15DKi
-	1nAQwvVkD6UErGkIJJIuJwWxon9Z21z/34FWPZaLONeELfD6Cis5CRYWNdejRw==
-Date: Tue, 2 Dec 2025 13:56:05 +0100
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Markus Schneider-Pargmann
- <msp@baylibre.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, Louis
- Chauvet <louis.chauvet@bootlin.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, Miguel Gazquez
- <miguel.gazquez@bootlin.com>, dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org, Jyri
- Sarha <jyri.sarha@iki.fi>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Russell
- King <linux@armlinux.org.uk>, Bartosz Golaszewski <brgl@bgdev.pl>, Tony
- Lindgren <tony@atomide.com>, Andrzej Hajda <andrzej.hajda@intel.com>, Neil
- Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
- <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>
-Subject: Re: [PATCH 05/21] ARM: dts: omap: Bind panel to panel-dpi instead
- of ti,tilcdc,panel driver
-Message-ID: <20251202135605.053ada96@kmaincent-XPS-13-7390>
-In-Reply-To: <1d9a9269-bfda-4d43-938b-2df6b82b9369@ideasonboard.com>
-References: <20251126-feature_tilcdc-v1-0-49b9ef2e3aa0@bootlin.com>
-	<20251126-feature_tilcdc-v1-5-49b9ef2e3aa0@bootlin.com>
-	<96b1b7bf-ddbe-4213-a201-dc89cf2998dd@ideasonboard.com>
-	<3bc5bf92-05c3-4841-ab28-9bab2bb31cd5@kernel.org>
-	<20251202104244.59a9e83d@kmaincent-XPS-13-7390>
-	<d7515cd3-5488-4d15-82dc-d2b98cfa2bed@kernel.org>
-	<20251202114416.09624a4b@kmaincent-XPS-13-7390>
-	<94e254fa-289d-41ed-909f-1742cfbb2690@kernel.org>
-	<20251202121856.0da62885@kmaincent-XPS-13-7390>
-	<1d9a9269-bfda-4d43-938b-2df6b82b9369@ideasonboard.com>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1764691551; c=relaxed/simple;
+	bh=oBlUbm/4rajTOLUrUnf2zsSWelXrOsMnnCt8Bhe3JzU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J5N5HCZKtCrgN/pJKG5Mmao+rdjfySqUX2lwJ1B8veiYOjZOPE9oZCXuxB5ofpjjcY1a+X25FErKynyn+ycJjfUxSWfEPoOud2kjKqtDPSus6BszMcqW4kOCz9I5J61Pw/+0TIVnfSsq6J9jUTQs6hv6KX9BWAQcN6aBimSFtvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=KQIFYGTn; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ee19b1fe5dso66721601cf.0
+        for <linux-omap@vger.kernel.org>; Tue, 02 Dec 2025 08:05:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1764691548; x=1765296348; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iEziSNrQQn4I05oBYvzUjY2FjKsIMByhRBoiclkMFIc=;
+        b=KQIFYGTnevjXpDUnDqt0jkUGh3z3F1Kw6qrgMY1NfxkuQGbUg8Kadewp5NTy9x0DO3
+         ClzkpaWxuLj6F5xwEZ5KhulRc+9qJNWx/ESMUFkxDM/+26czInQ7uCn1UvqhiZDxtN0T
+         8TIDQVOXUqHurcr+Uf6dU831Ya5Dr5kE95upkJPD9iC2wePhb6VHoxVraK3RzW/gOV42
+         Z62OJh0SqC6RFs8eCk1NISLZrxZVOVscI/gT5KjttOpmouhB9jRNpfX1w5Z2/hj1bZXR
+         jWy89pjPSf6byeId4N+nOnPSCJUKKGMAAFUP/pYlXvOyyrtpSslyWERJZj3F/MvgfT0u
+         NvAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764691548; x=1765296348;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iEziSNrQQn4I05oBYvzUjY2FjKsIMByhRBoiclkMFIc=;
+        b=P5phLijA/3l5BFcKF5oJE6rVD/jjWpZNyULGgGxTuao2yMM48ENZG5cCatF0EvOayJ
+         g9m77yQLhzh1ny0OPNLTEDtR1AYMCw9yBqYi8w5uOgPYx9DtWxzAHs38vG9Jl0WfEpQS
+         eeGJlqxehHir5nRzn1YN1zq5Nr4DUplrn8sPr3w/OY4rP1JmN0YT0XfDCdrJQ+MYPsDL
+         FrG9RBXLp4XDXOTn3MWudXTM6oqkNZSr0gRuinue3Ze4bFzrP6/BP39yeIVwNQyRmP/f
+         lX0QwJgqLrFpUtsHnKdJKAmELYaYPZBGKDxbIys6RRdBmo+5ui223WB/gYZNXykBQiRS
+         E3bg==
+X-Forwarded-Encrypted: i=1; AJvYcCXRttiVbsvKcVi8/Hw1AE5TdPangiBDEXiD+wLQ6LKJWTMoJWyynoFH6DqzU62ybSFjT1DfB9cWeBVh@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdnyPX4ugGIir+8KxYvGg+kZCQNxDsP9PsuwAfzSXGKj3KXdKE
+	ooKw7pcwGxdhH9MYLHOON5IGdpsvhrhFfG7Nx/hCT5X8A39poFCo4hxvvKKYEPc3zQ==
+X-Gm-Gg: ASbGncvhAR9whXfXEJ4L4F0hCCJI6CpGRSsDgvHFL4oOtU1m7GHsl02zVfrMCpvtoaS
+	DDsR4eRJS6Y9LgB4GWj/4BU25z1/7l0r1vn/c7mSSXwn2SesYfGRlmY1cgggB7PqheLIWjfSEyc
+	C+O0owJYOVhAx9h/2BuDmZmB1UwGeI5e5LpQTkOLA3/UvOqqq94Az8qc9HohFeXzN6unVlzPNV7
+	/gNnakYBabScGzYnTqI/tsqZXRCN990lW67SYKnFu1TFCPYzpfnQ2ZN/0ETTFAwqcNhxSXxwqt2
+	pbkY+TxHz82x5c4TlD2rrFP3nZF05QV5gyHk/QeaAz0uPVoB+sewKx5IJcQOeOKIhJ04/4r8VmC
+	Jv0kBZ64bQqEvILwADt0ZLmkWl1JaJnNNpo2U+9CJczynpLB0ob3WOwoijAxxx33L52A896MaO+
+	S9v5hqXG94HOiA
+X-Google-Smtp-Source: AGHT+IHjgMbcY+byTZV1x8KfhonySSDxlQ5+BhItSw06ag+f4H5XsHVZFjDTTcOrdWE4HzLgPcTA0g==
+X-Received: by 2002:a05:622a:4c8:b0:4e6:ebcc:23fb with SMTP id d75a77b69052e-4efbda58b15mr409662561cf.36.1764691548001;
+        Tue, 02 Dec 2025 08:05:48 -0800 (PST)
+Received: from rowland.harvard.edu ([2601:19b:d03:1700::eaae])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4efd2f9a755sm96901011cf.3.2025.12.02.08.05.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Dec 2025 08:05:47 -0800 (PST)
+Date: Tue, 2 Dec 2025 11:05:44 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Haotian Zhang <vulab@iscas.ac.cn>
+Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] USB: ehci-omap: Fix missing usb_phy_init() error handling
+Message-ID: <7c6ed1af-46c8-425b-83a5-4692095144a6@rowland.harvard.edu>
+References: <20251202080027.1124-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251202080027.1124-1-vulab@iscas.ac.cn>
 
-On Tue, 2 Dec 2025 13:51:59 +0200
-Tomi Valkeinen <tomi.valkeinen@ideasonboard.com> wrote:
+On Tue, Dec 02, 2025 at 04:00:27PM +0800, Haotian Zhang wrote:
+> usb_phy_init() may fail if the PHY clock or regulator setup fails,
+> but ehci_hcd_omap_probe() does not check its return value,
+> potentially causing later operations to act on an uninitialized PHY.
+> 
+> Add proper error checking for usb_phy_init() calls. Add a new
+> error label to properly remove the hcd.
+> 
+> Fixes: 4e5c9e6fa2d2 ("USB: ehci-omap: Tweak PHY initialization sequence")
+> Fixes: 49f092198f4f ("USB: ehci-omap: Fix detection in HSIC mode")
+> Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+> ---
+>  drivers/usb/host/ehci-omap.c | 14 ++++++++++++--
+>  1 file changed, 12 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/usb/host/ehci-omap.c b/drivers/usb/host/ehci-omap.c
+> index db4a1acb27da..30b3586fd696 100644
+> --- a/drivers/usb/host/ehci-omap.c
+> +++ b/drivers/usb/host/ehci-omap.c
+> @@ -166,7 +166,11 @@ static int ehci_hcd_omap_probe(struct platform_device *pdev)
+>  		omap->phy[i] = phy;
+>  
+>  		if (pdata->port_mode[i] == OMAP_EHCI_PORT_MODE_PHY) {
+> -			usb_phy_init(omap->phy[i]);
+> +			ret = usb_phy_init(omap->phy[i]);
+> +			if (ret) {
+> +				dev_err(dev, "Failed to init PHY %d\n", i);
+> +				goto err_phy;
+> +			}
+>  			/* bring PHY out of suspend */
+>  			usb_phy_set_suspend(omap->phy[i], 0);
+>  		}
+> @@ -205,13 +209,19 @@ static int ehci_hcd_omap_probe(struct platform_device *pdev)
+>  		     pdata->port_mode[i] == OMAP_EHCI_PORT_MODE_PHY)
+>  			continue;
+>  
+> -		usb_phy_init(omap->phy[i]);
+> +		ret = usb_phy_init(omap->phy[i]);
+> +		if (ret) {
+> +			dev_err(dev, "Failed to init PHY %d\n", i);
+> +			goto err_remove_hcd;
+> +		}
+>  		/* bring PHY out of suspend */
+>  		usb_phy_set_suspend(omap->phy[i], 0);
+>  	}
+>  
+>  	return 0;
+>  
+> +err_remove_hcd:
+> +	usb_remove_hcd(hcd);
+>  err_pm_runtime:
+>  	pm_runtime_put_sync(dev);
+>  	pm_runtime_disable(dev);
 
-> Hi Kory,
->=20
-> On 02/12/2025 13:18, Kory Maincent wrote:
-> > On Tue, 2 Dec 2025 11:47:40 +0100
-> > Krzysztof Kozlowski <krzk@kernel.org> wrote:
+This basically looks okay.  But...
 
-> I will not NAK, removing bindings and breaking users is under some
-> conditions acceptable. You just need to come with the reasons and impact.
->=20
-> Reason "is ugly" is usually not good enough. Especially if things were
-> working.
+I don't know much about the usb-phy code.  Is it really okay to call 
+usb_phy_shutdown() for something that hasn't gone through 
+usb_phy_init()?  (Yes, the original code already does this -- maybe 
+the original code is also wrong.)
 
-Thanks for you reply.
-
-> >>
-> >> DTS cannot go to drm, which means you either need to separate the chan=
-ge
-> >> and make entire work bisectable and backwards compatible for some time
-> >> OR at least document clearly the impact as we always ask. =20
-> >=20
-> > The thing is, if I split it, it has to be in 3. One for the of DRM bus =
-flags
-> > support, a second for the the devicetree and binding change and a third=
- for
-> > the whole tilcdc and tda998x cleaning stuff. I think I will go for one
-> > series, with better documentation.
-> >=20
-> > Now, what is your point of view on my question. Will you nak any binding
-> > removal even if the binding is ugly and legacy and imply maintaining an
-> > non-standard tilcdc panel driver? I know it breaks DTB compatibility but
-> > there is several argument to not keep it. See patch 6. =20
-> The binding being ugly and having to maintain non-standard tilcdc panel
-> driver may be nice things for us, the users don't care. The users care
-> if their board no longer works.
-
-Yes I understand but then I have another question. At what cost should we
-continue to support legacy binding?
-
-Just figured out this case already happened, ti,tilcdc,slave binding was
-removed from the tilcdc driver:
-739acd85ffdb7 ("drm/tilcdc: Remove obsolete "ti,tilcdc,slave" dts binding
-support")
-
-Even if there is still one mainline device tree that uses it:
-am335x-base0033.dts. :/
-
-> And how does this sync with u-boot? It also has code for at least for a
-> few of these boards.
-
-U-boot has indeed a driver for the ti,tilcdc,panel binding.
-Changing this devicetree would beak display for these board in U-boot as it
-currently does not support the "panel-dpi" binding.
-
-> Are there even users for these boards? If not, maybe they can be just
-> removed? I'm personally not familiar with these boards, so I have no
-> idea of their age or distribution.
-
-These boards are quite old (>10 years) but I don't know if they are still u=
-sed
-by people. After a quick look they seem not available on the market.
-
-> One trick that can be done is to modify the loaded DTB at boot time,
-> detecting the old format, converting it to the new one, so that when the
-> drivers are probed they only see the new DTB.
-
-Yes, indeed that could do the trick. The things is, I don't have one of
-theses board to test it. I will try to look for an other way to test it.
-
-Regards,
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+Alan Stern
 
