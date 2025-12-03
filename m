@@ -1,161 +1,195 @@
-Return-Path: <linux-omap+bounces-5112-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5113-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15910C9E37A
-	for <lists+linux-omap@lfdr.de>; Wed, 03 Dec 2025 09:30:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A8AC9EC47
+	for <lists+linux-omap@lfdr.de>; Wed, 03 Dec 2025 11:51:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BE81B4E06C0
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Dec 2025 08:30:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D92253A981E
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Dec 2025 10:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7D02D480F;
-	Wed,  3 Dec 2025 08:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB29A2D8779;
+	Wed,  3 Dec 2025 10:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rI6h+xJT"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="hllfMgf4"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244B724DD09;
-	Wed,  3 Dec 2025 08:30:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829422F25F0
+	for <linux-omap@vger.kernel.org>; Wed,  3 Dec 2025 10:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764750650; cv=none; b=Ux2cUXs7gf19vnS91uXFDNQA++r4cgG+NCZTjfyrDvuP8C7Cs5T+6lWpBwMwIN7Dy0DUW5DD9FRt+2OAHju/1yItlX2jc5B/uZdZY7FCAj/SbbbHRNE2XR0uH3Ya2wAhtU0W/WNsSh84qfiUgucUgKl4x2OELhiZINSppyTdWQI=
+	t=1764759001; cv=none; b=pyacJ4s6H6Y7ymBEntE4ZtMT06fA2zJHcV5+pKJ9/LK0zUKdZc/Dz20/vNVaezAMHyatuKR+OLoCCBBWSdatOwlv9Rkap90n/ipFKwegmc6D2tKqSYH9CebVygxtqXX0zvpBeOLhpe33J6GAsGzdYHfto2YP4+GMFwaipVc65w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764750650; c=relaxed/simple;
-	bh=zyF/r0fjZEG5Zc5d3W/4Gh2VeH+el4jv7LMS1PSNlk0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h6GaE7S/GvVczqt/+09XZIObUBzAufNHDgwbaz49MoRGpJpcPZ5WYFzeqss05QrKXa0YWPGnl60JPPxkfSSAg+cC+lNjUBykQggQa7Rgf0aSAtn6yPaNWzo1h2/cxx+M5HpHm2JP14hR8j3nOt41W3KpGHbEMkXS/9SfUZeYNaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rI6h+xJT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3A9C4CEFB;
-	Wed,  3 Dec 2025 08:30:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764750649;
-	bh=zyF/r0fjZEG5Zc5d3W/4Gh2VeH+el4jv7LMS1PSNlk0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rI6h+xJTutYGBiCMHFSC/CvZ/aY8wz+s4/Zl+p2h9DrLvfIzTqd/+d1iR4lErm5FB
-	 mKQKFs37QSydLBwjhKPPZwTcCewwu9vwRaOKnDWzWiD0YAwKFCKAInPN20z5mmD7fn
-	 tl8JtUqV3tiQsXc5zFT8Hi5EDUYl36G54aqvYte5xk6qTXQFkpq65iRsQ3o4WGXNtN
-	 NCklPbkMxcfeLXearae5GTpSabNxYuf8ZOvHtVMKnxs1TQBgmIVeiWSG0BEA1a5KDf
-	 abjPoyZNTSRel49GIShJu3LoR1+/e6jpovfKAlDCHifWa8lAhlupOrLbemnC5nh4e/
-	 TGmHTfIEDA8gw==
-Date: Wed, 3 Dec 2025 09:30:47 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Kory Maincent <kory.maincent@bootlin.com>
-Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
-	Markus Schneider-Pargmann <msp@baylibre.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Louis Chauvet <louis.chauvet@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	Miguel Gazquez <miguel.gazquez@bootlin.com>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org, 
-	Jyri Sarha <jyri.sarha@iki.fi>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Russell King <linux@armlinux.org.uk>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Tony Lindgren <tony@atomide.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>
-Subject: Re: [PATCH 05/21] ARM: dts: omap: Bind panel to panel-dpi instead of
- ti,tilcdc,panel driver
-Message-ID: <20251203-aromatic-heavy-loon-0cbd14@quoll>
-References: <20251126-feature_tilcdc-v1-5-49b9ef2e3aa0@bootlin.com>
- <96b1b7bf-ddbe-4213-a201-dc89cf2998dd@ideasonboard.com>
- <3bc5bf92-05c3-4841-ab28-9bab2bb31cd5@kernel.org>
- <20251202104244.59a9e83d@kmaincent-XPS-13-7390>
- <d7515cd3-5488-4d15-82dc-d2b98cfa2bed@kernel.org>
- <20251202114416.09624a4b@kmaincent-XPS-13-7390>
- <94e254fa-289d-41ed-909f-1742cfbb2690@kernel.org>
- <20251202121856.0da62885@kmaincent-XPS-13-7390>
- <1d9a9269-bfda-4d43-938b-2df6b82b9369@ideasonboard.com>
- <20251202135605.053ada96@kmaincent-XPS-13-7390>
+	s=arc-20240116; t=1764759001; c=relaxed/simple;
+	bh=08St0W18syl6cb2kqTjkQ6nAwGEFRsXeSnAUw36rRPg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dQQ6HogSlA9NdRIy9JGwO+pFJ+bAzpi+vbpBbPyqWDcQfdbwY6tbzz13TSl2IO1ydsZTs0eEA3aC9/f/1+JBL4QPvYgxAFyKNN+hh2MUihHOtr72CZVRKsvqPbdXwOsLt6bVIzTVgAX/WDXLn1pUaujLZEGzQifpJFDLmAQhwqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=hllfMgf4; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 39B671A1EEF;
+	Wed,  3 Dec 2025 10:49:52 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0978E60706;
+	Wed,  3 Dec 2025 10:49:52 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C027F1192038B;
+	Wed,  3 Dec 2025 11:49:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1764758990; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=jNcvfrXTM72K7iRCwTM8Vuwyzk1BAcytFwMTCwmI/Pk=;
+	b=hllfMgf41LGgmDZYl6QO0NRnJvOIjfX+mNuzo8QgpQrEwrB2A9KO7/RJj4AkUzIupWHYNo
+	HYi2+VvYwCGLecBXkEz5IpHt+1LIiNYfZoQAj3dOMjHAqJZLeLyYP03afGA1cUx16BPTvT
+	AoklCt8caGs70sUepUyJ7gXYLyqzpd10VWdlQt2VQD2nA+SZxWUvXtfPIxYcK7FrLOpAyY
+	mTNLpu8sWcbP/i75ydb4xq3uHDZT4NmOpWoJvYhAHBubayfqzDjsuKk17wVUCIQr3UK3sB
+	h2egsWZfnjQk9mniMD93fhWbXcE8XtKwTeVXG6pUicN31mOMt+Penxk8XcfPCQ==
+Date: Wed, 3 Dec 2025 11:49:41 +0100
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Swamil Jain <s-jain1@ti.com>
+Cc: Jyri Sarha <jyri.sarha@iki.fi>, Tomi Valkeinen
+ <tomi.valkeinen@ideasonboard.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Russell
+ King <linux@armlinux.org.uk>, "Bartosz Golaszewski" <brgl@bgdev.pl>, Tony
+ Lindgren <tony@atomide.com>, Andrzej Hajda <andrzej.hajda@intel.com>, Neil
+ Armstrong <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
+ <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, Markus
+ Schneider-Pargmann <msp@baylibre.com>, Luca Ceresoli
+ <luca.ceresoli@bootlin.com>, Louis Chauvet <louis.chauvet@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Miguel Gazquez
+ <miguel.gazquez@bootlin.com>, <dri-devel@lists.freedesktop.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-omap@vger.kernel.org>
+Subject: Re: [PATCH 00/21] Clean and update tilcdc driver to support
+ DRM_BRIDGE_ATTACH_NO_CONNECTOR
+Message-ID: <20251203114941.1fafd9dd@kmaincent-XPS-13-7390>
+In-Reply-To: <7b8e22d1-a872-4ea0-8fce-4323d2bf81ff@ti.com>
+References: <20251126-feature_tilcdc-v1-0-49b9ef2e3aa0@bootlin.com>
+	<7b8e22d1-a872-4ea0-8fce-4323d2bf81ff@ti.com>
+Organization: bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251202135605.053ada96@kmaincent-XPS-13-7390>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Dec 02, 2025 at 01:56:05PM +0100, Kory Maincent wrote:
-> On Tue, 2 Dec 2025 13:51:59 +0200
-> Tomi Valkeinen <tomi.valkeinen@ideasonboard.com> wrote:
-> 
-> > Hi Kory,
-> > 
-> > On 02/12/2025 13:18, Kory Maincent wrote:
-> > > On Tue, 2 Dec 2025 11:47:40 +0100
-> > > Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> 
-> > I will not NAK, removing bindings and breaking users is under some
-> > conditions acceptable. You just need to come with the reasons and impact.
-> > 
-> > Reason "is ugly" is usually not good enough. Especially if things were
-> > working.
-> 
-> Thanks for you reply.
-> 
-> > >>
-> > >> DTS cannot go to drm, which means you either need to separate the change
-> > >> and make entire work bisectable and backwards compatible for some time
-> > >> OR at least document clearly the impact as we always ask.  
-> > > 
-> > > The thing is, if I split it, it has to be in 3. One for the of DRM bus flags
-> > > support, a second for the the devicetree and binding change and a third for
-> > > the whole tilcdc and tda998x cleaning stuff. I think I will go for one
-> > > series, with better documentation.
-> > > 
-> > > Now, what is your point of view on my question. Will you nak any binding
-> > > removal even if the binding is ugly and legacy and imply maintaining an
-> > > non-standard tilcdc panel driver? I know it breaks DTB compatibility but
-> > > there is several argument to not keep it. See patch 6.  
-> > The binding being ugly and having to maintain non-standard tilcdc panel
-> > driver may be nice things for us, the users don't care. The users care
-> > if their board no longer works.
-> 
-> Yes I understand but then I have another question. At what cost should we
-> continue to support legacy binding?
+On Tue, 2 Dec 2025 17:55:15 +0530
+Swamil Jain <s-jain1@ti.com> wrote:
 
-That's mostly question to platform maintainers and users. Extrapolating
-kernel rule - we never break the user-space - we never break the users,
-thus we take significant cost.
+> Hi Kory,
+> Thanks for the series.
+>=20
+> On 11/26/25 23:05, Kory Maincent (TI.com) wrote:
+> > The starting point for this work was adding support for the HDMI cape:
+> > https://www.seeedstudio.com/Seeed-Studio-BeagleBone-Green-HDMI-Cape.html
+> > This will be sent in a later series.
+> >=20
+> > Initially, Miguel proposed modifying the ite-it66121 bridge to support
+> > the legacy behavior without the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag:
+> > https://lore.kernel.org/lkml/20250909-it66121-fix-v1-1-bc79ca83df17@boo=
+tlin.com/
+> > This patch was NAK'd as we don't want to add more legacy code. Maxime
+> > requested that the tilcdc driver be updated to use
+> > DRM_BRIDGE_ATTACH_NO_CONNECTOR instead.
+> >=20
+> > While working on this update, I discovered that the tilcdc driver
+> > contained significant amounts of legacy code that needed cleaning.
+> > Since this driver was developed alongside the tda998x driver for
+> > several AM335x boards, the tda998x driver also required cleanup and
+> > support for the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag.
+> >=20
+> > This series is based on the tilcdc fix sent to mainline:
+> > https://lore.kernel.org/lkml/20251125090546.137193-1-kory.maincent@boot=
+lin.com/
+> >=20
+> > Patch 1-7: Convert tilcdc binding to YAML and remove the ti,tilcdc,panel
+> > 	   sub-binding and driver
+> > Patch 8-16: Clean up tilcdc driver
+> > Patch 17-19: Clean up tda998x driver
+> > Patch 20: Add DRM_BRIDGE_ATTACH_NO_CONNECTOR support to tda998x
+> > Patch 21: Add DRM_BRIDGE_ATTACH_NO_CONNECTOR support to tilcdc
+> >=20
+> > Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
+> > ---
+> > Kory Maincent (TI.com) (21):
+> >        dt-bindings: display: tilcdc: Convert to DT schema
+> >        dt-bindings: display: tilcdc: Add fifo-threshold property
+> >        drm/tilcdc: Remove simulate_vesa_sync flag
+> >        drm/tilcdc: Add support for DRM bus flags and simplify panel con=
+fig
+> >        ARM: dts: omap: Bind panel to panel-dpi instead of ti,tilcdc,pan=
+el
+> > driver dt-bindings: display: tilcdc: Remove panel binding
+> >        drm/tilcdc: Remove tilcdc panel driver
+> >        drm/tilcdc: Remove component framework support
+> >        drm/tilcdc: Remove tilcdc_panel_info structure
+> >        drm/tilcdc: Remove redundant #endif/#ifdef in debugfs code
+> >        drm/tilcdc: Remove unused encoder and connector tracking arrays
+> >        drm/tilcdc: Rename external_encoder and external_connector to
+> > encoder and connector drm/tilcdc: Rename tilcdc_external to tilcdc_enco=
+der
+> >        drm/tilcdc: Remove the useless module list support
+> >        drm/tilcdc: Modernize driver initialization and cleanup paths
+> >        drm/tilcdc: Remove the use of drm_device private_data
+> >        drm/bridge: tda998x: Remove component support
+> >        drm/bridge: tda998x: Move tda998x_create/destroy into probe and
+> > remove drm/bridge: tda998x: Remove useless tda998x_connector_destroy wr=
+apper
+> >        drm/bridge: tda998x: Add support for DRM_BRIDGE_ATTACH_NO_CONNEC=
+TOR
+> >        drm/tilcdc: Add support for DRM_BRIDGE_ATTACH_NO_CONNECTOR
+> >=20
+> >   .../devicetree/bindings/display/tilcdc/panel.txt   |  66 ---
+> >   .../devicetree/bindings/display/tilcdc/tilcdc.txt  |  82 ----
+> >   .../devicetree/bindings/display/tilcdc/tilcdc.yaml | 103 +++++
+> >   arch/arm/boot/dts/ti/davinci/da850-evm.dts         |  26 +-
+> >   arch/arm/boot/dts/ti/omap/am335x-guardian.dts      |  25 +-
+> >   arch/arm/boot/dts/ti/omap/am335x-pdu001.dts        |  21 +-
+> >   arch/arm/boot/dts/ti/omap/am335x-pepper.dts        |  22 +-
+> >   arch/arm/boot/dts/ti/omap/am335x-sbc-t335.dts      |  25 +-
+> >   arch/arm/boot/dts/ti/omap/am335x-sl50.dts          |  25 +-
+> >   drivers/gpu/drm/bridge/tda998x_drv.c               | 251 ++++++------
+> >   drivers/gpu/drm/tilcdc/Makefile                    |   3 +-
+> >   drivers/gpu/drm/tilcdc/tilcdc_crtc.c               | 117 ++----
+> >   drivers/gpu/drm/tilcdc/tilcdc_drv.c                | 456
+> > +++++++-------------- drivers/gpu/drm/tilcdc/tilcdc_drv.h              =
+  |
+> > 88 +--- drivers/gpu/drm/tilcdc/tilcdc_encoder.c            |  93 +++++
+> >   .../tilcdc/{tilcdc_external.h =3D> tilcdc_encoder.h} |   5 +-
+> >   drivers/gpu/drm/tilcdc/tilcdc_external.c           | 179 --------
+> >   drivers/gpu/drm/tilcdc/tilcdc_panel.c              | 408
+> > ------------------ drivers/gpu/drm/tilcdc/tilcdc_panel.h              |=
+  15
+> > - drivers/gpu/drm/tilcdc/tilcdc_plane.c              |   2 +-
+> >   drivers/gpu/drm/tilcdc/tilcdc_regs.h               |   8 +-
+> >   21 files changed, 589 insertions(+), 1431 deletions(-)
+> > ---
+> > base-commit: 670bacfc7579bdd79a3069cfb5ab60a6a7923003 =20
+>=20
+> I was trying to test the patches, unable to find the base-commit, are
+> you using drm-misc-next?
 
-And that significant cost can be the cost of making the transition
-smooth or smoother.
+It is based on the tilcdc fix as explained in the cover letter.
+https://lore.kernel.org/lkml/20251125090546.137193-1-kory.maincent@bootlin.=
+com/
+Therefore you won't be able to find this base commit hash.=20
 
-> 
-> Just figured out this case already happened, ti,tilcdc,slave binding was
-> removed from the tilcdc driver:
-> 739acd85ffdb7 ("drm/tilcdc: Remove obsolete "ti,tilcdc,slave" dts binding
-> support")
-> 
-> Even if there is still one mainline device tree that uses it:
-> am335x-base0033.dts. :/
-
-If that commit broke existing users, it is a good argument for your
-changes, but you need to explicitly use that argument in commit msg.
-
-> 
-> > And how does this sync with u-boot? It also has code for at least for a
-> > few of these boards.
-> 
-> U-boot has indeed a driver for the ti,tilcdc,panel binding.
-> Changing this devicetree would beak display for these board in U-boot as it
-> currently does not support the "panel-dpi" binding.
-
-Thanks for checking, regardless of decision this also should be in
-commit msg.
-
-Maybe things were not working correctly for long time, so there is a
-choice of fixing Linux side while breaking U-boot and not fixing, but
-keeping bootloader working.
-
-
-Best regards,
-Krzysztof
-
+Regards,
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
 
