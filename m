@@ -1,85 +1,49 @@
-Return-Path: <linux-omap+bounces-5108-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5109-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12A8BC9C1A8
-	for <lists+linux-omap@lfdr.de>; Tue, 02 Dec 2025 17:07:33 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B474C9DAC0
+	for <lists+linux-omap@lfdr.de>; Wed, 03 Dec 2025 04:48:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6180E3AA4DC
-	for <lists+linux-omap@lfdr.de>; Tue,  2 Dec 2025 16:06:17 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4279C3491DE
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Dec 2025 03:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980D5288522;
-	Tue,  2 Dec 2025 16:05:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="KQIFYGTn"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46D42550D4;
+	Wed,  3 Dec 2025 03:47:55 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2E72857C1
-	for <linux-omap@vger.kernel.org>; Tue,  2 Dec 2025 16:05:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E0C2AD32;
+	Wed,  3 Dec 2025 03:47:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764691551; cv=none; b=vGeRcTzgg1lo7U0Wys6+C/syej5CHhoQ8k4ADsox44bB09Dj0Bl5GIvsr3VkFrnQPRMOzjlXMcSldHXOtOTr6zx28dmKRyU+n2MDtHdodEo9iqw7HHfBWQKG8uezSDrxcGPuUjw3oPhqiFnuSUU5edjebi+O30iWomRg7q4I114=
+	t=1764733675; cv=none; b=N5ykwwp4A9sHFrNMVRknnEx1O+AoZm5FfWfuGGQRTPAZ3E9/q33pU+R82p/vz1kHsN4lhCUvNzkIr3TqbpO1WjGPwZNMJP4UVBYX4U+WyuZNKqdByfL+8C+Bbmw8wQ8MT5K8VQ888iY8/+zL650GrmxTrfFTuiRgnq+EeViI3R8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764691551; c=relaxed/simple;
-	bh=oBlUbm/4rajTOLUrUnf2zsSWelXrOsMnnCt8Bhe3JzU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J5N5HCZKtCrgN/pJKG5Mmao+rdjfySqUX2lwJ1B8veiYOjZOPE9oZCXuxB5ofpjjcY1a+X25FErKynyn+ycJjfUxSWfEPoOud2kjKqtDPSus6BszMcqW4kOCz9I5J61Pw/+0TIVnfSsq6J9jUTQs6hv6KX9BWAQcN6aBimSFtvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=KQIFYGTn; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ee19b1fe5dso66721601cf.0
-        for <linux-omap@vger.kernel.org>; Tue, 02 Dec 2025 08:05:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1764691548; x=1765296348; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iEziSNrQQn4I05oBYvzUjY2FjKsIMByhRBoiclkMFIc=;
-        b=KQIFYGTnevjXpDUnDqt0jkUGh3z3F1Kw6qrgMY1NfxkuQGbUg8Kadewp5NTy9x0DO3
-         ClzkpaWxuLj6F5xwEZ5KhulRc+9qJNWx/ESMUFkxDM/+26czInQ7uCn1UvqhiZDxtN0T
-         8TIDQVOXUqHurcr+Uf6dU831Ya5Dr5kE95upkJPD9iC2wePhb6VHoxVraK3RzW/gOV42
-         Z62OJh0SqC6RFs8eCk1NISLZrxZVOVscI/gT5KjttOpmouhB9jRNpfX1w5Z2/hj1bZXR
-         jWy89pjPSf6byeId4N+nOnPSCJUKKGMAAFUP/pYlXvOyyrtpSslyWERJZj3F/MvgfT0u
-         NvAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764691548; x=1765296348;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iEziSNrQQn4I05oBYvzUjY2FjKsIMByhRBoiclkMFIc=;
-        b=P5phLijA/3l5BFcKF5oJE6rVD/jjWpZNyULGgGxTuao2yMM48ENZG5cCatF0EvOayJ
-         g9m77yQLhzh1ny0OPNLTEDtR1AYMCw9yBqYi8w5uOgPYx9DtWxzAHs38vG9Jl0WfEpQS
-         eeGJlqxehHir5nRzn1YN1zq5Nr4DUplrn8sPr3w/OY4rP1JmN0YT0XfDCdrJQ+MYPsDL
-         FrG9RBXLp4XDXOTn3MWudXTM6oqkNZSr0gRuinue3Ze4bFzrP6/BP39yeIVwNQyRmP/f
-         lX0QwJgqLrFpUtsHnKdJKAmELYaYPZBGKDxbIys6RRdBmo+5ui223WB/gYZNXykBQiRS
-         E3bg==
-X-Forwarded-Encrypted: i=1; AJvYcCXRttiVbsvKcVi8/Hw1AE5TdPangiBDEXiD+wLQ6LKJWTMoJWyynoFH6DqzU62ybSFjT1DfB9cWeBVh@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdnyPX4ugGIir+8KxYvGg+kZCQNxDsP9PsuwAfzSXGKj3KXdKE
-	ooKw7pcwGxdhH9MYLHOON5IGdpsvhrhFfG7Nx/hCT5X8A39poFCo4hxvvKKYEPc3zQ==
-X-Gm-Gg: ASbGncvhAR9whXfXEJ4L4F0hCCJI6CpGRSsDgvHFL4oOtU1m7GHsl02zVfrMCpvtoaS
-	DDsR4eRJS6Y9LgB4GWj/4BU25z1/7l0r1vn/c7mSSXwn2SesYfGRlmY1cgggB7PqheLIWjfSEyc
-	C+O0owJYOVhAx9h/2BuDmZmB1UwGeI5e5LpQTkOLA3/UvOqqq94Az8qc9HohFeXzN6unVlzPNV7
-	/gNnakYBabScGzYnTqI/tsqZXRCN990lW67SYKnFu1TFCPYzpfnQ2ZN/0ETTFAwqcNhxSXxwqt2
-	pbkY+TxHz82x5c4TlD2rrFP3nZF05QV5gyHk/QeaAz0uPVoB+sewKx5IJcQOeOKIhJ04/4r8VmC
-	Jv0kBZ64bQqEvILwADt0ZLmkWl1JaJnNNpo2U+9CJczynpLB0ob3WOwoijAxxx33L52A896MaO+
-	S9v5hqXG94HOiA
-X-Google-Smtp-Source: AGHT+IHjgMbcY+byTZV1x8KfhonySSDxlQ5+BhItSw06ag+f4H5XsHVZFjDTTcOrdWE4HzLgPcTA0g==
-X-Received: by 2002:a05:622a:4c8:b0:4e6:ebcc:23fb with SMTP id d75a77b69052e-4efbda58b15mr409662561cf.36.1764691548001;
-        Tue, 02 Dec 2025 08:05:48 -0800 (PST)
-Received: from rowland.harvard.edu ([2601:19b:d03:1700::eaae])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4efd2f9a755sm96901011cf.3.2025.12.02.08.05.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Dec 2025 08:05:47 -0800 (PST)
-Date: Tue, 2 Dec 2025 11:05:44 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Haotian Zhang <vulab@iscas.ac.cn>
-Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] USB: ehci-omap: Fix missing usb_phy_init() error handling
-Message-ID: <7c6ed1af-46c8-425b-83a5-4692095144a6@rowland.harvard.edu>
+	s=arc-20240116; t=1764733675; c=relaxed/simple;
+	bh=uA1/e8rNSMjMiJrJI72qZLIR3Aj+8qMPowaw8XjZEMk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AJbwJ+G4uDg9A2g3/WgBej+L1y80JxFlkfFT8cT70KN3moFkOl5MSIFyDwDTBGGUxNeYXnEMRq8dqseKo8DCsvnbJWDsJeFL7UbeWpK9jYfNnFIAFAfqUO5PU4WHtLghM96LSue7x6ugXsWK4XwU04I9HHMlB7P6z7oYAWrn2Yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from DESKTOP-L0HPE2S (unknown [124.16.141.245])
+	by APP-01 (Coremail) with SMTP id qwCowAA3ysnhsi9p1GTsAg--.4197S2;
+	Wed, 03 Dec 2025 11:47:47 +0800 (CST)
+From: Haotian Zhang <vulab@iscas.ac.cn>
+To: stern@rowland.harvard.edu
+Cc: gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haotian Zhang <vulab@iscas.ac.cn>
+Subject: [PATCH v2] USB: ehci-omap: Fix missing usb_phy_init() error handling
+Date: Wed,  3 Dec 2025 11:28:22 +0800
+Message-ID: <20251203034741.461-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
+In-Reply-To: <20251202080027.1124-1-vulab@iscas.ac.cn>
 References: <20251202080027.1124-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -87,70 +51,107 @@ List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251202080027.1124-1-vulab@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAA3ysnhsi9p1GTsAg--.4197S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxXrWfJw15AFW5Kw4DGr4xtFb_yoW5GFW5pr
+	ZFqan0grWYgFZ2qrZ5tr18ZF1Fyw48try29FWxGa4fZw4rJrWqgr18tF4YyF1rZrZYka1U
+	Ja4qvayruF4UWaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkK14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26F
+	4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
+	7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r
+	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AK
+	xVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F4
+	0E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1l
+	IxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxV
+	AFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j
+	6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7VUjuHq7
+	UUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwoFA2kvgpG-OwAAsa
 
-On Tue, Dec 02, 2025 at 04:00:27PM +0800, Haotian Zhang wrote:
-> usb_phy_init() may fail if the PHY clock or regulator setup fails,
-> but ehci_hcd_omap_probe() does not check its return value,
-> potentially causing later operations to act on an uninitialized PHY.
-> 
-> Add proper error checking for usb_phy_init() calls. Add a new
-> error label to properly remove the hcd.
-> 
-> Fixes: 4e5c9e6fa2d2 ("USB: ehci-omap: Tweak PHY initialization sequence")
-> Fixes: 49f092198f4f ("USB: ehci-omap: Fix detection in HSIC mode")
-> Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-> ---
->  drivers/usb/host/ehci-omap.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/usb/host/ehci-omap.c b/drivers/usb/host/ehci-omap.c
-> index db4a1acb27da..30b3586fd696 100644
-> --- a/drivers/usb/host/ehci-omap.c
-> +++ b/drivers/usb/host/ehci-omap.c
-> @@ -166,7 +166,11 @@ static int ehci_hcd_omap_probe(struct platform_device *pdev)
->  		omap->phy[i] = phy;
->  
->  		if (pdata->port_mode[i] == OMAP_EHCI_PORT_MODE_PHY) {
-> -			usb_phy_init(omap->phy[i]);
-> +			ret = usb_phy_init(omap->phy[i]);
-> +			if (ret) {
-> +				dev_err(dev, "Failed to init PHY %d\n", i);
-> +				goto err_phy;
-> +			}
->  			/* bring PHY out of suspend */
->  			usb_phy_set_suspend(omap->phy[i], 0);
->  		}
-> @@ -205,13 +209,19 @@ static int ehci_hcd_omap_probe(struct platform_device *pdev)
->  		     pdata->port_mode[i] == OMAP_EHCI_PORT_MODE_PHY)
->  			continue;
->  
-> -		usb_phy_init(omap->phy[i]);
-> +		ret = usb_phy_init(omap->phy[i]);
-> +		if (ret) {
-> +			dev_err(dev, "Failed to init PHY %d\n", i);
-> +			goto err_remove_hcd;
-> +		}
->  		/* bring PHY out of suspend */
->  		usb_phy_set_suspend(omap->phy[i], 0);
->  	}
->  
->  	return 0;
->  
-> +err_remove_hcd:
-> +	usb_remove_hcd(hcd);
->  err_pm_runtime:
->  	pm_runtime_put_sync(dev);
->  	pm_runtime_disable(dev);
+usb_phy_init() may fail if the PHY clock or regulator setup fails,
+but ehci_hcd_omap_probe() does not check its return value,
+potentially causing later operations to act on an uninitialized PHY.
+Original cleanup also calls usb_phy_shutdown() on uninitialized
+PHYs, which is unsafe.
 
-This basically looks okay.  But...
+Add proper error checking for usb_phy_init() calls. Add a new
+error label to properly remove the hcd. Use local bool array to
+track successfully initialized PHYs, only shutdown properly
+initialized PHYs during cleanup.
 
-I don't know much about the usb-phy code.  Is it really okay to call 
-usb_phy_shutdown() for something that hasn't gone through 
-usb_phy_init()?  (Yes, the original code already does this -- maybe 
-the original code is also wrong.)
+Fixes: 4e5c9e6fa2d2 ("USB: ehci-omap: Tweak PHY initialization sequence")
+Fixes: 49f092198f4f ("USB: ehci-omap: Fix detection in HSIC mode")
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+---
+Changes in v2:
+  -Add a local bool array to track successfully initialized PHYs.
+  -Check if PHY is successfully initialized before
+   calling usb_phy_shutdown().
+---
+ drivers/usb/host/ehci-omap.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-Alan Stern
+diff --git a/drivers/usb/host/ehci-omap.c b/drivers/usb/host/ehci-omap.c
+index db4a1acb27da..f36083ee317c 100644
+--- a/drivers/usb/host/ehci-omap.c
++++ b/drivers/usb/host/ehci-omap.c
+@@ -89,6 +89,7 @@ static int ehci_hcd_omap_probe(struct platform_device *pdev)
+ 	int irq;
+ 	int i;
+ 	struct omap_hcd	*omap;
++	bool phy_initialized[OMAP3_HS_USB_PORTS] = { false };
+ 
+ 	if (usb_disabled())
+ 		return -ENODEV;
+@@ -166,7 +167,12 @@ static int ehci_hcd_omap_probe(struct platform_device *pdev)
+ 		omap->phy[i] = phy;
+ 
+ 		if (pdata->port_mode[i] == OMAP_EHCI_PORT_MODE_PHY) {
+-			usb_phy_init(omap->phy[i]);
++			ret = usb_phy_init(omap->phy[i]);
++			if (ret) {
++				dev_err(dev, "Failed to init PHY %d\n", i);
++				goto err_phy;
++			}
++			phy_initialized[i] = true;
+ 			/* bring PHY out of suspend */
+ 			usb_phy_set_suspend(omap->phy[i], 0);
+ 		}
+@@ -205,20 +211,27 @@ static int ehci_hcd_omap_probe(struct platform_device *pdev)
+ 		     pdata->port_mode[i] == OMAP_EHCI_PORT_MODE_PHY)
+ 			continue;
+ 
+-		usb_phy_init(omap->phy[i]);
++		ret = usb_phy_init(omap->phy[i]);
++		if (ret) {
++			dev_err(dev, "Failed to init PHY %d\n", i);
++			goto err_remove_hcd;
++		}
++		phy_initialized[i] = true;
+ 		/* bring PHY out of suspend */
+ 		usb_phy_set_suspend(omap->phy[i], 0);
+ 	}
+ 
+ 	return 0;
+ 
++err_remove_hcd:
++	usb_remove_hcd(hcd);
+ err_pm_runtime:
+ 	pm_runtime_put_sync(dev);
+ 	pm_runtime_disable(dev);
+ 
+ err_phy:
+ 	for (i = 0; i < omap->nports; i++) {
+-		if (omap->phy[i])
++		if (omap->phy[i] && phy_initialized[i])
+ 			usb_phy_shutdown(omap->phy[i]);
+ 	}
+ 
+-- 
+2.50.1.windows.1
+
 
