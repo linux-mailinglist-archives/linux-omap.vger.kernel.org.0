@@ -1,115 +1,107 @@
-Return-Path: <linux-omap+bounces-5110-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5111-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB27EC9DE8D
-	for <lists+linux-omap@lfdr.de>; Wed, 03 Dec 2025 07:14:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33643C9E26C
+	for <lists+linux-omap@lfdr.de>; Wed, 03 Dec 2025 09:10:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E11824E0EC5
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Dec 2025 06:14:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 266154E10DD
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Dec 2025 08:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C68289824;
-	Wed,  3 Dec 2025 06:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 232D82BE7A6;
+	Wed,  3 Dec 2025 08:10:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=thingy.jp header.i=@thingy.jp header.b="JhJoX1pV"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643D61E832A;
-	Wed,  3 Dec 2025 06:14:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844C329C35A
+	for <linux-omap@vger.kernel.org>; Wed,  3 Dec 2025 08:10:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764742462; cv=none; b=se/peGihGkkTXYKNnHsuujHPocXJwvRd419sBrTG3nUxNVZwVA2vwi9qfq7VYwy8ciDSYSy86UP2rk3xYOwMyByAnnnncFoo5kFpPtZzwfwHRWQ4WkqTPMCVQCqWRVa6kGVoBA2BZreyKgeQqfsZj9+Yl9Z9O+ETse04fK0Mwo0=
+	t=1764749426; cv=none; b=H+yS/yvJpFogncSCPlZMpdwj8ba5lF4AOOAB1xzX5T+IFrv9IIXhvF2aFV14SI8jgViz48lVBwAV+wFnW/Um+wfh3J70QL+52ksZjOcln0Va9KSjTIAh+9GUa//huKLJ+T4HfKgP8koYnaFUoNpDxum4cmCX1cvNzejfSd57tlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764742462; c=relaxed/simple;
-	bh=TkyaOm3j5eKLbZJdeaX+Ddfn/QBJIJurwe0v7rdCu7Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u5KueUWRD7e/IuNMQEeNAOyaTCJoWxIDLyU5KH+ONscu95KSf3uLYz9hFf2sDw0SRTec/Z7H677YKqfnEFr8W2LdYpMve7QwvkuPy1gKWP6GOCDwhNDo6P6bNlk0J2ZinsJjFvx7BCjyk5niwdYCE+AslPT42wtGZeF2KsewWX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from DESKTOP-L0HPE2S (unknown [124.16.141.245])
-	by APP-03 (Coremail) with SMTP id rQCowAC3RNcu1S9pcZMBAw--.492S2;
-	Wed, 03 Dec 2025 14:14:06 +0800 (CST)
-From: Haotian Zhang <vulab@iscas.ac.cn>
-To: tony@atomide.com,
-	haojian.zhuang@linaro.org,
-	linus.walleij@linaro.org
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-omap@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Haotian Zhang <vulab@iscas.ac.cn>
-Subject: [PATCH] pinctrl: single: Fix incorrect type for error return variable
-Date: Wed,  3 Dec 2025 14:13:47 +0800
-Message-ID: <20251203061347.381-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1.windows.1
+	s=arc-20240116; t=1764749426; c=relaxed/simple;
+	bh=Z5QyQLMURNcrCc99cho9V8h9KI4BXTcX0f/zycekJzk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KUP6eG6xp2RwGrV1XCG0uGa03V9hBxlXcXNdM+tmeVNh3sHrzIGILlbfWAizN42RoAYBVONsYcK4p+RxjNzKg3w0Qj4on12NC/HMSibYEFuYcpQW8C8AYWd2vHz1Q1mVAzy8IF50+4CA1vTo+s72bFWy+STANuzRXEqYPCbT9M4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=thingy.jp; spf=pass smtp.mailfrom=0x0f.com; dkim=pass (1024-bit key) header.d=thingy.jp header.i=@thingy.jp header.b=JhJoX1pV; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=thingy.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0x0f.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-343ff854297so8502301a91.1
+        for <linux-omap@vger.kernel.org>; Wed, 03 Dec 2025 00:10:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=thingy.jp; s=google; t=1764749424; x=1765354224; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z5QyQLMURNcrCc99cho9V8h9KI4BXTcX0f/zycekJzk=;
+        b=JhJoX1pVQxbugDb6MhZ63EuMMZr4WjoqIomlGylXmzpn/QX2/n8zu6DEH8r43sOySu
+         8lSHfdj1yxcSENvuhvokZ8ej1ulyP4vjjmPggGAnpwbrB2VmwkFg6TqkwHh6PCHRUvBY
+         iaAJy6o4WUdyzjpWQ7sFFO7QOlxjESD7BFjoM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764749424; x=1765354224;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z5QyQLMURNcrCc99cho9V8h9KI4BXTcX0f/zycekJzk=;
+        b=dMSN3PT6MS88S9zk0MJRmwvSLzasF8BmlU6UruWXK8Yr4vJa4vKRiyVVOAIAE6xliL
+         GhVDRI0JiCunHcsJWOVYZ70mw2Qk9y/vavrowMrs1NFiXxiRgvGPtLJWSkfaJ8DD4acG
+         tC3OGThxGyVJ/E076YEcnEpb1gJPh69e5XDAM7EqhvhOlgJXbeqQcTBP7y56n3bes9E7
+         0IsoKBlt8mOWOXdzE7chXaw1suk/kWEq6kavsVMmkrXK1IWx/nBuNFX6um56J+UzpKg4
+         B+22j4nnCBwyebXixlmkwXb0AyaxOZAGo+bU4tFT6iwkARsXCc5A22LfYP9DrTLVHVEk
+         Tz6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUJnWT9zwMVjpJdHgWmmY8CUyWwKL+ypj4E42KUjlOIlgCWXB0JrmOUuEFnGpRTg+8kJ1hFBVxKfnL9@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxjcqr5n6dGK0sFeBAuXGoni4U34dCsmW/8/yae9Y/SrOt/4ubg
+	gxWhtrLivCoXQ731bcJJsMp3+fUcVhMadCs9gsvGYPGsEGtZez4EPjMLgf19NPQWR3ZdyPYjpGL
+	RJrcVSJEhqXZ1Bb8FFrDuqo3rIwN5NZFxPseJ/efnfI5khWK+d7aWAbFO6A==
+X-Gm-Gg: ASbGnctRlYyHYv8HiZJeqjb+cFhYeVRC1C4l3NPTxCOPuw6h3e+ymaFkBGcIBlsBA0A
+	ywx9e1QFpPhFH1VlDgozkydKgtBnK7x1jGoFmptfMR6OPBC8Cm47WpiuGpwuUbZ02Hw6/3OuDT4
+	ecm+h/gHeW4YK/XQGDeBMs0ctQFJ4rnXSEUuGwnxsGZ13/zE8Hcfs8oKTWb0qiEv10tHhQ8us+Q
+	yrBInQwtYmKyYm011ZDhH9qbW58vlz1powjyLR+KJRdb7uRnrpe3USb42I6+Nhnfvg3nVkU
+X-Google-Smtp-Source: AGHT+IEq5y63hfjT8YHjilACNJqyKvg5j+0plLqT3wpsKD5Q7MH1znsyxIQRdeefXp8WZbUY/IfgJtcujn/JnV7uScQ=
+X-Received: by 2002:a17:90b:17cc:b0:335:2eef:4ca8 with SMTP id
+ 98e67ed59e1d1-3491284b4d8mr1814924a91.33.1764749424655; Wed, 03 Dec 2025
+ 00:10:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAC3RNcu1S9pcZMBAw--.492S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7CFWrtF1UJr18Ar43XF1xuFg_yoW8XrW7pF
-	Z3Ja45GrW5KrW3uryDJ395WFy3Can7J3yrGayak3s8Za15AFykAa45KrWYqan0krZ8uF1a
-	9a15Xr909w1DA3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvm14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	JF0_Jw1lc2xSY4AK67AK6r47MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
-	4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
-	67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
-	x0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
-	z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
-	UI43ZEXa7VUjz6zUUUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwsFA2kvyV0ndQAAsK
+References: <20251124002105.25429-1-jszhang@kernel.org> <20251124002105.25429-8-jszhang@kernel.org>
+In-Reply-To: <20251124002105.25429-8-jszhang@kernel.org>
+From: Daniel Palmer <daniel@thingy.jp>
+Date: Wed, 3 Dec 2025 17:10:12 +0900
+X-Gm-Features: AWmQ_blMivOz7cN3cWbzITo5XCmwfcKVIQTdEzDBywa8v8-CY7hjUyWixRG6J94
+Message-ID: <CAFr9PX=zXuaOBoEUGkYjrROK75e_xt6XZQu=mt0zQQNYWn_TYA@mail.gmail.com>
+Subject: Re: [PATCH v5 07/14] gpio: msc313: Use modern PM macros
+To: Jisheng Zhang <jszhang@kernel.org>
+Cc: Doug Berger <opendmb@gmail.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	bcm-kernel-feedback-list@broadcom.com, 
+	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Hoan Tran <hoan@os.amperecomputing.com>, Andy Shevchenko <andy@kernel.org>, 
+	Romain Perier <romain.perier@gmail.com>, Grygorii Strashko <grygorii.strashko@ti.com>, 
+	Santosh Shilimkar <ssantosh@kernel.org>, Kevin Hilman <khilman@kernel.org>, 
+	Robert Jarzmik <robert.jarzmik@free.fr>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>, 
+	Srinivas Neeli <srinivas.neeli@amd.com>, Michal Simek <michal.simek@amd.com>, 
+	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, 
+	Andy Shevchenko <andriy.shevchenko@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-pcs_pinconf_get() and pcs_pinconf_set() declare ret as unsigned int,
-but assign it the return values of pcs_get_function() that may return
-negative error codes. This causes negative error codes to be
-converted to large positive values.
+Hi Jisheng,
 
-Change ret from unsigned int to int in both functions.
+Sorry I missed this. This looks fine to me.
 
-Fixes: 9dddb4df90d1 ("pinctrl: single: support generic pinconf")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
----
- drivers/pinctrl/pinctrl-single.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+On Mon, 24 Nov 2025 at 09:39, Jisheng Zhang <jszhang@kernel.org> wrote:
+>
+> Use the modern PM macros for the suspend and resume functions to be
+> automatically dropped by the compiler when CONFIG_PM or
+> CONFIG_PM_SLEEP are disabled, without having to use __maybe_unused
 
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index 5cda6201b60f..21b2580480ca 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -485,7 +485,8 @@ static int pcs_pinconf_get(struct pinctrl_dev *pctldev,
- 	struct pcs_device *pcs = pinctrl_dev_get_drvdata(pctldev);
- 	struct pcs_function *func;
- 	enum pin_config_param param;
--	unsigned offset = 0, data = 0, i, j, ret;
-+	unsigned offset = 0, data = 0, i, j;
-+	int ret;
- 
- 	ret = pcs_get_function(pctldev, pin, &func);
- 	if (ret)
-@@ -549,9 +550,9 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
- {
- 	struct pcs_device *pcs = pinctrl_dev_get_drvdata(pctldev);
- 	struct pcs_function *func;
--	unsigned offset = 0, shift = 0, i, data, ret;
-+	unsigned offset = 0, shift = 0, i, data;
- 	u32 arg;
--	int j;
-+	int j, ret;
- 	enum pin_config_param param;
- 
- 	ret = pcs_get_function(pctldev, pin, &func);
--- 
-2.50.1.windows.1
-
+Reviewed-by: Daniel Palmer <daniel@thingy.jp>
 
