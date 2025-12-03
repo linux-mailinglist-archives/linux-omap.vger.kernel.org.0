@@ -1,345 +1,91 @@
-Return-Path: <linux-omap+bounces-5115-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5116-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A3F2CA1D60
-	for <lists+linux-omap@lfdr.de>; Wed, 03 Dec 2025 23:35:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E312FCA1ED1
+	for <lists+linux-omap@lfdr.de>; Thu, 04 Dec 2025 00:20:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BD9303012DF1
-	for <lists+linux-omap@lfdr.de>; Wed,  3 Dec 2025 22:34:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DEB7F300940F
+	for <lists+linux-omap@lfdr.de>; Wed,  3 Dec 2025 23:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBAD2EA743;
-	Wed,  3 Dec 2025 22:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3C825C80E;
+	Wed,  3 Dec 2025 23:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cHeJo8wH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i52K43It"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FF12E9EAD;
-	Wed,  3 Dec 2025 22:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCBDC285C80
+	for <linux-omap@vger.kernel.org>; Wed,  3 Dec 2025 23:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764801275; cv=none; b=LUIyMhEegeqxdDRHsN5mbD3EFc7uN9Vs20KeanmA4sx5LKlSOtKkAXC9GxK7Q2RyyKklMf8ukCQWHK/k6t+ychdBdJASwWymOMsxeZ+LSqZuvXJ5yp3LyDZGhD4mUdFG4lcRX+YERsKAQSOgt5G0eGWXqSRpXPzEq9C0evI20ks=
+	t=1764804026; cv=none; b=hM4r5immgJQeWrTZqRxlUa6IgGGOgEtQgemeNT0QrQcLcBJvWYndof/yw4FiVVSeogf4stl7bK4Ebw3w7pDcsqwwtzG4j7sHbXNPE56MM9VhRw15k/JRevxgSNgM6eRV25kxsadpj1iu+W898u3yxWVTLsw51V3IniCcmhkEmqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764801275; c=relaxed/simple;
-	bh=KJmUZ24nnbwERWZJG1Y6zF6gaML1oCL/l0B4Mz3x+9Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=E5cVRs4wp2Zv79yG0aUmL+eA55y/9T0N9mB5F96wakEmmkuQS/GxU5oBNqiNsHs7TkvMjJVp7U60S/dw7qS8ZuuxIKLPI0GHwQYeXSh8i4gHX2g9WvGiLF8Lqgaqj5yovo4ud9TEWgPZgXk32whs7lkVYCBAICNgV6JboQOm1b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cHeJo8wH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 539BAC4CEFB;
-	Wed,  3 Dec 2025 22:34:34 +0000 (UTC)
+	s=arc-20240116; t=1764804026; c=relaxed/simple;
+	bh=d0GfyFGM1Oph0pY5oAbEauVJi8UkgLE6QU9SfUb2YsY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bmJwQsIwuREcmqDtsk/GMoAdiHvJDfD2Txsz/MA6vbnREATjtfknjzEPWtGaCmu+7C33gqrQxqx32sd8S1Yw30Su/bUulI1bOnloC0eaoOZBnvlRdhLKlYbpiRah76rYCYmjum72V/NXCBUkREOHClYeGuAOxq/8t5SOUe5z6Cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i52K43It; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73199C19423
+	for <linux-omap@vger.kernel.org>; Wed,  3 Dec 2025 23:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764801274;
-	bh=KJmUZ24nnbwERWZJG1Y6zF6gaML1oCL/l0B4Mz3x+9Y=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=cHeJo8wHZ/n24vLkFZiEvuXEl4rzESwj5U6mwtUwgPXG8G83aPbshok65K9FoKkbV
-	 08ocsea4uWV5tkOLQSOQnOG9BTyBzdK9yu2cjd1UnTVpMbVgT8BAR5qA7uL+1RJ7OX
-	 rnaYoZSCGhZEg0oGtP+ZuM56r7TMZXPf3478tEkqxqg0MmKQB7zlCIIV/lAknccgM0
-	 p6KntHuJFutCQzYeC9ANo9AGGMhdmAUtWKWkxcxJNgwpQWRX9zMePu1m1rC257pCPo
-	 I7ptBYUr2hmTJNHK/1yksK9k0ct3rFseN+FU/zNBcCDJGUT1Vy/GRk6vChFQ611tFx
-	 3EHftwt3O0oTA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BEC9D15DB6;
-	Wed,  3 Dec 2025 22:34:34 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 03 Dec 2025 23:34:10 +0100
-Subject: [PATCH] ALSA: Do not build obsolete API
+	s=k20201202; t=1764804026;
+	bh=d0GfyFGM1Oph0pY5oAbEauVJi8UkgLE6QU9SfUb2YsY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=i52K43ItRJf5Gem+Kwl6iAnimM0datLWEvGacELCt3p4FULhukjH4QT4DVLavFWpI
+	 JEAkp9xSM3Z71lEYJ4anaihlGwP9XrBIqAsLsIzneOwZvFLrgvgA1+O4W5C4r/ohAx
+	 R8nV7z9NLtoxn9otR+6OxbgLljweuWOlfh9BX3f04zZKyXiJi/EKKAhUGheI7j5Cp7
+	 5yGbVwAEHxfyrhFwjj6B6eg9aaG69KJO0U9/QttH/xPYGQ7+V7Z7ZWBPGn1xNgQr+I
+	 x5Yx9ajGl1N26NlLSfMn5jZpEmjVV0K3nogbO4eUjT7k5f33GKNMpZ29+2wAIHXeIw
+	 nHK88laEj7D5w==
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-63fc6d9fde5so233279d50.3
+        for <linux-omap@vger.kernel.org>; Wed, 03 Dec 2025 15:20:26 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWtczRR+U/2HMVv1EP8Ho/nQN3FNsSTj1EiWuMikdhqYyYyI7VGAXDVic6o9NHBaqUyIlqFDQ7+8Deo@vger.kernel.org
+X-Gm-Message-State: AOJu0YydKRWE4LNvzHAMLx8nlL4/SyW1yuht1eQGGgJK7dh3p9+sgg/2
+	FgjRZKLvn1i0IN7DDYzaznisrSjbXo03tzpbnuR94hQw72OD2JROa1JWETsu7iOclhilTYVTsLZ
+	+I0r7Eqa0u//pOxOw6Zf639CIQS9eEWs=
+X-Google-Smtp-Source: AGHT+IF6Ubehf9UyFyN7R9CQHHKnaL2+kuEjm67boDEH1TzAwnXzKTEF1gwP+gQVaHPkySSPQ+49jv0HL03LpI29228=
+X-Received: by 2002:a05:690c:6982:b0:786:8a25:9967 with SMTP id
+ 00721157ae682-78c18902a3dmr6870477b3.50.1764804025792; Wed, 03 Dec 2025
+ 15:20:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251203-old-alsa-v1-1-ac80704f52c3@ixit.cz>
-X-B4-Tracking: v=1; b=H4sIAOG6MGkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1NDIwNj3fycFN3EnOJE3bREo2Sj5CQDY4tUQyWg8oKi1LTMCrBR0bG1tQA
- h8dfkWgAAAA==
-X-Change-ID: 20251203-old-alsa-fa2c2cb038e1
-To: Russell King <linux@armlinux.org.uk>, Vladimir Zapolskiy <vz@mleia.com>, 
- Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
- Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>, 
- Thierry Reding <thierry.reding@gmail.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Keguang Zhang <keguang.zhang@gmail.com>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org, 
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-sh@vger.kernel.org, linux-sound@vger.kernel.org, 
- David Heidelberg <david@ixit.cz>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8871; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=iI36/zucaZGMAuHjbpHexqSrh35fgY0PI2Hy+1NmdLI=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBpMLr4dZLJefPCvCqy7I+f17rkRcl5hpkhPdmWn
- TUxQ0hMVpqJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaTC6+AAKCRBgAj/E00kg
- cjJDEACVB5l/R30FCxRxuw1tVSQNh1XBjAM/u0mWR8xtGuOwua2EGN2BnCS2P63uuTvKDaQLHDM
- nI6uK3wK3LSfSV8llwL09HmaTKe8EHkJhIY4XXnSnt3Xf+YzEwpFtqZdouJRXshNZcOwv9YCaVB
- BkF3f87Iu6iAbtuEWJhmiD0EZfrMzLbPBxnIiCUOb+xFB3yRoHocuAtB+PqwT5GjEupogYxlWFE
- vAIlFc4xSMtxdH7wJk6K/D76PwbwXY9dHJHEasuP6KD5sFMjibjf+eP8VAqZMFcFzvsjorfTgtK
- /tldmJUfctc6nx/IyiGPrx4WT1qMpUjfWymzmtbELTsKwLuH9bnmmmxdZXiW5VUPRVXTmSwWSDf
- V2OlpxnZL7eJayWWzTyMMt2M6lNWiblwgxYXnFOnxNmr3dunhKVjEX2bpF2fR4LQYjoSdb0VHy2
- +Sfcs0xEfeGUtbL5tFU6X17UrOoT5VkmPq2R4T1zg7ucI7Om4tnGV5lhj/HUE4PEzODr9mEoDgD
- oqQKtCrAUTp+XO0o/E4+XjE0NjjNnfhwBhx9WMWAUPOYI52HcPdS+dkXgSRmdphZao3dawJK7wu
- GeqGmaGEqHl8wJvmrx7wSIu1GGPYHL3yY7CKUq9lRUUcktu0JJ4kGp/Giuj/YqxFNdKhXFerthu
- bsqXeLACDYQX51g==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+References: <20251203061347.381-1-vulab@iscas.ac.cn>
+In-Reply-To: <20251203061347.381-1-vulab@iscas.ac.cn>
+From: Linus Walleij <linusw@kernel.org>
+Date: Thu, 4 Dec 2025 00:20:14 +0100
+X-Gmail-Original-Message-ID: <CAD++jLnH-ZT+9YMxqZ=TV=0fatXSRcFkJMk-snEuRSMLdfD6PQ@mail.gmail.com>
+X-Gm-Features: AWmQ_bn-byFumMhepCmXCRHPlxHjGckHiBtylxRKGopQpAJ4h0Hwa7EoKago8dU
+Message-ID: <CAD++jLnH-ZT+9YMxqZ=TV=0fatXSRcFkJMk-snEuRSMLdfD6PQ@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: single: Fix incorrect type for error return variable
+To: Haotian Zhang <vulab@iscas.ac.cn>
+Cc: tony@atomide.com, haojian.zhuang@linaro.org, linus.walleij@linaro.org, 
+	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: David Heidelberg <david@ixit.cz>
+On Wed, Dec 3, 2025 at 7:14=E2=80=AFAM Haotian Zhang <vulab@iscas.ac.cn> wr=
+ote:
 
-ALSA 0.9.0-rc3 is from 2002, 23 years old.
+> pcs_pinconf_get() and pcs_pinconf_set() declare ret as unsigned int,
+> but assign it the return values of pcs_get_function() that may return
+> negative error codes. This causes negative error codes to be
+> converted to large positive values.
+>
+> Change ret from unsigned int to int in both functions.
+>
+> Fixes: 9dddb4df90d1 ("pinctrl: single: support generic pinconf")
+> Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
 
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
-Maybe I could drop also the code and Kconfig option?
+Patch applied.
+Thanks Haotian!
 
-David
----
- arch/arm/configs/am200epdkit_defconfig    | 1 -
- arch/arm/configs/lpc32xx_defconfig        | 1 -
- arch/arm/configs/omap1_defconfig          | 1 -
- arch/arm/configs/tegra_defconfig          | 1 -
- arch/mips/configs/gcw0_defconfig          | 1 -
- arch/mips/configs/loongson1_defconfig     | 1 -
- arch/mips/configs/qi_lb60_defconfig       | 1 -
- arch/mips/configs/rbtx49xx_defconfig      | 1 -
- arch/mips/configs/rs90_defconfig          | 1 -
- arch/powerpc/configs/85xx-hw.config       | 1 -
- arch/powerpc/configs/86xx-hw.config       | 1 -
- arch/powerpc/configs/mpc5200_defconfig    | 1 -
- arch/powerpc/configs/ppc6xx_defconfig     | 1 -
- arch/sh/configs/edosk7760_defconfig       | 1 -
- arch/sh/configs/se7724_defconfig          | 1 -
- arch/sh/configs/sh7785lcr_32bit_defconfig | 1 -
- sound/core/Kconfig                        | 2 +-
- 17 files changed, 1 insertion(+), 17 deletions(-)
-
-diff --git a/arch/arm/configs/am200epdkit_defconfig b/arch/arm/configs/am200epdkit_defconfig
-index 134a559aba3dd..2367b1685c1cf 100644
---- a/arch/arm/configs/am200epdkit_defconfig
-+++ b/arch/arm/configs/am200epdkit_defconfig
-@@ -68,7 +68,6 @@ CONFIG_SOUND=m
- CONFIG_SND=m
- CONFIG_SND_MIXER_OSS=m
- CONFIG_SND_PCM_OSS=m
--# CONFIG_SND_SUPPORT_OLD_API is not set
- # CONFIG_SND_VERBOSE_PROCFS is not set
- CONFIG_SND_PXA2XX_AC97=m
- CONFIG_USB_GADGET=y
-diff --git a/arch/arm/configs/lpc32xx_defconfig b/arch/arm/configs/lpc32xx_defconfig
-index 2bddb0924a8c0..b9e2e603cd95e 100644
---- a/arch/arm/configs/lpc32xx_defconfig
-+++ b/arch/arm/configs/lpc32xx_defconfig
-@@ -113,7 +113,6 @@ CONFIG_LOGO=y
- # CONFIG_LOGO_LINUX_VGA16 is not set
- CONFIG_SOUND=y
- CONFIG_SND=y
--# CONFIG_SND_SUPPORT_OLD_API is not set
- # CONFIG_SND_VERBOSE_PROCFS is not set
- CONFIG_SND_DEBUG=y
- CONFIG_SND_DEBUG_VERBOSE=y
-diff --git a/arch/arm/configs/omap1_defconfig b/arch/arm/configs/omap1_defconfig
-index dee820474f444..df88763fc7c3d 100644
---- a/arch/arm/configs/omap1_defconfig
-+++ b/arch/arm/configs/omap1_defconfig
-@@ -148,7 +148,6 @@ CONFIG_SOUND=y
- CONFIG_SND=y
- CONFIG_SND_MIXER_OSS=y
- CONFIG_SND_PCM_OSS=y
--# CONFIG_SND_SUPPORT_OLD_API is not set
- # CONFIG_SND_VERBOSE_PROCFS is not set
- CONFIG_SND_DUMMY=y
- CONFIG_SND_USB_AUDIO=y
-diff --git a/arch/arm/configs/tegra_defconfig b/arch/arm/configs/tegra_defconfig
-index ce70ff07c978a..68aedaf92667a 100644
---- a/arch/arm/configs/tegra_defconfig
-+++ b/arch/arm/configs/tegra_defconfig
-@@ -219,7 +219,6 @@ CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=y
- CONFIG_LOGO=y
- CONFIG_SOUND=y
- CONFIG_SND=y
--# CONFIG_SND_SUPPORT_OLD_API is not set
- # CONFIG_SND_DRIVERS is not set
- CONFIG_SND_HDA_TEGRA=y
- CONFIG_SND_HDA_INPUT_BEEP=y
-diff --git a/arch/mips/configs/gcw0_defconfig b/arch/mips/configs/gcw0_defconfig
-index fda9971bdd8d9..adb9fd62ddb0d 100644
---- a/arch/mips/configs/gcw0_defconfig
-+++ b/arch/mips/configs/gcw0_defconfig
-@@ -79,7 +79,6 @@ CONFIG_LOGO=y
- # CONFIG_LOGO_LINUX_VGA16 is not set
- CONFIG_SOUND=y
- CONFIG_SND=y
--# CONFIG_SND_SUPPORT_OLD_API is not set
- # CONFIG_SND_PROC_FS is not set
- # CONFIG_SND_DRIVERS is not set
- # CONFIG_SND_SPI is not set
-diff --git a/arch/mips/configs/loongson1_defconfig b/arch/mips/configs/loongson1_defconfig
-index 02d29110f7024..1d9781ff96986 100644
---- a/arch/mips/configs/loongson1_defconfig
-+++ b/arch/mips/configs/loongson1_defconfig
-@@ -119,7 +119,6 @@ CONFIG_WATCHDOG_SYSFS=y
- CONFIG_LOONGSON1_WDT=y
- CONFIG_SOUND=y
- CONFIG_SND=y
--# CONFIG_SND_SUPPORT_OLD_API is not set
- # CONFIG_SND_DRIVERS is not set
- # CONFIG_SND_MIPS is not set
- # CONFIG_SND_USB is not set
-diff --git a/arch/mips/configs/qi_lb60_defconfig b/arch/mips/configs/qi_lb60_defconfig
-index 5f5b0254d75e7..a1bb0792f6eb1 100644
---- a/arch/mips/configs/qi_lb60_defconfig
-+++ b/arch/mips/configs/qi_lb60_defconfig
-@@ -81,7 +81,6 @@ CONFIG_LOGO=y
- # CONFIG_LOGO_LINUX_CLUT224 is not set
- CONFIG_SOUND=y
- CONFIG_SND=y
--# CONFIG_SND_SUPPORT_OLD_API is not set
- # CONFIG_SND_VERBOSE_PROCFS is not set
- # CONFIG_SND_DRIVERS is not set
- # CONFIG_SND_SPI is not set
-diff --git a/arch/mips/configs/rbtx49xx_defconfig b/arch/mips/configs/rbtx49xx_defconfig
-index 03a7bbe28a532..49c709d663beb 100644
---- a/arch/mips/configs/rbtx49xx_defconfig
-+++ b/arch/mips/configs/rbtx49xx_defconfig
-@@ -53,7 +53,6 @@ CONFIG_TXX9_WDT=m
- # CONFIG_VGA_ARB is not set
- CONFIG_SOUND=m
- CONFIG_SND=m
--# CONFIG_SND_SUPPORT_OLD_API is not set
- # CONFIG_SND_VERBOSE_PROCFS is not set
- # CONFIG_SND_DRIVERS is not set
- # CONFIG_SND_PCI is not set
-diff --git a/arch/mips/configs/rs90_defconfig b/arch/mips/configs/rs90_defconfig
-index a53dd66e9b864..8382d535e6dc1 100644
---- a/arch/mips/configs/rs90_defconfig
-+++ b/arch/mips/configs/rs90_defconfig
-@@ -105,7 +105,6 @@ CONFIG_LOGO=y
- CONFIG_SOUND=y
- CONFIG_SND=y
- # CONFIG_SND_PCM_TIMER is not set
--# CONFIG_SND_SUPPORT_OLD_API is not set
- # CONFIG_SND_PROC_FS is not set
- # CONFIG_SND_DRIVERS is not set
- # CONFIG_SND_MIPS is not set
-diff --git a/arch/powerpc/configs/85xx-hw.config b/arch/powerpc/configs/85xx-hw.config
-index 8aff832173977..2b19c20a9a2c4 100644
---- a/arch/powerpc/configs/85xx-hw.config
-+++ b/arch/powerpc/configs/85xx-hw.config
-@@ -117,7 +117,6 @@ CONFIG_SND_INTEL8X0=y
- CONFIG_SND_POWERPC_SOC=y
- # CONFIG_SND_PPC is not set
- CONFIG_SND_SOC=y
--# CONFIG_SND_SUPPORT_OLD_API is not set
- # CONFIG_SND_USB is not set
- CONFIG_SND=y
- CONFIG_SOUND=y
-diff --git a/arch/powerpc/configs/86xx-hw.config b/arch/powerpc/configs/86xx-hw.config
-index e7bd265fae5a4..07f30ab881e59 100644
---- a/arch/powerpc/configs/86xx-hw.config
-+++ b/arch/powerpc/configs/86xx-hw.config
-@@ -80,7 +80,6 @@ CONFIG_SERIO_LIBPS2=y
- CONFIG_SND_INTEL8X0=y
- CONFIG_SND_MIXER_OSS=y
- CONFIG_SND_PCM_OSS=y
--# CONFIG_SND_SUPPORT_OLD_API is not set
- CONFIG_SND=y
- CONFIG_SOUND=y
- CONFIG_ULI526X=y
-diff --git a/arch/powerpc/configs/mpc5200_defconfig b/arch/powerpc/configs/mpc5200_defconfig
-index c0fe5e76604a0..617650cea56a9 100644
---- a/arch/powerpc/configs/mpc5200_defconfig
-+++ b/arch/powerpc/configs/mpc5200_defconfig
-@@ -75,7 +75,6 @@ CONFIG_FB_SM501=m
- CONFIG_LOGO=y
- CONFIG_SOUND=y
- CONFIG_SND=y
--# CONFIG_SND_SUPPORT_OLD_API is not set
- # CONFIG_SND_DRIVERS is not set
- # CONFIG_SND_PCI is not set
- # CONFIG_SND_PPC is not set
-diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
-index b082c1fae13c9..787d707f64a42 100644
---- a/arch/powerpc/configs/ppc6xx_defconfig
-+++ b/arch/powerpc/configs/ppc6xx_defconfig
-@@ -726,7 +726,6 @@ CONFIG_SND_OSSEMUL=y
- CONFIG_SND_MIXER_OSS=m
- CONFIG_SND_PCM_OSS=m
- CONFIG_SND_DYNAMIC_MINORS=y
--# CONFIG_SND_SUPPORT_OLD_API is not set
- CONFIG_SND_VERBOSE_PRINTK=y
- CONFIG_SND_DEBUG=y
- CONFIG_SND_DEBUG_VERBOSE=y
-diff --git a/arch/sh/configs/edosk7760_defconfig b/arch/sh/configs/edosk7760_defconfig
-index abeae220606a3..905fac1072845 100644
---- a/arch/sh/configs/edosk7760_defconfig
-+++ b/arch/sh/configs/edosk7760_defconfig
-@@ -79,7 +79,6 @@ CONFIG_FB_TILEBLITTING=y
- CONFIG_FB_SH_MOBILE_LCDC=m
- CONFIG_SOUND=y
- CONFIG_SND=y
--# CONFIG_SND_SUPPORT_OLD_API is not set
- # CONFIG_SND_VERBOSE_PROCFS is not set
- CONFIG_SND_VERBOSE_PRINTK=y
- CONFIG_SND_SOC=y
-diff --git a/arch/sh/configs/se7724_defconfig b/arch/sh/configs/se7724_defconfig
-index 9e3a54936f76f..8ca46d704c8ba 100644
---- a/arch/sh/configs/se7724_defconfig
-+++ b/arch/sh/configs/se7724_defconfig
-@@ -83,7 +83,6 @@ CONFIG_LOGO=y
- # CONFIG_LOGO_SUPERH_VGA16 is not set
- CONFIG_SOUND=y
- CONFIG_SND=m
--# CONFIG_SND_SUPPORT_OLD_API is not set
- # CONFIG_SND_DRIVERS is not set
- # CONFIG_SND_SPI is not set
- # CONFIG_SND_SUPERH is not set
-diff --git a/arch/sh/configs/sh7785lcr_32bit_defconfig b/arch/sh/configs/sh7785lcr_32bit_defconfig
-index eb63aa61b0465..5468cc53cddb4 100644
---- a/arch/sh/configs/sh7785lcr_32bit_defconfig
-+++ b/arch/sh/configs/sh7785lcr_32bit_defconfig
-@@ -93,7 +93,6 @@ CONFIG_SND_PCM_OSS=y
- CONFIG_SND_SEQUENCER_OSS=y
- CONFIG_SND_HRTIMER=y
- CONFIG_SND_DYNAMIC_MINORS=y
--# CONFIG_SND_SUPPORT_OLD_API is not set
- # CONFIG_SND_VERBOSE_PROCFS is not set
- CONFIG_SND_VERBOSE_PRINTK=y
- CONFIG_SND_DEBUG=y
-diff --git a/sound/core/Kconfig b/sound/core/Kconfig
-index 48db44fa56feb..4e7bc370ffd7f 100644
---- a/sound/core/Kconfig
-+++ b/sound/core/Kconfig
-@@ -155,7 +155,7 @@ config SND_MAX_CARDS
- 
- config SND_SUPPORT_OLD_API
- 	bool "Support old ALSA API"
--	default y
-+	default n
- 	help
- 	  Say Y here to support the obsolete ALSA PCM API (ver.0.9.0 rc3
- 	  or older).
-
----
-base-commit: b2c27842ba853508b0da00187a7508eb3a96c8f7
-change-id: 20251203-old-alsa-fa2c2cb038e1
-
-Best regards,
--- 
-David Heidelberg <david@ixit.cz>
-
-
+Yours,
+Linus Walleij
 
