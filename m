@@ -1,335 +1,198 @@
-Return-Path: <linux-omap+bounces-5117-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5118-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ED02CA2A84
-	for <lists+linux-omap@lfdr.de>; Thu, 04 Dec 2025 08:39:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AFEBCA2FD4
+	for <lists+linux-omap@lfdr.de>; Thu, 04 Dec 2025 10:29:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E95FF300CD48
-	for <lists+linux-omap@lfdr.de>; Thu,  4 Dec 2025 07:39:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 25FAE30A29A3
+	for <lists+linux-omap@lfdr.de>; Thu,  4 Dec 2025 09:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47B64307AF7;
-	Thu,  4 Dec 2025 07:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE21333711E;
+	Thu,  4 Dec 2025 09:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="naH7XhYE"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ucyZ5f9d"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991292FFFAB;
-	Thu,  4 Dec 2025 07:39:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12303336EEB;
+	Thu,  4 Dec 2025 09:23:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764833953; cv=none; b=ANEZTFl2fcsLSE8sH8aEQe6iy85gVZnorQsvbb4iAnr+CZ1wulqm7tRTOONwOu0DrPLfV+AmkSdRTNHox5ekwsEGKHR0h4l27mGO4d87Rr151yUYbgzrd7w5ylv8pwekQ9/VTOpG8BAzuh5vYYPbgGHtyptZkAqahYXOkYjg++0=
+	t=1764840236; cv=none; b=JBrYwu4XWIiQk5ejZZ73Mvftv1DXbVWm/BfoXnS35a6lg/wUL8IAfRcLIAc5N2h3eM+FB225B3x4L/VVaKP7bZoZ/ZPIBUq59sD5JV86SHMcssS7I38le7mP+4BTE5wX3Mpopt4JGYcIvEed3NiNHGot4ygl/ARvyTJzzh/4Pgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764833953; c=relaxed/simple;
-	bh=Qq0GWTvBPgCqUz9m3+8fVUgJ9uPY8K9dp5GcVDT/CYE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=URYYkqvs83gcP86hkm6dd0j6hkXsLDYoowumaSbfkSU8KiWYb3WI2X7UoMJQ4XJwN2/SfHilKJ1fCRlrWoLqKabVZGHEgZbJyQ5did8Pwt7MB3qBNmqh68Re9cjLK3J2Ho9MPydvoiRGFiwD5JcPnuJJqSwBN+YiiPgPwMDe7dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=naH7XhYE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F690C113D0;
-	Thu,  4 Dec 2025 07:39:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764833953;
-	bh=Qq0GWTvBPgCqUz9m3+8fVUgJ9uPY8K9dp5GcVDT/CYE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=naH7XhYEsEkbtlW6bsr51zK1N3fr04bg7n2X9YlcuhrVgKW+16Y+Zb8p2vXqWEOvm
-	 p9IJks1elvXfDM72avZm44WkyA6S6axvsOO9yKOt107nN/XGV+syj1R0x2FySHa/dS
-	 ZsLnhKU8Vrt4l32kXkLXUT30bZaMTIP+zLvWVRwtijoZXIbe12bkkdIac79lyYcg7w
-	 KpKF8/bwnuwzXk75yU4uqCdpd7Ts3Cbb2sc+bOrThfJ9ZF+OuZIbCZk4chVYq1nAXF
-	 eBYKxcJR0XQctjXiK1mK01OaMZU6amOD6yjnjSy2A5qlDw9gZJxrPmhRDDX2kCtYNA
-	 8L5PdBOJKtD1g==
-Message-ID: <b896d109-d707-4651-8bb0-6cf5071e46bf@kernel.org>
-Date: Thu, 4 Dec 2025 08:39:03 +0100
+	s=arc-20240116; t=1764840236; c=relaxed/simple;
+	bh=tFiO0lAA6DWpebrUO11w6zmuieqyodJNCr81oE1Iu7Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XeBhqySiS+jylFjoQMztmws1cCfoVa6p+j/Y0unmc+EcI3llc34ri1erzo3ffYTbVQ+gREkb4i/X3Uz0c9NidQ7i/pOB1ki3mL94w3v5POT+TCbXmb736pRsocjySFJ9p/oeMdPmK2XVQarGvgVpGKZB1flHWXST/OXDPEUQmW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ucyZ5f9d; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 9BE9EC17860;
+	Thu,  4 Dec 2025 09:23:27 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id EDC736068C;
+	Thu,  4 Dec 2025 09:23:50 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E666A1192215B;
+	Thu,  4 Dec 2025 10:23:48 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1764840230; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=nXpdNiS56jR1KT4Jpt0BrujsluykoEHSKtLMRVVKOQ8=;
+	b=ucyZ5f9dpcM4gv+pcuCztmowf1u01uFz6ox6lNR5/Ph9+Gf22qzLJfyH2EeKYst42+X3rQ
+	0at2PUWTWVlzNq8t8ZUJbePexLMkomprEtFXchdzPshMegxhPMkm6CuVEufjQYAfyYuw4U
+	YZQyIvV/a/bhxbdlJWV6iSnhbb6zpUPtrl2wutg3orcv3aKjNkmE3pvM6hXKKTQtzr6R9V
+	E+Z6pfZ85J9lsMnLxuhRVIvyNziUgI6gOwoCok20PLFqFGeyEQKyOTlkCc0nvyfj5FSYc0
+	hbXHNSel01AUnuaKYQn4Ebh8IZ35qaDoQz9nhZMeQAOZo02ccY715BguqrPWyQ==
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>,
+	thomas.petazzoni@bootlin.com,
+	Tony Lindgren <tony@atomide.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Subject: [PATCH] ARM: dts: Drop am335x-base0033 devicetree
+Date: Thu,  4 Dec 2025 10:23:44 +0100
+Message-ID: <20251204092346.1076836-1-kory.maincent@bootlin.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ALSA: Do not build obsolete API
-To: david@ixit.cz, Russell King <linux@armlinux.org.uk>,
- Vladimir Zapolskiy <vz@mleia.com>,
- Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
- Aaro Koskinen <aaro.koskinen@iki.fi>,
- Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Keguang Zhang <keguang.zhang@gmail.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-omap@vger.kernel.org, linux-tegra@vger.kernel.org,
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-sh@vger.kernel.org, linux-sound@vger.kernel.org
-References: <20251203-old-alsa-v1-1-ac80704f52c3@ixit.cz>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20251203-old-alsa-v1-1-ac80704f52c3@ixit.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
 
+Remove the am335x-base0033 devicetree as it has been non-functional since
+2017 (Linunx v4.14) when the ti,tilcdc,slave binding was removed. The HDMI
+output on this board has been broken for over 8 years without any reported
+issues or attempts to fix it, indicating this devicetree is no longer in
+active use.
 
-Le 03/12/2025 à 23:34, David Heidelberg via B4 Relay a écrit :
-> [Vous ne recevez pas souvent de courriers de devnull+david.ixit.cz@kernel.org. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
-> 
-> From: David Heidelberg <david@ixit.cz>
-> 
-> ALSA 0.9.0-rc3 is from 2002, 23 years old.
-> 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
-> Maybe I could drop also the code and Kconfig option?
-> 
-> David
-> ---
->   arch/arm/configs/am200epdkit_defconfig    | 1 -
->   arch/arm/configs/lpc32xx_defconfig        | 1 -
->   arch/arm/configs/omap1_defconfig          | 1 -
->   arch/arm/configs/tegra_defconfig          | 1 -
->   arch/mips/configs/gcw0_defconfig          | 1 -
->   arch/mips/configs/loongson1_defconfig     | 1 -
->   arch/mips/configs/qi_lb60_defconfig       | 1 -
->   arch/mips/configs/rbtx49xx_defconfig      | 1 -
->   arch/mips/configs/rs90_defconfig          | 1 -
->   arch/powerpc/configs/85xx-hw.config       | 1 -
->   arch/powerpc/configs/86xx-hw.config       | 1 -
->   arch/powerpc/configs/mpc5200_defconfig    | 1 -
->   arch/powerpc/configs/ppc6xx_defconfig     | 1 -
+Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
+---
+ arch/arm/boot/dts/ti/omap/Makefile            |  1 -
+ arch/arm/boot/dts/ti/omap/am335x-base0033.dts | 92 -------------------
+ 2 files changed, 93 deletions(-)
+ delete mode 100644 arch/arm/boot/dts/ti/omap/am335x-base0033.dts
 
-For powerpc:
-
-Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Acked-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-
-
-
->   arch/sh/configs/edosk7760_defconfig       | 1 -
->   arch/sh/configs/se7724_defconfig          | 1 -
->   arch/sh/configs/sh7785lcr_32bit_defconfig | 1 -
->   sound/core/Kconfig                        | 2 +-
->   17 files changed, 1 insertion(+), 17 deletions(-)
-> 
-> diff --git a/arch/arm/configs/am200epdkit_defconfig b/arch/arm/configs/am200epdkit_defconfig
-> index 134a559aba3dd..2367b1685c1cf 100644
-> --- a/arch/arm/configs/am200epdkit_defconfig
-> +++ b/arch/arm/configs/am200epdkit_defconfig
-> @@ -68,7 +68,6 @@ CONFIG_SOUND=m
->   CONFIG_SND=m
->   CONFIG_SND_MIXER_OSS=m
->   CONFIG_SND_PCM_OSS=m
-> -# CONFIG_SND_SUPPORT_OLD_API is not set
->   # CONFIG_SND_VERBOSE_PROCFS is not set
->   CONFIG_SND_PXA2XX_AC97=m
->   CONFIG_USB_GADGET=y
-> diff --git a/arch/arm/configs/lpc32xx_defconfig b/arch/arm/configs/lpc32xx_defconfig
-> index 2bddb0924a8c0..b9e2e603cd95e 100644
-> --- a/arch/arm/configs/lpc32xx_defconfig
-> +++ b/arch/arm/configs/lpc32xx_defconfig
-> @@ -113,7 +113,6 @@ CONFIG_LOGO=y
->   # CONFIG_LOGO_LINUX_VGA16 is not set
->   CONFIG_SOUND=y
->   CONFIG_SND=y
-> -# CONFIG_SND_SUPPORT_OLD_API is not set
->   # CONFIG_SND_VERBOSE_PROCFS is not set
->   CONFIG_SND_DEBUG=y
->   CONFIG_SND_DEBUG_VERBOSE=y
-> diff --git a/arch/arm/configs/omap1_defconfig b/arch/arm/configs/omap1_defconfig
-> index dee820474f444..df88763fc7c3d 100644
-> --- a/arch/arm/configs/omap1_defconfig
-> +++ b/arch/arm/configs/omap1_defconfig
-> @@ -148,7 +148,6 @@ CONFIG_SOUND=y
->   CONFIG_SND=y
->   CONFIG_SND_MIXER_OSS=y
->   CONFIG_SND_PCM_OSS=y
-> -# CONFIG_SND_SUPPORT_OLD_API is not set
->   # CONFIG_SND_VERBOSE_PROCFS is not set
->   CONFIG_SND_DUMMY=y
->   CONFIG_SND_USB_AUDIO=y
-> diff --git a/arch/arm/configs/tegra_defconfig b/arch/arm/configs/tegra_defconfig
-> index ce70ff07c978a..68aedaf92667a 100644
-> --- a/arch/arm/configs/tegra_defconfig
-> +++ b/arch/arm/configs/tegra_defconfig
-> @@ -219,7 +219,6 @@ CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=y
->   CONFIG_LOGO=y
->   CONFIG_SOUND=y
->   CONFIG_SND=y
-> -# CONFIG_SND_SUPPORT_OLD_API is not set
->   # CONFIG_SND_DRIVERS is not set
->   CONFIG_SND_HDA_TEGRA=y
->   CONFIG_SND_HDA_INPUT_BEEP=y
-> diff --git a/arch/mips/configs/gcw0_defconfig b/arch/mips/configs/gcw0_defconfig
-> index fda9971bdd8d9..adb9fd62ddb0d 100644
-> --- a/arch/mips/configs/gcw0_defconfig
-> +++ b/arch/mips/configs/gcw0_defconfig
-> @@ -79,7 +79,6 @@ CONFIG_LOGO=y
->   # CONFIG_LOGO_LINUX_VGA16 is not set
->   CONFIG_SOUND=y
->   CONFIG_SND=y
-> -# CONFIG_SND_SUPPORT_OLD_API is not set
->   # CONFIG_SND_PROC_FS is not set
->   # CONFIG_SND_DRIVERS is not set
->   # CONFIG_SND_SPI is not set
-> diff --git a/arch/mips/configs/loongson1_defconfig b/arch/mips/configs/loongson1_defconfig
-> index 02d29110f7024..1d9781ff96986 100644
-> --- a/arch/mips/configs/loongson1_defconfig
-> +++ b/arch/mips/configs/loongson1_defconfig
-> @@ -119,7 +119,6 @@ CONFIG_WATCHDOG_SYSFS=y
->   CONFIG_LOONGSON1_WDT=y
->   CONFIG_SOUND=y
->   CONFIG_SND=y
-> -# CONFIG_SND_SUPPORT_OLD_API is not set
->   # CONFIG_SND_DRIVERS is not set
->   # CONFIG_SND_MIPS is not set
->   # CONFIG_SND_USB is not set
-> diff --git a/arch/mips/configs/qi_lb60_defconfig b/arch/mips/configs/qi_lb60_defconfig
-> index 5f5b0254d75e7..a1bb0792f6eb1 100644
-> --- a/arch/mips/configs/qi_lb60_defconfig
-> +++ b/arch/mips/configs/qi_lb60_defconfig
-> @@ -81,7 +81,6 @@ CONFIG_LOGO=y
->   # CONFIG_LOGO_LINUX_CLUT224 is not set
->   CONFIG_SOUND=y
->   CONFIG_SND=y
-> -# CONFIG_SND_SUPPORT_OLD_API is not set
->   # CONFIG_SND_VERBOSE_PROCFS is not set
->   # CONFIG_SND_DRIVERS is not set
->   # CONFIG_SND_SPI is not set
-> diff --git a/arch/mips/configs/rbtx49xx_defconfig b/arch/mips/configs/rbtx49xx_defconfig
-> index 03a7bbe28a532..49c709d663beb 100644
-> --- a/arch/mips/configs/rbtx49xx_defconfig
-> +++ b/arch/mips/configs/rbtx49xx_defconfig
-> @@ -53,7 +53,6 @@ CONFIG_TXX9_WDT=m
->   # CONFIG_VGA_ARB is not set
->   CONFIG_SOUND=m
->   CONFIG_SND=m
-> -# CONFIG_SND_SUPPORT_OLD_API is not set
->   # CONFIG_SND_VERBOSE_PROCFS is not set
->   # CONFIG_SND_DRIVERS is not set
->   # CONFIG_SND_PCI is not set
-> diff --git a/arch/mips/configs/rs90_defconfig b/arch/mips/configs/rs90_defconfig
-> index a53dd66e9b864..8382d535e6dc1 100644
-> --- a/arch/mips/configs/rs90_defconfig
-> +++ b/arch/mips/configs/rs90_defconfig
-> @@ -105,7 +105,6 @@ CONFIG_LOGO=y
->   CONFIG_SOUND=y
->   CONFIG_SND=y
->   # CONFIG_SND_PCM_TIMER is not set
-> -# CONFIG_SND_SUPPORT_OLD_API is not set
->   # CONFIG_SND_PROC_FS is not set
->   # CONFIG_SND_DRIVERS is not set
->   # CONFIG_SND_MIPS is not set
-> diff --git a/arch/powerpc/configs/85xx-hw.config b/arch/powerpc/configs/85xx-hw.config
-> index 8aff832173977..2b19c20a9a2c4 100644
-> --- a/arch/powerpc/configs/85xx-hw.config
-> +++ b/arch/powerpc/configs/85xx-hw.config
-> @@ -117,7 +117,6 @@ CONFIG_SND_INTEL8X0=y
->   CONFIG_SND_POWERPC_SOC=y
->   # CONFIG_SND_PPC is not set
->   CONFIG_SND_SOC=y
-> -# CONFIG_SND_SUPPORT_OLD_API is not set
->   # CONFIG_SND_USB is not set
->   CONFIG_SND=y
->   CONFIG_SOUND=y
-> diff --git a/arch/powerpc/configs/86xx-hw.config b/arch/powerpc/configs/86xx-hw.config
-> index e7bd265fae5a4..07f30ab881e59 100644
-> --- a/arch/powerpc/configs/86xx-hw.config
-> +++ b/arch/powerpc/configs/86xx-hw.config
-> @@ -80,7 +80,6 @@ CONFIG_SERIO_LIBPS2=y
->   CONFIG_SND_INTEL8X0=y
->   CONFIG_SND_MIXER_OSS=y
->   CONFIG_SND_PCM_OSS=y
-> -# CONFIG_SND_SUPPORT_OLD_API is not set
->   CONFIG_SND=y
->   CONFIG_SOUND=y
->   CONFIG_ULI526X=y
-> diff --git a/arch/powerpc/configs/mpc5200_defconfig b/arch/powerpc/configs/mpc5200_defconfig
-> index c0fe5e76604a0..617650cea56a9 100644
-> --- a/arch/powerpc/configs/mpc5200_defconfig
-> +++ b/arch/powerpc/configs/mpc5200_defconfig
-> @@ -75,7 +75,6 @@ CONFIG_FB_SM501=m
->   CONFIG_LOGO=y
->   CONFIG_SOUND=y
->   CONFIG_SND=y
-> -# CONFIG_SND_SUPPORT_OLD_API is not set
->   # CONFIG_SND_DRIVERS is not set
->   # CONFIG_SND_PCI is not set
->   # CONFIG_SND_PPC is not set
-> diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
-> index b082c1fae13c9..787d707f64a42 100644
-> --- a/arch/powerpc/configs/ppc6xx_defconfig
-> +++ b/arch/powerpc/configs/ppc6xx_defconfig
-> @@ -726,7 +726,6 @@ CONFIG_SND_OSSEMUL=y
->   CONFIG_SND_MIXER_OSS=m
->   CONFIG_SND_PCM_OSS=m
->   CONFIG_SND_DYNAMIC_MINORS=y
-> -# CONFIG_SND_SUPPORT_OLD_API is not set
->   CONFIG_SND_VERBOSE_PRINTK=y
->   CONFIG_SND_DEBUG=y
->   CONFIG_SND_DEBUG_VERBOSE=y
-> diff --git a/arch/sh/configs/edosk7760_defconfig b/arch/sh/configs/edosk7760_defconfig
-> index abeae220606a3..905fac1072845 100644
-> --- a/arch/sh/configs/edosk7760_defconfig
-> +++ b/arch/sh/configs/edosk7760_defconfig
-> @@ -79,7 +79,6 @@ CONFIG_FB_TILEBLITTING=y
->   CONFIG_FB_SH_MOBILE_LCDC=m
->   CONFIG_SOUND=y
->   CONFIG_SND=y
-> -# CONFIG_SND_SUPPORT_OLD_API is not set
->   # CONFIG_SND_VERBOSE_PROCFS is not set
->   CONFIG_SND_VERBOSE_PRINTK=y
->   CONFIG_SND_SOC=y
-> diff --git a/arch/sh/configs/se7724_defconfig b/arch/sh/configs/se7724_defconfig
-> index 9e3a54936f76f..8ca46d704c8ba 100644
-> --- a/arch/sh/configs/se7724_defconfig
-> +++ b/arch/sh/configs/se7724_defconfig
-> @@ -83,7 +83,6 @@ CONFIG_LOGO=y
->   # CONFIG_LOGO_SUPERH_VGA16 is not set
->   CONFIG_SOUND=y
->   CONFIG_SND=m
-> -# CONFIG_SND_SUPPORT_OLD_API is not set
->   # CONFIG_SND_DRIVERS is not set
->   # CONFIG_SND_SPI is not set
->   # CONFIG_SND_SUPERH is not set
-> diff --git a/arch/sh/configs/sh7785lcr_32bit_defconfig b/arch/sh/configs/sh7785lcr_32bit_defconfig
-> index eb63aa61b0465..5468cc53cddb4 100644
-> --- a/arch/sh/configs/sh7785lcr_32bit_defconfig
-> +++ b/arch/sh/configs/sh7785lcr_32bit_defconfig
-> @@ -93,7 +93,6 @@ CONFIG_SND_PCM_OSS=y
->   CONFIG_SND_SEQUENCER_OSS=y
->   CONFIG_SND_HRTIMER=y
->   CONFIG_SND_DYNAMIC_MINORS=y
-> -# CONFIG_SND_SUPPORT_OLD_API is not set
->   # CONFIG_SND_VERBOSE_PROCFS is not set
->   CONFIG_SND_VERBOSE_PRINTK=y
->   CONFIG_SND_DEBUG=y
-> diff --git a/sound/core/Kconfig b/sound/core/Kconfig
-> index 48db44fa56feb..4e7bc370ffd7f 100644
-> --- a/sound/core/Kconfig
-> +++ b/sound/core/Kconfig
-> @@ -155,7 +155,7 @@ config SND_MAX_CARDS
-> 
->   config SND_SUPPORT_OLD_API
->          bool "Support old ALSA API"
-> -       default y
-> +       default n
->          help
->            Say Y here to support the obsolete ALSA PCM API (ver.0.9.0 rc3
->            or older).
-> 
-> ---
-> base-commit: b2c27842ba853508b0da00187a7508eb3a96c8f7
-> change-id: 20251203-old-alsa-fa2c2cb038e1
-> 
-> Best regards,
-> --
-> David Heidelberg <david@ixit.cz>
-> 
-> 
+diff --git a/arch/arm/boot/dts/ti/omap/Makefile b/arch/arm/boot/dts/ti/omap/Makefile
+index 04c820771eae3..b79256b09d31f 100644
+--- a/arch/arm/boot/dts/ti/omap/Makefile
++++ b/arch/arm/boot/dts/ti/omap/Makefile
+@@ -86,7 +86,6 @@ dtb-$(CONFIG_SOC_AM33XX) += \
+ 	am335x-baltos-ir2110.dtb \
+ 	am335x-baltos-ir3220.dtb \
+ 	am335x-baltos-ir5221.dtb \
+-	am335x-base0033.dtb \
+ 	am335x-bone.dtb \
+ 	am335x-boneblack.dtb \
+ 	am335x-boneblack-wireless.dtb \
+diff --git a/arch/arm/boot/dts/ti/omap/am335x-base0033.dts b/arch/arm/boot/dts/ti/omap/am335x-base0033.dts
+deleted file mode 100644
+index 46078af4b7a35..0000000000000
+--- a/arch/arm/boot/dts/ti/omap/am335x-base0033.dts
++++ /dev/null
+@@ -1,92 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * am335x-base0033.dts - Device Tree file for IGEP AQUILA EXPANSION
+- *
+- * Copyright (C) 2013 ISEE 2007 SL - https://www.isee.biz
+- */
+-
+-#include "am335x-igep0033.dtsi"
+-
+-/ {
+-	model = "IGEP COM AM335x on AQUILA Expansion";
+-	compatible = "isee,am335x-base0033", "isee,am335x-igep0033", "ti,am33xx";
+-
+-	hdmi {
+-		compatible = "ti,tilcdc,slave";
+-		i2c = <&i2c0>;
+-		pinctrl-names = "default", "off";
+-		pinctrl-0 = <&nxp_hdmi_pins>;
+-		pinctrl-1 = <&nxp_hdmi_off_pins>;
+-		status = "okay";
+-	};
+-
+-	leds_base {
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&leds_base_pins>;
+-
+-		compatible = "gpio-leds";
+-
+-		led0 {
+-			label = "base:red:user";
+-			gpios = <&gpio1 21 GPIO_ACTIVE_HIGH>;	/* gpio1_21 */
+-			default-state = "off";
+-		};
+-
+-		led1 {
+-			label = "base:green:user";
+-			gpios = <&gpio2 0 GPIO_ACTIVE_HIGH>;	/* gpio2_0 */
+-			default-state = "off";
+-		};
+-	};
+-};
+-
+-&am33xx_pinmux {
+-	nxp_hdmi_pins: nxp-hdmi-pins {
+-		pinctrl-single,pins = <
+-			AM33XX_PADCONF(AM335X_PIN_XDMA_EVENT_INTR0, PIN_OUTPUT, MUX_MODE3)	/* xdma_event_intr0.clkout1 */
+-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA0, PIN_OUTPUT, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA1, PIN_OUTPUT, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA2, PIN_OUTPUT, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA3, PIN_OUTPUT, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA4, PIN_OUTPUT, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA5, PIN_OUTPUT, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA6, PIN_OUTPUT, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA7, PIN_OUTPUT, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA8, PIN_OUTPUT, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA9, PIN_OUTPUT, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA10, PIN_OUTPUT, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA11, PIN_OUTPUT, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA12, PIN_OUTPUT, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA13, PIN_OUTPUT, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA14, PIN_OUTPUT, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_LCD_DATA15, PIN_OUTPUT, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_LCD_VSYNC, PIN_OUTPUT, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_LCD_HSYNC, PIN_OUTPUT, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_LCD_PCLK, PIN_OUTPUT, MUX_MODE0)
+-			AM33XX_PADCONF(AM335X_PIN_LCD_AC_BIAS_EN, PIN_OUTPUT, MUX_MODE0)
+-		>;
+-	};
+-	nxp_hdmi_off_pins: nxp-hdmi-off-pins {
+-		pinctrl-single,pins = <
+-			AM33XX_PADCONF(AM335X_PIN_XDMA_EVENT_INTR0, PIN_OUTPUT, MUX_MODE3)	/* xdma_event_intr0.clkout1 */
+-		>;
+-	};
+-
+-	leds_base_pins: leds-base-pins {
+-		pinctrl-single,pins = <
+-			AM33XX_PADCONF(AM335X_PIN_GPMC_A5, PIN_OUTPUT_PULLDOWN, MUX_MODE7)	/* gpmc_a5.gpio1_21 */
+-			AM33XX_PADCONF(AM335X_PIN_GPMC_CSN3, PIN_OUTPUT_PULLDOWN, MUX_MODE7)	/* gpmc_csn3.gpio2_0 */
+-		>;
+-	};
+-};
+-
+-&lcdc {
+-	status = "okay";
+-};
+-
+-&i2c0 {
+-	eeprom: eeprom@50 {
+-		compatible = "atmel,24c256";
+-		reg = <0x50>;
+-	};
+-};
+-- 
+2.43.0
 
 
