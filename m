@@ -1,182 +1,186 @@
-Return-Path: <linux-omap+bounces-5123-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5124-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0F2DCAB412
-	for <lists+linux-omap@lfdr.de>; Sun, 07 Dec 2025 13:18:08 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD184CABCA8
+	for <lists+linux-omap@lfdr.de>; Mon, 08 Dec 2025 03:04:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4ED4A305C4F0
-	for <lists+linux-omap@lfdr.de>; Sun,  7 Dec 2025 12:18:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E22BE3002526
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Dec 2025 02:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 187752C21D4;
-	Sun,  7 Dec 2025 12:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D9826F443;
+	Mon,  8 Dec 2025 02:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ptJ+j6YP";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="VkgzOLXv";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0YuJJ3XF";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="yM/pJrbc"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="GJIo+4RI"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3905623D7C7
-	for <linux-omap@vger.kernel.org>; Sun,  7 Dec 2025 12:18:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1057923D7FF;
+	Mon,  8 Dec 2025 02:04:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765109882; cv=none; b=uTUkpKj0LVtGJGV902foBkNeWfWiuxglEGVPLxTJTn9MfTdFj2xVxxa4J80O0/3rJdopix7BM2snAOk3VlVizAoQUrO4qWLnI+l5Ukt5jj61pRdCqQTbEfdhkIjIcBFtYzXjqw8Vm9GpF82DIqmI32Q7cIVbzomtGS74m9Lcfi8=
+	t=1765159459; cv=none; b=B7KU6mMbzWmZRSJaVXwLYwkehdhzvOwnhjlW4kP5Rkv7eGSTq24Hia3c7Ks0koSnIBHV9Tu8sMu7wbWtBoNZDPwPUziijR/YuUm7jHUHl+XQwKAet84C+eLI0cX5VNp6MlHvzHsYVFmYYSjOBk89QQYfY1/tNXtlcP7cbQffLzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765109882; c=relaxed/simple;
-	bh=eHHuk8EuA0OkibycrFyOsApgYPoSZn1CWZpS/ijvq0Y=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cVtRpTbmKm+NKbO3CaZlWA3wGmTvaDvcDXWjFPdTQHwC3qtOVzoqPdMcbGLzXLk4ECRuSwvd3tG2csfxBfB/eoOGPMVUr4x1mdDE78BlgyWwN8EeKe67HiA7MVoOu3X3WeMw82QTzUBsY1dSQ9UwRt7N/GZ+5Bi3CUJxlBdZNpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ptJ+j6YP; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=VkgzOLXv; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0YuJJ3XF; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=yM/pJrbc; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 16A455BCFD;
-	Sun,  7 Dec 2025 12:17:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1765109879; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cBd0eFWa3WTOx819+QWxAtcmpEF3LgSjzGKmJhb1WOc=;
-	b=ptJ+j6YPX4g+bVfgoE8ZGTjROuh8vTpSPNCv/qp0Q1ZljH1k6a8NBRAl9PuRb/OAq+XIDy
-	Ms3IQNYL1UGQXarbvyUzIeXgSBkeivNsvAZU9knIC1uAehc4VZSgwD6WyKttisOejkucd4
-	wsZ8RlWhvRqiXF3CkmGsZ4ILGDkvVZo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1765109879;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cBd0eFWa3WTOx819+QWxAtcmpEF3LgSjzGKmJhb1WOc=;
-	b=VkgzOLXvVzmsNyshw1DtVQoAoqZnxBQbXa/ajCsN5DdEWhfMRf3OddfIE276hMSQ5nWGvz
-	qgzw3pUkeCxWoFDw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0YuJJ3XF;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="yM/pJrbc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1765109878; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cBd0eFWa3WTOx819+QWxAtcmpEF3LgSjzGKmJhb1WOc=;
-	b=0YuJJ3XFWR17M6QyJQov2+FyIAhSdoGYPfrmbxb1xuXppPswhnxE1s6EE+4EqIbTRZu8Bp
-	8EX1Rjq6OSEDARqS9qICqkYEYcKjU0uA/07KnY5JMh6XQQnbIagxjjj5mgDtxZuknqyCQ7
-	S6z6B7TTfVPYuJuL+MrjDPCS+IZkj04=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1765109878;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cBd0eFWa3WTOx819+QWxAtcmpEF3LgSjzGKmJhb1WOc=;
-	b=yM/pJrbcO/dEmDdgL7ZVTAFBtzM7UxjjJqeIgGuIINwlyBUV6fSD7Tb1eGcAL+4S1SR8dQ
-	ln3+ze8SfTkZ/GCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 67A4E3EA63;
-	Sun,  7 Dec 2025 12:17:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id gID+FnVwNWl9JAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Sun, 07 Dec 2025 12:17:57 +0000
-Date: Sun, 07 Dec 2025 13:17:57 +0100
-Message-ID: <87pl8qv62y.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: david@ixit.cz,
-	David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Cc: Russell King <linux@armlinux.org.uk>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Keguang Zhang <keguang.zhang@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-sh@vger.kernel.org,
-	linux-sound@vger.kernel.org
-Subject: Re: [PATCH] ALSA: Do not build obsolete API
-In-Reply-To: <20251203-old-alsa-v1-1-ac80704f52c3@ixit.cz>
-References: <20251203-old-alsa-v1-1-ac80704f52c3@ixit.cz>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.1 Mule/6.0
+	s=arc-20240116; t=1765159459; c=relaxed/simple;
+	bh=PhD/zPcsp23w3jW7gcG+Xy9ut1qV4VnpMklFW2ZBkn0=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Cc:Content-Type; b=POojAmYDQdqIYDMcEp7bAeF7yxbYPBjYbeG/F9qqyMf3fqkNX3R3Oc6/CBE+SKuSvvALwOt7n359YFx4h8U1w8AN/oQp/yw/f85y6GZYjk8VXDsUttsjM4BNeDoWs+npUhHd/hV67n/WOCMCzDjZ6yyCXZOlyMfQNenQO1WF/IQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=GJIo+4RI; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:Cc:Subject:From:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=gug9CwpDqb+TCtvtvwUyKvSMovynSjoGfeuTquKCNd8=; b=GJIo+4RI9zScb6ah6vv9oRpxzU
+	Y7EWECcyRQu8nbLGARUrNfg8Tf31lmCdvheA4wizeMRNn8jd2oQZcDFAKM3XtpJOFHgKAIFmFxcTv
+	bVNsYdJ2WBssI0QGKWm0dAlXfAEFt4dYUFXweq8dChvTJhlWS/bFlbMLpmvwR8sVH4LLAn+moUc/e
+	dwPO4XIr7ox2E+EE6HCxsIqlryksDU81uTSUtjnVkU5jqxCVHQsxgXSQICjzZd9bGt39Vynmmg2y9
+	bmZm1gVEVFJDMuvAUWQJs1vvVlr2tI/R5csgXX7eLqAEJF5YMH5r3nH7sEBdxlHU/k0O4WlY47CKF
+	weAnAEQw==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vSQbi-0000000CRpl-40tu;
+	Mon, 08 Dec 2025 02:04:11 +0000
+Message-ID: <22b92ddf-6321-41b5-8073-f9c7064d3432@infradead.org>
+Date: Sun, 7 Dec 2025 18:04:09 -0800
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Flag: NO
-X-Spam-Score: -2.01
-X-Rspamd-Queue-Id: 16A455BCFD
-X-Spamd-Result: default: False [-2.01 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCPT_COUNT_TWELVE(0.00)[29];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[armlinux.org.uk,mleia.com,timesys.com,iki.fi,gmail.com,atomide.com,nvidia.com,alpha.franken.de,linux.ibm.com,ellerman.id.au,kernel.org,users.sourceforge.jp,libc.org,physik.fu-berlin.de,perex.cz,suse.com,lists.infradead.org,vger.kernel.org,lists.ozlabs.org];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[david.ixit.cz];
-	R_RATELIMIT(0.00)[to_ip_from(RLin1spj7ezzoz4e1zj94tyerm)];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Level: 
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+From: Randy Dunlap <rdunlap@infradead.org>
+Subject: Kconfig dangling references (BZ 216748)
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, Arnd Bergmann
+ <arnd@arndb.de>, andrew.jones@linux.dev, linux-omap@vger.kernel.org,
+ openbmc@lists.ozlabs.org, linux-sound@vger.kernel.org,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ linux-mips@vger.kernel.org, asahi@lists.linux.dev,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ Paul Kocialkowski <paulk@sys-base.io>, chrome-platform@lists.linux.dev,
+ Paul Cercueil <paul@crapouillou.net>,
+ linux-stm32@st-md-mailman.stormreply.com,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ linux-gpio@vger.kernel.org, Srinivas Kandagatla <srini@kernel.org>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ Matti Vaittinen <mazziesaccount@gmail.com>,
+ Jonathan Cameron <jic23@kernel.org>,
+ Vaibhav Hiremath <hvaibhav.linux@gmail.com>, linux-sh@vger.kernel.org,
+ x86@kernel.org, Max Filippov <jcmvbkbc@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, 03 Dec 2025 23:34:10 +0100,
-David Heidelberg via B4 Relay wrote:
-> 
-> From: David Heidelberg <david@ixit.cz>
-> 
-> ALSA 0.9.0-rc3 is from 2002, 23 years old.
-> 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
-> Maybe I could drop also the code and Kconfig option?
+from  https://bugzilla.kernel.org/show_bug.cgi?id=216748
 
-Thanks, applied now.
+The bugzilla entry includes a Perl script and a shell script.
+This is the edited result of running them (I removed some entries that were noise).
 
-I believe it's safer to have this default only off for 6.19, then
-disable for 6.20, eventually drop the dead code later.
+I'll try to Cc: all of the relevant mailing lists or individuals.
 
 
-Takashi
+ARCH_HAS_HOLES_MEMORYMODEL ---
+arch/arm/mach-omap1/Kconfig:7:	select ARCH_HAS_HOLES_MEMORYMODEL
+
+ARM_ERRATA_794072 ---
+arch/arm/mach-npcm/Kconfig:33:	select ARM_ERRATA_794072
+
+ARM_SMC_MBOX ---
+arch/arm64/Kconfig.platforms:375:	select ARM_SMC_MBOX
+
+CLK_FIXED_FCH ---
+sound/soc/amd/Kconfig:11:	select CLK_FIXED_FCH
+sound/soc/amd/Kconfig:48:	select CLK_FIXED_FCH
+sound/soc/amd/acp/Kconfig:107:	select CLK_FIXED_FCH
+
+CONFIG_STM ---
+drivers/hwtracing/stm/Kconfig:16:	default CONFIG_STM  # should be STM
+drivers/hwtracing/stm/Kconfig:31:	default CONFIG_STM
+
+CPU_HAS_LOAD_STORE_LR ---
+arch/mips/Kconfig:1411:	select CPU_HAS_LOAD_STORE_LR
+
+DRM_KMS_DMA_HELPER ---
+drivers/gpu/drm/adp/Kconfig:9:	select DRM_KMS_DMA_HELPER
+drivers/gpu/drm/logicvc/Kconfig:7:	select DRM_KMS_DMA_HELPER
+
+EXTCON_TCSS_CROS_EC ---
+drivers/usb/typec/ucsi/Kconfig:76:	depends on !EXTCON_TCSS_CROS_EC
+
+MACH_JZ4755 ---
+drivers/clk/ingenic/Kconfig:20:	default MACH_JZ4755
+drivers/pinctrl/pinctrl-ingenic.c:158:	IS_ENABLED(CONFIG_MACH_JZ4755) << ID_JZ4755 |
+drivers/pinctrl/pinctrl-ingenic.c:4616:		.data = IF_ENABLED(CONFIG_MACH_JZ4755, &jz4755_chip_info)
+
+MACH_JZ4760 ---
+drivers/clk/ingenic/Kconfig:40:	default MACH_JZ4760
+drivers/pinctrl/pinctrl-ingenic.c:159:	IS_ENABLED(CONFIG_MACH_JZ4760) << ID_JZ4760 |
+drivers/pinctrl/pinctrl-ingenic.c:4620:		.data = IF_ENABLED(CONFIG_MACH_JZ4760, &jz4760_chip_info)
+drivers/pinctrl/pinctrl-ingenic.c:4624:		.data = IF_ENABLED(CONFIG_MACH_JZ4760, &jz4760_chip_info)
+
+MACH_STM32MP25 ---
+drivers/pinctrl/stm32/Kconfig:58:	default MACH_STM32MP25 || (ARCH_STM32 && ARM64)
+
+MFD_AIROHA_AN8855 ---
+drivers/nvmem/Kconfig:33:	depends on MFD_AIROHA_AN8855 || COMPILE_TEST
+
+MFD_TN48M_CPLD ---
+drivers/gpio/Kconfig:1624:	depends on MFD_TN48M_CPLD || COMPILE_TEST
+drivers/reset/Kconfig:365:	depends on MFD_TN48M_CPLD || COMPILE_TEST
+drivers/reset/Kconfig:366:	default MFD_TN48M_CPLD
+
+MIPS_BAIKAL_T1 ---
+drivers/ata/Kconfig:197:	select MFD_SYSCON if (MIPS_BAIKAL_T1 || COMPILE_TEST)
+drivers/bus/Kconfig:43:	depends on MIPS_BAIKAL_T1 || COMPILE_TEST
+drivers/bus/Kconfig:58:	depends on MIPS_BAIKAL_T1 || COMPILE_TEST
+drivers/clk/baikal-t1/Kconfig:4:	depends on (MIPS_BAIKAL_T1 && OF) || COMPILE_TEST
+drivers/clk/baikal-t1/Kconfig:5:	default MIPS_BAIKAL_T1
+drivers/clk/baikal-t1/Kconfig:20:	default MIPS_BAIKAL_T1
+drivers/clk/baikal-t1/Kconfig:33:	default MIPS_BAIKAL_T1
+drivers/clk/baikal-t1/Kconfig:45:	default MIPS_BAIKAL_T1
+drivers/hwmon/Kconfig:462:	depends on MIPS_BAIKAL_T1 || COMPILE_TEST
+drivers/i2c/busses/Kconfig:589:	select MFD_SYSCON if MIPS_BAIKAL_T1
+drivers/memory/Kconfig:69:	depends on MIPS_BAIKAL_T1 || COMPILE_TEST
+drivers/mtd/maps/Kconfig:81:	depends on MIPS_BAIKAL_T1 || COMPILE_TEST
+drivers/pci/controller/dwc/Kconfig:89:	depends on MIPS_BAIKAL_T1 || COMPILE_TEST
+drivers/spi/Kconfig:370:	depends on MIPS_BAIKAL_T1 || COMPILE_TEST
+
+PINCTRL_MILBEAUT ---
+arch/arm/mach-milbeaut/Kconfig:16:	select PINCTRL_MILBEAUT
+
+SND_SOC_AC97_BUS_NEW ---
+sound/soc/pxa/Kconfig:21:	select SND_SOC_AC97_BUS_NEW
+
+SND_SOC_CS35L56_CAL_SYSFS_COMMON ---
+sound/soc/codecs/Kconfig:920:	select SND_SOC_CS35L56_CAL_SYSFS_COMMON
+
+TEST_KUNIT_DEVICE_HELPERS ---
+drivers/iio/test/Kconfig:11:	select TEST_KUNIT_DEVICE_HELPERS
+
+USB_HSIC_USB3613 ---
+drivers/staging/greybus/Kconfig:209:	depends on USB_HSIC_USB3613 || COMPILE_TEST
+drivers/staging/greybus/arche-platform.c:26:#if IS_ENABLED(CONFIG_USB_HSIC_USB3613)
+
+USB_OHCI_SH ---
+arch/sh/Kconfig:334:	select USB_OHCI_SH if USB_OHCI_HCD
+arch/sh/Kconfig:344:	select USB_OHCI_SH if USB_OHCI_HCD
+arch/sh/Kconfig:429:	select USB_OHCI_SH if USB_OHCI_HCD
+arch/sh/Kconfig:455:	select USB_OHCI_SH if USB_OHCI_HCD
+arch/sh/configs/sh7757lcr_defconfig:61:CONFIG_USB_OHCI_SH=y
+
+X86_P6_NOP ---
+arch/x86/Kconfig.cpufeatures:41:	depends on X86_64 || X86_P6_NOP
+arch/x86/Makefile_32.cpu:48:ifneq ($(CONFIG_X86_P6_NOP),y)
+
+XTENSA_PLATFORM_ESP32 ---
+drivers/tty/serial/Kconfig:1598:	depends on XTENSA_PLATFORM_ESP32 || (COMPILE_TEST && OF)
+drivers/tty/serial/Kconfig:1611:	depends on XTENSA_PLATFORM_ESP32 || (COMPILE_TEST && OF)
+
+
+-- 
+~Randy
+
 
