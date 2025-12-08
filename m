@@ -1,49 +1,81 @@
-Return-Path: <linux-omap+bounces-5124-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5125-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD184CABCA8
-	for <lists+linux-omap@lfdr.de>; Mon, 08 Dec 2025 03:04:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAAE5CAC746
+	for <lists+linux-omap@lfdr.de>; Mon, 08 Dec 2025 09:04:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E22BE3002526
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Dec 2025 02:04:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E3DF5301E5B1
+	for <lists+linux-omap@lfdr.de>; Mon,  8 Dec 2025 08:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D9826F443;
-	Mon,  8 Dec 2025 02:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4379C2D3ECA;
+	Mon,  8 Dec 2025 08:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="GJIo+4RI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RSTEl7vD"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1057923D7FF;
-	Mon,  8 Dec 2025 02:04:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6229D275AF5
+	for <linux-omap@vger.kernel.org>; Mon,  8 Dec 2025 08:04:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765159459; cv=none; b=B7KU6mMbzWmZRSJaVXwLYwkehdhzvOwnhjlW4kP5Rkv7eGSTq24Hia3c7Ks0koSnIBHV9Tu8sMu7wbWtBoNZDPwPUziijR/YuUm7jHUHl+XQwKAet84C+eLI0cX5VNp6MlHvzHsYVFmYYSjOBk89QQYfY1/tNXtlcP7cbQffLzg=
+	t=1765181048; cv=none; b=lXqDfJpM8i/692gjKc9ksO4161cJS/b+4eyYsksjr4OyOeqDt/tj5xb8byT4/zmUnHGSIJXtoVFHAGcw7ndYmNwEXWP5cv8LOmFTvoX87iQjipV7z0igKY6DsbyG9romJdkvUREx0osJWPwKuf22ivQIUBsu9Cm5irMGA4q5i/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765159459; c=relaxed/simple;
-	bh=PhD/zPcsp23w3jW7gcG+Xy9ut1qV4VnpMklFW2ZBkn0=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Cc:Content-Type; b=POojAmYDQdqIYDMcEp7bAeF7yxbYPBjYbeG/F9qqyMf3fqkNX3R3Oc6/CBE+SKuSvvALwOt7n359YFx4h8U1w8AN/oQp/yw/f85y6GZYjk8VXDsUttsjM4BNeDoWs+npUhHd/hV67n/WOCMCzDjZ6yyCXZOlyMfQNenQO1WF/IQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=GJIo+4RI; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:Cc:Subject:From:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=gug9CwpDqb+TCtvtvwUyKvSMovynSjoGfeuTquKCNd8=; b=GJIo+4RI9zScb6ah6vv9oRpxzU
-	Y7EWECcyRQu8nbLGARUrNfg8Tf31lmCdvheA4wizeMRNn8jd2oQZcDFAKM3XtpJOFHgKAIFmFxcTv
-	bVNsYdJ2WBssI0QGKWm0dAlXfAEFt4dYUFXweq8dChvTJhlWS/bFlbMLpmvwR8sVH4LLAn+moUc/e
-	dwPO4XIr7ox2E+EE6HCxsIqlryksDU81uTSUtjnVkU5jqxCVHQsxgXSQICjzZd9bGt39Vynmmg2y9
-	bmZm1gVEVFJDMuvAUWQJs1vvVlr2tI/R5csgXX7eLqAEJF5YMH5r3nH7sEBdxlHU/k0O4WlY47CKF
-	weAnAEQw==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vSQbi-0000000CRpl-40tu;
-	Mon, 08 Dec 2025 02:04:11 +0000
-Message-ID: <22b92ddf-6321-41b5-8073-f9c7064d3432@infradead.org>
-Date: Sun, 7 Dec 2025 18:04:09 -0800
+	s=arc-20240116; t=1765181048; c=relaxed/simple;
+	bh=LcIjzS/QX9OdfzWd7S5fStct/j5BiQOmeNhDz/vl8LE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZnrgBMzjTN2PM3kl8MsOmQl2sMGjKpTdW6r1N8N+TVFoW39ZXIdVHSPGzzIbSr+4LUDh+Pz9PrEx+j33+c4O0b7IaNfxMHSuhh+I7UhcB/8lEQBm/PoOiRo+Huw9uTrK3Xr0lXK89icZkfcm5JWKzEavDC8mRcBV6C7ZqWf1c3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RSTEl7vD; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-597c83bb5c2so3158858e87.3
+        for <linux-omap@vger.kernel.org>; Mon, 08 Dec 2025 00:04:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765181045; x=1765785845; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0+tebP17XJiSVpHNLRMqnpjIXpj4TNVdcjDVZw4M8+c=;
+        b=RSTEl7vDc1dcrV43f4lJp71x71nXdxonolSC+FgFuW2YrEJPE+ZMyPV0P1/UvbeGg7
+         3rIAzVfJ1h0EgIoQYtz2j49lWTVnmXZgCkbqWODl5IF8edwdTqlPYrNnRJGjJ9zC9JJh
+         jg26EOgV7P0Vm9/2A8Ovijk839KiGACsWcyvRNyBTYzLEo9LOdlFT5Hmcx8vEXK1tV1P
+         OQIras0Rhqw/3cV1AH8p6GpM/2+6Cr1ogNpf2swjA4i7kItSWxFyxyy2T3nBWQHOIzPo
+         Qd4p/0Tg5LLNMbWm37CZG8gcG4QXRYLWvsCywPbO6ahrgrZi4l19j8AXaL1xAa6vmOoO
+         x3ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765181045; x=1765785845;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0+tebP17XJiSVpHNLRMqnpjIXpj4TNVdcjDVZw4M8+c=;
+        b=tPMYhUtMt8Tdte9qNE7RNmAss8Nm0fJ0h35JLHjAl+1tC3w6vSrVZoMHejwncc89Q3
+         SxRq/zlNSnbj+3Rq/2t3124AW7yMBxkW0zyQt8w1vcSKH05tTyUlIW4EqWjPRSBYMEvS
+         3M7jwkCd75pG+jAZPwinS/ACe3qYZq+9jO6k64lFgK7pE7oWYCtWRm3LvqtjnAfaW4SZ
+         dh+tZeA3ig5SUCRWhZeZnFPJRjhPuF2AxWGQghUEpHLFS8LBiKUsvyOzuMKAnBfXOEbc
+         62wag8XvJf+WKOv2zWdtQV3f5Fz2FOzP2N5sKuLGXxQKvFfFtCO4rmMD2u5+C8/iV8bJ
+         S3OA==
+X-Forwarded-Encrypted: i=1; AJvYcCXI9QuZiaxwWHNSXa6qod9Yghg6kzgxSGvjJF7DhPqWT0aUDMKh63Mvhio4CRh/K4JGZNNq/H9jNhM3@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2Z2AifYsuOG3OZhtmLYqo6boSCZAqLh0AC5bGelaq2rMsfZ7B
+	TIQPeObJAPC/eURw9FCO1WF+Dv0pZgXCWCrrGlUSMKEjBX/vOKsRmIwX
+X-Gm-Gg: ASbGncu3gKjOjGWkB7tiJuMv800+sZWvGvzVnFfAuVcPIIepy20k00OBFY9TcgRMA4X
+	Yoj4eZixup7xT0y3IVm3D3LTp6aejthW8I7V/MrbJbSKALbqmlyOXGNGEScBC3rDImUPxKITbmi
+	THvDB+DeUkAge0ADKKW8ZD+G+Ql7yysndZljJtpQguvur/K1eJXm/iZc0W7zhL6/6WRiQTsTFGi
+	EYGCnO68pwB8hlBRM1LXorx60WwVCUqKKa1MKfZl/fwFmqcuH1hIxzpfzBLyySs4Ai9gtZ23gec
+	7M3iRQiITBkIyo6yGVQeMPWHwSqQp5iWU13Rw3mo4jPYsoNlEpGAFHCOuEhgxx0Sm82RbeBea+q
+	yM6pM2Rat/nWwG10FeqVCp5wpNUv8AyEhDoJ/LWsr/lCXWBCz1jjHGEnlbKWEkGyhIaqdSHIbKQ
+	cnrjZ6ofkRSRAvGSYngThl7DH275IdLKqq+IOg81HL69LqqWx1CX07tmNadM3AaIlbl/eNG+z0w
+	HCh1UI=
+X-Google-Smtp-Source: AGHT+IEtsjzvo2jB+dbI9VQ7yZrjbx6yvK3VRttDJmqZME09yWJ/CiejjRuxkvbF6yvGpf9tC/V6mQ==
+X-Received: by 2002:a05:6512:104f:b0:592:fb5d:6300 with SMTP id 2adb3069b0e04-5987e88bb77mr1971804e87.10.1765181045203;
+        Mon, 08 Dec 2025 00:04:05 -0800 (PST)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-597d7c1e2b7sm3942418e87.51.2025.12.08.00.04.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Dec 2025 00:04:04 -0800 (PST)
+Message-ID: <bcbe66b0-23bc-4ba1-93ab-f2c09262e07b@gmail.com>
+Date: Mon, 8 Dec 2025 10:04:03 +0200
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -51,10 +83,9 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-From: Randy Dunlap <rdunlap@infradead.org>
-Subject: Kconfig dangling references (BZ 216748)
+Subject: Re: Kconfig dangling references (BZ 216748)
+To: Randy Dunlap <rdunlap@infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, Arnd Bergmann
  <arnd@arndb.de>, andrew.jones@linux.dev, linux-omap@vger.kernel.org,
  openbmc@lists.ozlabs.org, linux-sound@vger.kernel.org,
@@ -66,121 +97,40 @@ Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, Arnd Bergmann
  linux-stm32@st-md-mailman.stormreply.com,
  Linux ARM <linux-arm-kernel@lists.infradead.org>,
  linux-gpio@vger.kernel.org, Srinivas Kandagatla <srini@kernel.org>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Matti Vaittinen <mazziesaccount@gmail.com>,
- Jonathan Cameron <jic23@kernel.org>,
+ Philipp Zabel <p.zabel@pengutronix.de>, Jonathan Cameron <jic23@kernel.org>,
  Vaibhav Hiremath <hvaibhav.linux@gmail.com>, linux-sh@vger.kernel.org,
  x86@kernel.org, Max Filippov <jcmvbkbc@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+References: <22b92ddf-6321-41b5-8073-f9c7064d3432@infradead.org>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <22b92ddf-6321-41b5-8073-f9c7064d3432@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-from  https://bugzilla.kernel.org/show_bug.cgi?id=216748
+On 08/12/2025 04:04, Randy Dunlap wrote:
+> from  https://bugzilla.kernel.org/show_bug.cgi?id=216748
+> 
+> The bugzilla entry includes a Perl script and a shell script.
+> This is the edited result of running them (I removed some entries that were noise).
+> 
+> I'll try to Cc: all of the relevant mailing lists or individuals.
+> 
 
-The bugzilla entry includes a Perl script and a shell script.
-This is the edited result of running them (I removed some entries that were noise).
+Thanks Randy! This is good.
 
-I'll try to Cc: all of the relevant mailing lists or individuals.
+> TEST_KUNIT_DEVICE_HELPERS ---
+> drivers/iio/test/Kconfig:11:	select TEST_KUNIT_DEVICE_HELPERS
+This is a config for stuff that never went upstream. It was replaced by 
+more sophisticated kunit_device, which I believe is behind the 
+'CONFIG_KUNIT'. So, this should be dropped, thanks!
 
+Yours,
+	-- Matti
 
-ARCH_HAS_HOLES_MEMORYMODEL ---
-arch/arm/mach-omap1/Kconfig:7:	select ARCH_HAS_HOLES_MEMORYMODEL
+---
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
-ARM_ERRATA_794072 ---
-arch/arm/mach-npcm/Kconfig:33:	select ARM_ERRATA_794072
-
-ARM_SMC_MBOX ---
-arch/arm64/Kconfig.platforms:375:	select ARM_SMC_MBOX
-
-CLK_FIXED_FCH ---
-sound/soc/amd/Kconfig:11:	select CLK_FIXED_FCH
-sound/soc/amd/Kconfig:48:	select CLK_FIXED_FCH
-sound/soc/amd/acp/Kconfig:107:	select CLK_FIXED_FCH
-
-CONFIG_STM ---
-drivers/hwtracing/stm/Kconfig:16:	default CONFIG_STM  # should be STM
-drivers/hwtracing/stm/Kconfig:31:	default CONFIG_STM
-
-CPU_HAS_LOAD_STORE_LR ---
-arch/mips/Kconfig:1411:	select CPU_HAS_LOAD_STORE_LR
-
-DRM_KMS_DMA_HELPER ---
-drivers/gpu/drm/adp/Kconfig:9:	select DRM_KMS_DMA_HELPER
-drivers/gpu/drm/logicvc/Kconfig:7:	select DRM_KMS_DMA_HELPER
-
-EXTCON_TCSS_CROS_EC ---
-drivers/usb/typec/ucsi/Kconfig:76:	depends on !EXTCON_TCSS_CROS_EC
-
-MACH_JZ4755 ---
-drivers/clk/ingenic/Kconfig:20:	default MACH_JZ4755
-drivers/pinctrl/pinctrl-ingenic.c:158:	IS_ENABLED(CONFIG_MACH_JZ4755) << ID_JZ4755 |
-drivers/pinctrl/pinctrl-ingenic.c:4616:		.data = IF_ENABLED(CONFIG_MACH_JZ4755, &jz4755_chip_info)
-
-MACH_JZ4760 ---
-drivers/clk/ingenic/Kconfig:40:	default MACH_JZ4760
-drivers/pinctrl/pinctrl-ingenic.c:159:	IS_ENABLED(CONFIG_MACH_JZ4760) << ID_JZ4760 |
-drivers/pinctrl/pinctrl-ingenic.c:4620:		.data = IF_ENABLED(CONFIG_MACH_JZ4760, &jz4760_chip_info)
-drivers/pinctrl/pinctrl-ingenic.c:4624:		.data = IF_ENABLED(CONFIG_MACH_JZ4760, &jz4760_chip_info)
-
-MACH_STM32MP25 ---
-drivers/pinctrl/stm32/Kconfig:58:	default MACH_STM32MP25 || (ARCH_STM32 && ARM64)
-
-MFD_AIROHA_AN8855 ---
-drivers/nvmem/Kconfig:33:	depends on MFD_AIROHA_AN8855 || COMPILE_TEST
-
-MFD_TN48M_CPLD ---
-drivers/gpio/Kconfig:1624:	depends on MFD_TN48M_CPLD || COMPILE_TEST
-drivers/reset/Kconfig:365:	depends on MFD_TN48M_CPLD || COMPILE_TEST
-drivers/reset/Kconfig:366:	default MFD_TN48M_CPLD
-
-MIPS_BAIKAL_T1 ---
-drivers/ata/Kconfig:197:	select MFD_SYSCON if (MIPS_BAIKAL_T1 || COMPILE_TEST)
-drivers/bus/Kconfig:43:	depends on MIPS_BAIKAL_T1 || COMPILE_TEST
-drivers/bus/Kconfig:58:	depends on MIPS_BAIKAL_T1 || COMPILE_TEST
-drivers/clk/baikal-t1/Kconfig:4:	depends on (MIPS_BAIKAL_T1 && OF) || COMPILE_TEST
-drivers/clk/baikal-t1/Kconfig:5:	default MIPS_BAIKAL_T1
-drivers/clk/baikal-t1/Kconfig:20:	default MIPS_BAIKAL_T1
-drivers/clk/baikal-t1/Kconfig:33:	default MIPS_BAIKAL_T1
-drivers/clk/baikal-t1/Kconfig:45:	default MIPS_BAIKAL_T1
-drivers/hwmon/Kconfig:462:	depends on MIPS_BAIKAL_T1 || COMPILE_TEST
-drivers/i2c/busses/Kconfig:589:	select MFD_SYSCON if MIPS_BAIKAL_T1
-drivers/memory/Kconfig:69:	depends on MIPS_BAIKAL_T1 || COMPILE_TEST
-drivers/mtd/maps/Kconfig:81:	depends on MIPS_BAIKAL_T1 || COMPILE_TEST
-drivers/pci/controller/dwc/Kconfig:89:	depends on MIPS_BAIKAL_T1 || COMPILE_TEST
-drivers/spi/Kconfig:370:	depends on MIPS_BAIKAL_T1 || COMPILE_TEST
-
-PINCTRL_MILBEAUT ---
-arch/arm/mach-milbeaut/Kconfig:16:	select PINCTRL_MILBEAUT
-
-SND_SOC_AC97_BUS_NEW ---
-sound/soc/pxa/Kconfig:21:	select SND_SOC_AC97_BUS_NEW
-
-SND_SOC_CS35L56_CAL_SYSFS_COMMON ---
-sound/soc/codecs/Kconfig:920:	select SND_SOC_CS35L56_CAL_SYSFS_COMMON
-
-TEST_KUNIT_DEVICE_HELPERS ---
-drivers/iio/test/Kconfig:11:	select TEST_KUNIT_DEVICE_HELPERS
-
-USB_HSIC_USB3613 ---
-drivers/staging/greybus/Kconfig:209:	depends on USB_HSIC_USB3613 || COMPILE_TEST
-drivers/staging/greybus/arche-platform.c:26:#if IS_ENABLED(CONFIG_USB_HSIC_USB3613)
-
-USB_OHCI_SH ---
-arch/sh/Kconfig:334:	select USB_OHCI_SH if USB_OHCI_HCD
-arch/sh/Kconfig:344:	select USB_OHCI_SH if USB_OHCI_HCD
-arch/sh/Kconfig:429:	select USB_OHCI_SH if USB_OHCI_HCD
-arch/sh/Kconfig:455:	select USB_OHCI_SH if USB_OHCI_HCD
-arch/sh/configs/sh7757lcr_defconfig:61:CONFIG_USB_OHCI_SH=y
-
-X86_P6_NOP ---
-arch/x86/Kconfig.cpufeatures:41:	depends on X86_64 || X86_P6_NOP
-arch/x86/Makefile_32.cpu:48:ifneq ($(CONFIG_X86_P6_NOP),y)
-
-XTENSA_PLATFORM_ESP32 ---
-drivers/tty/serial/Kconfig:1598:	depends on XTENSA_PLATFORM_ESP32 || (COMPILE_TEST && OF)
-drivers/tty/serial/Kconfig:1611:	depends on XTENSA_PLATFORM_ESP32 || (COMPILE_TEST && OF)
-
-
--- 
-~Randy
-
+~~ When things go utterly wrong vim users can always type :help! ~~
 
