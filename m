@@ -1,54 +1,94 @@
-Return-Path: <linux-omap+bounces-5139-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5140-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEE47CAF45A
-	for <lists+linux-omap@lfdr.de>; Tue, 09 Dec 2025 09:23:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E24ACCAF50F
+	for <lists+linux-omap@lfdr.de>; Tue, 09 Dec 2025 09:42:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A7BEF3012DDE
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Dec 2025 08:23:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 59C52300A73F
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Dec 2025 08:42:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFAAC25A640;
-	Tue,  9 Dec 2025 08:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D179721ABD0;
+	Tue,  9 Dec 2025 08:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="DQyR1KxD"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="OL0r6LgL";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="oLmnYet/";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="OL0r6LgL";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="oLmnYet/"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0DC1F419F;
-	Tue,  9 Dec 2025 08:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FC326A0DD
+	for <linux-omap@vger.kernel.org>; Tue,  9 Dec 2025 08:42:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765268579; cv=none; b=oTMj30/zvXiArkEvGXuOr+qnWfxbP8zi7WPx21vyIFjI7BoNXA3bVTot/j419v2UOIJKYL69xmCalPa0ZP+3CXnrGrROamdpmp46GzlU9a+LqQEl8a593YT6lcPz7hSsUsOmlGXnUaz/+/YduEdTxM7oau8nIw4eIIdGMHSkhm0=
+	t=1765269729; cv=none; b=hSyM8ss+T9IexzBgMRTp4snhPB/P2hWE/LGOQx2OPB/QEaxqVJs0W8Z6BtiB84/ha0KOJ1OLoex3t8r4C0WofqqRjPMWJdbYpNbC5oiZ60AWdG4puLJmQQ2QJ5igDTLEZYnwRwzN0zKLxQhMOmjsJ8tebcNtfWIGL4gTvP+3WBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765268579; c=relaxed/simple;
-	bh=O2n9S5VUQSKJ/sDYix/LU4IMqYhCgnMblyBPSc9/Uwk=;
+	s=arc-20240116; t=1765269729; c=relaxed/simple;
+	bh=JBWSMZz/pAuMr1EDIhh90m65W9QWEUMQMBfoaVwWb3g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PbaBxKR/auwGhi9Tx4zymkK93bGiSmYddpMmn0Vbe1niIB5e6uhJMu2hkjg07kngc2PeDBQRK6ECXD2/bBskg7cOewqzk7S4Ow6DSJaZ3GuKcqOKXG5Ovilmi5D17ERpbJe1+REcLbUnRK7FSvmNpWDlUdrd8tmUjMesVlpE/go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=DQyR1KxD; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1765268570; x=1765873370; i=deller@gmx.de;
-	bh=yKX3Wx9Yx93QVJCLVrmGsLzBJdSVtTX1xYs5ni9sJhM=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=DQyR1KxDObzeIu1mLxIBSwOttKP2I0lILHwPiI9MzzY+u84uHSyH5LWkoMDeXmK3
-	 /SneFNnE4h3hbvt6NBALpRrobzc479bJdHyJgpr4Dp4MOlktP6cxr/le2EZPv9h2o
-	 HDEj/YeyIg7YiKpAyJD6qR+UISu9lavZKMsNJHp2EIhxRoe3DpV8xNqPUGacN2F/E
-	 fo/ynZZ0wRtXWXp+GJl1a+FCz7VEknsxZOI49OMZ+9MJ4W7GiHHSv70TdHXFZ3V3x
-	 A8UeW+3vlAqZel/FYRoQ/BgVI6UmmZnEu/pKlIfljJmwm8haAv1BAYMz0aAP3koCd
-	 JHCo+9ZUA4pelyZnhw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([109.250.51.124]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N3se2-1wAiBm2GNU-00uceT; Tue, 09
- Dec 2025 09:22:50 +0100
-Message-ID: <f5d50007-5b48-47cb-8133-72fca274d562@gmx.de>
-Date: Tue, 9 Dec 2025 09:22:49 +0100
+	 In-Reply-To:Content-Type; b=jS9r7lb1ITQF7I0OLn0vPQUdZfdbMCC3zr2g3yzEZ/6qLgBO3FBtu9XNEWMR3IxC0Alq2CRidRr+OgJ7EsFh6hLFrlWvWmNNWVFQKlbCmltoOkOBiZ5tIrqyXLdnAfzOiWMJgg8lvEY4e5dJls4yioZlV0P5wsgvk7M8ERTBwEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=OL0r6LgL; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=oLmnYet/; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=OL0r6LgL; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=oLmnYet/; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5830D5BD9C;
+	Tue,  9 Dec 2025 08:42:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1765269724; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=mkXnCCDibCT6NceqYRV8oQpGMsdF6XLcZr94DE5nJVM=;
+	b=OL0r6LgL1+dDhQOl7ThMpm9FBdi/rtKKgh7S0BNaKeKoJeh5UAHjwydL9yZgwbjpwApKGx
+	wv1vwOufVjqto5L/erjFModKsmTreWPCdoqJ6yu5avyCehoIpuCDlKfGLSbDUezhdkwd/D
+	8SEdupw1qEa6UZ57UIPaRQvZYJyEXhg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1765269724;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=mkXnCCDibCT6NceqYRV8oQpGMsdF6XLcZr94DE5nJVM=;
+	b=oLmnYet/MjU46NsSflbcbECEhtMK/NXBx/ljSwhF5VfaLajWXCuUV2Vuu75a0Ul6wqv2Bz
+	XwkvZp7cQUZZOfBg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OL0r6LgL;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="oLmnYet/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1765269724; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=mkXnCCDibCT6NceqYRV8oQpGMsdF6XLcZr94DE5nJVM=;
+	b=OL0r6LgL1+dDhQOl7ThMpm9FBdi/rtKKgh7S0BNaKeKoJeh5UAHjwydL9yZgwbjpwApKGx
+	wv1vwOufVjqto5L/erjFModKsmTreWPCdoqJ6yu5avyCehoIpuCDlKfGLSbDUezhdkwd/D
+	8SEdupw1qEa6UZ57UIPaRQvZYJyEXhg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1765269724;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=mkXnCCDibCT6NceqYRV8oQpGMsdF6XLcZr94DE5nJVM=;
+	b=oLmnYet/MjU46NsSflbcbECEhtMK/NXBx/ljSwhF5VfaLajWXCuUV2Vuu75a0Ul6wqv2Bz
+	XwkvZp7cQUZZOfBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1841C3EA63;
+	Tue,  9 Dec 2025 08:42:04 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Jb93BNzgN2l8DQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 09 Dec 2025 08:42:04 +0000
+Message-ID: <90afab05-eb56-4c81-afd5-35337335c562@suse.de>
+Date: Tue, 9 Dec 2025 09:42:03 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -57,220 +97,176 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 0/3] fbdev: Guard sysfs interfaces under CONFIG_FB_DEVICE
-To: Thomas Zimmermann <tzimmermann@suse.de>,
- Chintan Patel <chintanlike@gmail.com>, linux-fbdev@vger.kernel.org,
- linux-staging@lists.linux.dev, linux-omap@vger.kernel.org
+To: Helge Deller <deller@gmx.de>, Chintan Patel <chintanlike@gmail.com>,
+ linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
+ linux-omap@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
  andy@kernel.org, gregkh@linuxfoundation.org
 References: <20251209042744.7875-1-chintanlike@gmail.com>
  <19e8a1b0-75e3-4c8d-911a-15fd70f60bea@suse.de>
+ <f5d50007-5b48-47cb-8133-72fca274d562@gmx.de>
 Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <19e8a1b0-75e3-4c8d-911a-15fd70f60bea@suse.de>
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <f5d50007-5b48-47cb-8133-72fca274d562@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:jDXE3Wm7e9WJYRsi/Qy8IySVRwziSAqGU8uMTHW4oHNwH+FhHy/
- Z6+SlhVIpG708aLOlbqeBn6oZKkS9T2tnuZFR1I7IMa6gMV0KHM6KmrdXu8evNAIz0ws9xH
- Ea5f9cQyvywb3LBohEUgtzD6rUF4kDm2rgqz7c9HUzu2gsuwFNKcqJnhNtJSqQ7cCaWLyP8
- r1II1oA9A28abGrdJ5YkQ==
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[gmx.de,gmail.com,vger.kernel.org,lists.linux.dev];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,suse.de:email,suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 5830D5BD9C
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:sKV6n7397TE=;aVuZchHyMP4kuwYa9OICTgnvId2
- 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
- 8p5OvI58=
+X-Spam-Score: -4.51
 
-On 12/9/25 08:27, Thomas Zimmermann wrote:
-> Hi
->=20
-> Am 09.12.25 um 05:27 schrieb Chintan Patel:
->> Hi all,
->>
->> This small series makes several legacy fbdev drivers buildable with
->> CONFIG_FB_DEVICE=3Dn. Currently, multiple fbdev drivers rely on fb_info=
-->dev
->> and sysfs attribute registration unconditionally, which leads to build
->> failures whenever FB_DEVICE is disabled.
->>
->> Thomas previously noted that FB_DEVICE should eventually become optiona=
-l
->> and that drivers should not depend on sysfs or fb_info->dev being prese=
-nt
->> unless the Kconfig explicitly selects it. This series pushes in that
->> direction by tightening the FB_DEVICE dependency boundary without chang=
-ing
->> any runtime behaviour when FB_DEVICE=3Dy.
->>
->> What this series does *not* change
->>
->> - No functional behaviour changes when FB_DEVICE=3Dy.
->> - No removal of sysfs interfaces.
->> - No changes to fbops, memory allocation, or display update paths.
->>
->> Build & test coverage
->>
->> Tested with the following combinations:
->>
->> 1. **FB=3Dy, FB_DEVICE=3Dy**
->> =C2=A0=C2=A0=C2=A0 - Baseline configuration; no regressions expected.
->>
->> 2. **FB=3Dy, FB_DEVICE=3Dn**
->> =C2=A0=C2=A0=C2=A0 - Drivers build successfully.
->> =C2=A0=C2=A0=C2=A0 - No sysfs attributes are created.
->> =C2=A0=C2=A0=C2=A0 - fbdev devices operate normally (where applicable).
->>
->> 3. **FB=3Dn**
->> =C2=A0=C2=A0=C2=A0 - Drivers depend on FB, so they properly do not buil=
-d, unchanged.
->>
->> Motivation
->>
->> This moves fbdev closer to supporting FB_DEVICE as truly optional, help=
-s
->> reduce Kconfig entanglement, and clears several long-standing TODO item=
-s
->> as suggested by Thomas Zimmermann around legacy sysfs usage inside fbde=
-v
->> drivers.
->>
->> Feedback is welcome, especially on whether the guard boundaries around
->> sysfs are placed correctly or whether more logic should be pulled under
->> CONFIG_FB_DEVICE.
->=20
-> I left a comment on the first patch. If things still build nicely, then
->=20
-> Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
->=20
-> for the series.
+Hi
 
-This whole series adds a whole lot of ifdef'ery, which I think is the
-worst approach. It makes the code less readable and leads to two code
-paths, which may trigger different build errors depending on the config.
+Am 09.12.25 um 09:22 schrieb Helge Deller:
+> On 12/9/25 08:27, Thomas Zimmermann wrote:
+>> Hi
+>>
+>> Am 09.12.25 um 05:27 schrieb Chintan Patel:
+>>> Hi all,
+>>>
+>>> This small series makes several legacy fbdev drivers buildable with
+>>> CONFIG_FB_DEVICE=n. Currently, multiple fbdev drivers rely on 
+>>> fb_info->dev
+>>> and sysfs attribute registration unconditionally, which leads to build
+>>> failures whenever FB_DEVICE is disabled.
+>>>
+>>> Thomas previously noted that FB_DEVICE should eventually become 
+>>> optional
+>>> and that drivers should not depend on sysfs or fb_info->dev being 
+>>> present
+>>> unless the Kconfig explicitly selects it. This series pushes in that
+>>> direction by tightening the FB_DEVICE dependency boundary without 
+>>> changing
+>>> any runtime behaviour when FB_DEVICE=y.
+>>>
+>>> What this series does *not* change
+>>>
+>>> - No functional behaviour changes when FB_DEVICE=y.
+>>> - No removal of sysfs interfaces.
+>>> - No changes to fbops, memory allocation, or display update paths.
+>>>
+>>> Build & test coverage
+>>>
+>>> Tested with the following combinations:
+>>>
+>>> 1. **FB=y, FB_DEVICE=y**
+>>>     - Baseline configuration; no regressions expected.
+>>>
+>>> 2. **FB=y, FB_DEVICE=n**
+>>>     - Drivers build successfully.
+>>>     - No sysfs attributes are created.
+>>>     - fbdev devices operate normally (where applicable).
+>>>
+>>> 3. **FB=n**
+>>>     - Drivers depend on FB, so they properly do not build, unchanged.
+>>>
+>>> Motivation
+>>>
+>>> This moves fbdev closer to supporting FB_DEVICE as truly optional, 
+>>> helps
+>>> reduce Kconfig entanglement, and clears several long-standing TODO 
+>>> items
+>>> as suggested by Thomas Zimmermann around legacy sysfs usage inside 
+>>> fbdev
+>>> drivers.
+>>>
+>>> Feedback is welcome, especially on whether the guard boundaries around
+>>> sysfs are placed correctly or whether more logic should be pulled under
+>>> CONFIG_FB_DEVICE.
+>>
+>> I left a comment on the first patch. If things still build nicely, then
+>>
+>> Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+>>
+>> for the series.
+>
+> This whole series adds a whole lot of ifdef'ery, which I think is the
+> worst approach. It makes the code less readable and leads to two code
+> paths, which may trigger different build errors depending on the config.
+>
+> I'm sure it must be possible to do the same without adding more #ifdefs,
+> e.g. by introducing a function like   dev_of_fbinfo(fbinfo)  which
+> simply returns NULL for the FB_DEVICE=n case.  Then, that value can be 
+> tested
+> like
+>     if (dev_of_fbinfo(fbinfo))
+>         {...do-the-things...}
+> For the FB_DEVICE=n case this will then be optimized out by the compiler,
+> while you still have full compiler syntax checking.
+>
+> Thoughts?
 
-I'm sure it must be possible to do the same without adding more #ifdefs,
-e.g. by introducing a function like   dev_of_fbinfo(fbinfo)  which
-simply returns NULL for the FB_DEVICE=3Dn case.  Then, that value can be t=
-ested
-like
-	if (dev_of_fbinfo(fbinfo))
-		{...do-the-things...}
-For the FB_DEVICE=3Dn case this will then be optimized out by the compiler=
-,
-while you still have full compiler syntax checking.
+Your choice. I don't see this as an important fix. The FB_DEVICE=n case 
+is mostly useful for DRM-based systems that do not want to expose fbdev 
+interfaces to user space. Those are the vast majority today. The very 
+few special builds with fbdev drivers would likely use FB_DEVICE=y anyway.
 
-Thoughts?
+Best regards
+Thomas
 
-Helge
+>
+> Helge
+>
+
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+
+
 
