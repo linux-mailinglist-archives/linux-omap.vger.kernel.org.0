@@ -1,146 +1,307 @@
-Return-Path: <linux-omap+bounces-5136-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5137-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23E04CAEE13
-	for <lists+linux-omap@lfdr.de>; Tue, 09 Dec 2025 05:29:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB91ACAF1F3
+	for <lists+linux-omap@lfdr.de>; Tue, 09 Dec 2025 08:26:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A09A300E7B8
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Dec 2025 04:28:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 392D43011ECE
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Dec 2025 07:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A7030147C;
-	Tue,  9 Dec 2025 04:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C0628640F;
+	Tue,  9 Dec 2025 07:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="goJwjEoq"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="JhhxlY6Y";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="HrF34AZM";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="JhhxlY6Y";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="HrF34AZM"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5AF2F7442
-	for <linux-omap@vger.kernel.org>; Tue,  9 Dec 2025 04:28:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D558E281376
+	for <linux-omap@vger.kernel.org>; Tue,  9 Dec 2025 07:25:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765254505; cv=none; b=ADadOTw79iDU8Cxz8SnwJeJ+u180WPT/4g2h80czPdlZyMi0BXKoExsaO+7/QcnKfGBQJD2fDlcR+nvU0b9C71otMVYDvOCGAHeCDt+6hdEBXKYIU7dReWM0P7th54Pg/j4zqNm3itL6CQEEu61vfh7I2ckB8fr4OP3ySSNjPX4=
+	t=1765265144; cv=none; b=a6+U10gpROTQyyktDrhdTj9vBeM6ZuWIGs83Cb8EtxcMj6BU+94x0lvTgkUM41zEdzeTjn+izY9kwZJqMUDGd/hLOSSlKq8LKz6BMUstnDQxVu+AzZz6e6YkI42XuYgnhemHgOnygGnZb5jclWo1alaZgL/A8WURIwqB6D1bPpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765254505; c=relaxed/simple;
-	bh=LxCofJzFToPOuZEjMx+TyTe6Tdr2NQUdvBjzyB7tTZg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X49OH0Cfi+XUXCbcZnerLpU7HQM7LjY/+Zf+GKJC59P3z4nyiU5igXaJP8j+rWn5cYsc8W89YA9+hpTARJnbMs1hf6F5Udg/TSQl1szN51MYDobHCOL3uWoE4b/UAOm2lGq1645uOLU3tZzN9K00qrFQcUumekBXcEdIhvgM8ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=goJwjEoq; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3434700be69so7349252a91.1
-        for <linux-omap@vger.kernel.org>; Mon, 08 Dec 2025 20:28:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765254503; x=1765859303; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6Pa1Xejftpj9ZCjaie2sXROdWsX12z9SbomyYLGQRdM=;
-        b=goJwjEoqVOr6p7uDo7IzL9xDE4qhUn0v1XiAr1rrsELp/IGup24aKtS62i4PlweLln
-         +0/953zqSjBqzpeYJwOLf2j6bY8entu+OeUkZa1VUppTc+CjdajO3+IqlOYo3RubV1ix
-         f//+XOjaNgw5GBNf6KuYrgw9mHzR5stoYs9uKH5QKb3dqmNWaR0y+DfF4eAH1FHEVfAg
-         doqZTD81Z67tBWN7d4TCx4mC9dmafUMgsJNgzSB7Ljz/Dxy/KAMpug++hlhCzewYNTQ5
-         1idvTp2rM+G13w+dymJnHiMrRHdZNSDAHaJ/nYfgypC1ERMFqQaZChUkDobYrbxDLXTC
-         H5Zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765254503; x=1765859303;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6Pa1Xejftpj9ZCjaie2sXROdWsX12z9SbomyYLGQRdM=;
-        b=LUqmh5f/Y651lS/XX4ziSt0jsRM5K0tsv3r55C2aRYTQwK4e8jIvBT0qCBTkwULHIt
-         nLRs6tielE7n3tWCEYOSNP0qfLrjsbAmWV4D6QDWKkOOV2ldBpSFa93aWKMAjEdfqfZa
-         hl6HUTN32FvUzyh55vlBnhHBhZXVd3nEthlnjKnIbuN77LNwdGlNNZcH3H9rpy8JzdC+
-         X6qMaTgmjPLjQ3uXli7aG07prn8YZphs5+Anq7+0LIP5JOF2vOy+TaUiY0jCy2AcLx5T
-         ZJtds0D/kHZX3t/XivUs6tmefJjWuNgMQb8Aq/9+YTgOg5IFWRrwPF0rpYPZE3KqsHWr
-         udGw==
-X-Forwarded-Encrypted: i=1; AJvYcCVSbVGZjwbwvG6cf6tljkHSb5lCgno5rJSKYzvJdLCE1nXuO9ysDMbi2NzgtxPAinYqKQiFTtFYVgUC@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgE4O/kKWjeCpdqBCAXT5hgKRoayLsG13Cmccj+ZZKIYZj/qlR
-	iEr07BHrLk9qd5LpXlsXrEV9LTNayoOY9E5PRGiHdTTDYnoMWmN/neRv/KR1KAVDWyw=
-X-Gm-Gg: ASbGncsRRUg0HjHnRNpcuh8n47jYNqlSv3q3G61uCxRAiT5J0rPwSPh70LETNEQIL6A
-	PA3uUwwlB0RKhwQ09/GyeZ2Qcrs8udh6ugMBiIDcsAw+N2lU2im9dINYcq8TGcJCGk6w6g7iw+F
-	0mM8ABjpv0kVW4OUie4iVKt/PSy+B3kLFPNJ2Nn+MnBHJcyNm6QgkPBEwaDT4b9/sVcGXCWcE3R
-	8kK6/cP79ugp+E2rPpYsUG2gbcHPHNbZTfvS5bVxEjxpGWskmqTKlqJulPKuH6KzlClrbXJV/Nr
-	aKXyXLIzjSaMBBuilCoxXKynT510mQvHsxSurEkQP45dYGNJXJA5iYHHywSPcEkMzYxEQPkF8V1
-	ck/cC1un5Yam5lpcRh54elBINHGoP/ZbvtvqR85SXkQs7o1zafJXBB6MeM0fZlRl4yU9SEXwzGi
-	PceY/VTzK28/wnI4bcaXnuLTwoYboue9HG3BYfC3ZkfH4=
-X-Google-Smtp-Source: AGHT+IEAgpMVzxFDELmSe1EcFgFHHrMmtin3pr01zEUtdDpWNY9djhS44HySFgwBkRAy8M6k41HDxw==
-X-Received: by 2002:a17:90b:58c5:b0:340:e517:4e05 with SMTP id 98e67ed59e1d1-349a256431bmr9237622a91.12.1765254503018;
-        Mon, 08 Dec 2025 20:28:23 -0800 (PST)
-Received: from cmpatel-home.hsd1.or.comcast.net ([2601:1c0:5780:9200:b455:298d:48bb:1784])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34a49b90fd5sm765185a91.10.2025.12.08.20.28.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Dec 2025 20:28:22 -0800 (PST)
-From: Chintan Patel <chintanlike@gmail.com>
-To: linux-fbdev@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-omap@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	tzimmermann@suse.de,
-	andy@kernel.org,
-	deller@gmx.de,
-	gregkh@linuxfoundation.org,
-	Chintan Patel <chintanlike@gmail.com>
-Subject: [PATCH 3/3] sh_mobile_lcdc: Guard overlay sysfs interfaces under CONFIG_FB_DEVICE
-Date: Mon,  8 Dec 2025 20:27:44 -0800
-Message-ID: <20251209042744.7875-4-chintanlike@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251209042744.7875-1-chintanlike@gmail.com>
-References: <20251209042744.7875-1-chintanlike@gmail.com>
+	s=arc-20240116; t=1765265144; c=relaxed/simple;
+	bh=DXm6q4/l50UuiHWYJbCgkzJNMauhQq2Mht1PTpW7O2o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SSAeUAk8L2TE1WabHvUPP+ndobAnjY0k5SU15lNHCMwpx2ULdlv+Xd0pGyViQyYA9u0CBEjiZjiDPl0ytDG3s52NY8B1KIvP3btJHuKypwIg+i6iV+5AA2+l08llt41ck0WQnN4S22o7vmrx7zAtUrbhK93ETIxuvU0okj9ZwaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=JhhxlY6Y; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=HrF34AZM; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=JhhxlY6Y; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=HrF34AZM; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 1A0A85BD97;
+	Tue,  9 Dec 2025 07:25:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1765265140; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=5e9b4/51wBGJvfBnQarXioyoalwwpsbM4BtlHsk8JeM=;
+	b=JhhxlY6YTb8wGIKVsELWxhc6rMmCzMSEGAW/mypKi8LO/0nhaHFojugSeu7z1MW14hnbe6
+	JEYu09Po0xlksKtNqQQ/vZvPv4SQJLzXqN2tXW0aaIHSCAgJiyhBmA1cnTFkEU1wCgZYIW
+	2iGmj7BtWg3IMqD00ztW2BtyqzIOeso=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1765265140;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=5e9b4/51wBGJvfBnQarXioyoalwwpsbM4BtlHsk8JeM=;
+	b=HrF34AZMxlVAfrZXVT17cSwfIJlCVssYU3VP20xQVDp2r68m7rk1t2HUQwydSQue+6a+wB
+	/XIxOP7YU0m81rDw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1765265140; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=5e9b4/51wBGJvfBnQarXioyoalwwpsbM4BtlHsk8JeM=;
+	b=JhhxlY6YTb8wGIKVsELWxhc6rMmCzMSEGAW/mypKi8LO/0nhaHFojugSeu7z1MW14hnbe6
+	JEYu09Po0xlksKtNqQQ/vZvPv4SQJLzXqN2tXW0aaIHSCAgJiyhBmA1cnTFkEU1wCgZYIW
+	2iGmj7BtWg3IMqD00ztW2BtyqzIOeso=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1765265140;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=5e9b4/51wBGJvfBnQarXioyoalwwpsbM4BtlHsk8JeM=;
+	b=HrF34AZMxlVAfrZXVT17cSwfIJlCVssYU3VP20xQVDp2r68m7rk1t2HUQwydSQue+6a+wB
+	/XIxOP7YU0m81rDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C473E3EA63;
+	Tue,  9 Dec 2025 07:25:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id iFmFLvPON2nSRgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 09 Dec 2025 07:25:39 +0000
+Message-ID: <329423e8-d778-4f30-904a-825b1be72ce2@suse.de>
+Date: Tue, 9 Dec 2025 08:25:39 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] fbtft: Make sysfs and dev_*() logging conditional on
+ FB_DEVICE
+To: Chintan Patel <chintanlike@gmail.com>, linux-fbdev@vger.kernel.org,
+ linux-staging@lists.linux.dev, linux-omap@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ andy@kernel.org, deller@gmx.de, gregkh@linuxfoundation.org
+References: <20251209042744.7875-1-chintanlike@gmail.com>
+ <20251209042744.7875-2-chintanlike@gmail.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20251209042744.7875-2-chintanlike@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.997];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_TLS_ALL(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org,lists.linux.dev];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,kernel.org,gmx.de,linuxfoundation.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:url,suse.com:url,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
 
-The SH Mobile LCDC driver exposes overlay configuration via sysfs.
-These attributes depend on FB_DEVICE and cause build failures when
-FB_DEVICE=n.
+Hi
 
-Wrap all overlay sysfs attribute definitions and group registrations
-within CONFIG_FB_DEVICE. When FB_DEVICE is disabled, the driver still
-loads but without sysfs entries.
+Am 09.12.25 um 05:27 schrieb Chintan Patel:
+> The fbtft core and sysfs implementation unconditionally dereference
+> fb_info->dev and register sysfs attributes. When FB_DEVICE=n, these
+> fields are unavailable, leading to build failures.
+>
+> This patch wraps all sysfs attribute creation/removal and dev_dbg/dev_info
+> logging in #ifdef CONFIG_FB_DEVICE, with pr_*() fallbacks for the
+> non-FB_DEVICE case. This makes fbtft fully buildable when FB_DEVICE is
+> disabled.
+>
+> Signed-off-by: Chintan Patel <chintanlike@gmail.com>
+> ---
+>   drivers/staging/fbtft/fbtft-core.c  | 20 ++++++++++++++++++--
+>   drivers/staging/fbtft/fbtft-sysfs.c |  8 ++++++++
+>   2 files changed, 26 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
+> index 9e7b84071174..dc967bdeabe8 100644
+> --- a/drivers/staging/fbtft/fbtft-core.c
+> +++ b/drivers/staging/fbtft/fbtft-core.c
+> @@ -365,9 +365,14 @@ static int fbtft_fb_setcolreg(unsigned int regno, unsigned int red,
+>   	unsigned int val;
+>   	int ret = 1;
+>   
+> +#ifdef CONFIG_FB_DEVICE
+>   	dev_dbg(info->dev,
 
-Signed-off-by: Chintan Patel <chintanlike@gmail.com>
----
- drivers/video/fbdev/sh_mobile_lcdcfb.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Rather use fb_dbg() [1] and similar helpers for logging. They only need 
+the info pointer and do the correct output by themselves.
 
-diff --git a/drivers/video/fbdev/sh_mobile_lcdcfb.c b/drivers/video/fbdev/sh_mobile_lcdcfb.c
-index dd950e4ab5ce..a46da10789c3 100644
---- a/drivers/video/fbdev/sh_mobile_lcdcfb.c
-+++ b/drivers/video/fbdev/sh_mobile_lcdcfb.c
-@@ -1182,6 +1182,7 @@ static int __sh_mobile_lcdc_check_var(struct fb_var_screeninfo *var,
-  * Frame buffer operations - Overlays
-  */
- 
-+#ifdef CONFIG_FB_DEVICE
- static ssize_t
- overlay_alpha_show(struct device *dev, struct device_attribute *attr, char *buf)
- {
-@@ -1351,6 +1352,7 @@ static struct attribute *overlay_sysfs_attrs[] = {
- 	NULL,
- };
- ATTRIBUTE_GROUPS(overlay_sysfs);
-+#endif
- 
- static const struct fb_fix_screeninfo sh_mobile_lcdc_overlay_fix  = {
- 	.id =		"SH Mobile LCDC",
-@@ -2637,7 +2639,9 @@ static int sh_mobile_lcdc_probe(struct platform_device *pdev)
- static struct platform_driver sh_mobile_lcdc_driver = {
- 	.driver		= {
- 		.name		= "sh_mobile_lcdc_fb",
-+#ifdef CONFIG_FB_DEVICE
- 		.dev_groups	= overlay_sysfs_groups,
-+#endif
- 		.pm		= &sh_mobile_lcdc_dev_pm_ops,
- 	},
- 	.probe		= sh_mobile_lcdc_probe,
+[1] https://elixir.bootlin.com/linux/v6.18/source/include/linux/fb.h#L895
+
+>   		"%s(regno=%u, red=0x%X, green=0x%X, blue=0x%X, trans=0x%X)\n",
+>   		__func__, regno, red, green, blue, transp);
+> +#else
+> +	pr_debug("%s(regno=%u, red=0x%X, green=0x%X, blue=0x%X, trans=0x%X)\n",
+> +		 __func__, regno, red, green, blue, transp);
+> +#endif
+>   
+>   	switch (info->fix.visual) {
+>   	case FB_VISUAL_TRUECOLOR:
+> @@ -391,8 +396,11 @@ static int fbtft_fb_blank(int blank, struct fb_info *info)
+>   	struct fbtft_par *par = info->par;
+>   	int ret = -EINVAL;
+>   
+> -	dev_dbg(info->dev, "%s(blank=%d)\n",
+> -		__func__, blank);
+> +#ifdef CONFIG_FB_DEVICE
+> +	dev_dbg(info->dev, "%s(blank=%d)\n", __func__, blank);
+> +#else
+> +	pr_debug("%s(blank=%d)\n", __func__, blank);
+> +#endif
+>   
+>   	if (!par->fbtftops.blank)
+>   		return ret;
+> @@ -793,6 +801,8 @@ int fbtft_register_framebuffer(struct fb_info *fb_info)
+>   	if (spi)
+>   		sprintf(text2, ", spi%d.%d at %d MHz", spi->controller->bus_num,
+>   			spi_get_chipselect(spi, 0), spi->max_speed_hz / 1000000);
+> +
+> +#ifdef CONFIG_FB_DEVICE
+>   	dev_info(fb_info->dev,
+
+Same here with fb_info().
+
+Best regards
+Thomas
+
+>   		 "%s frame buffer, %dx%d, %d KiB video memory%s, fps=%lu%s\n",
+>   		 fb_info->fix.id, fb_info->var.xres, fb_info->var.yres,
+> @@ -804,6 +814,12 @@ int fbtft_register_framebuffer(struct fb_info *fb_info)
+>   		fb_info->bl_dev->props.power = BACKLIGHT_POWER_ON;
+>   		fb_info->bl_dev->ops->update_status(fb_info->bl_dev);
+>   	}
+> +#else
+> +	pr_info("%s frame buffer, %dx%d, %d KiB video memory%s, fps=%lu%s\n",
+> +		fb_info->fix.id, fb_info->var.xres, fb_info->var.yres,
+> +		fb_info->fix.smem_len >> 10, text1,
+> +		HZ / fb_info->fbdefio->delay, text2);
+> +#endif
+>   
+>   	return 0;
+>   
+> diff --git a/drivers/staging/fbtft/fbtft-sysfs.c b/drivers/staging/fbtft/fbtft-sysfs.c
+> index e45c90a03a90..944f74f592d0 100644
+> --- a/drivers/staging/fbtft/fbtft-sysfs.c
+> +++ b/drivers/staging/fbtft/fbtft-sysfs.c
+> @@ -89,6 +89,7 @@ int fbtft_gamma_parse_str(struct fbtft_par *par, u32 *curves,
+>   	return ret;
+>   }
+>   
+> +#ifdef CONFIG_FB_DEVICE
+>   static ssize_t
+>   sprintf_gamma(struct fbtft_par *par, u32 *curves, char *buf)
+>   {
+> @@ -145,6 +146,7 @@ static ssize_t show_gamma_curve(struct device *device,
+>   static struct device_attribute gamma_device_attrs[] = {
+>   	__ATTR(gamma, 0660, show_gamma_curve, store_gamma_curve),
+>   };
+> +#endif
+>   
+>   void fbtft_expand_debug_value(unsigned long *debug)
+>   {
+> @@ -173,6 +175,7 @@ void fbtft_expand_debug_value(unsigned long *debug)
+>   	}
+>   }
+>   
+> +#ifdef CONFIG_FB_DEVICE
+>   static ssize_t store_debug(struct device *device,
+>   			   struct device_attribute *attr,
+>   			   const char *buf, size_t count)
+> @@ -200,17 +203,22 @@ static ssize_t show_debug(struct device *device,
+>   
+>   static struct device_attribute debug_device_attr =
+>   	__ATTR(debug, 0660, show_debug, store_debug);
+> +#endif
+>   
+>   void fbtft_sysfs_init(struct fbtft_par *par)
+>   {
+> +#ifdef CONFIG_FB_DEVICE
+>   	device_create_file(par->info->dev, &debug_device_attr);
+>   	if (par->gamma.curves && par->fbtftops.set_gamma)
+>   		device_create_file(par->info->dev, &gamma_device_attrs[0]);
+> +#endif
+>   }
+>   
+>   void fbtft_sysfs_exit(struct fbtft_par *par)
+>   {
+> +#ifdef CONFIG_FB_DEVICE
+>   	device_remove_file(par->info->dev, &debug_device_attr);
+>   	if (par->gamma.curves && par->fbtftops.set_gamma)
+>   		device_remove_file(par->info->dev, &gamma_device_attrs[0]);
+> +#endif
+>   }
+
 -- 
-2.43.0
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+
 
 
