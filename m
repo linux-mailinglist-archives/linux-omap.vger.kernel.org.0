@@ -1,77 +1,77 @@
-Return-Path: <linux-omap+bounces-5134-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5135-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F096CAEE07
-	for <lists+linux-omap@lfdr.de>; Tue, 09 Dec 2025 05:28:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B43CAEE10
+	for <lists+linux-omap@lfdr.de>; Tue, 09 Dec 2025 05:29:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2EC8302105E
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Dec 2025 04:28:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8FC4D304842F
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Dec 2025 04:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33A12D73B6;
-	Tue,  9 Dec 2025 04:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95782EB873;
+	Tue,  9 Dec 2025 04:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QsECSg+d"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dTpVjikD"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9F02E370C
-	for <linux-omap@vger.kernel.org>; Tue,  9 Dec 2025 04:28:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824893009ED
+	for <linux-omap@vger.kernel.org>; Tue,  9 Dec 2025 04:28:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765254501; cv=none; b=XfKHu4hb7Aa2HNC10N8zUJOHPT9S8Y//NkhdDbHWLCLxZUNJ4R3bsYdSEq1zAZtDMWJzsL7fGht9wtcrQsBkePCfC5SwDvaHceKxFk6asQflJrn6OxS94moaqLWSVXcqK4pUfWDo0cFeV31ThLHBMdv63FcJG+u+HgB/r9CGRkI=
+	t=1765254504; cv=none; b=A1Z65aguiuhn55QjRNWYIW88la8MC7jDjHegrrOh4Y/hvg7rB7T7W0tcXGNYq1C4Zuga24jRjISLTxb/C3Q9cSRXpdIUcBH9NQlfxPTAV0AIiaMxia4DwraYZ2PoppoozJ+A/8Des6hSmh9Hi3QTF0/B4OadWh7JKn9rvuP21Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765254501; c=relaxed/simple;
-	bh=nshWNu78Q/XMh0LlE3oui168SyNeyp8mzorR1kZ8bsA=;
+	s=arc-20240116; t=1765254504; c=relaxed/simple;
+	bh=3pidgD9TpcdjmuGEM4+2gj7Du8pBd7MRvFriroyxajI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JPWXl3cHyxhAyULMGvSlKvgjKEU2zeWuj2ByDIMqCwMJ2NEXyZ7i9tno55/OJ0hkkMmMJnVS7KeC1yo+XAzw1Hvde0wrvn/g13boxQC8n9MASFte7za9HudWNv7jGGUGLrZCsJj6aps/REj86Pk9CIuBatmUcu39HKEPoIApgI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QsECSg+d; arc=none smtp.client-ip=209.85.216.49
+	 MIME-Version; b=echuS9xXMKCedamdyF2bEez6lrk6Fvz0owemWGzlXEv7rGvrRw4PT2SXdZTOxyw2I16LtbkWnQYdGlqTqtWYsH9NZWFsLd5teDVlulD3UmzztxuWhgaU3/ipmbuvFxMkOLCdkj3J8efFaE0j3awsKTWXEQqB52ukqPMyvOCJpck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dTpVjikD; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-34374febdefso5377233a91.0
-        for <linux-omap@vger.kernel.org>; Mon, 08 Dec 2025 20:28:19 -0800 (PST)
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-34374febdefso5377257a91.0
+        for <linux-omap@vger.kernel.org>; Mon, 08 Dec 2025 20:28:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765254499; x=1765859299; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1765254502; x=1765859302; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=okmIi4vWYl0QHDsaJwQNy/3wmdsCyJzm0p/g7ebWdjU=;
-        b=QsECSg+dJ4DzL0l1Lo6jg3hQ2OIjMM4PSdt7Dk+xvAuCoD2luEvLgUaewALpsW4EzZ
-         PFNrLx9xaYfhsroyyfXB6ZShfCVopsFgOa2m3V6/+JVZIdTvfxb7DwlZU3FQHFDjh7tx
-         Pb5gdDNcbR1xWTd0JCNDW5vhYh21io8pBiXfcsUhCpW1Ms+x9ctFJa4X34TTn5a0cxgS
-         P8N/Gu1sMi9FlQRnKNqD9xe1Kps++QDhvwjncASR0DCWC5JPXW2k95bJinff1g3fdNmK
-         Nubeefy5VQZ3ttzuvo4b+erx0sbzFIKt1FJUDV7Xe6I3KAkwaucJh1OFuXRvC6UelGvH
-         9VYA==
+        bh=DoV8ebquCT6L/RZ0AqbPbGv9Gx9G1WrRRbUTSZpd9fE=;
+        b=dTpVjikD2Nh9Nc85uX18Y/CF7eeymtNW82EdDmUYat0Nn0eaW3hWy2d1mDIg8raI0N
+         vBYPWMW4+VI/KgaBRhNBMhFJ1138Gu2S+xIAnSwHV+O5n5+iMJ5L/pWbth2xJANeNL2/
+         hiU+8+W1RTyvh2mBjgezwdSjVp0GPD8w1StXgX9lPsgCYfW+p/7OKUsz3wIaF2yAJcnd
+         ljpa4rcpo7whB7tK0lKapQTP+zMQgESlRSc4LACfyEkhbZOUFCo8POPJbJ7pI38uaTOb
+         Tr1tzz0U+Ab40qF1zCoMhfBY0pW/132j99/8IyleurMrGYc3l2XLBawcHT9u7bMxtjTu
+         qpxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765254499; x=1765859299;
+        d=1e100.net; s=20230601; t=1765254502; x=1765859302;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=okmIi4vWYl0QHDsaJwQNy/3wmdsCyJzm0p/g7ebWdjU=;
-        b=FSefJaZ3D7goE/o/sVukFzZl9UBENx57kCdTEwy1DAS1qJevW8nMJba4bcuBzQBPHR
-         26wx9NMiZSJxGpoV882qgHh306EHTxkff5KncpOS0DeyrR+hOL85Vtfde/Cjear81obT
-         hB/G2SrkcvCTikrb0JhMYuO5elLJO4ssBbSle/FA43wUFGamthMTg9w3RrPspC8BbQqF
-         vB4v9UiBHS4Ee0rJUJjuhUzU/To+PfLb0JEVlnnfjn4vAuZ52LpPn4wCeNcWN5a9xSwO
-         U1YoGrJBCw/dRLHZIcjl2dCykzYnl9owBHRRdTAFJEs9Qrse3zsXCH6B3zas7tBi+rcu
-         gz2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVHbveqEltFrYOtxrmdrmljXPSUCihbirt/XmrzI0H+RfnRnr+CNkmMu1lAV/c9PoEs2HBOz5YjJXnm@vger.kernel.org
-X-Gm-Message-State: AOJu0YwujS8bPC6prYq50NAJu/wk4swSBBhSI196YTUlGNLnJEniF/n/
-	UYnjIs5XuvvstzcP4jLDIqnmIhR8EKKs94Xd5jJshp4Gh4KEc5t+mAWg
-X-Gm-Gg: ASbGncsvlSiTHc9jNJgD6KEpj73UqO7d/CfJT/fVOAzCn9E4Lv9YnaUbtulakJNYuyt
-	BJYQMJ8veKYUE76jFyYMFBIpsqMbgkML7jsMjeydvdi/o2MgtgmboHc3hXM2fOAAbfjgsTXY0qF
-	YOChtySs8yu1cBNPjeuPthpdvtLWfFohwAqH8iL1akB9JToO67uRvFEYcG/fPnrb01hoQC4eBKV
-	SQzrWtk6OE38fjA9ceKOmHA78TT5sulpOfgRlSIYHQFPiHZDHqrXMWW7UYyvB0/Rq4oAeFqeL17
-	5UHDSvWHATNfWmkpTrA4RQ98GpEerH0aO/h1TbcFTbT7KnwZ6Yo0WZ1vtzxwaj0qa61WEdObk8+
-	2ibWhl8NVrMooREPkCtqN804M2CF/U1wj8XI4YxTMlPaUenx3BhxIXG1d8xSPF6fnwshfleaXMK
-	lzmwj8AuFofya13J5CzlWRWK/U3wFxL32N+6BIfgnoD2U=
-X-Google-Smtp-Source: AGHT+IH/sZjDstHQBk/4kkoOc4q4BWQ69NzeICX5PBywIS3oa9fbeB6YzchPZljjw9QmJ7GHpZIn7A==
-X-Received: by 2002:a17:90b:1801:b0:340:b908:9665 with SMTP id 98e67ed59e1d1-349a260ac22mr8426365a91.37.1765254498693;
-        Mon, 08 Dec 2025 20:28:18 -0800 (PST)
+        bh=DoV8ebquCT6L/RZ0AqbPbGv9Gx9G1WrRRbUTSZpd9fE=;
+        b=alHhO1s09fVPmbWLax3Db5n2hTpOErZJ3Ef5BfgS8PYEZwbQHztBUYMVsuJiazjwGc
+         Mctjr/tSaes7uRk82hTj7w6/Htd2luBZHysc3/S+XjvEE/R7cYWtcy7NM3jHmIzNrj06
+         EIXa5qXj7bJjZRs1MNSE9aAcwFqEnrLTiqE8ETddBhIpISNva8rUlYYGHbaWOxyCt6CU
+         Z/jK0+Ym45Anf1QryQVUdUlVEUH8+8xKk39OxbLwfjZEday9oWaZBCvYp0ECC5XNmU8T
+         9Pi4S2vmC885TeajgpYro00rX+Ezr01x/BycRRRKn6fqqshdRVWxOKnVyAEnptOGviDT
+         JULA==
+X-Forwarded-Encrypted: i=1; AJvYcCVUESG8yQWjaSiRnhMBwhVYpAbRffILQlPEwyhqVX8+PiWF2WAIfAYd+KW969jFmuneal9VtX+bpx5W@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxdr75gK7omWXs/Fz/mJ7/yaguCFAVqUYynQEDAhdPlkgZvoclr
+	mcqxvdbUolEnjk0CKkRhi0a+yKpoxsKJNs6FrnafNTU6lcasI6DA3a0x
+X-Gm-Gg: ASbGncsgP2Gh9ykh65a0lnonMv3h5IsYYtA0JoOt9W18ZRf/RJXutysz8cvMzGkQFV/
+	xNq33Q501D0LyrOBQHaMMZhXeJMGn0E59jzFI9EoeswK3jzxPgqbPaBNCIkEhUxdFIMLxZ38qc9
+	j1ceSf0wWucfqZ1FoK4fPZH1V8448qareItqZKF/CEYEBVg541BSymGMERfhNOfCByzw/R2BKWh
+	ew+L543qNxl0zUv1dJaRBP//UgozVvIF6JQwrGw3NYR98qZN63LRckDnQPw9dqZLAcrzI2OQH0v
+	vXOZ2RYwVZtZPP1VSPyT+wx/z6XzBqECBG+tDCsbNs8mFyp+Y6XgsFPXFeRXAuglKi9Exql85GO
+	5Gy6tXOYvhTBozQuXc4g8xN5v26zcUAsREkOQschZiBu8X+2s6wH+1NfF9SLcw6wpYvdmbRC5Jm
+	hTNU5YoF7zBVI9Jiutu/gz34cn4XJJ1eyDpVjwc8P0IyA=
+X-Google-Smtp-Source: AGHT+IGhZ172wJMCe8Y+hl9H/FCCQtSdsSpkHLmThykFWMzH/YAfrcNiqXS6r43YyTp5Eyv9aHLeZg==
+X-Received: by 2002:a17:90b:1a8b:b0:343:f509:aa4a with SMTP id 98e67ed59e1d1-349a260a9d0mr7994609a91.36.1765254501596;
+        Mon, 08 Dec 2025 20:28:21 -0800 (PST)
 Received: from cmpatel-home.hsd1.or.comcast.net ([2601:1c0:5780:9200:b455:298d:48bb:1784])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34a49b90fd5sm765185a91.10.2025.12.08.20.28.18
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34a49b90fd5sm765185a91.10.2025.12.08.20.28.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Dec 2025 20:28:18 -0800 (PST)
+        Mon, 08 Dec 2025 20:28:21 -0800 (PST)
 From: Chintan Patel <chintanlike@gmail.com>
 To: linux-fbdev@vger.kernel.org,
 	linux-staging@lists.linux.dev,
@@ -83,9 +83,9 @@ Cc: linux-kernel@vger.kernel.org,
 	deller@gmx.de,
 	gregkh@linuxfoundation.org,
 	Chintan Patel <chintanlike@gmail.com>
-Subject: [PATCH 1/3] fbtft: Make sysfs and dev_*() logging conditional on FB_DEVICE
-Date: Mon,  8 Dec 2025 20:27:42 -0800
-Message-ID: <20251209042744.7875-2-chintanlike@gmail.com>
+Subject: [PATCH 2/3] omapfb: Guard sysfs code under CONFIG_FB_DEVICE
+Date: Mon,  8 Dec 2025 20:27:43 -0800
+Message-ID: <20251209042744.7875-3-chintanlike@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251209042744.7875-1-chintanlike@gmail.com>
 References: <20251209042744.7875-1-chintanlike@gmail.com>
@@ -97,127 +97,68 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The fbtft core and sysfs implementation unconditionally dereference
-fb_info->dev and register sysfs attributes. When FB_DEVICE=n, these
-fields are unavailable, leading to build failures.
+omapfb implements multiple sysfs attributes for framebuffer rotation,
+overlays, and debug information. These interfaces depend on FB_DEVICE
+being enabled.
 
-This patch wraps all sysfs attribute creation/removal and dev_dbg/dev_info
-logging in #ifdef CONFIG_FB_DEVICE, with pr_*() fallbacks for the
-non-FB_DEVICE case. This makes fbtft fully buildable when FB_DEVICE is
-disabled.
+This patch wraps all sysfs attribute definitions, registration, and
+removal in #ifdef CONFIG_FB_DEVICE. For FB_DEVICE=n, lightweight stub
+functions are provided so that the driver builds and runs without
+exposing sysfs interfaces.
 
 Signed-off-by: Chintan Patel <chintanlike@gmail.com>
 ---
- drivers/staging/fbtft/fbtft-core.c  | 20 ++++++++++++++++++--
- drivers/staging/fbtft/fbtft-sysfs.c |  8 ++++++++
- 2 files changed, 26 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/omap2/omapfb/Kconfig        |  2 +-
+ drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c | 11 +++++++++++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
-index 9e7b84071174..dc967bdeabe8 100644
---- a/drivers/staging/fbtft/fbtft-core.c
-+++ b/drivers/staging/fbtft/fbtft-core.c
-@@ -365,9 +365,14 @@ static int fbtft_fb_setcolreg(unsigned int regno, unsigned int red,
- 	unsigned int val;
- 	int ret = 1;
+diff --git a/drivers/video/fbdev/omap2/omapfb/Kconfig b/drivers/video/fbdev/omap2/omapfb/Kconfig
+index f4cdf999a080..ee664decbb64 100644
+--- a/drivers/video/fbdev/omap2/omapfb/Kconfig
++++ b/drivers/video/fbdev/omap2/omapfb/Kconfig
+@@ -5,7 +5,6 @@ config OMAP2_VRFB
+ menuconfig FB_OMAP2
+ 	tristate "OMAP2+ frame buffer support"
+ 	depends on FB
+-	depends on FB_DEVICE
+ 	depends on DRM_OMAP = n
+ 	depends on GPIOLIB
+ 	select FB_OMAP2_DSS
+@@ -13,6 +12,7 @@ menuconfig FB_OMAP2
+ 	select FB_IOMEM_HELPERS
+ 	help
+ 	  Frame buffer driver for OMAP2+ based boards.
++	  Selecting FB_DEVICE enables additional sysfs interfaces.
+ 
+ if FB_OMAP2
+ 
+diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c b/drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c
+index 831b2c2fbdf9..0a340f69484f 100644
+--- a/drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c
++++ b/drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c
+@@ -24,6 +24,7 @@
+ 
+ #include "omapfb.h"
  
 +#ifdef CONFIG_FB_DEVICE
- 	dev_dbg(info->dev,
- 		"%s(regno=%u, red=0x%X, green=0x%X, blue=0x%X, trans=0x%X)\n",
- 		__func__, regno, red, green, blue, transp);
+ static ssize_t show_rotate_type(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
+ {
+@@ -585,4 +586,14 @@ void omapfb_remove_sysfs(struct omapfb2_device *fbdev)
+ 					&omapfb_attrs[t]);
+ 	}
+ }
 +#else
-+	pr_debug("%s(regno=%u, red=0x%X, green=0x%X, blue=0x%X, trans=0x%X)\n",
-+		 __func__, regno, red, green, blue, transp);
-+#endif
- 
- 	switch (info->fix.visual) {
- 	case FB_VISUAL_TRUECOLOR:
-@@ -391,8 +396,11 @@ static int fbtft_fb_blank(int blank, struct fb_info *info)
- 	struct fbtft_par *par = info->par;
- 	int ret = -EINVAL;
- 
--	dev_dbg(info->dev, "%s(blank=%d)\n",
--		__func__, blank);
-+#ifdef CONFIG_FB_DEVICE
-+	dev_dbg(info->dev, "%s(blank=%d)\n", __func__, blank);
-+#else
-+	pr_debug("%s(blank=%d)\n", __func__, blank);
-+#endif
- 
- 	if (!par->fbtftops.blank)
- 		return ret;
-@@ -793,6 +801,8 @@ int fbtft_register_framebuffer(struct fb_info *fb_info)
- 	if (spi)
- 		sprintf(text2, ", spi%d.%d at %d MHz", spi->controller->bus_num,
- 			spi_get_chipselect(spi, 0), spi->max_speed_hz / 1000000);
++int omapfb_create_sysfs(struct omapfb2_device *fbdev)
++{
++	return 0;
++}
 +
-+#ifdef CONFIG_FB_DEVICE
- 	dev_info(fb_info->dev,
- 		 "%s frame buffer, %dx%d, %d KiB video memory%s, fps=%lu%s\n",
- 		 fb_info->fix.id, fb_info->var.xres, fb_info->var.yres,
-@@ -804,6 +814,12 @@ int fbtft_register_framebuffer(struct fb_info *fb_info)
- 		fb_info->bl_dev->props.power = BACKLIGHT_POWER_ON;
- 		fb_info->bl_dev->ops->update_status(fb_info->bl_dev);
- 	}
-+#else
-+	pr_info("%s frame buffer, %dx%d, %d KiB video memory%s, fps=%lu%s\n",
-+		fb_info->fix.id, fb_info->var.xres, fb_info->var.yres,
-+		fb_info->fix.smem_len >> 10, text1,
-+		HZ / fb_info->fbdefio->delay, text2);
++void omapfb_remove_sysfs(struct omapfb2_device *fbdev)
++{
++}
 +#endif
  
- 	return 0;
- 
-diff --git a/drivers/staging/fbtft/fbtft-sysfs.c b/drivers/staging/fbtft/fbtft-sysfs.c
-index e45c90a03a90..944f74f592d0 100644
---- a/drivers/staging/fbtft/fbtft-sysfs.c
-+++ b/drivers/staging/fbtft/fbtft-sysfs.c
-@@ -89,6 +89,7 @@ int fbtft_gamma_parse_str(struct fbtft_par *par, u32 *curves,
- 	return ret;
- }
- 
-+#ifdef CONFIG_FB_DEVICE
- static ssize_t
- sprintf_gamma(struct fbtft_par *par, u32 *curves, char *buf)
- {
-@@ -145,6 +146,7 @@ static ssize_t show_gamma_curve(struct device *device,
- static struct device_attribute gamma_device_attrs[] = {
- 	__ATTR(gamma, 0660, show_gamma_curve, store_gamma_curve),
- };
-+#endif
- 
- void fbtft_expand_debug_value(unsigned long *debug)
- {
-@@ -173,6 +175,7 @@ void fbtft_expand_debug_value(unsigned long *debug)
- 	}
- }
- 
-+#ifdef CONFIG_FB_DEVICE
- static ssize_t store_debug(struct device *device,
- 			   struct device_attribute *attr,
- 			   const char *buf, size_t count)
-@@ -200,17 +203,22 @@ static ssize_t show_debug(struct device *device,
- 
- static struct device_attribute debug_device_attr =
- 	__ATTR(debug, 0660, show_debug, store_debug);
-+#endif
- 
- void fbtft_sysfs_init(struct fbtft_par *par)
- {
-+#ifdef CONFIG_FB_DEVICE
- 	device_create_file(par->info->dev, &debug_device_attr);
- 	if (par->gamma.curves && par->fbtftops.set_gamma)
- 		device_create_file(par->info->dev, &gamma_device_attrs[0]);
-+#endif
- }
- 
- void fbtft_sysfs_exit(struct fbtft_par *par)
- {
-+#ifdef CONFIG_FB_DEVICE
- 	device_remove_file(par->info->dev, &debug_device_attr);
- 	if (par->gamma.curves && par->fbtftops.set_gamma)
- 		device_remove_file(par->info->dev, &gamma_device_attrs[0]);
-+#endif
- }
 -- 
 2.43.0
 
