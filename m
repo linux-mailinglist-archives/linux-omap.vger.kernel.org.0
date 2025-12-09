@@ -1,163 +1,123 @@
-Return-Path: <linux-omap+bounces-5131-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5132-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C346DCAE22D
-	for <lists+linux-omap@lfdr.de>; Mon, 08 Dec 2025 21:06:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7AC5CAEC6B
+	for <lists+linux-omap@lfdr.de>; Tue, 09 Dec 2025 04:09:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 812473049585
-	for <lists+linux-omap@lfdr.de>; Mon,  8 Dec 2025 20:06:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ECB1B3027CF3
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Dec 2025 03:09:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A35A2FD68E;
-	Mon,  8 Dec 2025 20:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD872DF6E3;
+	Tue,  9 Dec 2025 03:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="RCw4MYw+";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="voCV257E"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="HgCGdRc2"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from flow-a6-smtp.messagingengine.com (flow-a6-smtp.messagingengine.com [103.168.172.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D461A9FA8;
-	Mon,  8 Dec 2025 20:06:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB9318D658
+	for <linux-omap@vger.kernel.org>; Tue,  9 Dec 2025 03:09:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765224366; cv=none; b=eQmLTNVd//YxF6eO4bOE3Nu7foDN8UVZPDdRgkpPiAnbuCmmgO59tksH3TslcovX7f0snJiyWVmIYsQda8/BSCy4GPNkVJOiiK+Q1cw302Eqe4Qme4EIJXdFxGMX8l0stQgL6Zp7VkmIzzZqTM9fBkuheMYwkI9UVMdMGKK4nfY=
+	t=1765249789; cv=none; b=RCppP7FUNKqBnE7rjSDLTyBgTQ3252RXfXXlIR7v9+tj85/ym6PVAxaqY3G1Lf3b4LvZ31vfLex1VlEz/193wknuqL3EVo3cfXeVc7JgDDy1Sg+FXtGDMMaPD2snPWiuMf3v9tq5cTmvq5Oh9E/GuZ8kWW8HWHatB52FP2jNvfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765224366; c=relaxed/simple;
-	bh=jr5/ZXHHETObVyfq2xnDJTDvOshfBwx+krGl3v0gYC4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O3rj2taSf8oYlgAYyzL4Dd64gsp7B2PYtGzSz1SDmlUnRbTIgqYCYeDMp7+9YBLK4A6iz+hMxmoJq7HFgRz29c9wCujHcz9etE7EaDN3m7rLDJugm3sf7068piHEHzC0MhpSqM7XM7874XJGiKj7/OJB7fxuU4e0mkLF7ArEktQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=RCw4MYw+; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=voCV257E; arc=none smtp.client-ip=103.168.172.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.phl.internal (Postfix) with ESMTP id 15BE51380418;
-	Mon,  8 Dec 2025 15:06:00 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Mon, 08 Dec 2025 15:06:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1765224360; x=1765231560; bh=geGVe3G5SB
-	gEZ59+oVuK/Iwq85pb8lTkLlayLey8xSA=; b=RCw4MYw+7ZLDHkj305wxxjCRSX
-	rMrdbrBgi9f25g/3it320zvhMNV1ZQKoK4HMoVtdSMCSQxa3T1NtQGZK2ji7FaB+
-	4EAMXj2Z/18fg18HLzgIp1Xd2gaRaVf6aOd9tq+17uy6+b25gxNy3mnV9680Kb9/
-	5tqHVF1j8ty4YqRtlzJwDQD/AFabZMuWlqsu+ivO0qERdUZBTsbfvToLgDReiU2c
-	Lh/Eba71Uo99rQNJKXg+dWVZlsvVZ4EEWaxpUn0pfDgHeJqy1Ci7jT91cm3WjvPy
-	sTJxo0O0i2VTRszFsHu9XlHbQZYuMm/iGITipFRODxC1B8IcWm5/KrQbrMbg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1765224360; x=1765231560; bh=geGVe3G5SBgEZ59+oVuK/Iwq85pb8lTkLla
-	yLey8xSA=; b=voCV257E8ExI8LRf6UdVA7F02TYLxADA60npChdBR6Y21xs0tRA
-	C1uw+AV9CLSaNfK6RAUV6AE1RZBKQaSh2/pgZThaQt1P282do/o12nWenujxz3Pg
-	/tdhnCFD0X7RQQSdVppzFajbBlqF0NSSuk+kHONsZxH3CEBuJYx+4gBEMsH+gyIP
-	razXamAr0cLJLucn4Z8U6ZvWzmg4VLNRkI8fW7bkvNN/o41lmXQ/g0VAlsbl0p+c
-	9kOr6shetIpWgA2fAxvQUSRm6uEgMj9wjThm4m3EyfuK4xRaW/GPDonriBPihui9
-	NKID6dEU3zuG8C0j+xnEP0PQag6LUCS0h3A==
-X-ME-Sender: <xms:pi83aTQUBBxxcwI8Ju7BapuF7LwulYjYQpKe7sWAR0r_uWtzDdDwRg>
-    <xme:pi83aebVHsxrKMEuQywvzdXSDZHpM9MK2UiluZkdXAVmh0J0nNZu6U6gfkZg9j0Ga
-    Ut53OsW7mEjA55oME3b-thugVKSe0_5Tbewl2mI88XfPPTSUxekmw>
-X-ME-Received: <xmr:pi83acQeu23D1kI1rLhQ4wr0x5rXNlW92yKuzfJ9DXbmbyD1PnQo3LIx3zAyL52iJBsHs4oNCdPXZZnY0nx-sHu7J1Hs6kJCHtU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddujeehlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttdejnecuhfhrohhmpeflrghnnhgvucfi
-    rhhunhgruhcuoehjsehjrghnnhgruhdrnhgvtheqnecuggftrfgrthhtvghrnhepgfduue
-    ffleefkeegueektdehkeejtedtffdtudejhfdvheetgfeigfeltdeufeejnecuffhomhgr
-    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehjsehjrghnnhgruhdrnhgvthdpnhgspghrtghpthhtohepvdei
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehprghulhhksehshihsqdgsrghsvg
-    drihhopdhrtghpthhtoheprhguuhhnlhgrphesihhnfhhrrgguvggrugdrohhrghdprhgt
-    phhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopegrnhguhidrshhhvghvtghhvghnkhhosehgmhgrihhlrdgtohhmpdhrtghp
-    thhtoheprghrnhgusegrrhhnuggsrdguvgdprhgtphhtthhopegrnhgurhgvfidrjhhonh
-    gvsheslhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhomhgrphesvhhgvghr
-    rdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehophgvnhgsmhgtsehlihhsthhsrdhoii
-    hlrggsshdrohhrghdprhgtphhtthhopehlihhnuhigqdhsohhunhgusehvghgvrhdrkhgv
-    rhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:pi83aZ4RCJmeDa-VR1cQPG2ul73JR-gGDUFjKdpu-22mFdL9oWUOfw>
-    <xmx:pi83aXrSwaSszaHmCrk55lMdmsGtmyEQHQ1s-QpJy4Rt1_cXfEHipg>
-    <xmx:pi83aUR5DbLatVwQOF8-uRLn9TImi_QeLc8Ti5pE_VqfQwUHqh1VcA>
-    <xmx:pi83aTtoeQfXbJumEOlxloGR9zkRk3a07od05eZIJLIDpzutEw-WGg>
-    <xmx:qC83aQtVE-oT3QFyD3EhDToVHKkkvo2HfKm_z0WZaMfBkC3mxyGDZ6m_>
-Feedback-ID: i47b949f6:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 8 Dec 2025 15:05:57 -0500 (EST)
-Date: Mon, 8 Dec 2025 21:05:55 +0100
-From: Janne Grunau <j@jannau.net>
-To: Paul Kocialkowski <paulk@sys-base.io>
-Cc: Randy Dunlap <rdunlap@infradead.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>, andrew.jones@linux.dev,
-	linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
-	linux-sound@vger.kernel.org,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	linux-mips@vger.kernel.org, asahi@lists.linux.dev,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	chrome-platform@lists.linux.dev,
-	Paul Cercueil <paul@crapouillou.net>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Linux ARM <linux-arm-kernel@lists.infradead.org>,
-	linux-gpio@vger.kernel.org, Srinivas Kandagatla <srini@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Vaibhav Hiremath <hvaibhav.linux@gmail.com>,
-	linux-sh@vger.kernel.org, x86@kernel.org,
-	Max Filippov <jcmvbkbc@gmail.com>
-Subject: Re: Kconfig dangling references (BZ 216748)
-Message-ID: <20251208200555.GA333481@robin.jannau.net>
-References: <22b92ddf-6321-41b5-8073-f9c7064d3432@infradead.org>
- <aTcVXrUXVsyjaT22@shepard>
+	s=arc-20240116; t=1765249789; c=relaxed/simple;
+	bh=j9T9qc8kv4Wu2R0NYry0ZY+FxQqLZIT+LQK8My5CDoE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=MNZQ3XCGU78tEvHkzs6Or2ZPG1YRlBJdP2+f/KEIlUGGzjJ+xGY1weI64a7xDf0Arkpa597JH1hpDmVrVFMkJeBKcr3s3bQ9VFZ96nCvdij02YjPpvXTH2SGi9gk9tEd6w8SlovNKuVTl9mGaMOKonFaz0aDCjeT6uRwEQvgBr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=HgCGdRc2; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-29555b384acso52725345ad.1
+        for <linux-omap@vger.kernel.org>; Mon, 08 Dec 2025 19:09:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765249787; x=1765854587; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MTpghPmOCPM19OYgMgbGT5qXtYNK79xgvXC2Ue5PK3k=;
+        b=HgCGdRc2d0z39IbfwMvEcrxUWaw5AjkywRLoDO90tRJHPO8zgmyUQ03AnYYYQ6FjHr
+         Yc9O5k58cd3qARgGT+0Vtwc6FAsNZYJuZcOCS2sgJ8I3X2/OtnpayyXW7JS6tTaKMfRa
+         2ZeUyd1/hsyM3tg7pfdwjM66F6Q9CAjPPUTKl8kq0rmEyAOAUhC/ruQqCs9K4rCsk7Ju
+         b+O9sI0NMIMdkIN/eVF5OzcS+i5luyV95IzMYzU5sfW3eTIQDwkysBragsuImEmAAs4d
+         f+/PJhGPay/miO2A5IFMOzBSzV5p7Wjw7zSTCeHCJraRREje+2SJmoYyCDeVUX1ZIIym
+         c3pA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765249787; x=1765854587;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MTpghPmOCPM19OYgMgbGT5qXtYNK79xgvXC2Ue5PK3k=;
+        b=suN+pkcaJj3L4p6arJGHTK1X7g7rxVma1UV0+Hea3ZmxA32HFCPGNmvKnBftI19RrG
+         UkxNqZdV/oMakwPQujWdpZNIAG8ZzeucPcq6HQ66Vl3u9nPK9Aa2xUmTIzejhfleBXw9
+         YBdk+W/TMIxNNu2jyAyeyrUEFayxEPQhMA1uNe43HT6kVSoiJNCHcvN4XJCwNNF3fykK
+         Ka7JSHSGabRcMBz8cEBt5Mz6sPPdUr4VwmQoWcyKvH7C1PPaonrbctcwjG02T5IXQqNs
+         xyFD/CMJIH8RLwEwFrzXMawlcUwlLz5hzSPV7D9H2sNSZzC9AT0mbOeWtx2F50SSJIoh
+         iSjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXADUT7yqlNU5nRSwQNU+J5agufInEkv6sWLIl5GP9VHvHxkPWG+oyDSekIYdOLdEWuIgrnKrs05dJt@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4HYzp5aag5cozXOEQFjLX349xnqlPvnHZS89Hx8hW2u2/vsRu
+	yDN3/Nltjo7+7BOa0e0qHUml5I6q9D3MA8LM9H5H0TdYzmEFOq4qhmOpEt7YZIygTAk=
+X-Gm-Gg: ASbGncsiWphqI+66Bv0Mi5GJoapKPR6ljgCeka6Yi1X2FiWTrxNHrTETLhVPbMQBa+H
+	whOmkNm9CgrJ6y6Lz2Wesrz6q7x661+OZGD4+31IYEihj8Es3oQj7c+dQjkW/XEItvcZgr58lud
+	4TCAteqye15237QsV8fCTUjZF7lINTbQ5+gzPs/52hDmkucmU+FCzWBht9TaoQ+Tly6WzxeSEpK
+	qLIw8X/GlhCpM93GGDDd4dPSTK3TslaMDqEm+Y7ZzSdaJ//yW0v6F/IjYLyobKZOxGnPBaZ5vZJ
+	g4N8mdujOL+gNfVjC+xWHBEl5qsxNoBDwlaUwU4MfDIlpEUYA/PZuTPqTw2GZcX+VN9gICkU7E3
+	XGGD/L/PkQAQnQB4+vhFp8lWovKO9r5WcAmc0oZZZmqOX9SDHxv+ahIyYIvgk+krPFfMcoiKvg3
+	3f6mdV5iSvR7+5LBXx2kk=
+X-Google-Smtp-Source: AGHT+IH2WHVFwA78UMJtgEIT3W0hF7oDSenZgK9PqDDhWa2l7fUr6FMBMW4Hhj3UAdOKbbG/n2COrg==
+X-Received: by 2002:a17:902:cf0e:b0:295:96bc:868c with SMTP id d9443c01a7336-29df546f962mr89029595ad.5.1765249786761;
+        Mon, 08 Dec 2025 19:09:46 -0800 (PST)
+Received: from localhost ([71.212.208.158])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29e4f15accfsm40755175ad.35.2025.12.08.19.09.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Dec 2025 19:09:46 -0800 (PST)
+From: Kevin Hilman <khilman@baylibre.com>
+To: Kory Maincent <kory.maincent@bootlin.com>, Aaro Koskinen
+ <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, Roger
+ Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, Lee Jones
+ <lee@kernel.org>, Shree Ramamoorthy <s-ramamoorthy@ti.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>
+Cc: Andrew Davis <afd@ti.com>, Bajjuri Praneeth <praneeth@ti.com>, Thomas
+ Petazzoni <thomas.petazzoni@bootlin.com>, linux-omap@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v4 0/2] Enable 1GHz OPP am335x-bonegreen-eco
+In-Reply-To: <20251127144138.400d1dcd@kmaincent-XPS-13-7390>
+References: <20251112-fix_tps65219-v4-0-696a0f55d5d8@bootlin.com>
+ <20251127144138.400d1dcd@kmaincent-XPS-13-7390>
+Date: Mon, 08 Dec 2025 19:09:45 -0800
+Message-ID: <7hsedk73ly.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aTcVXrUXVsyjaT22@shepard>
+Content-Type: text/plain
 
-On Mon, Dec 08, 2025 at 07:13:50PM +0100, Paul Kocialkowski wrote:
-> Hi Randy,
-> 
-> On Sun 07 Dec 25, 18:04, Randy Dunlap wrote:
-> > from  https://bugzilla.kernel.org/show_bug.cgi?id=216748
-> > 
-> > The bugzilla entry includes a Perl script and a shell script.
-> > This is the edited result of running them (I removed some entries that were noise).
-> 
-> [...]
-> 
-> > DRM_KMS_DMA_HELPER ---
-> > drivers/gpu/drm/adp/Kconfig:9:	select DRM_KMS_DMA_HELPER
-> > drivers/gpu/drm/logicvc/Kconfig:7:	select DRM_KMS_DMA_HELPER
-> 
-> For these two, the symbol was removed in commit
-> 09717af7d13d63df141ae6e71686289989d17efd
+Kory Maincent <kory.maincent@bootlin.com> writes:
 
-That commit removed DRM_KMS_CMA_HELPER. Later commit 6bcfe8eaeef0
-("drm/fb: rename FB CMA helpers to FB DMA helpers") renamed
-DRM_KMS_CMA_HELPER erroneously to DRM_KMS_DMA_HELPER.
+> On Wed, 12 Nov 2025 16:14:19 +0100
+> "Kory Maincent (TI.com)" <kory.maincent@bootlin.com> wrote:
+>
+>> The vdd_mpu regulator maximum voltage was previously limited to 1.2985V,
+>> which prevented the CPU from reaching the 1GHz operating point. This
+>> limitation was put in place because voltage changes were not working
+>> correctly, causing the board to stall when attempting higher frequencies.
+>> Increase the maximum voltage to 1.3515V to allow the full 1GHz OPP to be
+>> used.
+>> 
+>> Add a TPS65219 PMIC driver fixes that properly implement the LOCK register
+>> handling, to make voltage transitions work reliably.
+>
+> Hello,
+>
+> What is the status on this series?
+> Is there anything that could prevent it from being merged?
 
-> but these two drivers either were
-> missed by the batch rename or were introduced a bit later.
+Nothing technical.  I'll start queuing things up after the merge window
+closes and -rc1 (or maybe -rc2) is out.
 
-In the case of drivers/gpu/drm/adp/Kconfig it was missed much later
-during review (but iirc went through the same rename out of tree).
-
-> Since the symbol selected DRM_GEM_CMA_HELPER (which is still needed by the
-> drivers), it should be replaced with DRM_GEM_CMA_HELPER.
-
-That symbol doesn't exist anymore either. It's now DRM_GEM_DMA_HELPER
-which is already present in both files.
-
-So the "select DRM_KMS_DMA_HELPER" lines can be removed from both files.
-
-Janne
+Kevin
 
