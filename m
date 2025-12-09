@@ -1,94 +1,98 @@
-Return-Path: <linux-omap+bounces-5140-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5141-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E24ACCAF50F
-	for <lists+linux-omap@lfdr.de>; Tue, 09 Dec 2025 09:42:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 752B2CAF79E
+	for <lists+linux-omap@lfdr.de>; Tue, 09 Dec 2025 10:39:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 59C52300A73F
-	for <lists+linux-omap@lfdr.de>; Tue,  9 Dec 2025 08:42:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2E058307B4F5
+	for <lists+linux-omap@lfdr.de>; Tue,  9 Dec 2025 09:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D179721ABD0;
-	Tue,  9 Dec 2025 08:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F942F7444;
+	Tue,  9 Dec 2025 09:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="OL0r6LgL";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="oLmnYet/";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="OL0r6LgL";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="oLmnYet/"
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="nJMsVbkk";
+	dkim=pass (1024-bit key) header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.b="rQqSpYe+"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FC326A0DD
-	for <linux-omap@vger.kernel.org>; Tue,  9 Dec 2025 08:42:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765269729; cv=none; b=hSyM8ss+T9IexzBgMRTp4snhPB/P2hWE/LGOQx2OPB/QEaxqVJs0W8Z6BtiB84/ha0KOJ1OLoex3t8r4C0WofqqRjPMWJdbYpNbC5oiZ60AWdG4puLJmQQ2QJ5igDTLEZYnwRwzN0zKLxQhMOmjsJ8tebcNtfWIGL4gTvP+3WBI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765269729; c=relaxed/simple;
-	bh=JBWSMZz/pAuMr1EDIhh90m65W9QWEUMQMBfoaVwWb3g=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88BE21FF55;
+	Tue,  9 Dec 2025 09:37:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.152.168
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765273080; cv=fail; b=G5rpyDI/3K710nemRRYBZEIv/Pwm1RdZn2qqJQFlTu1u0596jhXBMzdVMy+AaPfm1rQYNzd0X2XPwr/d6NFBFEUY93WIFWw8b95PFknWvKWgQG5WcuH1eDCFw73N1WfdBCSgdKB43K06/1LT1OnPGJ3EX85V4V85VxILfKrMI8Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765273080; c=relaxed/simple;
+	bh=/8frytfZT8C4vyh0B90Yhphu+Mp3j37X2ZdoHM9/d2A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jS9r7lb1ITQF7I0OLn0vPQUdZfdbMCC3zr2g3yzEZ/6qLgBO3FBtu9XNEWMR3IxC0Alq2CRidRr+OgJ7EsFh6hLFrlWvWmNNWVFQKlbCmltoOkOBiZ5tIrqyXLdnAfzOiWMJgg8lvEY4e5dJls4yioZlV0P5wsgvk7M8ERTBwEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=OL0r6LgL; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=oLmnYet/; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=OL0r6LgL; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=oLmnYet/; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5830D5BD9C;
-	Tue,  9 Dec 2025 08:42:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1765269724; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=mkXnCCDibCT6NceqYRV8oQpGMsdF6XLcZr94DE5nJVM=;
-	b=OL0r6LgL1+dDhQOl7ThMpm9FBdi/rtKKgh7S0BNaKeKoJeh5UAHjwydL9yZgwbjpwApKGx
-	wv1vwOufVjqto5L/erjFModKsmTreWPCdoqJ6yu5avyCehoIpuCDlKfGLSbDUezhdkwd/D
-	8SEdupw1qEa6UZ57UIPaRQvZYJyEXhg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1765269724;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=mkXnCCDibCT6NceqYRV8oQpGMsdF6XLcZr94DE5nJVM=;
-	b=oLmnYet/MjU46NsSflbcbECEhtMK/NXBx/ljSwhF5VfaLajWXCuUV2Vuu75a0Ul6wqv2Bz
-	XwkvZp7cQUZZOfBg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OL0r6LgL;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="oLmnYet/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1765269724; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=mkXnCCDibCT6NceqYRV8oQpGMsdF6XLcZr94DE5nJVM=;
-	b=OL0r6LgL1+dDhQOl7ThMpm9FBdi/rtKKgh7S0BNaKeKoJeh5UAHjwydL9yZgwbjpwApKGx
-	wv1vwOufVjqto5L/erjFModKsmTreWPCdoqJ6yu5avyCehoIpuCDlKfGLSbDUezhdkwd/D
-	8SEdupw1qEa6UZ57UIPaRQvZYJyEXhg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1765269724;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=mkXnCCDibCT6NceqYRV8oQpGMsdF6XLcZr94DE5nJVM=;
-	b=oLmnYet/MjU46NsSflbcbECEhtMK/NXBx/ljSwhF5VfaLajWXCuUV2Vuu75a0Ul6wqv2Bz
-	XwkvZp7cQUZZOfBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1841C3EA63;
-	Tue,  9 Dec 2025 08:42:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Jb93BNzgN2l8DQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 09 Dec 2025 08:42:04 +0000
-Message-ID: <90afab05-eb56-4c81-afd5-35337335c562@suse.de>
-Date: Tue, 9 Dec 2025 09:42:03 +0100
+	 In-Reply-To:Content-Type; b=qcbMPLLWh9qh7CUzIphrzc3eoa6VdMfASitb8+2lsLAa6AMhi819Qi/nMdlu8yypjZhRx1suhGlYYsBHqOagX3ReY0uc9XBZQ/N2FWV1siu+ZCD6nH91YqSPhmO3pNUgGDaXavqPDzEUA23+zEz+88raePUsbop1bEh1S+h6lzE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=nJMsVbkk; dkim=pass (1024-bit key) header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.b=rQqSpYe+; arc=fail smtp.client-ip=67.231.152.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+	by mx0b-001ae601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B94uIYT179684;
+	Tue, 9 Dec 2025 03:36:39 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	PODMain02222019; bh=PKHXBFeexF1OLAnNorin/u5kfN3/rLU+xeTkWta0by4=; b=
+	nJMsVbkk/0REfe2/pWPRS82FuNujSbNQPo1LBhVcs61yKmFSeTF6bSMUpRcXRxX3
+	z0I5ZH3ifEWfPTBUhu8BM49Y7ERFF57al/Tsu+Pyvye/a4M2OOE444VSoMohKB2s
+	UWNHqcHeOWDIFiom8rfWm7XL9V6rMg3inKg8EvppFi9v6BHg3d5vvMZtO5kakP9E
+	Rbui9lEqJxfY4p7/2UoS25vYCT48dlS8qwHZeDN0dmzfuKcvDsKEgmU0BWRqspaa
+	afcNJZ2o7CLGamtn4o+gWGTHLvAsbYytt6jvOf6wD9E3K8OvS7x1q5/6TJz5WHf0
+	m6wY4CKTeI7uCeVErbnzAQ==
+Received: from ch1pr05cu001.outbound.protection.outlook.com (mail-northcentralusazon11020138.outbound.protection.outlook.com [52.101.193.138])
+	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 4avhskk8kr-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 09 Dec 2025 03:36:39 -0600 (CST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RucF7YSWv+eVINCnJJz5Q4p7cK7P+xezEF3ZpKz2ripy9635PtU07jdzd7jlH33FCgnQ6awntnCFM76xH1BWfV9yo68ohSXF9RADhUShLbiR1LE1T+j7u1nVDlRFpcdAvhNSgrS9hu2l1xpTUmCDHj6rBz55N2fxzZup0S18G5yQb3BnayyUh3VSfKUkrUzeknxsUEI0Flq0E921EyKgxv9lzN0fLPlWvyyy1awX7hFU6lNQRsz1EHz9zh7BZ+dCaNVq1D6w2vWbjjBV608ojL9UecO4w+Ywo9mGsPdTR30FcP17sn7OkoayeuVH6h/O6cyIGggvFgZQ3ql1Vt7Hqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PKHXBFeexF1OLAnNorin/u5kfN3/rLU+xeTkWta0by4=;
+ b=ZTo6YWe1S4PjpS9yGxzWHkbTbbx9+oukgTRzY96RYHGY+baBGL7rciiDqFWuCR+zYbu1rhYRv33lOA5fylVrh88ulBwOLJ2b6NVTh4SyDfAG4rBRvrj2IX/i5a7a1gvw5T+K209loVrZPrHByZf6t+6MMIrajpPcV2GgX5dCVhxroUva2LlojsBkAsHMqZPRqAqri2yQHRIPSINBzxIWiMUgdxR5C6ymRjR1t53+Ep/dlmuwTUjEpJIEPklBxVoDV8f0QCss1dCQ8E87sm6oj2FC4xh+ZneSFRef/EpHdw7iI42skgSgzQA/RhMe/4AbdaZQuWXC7aFk5n4poR1qtA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 84.19.233.75) smtp.rcpttodomain=arndb.de smtp.mailfrom=opensource.cirrus.com;
+ dmarc=fail (p=reject sp=reject pct=100) action=oreject
+ header.from=opensource.cirrus.com; dkim=none (message not signed); arc=none
+ (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cirrus4.onmicrosoft.com; s=selector2-cirrus4-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PKHXBFeexF1OLAnNorin/u5kfN3/rLU+xeTkWta0by4=;
+ b=rQqSpYe++dHKD8budRum+Pa/h/84bQEYkcJ8NsxvflHiSsdWjJirIQnFztPGqBm2G2XijzizPBOaxCv9Gm5ufnvkqH6gybqoWhVPPeaBzVznebkSoT1WRIPgsPS4DDs/l7EwnLwBLsubeiLWSmfsvcYBPbxhTfYJJQONr8YImys=
+Received: from BLAPR03CA0120.namprd03.prod.outlook.com (2603:10b6:208:32a::35)
+ by PH0PR19MB5396.namprd19.prod.outlook.com (2603:10b6:510:fa::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.6; Tue, 9 Dec
+ 2025 09:36:36 +0000
+Received: from BL6PEPF00022575.namprd02.prod.outlook.com
+ (2603:10b6:208:32a:cafe::fd) by BLAPR03CA0120.outlook.office365.com
+ (2603:10b6:208:32a::35) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9388.14 via Frontend Transport; Tue,
+ 9 Dec 2025 09:35:56 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 84.19.233.75)
+ smtp.mailfrom=opensource.cirrus.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=oreject header.from=opensource.cirrus.com;
+Received-SPF: Fail (protection.outlook.com: domain of opensource.cirrus.com
+ does not designate 84.19.233.75 as permitted sender)
+ receiver=protection.outlook.com; client-ip=84.19.233.75;
+ helo=edirelay1.ad.cirrus.com;
+Received: from edirelay1.ad.cirrus.com (84.19.233.75) by
+ BL6PEPF00022575.mail.protection.outlook.com (10.167.249.43) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9412.4
+ via Frontend Transport; Tue, 9 Dec 2025 09:36:35 +0000
+Received: from ediswmail9.ad.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
+	by edirelay1.ad.cirrus.com (Postfix) with ESMTPS id 6ED37406541;
+	Tue,  9 Dec 2025 09:36:34 +0000 (UTC)
+Received: from [198.90.208.24] (ediswws06.ad.cirrus.com [198.90.208.24])
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTPSA id 5F14F820247;
+	Tue,  9 Dec 2025 09:36:34 +0000 (UTC)
+Message-ID: <3b72f01e-698c-48da-a40e-431d08c7b847@opensource.cirrus.com>
+Date: Tue, 9 Dec 2025 09:36:33 +0000
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -96,177 +100,125 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] fbdev: Guard sysfs interfaces under CONFIG_FB_DEVICE
-To: Helge Deller <deller@gmx.de>, Chintan Patel <chintanlike@gmail.com>,
- linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
- linux-omap@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- andy@kernel.org, gregkh@linuxfoundation.org
-References: <20251209042744.7875-1-chintanlike@gmail.com>
- <19e8a1b0-75e3-4c8d-911a-15fd70f60bea@suse.de>
- <f5d50007-5b48-47cb-8133-72fca274d562@gmx.de>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <f5d50007-5b48-47cb-8133-72fca274d562@gmx.de>
+Subject: Re: Kconfig dangling references (BZ 216748)
+To: Takashi Iwai <tiwai@suse.de>, Randy Dunlap <rdunlap@infradead.org>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, andrew.jones@linux.dev,
+        linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
+        linux-sound@vger.kernel.org,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        linux-mips@vger.kernel.org, asahi@lists.linux.dev,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        Paul Kocialkowski <paulk@sys-base.io>, chrome-platform@lists.linux.dev,
+        Paul Cercueil <paul@crapouillou.net>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-gpio@vger.kernel.org, Srinivas Kandagatla <srini@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Vaibhav Hiremath <hvaibhav.linux@gmail.com>, linux-sh@vger.kernel.org,
+        x86@kernel.org, Max Filippov <jcmvbkbc@gmail.com>
+References: <22b92ddf-6321-41b5-8073-f9c7064d3432@infradead.org>
+ <87fr9luyu7.wl-tiwai@suse.de>
+Content-Language: en-GB
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
+In-Reply-To: <87fr9luyu7.wl-tiwai@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[gmx.de,gmail.com,vger.kernel.org,lists.linux.dev];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_TLS_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,suse.de:email,suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 5830D5BD9C
-X-Spam-Flag: NO
-X-Spam-Score: -4.51
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF00022575:EE_|PH0PR19MB5396:EE_
+X-MS-Office365-Filtering-Correlation-Id: 08c42c0c-2e81-44e5-7bbe-08de370671fc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|61400799027|36860700013|7416014|376014|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RHIrRDJGd3cvK1dZN2c3cHlhSldLOW5aNnZtT0JNQmpoR1FwempvU1I3alpZ?=
+ =?utf-8?B?MFk4aVJDTlMwLzMxN1h3SWtQWmxMNnVJQkY3OWdBVkpWOWRVWEphMmVXd0hv?=
+ =?utf-8?B?SlJUbXBYbFhmajVQajZDa0xOUlhkTmg0VmpHOFhUcDJNVFlWUU1WcEZmMGVG?=
+ =?utf-8?B?MDBhU1RScTVVdC9xQ1oxeG44bWE5SDhRdWtHWmRld3NGTFlsTW5hZkxySVNY?=
+ =?utf-8?B?ZmM3Z3FwU3ZDOFpnczlJQXRONmNLU2FaMXlTRWE1eHBGY0Q3bzZQMXJIaDgx?=
+ =?utf-8?B?bk56QXZBclBXSkNFOGFrRjl0SmY0K2lSTk1hOWI1NlRKeXYyTkRDZGdwZzZm?=
+ =?utf-8?B?bllSTSsrbWdwRDN0bVl0aVNhUUQ5RTVHWnBqM3JBU1ZrNEJjR3BVRERHWDJP?=
+ =?utf-8?B?TmdXWExBM2gvanRkRUtISVk2RUxSM1VKQ1l2NkhxZFdUV21ha1NrVVczTk1U?=
+ =?utf-8?B?aHNkYkFMZlZIcEZuc3dtUmgvQnI5ekVrM2NJN3dOZWllWllaTzZOZHNXaHlz?=
+ =?utf-8?B?WDdGNmhnSXFMbFoxVDU4YTdKNTRXdFVRK05zY1IzcWJ6YmtDRDZKQ0tjbVJh?=
+ =?utf-8?B?V1dkMVliTVA3cWFYMzhicmNGYVhnYnU5NHJOL2RSdlRCem1RRHN4Y2pjZ0hN?=
+ =?utf-8?B?Q3NrSVExYkk1VUZTNW1WdkpxTG1BQWFKQnpqK0ZYZkVWQmM2UDFpVVI5Zkp1?=
+ =?utf-8?B?cHBpNVV0TVNQRjlua0M3V3c3OENwaUdpMGQvS01zMFdXMElvVk9mak1XWVNy?=
+ =?utf-8?B?S2hiMFFqMUJoTWprTEt3S1RsNFBVWS8zTitMbmNJSW9sRWRIMlBPL2NMbnRP?=
+ =?utf-8?B?M05Fc29xNWFuUXlhN002RWR2V0NhS1R5dC84cWRUMkdnbjV2NW1FTHJ1Z0M0?=
+ =?utf-8?B?VXZkc0VHa2pjSnhvVzI5QS85SjkxNWhUM3B6bTVPQXRKT2dpZC9jYldFaW41?=
+ =?utf-8?B?eFJJTWYvUGp6NVJ6NjdNM1cyaXlIUm0zZndGdTI0MlRCSHlJMjdtWStYRTVV?=
+ =?utf-8?B?TndIRXM3Nnl5dUlNS2ZlUk42WnZ3eTlOZGJUbFVETGU2bWJxNnFrNmlnSTBv?=
+ =?utf-8?B?WG1ub0UwM0Q5d2lqNjVKdUlpeTlXY2d6M1N6RTYxMTZNajRYejE3ZFdJekRn?=
+ =?utf-8?B?VTdBUCtpWWI3RFlxY2FKRVZsR3hwTzVKR1lGYkNWZll2WFFuTzY3eGlLSFd1?=
+ =?utf-8?B?NlJkQk1XTmVsem42cGg4TjRhUTlDcWlrOXZjTWpBbVo2bUdtNHgzTlJRcFdS?=
+ =?utf-8?B?VDVvWE9hWGtoZ1JnbEd2bWVvYXFob3NSczNFVk5VZjA1dnN3RkU1aXlnaHhG?=
+ =?utf-8?B?cnRwVGJLaGpuOW9ZZS9NRGdFUFNyM0UwUEJMT3lXSTRVdDdsZCt5RlF3d3Zu?=
+ =?utf-8?B?em1BYmNGL3RKaFc3UmpXUjVYUHl4MitGK3FzVTlKTXhBTjdyanF3RmczY0Va?=
+ =?utf-8?B?SHJqSGp5ZklqUy9SZ09sZ2I2VkVVQkc1QzV1bWZjcGJMZVNkVkhEdThScUM5?=
+ =?utf-8?B?RnFuYUk2Y3NZZDZDb1cxS0tWYjdUK2YwUmpQN1NGOGE5MUtUM1dvck1PNUlj?=
+ =?utf-8?B?Wncwa2lFd09NVWlnQWY4b2xzR3MxRjlzQjVpazJQOWxwQUowODRkK05tRGhj?=
+ =?utf-8?B?eXVVZkdpcjZ0ZTFaSjdBd25DMG1SZVIrbVNLQjQwNVBBMmVxcVRoUUplak9O?=
+ =?utf-8?B?UXd2RXI0TElBSVZJUHZvZHBjOW9waFpGWlhOZ3BjZVgwcmQwajJ1N0xnWVBs?=
+ =?utf-8?B?WUNaSmxMY1BLeS8yekVSZ0JOZDVyOUcvNjBxR2hrVWIveGIrUTc1ai8zd0tv?=
+ =?utf-8?B?KzNoZm9SREFJaEpYSjREaStpM1prSUNoVWxZbEgxNEMydmJJc2FXa1ZZMkx4?=
+ =?utf-8?B?MXFEVkhJQTlJeGhHUWdCZU1zRDE0eTZHTkJFTnQ0dCt0ZXRPSTVwdTBqTEdt?=
+ =?utf-8?B?SUJqTGlYWENpYSs0QnVML0NkOFdtZjRqMVFTUHNsOEI4NXAyZGFsVTNid3Fz?=
+ =?utf-8?B?M3ZHK0pKUjFld3FrTms1TXIzcFVKME53V1lBQk9WaGJzZlJhYkxBaWhzN3VO?=
+ =?utf-8?B?YytIYnRMeGNSYWF2YVZPNXFDcEh3WFlLRGNrQT09?=
+X-Forefront-Antispam-Report:
+	CIP:84.19.233.75;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:edirelay1.ad.cirrus.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(61400799027)(36860700013)(7416014)(376014)(82310400026);DIR:OUT;SFP:1102;
+X-OriginatorOrg: opensource.cirrus.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Dec 2025 09:36:35.2774
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 08c42c0c-2e81-44e5-7bbe-08de370671fc
+X-MS-Exchange-CrossTenant-Id: bec09025-e5bc-40d1-a355-8e955c307de8
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bec09025-e5bc-40d1-a355-8e955c307de8;Ip=[84.19.233.75];Helo=[edirelay1.ad.cirrus.com]
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-BL6PEPF00022575.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR19MB5396
+X-Proofpoint-ORIG-GUID: HmELDZTK9mzkvQe1JymO9Z9NL6DpSihZ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA5MDA2NyBTYWx0ZWRfX2rz8c69/HykU
+ amDi/ybpGW57WMK6dc8arxp314n78gNQL74C8fKc88pW//+dtIFUEH3C9HGcP1rxLceLzz8KRxC
+ uz3g6rG2/b9tj2r4ObAweTO7B/nAS+F/P0kyPiavpUBWeqsrcYM7vXan+fagpB02xzqMeLqcAXZ
+ GpvcWKiNNd9j4kdKZu1ikQJKs6XkojQD/OfF693xcQNDyepRUc0Qru8LLrHxJV9hb/mqfWBJZJW
+ GNmDvNtdFj3g/zpLDt/IQVyJ8mXOiJeLflQZquZiHsRANq5hw1oA+RQ8z3RlkNbs/lpgUQywV5C
+ WPVgsYLvut7rvvl1bG18/ADFTRGdZo/4XolOX6Lwg7lOv3js4+JveFBWhFsK5dUPJunby6TzVxO
+ P9CtUWZ+nV6VnkkbgLjiXdMrSdX+Bw==
+X-Authority-Analysis: v=2.4 cv=DJ6CIiNb c=1 sm=1 tr=0 ts=6937eda7 cx=c_pps
+ a=wpg3e3TFAlO0qOiIlNsFBg==:117 a=h1hSm8JtM9GN1ddwPAif2w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s63m1ICgrNkA:10 a=RWc_ulEos4gA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=eQQaxFmmQVRwuAb-A3wA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: HmELDZTK9mzkvQe1JymO9Z9NL6DpSihZ
+X-Proofpoint-Spam-Reason: safe
 
-Hi
-
-Am 09.12.25 um 09:22 schrieb Helge Deller:
-> On 12/9/25 08:27, Thomas Zimmermann wrote:
->> Hi
+On 08/12/2025 9:06 am, Takashi Iwai wrote:
+> On Mon, 08 Dec 2025 03:04:09 +0100,
+> Randy Dunlap wrote:
 >>
->> Am 09.12.25 um 05:27 schrieb Chintan Patel:
->>> Hi all,
->>>
->>> This small series makes several legacy fbdev drivers buildable with
->>> CONFIG_FB_DEVICE=n. Currently, multiple fbdev drivers rely on 
->>> fb_info->dev
->>> and sysfs attribute registration unconditionally, which leads to build
->>> failures whenever FB_DEVICE is disabled.
->>>
->>> Thomas previously noted that FB_DEVICE should eventually become 
->>> optional
->>> and that drivers should not depend on sysfs or fb_info->dev being 
->>> present
->>> unless the Kconfig explicitly selects it. This series pushes in that
->>> direction by tightening the FB_DEVICE dependency boundary without 
->>> changing
->>> any runtime behaviour when FB_DEVICE=y.
->>>
->>> What this series does *not* change
->>>
->>> - No functional behaviour changes when FB_DEVICE=y.
->>> - No removal of sysfs interfaces.
->>> - No changes to fbops, memory allocation, or display update paths.
->>>
->>> Build & test coverage
->>>
->>> Tested with the following combinations:
->>>
->>> 1. **FB=y, FB_DEVICE=y**
->>>     - Baseline configuration; no regressions expected.
->>>
->>> 2. **FB=y, FB_DEVICE=n**
->>>     - Drivers build successfully.
->>>     - No sysfs attributes are created.
->>>     - fbdev devices operate normally (where applicable).
->>>
->>> 3. **FB=n**
->>>     - Drivers depend on FB, so they properly do not build, unchanged.
->>>
->>> Motivation
->>>
->>> This moves fbdev closer to supporting FB_DEVICE as truly optional, 
->>> helps
->>> reduce Kconfig entanglement, and clears several long-standing TODO 
->>> items
->>> as suggested by Thomas Zimmermann around legacy sysfs usage inside 
->>> fbdev
->>> drivers.
->>>
->>> Feedback is welcome, especially on whether the guard boundaries around
->>> sysfs are placed correctly or whether more logic should be pulled under
->>> CONFIG_FB_DEVICE.
->>
->> I left a comment on the first patch. If things still build nicely, then
->>
->> Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
->>
->> for the series.
->
-> This whole series adds a whole lot of ifdef'ery, which I think is the
-> worst approach. It makes the code less readable and leads to two code
-> paths, which may trigger different build errors depending on the config.
->
-> I'm sure it must be possible to do the same without adding more #ifdefs,
-> e.g. by introducing a function like   dev_of_fbinfo(fbinfo)  which
-> simply returns NULL for the FB_DEVICE=n case.  Then, that value can be 
-> tested
-> like
->     if (dev_of_fbinfo(fbinfo))
->         {...do-the-things...}
-> For the FB_DEVICE=n case this will then be optimized out by the compiler,
-> while you still have full compiler syntax checking.
->
-> Thoughts?
+>> SND_SOC_AC97_BUS_NEW ---
+>> sound/soc/pxa/Kconfig:21:	select SND_SOC_AC97_BUS_NEW
+> 
+> This must be a bogus entry added in commit 1c8bc7b3de5e ("ASoC: pxa:
+> switch to new ac97 bus support"), which can be dropped.
+> 
+>> SND_SOC_CS35L56_CAL_SYSFS_COMMON ---
+>> sound/soc/codecs/Kconfig:920:	select SND_SOC_CS35L56_CAL_SYSFS_COMMON
+> 
+> The buggy commit was 32172cf3cb54 ("ASoC: cs35l56: Allow restoring
+> factory calibration through ALSA control").
+> This looks like a fallout at changing from sysfs to debugfs, so this
+> should be SND_SOC_CS35L56_CAL_DEBUGFS_COMMON instead.
+> 
+> 
 
-Your choice. I don't see this as an important fix. The FB_DEVICE=n case 
-is mostly useful for DRM-based systems that do not want to expose fbdev 
-interfaces to user space. Those are the vast majority today. The very 
-few special builds with fbdev drivers would likely use FB_DEVICE=y anyway.
-
-Best regards
-Thomas
-
->
-> Helge
->
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
-
-
+Oh! I checked multiple times that I'd changed all the sysfs to debugfs
+and this STILL got through. I'll send a fix.
 
