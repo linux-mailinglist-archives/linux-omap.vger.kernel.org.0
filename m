@@ -1,236 +1,140 @@
-Return-Path: <linux-omap+bounces-5147-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5148-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F73CCB1D20
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Dec 2025 04:49:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FE73CB1E6F
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Dec 2025 05:24:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8257B3064BE8
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Dec 2025 03:49:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E6D430698F7
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Dec 2025 04:24:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E95E30F533;
-	Wed, 10 Dec 2025 03:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBEF430EF86;
+	Wed, 10 Dec 2025 04:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GANpA89x"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gfpgHscR"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993D826560D;
-	Wed, 10 Dec 2025 03:49:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED412FB0BA
+	for <linux-omap@vger.kernel.org>; Wed, 10 Dec 2025 04:24:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765338565; cv=none; b=jD8MDyjlwakDzfifYrhUhq3reaaeVNh30K20zjDkctDZcjq+cWFd//s57AabqMNlxpoObdo4VKZXptgVfsikJa1kM0Bo+zYbnW6Trtu7RY9eg+W2+7RQrUCBUXxDFSfahCuxOW6GLN9olxPba4IiUP6lOF+JEzO+xwvw5BOYDFI=
+	t=1765340691; cv=none; b=t8XPWNJ0fayQemoTnpdXPPSDxHWqCQh4K7t1HjXp8zztmZNOKm+PuUB8GVQofAxtH723U9wQXNNFRPyXrB9RP7IzLN9lolC0hJUs0L8AoOoG9o1iSZK/NyIjGnG6QV3POkxyvoYyeykMGDWpttPR1EZFWoqqrI/vH54c+uzepL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765338565; c=relaxed/simple;
-	bh=T/FUqIYymG8r2tt74VYnJ73FamrE5okQj2rlbfsBCnw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s4OB5s/V/UNWEAtvDBT2Vg0Zk6LLoJDplUZeftI8arMQfFRUkWg8qDQHWNcAnZlTNNaJMHVBWPdzcLVbuj1MwZoSE6FPnRjoBCjJX2SJCOMWQMR74z+25II7DQnveH9LMZwHj2iBCo+rpe3+hxwDCMpj7mZYjFn6LTRSpqx8hfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GANpA89x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C063C4CEF1;
-	Wed, 10 Dec 2025 03:49:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765338565;
-	bh=T/FUqIYymG8r2tt74VYnJ73FamrE5okQj2rlbfsBCnw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GANpA89xDZ4e7tLWNe62xQrkwhzyP9WeKdqsylSA7sFPfm5BkXXBckCoEbjS0gt/C
-	 ObiIFoDkK/u9/eEktAY639s1G+3CnOSalQiyL7oiM2VBLs05byymPNPJKJqeyp+Eh3
-	 NV/TShTeRZ4KD5irgrqlAitmUy+WDKAKMtlxijYLZgjYwGX2NcCBfqTFEnIWgkdg95
-	 jnB4f9GrHLQr98oWa/j20lOp7drWs4szACLFkh9xcb5q+366A5zFZe1Pk2N4eAu7hb
-	 dYUIZYu5mx0m2WTnqKW5W7BweTtRe0JQs3KO34bbmyMIZ1pCrYJQq+OKCk1QlEJOQ0
-	 zQG17fGZSHyLg==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Matthias Schiffer <matthias.schiffer@tq-group.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Sasha Levin <sashal@kernel.org>,
-	aaro.koskinen@iki.fi,
-	andreas@kemnade.info,
-	rogerq@kernel.org,
-	tony@atomide.com,
-	linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] ti-sysc: allow OMAP2 and OMAP4 timers to be reserved on AM33xx
-Date: Tue,  9 Dec 2025 22:48:45 -0500
-Message-ID: <20251210034915.2268617-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251210034915.2268617-1-sashal@kernel.org>
-References: <20251210034915.2268617-1-sashal@kernel.org>
+	s=arc-20240116; t=1765340691; c=relaxed/simple;
+	bh=cbubf1NYJfCvFoWNQLYMFA2LJeNlUgm2HmggK2vgpLE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PhtV37BxJND0cPeEE8mFAK79CNH9v6McismptikruqH9BLuoXxYthdsTP5zd31Gnc61ftXmZT9FE5S5nBJdY5cNZkAjhBrS6nG2ewz80vWUiTQQp93mQXTBR64QTMyzW5nUCVdwP6IsYKEiDm4g2tjWlwRlBKLgbncKEscevl/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gfpgHscR; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2981f9ce15cso84292315ad.1
+        for <linux-omap@vger.kernel.org>; Tue, 09 Dec 2025 20:24:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765340689; x=1765945489; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZHURbWUQgIv6rDE4plYGzDdoLRCquvnAG2DekAVeb8k=;
+        b=gfpgHscRzbg/3mIu1hfQjld+HqZgJG2nv4UTogQhqtGdoFjJsE6UxluafU0SWg+yah
+         G/CnSdY16oCresSu+iSi88zBpMmIx7+GXsstPrJ59f2XCgsBYG4zkYUPXu0vBslOhhE/
+         0+vAqvszq5PtC4JJjU/RfJ6jsQ+6E+KKAKWnpcPL7+iSM/zQWgbhPxS3SNhOl7xkjPLB
+         6909K8Tojvfs1Gp3a0F2zflXUKPx4OPECCQj59LDjr7k2e65rrKgMdw7uuAjDRQZAFHZ
+         aoklaDr6tTfk3o+MNy1ZISIQorvaNSY8FdtXG5rO1b/wfDJL7LKO+Z1CnH2M9VqFBfjC
+         l3Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765340689; x=1765945489;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZHURbWUQgIv6rDE4plYGzDdoLRCquvnAG2DekAVeb8k=;
+        b=DNtRLqJU6jY2QFBJB+CFsqiO2HaEaLMUect+0HWI4V0RwrbiGmRV+w3DgRk3BiRcTZ
+         KJMJU4abV9JEgi7TYtxrf64+YP2P5v5VCK8U4n/gffjL8iwDPM1anNC+VXvK71MpOc0R
+         tak55F4ue6KkHISeSQW21pNmLvX4q2s9zW4Vc9MNEXaHUtiMIwv4kaeVsSTC6BwJTTpe
+         +z9S0c4VwyTBMmOw4CXtNC6T8OXag31s2oAqXf+Tm27nXy7/wj1fi7VsRS3HQ+TRIj7x
+         9i5nJCtmDGAw1nWu6EUYR1FYmgQGsCOECNHgh9BDiicvThDqXu/afrhL/nAFTYzgeywz
+         KmSg==
+X-Forwarded-Encrypted: i=1; AJvYcCWNHLxeiVcC32PuIGbznzEMjfkgGYr8OaYFmfMo9SaXBfn+dsa2iJqPr9BNxmxT/+RfMmb0QPLdwfRS@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3Y9SqSCzqp5fLuvtCSuGnF/jY2q+MaK/dBpTG+YJH+EtDyPQ8
+	d1TkpIxMQbnjOpCtrkkYQr3Bw8JYVGiriI6ppk+QZj/Ts44Az5em5zzd
+X-Gm-Gg: AY/fxX5cWEjG750AGH5sJog/p88aBtlMKLoka974Iak4iMfs6VyExEw1Ecu327FhJy1
+	t75y50WaFwRJrdRq22EynRH//a224WSsHzUovplOwWIGYCgUNUk7kwSgauSJ7qoAlZXmykEXSzC
+	zAskbtdLa8JeDhAgsryncySdJLSjeqdj0BIvq5SLHnINpkmwar1D3wKCvWHKajhehJbNSMMVFgu
+	ieC1hG9u+guu4N5qFriodtcW7aNngI3axxtiWbnQKYGUfbQnOQCgWyWz7MwnznLEf21kYCvDUIC
+	KC1yNcvKDWTNsoko/vm84RBWzCklyqtzoj9IuAqy/i1EV+/h5Pvg3JEJ6onl6HyZd6gwftKZP02
+	fEscMjXbyPoAXMgdcy1b52/0+GlKjloRR/HdjljrhlyHiQb91ElwY4r36sxD0pys8R+cRMi7rT0
+	2pxYE8dE8e41PCyp1kGl5iFiK4GwHqJTPXq1CKHEyE0hCYytsHVDcIXJRakmDS
+X-Google-Smtp-Source: AGHT+IFLjbHqKm1TeTHwPWHgM/dVq6lAyHbS/510gkTwuZ9bXQQa6783zsMnS6eOgTYVIMZq9D1MPA==
+X-Received: by 2002:a17:903:198d:b0:298:1422:510d with SMTP id d9443c01a7336-29ec2d8b9f2mr11445495ad.48.1765340689155;
+        Tue, 09 Dec 2025 20:24:49 -0800 (PST)
+Received: from ?IPV6:2601:1c0:5780:9200:b90d:2938:bd7a:289f? ([2601:1c0:5780:9200:b90d:2938:bd7a:289f])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29dae4cf97fsm167022355ad.25.2025.12.09.20.24.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Dec 2025 20:24:48 -0800 (PST)
+Message-ID: <89b08d9a-9f96-40f0-9ae6-e54b16b65879@gmail.com>
+Date: Tue, 9 Dec 2025 20:24:47 -0800
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] fbtft: Make sysfs and dev_*() logging conditional on
+ FB_DEVICE
+To: Thomas Zimmermann <tzimmermann@suse.de>, linux-fbdev@vger.kernel.org,
+ linux-staging@lists.linux.dev, linux-omap@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ andy@kernel.org, deller@gmx.de, gregkh@linuxfoundation.org
+References: <20251209042744.7875-1-chintanlike@gmail.com>
+ <20251209042744.7875-2-chintanlike@gmail.com>
+ <329423e8-d778-4f30-904a-825b1be72ce2@suse.de>
+Content-Language: en-US
+From: Chintan Patel <chintanlike@gmail.com>
+In-Reply-To: <329423e8-d778-4f30-904a-825b1be72ce2@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Matthias Schiffer <matthias.schiffer@tq-group.com>
+Hi Thomas,
 
-[ Upstream commit 3f61783920504b2cf99330b372d82914bb004d8e ]
+On 12/8/25 23:25, Thomas Zimmermann wrote:
+> Hi
+> 
+> Am 09.12.25 um 05:27 schrieb Chintan Patel:
+>> The fbtft core and sysfs implementation unconditionally dereference
+>> fb_info->dev and register sysfs attributes. When FB_DEVICE=n, these
+>> fields are unavailable, leading to build failures.
+>>
+>> This patch wraps all sysfs attribute creation/removal and dev_dbg/ 
+>> dev_info
+>> logging in #ifdef CONFIG_FB_DEVICE, with pr_*() fallbacks for the
+>> non-FB_DEVICE case. This makes fbtft fully buildable when FB_DEVICE is
+>> disabled.
+>>
+>> Signed-off-by: Chintan Patel <chintanlike@gmail.com>
+>> ---
+>>   drivers/staging/fbtft/fbtft-core.c  | 20 ++++++++++++++++++--
+>>   drivers/staging/fbtft/fbtft-sysfs.c |  8 ++++++++
+>>   2 files changed, 26 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/ 
+>> fbtft/fbtft-core.c
+>> index 9e7b84071174..dc967bdeabe8 100644
+>> --- a/drivers/staging/fbtft/fbtft-core.c
+>> +++ b/drivers/staging/fbtft/fbtft-core.c
+>> @@ -365,9 +365,14 @@ static int fbtft_fb_setcolreg(unsigned int regno, 
+>> unsigned int red,
+>>       unsigned int val;
+>>       int ret = 1;
+>> +#ifdef CONFIG_FB_DEVICE
+>>       dev_dbg(info->dev,
+> 
+> Rather use fb_dbg() [1] and similar helpers for logging. They only need 
+> the info pointer and do the correct output by themselves.
+> 
+> [1] https://elixir.bootlin.com/linux/v6.18/source/include/linux/fb.h#L895
 
-am33xx.dtsi has the same clock setup as am35xx.dtsi, setting
-ti,no-reset-on-init and ti,no-idle on timer1_target and timer2_target,
-so AM33 needs the same workaround as AM35 to avoid ti-sysc probe
-failing on certain target modules.
-
-Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Link: https://lore.kernel.org/r/20250825131114.2206804-1-alexander.stein@ew.tq-group.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-# Commit Analysis: ti-sysc: allow OMAP2 and OMAP4 timers to be reserved
-on AM33xx
-
-## 1. Commit Message Analysis
-
-**Subject/Body**: The commit addresses ti-sysc probe failures on AM33xx
-platforms (commonly used in BeagleBone and industrial embedded systems).
-The commit explains that AM33xx has the same clock setup as AM35xx (with
-`ti,no-reset-on-init` and `ti,no-idle` on timer targets), so it needs
-the same workaround.
-
-**Notable absence**: No `Cc: stable@vger.kernel.org` or `Fixes:` tag.
-The maintainers didn't explicitly mark this for stable backporting.
-
-## 2. Code Change Analysis
-
-The changes are minimal and well-contained:
-
-1. **New enum value**: Adds `SOC_AM33` to `enum sysc_soc` at
-   `drivers/bus/ti-sysc.c:51`
-2. **SoC detection**: Adds `SOC_FLAG("AM33*", SOC_AM33)` to
-   `sysc_soc_match[]`
-3. **Logic extension in `sysc_check_active_timer()`**:
-   - Converts if/else to switch statement
-   - Adds `SOC_AM33` case alongside existing `SOC_3430` and `SOC_AM35`
-     to return `-ENXIO`
-
-**Technical mechanism**: When a timer has both
-`SYSC_QUIRK_NO_RESET_ON_INIT` and `SYSC_QUIRK_NO_IDLE` quirks set
-(indicating it's likely in use by the system timer driver), and the SoC
-is AM33/AM35/3430, the function returns `-ENXIO` allowing the timer to
-be "reserved" and preventing probe failure.
-
-## 3. Classification
-
-This falls under the **QUIRKS and WORKAROUNDS** exception category:
-- Extends an existing hardware-specific workaround to similar hardware
-- Fixes probe failures on real devices
-- Follows an established pattern in the driver for handling SoC-specific
-  timer behavior
-
-## 4. Scope and Risk Assessment
-
-**Size**: Very small (~20 lines, 1 file)
-**Subsystem**: ti-sysc bus driver (OMAP/TI platform-specific)
-**Complexity**: Low - straightforward extension of existing logic
-**Risk**: Very low - only affects AM33xx platforms, doesn't change
-behavior for any other SoC
-
-The switch statement change is a cosmetic improvement that makes the
-code cleaner while adding the new case.
-
-## 5. User Impact
-
-**Who is affected**: Users of AM33xx-based systems (BeagleBone Black,
-industrial AM335x boards)
-**Severity**: Probe failures prevent proper hardware initialization,
-which can be significant for embedded systems
-**Prevalence**: AM33xx is a widely-deployed platform
-
-## 6. Stability Indicators
-
-- Multiple signed-off-by tags (Matthias Schiffer, Alexander Stein, Kevin
-  Hilman)
-- Proper review via lore.kernel.org
-- Follows established patterns in the codebase (SOC_AM35 workaround
-  already existed)
-
-## 7. Dependency Check
-
-The commit is self-contained. The required infrastructure (SOC detection
-mechanism, timer quirk handling) already exists in the driver. The only
-addition is a new enum value and extending the switch case.
-
-## Summary Assessment
-
-**Pros**:
-- Fixes real probe failures on commonly-used embedded platforms
-- Very small, contained change with low regression risk
-- Extends existing well-tested workaround to similar hardware
-- Falls under the "quirks/workarounds" exception for stable
-
-**Cons**:
-- No explicit `Cc: stable` tag from maintainers
-- No `Fixes:` tag to identify when the bug was introduced
-- Adds new code (enum value) rather than purely fixing existing code
-
-**Risk vs Benefit**: The risk is very low (only affects AM33xx
-platforms, extends existing logic). The benefit is meaningful for AM33xx
-users who would otherwise hit probe failures. This type of platform-
-specific quirk extension is common and safe.
-
-## Verdict
-
-This is a small, well-contained fix that extends an existing hardware
-workaround to similar hardware (AM33xx). While it lacks explicit stable
-tags, it meets the criteria for the "quirks and workarounds" exception.
-The fix prevents probe failures on a widely-used embedded platform with
-minimal regression risk. The pattern of extending SoC-specific
-workarounds to similar SoCs is well-established and safe.
-
-**YES**
-
- drivers/bus/ti-sysc.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 5566ad11399e7..610354ce7f8f0 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -48,6 +48,7 @@ enum sysc_soc {
- 	SOC_UNKNOWN,
- 	SOC_2420,
- 	SOC_2430,
-+	SOC_AM33,
- 	SOC_3430,
- 	SOC_AM35,
- 	SOC_3630,
-@@ -2912,6 +2913,7 @@ static void ti_sysc_idle(struct work_struct *work)
- static const struct soc_device_attribute sysc_soc_match[] = {
- 	SOC_FLAG("OMAP242*", SOC_2420),
- 	SOC_FLAG("OMAP243*", SOC_2430),
-+	SOC_FLAG("AM33*", SOC_AM33),
- 	SOC_FLAG("AM35*", SOC_AM35),
- 	SOC_FLAG("OMAP3[45]*", SOC_3430),
- 	SOC_FLAG("OMAP3[67]*", SOC_3630),
-@@ -3117,10 +3119,15 @@ static int sysc_check_active_timer(struct sysc *ddata)
- 	 * can be dropped if we stop supporting old beagleboard revisions
- 	 * A to B4 at some point.
- 	 */
--	if (sysc_soc->soc == SOC_3430 || sysc_soc->soc == SOC_AM35)
-+	switch (sysc_soc->soc) {
-+	case SOC_AM33:
-+	case SOC_3430:
-+	case SOC_AM35:
- 		error = -ENXIO;
--	else
-+		break;
-+	default:
- 		error = -EBUSY;
-+	}
- 
- 	if ((ddata->cfg.quirks & SYSC_QUIRK_NO_RESET_ON_INIT) &&
- 	    (ddata->cfg.quirks & SYSC_QUIRK_NO_IDLE))
--- 
-2.51.0
-
+Thank you for this pointer - I actually didnt now this existed. Will do v2.
 
