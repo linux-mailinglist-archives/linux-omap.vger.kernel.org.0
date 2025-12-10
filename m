@@ -1,140 +1,129 @@
-Return-Path: <linux-omap+bounces-5160-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5161-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DE59CB3B77
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Dec 2025 19:08:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8AAFCB3B89
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Dec 2025 19:11:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DEB4530146E8
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Dec 2025 18:08:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 92C23300E453
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Dec 2025 18:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A553246EB;
-	Wed, 10 Dec 2025 18:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6FC832825E;
+	Wed, 10 Dec 2025 18:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b="ROoWxZO/"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="O6jczRAH"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from meesny.iki.fi (meesny.iki.fi [195.140.195.201])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0A6248F5C;
-	Wed, 10 Dec 2025 18:08:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=195.140.195.201
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765390106; cv=pass; b=JB4sd6qO74G9UjloLcJBPAx/IHT/a/F6GsUKUt6+dvP+uKMctZ/7yQv43WL3fUUIvKRRJG5qP57pxI0ecBF5flCy3xGgMAo2vU2acAYOw+X9GReWmoQ2PLnsQQLzYvBVY+5aqSYaV3rO4ieLU5ggtar/EaV5GG3BNbOsyK63Lzg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765390106; c=relaxed/simple;
-	bh=bgDmLhaY1NO4JB72njZjKH2ScX+D/cpVpwiVK7S4fHc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U7AIIzqT/Hy6Qodz+094d1MCGfCX3YttWzbZc69EPJwYPMJ2VKmhLkzxh4vZGRzZ7exCVch7X94lRrmDY0Xd+cKYvNIAPFM3lZiEmx8uloodY+golIRsxjgvdMGqfGDlna/EhlzaqWDqtP+y3IhwtGLkGLAtzsx12uszDIMF+Q0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b=ROoWxZO/; arc=pass smtp.client-ip=195.140.195.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
-Received: from darkstar.musicnaut.iki.fi (85-76-143-161-nat.elisa-mobile.fi [85.76.143.161])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: aaro.koskinen)
-	by meesny.iki.fi (Postfix) with ESMTPSA id 4dRNxc2XnZzyNV;
-	Wed, 10 Dec 2025 20:08:17 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
-	t=1765390102;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sJAA5IVaGvUosOi6GQ8uQHuXREwy/pXMFX1PmrToNyQ=;
-	b=ROoWxZO/NuTDVhS11l392n4c6xihl0X5w9g7y6RRYEPvGsWGkzT/wKNw/z+DujQOh/ojx2
-	QGSdtpFH5mrqK9JF0Zp9V8hiV94v/CUiX7xJ6baSM24KmGubGYBIYfxhQdo+wNBFH5PlVl
-	QUrOIqevTEZQ+l6FUfnFzg3jFF649lE=
-ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=meesny; cv=none; t=1765390102;
-	b=b8oUrx9O2I3EiZ608LHR75OUNaMTJ4xi9+1zS78DwGp6dUO0o/+dUHYxHs7rm4gzeGxBJ7
-	kxXOhSX7xuvKizmi8PRWs91SWPkhJz6DDVGFxd7TQOyDzTG0cM+8hTJqZ4/DeAxqGlJAh8
-	5HQK5NO7sXih/P8YcaCI/ah8TDiQNAI=
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=meesny; t=1765390102;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sJAA5IVaGvUosOi6GQ8uQHuXREwy/pXMFX1PmrToNyQ=;
-	b=arLvp0KKdBcx6PGl57rlFjColUuxLGyXTPONvGVA4NU3h3QQQoAdnUvNbgb4UPd02XFTX5
-	DHRyI49BUtv94BHTzzZUJflTQvuR4JW+Z5n6j4PGzA3TKBIWbt0eSibGo9oHKjU7+/BifZ
-	RyOc+PzTUVdIdR5NBIubyauav/lInJo=
-Date: Wed, 10 Dec 2025 20:08:16 +0200
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
-To: Fernando Coda <fcoda@frba.utn.edu.ar>
-Cc: jmkrzyszt@gmail.com, tony@atomide.com, vigneshr@ti.com,
-	andreas@kemnade.info, khilman@baylibre.com, rogerq@kernel.org,
-	linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org
-Subject: Re: [PATCH] i2c: omap: fix incorrect SCLH timing calculation
-Message-ID: <aTm3EGNR8smNE4Xl@darkstar.musicnaut.iki.fi>
-References: <20251210052254.279899-1-fcoda@frba.utn.edu.ar>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0FD3271ED;
+	Wed, 10 Dec 2025 18:10:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765390267; cv=none; b=TE0oacPru+ldhoS1aW0tHu7DxZ7IMLXyA88ZnEFeAeNdR0VfinJtgxZ7QMi9hgbJf7YMIMH+mkXIMJUab92+acSiNnb2UwzKy3OA+bZxd91RirzDI+JpN/VVKL6Nrzi3rYBik+xNA9n4XV3P+eq2XkLqwRr1bbyHglyeUL41EKY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765390267; c=relaxed/simple;
+	bh=11D+FbyBRjBd7dRkaGNZbGmzx6wWeykWSe7o2lp4Unw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=S82qD8jgAnmGt+bo18UJFWCrHayWHUOO/MNIcBEAs8EsYRzbev9iEwsF+uqcJorDHt2+VhRG1BI0ck1f/Io5zg9A5TXqc31imZRShN4QbJWFVemAJUn3IahJ7cu4G4/zsExJO/2LNRc5oqxod/3Yw0b8UXbSuYppV4KbFbzOYcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=O6jczRAH; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 46C371A20B2;
+	Wed, 10 Dec 2025 18:10:56 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D59F760714;
+	Wed, 10 Dec 2025 18:10:55 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 63FF8103C8CB3;
+	Wed, 10 Dec 2025 19:10:46 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1765390254; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=zHScQ9epIs7tSkBpcNfLT2ySqJpIcU3hl0yiRWEMSxU=;
+	b=O6jczRAHlyE369TuBgKbSoI5sr+D8r2p/p/jJJNzLR9kXxPqm7i8xrI7fQB90odCyPIXe1
+	4YZEYdjGPIrzpd27WpJ88/6qed4b09CpY+O8jxnssomse8LoTt8CSvaA6wr3dlSpRtijCJ
+	vAHmY6R0ZD1eQUyUZarC66Ne+Ux/2RcQd5t77tAyFL1OfRlXrUkmm1ZMn+BPB5r7RdTl7h
+	Qk+hr7+AYIIFJwhZj0Tgwd+BKfz6bdCRIMotppabJdlVf4Bs8C4uOdOKVnpS/5nLW/u5hk
+	/fANJbwQ2wd/+NdKjXBdlPyCrER7pQDgNesMJqkCFPh9spNiUJ1olbTsiUR65A==
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251210052254.279899-1-fcoda@frba.utn.edu.ar>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 10 Dec 2025 19:10:45 +0100
+Message-Id: <DEUQM2HNEOQU.3K4ZPL44GVZAJ@bootlin.com>
+Subject: Re: [PATCH 03/21] drm/tilcdc: Remove simulate_vesa_sync flag
+Cc: "Markus Schneider-Pargmann" <msp@baylibre.com>, "Louis Chauvet"
+ <louis.chauvet@bootlin.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, "Miguel Gazquez"
+ <miguel.gazquez@bootlin.com>, <dri-devel@lists.freedesktop.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-omap@vger.kernel.org>
+To: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>, "Jyri Sarha"
+ <jyri.sarha@iki.fi>, "Tomi Valkeinen" <tomi.valkeinen@ideasonboard.com>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Rob
+ Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>, "Russell King"
+ <linux@armlinux.org.uk>, "Bartosz Golaszewski" <brgl@bgdev.pl>, "Tony
+ Lindgren" <tony@atomide.com>, "Andrzej Hajda" <andrzej.hajda@intel.com>,
+ "Neil Armstrong" <neil.armstrong@linaro.org>, "Robert Foss"
+ <rfoss@kernel.org>, "Laurent Pinchart" <Laurent.pinchart@ideasonboard.com>,
+ "Jonas Karlman" <jonas@kwiboo.se>, "Jernej Skrabec"
+ <jernej.skrabec@gmail.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+X-Mailer: aerc 0.20.1
+References: <20251126-feature_tilcdc-v1-0-49b9ef2e3aa0@bootlin.com>
+ <20251126-feature_tilcdc-v1-3-49b9ef2e3aa0@bootlin.com>
+In-Reply-To: <20251126-feature_tilcdc-v1-3-49b9ef2e3aa0@bootlin.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
+Hi K=C3=B6ry,
 
-On Wed, Dec 10, 2025 at 02:22:54AM -0300, Fernando Coda wrote:
-> According to the AM335x Technical Reference Manual, which uses the
-> i2c-omap driver, in the section 21.4.1.24 (clock timing parameters),
-> the SCL high and low periods are defined as:
-> 
->     tLOW  = (SCLL + 7) * ICLK period
->     tHIGH = (SCLH + 5) * ICLK period
-> 
-> Every other reference to SCLL and SCLH in the omap_i2c_init() function
-> follows the same pattern:
-> 
->     SCLL = value - 7
->     SCLH = value - 5
-> 
-> However, in this line the value of SCLH is computed subtracting 7 instead
-> of 5, which will produce an incorrect SCL high period.
+On Wed Nov 26, 2025 at 6:35 PM CET, Kory Maincent (TI.com) wrote:
+> The tilcdc hardware does not generate VESA-compliant sync signals. It
+> aligns the vertical sync (VS) on the second edge of the horizontal sync
+> (HS) instead of the first edge. To compensate for this hardware
+> behavior, the driver applies a timing adjustment in mode_fixup().
 >
-> This appears to be a copy and paste error.
-> 
-> Fix by using −5, consistent with both the TRM and the surrounding SCLH formula
-
-What's the impact, and how the change was tested?
-
-I think the code line you are modifying affects only OMAP1
-(OMAP_I2C_FLAG_SIMPLE_CLOCK branch), so AM335x TRM reference has little
-value.
-
-A.
-
-> 
-> Signed-off-by: Fernando Coda <fcoda@frba.utn.edu.ar>
+> Previously, this adjustment was conditional based on the simulate_vesa_sy=
+nc
+> flag, which was only set when using external encoders. This appears
+> problematic because:
+>
+> 1. The timing adjustment seems needed for the hardware behavior regardles=
+s
+>    of whether an external encoder is used
+> 2. The external encoder infrastructure is driver-specific and being
+>    removed due to design issues
+> 3. Boards using tilcdc without bridges (e.g., am335x-evm, am335x-evmsk)
+>    may not be getting the necessary timing adjustments
+>
+> Remove the simulate_vesa_sync flag and apply the VESA sync timing
+> adjustment unconditionally, ensuring consistent behavior across all
+> configurations. While it's unclear if the previous conditional behavior
+> was causing actual issues, the unconditional adjustment better reflects
+> the hardware's characteristics.
+>
+> Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
 > ---
->  drivers/i2c/busses/i2c-omap.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
-> index d9f590f0c384..d0a33f5f1bb3 100644
-> --- a/drivers/i2c/busses/i2c-omap.c
-> +++ b/drivers/i2c/busses/i2c-omap.c
-> @@ -459,7 +459,7 @@ static int omap_i2c_init(struct omap_i2c_dev *omap)
->  		if (psc > 2)
->  			psc = 2;
->  		scll = fclk_rate / (omap->speed * 2) - 7 + psc;
-> -		sclh = fclk_rate / (omap->speed * 2) - 7 + psc;
-> +		sclh = fclk_rate / (omap->speed * 2) - 5 + psc;
->  	}
->  
->  	omap->iestate = (OMAP_I2C_IE_XRDY | OMAP_I2C_IE_RRDY |
-> -- 
-> 2.52.0
-> 
-> 
+>
+> Only few board currently use tilcdc not associated to a bridge like the
+> am335x_evm or the am335x-evmsk.
+
+Have you tested this change on any affected board?
+
+The change looks good to me but without some testing it would be risky.
+
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
