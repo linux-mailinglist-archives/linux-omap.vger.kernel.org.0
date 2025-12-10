@@ -1,153 +1,162 @@
-Return-Path: <linux-omap+bounces-5164-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5165-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 479B2CB3FF2
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Dec 2025 21:50:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8A7ACB4219
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Dec 2025 23:10:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3FFAC300F1B0
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Dec 2025 20:50:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C40F33059688
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Dec 2025 22:10:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85FE9322B99;
-	Wed, 10 Dec 2025 20:50:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=frba.utn.edu.ar header.i=@frba.utn.edu.ar header.b="A5lusV7z"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA3832C30D;
+	Wed, 10 Dec 2025 22:10:27 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from leonov.paulk.fr (leonov.paulk.fr [185.233.101.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3777230171F
-	for <linux-omap@vger.kernel.org>; Wed, 10 Dec 2025 20:50:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE5326FDBD;
+	Wed, 10 Dec 2025 22:10:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.101.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765399850; cv=none; b=WOiOD5sCZ7PejSriYE6H5ILrCBhvmZfmhg58T6x3l2uPvxdnyY6LuBEBUFhLbO//Xys352TXggChVVrHz4Ypr9sIC4kMccyOK28NrOfwX1+YWyaP/F/Rs2OQRCoLvBKy7TWOILve8/vHmY1qw7prfLQw7YkEHEx3OkeZ9z8RbTw=
+	t=1765404627; cv=none; b=FFRi5WUvb3WwRR66Cl+UsJ3LXe54+GYEueV6tt2epOVsevNGHapZcyRvP5azSXGeJbPmd+88ZCyV+Chex0/SjoM98fadrXp5Sgv5+kQWyYGsHiJ56r91KCswMTHgZsSGASlaCJweac989wJPRw1D8sJrJJVt7PMuRIFFFMLTe+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765399850; c=relaxed/simple;
-	bh=Ni/DlTRLrWNBrRfruswlghq4vvB8vlWS1U6dlJqQLC8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 Cc:Content-Type; b=Sb1/7RR3OLGmB3YCz76Jj6hBOhKHMqMwNhU6tf2ns9h7shQxLMVGVS/RvjLVzQBodi2edOfMVhZz+8jb82xWxTSVI50qikyoIvFa7iI9XMfdrEacT9qWvrB8ipgXd0vj7jHBEHKwkyDgwGPypLzcK1A1kalxSNKxvSV5rAO13hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=frba.utn.edu.ar; spf=pass smtp.mailfrom=frba.utn.edu.ar; dkim=pass (2048-bit key) header.d=frba.utn.edu.ar header.i=@frba.utn.edu.ar header.b=A5lusV7z; arc=none smtp.client-ip=209.85.128.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=frba.utn.edu.ar
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=frba.utn.edu.ar
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-78c8d74bf4cso2618977b3.1
-        for <linux-omap@vger.kernel.org>; Wed, 10 Dec 2025 12:50:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=frba.utn.edu.ar; s=google; t=1765399846; x=1766004646; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dHUWRafJ365AEdJneJMcUNVrKE6WQP71DnOIKXCfU0Q=;
-        b=A5lusV7zHjhqUFEE7GvUrKcbSujX/EXFfWv0R2KGFh6e/kOwB3g9ZDMS+vDb8I+AQM
-         H6Rg57TqX3fUxZi4PrcekEf6GHYi2BcHqjC+Brnz+q3uPpieRIEXorDtwn1DsqW6rVyK
-         QX77wIw9EGl8iK3LxIYmaR9MZTY1NB/KIhxw3PnHOQ83TzpbUbNXbmolNyLyoYpBy55/
-         bNcl429389c6RRSGXCBDfCpUeN41dhFcryhDXnO2f608Ctmclyr7VeF1mLzghBm8g2jk
-         uII96qnAs0Zf6WfvUlskLv9oTZH488aR1+1jAWdwDlUdRAmz24ezBaHjoTVzJkM7m4+2
-         xs2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765399846; x=1766004646;
-        h=content-transfer-encoding:cc:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dHUWRafJ365AEdJneJMcUNVrKE6WQP71DnOIKXCfU0Q=;
-        b=bEI8+S3w0+SZ9iM9WtXMvLiNg+GKfgqNTDYWCNhZy045uVekHUirOGXHLa8A+nyxOm
-         ch+Ap+NZGh4E8rRdjNyYiK0tD9eYzsv7Wl7/wADJ59mvjxiH16Y8km0qdiYS9M33vz1T
-         Pp3mtU2h+pjgl3Dd5n4TVDbAPcUKCwM3zwf+zw76MvooY+gNSbjMaFF6331VsqoasCcV
-         I/tA/3NpdPISCXCV6okntza/yO3xrHNu/iTdjx26OltLEmZ0WBXI0E7wTFrMyb83TRj5
-         Buh7qqz1YLkE6d1GK73DLoozWIzIxfIkoHWB6eqDu/oG1UE0TObE9gPBAU7Q5cm6OMvC
-         2SLg==
-X-Gm-Message-State: AOJu0Yyn4fPZT87OOYZqB5lISGvKJfJw51MGR6MrHAAuMB7FX+hCPQF3
-	MIxkygspre2aIDC8ZvlQv6fVqk17RgWjFUyefsJ8ppXToOBcYm8XXNh4qFiVpzu71lBXcBNI0Nq
-	eMHdf1yEXx72Qdmaub91DF5DIFrytVqm6saP51sT0vz44h2hPBZ4KkG2o9r7r
-X-Gm-Gg: AY/fxX55cM87E9YeoIpe8BlO+SCxUSAmzWVFB/29e3/YXukid8MxSs1ZFeV5PzJsshY
-	/s3oGXp04QGlKXWOYDuRM6lSrjL/yJn/8Ug2xwkvaK+mOFzGsUy6R6/CWquj5pBqTSEImHQuJ2J
-	91SxvFqzG39PouZpPlgtVCx5tM2+oNDsS/5HFRvTZJbg0Dc2HNrfaZpmOTX3obeRnSHtGeihjt3
-	cNSn9LiGLyaUSe+LIpNWDj4EaX94RVEnsF995gElOC851LR8+CP2ewxL8RmiPeoK/jsSGFMJHa1
-	HaW8t9pR8FdT/C/rI5VDyHTvroL5b0lmjuCfhWjH1zcQkCzQrT5neCMR
-X-Received: by 2002:a05:690c:4b92:b0:78c:5803:f68e with SMTP id
- 00721157ae682-78c9d725a6bmt34112057b3.33.1765399845997; Wed, 10 Dec 2025
- 12:50:45 -0800 (PST)
+	s=arc-20240116; t=1765404627; c=relaxed/simple;
+	bh=9Mbw+2a+O0bpocbYBboqIR0wKgD/bxSaeJe1Sq+BSnE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q/5gSkUC3JSQmdmMXRSk87tcZeqZZuLuCQB4lRMIOKvzY4t0DgWtb8iRQCveYND/+p45I88n1P0Qx8jhTs3p9aziJvYgl426rnTb1Po9uDMbjNBlAAPqHlug7ZhUYT8t4hT7HU8HUhytWmPVdS8SBTONGxILEaQ/Yteuu2ftcMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io; spf=pass smtp.mailfrom=sys-base.io; arc=none smtp.client-ip=185.233.101.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sys-base.io
+Received: from laika.paulk.fr (12.234.24.109.rev.sfr.net [109.24.234.12])
+	by leonov.paulk.fr (Postfix) with ESMTPS id 85D0E1F8005F;
+	Wed, 10 Dec 2025 22:09:49 +0000 (UTC)
+Received: by laika.paulk.fr (Postfix, from userid 65534)
+	id 0A9C4B127E9; Wed, 10 Dec 2025 22:09:38 +0000 (UTC)
+X-Spam-Level: 
+Received: from collins (unknown [192.168.1.1])
+	by laika.paulk.fr (Postfix) with ESMTPSA id EBB48B127E9;
+	Wed, 10 Dec 2025 22:09:35 +0000 (UTC)
+Date: Wed, 10 Dec 2025 23:09:33 +0100
+From: Paul Kocialkowski <paulk@sys-base.io>
+To: Janne Grunau <j@jannau.net>
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>, andrew.jones@linux.dev,
+	linux-omap@vger.kernel.org, openbmc@lists.ozlabs.org,
+	linux-sound@vger.kernel.org,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	linux-mips@vger.kernel.org, asahi@lists.linux.dev,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	chrome-platform@lists.linux.dev,
+	Paul Cercueil <paul@crapouillou.net>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Linux ARM <linux-arm-kernel@lists.infradead.org>,
+	linux-gpio@vger.kernel.org, Srinivas Kandagatla <srini@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Vaibhav Hiremath <hvaibhav.linux@gmail.com>,
+	linux-sh@vger.kernel.org, x86@kernel.org,
+	Max Filippov <jcmvbkbc@gmail.com>
+Subject: Re: Kconfig dangling references (BZ 216748)
+Message-ID: <aTnvnaRuJ5lF4dVv@collins>
+References: <22b92ddf-6321-41b5-8073-f9c7064d3432@infradead.org>
+ <aTcVXrUXVsyjaT22@shepard>
+ <20251208200555.GA333481@robin.jannau.net>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251210052254.279899-1-fcoda@frba.utn.edu.ar> <aTm3EGNR8smNE4Xl@darkstar.musicnaut.iki.fi>
-In-Reply-To: <aTm3EGNR8smNE4Xl@darkstar.musicnaut.iki.fi>
-From: Fernando Coda <fcoda@frba.utn.edu.ar>
-Date: Wed, 10 Dec 2025 17:50:35 -0300
-X-Gm-Features: AQt7F2rrgKNAb5w2YQElHsCcBB6u6tOldkHdf4RvDB27jgxE2qXKgx6dd-lof4Q
-Message-ID: <CAOXe=TXbvfnqNJJooAV5tzMH+z4Yd8s-1c-41kmRmuspwNV9Vg@mail.gmail.com>
-Subject: Re: [PATCH] i2c: omap: fix incorrect SCLH timing calculation
-Cc: linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="MEb6eXQ93P1+3Wd8"
+Content-Disposition: inline
+In-Reply-To: <20251208200555.GA333481@robin.jannau.net>
+
+
+--MEb6eXQ93P1+3Wd8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Aaro,
+Hi Janne,
 
-I double checked and it's now evident that I wasn't understanding
-the meaning of the flag OMAP_I2C_FLAG_SIMPLE_CLOCK.
+Le Mon 08 Dec 25, 21:05, Janne Grunau a =C3=A9crit :
+> On Mon, Dec 08, 2025 at 07:13:50PM +0100, Paul Kocialkowski wrote:
+> > Hi Randy,
+> >=20
+> > On Sun 07 Dec 25, 18:04, Randy Dunlap wrote:
+> > > from  https://bugzilla.kernel.org/show_bug.cgi?id=3D216748
+> > >=20
+> > > The bugzilla entry includes a Perl script and a shell script.
+> > > This is the edited result of running them (I removed some entries tha=
+t were noise).
+> >=20
+> > [...]
+> >=20
+> > > DRM_KMS_DMA_HELPER ---
+> > > drivers/gpu/drm/adp/Kconfig:9:	select DRM_KMS_DMA_HELPER
+> > > drivers/gpu/drm/logicvc/Kconfig:7:	select DRM_KMS_DMA_HELPER
+> >=20
+> > For these two, the symbol was removed in commit
+> > 09717af7d13d63df141ae6e71686289989d17efd
+>=20
+> That commit removed DRM_KMS_CMA_HELPER. Later commit 6bcfe8eaeef0
+> ("drm/fb: rename FB CMA helpers to FB DMA helpers") renamed
+> DRM_KMS_CMA_HELPER erroneously to DRM_KMS_DMA_HELPER.
+>=20
+> > but these two drivers either were
+> > missed by the batch rename or were introduced a bit later.
+>=20
+> In the case of drivers/gpu/drm/adp/Kconfig it was missed much later
+> during review (but iirc went through the same rename out of tree).
+>=20
+> > Since the symbol selected DRM_GEM_CMA_HELPER (which is still needed by =
+the
+> > drivers), it should be replaced with DRM_GEM_CMA_HELPER.
+>=20
+> That symbol doesn't exist anymore either. It's now DRM_GEM_DMA_HELPER
+> which is already present in both files.
 
-Please dismiss my submit.
+Thanks for the details! It seems that I was looking at an older tree.
 
-El mi=C3=A9, 10 dic 2025 a las 15:08, Aaro Koskinen
-(<aaro.koskinen@iki.fi>) escribi=C3=B3:
->
-> Hi,
->
-> On Wed, Dec 10, 2025 at 02:22:54AM -0300, Fernando Coda wrote:
-> > According to the AM335x Technical Reference Manual, which uses the
-> > i2c-omap driver, in the section 21.4.1.24 (clock timing parameters),
-> > the SCL high and low periods are defined as:
-> >
-> >     tLOW  =3D (SCLL + 7) * ICLK period
-> >     tHIGH =3D (SCLH + 5) * ICLK period
-> >
-> > Every other reference to SCLL and SCLH in the omap_i2c_init() function
-> > follows the same pattern:
-> >
-> >     SCLL =3D value - 7
-> >     SCLH =3D value - 5
-> >
-> > However, in this line the value of SCLH is computed subtracting 7 inste=
-ad
-> > of 5, which will produce an incorrect SCL high period.
-> >
-> > This appears to be a copy and paste error.
-> >
-> > Fix by using =E2=88=925, consistent with both the TRM and the surroundi=
-ng SCLH formula
->
-> What's the impact, and how the change was tested?
->
-> I think the code line you are modifying affects only OMAP1
-> (OMAP_I2C_FLAG_SIMPLE_CLOCK branch), so AM335x TRM reference has little
-> value.
->
-> A.
->
-> >
-> > Signed-off-by: Fernando Coda <fcoda@frba.utn.edu.ar>
-> > ---
-> >  drivers/i2c/busses/i2c-omap.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-oma=
-p.c
-> > index d9f590f0c384..d0a33f5f1bb3 100644
-> > --- a/drivers/i2c/busses/i2c-omap.c
-> > +++ b/drivers/i2c/busses/i2c-omap.c
-> > @@ -459,7 +459,7 @@ static int omap_i2c_init(struct omap_i2c_dev *omap)
-> >               if (psc > 2)
-> >                       psc =3D 2;
-> >               scll =3D fclk_rate / (omap->speed * 2) - 7 + psc;
-> > -             sclh =3D fclk_rate / (omap->speed * 2) - 7 + psc;
-> > +             sclh =3D fclk_rate / (omap->speed * 2) - 5 + psc;
-> >       }
-> >
-> >       omap->iestate =3D (OMAP_I2C_IE_XRDY | OMAP_I2C_IE_RRDY |
-> > --
-> > 2.52.0
-> >
-> >
+> So the "select DRM_KMS_DMA_HELPER" lines can be removed from both files.
+
+Good, then I'll craft a patch removing these two lines.
+
+All the best,
+
+Paul
+
+--=20
+Paul Kocialkowski,
+
+Independent contractor - sys-base - https://www.sys-base.io/
+Free software developer - https://www.paulk.fr/
+
+Expert in multimedia, graphics and embedded hardware support with Linux.
+
+--MEb6eXQ93P1+3Wd8
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEAbcMXZQMtj1fphLChP3B6o/ulQwFAmk5750ACgkQhP3B6o/u
+lQxOag/+J9Lwmq+hqcg9BxoDCZl6KmFGAh/RmelPeBUew6LlQphMcDpjQ0yJavK3
+bxojss4r12rV5307+f47JlSMFJa/100MablzoWV0koupx/JCRszhYf2w1lxYHKJh
+7jwy8GLd9NnaZGaiscrckVEcfaVRufzSM2I6ErSZIMSYEZ1LUTCakTPAwrgtarZb
+b9FzHmCrau56mdC2M6StWaolU90t4em1/We8XVRtLY87MEY/VQK6qLylL2fbpuIX
+5+DjnOBDMrvyB7UJFVbzcQA4ev1ckCBvnB2JdzGOfquj6XTO23m5/L5qfxTVk6qa
+yp9ShU6lQZ9RjinifpGWf8JTYl46U7hch9PrUCE/n0FgVl2frQHb/N08ynKUniCB
+1U76zgnG48Wkj08Sz6anRvER3dqEhzJgxJxpkW1UqoXFOSBQeeJZzZONuuUxYw3M
+8JKSldwJVj/oLlvCOI6QO0Q9T+U4YS1gpNBfHbysPaJgZyqld5tXaElOo9k8P8pX
+kAMhcvAn6FaXqkX5qJOAN+91M+CkQwQlWf16G7HKV0LcOvzCtGHYWVrxb7xWw9Em
+JBZRsrdq4CaQc34D8GkBR14H6WGWkGR4OQSTqxshPv7x/S4u9vV8FQWIhLW2LToY
+kw9ephtALgBj6D79R84K2DGlmZwPH2sunV3y9huDh3SNlR5dZg8=
+=EEMR
+-----END PGP SIGNATURE-----
+
+--MEb6eXQ93P1+3Wd8--
 
