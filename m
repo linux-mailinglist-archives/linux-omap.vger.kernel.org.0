@@ -1,51 +1,51 @@
-Return-Path: <linux-omap+bounces-5161-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5162-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8AAFCB3B89
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Dec 2025 19:11:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E676FCB3BB0
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Dec 2025 19:14:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 92C23300E453
-	for <lists+linux-omap@lfdr.de>; Wed, 10 Dec 2025 18:11:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 524DF30CB00C
+	for <lists+linux-omap@lfdr.de>; Wed, 10 Dec 2025 18:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6FC832825E;
-	Wed, 10 Dec 2025 18:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE4E63246EB;
+	Wed, 10 Dec 2025 18:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="O6jczRAH"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fJ+jfCzl"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0FD3271ED;
-	Wed, 10 Dec 2025 18:10:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3572329378;
+	Wed, 10 Dec 2025 18:14:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765390267; cv=none; b=TE0oacPru+ldhoS1aW0tHu7DxZ7IMLXyA88ZnEFeAeNdR0VfinJtgxZ7QMi9hgbJf7YMIMH+mkXIMJUab92+acSiNnb2UwzKy3OA+bZxd91RirzDI+JpN/VVKL6Nrzi3rYBik+xNA9n4XV3P+eq2XkLqwRr1bbyHglyeUL41EKY=
+	t=1765390442; cv=none; b=mD7eDYlrkjlp75f/Fo8wwevQ2IjbcaVAjgggxZayda7K4hHjQi91mRBr/Qq8+swrmTSE3sM7qdq5z/VuI84JsejJG4kMeSXjXtMGBY28TNArTEHMIL/cZ9ROF7kYjSKGP5RSuJlba+6RaTZUbWDACXNdnQt08Ad8eObrKUrit7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765390267; c=relaxed/simple;
-	bh=11D+FbyBRjBd7dRkaGNZbGmzx6wWeykWSe7o2lp4Unw=;
+	s=arc-20240116; t=1765390442; c=relaxed/simple;
+	bh=l98qOu+0/tY6Orese0IPL2xdfoJODXFr8iaKgobrYT0=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=S82qD8jgAnmGt+bo18UJFWCrHayWHUOO/MNIcBEAs8EsYRzbev9iEwsF+uqcJorDHt2+VhRG1BI0ck1f/Io5zg9A5TXqc31imZRShN4QbJWFVemAJUn3IahJ7cu4G4/zsExJO/2LNRc5oqxod/3Yw0b8UXbSuYppV4KbFbzOYcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=O6jczRAH; arc=none smtp.client-ip=185.246.84.56
+	 References:In-Reply-To; b=ejto5cpeFfbbdMJfJ8l4oEDuAEVYeXWVrBJBQ+T4gPn/Hrxee9RSLIsHxSHgcvWBPX5Hhe9N8MpbTJLg04KrFxSka3d3NwMnLappJfjHxWWffXSJkLLdS+zn8nCrEnRCTX3rkEhXZ7V1/YhI9e5f/mD3KFmegmsvaFJx3MXTIbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fJ+jfCzl; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 46C371A20B2;
-	Wed, 10 Dec 2025 18:10:56 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id D8557C180F6;
+	Wed, 10 Dec 2025 18:13:34 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D59F760714;
-	Wed, 10 Dec 2025 18:10:55 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 63FF8103C8CB3;
-	Wed, 10 Dec 2025 19:10:46 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9D6E760714;
+	Wed, 10 Dec 2025 18:13:58 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C3317103C8CB3;
+	Wed, 10 Dec 2025 19:13:53 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1765390254; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1765390437; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=zHScQ9epIs7tSkBpcNfLT2ySqJpIcU3hl0yiRWEMSxU=;
-	b=O6jczRAHlyE369TuBgKbSoI5sr+D8r2p/p/jJJNzLR9kXxPqm7i8xrI7fQB90odCyPIXe1
-	4YZEYdjGPIrzpd27WpJ88/6qed4b09CpY+O8jxnssomse8LoTt8CSvaA6wr3dlSpRtijCJ
-	vAHmY6R0ZD1eQUyUZarC66Ne+Ux/2RcQd5t77tAyFL1OfRlXrUkmm1ZMn+BPB5r7RdTl7h
-	Qk+hr7+AYIIFJwhZj0Tgwd+BKfz6bdCRIMotppabJdlVf4Bs8C4uOdOKVnpS/5nLW/u5hk
-	/fANJbwQ2wd/+NdKjXBdlPyCrER7pQDgNesMJqkCFPh9spNiUJ1olbTsiUR65A==
+	bh=l98qOu+0/tY6Orese0IPL2xdfoJODXFr8iaKgobrYT0=;
+	b=fJ+jfCzl8+4tV/5a2fjeAI0hqo1ETpxNTPbTLeRkcWl+3hg9ddajcJlzgT3RjWWIkjbsTa
+	T4tqLnnKAatCmuruKQGjuXAVE9e0LrCIxjrm8mXAd1/SuYg832ffC6HxVGAtXPRDd/1+Dq
+	VQTVso6cfbjeA/+6fsZnkkjz3tkYOQmzYjF5t3T3fh8hmXnv7MjXuyAIsTFOWOQMQIB5ku
+	H2CsRwiLKpWqq3oESdJoguxhOAmEondgANQOWNl573uWipCPUJSaPR3+WO/WniA9KT9Npo
+	Kns/EKpwKZTEk9u5sMtXBkRNXC2t7+mtM73poDyR4SIxWIc8b1XHx0jiYdExuA==
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -54,9 +54,10 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 10 Dec 2025 19:10:45 +0100
-Message-Id: <DEUQM2HNEOQU.3K4ZPL44GVZAJ@bootlin.com>
-Subject: Re: [PATCH 03/21] drm/tilcdc: Remove simulate_vesa_sync flag
+Date: Wed, 10 Dec 2025 19:13:53 +0100
+Message-Id: <DEUQOGYVBYFL.39NLEZ2GBI2WT@bootlin.com>
+Subject: Re: [PATCH 04/21] drm/tilcdc: Add support for DRM bus flags and
+ simplify panel config
 Cc: "Markus Schneider-Pargmann" <msp@baylibre.com>, "Louis Chauvet"
  <louis.chauvet@bootlin.com>, "Thomas Petazzoni"
  <thomas.petazzoni@bootlin.com>, "Miguel Gazquez"
@@ -79,46 +80,39 @@ To: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>, "Jyri Sarha"
 From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
 X-Mailer: aerc 0.20.1
 References: <20251126-feature_tilcdc-v1-0-49b9ef2e3aa0@bootlin.com>
- <20251126-feature_tilcdc-v1-3-49b9ef2e3aa0@bootlin.com>
-In-Reply-To: <20251126-feature_tilcdc-v1-3-49b9ef2e3aa0@bootlin.com>
+ <20251126-feature_tilcdc-v1-4-49b9ef2e3aa0@bootlin.com>
+In-Reply-To: <20251126-feature_tilcdc-v1-4-49b9ef2e3aa0@bootlin.com>
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi K=C3=B6ry,
-
 On Wed Nov 26, 2025 at 6:35 PM CET, Kory Maincent (TI.com) wrote:
-> The tilcdc hardware does not generate VESA-compliant sync signals. It
-> aligns the vertical sync (VS) on the second edge of the horizontal sync
-> (HS) instead of the first edge. To compensate for this hardware
-> behavior, the driver applies a timing adjustment in mode_fixup().
+> Migrate CRTC mode configuration to use standard DRM bus flags in
+> preparation for removing the tilcdc_panel driver and its custom
+> tilcdc_panel_info structure.
 >
-> Previously, this adjustment was conditional based on the simulate_vesa_sy=
-nc
-> flag, which was only set when using external encoders. This appears
-> problematic because:
+> Add support for DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE and
+> DRM_BUS_FLAG_SYNC_DRIVE_NEGEDGE flags to control pixel clock and sync
+> signal edge polarity, while maintaining backward compatibility with the
+> existing tilcdc panel info structure.
 >
-> 1. The timing adjustment seems needed for the hardware behavior regardles=
-s
->    of whether an external encoder is used
-> 2. The external encoder infrastructure is driver-specific and being
->    removed due to design issues
-> 3. Boards using tilcdc without bridges (e.g., am335x-evm, am335x-evmsk)
->    may not be getting the necessary timing adjustments
+> Simplify several hardware parameters by setting them to fixed defaults
+> based on common usage across existing device trees:
+> - DMA burst size: 16 (previously configurable via switch statement)
+> - AC bias frequency: 255 (previously panel-specific)
+> - FIFO DMA request delay: 128 (previously panel-specific)
 >
-> Remove the simulate_vesa_sync flag and apply the VESA sync timing
-> adjustment unconditionally, ensuring consistent behavior across all
-> configurations. While it's unclear if the previous conditional behavior
-> was causing actual issues, the unconditional adjustment better reflects
-> the hardware's characteristics.
+> These parameters show no variation in real-world usage, so hardcoding
+> them simplifies the driver without losing functionality.
+>
+> Preserve FIFO threshold configurability by adding a new "fifo-threshold"
+> device tree property at the display controller level, as this parameter
+> varies across different display configurations in existing device trees.
 >
 > Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
-> ---
->
-> Only few board currently use tilcdc not associated to a bridge like the
-> am335x_evm or the am335x-evmsk.
 
-Have you tested this change on any affected board?
-
-The change looks good to me but without some testing it would be risky.
+Apart from the "fifo-threshold" property, which as discussed should instead
+be inferred from the compatible, the patch looks good. I checked the values
+which are being removed and they have all the same value in the code
+defaults and all in-tree dts files.
 
 Luca
 
