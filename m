@@ -1,54 +1,55 @@
-Return-Path: <linux-omap+bounces-5178-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5179-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D626CB6882
-	for <lists+linux-omap@lfdr.de>; Thu, 11 Dec 2025 17:43:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DDB0CB68A0
+	for <lists+linux-omap@lfdr.de>; Thu, 11 Dec 2025 17:45:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 34C6C3065626
-	for <lists+linux-omap@lfdr.de>; Thu, 11 Dec 2025 16:40:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 61B303077E7F
+	for <lists+linux-omap@lfdr.de>; Thu, 11 Dec 2025 16:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BC6313E11;
-	Thu, 11 Dec 2025 16:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1750314A7E;
+	Thu, 11 Dec 2025 16:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pQnii7/s"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bbJAY3x7"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC5B313542
-	for <linux-omap@vger.kernel.org>; Thu, 11 Dec 2025 16:40:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BA928C009
+	for <linux-omap@vger.kernel.org>; Thu, 11 Dec 2025 16:40:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765471209; cv=none; b=hpPbC9MjPbff7U2fAbj2aKhAcK9z+DfBpaR3lvt4j/nTGvijiOzosAw6OJF0nViwbimEAjMmNVJBjcLoGonjupF7hOt0ou1vsP6HBo/1W8PdLFo06olsnFGeC0qG7SxOfCRSM47fep6FJERhVxoSu8n7uS04wLCVDOujGGd6HJc=
+	t=1765471219; cv=none; b=os0BzMkpRXvYXq2N7uPC6JfiBVaM0CrlHMgcJ2BTxwHWJtZzAoU/mRpSqrQu8QTheZrn/s9dwnVZRkj6VcT5nh23b7kpoipx2nxpQSpWJrhalBEG5CYOBkEKekWdPlT3bqXR5SqKnJ0sHBwa5AtNneVHxo/9LI1lgaE5Q3ziYtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765471209; c=relaxed/simple;
-	bh=sJOxIZIzqKYhqehIbd0EKHIP7+4kl84s7aOQHkLIzQM=;
+	s=arc-20240116; t=1765471219; c=relaxed/simple;
+	bh=R2ozZyameZR8yNERVvn+fDB8DQCf25gtzZUsLJMbSfk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JoyuGUQbjzTbhxqUceJgYvEDnFVDsWTURbkhD2tOINVzNlktYtItMpHWKRKhGi9GeE1l+dhCn8Y9oJoUH5sNIXAcp4xNThZ84GoAdexlanv9QrH/Amh2W6wiecHxerPGZ2LM6ZDRzYukTnFXB65nf9ZpN1SXj79pNnxOP5oZcEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pQnii7/s; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:To:Cc; b=jUci+tkBhjWkrBuW23+WADBu3uZ7obE5vbBxPw80wm+VU6JV8SFScOxxGq95ctzl1VOdCYtLVHVpooVkEv9fglOgUgKIZn3+XJWHjgkcUlQn7JXAgRfybIY7JBY6XUhuZQTwGJ9Vc6YGqxg280aCGLCBvhJ78U/TcuXg1xSglUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bbJAY3x7; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id A64711A20DD;
-	Thu, 11 Dec 2025 16:40:04 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 86308C1934D;
+	Thu, 11 Dec 2025 16:39:50 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7955F6072F;
-	Thu, 11 Dec 2025 16:40:04 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F31D5103C8C1B;
-	Thu, 11 Dec 2025 17:40:00 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 42BA960738;
+	Thu, 11 Dec 2025 16:40:08 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9690C103C8E02;
+	Thu, 11 Dec 2025 17:40:03 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1765471203; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1765471206; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=O24tFBrT15VptdJnWdlRlNZ2J39m4pHYDYjGkzjXizs=;
-	b=pQnii7/s6o9omMIJBki50j6kxTaT3doAjDRB7SBBjMIRysv/rVQsaJ7cRXZ0WR7bam0JtP
-	Slc7/99uCCEQidcxqSOx9bJPojsf65TfleMTdTNl75GETXAgnpfuBn7uOp6xqkjuqlAEIy
-	W7+2jcKldC3C/5y44poJCGryfSN5hkWE0TdfRga2OoYJbimr84UwagMVwiQUDn4WTLNRyo
-	5NT+dslwTrHxvzwgJRtgXumi+pa+tqVetngafYUvFFd34RpA+64ZsDPGN5uebrjHyGtaDz
-	GvXcX2xE26UuwB7zIl8PWF7sjGmION4bTL2Da0/CT3Ns3YiDxECJITyLSld7Uw==
+	bh=MS4b7veCYN3tYDfz/s9LxcL0AfieJWRhqqzkQWfhAqQ=;
+	b=bbJAY3x7JC9zvbF72HehgjE2uBmtCiIl/RjavgKbbW4A63NrEtYVDKBIEx+EIQ5gVRn7iz
+	2xWoaBIJ/+p0ITIcyTdKNcH3vtOcPxFwB1L2RyGSFVPrCly7fis7UQB3KRbkjGOYIHQAaV
+	zZS8qWp9hj1i76meKW5CsoIMGdDY9Ka9CQLAZQGmzPXy8LQ/TV6mRk7qJIUVomqw/HA0D9
+	a4kTYeFSbIGVhCjJzx54Oa9F1fEvQRw5TciCfQ9Fv+1sHap3nnQ6mjVCuLIB8YzYB0+rCc
+	j+rxSFWsDCMO9knPeggDl2mRuD2qfyaLlIwxbWaKsonD4UYrGDVl0THIubMaiA==
 From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
-Date: Thu, 11 Dec 2025 17:38:52 +0100
-Subject: [PATCH v2 08/20] drm/tilcdc: Remove tilcdc_panel_info structure
+Date: Thu, 11 Dec 2025 17:38:53 +0100
+Subject: [PATCH v2 09/20] drm/tilcdc: Remove redundant #endif/#ifdef in
+ debugfs code
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -57,7 +58,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251211-feature_tilcdc-v2-8-f48bac3cd33e@bootlin.com>
+Message-Id: <20251211-feature_tilcdc-v2-9-f48bac3cd33e@bootlin.com>
 References: <20251211-feature_tilcdc-v2-0-f48bac3cd33e@bootlin.com>
 In-Reply-To: <20251211-feature_tilcdc-v2-0-f48bac3cd33e@bootlin.com>
 To: Jyri Sarha <jyri.sarha@iki.fi>, 
@@ -85,214 +86,30 @@ Cc: Markus Schneider-Pargmann <msp@baylibre.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-Remove the tilcdc_panel_info structure and its associated helper
-function as the structure contains only redundant or unused parameters.
-
-Most panel configuration parameters in tilcdc_panel_info are either:
-- Already represented by existing DRM mode flags (invert_pxl_clk,
-  sync_edge via DRM_BUS_FLAG_*), or
-- Set to identical values across all instances (panel_info_default),
-  making them effectively constants
-
-The removed fifo_th field is already handled by priv->fifo_th when set.
-Other removed fields (tft_alt_mode, raster_order) were always set to 0
-in the only instance (panel_info_default) and thus had no effect.
-
-This simplifies the code by eliminating unnecessary abstraction while
-preserving all functional behavior.
+Remove the unnecessary #endif/#ifdef CONFIG_DEBUG_FS pair that splits
+the debugfs code section. This keeps all debugfs-related code within a
+single preprocessor conditional block, improving code readability.
 
 Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
 ---
- drivers/gpu/drm/tilcdc/tilcdc_crtc.c     | 28 +++------------------
- drivers/gpu/drm/tilcdc/tilcdc_drv.h      | 42 --------------------------------
- drivers/gpu/drm/tilcdc/tilcdc_external.c | 14 -----------
- 3 files changed, 3 insertions(+), 81 deletions(-)
+ drivers/gpu/drm/tilcdc/tilcdc_drv.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_crtc.c b/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
-index 252e5adaeb6e2..5b8aba0765f9b 100644
---- a/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
-@@ -31,7 +31,6 @@ struct tilcdc_crtc {
- 	struct drm_crtc base;
- 
- 	struct drm_plane primary;
--	const struct tilcdc_panel_info *info;
- 	struct drm_pending_vblank_event *event;
- 	struct mutex enable_lock;
- 	bool enabled;
-@@ -272,14 +271,10 @@ static void tilcdc_crtc_set_mode(struct drm_crtc *crtc)
- 	struct tilcdc_crtc *tilcdc_crtc = to_tilcdc_crtc(crtc);
- 	struct drm_device *dev = crtc->dev;
- 	struct tilcdc_drm_private *priv = dev->dev_private;
--	const struct tilcdc_panel_info *info = tilcdc_crtc->info;
- 	uint32_t reg, hbp, hfp, hsw, vbp, vfp, vsw;
- 	struct drm_display_mode *mode = &crtc->state->adjusted_mode;
- 	struct drm_framebuffer *fb = crtc->primary->state->fb;
- 
--	if (WARN_ON(!info))
--		return;
--
- 	if (WARN_ON(!fb))
- 		return;
- 
-@@ -287,12 +282,11 @@ static void tilcdc_crtc_set_mode(struct drm_crtc *crtc)
- 	reg = tilcdc_read(dev, LCDC_DMA_CTRL_REG) & ~0x00000770;
- 	/* Use 16 bit DMA burst size by default */
- 	reg |= LCDC_DMA_BURST_SIZE(LCDC_DMA_BURST_16);
-+
- 	if (priv->fifo_th) {
- 		int fifo_th_val = ilog2(priv->fifo_th) - 3;
- 
- 		reg |= (fifo_th_val << 8);
--	} else {
--		reg |= (info->fifo_th << 8);
- 	}
- 	tilcdc_write(dev, LCDC_DMA_CTRL_REG, reg);
- 
-@@ -360,8 +354,6 @@ static void tilcdc_crtc_set_mode(struct drm_crtc *crtc)
- 		  LCDC_V2_TFT_24BPP_MODE | LCDC_V2_TFT_24BPP_UNPACK |
- 		  0x000ff000 /* Palette Loading Delay bits */);
- 	reg |= LCDC_TFT_MODE; /* no monochrome/passive support */
--	if (info->tft_alt_mode)
--		reg |= LCDC_TFT_ALT_ENABLE;
- 	if (priv->rev == 2) {
- 		switch (fb->format->format) {
- 		case DRM_FORMAT_BGR565:
-@@ -384,15 +376,13 @@ static void tilcdc_crtc_set_mode(struct drm_crtc *crtc)
- 	reg |= 128 << 12;
- 	tilcdc_write(dev, LCDC_RASTER_CTRL_REG, reg);
- 
--	if (info->invert_pxl_clk ||
--	    mode->flags == DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE)
-+	if (mode->flags == DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE)
- 		tilcdc_set(dev, LCDC_RASTER_TIMING_2_REG, LCDC_INVERT_PIXEL_CLOCK);
- 	else
- 		tilcdc_clear(dev, LCDC_RASTER_TIMING_2_REG, LCDC_INVERT_PIXEL_CLOCK);
- 
- 	tilcdc_set(dev, LCDC_RASTER_TIMING_2_REG, LCDC_SYNC_CTRL);
--	if (info->sync_edge ||
--	    mode->flags == DRM_BUS_FLAG_SYNC_DRIVE_NEGEDGE)
-+	if (mode->flags == DRM_BUS_FLAG_SYNC_DRIVE_NEGEDGE)
- 		tilcdc_set(dev, LCDC_RASTER_TIMING_2_REG, LCDC_SYNC_EDGE);
- 	else
- 		tilcdc_clear(dev, LCDC_RASTER_TIMING_2_REG, LCDC_SYNC_EDGE);
-@@ -407,11 +397,6 @@ static void tilcdc_crtc_set_mode(struct drm_crtc *crtc)
- 	else
- 		tilcdc_clear(dev, LCDC_RASTER_TIMING_2_REG, LCDC_INVERT_VSYNC);
- 
--	if (info->raster_order)
--		tilcdc_set(dev, LCDC_RASTER_CTRL_REG, LCDC_RASTER_ORDER);
--	else
--		tilcdc_clear(dev, LCDC_RASTER_CTRL_REG, LCDC_RASTER_ORDER);
--
- 	tilcdc_crtc_set_clk(crtc);
- 
- 	tilcdc_crtc_load_palette(crtc);
-@@ -838,13 +823,6 @@ static const struct drm_crtc_helper_funcs tilcdc_crtc_helper_funcs = {
- 	.atomic_flush	= tilcdc_crtc_atomic_flush,
+diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.c b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
+index 9b3a0435a8d2d..d2aae731b72c6 100644
+--- a/drivers/gpu/drm/tilcdc/tilcdc_drv.c
++++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
+@@ -438,9 +438,6 @@ static const struct {
+ #undef REG
  };
  
--void tilcdc_crtc_set_panel_info(struct drm_crtc *crtc,
--		const struct tilcdc_panel_info *info)
--{
--	struct tilcdc_crtc *tilcdc_crtc = to_tilcdc_crtc(crtc);
--	tilcdc_crtc->info = info;
--}
+-#endif
 -
- void tilcdc_crtc_update_clk(struct drm_crtc *crtc)
+-#ifdef CONFIG_DEBUG_FS
+ static int tilcdc_regs_show(struct seq_file *m, void *arg)
  {
- 	struct drm_device *dev = crtc->dev;
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.h b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-index c23b593dc61f6..181b9d7a515b6 100644
---- a/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-@@ -114,53 +114,11 @@ void tilcdc_module_init(struct tilcdc_module *mod, const char *name,
- 		const struct tilcdc_module_ops *funcs);
- void tilcdc_module_cleanup(struct tilcdc_module *mod);
- 
--/* Panel config that needs to be set in the crtc, but is not coming from
-- * the mode timings.  The display module is expected to call
-- * tilcdc_crtc_set_panel_info() to set this during modeset.
-- */
--struct tilcdc_panel_info {
--
--	/* AC Bias Pin Frequency */
--	uint32_t ac_bias;
--
--	/* AC Bias Pin Transitions per Interrupt */
--	uint32_t ac_bias_intrpt;
--
--	/* DMA burst size */
--	uint32_t dma_burst_sz;
--
--	/* Bits per pixel */
--	uint32_t bpp;
--
--	/* FIFO DMA Request Delay */
--	uint32_t fdd;
--
--	/* TFT Alternative Signal Mapping (Only for active) */
--	bool tft_alt_mode;
--
--	/* Invert pixel clock */
--	bool invert_pxl_clk;
--
--	/* Horizontal and Vertical Sync Edge: 0=rising 1=falling */
--	uint32_t sync_edge;
--
--	/* Horizontal and Vertical Sync: Control: 0=ignore */
--	uint32_t sync_ctrl;
--
--	/* Raster Data Order Select: 1=Most-to-least 0=Least-to-most */
--	uint32_t raster_order;
--
--	/* DMA FIFO threshold */
--	uint32_t fifo_th;
--};
--
- #define DBG(fmt, ...) DRM_DEBUG(fmt"\n", ##__VA_ARGS__)
- 
- int tilcdc_crtc_create(struct drm_device *dev);
- irqreturn_t tilcdc_crtc_irq(struct drm_crtc *crtc);
- void tilcdc_crtc_update_clk(struct drm_crtc *crtc);
--void tilcdc_crtc_set_panel_info(struct drm_crtc *crtc,
--		const struct tilcdc_panel_info *info);
- void tilcdc_crtc_shutdown(struct drm_crtc *crtc);
- void tilcdc_crtc_destroy(struct drm_crtc *crtc);
- int tilcdc_crtc_update_fb(struct drm_crtc *crtc,
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_external.c b/drivers/gpu/drm/tilcdc/tilcdc_external.c
-index 2970c41d9c3eb..81c90c2754c6c 100644
---- a/drivers/gpu/drm/tilcdc/tilcdc_external.c
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_external.c
-@@ -14,18 +14,6 @@
- #include "tilcdc_drv.h"
- #include "tilcdc_external.h"
- 
--static const struct tilcdc_panel_info panel_info_default = {
--		.ac_bias                = 255,
--		.ac_bias_intrpt         = 0,
--		.dma_burst_sz           = 16,
--		.bpp                    = 16,
--		.fdd                    = 0x80,
--		.tft_alt_mode           = 0,
--		.sync_edge              = 0,
--		.sync_ctrl              = 1,
--		.raster_order           = 0,
--};
--
- static
- struct drm_connector *tilcdc_encoder_find_connector(struct drm_device *ddev,
- 						    struct drm_encoder *encoder)
-@@ -55,8 +43,6 @@ int tilcdc_attach_bridge(struct drm_device *ddev, struct drm_bridge *bridge)
- 	if (ret)
- 		return ret;
- 
--	tilcdc_crtc_set_panel_info(priv->crtc, &panel_info_default);
--
- 	priv->external_connector =
- 		tilcdc_encoder_find_connector(ddev, priv->external_encoder);
- 	if (!priv->external_connector)
+ 	struct drm_info_node *node = (struct drm_info_node *) m->private;
 
 -- 
 2.43.0
