@@ -1,363 +1,107 @@
-Return-Path: <linux-omap+bounces-5192-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5193-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 991D8CB9CA2
-	for <lists+linux-omap@lfdr.de>; Fri, 12 Dec 2025 21:35:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C727CBC4AC
+	for <lists+linux-omap@lfdr.de>; Mon, 15 Dec 2025 04:07:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 56E9030D47E9
-	for <lists+linux-omap@lfdr.de>; Fri, 12 Dec 2025 20:33:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CB1693009132
+	for <lists+linux-omap@lfdr.de>; Mon, 15 Dec 2025 03:07:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3ACB2F0C73;
-	Fri, 12 Dec 2025 20:33:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="byJ0gm1z"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E76A317701;
+	Mon, 15 Dec 2025 03:07:07 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321DE2DA74D;
-	Fri, 12 Dec 2025 20:33:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF04D3FFD;
+	Mon, 15 Dec 2025 03:07:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765571591; cv=none; b=H9eyRgMV7G7b3yS4hueBlhh9/vsGLgRmQqlIMeYrF0UqfDm6DM45f5U05Vrk+Wr1/654RmyELXQZxImby+Z6eBfdFiVIEquQaKGIAXkAUKXh9Uzhl6izNDiZNNj+rImNLRRdcZLIJ8zE7YGkbYaxGzpE2RtaFNTrXWNUbMQKbAY=
+	t=1765768027; cv=none; b=QeWGO0K4a5eKrhPsqwomn//UinAvW9U6xiR4sdZfID6lioZ33CbUketSDLhBksAQMYPQLT07TUh6Knmj/lkxSMI7HSPL3Yv8RcoR7v+QNZfwokth03lxnGec1kUWewSF3F7t5qmLSQaBl0lITqoTxImEdpzRgh0xzEL+XSB7txI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765571591; c=relaxed/simple;
-	bh=o8hAXqSLsFNLTNnaxITpEtVjUkdb0GutzQPnxZvns68=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ceaeide/+nArvXbqG6DaSlreZpALNXoOElzqVH4Nvda3AfjRYVZG8o6zFJGAbuTGH2cYwKncTPVpFZB0Fb62IJGypyaGmkQcu238+D1v2XOKDDxNnJ22gkY7RlrX03PazDffjIW5PcmQ88jXCsOpEbbNi+8P8OjwYHDqmneiozQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=byJ0gm1z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E2BC4AF09;
-	Fri, 12 Dec 2025 20:33:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765571590;
-	bh=o8hAXqSLsFNLTNnaxITpEtVjUkdb0GutzQPnxZvns68=;
-	h=From:To:Cc:Subject:Date:From;
-	b=byJ0gm1zcXYHNofdWwUkJ4b7+mmB0nZruoo/5K2vNv0sSCNb5oMb6RWNXq5E2iqqo
-	 2KodYnPDOOIcFeChjKTK+i6YB0VQGupoXQc00bOlOkJFFZJgvOkKsCW2BLaVpnMsuw
-	 peBBws4RQm6O1DSdNsqvPd5vv7hHPPZ6i5GnQmydXRs3Vi1a/R14U8cUvfxuyuidt0
-	 dVnGVGevWDWiCzsUUA57qjCGAc9ouWBtMCFHAzumKxD9FWpmjOJqPSOTkjlgnbbIkR
-	 PW70Db59scVLLpujAmuOzdBULppGEyrQWmkPZVmoiqnek9jxqq9LKXQsSoVvaztMY6
-	 RZq5hzb/1zD9w==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Tony Lindgren <tony@atomide.com>
-Cc: linux-renesas-soc@vger.kernel.org,
-	devicetree@vger.kernel.org,
+	s=arc-20240116; t=1765768027; c=relaxed/simple;
+	bh=LErrcRNnpssQ0GpNWM4WP5MO2P1nIf8hlgEKdjFQgr8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R2Eupgy/JwvdaH2olP9VksnnHb0x9q4UM7bXcyaUedFn50bl6NbH2dlKNtEFGkqxKJtvC5rHz2LaVOnhOspooua9rKC1YRmmHN/HQzYXOA0hZ2lossmt+faauqjQt7Ekib5YMNi2PmIT4x3DQZ5SvXXU1hYthWXOngV23jTSbYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from DESKTOP-L0HPE2S (unknown [124.16.141.245])
+	by APP-03 (Coremail) with SMTP id rQCowACnyN9Rez9pY3TCAA--.57841S2;
+	Mon, 15 Dec 2025 11:06:58 +0800 (CST)
+From: Haotian Zhang <vulab@iscas.ac.cn>
+To: Kevin Hilman <khilman@kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Cc: linux-omap@vger.kernel.org,
+	linux-pm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org
-Subject: [PATCH] ARM: dts: ti: Drop unused .dtsi
-Date: Fri, 12 Dec 2025 14:32:12 -0600
-Message-ID: <20251212203226.458694-6-robh@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	Haotian Zhang <vulab@iscas.ac.cn>
+Subject: [PATCH] omap-cpufreq: Fix regulator resource leak in probe()
+Date: Mon, 15 Dec 2025 11:03:27 +0800
+Message-ID: <20251215030327.1771-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowACnyN9Rez9pY3TCAA--.57841S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Kr45XF1xAr18tF4rury7GFg_yoW8Gry8pF
+	Z8Xr42kry8JFyvyw4DuF4I93WFvw1vyws29348Gwsavw1DJa4fX3Z8C345ZFWrG3ykJr4j
+	vry7Za4xAFWDZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
+	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
+	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIY
+	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
+	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
+	JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUejjgDU
+	UUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgsRA2k-bwQynQAAsN
 
-These .dtsi files are not included anywhere in the tree and can't be
-tested.
+The current omap_cpufreq_probe() uses regulator_get() to obtain the MPU
+regulator but does not release it in omap_cpufreq_remove() or when
+cpufreq_register_driver() fails, leading to a potential resource leak.
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Use devm_regulator_get() instead of regulator_get() so that the regulator
+resource is automatically released.
+
+Fixes: 53dfe8a884e6 ("cpufreq: OMAP: scale voltage along with frequency")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
 ---
- arch/arm/boot/dts/ti/omap/am3703.dtsi         |  14 --
- arch/arm/boot/dts/ti/omap/am3715.dtsi         |  10 -
- .../boot/dts/ti/omap/omap3430es1-clocks.dtsi  | 237 ------------------
- 3 files changed, 261 deletions(-)
- delete mode 100644 arch/arm/boot/dts/ti/omap/am3703.dtsi
- delete mode 100644 arch/arm/boot/dts/ti/omap/am3715.dtsi
- delete mode 100644 arch/arm/boot/dts/ti/omap/omap3430es1-clocks.dtsi
+ drivers/cpufreq/omap-cpufreq.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/ti/omap/am3703.dtsi b/arch/arm/boot/dts/ti/omap/am3703.dtsi
-deleted file mode 100644
-index 2b994ae790c9..000000000000
---- a/arch/arm/boot/dts/ti/omap/am3703.dtsi
-+++ /dev/null
-@@ -1,14 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * Copyright (C) 2020 André Hentschel <nerv@dawncrow.de>
-- */
--
--#include "omap36xx.dtsi"
--
--&iva {
--	status = "disabled";
--};
--
--&sgx_module {
--	status = "disabled";
--};
-diff --git a/arch/arm/boot/dts/ti/omap/am3715.dtsi b/arch/arm/boot/dts/ti/omap/am3715.dtsi
-deleted file mode 100644
-index ab328e8c0bd8..000000000000
---- a/arch/arm/boot/dts/ti/omap/am3715.dtsi
-+++ /dev/null
-@@ -1,10 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * Copyright (C) 2020 André Hentschel <nerv@dawncrow.de>
-- */
--
--#include "omap36xx.dtsi"
--
--&iva {
--	status = "disabled";
--};
-diff --git a/arch/arm/boot/dts/ti/omap/omap3430es1-clocks.dtsi b/arch/arm/boot/dts/ti/omap/omap3430es1-clocks.dtsi
-deleted file mode 100644
-index 6e754d265f18..000000000000
---- a/arch/arm/boot/dts/ti/omap/omap3430es1-clocks.dtsi
-+++ /dev/null
-@@ -1,237 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * Device Tree Source for OMAP3430 ES1 clock data
-- *
-- * Copyright (C) 2013 Texas Instruments, Inc.
-- */
--&cm_clocks {
--	gfx_l3_ck: gfx_l3_ck@b10 {
--		#clock-cells = <0>;
--		compatible = "ti,wait-gate-clock";
--		clocks = <&l3_ick>;
--		reg = <0x0b10>;
--		ti,bit-shift = <0>;
--	};
--
--	gfx_l3_fck: gfx_l3_fck@b40 {
--		#clock-cells = <0>;
--		compatible = "ti,divider-clock";
--		clocks = <&l3_ick>;
--		ti,max-div = <7>;
--		reg = <0x0b40>;
--		ti,index-starts-at-one;
--	};
--
--	gfx_l3_ick: gfx_l3_ick {
--		#clock-cells = <0>;
--		compatible = "fixed-factor-clock";
--		clocks = <&gfx_l3_ck>;
--		clock-mult = <1>;
--		clock-div = <1>;
--	};
--
--	gfx_cg1_ck: gfx_cg1_ck@b00 {
--		#clock-cells = <0>;
--		compatible = "ti,wait-gate-clock";
--		clocks = <&gfx_l3_fck>;
--		reg = <0x0b00>;
--		ti,bit-shift = <1>;
--	};
--
--	gfx_cg2_ck: gfx_cg2_ck@b00 {
--		#clock-cells = <0>;
--		compatible = "ti,wait-gate-clock";
--		clocks = <&gfx_l3_fck>;
--		reg = <0x0b00>;
--		ti,bit-shift = <2>;
--	};
--
--	clock@a00 {
--		compatible = "ti,clksel";
--		reg = <0xa00>;
--		#clock-cells = <2>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--
--		d2d_26m_fck: clock-d2d-26m-fck@3 {
--			reg = <3>;
--			#clock-cells = <0>;
--			compatible = "ti,wait-gate-clock";
--			clock-output-names = "d2d_26m_fck";
--			clocks = <&sys_ck>;
--		};
--
--		fshostusb_fck: clock-fshostusb-fck@5 {
--			reg = <5>;
--			#clock-cells = <0>;
--			compatible = "ti,wait-gate-clock";
--			clock-output-names = "fshostusb_fck";
--			clocks = <&core_48m_fck>;
--		};
--
--		ssi_ssr_gate_fck_3430es1: clock-ssi-ssr-gate-fck-3430es1@0 {
--			reg = <0>;
--			#clock-cells = <0>;
--			compatible = "ti,composite-no-wait-gate-clock";
--			clock-output-names = "ssi_ssr_gate_fck_3430es1";
--			clocks = <&corex2_fck>;
--		};
--	};
--
--	clock@a40 {
--		compatible = "ti,clksel";
--		reg = <0xa40>;
--		#clock-cells = <2>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--
--		ssi_ssr_div_fck_3430es1: clock-ssi-ssr-div-fck-3430es1@8 {
--			reg = <8>;
--			#clock-cells = <0>;
--			compatible = "ti,composite-divider-clock";
--			clock-output-names = "ssi_ssr_div_fck_3430es1";
--			clocks = <&corex2_fck>;
--			ti,dividers = <0>, <1>, <2>, <3>, <4>, <0>, <6>, <0>, <8>;
--		};
--
--		usb_l4_div_ick: clock-usb-l4-div-ick@4 {
--			reg = <4>;
--			#clock-cells = <0>;
--			compatible = "ti,composite-divider-clock";
--			clock-output-names = "usb_l4_div_ick";
--			clocks = <&l4_ick>;
--			ti,max-div = <1>;
--			ti,index-starts-at-one;
--		};
--	};
--
--	ssi_ssr_fck: ssi_ssr_fck_3430es1 {
--		#clock-cells = <0>;
--		compatible = "ti,composite-clock";
--		clocks = <&ssi_ssr_gate_fck_3430es1>, <&ssi_ssr_div_fck_3430es1>;
--	};
--
--	ssi_sst_fck: ssi_sst_fck_3430es1 {
--		#clock-cells = <0>;
--		compatible = "fixed-factor-clock";
--		clocks = <&ssi_ssr_fck>;
--		clock-mult = <1>;
--		clock-div = <2>;
--	};
--
--	clock@a10 {
--		compatible = "ti,clksel";
--		reg = <0xa10>;
--		#clock-cells = <2>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--
--		hsotgusb_ick_3430es1: clock-hsotgusb-ick-3430es1@4 {
--			reg = <4>;
--			#clock-cells = <0>;
--			compatible = "ti,omap3-no-wait-interface-clock";
--			clock-output-names = "hsotgusb_ick_3430es1";
--			clocks = <&core_l3_ick>;
--		};
--
--		fac_ick: clock-fac-ick@8 {
--			reg = <8>;
--			#clock-cells = <0>;
--			compatible = "ti,omap3-interface-clock";
--			clock-output-names = "fac_ick";
--			clocks = <&core_l4_ick>;
--		};
--
--		ssi_ick: clock-ssi-ick-3430es1@0 {
--			reg = <0>;
--			#clock-cells = <0>;
--			compatible = "ti,omap3-no-wait-interface-clock";
--			clock-output-names = "ssi_ick_3430es1";
--			clocks = <&ssi_l4_ick>;
--		};
--
--		usb_l4_gate_ick: clock-usb-l4-gate-ick@5 {
--			reg = <5>;
--			#clock-cells = <0>;
--			compatible = "ti,composite-interface-clock";
--			clock-output-names = "usb_l4_gate_ick";
--			clocks = <&l4_ick>;
--		};
--	};
--
--	ssi_l4_ick: ssi_l4_ick {
--		#clock-cells = <0>;
--		compatible = "fixed-factor-clock";
--		clocks = <&l4_ick>;
--		clock-mult = <1>;
--		clock-div = <1>;
--	};
--
--	usb_l4_ick: usb_l4_ick {
--		#clock-cells = <0>;
--		compatible = "ti,composite-clock";
--		clocks = <&usb_l4_gate_ick>, <&usb_l4_div_ick>;
--	};
--
--	clock@e00 {
--		compatible = "ti,clksel";
--		reg = <0xe00>;
--		#clock-cells = <2>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--
--		dss1_alwon_fck: clock-dss1-alwon-fck-3430es1@0 {
--			reg = <0>;
--			#clock-cells = <0>;
--			compatible = "ti,gate-clock";
--			clock-output-names = "dss1_alwon_fck_3430es1";
--			clocks = <&dpll4_m4x2_ck>;
--			ti,set-rate-parent;
--		};
--	};
--
--	dss_ick: dss_ick_3430es1@e10 {
--		#clock-cells = <0>;
--		compatible = "ti,omap3-no-wait-interface-clock";
--		clocks = <&l4_ick>;
--		reg = <0x0e10>;
--		ti,bit-shift = <0>;
--	};
--};
--
--&cm_clockdomains {
--	core_l3_clkdm: core_l3_clkdm {
--		compatible = "ti,clockdomain";
--		clocks = <&sdrc_ick>, <&hsotgusb_ick_3430es1>;
--	};
--
--	gfx_3430es1_clkdm: gfx_3430es1_clkdm {
--		compatible = "ti,clockdomain";
--		clocks = <&gfx_l3_ck>, <&gfx_cg1_ck>, <&gfx_cg2_ck>;
--	};
--
--	dss_clkdm: dss_clkdm {
--		compatible = "ti,clockdomain";
--		clocks = <&dss_tv_fck>, <&dss_96m_fck>, <&dss2_alwon_fck>,
--			 <&dss1_alwon_fck>, <&dss_ick>;
--	};
--
--	d2d_clkdm: d2d_clkdm {
--		compatible = "ti,clockdomain";
--		clocks = <&d2d_26m_fck>;
--	};
--
--	core_l4_clkdm: core_l4_clkdm {
--		compatible = "ti,clockdomain";
--		clocks = <&mmchs2_fck>, <&mmchs1_fck>, <&i2c3_fck>, <&i2c2_fck>,
--			 <&i2c1_fck>, <&mcspi4_fck>, <&mcspi3_fck>,
--			 <&mcspi2_fck>, <&mcspi1_fck>, <&uart2_fck>,
--			 <&uart1_fck>, <&hdq_fck>, <&mmchs2_ick>, <&mmchs1_ick>,
--			 <&hdq_ick>, <&mcspi4_ick>, <&mcspi3_ick>,
--			 <&mcspi2_ick>, <&mcspi1_ick>, <&i2c3_ick>, <&i2c2_ick>,
--			 <&i2c1_ick>, <&uart2_ick>, <&uart1_ick>, <&gpt11_ick>,
--			 <&gpt10_ick>, <&mcbsp5_ick>, <&mcbsp1_ick>,
--			 <&omapctrl_ick>, <&aes2_ick>, <&sha12_ick>,
--			 <&fshostusb_fck>, <&fac_ick>, <&ssi_ick>;
--	};
--};
+diff --git a/drivers/cpufreq/omap-cpufreq.c b/drivers/cpufreq/omap-cpufreq.c
+index bbb01d93b54b..f83f85996b36 100644
+--- a/drivers/cpufreq/omap-cpufreq.c
++++ b/drivers/cpufreq/omap-cpufreq.c
+@@ -157,7 +157,7 @@ static int omap_cpufreq_probe(struct platform_device *pdev)
+ 		return -EINVAL;
+ 	}
+ 
+-	mpu_reg = regulator_get(mpu_dev, "vcc");
++	mpu_reg = devm_regulator_get(mpu_dev, "vcc");
+ 	if (IS_ERR(mpu_reg)) {
+ 		pr_warn("%s: unable to get MPU regulator\n", __func__);
+ 		mpu_reg = NULL;
+@@ -169,7 +169,6 @@ static int omap_cpufreq_probe(struct platform_device *pdev)
+ 		if (regulator_get_voltage(mpu_reg) < 0) {
+ 			pr_warn("%s: physical regulator not present for MPU\n",
+ 				__func__);
+-			regulator_put(mpu_reg);
+ 			mpu_reg = NULL;
+ 		}
+ 	}
 -- 
-2.51.0
+2.50.1.windows.1
 
 
