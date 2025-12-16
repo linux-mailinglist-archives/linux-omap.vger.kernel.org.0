@@ -1,107 +1,182 @@
-Return-Path: <linux-omap+bounces-5193-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5194-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C727CBC4AC
-	for <lists+linux-omap@lfdr.de>; Mon, 15 Dec 2025 04:07:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EBD5CC10BA
+	for <lists+linux-omap@lfdr.de>; Tue, 16 Dec 2025 07:01:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CB1693009132
-	for <lists+linux-omap@lfdr.de>; Mon, 15 Dec 2025 03:07:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7D19D301412F
+	for <lists+linux-omap@lfdr.de>; Tue, 16 Dec 2025 06:01:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E76A317701;
-	Mon, 15 Dec 2025 03:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC1EE33468C;
+	Tue, 16 Dec 2025 06:01:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YITzAch0"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF04D3FFD;
-	Mon, 15 Dec 2025 03:07:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581D131AF1F;
+	Tue, 16 Dec 2025 06:01:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765768027; cv=none; b=QeWGO0K4a5eKrhPsqwomn//UinAvW9U6xiR4sdZfID6lioZ33CbUketSDLhBksAQMYPQLT07TUh6Knmj/lkxSMI7HSPL3Yv8RcoR7v+QNZfwokth03lxnGec1kUWewSF3F7t5qmLSQaBl0lITqoTxImEdpzRgh0xzEL+XSB7txI=
+	t=1765864913; cv=none; b=eF9t1ZkG120Vr3/GpuDRWFsKBhgv0T6aODjPDByqIkdbkgrFrxZmSCtiJHdLVN+d9b3s0WAcc4VFjOXB+NNXHdU+sHl3Q6Gk9qjW9h61qt7MzgXIr7K6e/BETz3GEeKWITVPkHy3SZkEgZOnJAWLp6DqRM/Lo0p4YR4+ykWoG50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765768027; c=relaxed/simple;
-	bh=LErrcRNnpssQ0GpNWM4WP5MO2P1nIf8hlgEKdjFQgr8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R2Eupgy/JwvdaH2olP9VksnnHb0x9q4UM7bXcyaUedFn50bl6NbH2dlKNtEFGkqxKJtvC5rHz2LaVOnhOspooua9rKC1YRmmHN/HQzYXOA0hZ2lossmt+faauqjQt7Ekib5YMNi2PmIT4x3DQZ5SvXXU1hYthWXOngV23jTSbYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from DESKTOP-L0HPE2S (unknown [124.16.141.245])
-	by APP-03 (Coremail) with SMTP id rQCowACnyN9Rez9pY3TCAA--.57841S2;
-	Mon, 15 Dec 2025 11:06:58 +0800 (CST)
-From: Haotian Zhang <vulab@iscas.ac.cn>
-To: Kevin Hilman <khilman@kernel.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Cc: linux-omap@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Haotian Zhang <vulab@iscas.ac.cn>
-Subject: [PATCH] omap-cpufreq: Fix regulator resource leak in probe()
-Date: Mon, 15 Dec 2025 11:03:27 +0800
-Message-ID: <20251215030327.1771-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1.windows.1
+	s=arc-20240116; t=1765864913; c=relaxed/simple;
+	bh=I95cDlcRjf1+/2faDF4bEDUMeInHLZs8Kq3NLwEe++A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fJ+J90x36QrTDX2oyTZOo3V9AJqjZIJzH58fHWLuFZfE5wylKgyqotKkiJL26MIknsw2FfO6pfjDHrsc+8ZOujHuZk3KMElTaEkJ+FD4zrgcFtqJrl1a2Zvqo+PeY61gWYi2ZrVIDCN9534tkaifl+UZQlsqi8JXPS7hwhBUXl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YITzAch0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D71C4CEF1;
+	Tue, 16 Dec 2025 06:01:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765864911;
+	bh=I95cDlcRjf1+/2faDF4bEDUMeInHLZs8Kq3NLwEe++A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YITzAch0mk5AlPQuPIPKdKc372t6AdmNCQ7JhwR1AzVoruoh4VvWmrgNNYMPwHYvN
+	 B8trJ37+YZNC09WuHa3aK2dIOKZsu5m+MAAjxw3vXrtosM5PXcbh77W+Y+/KOnrSHS
+	 YUyN9FnLNYC8z9HvFVqPxYQ0Spb9LIBXU7yF0XcYMiqymkGxAnqzYMP/bD3G+dmapt
+	 chzyxvZbFb6tGPRA2DdfFm/CwBdVWqyJdO77Z4bCWIjAheZBaF6QnUuMY8KMiNg7Bg
+	 yEz2QtlrBlyeMLzapXkH6xKysyJLiy1KjWfzJvx64DaX4PAqNiZ/QmEZiuyLNvFngk
+	 d1ZXWB+U8k7fw==
+Date: Tue, 16 Dec 2025 07:01:49 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
+Cc: Jyri Sarha <jyri.sarha@iki.fi>, 
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Russell King <linux@armlinux.org.uk>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Tony Lindgren <tony@atomide.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Markus Schneider-Pargmann <msp@baylibre.com>, 
+	Bajjuri Praneeth <praneeth@ti.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Louis Chauvet <louis.chauvet@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	Miguel Gazquez <miguel.gazquez@bootlin.com>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCH v2 01/20] dt-bindings: display: tilcdc: Convert to DT
+ schema
+Message-ID: <20251216-capable-eccentric-nightingale-b09037@quoll>
+References: <20251211-feature_tilcdc-v2-0-f48bac3cd33e@bootlin.com>
+ <20251211-feature_tilcdc-v2-1-f48bac3cd33e@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACnyN9Rez9pY3TCAA--.57841S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Kr45XF1xAr18tF4rury7GFg_yoW8Gry8pF
-	Z8Xr42kry8JFyvyw4DuF4I93WFvw1vyws29348Gwsavw1DJa4fX3Z8C345ZFWrG3ykJr4j
-	vry7Za4xAFWDZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
-	JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUejjgDU
-	UUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgsRA2k-bwQynQAAsN
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251211-feature_tilcdc-v2-1-f48bac3cd33e@bootlin.com>
 
-The current omap_cpufreq_probe() uses regulator_get() to obtain the MPU
-regulator but does not release it in omap_cpufreq_remove() or when
-cpufreq_register_driver() fails, leading to a potential resource leak.
+On Thu, Dec 11, 2025 at 05:38:45PM +0100, Kory Maincent (TI.com) wrote:
+> diff --git a/Documentation/devicetree/bindings/display/tilcdc/tilcdc.yaml b/Documentation/devicetree/bindings/display/tilcdc/tilcdc.yaml
+> new file mode 100644
+> index 0000000000000..34ac1fd04d5c6
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/tilcdc/tilcdc.yaml
 
-Use devm_regulator_get() instead of regulator_get() so that the regulator
-resource is automatically released.
+Filename based on compatible, so for example ti,am33xx-tilcdc.yaml or
+worse case ti,tilcdc.yaml (see writing bindings and writing schema docs)
 
-Fixes: 53dfe8a884e6 ("cpufreq: OMAP: scale voltage along with frequency")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
----
- drivers/cpufreq/omap-cpufreq.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/omap-cpufreq.c b/drivers/cpufreq/omap-cpufreq.c
-index bbb01d93b54b..f83f85996b36 100644
---- a/drivers/cpufreq/omap-cpufreq.c
-+++ b/drivers/cpufreq/omap-cpufreq.c
-@@ -157,7 +157,7 @@ static int omap_cpufreq_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
- 
--	mpu_reg = regulator_get(mpu_dev, "vcc");
-+	mpu_reg = devm_regulator_get(mpu_dev, "vcc");
- 	if (IS_ERR(mpu_reg)) {
- 		pr_warn("%s: unable to get MPU regulator\n", __func__);
- 		mpu_reg = NULL;
-@@ -169,7 +169,6 @@ static int omap_cpufreq_probe(struct platform_device *pdev)
- 		if (regulator_get_voltage(mpu_reg) < 0) {
- 			pr_warn("%s: physical regulator not present for MPU\n",
- 				__func__);
--			regulator_put(mpu_reg);
- 			mpu_reg = NULL;
- 		}
- 	}
--- 
-2.50.1.windows.1
+> @@ -0,0 +1,96 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/display/tilcdc/tilcdc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: TI LCD Controller, found on AM335x, DA850, AM18x and OMAP-L138
+> +
+> +maintainers:
+> +  - Kory Maincent <kory.maincent@bootlin.com>
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - ti,am33xx-tilcdc
+> +      - ti,da850-tilcdc
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  port:
+> +    $ref: /schemas/graph.yaml#/properties/port
+> +
+> +  ti,hwmods:
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    description:
+> +      Name of the hwmod associated to the LCDC
+> +
+> +  max-bandwidth:
+
+constraints? Is '1' valid? Is INT_MAX valid as well?
+
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      The maximum pixels per second that the memory interface / lcd
+> +      controller combination can sustain
+> +
+> +  max-width:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+
+constraints?
+
+> +    description:
+> +      The maximum horizontal pixel width supported by the lcd controller.
+> +
+> +  max-pixelclock:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      The maximum pixel clock that can be supported by the lcd controller
+> +      in KHz.
+> +
+> +  blue-and-red-wiring:
+> +    enum: [straight, crossed]
+> +    description:
+> +      This property deals with the LCDC revision 2 (found on AM335x)
+> +      color errata [1].
+> +       - "straight" indicates normal wiring that supports RGB565,
+> +         BGR888, and XBGR8888 color formats.
+> +       - "crossed" indicates wiring that has blue and red wires
+> +         crossed. This setup supports BGR565, RGB888 and XRGB8888
+> +         formats.
+> +       - If the property is not present or its value is not recognized
+> +         the legacy mode is assumed. This configuration supports RGB565,
+> +         RGB888 and XRGB8888 formats. However, depending on wiring, the red
+> +         and blue colors are swapped in either 16 or 24-bit color modes.
+> +
+> +       [1] There is an errata about AM335x color wiring. For 16-bit color
+> +       mode the wires work as they should (LCD_DATA[0:4] is for Blue[3:7]),
+> +       but for 24 bit color modes the wiring of blue and red components is
+> +       crossed and LCD_DATA[0:4] is for Red[3:7] and LCD_DATA[11:15] is
+> +       for Blue[3-7]. For more details see section 3.1.1 in AM335x
+> +       Silicon Errata
+> +       https://www.ti.com/general/docs/lit/getliterature.tsp?baseLiteratureNumber=sprz360
+> +
+> +required:
+> +  - compatible
+> +  - interrupts
+> +  - reg
+> +  - port
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    tilcdc: tilcdc@4830e000 {
+
+Drop unused label. Generic node name, e.g. "display-controller" or
+"lcd-controller".
+
+
+Best regards,
+Krzysztof
 
 
