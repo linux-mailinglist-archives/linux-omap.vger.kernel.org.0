@@ -1,51 +1,51 @@
-Return-Path: <linux-omap+bounces-5214-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5215-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE672CC841A
-	for <lists+linux-omap@lfdr.de>; Wed, 17 Dec 2025 15:43:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D12CC8408
+	for <lists+linux-omap@lfdr.de>; Wed, 17 Dec 2025 15:41:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3167E3058E78
-	for <lists+linux-omap@lfdr.de>; Wed, 17 Dec 2025 14:38:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 004FE30FBA09
+	for <lists+linux-omap@lfdr.de>; Wed, 17 Dec 2025 14:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA20C34F24F;
-	Wed, 17 Dec 2025 14:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E4E354ACD;
+	Wed, 17 Dec 2025 14:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RPYpOyYV"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZenrByKB"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EBA34E765
-	for <linux-omap@vger.kernel.org>; Wed, 17 Dec 2025 14:26:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453C934FF6C;
+	Wed, 17 Dec 2025 14:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765981585; cv=none; b=YUWFBGOGJYOSTdGML4oP4nFNG26JJxlRgyEicsRejCyVFak7g1Cw9eH8qBoXQktVr/3nG6m9tBaSPzC523XWXvC022ePdawyEOe4fEDjXk4dQ4RvW96RDDW3NckcWjJs67OJusMm7Hx0OSBuy0FND2Sc5K/WOFvhL5gce1WlRpg=
+	t=1765981596; cv=none; b=bVKGhkwt6AnPT/rpW/jvogc4HbGgHXG9gogU6ogOuGXJ3qHENRep0S1sKjofB+XFtMWQEIlTaWd/xm/65QozFqYWcE5e38MPu5UlR8W/6mofCIDNW8CfkIHZq+j2TcbDbnX8cY1tlMEP5Ido6ce6xzssclDaaU4YBKq1IYxKNaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765981585; c=relaxed/simple;
-	bh=b2NN2dQMMIMWyY2CwDLF2JNtDMv+Z6tQUfqwLsqBg7g=;
+	s=arc-20240116; t=1765981596; c=relaxed/simple;
+	bh=lIuE0WtPJvS2INuyaKV/4a3/NkoICAISHEWT1v/5f64=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=g+VfNQ3GozdVDMJjo5YFjeMWqh3s5B8I0JOA167pX6v1xP+8lqa3tYtShFNFsCp7rpM9Yi7Ktk1ub87vxxFfYnYXaGeb3bCNpJhzlQaCsiKH6z6HqQteiNebWQufMpw6JJ0n1o/bARB/0216S+WUDhxDFsnmhrOFNJh36JtFIG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RPYpOyYV; arc=none smtp.client-ip=185.171.202.116
+	 References:In-Reply-To; b=Swg0KvjYhuNvqJHGEd/2zUaRjkg+hqYICj0zteUFLPghFu5MffCmYEE6PTfn0r+UIHIFITfx3AEqDbionZzffTZXV4RvciK5reS862AdKwe9VDHIV/ZlZSkmZyNCvHw7NmihKSSyegJ/86JVaQm3OTq1lvm5gapKBWy4IycHClM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZenrByKB; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 22019C1A59E;
-	Wed, 17 Dec 2025 14:25:57 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id E27361A2281;
+	Wed, 17 Dec 2025 14:26:31 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A62DB6072F;
-	Wed, 17 Dec 2025 14:26:21 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 101A2102F0AD5;
-	Wed, 17 Dec 2025 15:26:17 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B7D8A6072F;
+	Wed, 17 Dec 2025 14:26:31 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4B086102F0AD6;
+	Wed, 17 Dec 2025 15:26:23 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1765981580; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1765981586; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=b2NN2dQMMIMWyY2CwDLF2JNtDMv+Z6tQUfqwLsqBg7g=;
-	b=RPYpOyYVWxLffw4P2Gvc6vqaRomO9Mn24k/k7XhAkb8q6P+r5u7AWM9XG4j1TXWkO2mufi
-	iqZg/xLlNNFVhpnL++fww4E/yjxdQXrjtURhDtmI72Eq3DMbI5FQRTBP+w1a2bT4mN5e8h
-	NhkugMgtpZuegJOJt4MGfmX4IZ4lntH9CTZzMbBalRFnA/qenQgbvHh29+DqA3dVck+Vrp
-	znLmK+H0qYFU2TriFA2K6bToYsaGvn5sufglqmljYUnPVLKhRZjwUESpAQnQs+2aJI2Uv0
-	m5jXeY/KmNGQ68jsUInxF++lCy/gdsJKAj1sHupPkrMzE9Ksuw3+AHaR/HrCvA==
+	bh=LdI+WLhwoG2148T22JxuSuz6UiWPQZG056K2Vo9svR0=;
+	b=ZenrByKB4riY+GKo1T8xP6/Mo8UDElSx1ICK6SOLZN83miOdDSFHFaydE0zYZ5UXZAPV25
+	0546wAgP6BSD5ACbA9F26FI0aUxz5E7idXNqna2S+pOZrWuR8Xw9cQ5uF8J3i7W2izuwCF
+	P7A1BViQr626iP1CwpG7zObQkDpJ5fkfTGpdUubKzxnaZXJhh6Mc+IStE1IcMUlGcMyybS
+	MmrQ9HdN7ixAwdVcmebqpdqC9xW5jvF/mDiiV4GRb7mZon6O+IohZPiI5MlPrCdk3UlIG3
+	Ttv/E3925xpvvK0hoNXB3OYw1dK5qMgnOFRlcBdtDZqq0LxsuEs+/F4X4l8qVQ==
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -54,9 +54,10 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 17 Dec 2025 15:26:16 +0100
-Message-Id: <DF0K80GZ8QQZ.2HKNJGNJ4LYC9@bootlin.com>
-Subject: Re: [PATCH v2 16/20] drm/bridge: tda998x: Remove component support
+Date: Wed, 17 Dec 2025 15:26:22 +0100
+Message-Id: <DF0K83B46R5Y.387A8AWR3CDP5@bootlin.com>
+Subject: Re: [PATCH v2 17/20] drm/bridge: tda998x: Move
+ tda998x_create/destroy into probe and remove
 Cc: "Markus Schneider-Pargmann" <msp@baylibre.com>, "Bajjuri Praneeth"
  <praneeth@ti.com>, "Louis Chauvet" <louis.chauvet@bootlin.com>, "Thomas
  Petazzoni" <thomas.petazzoni@bootlin.com>, "Miguel Gazquez"
@@ -79,18 +80,102 @@ To: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>, "Jyri Sarha"
 From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
 X-Mailer: aerc 0.20.1
 References: <20251211-feature_tilcdc-v2-0-f48bac3cd33e@bootlin.com>
- <20251211-feature_tilcdc-v2-16-f48bac3cd33e@bootlin.com>
-In-Reply-To: <20251211-feature_tilcdc-v2-16-f48bac3cd33e@bootlin.com>
+ <20251211-feature_tilcdc-v2-17-f48bac3cd33e@bootlin.com>
+In-Reply-To: <20251211-feature_tilcdc-v2-17-f48bac3cd33e@bootlin.com>
 X-Last-TLS-Session-Version: TLSv1.3
 
 On Thu Dec 11, 2025 at 5:39 PM CET, Kory Maincent (TI.com) wrote:
-> The tilcdc driver no longer uses the component framework to bind the
-> tda998x bridge driver. The component bind/unbind operations and the
-> encoder initialization code are now dead code and can be safely removed.
+
+Small nit:
+
+> Now that tda998x_create and tda998x_destroy are called only in the probe
+> function, there is no need for separate functions.
+ ^ add "and remove" here
+
+> Move the code into the tda998x_probe and tda998x_remove functions.
+> Rewrite the cleanup path using goto calls in probe and reorder it in the
+> remove function.
 >
 > Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
+> ---
+>  drivers/gpu/drm/bridge/tda998x_drv.c | 99 +++++++++++++++++++-----------=
+------
+>  1 file changed, 51 insertions(+), 48 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/bridge/tda998x_drv.c b/drivers/gpu/drm/bridg=
+e/tda998x_drv.c
+> index 865285ba2bd8c..4be49dd5bfc01 100644
+> --- a/drivers/gpu/drm/bridge/tda998x_drv.c
+> +++ b/drivers/gpu/drm/bridge/tda998x_drv.c
+> @@ -1748,38 +1748,20 @@ static int tda998x_get_audio_ports(struct tda998x=
+_priv *priv,
+>  	return 0;
+>  }
+>
+> -static void tda998x_destroy(struct device *dev)
+> -{
+> -	struct tda998x_priv *priv =3D dev_get_drvdata(dev);
+> -
+> -	drm_bridge_remove(&priv->bridge);
+> -
+> -	/* disable all IRQs and free the IRQ handler */
+> -	cec_write(priv, REG_CEC_RXSHPDINTENA, 0);
+> -	reg_clear(priv, REG_INT_FLAGS_2, INT_FLAGS_2_EDID_BLK_RD);
+> -
+> -	if (priv->audio_pdev)
+> -		platform_device_unregister(priv->audio_pdev);
+> -
+> -	if (priv->hdmi->irq)
+> -		free_irq(priv->hdmi->irq, priv);
 
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Compared to the original code being removed...
+
+> @@ -1956,26 +1941,44 @@ static int tda998x_create(struct device *dev)
+>
+>  	return 0;
+>
+> -fail:
+> -	tda998x_destroy(dev);
+> -err_irq:
+> +unregister_dev:
+> +	i2c_unregister_device(priv->cec);
+> +notifier_conn_unregister:
+> +	cec_notifier_conn_unregister(priv->cec_notify);
+> +free_irq:
+> +	if (client->irq) {
+> +		free_irq(client->irq, priv);
+> +		cec_write(priv, REG_CEC_RXSHPDINTENA, 0);
+> +		reg_clear(priv, REG_INT_FLAGS_2, INT_FLAGS_2_EDID_BLK_RD);
+> +	}
+
+...here you moved free_irq() before writing registers. It should stay last,
+as per free_irq() documentation.
+
+[...]
+
+> -static void tda998x_remove(struct i2c_client *client)
+> -{
+> -	tda998x_destroy(&client->dev);
+> +	if (priv->audio_pdev)
+> +		platform_device_unregister(priv->audio_pdev);
+> +
+> +	i2c_unregister_device(priv->cec);
+> +
+> +	cec_notifier_conn_unregister(priv->cec_notify);
+> +
+> +	/* disable all IRQs and free the IRQ handler */
+> +	if (client->irq) {
+> +		cec_write(priv, REG_CEC_RXSHPDINTENA, 0);
+> +		reg_clear(priv, REG_INT_FLAGS_2, INT_FLAGS_2_EDID_BLK_RD);
+> +		free_irq(priv->hdmi->irq, priv);
+> +	}
+
+Here the order is correct.
+
+Otherwise looks good! With the above fixed and no other changes you can
+add my Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+
+Luca
 
 --
 Luca Ceresoli, Bootlin
