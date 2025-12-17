@@ -1,51 +1,51 @@
-Return-Path: <linux-omap+bounces-5217-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5218-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 794B7CC841D
-	for <lists+linux-omap@lfdr.de>; Wed, 17 Dec 2025 15:43:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3E91CC8583
+	for <lists+linux-omap@lfdr.de>; Wed, 17 Dec 2025 16:08:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 39083306FE6E
-	for <lists+linux-omap@lfdr.de>; Wed, 17 Dec 2025 14:38:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D930130DD6AD
+	for <lists+linux-omap@lfdr.de>; Wed, 17 Dec 2025 15:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BC7361DCF;
-	Wed, 17 Dec 2025 14:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1778365A15;
+	Wed, 17 Dec 2025 14:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="i557slcF"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="niEu2lja"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11BB361DCB
-	for <linux-omap@vger.kernel.org>; Wed, 17 Dec 2025 14:26:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09695366DA3
+	for <linux-omap@vger.kernel.org>; Wed, 17 Dec 2025 14:26:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765981610; cv=none; b=QNZoI9HoAGc1/sFJBrs1zYYNOAF6LXI2SCB+4eb9NOBJumsJV1+TkgBkwqoS32eDXK/iHm8tdmgHzzcZyLi5fBzt04kJQ2Lbuk+ETbCLzTvLWnWVmAMCh+K8HO/hdTDhpmY+JTAblMG9wL0KfCoIm0IkmXPkeCn8VHJf4nyasXg=
+	t=1765981618; cv=none; b=ETtdsQGpVhSuCofXraMn/y6sw/avRl2HXiNADzHUNOEuV1CVMYDh2g9+CLiWmcuOuzwQMyGbjcFIO/r8yWSKqoVTa4xWSVzywvSqxleRO0WmVv5t/7NRrwt+xdHQn8KP68d4F+TZPD9tGBycSfoMJuSoWB0kYskNmzllG0VJK6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765981610; c=relaxed/simple;
-	bh=kdrcbRuNfNIYwqnVXaEJgUbwBUAE3RshqH8HZodpWVU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=iH3fM4/a84kGGviBsreOJxIwl5xTqn2xoJaGVbVwwzBVPs6pgvE/s7u9rWb+v7wHcRG3La0ZXMmXy7xBOTBxJceTIfWz8zxDtDpKc9cxAL1r2SqHJjY+IF9B/7th0Bi10J5FjXVmrwBjT5lR+4rojPvq9tOiEaAqG4MgpbiK89Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=i557slcF; arc=none smtp.client-ip=185.171.202.116
+	s=arc-20240116; t=1765981618; c=relaxed/simple;
+	bh=WpFTNZp1BkY5aeHm9MwA/7jopV+H1qGUXOIS+V2/270=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=ZoR/tOipClpqpXxuENN0w/oqWVws+blLKmTVUsiOKuLo/ftVXFqMtUyrzQEOzZX2NeZrjYQ3ezRtPlvK5ojgC+4U1r/J7kn9ZcDHVnw9Aobl71nyL4khHLzXwIwW3O3qEJ11XyrayqaU+yIM0nogyo0A4BqtArbWRFyb1Il+1tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=niEu2lja; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id F2280C1A59F;
-	Wed, 17 Dec 2025 14:26:21 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id ABDD11A2285;
+	Wed, 17 Dec 2025 14:26:55 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 802546072F;
-	Wed, 17 Dec 2025 14:26:46 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 15734102F0AD5;
-	Wed, 17 Dec 2025 15:26:42 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7F29F6072F;
+	Wed, 17 Dec 2025 14:26:55 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CDDEA102F0AD6;
+	Wed, 17 Dec 2025 15:26:49 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1765981605; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1765981614; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=YDX1qXUbxhjoP2T+6sGXnAdfnWZpwmfhKaz+lWV9Ox0=;
-	b=i557slcFQjwF4LQaQPzNhGuODav4tNj9ltFajgy5V9vFyDFB+He4fnZNUOo0gJEsxrDs7d
-	FrNuHM8bi5+k1L/PJGhrrVC5UoVynX2II1ImSypDmv/uGWa752fHg/g9c18PLFF+7Ut1yL
-	miWheZ4RFC05VPHCgP1e8SIgowzxuqWgEASqM7rMrHAa2iQ2symcSpKAmt7vWojs0jjXwo
-	Cr8R9uam6K1DwxEBC0czPKqb1H5ivLqCzTtIcOdCflCTuAZzNcG3/1JxZ/cZqPfHuVgMBH
-	psUIG/+yKlXWbwPvw3PYCUt+LEqCa0S7AFgLdasBF4oWFwqxwI8Q6M77LJEOHw==
+	bh=WpFTNZp1BkY5aeHm9MwA/7jopV+H1qGUXOIS+V2/270=;
+	b=niEu2lja+3bMOVifguU8UiBsXtDpKAzyE74Rrbcp9L4Po1XhqbQrvBQ4Lr/IKYTQA7eq6k
+	5TL6KhGh56B9nzBmEjBzLRXeYg0AnyFehDTv5sdkICdyI952XF3XHp8PSiieBe9epf6o2W
+	cqkzM3h+zuQ1Ug2UNG0gTTT5FBO50BG89adtQ+eUT5abkxWx2gZ3iYxjf/4p+bcPUkGchK
+	9gmUWTztvfgIGRG9qsDr369Ped9ap4JRnmGuR/EtYehR3ucarDykV/rvWG2lbw50FsIWX1
+	G3PtuNxDfGtO1gveFu98+SXSaB68mFENQ5EcCEhU+RsyXBNkJyDXRqWRgIilCA==
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -54,10 +54,9 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 17 Dec 2025 15:26:41 +0100
-Message-Id: <DF0K8BWFMM5G.2DEY7RJB6SSBA@bootlin.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v2 19/20] drm/bridge: tda998x: Add support for
+Date: Wed, 17 Dec 2025 15:26:49 +0100
+Message-Id: <DF0K8FGRVIGZ.1UTD9XSHX4CVF@bootlin.com>
+Subject: Re: [PATCH v2 20/20] drm/tilcdc: Add support for
  DRM_BRIDGE_ATTACH_NO_CONNECTOR
 Cc: "Markus Schneider-Pargmann" <msp@baylibre.com>, "Bajjuri Praneeth"
  <praneeth@ti.com>, "Louis Chauvet" <louis.chauvet@bootlin.com>, "Thomas
@@ -78,28 +77,26 @@ To: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>, "Jyri Sarha"
  <rfoss@kernel.org>, "Laurent Pinchart" <Laurent.pinchart@ideasonboard.com>,
  "Jonas Karlman" <jonas@kwiboo.se>, "Jernej Skrabec"
  <jernej.skrabec@gmail.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
 X-Mailer: aerc 0.20.1
 References: <20251211-feature_tilcdc-v2-0-f48bac3cd33e@bootlin.com>
- <20251211-feature_tilcdc-v2-19-f48bac3cd33e@bootlin.com>
-In-Reply-To: <20251211-feature_tilcdc-v2-19-f48bac3cd33e@bootlin.com>
+ <20251211-feature_tilcdc-v2-20-f48bac3cd33e@bootlin.com>
+In-Reply-To: <20251211-feature_tilcdc-v2-20-f48bac3cd33e@bootlin.com>
 X-Last-TLS-Session-Version: TLSv1.3
 
 On Thu Dec 11, 2025 at 5:39 PM CET, Kory Maincent (TI.com) wrote:
-> Add support for the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag to allow display
-> controller drivers to create their own connectors. This modernizes the
-> driver to work with the current DRM bridge framework.
+> Convert the driver to use the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag when
+> attaching bridges. This modernizes the driver by delegating connector
+> creation to the bridge subsystem through drm_bridge_connector_init()
+> instead of manually searching for connectors created by the bridge.
 >
-> The implementation includes:
-> - Refactoring detection and EDID reading into bridge-usable helpers
-> - Adding bridge operations: edid_read, detect, hpd_enable, hpd_disable
-> - Setting appropriate bridge ops (DRM_BRIDGE_OP_EDID, DRM_BRIDGE_OP_DETEC=
-T,
->   DRM_BRIDGE_OP_HPD) and connector type (HDMIA)
-> - Skipping connector creation when DRM_BRIDGE_ATTACH_NO_CONNECTOR is set
-> - Handling conditional connector cleanup in bridge_detach
+> The custom tilcdc_encoder_find_connector() function is removed and
+> replaced with the standard drm_bridge_connector infrastructure, which
+> simplifies the code and aligns with current DRM bridge best practices.
 >
-> The driver maintains backward compatibility by continuing to create its
-> own connector when the flag is not set.
+> This change is safe as there are now no in-tree devicetrees that
+> connect tilcdc to bridges which do not support the
+> DRM_BRIDGE_ATTACH_NO_CONNECTOR flag.
 >
 > Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
 
