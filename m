@@ -1,77 +1,77 @@
-Return-Path: <linux-omap+bounces-5226-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5227-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB3A5CCE93F
-	for <lists+linux-omap@lfdr.de>; Fri, 19 Dec 2025 06:45:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB0FCCE948
+	for <lists+linux-omap@lfdr.de>; Fri, 19 Dec 2025 06:46:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 66A8F3093F96
-	for <lists+linux-omap@lfdr.de>; Fri, 19 Dec 2025 05:43:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E55F309B349
+	for <lists+linux-omap@lfdr.de>; Fri, 19 Dec 2025 05:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A552D4B77;
-	Fri, 19 Dec 2025 05:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3788A2D1913;
+	Fri, 19 Dec 2025 05:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UVNZt8B0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MEMGQLF7"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD602D1913
-	for <linux-omap@vger.kernel.org>; Fri, 19 Dec 2025 05:43:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34A62D0C92
+	for <linux-omap@vger.kernel.org>; Fri, 19 Dec 2025 05:43:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766123024; cv=none; b=MLP2qFdG8yQM3Zj7kSSpeWyBg5D+CxlPglcA0syUrDHB6TsmJElqA6DcPyeAozH4LNninloyFVwxQgVmll+3aD9zzwpXKxi75GvKX1TeKOhz7+RCKngjHiGckjlXphkqh4a964VwaxGt6QyZ0iilxNdcFU5Ih87ZlnCIz0kZaAI=
+	t=1766123026; cv=none; b=rQGltzYNYfuCcs4amyhEySJ0nLqVW3oywJ67cKOSNsiL3eKYvxVIWa4SRt4p/zRuQwMWXYpkY/64jv3JYc82yyhRXK+ZtRPZyduI/9scpiZI/ZhXTPAjj2lQEAc324rn/R6tbodko1soiVM1GXjbq7oWdfkDcWlGA3CXCOIcXYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766123024; c=relaxed/simple;
-	bh=86Kzw/hKU0nrIm8xZ8jpwyS+2DiCcDwmWTX+qvqHhFE=;
+	s=arc-20240116; t=1766123026; c=relaxed/simple;
+	bh=/h0B2MrEIB8vw1/0qkLk8pblOQDpqw3e0E/7EdgwDz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dryFr1agq39+mkv9Jm4ChdTYMrKjINYS1G717jHGw6+FtOekpLo556wrlO3IDYBA9a7kSgyskd5jDV5R/pK/7WyO9VQLxsgcVGlr1Wz7Ye2zgM0HMtWfKuCgDmw1Gw/+VmNUOrKefo6s0WM+eEAkZc75FzO3GvvUD4+elvwmVyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UVNZt8B0; arc=none smtp.client-ip=209.85.214.172
+	 MIME-Version; b=CE0vS74aya1cIqvxXGGyOi9SYnMRrJ7uj/KUR6SMCRGD70YoNdsPMQBJnO7ANmnQ0V2HsYykcpbF11vCgVqpzuowdS5BKKHFmUk9mbcgA2ZfobKxiGUdM7DsAHr+XM0AJ4fXviMQsg9IvsmEOXcCzV/JOt4you4miM31gFplyd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MEMGQLF7; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-29f102b013fso18032085ad.2
-        for <linux-omap@vger.kernel.org>; Thu, 18 Dec 2025 21:43:42 -0800 (PST)
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a0f3f74587so19560175ad.2
+        for <linux-omap@vger.kernel.org>; Thu, 18 Dec 2025 21:43:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766123022; x=1766727822; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1766123024; x=1766727824; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fKkdwzvSXz/T9pEqrvQ0VdQLUSbrQRl3ctUuH0zUyRA=;
-        b=UVNZt8B0eRLdEbUBBnh2zpWq40lqCA+elXS7xzOsTlxlq64QBnZcxPvl6QfxP/kPDT
-         tuXIMj94oId9VJbpPx+G/bm80iRYbpaCAu8RODiJajR18I4ieuRN99MjU8TsGQPoGFNX
-         5CKj5ktHIgjWDVv/0QFpcpnuqGLBmDPFxCtHOf06uI4Xy3P/SlO46/+d5p+VSEjSK9D+
-         ydRm1K58ClGnvON/LdC8qscoEp+kN74teNXzFC0Rm5O+bS2vXp1JzBewGttJ4BSJgdr0
-         QLl/irSolSQlNtO1DLuj70gqlfog37mLwDcMVgUru9SmLfsZbKxc6nMQj53KgubYLbPG
-         nfIg==
+        bh=wLowgtUxpf7Ylc32b4gcev+kc2iAvzLFrJvCpgPdl8s=;
+        b=MEMGQLF7wLCH7OpEDUVaeJDgrsjKFUWkDuTpFnx68L9JLQGVqnOKVr3h5P2gLMuyOW
+         exuw/wisARzusZqbKf8LBe6QvrY/8BXg/hvpQodRQts4DHIY5VaCMkMfKHxLAA8Ns4P6
+         /Ny/SY61iHs4hHSwAuURv7PQXQZR9w6VAqgq9BzlnqlbM4F6+FiDC72mVVXAf0muTirB
+         +6mW1Bqqtw8vtQm7o07NdHyU3ccWcMjCVdbokwywQYw8S/sBn46uQQyT0sxHOznYPQ/M
+         xunbDVL7QbCo7owcg9G/pa1yu0yyfSYmN2GaaAefjDBqQm3x9N0FjZ22vtIKazBYuZyu
+         SwCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766123022; x=1766727822;
+        d=1e100.net; s=20230601; t=1766123024; x=1766727824;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=fKkdwzvSXz/T9pEqrvQ0VdQLUSbrQRl3ctUuH0zUyRA=;
-        b=CYgLPlMfHfUUcPoZ3Osu8ZxZWKOKcSXYyapbkioEzx5ciJ4kysRq9kBN4PP7AEr+A0
-         ywKOWIlj3U42vY+aIt6kVo/hfHsnxYHlp6kaUslQQcZR6iLuGS+Z+6q2PKRNOI3bWRJf
-         0zW8rSL/NUZWMIwZ8vCa1JosfptK3cK9GHWkNNxVKraNJ6vtQDs+A4YHTgrlaa4xPCLU
-         n+9x3986mc67cv91DHiQ+iKyf/gspXwImllG/aNhG96r3lEjTQmEIE74fHLAmctZZl9s
-         /ZiqIGz6k4ilAU8bCltmClCeDjwADvll/AUtA3q2wgIdglPrvx4VdhjyY5FybKqIug5q
-         UvUA==
-X-Forwarded-Encrypted: i=1; AJvYcCUJWd4waKDivrvDjaj3nia28B8c6GT+BC/SJRkIhXOzp8+f2gLCEJfEuGKoUqevPm+MeVTng72OOSKj@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiHBXnh6Fxpg2pLb4OTdaxecmzK28TB/Cz7F09PqJssv4LgKp8
-	l8dap+OIhKFA1ikuxyj5aeVasMu7064rrnNTsypSacBGiuYMU9mFz3uF
-X-Gm-Gg: AY/fxX5nkisBzwWhgfqEIYbx2TVySc+nFe2taRYM4IoAZ/t2jim/lj6ufi6pTFV8bYr
-	SMSfBbbZgHOvyMFeMe/m7VvIbQmoUyrHtbcf9zpzYouyAUQiwTUsXCn665ynl7k7Y8jttmKSn7y
-	DG0HSe7CqCRgwrjbywhkGxREVr665sROcFw1tooe+cFQ+tJ6wG7GxogHQm3yWBOOx37DNgTuA7X
-	m43jF0tUR89bmeoGY6BdL1T8r9Jth4JRr9U+NPuf/tXvFy0K2LZHBYlYX/0M6MdRl8/FsgvjAPM
-	jfXI5XscUkFfIf47QUTiTYwKU/8scB1SG38TCxSc7+XZYLdywZze60KJMCr5mKUiuurKFtns3Z5
-	bjJJV3aE955/2yBDoCA4WBAYUsfPwK8Iav97ZRVbwymNqqIxeHdGBho5LUwLLusCI7y4NQgKJjk
-	B51WW23UYDZFpczt6Lku5DvKads3dIZwH0+Pm4ufbnbVU=
-X-Google-Smtp-Source: AGHT+IGRBz3LEiHHY3N36Lf2Jbdyl+OtCRRLAqx/kmUDLPH9d4n3KvJgE1piBAVSSdqL472NtK6Xtg==
-X-Received: by 2002:a17:902:f78d:b0:2a0:c35c:572e with SMTP id d9443c01a7336-2a2f2836480mr16751125ad.30.1766123021882;
-        Thu, 18 Dec 2025 21:43:41 -0800 (PST)
+        bh=wLowgtUxpf7Ylc32b4gcev+kc2iAvzLFrJvCpgPdl8s=;
+        b=Y1bwsyhkIHMUO8vdh9CiADVtN5WcICFCkoYPz8GPhpobTSiTI++I2kiEcu6hmkxIht
+         1LVzQMR0+KZgp6c04E1uT6XX5QNhM60Q9nucZCKwS1szX+3ZIRsIAdDg7LvFZbmmOZVm
+         K5bb4+bDLyUDz1c7c51Zt3kUix9kjZgpgxrus3wFYe0L7AmTjc/Ctnde+F5PHt7AwmHd
+         XwDtBA9lYf2guudYqazk+BhwvPgJeDYiP6HnXlOEDDqjlRyeC7MnzPdsbeXLhFMAsFuk
+         rNfhWL2r2nJfCReTFS0E7vRXyOLed3zl67EvSWKTEwT89uucWpMRsSuTitLM1TfmL4pb
+         CsTw==
+X-Forwarded-Encrypted: i=1; AJvYcCXs2h+6brePPTlaAhN4f25i6NVrYrUqnOIV6JhDAqou/zIjn01PagQ84imwlR2DfoRky5E069xJR4P1@vger.kernel.org
+X-Gm-Message-State: AOJu0YyljAd6JfRdgyjgY0VCG1/byXR/kiB4sHljbt7WkP6iy96CopJT
+	x8JV2NEUbXwYPZUGrth+0K8N2uyLgRZCYifEHZupv4Dj/2mqqS5SGl+y
+X-Gm-Gg: AY/fxX6GKUUI6RxDuHCGm36SJX1RzJ5X2QyZJoM3YPN3uAaCLBI0dX2sXLlsDuXU0OJ
+	q4ISHEPbLhKCltYKSBxOf6QUKnsKf8wlgzjIZRTL9LjXHXTNHi7uOcVStQomW8wInntRIRaorxQ
+	j/RuVRuemi99HnNKKvZY45wf1weUKN8LMRex3D5yOmfESsQwVDXL+gKgJLcmR0mRC/vF3QJOQmq
+	Y9P9/ie23Z/x7AirpwtQ+ilqF75cvVJs4tWrbD2zZigtiIFG+qSjiKbv+bry+fobtnHBv4+MYyB
+	Fzrimoa+J7lxPtmtFE5fgWztdw5tzzvSlMG0ZjaQ7EmC7b58mIlnhqLH0lZEfTXvtQL8BFPrlDn
+	BWKZzkdRZNioeBBFZx4P6iSiaOMmPg9REOcJYTLWPycgHDTI/ofoO+bQinNt58UGmPBjG1cpJeD
+	fdPYMUfIhWjpSC2e0DlV6eKkIkn0BABtjj5kEo0X3v6Qw=
+X-Google-Smtp-Source: AGHT+IHapH6OsO1AHtO1AIXlBe8ewsFWc/T53IxGs44x5WRWKW2jyFjQP7saYVlxU5+BW4fZO8YydA==
+X-Received: by 2002:a17:902:e809:b0:297:cf96:45bd with SMTP id d9443c01a7336-2a2f2231b01mr17507025ad.19.1766123024262;
+        Thu, 18 Dec 2025 21:43:44 -0800 (PST)
 Received: from cmpatel-home.hsd1.or.comcast.net ([2601:1c0:5780:9200:5160:2cad:cf88:afa5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3da7dabsm9878955ad.25.2025.12.18.21.43.41
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3da7dabsm9878955ad.25.2025.12.18.21.43.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Dec 2025 21:43:41 -0800 (PST)
+        Thu, 18 Dec 2025 21:43:44 -0800 (PST)
 From: Chintan Patel <chintanlike@gmail.com>
 To: linux-fbdev@vger.kernel.org,
 	linux-staging@lists.linux.dev,
@@ -83,9 +83,9 @@ Cc: linux-kernel@vger.kernel.org,
 	deller@gmx.de,
 	gregkh@linuxfoundation.org,
 	Chintan Patel <chintanlike@gmail.com>
-Subject: [PATCH v2 1/4] fb: Add dev_of_fbinfo() helper for optional sysfs support
-Date: Thu, 18 Dec 2025 21:43:16 -0800
-Message-ID: <20251219054320.447281-2-chintanlike@gmail.com>
+Subject: [PATCH v2 2/4] staging: fbtft: Make FB_DEVICE dependency optional
+Date: Thu, 18 Dec 2025 21:43:17 -0800
+Message-ID: <20251219054320.447281-3-chintanlike@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251219054320.447281-1-chintanlike@gmail.com>
 References: <20251219054320.447281-1-chintanlike@gmail.com>
@@ -97,39 +97,79 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add dev_of_fbinfo() to return the framebuffer struct device when
-CONFIG_FB_DEVICE is enabled, or NULL otherwise.
+fbtft provides sysfs interfaces for debugging and gamma configuration,
+but these are not required for the core driver.
 
-This allows fbdev drivers to use sysfs interfaces via runtime checks
-instead of CONFIG_FB_DEVICE ifdefs, keeping the code clean while
-remaining fully buildable.
+Drop the hard dependency on CONFIG_FB_DEVICE and make sysfs support
+optional by using dev_of_fbinfo() at runtime. When FB_DEVICE is disabled,
+sysfs operations are skipped while the code remains buildable and
+type-checked.
 
+v2:
+- Replace CONFIG_FB_DEVICE ifdefs with runtime checks
+- Use dev_of_fbinfo() to guard sysfs creation and removal
+
+Suggested-by: Thomas Zimmermann <tzimmermann@suse.de>
 Suggested-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Chintan Patel <chintanlike@gmail.com>
 ---
- include/linux/fb.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/staging/fbtft/Kconfig       |  5 ++++-
+ drivers/staging/fbtft/fbtft-sysfs.c | 18 ++++++++++++++----
+ 2 files changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/fb.h b/include/linux/fb.h
-index 05cc251035da..dad3fb61a06a 100644
---- a/include/linux/fb.h
-+++ b/include/linux/fb.h
-@@ -628,6 +628,15 @@ static inline void unlock_fb_info(struct fb_info *info)
- 	mutex_unlock(&info->lock);
+diff --git a/drivers/staging/fbtft/Kconfig b/drivers/staging/fbtft/Kconfig
+index c2655768209a..578412a2f379 100644
+--- a/drivers/staging/fbtft/Kconfig
++++ b/drivers/staging/fbtft/Kconfig
+@@ -2,11 +2,14 @@
+ menuconfig FB_TFT
+ 	tristate "Support for small TFT LCD display modules"
+ 	depends on FB && SPI
+-	depends on FB_DEVICE
+ 	depends on BACKLIGHT_CLASS_DEVICE
+ 	depends on GPIOLIB || COMPILE_TEST
+ 	select FB_BACKLIGHT
+ 	select FB_SYSMEM_HELPERS_DEFERRED
++	help
++	  Support for small TFT LCD display modules over SPI bus. FB_DEVICE
++	  is not required, but if enabled, provides sysfs interface for debugging
++	  and gamma curve configuration.
+ 
+ if FB_TFT
+ 
+diff --git a/drivers/staging/fbtft/fbtft-sysfs.c b/drivers/staging/fbtft/fbtft-sysfs.c
+index e45c90a03a90..848702fc871a 100644
+--- a/drivers/staging/fbtft/fbtft-sysfs.c
++++ b/drivers/staging/fbtft/fbtft-sysfs.c
+@@ -203,14 +203,24 @@ static struct device_attribute debug_device_attr =
+ 
+ void fbtft_sysfs_init(struct fbtft_par *par)
+ {
+-	device_create_file(par->info->dev, &debug_device_attr);
++	struct device *dev = dev_of_fbinfo(par->info);
++
++	if (!dev)
++		return;
++
++	device_create_file(dev, &debug_device_attr);
+ 	if (par->gamma.curves && par->fbtftops.set_gamma)
+-		device_create_file(par->info->dev, &gamma_device_attrs[0]);
++		device_create_file(dev, &gamma_device_attrs[0]);
  }
  
-+static inline struct device *dev_of_fbinfo(const struct fb_info *info)
-+{
-+#ifdef CONFIG_FB_DEVICE
-+	return info->dev;
-+#else
-+	return NULL;
-+#endif
-+}
-+
- static inline void __fb_pad_aligned_buffer(u8 *dst, u32 d_pitch,
- 					   u8 *src, u32 s_pitch, u32 height)
+ void fbtft_sysfs_exit(struct fbtft_par *par)
  {
+-	device_remove_file(par->info->dev, &debug_device_attr);
++	struct device *dev = dev_of_fbinfo(par->info);
++
++	if (!dev)
++		return;
++
++	device_remove_file(dev, &debug_device_attr);
+ 	if (par->gamma.curves && par->fbtftops.set_gamma)
+-		device_remove_file(par->info->dev, &gamma_device_attrs[0]);
++		device_remove_file(dev, &gamma_device_attrs[0]);
+ }
 -- 
 2.43.0
 
