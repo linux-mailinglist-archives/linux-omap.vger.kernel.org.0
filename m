@@ -1,85 +1,85 @@
-Return-Path: <linux-omap+bounces-5237-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5236-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 133D1CD5C7A
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Dec 2025 12:18:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69A4ACD5B88
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Dec 2025 12:06:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 77D4B3048094
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Dec 2025 11:16:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 554D93008D70
+	for <lists+linux-omap@lfdr.de>; Mon, 22 Dec 2025 11:06:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 911D52DCF6E;
-	Mon, 22 Dec 2025 11:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DBAE30B50D;
+	Mon, 22 Dec 2025 11:06:05 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA02B30E0F5
-	for <linux-omap@vger.kernel.org>; Mon, 22 Dec 2025 11:07:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823A7295DB8
+	for <linux-omap@vger.kernel.org>; Mon, 22 Dec 2025 11:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766401641; cv=none; b=gon/OuUC5P7jYwVL70isGTFPSa6vdYEax6J9KG9iNgBO550UHwzsZW7v6abPqVuI9a8yN58W4s9GjrUPYzwkBp53Yyjn17OLswRMfP1NcLWBL2RVRd+O7rFbpPO6cgBD9rzOXGAaLIiQTVPOhVxDTC9L51QhJHtE51QFqOHzSXs=
+	t=1766401564; cv=none; b=Jvfvi/Mwn/0z3HfncSfZQmrp4ufIvvt4Oteies1K2PNHjh2+UVUHpFvwybAuizwfDmLB3ZsuujleYJxyZ0ofUE/4fTNsm/ASEXX+atEwfHd3kl7BKUyj3TYEEl4zgJOw2lQfW8k8gHiENWreq/+x1+868lIjkTZ4cZELTtGffmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766401641; c=relaxed/simple;
-	bh=hQz8inePYy4z7kE2ZTh8btcX7ZL/LHM5S3zx3idHlV0=;
+	s=arc-20240116; t=1766401564; c=relaxed/simple;
+	bh=Sa6vRFp+J8CzdQeFDX4yWNCdRt01fLLpAObxTP7lVIs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pi/GIiCQ5IgsjZdCneP3FGWKKez5SL9OqqeXhd/FGEtN+ogOeL5hVzb+t6e0KhzOcC/DtXfHyb6hYbcbtMEVq+GKBwRgwbJsw3VwMzSnCLpZYh8QgQ4jWDF78SWuPWtW11xNBrGN0LotlwO6R5uMXSZC6jHsWQWLFLjMfYPY/9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.42
+	 To:Cc:Content-Type; b=pszVqeTzUr2a/je4lWcDrbwFzk0DKx0KDMrG3fY5wUMYjzKCgP46rVarka/PcDs0kUHRbVdeSyizcXrsCWxbL7daw0z7f9co9hSeIm0qR/D0ROjV+Fx6x3dMSbJQL8am5Iy8QXjUNQyX0/q8h6j/5iglVrCdiUFqcaWu9eAU5Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-5dbde7f4341so3774069137.1
-        for <linux-omap@vger.kernel.org>; Mon, 22 Dec 2025 03:07:19 -0800 (PST)
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-65d0441b6feso2206119eaf.1
+        for <linux-omap@vger.kernel.org>; Mon, 22 Dec 2025 03:06:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766401639; x=1767006439;
+        d=1e100.net; s=20230601; t=1766401562; x=1767006362;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iVlS5J1HzuVScBDeCBX0VxoypelfY5sXHRtDOTQInFQ=;
-        b=VO8FDTRHoW09GkWK/e+FF92TgEXB4t8OIYqEvph4wSXZcKbVi+ThgQoc7t8+EGc7UQ
-         RagxO64BPSidYlClzZtLVyGFFll5dM++3ghXPA+UJVimkfk9zTvbLf4KUchAGlWkX9ro
-         wyP1syrdzE3vF0pebP25k1h+oQvHcJI0jmQneAW7zWmvm1EKT459cQZh2LglRVl+Tsf5
-         oyxdxgTkwohh3KQHzfKlMjtTwpOoDxCXGdS9kcVFXloU5KhXgoCw5uPqK8AWKdwjroln
-         5sTRQejXe8PeAlf1gyHVxHHhiFsJuIJliNCZjVWq3rwd9Tx053qnOGrKsACcrcWN/qS2
-         CehQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVfYx2Ll0S1MQtCs40YxSFz4fnpbeAItBe+teV1QhIWYfoMZZLrk1HKRFvLG8KyLIgxuYsfdHHrPFng@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6ibofZwG0iX96PBSBng2qk5ODbK4NNom2pFN8AbN+HQWwS3+f
-	JHUSDtH3NGkB+4dUK9v5FHVoRir67PC/RUs3ymqTk5aDO4Wsd/0YtXPnQOR5lN+h
-X-Gm-Gg: AY/fxX62+ZCeP+bGZdJLojK+Wtb+jLljfnEccTfXGuJ7N3gOnzkE2L1MopRnbo+8aSt
-	msAnwtHhH5Z84iwnrnCNYWGPDVBHNhCMcznqCsE9vGi63kG3hEu1OmVKz/koSBqQOhpMljUcyr7
-	HrqjaOQ3+Ise2QXnJ25I7RXvOmbp7DvSJZz56uXhksnlErKpsOfL/aXHxnQdLm94yoPtrTTKvQQ
-	Uk6vY8Jg1F/P4Lctbyg0V/W/1l4m/m9fGqchQ9hdfe3TxFmobHI+oLr5O9QJ5ZN+R/4VhZp0Xu6
-	C1wD4XcVEyvk1CU104PIP0jZ81GThlIss+pPBiWWTa0JOb32XeyfhMsfGfq4FOuFyzciklfwYhk
-	OPfHTg4BLWWEJQXdSr3/6QmMuu3h02Y2Kt28U5Bqb9FW3EGx906cJUwLCFnzJgDX1CvRbkcW36B
-	T+P2hZxpNovQ0Npts6D6eiyWNTZQ7vGgcQmoV6iZK1G69Wdtmz
-X-Google-Smtp-Source: AGHT+IEinh/dOIzbNkgqc/APuOp26UdKMAdInSUuZdDjqdaahxbsV0gEkrNsHzyYRAgl/+4gXrRqtQ==
-X-Received: by 2002:a05:6102:c0c:b0:5dd:a08e:5bac with SMTP id ada2fe7eead31-5eb023b4d14mr5447458137.6.1766401638693;
-        Mon, 22 Dec 2025 03:07:18 -0800 (PST)
-Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com. [209.85.222.43])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-94341796a4dsm2857345241.12.2025.12.22.03.07.18
+        bh=Er9fT5sSTO9v6Ol7FhPUI+D4OHHff+0Re947MEjlztA=;
+        b=GijIyZQatVEoK/OecyRFr6x8CXGzqhlAMw6ZJkSXqlT9RD98142xzc1BsSHHLJstG1
+         R662GBkFU8yuEWKAvrneu0xSVLkqLeHX37VpyZMfqRAbDc4ffcoLjQIjeJW9I+KiAPMi
+         2UpdS9EvHKzpgftdi9BCK55DssXTnyu8psZBr5fJ1cH7lnIVe7d4/iKcZCD+hRD9rWiD
+         zgzvL855FO0JlCjTovxzYZFGmPgOVFseTvPhhtfv5w+jTy5uVo38ntRfCjuWDdQTWwQU
+         w3/o6/diPJgDwuYPK6Acy1uLGcezPudRtk00NLhqdpDtRxi6SpXOPObA5SOXTGGLqMvg
+         pp0w==
+X-Forwarded-Encrypted: i=1; AJvYcCXEd/0b+/XiT2XKg7C/t21pIabmLMpfTZNRbNh7/DfNrJvB4dpLkCpRtl9KRvtwWQ4UD0bL3oq8sz/W@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxl2r5D0HM0PXuNLzwk64x0XDGqmSspMJEB5GWY39rz7PUPyJ6Z
+	rpOjbXT3qF4GtYAb7GYN1Xm0h3+7hSJZJE7XXy3s+jQPhIfx3ghxoH4+eePvWlo9
+X-Gm-Gg: AY/fxX5RJJWQJqtUrUT7z5KFrb3rI+98hCaxmkZse6oEAcmJqib2EyLrM+Aat6UT7IG
+	d160pmZln0AaXkvwUhkpOHCCTtic2mbXmgB5QIWlFuvIJV5dzhcl1ZgmTWIk4eBfXojWd098ita
+	e30nN0jEWWlYLDmRzCXz2ij2mwiiaS1OyCS2YFnVLlJLFV4XRxs3kNv4GCNHTyYreKNWv53xuXi
+	suwB4kvHOWgSKggwGQYWkwBp/DOtPXol9qSQOmgv0xobavqUg/tOewKLCTihtOQolFI9CqZdlic
+	MxXS1BtLh81U7a/2p7riuyTuO1hnCx4969qhPpQqKs64dqz02QoRiSxu3Ela9w1IZlPSXbSrvGO
+	JYrTfwETYny2W8cgCTI/adYreZGqJ6Da0fWzxglcTusala078Mzqn+nZqY2olZ2k7LsXV9Q8B3O
+	mUs+OXEatTU8iGzamyiZrcMyxDyyqtWUJKLSB3WGgoFb5ZwR0y8wri
+X-Google-Smtp-Source: AGHT+IFtE9g2fgqpa844pr4jbG3HqwAX4ZtgiG5D4793u6oEQL7aG7C8RdhD+JbTULQa+2efOkGGsA==
+X-Received: by 2002:a05:6820:168c:b0:65b:35fe:4323 with SMTP id 006d021491bc7-65d0eae1f60mr4862057eaf.67.1766401562449;
+        Mon, 22 Dec 2025 03:06:02 -0800 (PST)
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com. [209.85.167.171])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-65d0f69ae7esm6652062eaf.9.2025.12.22.03.06.01
         for <linux-omap@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Dec 2025 03:07:18 -0800 (PST)
-Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-93f5910b06cso2373041241.0
-        for <linux-omap@vger.kernel.org>; Mon, 22 Dec 2025 03:07:18 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVE40dcof0LHecDgi37N0WsWN+BAsaFwkhh6nqeSElLe7xoZJVD/Yssw7X7jHuKB9C3C+gkUHkO4/uk@vger.kernel.org
-X-Received: by 2002:a05:6122:6790:b0:559:7faf:a276 with SMTP id
- 71dfb90a1353d-5614f7ae2d0mr3069797e0c.7.1766401194470; Mon, 22 Dec 2025
- 02:59:54 -0800 (PST)
+        Mon, 22 Dec 2025 03:06:02 -0800 (PST)
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-4537407477aso2467614b6e.1
+        for <linux-omap@vger.kernel.org>; Mon, 22 Dec 2025 03:06:01 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVRabUZyn8qtmpLAgASdtKLVUZOWAn3XgkICWwaFy+lpaCwX2Eb1qovW8WiiQk1VvkCwjbbDELLBZSY@vger.kernel.org
+X-Received: by 2002:a05:6102:e0e:b0:5e5:5ed7:60ae with SMTP id
+ ada2fe7eead31-5eb1a817635mr3544923137.31.1766401227460; Mon, 22 Dec 2025
+ 03:00:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251210-rz-sdio-mux-v3-0-ca628db56d60@solid-run.com> <20251210-rz-sdio-mux-v3-1-ca628db56d60@solid-run.com>
-In-Reply-To: <20251210-rz-sdio-mux-v3-1-ca628db56d60@solid-run.com>
+References: <20251210-rz-sdio-mux-v3-0-ca628db56d60@solid-run.com> <20251210-rz-sdio-mux-v3-3-ca628db56d60@solid-run.com>
+In-Reply-To: <20251210-rz-sdio-mux-v3-3-ca628db56d60@solid-run.com>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 22 Dec 2025 11:59:43 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVqSPQ_rCY1mPxyAw1=WwK2VX9bxMKQQuVEe75u5hTvsg@mail.gmail.com>
-X-Gm-Features: AQt7F2qvtAFJTZWBdh_71wFZZJPHL2v6ti7TTVpa1qQd7XzzszUS-LtvxMifYms
-Message-ID: <CAMuHMdVqSPQ_rCY1mPxyAw1=WwK2VX9bxMKQQuVEe75u5hTvsg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/6] phy: can-transceiver: rename temporary helper
- function to avoid conflict
+Date: Mon, 22 Dec 2025 12:00:16 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdXmKPe6AyfAeD9nObqVhofZ4a5559_=DbDZzJ57A7=k9g@mail.gmail.com>
+X-Gm-Features: AQt7F2qYMU-2Y0vKWd5gUo3SltdOK-02OVX3vIl9B9fuc7xPsFnO8gx3yQGyGmE
+Message-ID: <CAMuHMdXmKPe6AyfAeD9nObqVhofZ4a5559_=DbDZzJ57A7=k9g@mail.gmail.com>
+Subject: Re: [PATCH v3 3/6] phy: can-transceiver: drop temporary helper
+ getting optional mux-state
 To: Josua Mayer <josua@solid-run.com>
 Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
@@ -98,8 +98,12 @@ Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 
 On Wed, 10 Dec 2025 at 18:39, Josua Mayer <josua@solid-run.com> wrote:
-> Rename the temporary devm_mux_state_get_optional function to avoid
-> conflict with upcoming implementation in multiplexer subsystem.
+> Multiplexer subsystem has now added helpers for getting managed optional
+> mux-state.
+>
+> Switch to the new devm_mux_state_get_optional helper.
+>
+> This change is only compile-tested.
 >
 > Signed-off-by: Josua Mayer <josua@solid-run.com>
 
