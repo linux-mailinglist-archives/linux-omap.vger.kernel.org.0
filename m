@@ -1,121 +1,239 @@
-Return-Path: <linux-omap+bounces-5244-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5245-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32078CD7207
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Dec 2025 21:46:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54724CD9101
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Dec 2025 12:17:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B09AD301099B
-	for <lists+linux-omap@lfdr.de>; Mon, 22 Dec 2025 20:46:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BCB7C30158AC
+	for <lists+linux-omap@lfdr.de>; Tue, 23 Dec 2025 11:16:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD1630AD13;
-	Mon, 22 Dec 2025 20:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E08349B12;
+	Tue, 23 Dec 2025 10:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xe66iKA7"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="TAiODTnZ";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="MbD4ZykC"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68065661;
-	Mon, 22 Dec 2025 20:46:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45905349B17
+	for <linux-omap@vger.kernel.org>; Tue, 23 Dec 2025 10:04:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766436388; cv=none; b=VY8uNqhyfKwYi6coAD9fdo6WS9Fw+Tfjyz65E/OZ+sceu+nxjjLmLDqwh92YBYi//LJFh/mi0qUNxTdLPDTe52FYsRQ4TYa6Bkf3b9K8uP92BCCEluJ4ln3CaTKHIqo7g7Kg88NflpzzUwdlSiAgt4Pmzhw1rG0lhZPZ+Six05M=
+	t=1766484300; cv=none; b=mV/xzQsSoJUtH81V62O8f0TJznDP4VXzeALVH0ysUvdAlWxniL4adSkKg899F7tV0w7dzqCjv95O4XqPcq6E4scT3T+BsYHfgDLySokmA8rk5gdEJOm0yHPuyzPBTZT/qGl5fQvPWmCDBRu4J1eGop3ZU85jfaFsIqXxvMzwFko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766436388; c=relaxed/simple;
-	bh=2RBv3OtmPUQILKSmp4Q0ix+BvAl1QjorxEod4NKRr+c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H1RWZ9VHkQLrpPPie1tYyMFjq+ZVw6Fmv5i+2lZq76eWP4SSgoLz8SRtjWNZAmL+udXC4afq1fdFd03ojzqeTOoZMrbZNlERfximWKk+biO8fqQWu0eZP62jGUDTas6l5q+n8DK2tGO/UMwGDVXhotXIpZjXPq8d1r/4J3w4Pd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xe66iKA7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAF3C4CEF1;
-	Mon, 22 Dec 2025 20:46:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766436388;
-	bh=2RBv3OtmPUQILKSmp4Q0ix+BvAl1QjorxEod4NKRr+c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Xe66iKA7tkcZTcng66uVrkLYMUxL7Cv03RDri/iEZv73H2d8MhcK90Tgj/cfmNthl
-	 HODj+lEcW5F6M6+5nPHs+9NViV4JRd6P0/pkKQXav+A4bLIYQef9zVSxnxrQG2Xwzc
-	 cObi6sSIW6ZrdV9ci9TCwdUjowxUxPHm+u/Q83eYBDseqQXc6S5VWpPPohz/r4io3F
-	 9SwPevL4D1eIqXP5Wm1qNb4cWM/QzJM47q7LKDQzaVNP1ymljsCL7yE9A3QefpSPLQ
-	 06v8p7wGa+aI/pEMMQioIzh7Nrh4KlwuJ4TNn0YQOQaUeC10A/0PwmnTb8rLUU35K4
-	 obwV13aFlwnjw==
-Date: Mon, 22 Dec 2025 14:46:25 -0600
-From: Bjorn Andersson <andersson@kernel.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Linux PM <linux-pm@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Brian Norris <briannorris@chromium.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	linux-omap@vger.kernel.org, linux-remoteproc@vger.kernel.org
-Subject: Re: [PATCH v1 16/23] hwspinlock: omap: Discard pm_runtime_put()
- return value
-Message-ID: <o54twe6xkpqn35khexdj7sbdzsi7i7lsqo4h66y5l5dsymmvrv@uvjxuvpizdcm>
-References: <6245770.lOV4Wx5bFT@rafael.j.wysocki>
- <883243465.0ifERbkFSE@rafael.j.wysocki>
+	s=arc-20240116; t=1766484300; c=relaxed/simple;
+	bh=Aessx24OljIFWC+mc2LsHK/66rMxd0lRq5JDSMHPZrs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Xlm6bxj1x8sfs2xo0ah/2/++l/zxod5/VPDqFvcnMD1FAduyUxwYhyI74ONL0GVowHoYSVaPZjqls3iBPHLX2ZMUiFKlfjNUF001h5140hDjr1s318IWSLJ07skp+VEoIwNVlYNFfeCPAx1perkRDt8Aqg3iB09DCF/JUZgC1Gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=TAiODTnZ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=MbD4ZykC; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BN93HMS2792582
+	for <linux-omap@vger.kernel.org>; Tue, 23 Dec 2025 10:04:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=Rpb4W73dFQhb2fFVWipjtD
+	js1BBDNzb3ATpS6fi83mQ=; b=TAiODTnZbMj6PmIgx9AmPxt9azJHDmXkcd8QmU
+	d2caYjG+9fRP3dpKbbCX/MqqOww+fHK8m4ygpbKLPRL+NQdtRHTDvANw+HiejMXZ
+	+KZ0R2ENLChWcctaHwCkWZXCZHPNkiOEf6fxy8W/5G6ncv6HNjtGK81Sk21UeqEb
+	uqeir517kr20DQfkuFHKJXaXVz5TqxqtqLxrQfyqOBgi0Jc4ZQbmGEwiCLGBawhn
+	6yV7zTd3clbDt+xqTydTPh04zn3+IZOG4drvZZZ6Zyvxl0Dhxec1AtrfcLBupWgC
+	0f+hb355KrFHSK76YEr+Bh1/X4sbZbtLvmUKUHT+Kt0j+Ysg==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b758y3ggc-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-omap@vger.kernel.org>; Tue, 23 Dec 2025 10:04:57 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4ee04f4c632so91517491cf.3
+        for <linux-omap@vger.kernel.org>; Tue, 23 Dec 2025 02:04:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1766484296; x=1767089096; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Rpb4W73dFQhb2fFVWipjtDjs1BBDNzb3ATpS6fi83mQ=;
+        b=MbD4ZykCSYJ8V3vVyieD8BsNUm4G7Ng5F+ujqGDTtVdnOdlHai2+jsspfXmWEoT25b
+         BgeIYxOHW4OCBzYlglXJVNt4oOjkalh8Gpsw8/VE1fRHvdhOp18Uu2xpdq/wpQeLv5uc
+         /JAA8RZotAWBMFNWYPkVBtDEWO0l5nd3wTMjKFgaRZP/k7uo4/sPaF/t2WlWFETylBtU
+         zFYRkPJjSlQtKoSvE4GvlLVC89UMJhabg44fKHc/JTIvvWxIZJDhkaxMgTrU8Z4o4bSo
+         yA+yZSBohkgNWuH9Ru4wZRSmxh7tMoouPf8I+xni++tPRLdHq/0TQOK6AmRTjRl9VWuh
+         fv/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766484296; x=1767089096;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Rpb4W73dFQhb2fFVWipjtDjs1BBDNzb3ATpS6fi83mQ=;
+        b=GceZ5pEKFrfvj30aZ5wTsdTXWX1944mW1Idu6OSSYEIVoTDAP9tSVk9fJpE73EhJMQ
+         ug0cmHs3xdyeK3MTr/KIyEGsNocwJzwSIjvXk5pzY1Nn6j0yWUdymrXuXH0ZQgPkedje
+         o5QWr3ORP9ma+TsY9WwB18hYsZjipsvwsyLUgOIDgiSmwQdGbJjcUDmIeGTI+KJxQDjc
+         FoLoSp+5IBfTpV4dGWR2jIw2pKIEIfufLANBEzsQnsPZTKHHC32Fhcg1oDTx4dbBqbYH
+         Y//ZOlxwXMmQIxsoOpB2zBrZfNVDFF7//9F9veifJg/ZauC25bLH2SGnVLV7xMDi9A6p
+         MREw==
+X-Forwarded-Encrypted: i=1; AJvYcCWaWv7TMjiLThN2Zh104IdxCJXnQkqlY6IuEND5Rg5+pQAU0//3s9BY/ZKCMT6oRYL27zFlP4vRA406@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzduju75yxiUYLt5w5B99oDvGg6jyPGBiYZGDuX/wwEB56ZHlSZ
+	NqkONqs07LR23vaZy+Fvg6gIMDSVW7PGmcmOQjEBetp1RBiHQ99ERvagybQfmhENQClK4SB2S0/
+	WZ8SKgSp817HTZJS0kFcSQg1VVH5RvKtJLwuHUEKQNbYTTmXg12nvgFyjO/rvBhqQ
+X-Gm-Gg: AY/fxX6ZnnpIpvjToVmw/RaRahJb3xsjc+C/wtX/C73sH/L00TEirhXLZFc+l5gKciz
+	3OOBW0DXg/MbL3JEYjhkklLBJa6TcXAMfpgPgptk4q4hPdnpm9CPpzW0zIdLnQm1PdfV+H98qoB
+	wsyP7jsXe3M6h5d9pk+Jcbqo2rMAYxCQldW73gWRy7f0mMYoTRkiBww1IO7LFIQNZMz4XFoSgB1
+	AbW1kWfSKRPJZzT6Oi5bgLCtjEZpFq7h0hVqMB/VL8KfOqK/yvOXBFozbMoIvDwhSFJqj+5N0PY
+	D+jbaSs3+W71O2iGEA22615IZnHpS6oOHDIPy9XgAjqQVrC4f5YKuwgQ8GKDDj3F2SDhgosHULB
+	1ixm/4HIdESMKvgZFRKXr4/jjbKuC2chSOCJRD8o=
+X-Received: by 2002:ac8:5cd2:0:b0:4f1:83e4:6f55 with SMTP id d75a77b69052e-4f4abcd06f8mr204814881cf.16.1766484296267;
+        Tue, 23 Dec 2025 02:04:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEiNHKqDKCrFlscF1e8nxZ5lfR1gZCs8573oK/BJMiXsdrVSl2/AbVhz7yPs2GYVwiIg03KGQ==
+X-Received: by 2002:ac8:5cd2:0:b0:4f1:83e4:6f55 with SMTP id d75a77b69052e-4f4abcd06f8mr204814511cf.16.1766484295661;
+        Tue, 23 Dec 2025 02:04:55 -0800 (PST)
+Received: from brgl-qcom.local ([2a01:cb1d:dc:7e00:190a:1976:65e2:c61])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d193d4f09sm235035025e9.12.2025.12.23.02.04.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Dec 2025 02:04:55 -0800 (PST)
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Subject: [PATCH 00/12] i2c: configure parent device and OF node through the
+ adapter struct
+Date: Tue, 23 Dec 2025 11:04:38 +0100
+Message-Id: <20251223-i2c-adap-dev-config-v1-0-4829b1cf0834@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <883243465.0ifERbkFSE@rafael.j.wysocki>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADZpSmkC/x3MQQqAIBBA0avErBvIqSi7SrQwnWo2JgoRiHdPW
+ r7F/xkSR+EES5Mh8iNJbl+h2gbsZfzJKK4aqKNREfUoZNE4E9Dxg/b2h5yoh643+6zUpEeoZYh
+ 8yPtf162UD/OF/y1lAAAA
+X-Change-ID: 20251223-i2c-adap-dev-config-9403ab811795
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
+        Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+        Vignesh R <vigneshr@ti.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Patrice Chotard <patrice.chotard@foss.st.com>,
+        Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Linus Walleij <linusw@kernel.org>
+Cc: Bartosz Golaszewski <brgl@kernel.org>, linux-i2c@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+        linux-rpi-kernel@lists.infradead.org,
+        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3406;
+ i=bartosz.golaszewski@oss.qualcomm.com; h=from:subject:message-id;
+ bh=Aessx24OljIFWC+mc2LsHK/66rMxd0lRq5JDSMHPZrs=;
+ b=owEBbQKS/ZANAwAKAQWdLsv/NoTDAcsmYgBpSmk6CFIKSo02FUVtncKxbJmpddSLBsdGwlGxk
+ 3xgKHq5LdWJAjMEAAEKAB0WIQSR5RMt5bVGHXuiZfwFnS7L/zaEwwUCaUppOgAKCRAFnS7L/zaE
+ w9lvEAC6IPKCIFxQKEcT0e9etvsanf7pMOhUQltvitPug6OEIG0KYMeK/K84tQWkYK1rDNEM9+S
+ VInnmCouxiX6wvyRpsmIWYdoTH3Hx0NwbMAtenLaYgj1HOqPC/2T4EfL2fhIHFks+HcwQJQtX/U
+ 6IJHl2gOPKIqt/Nsdy7uhRu+dsZtrmTox0QcIWDnQ2u1AJHSOPrUWAP2bziaEPzvN7wMFnmMI0L
+ yWjqOuw6piX/7Jv7xgdIphnmGvtOjVJY8CN7EzZPssJk52TGwSu4jbPZ+oh+VVPDc5ednw2LJcG
+ GbY06fhDBfb2tk7U5drjc/kU27DZ7CjOZoBeGXE3FMBPIKQBarOf+PxOssqRC6+0y+CfpBs/DWW
+ rk1QSObI9tMRBTzeqAMF8jCp6dqEm7lHH21J+CnG3Ed1AFcnI9zYtDqbK4FKGKA2z6wgf0gwQbZ
+ 48KFlz+jGZHxm7KimHiLcfu5XZqlSW0GKFLwH++KbYffIP0VH8DrDBU4X42xbIZr/WaBfen+HLG
+ tgpottRsMj2BslGnnqPwbYb70GrH0NM1WEm1Afevt9odAaChxpRNm0sHJHpnE7mukt8NUqfWiVO
+ 19KRrejHoawa94lLIdae41mcZ60Yr/TOm8q9qNfStSjmOFamByZqVSisccC+ixsP/EnQD1TXsYA
+ hicHpNR/3lUOyWA==
+X-Developer-Key: i=bartosz.golaszewski@oss.qualcomm.com; a=openpgp;
+ fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
+X-Authority-Analysis: v=2.4 cv=TOdIilla c=1 sm=1 tr=0 ts=694a6949 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=_sFN2lLQU9JdPEgOWvQA:9 a=QEXdDO2ut3YA:10
+ a=uxP6HrT_eTzRwkO_Te1X:22
+X-Proofpoint-ORIG-GUID: vUnJlPe3pNDekY1PYbb6Vvs-dgeYD_XN
+X-Proofpoint-GUID: vUnJlPe3pNDekY1PYbb6Vvs-dgeYD_XN
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIzMDA4MCBTYWx0ZWRfXxIXRydDPtzeA
+ mqdyd54XVCencs2r+xCGIYIfkOcAPfFDlkWQt630zLgv6xlsQWGygjLSIfQr0G/FHNCrWnmfLcT
+ qwdoydyrNT5HyOaT+VXrzw+ppQXSKFnxW8nzi625DkHx9BdbrDex+zQYYbOTMILz9t1GjHImNHC
+ TXEcLjU6a5dSCygNpMAe1v/+sO8v3rOaVANxNHW01AnputJKfc6RL4UTMXUIiXTpQCDeccmKh7g
+ tj8+Ak5enuGb+M2I8LXAIcIumOc6fgr90ttV1sL3MaX+vXttPcul/0ay1kJ0nEuY/FFpzRuz4oC
+ 65xeGDwx0/2RSzUnbQxTNg+65QBasv6UylpqMMCCsadsOaKilaa9GenvWrv8HoTcrj00WEgXWlG
+ oQzJLBP2Oa2ffJFxo8Vq3SDD8Xr7lIUQdRdKlKw3/wSp8ayOhOOXdYg+WZhkZfcBwtHs41aar1M
+ V+jeFceay1Pcc0Twu5w==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-23_02,2025-12-22_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0 priorityscore=1501
+ clxscore=1011 impostorscore=0 bulkscore=0 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2512230080
 
-On Mon, Dec 22, 2025 at 09:24:19PM +0100, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> Failing driver probe due to pm_runtime_put() returning a negative value
-> is not particularly useful.
-> 
-> Returning an error code from pm_runtime_put() merely means that it has
-> not queued up a work item to check whether or not the device can be
-> suspended and there are many perfectly valid situations in which that
-> can happen, like after writing "on" to the devices' runtime PM "control"
-> attribute in sysfs for one example.  It also happens when the kernel
-> has been configured with CONFIG_PM unset.
-> 
-> Accordingly, update omap_hwspinlock_probe() to simply discard the
-> return value of pm_runtime_put().
-> 
-> This will facilitate a planned change of the pm_runtime_put() return
-> type to void in the future.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+It's been another year of discussing the object life-time problems at
+conferences. I2C is one of the offenders and its problems are more
+complex than those of some other subsystems. It seems the revocable[1]
+API may make its way into the kernel this year but even with it in
+place, I2C won't be able to use it as there's currently nothing to
+*revoke*. The struct device is embedded within the i2c_adapter struct
+whose lifetime is tied to the provider device being bound to its driver.
 
-Acked-by: Bjorn Andersson <andersson@kernel.org>
+Fixing this won't be fast and easy but nothing's going to happen if we
+don't start chipping away at it. The ultimate goal in order to be able
+to use an SRCU-based solution (revocable or otherwise) is to convert the
+embedded struct device in struct i2c_adapter into an __rcu pointer that
+can be *revoked*. To that end we need to hide all dereferences of
+adap->dev in drivers.
 
-Regards,
-Bjorn
+This series addresses the usage of adap->dev in probe() callbacks where
+drivers assign the parent device address and the associated OF-node
+directly to the struct device embedded in i2c_adapter. We extend the
+latter struct to accept the parent struct device and of_node directly
+and make it assign it to its internal struct device inside
+i2c_register_adapter(). For now just 12 patches but I'll keep on doing it
+if these get accepted. Once these get upstream for v6.20/7.0, we'll be
+able to also start converting i2c drivers outside of drivers/i2c/.
 
-> ---
-> 
-> This patch is part of a series, but it doesn't depend on anything else
-> in that series.  The last patch in the series depends on it.
-> 
-> It can be applied by itself and if you decide to do so, please let me
-> know.
-> 
-> Otherwise, an ACK or equivalent will be appreciated, but also the lack
-> of specific criticism will be eventually regarded as consent.
-> 
-> ---
->  drivers/hwspinlock/omap_hwspinlock.c |    4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> --- a/drivers/hwspinlock/omap_hwspinlock.c
-> +++ b/drivers/hwspinlock/omap_hwspinlock.c
-> @@ -101,9 +101,7 @@ static int omap_hwspinlock_probe(struct
->  	 * runtime PM will make sure the clock of this module is
->  	 * enabled again iff at least one lock is requested
->  	 */
-> -	ret = pm_runtime_put(&pdev->dev);
-> -	if (ret < 0)
-> -		return ret;
-> +	pm_runtime_put(&pdev->dev);
->  
->  	/* one of the four lsb's must be set, and nothing else */
->  	if (hweight_long(i & 0xf) != 1 || i > 8)
-> 
-> 
-> 
+[1] https://lore.kernel.org/all/20251106152330.11733-1-tzungbi@kernel.org/
+
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+---
+Bartosz Golaszewski (12):
+      i2c: allow setting the parent device and OF node through the adapter struct
+      i2c: qcom-geni: set device parent and of_node through the adapter struct
+      i2c: bcm-kona: set device parent and of_node through the adapter struct
+      i2c: keba: set device parent and of_node through the adapter struct
+      i2c: omap: set device parent and of_node through the adapter struct
+      i2c: rcar: set device parent and of_node through the adapter struct
+      i2c: st: set device parent and of_node through the adapter struct
+      i2c: mxs: set device parent and of_node through the adapter struct
+      i2c: highlander: set device parent and of_node through the adapter struct
+      i2c: gpio: set device parent and of_node through the adapter struct
+      i2c: nomadik: set device parent and of_node through the adapter struct
+      i2c: bcm2835: set device parent and of_node through the adapter struct
+
+ drivers/i2c/busses/i2c-bcm-kona.c   | 4 ++--
+ drivers/i2c/busses/i2c-bcm2835.c    | 4 ++--
+ drivers/i2c/busses/i2c-gpio.c       | 2 +-
+ drivers/i2c/busses/i2c-highlander.c | 2 +-
+ drivers/i2c/busses/i2c-keba.c       | 2 +-
+ drivers/i2c/busses/i2c-mxs.c        | 4 ++--
+ drivers/i2c/busses/i2c-nomadik.c    | 4 ++--
+ drivers/i2c/busses/i2c-omap.c       | 4 ++--
+ drivers/i2c/busses/i2c-qcom-geni.c  | 4 ++--
+ drivers/i2c/busses/i2c-rcar.c       | 4 ++--
+ drivers/i2c/busses/i2c-st.c         | 4 ++--
+ drivers/i2c/i2c-core-base.c         | 5 +++++
+ include/linux/i2c.h                 | 4 ++++
+ 13 files changed, 28 insertions(+), 19 deletions(-)
+---
+base-commit: 9448598b22c50c8a5bb77a9103e2d49f134c9578
+change-id: 20251223-i2c-adap-dev-config-9403ab811795
+
+Best regards,
+-- 
+Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+
 
