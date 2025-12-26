@@ -1,144 +1,187 @@
-Return-Path: <linux-omap+bounces-5261-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5262-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 796BECDBD0E
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Dec 2025 10:35:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C12DCCDED75
+	for <lists+linux-omap@lfdr.de>; Fri, 26 Dec 2025 18:19:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 67CB63023575
-	for <lists+linux-omap@lfdr.de>; Wed, 24 Dec 2025 09:35:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B278D3007C42
+	for <lists+linux-omap@lfdr.de>; Fri, 26 Dec 2025 17:19:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98736332ED3;
-	Wed, 24 Dec 2025 09:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E6F2E542A;
+	Fri, 26 Dec 2025 17:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="T5RUarH7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eGR7GzLh"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66C2327BF7;
-	Wed, 24 Dec 2025 09:35:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A31E2E0413;
+	Fri, 26 Dec 2025 17:19:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766568920; cv=none; b=CFho1MgMO/0HcUhaWCG8DRNCRob5auBuEmYnUVwY9dxMcGPhn7iuVhBeAHPwxNrUiL8XEzHe0/CJeABH+C/VVgVV1PXM2npv1ipeepaSmwcEXbyAti4iAsAhrtQzRQRkRZC3YJcY8T47GWIeFH+ouGCwjNRnlzyw34h2TjlbrVg=
+	t=1766769562; cv=none; b=ASuDIRbl9jeULNTtOSxSDQC/KYEqhW5Zm4xiAQrgEICmnbNAEfnwteBpkIyTU7uetQIxx7WogRZdLPgKqpSLx5rDU9Y1/bZ8d/bIlqy157LqmpG20JS0NotuOsEKCwJc0gnAiZR3m/d6oNpbTU4VJuo/MfDYM5JbMCWCx/YfEM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766568920; c=relaxed/simple;
-	bh=Fmjd7eyRnlV9XTCzyNEV2bPki8dqXkW1yALeD1EYLh8=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=fmjW/nCNSBZkkVP+BVMvtVVQ+dad58xm7aWscDJFzB1JyiyGC7iIYz+vUSd8ITYn3fH4XFD/3gnwsvI8VnimOr1+uNLfc/slQBc3CpBfjGKNSghqUbWPOqkCGA1vjlU7t6W6t0zPyfuUdSpQo1KC+0VUNjJEtfJPRjgRfVdYHXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=T5RUarH7; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=From:Sender:Reply-To:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=MOZsQQoHQXrZlTx6X9yhr7Z6zefVXj/8USVC2Ec8vnk=; b=T5RUarH75vSiRSp7xX3oBD8aV4
-	bM8zF1uFgt+wiCLvC0MfasjBl81ulLk/WmDT+OG6sElJyTRMJgpm09RMEl6/N/QVErbcaZp0Ngr09
-	NSLlqp6QtXc/cSN58wum7ALao5Wevu30Ue/xLSXwjq3fb/e3VHlLMQ0566PfbxboUT2tcMeQ3CkWP
-	1jbbYTKpy00848wTwuc1DCR7cq22noY2zVQPgH0dWgtcmTyBoX3wUX8EjVmYEPKuADNnmWYmCFuqX
-	sweiKHlwP2mjudN/aZhwD6/u4LJk166XhThNOV2Z2bo0HeCmFl9uZkepSQ1wr5L08E7DVmUGldSrH
-	ch7ApC/g==;
-From: Andreas Kemnade <andreas@kemnade.info>
-To: aaro.koskinen@iki.fi,
-	andreas@kemnade.info,
-	khilman@baylibre.com,
-	rogerq@kernel.org,
-	tony@atomide.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	linux-omap@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: dts: ti/omap: omap*: fix watchdog node names
-Date: Wed, 24 Dec 2025 10:34:57 +0100
-Message-ID: <20251224093457.558477-1-andreas@kemnade.info>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1766769562; c=relaxed/simple;
+	bh=R7Xe8Vo0sAqcTqxB+ijnQow2uxhO0kGbyfHDUMMcV7M=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=h8euBzwoLMMC5cVVCu1fDpIj7K3PEAiCvEKq3yn2nGVnyQ9DoxEf6AXYlCzOsX+DTum609vf37vX74QISOiSDaD56gnBZ0pBlbyQGEn5rS5aIytMDz0ZhJFo7V2Wsuh/1vjSVrK3nUxBpfpqudFmKysZKm3A+s4d6taLhmMSPo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eGR7GzLh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1B7C4CEF7;
+	Fri, 26 Dec 2025 17:19:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766769560;
+	bh=R7Xe8Vo0sAqcTqxB+ijnQow2uxhO0kGbyfHDUMMcV7M=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=eGR7GzLhAOzoM/tW2iHh7BICj3wp6aJVpL1auZt5PIo8y14Aah7cHx+VU6wDZU2Pl
+	 TqZDTKbjHnLHXrNmSUqSmQ9z2vMhqD4F53kR3cFbQYJ4AaBJd1teUunFB+qyc/zsC5
+	 DQaODq0Sm/zgpvSXU1MHAiRUHU3yMN8QCDi3V+NhHH53qkgpED1HNKxaTjq0k+ptIT
+	 +YMNKdP6N4ivct58Q9+hdFhmE0ahD1SQ6DtZmuAlJXzhrBt2VASeyBK66+TO7+IORA
+	 gwKTuW2+pQabXKk8+V9FVCSJZ5vf0owUAy+qbrGzGwj7seTL91q5wQBN72TH6Fp6jH
+	 CgOIgWdlrJeqg==
+Date: Fri, 26 Dec 2025 11:19:19 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: vigneshr@ti.com, lpieralisi@kernel.org, kwilczynski@kernel.org,
+	mani@kernel.org, robh@kernel.org, bhelgaas@google.com,
+	arnd@arndb.de, kishon@kernel.org, stable@vger.kernel.org,
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	srk@ti.com
+Subject: Re: [PATCH] PCI: j721e: Add config guards for Cadence Host and
+ Endpoint library APIs
+Message-ID: <20251226171919.GA4131469@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251117113246.1460644-1-s-vadapalli@ti.com>
 
-Watchdog nodes should be named watchdog@ and not wdg@. Fix that.
+On Mon, Nov 17, 2025 at 05:02:06PM +0530, Siddharth Vadapalli wrote:
+> Commit under Fixes enabled loadable module support for the driver under
+> the assumption that it shall be the sole user of the Cadence Host and
+> Endpoint library APIs. This assumption guarantees that we won't end up
+> in a case where the driver is built-in and the library support is built
+> as a loadable module.
+> 
+> With the introduction of [1], this assumption is no longer valid. The
+> SG2042 driver could be built as a loadable module, implying that the
+> Cadence Host library is also selected as a loadable module. However, the
+> pci-j721e.c driver could be built-in as indicated by CONFIG_PCI_J721E=y
+> due to which the Cadence Endpoint library is built-in. Despite the
+> library drivers being built as specified by their respective consumers,
+> since the 'pci-j721e.c' driver has references to the Cadence Host
+> library APIs as well, we run into a build error as reported at [0].
+> 
+> Fix this by adding config guards as a temporary workaround. The proper
+> fix is to split the 'pci-j721e.c' driver into independent Host and
+> Endpoint drivers as aligned at [2].
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
----
- arch/arm/boot/dts/ti/omap/omap2430.dtsi     | 2 +-
- arch/arm/boot/dts/ti/omap/omap3.dtsi        | 2 +-
- arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi | 2 +-
- arch/arm/boot/dts/ti/omap/omap4-l4.dtsi     | 2 +-
- arch/arm/boot/dts/ti/omap/omap5-l4.dtsi     | 2 +-
- 5 files changed, 5 insertions(+), 5 deletions(-)
+If we know what the proper fix is, why aren't we just doing that
+instead of adding a temporary workaround?
 
-diff --git a/arch/arm/boot/dts/ti/omap/omap2430.dtsi b/arch/arm/boot/dts/ti/omap/omap2430.dtsi
-index b9a9e6e45266..222613d2a4d1 100644
---- a/arch/arm/boot/dts/ti/omap/omap2430.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap2430.dtsi
-@@ -332,7 +332,7 @@ usb_otg_hs: usb_otg_hs@480ac000 {
- 			interrupts = <93>;
- 		};
- 
--		wd_timer2: wdt@49016000 {
-+		wd_timer2: watchdog@49016000 {
- 			compatible = "ti,omap2-wdt";
- 			ti,hwmods = "wd_timer2";
- 			reg = <0x49016000 0x80>;
-diff --git a/arch/arm/boot/dts/ti/omap/omap3.dtsi b/arch/arm/boot/dts/ti/omap/omap3.dtsi
-index 817474ee2d13..959069e24730 100644
---- a/arch/arm/boot/dts/ti/omap/omap3.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap3.dtsi
-@@ -553,7 +553,7 @@ mmu_iva: mmu@5d000000 {
- 			status = "disabled";
- 		};
- 
--		wdt2: wdt@48314000 {
-+		wdt2: watchdog@48314000 {
- 			compatible = "ti,omap3-wdt";
- 			reg = <0x48314000 0x80>;
- 			ti,hwmods = "wd_timer2";
-diff --git a/arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi b/arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi
-index 59f546a278f8..78ac3d4eceb5 100644
---- a/arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi
-@@ -279,7 +279,7 @@ target-module@30000 {			/* 0x40130000, ap 14 0e.0 */
- 			ranges = <0x0 0x30000 0x1000>,
- 				 <0x49030000 0x49030000 0x1000>;
- 
--			wdt3: wdt@0 {
-+			wdt3: watchdog@0 {
- 				compatible = "ti,omap4-wdt", "ti,omap3-wdt";
- 				reg = <0x0 0x80>;
- 				interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
-diff --git a/arch/arm/boot/dts/ti/omap/omap4-l4.dtsi b/arch/arm/boot/dts/ti/omap/omap4-l4.dtsi
-index 4ee53dfb71b4..4881dd674393 100644
---- a/arch/arm/boot/dts/ti/omap/omap4-l4.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap4-l4.dtsi
-@@ -1133,7 +1133,7 @@ target-module@4000 {			/* 0x4a314000, ap 7 18.0 */
- 			#size-cells = <1>;
- 			ranges = <0x0 0x4000 0x1000>;
- 
--			wdt2: wdt@0 {
-+			wdt2: watchdog@0 {
- 				compatible = "ti,omap4-wdt", "ti,omap3-wdt";
- 				reg = <0x0 0x80>;
- 				interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
-diff --git a/arch/arm/boot/dts/ti/omap/omap5-l4.dtsi b/arch/arm/boot/dts/ti/omap/omap5-l4.dtsi
-index 9f6100c7c34d..487259132ebf 100644
---- a/arch/arm/boot/dts/ti/omap/omap5-l4.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap5-l4.dtsi
-@@ -2393,7 +2393,7 @@ target-module@4000 {			/* 0x4ae14000, ap 7 14.0 */
- 			#size-cells = <1>;
- 			ranges = <0x0 0x4000 0x1000>;
- 
--			wdt2: wdt@0 {
-+			wdt2: watchdog@0 {
- 				compatible = "ti,omap5-wdt", "ti,omap3-wdt";
- 				reg = <0x0 0x80>;
- 				interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
--- 
-2.47.3
-
+> Fixes: a2790bf81f0f ("PCI: j721e: Add support to build as a loadable module")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202511111705.MZ7ls8Hm-lkp@intel.com/
+> Cc: <stable@vger.kernel.org>
+> [0]: https://lore.kernel.org/r/202511111705.MZ7ls8Hm-lkp@intel.com/
+> [1]: commit 1c72774df028 ("PCI: sg2042: Add Sophgo SG2042 PCIe driver")
+> [2]: https://lore.kernel.org/r/37f6f8ce-12b2-44ee-a94c-f21b29c98821@app.fastmail.com/
+> Suggested-by: Arnd Bergmann <arnd@arndb.de>
+> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+> ---
+>  drivers/pci/controller/cadence/pci-j721e.c | 43 +++++++++++++---------
+>  1 file changed, 26 insertions(+), 17 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+> index 5bc5ab20aa6d..67c5e02afccf 100644
+> --- a/drivers/pci/controller/cadence/pci-j721e.c
+> +++ b/drivers/pci/controller/cadence/pci-j721e.c
+> @@ -628,10 +628,12 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+>  			gpiod_set_value_cansleep(gpiod, 1);
+>  		}
+>  
+> -		ret = cdns_pcie_host_setup(rc);
+> -		if (ret < 0) {
+> -			clk_disable_unprepare(pcie->refclk);
+> -			goto err_pcie_setup;
+> +		if (IS_ENABLED(CONFIG_PCI_J721E_HOST)) {
+> +			ret = cdns_pcie_host_setup(rc);
+> +			if (ret < 0) {
+> +				clk_disable_unprepare(pcie->refclk);
+> +				goto err_pcie_setup;
+> +			}
+>  		}
+>  
+>  		break;
+> @@ -642,9 +644,11 @@ static int j721e_pcie_probe(struct platform_device *pdev)
+>  			goto err_get_sync;
+>  		}
+>  
+> -		ret = cdns_pcie_ep_setup(ep);
+> -		if (ret < 0)
+> -			goto err_pcie_setup;
+> +		if (IS_ENABLED(CONFIG_PCI_J721E_EP)) {
+> +			ret = cdns_pcie_ep_setup(ep);
+> +			if (ret < 0)
+> +				goto err_pcie_setup;
+> +		}
+>  
+>  		break;
+>  	}
+> @@ -669,10 +673,11 @@ static void j721e_pcie_remove(struct platform_device *pdev)
+>  	struct cdns_pcie_ep *ep;
+>  	struct cdns_pcie_rc *rc;
+>  
+> -	if (pcie->mode == PCI_MODE_RC) {
+> +	if (IS_ENABLED(CONFIG_PCI_J721E_HOST) &&
+> +	    pcie->mode == PCI_MODE_RC) {
+>  		rc = container_of(cdns_pcie, struct cdns_pcie_rc, pcie);
+>  		cdns_pcie_host_disable(rc);
+> -	} else {
+> +	} else if (IS_ENABLED(CONFIG_PCI_J721E_EP)) {
+>  		ep = container_of(cdns_pcie, struct cdns_pcie_ep, pcie);
+>  		cdns_pcie_ep_disable(ep);
+>  	}
+> @@ -739,10 +744,12 @@ static int j721e_pcie_resume_noirq(struct device *dev)
+>  			gpiod_set_value_cansleep(pcie->reset_gpio, 1);
+>  		}
+>  
+> -		ret = cdns_pcie_host_link_setup(rc);
+> -		if (ret < 0) {
+> -			clk_disable_unprepare(pcie->refclk);
+> -			return ret;
+> +		if (IS_ENABLED(CONFIG_PCI_J721E_HOST)) {
+> +			ret = cdns_pcie_host_link_setup(rc);
+> +			if (ret < 0) {
+> +				clk_disable_unprepare(pcie->refclk);
+> +				return ret;
+> +			}
+>  		}
+>  
+>  		/*
+> @@ -752,10 +759,12 @@ static int j721e_pcie_resume_noirq(struct device *dev)
+>  		for (enum cdns_pcie_rp_bar bar = RP_BAR0; bar <= RP_NO_BAR; bar++)
+>  			rc->avail_ib_bar[bar] = true;
+>  
+> -		ret = cdns_pcie_host_init(rc);
+> -		if (ret) {
+> -			clk_disable_unprepare(pcie->refclk);
+> -			return ret;
+> +		if (IS_ENABLED(CONFIG_PCI_J721E_HOST)) {
+> +			ret = cdns_pcie_host_init(rc);
+> +			if (ret) {
+> +				clk_disable_unprepare(pcie->refclk);
+> +				return ret;
+> +			}
+>  		}
+>  	}
+>  
+> -- 
+> 2.51.1
+> 
 
