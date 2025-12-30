@@ -1,94 +1,61 @@
-Return-Path: <linux-omap+bounces-5288-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5289-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6469FCE8B98
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Dec 2025 06:30:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7DC9CE8BCB
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Dec 2025 06:52:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2ED913033700
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Dec 2025 05:29:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9E98B300BD8C
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Dec 2025 05:52:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8A42F1FE1;
-	Tue, 30 Dec 2025 05:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E64274643;
+	Tue, 30 Dec 2025 05:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H+Lno6PO"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="u8oajc+i"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDB22EA73D
-	for <linux-omap@vger.kernel.org>; Tue, 30 Dec 2025 05:29:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828B31A23A6
+	for <linux-omap@vger.kernel.org>; Tue, 30 Dec 2025 05:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767072552; cv=none; b=nmQ0bCyjLTc5PrFfKRl0xEOi5ZdRE7kiSdxKr1VG3RmMtyAV4p1KcmOZfg3KCvzzm1baHQsqMuZKkvHzTGb03J2FpCqjICI3N/9cCfSWjOV3vnu985cPxHDQ/Abcd4mvVe4W9kQ7PfBDRXNPgh0uELJaK5Pv2UO314Gedaybusc=
+	t=1767073964; cv=none; b=eyONbdaxk4n46Qp17xdwkkeGsM/86sDjIzQP+mbfXxybYtgcMoc4Azt1w+GnV7BOQWhkjuC8NeYPCfZM+XHrY1WIq6ROpQ4hstsucQHCYSzPOAIi4U0X2b0nFz53jdxzwk2vj9cruiilymxHoNQy/XdLRXUyS30nlqeTPoYcIW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767072552; c=relaxed/simple;
-	bh=GAGjpPhjgIvIUqlyfKlbs+tqnrLy69m1dh/HDqos+sw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UQm48zZWtfAJbc6DepH5iFLAf+fG8TznYG+RrTf+Mxa1sVWXVw6Owgi9Mp94vRHkaHT6Mqw6XehwIr5DrvcVaBvnBaw/LsbWZgZAFVwQa2PE1h8gl8UClJ8canTiPu3XtmM8z3jtY3qunobbFL8emh8TZwKCbGA0SG0LT9mWirE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H+Lno6PO; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a0833b5aeeso132176635ad.1
-        for <linux-omap@vger.kernel.org>; Mon, 29 Dec 2025 21:29:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767072549; x=1767677349; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LJqOs0RXEJY8E2s1bb5OeUsv+WqHfc5EFgK5KbB75l4=;
-        b=H+Lno6POnxup92vGJ1f7ihfIfbwleJVor6tXER17rp/zQBaa0niWobKLm5AbfdzeR/
-         1LFNoT44dIFX6+X+48yM9SvwxfIhQ5uDHGd1aPQTALn0LxlKaT6G9XcL9Ib661xNUxh9
-         MEKivs33TvK/o/XVoU6qIeN6WNA5/Q5ibLmKKXG8W3dYzvgahRTmiLoFsZuTRzWak/1E
-         8ddAiXOPjqKc07lcqS7we5idlVmNHjULmlY4ELJ8mgPHI5hoQLOZ4v2kbTEBZXML4C2b
-         qjwa9cedy+B2EtA4/z0dvZqkG4woKTpUna8tDuOfsehAMaVRjq9MEE1AJ1DfEagYeITw
-         0XrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767072549; x=1767677349;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LJqOs0RXEJY8E2s1bb5OeUsv+WqHfc5EFgK5KbB75l4=;
-        b=SMKBLwJ+qFJoHHWFSewrovDlKwnpzEHMB+cz59be3yrTvD2e4zKyXufr8+c9Pi2UFT
-         LxbchP2E+pG7SvjOXPCYHFrGzJym4cEV8PYGFpGyG/ksAKRIjMaidUQVRxSuor9AxRmP
-         jIbhHNfsTiLjQjxioUYINMGGtGYmBNcjRvAnH0DtJAhf8wWl/gB4YWO+CS+RBjBurJb2
-         6W+Lev0Z8G6dQvmr47P5JXs7Oub6BmXlJRF7eQB3S/oS+3TEG3Rz3E3YPAsP4jb2Am2S
-         cso3HYBZtpwgKSMB3zQAYaQusRGWmvqYGYDnJUaITj8rCm3DsdkjR5nGwYlIA7xuHvJJ
-         TVdA==
-X-Forwarded-Encrypted: i=1; AJvYcCUCtXqWLUz6O00OquNhxHtmZ3SzeEUu5VXDLJhzo1UjoLrMwPAR2E/VuBeU7WFWPdmQYlNX8pUjaAke@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHsdQT/p+uFl1Ln3P4RlP6CrK2RUCZOWL3H3jVTMVzvQOkT4lG
-	GlSIJhHBviDNxiZOCqbv5OZGi/qrzm7HTEPr9JDCsDvVbHN6s2quO7Xq
-X-Gm-Gg: AY/fxX6+jPjdoVC35t4+t5jviGBcDPuf4PDZ2d1pGoujGJHSggYBwKBcvW9CC4JSZuX
-	n9qAXYcNTtvFhdPCONascQ3yaXisIAHZKcI2nqEJF+WW2BUqCh2/Ba/bxzanqe8koOO4W+B6rpX
-	xNPVvOm8bDurVYfbu3Qxhi/MOfxdAl4Yxwlo0wNwZcBhJBUtI0AVbJYkj2wcQeTr1DfJq/jf7h+
-	6NB14W92l/Z2wEQRCdWgL0aigoWbWdOeaBJgjeoKUwyzEQVa8qRIoxAy/SyOipVfZ2krFRvtXJ8
-	+y+j/8y93whRMz7Cu+U+xyRdE64qHhUubou5a2Qq6zWZgYnfopEquaQssgs24N/fHPvsF5kq3v9
-	zyb8fiZYoRYk07wpqilJ98Sp3/U40qauGLnIgMmqFZuy1e0C4KU+3lYyyU2HNiIkufAxYPyoEkW
-	jbFHkWTl0dN6AXRJKZNyumF2/QFKMi0Ko4eAt3vXz7wAzEx5QPAPAg
-X-Google-Smtp-Source: AGHT+IHpNTh/+mtzP6KtG3m//yZa/VBoJcww6MwkW4PNCEdqrAaxVfXefkHC54eoavSEs+b2060qpw==
-X-Received: by 2002:a17:902:cf08:b0:2a2:ecb6:55ac with SMTP id d9443c01a7336-2a2f220cbf6mr374425555ad.7.1767072549441;
-        Mon, 29 Dec 2025 21:29:09 -0800 (PST)
-Received: from cmpatel-home.hsd1.or.comcast.net ([2601:1c0:5780:9200:f7a0:c2f:d915:faf0])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3c8286esm289290375ad.33.2025.12.29.21.29.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Dec 2025 21:29:09 -0800 (PST)
-From: Chintan Patel <chintanlike@gmail.com>
-To: linux-fbdev@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-omap@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	tzimmermann@suse.de,
-	andy@kernel.org,
-	deller@gmx.de,
-	gregkh@linuxfoundation.org,
-	Chintan Patel <chintanlike@gmail.com>
-Subject: [PATCH v3 4/4] fbdev: sh_mobile_lcdc: Make FB_DEVICE dependency optional
-Date: Mon, 29 Dec 2025 21:28:22 -0800
-Message-ID: <20251230052827.4676-5-chintanlike@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251230052827.4676-1-chintanlike@gmail.com>
-References: <20251230052827.4676-1-chintanlike@gmail.com>
+	s=arc-20240116; t=1767073964; c=relaxed/simple;
+	bh=PAv4tAJqy8XVBFI4rD8NsIb6pkb1uegME7zSbIMC0V4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KhHcB+NCqGYwuMwnmrIK5ly00YBzb4zJfMxyOuPsD1bh1RFaG3PX8CH1Yee//fm1NaVQDoQ4rO/ycKfyL9aV6IoavcOl2AkDxIX/FQPnclCfnG0pdaDjcFnCBIpcwsRlbyIwcugI/2x4mHUdkti0sMR4Erz92gm2mh/RqcmeG9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=u8oajc+i; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=FVwWeVuQuojBBIt0GbiNzCrl8hYjdxZkoliVMSaEEag=; b=u8oajc+iE+Vd/w4FTvoZ0Hl+6H
+	t09eD/5WQeT2g2NK4wetqHHAbTzEJMCY5H8Tryu88W2lajtZOzgT6+DQSjilHZvssIEkQXDl+OdkI
+	IM/w2vq0jTt7Zi+AW4UyR1zk5BdoGYTuVFcHKRwaC1x70jaeKGrqK+mNIxbBf+29sMoI3yS/gQ850
+	qQH2x9kxJpOCU0x3aFIY/ddAyW+80zMeCV8cqVFJC1m4F6sUst6mbrWm0rXXsFfhLEBZ3cGVjJ+Fk
+	LwSimhan23qfHvo90gJtGtl27hP2rR/TExvtVUkIpg4gK5gp04rBU7ng4icmxDZBrEACME98LCbSo
+	NTMJByNw==;
+Received: from [50.53.43.113] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vaSel-00000004RKy-3Yoy;
+	Tue, 30 Dec 2025 05:52:31 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	patches@armlinux.org.uk,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+	Tony Lindgren <tony@atomide.com>,
+	linux-omap@vger.kernel.org,
+	Russell King <linux@armlinux.org.uk>
+Subject: [PATCH] ARM: omap1: drop unused Kconfig symbol
+Date: Mon, 29 Dec 2025 21:52:30 -0800
+Message-ID: <20251230055230.3212260-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -97,44 +64,37 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The sh_mobile_lcdc driver exposes overlay configuration via sysfs, but the
-core driver does not require CONFIG_FB_DEVICE.
+"select ARCH_HAS_HOLES_MEMORYMODEL" was mistakenly merged here
+due to a botched rebase (says Arnd [1]).
 
-Make sysfs support optional by defining overlay_sysfs_groups conditionally
-using PTR_IF(). The driver always sets .dev_groups, and the kernel
-naturally skips NULL attribute groups while the code remains buildable
-and type-checked.
+Drop that line since that symbol is not used anywhere else in the
+kernel source tree.
 
-Suggested-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Chintan Patel <chintanlike@gmail.com>
+[1] https://lore.kernel.org/all/5e335232-89b4-4c35-93bd-efad7e4d8995@app.fastmail.com/
+Fixes: 7036440eab3e ("ARM: omap1: enable multiplatform")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 ---
- drivers/video/fbdev/sh_mobile_lcdcfb.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+KernelVersion: 6.19-rc1
 
-diff --git a/drivers/video/fbdev/sh_mobile_lcdcfb.c b/drivers/video/fbdev/sh_mobile_lcdcfb.c
-index dd950e4ab5ce..cb7ed1ff9165 100644
---- a/drivers/video/fbdev/sh_mobile_lcdcfb.c
-+++ b/drivers/video/fbdev/sh_mobile_lcdcfb.c
-@@ -1350,7 +1350,17 @@ static struct attribute *overlay_sysfs_attrs[] = {
- 	&dev_attr_overlay_rop3.attr,
- 	NULL,
- };
--ATTRIBUTE_GROUPS(overlay_sysfs);
-+
-+#ifdef CONFIG_FB_DEVICE
-+static const struct attribute_group overlay_sysfs_group = {
-+	.attrs = overlay_sysfs_attrs,
-+};
-+#endif
-+
-+static const struct attribute_group *overlay_sysfs_groups[] = {
-+	PTR_IF(IS_ENABLED(CONFIG_FB_DEVICE), &overlay_sysfs_group),
-+	NULL,
-+};
- 
- static const struct fb_fix_screeninfo sh_mobile_lcdc_overlay_fix  = {
- 	.id =		"SH Mobile LCDC",
--- 
-2.43.0
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: patches@armlinux.org.uk
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+Cc: Tony Lindgren <tony@atomide.com>
+Cc: linux-omap@vger.kernel.org
+Cc: Russell King <linux@armlinux.org.uk>
 
+ arch/arm/mach-omap1/Kconfig |    1 -
+ 1 file changed, 1 deletion(-)
+
+--- linux-next-20251219.orig/arch/arm/mach-omap1/Kconfig
++++ linux-next-20251219/arch/arm/mach-omap1/Kconfig
+@@ -4,7 +4,6 @@ menuconfig ARCH_OMAP1
+ 	depends on ARCH_MULTI_V4T || ARCH_MULTI_V5
+ 	depends on CPU_LITTLE_ENDIAN
+ 	depends on ATAGS
+-	select ARCH_HAS_HOLES_MEMORYMODEL
+ 	select ARCH_OMAP
+ 	select CLKSRC_MMIO
+ 	select FORCE_PCI if PCCARD
 
