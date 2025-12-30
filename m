@@ -1,132 +1,124 @@
-Return-Path: <linux-omap+bounces-5297-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5298-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8FDDCEA530
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Dec 2025 18:36:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D425CEA608
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Dec 2025 18:59:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5C08301D652
-	for <lists+linux-omap@lfdr.de>; Tue, 30 Dec 2025 17:36:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7CB7F30222D7
+	for <lists+linux-omap@lfdr.de>; Tue, 30 Dec 2025 17:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE86127AC28;
-	Tue, 30 Dec 2025 17:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E0C632C933;
+	Tue, 30 Dec 2025 17:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="C0J63I2r"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kiuWUDig"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE64CA52
-	for <linux-omap@vger.kernel.org>; Tue, 30 Dec 2025 17:35:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767116161; cv=pass; b=Gj8PaITxvVGr5/z7FBe6gdxavEr2dcOL4NiTjR66nFNAoEhUibqB0B3mUvmZ0MRvlcyw5Ml5eUsArQKxZ8igJW2scln6mnL3v3EzwXordAcnqwhWZgNR4PwsnEVOmj6qW9OS02HtM339uwTOYNXY/BJY7Keb1ReAWJxry3sQDtE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767116161; c=relaxed/simple;
-	bh=AehpaYdyh/w30UaBplTlikv0iNx9XeTTYgf500yJ33Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iuXldQWgNwWfdvor/utoLGsQzYdIDgwy2VxQE7Ja3in0hFREKvJRUMuqmNaBUeJCz2xNMEQi4cLtEVAkcHkgt2R/EyD2VIqrg0S/x9Pxm6yqeKYM+yGJ9jPZX7QLlUSua5+7/R6e4LS6xKyasuOdaDdkRphNFJ1d03GumvQjJm4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=C0J63I2r; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
-Received: from darkstar.musicnaut.iki.fi (85-76-162-171-nat.elisa-mobile.fi [85.76.162.171])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: aaro.koskinen)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4dggGl2dZJz49Q8K;
-	Tue, 30 Dec 2025 19:35:42 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1767116145;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/IB+huzo10okk2OaTVTslD9guwUX3b+iP/CdZtUnaS8=;
-	b=C0J63I2rqTHg2c8seaXumRYMepfu9z8lkPKAr014D4AbO/8Mha3L9EDoepEa7PulAtIVdR
-	zzA9FZr8FHULlZ27pzfNSXAXc8FW5GkeVsdBw3PMQZiIditn5x33IyjDxPwlO0R36JObLT
-	cT9QMw5wmLNwIxYGx7Xe3YM1bFLWXDMLE0anIhK5RJxMt4QVN8xCV3EzVaCbMnRFv3QxXW
-	hGiaeOjwr7o/wTWNBpFahNI0xrEwDD7aVl49Rg4iplp6ipD0epXXFHfFBaEvqkvNuWMP2r
-	1q4EYYz7GShxddFmiFrrGYtA4w5+FjWex9S19mL3TGrpqjwF/3WMF9U2raTrxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1767116145;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/IB+huzo10okk2OaTVTslD9guwUX3b+iP/CdZtUnaS8=;
-	b=Gfl/D9D/vVEHaO4gJY0CAoQqPjmvQ/8qjdkxdgTUNS8coc2XsHjv8gLUTNYjUAQJJ2hD9t
-	SKugwNgFJyVaDmoXuFo4nLSd6x8SnrkgY8MYs8TNI2JjizQKg6do2h/UYvQzTzua+MD3h6
-	esIDy7pvi398YIKclN9sfvr+Vjs5G29PyD20bpteVZT80FMC9hYPpzYoM6EoQ0HpWCDlCN
-	YEZLkQ6dGYgofgIA7953XxKfdT7a3YH8vE8M8jPP7dVdnlr7ZkAlDaB40NfL8p9WulwoEx
-	5LAeiaT87weV6gzNZA4LA1kXsQKskTkYs+8HlEbAXiwL8XC6emKC6HPkX9cFfw==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=aaro.koskinen smtp.mailfrom=aaro.koskinen@iki.fi
-ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=lahtoruutu; cv=none; t=1767116145;
-	b=BhE4yi8POenZhEl4FPyDdkrAeQAlsFc0UbQRxqAz7as9BCgxglLYgQGdw78oHT/+rx3sN1
-	pNmRD3Vw4VJycfXGibYD/JmPRmdwr2v57sRxQBV46cIuiVCu89MpNNnbnUTKWKlcyiPOKW
-	a5IHP5RzSdqRZj33DuiboTKc0e6D70a5AM9eFyAWGnHXuJ5URqFHIAXKOnggZQw9OmMhO+
-	yfDJpfXrcFiBBRXuhZZMqQc14TtcG1CKlk61NV5ZITPaf9SbSj3KOWIood8rlOPHG6jomb
-	J6VqEGn00Si5D57jpPkwc7iUUvzkyoQYnOqL9ZtT8dUqTCeuAt9SK+MXuF8Grg==
-Date: Tue, 30 Dec 2025 19:35:40 +0200
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-arm-kernel@lists.infradead.org, Arnd Bergmann <arnd@arndb.de>,
-	patches@armlinux.org.uk, Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-	Russell King <linux@armlinux.org.uk>
-Subject: Re: [PATCH] ARM: omap1: drop unused Kconfig symbol
-Message-ID: <aVQNbK4K_q4UtJP_@darkstar.musicnaut.iki.fi>
-References: <20251230055230.3212260-1-rdunlap@infradead.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF89632C301
+	for <linux-omap@vger.kernel.org>; Tue, 30 Dec 2025 17:59:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767117578; cv=none; b=ov/LGF69CDlMX4U6ckZA1gG1KK/JCTQ+GD8E/YAFI//Rp6GmBlHoqxOeP84NVf3O+zHYKO2wyGrseXiw0r69BjgLkd+obiingMS6kVzi23aS0Zr8i2tXWYjZ2hy6e9uL9lkqXRwmx7pcHToV10nElU3fpgjsQk4wp+9Emj6jNpw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767117578; c=relaxed/simple;
+	bh=Svf6CW8WgH/scy3ZDCbvYCOLQqor3XFA6TUVq8BoF9w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sUifnKRE1GOYqKMOJacQQETLv7rjoLaltu7OqSTQYuvrpZlumwbM3D7n+P3GuREbqhKvl69V4q5frc/jA69699yFHLDBD24I+X4HouMEIgFRKVv5SvH+IGSJTLJV7TaNt3LdPTyhS1ugTPm8b+sq9Zv03BvTQaCe5WKEx7DJyTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kiuWUDig; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2a102494058so54850205ad.0
+        for <linux-omap@vger.kernel.org>; Tue, 30 Dec 2025 09:59:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767117576; x=1767722376; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/CHIgKSfibsVDyynvS5htdSQz4K+hlBg8dyDuvjuAZc=;
+        b=kiuWUDigxcFlkIm2xDOE4hG5wpJOikr/wd5N6cZyV75F4dqbfdkEYCYTNvLrSiaDyi
+         LN0UmNq7QmtZL1/oah5lb7To2fSjZvYgyWa3xoBRv3NKX9nXFyylHEv/SfZ71hkYeiH/
+         VndH0SETSft14zOZWExmOoHSTc50XFIh0AriiSXWxdEHKeIiSRGCzRI0EomhFWwITZjO
+         bD7HGjiFspOEpVJKYTz/tv+eKXpiXV6J7VbG2fHIozcVVulu4cYt9EqJk4JQcxoakh3c
+         q7Re4xibrYFmgFKLV6HWl9Bbimidrvayhud6WPk5R7zrF/gaoPP8hBNNy9BzekBSRPOx
+         jzBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767117576; x=1767722376;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/CHIgKSfibsVDyynvS5htdSQz4K+hlBg8dyDuvjuAZc=;
+        b=L65qBti3awAtpmS5eKKZuTJ3yVT8SKFkojTweoR1IGmmHh4laPSpbPSUhVPLAs8bzC
+         PW/U86LSsAeBWfmyoJfarEMsRHvuo4yYhhxZb803TEPipRDZo/r7l76cT77ZWO1A4JOW
+         amXRAvmzwouAuSETI+yMgpVhX61lU36cof4MNlyG/Aec3QBv/sqdF0F8N5ZVe0IPa+Ev
+         lrHSbkNFhdmXYd0sUd5LTg+74wWzE9pJxmAJx8pxzX0BRM8tpzDS3Z+Jaf5u0Dhx+Xeu
+         dc1xuWBdUOCRGexsVHCPI71moJUrq/w5URNlm3Zh4tVC2cdOqPnvU+EJxY6gH9PPMib4
+         P4FQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVfy/uepXfDG+ManWP41TKBhdSMjyQKGlvtHbvmSs0POFxAv2IoDF/tb/J0cISku+gW+MqL1j+dQWM7@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtgHyIedaxNrb5TfdcUy5PELEAoggD7T8NYoTzcpvMIsgjoYHm
+	vAXBs8kNYYb+9JI+v2U/AOT6Wg5d4fudKJTE+csbymj3vsP1IX9QpTV3
+X-Gm-Gg: AY/fxX4f2uojhz43/sGGvIBQzkRiQLmRlgGAcQoUJTUaWTJuO2F08s/XJUtfavvahiX
+	IsuE77SAQSXzM5tW9OJpZv4xM6/QA0OgIumVSfMlZOpZe6EKnANGaVjPxG1w7T2tpO1/c/jp/ju
+	DGCXHzcwrrFMr1QNg265eGJBFMiRyfcWMzhjhO14Owvjt9myB68AW2WY3Vgh67JxAAinB2e6PIn
+	UCSFm3rkp0Frzk8Ud2grbJSnvlh7p9o3GmIRm0ig3E3reDFFDkHFh9vdGvwCMqxv8AZBscrlf1E
+	Wg2wlUIVzfm+QNXxF7U0M/vmvvg2wKYo6mP4Q+6fg9DJ6lrtgHy6ekdB3U/brA1Wl3UAnu7CTIm
+	uGcX5xnprLUcsnKi0cmHUwPx911gWl+B+97MAf/EovyGgNOm89oJjjYjVmlLVe9pottE4I2UMKG
+	VHhVqIFe/iy26STql7d0nYro2uCEBbXUWxSNx4CuwPMDiAIx4raOU2TsKyWR1y
+X-Google-Smtp-Source: AGHT+IHFngs68Viy0QIud4OyKUMML0W7Abh6BiK0CuBqkEfCHrIFWmwGVVieu+bTWVJ/P4u+tamC4Q==
+X-Received: by 2002:a17:903:4b30:b0:2a0:de67:9704 with SMTP id d9443c01a7336-2a2f0d2daa8mr301443375ad.19.1767117576143;
+        Tue, 30 Dec 2025 09:59:36 -0800 (PST)
+Received: from ?IPV6:2601:1c0:5780:9200:d742:b62c:dcc9:47cd? ([2601:1c0:5780:9200:d742:b62c:dcc9:47cd])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3d4cb48sm308258165ad.64.2025.12.30.09.59.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Dec 2025 09:59:35 -0800 (PST)
+Message-ID: <7ded1cc9-71bb-4ad3-8804-477b4317a6b3@gmail.com>
+Date: Tue, 30 Dec 2025 09:59:35 -0800
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251230055230.3212260-1-rdunlap@infradead.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] fbdev: Make CONFIG_FB_DEVICE optional for drivers
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
+ linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, tzimmermann@suse.de, andy@kernel.org,
+ deller@gmx.de, gregkh@linuxfoundation.org
+References: <20251230052827.4676-1-chintanlike@gmail.com>
+ <aVO4pslXIvnc00J3@smile.fi.intel.com>
+Content-Language: en-US
+From: Chintan Patel <chintanlike@gmail.com>
+In-Reply-To: <aVO4pslXIvnc00J3@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi,
 
-On Mon, Dec 29, 2025 at 09:52:30PM -0800, Randy Dunlap wrote:
-> "select ARCH_HAS_HOLES_MEMORYMODEL" was mistakenly merged here
-> due to a botched rebase (says Arnd [1]).
-> 
-> Drop that line since that symbol is not used anywhere else in the
-> kernel source tree.
-> 
-> [1] https://lore.kernel.org/all/5e335232-89b4-4c35-93bd-efad7e4d8995@app.fastmail.com/
-> Fixes: 7036440eab3e ("ARM: omap1: enable multiplatform")
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 
-Reviewed-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-
-A.
-
-> ---
-> KernelVersion: 6.19-rc1
+On 12/30/25 03:33, Andy Shevchenko wrote:
+> On Mon, Dec 29, 2025 at 09:28:18PM -0800, Chintan Patel wrote:
+>> This series makes CONFIG_FB_DEVICE optional for fbdev drivers that use
+>> it only for sysfs interfaces, addressing Thomas Zimmermann’s TODO to
+>> remove hard FB_DEVICE dependencies.
+>>
+>> The series introduces a small helper, dev_of_fbinfo(), which returns
+>> NULL when CONFIG_FB_DEVICE=n. This allows sysfs code paths to be skipped
+>> via runtime checks, avoids #ifdef CONFIG_FB_DEVICE clutter, and keeps
+>> full compile-time syntax checking.
 > 
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: patches@armlinux.org.uk
-> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-> Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-> Cc: Tony Lindgren <tony@atomide.com>
-> Cc: linux-omap@vger.kernel.org
-> Cc: Russell King <linux@armlinux.org.uk>
+>> Signed-off-by: Chintan Patel <chintanlike@gmail.com>
+>> ---
+>> Changes in v3:
+>> - Use PTR_IF() to conditionally include overlay_sysfs_group in
+>>    overlay_sysfs_groups
+>> - Decouple variable definition and assignment in fbtft_sysfs_init/exit
 > 
->  arch/arm/mach-omap1/Kconfig |    1 -
->  1 file changed, 1 deletion(-)
+> Any particular reasons you ignored my tag from v2?
 > 
-> --- linux-next-20251219.orig/arch/arm/mach-omap1/Kconfig
-> +++ linux-next-20251219/arch/arm/mach-omap1/Kconfig
-> @@ -4,7 +4,6 @@ menuconfig ARCH_OMAP1
->  	depends on ARCH_MULTI_V4T || ARCH_MULTI_V5
->  	depends on CPU_LITTLE_ENDIAN
->  	depends on ATAGS
-> -	select ARCH_HAS_HOLES_MEMORYMODEL
->  	select ARCH_OMAP
->  	select CLKSRC_MMIO
->  	select FORCE_PCI if PCCARD
-> 
+Ah.. This is typo. I see what happened now. Looks like my script picked 
+wrong or old patches instead of new updated one. Should I send v4 or v4 
+is fine?
 
