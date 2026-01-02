@@ -1,115 +1,141 @@
-Return-Path: <linux-omap+bounces-5305-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5306-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3348CEC917
-	for <lists+linux-omap@lfdr.de>; Wed, 31 Dec 2025 22:15:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3500ACED99A
+	for <lists+linux-omap@lfdr.de>; Fri, 02 Jan 2026 02:55:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C70383033D40
-	for <lists+linux-omap@lfdr.de>; Wed, 31 Dec 2025 21:14:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 616D030046C0
+	for <lists+linux-omap@lfdr.de>; Fri,  2 Jan 2026 01:55:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3959930E82E;
-	Wed, 31 Dec 2025 21:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25AF120F067;
+	Fri,  2 Jan 2026 01:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OE1s0UBq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AvEj/0/M"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0952F1FD5;
-	Wed, 31 Dec 2025 21:14:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3594F1C69D
+	for <linux-omap@vger.kernel.org>; Fri,  2 Jan 2026 01:55:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767215675; cv=none; b=BsK64v4B3mENjFd7bR4dqfIyFqV9Ps/uk4b78gA7nQvu1RnTuL8j/xX8V+tK4I704b+LsvNy9xpivpiN3xGL27T+vi6dP5r1Q3X3d41B6DOBqsYfiYjf+n71SQAjCuZ6FdPAT4M066GqURa03IveMT311Zu9QlhCQG6VZ1qyGQ8=
+	t=1767318920; cv=none; b=SlpT5xxa1u/N5Q3mKZZYJJzfqQYZYnrGztRFcN/xvAX8+rVfQ5Zypn2cnWSZulWK2vxTAQ6gP1A8OFrgC/c3hRtwEPkdc1ObvPOlzxKrSFij928JCwARSHp31IsrXBn4pOYmoKpgrnxypNBlg018qquD13dIjzB/FGHwB2CA2to=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767215675; c=relaxed/simple;
-	bh=whyQymEuKoQPya6K6m/OkXij0pAB0J+H6jrBiCCUzB0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UM2j3yjVpsjkusZcaKtIzfFEHecw5JEs3TKHPrv8c1NPUHqjBaIdNSOWhPyIbBvFfravyRA42wtvZIkXyFxIfsRIv3CjutfN1pYjfcXJuSN2IIeE0XhyrBXZcr8GKQz25nxKk+1en041JzIqtkwUY0B+KoBHOd46np5MzbsCxDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OE1s0UBq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B53C16AAE;
-	Wed, 31 Dec 2025 21:14:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767215674;
-	bh=whyQymEuKoQPya6K6m/OkXij0pAB0J+H6jrBiCCUzB0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=OE1s0UBqkbN26uFy3VYYZD1mXU1YaulOdCTNWR7lPxHyOl96twJ20ZlX+bB/7QC+b
-	 TsYXvm95nlsa+FTxwdDG0qYtB8tifBwWB97untRgmb2kAFlNVAn1WqbZHNkeT8Vdw/
-	 tDbaAti6YAbRQGVknBNFyDaoWguswu/SJfsdT99ISKDp/ejTNGcCQLv4b72SNk5vDq
-	 8t0U3ok5hJ2AW4S6acx8NstFCP8q+SAjveQEkNl1cMV1pX+YUUNwVAdYvB8rZR81eL
-	 rjzuuTaHs1AVnQ3gjMgik7Y/oLdt2ARYwtUFYHXBnpRYrmO2NRxFTkyEjgDypAZIGM
-	 +hmJTJ4n2sp1w==
-From: akemnade@kernel.org
-Date: Wed, 31 Dec 2025 22:14:17 +0100
-Subject: [PATCH 2/2] ARM: dts: ti/omap: omap4-epson-embt2ws: fix typo in
- iio device property
+	s=arc-20240116; t=1767318920; c=relaxed/simple;
+	bh=EkLngSquTM1BwBEdY8v/qPAltklK/YaUMxSBuSjVE9I=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=eb0Xw0OFm1TpDLKCxwiPFeHEfUhYdB0qJMPUvmg1CPSc2RiTWOAQAAMexvIpQJri88gqQBk+mWy+a1LUIvByEvMK7wQz3FzEukNSOQGrbJz1G4QkhOyqJ+qzGumhByLIzZAxpi/LLcIb6kMA0kqf+CjOJeePHkILdSB1Ha9eAk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AvEj/0/M; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-37fcd0704d5so12592381fa.0
+        for <linux-omap@vger.kernel.org>; Thu, 01 Jan 2026 17:55:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767318917; x=1767923717; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=FV2xYISBrc+EHKZMZi2H8bUgE6vMnvLSh5mQjE9RgYg=;
+        b=AvEj/0/MEcuHeFh1ehqYr+PfgmwUSvhFAirhXSyateq6+4ZPdZq6fRNSG7ZpaKSvyl
+         t4fj6yvXmOPDZucIHdOlK0eEqW0GCI/mQwzDL7c4lSsqMpTnIrnxUNl32o56ed4Lxovr
+         icw3Mn2+f9CIUiDoPb6yCmxbLCsAhlUFSS0KcFh8YMYMFlhF8/GMHI93anyRcoOS3nHh
+         XoHQ8MJjaKUsmzhFrPbs2ZvC9dnewF6j9bb9gA+MuwQHZVm654KQYUGVMmaM3TgCaTl5
+         C7faIejhWTd1KzSMqEqWabc0lSECHG556F3YJFI0BujVgbTbTcIbxQ36dV7IeCuFX2jL
+         gL7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767318917; x=1767923717;
+        h=to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FV2xYISBrc+EHKZMZi2H8bUgE6vMnvLSh5mQjE9RgYg=;
+        b=YDxf43LoJI7D+plD/lBF281iqcqqyI7YAHxLcln6qQ6mXmVvuFHxF68naE6YPQb3XN
+         1YDnM+hEySQogV50ICog3NA17dMgRxgkNSwBlSYREj6b6/0vIyY7lBAQkYzDBiwbCxVS
+         adujCKy4XRZm97n4Qfs99hH5/EJK5fvImfoQMjKrVodCwwkSgQ/V398xQXY6DhDr6bMg
+         YGbAgk4oM5lAoCke4lUL9PoeAvEMN/FgTE20RVd7tYbqPidCWCesEPjCX3jeMb7Vh6gP
+         yuen4R3GNF+8MZ9Zo7e/0yjoKTUOGE1xNd2gXsE9wb8nRE7QHOfrTq/oSLr+zlhZZw5I
+         sTMQ==
+X-Gm-Message-State: AOJu0YyMjZCJRhfkEaUfa2PFtsyMgaNJ73C2f+/5ORP1531w7S9yVdv6
+	p3fAJ+meE5QBfXF08dWwh1BV2123Zc5oSNEAvVE3zQihLpbYaRPSHrYPWsfMJYcMaVgNCJQWVg5
+	IWCLaPWEpyHgdIPuSzTyH1ADYQ1pP+i8fZ4aU
+X-Gm-Gg: AY/fxX5pIDeiJD/xhx7fqHkaM/ZXq7Nfpbd19ENfhNDNZXh3YX3UM/FX3DAD9JWawBH
+	Y9UA0CVczJjt0BG0PgkxBjlYgGXXgUBnRJSy8FV3C0+pC2CBvR8ShA6/TlnDUMZudxsv6HVM2gh
+	MMXBhREeb3E7VAWSEUjOmxULLgBrBBrrQq8Z6ALuMFh4h02i+U6LchUZIozWZa8cqSJXQUelcge
+	kHPooGzuqCh/hn5Arg/8m8K+GmSK2Tb8qGQS78Em8biVFGwYIYjpeo5zRgEYn38xfQJEt1ZkrRb
+	XmAi97Q=
+X-Google-Smtp-Source: AGHT+IGCF3WDLUUs7QQGucMEi5DrqN1sqrf3y0t/3rIak5e8UtmqWRHbeW4yX0lgnV2ZyERDD/In4uRUGTsHZUxhKbM=
+X-Received: by 2002:a2e:bc0f:0:b0:380:a1c:7037 with SMTP id
+ 38308e7fff4ca-3812152aa0fmr81284481fa.2.1767318917067; Thu, 01 Jan 2026
+ 17:55:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251231-mpu9150-v1-2-08ecf085c4ae@kernel.org>
-References: <20251231-mpu9150-v1-0-08ecf085c4ae@kernel.org>
-In-Reply-To: <20251231-mpu9150-v1-0-08ecf085c4ae@kernel.org>
-To: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, 
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
- Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-omap@vger.kernel.org, devicetree@vger.kernel.org, 
- Andreas Kemnade <akemnade@kernel.org>
-X-Mailer: b4 0.15-dev-a6db3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1141; i=akemnade@kernel.org;
- h=from:subject:message-id; bh=z+7X+G6XUh0LFLv4u0xBI8oqiZVKwYqo5TbWTH8Z7tQ=;
- b=owGbwMvMwCUm/rzkS6lq2x3G02pJDJmhk/QeffEXCdvNdL3rtq7Whx/dVdtuvPqo32wx4d7q/
- 9cUtlz17ChlYRDjYpAVU2T5Za3g9knlWW7w1Ah7mDmsTCBDGLg4BWAizm4M/30skpzfafnOruyR
- CNfc0Ke7gCH+h9rB/c15FzqkBHJOyTL84Tn0iPNCyNzUyX0aRuzRN/flSOsl18ion/q9O1e0zW0
- lCwA=
-X-Developer-Key: i=akemnade@kernel.org; a=openpgp;
- fpr=EEC0DB858E66C0DA70620AC07DBD6AC74DE29324
+From: Krzysztof Lasocki <krz.lasocki@gmail.com>
+Date: Fri, 2 Jan 2026 02:55:06 +0100
+X-Gm-Features: AQt7F2oNhGsfxnFCcHcO-qraVGDeprCBCOgEKdalt9zh2wwGxF_IPfcZYSLm4u0
+Message-ID: <CAMZtjFax=Css04mxz7yzG=diSoE=DcaUcrFipt3d5Qy3KMv+hw@mail.gmail.com>
+Subject: dm8148-t410: getting USB to work
+To: linux-omap@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Andreas Kemnade <andreas@kemnade.info>
+Hi,
 
-Define interrupts properly. Unfortunately, this hides a bug in the linux
-driver, so it needs to be used with the driver fixed only.
+I am trying to build a kernel for HP t410 thin client which is running
+a TMS320DM8148. There are some very old (kernel v4.6) instructions
+posted on http://muru.com/linux/t410/, and following these I am
+getting a kernel that boots, but does not detect any USB
+controllers(!). I am using omap2plus defconfig,
+linux-omap-drivers-ti-sysc-for-v6.10-signed release, I want to use a
+USB drive for the root device, so I set the respective USB Kconfig
+items to builtin. The devicetree I'm using is
+arch/arm/boot/dts/ti/omap/dm8148-t410.dts
+I am getting the following errors related to the USB controller:
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
----
- arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+[    3.150752] am335x-phy-driver 48141b00.usb-phy: using DT
+'/ocp/l4ls@48000000/control@140000/usb-phy@1b00' for 'reset' GPIO
+lookup
+[    3.162542] of_get_named_gpiod_flags: can't parse 'reset-gpios'
+property of node '/ocp/l4ls@48000000/control@140000/usb-phy@1b00[0]'
+[    3.174563] of_get_named_gpiod_flags: can't parse 'reset-gpio'
+property of node '/ocp/l4ls@48000000/control@140000/usb-phy@1b00[0]'
+[    3.186488] am335x-phy-driver 48141b00.usb-phy: using lookup tables
+for GPIO lookup
+[    3.194201] am335x-phy-driver 48141b00.usb-phy: No GPIO consumer reset found
+[    3.201286] am335x-phy-driver 48141b00.usb-phy: using DT
+'/ocp/l4ls@48000000/control@140000/usb-phy@1b00' for 'vbus-detect'
+GPIO lookup
+[    3.213553] of_get_named_gpiod_flags: can't parse
+'vbus-detect-gpios' property of node
+'/ocp/l4ls@48000000/control@140000/usb-phy@1b00[0]'
+[    3.226100] of_get_named_gpiod_flags: can't parse
+'vbus-detect-gpio' property of node
+'/ocp/l4ls@48000000/control@140000/usb-phy@1b00[0]'
+[    3.238542] am335x-phy-driver 48141b00.usb-phy: using lookup tables
+for GPIO lookup
+[    3.246254] am335x-phy-driver 48141b00.usb-phy: No GPIO consumer
+vbus-detect found
+[    3.253931] am335x-phy-driver 48141b00.usb-phy: dummy supplies not
+allowed for exclusive requests
+[    3.262855] am335x-phy-driver 48141b00.usb-phy: dummy supplies not
+allowed for exclusive requests
 
-diff --git a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
-index c90f43cc2fae9..a9f0cfd7c999d 100644
---- a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
-+++ b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
-@@ -346,7 +346,7 @@ mpu9150h: imu@68 {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&mpu9150h_pins>;
- 		interrupt-parent = <&gpio2>;
--		interrupt = <19 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupts = <19 IRQ_TYPE_LEVEL_HIGH>;
- 	};
- };
- 
-@@ -408,7 +408,7 @@ mpu9150: imu@68 {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&mpu9150_pins>;
- 		interrupt-parent = <&gpio2>;
--		interrupt = <7 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupts = <7 IRQ_TYPE_LEVEL_HIGH>;
- 		vddio-supply = <&cb_v18>;
- 		vdd-supply = <&cb_v33>;
- 		invensense,level-shifter;
+Following code in drivers/usb/phy/phy-am335x.c, the errors come from
+the upper-level usb driver, it seems that usb_phy_gen_create_phy
+requires a vbus-detect gpio pin. Following the DM8148 Technical
+Reference Manual (sprugx8c.pdf) I found that the SoC has these pins
+(VDD_USB0_VBUS and VDD_USB1_VBUS), but they are not connected to GPIO.
+Resetting the PHY is also done by means of a register and not GPIO
+(the PHY is integrated in SoC).
+
+This device operates USB in host-only mode. The USB power regulator is
+set up to be always on. Does anyone have an idea how to patch this so
+the USB controllers' VBUS_DETECT is considered high and they are
+configured and enumerate the devices? Is there some way to specify a
+dummy always-high GPIO in the dts?
+
+Best
+Chris Lasocki
 
 -- 
-2.47.3
-
+Ala ma bota
 
