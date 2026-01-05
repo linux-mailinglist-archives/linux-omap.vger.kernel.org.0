@@ -1,123 +1,132 @@
-Return-Path: <linux-omap+bounces-5311-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5312-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB4EACF18DA
-	for <lists+linux-omap@lfdr.de>; Mon, 05 Jan 2026 02:17:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61076CF2006
+	for <lists+linux-omap@lfdr.de>; Mon, 05 Jan 2026 06:34:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B63013013EF0
-	for <lists+linux-omap@lfdr.de>; Mon,  5 Jan 2026 01:17:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D35FE3047919
+	for <lists+linux-omap@lfdr.de>; Mon,  5 Jan 2026 05:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25B72BF011;
-	Mon,  5 Jan 2026 01:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D209F327C16;
+	Mon,  5 Jan 2026 05:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="AKRq+C0R"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="AMTTip1s"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2682251795;
-	Mon,  5 Jan 2026 01:17:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF479327C00
+	for <linux-omap@vger.kernel.org>; Mon,  5 Jan 2026 05:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767575845; cv=none; b=jxCjq+eslDwzZnYce+6dgkqLUuahofDevRXT1LRjw37bmG7nys9D0KIWjASnuoRtV1wXdbizT5QJB2+dEU6ke1jNrEajKb5yc0EhYbuUqOEkN+xmHwCoitJtGguzrOv129iVnQxUJiAxxzO3/i3yiLHUa8zqrDW0QCqE7cVcjgk=
+	t=1767590184; cv=none; b=D/FaJsodSBe51U3QDXcgi8b6J/RnsqRKOhQAiN11lnJCzZEC6btvGybqIkdBfeZtgzjaGBZt1Zh/3kcUxJD5CwPbeZ6CDuz2nqmlwJTO8M5mMmJ2xQvTl1K0afQRQZaKjKEBwJzuf9pdAFkXloivSFMWZ3rGiLwx9lFu50ma1b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767575845; c=relaxed/simple;
-	bh=lKYlFUk3wTX+gwXFOMsXeQ4+0b/Y3itIzSFepyAzzDk=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=FvRMSne941cGw4VtG2k9spnZqIb3e6Y6vtKAfmF8nwM1/Rr+xxc6p65WBdQBkCyRUCbM3HtQewP2uIjhpr95MO2+lAxZzYczov4V6lcwe7RULYPAFd7y0uPL/a2rEDeOUXgzpf8S6gg6f0VGTFAMRXTrXltYaw1vs3zadtmKIlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=AKRq+C0R; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:Cc:To:Subject:From:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=pZJXqr1shDOJNTqRYSFVIu1Zdtd7/8R285rGmkkRm1E=; b=AKRq+C0RidbJ2ebH1AwJJaiFtO
-	8KWAnzMMb5j2/RD+jEWnlyhtwoMIEpAqesaCl2mj+Bgr79rcXC2iLY4X8UoUZ1J6ZcERcRLZf/1Mr
-	Qj9AvTYMuYYMDIchA/83TyX753gWfZ5EHQHWWsZhznwSoZHN6XQ9mSMXkqJBZRxUOF8JjK7kxTjy8
-	YRYm5cRRxcqihc4WnIbQJI4hdpLFCyLFM5d6xhV3rSlhTjcSnziwDYdjnr6V0QQi5WmSmqCxg8qg0
-	JaNWJvB4I8S7f1CbEKaO5cHJ++lZok1J0rNm2fPDugTXr2azRdsHFhVo21Rw9ChmdPDMCgZBM4Cj0
-	TJFOwEpA==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vcZDf-0000000AbSy-3tej;
-	Mon, 05 Jan 2026 01:17:16 +0000
-Message-ID: <eb7c246a-6c5f-4d8d-bc96-2a71ece2e042@infradead.org>
-Date: Sun, 4 Jan 2026 17:17:14 -0800
+	s=arc-20240116; t=1767590184; c=relaxed/simple;
+	bh=mcYzBYB7y8/r8i7g4RLrBc1IZKBZ6GevOynaaAk8sbU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J9hrUfRhMsoWC6G3eyfPhPE1XPKgyteiEoeiOsvI2CuwD6eNuqbj9fxGdJxcB8MeUJItJ2al2Jy8wCJi5IFGzyf/M3riP+t5BmCrDKEBSb0B3BvWUJVj6ybvhipHI33sSfTge/52HkWjs3nlaeZ7LsWaFUcJn+YPNOLyCnyiYw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=AMTTip1s; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-803474aaa8bso776949b3a.0
+        for <linux-omap@vger.kernel.org>; Sun, 04 Jan 2026 21:16:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1767590182; x=1768194982; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EpbA45esMIBMgfkAVwV6CxFZYn+BwHRYNqukP46Yyhc=;
+        b=AMTTip1s8fuq3LMXokI30VJFnjHPUSv+LhLxPI1XyWVNwfmi9/0QyrBW2MbNxdtVfR
+         ME17Q6edMPZ0OUasPhEFa+1FBYbtdfPALncVVgTQ/fScQiBh8HdB3z+zUJMQYE/W6A3N
+         l203kqO8JrH4aQWHbGp/ai7nUDuCTIfQM8bs8wGsi7Dmfj6fFOBO8/DOfS/JffEbh6b1
+         oXg443hOHtCoNK7I8auAdQcQvt0HMWcgMuSgK8NuABqO5F1POHqmea2l23m58psFMUXr
+         W22puneQtNpeyemMcapdoCEfsnRfT+Moxnx2rZyiyndB+cK7a4XSx7VI6pe/FYEUp1Cl
+         hIng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767590182; x=1768194982;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EpbA45esMIBMgfkAVwV6CxFZYn+BwHRYNqukP46Yyhc=;
+        b=KpQqDatKxq18+NOKl728OoyoKuYYViVhSdYa6wq4KHDhIbk4USN1xeX9BjUgs1RtIj
+         oCW0q8t7UsTs9fgnaZ/zAneJ3+4z1LJYuAOcD6womHx8pV7wIsX1r0MOBEI5vdwc9RKv
+         bNSuvV+NGcH4frMc+Eabl32jRbObdIDPvbXpzw8eguQeW/IQuK43TZo/9EgTAeMa7fy7
+         KbRcFkv665agfg8WAfduELrfByQl+r8a9/rTW9SF1u7vdVMpOb6BDRS8sc6Eli0U7x6P
+         2kDvR94xyRPr8xXEf6oVpYrPiVq+vIL4b8TLq8jhD4kuEAOELyhHu+vg+A4e4meQ/Jo4
+         aYAA==
+X-Forwarded-Encrypted: i=1; AJvYcCXmfsPzrvbKdVjwsZP0xrnJ8m2otiO+FUOHbszuSj3Dp4+VsP9ig6TZtPmgOriLYVNMTsYUdWo4nBye@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVSYlIXVFHkt5NnInhki+vHFJOCKO1MLxspgOM+GBqnlfIG9L/
+	Xs4CuGJ+fqcfdgmuHMrrExDGAwUvARdo4dLe5WrqSHnss7iDZWJ6PBeLP6zVBS812wc=
+X-Gm-Gg: AY/fxX6vnkcG4btBJIkcU5bxkoB/OitUs51g1EWjaC6SNxkts2mqVV3Y8tgZ6vG76bp
+	/P3uKZk8bbJj5xLAThowIz/K43MoP7J9UI+6Kr1ltz2TZmeYUcxXu26jYi9eZJ64p7WCfpNlW8A
+	vfAyU9Aj+LtJsNwqcCPRFHOWwkiXCWq6XOVn078cw1qdIhsQc5ZbjiE1rWShGNhg1Xnn26nN6h1
+	SqaTL83XZbPYh2ojJiipNVxtLMKoNhyFYtZAkXDWVzrhFouhyqJjNU6+ZG0C+Pc7YP81sfr78oe
+	mic/crW+5pPZp8x4W+MGBHRb1AG6qPw2bR+hyZx1jrSylZVMNbG7FDLZbqWsv/Wq06wsj8MYm8y
+	5xsxGRrQ9f3l+VeiKFDcbJhMyq25EwV9AoB/RMC2U3K/uSd1yTG6sSfRpiqfUX43vAmdJRwXRJ/
+	A8VaCsbG643iKIIt/7Yt94Xw==
+X-Google-Smtp-Source: AGHT+IFfEKnsl5QxZyXv7k50VAY2BXELhz52jgPd5VP1ILP7m/DhbTLzWR4EDt/ToMMNCM4NouQd9A==
+X-Received: by 2002:a05:6a00:909c:b0:7e8:3fcb:bc4b with SMTP id d2e1a72fcca58-8148b523aaamr5501381b3a.32.1767590181832;
+        Sun, 04 Jan 2026 21:16:21 -0800 (PST)
+Received: from localhost ([122.172.80.63])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7a844d5asm46691551b3a.3.2026.01.04.21.16.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Jan 2026 21:16:21 -0800 (PST)
+Date: Mon, 5 Jan 2026 10:46:19 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Kevin Hilman <khilman@kernel.org>, Haotian Zhang <vulab@iscas.ac.cn>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, linux-omap@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] omap-cpufreq: Fix regulator resource leak in probe()
+Message-ID: <63igwpx3adqf27awer7gv4yoj6qzhbgvomzierksm6m3vziybt@ypxykci7gnll>
+References: <20251215030327.1771-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: [Linux-stm32] Kconfig dangling references (BZ 216748)
-To: Antonio Borneo <antonio.borneo@foss.st.com>, Arnd Bergmann
- <arnd@arndb.de>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Cc: linux-sh@vger.kernel.org,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Vaibhav Hiremath <hvaibhav.linux@gmail.com>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- andrew.jones@linux.dev, Paul Cercueil <paul@crapouillou.net>,
- Max Filippov <jcmvbkbc@gmail.com>, linux-stm32@st-md-mailman.stormreply.com,
- chrome-platform@lists.linux.dev, openbmc@lists.ozlabs.org, x86@kernel.org,
- Andy Shevchenko <andy.shevchenko@gmail.com>,
- Matti Vaittinen <mazziesaccount@gmail.com>,
- Philipp Zabel <p.zabel@pengutronix.de>, Paul Kocialkowski
- <paulk@sys-base.io>, linux-sound@vger.kernel.org,
- "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
- Linux-OMAP <linux-omap@vger.kernel.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- linux-mips@vger.kernel.org, asahi@lists.linux.dev,
- Srinivas Kandagatla <srini@kernel.org>, Jonathan Cameron <jic23@kernel.org>
-References: <22b92ddf-6321-41b5-8073-f9c7064d3432@infradead.org>
- <5e335232-89b4-4c35-93bd-efad7e4d8995@app.fastmail.com>
- <0220ec0592b6ef8936c25cffbc6cbfa0539fb71a.camel@foss.st.com>
-Content-Language: en-US
-In-Reply-To: <0220ec0592b6ef8936c25cffbc6cbfa0539fb71a.camel@foss.st.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251215030327.1771-1-vulab@iscas.ac.cn>
 
-
-
-On 12/8/25 1:48 AM, Antonio Borneo wrote:
-> On Mon, 2025-12-08 at 09:55 +0100, Arnd Bergmann wrote:
->> On Mon, Dec 8, 2025, at 03:04, Randy Dunlap wrote:
->>> from  https://bugzilla.kernel.org/show_bug.cgi?id=216748
->>>
->>> The bugzilla entry includes a Perl script and a shell script.
->>> This is the edited result of running them (I removed some entries that 
->>> were noise).
->>>
->>> I'll try to Cc: all of the relevant mailing lists or individuals.
->>>
->>> ...
->>>
->>> MACH_STM32MP25 ---
->>> drivers/pinctrl/stm32/Kconfig:58:       default MACH_STM32MP25 || (ARCH_STM32 
->>> && ARM64)
->>
->> This was likely intended for 32-bit kernels on 64-bit STM32MP25
->> chips, which we don't support. I think this can go.
+On 15-12-25, 11:03, Haotian Zhang wrote:
+> The current omap_cpufreq_probe() uses regulator_get() to obtain the MPU
+> regulator but does not release it in omap_cpufreq_remove() or when
+> cpufreq_register_driver() fails, leading to a potential resource leak.
 > 
-> Yes, I fully agree!
+> Use devm_regulator_get() instead of regulator_get() so that the regulator
+> resource is automatically released.
 > 
-> I have a series pinctrl stm32 to be rebased on v6.19-rc1 and I can include the
-> drop of MACH_STM32MP25 inside it.
+> Fixes: 53dfe8a884e6 ("cpufreq: OMAP: scale voltage along with frequency")
+> Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+> ---
+>  drivers/cpufreq/omap-cpufreq.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/cpufreq/omap-cpufreq.c b/drivers/cpufreq/omap-cpufreq.c
+> index bbb01d93b54b..f83f85996b36 100644
+> --- a/drivers/cpufreq/omap-cpufreq.c
+> +++ b/drivers/cpufreq/omap-cpufreq.c
+> @@ -157,7 +157,7 @@ static int omap_cpufreq_probe(struct platform_device *pdev)
+>  		return -EINVAL;
+>  	}
+>  
+> -	mpu_reg = regulator_get(mpu_dev, "vcc");
+> +	mpu_reg = devm_regulator_get(mpu_dev, "vcc");
+>  	if (IS_ERR(mpu_reg)) {
+>  		pr_warn("%s: unable to get MPU regulator\n", __func__);
+>  		mpu_reg = NULL;
+> @@ -169,7 +169,6 @@ static int omap_cpufreq_probe(struct platform_device *pdev)
+>  		if (regulator_get_voltage(mpu_reg) < 0) {
+>  			pr_warn("%s: physical regulator not present for MPU\n",
+>  				__func__);
+> -			regulator_put(mpu_reg);
+>  			mpu_reg = NULL;
+>  		}
+>  	}
 
-and what about this dangling symbol?
-arch/arm64/Kconfig.platforms:375:	select ARM_SMC_MBOX
+Kevin ?
 
-It was merged with ARCH_STM32 in
-9e4e24414cc6 ("arm64: introduce STM32 family on Armv8 architecture")
-
-Same answer as for MACH_STM32MP25?
-If so, Antonio, can you take care of that one also, please?
-
-thanks.
 -- 
-~Randy
-
+viresh
 
