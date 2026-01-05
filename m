@@ -1,138 +1,94 @@
-Return-Path: <linux-omap+bounces-5317-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5318-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8CE4CF3DCA
-	for <lists+linux-omap@lfdr.de>; Mon, 05 Jan 2026 14:39:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D034CF3DA3
+	for <lists+linux-omap@lfdr.de>; Mon, 05 Jan 2026 14:36:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 44FB3316DB58
-	for <lists+linux-omap@lfdr.de>; Mon,  5 Jan 2026 13:33:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8E41B30D1869
+	for <lists+linux-omap@lfdr.de>; Mon,  5 Jan 2026 13:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC1133985E;
-	Mon,  5 Jan 2026 13:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0A14221FAC;
+	Mon,  5 Jan 2026 13:29:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="zWlEz8la"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009D533984D;
-	Mon,  5 Jan 2026 13:13:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899181EA65;
+	Mon,  5 Jan 2026 13:29:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767618817; cv=none; b=nVqbc3bOD0IYaATv2Ta6McwzI5Vr1G+kGBsm+Wbbbvf6ZW+EQEFJHF0VkO1N9IKFD60evodG4g7LPHMJEEvj9TkyarBzd/a7I18cw+NIuQ4vUblt1nLH1IQ6mLKdg3nADpX9MaIyJsym/zz2G5HnOftfuUiEyivAHbAWf7L0WYE=
+	t=1767619771; cv=none; b=Uab1CuVNVQRBdTXwvkNUSrh7WKeX6H6BoiqxxyO72LQhb7dnuJmtfv+q6cQhbUxG49bs6XlW84zMWVc+HOz78QrgbTZgAoPvbV4xXQcYuF8vRfKQRqv/KX3S+YwVtQqav1xyjdbnoyGQsB1JkSJLbqN1OvkhBVeFuPwz7Eesr1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767618817; c=relaxed/simple;
-	bh=Vy6RaF7s9rFJKANr5LYAB2S+8LdhlBMuOdgH4W3YKtM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UJjH/kBI51yKOkpCT7P/M7HHos3nqitwKcvz1EFVRrMwNXEeVWjJr5tgSfBKXlmnAwaGnOAEtqnc2ZCdY+TRapB2B7bUy7zaFbHeqKIIYd5/L3Kktt7VMUuxZIZoRXdisQ31ixgESh+cGgKm0+CW854zym2PhEQEDvfYxDwugPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from DESKTOP-L0HPE2S.localdomain (unknown [124.16.141.245])
-	by APP-05 (Coremail) with SMTP id zQCowADneAzsuFtpFst0Aw--.17822S2;
-	Mon, 05 Jan 2026 21:13:18 +0800 (CST)
-From: Haotian Zhang <vulab@iscas.ac.cn>
-To: andreas@kemnade.info,
-	khilman@kernel.org,
-	rafael@kernel.org,
-	viresh.kumar@linaro.org
-Cc: linux-omap@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Haotian Zhang <vulab@iscas.ac.cn>
-Subject: [PATCH v2] cpufreq: OMAP: Fix resource leak in probe error path and remove
-Date: Mon,  5 Jan 2026 21:12:53 +0800
-Message-ID: <20260105131253.2692-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251215030327.1771-1-vulab@iscas.ac.cn>
-References: <20251215030327.1771-1-vulab@iscas.ac.cn>
+	s=arc-20240116; t=1767619771; c=relaxed/simple;
+	bh=vBH8JiDwfiJDYGHofFIugWOXfNcExW4sl5x9m+iuBd0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mmKwA1m9EVgMYAsx457gX8IjWX3FxTZbm5+wdxloRhwUov9g8HbdhuEJt+TrlV22zvxZsvJWHWACjUtGQ2PuxALBQBgzPX0Q3n6SIb9+0wp7uIC2Nxk1QuWQIenKl9spwTOWMvUEUNRfCszluB4gyYZ/ET9CCD5Lhka8xQcrTiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=zWlEz8la; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id DBC061A2659;
+	Mon,  5 Jan 2026 13:29:27 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B150660726;
+	Mon,  5 Jan 2026 13:29:27 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 151E9103C853F;
+	Mon,  5 Jan 2026 14:29:24 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1767619767; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=A25N/ovUP2MHvVztinoJtar+/xH5m7o0FxJt+cbAiJY=;
+	b=zWlEz8lauLrlfKOdjwLtu+R/e5LfaPkXffKoJuVQockemAiEfhdesqIPTCLmmDGmKEMTMA
+	dEgo9B1gZTCdlC3hKBPGO33dvTitQdhxLWx8OkIq2ZdcOEJ08iV8itblIN+IuhkgVPyRiC
+	vb/qzME1CWDQJtyu/BE4CRq01AdUK1QmoCXNwhDndk0X1BDVdOI08QKBRBdxQfGfmMnzMi
+	yyd9gAz/FQMhIycTe4taqOMXTTPngzf6CJ9lmtGRiyVN3LcDyneCayXcsJoyhEgCuplaBI
+	qoucejN/+Ji5fp1mmOc4ydwQnfKmq+h2vqIHanN0zRlWC39YwZeopxjU9zcdhg==
+Date: Mon, 5 Jan 2026 14:29:23 +0100
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: thomas.petazzoni@bootlin.com, Tony Lindgren <tony@atomide.com>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Enric Balletbo i Serra <eballetbo@gmail.com>
+Subject: Re: [PATCH] ARM: dts: Drop am335x-base0033 devicetree
+Message-ID: <20260105142923.15746579@kmaincent-XPS-13-7390>
+In-Reply-To: <20251204092346.1076836-1-kory.maincent@bootlin.com>
+References: <20251204092346.1076836-1-kory.maincent@bootlin.com>
+Organization: bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowADneAzsuFtpFst0Aw--.17822S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tw1fAFyrGr4kJry5JF18Zrb_yoW8Zw1kpF
-	Z8WrWakr48JF97C39rAF4xCa4ru3WSyw409w1xGwsav3WDAF15Wa4DGa4UAF45K3ykJr4I
-	vryUZa1xCF4DZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkm14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
-	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
-	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
-	IxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfUejjgDUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ8SA2lbeC64dQAAs+
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-The current omap_cpufreq_probe() uses regulator_get() to obtain the MPU
-regulator but does not release it in omap_cpufreq_remove() or when
-cpufreq_register_driver() fails.
+On Thu,  4 Dec 2025 10:23:44 +0100
+Kory Maincent <kory.maincent@bootlin.com> wrote:
 
-Add the missing regulator_put() in the remove function and in the
-error handling path of the probe function to prevent resource leaks.
-Also ensure the mpu_reg pointer is set to NULL after release to avoid
-dangling pointers.
+> From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
+>=20
+> Remove the am335x-base0033 devicetree as it has been non-functional since
+> 2017 (Linunx v4.14) when the ti,tilcdc,slave binding was removed. The HDMI
+> output on this board has been broken for over 8 years without any reported
+> issues or attempts to fix it, indicating this devicetree is no longer in
+> active use.
 
-Fixes: 53dfe8a884e6 ("cpufreq: OMAP: scale voltage along with frequency")
-Suggested-by: Andreas Kemnade <andreas@kemnade.info>
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Hello,
 
----
-Changes in v2:
- - Revert to using regulator_get() instead of devm_regulator_get()
-   to ensure immediate release of unusable regulators and
-   safer handling of the global mpu_reg variable.
- - Add explicit regulator_put() in omap_cpufreq_remove().
- - Add error handling for cpufreq_register_driver() in probe.
----
- drivers/cpufreq/omap-cpufreq.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+Any news on this? The devicetree author acked the patch so all lights are g=
+reen
+to merge the patch.
 
-diff --git a/drivers/cpufreq/omap-cpufreq.c b/drivers/cpufreq/omap-cpufreq.c
-index bbb01d93b54b..b3d58090d202 100644
---- a/drivers/cpufreq/omap-cpufreq.c
-+++ b/drivers/cpufreq/omap-cpufreq.c
-@@ -151,6 +151,8 @@ static struct cpufreq_driver omap_driver = {
- 
- static int omap_cpufreq_probe(struct platform_device *pdev)
- {
-+	int ret;
-+
- 	mpu_dev = get_cpu_device(0);
- 	if (!mpu_dev) {
- 		pr_warn("%s: unable to get the MPU device\n", __func__);
-@@ -174,12 +176,23 @@ static int omap_cpufreq_probe(struct platform_device *pdev)
- 		}
- 	}
- 
--	return cpufreq_register_driver(&omap_driver);
-+	ret = cpufreq_register_driver(&omap_driver);
-+	if (ret) {
-+		if (mpu_reg) {
-+			regulator_put(mpu_reg);
-+			mpu_reg = NULL;
-+		}
-+	}
-+	return ret;
- }
- 
- static void omap_cpufreq_remove(struct platform_device *pdev)
- {
- 	cpufreq_unregister_driver(&omap_driver);
-+	if (mpu_reg) {
-+		regulator_put(mpu_reg);
-+		mpu_reg = NULL;
-+	}
- }
- 
- static struct platform_driver omap_cpufreq_platdrv = {
--- 
-2.43.0
-
+Regards,
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
 
