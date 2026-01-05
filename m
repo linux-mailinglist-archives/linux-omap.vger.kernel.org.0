@@ -1,82 +1,138 @@
-Return-Path: <linux-omap+bounces-5316-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5317-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB0C4CF2CDA
-	for <lists+linux-omap@lfdr.de>; Mon, 05 Jan 2026 10:39:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8CE4CF3DCA
+	for <lists+linux-omap@lfdr.de>; Mon, 05 Jan 2026 14:39:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 81964304DD9E
-	for <lists+linux-omap@lfdr.de>; Mon,  5 Jan 2026 09:37:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 44FB3316DB58
+	for <lists+linux-omap@lfdr.de>; Mon,  5 Jan 2026 13:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374C132C326;
-	Mon,  5 Jan 2026 09:28:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="TOWfQzGK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC1133985E;
+	Mon,  5 Jan 2026 13:13:38 +0000 (UTC)
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C362D73A3;
-	Mon,  5 Jan 2026 09:28:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009D533984D;
+	Mon,  5 Jan 2026 13:13:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767605316; cv=none; b=H/a0X81flg0xRPQsx+EdrJVI1CnadqeS0wiJfjrKHb+fgIrVWVfT8rmTbB9JbCir0f/z4FWyakseyZl7WcQVRR38Lu3djhOyWR4BQ5C52tT22giBjiQRkFpvOvFXJcupjMTQX+Dl1bF/nguvx05JfZHdq+Wh0h1UZ+OLJgXgT8c=
+	t=1767618817; cv=none; b=nVqbc3bOD0IYaATv2Ta6McwzI5Vr1G+kGBsm+Wbbbvf6ZW+EQEFJHF0VkO1N9IKFD60evodG4g7LPHMJEEvj9TkyarBzd/a7I18cw+NIuQ4vUblt1nLH1IQ6mLKdg3nADpX9MaIyJsym/zz2G5HnOftfuUiEyivAHbAWf7L0WYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767605316; c=relaxed/simple;
-	bh=Z+Mf2OJd/f8FCFLXymRmlLvwckLFVln2kGBpPKbdcYI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QULf5UFa4zli0QABg42PpD5GGlk3INfyGzGoKaAucG7uWmT+qATM3UyCq7dUSVOi25eT6r/aZqf7S5erNG0AU3j240C33TCsxf+f0ZhbX7TIxAlyXw0h7sV1wiO1mwlw3/YbI8C0bjdqApjV8dJ82rSoGNEn0ZR9mPcQkpdeL88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=TOWfQzGK; arc=none smtp.client-ip=178.238.236.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=emKIByfXGmPnCS6jAiZsoKAy6fQFYwuuRgiRa12+j8g=; b=TOWfQzGKPksIysId1zH63kpqpa
-	EcO2JNyxw2G88PRxMO76uG1Vdt1iyA+QW/O23xppemvAsbhNACSL4MnpergTnAAeGFPLFfIPA4ASo
-	9O0iNRTYZkHsf05jyv46P8hTk6FpF2/PORUdVI58W/2gvm8KpnQpVOYc6F9LlDjqjqXWzYZRf4Z0E
-	NqPNU6XBARYNNtS2zpG1rGUwaHHNhABmw9LHjYep937mBVmVEU/ub0p3RW7TWEB95wZt8vaLmQZ/G
-	mg73CcMSdh+HO2AKdIVaxjh/RWtP4Ff8IOU3VaIR7yLZkSCyMf4CM5a7S2bxvuoTDjiQ6i38gI1c+
-	ogAmf1Fw==;
-Date: Mon, 5 Jan 2026 10:27:04 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: aaro.koskinen@iki.fi, khilman@baylibre.com, rogerq@kernel.org,
- tony@atomide.com, linux@armlinux.org.uk,
- linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] ARM: omap2: Fix reference count leaks in
- omap_control_init()
-Message-ID: <20260105102704.77d4c9d1@kemnade.info>
-In-Reply-To: <20251217142122.1861292-1-vulab@iscas.ac.cn>
-References: <20251217142122.1861292-1-vulab@iscas.ac.cn>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; aarch64-unknown-linux-gnu)
+	s=arc-20240116; t=1767618817; c=relaxed/simple;
+	bh=Vy6RaF7s9rFJKANr5LYAB2S+8LdhlBMuOdgH4W3YKtM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UJjH/kBI51yKOkpCT7P/M7HHos3nqitwKcvz1EFVRrMwNXEeVWjJr5tgSfBKXlmnAwaGnOAEtqnc2ZCdY+TRapB2B7bUy7zaFbHeqKIIYd5/L3Kktt7VMUuxZIZoRXdisQ31ixgESh+cGgKm0+CW854zym2PhEQEDvfYxDwugPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from DESKTOP-L0HPE2S.localdomain (unknown [124.16.141.245])
+	by APP-05 (Coremail) with SMTP id zQCowADneAzsuFtpFst0Aw--.17822S2;
+	Mon, 05 Jan 2026 21:13:18 +0800 (CST)
+From: Haotian Zhang <vulab@iscas.ac.cn>
+To: andreas@kemnade.info,
+	khilman@kernel.org,
+	rafael@kernel.org,
+	viresh.kumar@linaro.org
+Cc: linux-omap@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haotian Zhang <vulab@iscas.ac.cn>
+Subject: [PATCH v2] cpufreq: OMAP: Fix resource leak in probe error path and remove
+Date: Mon,  5 Jan 2026 21:12:53 +0800
+Message-ID: <20260105131253.2692-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251215030327.1771-1-vulab@iscas.ac.cn>
+References: <20251215030327.1771-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowADneAzsuFtpFst0Aw--.17822S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tw1fAFyrGr4kJry5JF18Zrb_yoW8Zw1kpF
+	Z8WrWakr48JF97C39rAF4xCa4ru3WSyw409w1xGwsav3WDAF15Wa4DGa4UAF45K3ykJr4I
+	vryUZa1xCF4DZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkm14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
+	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
+	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+	IxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfUejjgDUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ8SA2lbeC64dQAAs+
 
-On Wed, 17 Dec 2025 14:21:22 +0000
-Wentao Liang <vulab@iscas.ac.cn> wrote:
+The current omap_cpufreq_probe() uses regulator_get() to obtain the MPU
+regulator but does not release it in omap_cpufreq_remove() or when
+cpufreq_register_driver() fails.
 
-> The of_get_child_by_name() function increments the reference count
-> of child nodes, causing multiple reference leaks in omap_control_init():
-> 
-> 1. scm_conf node never released in normal/error paths
-> 2. clocks node leak when checking existence
-> 3. Missing scm_conf release before np in error paths
-> 
-> Fix these leaks by adding proper of_node_put() calls and separate error
-> handling.
-> 
-> Fixes: e5b635742e98 ("ARM: OMAP2+: control: add syscon support for register accesses")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Add the missing regulator_put() in the remove function and in the
+error handling path of the probe function to prevent resource leaks.
+Also ensure the mpu_reg pointer is set to NULL after release to avoid
+dangling pointers.
 
-Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
+Fixes: 53dfe8a884e6 ("cpufreq: OMAP: scale voltage along with frequency")
+Suggested-by: Andreas Kemnade <andreas@kemnade.info>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+
+---
+Changes in v2:
+ - Revert to using regulator_get() instead of devm_regulator_get()
+   to ensure immediate release of unusable regulators and
+   safer handling of the global mpu_reg variable.
+ - Add explicit regulator_put() in omap_cpufreq_remove().
+ - Add error handling for cpufreq_register_driver() in probe.
+---
+ drivers/cpufreq/omap-cpufreq.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/cpufreq/omap-cpufreq.c b/drivers/cpufreq/omap-cpufreq.c
+index bbb01d93b54b..b3d58090d202 100644
+--- a/drivers/cpufreq/omap-cpufreq.c
++++ b/drivers/cpufreq/omap-cpufreq.c
+@@ -151,6 +151,8 @@ static struct cpufreq_driver omap_driver = {
+ 
+ static int omap_cpufreq_probe(struct platform_device *pdev)
+ {
++	int ret;
++
+ 	mpu_dev = get_cpu_device(0);
+ 	if (!mpu_dev) {
+ 		pr_warn("%s: unable to get the MPU device\n", __func__);
+@@ -174,12 +176,23 @@ static int omap_cpufreq_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
+-	return cpufreq_register_driver(&omap_driver);
++	ret = cpufreq_register_driver(&omap_driver);
++	if (ret) {
++		if (mpu_reg) {
++			regulator_put(mpu_reg);
++			mpu_reg = NULL;
++		}
++	}
++	return ret;
+ }
+ 
+ static void omap_cpufreq_remove(struct platform_device *pdev)
+ {
+ 	cpufreq_unregister_driver(&omap_driver);
++	if (mpu_reg) {
++		regulator_put(mpu_reg);
++		mpu_reg = NULL;
++	}
+ }
+ 
+ static struct platform_driver omap_cpufreq_platdrv = {
+-- 
+2.43.0
+
 
