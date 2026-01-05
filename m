@@ -1,570 +1,328 @@
-Return-Path: <linux-omap+bounces-5324-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5321-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CCDACF4CD0
-	for <lists+linux-omap@lfdr.de>; Mon, 05 Jan 2026 17:48:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30862CF4C28
+	for <lists+linux-omap@lfdr.de>; Mon, 05 Jan 2026 17:41:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0336930A307F
-	for <lists+linux-omap@lfdr.de>; Mon,  5 Jan 2026 16:42:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 469F531055C1
+	for <lists+linux-omap@lfdr.de>; Mon,  5 Jan 2026 16:22:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B5A314B87;
-	Mon,  5 Jan 2026 16:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6DD0305045;
+	Mon,  5 Jan 2026 16:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="uhWSGL9g"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="wfyASmZY"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from server.couthit.com (server.couthit.com [162.240.164.96])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D24314A6F;
-	Mon,  5 Jan 2026 16:27:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CA5285C89;
+	Mon,  5 Jan 2026 16:22:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767630466; cv=none; b=aJUHnwK0INk8r3s3YoHIC9dkvYDbpZmlW3KNl3fRhEehlm20jMQ4P1+IAGECbx/bz0ccCMEejJ10LSZ0ZEwCjYWHKYojhVjS6ZFgnkRj/6hpRN9rqqYQrGZ1m/YbBM5MzSUa8HZvvqsRF3mFKVXRqItV7FHyzYI7qhd4HlqVbm8=
+	t=1767630157; cv=none; b=dkksun5M2Jyol5l9ICIevNuHbKUr4gf8RCHIcS+jDgqzS+qCoKrdnJDPTEyugQ0F+D6HkBJq7iHsAc95WjIq8VYC0yiaTMKHQ2mWVBUHA6M385HJ7t0UzxCC8E8TGOPxjz9O4cY/cu/zxTx0pMr3qKI5pECfk46vZte8piQNUsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767630466; c=relaxed/simple;
-	bh=m+o8ilr2xwFBOvmY5HuCXFh9hTQVbVfG3UukeDc7eck=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TBoQUqV5SpSfysVobvMy1wI4e2IMuZIiewV/Qzmp1MCzPM9AzmcfLduJG5UAzloBic0v30v0yJYbjxu4BT77Sjr50mIueQQhtmQSo+Mu3VFcPRs7rI108W7IdJCQP/vR4Xr2pMMMuzp+3+DcUKZhZCb3KnoGA57xpsTeGNQ2788=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=uhWSGL9g; arc=none smtp.client-ip=162.240.164.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=OCGh0Zzbvq8aDNVgo+bLQ986ExQjwSh4I8caNL1GVCs=; b=uhWSGL9gLdwW9LWVLqtWw1zX0K
-	BpFQtDjd6c5E85yS4Guq251ZfghqdNZWPPSofHxiLG2S9dWt0V1579tLMiRvgKy+K1s1AzD9xSMPx
-	p48on4aqIj9iFhlWpVROkb3PIiApc166LyERaiizJUXqCDIiJt3x68nH8ztNB8jEsJD9zz4mBQp0v
-	dGL+CPFOabVO1xZVbE0m6ktgFMS3IDM1V5j8jJWR6wG1jZmn3/xg+gCVoIQ3bcw4KHApp4LHTdSmu
-	1sCuHxSgVe9vdmPAF4dgAD6itgThkACFe3Vup4vn47tpNJNisERnPgaXIR9qejBO0Zoz5JXJ02eo9
-	49EHyfpg==;
-Received: from [122.175.9.182] (port=19826 helo=cypher.couthit.local)
-	by server.couthit.com with esmtpa (Exim 4.98.1)
-	(envelope-from <parvathi@couthit.com>)
-	id 1vcnQd-0000000F4as-3Ue0;
-	Mon, 05 Jan 2026 11:27:36 -0500
-From: Parvathi Pudi <parvathi@couthit.com>
-To: nm@ti.com,
-	vigneshr@ti.com,
-	afd@ti.com,
-	khilman@baylibre.com,
-	rogerq@kernel.org,
-	tony@atomide.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	richardcochran@gmail.com,
-	aaro.koskinen@iki.fi,
-	andreas@kemnade.info
-Cc: andrew@lunn.ch,
-	linux-omap@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	danishanwar@ti.com,
-	pratheesh@ti.com,
-	j-rameshbabu@ti.com,
-	praneeth@ti.com,
-	srk@ti.com,
-	rogerq@ti.com,
-	krishna@couthit.com,
-	mohan@couthit.com,
-	pmohan@couthit.com,
-	basharath@couthit.com,
-	parvathi@couthit.com,
-	Murali Karicheri <m-karicheri2@ti.com>
-Subject: [PATCH v4 2/2] arm: dts: ti: Adds support for AM335x and AM437x
-Date: Mon,  5 Jan 2026 21:51:20 +0530
-Message-ID: <20260105162546.1809714-3-parvathi@couthit.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260105162546.1809714-1-parvathi@couthit.com>
-References: <20260105162546.1809714-1-parvathi@couthit.com>
+	s=arc-20240116; t=1767630157; c=relaxed/simple;
+	bh=AxcR+Fylwqh1PgJgCyR6seeSRnJV5hh0ert8Q7FFt7M=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mFyG46WmNZcezWyPDOZBAf3sp0PAsPVyRnMO5PkN4rsCQdGMn/+C6SPmeN1Qa9XHd0FkIfDG5AnWO+aLG6uEx81G0dVCuP6QcB9l16GK19vqz+4EH+TJrY9ybXImskoE8r1LkRkrFrAIU9rqyhDCb/TutFqW/VL+P0Wjsh3jLSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=wfyASmZY; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 2BEC64E41F7F;
+	Mon,  5 Jan 2026 16:22:33 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id F102A60726;
+	Mon,  5 Jan 2026 16:22:32 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 362D1103C8581;
+	Mon,  5 Jan 2026 17:22:22 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1767630151; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=MASj0+5F+BhI0O8zz8NrhU8cFe/vl+IgpIDneI/8zCU=;
+	b=wfyASmZYAXZDOEI9ogI1szLZusLvXiw3hq/bBEIuPMHGAjW+PCHy4rELj73K3KzyrFrPZO
+	TEDzqz/Jr0x2JkdZiTTpfWBWBg0MGxmkkTPmKMe3FN+aQpm7fIf1Ak/W1lkcc2AhEY412W
+	dI9HvO5+bzTPhEB/eVPG48ldJ+aYfLHrdN1e2Le4vOqajsUib3r4MaJXsa3t0RYt0yOF9k
+	N73Cb6I252QKdqNZ/QkqD2c5Yk/imngKg/nIoGC8nsKA1bNlLZgkrC9UXjwo3HVf0rGzxS
+	wHPP0PRX/alh9zs6FQdYIus8qT+KGVSoOk1unbSanDxfmERwOeLe0yu8SM3Lfw==
+Date: Mon, 5 Jan 2026 17:22:20 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: "Luca Ceresoli" <luca.ceresoli@bootlin.com> (by way of Kory Maincent
+ <kory.maincent@bootlin.com>)
+Cc: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>, "Jyri Sarha"
+ <jyri.sarha@iki.fi>, "Tomi Valkeinen" <tomi.valkeinen@ideasonboard.com>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Rob
+ Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>, "Russell King"
+ <linux@armlinux.org.uk>, "Bartosz Golaszewski" <brgl@bgdev.pl>, "Tony
+ Lindgren" <tony@atomide.com>, "Andrzej Hajda" <andrzej.hajda@intel.com>,
+ "Neil Armstrong" <neil.armstrong@linaro.org>, "Robert Foss"
+ <rfoss@kernel.org>, "Laurent Pinchart" <Laurent.pinchart@ideasonboard.com>,
+ "Jonas Karlman" <jonas@kwiboo.se>, "Jernej Skrabec"
+ <jernej.skrabec@gmail.com>, "Markus Schneider-Pargmann" <msp@baylibre.com>,
+ "Bajjuri Praneeth" <praneeth@ti.com>, "Louis Chauvet"
+ <louis.chauvet@bootlin.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, "Miguel Gazquez"
+ <miguel.gazquez@bootlin.com>, <dri-devel@lists.freedesktop.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-omap@vger.kernel.org>
+Subject: Re: [PATCH v2 05/20] drm/tilcdc: Convert legacy panel binding via
+ DT overlay at boot time
+Message-ID: <20260105172220.2d2edd28@bootlin.com>
+In-Reply-To: <DF0K5UFX46JA.OH85T6IPC5MW@bootlin.com>
+References: <20251211-feature_tilcdc-v2-0-f48bac3cd33e@bootlin.com>
+	<20251211-feature_tilcdc-v2-5-f48bac3cd33e@bootlin.com>
+	<DF0K5UFX46JA.OH85T6IPC5MW@bootlin.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.couthit.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: parvathi@couthit.com
-X-Authenticated-Sender: server.couthit.com: parvathi@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Roger Quadros <rogerq@ti.com>
+Hi Luca, Kory,
 
-PRU-ICSS instance consists of two PRU cores along with various
-peripherals such as the Interrupt Controller (PRU_INTC), the Industrial
-Ethernet Peripheral(IEP), the Real Time Media Independent Interface
-controller (MII_RT), and the Enhanced Capture (eCAP) event module.
+On Wed, 17 Dec 2025 15:23:26 +0100
+"Luca Ceresoli" <luca.ceresoli@bootlin.com> (by way of Kory Maincent <kory.maincent@bootlin.com>) wrote:
 
-The TI Sitara AM335x ICE-V2 consists of single PRU-ICSS instance,
-This patch adds the new device tree overlay file in-order to enable
-PRU-ICSS instance, along with makefile changes.
+> Hi,
+> 
+> Cc: Hervé, can you review the DT overlay aspects?
 
-The TI Sitara AM437x series of devices consists of 2 PRU-ICSS instances
-(PRU-ICSS0 and PRU-ICSS1). This patch adds the device tree nodes for the
-PRU-ICSS1 instance to support DUAL-MAC mode of operation. Support for
-Ethernet over PRU is available only for ICSS1 instance.
+Yes sure.
 
-am33xx-l4.dtsi, am4372.dtsi - Adds IEP and eCAP peripheral as child nodes
-of the PRUSS subsystem node.
+Here is my global review.
 
-am335x-icev2-prueth.dtso, am437x-idk-evm.dts - Adds PRU-ICSS
-instance node along with PRU eth port information and corresponding
-port configuration. It includes interrupt mapping for packet reception,
-HW timestamp collection, and PRU Ethernet ports in MII mode,
+Depending on the discussion on things I have spotted, I will go deeper in
+patch details.
 
-GPIO configuration, boot strapping along with delay configuration for
-individual PRU Ethernet port and other required nodes.
+...
 
-Signed-off-by: Roger Quadros <rogerq@ti.com>
-Signed-off-by: Andrew F. Davis <afd@ti.com>
-Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
-Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
-Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
----
- arch/arm/boot/dts/ti/omap/Makefile            |   5 +
- .../ti/omap/am335x-icev2-prueth-overlay.dtso  | 190 ++++++++++++++++++
- arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi      |  11 +
- arch/arm/boot/dts/ti/omap/am4372.dtsi         |  11 +
- arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts  | 137 ++++++++++++-
- 5 files changed, 353 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/boot/dts/ti/omap/am335x-icev2-prueth-overlay.dtso
+> > +
+> > +static void __init
+> > +tilcdc_panel_update_prop(struct device_node *node, char *name,
+> > +			 void *val, int length)
+> > +{
+> > +	struct property *prop;
+> > +
+> > +	prop = kzalloc(sizeof(*prop), GFP_KERNEL);
+> > +	if (!prop)
+> > +		return;
+> > +
+> > +	prop->name = kstrdup(name, GFP_KERNEL);
+> > +	prop->length = length;
+> > +	prop->value = kmemdup(val, length, GFP_KERNEL);
+> > +	of_update_property(node, prop);
 
-diff --git a/arch/arm/boot/dts/ti/omap/Makefile b/arch/arm/boot/dts/ti/omap/Makefile
-index 14e500846875..c68948035eca 100644
---- a/arch/arm/boot/dts/ti/omap/Makefile
-+++ b/arch/arm/boot/dts/ti/omap/Makefile
-@@ -82,6 +82,10 @@ dtb-$(CONFIG_ARCH_OMAP4) += \
- 	omap4-var-stk-om44.dtb \
- 	omap4-xyboard-mz609.dtb \
- 	omap4-xyboard-mz617.dtb
-+
-+am335x-icev2-prueth-dtbs := am335x-icev2.dtb \
-+	am335x-icev2-prueth-overlay.dtbo
-+
- dtb-$(CONFIG_SOC_AM33XX) += \
- 	am335x-baltos-ir2110.dtb \
- 	am335x-baltos-ir3220.dtb \
-@@ -100,6 +104,7 @@ dtb-$(CONFIG_SOC_AM33XX) += \
- 	am335x-evmsk.dtb \
- 	am335x-guardian.dtb \
- 	am335x-icev2.dtb \
-+	am335x-icev2-prueth.dtb \
- 	am335x-lxm.dtb \
- 	am335x-mba335x.dtb \
- 	am335x-moxa-uc-2101.dtb \
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-icev2-prueth-overlay.dtso b/arch/arm/boot/dts/ti/omap/am335x-icev2-prueth-overlay.dtso
-new file mode 100644
-index 000000000000..abde5119875f
---- /dev/null
-+++ b/arch/arm/boot/dts/ti/omap/am335x-icev2-prueth-overlay.dtso
-@@ -0,0 +1,190 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * DT overlay for IDK AM335x
-+ *
-+ * Copyright (C) 2018 Texas Instruments Incorporated - http://www.ti.com/
-+ */
-+
-+/*
-+ * AM335x ICE V2 board
-+ * http://www.ti.com/tool/tmdsice3359
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/bus/ti-sysc.h>
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/pinctrl/am33xx.h>
-+#include <dt-bindings/clock/am3.h>
-+
-+&{/} {
-+        /* Dual-MAC Ethernet application node on PRU-ICSS */
-+        pruss_eth: pruss-eth {
-+                compatible = "ti,am3359-prueth";
-+                ti,prus = <&pru0>, <&pru1>;
-+                sram = <&ocmcram>;
-+                ti,mii-rt = <&pruss_mii_rt>;
-+                ti,iep = <&pruss_iep>;
-+                ti,ecap = <&pruss_ecap>;
-+                interrupts = <20 2 2>, <21 3 3>;
-+                interrupt-names = "rx_hp", "rx_lp";
-+                interrupt-parent = <&pruss_intc>;
-+
-+                pinctrl-0 = <&pruss_eth_default>;
-+                pinctrl-names = "default";
-+
-+                ethernet-ports {
-+                        #address-cells = <1>;
-+                        #size-cells = <0>;
-+                        pruss_emac0: ethernet-port@0 {
-+                                reg = <0>;
-+                                phy-handle = <&pruss_eth0_phy>;
-+                                phy-mode = "mii";
-+                                interrupts = <20 2 2>, <26 6 6>, <23 6 6>;
-+                                interrupt-names = "rx", "emac_ptp_tx",
-+                                                  "hsr_ptp_tx";
-+                                /* Filled in by bootloader */
-+                                local-mac-address = [00 00 00 00 00 00];
-+                        };
-+
-+                        pruss_emac1: ethernet-port@1 {
-+                                reg = <1>;
-+                                phy-handle = <&pruss_eth1_phy>;
-+                                phy-mode = "mii";
-+                                interrupts = <21 3 3>, <27 9 7>, <24 9 7>;
-+                                interrupt-names = "rx", "emac_ptp_tx",
-+                                                  "hsr_ptp_tx";
-+                                /* Filled in by bootloader */
-+                                local-mac-address = [00 00 00 00 00 00];
-+                        };
-+                };
-+        };
-+};
-+
-+&am33xx_pinmux {
-+	/* MDIO node for PRU-ICSS */
-+        pruss_mdio_default: pruss_mdio_default {
-+                pinctrl-single,pins = <
-+                        /* gpmc_clk.pr1_mdio_mdclk */
-+                        AM33XX_PADCONF(0x88c, PIN_OUTPUT, MUX_MODE5)
-+                        /* gpmc_csn3.pr1_mdio_data */
-+                        AM33XX_PADCONF(0x888, PIN_INPUT, MUX_MODE5)
-+                        /* gpmc_ben0_cle.gpio2_5 */
-+                        AM33XX_PADCONF(0x89c, PIN_INPUT_PULLUP, MUX_MODE7)
-+                        /* disable CPSW MDIO */
-+                        /* mdio_data.gpio0_0 */
-+                        AM33XX_PADCONF(0x948, PIN_INPUT_PULLUP, MUX_MODE7)
-+                        /* mdio_clk.gpio0_1 */
-+                        AM33XX_PADCONF(0x94c, PIN_INPUT_PULLUP, MUX_MODE7)
-+                >;
-+        };
-+
-+	/* Pinmux configuration for PRU-ICSS */
-+        pruss_eth_default: pruss_eth_default {
-+                pinctrl-single,pins = <
-+                        /* dss_data0.pr1_mii_mt0_clk */
-+                        AM33XX_PADCONF(0x8a0, PIN_INPUT,   MUX_MODE2)
-+                        /* dss_data5.pr1_mii0_txd0 */
-+                        AM33XX_PADCONF(0x8b4, PIN_OUTPUT,  MUX_MODE2)
-+                        /* dss_data4.pr1_mii0_txd1 */
-+                        AM33XX_PADCONF(0x8b0, PIN_OUTPUT,  MUX_MODE2)
-+                        /* dss_data3.pr1_mii0_txd2 */
-+                        AM33XX_PADCONF(0x8ac, PIN_OUTPUT,  MUX_MODE2)
-+                        /* dss_data2.pr1_mii0_txd3 */
-+                        AM33XX_PADCONF(0x8a8, PIN_OUTPUT,  MUX_MODE2)
-+                        /* dss_data11.pr1_mii0_rxd0 */
-+                        AM33XX_PADCONF(0x8cc, PIN_INPUT,   MUX_MODE5)
-+                        /* dss_data10.pr1_mii0_rxd1 */
-+                        AM33XX_PADCONF(0x8c8, PIN_INPUT,   MUX_MODE5)
-+                        /* dss_data9.pr1_mii0_rxd2 */
-+                        AM33XX_PADCONF(0x8c4, PIN_INPUT,   MUX_MODE5)
-+                        /* dss_data8.pr1_mii0_rxd3 */
-+                        AM33XX_PADCONF(0x8c0, PIN_INPUT,   MUX_MODE5)
-+                        /* dss_data1.pr1_mii0_txen */
-+                        AM33XX_PADCONF(0x8a4, PIN_OUTPUT,  MUX_MODE2)
-+                        /* dss_data14.pr1_mii_mr0_clk */
-+                        AM33XX_PADCONF(0x8d8, PIN_INPUT,   MUX_MODE5)
-+                        /* dss_data15.pr1_mii0_rxdv */
-+                        AM33XX_PADCONF(0x8dc, PIN_INPUT,   MUX_MODE5)
-+                        /* dss_data13.pr1_mii0_rxer */
-+                        AM33XX_PADCONF(0x8d4, PIN_INPUT,   MUX_MODE5)
-+                        /* dss_data12.pr1_mii0_rxlink */
-+                        AM33XX_PADCONF(0x8d0, PIN_INPUT,   MUX_MODE5)
-+                        /* dss_pclk.pr1_mii0_crs */
-+                        AM33XX_PADCONF(0x8e8, PIN_INPUT,   MUX_MODE2)
-+
-+                        /* gpmc_a0.pr1_mii_mt1_clk */
-+                        AM33XX_PADCONF(0x840, PIN_INPUT,   MUX_MODE5)
-+                        /* gpmc_a4.pr1_mii1_txd0 */
-+                        AM33XX_PADCONF(0x850, PIN_OUTPUT,  MUX_MODE5)
-+                        /* gpmc_a3.pr1_mii1_txd1 */
-+                        AM33XX_PADCONF(0x84c, PIN_OUTPUT,  MUX_MODE5)
-+                        /* gpmc_a2.pr1_mii1_txd2 */
-+                        AM33XX_PADCONF(0x848, PIN_OUTPUT,  MUX_MODE5)
-+                        /* gpmc_a1.pr1_mii1_txd3 */
-+                        AM33XX_PADCONF(0x844, PIN_OUTPUT,  MUX_MODE5)
-+                        /* gpmc_a8.pr1_mii1_rxd0 */
-+                        AM33XX_PADCONF(0x860, PIN_INPUT,   MUX_MODE5)
-+                        /* gpmc_a7.pr1_mii1_rxd1 */
-+                        AM33XX_PADCONF(0x85c, PIN_INPUT,   MUX_MODE5)
-+                        /* gpmc_a6.pr1_mii1_rxd2 */
-+                        AM33XX_PADCONF(0x858, PIN_INPUT,   MUX_MODE5)
-+                        /* gpmc_a5.pr1_mii1_rxd3 */
-+                        AM33XX_PADCONF(0x854, PIN_INPUT,   MUX_MODE5)
-+                        /* gpmc_wpn.pr1_mii1_txen */
-+                        AM33XX_PADCONF(0x874, PIN_OUTPUT,  MUX_MODE5)
-+                        /* gpmc_a9.pr1_mii_mr1_clk */
-+                        AM33XX_PADCONF(0x864, PIN_INPUT,   MUX_MODE5)
-+                        /* gpmc_a10.pr1_mii1_rxdv */
-+                        AM33XX_PADCONF(0x868, PIN_INPUT,   MUX_MODE5)
-+                        /* gpmc_a11.pr1_mii1_rxer */
-+                        AM33XX_PADCONF(0x86c, PIN_INPUT,   MUX_MODE5)
-+                        /* gpmc_ben1.pr1_mii1_rxlink */
-+                        AM33XX_PADCONF(0x878, PIN_INPUT,   MUX_MODE5)
-+                        /* lcd_ac_bias_en.pr1_mii1_crs */
-+                        AM33XX_PADCONF(0x8ec, PIN_INPUT,   MUX_MODE2)
-+                        /* gpmc_wait0.pr1_mii1_col */
-+                        AM33XX_PADCONF(0x870, PIN_INPUT,   MUX_MODE5)
-+                >;
-+        };
-+};
-+
-+&gpio3 {
-+        mux-mii-hog {
-+                /* ETH1 mux: Low for MII-PRU, high for RMII-CPSW */
-+                output-low;
-+        };
-+};
-+
-+/*
-+ * Disable CPSW switch node and
-+ * MDIO configuration to prevent
-+ * conflict with PRU-ICSS
-+ */
-+&mac_sw {
-+        status = "disable";
-+};
-+
-+&davinci_mdio_sw {
-+        status = "disable";
-+};
-+
-+/* PRU-ICSS MDIO configuration */
-+&pruss_mdio {
-+        pinctrl-0 = <&pruss_mdio_default>;
-+        pinctrl-names = "default";
-+        reset-gpios = <&gpio2 5 GPIO_ACTIVE_LOW>;
-+        reset-delay-us = <2>; /* PHY datasheet states 1uS min */
-+        status = "okay";
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        pruss_eth0_phy: ethernet-phy@1 {
-+                 reg = <1>;
-+        };
-+
-+        pruss_eth1_phy: ethernet-phy@3 {
-+                 reg = <3>;
-+        };
-+};
-diff --git a/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi b/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi
-index 89d16fcc773e..a63ef307d918 100644
---- a/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/am33xx-l4.dtsi
-@@ -896,6 +896,17 @@ pruss_mii_rt: mii-rt@32000 {
- 					reg = <0x32000 0x58>;
- 				};
- 
-+				pruss_iep: iep@2e000 {
-+					compatible = "ti,am3356-icss-iep";
-+					reg = <0x2e000 0x31c>;
-+					clocks = <&pruss_iepclk_mux>;
-+				};
-+
-+				pruss_ecap: ecap@30000 {
-+					compatible = "ti,pruss-ecap";
-+					reg = <0x30000 0x60>;
-+				};
-+
- 				pruss_intc: interrupt-controller@20000 {
- 					compatible = "ti,pruss-intc";
- 					reg = <0x20000 0x2000>;
-diff --git a/arch/arm/boot/dts/ti/omap/am4372.dtsi b/arch/arm/boot/dts/ti/omap/am4372.dtsi
-index 504fa6b57d39..494f251c8e6a 100644
---- a/arch/arm/boot/dts/ti/omap/am4372.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/am4372.dtsi
-@@ -476,6 +476,17 @@ pruss1_mii_rt: mii-rt@32000 {
- 					reg = <0x32000 0x58>;
- 				};
- 
-+				pruss1_iep: iep@2e000 {
-+					compatible = "ti,am4376-icss-iep";
-+					reg = <0x2e000 0x31c>;
-+					clocks = <&pruss1_iepclk_mux>;
-+				};
-+
-+				pruss1_ecap: ecap@30000 {
-+					compatible = "ti,pruss-ecap";
-+					reg = <0x30000 0x60>;
-+				};
-+
- 				pruss1_intc: interrupt-controller@20000 {
- 					compatible = "ti,pruss-intc";
- 					reg = <0x20000 0x2000>;
-diff --git a/arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts b/arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts
-index 826f687c368a..3d755d875a70 100644
---- a/arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts
-+++ b/arch/arm/boot/dts/ti/omap/am437x-idk-evm.dts
-@@ -168,6 +168,48 @@ led-out7 {
- 			default-state = "off";
- 		};
- 	};
-+
-+	/* Dual-MAC Ethernet application node on PRU-ICSS1 */
-+	pruss1_eth: pruss1-eth {
-+		compatible = "ti,am4376-prueth";
-+		ti,prus = <&pru1_0>, <&pru1_1>;
-+		sram = <&ocmcram>;
-+		ti,mii-rt = <&pruss1_mii_rt>;
-+		ti,iep = <&pruss1_iep>;
-+		ti,ecap = <&pruss1_ecap>;
-+		interrupts = <20 2 2>, <21 3 3>;
-+		interrupt-names = "rx_hp", "rx_lp";
-+		interrupt-parent = <&pruss1_intc>;
-+
-+		pinctrl-0 = <&pruss1_eth_default>;
-+		pinctrl-names = "default";
-+
-+		ethernet-ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			pruss1_emac0: ethernet-port@0 {
-+				reg = <0>;
-+				phy-handle = <&pruss1_eth0_phy>;
-+				phy-mode = "mii";
-+				interrupts = <20 2 2>, <26 6 6>, <23 6 6>;
-+				interrupt-names = "rx", "emac_ptp_tx",
-+						  "hsr_ptp_tx";
-+				/* Filled in by bootloader */
-+				local-mac-address = [00 00 00 00 00 00];
-+			};
-+
-+			pruss1_emac1: ethernet-port@1 {
-+				reg = <1>;
-+				phy-handle = <&pruss1_eth1_phy>;
-+				phy-mode = "mii";
-+				interrupts = <21 3 3>, <27 9 5>, <24 9 5>;
-+				interrupt-names = "rx", "emac_ptp_tx",
-+						  "hsr_ptp_tx";
-+				/* Filled in by bootloader */
-+				local-mac-address = [00 00 00 00 00 00];
-+			};
-+		};
-+	};
- };
- 
- &am43xx_pinmux {
-@@ -303,6 +345,86 @@ AM4372_IOPAD(0x94c, PIN_INPUT_PULLDOWN | MUX_MODE7)
- 		>;
- 	};
- 
-+	pruss1_mdio_default: pruss1_mdio_default {
-+		pinctrl-single,pins = <
-+			/* gpmc_clk.pr1_mdio_mdclk */
-+			AM4372_IOPAD(0x88c, (PIN_OUTPUT | MUX_MODE5))
-+			/* xdma_event_intr0.pr1_mdio_data */
-+			AM4372_IOPAD(0xa70, (PIN_INPUT  | MUX_MODE8))
-+			/* cam1_data6.gpio4_20 */
-+			AM4372_IOPAD(0xa00, (PIN_INPUT_PULLUP | MUX_MODE7))
-+		>;
-+	};
-+
-+	pruss1_eth_default: pruss1_eth_default {
-+		pinctrl-single,pins = <
-+			/* dss_data0.pr1_mii_mt0_clk */
-+			AM4372_IOPAD(0x8a0, (PIN_INPUT  | MUX_MODE2))
-+			/* dss_data5.pr1_mii0_txd0 */
-+			AM4372_IOPAD(0x8b4, (PIN_OUTPUT | MUX_MODE2))
-+			/* dss_data4.pr1_mii0_txd1 */
-+			AM4372_IOPAD(0x8b0, (PIN_OUTPUT | MUX_MODE2))
-+			/* dss_data3.pr1_mii0_txd2 */
-+			AM4372_IOPAD(0x8ac, (PIN_OUTPUT | MUX_MODE2))
-+			/* dss_data2.pr1_mii0_txd3 */
-+			AM4372_IOPAD(0x8a8, (PIN_OUTPUT | MUX_MODE2))
-+			/* dss_data11.pr1_mii0_rxd0 */
-+			AM4372_IOPAD(0x8cc, (PIN_INPUT  | MUX_MODE5))
-+			/* dss_data10.pr1_mii0_rxd1 */
-+			AM4372_IOPAD(0x8c8, (PIN_INPUT  | MUX_MODE5))
-+			/* dss_data9.pr1_mii0_rxd2 */
-+			AM4372_IOPAD(0x8c4, (PIN_INPUT  | MUX_MODE5))
-+			/* dss_data8.pr1_mii0_rxd3 */
-+			AM4372_IOPAD(0x8c0, (PIN_INPUT  | MUX_MODE5))
-+			/* dss_data1.pr1_mii0_txen */
-+			AM4372_IOPAD(0x8a4, (PIN_OUTPUT | MUX_MODE2))
-+			/* dss_data14.pr1_mii_mr0_clk */
-+			AM4372_IOPAD(0x8d8, (PIN_INPUT  | MUX_MODE5))
-+			/* dss_data15.pr1_mii0_rxdv */
-+			AM4372_IOPAD(0x8dc, (PIN_INPUT  | MUX_MODE5))
-+			/* dss_data13.pr1_mii0_rxer */
-+			AM4372_IOPAD(0x8d4, (PIN_INPUT  | MUX_MODE5))
-+			/* dss_data12.pr1_mii0_rxlink */
-+			AM4372_IOPAD(0x8d0, (PIN_INPUT  | MUX_MODE5))
-+			/* gpio5_10.pr1_mii0_crs */
-+			AM4372_IOPAD(0xa40, (PIN_INPUT  | MUX_MODE5))
-+			/* gpio5_8.pr1_mii0_col */
-+			AM4372_IOPAD(0xa38, (PIN_INPUT  | MUX_MODE5))
-+			/* gpmc_a6.pr1_mii_mt1_clk */
-+			AM4372_IOPAD(0x858, (PIN_INPUT  | MUX_MODE5))
-+			/* gpmc_a5.pr1_mii1_txd0 */
-+			AM4372_IOPAD(0x854, (PIN_OUTPUT | MUX_MODE5))
-+			/* gpmc_a4.pr1_mii1_txd1 */
-+			AM4372_IOPAD(0x850, (PIN_OUTPUT | MUX_MODE5))
-+			/* gpmc_a3.pr1_mii1_txd2 */
-+			AM4372_IOPAD(0x84c, (PIN_OUTPUT | MUX_MODE5))
-+			/* gpmc_a2.pr1_mii1_txd3 */
-+			AM4372_IOPAD(0x848, (PIN_OUTPUT | MUX_MODE5))
-+			/* gpmc_a11.pr1_mii1_rxd0 */
-+			AM4372_IOPAD(0x86c, (PIN_INPUT  | MUX_MODE5))
-+			/* gpmc_a10.pr1_mii1_rxd1 */
-+			AM4372_IOPAD(0x868, (PIN_INPUT  | MUX_MODE5))
-+			/* gpmc_a9.pr1_mii1_rxd2 */
-+			AM4372_IOPAD(0x864, (PIN_INPUT  | MUX_MODE5))
-+			/* gpmc_a8.pr1_mii1_rxd3 */
-+			AM4372_IOPAD(0x860, (PIN_INPUT  | MUX_MODE5))
-+			/* gpmc_a0.pr1_mii1_txen */
-+			AM4372_IOPAD(0x840, (PIN_OUTPUT | MUX_MODE5))
-+			/* gpmc_a7.pr1_mii_mr1_clk */
-+			AM4372_IOPAD(0x85c, (PIN_INPUT  | MUX_MODE5))
-+			/* gpmc_a1.pr1_mii1_rxdv */
-+			AM4372_IOPAD(0x844, (PIN_INPUT  | MUX_MODE5))
-+			/* gpmc_wpn.pr1_mii1_rxer */
-+			AM4372_IOPAD(0x874, (PIN_INPUT  | MUX_MODE5))
-+			/* gpio5_13.pr1_mii1_rxlink */
-+			AM4372_IOPAD(0xa4c, (PIN_INPUT  | MUX_MODE5))
-+			/* gpio5_11.pr1_mii1_crs */
-+			AM4372_IOPAD(0xa44, (PIN_INPUT  | MUX_MODE5))
-+			/* gpmc_be1n.pr1_mii1_col */
-+			AM4372_IOPAD(0x878, (PIN_INPUT  | MUX_MODE5))
-+		>;
-+	};
-+
- 	qspi_pins_default: qspi-default-pins {
- 		pinctrl-single,pins = <
- 			AM4372_IOPAD(0x87c, PIN_OUTPUT_PULLUP | MUX_MODE3)	/* gpmc_csn0.qspi_csn */
-@@ -539,5 +661,18 @@ opp-100-600000000 {
- };
- 
- &pruss1_mdio {
--	status = "disabled";
-+	pinctrl-0 = <&pruss1_mdio_default>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+
-+	reset-gpios = <&gpio4 20 GPIO_ACTIVE_LOW>;
-+	reset-delay-us = <2>;	/* PHY datasheet states 1uS min */
-+
-+	pruss1_eth0_phy: ethernet-phy@0 {
-+		reg = <0>;
-+	};
-+
-+	pruss1_eth1_phy: ethernet-phy@1 {
-+		reg = <1>;
-+	};
- };
--- 
-2.43.0
+I would use OF changesets to perform the modification.
 
+OF changesets are kind of atomic. You first prepare all modifications in a
+changeset and then you apply the changeset.
+If something goes wrong, the changeset is removed.
+
+Also, if something goes wrong during the changeset preparation, you can abort
+without any modification on the live device-tree.
+
+> > +}
+> > +
+> > +static int __init tilcdc_panel_copy_props(struct device_node *old_panel,
+> > +					  struct device_node *new_panel)
+> > +{
+> > +	struct device_node *child, *old_timing, *new_timing, *panel_info;
+> > +	u32 invert_pxl_clk = 0, sync_edge = 0;
+> > +	struct property *prop;
+> > +
+> > +	/* Copy all panel properties to the new panel node */
+> > +	for_each_property_of_node(old_panel, prop) {
+> > +		if (!strncmp(prop->name, "compatible", sizeof("compatible")))
+> > +			continue;
+> > +
+> > +		tilcdc_panel_update_prop(new_panel, prop->name,
+> > +					 prop->value, prop->length);
+> > +	}
+> > +
+> > +	child = of_get_child_by_name(old_panel, "display-timings");  
+> 
+> There's some housekeeping code in this function to ensure you put all the
+> device_node refs. It would be simpler and less error prone to use a cleanup
+> action. E.g.:
+> 
+> -	struct device_node *child, *old_timing, *new_timing, *panel_info;
+> 
+> -	child = of_get_child_by_name(old_panel, "display-timings");
+> +	struct device_node *child __free(device_node) = of_get_child_by_name(old_panel, "display-timings");
+> 
+> > +	if (!child)
+> > +		return -EINVAL;
+> > +
+> > +	/* The default display timing is the one specified as native-mode.
+> > +	 * If no native-mode is specified then the first node is assumed
+> > +	 * to be the native mode.
+> > +	 */
+> > +	old_timing = of_parse_phandle(child, "native-mode", 0);
+> > +	if (!old_timing) {
+> > +		old_timing = of_get_next_child(child, NULL);
+> > +		if (!old_timing) {
+> > +			of_node_put(child);
+> > +			return -EINVAL;
+> > +		}
+> > +	}
+> > +	of_node_put(child);
+> > +
+> > +	new_timing = of_get_child_by_name(new_panel, "panel-timing");
+> > +	if (!new_timing)
+> > +		return -EINVAL;
+
+Here, for instance, you have already modified your live tree and you abort the
+operation. Your live tree is somewhat corrupted.
+
+> > +
+> > +	/* Copy all panel timing property to the new panel node */
+> > +	for_each_property_of_node(old_timing, prop)
+> > +		tilcdc_panel_update_prop(new_timing, prop->name,
+> > +					 prop->value, prop->length);
+> > +
+> > +	panel_info = of_get_child_by_name(old_panel, "panel-info");
+> > +	if (!panel_info)
+> > +		return -EINVAL;  
+> 
+> tilcdc_panel_update_prop() has previously done various allocations which
+> will not be freed if you return here. You shoudl probably do all the
+> of_get_*() at the top, and if they all succeed start copying data along
+> with with the needed allocations.
+> 
+> > +	/* Looked only for these two parameter as all the other are always
+> > +	 * set to default and not related to common DRM properties.
+> > +	 */
+> > +	of_property_read_u32(panel_info, "invert-pxl-clk", &invert_pxl_clk);
+> > +	of_property_read_u32(panel_info, "sync-edge", &sync_edge);
+> > +
+> > +	if (!invert_pxl_clk)
+> > +		tilcdc_panel_update_prop(new_timing, "pixelclk-active",
+> > +					 &(int){1}, sizeof(int));
+> > +
+> > +	if (!sync_edge)
+> > +		tilcdc_panel_update_prop(new_timing, "syncclk-active",
+> > +					 &(int){1}, sizeof(int));
+> > +
+> > +	of_node_put(panel_info);
+> > +	of_node_put(old_timing);
+> > +	of_node_put(new_timing);
+> > +	return 0;
+> > +}
+> > +
+> > +static const struct of_device_id tilcdc_panel_of_match[] __initconst = {
+> > +	{ .compatible = "ti,tilcdc,panel", },
+> > +	{},
+> > +};
+> > +
+> > +static const struct of_device_id tilcdc_of_match[] __initconst = {
+> > +	{ .compatible = "ti,am33xx-tilcdc", },
+> > +	{ .compatible = "ti,da850-tilcdc", },
+> > +	{},
+> > +};
+> > +
+> > +static int __init tilcdc_panel_legacy_init(void)
+> > +{
+> > +	struct device_node *panel, *lcdc, *new_panel;
+> > +	void *dtbo_start;
+> > +	u32 dtbo_size;
+> > +	int ovcs_id;
+> > +	int ret;
+> > +
+> > +	lcdc = of_find_matching_node(NULL, tilcdc_of_match);
+> > +	panel = of_find_matching_node(NULL, tilcdc_panel_of_match);
+> > +
+> > +	if (!of_device_is_available(panel) ||
+> > +	    !of_device_is_available(lcdc)) {
+> > +		ret = -ENODEV;
+> > +		goto out;
+> > +	}
+> > +
+> > +	dtbo_start = __dtbo_tilcdc_panel_legacy_begin;
+> > +	dtbo_size = __dtbo_tilcdc_panel_legacy_end -
+> > +		    __dtbo_tilcdc_panel_legacy_begin;
+> > +
+> > +	ret = of_overlay_fdt_apply(dtbo_start, dtbo_size, &ovcs_id, NULL);
+> > +	if (ret)
+> > +		goto out;
+
+As soon as the overlay is applied, the driver handling the panel-dti node
+can be probed.
+
+Modifying some properties after applying the overlay could be not seen by the
+driver.
+
+> > +
+> > +	new_panel = of_find_node_by_name(NULL, "panel-dpi");
+> > +	if (!new_panel) {
+> > +		ret = -ENODEV;
+> > +		goto overlay_remove;
+> > +	}
+> > +
+> > +	ret = tilcdc_panel_copy_props(panel, new_panel);
+> > +	if (ret)
+> > +		goto overlay_remove;
+> > +
+> > +	/* Remove compatible property to avoid any driver compatible match */
+> > +	of_remove_property(panel, of_find_property(panel, "compatible",
+> > +						   NULL));
+> > +overlay_remove:
+> > +	of_overlay_remove(&ovcs_id);  
+> 
+> Is it correct to remove the overlay here? Won't it remove what you have
+> just added?
+
+Agreed, the overlay should not be removed here.
+
+> 
+> > +out:
+> > +	of_node_put(new_panel);
+> > +	of_node_put(panel);
+> > +	of_node_put(lcdc);  
+> 
+> Here too you can use cleanup actions, even though the current code is
+> slightly simpler than tilcdc_panel_copy_props as far as of_node_put() is
+> concerned.
+> 
+> > +	return ret;
+> > +}
+> > +
+> > +subsys_initcall(tilcdc_panel_legacy_init);
+
+IMHO, the call to tilcdc_panel_legacy_init() will be too late.
+
+subsys initcalls are called after arch initcalls.
+
+During arch initcalls, of_platform_populate_init() is called
+https://elixir.bootlin.com/linux/v6.19-rc3/source/drivers/of/platform.c#L599
+
+The root node is populated and handled by the platform bus.
+
+Later at subsys initcall, the tilcdc_panel_legacy_init() function is called.
+This function starts by applying the overlay and so a new node (panel-dpi)
+is added at the root node.
+
+This trigger an OF_RECONFIG_CHANGE_ADD event handled by the platform bus.
+https://elixir.bootlin.com/linux/v6.19-rc3/source/drivers/of/platform.c#L731
+
+If the "panel-dpi" compatible driver is available, its probe() is called but
+the panel-dpi DT node is not fully correct. Indeed, tilcdc_panel_copy_props()
+has not be called yet.
+
+Also, the legacy compatible string is removed after the of_platform_populate_init()
+call. The legacy driver could have been already probed.
+
+Of course, please correct me if I have misunderstood something.
+
+Best regards,
+Hervé
 
