@@ -1,52 +1,52 @@
-Return-Path: <linux-omap+bounces-5319-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5320-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A14CF4218
-	for <lists+linux-omap@lfdr.de>; Mon, 05 Jan 2026 15:33:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB20CF4884
+	for <lists+linux-omap@lfdr.de>; Mon, 05 Jan 2026 16:55:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6431A3071561
-	for <lists+linux-omap@lfdr.de>; Mon,  5 Jan 2026 14:29:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2DD6230D45D7
+	for <lists+linux-omap@lfdr.de>; Mon,  5 Jan 2026 15:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502873191A2;
-	Mon,  5 Jan 2026 14:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B3033FE00;
+	Mon,  5 Jan 2026 15:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RT/UiyYE"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="siYqSzl4"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730453016E1;
-	Mon,  5 Jan 2026 14:29:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B675533F38C;
+	Mon,  5 Jan 2026 15:46:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767623394; cv=none; b=EkrqZzFristM1tzvmx+uKfr36pJnH0u+lk7B115Tm5PTZS2aAY0KFPzUw1XueXx0AorYyck1gEM6pxB4Ojw20MgTWPmV1Fx8+iWWnY36G3jcJ2XhVC1m3zkcajhhKCmgC2CVYrFGSm75pkiTdXWZLAv65y7EqBiCsxQvkgXE/CI=
+	t=1767627964; cv=none; b=G9mT8IfNAE+ib/RmVpniMRRKJ/cKHk3vUvAQYltwVKLp7ukyJZYtsYjzXISJi6O6YnC6iyzQFjg54Fyd02YcVRro/MokQJjTEs8rL1ZzgRyNX2MZibHP+k1Di4leC1/K0nNYpqQ2/hgOio8Qgcjrt7tKwHNLo6AdSkNTfOzLFa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767623394; c=relaxed/simple;
-	bh=cwYJ5238unTaRuG82BxcRqqjvagCwc+8moiAWIHLkZo=;
+	s=arc-20240116; t=1767627964; c=relaxed/simple;
+	bh=SqOtJ170J+RFFwhvH9wZQqBg0xbrxwhxi7WUufuAgOE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SFOnY/IUnXIWB51rcionovYll/zbQZWTSjUIOtZg2e18pK7CdsqnqvwUOx48OqVEUQl7ATHKOhwYBn3FCKxlyuWzneYmzO9OI03VTb0jCq+HfvMDnbAtUvQIKILT/inHGWN2bGW/gSK8DVvDu5Jv2qv8119JjFiupdtWRq7u5wU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RT/UiyYE; arc=none smtp.client-ip=185.246.85.4
+	 MIME-Version:Content-Type; b=pb/SWHn4XhN+fseRWvKcOFJhGo6U5du6k8EpEHv+8EFqPaOHLUsF3R7fg+6ex7SNSRSQ4lvA+D+Ub4AsVMzgXIKfyR2D88iA+i9TxA6JavLc03xcpEKNOrAXN5XR/OEWGAvC+oUziTKyaikHNwvLx0J49CGjB13i3CAmppg5PQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=siYqSzl4; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id B9FCA4E41F7E;
-	Mon,  5 Jan 2026 14:29:49 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 12CDE1A2667;
+	Mon,  5 Jan 2026 15:46:00 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8967F60726;
-	Mon,  5 Jan 2026 14:29:49 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9BBD0103C847C;
-	Mon,  5 Jan 2026 15:29:40 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D0C1C60726;
+	Mon,  5 Jan 2026 15:45:59 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5BF16103C8589;
+	Mon,  5 Jan 2026 16:45:50 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767623388; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1767627958; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=m5a1q4+8KZ4VroTl8szIeT6DJLUnWji0vwzjJmPKVOY=;
-	b=RT/UiyYEF8zOufF/RMp090pHJ3IBWOd4IbiXaTokdETQKrMOwK8Q8S2nZIFEcm1q63CHmV
-	D08ZN1O3K/1Gs2xV+uE0bMucI+rbX1RqVtgt4MGGMn1AKSPqPRLs70HaBBQngw0tzHvfu0
-	HUCwqMdkoZAydUqDN8ELrpazP6u4KUikTiPLwzPa1erGGDWdFePyrme9KN5cFNkjFRSC//
-	NLlAMhDAxUNe/HzKmbxJnsGtmrWZInP+yWvx2+ecE05TJs/pIWEzfNTB3CCWUIyRXq7lmb
-	7IpkvtZ1mpV3oOH4G5j0pzoFUC7DGbNC4qX92galMenfSPV+eKwOd+p3R0prog==
-Date: Mon, 5 Jan 2026 15:29:39 +0100
+	bh=urFj5GEfGN8FUr9AOM2C6eqiJQ8QOnGyn9HuswUxntE=;
+	b=siYqSzl40Vyi3gRkzXNtwSMwEya76+IHz+53auu6Pjt5ozNbdfPZkTRqqklql44NeDop1b
+	g6skmldwyiDb3s414SWmAGzorvgwWlL7tjuFf8dfYjqUbJziGpnCtn4JmMyrLAZvkY65+/
+	Wad8Z/Xsgu7aVPaJ9jLbde9LuDKwZvkxi2PWu1RplG+8Pgaoc3a1Fc5YBiAhgmVD0t3DNU
+	o/f3kJQQEUpi5xDULWXoaFWYJv0ohNpe+07F6lCVXE+658vVHMueSf+9yr5DZYPzejXDNd
+	VJ+0XZjsUSqZ02HoL4dTROlwgBBOHtXuQx1EH4M3EWIEEA1EO2Q3FCeqzoHJaQ==
+Date: Mon, 5 Jan 2026 16:45:48 +0100
 From: Kory Maincent <kory.maincent@bootlin.com>
 To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
 Cc: "Jyri Sarha" <jyri.sarha@iki.fi>, "Tomi Valkeinen"
@@ -67,13 +67,13 @@ Cc: "Jyri Sarha" <jyri.sarha@iki.fi>, "Tomi Valkeinen"
  <miguel.gazquez@bootlin.com>, <dri-devel@lists.freedesktop.org>,
  <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
  <linux-arm-kernel@lists.infradead.org>, <linux-omap@vger.kernel.org>
-Subject: Re: [PATCH v2 05/20] drm/tilcdc: Convert legacy panel binding via
- DT overlay at boot time
-Message-ID: <20260105152939.49642d0a@kmaincent-XPS-13-7390>
-In-Reply-To: <DF0K5UFX46JA.OH85T6IPC5MW@bootlin.com>
+Subject: Re: [PATCH v2 13/20] drm/tilcdc: Remove the useless module list
+ support
+Message-ID: <20260105164548.0f760c66@kmaincent-XPS-13-7390>
+In-Reply-To: <DF0K7JPSOKLU.3V1FT4LAZSPGB@bootlin.com>
 References: <20251211-feature_tilcdc-v2-0-f48bac3cd33e@bootlin.com>
-	<20251211-feature_tilcdc-v2-5-f48bac3cd33e@bootlin.com>
-	<DF0K5UFX46JA.OH85T6IPC5MW@bootlin.com>
+	<20251211-feature_tilcdc-v2-13-f48bac3cd33e@bootlin.com>
+	<DF0K7JPSOKLU.3V1FT4LAZSPGB@bootlin.com>
 Organization: bootlin
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
@@ -86,146 +86,54 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hello Luca,
-
-Thank you for your full review on this series!
-
-On Wed, 17 Dec 2025 15:23:26 +0100
+On Wed, 17 Dec 2025 15:25:40 +0100
 "Luca Ceresoli" <luca.ceresoli@bootlin.com> wrote:
-> > +config DRM_TILCDC_PANEL_LEGACY
-> > +	bool "Support device tree blobs using TI LCDC Panel binding"
-> > +	default n =20
->=20
-> 'default' defaults to 'n', you can drop this line.
->=20
-> However I think it should instead be enabled by default. You propose to
-> entirely remove the tilcdc panel driver in the next patch, so any users
-> without DRM_TILCDC_PANEL_LEGACY in their defconfig would be broken. For
-> this reason, I propose to enable DRM_TILCDC_PANEL_LEGACY in all cases whe=
-re
-> the tilcdc_panel was compiled in, which I guess means:
->=20
->     default DRM_TILCDC
->=20
-> Except I think if DRM_TILCDC=3Dm, DRM_TILCDC_PANEL_LEGACY should be =3Dy.=
- I
-> don't know how to do that in Kconfig. But I'm not really sure about this
-> last topic.
 
-Just setting default to 'y' works for both cases TILCDC as a module or buil=
-tin.=20
-
-> > +	depends on DRM_TILCDC
-> > +        depends on OF
-> > +        depends on BACKLIGHT_CLASS_DEVICE
-> > +        depends on PM
-> > +	select OF_OVERLAY
-> > +	select DRM_PANEL_SIMPLE
-> > +	help
-> > +	  Choose this option if you need a kernel that is compatible
-> > +	  with device tree blobs using the obsolete "ti,tilcdc,panel"
-> > +	  binding. If you find "ti,tilcdc,panel"-string from your DTB,
-> > +	  you probably need this. Otherwise you do not. =20
+> On Thu Dec 11, 2025 at 5:38 PM CET, Kory Maincent (TI.com) wrote:
+> > The tilcdc driver previously supported a sub-module system where
+> > external display drivers (panels, encoders) could register themselves
+> > through tilcdc_module_init() and be automatically initialized through
+> > a module list. This infrastructure became unused after the component
+> > framework support and panel driver was removed.
+> >
+> > Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com> =20
 >=20
-> Maybe mention here what it does?
+> [...]
 >=20
-> For example, rewording your commit message:
+> > @@ -562,24 +533,7 @@ static struct platform_driver tilcdc_platform_driv=
+er =3D
+> > { .of_match_table =3D tilcdc_of_match,
+> >  	},
+> >  };
+> > -
+> > -static int __init tilcdc_drm_init(void)
+> > -{
+> > -	if (drm_firmware_drivers_only())
+> > -		return -ENODEV;
+> > -
+> > -	DBG("init");
+> > -	return platform_driver_register(&tilcdc_platform_driver);
+> > -}
+> > -
+> > -static void __exit tilcdc_drm_fini(void)
+> > -{
+> > -	DBG("fini");
+> > -	platform_driver_unregister(&tilcdc_platform_driver);
+> > -}
+> > -
+> > -module_init(tilcdc_drm_init);
+> > -module_exit(tilcdc_drm_fini);
+> > +module_platform_driver(tilcdc_platform_driver); =20
 >=20
->   Modifies the live device tree at early boot to convert the legacy
->   "ti,tilcdc,panel" devicetree node to the standard panel-dpi node.  This
->   allows to maintain backward compatibility for boards which were using t=
-he
->   deprecated tilcdc_panel driver.
+> Is this hunk related to the removal of the module list? Looks like it
+> should be a separate patch.
 
-Ack, I will update it.
-
-...
-
-> > +static int __init tilcdc_panel_copy_props(struct device_node *old_pane=
-l,
-> > +					  struct device_node *new_panel)
-> > +{
-> > +	struct device_node *child, *old_timing, *new_timing, *panel_info;
-> > +	u32 invert_pxl_clk =3D 0, sync_edge =3D 0;
-> > +	struct property *prop;
-> > +
-> > +	/* Copy all panel properties to the new panel node */
-> > +	for_each_property_of_node(old_panel, prop) {
-> > +		if (!strncmp(prop->name, "compatible",
-> > sizeof("compatible")))
-> > +			continue;
-> > +
-> > +		tilcdc_panel_update_prop(new_panel, prop->name,
-> > +					 prop->value, prop->length);
-> > +	}
-> > +
-> > +	child =3D of_get_child_by_name(old_panel, "display-timings"); =20
->=20
-> There's some housekeeping code in this function to ensure you put all the
-> device_node refs. It would be simpler and less error prone to use a clean=
-up
-> action. E.g.:
->=20
-> -	struct device_node *child, *old_timing, *new_timing, *panel_info;
->=20
-> -	child =3D of_get_child_by_name(old_panel, "display-timings");
-> +	struct device_node *child __free(device_node) =3D
-> of_get_child_by_name(old_panel, "display-timings");
-
-I am not used to this __free() macro and even some subsystem (net) are avoi=
-ding
-it but ok I will move to it. I don't know what are the pros and cons.
-
-...
-
-> > +	/* Copy all panel timing property to the new panel node */
-> > +	for_each_property_of_node(old_timing, prop)
-> > +		tilcdc_panel_update_prop(new_timing, prop->name,
-> > +					 prop->value, prop->length);
-> > +
-> > +	panel_info =3D of_get_child_by_name(old_panel, "panel-info");
-> > +	if (!panel_info)
-> > +		return -EINVAL; =20
->=20
-> tilcdc_panel_update_prop() has previously done various allocations which
-> will not be freed if you return here. You shoudl probably do all the
-> of_get_*() at the top, and if they all succeed start copying data along
-> with with the needed allocations.
-
-Ok.
-
-...
-
-> > +	ret =3D tilcdc_panel_copy_props(panel, new_panel);
-> > +	if (ret)
-> > +		goto overlay_remove;
-> > +
-> > +	/* Remove compatible property to avoid any driver compatible match
-> > */
-> > +	of_remove_property(panel, of_find_property(panel, "compatible",
-> > +						   NULL));
-> > +overlay_remove:
-> > +	of_overlay_remove(&ovcs_id); =20
->=20
-> Is it correct to remove the overlay here? Won't it remove what you have
-> just added?
-
-Indeed this should be only in the error path. That's weird that it was still
-working during my tests.=20
+Indeed it is not directly related, but a following cleanup. I will put it in
+another patch.
 
 >=20
-> > +out:
-> > +	of_node_put(new_panel);
-> > +	of_node_put(panel);
-> > +	of_node_put(lcdc); =20
->=20
-> Here too you can use cleanup actions, even though the current code is
-> slightly simpler than tilcdc_panel_copy_props as far as of_node_put() is
-> concerned.
-
-Ack.
-
-Regards,
+> With that hunk removed (or kept if I'm wrong and it should stay):
+> Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 --=20
 K=C3=B6ry Maincent, Bootlin
 Embedded Linux and kernel engineering
