@@ -1,66 +1,57 @@
-Return-Path: <linux-omap+bounces-5325-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5326-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07298CF4F9C
-	for <lists+linux-omap@lfdr.de>; Mon, 05 Jan 2026 18:23:59 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8CD6CF4F5A
+	for <lists+linux-omap@lfdr.de>; Mon, 05 Jan 2026 18:19:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 647CC303C9A7
-	for <lists+linux-omap@lfdr.de>; Mon,  5 Jan 2026 17:18:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 50C0E30089BA
+	for <lists+linux-omap@lfdr.de>; Mon,  5 Jan 2026 17:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C1733ADAB;
-	Mon,  5 Jan 2026 17:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C94339B49;
+	Mon,  5 Jan 2026 17:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pbz9pPZv"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Lgt1/wWN"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BB2339716
-	for <linux-omap@vger.kernel.org>; Mon,  5 Jan 2026 17:18:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DC3329C5D
+	for <linux-omap@vger.kernel.org>; Mon,  5 Jan 2026 17:18:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767633533; cv=none; b=mCTDOR3epfvqNLRjLlOL3TSSv5tK/4djyCWcj5Y5jaPU24X9rOixcMlST/0AOueGPv15S5/W8ZspI0Mji5h9RiLruFNiEcNx+1MKcJxDoOdDQbRFSttwfjqiPCFXXE1RxCLCMFGqdAvv14lVR21DjrMH3n3puZ0xIZYKofJyetA=
+	t=1767633536; cv=none; b=LNe3ym8ophC5Fy/oCxpM9j4f8DrKXpmkF+5QdaSHxtCs5jVH1k6sZg/e3txtyK5iiDZJk/qwuya9lSLyCwNZ4mjnT+8g7B5n/KLKJ7NH2084/R7bcCn5O/bwSYIMu32U6xg89RX3+NmVDrVhd7CczKuxIV5K4e+6VT26jusMFPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767633533; c=relaxed/simple;
-	bh=kmlpie7uPacLuriWKrsHoYzxNI/2YimRo50QTr6xE4I=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=eR+pwMNVG1MC4Ihki6ke30lQbMq696pticATJvsufeXwOsS58bPEQUKDkSGVgwbLpgars/PXqSp5yYo2+EwmFa1lBd3DnD76a0WhWvk+Ym87tbxUoVWf8DJ1SN6gbDE8RRyebc4UnyPvRIwufmin7ctDnFfdhc4cKgOI6/hEfEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pbz9pPZv; arc=none smtp.client-ip=185.246.84.56
+	s=arc-20240116; t=1767633536; c=relaxed/simple;
+	bh=3x+2P8za88UvWtief1f8RL1MriK1vbzkJ9DaCD+nAJI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=W4oIdWIl9Ty54cpAgbU4KejQd903+FhB+QbElZhF+g1mZ94p7ugEcidjvADtQQfk7L7PJ55EliD4Z2vwvy6TMOEQjNiBWyOMdms3/Bg8MXtI9ri5qIFHoT/eEbvwzk2l21HPD2eXzXrheUll7Sw/f96JeXqmeFa1Swp+WuJrj58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Lgt1/wWN; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id DDA831A265E;
-	Mon,  5 Jan 2026 17:18:43 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 866934E41F82;
+	Mon,  5 Jan 2026 17:18:45 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id AE7C060726;
-	Mon,  5 Jan 2026 17:18:43 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 34754103C8570;
-	Mon,  5 Jan 2026 18:18:33 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5787760726;
+	Mon,  5 Jan 2026 17:18:45 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 859B4103C85AF;
+	Mon,  5 Jan 2026 18:18:39 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767633521; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1767633524; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=jJBDd1lBnsLLVQ+v5uRZrldoZU9HJRYkyBCUB5ieka0=;
-	b=pbz9pPZvL1ZahfDLn46OeQ5DP15RMcsamsRlCdxFLSVe1OoIsY++I543gAavhbvRpmauuI
-	YKHc3yuyAQcEtpSquPFG+U68vJAt4jCkftgv8nMZ7F4KhijQDkIZXPhO9X6tTdCWRNtuUt
-	o0ZvvgsnKl5d6RByNX1h7+4Rjh6S3pmwRBZLq0FDC5ha4YirVoIIsT/dKlIMwjJIkW48Fg
-	gQAbTMhubNlNcRj9E35TJyR67vr96yhZTyKr0nZvRfIazM53pNemdtDM4qM2tb1quywmXL
-	apq5cndky1UIlAzOly5WykcD0qFOTDIg9nEBHcKj+ZrAE4IDL0p8v/lTI7nLxA==
-Precedence: bulk
-X-Mailing-List: linux-omap@vger.kernel.org
-List-Id: <linux-omap.vger.kernel.org>
-List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 05 Jan 2026 18:18:32 +0100
-Message-Id: <DFGTS953Y2YJ.1SUIIDRMKUGQJ@bootlin.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v2 05/20] drm/tilcdc: Convert legacy panel binding via
- DT overlay at boot time
-Cc: "Jyri Sarha" <jyri.sarha@iki.fi>, "Tomi Valkeinen"
- <tomi.valkeinen@ideasonboard.com>, "Maarten Lankhorst"
+	bh=jIBkZttH8UcrhXyn62V/vifYHtr3RdH6TLU19ogc48M=;
+	b=Lgt1/wWNFRp8ZDmb4YxYLjkiBRcb7CtoVKmTRMZ07W0U/br6Dh3BJWJMTCYTx3gk9yo5me
+	xVBBu3t77YwByxcwFqBpDuk8U4O7hBLh/oP5g71HenWMA4xI7vHRcUm5Z9ZtzOcZVuysNt
+	bRHiWBmjoR+i2zexcxaE9zdDtikD61FniAZQJYOp+9QYJkIAd0Z43TNx4bhO2i1havaIzR
+	Fppa2taeXE/HzEaPkj85nvh8yN6jO297zAoQ9AVoqAQe1qUyBFvrA5fYX7/bN/TBFseok9
+	7iNat9VoBDAXYM3IVTcoqyJz9uKtvjg1NeNZfFNiiqU2vUTkn2Sya1FAGxzOBg==
+Date: Mon, 5 Jan 2026 18:18:38 +0100
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: "Luca Ceresoli" <luca.ceresoli@bootlin.com> (by way of Kory Maincent
+ <kory.maincent@bootlin.com>), "Jyri Sarha" <jyri.sarha@iki.fi>, "Tomi
+ Valkeinen" <tomi.valkeinen@ideasonboard.com>, "Maarten Lankhorst"
  <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
  "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
  <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Rob Herring"
@@ -77,126 +68,141 @@ Cc: "Jyri Sarha" <jyri.sarha@iki.fi>, "Tomi Valkeinen"
  <miguel.gazquez@bootlin.com>, <dri-devel@lists.freedesktop.org>,
  <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
  <linux-arm-kernel@lists.infradead.org>, <linux-omap@vger.kernel.org>
-To: "Kory Maincent" <kory.maincent@bootlin.com>
-X-Mailer: aerc 0.20.1
+Subject: Re: [PATCH v2 05/20] drm/tilcdc: Convert legacy panel binding via
+ DT overlay at boot time
+Message-ID: <20260105181838.1f307964@kmaincent-XPS-13-7390>
+In-Reply-To: <20260105172220.2d2edd28@bootlin.com>
 References: <20251211-feature_tilcdc-v2-0-f48bac3cd33e@bootlin.com>
- <20251211-feature_tilcdc-v2-5-f48bac3cd33e@bootlin.com>
- <DF0K5UFX46JA.OH85T6IPC5MW@bootlin.com>
- <20260105152939.49642d0a@kmaincent-XPS-13-7390>
-In-Reply-To: <20260105152939.49642d0a@kmaincent-XPS-13-7390>
+	<20251211-feature_tilcdc-v2-5-f48bac3cd33e@bootlin.com>
+	<DF0K5UFX46JA.OH85T6IPC5MW@bootlin.com>
+	<20260105172220.2d2edd28@bootlin.com>
+Organization: bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+Precedence: bulk
+X-Mailing-List: linux-omap@vger.kernel.org
+List-Id: <linux-omap.vger.kernel.org>
+List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi K=C3=B6ry,
+On Mon, 5 Jan 2026 17:22:20 +0100
+Herve Codina <herve.codina@bootlin.com> wrote:
 
-On Mon Jan 5, 2026 at 3:29 PM CET, Kory Maincent wrote:
->> > +static int __init tilcdc_panel_copy_props(struct device_node *old_pan=
-el,
->> > +					  struct device_node *new_panel)
->> > +{
->> > +	struct device_node *child, *old_timing, *new_timing, *panel_info;
->> > +	u32 invert_pxl_clk =3D 0, sync_edge =3D 0;
->> > +	struct property *prop;
->> > +
->> > +	/* Copy all panel properties to the new panel node */
->> > +	for_each_property_of_node(old_panel, prop) {
->> > +		if (!strncmp(prop->name, "compatible",
->> > sizeof("compatible")))
->> > +			continue;
->> > +
->> > +		tilcdc_panel_update_prop(new_panel, prop->name,
->> > +					 prop->value, prop->length);
->> > +	}
->> > +
->> > +	child =3D of_get_child_by_name(old_panel, "display-timings");
->>
->> There's some housekeeping code in this function to ensure you put all th=
-e
->> device_node refs. It would be simpler and less error prone to use a clea=
-nup
->> action. E.g.:
->>
->> -	struct device_node *child, *old_timing, *new_timing, *panel_info;
->>
->> -	child =3D of_get_child_by_name(old_panel, "display-timings");
->> +	struct device_node *child __free(device_node) =3D
->> of_get_child_by_name(old_panel, "display-timings");
+> Hi Luca, Kory,
+>=20
+> On Wed, 17 Dec 2025 15:23:26 +0100
+> "Luca Ceresoli" <luca.ceresoli@bootlin.com> (by way of Kory Maincent
+> <kory.maincent@bootlin.com>) wrote:
+>=20
+> > Hi,
+> >=20
+> > Cc: Herv=C3=A9, can you review the DT overlay aspects? =20
+>=20
+> Yes sure.
+>=20
+> Here is my global review.
+>=20
+> Depending on the discussion on things I have spotted, I will go deeper in
+> patch details.
+>=20
+> ...
+>=20
+> > > +
+> > > +static void __init
+> > > +tilcdc_panel_update_prop(struct device_node *node, char *name,
+> > > +			 void *val, int length)
+> > > +{
+> > > +	struct property *prop;
+> > > +
+> > > +	prop =3D kzalloc(sizeof(*prop), GFP_KERNEL);
+> > > +	if (!prop)
+> > > +		return;
+> > > +
+> > > +	prop->name =3D kstrdup(name, GFP_KERNEL);
+> > > +	prop->length =3D length;
+> > > +	prop->value =3D kmemdup(val, length, GFP_KERNEL);
+> > > +	of_update_property(node, prop); =20
+>=20
+> I would use OF changesets to perform the modification.
+>=20
+> OF changesets are kind of atomic. You first prepare all modifications in a
+> changeset and then you apply the changeset.
+> If something goes wrong, the changeset is removed.
+>=20
+> Also, if something goes wrong during the changeset preparation, you can a=
+bort
+> without any modification on the live device-tree.
+
+Ok, I will take a look at changeset to use it to copy all the properties to=
+ new
+the panel-dpi node.
+
+...
+
+> > > +
+> > > +	ret =3D of_overlay_fdt_apply(dtbo_start, dtbo_size, &ovcs_id,
+> > > NULL);
+> > > +	if (ret)
+> > > +		goto out; =20
+>=20
+> As soon as the overlay is applied, the driver handling the panel-dti node
+> can be probed.
 >
-> I am not used to this __free() macro and even some subsystem (net) are av=
-oiding
-> it but ok I will move to it. I don't know what are the pros and cons.
+> Modifying some properties after applying the overlay could be not seen by=
+ the
+> driver.
 
-I don't see drawbacks from a technical point of view. Only potentially a
-matter of taste.
+I disagree here. This driver is loaded at subsys_initcall (initcall 4) while
+the panel is loaded at device_initcall (initcall 6) so the panel driver won=
+'t
+probe in-between.
 
-The pro is that with a cleanup action the compiler will put the cleanup
-code at scope exit, whichever exit point is taken. Example:
+...
 
-int myfunc()
-{
-    struct device_node *node1, *node2, *node3;
+> > > +subsys_initcall(tilcdc_panel_legacy_init); =20
+>=20
+> IMHO, the call to tilcdc_panel_legacy_init() will be too late.
+>=20
+> subsys initcalls are called after arch initcalls.
+>=20
+> During arch initcalls, of_platform_populate_init() is called
+> https://elixir.bootlin.com/linux/v6.19-rc3/source/drivers/of/platform.c#L=
+599
+>=20
+> The root node is populated and handled by the platform bus.
+>=20
+> Later at subsys initcall, the tilcdc_panel_legacy_init() function is call=
+ed.
+> This function starts by applying the overlay and so a new node (panel-dpi)
+> is added at the root node.
+>=20
+> This trigger an OF_RECONFIG_CHANGE_ADD event handled by the platform bus.
+> https://elixir.bootlin.com/linux/v6.19-rc3/source/drivers/of/platform.c#L=
+731
+>=20
+> If the "panel-dpi" compatible driver is available, its probe() is called =
+but
+> the panel-dpi DT node is not fully correct. Indeed, tilcdc_panel_copy_pro=
+ps()
+> has not be called yet.
 
-    struct device_node *node1 =3D of_get_child_by_name();
-    ...
-    if (foo) {
-        of_node_put(node1);
-        return -E...;
-    }
+As said before, I don't think this will happen due to the initcall differen=
+ce
+value.
 
-    struct device_node *node2 =3D of_get_child_by_name();
-    ...
-    if (bar) {
-        of_node_put(node2);
-        of_node_put(node1);
-        return -E...;
-    }
+> Also, the legacy compatible string is removed after the
+> of_platform_populate_init() call. The legacy driver could have been alrea=
+dy
+> probed.
 
-    struct device_node *node3 =3D of_get_child_by_name();
-    ...
-    if (foo) {
-        of_node_put(node3);
-        of_node_put(node2);
-        of_node_put(node1);
-        return -E...;
-    }
-}
+Same here.
 
-Here the of_node_put() list grows at every return point. Of course you can
-use gotos to do all the of_node_put()s in a single place, but still with
-some code to maintain, potential bugs, and take care of corner cases in
-case of a complex code path.
-
-Same example with a cleanup action:
-
-int myfunc()
-{
-    struct device_node *node1 __free(of_node_put) =3D of_get_child_by_name(=
-);
-    ...
-    if (foo)
-        return -E...;
-
-    struct device_node *node2 __free(of_node_put) =3D of_get_child_by_name(=
-);
-    ...
-    if (bar)
-        return -E...;
-
-    struct device_node *node3 __free(of_node_put) =3D of_get_child_by_name(=
-);
-    ...
-    if (foo)
-        return -E...;
-}
-
-The compiler will insert the of_node_put() calls at scope exit (the scope
-is the entire function in the above example), so they are called whichever
-'return' statement happens. Pros: less code to write and maintain, code is
-cleaner, less potential mistakes.
-
-Luca
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
+Regards,
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
 https://bootlin.com
 
