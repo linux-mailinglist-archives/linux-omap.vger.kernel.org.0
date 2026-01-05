@@ -1,89 +1,90 @@
-Return-Path: <linux-omap+bounces-5335-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5336-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57922CF57F0
-	for <lists+linux-omap@lfdr.de>; Mon, 05 Jan 2026 21:18:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9035CF57F6
+	for <lists+linux-omap@lfdr.de>; Mon, 05 Jan 2026 21:19:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BBDBB3112D13
-	for <lists+linux-omap@lfdr.de>; Mon,  5 Jan 2026 20:16:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7804B311F8EB
+	for <lists+linux-omap@lfdr.de>; Mon,  5 Jan 2026 20:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F04C0346E72;
-	Mon,  5 Jan 2026 20:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A78DB31D37B;
+	Mon,  5 Jan 2026 20:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="iUOu0Ut2"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="EumCJn6i"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B903C33859E
-	for <linux-omap@vger.kernel.org>; Mon,  5 Jan 2026 20:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1D8346E43
+	for <linux-omap@vger.kernel.org>; Mon,  5 Jan 2026 20:16:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767644165; cv=none; b=u9D9cmY2UNihN4QyztEqNtqdiz5Nz2Qkc7Fj58yfhduC6fUIDCAEqzkoeEnTYcpRDORYs3Nd1u6Ov8ATJau63zLzzKSRPcnUrbIFfAXz4qvO7nXvxzsqnWi4zgGb9hZw8UdKNJ/wC3fx0NQI2E514gmn1HFX+M/kp1oiuG4LGuI=
+	t=1767644166; cv=none; b=mykYTUvEob7sHFoRvaim88HVFKtaGw8ppA+DtZA6bd4KR7bdk97ttU/W/BspzAequpHVFSFZsjQkWh44ynE7KxhUgbpbWWiL3GpGiwEdmID2rsz/HbeVJrLW4bjgKCGanevAt6TBTnhkwGvr5rBvSGjMDIIYMhxMNy7m6NPeG50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767644165; c=relaxed/simple;
-	bh=BAeVXoly+T03UaRlLJhybnCxSqNJu/SzPzB7ml7C5LU=;
+	s=arc-20240116; t=1767644166; c=relaxed/simple;
+	bh=vrWvuBWWkIqJRjzwJR49BS8lxWZbt4dUcR6EDgDcVEI=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=DrTraxEcWcx1fRjLLnHasjc0RjIkNGde71G9npZqir0er7CaZeBFsTKyQFdkT9FAcKT2TI6HdmKq+wTFmPciALNgp/XGJ8Db1o9nJd11us9nzNV5H4SAoZuvpcyBlFgE+Nfm4E5wSS02ByG4sV49Tme5nCTsWXBOhZcd/1AuqsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=iUOu0Ut2; arc=none smtp.client-ip=209.85.214.177
+	 MIME-Version:Content-Type; b=bVF36pOvH6k32ZDF4mZCW/QTzCdZWIm27s4GHM+1VxUo/xwBPrgwV13aiCZxCeMai4TFfkPYdCtDdl9irZLKKO+e+NH70Fwz9ycl9Wn4dbIYbVM8SmiQ6xYIcK5B78KO3hEp73siTuEahyn4eQwtc7BUpLoso9T3E8ZB+INHdtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=EumCJn6i; arc=none smtp.client-ip=209.85.210.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a09757004cso3381375ad.3
-        for <linux-omap@vger.kernel.org>; Mon, 05 Jan 2026 12:16:03 -0800 (PST)
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7b8bbf16b71so365023b3a.2
+        for <linux-omap@vger.kernel.org>; Mon, 05 Jan 2026 12:16:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1767644163; x=1768248963; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1767644164; x=1768248964; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:date:message-id:subject
          :references:in-reply-to:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6ifa3FgzMJhdcyEQYjXisaWYQtz/jhQwaq5a5wqcFCs=;
-        b=iUOu0Ut25bj2eDK7g+QQSjJ169kZc8+kXryglbicLzRGm+1LQ9kJ83Cx0zUS3rgzZY
-         O5GF+VgB5LXr7COi5b0cVhb3mw9WKht2xLoVvzIGTrUSE0hQFufMhd/HgNtqsdkx+YdA
-         v1c7GPGKeODf+6U3A3ty794aOVnTySqTQFDva5ZJaDx1fiVE5MlvwPhoD6p0VhXp9ZCc
-         iB9+yAQTcLOfFo7thoXn8WQyAHUY8hsjCaWPdXF7/+XzBfIfzPYxkMe15kWCzcDttiao
-         lq3dAgHIvwk8g0EAgfjOXfV4Q5eV5tFzWn5arW3z2AD6XyVgRcBNDe7ji/XYPDHjloN+
-         4yAQ==
+        bh=gM/0NBeBZo/IQy3QHRFeMfe2d0xBAbWbFb4SKMpPqz8=;
+        b=EumCJn6iLWL7vFOaBgbm3LTKYP8PxybnGRariAhNcwnMv/ORZXPH4SklYkoQhLh+hB
+         p7ck3D/1rB0WeNZqe5tRFCoSrY/lCO9n0EYx+LC3iHxRmB7xgQWrwidvaEujviVzkHLZ
+         VtmfVZQNQx3+e/rusCLKFgxx5HpVURI2rRLIw/7jzQEPLqm5okqI+XiYJwbT95405FCO
+         vm64OfPi92CyRrsBMkNjn93w9VnxfITfaJDV6RSKb1msSONbWq1GovczMZff5rB7tx3y
+         9McLT/ovOoGinzo6hhUlwPHqUqT2eNA13KordoDZX5MmsuJ4eZyaizFv6Vydz4vfTTJN
+         8UVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767644163; x=1768248963;
+        d=1e100.net; s=20230601; t=1767644164; x=1768248964;
         h=content-transfer-encoding:mime-version:date:message-id:subject
          :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=6ifa3FgzMJhdcyEQYjXisaWYQtz/jhQwaq5a5wqcFCs=;
-        b=ZJmOSDSlrKkzYLa38q/3Ir9BD3aiP8Ps4fqRK+KFiy7R78w42wIRB+9kvycyjTVDOd
-         WVCRE4WxqP/A8PHqD+aJEVV+3IHtt4J+70rbj/cN4iLggTHbTN6M3jfEanMSq8VklC1w
-         TixbEGRIgStor7xZe/B2OPFw3RG5cCTNNGaMqZg4Kp87ozCkilO1gOcVMHR/YJe3NIcw
-         BFia/xf7DstunmtjRfTAWMjzteWtfVbg43rz41YPrhLgO5GfCAEMVgFQ/kW0trMQvxJX
-         Wux8Wxz3laT2Sm+UKWlbwO/+dhKfJCaPcayMnfsXt1heIKnwdNwYlnKTXUt5WYtN4n1e
-         kiQA==
-X-Forwarded-Encrypted: i=1; AJvYcCUjwQGeQSgv/PyEpTUX5chFg0DEaI6nc3WtTpvDF/zjPgU5RXJbsnG2I+qkFGWEoTgEwueGCrljKhc7@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1WZRwmsbd6yoP1TzHuvzm9u+QjqUnneTHqFM1j2ptz1eORlwz
-	HosMgBlRP1P0eugCAUEPEKzEFSQkIII0DCahO0dAY4vIZ/N4QsB2YEwdSOyrT2KhOos=
-X-Gm-Gg: AY/fxX73MS0ulU6j5SYnh8zupZGZJ/ZVjU8+yokZw+oQ3jf4rs8vNwg7Li27R2Og1Go
-	pIdAZWRXhyfvP/JUFrD5jWqvlMIkAJJbXd7wW1jUO4ChBZd0zuPn9KZZWkr8paIfC3NT3A752l6
-	wcs0LjUDfHOCu900xDlYzG9SAi5VODSvm7fFjQvSOIao0JRi5/kuurN84PYoDUe6NqpNUWrAPa6
-	eUBLWv9hUyCnupfKSV0EtgPeNbE/DtPZCQr6CKe31GecScjBwNo+ORPpXj/HXmmmuBw1u3q8KEK
-	PgXhJaWt4wSyh1Wu3fG/uz3CP4oWgKKrO4ZX63Ydp4Q0qKgY+8h8WnjH6Gx46Rk77IcJgQEyH5b
-	oidtckKtdg5WCb/SihNTa35ejmGDFcOUBAgCmoRzfMOUagZmjNnhr3r63jE/Cjmfbx6CtU8Cfe9
-	GUbtrJZfuw
-X-Google-Smtp-Source: AGHT+IHdmIrEr4BVbZEQPNX3+GmY+SREBGPwkRDFt+Xql+oRg3wNX3X+Ikd9nNU24yxL3SJbGllaWw==
-X-Received: by 2002:a17:903:32c7:b0:2a0:b4f6:5595 with SMTP id d9443c01a7336-2a3e2df0741mr6144155ad.50.1767644162704;
-        Mon, 05 Jan 2026 12:16:02 -0800 (PST)
+        bh=gM/0NBeBZo/IQy3QHRFeMfe2d0xBAbWbFb4SKMpPqz8=;
+        b=mZAuy2dhXIzRNU5lXz0o7/GLE+5quw1l8nI6iavys1cY2qgq2dZ46AK8ujCnWq/VBy
+         4moOSyr/7jAGKlaKBXtkP8xkKh3BQgomBUwR2SKQ2MeVKiS9hc+1jFH4SAKhsDrV+2rw
+         X+AJSXJnX98ljotdDiSMT8H54yhPcUOXVEemFWayXD9XEDlPnXYmhmt0Siy61ZDOuqq3
+         SujqK9Sm6H03PC4jM8qltbgJiQD8MexEfkzDpQPFBEw2CJrAf5iL+0kSldrSsyV62n8Q
+         svFJLyzZ2IOW/mLIV2QNd3uYF7pJ7MAqNChYxksMbGTDLMe2uwZY13wcXh0wqycW2/zr
+         tvFw==
+X-Forwarded-Encrypted: i=1; AJvYcCUlv6TmbpuB4vb/witBNZ726h1hzvBwFASJMtxeoAVAk7gB78V6ZkuO5JXgEftuNAWLwJEERKROi1X0@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaziVB++S3L36pkjyKNDnXL9TldQm3yKBT1bHRxAiLFUp0ZJzP
+	IuqziZZHaxIoATLBDZvgznqgiWxiIhPSzD7RBScA4heR0bNONPr+9vBnwbi/jtGzRiY=
+X-Gm-Gg: AY/fxX7fZGrBc/p/o0jRv3XkwbRiiVZ8ixsEUXQkzjX1gRyBvgRfD+tRxMJlfRFHi2E
+	FEg8AElC1rWifnqOp7I7/FWz8aara4VCb/zMeRlXZP1cqTfwHIoc9/lqPh+Qvdf1WxOOPil3tN4
+	uFS2XqARH+eqdgePTIejJONrx3EZDheTALTvaASjuaAbZzIqzNo/kR0kKzfGPX9iv69kenJgoRg
+	1XZIIP9A2SvjuwrNuqcgWxVMOuzj9nE2XotlCU9lxPQSXRSVSWnfgE57T0U/BErrPAm4jEBUkgo
+	41rWGC2E9QNHAaHA+D/3GpH6L551EqX1FGT18VOkL+Efa2GKcQW0UQDxNiU0HCPSVUjyj0FH7vF
+	ESYOuDa75VW8keTF9SMhvebmKUtcNlxHhN90Pyu+jMUDHoPa/kqLYebNKHT+UuNkPFCXJvYqcbX
+	39yDY/i26e
+X-Google-Smtp-Source: AGHT+IFv+URzhFo62S2OJHIOtV3yIc+G3XQJLuGIrCdc5mHktNrWdS8zWFn48CHW91APTlisHxQKQw==
+X-Received: by 2002:a05:6a20:d485:b0:361:2fe5:51a3 with SMTP id adf61e73a8af0-389823808b5mr334370637.39.1767644163808;
+        Mon, 05 Jan 2026 12:16:03 -0800 (PST)
 Received: from localhost ([71.212.208.158])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cd2b3asm873055ad.88.2026.01.05.12.16.02
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c4cc02ecfaasm209624a12.14.2026.01.05.12.16.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 12:16:02 -0800 (PST)
+        Mon, 05 Jan 2026 12:16:03 -0800 (PST)
 From: Kevin Hilman <khilman@baylibre.com>
-To: linux-arm-kernel@lists.infradead.org, 
- Randy Dunlap <rdunlap@infradead.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, patches@armlinux.org.uk, 
- Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>, 
- linux-omap@vger.kernel.org, Russell King <linux@armlinux.org.uk>
-In-Reply-To: <20251230055230.3212260-1-rdunlap@infradead.org>
-References: <20251230055230.3212260-1-rdunlap@infradead.org>
-Subject: Re: [PATCH] ARM: omap1: drop unused Kconfig symbol
-Message-Id: <176764416184.2561401.16752078199800151881.b4-ty@baylibre.com>
-Date: Mon, 05 Jan 2026 12:16:01 -0800
+To: Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Andreas Kemnade <andreas@kemnade.info>, Roger Quadros <rogerq@kernel.org>, 
+ Tony Lindgren <tony@atomide.com>, Vladimir Zapolskiy <vz@mleia.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, linux-omap@vger.kernel.org, 
+ devicetree@vger.kernel.org
+In-Reply-To: <20251230234040.2083889-1-vz@mleia.com>
+References: <20251230234040.2083889-1-vz@mleia.com>
+Subject: Re: [PATCH] ARM: dts: omap: dra7: Remove bogus #syscon-cells
+ property
+Message-Id: <176764416284.2561401.7444989303329594096.b4-ty@baylibre.com>
+Date: Mon, 05 Jan 2026 12:16:02 -0800
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -95,21 +96,15 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-a6db3
 
 
-On Mon, 29 Dec 2025 21:52:30 -0800, Randy Dunlap wrote:
-> "select ARCH_HAS_HOLES_MEMORYMODEL" was mistakenly merged here
-> due to a botched rebase (says Arnd [1]).
+On Wed, 31 Dec 2025 01:40:40 +0200, Vladimir Zapolskiy wrote:
+> There is no such dt binding property as '#syscon-cells', remove it.
 > 
-> Drop that line since that symbol is not used anywhere else in the
-> kernel source tree.
 > 
-> [1] https://lore.kernel.org/all/5e335232-89b4-4c35-93bd-efad7e4d8995@app.fastmail.com/
-> 
-> [...]
 
 Applied, thanks!
 
-[1/1] ARM: omap1: drop unused Kconfig symbol
-      commit: dc717e24deb4e626f4ad4896dd722815ef32311a
+[1/1] ARM: dts: omap: dra7: Remove bogus #syscon-cells property
+      commit: 76f88d2edd9f21acad7be8422069403118708455
 
 Best regards,
 -- 
