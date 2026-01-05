@@ -1,55 +1,56 @@
-Return-Path: <linux-omap+bounces-5315-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5316-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 443DECF2B0F
-	for <lists+linux-omap@lfdr.de>; Mon, 05 Jan 2026 10:19:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB0C4CF2CDA
+	for <lists+linux-omap@lfdr.de>; Mon, 05 Jan 2026 10:39:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 40DBD314C27C
-	for <lists+linux-omap@lfdr.de>; Mon,  5 Jan 2026 09:14:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 81964304DD9E
+	for <lists+linux-omap@lfdr.de>; Mon,  5 Jan 2026 09:37:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988EE32BF25;
-	Mon,  5 Jan 2026 09:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374C132C326;
+	Mon,  5 Jan 2026 09:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="m09SNTMS"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="TOWfQzGK"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA8D32573A;
-	Mon,  5 Jan 2026 09:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C362D73A3;
+	Mon,  5 Jan 2026 09:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767604466; cv=none; b=mRvV3feCJIadlPvFnW+FpbvA02JSjzfOh7/2TC9dxv4kOEH7hGo+smipJKSW8gHFkKe50WpwZu/J+Sj73STFDgemCxdrZo9gK2CvmjLAFBLNbPaHKsfAjMaeb1ixWHPBwlywX+/7nOqc+zusvByB1GmnCjvosyeIjATn5DUqxP4=
+	t=1767605316; cv=none; b=H/a0X81flg0xRPQsx+EdrJVI1CnadqeS0wiJfjrKHb+fgIrVWVfT8rmTbB9JbCir0f/z4FWyakseyZl7WcQVRR38Lu3djhOyWR4BQ5C52tT22giBjiQRkFpvOvFXJcupjMTQX+Dl1bF/nguvx05JfZHdq+Wh0h1UZ+OLJgXgT8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767604466; c=relaxed/simple;
-	bh=6gLEdhZvcQ8eY26ai+dpxvKO/Np0kZ2O161aQzCkSFU=;
+	s=arc-20240116; t=1767605316; c=relaxed/simple;
+	bh=Z+Mf2OJd/f8FCFLXymRmlLvwckLFVln2kGBpPKbdcYI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uEHJZyV2UQmsNozVKjrVLJr847A01zZbeG+FHZJ+0/yv+Bopr+YpvH1lxxkP47eorooiPpYfWGncpfg8um2UmI0x6iSgbm2kd3Cv1evKTAE/d9LnkAoOact3lmQOdwLnAFm1n77YFVSwgcm1+X202M//OZgATB4K8dxM3luUfLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=m09SNTMS; arc=none smtp.client-ip=178.238.236.174
+	 MIME-Version:Content-Type; b=QULf5UFa4zli0QABg42PpD5GGlk3INfyGzGoKaAucG7uWmT+qATM3UyCq7dUSVOi25eT6r/aZqf7S5erNG0AU3j240C33TCsxf+f0ZhbX7TIxAlyXw0h7sV1wiO1mwlw3/YbI8C0bjdqApjV8dJ82rSoGNEn0ZR9mPcQkpdeL88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=TOWfQzGK; arc=none smtp.client-ip=178.238.236.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=zoA01OWoNPX+QO76V5EPzTn2Rmdvp86aihrC/IvyJj4=; b=m09SNTMSHVn9Ac8LM2ZXYiSTRr
-	kpD4M2M/zX63h14MXxhQ6WPnyGmKkzYo26Si7iG9AIn/5CAVK2cDxPY7yKMTDlqqhWoepHb+RDoPI
-	uOV41t3RXw6QelNwJypOJQlFhftes/BPiXoas8bl1EIK7jb/Ab0X9Dl8ASqvrq+aSHQQ7fV7nmjwr
-	ScO3CS1krH4cwNezBcet5gnQEQ4hKVebY1xGxcRUB5sm/3+XBpbeS/RfsTMsF9/BUBPLGPujpi2Wp
-	kGx6eeQ266Ezn1FXf9R7BTQlqr2OtHRZr887YdFsv4EpyxdQlwvntD8Xgn+zfzjmD0kTTnN424ole
-	TnzGIWIA==;
-Date: Mon, 5 Jan 2026 10:14:12 +0100
+	bh=emKIByfXGmPnCS6jAiZsoKAy6fQFYwuuRgiRa12+j8g=; b=TOWfQzGKPksIysId1zH63kpqpa
+	EcO2JNyxw2G88PRxMO76uG1Vdt1iyA+QW/O23xppemvAsbhNACSL4MnpergTnAAeGFPLFfIPA4ASo
+	9O0iNRTYZkHsf05jyv46P8hTk6FpF2/PORUdVI58W/2gvm8KpnQpVOYc6F9LlDjqjqXWzYZRf4Z0E
+	NqPNU6XBARYNNtS2zpG1rGUwaHHNhABmw9LHjYep937mBVmVEU/ub0p3RW7TWEB95wZt8vaLmQZ/G
+	mg73CcMSdh+HO2AKdIVaxjh/RWtP4Ff8IOU3VaIR7yLZkSCyMf4CM5a7S2bxvuoTDjiQ6i38gI1c+
+	ogAmf1Fw==;
+Date: Mon, 5 Jan 2026 10:27:04 +0100
 From: Andreas Kemnade <andreas@kemnade.info>
-To: Haotian Zhang <vulab@iscas.ac.cn>
-Cc: Kevin Hilman <khilman@kernel.org>, "Rafael J . Wysocki"
- <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>,
- linux-omap@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] omap-cpufreq: Fix regulator resource leak in probe()
-Message-ID: <20260105101412.0ac7baa7@kemnade.info>
-In-Reply-To: <20251215030327.1771-1-vulab@iscas.ac.cn>
-References: <20251215030327.1771-1-vulab@iscas.ac.cn>
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: aaro.koskinen@iki.fi, khilman@baylibre.com, rogerq@kernel.org,
+ tony@atomide.com, linux@armlinux.org.uk,
+ linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] ARM: omap2: Fix reference count leaks in
+ omap_control_init()
+Message-ID: <20260105102704.77d4c9d1@kemnade.info>
+In-Reply-To: <20251217142122.1861292-1-vulab@iscas.ac.cn>
+References: <20251217142122.1861292-1-vulab@iscas.ac.cn>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; aarch64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -60,50 +61,22 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 15 Dec 2025 11:03:27 +0800
-Haotian Zhang <vulab@iscas.ac.cn> wrote:
+On Wed, 17 Dec 2025 14:21:22 +0000
+Wentao Liang <vulab@iscas.ac.cn> wrote:
 
-> The current omap_cpufreq_probe() uses regulator_get() to obtain the MPU
-> regulator but does not release it in omap_cpufreq_remove() or when
-> cpufreq_register_driver() fails, leading to a potential resource leak.
+> The of_get_child_by_name() function increments the reference count
+> of child nodes, causing multiple reference leaks in omap_control_init():
 > 
-> Use devm_regulator_get() instead of regulator_get() so that the regulator
-> resource is automatically released.
+> 1. scm_conf node never released in normal/error paths
+> 2. clocks node leak when checking existence
+> 3. Missing scm_conf release before np in error paths
 > 
-> Fixes: 53dfe8a884e6 ("cpufreq: OMAP: scale voltage along with frequency")
-> Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-> ---
->  drivers/cpufreq/omap-cpufreq.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+> Fix these leaks by adding proper of_node_put() calls and separate error
+> handling.
 > 
-> diff --git a/drivers/cpufreq/omap-cpufreq.c b/drivers/cpufreq/omap-cpufreq.c
-> index bbb01d93b54b..f83f85996b36 100644
-> --- a/drivers/cpufreq/omap-cpufreq.c
-> +++ b/drivers/cpufreq/omap-cpufreq.c
-> @@ -157,7 +157,7 @@ static int omap_cpufreq_probe(struct platform_device *pdev)
->  		return -EINVAL;
->  	}
->  
-> -	mpu_reg = regulator_get(mpu_dev, "vcc");
-> +	mpu_reg = devm_regulator_get(mpu_dev, "vcc");
->  	if (IS_ERR(mpu_reg)) {
->  		pr_warn("%s: unable to get MPU regulator\n", __func__);
->  		mpu_reg = NULL;
-> @@ -169,7 +169,6 @@ static int omap_cpufreq_probe(struct platform_device *pdev)
->  		if (regulator_get_voltage(mpu_reg) < 0) {
->  			pr_warn("%s: physical regulator not present for MPU\n",
->  				__func__);
-> -			regulator_put(mpu_reg);
+> Fixes: e5b635742e98 ("ARM: OMAP2+: control: add syscon support for register accesses")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 
-so it it not useable and could be released which is not done anymare 
-with your patch. It is not an error path here.
-
->  			mpu_reg = NULL;
-
-And this should happen after removal, too. I feel some discomfort with
-variables pointing to freed ressources. So I think rather add
-the regulator_put and the = NULL to the remove function.
-
-Regards,
-Andreas
+Reviewed-by: Andreas Kemnade <andreas@kemnade.info>
 
