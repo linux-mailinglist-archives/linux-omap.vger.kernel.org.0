@@ -1,147 +1,114 @@
-Return-Path: <linux-omap+bounces-5339-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5340-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 689DCCF6BB5
-	for <lists+linux-omap@lfdr.de>; Tue, 06 Jan 2026 06:08:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7D88CF70C9
+	for <lists+linux-omap@lfdr.de>; Tue, 06 Jan 2026 08:35:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6707F301AE0A
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Jan 2026 05:08:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7CD01304BD0A
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Jan 2026 07:34:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEFF12EA172;
-	Tue,  6 Jan 2026 05:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF7B30AAD6;
+	Tue,  6 Jan 2026 07:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dZwYEIHk"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="QA9jJ/P9"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E4B2DF703
-	for <linux-omap@vger.kernel.org>; Tue,  6 Jan 2026 05:07:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135E3307AC6
+	for <linux-omap@vger.kernel.org>; Tue,  6 Jan 2026 07:34:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767676078; cv=none; b=fsCwcq5ywSqLjwjmzuAvAPtG3cguPKU00CfXVKEs6ova4JDuTs+S4bYvh0I+ULOwAbRI2uvSqbzZ6KMhNOSefD/g1FCyy5ACOo7wOW53vGUcm3+5+ZlF/yANBK3jmJN1IYhUOKz7LOvD7puS+sP+zYx79doHGKxuwb82sUX521U=
+	t=1767684882; cv=none; b=ArmbDw3QyBLGOehrduy7QxaOdLm1G2SBQrnLFdYwy6FYVfVIUDGwn5cTKhnB7z+1GQrUYyqTweFz1UOlqBNy0ztFK9umRi1VvJsB/ciouAm77NsR2jaoTJEbRFlFMCifg4UCTqKfUsrT1YtG0YK0z+QizayhtJqP++1BNa8OOh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767676078; c=relaxed/simple;
-	bh=PvKsoC1yJDKXpvwc/Ywpgr06jgkkUxx9YT/NT7YJY4I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JkUvfNyUf9OvwMWizu8yAt1xec7AS5Idim5VYwT70fxcOpAJIa48Cc3XfxtbWVALrGk7LjmF1kSGgf8+w4zi59AJAMcZLGIl6WLrIcNGBbCgtZooi46IHlbJWBUELjeinDg9uXXarVYHsbOq3isDKnBO5xc4KcjibLGRjVH5rKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dZwYEIHk; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7b8e49d8b35so788337b3a.3
-        for <linux-omap@vger.kernel.org>; Mon, 05 Jan 2026 21:07:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767676074; x=1768280874; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0gtGPUtnrtvwlzSCngVczC/q2RK/CQdmnl4xMzqGXCo=;
-        b=dZwYEIHkOayOmYUN/scZL4w+LGYKtSWb4tlzh1I5U1dKaTGq0Fq8WAe3/CwDjP+t2E
-         nQ8VEYumnw0hEwDq8UayVuuQog66HijgcCap4hmiHb7/8AGinH89vc9ioTjLRgcGc9Gl
-         EvWxPfaHKebNl34GTnujf3zEvF7qHNIRbJDv5WPl8QnZ3UWX6JsCEapg0PXrEnpGLRbS
-         cxUmuX57zjb4eZWhJctI7jL/AwOdg5p1YhLy0TEfQ2/KCHM7I+9haato5/78xcgKFo2z
-         e+yOVFodcaw1DWd8feNCIqm7tAWOObMB4ynhTfv5nZxVjXb/oY1hOL89FbggKpthQCA+
-         zrOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767676074; x=1768280874;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0gtGPUtnrtvwlzSCngVczC/q2RK/CQdmnl4xMzqGXCo=;
-        b=wUghivE9V7V4n9rBhrR4YxKUY+DVnORkAZZkbdLldqHZWBdWAR1JG/RUZJc4mR2k9S
-         Xv0h5tM3EHyv9EaMmcB91ZVEFBxHn0qXi+PEJr3DdveJxGcrEUneC2qILQZ9KLQndqMQ
-         5kv2FF1Fwwrd1aCbPaVYBU8rPgfCAoDt3GN+x7ncJ2mwIhlf0pb1GvW5H2j84aoS+bkN
-         HVUhzfS47BUb6ebC8H906HdXA2kgaFyiawTvyH+ygvWT4jsX1FPXV7xdUN/zeygxQf6n
-         0TzKbkI0bvveP8NxaLH6qjerO/l6hPPos6AAvkbIihqzQ2XVuwR2rGjhnh5o3+pqnR45
-         /pjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW+4ktKZMqnWXjMHe+dk6PrvvyrrH1FWdHAaASuMkuFICilI6xAUZQqYwaUqumBZpWBI1dgBKzKuZ80@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEOb/gk3u0LzqOXyiEYgecy9/7EaRm6ehcxZCAWOW163z+w+Ya
-	oSs9R4uE27gottjUXOw49wG4tY06Ubfngl8KhjCiWwu0cUkeWVsF3qG/
-X-Gm-Gg: AY/fxX7oBn2EbYN31M7M/Xg6+/Vqv6DfMXx7Daq6p4G7llVOzLEytk0kJxvVswVfNu/
-	Z5pIJ1pfkcWCHSvxxxDkaQhmHInEH+roL6gpDWMdzF0Yin9xJjlw6kTDV9ZIZXxXXLGA3fTHxq6
-	Ql550pgUt97m4YB1PDHt6jLwYBc1uX+JUfqh7+iiAM5knnfO/EpEik/qDmM0motYyzLpz5eACcg
-	zncT6Rtp21bLBbwfXk71XZVZr5QbPK765al72EzLwOwOS1qCcNX06jIjwj6+U0me515hwwPwTup
-	EBBOEoRYBc5DwIsjmy+XjSD9q3/8VrRF70RrJX+K0SKE+l5xJdLgT/+4ho2xl6wtLYAoFC1xGLJ
-	NJlJE07Z7RS+DFuMtOETJ20CrxB9llCHEmQQcCDALYdG2rRQsO6a0V5SsS/tpkvIbZ1n1Q2uvdA
-	17A3kHPDDPzsr4feOx7oFRUb5eJwh1F6e1jEWTkWP75/dgnabwDbeX960+BOEd
-X-Google-Smtp-Source: AGHT+IELk3bSN8b6/uvhBy79lAtP4nFKRyXfqVo09Vl9Sea1jJstOayAx+4sJKgZc+BInTNtDc92kA==
-X-Received: by 2002:a05:6a00:f8e:b0:7f6:2b06:7129 with SMTP id d2e1a72fcca58-8187f4a1122mr1578438b3a.43.1767676074134;
-        Mon, 05 Jan 2026 21:07:54 -0800 (PST)
-Received: from ?IPV6:2601:1c0:5780:9200:980d:1373:5653:99ac? ([2601:1c0:5780:9200:980d:1373:5653:99ac])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-819c52f8ff7sm752055b3a.37.2026.01.05.21.07.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Jan 2026 21:07:53 -0800 (PST)
-Message-ID: <af800a37-150b-4b7f-ad83-4db6e7e72df9@gmail.com>
-Date: Mon, 5 Jan 2026 21:07:52 -0800
+	s=arc-20240116; t=1767684882; c=relaxed/simple;
+	bh=IJ1h3fEZv1s32cLhY4DdaKissfaetz3NYCz8X/5XBMo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WUAMkd+6n0s0LB1k2k870l1gQ4P0q2XA5jjQq3lMmJwRQIN9hoh1AAjLAJsxTg4CRk/2bbP75+OmrrZH6NqlRqHHmI6lkwhEvRaXYlENatxPMe/mXCx3aYcq+S96yesY9V7GLjohdmoTu7iMzXdd9l/auc7AiwZOYdIaEdr6lHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=QA9jJ/P9; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 0DF7FC1E4A4;
+	Tue,  6 Jan 2026 07:34:12 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 01C3560739;
+	Tue,  6 Jan 2026 07:34:38 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B79E1103C8092;
+	Tue,  6 Jan 2026 08:34:27 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1767684876; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=/ihofIBxFPwXzfBzLTBtqfZNBkL8peU6izBU5CnFXCQ=;
+	b=QA9jJ/P9eRhkdrxb0HptLgAtibWjUt8jFktKgN/YWUb+JLe+KkcDoyyEQD2Ppn5+/jwo5o
+	9PuhkdKrKHCFJmwvVHHrNuIRKapqHvtfMGKFtPfB8JkUZq7apk7/qR0ykO/WlNWhf7kDVi
+	Bl/ifnbmCGIsRzIc4uM0olnGsE4sW3ojxqibPYiiCO3NDqYB2afR4RvGjjLapoi56PC66n
+	5HJ/fOFerReyEAfARTdLDLeTJDoRQlIofWvp4plIFdiL3u195e1w/IEB3kmwrWJz73Gj1E
+	uQIdi3lYtAHnUwekMK3xvZVQnq9ev3kSCj8zKXKrEixDRgt59+RNM9n5WrdQ1g==
+Date: Tue, 6 Jan 2026 08:34:26 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: "Luca Ceresoli" <luca.ceresoli@bootlin.com> (by way of Kory Maincent
+ <kory.maincent@bootlin.com>), "Jyri Sarha" <jyri.sarha@iki.fi>, "Tomi
+ Valkeinen" <tomi.valkeinen@ideasonboard.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Rob Herring"
+ <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
+ Dooley" <conor+dt@kernel.org>, "Russell King" <linux@armlinux.org.uk>,
+ "Bartosz Golaszewski" <brgl@bgdev.pl>, "Tony Lindgren" <tony@atomide.com>,
+ "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
+ <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
+ Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
+ <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Markus
+ Schneider-Pargmann" <msp@baylibre.com>, "Bajjuri Praneeth"
+ <praneeth@ti.com>, "Louis Chauvet" <louis.chauvet@bootlin.com>, "Thomas
+ Petazzoni" <thomas.petazzoni@bootlin.com>, "Miguel Gazquez"
+ <miguel.gazquez@bootlin.com>, <dri-devel@lists.freedesktop.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-omap@vger.kernel.org>
+Subject: Re: [PATCH v2 05/20] drm/tilcdc: Convert legacy panel binding via
+ DT overlay at boot time
+Message-ID: <20260106083426.6916d687@bootlin.com>
+In-Reply-To: <20260105181838.1f307964@kmaincent-XPS-13-7390>
+References: <20251211-feature_tilcdc-v2-0-f48bac3cd33e@bootlin.com>
+	<20251211-feature_tilcdc-v2-5-f48bac3cd33e@bootlin.com>
+	<DF0K5UFX46JA.OH85T6IPC5MW@bootlin.com>
+	<20260105172220.2d2edd28@bootlin.com>
+	<20260105181838.1f307964@kmaincent-XPS-13-7390>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] fbdev: sh_mobile_lcdc: Make FB_DEVICE dependency
- optional
-To: Andy Shevchenko <andriy.shevchenko@intel.com>,
- Helge Deller <deller@gmx.de>
-Cc: Helge Deller <deller@kernel.org>, andy <andy@kernel.org>,
- linux-fbdev@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
-References: <20251230052827.4676-1-chintanlike@gmail.com>
- <20251230052827.4676-5-chintanlike@gmail.com> <aVOJovo-k6-0KnVg@carbonx1>
- <aa2b08f8-e6c3-4768-bce9-e36ad9d1e74b@gmail.com>
- <73007a0a-dd96-43eb-be2e-ccbf8b19cd79@gmx.de>
- <aVkWigAQWC1dZBAv@smile.fi.intel.com>
-Content-Language: en-US
-From: Chintan Patel <chintanlike@gmail.com>
-In-Reply-To: <aVkWigAQWC1dZBAv@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+Hi Köry,
 
+On Mon, 5 Jan 2026 18:18:38 +0100
+Kory Maincent <kory.maincent@bootlin.com> wrote:
 
-On 1/3/26 05:15, Andy Shevchenko wrote:
-> On Sat, Jan 03, 2026 at 10:59:44AM +0100, Helge Deller wrote:
->> On 12/30/25 19:25, Chintan Patel wrote:
->>> On 12/30/25 00:13, Helge Deller wrote:
+...
+> >
+> > Modifying some properties after applying the overlay could be not seen by the
+> > driver.  
 > 
-> ...
+> I disagree here. This driver is loaded at subsys_initcall (initcall 4) while
+> the panel is loaded at device_initcall (initcall 6) so the panel driver won't
+> probe in-between.
 > 
->>>>> -ATTRIBUTE_GROUPS(overlay_sysfs);
->>>>
->>>> Instead of replacing the ^ ATTRIBUTE_GROUPS() by the code below,
->>>> isn't it possible to just mark the overlay_sysfs_attrs[] array
->>>> _maybe_unused, and just do:
->>>> + #ifdef CONFIG_FB_DEVICE
->>>> + ATTRIBUTE_GROUPS(overlay_sysfs);
->>>> + #endif
->>>>
->>>> ?
->>>
->>> Yes, the __maybe_unused + #ifdef ATTRIBUTE_GROUPS() approach would work.
->>>
->>> I went with the PTR_IF(IS_ENABLED()) pattern because Andy suggested
->>> using PTR_IF() to conditionally include overlay_sysfs_group in
->>> overlay_sysfs_groups, and to keep .dev_groups always populated while
->>> letting the device core skip NULL groups. This avoids conditional
->>> wiring via #ifdef and keeps the code type-checked without
->>> CONFIG_FB_DEVICE.
->>> If you still prefer the simpler #ifdef ATTRIBUTE_GROUPS() approach
->>> for this driver, I can switch to that, but I wanted to follow Andy’s
->>> guidance here.
->>
->> I assume Andy will agree to my suggested approach, as it's cleaner
->> and avoids code bloat/duplication. Maybe you send out a v4 with my
->> suggested approach, then it's easier to judge... ?
-> 
-> I'm also fine with original code. But a suggested approach would work as well
-> (at least like it sounds from the above description). Ideally would be nice to
-> get rid of ifdeffery completely (that's why we have PTR_IF() for), although
-> it might be not so readable. TL;DR: the most readable solution is the winner.
-> 
-Thank you both! I will send v4 with Helge's suggestion and take it from 
-there.
+
+You're right. the driver registers at device_initcall().
+You can modify your node at subsys_initcall(), the driver will see modified
+values.
+
+Best regards,
+Hervé
 
 
