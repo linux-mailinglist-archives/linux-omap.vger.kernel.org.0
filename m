@@ -1,55 +1,55 @@
-Return-Path: <linux-omap+bounces-5354-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5355-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA325CF9FBE
-	for <lists+linux-omap@lfdr.de>; Tue, 06 Jan 2026 19:11:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4875ACF9FB5
+	for <lists+linux-omap@lfdr.de>; Tue, 06 Jan 2026 19:11:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8148230A4BDC
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Jan 2026 18:08:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 56872306C3EB
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Jan 2026 18:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68FA34C801;
-	Tue,  6 Jan 2026 17:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCAB134D391;
+	Tue,  6 Jan 2026 17:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ebaq3qZ8"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="xgP7Bkyy"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0330134BA59
-	for <linux-omap@vger.kernel.org>; Tue,  6 Jan 2026 17:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFD434CFBA;
+	Tue,  6 Jan 2026 17:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721441; cv=none; b=cE7aO+LKPBX10A2ChN/PMo5WdRtrJNXUaZ6lglZFpznn4rjFN1IAkCXBLQe8hLt4RuY2Y7DWacBQQ/25dS16Hj/FXIDYBpTupx10b02G7KUBLbycHy5GoyN75c+sqUENzu3ahllNBHY+9Vh5y/XSfaAl039W662hFzB5sDi1tMc=
+	t=1767721445; cv=none; b=g2pvS+qPk5a4eXfOvOrEnpdAmZNZY8SrxXQTIxKNoYkG4T87c859qz9AGKUC2GIwc+9H9Mijhrhlp2u4oBNcB6l8TN8CpWouMT6oYZ6hgwy+PO96o8bpMIoAdMI4qWeOxky5+WojJKDaKR6cz/Bkjkn8CCtQXNgLgqFB6lhHY1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721441; c=relaxed/simple;
-	bh=KNr7jwgdGc2ElCwTHbIj/MgTzYzjlKwlvBxiyQ+dsY0=;
+	s=arc-20240116; t=1767721445; c=relaxed/simple;
+	bh=OQzhguCunp556JZpdlpg6NI0CyYUN+VCF44h+a5d5KI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bYR1lOlQQESAD/s86mYIiasLAwAQacnQkr4vDVCs4NI0KLziDvoiseZ7ya6dnqujG5TVPMt6mMnhi6xyVt9iyuHAdmCXHiqFRzTVxLJHibWDDYeEAvctqoZFpOmvlf4aIaYVaOsIsGPAmkWV8Qoc4aDdUBZUuM1WlzqEeILFcyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ebaq3qZ8; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:To:Cc; b=gfwYvNhnZM/71Lu7niBakhYc9b6MYqSrDXl9pozFfM8IcRHecMc5+gOjq/cqpQffZU/lgzPpySmaTqRseIs1dN1wg4lkEaWpsiHY0ejMiXmmYrgEo+gUBu7jM3WbSNtxkB6sTS8MgQe9ZmRTgi2s+VZ5dthIzbeC4pQLoNQ+lSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=xgP7Bkyy; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id A459D4E41FB2;
-	Tue,  6 Jan 2026 17:43:58 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 21B254E41FB6;
+	Tue,  6 Jan 2026 17:44:02 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7956C60739;
-	Tue,  6 Jan 2026 17:43:58 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3C9DF103C81A7;
-	Tue,  6 Jan 2026 18:43:53 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E9ABC60739;
+	Tue,  6 Jan 2026 17:44:01 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 20B52103C833E;
+	Tue,  6 Jan 2026 18:43:56 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767721436; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1767721440; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=IASgUeePFpTVseIVPQ4U1gfCCgatBKZcsjSp38uopis=;
-	b=ebaq3qZ8ME64Sf66g8BGps0yIZMuHXj/HrC6uZTxx9+3r26ot9nOiCfWiUaCdiYkyLIFgC
-	Ix854VdfIz5Dw1pVJgTBAQzjsvYxyaq1MZSZgvCeoN2xeWkXi3YFqpGwxHJQ77pQoXWu7M
-	5xYs928ydYUIk8vmGxaUyzyifUEX05kJ7Eli5csx5EdzWvn9rwJ53Q349TCyyMRACTXF5z
-	wD5CEExOxPIkT4zyJRfMUi8OaoKHnWmLO2+iIxXSraXrqD5c2S2OH20/1GsTX/gov0wFyt
-	kT7xNE2daVN+ATZaUYDXUPvAAvGh9a/ReLlDti9Ijn1U2SCJ9DNJu+1wGE2aig==
+	bh=JDHGpV83FwUsUgMDu8AtpObbsVJVBRDFol87Uk0j7Tg=;
+	b=xgP7Bkyy1BI/gRGT6UjwDm/7XYFZRkP0Bs/5+HLLZFuKeGTQ5wvqfHB3ujyqc67yPGQ7jX
+	XtMSvJSh4/1dJBTtPi/ajhEL/4GGdkEhAzmpI1yMokzfIyg5+Ir12+KIhc9OA8POwpwKsi
+	4K+Cm9qtIprYxGOibcIVKJSx4ijhT6fKxHkrhulJUeYhUmnSTTZT9AVBpP163fVUdztOc8
+	A01ss45KsDeMukzOaf92+HVwQzuJiPbLDD9Kh+C3akcv5NhCaIyftQaHlhp9JO2XDXn/2y
+	YNBb0sPLQdTsTUOgBy79kM79YBIfjuqKufHUSxs+r+VYcErJw44WItM860zr3A==
 From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
-Date: Tue, 06 Jan 2026 18:42:26 +0100
-Subject: [PATCH v3 10/22] drm/tilcdc: Remove unused encoder and connector
- tracking arrays
+Date: Tue, 06 Jan 2026 18:42:27 +0100
+Subject: [PATCH v3 11/22] drm/tilcdc: Rename external_encoder and
+ external_connector to encoder and connector
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -58,7 +58,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260106-feature_tilcdc-v3-10-9bad0f742164@bootlin.com>
+Message-Id: <20260106-feature_tilcdc-v3-11-9bad0f742164@bootlin.com>
 References: <20260106-feature_tilcdc-v3-0-9bad0f742164@bootlin.com>
 In-Reply-To: <20260106-feature_tilcdc-v3-0-9bad0f742164@bootlin.com>
 To: Jyri Sarha <jyri.sarha@iki.fi>, 
@@ -86,47 +86,123 @@ Cc: Markus Schneider-Pargmann <msp@baylibre.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-The num_encoders/encoders and num_connectors/connectors arrays in
-tilcdc_drm_private are never populated or used by the driver.
+Remove the "external_" prefix from encoder and connector members in the
+tilcdc driver. These are internal driver structures and the "external"
+naming is misleading. The simpler names better reflect that these are
+the primary encoder and connector managed by this driver.
+
+Also rename tilcdc_attach_external_device() to tilcdc_encoder_create()
+for consistency and to better describe the function's purpose.
 
 Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
 ---
- drivers/gpu/drm/tilcdc/tilcdc_drv.c | 3 +--
- drivers/gpu/drm/tilcdc/tilcdc_drv.h | 6 ------
- 2 files changed, 1 insertion(+), 8 deletions(-)
+ drivers/gpu/drm/tilcdc/tilcdc_drv.c      |  4 ++--
+ drivers/gpu/drm/tilcdc/tilcdc_drv.h      |  4 ++--
+ drivers/gpu/drm/tilcdc/tilcdc_external.c | 21 +++++++++------------
+ drivers/gpu/drm/tilcdc/tilcdc_external.h |  2 +-
+ 4 files changed, 14 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.c b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-index d2aae731b72c6..a753cc47a59d7 100644
+index a753cc47a59d7..bf6cd763ecd0f 100644
 --- a/drivers/gpu/drm/tilcdc/tilcdc_drv.c
 +++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-@@ -348,8 +348,7 @@ static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
+@@ -344,11 +344,11 @@ static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
+ 	}
+ #endif
+ 
+-	ret = tilcdc_attach_external_device(ddev);
++	ret = tilcdc_encoder_create(ddev);
  	if (ret)
  		goto unregister_cpufreq_notif;
  
--	if (!priv->external_connector &&
--	    ((priv->num_encoders == 0) || (priv->num_connectors == 0))) {
-+	if (!priv->external_connector) {
+-	if (!priv->external_connector) {
++	if (!priv->connector) {
  		dev_err(dev, "no encoders/connectors found\n");
  		ret = -EPROBE_DEFER;
  		goto unregister_cpufreq_notif;
 diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.h b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-index 181b9d7a515b6..717529a331009 100644
+index 717529a331009..dafb00908d1d4 100644
 --- a/drivers/gpu/drm/tilcdc/tilcdc_drv.h
 +++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-@@ -75,12 +75,6 @@ struct tilcdc_drm_private {
+@@ -75,8 +75,8 @@ struct tilcdc_drm_private {
  
  	struct drm_crtc *crtc;
  
--	unsigned int num_encoders;
--	struct drm_encoder *encoders[8];
--
--	unsigned int num_connectors;
--	struct drm_connector *connectors[8];
--
- 	struct drm_encoder *external_encoder;
- 	struct drm_connector *external_connector;
+-	struct drm_encoder *external_encoder;
+-	struct drm_connector *external_connector;
++	struct drm_encoder *encoder;
++	struct drm_connector *connector;
  
+ 	bool irq_enabled;
+ };
+diff --git a/drivers/gpu/drm/tilcdc/tilcdc_external.c b/drivers/gpu/drm/tilcdc/tilcdc_external.c
+index 81c90c2754c6c..11ac9673ba98a 100644
+--- a/drivers/gpu/drm/tilcdc/tilcdc_external.c
++++ b/drivers/gpu/drm/tilcdc/tilcdc_external.c
+@@ -37,21 +37,20 @@ int tilcdc_attach_bridge(struct drm_device *ddev, struct drm_bridge *bridge)
+ 	struct tilcdc_drm_private *priv = ddev->dev_private;
+ 	int ret;
+ 
+-	priv->external_encoder->possible_crtcs = BIT(0);
++	priv->encoder->possible_crtcs = BIT(0);
+ 
+-	ret = drm_bridge_attach(priv->external_encoder, bridge, NULL, 0);
++	ret = drm_bridge_attach(priv->encoder, bridge, NULL, 0);
+ 	if (ret)
+ 		return ret;
+ 
+-	priv->external_connector =
+-		tilcdc_encoder_find_connector(ddev, priv->external_encoder);
+-	if (!priv->external_connector)
++	priv->connector = tilcdc_encoder_find_connector(ddev, priv->encoder);
++	if (!priv->connector)
+ 		return -ENODEV;
+ 
+ 	return 0;
+ }
+ 
+-int tilcdc_attach_external_device(struct drm_device *ddev)
++int tilcdc_encoder_create(struct drm_device *ddev)
+ {
+ 	struct tilcdc_drm_private *priv = ddev->dev_private;
+ 	struct drm_bridge *bridge;
+@@ -65,13 +64,11 @@ int tilcdc_attach_external_device(struct drm_device *ddev)
+ 	else if (ret)
+ 		return ret;
+ 
+-	priv->external_encoder = devm_kzalloc(ddev->dev,
+-					      sizeof(*priv->external_encoder),
+-					      GFP_KERNEL);
+-	if (!priv->external_encoder)
++	priv->encoder = devm_kzalloc(ddev->dev, sizeof(*priv->encoder), GFP_KERNEL);
++	if (!priv->encoder)
+ 		return -ENOMEM;
+ 
+-	ret = drm_simple_encoder_init(ddev, priv->external_encoder,
++	ret = drm_simple_encoder_init(ddev, priv->encoder,
+ 				      DRM_MODE_ENCODER_NONE);
+ 	if (ret) {
+ 		dev_err(ddev->dev, "drm_encoder_init() failed %d\n", ret);
+@@ -94,6 +91,6 @@ int tilcdc_attach_external_device(struct drm_device *ddev)
+ 	return 0;
+ 
+ err_encoder_cleanup:
+-	drm_encoder_cleanup(priv->external_encoder);
++	drm_encoder_cleanup(priv->encoder);
+ 	return ret;
+ }
+diff --git a/drivers/gpu/drm/tilcdc/tilcdc_external.h b/drivers/gpu/drm/tilcdc/tilcdc_external.h
+index 285a132f3035d..c8f87f59024e6 100644
+--- a/drivers/gpu/drm/tilcdc/tilcdc_external.h
++++ b/drivers/gpu/drm/tilcdc/tilcdc_external.h
+@@ -7,5 +7,5 @@
+ #ifndef __TILCDC_EXTERNAL_H__
+ #define __TILCDC_EXTERNAL_H__
+ 
+-int tilcdc_attach_external_device(struct drm_device *ddev);
++int tilcdc_encoder_create(struct drm_device *ddev);
+ #endif /* __TILCDC_SLAVE_H__ */
 
 -- 
 2.43.0
