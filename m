@@ -1,55 +1,54 @@
-Return-Path: <linux-omap+bounces-5348-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5351-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FCCDCFA30C
-	for <lists+linux-omap@lfdr.de>; Tue, 06 Jan 2026 19:33:40 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD367CFA318
+	for <lists+linux-omap@lfdr.de>; Tue, 06 Jan 2026 19:34:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 51120302A0CB
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Jan 2026 18:33:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 462593010507
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Jan 2026 18:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E175346AC4;
-	Tue,  6 Jan 2026 17:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 507C3347BC1;
+	Tue,  6 Jan 2026 17:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="vYnqF2Ek"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="eiEVOvpd"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01404303C88;
-	Tue,  6 Jan 2026 17:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A1D347BBD;
+	Tue,  6 Jan 2026 17:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721418; cv=none; b=CBvHVU5+kE8N4yEGxNY7T4grehD76Iuof+E3AwwbU8RLfe+kYuyOVs9ybDZoNfes5d2w6rK+2qImZdXiZI7JxnaJrm7SlVdpkf+I/PjTeCZt//dx2tYONt3dCU+LPQCwMXu95ZMD05HI5R4o2GIr1klWvF8xu6gVoNHO/gJPvAY=
+	t=1767721430; cv=none; b=MqR76EnCheGZNRM05hLsThUBqp7suj9fFKkRFgHiLxOBAVsquZdKtiZFvZOaPhwtu+2gmRliji28yR2IRKNOlxmeEigdG74ITx+9jK1X1Hczp3BxJ0/ge9Q11c8rUT4twflO4ky2ViK/sDV29eX8XXaoCg7YsdvyW+lAzpORKuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721418; c=relaxed/simple;
-	bh=s+vrSvExLgi0HodyB9S6Ud/ns0msW6UaqEo0G5XLfvw=;
+	s=arc-20240116; t=1767721430; c=relaxed/simple;
+	bh=KtrbrcoNJiTfGeLZsT86u06ZK9VaFzLBi6pcJir9/x8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FlSmGxsMGd1CfG0KE5JO2PgRn7jVc/5EnMBy1TBGWu8n2MSRT2xjcFOr6kcZNTKYvnnIBE2rtgtnfLMJbqhgERfbCigSpDARGugyE8oM2V/4SpdzJ3mRCLvwOLJ7xPP68IIWEg/LhtGqypVVYIv9X7EwSNVKyB7LvmnnhsqhDp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=vYnqF2Ek; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:To:Cc; b=C21WzJgb4YbahHPjcqDsuEd8NrHutMuE98y2u3uMh9/DDbbxalkIa1VEW2jm/cb5vWG52/o/w7/KVBE6VTAXuGFq7xbASnjXyIp/nMXSAxSZMSYzHSHxZ6X7oaYT+oOt1JRa32mrcBQehkeHh2Sc66YqxssNvgv99vA8NQSr/AE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=eiEVOvpd; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id A82A61A26A6;
-	Tue,  6 Jan 2026 17:43:34 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id BA69A1A26A6;
+	Tue,  6 Jan 2026 17:43:46 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7A60460739;
-	Tue,  6 Jan 2026 17:43:34 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7915C103C81A7;
-	Tue,  6 Jan 2026 18:43:29 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8DCAA60739;
+	Tue,  6 Jan 2026 17:43:46 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D95BE103C81A0;
+	Tue,  6 Jan 2026 18:43:40 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767721412; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1767721424; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=QDAXWdUJmd0cA6jKsGtZfG1uf3CKjn7ANSkkLa3ofEA=;
-	b=vYnqF2EkgkmmXCsKrRYap1MVBVqcoyb9kXkDFVtJHHTuNqG35YjHVgnWO9pFeLzbaydFWY
-	+3svXJrg4sogpTbDg2+8rI6y6Glck/fbS5ItS/s6dXaJ53LC9ly9nXOAS5b9+OmhQq+RPe
-	xprF3WlYTVNn6eoi9TDQGnT+oMgVS1FAibxOkwhHsuR0pBY3e8KJa5C1kVyiORr3zMdIA5
-	KiVaXMQmIvG+5HqDSSTcFurx0EABTDeYWUcafQdSVl+ysMcGZAW4GBKFeb9DuHkSjAJcOL
-	GkB7TEUrK1mTQQVODMGcbtoDFzA1VQyypVsg2bnVfM3mNEKl1Ynv5ZvKuBFIRQ==
+	bh=76lI+Kw/EnQnZBp12vCtTjE/XaOzQk4fLYsLcpPHt8g=;
+	b=eiEVOvpdPaKYfOKYmcNZfnJ9Yyv2w6wcqdUVdRQF8PFiht9YIcsuxqXt0JXKw4OaebSRTx
+	ooSD9JF2RReQ6NT3zhRdWlyW37LX7Stn/tjC8+T1qmMYUNfcarUOO6FsGtwpB4lM5nVUC5
+	kpbXL4FFA2K9kRvzw9V3bXqd0VKJ0B3hz/5OpaN9SpEEDQqu1uI9+J51M7BB0+eD1NFKRC
+	9U9FcEigN44wvr5Hf0mQPmd2kxRPUqiLMO3/H7p00lYLnP874kSkI1V7pguCcp6Qs2O+US
+	stHwkjki91IMTKwPcIqMo0twhdYfFl+z6MkVUSvgp9z9ZqNfPrq6FmhbkEzCiw==
 From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
-Date: Tue, 06 Jan 2026 18:42:20 +0100
-Subject: [PATCH v3 04/22] drm/tilcdc: Add support for DRM bus flags and
- simplify panel config
+Date: Tue, 06 Jan 2026 18:42:23 +0100
+Subject: [PATCH v3 07/22] drm/tilcdc: Remove component framework support
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -58,7 +57,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260106-feature_tilcdc-v3-4-9bad0f742164@bootlin.com>
+Message-Id: <20260106-feature_tilcdc-v3-7-9bad0f742164@bootlin.com>
 References: <20260106-feature_tilcdc-v3-0-9bad0f742164@bootlin.com>
 In-Reply-To: <20260106-feature_tilcdc-v3-0-9bad0f742164@bootlin.com>
 To: Jyri Sarha <jyri.sarha@iki.fi>, 
@@ -86,205 +85,325 @@ Cc: Markus Schneider-Pargmann <msp@baylibre.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-Migrate CRTC mode configuration to use standard DRM bus flags in
-preparation for removing the tilcdc_panel driver and its custom
-tilcdc_panel_info structure.
+The tilcdc driver previously used the component framework to bind
+external encoder subdrivers (specifically the TDA998x HDMI encoder).
+With the removal of these subdrivers in previous commits, the component
+framework is no longer needed.
 
-Add support for DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE and
-DRM_BUS_FLAG_SYNC_DRIVE_NEGEDGE flags to control pixel clock and sync
-signal edge polarity, while maintaining backward compatibility with the
-existing tilcdc panel info structure.
+This commit removes all component framework infrastructure including:
+- Component master operations and bind/unbind callbacks
+- The is_componentized flag and conditional code paths
+- tilcdc_get_external_components() and tilcdc_add_component_encoder()
+- TDA998x-specific panel configuration
 
-Simplify several hardware parameters by setting them to fixed defaults
-based on common usage across existing device trees:
-- DMA burst size: 16 (previously configurable via switch statement)
-- AC bias frequency: 255 (previously panel-specific)
-- FIFO DMA request delay: 128 (previously panel-specific)
+The driver now uses a simplified initialization path that directly
+attaches external devices via the DRM bridge API, eliminating the
+complexity of dual code paths for componentized vs non-componentized
+configurations.
 
-These parameters show no variation in real-world usage, so hardcoding
-them simplifies the driver without losing functionality.
-
-Preserve FIFO threshold configurability by detecting the SoC type, as
-this parameter varies between AM33xx (8) and DA850 (16) platforms.
+This cleanup removes approximately 140 lines of code and makes the
+driver initialization flow more straightforward.
 
 Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
 ---
-
-Change in v2:
-- Use SoC type instead of devicetree parameter to set FIFO threshold
-  value.
----
- drivers/gpu/drm/tilcdc/tilcdc_crtc.c | 47 +++++++++++++-----------------------
- drivers/gpu/drm/tilcdc/tilcdc_drv.c  | 29 ++++++++++++++++------
- drivers/gpu/drm/tilcdc/tilcdc_drv.h  |  2 ++
- 3 files changed, 41 insertions(+), 37 deletions(-)
+ drivers/gpu/drm/tilcdc/tilcdc_crtc.c     | 10 ----
+ drivers/gpu/drm/tilcdc/tilcdc_drv.c      | 80 ++++----------------------------
+ drivers/gpu/drm/tilcdc/tilcdc_drv.h      |  1 -
+ drivers/gpu/drm/tilcdc/tilcdc_external.c | 65 --------------------------
+ drivers/gpu/drm/tilcdc/tilcdc_external.h |  3 --
+ 5 files changed, 9 insertions(+), 150 deletions(-)
 
 diff --git a/drivers/gpu/drm/tilcdc/tilcdc_crtc.c b/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
-index b06b1453db2dd..2309a9a0c925d 100644
+index 2309a9a0c925d..252e5adaeb6e2 100644
 --- a/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
 +++ b/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
-@@ -285,27 +285,15 @@ static void tilcdc_crtc_set_mode(struct drm_crtc *crtc)
+@@ -1021,16 +1021,6 @@ int tilcdc_crtc_create(struct drm_device *dev)
  
- 	/* Configure the Burst Size and fifo threshold of DMA: */
- 	reg = tilcdc_read(dev, LCDC_DMA_CTRL_REG) & ~0x00000770;
--	switch (info->dma_burst_sz) {
--	case 1:
--		reg |= LCDC_DMA_BURST_SIZE(LCDC_DMA_BURST_1);
--		break;
--	case 2:
--		reg |= LCDC_DMA_BURST_SIZE(LCDC_DMA_BURST_2);
--		break;
--	case 4:
--		reg |= LCDC_DMA_BURST_SIZE(LCDC_DMA_BURST_4);
--		break;
--	case 8:
--		reg |= LCDC_DMA_BURST_SIZE(LCDC_DMA_BURST_8);
--		break;
--	case 16:
--		reg |= LCDC_DMA_BURST_SIZE(LCDC_DMA_BURST_16);
--		break;
--	default:
--		dev_err(dev->dev, "invalid burst size\n");
--		return;
-+	/* Use 16 bit DMA burst size by default */
-+	reg |= LCDC_DMA_BURST_SIZE(LCDC_DMA_BURST_16);
-+	if (priv->fifo_th) {
-+		int fifo_th_val = ilog2(priv->fifo_th) - 3;
-+
-+		reg |= (fifo_th_val << 8);
-+	} else {
-+		reg |= (info->fifo_th << 8);
- 	}
--	reg |= (info->fifo_th << 8);
- 	tilcdc_write(dev, LCDC_DMA_CTRL_REG, reg);
+ 	drm_crtc_helper_add(crtc, &tilcdc_crtc_helper_funcs);
  
- 	/* Configure timings: */
-@@ -321,8 +309,8 @@ static void tilcdc_crtc_set_mode(struct drm_crtc *crtc)
- 
- 	/* Set AC Bias Period and Number of Transitions per Interrupt: */
- 	reg = tilcdc_read(dev, LCDC_RASTER_TIMING_2_REG) & ~0x000fff00;
--	reg |= LCDC_AC_BIAS_FREQUENCY(info->ac_bias) |
--		LCDC_AC_BIAS_TRANSITIONS_PER_INT(info->ac_bias_intrpt);
-+	/* Use 255 AC Bias Pin Frequency by default */
-+	reg |= LCDC_AC_BIAS_FREQUENCY(255);
- 
- 	/*
- 	 * subtract one from hfp, hbp, hsw because the hardware uses
-@@ -392,20 +380,19 @@ static void tilcdc_crtc_set_mode(struct drm_crtc *crtc)
- 			return;
- 		}
- 	}
--	reg |= info->fdd << 12;
-+	/* Use 128 FIFO DMA Request Delay by default */
-+	reg |= 128 << 12;
- 	tilcdc_write(dev, LCDC_RASTER_CTRL_REG, reg);
- 
--	if (info->invert_pxl_clk)
-+	if (info->invert_pxl_clk ||
-+	    mode->flags == DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE)
- 		tilcdc_set(dev, LCDC_RASTER_TIMING_2_REG, LCDC_INVERT_PIXEL_CLOCK);
- 	else
- 		tilcdc_clear(dev, LCDC_RASTER_TIMING_2_REG, LCDC_INVERT_PIXEL_CLOCK);
- 
--	if (info->sync_ctrl)
--		tilcdc_set(dev, LCDC_RASTER_TIMING_2_REG, LCDC_SYNC_CTRL);
--	else
--		tilcdc_clear(dev, LCDC_RASTER_TIMING_2_REG, LCDC_SYNC_CTRL);
+-	if (priv->is_componentized) {
+-		crtc->port = of_graph_get_port_by_id(dev->dev->of_node, 0);
+-		if (!crtc->port) { /* This should never happen */
+-			dev_err(dev->dev, "Port node not found in %pOF\n",
+-				dev->dev->of_node);
+-			ret = -EINVAL;
+-			goto fail;
+-		}
+-	}
 -
--	if (info->sync_edge)
-+	tilcdc_set(dev, LCDC_RASTER_TIMING_2_REG, LCDC_SYNC_CTRL);
-+	if (info->sync_edge ||
-+	    mode->flags == DRM_BUS_FLAG_SYNC_DRIVE_NEGEDGE)
- 		tilcdc_set(dev, LCDC_RASTER_TIMING_2_REG, LCDC_SYNC_EDGE);
- 	else
- 		tilcdc_clear(dev, LCDC_RASTER_TIMING_2_REG, LCDC_SYNC_EDGE);
+ 	priv->crtc = crtc;
+ 	return 0;
+ 
 diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.c b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-index 3dcbec312bacb..60230fa9cec95 100644
+index 28f09b9c1879b..9b3a0435a8d2d 100644
 --- a/drivers/gpu/drm/tilcdc/tilcdc_drv.c
 +++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-@@ -31,6 +31,11 @@
- #include "tilcdc_panel.h"
- #include "tilcdc_regs.h"
+@@ -6,7 +6,6 @@
  
-+enum {
-+	AM33XX_TILCDC,
-+	DA850_TILCDC,
-+};
-+
- static LIST_HEAD(module_list);
+ /* LCDC DRM driver, based on da8xx-fb */
  
- static const u32 tilcdc_rev1_formats[] = { DRM_FORMAT_RGB565 };
-@@ -192,11 +197,19 @@ static void tilcdc_fini(struct drm_device *dev)
- 	drm_dev_put(dev);
- }
- 
-+static const struct of_device_id tilcdc_of_match[] = {
-+		{ .compatible = "ti,am33xx-tilcdc", .data = (void *)AM33XX_TILCDC},
-+		{ .compatible = "ti,da850-tilcdc", .data = (void *)DA850_TILCDC},
-+		{ },
-+};
-+MODULE_DEVICE_TABLE(of, tilcdc_of_match);
-+
- static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
- {
- 	struct drm_device *ddev;
- 	struct platform_device *pdev = to_platform_device(dev);
- 	struct device_node *node = dev->of_node;
-+	const struct of_device_id *of_id;
- 	struct tilcdc_drm_private *priv;
- 	u32 bpp = 0;
- 	int ret;
-@@ -209,6 +222,10 @@ static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
- 	if (IS_ERR(ddev))
- 		return PTR_ERR(ddev);
- 
-+	of_id = of_match_node(tilcdc_of_match, node);
-+	if (!of_id)
-+		return -ENODEV;
-+
- 	ddev->dev_private = priv;
+-#include <linux/component.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/pinctrl/consumer.h>
+@@ -229,9 +228,6 @@ static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
  	platform_set_drvdata(pdev, ddev);
  	drm_mode_config_init(ddev);
-@@ -309,6 +326,11 @@ static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
  
- 	DBG("Maximum Pixel Clock Value %dKHz", priv->max_pixelclock);
+-	priv->is_componentized =
+-		tilcdc_get_external_components(dev, NULL) > 0;
+-
+ 	priv->wq = alloc_ordered_workqueue("tilcdc", 0);
+ 	if (!priv->wq) {
+ 		ret = -ENOMEM;
+@@ -348,42 +344,32 @@ static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
+ 	}
+ #endif
  
-+	if ((unsigned int)of_id->data == DA850_TILCDC)
-+		priv->fifo_th = 16;
-+	else
-+		priv->fifo_th = 8;
-+
- 	ret = tilcdc_crtc_create(ddev);
+-	if (priv->is_componentized) {
+-		ret = component_bind_all(dev, ddev);
+-		if (ret < 0)
+-			goto unregister_cpufreq_notif;
+-
+-		ret = tilcdc_add_component_encoder(ddev);
+-		if (ret < 0)
+-			goto unbind_component;
+-	} else {
+-		ret = tilcdc_attach_external_device(ddev);
+-		if (ret)
+-			goto unregister_cpufreq_notif;
+-	}
++	ret = tilcdc_attach_external_device(ddev);
++	if (ret)
++		goto unregister_cpufreq_notif;
+ 
+ 	if (!priv->external_connector &&
+ 	    ((priv->num_encoders == 0) || (priv->num_connectors == 0))) {
+ 		dev_err(dev, "no encoders/connectors found\n");
+ 		ret = -EPROBE_DEFER;
+-		goto unbind_component;
++		goto unregister_cpufreq_notif;
+ 	}
+ 
+ 	ret = drm_vblank_init(ddev, 1);
  	if (ret < 0) {
- 		dev_err(dev, "failed to create crtc\n");
-@@ -597,13 +619,6 @@ static void tilcdc_pdev_shutdown(struct platform_device *pdev)
- 	drm_atomic_helper_shutdown(platform_get_drvdata(pdev));
+ 		dev_err(dev, "failed to initialize vblank\n");
+-		goto unbind_component;
++		goto unregister_cpufreq_notif;
+ 	}
+ 
+ 	ret = platform_get_irq(pdev, 0);
+ 	if (ret < 0)
+-		goto unbind_component;
++		goto unregister_cpufreq_notif;
+ 	priv->irq = ret;
+ 
+ 	ret = tilcdc_irq_install(ddev, priv->irq);
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to install IRQ handler\n");
+-		goto unbind_component;
++		goto unregister_cpufreq_notif;
+ 	}
+ 
+ 	drm_mode_config_reset(ddev);
+@@ -401,9 +387,6 @@ static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
+ stop_poll:
+ 	drm_kms_helper_poll_fini(ddev);
+ 	tilcdc_irq_uninstall(ddev);
+-unbind_component:
+-	if (priv->is_componentized)
+-		component_unbind_all(dev, ddev);
+ unregister_cpufreq_notif:
+ #ifdef CONFIG_CPU_FREQ
+ 	cpufreq_unregister_notifier(&priv->freq_transition,
+@@ -552,65 +535,20 @@ static int tilcdc_pm_resume(struct device *dev)
+ static DEFINE_SIMPLE_DEV_PM_OPS(tilcdc_pm_ops,
+ 				tilcdc_pm_suspend, tilcdc_pm_resume);
+ 
+-/*
+- * Platform driver:
+- */
+-static int tilcdc_bind(struct device *dev)
+-{
+-	return tilcdc_init(&tilcdc_driver, dev);
+-}
+-
+-static void tilcdc_unbind(struct device *dev)
+-{
+-	struct drm_device *ddev = dev_get_drvdata(dev);
+-
+-	/* Check if a subcomponent has already triggered the unloading. */
+-	if (!ddev->dev_private)
+-		return;
+-
+-	tilcdc_fini(ddev);
+-	dev_set_drvdata(dev, NULL);
+-}
+-
+-static const struct component_master_ops tilcdc_comp_ops = {
+-	.bind = tilcdc_bind,
+-	.unbind = tilcdc_unbind,
+-};
+-
+ static int tilcdc_pdev_probe(struct platform_device *pdev)
+ {
+-	struct component_match *match = NULL;
+-	int ret;
+-
+ 	/* bail out early if no DT data: */
+ 	if (!pdev->dev.of_node) {
+ 		dev_err(&pdev->dev, "device-tree data is missing\n");
+ 		return -ENXIO;
+ 	}
+ 
+-	ret = tilcdc_get_external_components(&pdev->dev, &match);
+-	if (ret < 0)
+-		return ret;
+-	else if (ret == 0)
+-		return tilcdc_init(&tilcdc_driver, &pdev->dev);
+-	else
+-		return component_master_add_with_match(&pdev->dev,
+-						       &tilcdc_comp_ops,
+-						       match);
++	return tilcdc_init(&tilcdc_driver, &pdev->dev);
  }
  
--static const struct of_device_id tilcdc_of_match[] = {
--		{ .compatible = "ti,am33xx-tilcdc", },
--		{ .compatible = "ti,da850-tilcdc", },
--		{ },
--};
--MODULE_DEVICE_TABLE(of, tilcdc_of_match);
+ static void tilcdc_pdev_remove(struct platform_device *pdev)
+ {
+-	int ret;
 -
- static struct platform_driver tilcdc_platform_driver = {
- 	.probe      = tilcdc_pdev_probe,
- 	.remove     = tilcdc_pdev_remove,
+-	ret = tilcdc_get_external_components(&pdev->dev, NULL);
+-	if (ret < 0)
+-		dev_err(&pdev->dev, "tilcdc_get_external_components() failed (%pe)\n",
+-			ERR_PTR(ret));
+-	else if (ret == 0)
+-		tilcdc_fini(platform_get_drvdata(pdev));
+-	else
+-		component_master_del(&pdev->dev, &tilcdc_comp_ops);
++	tilcdc_fini(platform_get_drvdata(pdev));
+ }
+ 
+ static void tilcdc_pdev_shutdown(struct platform_device *pdev)
 diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.h b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-index 3aba3a1155ba0..79078b4ae7393 100644
+index 79078b4ae7393..c23b593dc61f6 100644
 --- a/drivers/gpu/drm/tilcdc/tilcdc_drv.h
 +++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-@@ -61,6 +61,8 @@ struct tilcdc_drm_private {
- 	 */
- 	uint32_t max_width;
+@@ -84,7 +84,6 @@ struct tilcdc_drm_private {
+ 	struct drm_encoder *external_encoder;
+ 	struct drm_connector *external_connector;
  
-+	u32 fifo_th;
-+
- 	/* Supported pixel formats */
- 	const uint32_t *pixelformats;
- 	uint32_t num_pixelformats;
+-	bool is_componentized;
+ 	bool irq_enabled;
+ };
+ 
+diff --git a/drivers/gpu/drm/tilcdc/tilcdc_external.c b/drivers/gpu/drm/tilcdc/tilcdc_external.c
+index da755a411d9ff..2970c41d9c3eb 100644
+--- a/drivers/gpu/drm/tilcdc/tilcdc_external.c
++++ b/drivers/gpu/drm/tilcdc/tilcdc_external.c
+@@ -4,7 +4,6 @@
+  * Author: Jyri Sarha <jsarha@ti.com>
+  */
+ 
+-#include <linux/component.h>
+ #include <linux/of_graph.h>
+ 
+ #include <drm/drm_atomic_helper.h>
+@@ -15,19 +14,6 @@
+ #include "tilcdc_drv.h"
+ #include "tilcdc_external.h"
+ 
+-static const struct tilcdc_panel_info panel_info_tda998x = {
+-		.ac_bias                = 255,
+-		.ac_bias_intrpt         = 0,
+-		.dma_burst_sz           = 16,
+-		.bpp                    = 16,
+-		.fdd                    = 0x80,
+-		.tft_alt_mode           = 0,
+-		.invert_pxl_clk		= 1,
+-		.sync_edge              = 1,
+-		.sync_ctrl              = 1,
+-		.raster_order           = 0,
+-};
+-
+ static const struct tilcdc_panel_info panel_info_default = {
+ 		.ac_bias                = 255,
+ 		.ac_bias_intrpt         = 0,
+@@ -57,34 +43,6 @@ struct drm_connector *tilcdc_encoder_find_connector(struct drm_device *ddev,
+ 	return NULL;
+ }
+ 
+-int tilcdc_add_component_encoder(struct drm_device *ddev)
+-{
+-	struct tilcdc_drm_private *priv = ddev->dev_private;
+-	struct drm_encoder *encoder = NULL, *iter;
+-
+-	list_for_each_entry(iter, &ddev->mode_config.encoder_list, head)
+-		if (iter->possible_crtcs & (1 << priv->crtc->index)) {
+-			encoder = iter;
+-			break;
+-		}
+-
+-	if (!encoder) {
+-		dev_err(ddev->dev, "%s: No suitable encoder found\n", __func__);
+-		return -ENODEV;
+-	}
+-
+-	priv->external_connector =
+-		tilcdc_encoder_find_connector(ddev, encoder);
+-
+-	if (!priv->external_connector)
+-		return -ENODEV;
+-
+-	/* Only tda998x is supported at the moment. */
+-	tilcdc_crtc_set_panel_info(priv->crtc, &panel_info_tda998x);
+-
+-	return 0;
+-}
+-
+ static
+ int tilcdc_attach_bridge(struct drm_device *ddev, struct drm_bridge *bridge)
+ {
+@@ -153,26 +111,3 @@ int tilcdc_attach_external_device(struct drm_device *ddev)
+ 	drm_encoder_cleanup(priv->external_encoder);
+ 	return ret;
+ }
+-
+-static int dev_match_of(struct device *dev, void *data)
+-{
+-	return dev->of_node == data;
+-}
+-
+-int tilcdc_get_external_components(struct device *dev,
+-				   struct component_match **match)
+-{
+-	struct device_node *node;
+-
+-	node = of_graph_get_remote_node(dev->of_node, 0, 0);
+-
+-	if (!of_device_is_compatible(node, "nxp,tda998x")) {
+-		of_node_put(node);
+-		return 0;
+-	}
+-
+-	if (match)
+-		drm_of_component_match_add(dev, match, dev_match_of, node);
+-	of_node_put(node);
+-	return 1;
+-}
+diff --git a/drivers/gpu/drm/tilcdc/tilcdc_external.h b/drivers/gpu/drm/tilcdc/tilcdc_external.h
+index fb4476694cd89..285a132f3035d 100644
+--- a/drivers/gpu/drm/tilcdc/tilcdc_external.h
++++ b/drivers/gpu/drm/tilcdc/tilcdc_external.h
+@@ -7,8 +7,5 @@
+ #ifndef __TILCDC_EXTERNAL_H__
+ #define __TILCDC_EXTERNAL_H__
+ 
+-int tilcdc_add_component_encoder(struct drm_device *dev);
+-int tilcdc_get_external_components(struct device *dev,
+-				   struct component_match **match);
+ int tilcdc_attach_external_device(struct drm_device *ddev);
+ #endif /* __TILCDC_SLAVE_H__ */
 
 -- 
 2.43.0
