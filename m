@@ -1,55 +1,55 @@
-Return-Path: <linux-omap+bounces-5357-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5363-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4956DCFAFEA
-	for <lists+linux-omap@lfdr.de>; Tue, 06 Jan 2026 21:48:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF3ACFAFF3
+	for <lists+linux-omap@lfdr.de>; Tue, 06 Jan 2026 21:49:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28BDB3082D3D
+	by sea.lore.kernel.org (Postfix) with ESMTP id D0D0C308E677
 	for <lists+linux-omap@lfdr.de>; Tue,  6 Jan 2026 20:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE6634DCEB;
-	Tue,  6 Jan 2026 17:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8646F350A33;
+	Tue,  6 Jan 2026 17:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="218m2JFA"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="b1w+3RaE"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B41734DB5F
-	for <linux-omap@vger.kernel.org>; Tue,  6 Jan 2026 17:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F7B3502B5
+	for <linux-omap@vger.kernel.org>; Tue,  6 Jan 2026 17:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721452; cv=none; b=Jr5/iOwMU8592UB7OGkoUBUFIurhkeQN407MNRK7UErYQqlA4kVvcvmeStpoi846BvHNHBRAoBASA5x21qOwH5sQDcCg7/qL+BWzsEgbUParNaNNI4RV8RvwWbWuL0dxTdTfbE/VZiYmohdj+2CICiyvHILz6pt5fZ5FWbkBE4k=
+	t=1767721475; cv=none; b=nK/TzaXEO1kD5Ll8M43X+q6GYFSGNiwo+EJOq6Nh9Qn6/cOaOckFtUHk1VXc92lhXnfbERcgtx0hRfT0Nfe6oa0uOThV5tOlKlDxAYRFIs3mw8QorDt+bY97p41qGRo22T2sr3ARt6HBPN8Cl+h6x3+AfCrjA4E8F2pIqH9NHX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721452; c=relaxed/simple;
-	bh=k4dIiayHY+3fQFoVlD/gTbiIPus9xFdi2n1KjW+WW0g=;
+	s=arc-20240116; t=1767721475; c=relaxed/simple;
+	bh=GYi9ymkqS9JbiEn/nSiVkzg8mM/jA+pVVBk9Yt/0WSM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=IaejZEIhjx1XXjBj2g6Q7qHyJx3zeQgJ26Cl/cYZ+//HUYtDUwZU8zeZtLOJh/G6TsRYVI/Gq6B51fu/1UAJlxz1b0jKQEaaocp6y7EqTZfRzQmpdzBH1TS2DZ500PL/qGAxDjMjNoap7NteJA5bwPn9nH0pLOC0D2Pa611u+RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=218m2JFA; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:To:Cc; b=C+rDLzcjJ2lzdzJJFh+Z6arhxMA9/XrR1Iolfdl9vBsAYVe4afKmjWpCX+Z5MDaUjU4t/WNJE7rvlwFK191LPHnmS/LV2M4oNgurWf3t04sVpGjSsPhWIcmcGtUROztV/Onae4HlEYVKv0m0onzHTh1v/PezsYveq4lXP2S5TMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=b1w+3RaE; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 5F0804E41FB4;
-	Tue,  6 Jan 2026 17:44:09 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id CBA2B4E41FB5;
+	Tue,  6 Jan 2026 17:44:31 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3231460739;
-	Tue,  6 Jan 2026 17:44:09 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B1AFE103C81A7;
-	Tue,  6 Jan 2026 18:44:04 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9F41F60739;
+	Tue,  6 Jan 2026 17:44:31 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5EC62103C81A0;
+	Tue,  6 Jan 2026 18:44:27 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767721447; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1767721470; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=RSAb30vPwta0L6j5mRlEyTeFIJd6lPuoibY+qgqO0Dk=;
-	b=218m2JFAFbKKWUlQUsn2Wm6w3yVK4viodOWXVZp2fFlwZ445/2JYDQ82c4nchEP1Wc7BEj
-	KOwFsCAfbuLy3cfxgnPZWsaeGn5iU6kuZuZdSZzFqmbHUazQ/Jjb0faP+8EA2XXy54s5Lc
-	aEQr0KVGF+jGmWVwWL3n61fKG5LyfTA/iOzDLdrYO6mmNQAbokLYsPopsmeHJ2UeOer3hx
-	t5NnU4ggEPcb6O8N8a/p1s+sdfIvJ+2CG3BbFah4qebfqmxw30jOhbYJgI3mhtG2VFqa7y
-	OZe6t4UTq383p1fVjwr9S80ZQlSHlfg104GcSYOlJ/da8CDiGeLs+zyhHNotuw==
+	bh=Xaxir2BF/2AAPP//cTgqSk8YQ/2vo6kmLft9QcIZP28=;
+	b=b1w+3RaEyjybZbp2BDPPTcmxtfBV8eJbn44jfo7cy/mIdZssnEBYTzEwtxVp7R8XaPm/bE
+	IX0gPef40eEZL/6KZpZXcn3YFCu2Xv1d9cRT/a92awO7vqPUpr7QVnBvKMPdqTyYIMzkKD
+	MgJqSgrtCyEnpgpHpNfU1z7ldnoNh/IskeUXxqiJM5tMwrNSEH4GaPGKzNDteH0lzLqfie
+	FLVqlZlggI21qj7O4LgxslDrXoTuYd+bR7+Iy7isSxJYyhJ82glWetI5/fy2vJnJFxk/Z3
+	iIWA5shlviTaqnf46aYRihQjTFejJNqzL10z4j7bXGii65py2LntVyPX0fgt/g==
 From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
-Date: Tue, 06 Jan 2026 18:42:29 +0100
-Subject: [PATCH v3 13/22] drm/tilcdc: Remove the useless module list
- support
+Date: Tue, 06 Jan 2026 18:42:35 +0100
+Subject: [PATCH v3 19/22] drm/bridge: tda998x: Move tda998x_create/destroy
+ into probe and remove
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -58,7 +58,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260106-feature_tilcdc-v3-13-9bad0f742164@bootlin.com>
+Message-Id: <20260106-feature_tilcdc-v3-19-9bad0f742164@bootlin.com>
 References: <20260106-feature_tilcdc-v3-0-9bad0f742164@bootlin.com>
 In-Reply-To: <20260106-feature_tilcdc-v3-0-9bad0f742164@bootlin.com>
 To: Jyri Sarha <jyri.sarha@iki.fi>, 
@@ -86,132 +86,197 @@ Cc: Markus Schneider-Pargmann <msp@baylibre.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-The tilcdc driver previously supported a sub-module system where
-external display drivers (panels, encoders) could register themselves
-through tilcdc_module_init() and be automatically initialized through
-a module list. This infrastructure became unused after the component
-framework support and panel driver was removed.
+Now that tda998x_create and tda998x_destroy are called only in the probe
+function, there is no need for separate functions.
+Move the code into the tda998x_probe and tda998x_remove functions.
+Rewrite the cleanup path using goto calls in probe and reorder it in the
+remove function.
 
 Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
----
 
+---
 Change in v3:
-- Move the removal of module_init/exit in a following patch.
+- Move free_irq() call at the right place in the probe error path.
 ---
- drivers/gpu/drm/tilcdc/tilcdc_drv.c | 29 -----------------------------
- drivers/gpu/drm/tilcdc/tilcdc_drv.h | 27 ---------------------------
- 2 files changed, 56 deletions(-)
+ drivers/gpu/drm/bridge/tda998x_drv.c | 99 +++++++++++++++++++-----------------
+ 1 file changed, 51 insertions(+), 48 deletions(-)
 
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.c b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-index 6a08f50762af9..34d0e81552912 100644
---- a/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-@@ -7,7 +7,6 @@
- /* LCDC DRM driver, based on da8xx-fb */
- 
- #include <linux/mod_devicetable.h>
--#include <linux/module.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
-@@ -34,8 +33,6 @@ enum {
- 	DA850_TILCDC,
- };
- 
--static LIST_HEAD(module_list);
--
- static const u32 tilcdc_rev1_formats[] = { DRM_FORMAT_RGB565 };
- 
- static const u32 tilcdc_straight_formats[] = { DRM_FORMAT_RGB565,
-@@ -50,20 +47,6 @@ static const u32 tilcdc_legacy_formats[] = { DRM_FORMAT_RGB565,
- 					     DRM_FORMAT_RGB888,
- 					     DRM_FORMAT_XRGB8888 };
- 
--void tilcdc_module_init(struct tilcdc_module *mod, const char *name,
--		const struct tilcdc_module_ops *funcs)
--{
--	mod->name = name;
--	mod->funcs = funcs;
--	INIT_LIST_HEAD(&mod->list);
--	list_add(&mod->list, &module_list);
--}
--
--void tilcdc_module_cleanup(struct tilcdc_module *mod)
--{
--	list_del(&mod->list);
--}
--
- static int tilcdc_atomic_check(struct drm_device *dev,
- 			       struct drm_atomic_state *state)
- {
-@@ -97,12 +80,6 @@ static const struct drm_mode_config_funcs mode_config_funcs = {
- static void modeset_init(struct drm_device *dev)
- {
- 	struct tilcdc_drm_private *priv = dev->dev_private;
--	struct tilcdc_module *mod;
--
--	list_for_each_entry(mod, &module_list, list) {
--		DBG("loading module: %s", mod->name);
--		mod->funcs->modeset_init(mod, dev);
--	}
- 
- 	dev->mode_config.min_width = 0;
- 	dev->mode_config.min_height = 0;
-@@ -474,15 +451,9 @@ static struct drm_info_list tilcdc_debugfs_list[] = {
- 
- static void tilcdc_debugfs_init(struct drm_minor *minor)
- {
--	struct tilcdc_module *mod;
--
- 	drm_debugfs_create_files(tilcdc_debugfs_list,
- 				 ARRAY_SIZE(tilcdc_debugfs_list),
- 				 minor->debugfs_root, minor);
--
--	list_for_each_entry(mod, &module_list, list)
--		if (mod->funcs->debugfs_init)
--			mod->funcs->debugfs_init(mod, minor);
+diff --git a/drivers/gpu/drm/bridge/tda998x_drv.c b/drivers/gpu/drm/bridge/tda998x_drv.c
+index 865285ba2bd8c..e06d8d4c4b875 100644
+--- a/drivers/gpu/drm/bridge/tda998x_drv.c
++++ b/drivers/gpu/drm/bridge/tda998x_drv.c
+@@ -1748,38 +1748,20 @@ static int tda998x_get_audio_ports(struct tda998x_priv *priv,
+ 	return 0;
  }
- #endif
  
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.h b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-index dafb00908d1d4..60e85e29b1063 100644
---- a/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-@@ -81,33 +81,6 @@ struct tilcdc_drm_private {
- 	bool irq_enabled;
- };
+-static void tda998x_destroy(struct device *dev)
+-{
+-	struct tda998x_priv *priv = dev_get_drvdata(dev);
+-
+-	drm_bridge_remove(&priv->bridge);
+-
+-	/* disable all IRQs and free the IRQ handler */
+-	cec_write(priv, REG_CEC_RXSHPDINTENA, 0);
+-	reg_clear(priv, REG_INT_FLAGS_2, INT_FLAGS_2_EDID_BLK_RD);
+-
+-	if (priv->audio_pdev)
+-		platform_device_unregister(priv->audio_pdev);
+-
+-	if (priv->hdmi->irq)
+-		free_irq(priv->hdmi->irq, priv);
+-
+-	timer_delete_sync(&priv->edid_delay_timer);
+-	cancel_work_sync(&priv->detect_work);
+-
+-	i2c_unregister_device(priv->cec);
+-
+-	cec_notifier_conn_unregister(priv->cec_notify);
+-}
+-
+-static int tda998x_create(struct device *dev)
++static int
++tda998x_probe(struct i2c_client *client)
+ {
+-	struct i2c_client *client = to_i2c_client(dev);
+ 	struct device_node *np = client->dev.of_node;
++	struct device *dev = &client->dev;
+ 	struct i2c_board_info cec_info;
+ 	struct tda998x_priv *priv;
+-	u32 video;
+ 	int rev_lo, rev_hi, ret;
++	u32 video;
++
++	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
++		dev_warn(&client->dev, "adapter does not support I2C\n");
++		return -EIO;
++	}
  
--/* Sub-module for display.  Since we don't know at compile time what panels
-- * or display adapter(s) might be present (for ex, off chip dvi/tfp410,
-- * hdmi encoder, various lcd panels), the connector/encoder(s) are split into
-- * separate drivers.  If they are probed and found to be present, they
-- * register themselves with tilcdc_register_module().
-- */
--struct tilcdc_module;
--
--struct tilcdc_module_ops {
--	/* create appropriate encoders/connectors: */
--	int (*modeset_init)(struct tilcdc_module *mod, struct drm_device *dev);
--#ifdef CONFIG_DEBUG_FS
--	/* create debugfs nodes (can be NULL): */
--	int (*debugfs_init)(struct tilcdc_module *mod, struct drm_minor *minor);
--#endif
--};
--
--struct tilcdc_module {
--	const char *name;
--	struct list_head list;
--	const struct tilcdc_module_ops *funcs;
--};
--
--void tilcdc_module_init(struct tilcdc_module *mod, const char *name,
--		const struct tilcdc_module_ops *funcs);
--void tilcdc_module_cleanup(struct tilcdc_module *mod);
--
- #define DBG(fmt, ...) DRM_DEBUG(fmt"\n", ##__VA_ARGS__)
+ 	priv = devm_drm_bridge_alloc(dev, struct tda998x_priv, bridge, &tda998x_bridge_funcs);
+ 	if (IS_ERR(priv))
+@@ -1814,13 +1796,15 @@ static int tda998x_create(struct device *dev)
+ 	rev_lo = reg_read(priv, REG_VERSION_LSB);
+ 	if (rev_lo < 0) {
+ 		dev_err(dev, "failed to read version: %d\n", rev_lo);
+-		return rev_lo;
++		ret = rev_lo;
++		goto cancel_work;
+ 	}
  
- int tilcdc_crtc_create(struct drm_device *dev);
+ 	rev_hi = reg_read(priv, REG_VERSION_MSB);
+ 	if (rev_hi < 0) {
+ 		dev_err(dev, "failed to read version: %d\n", rev_hi);
+-		return rev_hi;
++		ret = rev_hi;
++		goto cancel_work;
+ 	}
+ 
+ 	priv->rev = rev_lo | rev_hi << 8;
+@@ -1843,7 +1827,8 @@ static int tda998x_create(struct device *dev)
+ 		break;
+ 	default:
+ 		dev_err(dev, "found unsupported device: %04x\n", priv->rev);
+-		return -ENXIO;
++		ret = -ENXIO;
++		goto cancel_work;
+ 	}
+ 
+ 	/* after reset, enable DDC: */
+@@ -1887,7 +1872,7 @@ static int tda998x_create(struct device *dev)
+ 		if (ret) {
+ 			dev_err(dev, "failed to request IRQ#%u: %d\n",
+ 				client->irq, ret);
+-			goto err_irq;
++			goto cancel_work;
+ 		}
+ 
+ 		/* enable HPD irq */
+@@ -1897,7 +1882,7 @@ static int tda998x_create(struct device *dev)
+ 	priv->cec_notify = cec_notifier_conn_register(dev, NULL, NULL);
+ 	if (!priv->cec_notify) {
+ 		ret = -ENOMEM;
+-		goto fail;
++		goto free_irq;
+ 	}
+ 
+ 	priv->cec_glue.parent = dev;
+@@ -1924,7 +1909,7 @@ static int tda998x_create(struct device *dev)
+ 	priv->cec = i2c_new_client_device(client->adapter, &cec_info);
+ 	if (IS_ERR(priv->cec)) {
+ 		ret = PTR_ERR(priv->cec);
+-		goto fail;
++		goto notifier_conn_unregister;
+ 	}
+ 
+ 	/* enable EDID read irq: */
+@@ -1941,7 +1926,7 @@ static int tda998x_create(struct device *dev)
+ 
+ 		ret = tda998x_get_audio_ports(priv, np);
+ 		if (ret)
+-			goto fail;
++			goto unregister_dev;
+ 
+ 		if (priv->audio_port_enable[AUDIO_ROUTE_I2S] ||
+ 		    priv->audio_port_enable[AUDIO_ROUTE_SPDIF])
+@@ -1956,26 +1941,44 @@ static int tda998x_create(struct device *dev)
+ 
+ 	return 0;
+ 
+-fail:
+-	tda998x_destroy(dev);
+-err_irq:
++unregister_dev:
++	i2c_unregister_device(priv->cec);
++notifier_conn_unregister:
++	cec_notifier_conn_unregister(priv->cec_notify);
++free_irq:
++	if (client->irq) {
++		cec_write(priv, REG_CEC_RXSHPDINTENA, 0);
++		reg_clear(priv, REG_INT_FLAGS_2, INT_FLAGS_2_EDID_BLK_RD);
++		free_irq(client->irq, priv);
++	}
++cancel_work:
++	timer_delete_sync(&priv->edid_delay_timer);
++	cancel_work_sync(&priv->detect_work);
+ 	return ret;
+ }
+ 
+-static int
+-tda998x_probe(struct i2c_client *client)
++static void tda998x_remove(struct i2c_client *client)
+ {
+-	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
+-		dev_warn(&client->dev, "adapter does not support I2C\n");
+-		return -EIO;
+-	}
++	struct tda998x_priv *priv = dev_get_drvdata(&client->dev);
+ 
+-	return tda998x_create(&client->dev);
+-}
++	drm_bridge_remove(&priv->bridge);
+ 
+-static void tda998x_remove(struct i2c_client *client)
+-{
+-	tda998x_destroy(&client->dev);
++	if (priv->audio_pdev)
++		platform_device_unregister(priv->audio_pdev);
++
++	i2c_unregister_device(priv->cec);
++
++	cec_notifier_conn_unregister(priv->cec_notify);
++
++	/* disable all IRQs and free the IRQ handler */
++	if (client->irq) {
++		cec_write(priv, REG_CEC_RXSHPDINTENA, 0);
++		reg_clear(priv, REG_INT_FLAGS_2, INT_FLAGS_2_EDID_BLK_RD);
++		free_irq(priv->hdmi->irq, priv);
++	}
++
++	timer_delete_sync(&priv->edid_delay_timer);
++	cancel_work_sync(&priv->detect_work);
+ }
+ 
+ #ifdef CONFIG_OF
 
 -- 
 2.43.0
