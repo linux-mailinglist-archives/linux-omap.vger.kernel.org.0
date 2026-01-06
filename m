@@ -1,54 +1,55 @@
-Return-Path: <linux-omap+bounces-5347-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5349-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AF9ECFAB15
-	for <lists+linux-omap@lfdr.de>; Tue, 06 Jan 2026 20:32:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A1E0CFAC77
+	for <lists+linux-omap@lfdr.de>; Tue, 06 Jan 2026 20:48:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1393D302058E
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Jan 2026 19:32:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 549F13194753
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Jan 2026 19:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8372D346781;
-	Tue,  6 Jan 2026 17:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB98346FB0;
+	Tue,  6 Jan 2026 17:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="obY0pm8o"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="rixvQnIz"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29986345CB0;
-	Tue,  6 Jan 2026 17:43:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B56A346E53;
+	Tue,  6 Jan 2026 17:43:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721414; cv=none; b=BFm9MHhWt9jMhWJRuKdDxf/yNOVqiL0z5PSrW0Vr+64r9Xt/ZHUXyFQHt/TuOh+BlXAHB9X4UwyEu3DpKW+17806h33PmP45Rp0BjpGM9ZTduy47c7e7IIY7jmST8YX1V4pbltF9ols7L1IcmvwKq85SEBXf/k7pmmEHIYQY7mI=
+	t=1767721422; cv=none; b=YN+0tpYZkQA94PFgH+6dCaLCHkXYbB6rMLHnr7hKKep0U+fvApPUYLECT1im+c5SqnfOwngMmjftCT0g879yhvOCUaZnePrPjkIcnP1W3aJVe9/PoaXZ8HM7q7jzyjBMg/rPsJeSkCi+sDV9r1ZtAnTxfPQ4eVOjwyNhl3Mj0T0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721414; c=relaxed/simple;
-	bh=zH6ddwMZf6e4Bua7tANEEOZOr9Vjd0AeuM3WhJ3M9R8=;
+	s=arc-20240116; t=1767721422; c=relaxed/simple;
+	bh=obFJtGGsuIxG1H9QUSyyWarbVTihbhaom3n9LbzRb4Y=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WE0SHb7ojgzbg6TI8J6UbW4smsm9AKLC0wKyRgIuCtuzmCPP7LIcUvrCTCDeUP7TJrGG9BJgkFpQ/JHA6Uy+dNB2GEwtqo7S2wIG3/vTabv/fw8/nC9imck+G/eAYBk2OdMSujW/b+3LoZDDQrGqeZsphJtYpyTuJ/Sd2C1Gx6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=obY0pm8o; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:To:Cc; b=JBKHULPo7AQzIakIK11RCMdhpAVvrx6wPMJqaXn7sIKKNhPjfgtC7B9a/nBbbRzY/eWsKKT1ITzCRXjtvpoM2kwspgN0XKlV7whjB30HJopezF9L5f3wa1l6ejXveg5+GwLsjnbZPkkk5AIpcGIvLvfjVBk0I+BxW7lUKsu2034=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=rixvQnIz; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id D68231A26A8;
-	Tue,  6 Jan 2026 17:43:30 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id C5D2F4E41FB2;
+	Tue,  6 Jan 2026 17:43:38 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A95F660739;
-	Tue,  6 Jan 2026 17:43:30 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 62358103C830C;
-	Tue,  6 Jan 2026 18:43:25 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 94C7860739;
+	Tue,  6 Jan 2026 17:43:38 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E5D37103C833E;
+	Tue,  6 Jan 2026 18:43:32 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767721408; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1767721416; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=RJmCdmjf1cJp6uWKepJHYg4mCo27O3rNk6xDNkv07d0=;
-	b=obY0pm8oG5523U438IUvNf3COd4DX5occ2li6h3MfiRPS9edcUhwXIzGTJnFASvevhIf2K
-	PHFr/cImBioWA1d+hwsm50BqxGiV93sTvHxmztUP5Qbf12qHWxLewWBPQasSmaf9Oelihi
-	0P8osqYI6VdQ43PmI4fsva2B4xjsVaNdvp9KggumP9LG6ZML0uio2gT+W+Ko/ZSUweLSZP
-	miZ+P8SA0uqJJtyLku9bKgopv3uqIAQoCxHKKQVpx/kZAkBTPobl7dRqJOVKmhoXd0iek0
-	srzwWZBty9IF1h5wLPWOtJtuR/RUik2XIUXtq2k1W8cH8O3Z/Ne/uaSQMapMzg==
+	bh=qnZz3V+eqsv88HjL9bfo8fY4ay+fDnSckWD+mpzI2zw=;
+	b=rixvQnIzwkBFC7JXjJF6SLg+y5+IsOASRDgsMYBim2IHGuM23cU3fwu+F12bMi6rRvbWEN
+	hGsgaRMbOCuNSsOMlr+CUzRUV5AOa+VvXPIh4MSHx0FpWswG7ZGwHUPaWO2DOniKNtcN2U
+	iRLsy1OTZrnHRmm6SM99q0+Sl02Cpcv9ujtwHUNhjaZ+i4XLA+3gcfQ1D7dMoKLAjUEgGv
+	Eq1gY+hDS+GfIgDlQb/4qpGeZw87in8P5wQfu90XZh8C1NAwTAtVPdcppp1efy5UC+CtbB
+	5Kg2Ukohzn3xy/6vixlb7G4suzhaldLBz3UVvAzGQr7ReFdEtJRjt4AHnjk5ow==
 From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
-Date: Tue, 06 Jan 2026 18:42:19 +0100
-Subject: [PATCH v3 03/22] drm/tilcdc: Remove simulate_vesa_sync flag
+Date: Tue, 06 Jan 2026 18:42:21 +0100
+Subject: [PATCH v3 05/22] drm/tilcdc: Convert legacy panel binding via DT
+ overlay at boot time
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -57,7 +58,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260106-feature_tilcdc-v3-3-9bad0f742164@bootlin.com>
+Message-Id: <20260106-feature_tilcdc-v3-5-9bad0f742164@bootlin.com>
 References: <20260106-feature_tilcdc-v3-0-9bad0f742164@bootlin.com>
 In-Reply-To: <20260106-feature_tilcdc-v3-0-9bad0f742164@bootlin.com>
 To: Jyri Sarha <jyri.sarha@iki.fi>, 
@@ -85,106 +86,326 @@ Cc: Markus Schneider-Pargmann <msp@baylibre.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-The tilcdc hardware does not generate VESA-compliant sync signals. It
-aligns the vertical sync (VS) on the second edge of the horizontal sync
-(HS) instead of the first edge. To compensate for this hardware
-behavior, the driver applies a timing adjustment in mode_fixup().
+To maintain backward compatibility while removing the deprecated
+tilcdc_panel driver, add a tilcdc_panel_legacy subdriver that converts
+the legacy "ti,tilcdc,panel" devicetree binding to the standard
+panel-dpi binding at early boot.
 
-Previously, this adjustment was conditional based on the simulate_vesa_sync
-flag, which was only set when using external encoders. This appears
-problematic because:
+The conversion uses an embedded device tree overlay that is applied and
+modified during subsys_initcall. The process:
 
-1. The timing adjustment seems needed for the hardware behavior regardless
-   of whether an external encoder is used
-2. The external encoder infrastructure is driver-specific and being
-   removed due to design issues
-3. Boards using tilcdc without bridges (e.g., am335x-evm, am335x-evmsk)
-   may not be getting the necessary timing adjustments
+- Apply embedded overlay to create a tilcdc-panel-dpi node with
+  port/endpoint connections to the LCDC
+- Copy all properties from the legacy panel node to the new
+  tilcdc-panel-dpi node
+- Copy display-timings from the legacy panel
+- Convert legacy panel-info properties (invert-pxl-clk, sync-edge) to
+  standard display timing properties (pixelclk-active, syncclk-active)
+- Disable the legacy panel by removing its compatible property to
+  prevent the deprecated driver from binding
 
-Remove the simulate_vesa_sync flag and apply the VESA sync timing
-adjustment unconditionally, ensuring consistent behavior across all
-configurations. While it's unclear if the previous conditional behavior
-was causing actual issues, the unconditional adjustment better reflects
-the hardware's characteristics.
+The result is a standard tilcdc-panel-dpi node with proper endpoints and
+timing properties, allowing the DRM panel infrastructure to work with
+legacy devicetrees without modification.
 
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Other legacy panel-info properties are not migrated as they consistently
+use default values across all mainline devicetrees and can be hardcoded
+in the tilcdc driver.
+
+This feature is optional via CONFIG_DRM_TILCDC_PANEL_LEGACY and should
+only be enabled for systems with legacy devicetrees containing
+"ti,tilcdc,panel" nodes.
+
+Suggested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://lore.kernel.org/all/1d9a9269-bfda-4d43-938b-2df6b82b9369@ideasonboard.com/
 Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
 ---
 
-Only few board currently use tilcdc not associated to a bridge like the
-am335x_evm or the am335x-evmsk.
----
- drivers/gpu/drm/tilcdc/tilcdc_crtc.c     | 16 ----------------
- drivers/gpu/drm/tilcdc/tilcdc_drv.h      |  2 --
- drivers/gpu/drm/tilcdc/tilcdc_external.c |  1 -
- 3 files changed, 19 deletions(-)
+Using the approach of applying an overlay and then modifying the live
+device tree is the solution I found that requires no modification of the
+OF core. Dealing entirely with changesets would bring additional
+requirements such as phandle resolution management, which is internal to
+the OF framework. I intend to avoid OF core change to support this legacy
+binding.
 
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_crtc.c b/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
-index 52c95131af5af..b06b1453db2dd 100644
---- a/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
-@@ -47,9 +47,6 @@ struct tilcdc_crtc {
+Change in v3:
+- Use __free() macro instead of manual house cleaning.
+- Enable CONFIG_DRM_TILCDC_PANEL_LEGACY config by default.
+- Improve config description.
+- Rename "panel-dpi" to "tilcdc-panel-dpi" to avoid any future conflict.
+- Use OF changeset instead of modifying the live devicetree step by
+  step.
+- Add kfree to avoid memory leak.
+
+Change in v2:
+- New patch.
+---
+ drivers/gpu/drm/tilcdc/Kconfig                  |  16 ++
+ drivers/gpu/drm/tilcdc/Makefile                 |   2 +
+ drivers/gpu/drm/tilcdc/tilcdc_panel_legacy.c    | 185 ++++++++++++++++++++++++
+ drivers/gpu/drm/tilcdc/tilcdc_panel_legacy.dtso |  29 ++++
+ 4 files changed, 232 insertions(+)
+
+diff --git a/drivers/gpu/drm/tilcdc/Kconfig b/drivers/gpu/drm/tilcdc/Kconfig
+index 24f9a245ba593..4fca8058eb7db 100644
+--- a/drivers/gpu/drm/tilcdc/Kconfig
++++ b/drivers/gpu/drm/tilcdc/Kconfig
+@@ -14,3 +14,19 @@ config DRM_TILCDC
+ 	  controller, for example AM33xx in beagle-bone, DA8xx, or
+ 	  OMAP-L1xx.  This driver replaces the FB_DA8XX fbdev driver.
  
- 	struct drm_framebuffer *next_fb;
++config DRM_TILCDC_PANEL_LEGACY
++	bool "Support device tree blobs using TI LCDC Panel binding"
++	default y
++	depends on DRM_TILCDC
++        depends on OF
++        depends on BACKLIGHT_CLASS_DEVICE
++        depends on PM
++	select OF_OVERLAY
++	select DRM_PANEL_SIMPLE
++	help
++	  Modifies the live device tree at early boot to convert the legacy
++	  "ti,tilcdc,panel" devicetree node to the standard panel-dpi node.
++	  This allows to maintain backward compatibility for boards which
++	  were using the deprecated tilcdc_panel driver.
++	  If you find "ti,tilcdc,panel"-string from your DTB, you probably
++	  need this. Otherwise you do not.
+diff --git a/drivers/gpu/drm/tilcdc/Makefile b/drivers/gpu/drm/tilcdc/Makefile
+index f5190477de721..6d6a08b5adf40 100644
+--- a/drivers/gpu/drm/tilcdc/Makefile
++++ b/drivers/gpu/drm/tilcdc/Makefile
+@@ -11,3 +11,5 @@ tilcdc-y := \
+ 	tilcdc_drv.o
  
--	/* Only set if an external encoder is connected */
--	bool simulate_vesa_sync;
--
- 	int sync_lost_count;
- 	bool frame_intact;
- 	struct work_struct recover_work;
-@@ -642,11 +639,6 @@ static bool tilcdc_crtc_mode_fixup(struct drm_crtc *crtc,
- 		const struct drm_display_mode *mode,
- 		struct drm_display_mode *adjusted_mode)
- {
--	struct tilcdc_crtc *tilcdc_crtc = to_tilcdc_crtc(crtc);
--
--	if (!tilcdc_crtc->simulate_vesa_sync)
--		return true;
--
- 	/*
- 	 * tilcdc does not generate VESA-compliant sync but aligns
- 	 * VS on the second edge of HS instead of first edge.
-@@ -866,14 +858,6 @@ void tilcdc_crtc_set_panel_info(struct drm_crtc *crtc,
- 	tilcdc_crtc->info = info;
- }
- 
--void tilcdc_crtc_set_simulate_vesa_sync(struct drm_crtc *crtc,
--					bool simulate_vesa_sync)
--{
--	struct tilcdc_crtc *tilcdc_crtc = to_tilcdc_crtc(crtc);
--
--	tilcdc_crtc->simulate_vesa_sync = simulate_vesa_sync;
--}
--
- void tilcdc_crtc_update_clk(struct drm_crtc *crtc)
- {
- 	struct drm_device *dev = crtc->dev;
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.h b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-index 58b276f82a669..3aba3a1155ba0 100644
---- a/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-@@ -160,8 +160,6 @@ irqreturn_t tilcdc_crtc_irq(struct drm_crtc *crtc);
- void tilcdc_crtc_update_clk(struct drm_crtc *crtc);
- void tilcdc_crtc_set_panel_info(struct drm_crtc *crtc,
- 		const struct tilcdc_panel_info *info);
--void tilcdc_crtc_set_simulate_vesa_sync(struct drm_crtc *crtc,
--					bool simulate_vesa_sync);
- void tilcdc_crtc_shutdown(struct drm_crtc *crtc);
- void tilcdc_crtc_destroy(struct drm_crtc *crtc);
- int tilcdc_crtc_update_fb(struct drm_crtc *crtc,
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_external.c b/drivers/gpu/drm/tilcdc/tilcdc_external.c
-index 3b86d002ef62e..da755a411d9ff 100644
---- a/drivers/gpu/drm/tilcdc/tilcdc_external.c
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_external.c
-@@ -80,7 +80,6 @@ int tilcdc_add_component_encoder(struct drm_device *ddev)
- 		return -ENODEV;
- 
- 	/* Only tda998x is supported at the moment. */
--	tilcdc_crtc_set_simulate_vesa_sync(priv->crtc, true);
- 	tilcdc_crtc_set_panel_info(priv->crtc, &panel_info_tda998x);
- 
- 	return 0;
+ obj-$(CONFIG_DRM_TILCDC)	+= tilcdc.o
++obj-$(CONFIG_DRM_TILCDC_PANEL_LEGACY)	+= tilcdc_panel_legacy.o \
++					   tilcdc_panel_legacy.dtbo.o
+diff --git a/drivers/gpu/drm/tilcdc/tilcdc_panel_legacy.c b/drivers/gpu/drm/tilcdc/tilcdc_panel_legacy.c
+new file mode 100644
+index 0000000000000..37a69b3cf04b2
+--- /dev/null
++++ b/drivers/gpu/drm/tilcdc/tilcdc_panel_legacy.c
+@@ -0,0 +1,185 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2025 Bootlin
++ * Author: Kory Maincent <kory.maincent@bootlin.com>
++ *
++ * To support the legacy "ti,tilcdc,panel" binding, the devicetree has to
++ * be transformed to the new panel-dpi binding with the endpoint associated.
++ */
++
++#include <linux/kernel.h>
++#include <linux/of.h>
++#include <linux/of_fdt.h>
++#include <linux/slab.h>
++
++/* Embedded dtbo symbols created by cmd_wrap_S_dtb in scripts/Makefile.lib */
++extern char __dtbo_tilcdc_panel_legacy_begin[];
++extern char __dtbo_tilcdc_panel_legacy_end[];
++
++static int __init
++tilcdc_panel_update_prop(struct of_changeset *ocs, struct device_node *node,
++			 char *name, void *val, int length)
++{
++	struct property *prop;
++
++	prop = kzalloc(sizeof(*prop), GFP_KERNEL);
++	if (!prop)
++		return -ENOMEM;
++
++	prop->name = kstrdup(name, GFP_KERNEL);
++	prop->length = length;
++	prop->value = kmemdup(val, length, GFP_KERNEL);
++	if (!prop->name || !prop->value) {
++		kfree(prop->name);
++		kfree(prop->value);
++		kfree(prop);
++		return -ENOMEM;
++	}
++
++	return of_changeset_update_property(ocs, node, prop);
++}
++
++static int __init tilcdc_panel_copy_props(struct device_node *old_panel,
++					  struct device_node *new_panel)
++{
++	struct device_node *old_timing __free(device_node) = NULL;
++	struct device_node *new_timing __free(device_node) = NULL;
++	struct device_node *panel_info __free(device_node) = NULL;
++	struct device_node *child __free(device_node) = NULL;
++	u32 invert_pxl_clk = 0, sync_edge = 0;
++	struct of_changeset ocs;
++	struct property *prop;
++	int ret;
++
++	child = of_get_child_by_name(old_panel, "display-timings");
++	if (!child)
++		return -EINVAL;
++
++	/* The default display timing is the one specified as native-mode.
++	 * If no native-mode is specified then the first node is assumed
++	 * to be the native mode.
++	 */
++	old_timing = of_parse_phandle(child, "native-mode", 0);
++	if (!old_timing) {
++		old_timing = of_get_next_child(child, NULL);
++		if (!old_timing)
++			return -EINVAL;
++	}
++
++	panel_info = of_get_child_by_name(old_panel, "panel-info");
++	if (!panel_info)
++		return -EINVAL;
++
++	of_changeset_init(&ocs);
++
++	/* Copy all panel properties to the new panel node */
++	for_each_property_of_node(old_panel, prop) {
++		if (!strncmp(prop->name, "compatible", sizeof("compatible")))
++			continue;
++
++		ret = tilcdc_panel_update_prop(&ocs, new_panel, prop->name,
++					       prop->value, prop->length);
++		if (ret)
++			goto destroy_ocs;
++	}
++
++	new_timing = of_changeset_create_node(&ocs, new_panel, "panel-timing");
++	if (!new_timing) {
++		ret = -ENODEV;
++		goto destroy_ocs;
++	}
++
++	/* Copy all panel timing properties to the new panel node */
++	for_each_property_of_node(old_timing, prop) {
++		ret = tilcdc_panel_update_prop(&ocs, new_timing, prop->name,
++					       prop->value, prop->length);
++		if (ret)
++			goto destroy_ocs;
++	}
++
++	/* Looked only for these two parameter as all the other are always
++	 * set to default and not related to common DRM properties.
++	 */
++	of_property_read_u32(panel_info, "invert-pxl-clk", &invert_pxl_clk);
++	of_property_read_u32(panel_info, "sync-edge", &sync_edge);
++
++	if (!invert_pxl_clk) {
++		ret = tilcdc_panel_update_prop(&ocs, new_timing, "pixelclk-active",
++					       &(u32){cpu_to_be32(1)}, sizeof(u32));
++		if (ret)
++			goto destroy_ocs;
++	}
++
++	if (!sync_edge) {
++		ret = tilcdc_panel_update_prop(&ocs, new_timing, "syncclk-active",
++					       &(u32){cpu_to_be32(1)}, sizeof(u32));
++		if (ret)
++			goto destroy_ocs;
++	}
++
++	/* Remove compatible property to avoid any driver compatible match */
++	of_changeset_remove_property(&ocs, old_panel,
++				     of_find_property(old_panel, "compatible", NULL));
++
++	of_changeset_apply(&ocs);
++	return 0;
++
++destroy_ocs:
++	of_changeset_destroy(&ocs);
++	return ret;
++}
++
++static const struct of_device_id tilcdc_panel_of_match[] __initconst = {
++	{ .compatible = "ti,tilcdc,panel", },
++	{},
++};
++
++static const struct of_device_id tilcdc_of_match[] __initconst = {
++	{ .compatible = "ti,am33xx-tilcdc", },
++	{ .compatible = "ti,da850-tilcdc", },
++	{},
++};
++
++static int __init tilcdc_panel_legacy_init(void)
++{
++	struct device_node *new_panel __free(device_node) = NULL;
++	struct device_node *panel __free(device_node) = NULL;
++	struct device_node *lcdc __free(device_node) = NULL;
++	void *dtbo_start;
++	u32 dtbo_size;
++	int ovcs_id;
++	int ret;
++
++	lcdc = of_find_matching_node(NULL, tilcdc_of_match);
++	panel = of_find_matching_node(NULL, tilcdc_panel_of_match);
++
++	if (!of_device_is_available(panel) ||
++	    !of_device_is_available(lcdc))
++		return 0;
++
++	dtbo_start = __dtbo_tilcdc_panel_legacy_begin;
++	dtbo_size = __dtbo_tilcdc_panel_legacy_end -
++		    __dtbo_tilcdc_panel_legacy_begin;
++
++	ret = of_overlay_fdt_apply(dtbo_start, dtbo_size, &ovcs_id, NULL);
++	if (ret)
++		return ret;
++
++	new_panel = of_find_node_by_name(NULL, "tilcdc-panel-dpi");
++	if (!new_panel) {
++		ret = -ENODEV;
++		goto overlay_remove;
++	}
++
++	ret = tilcdc_panel_copy_props(panel, new_panel);
++	if (ret)
++		goto overlay_remove;
++
++	return 0;
++
++overlay_remove:
++	of_overlay_remove(&ovcs_id);
++	return ret;
++}
++
++subsys_initcall(tilcdc_panel_legacy_init);
+diff --git a/drivers/gpu/drm/tilcdc/tilcdc_panel_legacy.dtso b/drivers/gpu/drm/tilcdc/tilcdc_panel_legacy.dtso
+new file mode 100644
+index 0000000000000..ae71d10f5ec13
+--- /dev/null
++++ b/drivers/gpu/drm/tilcdc/tilcdc_panel_legacy.dtso
+@@ -0,0 +1,29 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * DTS overlay for converting ti,tilcdc,panel binding to new binding.
++ *
++ * Copyright (C) 2025 Bootlin
++ * Author: Kory Maincent <kory.maincent@bootlin.com>
++ */
++
++/dts-v1/;
++/plugin/;
++
++&{/} {
++	tilcdc-panel-dpi {
++		compatible = "panel-dpi";
++		port {
++			panel_in: endpoint@0 {
++				remote-endpoint = <&lcd_0>;
++			};
++		};
++	};
++};
++
++&lcdc {
++	port {
++		lcd_0: endpoint@0 {
++			remote-endpoint = <&panel_in>;
++		};
++	};
++};
 
 -- 
 2.43.0
