@@ -1,156 +1,149 @@
-Return-Path: <linux-omap+bounces-5342-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5343-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19913CF8BA8
-	for <lists+linux-omap@lfdr.de>; Tue, 06 Jan 2026 15:18:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1DD9CF9C14
+	for <lists+linux-omap@lfdr.de>; Tue, 06 Jan 2026 18:40:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5E10D3009139
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Jan 2026 14:18:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B97153143479
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Jan 2026 17:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55EEB3126CD;
-	Tue,  6 Jan 2026 14:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5CCA3563E7;
+	Tue,  6 Jan 2026 17:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bOOHiz+z"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="Rk0jrZL2"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBA730FC2A
-	for <linux-omap@vger.kernel.org>; Tue,  6 Jan 2026 14:18:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BCA3563DC;
+	Tue,  6 Jan 2026 17:29:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767709088; cv=none; b=KM2vP+DHxzip0/qw9V4CqcbMJsUKCepMo5FrqcmYtLIGA+pCUNbU6IyfMwXVmtY1hspLIxyTWxbTESsuyjRkr3tm1tOL8aAkw3tvrrS850EidbC9/ENU8Ix9fiIP7/5YiOEcuTrqCDrRHQdAy+zQnu+YaojYFynW8/qiTwpm69A=
+	t=1767720601; cv=none; b=MX/5zX6Eaq/PHx1GuaQ9Kf/xgcVnRMX/6dde9F4HG+KJ+lZV4fQoHZHWyP255ZpCJ1aVFvnd8RsUq+8EXpJaqfljEs4qKV/H4JqaABi/thPNXG1p+prVq/4MFMf2y2FMefzsMaCfj8cl00b1vjJ+Nb96Nd6jJX8QvF8fgKjiOqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767709088; c=relaxed/simple;
-	bh=9Ym168jY0juUmceNY7e8j0i+6pSJU5pRFOBf6YtVzDo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ra3bh2273hT0wVxr+pC9GOsS7Nb5FE63BGsc65WNysVMZLZojM4SemZSGT64WywpOTv+Gyr6uPwwxzwx//rFXeOh0QWDZchDKPb277qwbONLsJfPDwDX5/4elAenACNzK0Ek4Kdj3N4L7oUYTbe01zCbN3ganw8IIbmS5FkGqH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bOOHiz+z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD55C2BC86
-	for <linux-omap@vger.kernel.org>; Tue,  6 Jan 2026 14:18:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767709087;
-	bh=9Ym168jY0juUmceNY7e8j0i+6pSJU5pRFOBf6YtVzDo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=bOOHiz+z351DggBlKZJG1l4SIBZi5rGrJuMJFrTSuCC2bhYg3GVmw+EzTJ8+4o8d6
-	 mfYKrjdZQleutU3LNIOJvytnRti1+tJxYEb5+FMc6i0af14bQLGN0lgtW7mtsU2Nzu
-	 6ryFz4M8Vn1p9iUNI1fLTWCa+m4bpeR2lNFEDKERvGn1VG6CP12akkl/4e/LRbhqaQ
-	 62Twt75lEl7bQuHsNLBEHkd+BPwKedPvj2JfLdCbCO/vQwTZc6DBtiCiXsT/Efz4cM
-	 7UiMgJqXCVK8SCkbDxCkKvsHQiwcHjxf2pPEiyTaEp11J2cA9WDICgY+7wYxuhNMRE
-	 KZcuMKroFvL4g==
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-37b9d8122fdso7720131fa.3
-        for <linux-omap@vger.kernel.org>; Tue, 06 Jan 2026 06:18:07 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCW000RIlbGBbs06h9Zp59pvvdYnzo+ClXA+gPEEx/VqUzvOAu9Xb3eKcQgnDxg6V3cvgKiHabBJRgFB@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw25V3tLHQdipNqMzWrrEn4219/wgdT81/nk5XSxLhMAO+PiNst
-	w5EupjHkLzPIzZ8M33rarD2WSv5kx2DMTYarNLh7EbEwldyV3iU/tBPZ8vmkGfoDHAIhp89MEJu
-	aCfXZATuLO50FJAp7N8exiHip+FgOg3k46QpiUbzSGw==
-X-Google-Smtp-Source: AGHT+IGMmSz6Ltdahe1rVY6f+YVLJmMwESu8W203AziADCClkRGLN7rkSW5dIW6LKxsDjFSC7ntBorz6/82D0HbV854=
-X-Received: by 2002:a2e:bc15:0:b0:37a:9558:5bda with SMTP id
- 38308e7fff4ca-382eaa05568mr8077901fa.14.1767709085885; Tue, 06 Jan 2026
- 06:18:05 -0800 (PST)
+	s=arc-20240116; t=1767720601; c=relaxed/simple;
+	bh=u4uuqTQUdVSQFR40CmbeuCd7YWPpLNXfQChgviT0EYY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IkHibpavluvs3R4vE1/yfNjsS+/L2YpngdCzMzV3sSVxOzYQhSrDzJDuZi8UgFel8CJMriPlpzmtIWDvXl1Su5SS3rz0+v/LTfOR2VyARVWk+TYHNfNq3ma7UmWF+yDuFw1fWnh8q3NEMzdAkzZDP137nK6IVrxicI1RPFTFNMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=Rk0jrZL2; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=c3xQQo7dlQe+3ToJZk0WtJfo6q7i6BfPDImOGw/1mAY=; b=Rk0jrZL2JDiHAt8AM6gbN5vLDJ
+	Q4407EBHUY56ExWkUEpmOVlHodGmpbUzQXxFu7XbiA0Kc7l6RDi9erVOuvSJTMkh1sZ+oaHlEqJJC
+	q1ExTI3DGyPI9X1o5xF1Fy3jdD+wCSbR3hMLVWYxDMsJixdVx7y2R7xqeGzOYAM6s+1lb5lSfPKgQ
+	Y7J1Tz+V4vXgzLH+IcPohDNqL2IPxrypuPQN3Fx4rSwz64KpQkckHNz3+u9FReveAwILFDfwvWWBt
+	ZjZBmHubVtk0AhJgSrLLk4gL0mafptijqfN4P0iXEU6lOVCBOzD73clayjDcTUZHQ1BFjs7YehWFs
+	yMchuuwg==;
+Date: Tue, 6 Jan 2026 18:29:46 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Haotian Zhang <vulab@iscas.ac.cn>, Kevin Hilman <khilman@kernel.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, linux-omap@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] omap-cpufreq: Fix regulator resource leak in probe()
+Message-ID: <20260106182946.1c54d769@kemnade.info>
+In-Reply-To: <pjmwnxp6wae3bbmzmzys4r5szw6ywxphi4qtmpmg7jsqadc5fm@fvozoujr4mi5>
+References: <20251215030327.1771-1-vulab@iscas.ac.cn>
+	<20260105101412.0ac7baa7@kemnade.info>
+	<pjmwnxp6wae3bbmzmzys4r5szw6ywxphi4qtmpmg7jsqadc5fm@fvozoujr4mi5>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; aarch64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251223-i2c-adap-dev-config-v1-0-4829b1cf0834@oss.qualcomm.com>
- <20251223-i2c-adap-dev-config-v1-6-4829b1cf0834@oss.qualcomm.com> <CAMuHMdW5ffiW_vEuDjV5bnmTeduhoqph7t8rsaFEVO7RXOM8jg@mail.gmail.com>
-In-Reply-To: <CAMuHMdW5ffiW_vEuDjV5bnmTeduhoqph7t8rsaFEVO7RXOM8jg@mail.gmail.com>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Tue, 6 Jan 2026 15:17:54 +0100
-X-Gmail-Original-Message-ID: <CAMRc=MctSufFn4Ku_8KBHmThvNOXo94DJDep-hzBem1yGw4wkg@mail.gmail.com>
-X-Gm-Features: AQt7F2rlYGWw0wYVcdfcu_38DzK8jJE5ZLbWHuaZHuyFfl6BwHPNSW4tcfiCMeQ
-Message-ID: <CAMRc=MctSufFn4Ku_8KBHmThvNOXo94DJDep-hzBem1yGw4wkg@mail.gmail.com>
-Subject: Re: [PATCH 06/12] i2c: rcar: set device parent and of_node through
- the adapter struct
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, 
-	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>, 
-	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>, Andi Shyti <andi.shyti@kernel.org>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Vignesh R <vigneshr@ti.com>, 
-	Aaro Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
-	Tony Lindgren <tony@atomide.com>, Andreas Kemnade <andreas@kemnade.info>, 
-	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Patrice Chotard <patrice.chotard@foss.st.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Linus Walleij <linusw@kernel.org>, linux-i2c@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-	linux-rpi-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jan 6, 2026 at 10:14=E2=80=AFAM Geert Uytterhoeven <geert@linux-m68=
-k.org> wrote:
->
-> Hi Bartosz,
->
-> On Tue, 23 Dec 2025 at 11:05, Bartosz Golaszewski
-> <bartosz.golaszewski@oss.qualcomm.com> wrote:
-> > Configure the parent device and the OF-node using dedicated fields in
-> > struct i2c_adapter and avoid dereferencing the internal struct device.
-> >
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.co=
-m>
->
-> Thanks for your patch!
->
-> > --- a/drivers/i2c/busses/i2c-rcar.c
-> > +++ b/drivers/i2c/busses/i2c-rcar.c
-> > @@ -1149,8 +1149,8 @@ static int rcar_i2c_probe(struct platform_device =
-*pdev)
-> >         adap->algo =3D &rcar_i2c_algo;
-> >         adap->class =3D I2C_CLASS_DEPRECATED;
-> >         adap->retries =3D 3;
-> > -       adap->dev.parent =3D dev;
-> > -       adap->dev.of_node =3D dev->of_node;
-> > +       adap->parent =3D dev;
-> > +       adap->of_node =3D dev->of_node;
-> >         adap->bus_recovery_info =3D &rcar_i2c_bri;
-> >         adap->quirks =3D &rcar_i2c_quirks;
-> >         i2c_set_adapdata(adap, priv);
->
->     [....]
->     ret =3D rcar_i2c_clock_calculate(priv);
->     [...]
->     ret =3D i2c_add_numbered_adapter(adap);
->
-> As rcar_i2c_clock_calculate() uses rcar_i2c_priv_to_dev(priv):
->
->     #define rcar_i2c_priv_to_dev(p)         ((p)->adap.dev.parent)
->
-> I believe this will deference dev.parent before it is initialized by
-> the newly added code in i2c_register_adapter().
->
-> Let's check...
->
->     Unable to handle kernel NULL pointer dereference at virtual
-> address 0000024c when read
->     [0000024c] *pgd=3D80000040004003, *pmd=3D00000000
->     Internal error: Oops: 206 [#1] SMP ARM
->     Modules linked in:
->     CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted
-> 6.19.0-rc3-koelsch-04401-g9e22366a23cd #2288 NONE
->     Hardware name: Generic R-Car Gen2 (Flattened Device Tree)
->     PC is at device_property_read_u32_array+0x0/0x14
->     LR is at i2c_parse_timing+0x14/0x30
->     [...]
->     Call trace:
->      device_property_read_u32_array from i2c_parse_timing+0x14/0x30
->      i2c_parse_timing from i2c_parse_fw_timings+0x28/0x12c
->      i2c_parse_fw_timings from rcar_i2c_probe+0x1cc/0x534
->      rcar_i2c_probe from platform_probe+0x58/0x90
->
+On Tue, 6 Jan 2026 10:20:55 +0530
+Viresh Kumar <viresh.kumar@linaro.org> wrote:
 
-Thanks for the heads-up. I'm still waiting for Wolfram to decide if
-these changes will be accepted or not before sending a v2.
+> On 05-01-26, 10:14, Andreas Kemnade wrote:
+> > On Mon, 15 Dec 2025 11:03:27 +0800
+> > Haotian Zhang <vulab@iscas.ac.cn> wrote:
+> >   
+> > > The current omap_cpufreq_probe() uses regulator_get() to obtain the MPU
+> > > regulator but does not release it in omap_cpufreq_remove() or when
+> > > cpufreq_register_driver() fails, leading to a potential resource leak.
+> > > 
+> > > Use devm_regulator_get() instead of regulator_get() so that the regulator
+> > > resource is automatically released.
+> > > 
+> > > Fixes: 53dfe8a884e6 ("cpufreq: OMAP: scale voltage along with frequency")
+> > > Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+> > > ---
+> > >  drivers/cpufreq/omap-cpufreq.c | 3 +--
+> > >  1 file changed, 1 insertion(+), 2 deletions(-)
+> > > 
+> > > diff --git a/drivers/cpufreq/omap-cpufreq.c b/drivers/cpufreq/omap-cpufreq.c
+> > > index bbb01d93b54b..f83f85996b36 100644
+> > > --- a/drivers/cpufreq/omap-cpufreq.c
+> > > +++ b/drivers/cpufreq/omap-cpufreq.c
+> > > @@ -157,7 +157,7 @@ static int omap_cpufreq_probe(struct platform_device *pdev)
+> > >  		return -EINVAL;
+> > >  	}
+> > >  
+> > > -	mpu_reg = regulator_get(mpu_dev, "vcc");
+> > > +	mpu_reg = devm_regulator_get(mpu_dev, "vcc");
+> > >  	if (IS_ERR(mpu_reg)) {
+> > >  		pr_warn("%s: unable to get MPU regulator\n", __func__);
+> > >  		mpu_reg = NULL;
+> > > @@ -169,7 +169,6 @@ static int omap_cpufreq_probe(struct platform_device *pdev)
+> > >  		if (regulator_get_voltage(mpu_reg) < 0) {
+> > >  			pr_warn("%s: physical regulator not present for MPU\n",
+> > >  				__func__);
+> > > -			regulator_put(mpu_reg);  
+> > 
+> > so it it not useable and could be released which is not done anymare 
+> > with your patch. It is not an error path here.  
+> 
+> Right. Perhaps devm_regulator_put() here would be good enough.
+> 
+ok, didn't expect such a function, so that should be the cleanest approach.
 
-Bartosz
+> > >  			mpu_reg = NULL;  
+> > 
+> > And this should happen after removal, too. I feel some discomfort with
+> > variables pointing to freed ressources. So I think rather add
+> > the regulator_put and the = NULL to the remove function.  
+> 
+> I don't see a reason why this extra step should be performed after the driver is
+> removed. `mpu_reg` can't be used after that.
+> 
+hmm, it is performed when the device is removed/unbound, which does not necessarily
+mean the driver is removed. But that does not prevent trouble if something
+is still trying to access stuff here after driver removal. So it is not really
+helpful.
+
+Hmm, how does a device gets bound to this driver?
+
+Lets gets back to this very basic question. I am usually using CPUFREQ_DT.
+Are there any signs of usage of this driver?
+
+omap2plus_defconfig creates in .config
+#
+# CPU frequency scaling drivers
+#
+CONFIG_CPUFREQ_DT=m
+# CONFIG_CPUFREQ_VIRT is not set
+CONFIG_CPUFREQ_DT_PLATDEV=y
+# CONFIG_ARM_OMAP2PLUS_CPUFREQ is not set
+CONFIG_ARM_TI_CPUFREQ=y
+# end of CPU Frequency scaling
+
+So this thing is not used. Everything with omap2plus uses devicetree,
+so probably no user at all for it. So I think we can deorbit the whole
+thing.
+
+But the fix is good for stable. So I would propose to add this
+fix (to let it propagate to stable) and deorbit this driver.
+
+Regards,
+Andreas
 
