@@ -1,55 +1,55 @@
-Return-Path: <linux-omap+bounces-5364-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5366-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B69CF9F5B
-	for <lists+linux-omap@lfdr.de>; Tue, 06 Jan 2026 19:09:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1F33CFA2DC
+	for <lists+linux-omap@lfdr.de>; Tue, 06 Jan 2026 19:32:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DA416307CF2B
-	for <lists+linux-omap@lfdr.de>; Tue,  6 Jan 2026 18:07:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C7D9431B5785
+	for <lists+linux-omap@lfdr.de>; Tue,  6 Jan 2026 17:44:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4B0350D4C;
-	Tue,  6 Jan 2026 17:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48627348466;
+	Tue,  6 Jan 2026 17:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EEkcCOOh"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GAVjxskH"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95E43502AA
-	for <linux-omap@vger.kernel.org>; Tue,  6 Jan 2026 17:44:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4161635295A;
+	Tue,  6 Jan 2026 17:44:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721478; cv=none; b=IrPuq2llwZzgrof+EjODJDcYYfGzCFnr+bsF43J4JQAqL4a2mXPv6d7mJwKDjxfTLPSmZdABs2kglPxKqiQ+IdozhXn8d3SQ9ce22FZp1eDNY8MHl9+z2V9Ub/RV5xTXfOClh7Tfu4SciQFLG665d+VzmYj137fG08KTA8R+auM=
+	t=1767721485; cv=none; b=PtbR35jr0/nKOu+nInYVVkhRAn/ZVZk0WYCWIWmFM0bJTgHSIKBCk42JqmzDCtaSf9TLCYoEcZgcwoyul2KGzPOyVz9BJSUDwCVOksZLJzlmOYywjeSG8+ilETMT/KDOGxt4lnJ5jWjp9NH6HBU0kL4CjKsBjRwyt0Wco7l2flY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721478; c=relaxed/simple;
-	bh=JKnFEy6hnHSto9heRigjVUZRFZ0ZXKYU4Idb4Bvjs0Q=;
+	s=arc-20240116; t=1767721485; c=relaxed/simple;
+	bh=m8Vd/UMx8obk02rF+xES0hdwx0fTedFK3Jp0PEafowA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hvMJ8fJ77HHO+PAY78b3v8N9OSszICa1BtaO0nU+25SsBwOPe931hmAjg62ASF6bh8n5esQW4ZBAY9SqMA3hTgLuS8JSEiPuUD8SzUzJqMfapYxJuWyeMShvu4UpwXZokH6eiE7PBdRIavLF5l3PO7f95M1Rju/041q2LMANI6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=EEkcCOOh; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:To:Cc; b=Ku5L1Ju1CU4rfYWd8xVR0cnOzz38tKiR+AABcrwn+Enjr3nIKIlitH0cDwVbu3guh6YtlaK88ozmS3Ho0UdWF7Yyh7An+CXN5zV079TxOGNWbohD2bZA7SPU4gKm8cuT3PC/Ue+AMYk/6E+HBZ//VT6hKakLDxUQeVph5eN/HfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GAVjxskH; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 5C7D7C1E4AB;
-	Tue,  6 Jan 2026 17:44:09 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id C7A704E41FB4;
+	Tue,  6 Jan 2026 17:44:42 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 6E8B760739;
-	Tue,  6 Jan 2026 17:44:35 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9D781103C85AC;
-	Tue,  6 Jan 2026 18:44:30 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 94DFF60739;
+	Tue,  6 Jan 2026 17:44:42 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2AD41103C81A7;
+	Tue,  6 Jan 2026 18:44:37 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767721473; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1767721481; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=Q7CbSYfY/ZhKXtpXnVfoMY3VsPQNb7ntqABDIkpQLRY=;
-	b=EEkcCOOhM3aLkUIoDQAdjOozaBQqNJvRo/LYBpbE4z8tnLnLjQmABBn5tZ6b/XvKjycK4V
-	CdS1WfcKxWzk2aS1gSQYQaODSva32N0DzZuBKE6zD0etU+dxreVjG2JfblqtJAX4+DMQ7G
-	VWCDlk22R12xxZV9TFXzbwUV126I3iW9C6oT2JWu3pJlHgAgZiKMYSuxd5enjdyaZMwv//
-	ZzmmOSEIutYnTiwHEaXU2jsUOwOOfaN605CUwuQejzJhY4bYQR5BKIGBXLOdqrzVLuf8vC
-	idLsKgERasv+1ZwIBj0LkG38WbpYdld+nuO0e3LGTkPZBpFwcbr2nOZ45Dl+XQ==
+	bh=C18nibWNbrI+mlm1MYTdBpxGmLeLHqkng45AdrWQivE=;
+	b=GAVjxskHueCGsVdYhSARKRMqD9OB1izcKujykW1+msy2vchK0YW/SEDdlWFIm0uu686jU3
+	b+xY8nJA+6GQNJLbOwDOGft5BGzxyF/e/aOh28ZHi7wadVQ7WWsOWyZKspu3SoO8rYwh8C
+	/T1L+tRQVxYrh4b6Q2E7w105ymJ/iOkhrYPC6ViKqJjao12MzCarZ91nArdEjTZgj+i7f0
+	ndThthTEM/TMFaB74Di7rez5oe4F+s7B5lBvqUA/1hqqdO9dUnuGlFQNkxQ6F8z3WJ5cLd
+	4mZk2WUHX3HWsxdbcEATaqGMZHdMeegUJqVnJz51Nv7W4dhaCTVS1mvbLsemsQ==
 From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
-Date: Tue, 06 Jan 2026 18:42:36 +0100
-Subject: [PATCH v3 20/22] drm/bridge: tda998x: Remove useless
- tda998x_connector_destroy wrapper
+Date: Tue, 06 Jan 2026 18:42:38 +0100
+Subject: [PATCH v3 22/22] drm/tilcdc: Add support for
+ DRM_BRIDGE_ATTACH_NO_CONNECTOR
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -58,7 +58,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260106-feature_tilcdc-v3-20-9bad0f742164@bootlin.com>
+Message-Id: <20260106-feature_tilcdc-v3-22-9bad0f742164@bootlin.com>
 References: <20260106-feature_tilcdc-v3-0-9bad0f742164@bootlin.com>
 In-Reply-To: <20260106-feature_tilcdc-v3-0-9bad0f742164@bootlin.com>
 To: Jyri Sarha <jyri.sarha@iki.fi>, 
@@ -86,37 +86,91 @@ Cc: Markus Schneider-Pargmann <msp@baylibre.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-Use directly drm_connector_cleanup in the destroy ops instead of having
-a custom function that does nothing more.
+Convert the driver to use the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag when
+attaching bridges. This modernizes the driver by delegating connector
+creation to the bridge subsystem through drm_bridge_connector_init()
+instead of manually searching for connectors created by the bridge.
+
+The custom tilcdc_encoder_find_connector() function is removed and
+replaced with the standard drm_bridge_connector infrastructure, which
+simplifies the code and aligns with current DRM bridge best practices.
+
+This change is safe as there are now no in-tree devicetrees that
+connect tilcdc to bridges which do not support the
+DRM_BRIDGE_ATTACH_NO_CONNECTOR flag.
 
 Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
 ---
- drivers/gpu/drm/bridge/tda998x_drv.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/gpu/drm/tilcdc/tilcdc_encoder.c | 37 ++++++++++++++-------------------
+ 1 file changed, 16 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/tda998x_drv.c b/drivers/gpu/drm/bridge/tda998x_drv.c
-index e06d8d4c4b875..fad3c9bfda383 100644
---- a/drivers/gpu/drm/bridge/tda998x_drv.c
-+++ b/drivers/gpu/drm/bridge/tda998x_drv.c
-@@ -1203,16 +1203,11 @@ tda998x_connector_detect(struct drm_connector *connector, bool force)
- 			connector_status_disconnected;
- }
+diff --git a/drivers/gpu/drm/tilcdc/tilcdc_encoder.c b/drivers/gpu/drm/tilcdc/tilcdc_encoder.c
+index d42be3e16c536..61dbd90a62f70 100644
+--- a/drivers/gpu/drm/tilcdc/tilcdc_encoder.c
++++ b/drivers/gpu/drm/tilcdc/tilcdc_encoder.c
+@@ -8,45 +8,40 @@
  
--static void tda998x_connector_destroy(struct drm_connector *connector)
+ #include <drm/drm_atomic_helper.h>
+ #include <drm/drm_bridge.h>
++#include <drm/drm_bridge_connector.h>
+ #include <drm/drm_of.h>
+ #include <drm/drm_simple_kms_helper.h>
+ 
+ #include "tilcdc_drv.h"
+ #include "tilcdc_encoder.h"
+ 
+-static
+-struct drm_connector *tilcdc_encoder_find_connector(struct drm_device *ddev,
+-						    struct drm_encoder *encoder)
 -{
--	drm_connector_cleanup(connector);
+-	struct drm_connector *connector;
+-
+-	list_for_each_entry(connector, &ddev->mode_config.connector_list, head) {
+-		if (drm_connector_has_possible_encoder(connector, encoder))
+-			return connector;
+-	}
+-
+-	dev_err(ddev->dev, "No connector found for %s encoder (id %d)\n",
+-		encoder->name, encoder->base.id);
+-
+-	return NULL;
 -}
 -
- static const struct drm_connector_funcs tda998x_connector_funcs = {
- 	.reset = drm_atomic_helper_connector_reset,
- 	.fill_modes = drm_helper_probe_single_connector_modes,
- 	.detect = tda998x_connector_detect,
--	.destroy = tda998x_connector_destroy,
-+	.destroy = drm_connector_cleanup,
- 	.atomic_duplicate_state = drm_atomic_helper_connector_duplicate_state,
- 	.atomic_destroy_state = drm_atomic_helper_connector_destroy_state,
- };
+ static
+ int tilcdc_attach_bridge(struct drm_device *ddev, struct drm_bridge *bridge)
+ {
+ 	struct tilcdc_drm_private *priv = ddev_to_tilcdc_priv(ddev);
++	struct drm_connector *connector;
+ 	int ret;
+ 
+ 	priv->encoder->possible_crtcs = BIT(0);
+ 
+-	ret = drm_bridge_attach(priv->encoder, bridge, NULL, 0);
++	ret = drm_bridge_attach(priv->encoder, bridge, NULL,
++				DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+ 	if (ret)
+ 		return ret;
+ 
+-	priv->connector = tilcdc_encoder_find_connector(ddev, priv->encoder);
+-	if (!priv->connector)
+-		return -ENODEV;
++	connector = drm_bridge_connector_init(ddev, priv->encoder);
++	if (IS_ERR(connector)) {
++		dev_err(ddev->dev, "bridge_connector create failed\n");
++		return PTR_ERR(connector);
++	}
++
++	ret = drm_connector_attach_encoder(connector, priv->encoder);
++	if (ret) {
++		dev_err(ddev->dev, "attaching encoder to connector failed\n");
++		return ret;
++	}
+ 
++	priv->connector = connector;
+ 	return 0;
+ }
+ 
 
 -- 
 2.43.0
