@@ -1,94 +1,80 @@
-Return-Path: <linux-omap+bounces-5379-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5380-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237DECFC774
-	for <lists+linux-omap@lfdr.de>; Wed, 07 Jan 2026 08:55:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3D6CCFC798
+	for <lists+linux-omap@lfdr.de>; Wed, 07 Jan 2026 08:58:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7DE69300E025
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Jan 2026 07:53:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0B65A3003192
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Jan 2026 07:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9308427A461;
-	Wed,  7 Jan 2026 07:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 004BC27FD4A;
+	Wed,  7 Jan 2026 07:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="afnPrEGF"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="G5A4psOb"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEA119B5B1;
-	Wed,  7 Jan 2026 07:53:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E464913C918;
+	Wed,  7 Jan 2026 07:58:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767772419; cv=none; b=JIZTPTBRD1HPs9i7Q4nq/IvhjiWkchpeXAYxZ+OSbrdqN3ub28VexDNwNJdhgvTWW8Qh6Z3DhCe4erSRu+iKGq+9SPAi6WplDbLKhjNbSgZ5VrPzvcLmb5zajGIfbYR+vnLcK6dQDjccwVsC9T5VJmrHys8guq3Gl/4bDnkSijg=
+	t=1767772736; cv=none; b=DfllPROrSFvnqTLW9S5klQ3MEwm/1D9kDGLnfg6Ulhyk0IWmU4tm6K8IHO1KmSj9eZuQwSCBmx4+J5YrEWFP8J1VDOBCeGpyQx7b7Z13Y6sh9afuDg8Gucqxuu7KA7TFpLcOgjPiggo66hvrCAjhNxk/tPJsyI54DmPyo/dgSP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767772419; c=relaxed/simple;
-	bh=9eNqAcghF7tdAA/uOmVCKek4FSJK0Zrf0oL0B3duEBY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qkvCjPjRsSSQ2H+PXBd0FlBrHeRnxQIWbGGnGT1XOaielvYF15HMyqkBnnGp90W0mQuqyb/yrsscKbPHcPx7sbNsL9EleV01cDcEIv5N93bbjwNuEm3yctrMhwHKZShsDPoDTdv8Ir/ynipN4TnNMsgeNPy0KhGW3W3J1SpTscw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=afnPrEGF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21ACCC4CEF7;
-	Wed,  7 Jan 2026 07:53:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767772418;
-	bh=9eNqAcghF7tdAA/uOmVCKek4FSJK0Zrf0oL0B3duEBY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=afnPrEGFvVIadMcNUTUWGGnLzqSlm3aYmVcEzgMSZfp3lvcYiSLEOKVX+rMvzyMa7
-	 JGfHxFw71fhruvsnL8abYgCZlL6GbsK4hMStDJOU6I6QYiTmhiEe46RwiT/HXqaPsc
-	 oHcu4PtOwNzl9t6AV62Aqcz1ahl77a8xioIlr/RdhvDnpSwyvY0hJ4iMvI9EMj6aIJ
-	 hx16kke+fO1rSfTQu4/cSXWS5pDmT2fNkrOOBfRm8plI1H+wfe76RR2BKqBSXfdkqk
-	 5iDr5yNtwR/wHcxZYVT8NVA+h0iSkIOb0hitquarBOlpD1mPB7daMl5W4kum22G4gQ
-	 30bStwyDUPoqw==
-Date: Wed, 7 Jan 2026 08:53:36 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
-Cc: Jyri Sarha <jyri.sarha@iki.fi>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Russell King <linux@armlinux.org.uk>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Tony Lindgren <tony@atomide.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Markus Schneider-Pargmann <msp@baylibre.com>, 
-	Bajjuri Praneeth <praneeth@ti.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Louis Chauvet <louis.chauvet@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	Miguel Gazquez <miguel.gazquez@bootlin.com>, Herve Codina <herve.codina@bootlin.com>, 
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH v3 01/22] dt-bindings: display: tilcdc: Convert to DT
- schema
-Message-ID: <20260107-elegant-utopian-kangaroo-cdb0cd@quoll>
-References: <20260106-feature_tilcdc-v3-0-9bad0f742164@bootlin.com>
- <20260106-feature_tilcdc-v3-1-9bad0f742164@bootlin.com>
+	s=arc-20240116; t=1767772736; c=relaxed/simple;
+	bh=dmzZTxpIHt2uGOFJD8/OYHYyUjiWQvJYXn16+ZOaHKM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EC4IylKlYW8SJNKpBMLXsutChPNku0k4TmFCjnlhHtrp+up7gIPRqB41xcx0u7CUr+53i4cPRXGt8kRTMs0MHnc1XnjVVF1kVzj8SwFT41hpDADaWmc5I4Hfty7gB6umLkddWjIxDGhPaNLl/a+ZM1ghnUt860njsVyLh6A0FVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=G5A4psOb; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=thXQiaz4V3xKqgoiOZ2lNAUVELY4RtoHKX/hnesmgSk=; b=G5A4psObg/OHz/aSvIp3H3c0DU
+	HZ+LDivnOsBnKQnsN7y6kX7PH4mi3V3aSsacBmRwPtc5XLy6Px/tVIk9fTyOWXgddCM/7lW4AkHpF
+	cqMP/uFuhQ1c8GcU1/v0HYFBHY0IdHjv2p1CZLeXkj9LjY/ejhrA/gE+3tgkBYGATYqyqhgGwSe72
+	Gtvza3aH5pdE3SsyvMRDmBlzHOsW3XQbySHs/noTZbRY+VQ+hSBWUeu2ZjGvvqLnRKRPrvmcZPZFY
+	HWyF6ylHQjAMatbzAedXBXhYptVbQTt13+oNxNaDYnahUUpEyndYeFoJkI+hQm71Ch3OFNJAgxCf1
+	1aXRVtYg==;
+Date: Wed, 7 Jan 2026 08:58:45 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Nishanth Menon <nm@ti.com>, Kevin Hilman <khilman@kernel.org>, Haotian
+ Zhang <vulab@iscas.ac.cn>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ linux-omap@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] omap-cpufreq: Fix regulator resource leak in probe()
+Message-ID: <20260107085845.2196cf93@kemnade.info>
+In-Reply-To: <y2xyyyyhdoxflj4doa4y3a7prjqulcw63bdkor3fo3qsbmxvzy@dvhmfxkkzdqs>
+References: <20251215030327.1771-1-vulab@iscas.ac.cn>
+	<20260105101412.0ac7baa7@kemnade.info>
+	<pjmwnxp6wae3bbmzmzys4r5szw6ywxphi4qtmpmg7jsqadc5fm@fvozoujr4mi5>
+	<20260106182946.1c54d769@kemnade.info>
+	<y2xyyyyhdoxflj4doa4y3a7prjqulcw63bdkor3fo3qsbmxvzy@dvhmfxkkzdqs>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; aarch64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260106-feature_tilcdc-v3-1-9bad0f742164@bootlin.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jan 06, 2026 at 06:42:17PM +0100, Kory Maincent (TI.com) wrote:
-> Convert the device tree binding documentation for tilcdc
-> from plain text to DT binding schema.
+On Wed, 7 Jan 2026 11:27:42 +0530
+Viresh Kumar <viresh.kumar@linaro.org> wrote:
+
+> > But the fix is good for stable. So I would propose to add this
+> > fix (to let it propagate to stable) and deorbit this driver.  
 > 
-> Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
-> ---
-> Change in v3:
-> - Rename binding file to ti,am33xx-tilcdc.yaml.
-> - Use generic node name and drop unused label.
-> ---
->  .../bindings/display/tilcdc/ti,am33xx-tilcdc.yaml  | 100 +++++++++++++++++++++
->  .../devicetree/bindings/display/tilcdc/tilcdc.txt  |  82 -----------------
->  2 files changed, 100 insertions(+), 82 deletions(-)
+> I don't think it is worth adding to stable when there are no users.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+ok, thet commit is from v4.9, oldest longterm is 5.10.
+So also no users in longterm kernels, so we do not need the fix at all.
 
-Best regards,
-Krzysztof
-
+Regards,
+Andreas
 
