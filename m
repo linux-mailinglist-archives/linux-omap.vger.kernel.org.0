@@ -1,139 +1,136 @@
-Return-Path: <linux-omap+bounces-5373-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5374-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B196CFC01A
-	for <lists+linux-omap@lfdr.de>; Wed, 07 Jan 2026 05:43:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F87CFC227
+	for <lists+linux-omap@lfdr.de>; Wed, 07 Jan 2026 06:59:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 01EA93046756
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Jan 2026 04:43:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F1D97305D925
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Jan 2026 05:57:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8DFD272E56;
-	Wed,  7 Jan 2026 04:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3431A26ED28;
+	Wed,  7 Jan 2026 05:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jvG32x9V"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sWywaJas"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C922609DC
-	for <linux-omap@vger.kernel.org>; Wed,  7 Jan 2026 04:43:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A36260580
+	for <linux-omap@vger.kernel.org>; Wed,  7 Jan 2026 05:57:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767761002; cv=none; b=p1EBjGv6Bfzihk/NvPhA6tGVP1lmOkpRk3B63oKEsABJmNN3hNpXskZ2NIHDKgAGuGE6fYy366BFrlGI0XUwju74nYm2BG0tyvw/QzYb9Z9xWPBJn/xICuqw4CnXgzHuBWUlpSp5bD4/md1CvyT4fDz+q1DXjWAdEWZoMnDSjhQ=
+	t=1767765467; cv=none; b=fC2Udz27NQIr/P4dcAwhjH2F4Bp+BcE2t2EgYpIf1i4jEi/NQKq/zGu+fzP2AmHxBw2QbYRlBY2Iv3Y0qruodwBMdjUPEG/miLPp6AU3VJqGRdFQkKxCKkz5q80hxX0wMdorbwA615nOY33lCwVXeitcII+SUvmhrmmffEgmp1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767761002; c=relaxed/simple;
-	bh=tRNeZwnYBDiJ5gpYRj3YNtC9pI+I0JQn8tmEq71PS0k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/8x+pFcHl3e78gk5fuCIf6iIJN2oN+R0BBOPHJ242uMGeUzn8FxfMOc3wrpahtm48mhCZiurjpa/mloUt3fyqI+aBtlR5spZTdOjE6BGzkuF+JVUW5DJnpo9na3rGQMBPf8v7Mhv1UnDRXT5DN9RLQFPYL5wMHp+JZWUt8gePk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jvG32x9V; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a0c20ee83dso17585065ad.2
-        for <linux-omap@vger.kernel.org>; Tue, 06 Jan 2026 20:43:20 -0800 (PST)
+	s=arc-20240116; t=1767765467; c=relaxed/simple;
+	bh=iOvdWPELyx+skLN7UXWLkA+/bXZVeSPWgX2ioqSAssc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CCzbHyThmhX0LXuTpBE3f7DcZpMaMQ0GyL5RP8AzyfUgp49Olv8ZB+JoBPzY6jfczbWfRof4cjN4B+8eDZmyWFRxGlS57zMn65inq5y4VUYZXdTHj/FkB6M6gEyUKatI7t1spM/cgNQQaFWOQ9y9o9qegQ7YBmDXNtwalDh5Zx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sWywaJas; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c03e8ac1da3so991927a12.2
+        for <linux-omap@vger.kernel.org>; Tue, 06 Jan 2026 21:57:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767761000; x=1768365800; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5rLU7DAV9qpUwuBQAOxfbjMQs4IqSMkv9fgfYLMr0Ww=;
-        b=jvG32x9VHN8R+LNmGb8I5yrXn8sT4yGVC6XgnwQifJodOgrbV7CuVUylqWIazH8I/S
-         Qd8WaqzWgUlklP5mDt5vMzGdCBozmCqRF1pjT+IwDWftfMoiKUSyLESGzN0PbyDO1GgG
-         sYtlTac3LeWeTrXXHlSbyS0q2TiKJ4UW/3td1UzaWtfBg3oKmbL1Tsg+/z2Da2EoamDF
-         dX9Wjqz7cdOaktw56xY63un67XyoTjoJfY/c729WjYBJu6VFG5oe3VVDqCWR3QCkDoHS
-         ijCdh8jT2XH3IcRj7XMvLv+wvWz8OcFb6W5PpscLBpHoP14cTfCfb7FIUIU2VBERajeM
-         yymw==
+        d=linaro.org; s=google; t=1767765466; x=1768370266; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LC0H7XXkEOYKc23QOgFpX3RRHegQ2qJKsip88CL9K2Q=;
+        b=sWywaJasLS0e25dnLyTHRyLKKNw/GbbpcHZjHXsQtmWlL2D2mPJscklhT8TNgv4x70
+         NW4dtQd/N5uGbgm2WpXWmmvQPIgKz6cRelmm2hLfKT6EX+CgfJwkEL3kHwSRcHLywlSi
+         YvLmZe9RUIeNu6je3R/VhYp4WsJS54xWq4Qjj6jLUSf5om57IP3CJWOdxbFX8KkX3L41
+         aWk8ss69lN/kM/m0lk8g7MzMhwCm932F4UmZvck6j6jV28np3LxfUUkovqSQhge6J9m5
+         jgd5o2RXUSs2Svf/JSrKTna7tmXscpCj4SWiIEqjsJ9QPRrd6YfD5FEkwPagzL3aa8yq
+         gZMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767761000; x=1768365800;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5rLU7DAV9qpUwuBQAOxfbjMQs4IqSMkv9fgfYLMr0Ww=;
-        b=b9S56wxHvOBPhVHOYIcoTXQMcdwYeGeaswT0FF4impb2EsuyTXPC3778AahXCa/HVx
-         +EahVLZ5w5EsyJIZS9+Q/9WoQ+ubTgMmfEHCXZDiQcv/vbB8v8WVr2fnwXxTmHinT5PV
-         QVZrRftyG0dnhEomqsFEjJfVXjAj3Oed2vhWcwHfQkFiovqlmy5C9CmGXeXSijAcGq8C
-         pMzsGoG+oEtyRbXtScc0RQ8qFxxNn5ENDBPbpjayRQ3iEC5yh7ZEgw0/y2MrouavjY79
-         4E3H4mOqr6yxwh00JZ7qBiIMLL4xbnobU9cEvwDVCHe5ndBjpqnPs6p9QxQ+mUnqVtdc
-         M7FQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU9qcw2RyhhINQCv8Duv4sXj/zu/rpNPQ+eVwAvkZYeMlTF0Ql4hYAOh+e38P7r9jaF3cOxp4lJGsmo@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLb1ucovyBm9tdIARL0yLDwoeKWrVrqsZZAPpLyHdMNc8QORpq
-	ArdQ1+SFTZWYalnyuqQ+8qwAETB/oKjUeD3IlRvbGaklu41br+39/u7x
-X-Gm-Gg: AY/fxX5GeJJifc3VdbNf0+1porkkXKACwQZ2gcTY0HH2J6tsk+ecMR/ESdju7LNlBrz
-	Zvw21qYCfcjUW4ueHFALNqGYX0YvokjbvabF0L83oztJvSHdr/9XoOSFlHiWBar+7ZXd9GzSmCB
-	g9l9KUd2SHNJJTZWvbfkL5kT2utU1JSHsst0R+GFuhdbMdurVUWYkdWWA8Qtg03v6VDWtP2e7yd
-	qXxGUjLQKjphl5iP/U3G7PiPbJkhWATM/gg809mZIpHGH1j1EQDnv4VYCilixemd8e3zG3MsLRC
-	fu/JrePiEum1XX5jDt5/1LXi99jR1Tmx5MY5UzIofb3/gHlyFKWQ/dX9mY46y9oB8B5FFBQUJG1
-	rVEDVD/eT83hUz/Ay3zyjbCDobJPhwvuVs0AiANr5qFKxRP5j1grMapagdWNQ6NqdcRCbhZern9
-	zHhdsPihgba3cUXb5RSuztfI8TuwJnMw5jS0gu5lPx/1g=
-X-Google-Smtp-Source: AGHT+IEc8TO2toWTGIaoXuv5rNAydXLamcJRscYf8Qm/aRVC4j2jXnovQzTTCfCrrqFWoia694nIZA==
-X-Received: by 2002:a17:902:e952:b0:29f:2f40:76c4 with SMTP id d9443c01a7336-2a3ee48ace2mr10688365ad.34.1767761000170;
-        Tue, 06 Jan 2026 20:43:20 -0800 (PST)
-Received: from cmpatel-home.hsd1.or.comcast.net ([2601:1c0:5780:9200:d1c8:9d76:637a:6957])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c39ef2sm36866225ad.14.2026.01.06.20.43.19
+        d=1e100.net; s=20230601; t=1767765466; x=1768370266;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LC0H7XXkEOYKc23QOgFpX3RRHegQ2qJKsip88CL9K2Q=;
+        b=a43gHx1jzO+AmZnGZCrB72wLeBP3p/dcw/BpQuME0ggvuyy0AOUsOi+FPIt3H/9RYa
+         i4qFg/ovikqo5sbBKGEzT1AMDStXQ/RU6JV36soZtQ/vEJuX85MAmpMxn/T4NAGg8LHr
+         cyu0GaZOxm/N4mCNP/D9W8s1w6hOfFfK6SikyXobnO6sdeTQitf03JTIuTTgoAdcls8g
+         tLnnZCbCoimT1ZW6VI+js5jfLZJycj96D/q3quAURLLECPEyMiR77VB1UtwljgHM8MIn
+         lOSwPw/37jejNq1PwkjFUxBvZFo0jxYUanVIeL0in7dw2HkLtxHgLW1Ub+3OLJQ3PYk5
+         pOyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUqmIKCiTJ221YXQ4aXIXAw/ZNsTvKNjKjnecsP4TrohzVJ/7cGFjPiWx6ivrQ4LxzZXSer3cIFJQkV@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpYCMNO3uQdFE7ht/zBU/lB/lqMYoWtBBvzTiHdHGzdzECMnk3
+	fRIURCoZNDEwxqhX/WqDbBaGkIB8BE5U7dww6l4OO+Pep5P4d4mMNw1qeYwQf3e449U=
+X-Gm-Gg: AY/fxX7wJBNRhbRvmJwRDoJoNvHP3z/zW24KbWj+LXkuOxQT/+ccGx3pB7oPv3m8IkF
+	Os+a7zSQKo4aceYy5iqL+TqRievXk9y0+Y1XFML/iWvgw3Y2eH2Xl4/VgUFu4Yk/qnPuhnFvrIK
+	+ISOQJ02f1medaZ2mgn4WoClJSVhq578Y130wMGcfIiCMxg4dcuO7TtjyEORCUpvDuFhoQ64PDi
+	TLqzbx95xeI1GwHfmIimUDDDzLIkBvZconKOmgluXA95W2zwXRzAHqcmI6jfE3EKlhbwyBn8/gD
+	ZRUtq+/TvXTw3Chc4yHoDkS6QLK0KhnXnyjDr4NDuu5/aBOz2cgTyJWpS7xi83g/k2cmxvVdqu9
+	oGW6DJ1Ap7JjHD3ak2Y3EQ5CsQ8KAcrVwtceyuXV8z3VuTENgpRMhdU/v0a8aqP0L6qctPFZcs1
+	2ra17go0ynv1cFZTEXnEOXCg==
+X-Google-Smtp-Source: AGHT+IHbKbuUiaGFKdL4diTpNeLR/j5eosCfbHWdAQ8rrrg+/KnQsIV8kE3nI8jz4VVgZv3B/kEBbQ==
+X-Received: by 2002:a05:6a20:7355:b0:361:4f82:e545 with SMTP id adf61e73a8af0-3898fa1f824mr1336775637.53.1767765465528;
+        Tue, 06 Jan 2026 21:57:45 -0800 (PST)
+Received: from localhost ([122.172.80.63])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cc8d76sm38106705ad.84.2026.01.06.21.57.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 20:43:19 -0800 (PST)
-From: Chintan Patel <chintanlike@gmail.com>
-To: linux-fbdev@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-omap@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	tzimmermann@suse.de,
-	andy@kernel.org,
-	deller@gmx.de,
-	gregkh@linuxfoundation.org,
-	Chintan Patel <chintanlike@gmail.com>
-Subject: [PATCH v4 4/4] fbdev: sh_mobile_lcdc: Make FB_DEVICE dependency optional
-Date: Tue,  6 Jan 2026 20:42:57 -0800
-Message-ID: <20260107044258.528624-5-chintanlike@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260107044258.528624-1-chintanlike@gmail.com>
-References: <20260107044258.528624-1-chintanlike@gmail.com>
+        Tue, 06 Jan 2026 21:57:44 -0800 (PST)
+Date: Wed, 7 Jan 2026 11:27:42 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Andreas Kemnade <andreas@kemnade.info>, Nishanth Menon <nm@ti.com>, 
+	Kevin Hilman <khilman@kernel.org>
+Cc: Haotian Zhang <vulab@iscas.ac.cn>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, linux-omap@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] omap-cpufreq: Fix regulator resource leak in probe()
+Message-ID: <y2xyyyyhdoxflj4doa4y3a7prjqulcw63bdkor3fo3qsbmxvzy@dvhmfxkkzdqs>
+References: <20251215030327.1771-1-vulab@iscas.ac.cn>
+ <20260105101412.0ac7baa7@kemnade.info>
+ <pjmwnxp6wae3bbmzmzys4r5szw6ywxphi4qtmpmg7jsqadc5fm@fvozoujr4mi5>
+ <20260106182946.1c54d769@kemnade.info>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260106182946.1c54d769@kemnade.info>
 
-The sh_mobile_lcdc driver exposes overlay configuration via sysfs, but the
-core driver does not require CONFIG_FB_DEVICE.
+On 06-01-26, 18:29, Andreas Kemnade wrote:
+> hmm, it is performed when the device is removed/unbound, which does not necessarily
+> mean the driver is removed.
 
-Make overlay sysfs optional so that the driver can build and operate
-even when FB_DEVICE is disabled. The kernel naturally ignores the
-missing attribute group, preserving buildability and type safety.
+For the cpufreq drivers, the device is normally never removed. It either gets
+created from DT or some platform specific code creates the device for ever. But
+anyway, we were both talking about unbound being called, doesn't matter if it is
+the device or driver which is removed.
 
-Suggested-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Chintan Patel <chintanlike@gmail.com>
----
- drivers/video/fbdev/sh_mobile_lcdcfb.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+> But that does not prevent trouble if something
+> is still trying to access stuff here after driver removal. So it is not really
+> helpful.
 
-diff --git a/drivers/video/fbdev/sh_mobile_lcdcfb.c b/drivers/video/fbdev/sh_mobile_lcdcfb.c
-index dd950e4ab5ce..5f3a0cd27db3 100644
---- a/drivers/video/fbdev/sh_mobile_lcdcfb.c
-+++ b/drivers/video/fbdev/sh_mobile_lcdcfb.c
-@@ -1343,14 +1343,17 @@ static DEVICE_ATTR_RW(overlay_mode);
- static DEVICE_ATTR_RW(overlay_position);
- static DEVICE_ATTR_RW(overlay_rop3);
- 
--static struct attribute *overlay_sysfs_attrs[] = {
-+static struct attribute *overlay_sysfs_attrs[] __maybe_unused = {
- 	&dev_attr_overlay_alpha.attr,
- 	&dev_attr_overlay_mode.attr,
- 	&dev_attr_overlay_position.attr,
- 	&dev_attr_overlay_rop3.attr,
- 	NULL,
- };
-+
-+#ifdef CONFIG_FB_DEVICE
- ATTRIBUTE_GROUPS(overlay_sysfs);
-+#endif
- 
- static const struct fb_fix_screeninfo sh_mobile_lcdc_overlay_fix  = {
- 	.id =		"SH Mobile LCDC",
+It is not possible for something to still be using the resources from this
+driver (like the global variables) after remove() is called. If there is a bug
+in there, then that needs to be fixed instead.
+
+> Hmm, how does a device gets bound to this driver?
+
+Nice catch.
+
+Tried to look at history.
+
+commit cb6675d6a868 ("ARM: OMAP2+: Remove legacy PM init")
+
+This commit removed the platform device being created and mentions that stuff
+happens via DT, which AFAIU, creates the cpufreq-dt device instead.
+
+So no one should be using this driver since year 2016.
+
+Kevin, Nishanth, can you please confirm ? We should remove this driver.
+
+> But the fix is good for stable. So I would propose to add this
+> fix (to let it propagate to stable) and deorbit this driver.
+
+I don't think it is worth adding to stable when there are no users.
+
 -- 
-2.43.0
-
+viresh
 
