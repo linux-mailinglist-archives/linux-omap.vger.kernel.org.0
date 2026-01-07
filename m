@@ -1,94 +1,94 @@
-Return-Path: <linux-omap+bounces-5377-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5378-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F35B9CFC5F7
-	for <lists+linux-omap@lfdr.de>; Wed, 07 Jan 2026 08:33:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D98CFC603
+	for <lists+linux-omap@lfdr.de>; Wed, 07 Jan 2026 08:34:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 688ED302D88D
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Jan 2026 07:33:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 494323009965
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Jan 2026 07:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB711263C8F;
-	Wed,  7 Jan 2026 07:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36992C15A3;
+	Wed,  7 Jan 2026 07:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="urNM36zl";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="SVW++TCH";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="XjTDy6kE";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="nHCbqayP"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="e6GmTwmE";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="45Niwm1d";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="e6GmTwmE";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="45Niwm1d"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D881123C503
-	for <linux-omap@vger.kernel.org>; Wed,  7 Jan 2026 07:33:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF0F23C503
+	for <linux-omap@vger.kernel.org>; Wed,  7 Jan 2026 07:33:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767771206; cv=none; b=HH6SnTkVkA9PXKhl0/LjuoKAgZeJUUA3MssZ2JGdvvfTi+BFQ/3mxUURCFTlOD64u9CeR85C6ozTpEQFAM53nkdlJV7K14c1GIA50MeIU3WjOxw8sMWY93W+wYKNizP8MdQnP+3fqRyQColr/pnKQMgNzpXZIyguHqEwXE5Cusg=
+	t=1767771238; cv=none; b=DgJyA752FAJHzLXp6ovx9ZTHFc4b1FpF4erLtzTJfkvtBaZOU3utaKwPCEO/E3ez5K+ON6cpwCH9ABjs/n0JKzTtfjgeLqircO6G6X3zMIU0/NtOJ6M2Y5JyE+aLPt34dJCPIx2uDDGkD1YrGh5SsA6tSXxzI6tOJJLYLaDBY9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767771206; c=relaxed/simple;
-	bh=fT5mtvqSqCc3ppOR95lM0v7uMiqWfowxVZee5Lerm3o=;
+	s=arc-20240116; t=1767771238; c=relaxed/simple;
+	bh=IuDnHV2QuvnWMg1nFyNtWq5Fs6K9+kEL4ALnoc535Q8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YynZVLyZm5TrG/u0ekTXmBk8/vtfm4MCpceWm2KzaJEcJD/qea3r3IRkXShUt2eJVTrWGJFmwt2p8PXnEaGMrEDK0Jcvp7+mNZ4794AIuNER+Cg/rUjap9L8+WcsZG3opWlG8HLVS2suaGLpcBWP55qm01AK4WTbW1M0Lz3WvXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=urNM36zl; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=SVW++TCH; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=XjTDy6kE; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=nHCbqayP; arc=none smtp.client-ip=195.135.223.131
+	 In-Reply-To:Content-Type; b=e4+LCgMbO7l8Il0UE1UMEOhg4/5baPv4jNAXj7DOIkj2copIp1+jgn9lv8vRDdCDnsqwIsOzHfoQpXT/fLzeLqkMmTKr6fzUFmXgfE12PxAqEKg6jMmTfqQqtQ6S/KArW6b9IlWuMgT+mtlCEwd7mfEpf2Bu8AZF3Zy5WCrscJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=e6GmTwmE; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=45Niwm1d; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=e6GmTwmE; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=45Niwm1d; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id C615E5BCDA;
-	Wed,  7 Jan 2026 07:33:21 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 75F4633AE6;
+	Wed,  7 Jan 2026 07:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1767771202; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1767771234; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jbQ6F1Id175wdNW1Z1StlgxuCVGW3fVxij8J49gh0hc=;
-	b=urNM36zl7LxtLlrIxaPSWAM6fDzZGRdeJ/IvS6e6QSkA8KRwYM+VD2b7gU4GZHKPUNLH5O
-	59Yb9B0aW68vhWnWqoOxJTT+kwkEzIoElIlLeljBm7ZrZgG91lAhbc6UA30c3JjMfnnixT
-	SRRdcuva1eqFtFTaFnu6Z5vZ0lu33Co=
+	bh=YTfH57cFLVxaRsvunRKLGg50I7siMF4FalkJ59/VEeY=;
+	b=e6GmTwmEJGtXp95yn0E/gbgQlCdGoJ33og40KFGach7gphT8TA8tADAoL2glnD10b4x/n1
+	HDROsoEvys+DHbLoxx2WUGSTxo1n9LJY3hrodG+GJmHGs85qpn6vndhaWUg1RiLETjkKeO
+	ct3v78I15LX/Su1rRVYSifm61dDs8xE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1767771202;
+	s=susede2_ed25519; t=1767771234;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jbQ6F1Id175wdNW1Z1StlgxuCVGW3fVxij8J49gh0hc=;
-	b=SVW++TCH5MqV5C7pRJvO4kJ3COOyIWuSk++lnfqPrNNAd6Eobgxf4PKZEcmAZxuTyXgo+6
-	ki9xtqJePFFZSuCA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XjTDy6kE;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=nHCbqayP
+	bh=YTfH57cFLVxaRsvunRKLGg50I7siMF4FalkJ59/VEeY=;
+	b=45Niwm1dcb1g9fb3xAo895dpHDawhlrj+DGe3fDBUn7sY1VcAuOyA9U+uQ2mQTdqZ73PEJ
+	yJNmIy+6QTe9INAQ==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e6GmTwmE;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=45Niwm1d
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1767771201; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1767771234; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jbQ6F1Id175wdNW1Z1StlgxuCVGW3fVxij8J49gh0hc=;
-	b=XjTDy6kEGa7qrLI42gsBRs5Q0Um30g07NqIsw9hr7HuyuCqRrAczDPGLqtORdr5ZjB4Itx
-	Y99EhgSzAOxw1eMDuPm4MyFtuNan1Ce+mY9N7yWE9lskBNDDM9oxjmCu9bG8lqWEVLGXvT
-	jVRjOIyLXuzf9qv2pWnSHXTagOe/a0M=
+	bh=YTfH57cFLVxaRsvunRKLGg50I7siMF4FalkJ59/VEeY=;
+	b=e6GmTwmEJGtXp95yn0E/gbgQlCdGoJ33og40KFGach7gphT8TA8tADAoL2glnD10b4x/n1
+	HDROsoEvys+DHbLoxx2WUGSTxo1n9LJY3hrodG+GJmHGs85qpn6vndhaWUg1RiLETjkKeO
+	ct3v78I15LX/Su1rRVYSifm61dDs8xE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1767771201;
+	s=susede2_ed25519; t=1767771234;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jbQ6F1Id175wdNW1Z1StlgxuCVGW3fVxij8J49gh0hc=;
-	b=nHCbqayPUaZW9Cve8zDIpDTfdx1fMEHATnBRbxlRq/jQZnEs7Yi6sVuqTMwi4LP4KmsRGB
-	I1cRJ672eT4BdnDQ==
+	bh=YTfH57cFLVxaRsvunRKLGg50I7siMF4FalkJ59/VEeY=;
+	b=45Niwm1dcb1g9fb3xAo895dpHDawhlrj+DGe3fDBUn7sY1VcAuOyA9U+uQ2mQTdqZ73PEJ
+	yJNmIy+6QTe9INAQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 822453EA63;
-	Wed,  7 Jan 2026 07:33:21 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 33FFF3EA63;
+	Wed,  7 Jan 2026 07:33:54 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 4wJYHkEMXmnVKgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 07 Jan 2026 07:33:21 +0000
-Message-ID: <aa922030-b0a1-4503-a3c0-7ce4c36c236e@suse.de>
-Date: Wed, 7 Jan 2026 08:33:21 +0100
+	id vew/C2IMXmnvKwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 07 Jan 2026 07:33:54 +0000
+Message-ID: <6382adc5-c27f-487a-80d2-32e6cf5eae18@suse.de>
+Date: Wed, 7 Jan 2026 08:33:53 +0100
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -96,13 +96,14 @@ List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/4] fbdev: omapfb: Make FB_DEVICE dependency optional
+Subject: Re: [PATCH v4 4/4] fbdev: sh_mobile_lcdc: Make FB_DEVICE dependency
+ optional
 To: Chintan Patel <chintanlike@gmail.com>, linux-fbdev@vger.kernel.org,
  linux-staging@lists.linux.dev, linux-omap@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
  andy@kernel.org, deller@gmx.de, gregkh@linuxfoundation.org
 References: <20260107044258.528624-1-chintanlike@gmail.com>
- <20260107044258.528624-4-chintanlike@gmail.com>
+ <20260107044258.528624-5-chintanlike@gmail.com>
 Content-Language: en-US
 From: Thomas Zimmermann <tzimmermann@suse.de>
 Autocrypt: addr=tzimmermann@suse.de; keydata=
@@ -129,12 +130,12 @@ Autocrypt: addr=tzimmermann@suse.de; keydata=
  SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
  Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
  4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20260107044258.528624-4-chintanlike@gmail.com>
+In-Reply-To: <20260107044258.528624-5-chintanlike@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Flag: NO
 X-Spam-Score: -4.51
-X-Rspamd-Queue-Id: C615E5BCDA
+X-Rspamd-Queue-Id: 75F4633AE6
 X-Spamd-Result: default: False [-4.51 / 50.00];
 	BAYES_HAM(-3.00)[100.00%];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
@@ -156,7 +157,7 @@ X-Spamd-Result: default: False [-4.51 / 50.00];
 	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,kernel.org,gmx.de,linuxfoundation.org];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	FROM_EQ_ENVFROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,suse.de:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.com:url];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.com:url,suse.de:mid,suse.de:dkim,suse.de:email];
 	RCVD_COUNT_TWO(0.00)[2];
 	TO_MATCH_ENVRCPT_ALL(0.00)[];
 	DKIM_TRACE(0.00)[suse.de:+]
@@ -167,13 +168,12 @@ X-Spam-Level:
 
 
 Am 07.01.26 um 05:42 schrieb Chintan Patel:
-> omapfb provides several sysfs interfaces for framebuffer configuration
-> and debugging, but these are not required for the core driver.
+> The sh_mobile_lcdc driver exposes overlay configuration via sysfs, but the
+> core driver does not require CONFIG_FB_DEVICE.
 >
-> Remove the hard dependency on CONFIG_FB_DEVICE and make sysfs support
-> optional by using dev_of_fbinfo() to obtain the backing device at runtime.
-> When FB_DEVICE is disabled, sysfs operations are skipped while the code
-> still builds and is type-checked.
+> Make overlay sysfs optional so that the driver can build and operate
+> even when FB_DEVICE is disabled. The kernel naturally ignores the
+> missing attribute group, preserving buildability and type safety.
 >
 > Suggested-by: Helge Deller <deller@gmx.de>
 > Signed-off-by: Chintan Patel <chintanlike@gmail.com>
@@ -181,70 +181,32 @@ Am 07.01.26 um 05:42 schrieb Chintan Patel:
 Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
 
 > ---
->   drivers/video/fbdev/omap2/omapfb/Kconfig       |  3 ++-
->   .../video/fbdev/omap2/omapfb/omapfb-sysfs.c    | 18 ++++++++++++++----
->   2 files changed, 16 insertions(+), 5 deletions(-)
+>   drivers/video/fbdev/sh_mobile_lcdcfb.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
 >
-> diff --git a/drivers/video/fbdev/omap2/omapfb/Kconfig b/drivers/video/fbdev/omap2/omapfb/Kconfig
-> index f4cdf999a080..2d20e79adefc 100644
-> --- a/drivers/video/fbdev/omap2/omapfb/Kconfig
-> +++ b/drivers/video/fbdev/omap2/omapfb/Kconfig
-> @@ -5,7 +5,6 @@ config OMAP2_VRFB
->   menuconfig FB_OMAP2
->   	tristate "OMAP2+ frame buffer support"
->   	depends on FB
-> -	depends on FB_DEVICE
->   	depends on DRM_OMAP = n
->   	depends on GPIOLIB
->   	select FB_OMAP2_DSS
-> @@ -13,6 +12,8 @@ menuconfig FB_OMAP2
->   	select FB_IOMEM_HELPERS
->   	help
->   	  Frame buffer driver for OMAP2+ based boards.
-> +	  FB_DEVICE is not required, but if enabled, provides sysfs interface
-> +	  for framebuffer configuration and debugging.
+> diff --git a/drivers/video/fbdev/sh_mobile_lcdcfb.c b/drivers/video/fbdev/sh_mobile_lcdcfb.c
+> index dd950e4ab5ce..5f3a0cd27db3 100644
+> --- a/drivers/video/fbdev/sh_mobile_lcdcfb.c
+> +++ b/drivers/video/fbdev/sh_mobile_lcdcfb.c
+> @@ -1343,14 +1343,17 @@ static DEVICE_ATTR_RW(overlay_mode);
+>   static DEVICE_ATTR_RW(overlay_position);
+>   static DEVICE_ATTR_RW(overlay_rop3);
 >   
->   if FB_OMAP2
->   
-> diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c b/drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c
-> index 831b2c2fbdf9..38a635d38d58 100644
-> --- a/drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c
-> +++ b/drivers/video/fbdev/omap2/omapfb/omapfb-sysfs.c
-> @@ -558,10 +558,15 @@ int omapfb_create_sysfs(struct omapfb2_device *fbdev)
->   
->   	DBG("create sysfs for fbs\n");
->   	for (i = 0; i < fbdev->num_fbs; i++) {
-> +		struct device *dev;
->   		int t;
+> -static struct attribute *overlay_sysfs_attrs[] = {
+> +static struct attribute *overlay_sysfs_attrs[] __maybe_unused = {
+>   	&dev_attr_overlay_alpha.attr,
+>   	&dev_attr_overlay_mode.attr,
+>   	&dev_attr_overlay_position.attr,
+>   	&dev_attr_overlay_rop3.attr,
+>   	NULL,
+>   };
 > +
-> +		dev = dev_of_fbinfo(fbdev->fbs[i]);
-> +		if (!dev)
-> +			continue;
-> +
->   		for (t = 0; t < ARRAY_SIZE(omapfb_attrs); t++) {
-> -			r = device_create_file(fbdev->fbs[i]->dev,
-> -					&omapfb_attrs[t]);
-> +			r = device_create_file(dev, &omapfb_attrs[t]);
+> +#ifdef CONFIG_FB_DEVICE
+>   ATTRIBUTE_GROUPS(overlay_sysfs);
+> +#endif
 >   
->   			if (r) {
->   				dev_err(fbdev->dev, "failed to create sysfs "
-> @@ -580,9 +585,14 @@ void omapfb_remove_sysfs(struct omapfb2_device *fbdev)
->   
->   	DBG("remove sysfs for fbs\n");
->   	for (i = 0; i < fbdev->num_fbs; i++) {
-> +		struct device *dev;
-> +
-> +		dev = dev_of_fbinfo(fbdev->fbs[i]);
-> +		if (!dev)
-> +			continue;
-> +
->   		for (t = 0; t < ARRAY_SIZE(omapfb_attrs); t++)
-> -			device_remove_file(fbdev->fbs[i]->dev,
-> -					&omapfb_attrs[t]);
-> +			device_remove_file(dev, &omapfb_attrs[t]);
->   	}
->   }
->   
+>   static const struct fb_fix_screeninfo sh_mobile_lcdc_overlay_fix  = {
+>   	.id =		"SH Mobile LCDC",
 
 -- 
 --
