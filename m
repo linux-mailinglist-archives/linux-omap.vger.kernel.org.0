@@ -1,98 +1,118 @@
-Return-Path: <linux-omap+bounces-5387-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5388-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55BCFCFFA44
-	for <lists+linux-omap@lfdr.de>; Wed, 07 Jan 2026 20:06:19 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDA00D00698
+	for <lists+linux-omap@lfdr.de>; Thu, 08 Jan 2026 00:44:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6826D325AFB3
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Jan 2026 18:44:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DD64B30060FA
+	for <lists+linux-omap@lfdr.de>; Wed,  7 Jan 2026 23:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B07A369994;
-	Wed,  7 Jan 2026 15:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96DE92F90DB;
+	Wed,  7 Jan 2026 23:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i/l3QeYU"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="M4uB9ZZP"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B49369974;
-	Wed,  7 Jan 2026 15:17:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E88828B4FE;
+	Wed,  7 Jan 2026 23:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767799024; cv=none; b=ejQLfEbT9y08Y+xzW6SjCfQAOTe6J3/cTF1WG/njroEbmeG+xVvSGK4KixPWtZ11m5qezT5NST8/jD7HFJpcOKDVTOiBd6Ahl2MjoYJyHfB5hAXyH/7EueQ0dSxGGKFcAQpbyi2nKzAw8uVoDBpL1IEjqpXwgHKm9llSH/DErgk=
+	t=1767829470; cv=none; b=Y7iVVaLIuVxFSyLrb8bvuQIrxTdCe+UmjlxNbQuTuko6rQZh9ATt1COycnF/Bi1iY9PccIgGbta4cU1lHyJslXma3/9A+8Tkbn7BjcI7Ie3y/ZAcFFCIAEgZIDom1w4dHZAl7TcWbcZQARhMwTznQzVQ82pfhq6fkHorH+nzLmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767799024; c=relaxed/simple;
-	bh=I2Zaa2iNkRHyunAJME9kRaq92t0pbT4Z0Uzi0j1sD6Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p859OPNmzJnayVMH6i+LUuJwSu6KBbXPOMTB7q/XmhVBXbrH4OCxG4lw3aVzCaR5aTXP4PnPbxbBOp2SuhcUdzEGA+Y0ozgOmT9nNmnGmAmRyLoTOeNjYToiKbyjb8xRxRImWQoRWv5ZZibzw0ERxyMf72ANOmjUCvSXjmIJS9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i/l3QeYU; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767799022; x=1799335022;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=I2Zaa2iNkRHyunAJME9kRaq92t0pbT4Z0Uzi0j1sD6Q=;
-  b=i/l3QeYUTg+FBUhHDNV0u/mCiFZov8w8IRwIJ+po9UBwb5nPt1jVo0j+
-   T/t2rzaTNjWdN0WiFbLjKKcWbuVe6O3BLOZigpVPeSmrX9uIWjA/EANlD
-   6O8wnTdZvKhEuX4ILlx4J8hHcLepX5rDrW4NvSI8/XNppMTKAuL0jY14U
-   EZoAkH/TtItUxLqyWdCrMvC7aVQBBMrPLsssIbxCgCtCMzxr5xR4VTZch
-   AfQuc0H9HE/LRleH2oIiV9Ou06OAnofukgXn5nFpzNxkR3MdSTo+XLv94
-   235FndlqJ8Le8P+4EQYCl9ZUMOTVwk/aehQTJj6UPIN/oYqLlP4lSwkzO
-   g==;
-X-CSE-ConnectionGUID: 88HdiZ/4Qqazcvkr5z0dqg==
-X-CSE-MsgGUID: XFGzOR9MRvuaYqEtAzw62g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="69220234"
-X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
-   d="scan'208";a="69220234"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 07:17:01 -0800
-X-CSE-ConnectionGUID: GvHOTgggQweSSjr8NaJn2Q==
-X-CSE-MsgGUID: W3I1JoekQ0KpoF1sJeEycw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
-   d="scan'208";a="234095069"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.245.168])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 07:16:58 -0800
-Date: Wed, 7 Jan 2026 17:16:56 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Chintan Patel <chintanlike@gmail.com>
-Cc: linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, tzimmermann@suse.de,
-	andy@kernel.org, deller@gmx.de, gregkh@linuxfoundation.org
-Subject: Re: [PATCH v4 2/4] staging: fbtft: Make FB_DEVICE dependency optional
-Message-ID: <aV546KdXG8KotqKj@smile.fi.intel.com>
-References: <20260107044258.528624-1-chintanlike@gmail.com>
- <20260107044258.528624-3-chintanlike@gmail.com>
+	s=arc-20240116; t=1767829470; c=relaxed/simple;
+	bh=oEpYS0+p12KjtD1xjYH6uX4JLkjrqmw8h27UjRsu9RI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=rtXC6qQ4UdtyS5knD+TrYArrYaSnLK2h2C194+OAF9Z9t/DPr4GtE3jlXXoeiq+SCDLcaojwj3DNvqbuvYSEh3w21/63VbBWmDlACaLGOI82tihWmOGJvlwGjRtn6afWun/C3+R4SSPBVdhXv+AEEiwdShuCOZWJdKbtt9qWm30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=M4uB9ZZP; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1767829460;
+	bh=vvbUvshcKay+5SyzipSpDu2A7P68B5vbaeosqp5G+WQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=M4uB9ZZPVsPXY6riJWKTZi9afSO24SmdJ5MMFaOwN3rouRWR5waBAj2H4hjNLawRM
+	 ZJzz7xC13YYt7/R065LFCDhNv7Vp07k8CK0xHfTgbenYVw3gDPCCHlKw/QzXzX4MgT
+	 tolqAxGati8jljrqUv5Y8lBIUc6yr/q7JeoeTB6282y47EHXOdU5QpmdI3RMbUFfpg
+	 /1GiryloDRy6NI38fkGfFuQGc1PQvVg9MrRZOdZQ2iQCjN048LDo+eDLS/kfAIfi1D
+	 ngkxKedmntRuoWPybC08mbY7EAn+gdJbyVzihucVkEZ1cZ4L9jlZKsTmatsnhFaeD9
+	 QKzVOIbpc0Wdw==
+Received: from [192.168.68.115] (unknown [180.150.112.60])
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 65D5479F8C;
+	Thu,  8 Jan 2026 07:44:18 +0800 (AWST)
+Message-ID: <245bb0d1cfc1dee91baaab7c1fd73bc264586a0d.camel@codeconstruct.com.au>
+Subject: Re: [PATCH 0/3] pinctrl: single: bit-per-mux DT flexibility, probe
+ robustness, and consistent pinconf offsets
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
+To: Billy Tsai <billy_tsai@aspeedtech.com>, Tony Lindgren
+ <tony@atomide.com>,  Haojian Zhuang <haojian.zhuang@linaro.org>, Linus
+ Walleij <linusw@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ BMC-SW@aspeedtech.com
+Date: Thu, 08 Jan 2026 10:14:17 +1030
+In-Reply-To: <20251222-upstream_pinctrl_single-v1-0-e4aaa4eeb936@aspeedtech.com>
+References: 
+	<20251222-upstream_pinctrl_single-v1-0-e4aaa4eeb936@aspeedtech.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260107044258.528624-3-chintanlike@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Jan 06, 2026 at 08:42:55PM -0800, Chintan Patel wrote:
-> fbtft provides sysfs interfaces for debugging and gamma configuration,
-> but these are not required for the core driver.
-> 
-> Drop the hard dependency on CONFIG_FB_DEVICE and make sysfs support
-> optional by using dev_of_fbinfo() at runtime. When FB_DEVICE is disabled,
-> sysfs operations are skipped while the code remains buildable and
-> type-checked.
+Hi Billy,
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+On Mon, 2025-12-22 at 20:04 +0800, Billy Tsai wrote:
+> This series updates pinctrl-single to behave more predictably on
+> bit-per-mux platforms by making its DT interface more flexible, its probe
+> path more tolerant of pre-reserved resources, and its pin configuration
+> register addressing consistent with pinmux.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Can you provide some more context here? For instance, this is motivated
+by the AST2700 - can you talk a bit more about why its design needs
+these changes?
 
+> It extends the driver to accept a per-pin <pin_index func_sel> style
+> description for bit-per-mux users while keeping the existing
+> pinctrl-single,bits binding as the preferred input when available. It als=
+o
+> relaxes probe failure when the I/O memory region cannot be reserved
+> exclusively, allowing initialization to proceed with a warning on systems
+> where that region is already reserved.
+>=20
 
+Can you unpack what's going on here in the context of the target soc?
+
+Andrew
+
+>  Finally, it aligns pinconf register
+> offset computation with the pinmux logic so that both muxing and pin
+> configuration access the same register offsets, avoiding incorrect pincon=
+f
+> operations on bit-per-mux configurations.
+>=20
+> Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+> ---
+> Billy Tsai (3):
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pinctrl: single: add per-pin binding suppo=
+rt for bit-per-mux
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pinctrl: single: Allow probe to continue i=
+f mem region busy
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pinctrl: single: unify pinconf offset mapp=
+ing with pinmux
+>=20
+> =C2=A0drivers/pinctrl/pinctrl-single.c | 150 ++++++++++++++++++++++++++++=
+-----------
+> =C2=A01 file changed, 110 insertions(+), 40 deletions(-)
+> ---
+> base-commit: dd9b004b7ff3289fb7bae35130c0a5c0537266af
+> change-id: 20251222-upstream_pinctrl_single-99e8df1fe2b9
+>=20
+> Best regards,
 
