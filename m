@@ -1,47 +1,47 @@
-Return-Path: <linux-omap+bounces-5391-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5389-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31F38D039E1
-	for <lists+linux-omap@lfdr.de>; Thu, 08 Jan 2026 16:01:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01275D03D00
+	for <lists+linux-omap@lfdr.de>; Thu, 08 Jan 2026 16:25:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 18434300AC9D
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Jan 2026 14:57:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8C5773019E3E
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Jan 2026 15:20:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73570361DCF;
-	Thu,  8 Jan 2026 08:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3AA3559F6;
+	Thu,  8 Jan 2026 08:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="KJej+N6e"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="q6I7B6Ww"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089C4350D41;
-	Thu,  8 Jan 2026 08:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D2335F8BA;
+	Thu,  8 Jan 2026 08:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767860831; cv=none; b=spQilgJ026Td4CGbnB/BUUr5Xcgv2yuOkS69wVvkNv6IfJVILhfgQNSz5ks2zXdt+qlML31s0TrahGe3inkW4swlu6Oeha1dKUYYzMBO4camkBU6be/o9LeNaffgfJh8R28V+NM5x4HIsN1EIcLTm0a6BLJAUG+ueQe60Qe9JtA=
+	t=1767860816; cv=none; b=madnIzT4SIpD492+vKpzbVcGSI4gMDlcKCl60ZMAkX650oVp4tNlyA54+OHsrm1L2tCFZ9POOVsVdJp7hBp34kS0T/dTXwSks70McQcQ41TZ62YQ5lEWqSaOJ3L44QneoouGqnwrCpg0FgWljsPdwE0MFaw7VRqfhk+T0vFpxLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767860831; c=relaxed/simple;
-	bh=ye9EsldyVtkyFEEHWlpwVnLNt05/xILj4xvBjgVBhPU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KSD7Du++d1v9lM9lnPFTmf7/LtmsQ2ryw8pzi+5n/thwm6EdshAQiwpKGR/1OdkyhVsOJWviHP+AW/U2SMS1E6NuMVZAXIeqHsOVAewHcAAVrTGe/H9HJvHiUx5YO2uyL6IVSSdErJSZtAe/4QlNspzMim6Q/rjCEX7vhjCr/WE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=KJej+N6e; arc=none smtp.client-ip=178.238.236.174
+	s=arc-20240116; t=1767860816; c=relaxed/simple;
+	bh=rdEwDabUWU2buJZW2ZyuGq8H/bqEDCqdfFLn0U7j3MQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=M7Rs4D1DzZ3HjJh1V6QCffhTndvayQ2fi2tDOv8UlRMkWIsF6T0HaGEd64TxnFx8iylHLfwqRBjsqIUibg8sLkKxUhZnrv5xAnJwCQnoJR31BZ01LxDxW+mW/lg0BJEfrn5HHcLObjCJGYp1A/akTPCvBcrivWuelYnc+IaFFWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=q6I7B6Ww; arc=none smtp.client-ip=178.238.236.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=Cc:In-Reply-To:References:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=sgbPhfaFLVrbkpz4PqBhY7w/yeiN7lhQkPSEva2tULE=; b=KJej+N6egpcNSGRSIDDDiXm34j
-	gRfFIreBUNUNlzGuOq+WgHgSKu7wyoNXUu932sCL317b9/pJ6Is2aG7JAlLEFMiw5lGVNASJ0yBsM
-	LYYTMaQuhOudmvK7tyRAJWSe7yfga0yckzLGfEnPYN7u06/3rzUbWMimuw4qsYSzJHJHjiLusFhBk
-	Z05oqBHymIn5XrSc+MnzfgAz9DMf0ZYTyn1tAk0WuPoHVi3Wt/Hv5Nkz8RlbbWAlcdhkmB3uzzy0I
-	Pqlwe8bpm1gQsXDCXe68r5NJuN1gRi6QNNu5nLpBZpsPS5N7Iuuz5EmDe4ilYLTLYUv2df7esG3Wo
-	vmIM0/kQ==;
+	d=kemnade.info; s=20220719; h=Cc:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=5K1mb25vjRxs8M3KsS9XWxb/bhwtw9aw+OSOppGStAA=; b=q6I7B6Wwl9z6fZUZGi1VlaFmtY
+	8+bNul5jJ3uLqMD/0Lv8u3VOQ12fcrZ4GGmFqOT09at/6IJEkaWaI4ClOi2zu3qDjf5l7yTmByISv
+	qVv0S4jfiMICHgmtfFVc0gW931kzSYbOxxwQ6RqM3gvf5HLSJIcfmewUxiBljQbkaVr7usHslBDGd
+	sSBGmT/Yvtp+S5MDbZ8styy9zmL0MZN0Vwqp1buehMx3hQbBWd+/5xQhMJ+o8szzbGncGTsc2pHOY
+	cPGEkte6H+7lBwUJxrP9m8F43vQcMSfxTvYwvPmhlOvbUQEQjhkiTbubZ0pyJZ/XNTD940vPCa9YP
+	BfCVuiXQ==;
 From: Andreas Kemnade <andreas@kemnade.info>
-Date: Thu, 08 Jan 2026 09:26:13 +0100
-Subject: [PATCH 2/2] MAINTAINERS: remove omap-cpufreq
+Subject: [PATCH 0/2] cpufreq: omap: remove driver
+Date: Thu, 08 Jan 2026 09:26:11 +0100
+Message-Id: <20260108-omap-cpufreq-removal-v1-0-8fe42f130f48@kemnade.info>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -50,9 +50,10 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260108-omap-cpufreq-removal-v1-2-8fe42f130f48@kemnade.info>
-References: <20260108-omap-cpufreq-removal-v1-0-8fe42f130f48@kemnade.info>
-In-Reply-To: <20260108-omap-cpufreq-removal-v1-0-8fe42f130f48@kemnade.info>
+X-B4-Tracking: v=1; b=H4sIACRqX2kC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDQwML3fzcxALd5ILStKLUQt2i1Nz8ssQcXVMzQ9M0E4PU1GRLMyWg1oK
+ i1LTMCrCx0bG1tQC2ALhCZgAAAA==
+X-Change-ID: 20260108-omap-cpufreq-removal-5615f40eec96
 To: "Rafael J. Wysocki" <rafael@kernel.org>, 
  Viresh Kumar <viresh.kumar@linaro.org>
 Cc: linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
@@ -61,36 +62,46 @@ Cc: linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
  Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
  linux-omap@vger.kernel.org
 X-Mailer: b4 0.15-dev-a6db3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=564; i=andreas@kemnade.info;
- h=from:subject:message-id; bh=ye9EsldyVtkyFEEHWlpwVnLNt05/xILj4xvBjgVBhPU=;
- b=owGbwMvMwCUm/rzkS6lq2x3G02pJDJnxWZZd7ib110zc2gLvvfJlZyxfOYnvsInGG5d7AnMvF
- M8X1BToKGVhEONikBVTZPllreD2SeVZbvDUCHuYOaxMIEMYuDgFYCLbFRn++3/cOuG1jA3POQZu
- iVdWYn09JzeUN0XrFJypMF5Sz/34M8P/7AnHDl0L1HlV0ODdG6pmdd3F/oH19b/PWSZLX1ffEL+
- aFwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1081; i=andreas@kemnade.info;
+ h=from:subject:message-id; bh=rdEwDabUWU2buJZW2ZyuGq8H/bqEDCqdfFLn0U7j3MQ=;
+ b=owGbwMvMwCUm/rzkS6lq2x3G02pJDJnxWabXM/qvMBprV+ZqHJpwwCA1v3dS5r2yucuWvtcQK
+ pDbq2/XUcrCIMbFICumyPLLWsHtk8qz3OCpEfYwc1iZQIYwcHEKwETkFjEyNG/pVAyTUhNXjHWt
+ N9zl2643feHyCU9Y7z8J+B/aLfYxm+G/M8fq0hV/Tmly12m83x3p9Hyx9oHzsgpH2beWfdjUaHC
+ GFQA=
 X-Developer-Key: i=andreas@kemnade.info; a=openpgp;
  fpr=EEC0DB858E66C0DA70620AC07DBD6AC74DE29324
 
-Remove entry for omap-cpufreq, since it is removed.
+The driver is not useable since 10 years, and the affected
+platforms have alternative drivers, so remove it.
+
+To: Rafael J. Wysocki <rafael@kernel.org>
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-pm@vger.kernel.org
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: Andreas Kemnade <andreas@kemnade.info>
+Cc: Kevin Hilman <khilman@baylibre.com>
+Cc: Roger Quadros <rogerq@kernel.org>
+Cc: Tony Lindgren <tony@atomide.com>
+Cc: linux-omap@vger.kernel.org
 
 Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
 ---
- MAINTAINERS | 1 -
- 1 file changed, 1 deletion(-)
+Andreas Kemnade (2):
+      cpufreq: omap: remove driver
+      MAINTAINERS: remove omap-cpufreq
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 765ad2daa2183..1065195a22ce2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -19132,7 +19132,6 @@ M:	Kevin Hilman <khilman@kernel.org>
- L:	linux-omap@vger.kernel.org
- S:	Maintained
- F:	arch/arm/*omap*/*pm*
--F:	drivers/cpufreq/omap-cpufreq.c
- 
- OMAP POWERDOMAIN SOC ADAPTATION LAYER SUPPORT
- M:	Paul Walmsley <paul@pwsan.com>
+ MAINTAINERS                    |   1 -
+ drivers/cpufreq/Kconfig.arm    |   5 --
+ drivers/cpufreq/Makefile       |   1 -
+ drivers/cpufreq/omap-cpufreq.c | 195 -----------------------------------------
+ 4 files changed, 202 deletions(-)
+---
+base-commit: 9ace4753a5202b02191d54e9fdf7f9e3d02b85eb
+change-id: 20260108-omap-cpufreq-removal-5615f40eec96
 
--- 
-2.47.3
+Best regards,
+--  
+Andreas Kemnade <andreas@kemnade.info>
 
 
