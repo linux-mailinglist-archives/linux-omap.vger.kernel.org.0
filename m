@@ -1,124 +1,118 @@
-Return-Path: <linux-omap+bounces-5398-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5399-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A12B7D05F5C
-	for <lists+linux-omap@lfdr.de>; Thu, 08 Jan 2026 21:01:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B4CD06043
+	for <lists+linux-omap@lfdr.de>; Thu, 08 Jan 2026 21:17:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ACC61301C903
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Jan 2026 20:01:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 72EAD3033D6E
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Jan 2026 20:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A911032A3C3;
-	Thu,  8 Jan 2026 20:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1703D322B7B;
+	Thu,  8 Jan 2026 20:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Y1rGkU88"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="OuJyDc1N"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE13223BCFF
-	for <linux-omap@vger.kernel.org>; Thu,  8 Jan 2026 20:01:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D76C272E6D
+	for <linux-omap@vger.kernel.org>; Thu,  8 Jan 2026 20:15:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767902463; cv=none; b=remc/zP8xbZ9YsfSi7qm7rFxfU5SD5/jEQhubGeoR5pN48KDrgVPlxWgvIqvJy5nl/jIiz7obvHsXj42hBt25JQl2mx6Fgx09jv86P5JIZElO1v/yalphnPf/eMJYog9EgoC0JVq2HiIVzUlKWm4Hdvh2DvEInelJvK3s/mFQpI=
+	t=1767903372; cv=none; b=h1J12VoKV8y21oK8oAoKNigDOEffGLSWXO9lrfXFP2e+hYuNFaMbELsVnjt1fBLW1IneaNQxkQX06yiff3Ej+4tiNbRZdNc0jOYtNXxhkYGvNen/QXw2ycn/c2hCDiepYZeH9m7C/zxkO2vK18oPJLBLThAEBNVqxDWePAKFm4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767902463; c=relaxed/simple;
-	bh=DE6Sp1xOrVBNsH6sK2fuRAlXsqjZwLxh07gWzBcBmtg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=BKaFTmswdfEBFwhM0psviB+PX5CaIjHPbRnKdSsPN6TDIE9TMmK/MnuTJua0YyqRNYBI5kc6968oYgy2pw8S+Dtj9/QtW8SOBhIrIFdOEl+6Dj77hq1LoRZgX8QzmFspUahbwZ4d2aecPD7gdlmOnGqpiX+ZL4bDADi8Ytcsnac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Y1rGkU88; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-42fb2314eb0so2860095f8f.2
-        for <linux-omap@vger.kernel.org>; Thu, 08 Jan 2026 12:01:01 -0800 (PST)
+	s=arc-20240116; t=1767903372; c=relaxed/simple;
+	bh=a/+cPvIJX94uGRv1+YvfPX7h8IidmOsGYVouQwyP1U8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=bKqtizZE2MsQkHp7yEI0IpvpoxcP6mtO3+hxEg5V0OUd+GjtHWKXvuQbKIFXWrsT+HH5LOQXO7XMfxMoN6/KdLkojL1fX8XlyMKCqNxSXBMJG+vjCo7mtRRMsFJ3P3Oea8Ha8HL1BzDrdzC4jS1y6B+IrA3A7N09O7WZTLW8Hp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=OuJyDc1N; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7b7828bf7bcso2589965b3a.2
+        for <linux-omap@vger.kernel.org>; Thu, 08 Jan 2026 12:15:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1767902460; x=1768507260; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0R59JhP2h+GNKoVP+C9/jngayGQfqzbzM8akEAfrgYo=;
-        b=Y1rGkU88DBRDx2fqYoyOlsxxs3rrpmhY1BfRnda5oPhYQRfxp4ctXH3jIXEVX43lN+
-         MHpT7EsALTnyHg+IDnR1CITsEpi1FeXp2nxJ+tePwcWa3a8xtmli3JqFv/I7KCAMuO+w
-         tSYKxXhTdYhtLRYOZSvHWpdGMQ8I8vYqGSI5deKdediM+/3BneYNf3Uv5UZZqZMTOH8j
-         /hZXl3HHS91FZ/JhMSgKKqsYVCG+CLgpDYhoI0zqlmMPyjmZ+RwVqjCxKWV6/h9cSA3s
-         f854u6tN7dBLjX2z6hCXdGF7hGijrxENL5XNa5WJa1mq0RQmFIuQqsKUGOO3zobvi/3y
-         ZloA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1767903359; x=1768508159; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=a/+cPvIJX94uGRv1+YvfPX7h8IidmOsGYVouQwyP1U8=;
+        b=OuJyDc1N2F9gbm3/SdbtD5d0Jn73k06UKtJNYrEtRKjYTRvmwjABfexecr0eFMawMl
+         E/+THkbDVaw4XCftwSQG5hNs8nb2/QrCamN0GAs9yTx/bNwDyBquML2dWIdbnw1wDGmE
+         jlpQ6EivyFSU+K/eqw3Ui6n1ALolnZUDhO39T1oDs57jAaBwc2rjqfIDfXvSca7OzLD5
+         atmXOhJskVVRqrQuPpm4HnFBOMrm1Fh6FSBkmPZjO2o2hOEEOSIg8oQROeikjmWP6pWM
+         mINxZvnEnMYxsNgeknmi9mA6xwF0npTYt+snnpwDlGyM7DLUxwK/79Nr6ddpwGGfI0nT
+         6F/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767902460; x=1768507260;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1767903359; x=1768508159;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0R59JhP2h+GNKoVP+C9/jngayGQfqzbzM8akEAfrgYo=;
-        b=CFNZOb8Ar81PNmTorkIxe9Wumfiy2CLlbMyJCT0sEUAzETEUv55czAkeFi200Lwsw9
-         +WLrwqKUKM4vQKVBIZqEdBBrGjiQlvrTUZstg7BNjhJj6RhB0J6rnaNpKDacek3FMYci
-         mP7ajWvl6exZNuvrPdVvd+jJUEVbPwi1F4xUP8KQt9XoBcyAj5TBzjc0EiUMrozg/e4M
-         u1fl4r/VZ7ffN+LbJBAuuz/JiW02vvXKnDUQKBtMlqAU8FkN+55HIvYsS59Jw/ZBNHTA
-         SdBtQItNnD6UAXSyx8hjaN6UexvBwEeU5CdMKVMI4vPyd2J3oCg06Egup45jci2GIwaB
-         r+dg==
-X-Forwarded-Encrypted: i=1; AJvYcCVBedN2sOju6WIJUAsMAZhuCaqoB0rgRpi74HO0eXKWCIQhZeQ78k9BubL5mt5Cjbs5YtmsXw44ffGh@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSvB6mRQD1Z6AbYmuaJeA5BCmf+F8eu9OpfjeJycmEW/2jHCuE
-	VbkGl3qcmW/9Q2R7cJ/3kiwG1Zbf8oxMOLR+M39MGoJCvO234C/77tK09GnRN4oNbMY=
-X-Gm-Gg: AY/fxX4wFGSjX7FgWqJyUQZoqkLJ/MMbwjx31MuucFWqqBJyDr3zrooUPMqFEMti1El
-	9C3ac1urz67aA9n44usIYr70xrYQ17EBNwiPceL+U5E6qxDLPPzSZx9T1CId/hrLNuVPY1m2FC+
-	u/HBPdTuOScfla5D2INXHQMYLNBuhS6NBYiepn3BGyXg2PWa54/rOp437dK6bH3p4SfGLg5ql2a
-	EZ7mjJYctG6gX1qyXGLlxv77PJPRyaQWp3MoQPEeO9l0dbpcDREQ1nqMxLT9/wbdtpjveiuoEpb
-	KEBfu+wKewpzlTiuzYMgmoZ1xTEWDyixb+bAV4ZWbJYtTxw+GicRnkCy6zbZ1d4Ykgbh69IhfeK
-	DekXx/eVmrJo7SQBNRbJMxBYtASulZV0D961EZZEBofb51U6VlMgfnLeUuJMJk+tcxvNG30lsQK
-	I8t2Von3KKfSltG7m/
-X-Google-Smtp-Source: AGHT+IE0npwunWACAYL+5K87C4JawJUGa/VvYRBjPWPZGKZYwiEeVeAPHCRJ0OWPGNFKQWH85CyAbg==
-X-Received: by 2002:a05:6000:4287:b0:430:f494:6aad with SMTP id ffacd0b85a97d-432c378a7dfmr8823298f8f.2.1767902460211;
-        Thu, 08 Jan 2026 12:01:00 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5edb7esm17838263f8f.30.2026.01.08.12.00.59
+        bh=a/+cPvIJX94uGRv1+YvfPX7h8IidmOsGYVouQwyP1U8=;
+        b=G+SABVyQQE2hvyIJB/0gwrzF77BpSIvHa8lZv0g8wZ1+kw3l/t2jdn6dgmepKIw9fB
+         aC7feDL23sC4nxYaoQKsowmaV8LSsg2APItO8n3cVUOKGknehJfkjK8IklIMKbCZ5cK2
+         /6Yj0xxhGHKKipXvESUAIupxXKcSs5qIk8+m9Z3GBFsuDqw6tw4Ylce2rWxZWo1cGl6j
+         CFCxdAptkm+aCBIR3YvAPhXhMGKsnE7cOawNYefDtJVFkfJ2uvYfXYzGYQR1muSGiWZr
+         NYoC8E8B8J50xwQuBmlRc7MH/wBieVz+LNnAzMA1Z0I4cKmbKb+PUv/uQiAIJXqA4IC6
+         xLtg==
+X-Forwarded-Encrypted: i=1; AJvYcCWG7QozoqoEvwSDOKebnbLV0RuW0x+/yToFI/FE4s9AluvbXUBriVGA6DS1B+eLOjBm/mBvt0DGVP/S@vger.kernel.org
+X-Gm-Message-State: AOJu0YzE8EjPEqo3Dz0N1rp2YaNCyoFBY8XcEVJPZDbeFeGdAKsZbzXt
+	FFtFryqgpz8mZfF+pQyJms/UGWOPE8xi8oSx5lyhTTwdoytjas1hX9QT0+VfbhCsjoM=
+X-Gm-Gg: AY/fxX52/C+MIciaXerafQSjVbRwgqgdl9fWeSS0eNtQIRAsUVeTNiRGcd8+8pJ/Zu0
+	ovNvOMlgicYYF2LhGMNIaRpqlzW81tjHg8oAPHnHEkrdwKJddJ0dylN6yIXaMXqsRp46y90udlM
+	mbbPQAxtOjxUcmKfrUx+XWzQSGUB+2EjwWw7wQ+l9cZLzToNCN3WpVQB3lmjcJLAxykf7N4HRHX
+	j1l4Pwv+TbiXd9UciYABx83sbgLHJgVPbNXHNyI2FR/bGHf05C6oBLdACZCFD3BX5YpkcgHnzpl
+	wb5y+sSddAmcxE7wzz5uE7pxHIR5NCZTnGZLC2BxLR0zCufbwqEmEP6nlwWbWdsTC7dh8nYnBCg
+	qOWnpGgSRCtmNhGA1pGhBE1fhcOPhXBslWgrDfUsXuDfWXhbqMML8IopiUEArvw/1aFXyKl4zEK
+	zJt2viVHHp
+X-Google-Smtp-Source: AGHT+IGEyNFxCYg+mz/nYXiyeR6SQHeALYFtxCcsGh7BEUBtCA+13vI7tMziVphvGhB+YDfWmtgivw==
+X-Received: by 2002:a05:6a00:2c85:b0:7e8:4398:b352 with SMTP id d2e1a72fcca58-81b7f7e28abmr5865999b3a.37.1767903358688;
+        Thu, 08 Jan 2026 12:15:58 -0800 (PST)
+Received: from localhost ([71.212.208.158])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-819c52f90c0sm8425980b3a.41.2026.01.08.12.15.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 12:00:59 -0800 (PST)
-Date: Thu, 8 Jan 2026 23:00:57 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Helge Deller <deller@gmx.de>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>, linux-fbdev@vger.kernel.org,
-	linux-omap@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] fbdev: omapfb: remove duplicate check in omapfb_setup_mem()
-Message-ID: <aWAM-SZArPSRNaNK@stanley.mountain>
+        Thu, 08 Jan 2026 12:15:57 -0800 (PST)
+From: Kevin Hilman <khilman@baylibre.com>
+To: Andreas Kemnade <andreas@kemnade.info>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>
+Cc: linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, Aaro Koskinen
+ <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, Roger
+ Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
+ linux-omap@vger.kernel.org
+Subject: Re: [PATCH 0/2] cpufreq: omap: remove driver
+In-Reply-To: <20260108-omap-cpufreq-removal-v1-0-8fe42f130f48@kemnade.info>
+References: <20260108-omap-cpufreq-removal-v1-0-8fe42f130f48@kemnade.info>
+Date: Thu, 08 Jan 2026 12:15:57 -0800
+Message-ID: <7hcy3j6ete.fsf@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+Content-Type: text/plain
 
-We know "size" is non-zero because it is checked on the line before.
-Delete the duplicate check and pull the code in a tab.
+Andreas Kemnade <andreas@kemnade.info> writes:
 
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
- drivers/video/fbdev/omap/omapfb_main.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+> The driver is not useable since 10 years, and the affected
+> platforms have alternative drivers, so remove it.
+>
+> To: Rafael J. Wysocki <rafael@kernel.org>
+> To: Viresh Kumar <viresh.kumar@linaro.org>
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-pm@vger.kernel.org
+> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Cc: Andreas Kemnade <andreas@kemnade.info>
+> Cc: Kevin Hilman <khilman@baylibre.com>
+> Cc: Roger Quadros <rogerq@kernel.org>
+> Cc: Tony Lindgren <tony@atomide.com>
+> Cc: linux-omap@vger.kernel.org
+>
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
 
-diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbdev/omap/omapfb_main.c
-index 106d21e74738..a8740213e891 100644
---- a/drivers/video/fbdev/omap/omapfb_main.c
-+++ b/drivers/video/fbdev/omap/omapfb_main.c
-@@ -846,12 +846,10 @@ static int omapfb_setup_mem(struct fb_info *fbi, struct omapfb_mem_info *mi)
- 		 * be reenabled unless its size is > 0.
- 		 */
- 		if (old_size != size && size) {
--			if (size) {
--				memcpy(new_var, &fbi->var, sizeof(*new_var));
--				r = set_fb_var(fbi, new_var);
--				if (r < 0)
--					goto out;
--			}
-+			memcpy(new_var, &fbi->var, sizeof(*new_var));
-+			r = set_fb_var(fbi, new_var);
-+			if (r < 0)
-+				goto out;
- 		}
- 
- 		if (fbdev->ctrl->sync)
--- 
-2.51.0
+Acked-by: Kevin Hilman <khilman@baylibre.com>
 
+Viresh, this is/was technically maintained by me, but feel free to take
+this via your tree, or let me know if you want me to queue it up.
+
+Kevin
 
