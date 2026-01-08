@@ -1,118 +1,102 @@
-Return-Path: <linux-omap+bounces-5399-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5400-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B4CD06043
-	for <lists+linux-omap@lfdr.de>; Thu, 08 Jan 2026 21:17:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76BB6D060D6
+	for <lists+linux-omap@lfdr.de>; Thu, 08 Jan 2026 21:28:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 72EAD3033D6E
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Jan 2026 20:16:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E88F30365BF
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Jan 2026 20:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1703D322B7B;
-	Thu,  8 Jan 2026 20:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1887332F753;
+	Thu,  8 Jan 2026 20:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="OuJyDc1N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eP78nnAW"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D76C272E6D
-	for <linux-omap@vger.kernel.org>; Thu,  8 Jan 2026 20:15:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A050532938B
+	for <linux-omap@vger.kernel.org>; Thu,  8 Jan 2026 20:28:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767903372; cv=none; b=h1J12VoKV8y21oK8oAoKNigDOEffGLSWXO9lrfXFP2e+hYuNFaMbELsVnjt1fBLW1IneaNQxkQX06yiff3Ej+4tiNbRZdNc0jOYtNXxhkYGvNen/QXw2ycn/c2hCDiepYZeH9m7C/zxkO2vK18oPJLBLThAEBNVqxDWePAKFm4A=
+	t=1767904096; cv=none; b=FQSc5b1XK1J/IqyHTafFfMC/CRr3u4ZEOGHGLN94kkQXapw6kBB9vy9FQsK9D1HkTcL2Wlm3E07zyKJHQUM1JnrYlX+ftnrE2b4ZfpwIH/G40JoYIiFdD/SKDWhQTo95lhmVtZbPZGkT2WuaGAfERzTC0x4p1Aj6+0nqBsDjdos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767903372; c=relaxed/simple;
-	bh=a/+cPvIJX94uGRv1+YvfPX7h8IidmOsGYVouQwyP1U8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=bKqtizZE2MsQkHp7yEI0IpvpoxcP6mtO3+hxEg5V0OUd+GjtHWKXvuQbKIFXWrsT+HH5LOQXO7XMfxMoN6/KdLkojL1fX8XlyMKCqNxSXBMJG+vjCo7mtRRMsFJ3P3Oea8Ha8HL1BzDrdzC4jS1y6B+IrA3A7N09O7WZTLW8Hp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=OuJyDc1N; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7b7828bf7bcso2589965b3a.2
-        for <linux-omap@vger.kernel.org>; Thu, 08 Jan 2026 12:15:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1767903359; x=1768508159; darn=vger.kernel.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=a/+cPvIJX94uGRv1+YvfPX7h8IidmOsGYVouQwyP1U8=;
-        b=OuJyDc1N2F9gbm3/SdbtD5d0Jn73k06UKtJNYrEtRKjYTRvmwjABfexecr0eFMawMl
-         E/+THkbDVaw4XCftwSQG5hNs8nb2/QrCamN0GAs9yTx/bNwDyBquML2dWIdbnw1wDGmE
-         jlpQ6EivyFSU+K/eqw3Ui6n1ALolnZUDhO39T1oDs57jAaBwc2rjqfIDfXvSca7OzLD5
-         atmXOhJskVVRqrQuPpm4HnFBOMrm1Fh6FSBkmPZjO2o2hOEEOSIg8oQROeikjmWP6pWM
-         mINxZvnEnMYxsNgeknmi9mA6xwF0npTYt+snnpwDlGyM7DLUxwK/79Nr6ddpwGGfI0nT
-         6F/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767903359; x=1768508159;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=a/+cPvIJX94uGRv1+YvfPX7h8IidmOsGYVouQwyP1U8=;
-        b=G+SABVyQQE2hvyIJB/0gwrzF77BpSIvHa8lZv0g8wZ1+kw3l/t2jdn6dgmepKIw9fB
-         aC7feDL23sC4nxYaoQKsowmaV8LSsg2APItO8n3cVUOKGknehJfkjK8IklIMKbCZ5cK2
-         /6Yj0xxhGHKKipXvESUAIupxXKcSs5qIk8+m9Z3GBFsuDqw6tw4Ylce2rWxZWo1cGl6j
-         CFCxdAptkm+aCBIR3YvAPhXhMGKsnE7cOawNYefDtJVFkfJ2uvYfXYzGYQR1muSGiWZr
-         NYoC8E8B8J50xwQuBmlRc7MH/wBieVz+LNnAzMA1Z0I4cKmbKb+PUv/uQiAIJXqA4IC6
-         xLtg==
-X-Forwarded-Encrypted: i=1; AJvYcCWG7QozoqoEvwSDOKebnbLV0RuW0x+/yToFI/FE4s9AluvbXUBriVGA6DS1B+eLOjBm/mBvt0DGVP/S@vger.kernel.org
-X-Gm-Message-State: AOJu0YzE8EjPEqo3Dz0N1rp2YaNCyoFBY8XcEVJPZDbeFeGdAKsZbzXt
-	FFtFryqgpz8mZfF+pQyJms/UGWOPE8xi8oSx5lyhTTwdoytjas1hX9QT0+VfbhCsjoM=
-X-Gm-Gg: AY/fxX52/C+MIciaXerafQSjVbRwgqgdl9fWeSS0eNtQIRAsUVeTNiRGcd8+8pJ/Zu0
-	ovNvOMlgicYYF2LhGMNIaRpqlzW81tjHg8oAPHnHEkrdwKJddJ0dylN6yIXaMXqsRp46y90udlM
-	mbbPQAxtOjxUcmKfrUx+XWzQSGUB+2EjwWw7wQ+l9cZLzToNCN3WpVQB3lmjcJLAxykf7N4HRHX
-	j1l4Pwv+TbiXd9UciYABx83sbgLHJgVPbNXHNyI2FR/bGHf05C6oBLdACZCFD3BX5YpkcgHnzpl
-	wb5y+sSddAmcxE7wzz5uE7pxHIR5NCZTnGZLC2BxLR0zCufbwqEmEP6nlwWbWdsTC7dh8nYnBCg
-	qOWnpGgSRCtmNhGA1pGhBE1fhcOPhXBslWgrDfUsXuDfWXhbqMML8IopiUEArvw/1aFXyKl4zEK
-	zJt2viVHHp
-X-Google-Smtp-Source: AGHT+IGEyNFxCYg+mz/nYXiyeR6SQHeALYFtxCcsGh7BEUBtCA+13vI7tMziVphvGhB+YDfWmtgivw==
-X-Received: by 2002:a05:6a00:2c85:b0:7e8:4398:b352 with SMTP id d2e1a72fcca58-81b7f7e28abmr5865999b3a.37.1767903358688;
-        Thu, 08 Jan 2026 12:15:58 -0800 (PST)
-Received: from localhost ([71.212.208.158])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-819c52f90c0sm8425980b3a.41.2026.01.08.12.15.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 12:15:57 -0800 (PST)
-From: Kevin Hilman <khilman@baylibre.com>
-To: Andreas Kemnade <andreas@kemnade.info>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>
-Cc: linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, Aaro Koskinen
- <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, Roger
- Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
- linux-omap@vger.kernel.org
-Subject: Re: [PATCH 0/2] cpufreq: omap: remove driver
-In-Reply-To: <20260108-omap-cpufreq-removal-v1-0-8fe42f130f48@kemnade.info>
-References: <20260108-omap-cpufreq-removal-v1-0-8fe42f130f48@kemnade.info>
-Date: Thu, 08 Jan 2026 12:15:57 -0800
-Message-ID: <7hcy3j6ete.fsf@baylibre.com>
+	s=arc-20240116; t=1767904096; c=relaxed/simple;
+	bh=D8kOCax/RNTjo+hlxUwdx7TKUmMeV6yw8olkrFkANgM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CIG1eAlig0fL1GUzcjJEngkvCywLKRYSKENNqY9eKs5gF78mkEvMFxEuSEpK7lXVRGt9gUBlzRKM0Lkzf4DucAS4+OIZwBWFYpOSdpiGkrLI1HjDQOabBZalJAQ9LWztWQbk3HqLsWl/os7VfIaPlqSOxqVuU51V4yqw4GNpG3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eP78nnAW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A1C1C19423
+	for <linux-omap@vger.kernel.org>; Thu,  8 Jan 2026 20:28:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767904096;
+	bh=D8kOCax/RNTjo+hlxUwdx7TKUmMeV6yw8olkrFkANgM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=eP78nnAWns8KOPdHjpazB3v/mn/zUOPP6L2hU0+NixUbp+L48KSgch5KurXL3xs/d
+	 ruxz7wZcEpX4cxbhJq+TUB99AzAa29wfrqiHNAUAHTq/zMuhW/gEKRwYNIpCkm/o1q
+	 2CVURHYMtB04Geera5H0XBZV/YqfYthpymJar49DU41d94i3DgvQMgxPRJOmxU7R8H
+	 1UHtNMkYAlzYngEmA2pcd8vrwFLD7Fi1VT+JtfWNMBA9DxOLJYvANHpq9K/yVIT5f3
+	 uRQ9z5WCbCZ4tRq5wzSciNPTducuXVDoOpKZOKyYbam4h8WBx82XPAKAu1dieQ9w3K
+	 lmNhSnjlQgyug==
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-3ec4d494383so2672808fac.3
+        for <linux-omap@vger.kernel.org>; Thu, 08 Jan 2026 12:28:16 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXSeWHOR9kW9V/Y79Nuk5D9UzfWtrSZ9svIDB79ACQNsXXf0VMB6BWyXaTGmlcgP3PnT4JqLEh30LL2@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy70VP6/ThFL/laP8y2FdOs/UTrswSSeVCmC3LpgTLU9O/2LCl7
+	gcKqOELmVRyEvJ78TZpXHGh9h7FZ/LBTS4NqNisexMAMKqtAz3wUmQ6KNMsJmApia1HGdlQQSDd
+	/epJ8s8CTzw4LFk71ptIYMa3S4HAY0AQ=
+X-Google-Smtp-Source: AGHT+IFDZ5eA6abImL8NUdVIdAWg94LO7tkXS6dhB0NlJP7A/A+6UQiNKGL70FD+qlsxvd5j5mV4ooH8ccYuS5PMC/g=
+X-Received: by 2002:a05:6871:6286:b0:315:b768:bd1d with SMTP id
+ 586e51a60fabf-3ffc0967ea5mr3701993fac.6.1767904095408; Thu, 08 Jan 2026
+ 12:28:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20260108-omap-cpufreq-removal-v1-0-8fe42f130f48@kemnade.info> <7hcy3j6ete.fsf@baylibre.com>
+In-Reply-To: <7hcy3j6ete.fsf@baylibre.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 8 Jan 2026 21:28:04 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0jePerpMJR8CbiMKOKmSV6f7BLc0ZO6wTQztLvw9Sj3PQ@mail.gmail.com>
+X-Gm-Features: AQt7F2pzPNY50L89-SzxYk921ngz4w4SrcmdZ2faUD5N5yDRK2xJTjtpeDawf7E
+Message-ID: <CAJZ5v0jePerpMJR8CbiMKOKmSV6f7BLc0ZO6wTQztLvw9Sj3PQ@mail.gmail.com>
+Subject: Re: [PATCH 0/2] cpufreq: omap: remove driver
+To: Kevin Hilman <khilman@baylibre.com>, Andreas Kemnade <andreas@kemnade.info>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Andreas Kemnade <andreas@kemnade.info> writes:
-
-> The driver is not useable since 10 years, and the affected
-> platforms have alternative drivers, so remove it.
+On Thu, Jan 8, 2026 at 9:16=E2=80=AFPM Kevin Hilman <khilman@baylibre.com> =
+wrote:
 >
-> To: Rafael J. Wysocki <rafael@kernel.org>
-> To: Viresh Kumar <viresh.kumar@linaro.org>
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-pm@vger.kernel.org
-> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-> Cc: Andreas Kemnade <andreas@kemnade.info>
-> Cc: Kevin Hilman <khilman@baylibre.com>
-> Cc: Roger Quadros <rogerq@kernel.org>
-> Cc: Tony Lindgren <tony@atomide.com>
-> Cc: linux-omap@vger.kernel.org
+> Andreas Kemnade <andreas@kemnade.info> writes:
 >
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> > The driver is not useable since 10 years, and the affected
+> > platforms have alternative drivers, so remove it.
+> >
+> > To: Rafael J. Wysocki <rafael@kernel.org>
+> > To: Viresh Kumar <viresh.kumar@linaro.org>
+> > Cc: linux-kernel@vger.kernel.org
+> > Cc: linux-pm@vger.kernel.org
+> > Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+> > Cc: Andreas Kemnade <andreas@kemnade.info>
+> > Cc: Kevin Hilman <khilman@baylibre.com>
+> > Cc: Roger Quadros <rogerq@kernel.org>
+> > Cc: Tony Lindgren <tony@atomide.com>
+> > Cc: linux-omap@vger.kernel.org
+> >
+> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+>
+> Acked-by: Kevin Hilman <khilman@baylibre.com>
+>
+> Viresh, this is/was technically maintained by me, but feel free to take
+> this via your tree, or let me know if you want me to queue it up.
 
-Acked-by: Kevin Hilman <khilman@baylibre.com>
+No need to bother Viresh with this, I've just applied it as 6.20 material.
 
-Viresh, this is/was technically maintained by me, but feel free to take
-this via your tree, or let me know if you want me to queue it up.
-
-Kevin
+Thanks!
 
