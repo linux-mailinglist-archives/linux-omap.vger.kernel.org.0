@@ -1,102 +1,177 @@
-Return-Path: <linux-omap+bounces-5400-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5401-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76BB6D060D6
-	for <lists+linux-omap@lfdr.de>; Thu, 08 Jan 2026 21:28:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 307B2D062E3
+	for <lists+linux-omap@lfdr.de>; Thu, 08 Jan 2026 21:57:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E88F30365BF
-	for <lists+linux-omap@lfdr.de>; Thu,  8 Jan 2026 20:28:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A76C301B2D6
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Jan 2026 20:55:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1887332F753;
-	Thu,  8 Jan 2026 20:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EDF233123C;
+	Thu,  8 Jan 2026 20:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eP78nnAW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SjSg9NeT"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A050532938B
-	for <linux-omap@vger.kernel.org>; Thu,  8 Jan 2026 20:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56FF330D58;
+	Thu,  8 Jan 2026 20:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767904096; cv=none; b=FQSc5b1XK1J/IqyHTafFfMC/CRr3u4ZEOGHGLN94kkQXapw6kBB9vy9FQsK9D1HkTcL2Wlm3E07zyKJHQUM1JnrYlX+ftnrE2b4ZfpwIH/G40JoYIiFdD/SKDWhQTo95lhmVtZbPZGkT2WuaGAfERzTC0x4p1Aj6+0nqBsDjdos=
+	t=1767905740; cv=none; b=QbSr3HCC9+lgCUa0JRyxmUVaszSK57QlSlHZetDyleJfo4Yn+xveQO6fH3KeXt/9l9YJ4oZMQHJvfdGirOZ6j7guCiYyW/OFewW6yd0salFRdHDQR/5TiUKsGK0okZ4aIYHIIPll0M/yCiKAKsuVE2jwDoI0kBDB/XCH8FBQufU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767904096; c=relaxed/simple;
-	bh=D8kOCax/RNTjo+hlxUwdx7TKUmMeV6yw8olkrFkANgM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CIG1eAlig0fL1GUzcjJEngkvCywLKRYSKENNqY9eKs5gF78mkEvMFxEuSEpK7lXVRGt9gUBlzRKM0Lkzf4DucAS4+OIZwBWFYpOSdpiGkrLI1HjDQOabBZalJAQ9LWztWQbk3HqLsWl/os7VfIaPlqSOxqVuU51V4yqw4GNpG3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eP78nnAW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A1C1C19423
-	for <linux-omap@vger.kernel.org>; Thu,  8 Jan 2026 20:28:16 +0000 (UTC)
+	s=arc-20240116; t=1767905740; c=relaxed/simple;
+	bh=xBJe/1TFcmT6ykWBd9m6VDk/sy5CDIe6A5UhmE5fQMc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aTmE/PVjCtmhNjdG6fyjOlh19PSd9lfdjxWmQC9b3P+r99O1315zh69YxsqaP/wLMhx2hu9MkJj9hD2A7fU3TQZk5l+sqk+UWRKwGw4LcXnvUk0eIsDlxPQXqmcsH7i0j64KOmkITPVY+wUYaD+WXkkiF8y9HEgbf4ms8SVeN3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SjSg9NeT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B290C116C6;
+	Thu,  8 Jan 2026 20:55:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767904096;
-	bh=D8kOCax/RNTjo+hlxUwdx7TKUmMeV6yw8olkrFkANgM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=eP78nnAWns8KOPdHjpazB3v/mn/zUOPP6L2hU0+NixUbp+L48KSgch5KurXL3xs/d
-	 ruxz7wZcEpX4cxbhJq+TUB99AzAa29wfrqiHNAUAHTq/zMuhW/gEKRwYNIpCkm/o1q
-	 2CVURHYMtB04Geera5H0XBZV/YqfYthpymJar49DU41d94i3DgvQMgxPRJOmxU7R8H
-	 1UHtNMkYAlzYngEmA2pcd8vrwFLD7Fi1VT+JtfWNMBA9DxOLJYvANHpq9K/yVIT5f3
-	 uRQ9z5WCbCZ4tRq5wzSciNPTducuXVDoOpKZOKyYbam4h8WBx82XPAKAu1dieQ9w3K
-	 lmNhSnjlQgyug==
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-3ec4d494383so2672808fac.3
-        for <linux-omap@vger.kernel.org>; Thu, 08 Jan 2026 12:28:16 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXSeWHOR9kW9V/Y79Nuk5D9UzfWtrSZ9svIDB79ACQNsXXf0VMB6BWyXaTGmlcgP3PnT4JqLEh30LL2@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy70VP6/ThFL/laP8y2FdOs/UTrswSSeVCmC3LpgTLU9O/2LCl7
-	gcKqOELmVRyEvJ78TZpXHGh9h7FZ/LBTS4NqNisexMAMKqtAz3wUmQ6KNMsJmApia1HGdlQQSDd
-	/epJ8s8CTzw4LFk71ptIYMa3S4HAY0AQ=
-X-Google-Smtp-Source: AGHT+IFDZ5eA6abImL8NUdVIdAWg94LO7tkXS6dhB0NlJP7A/A+6UQiNKGL70FD+qlsxvd5j5mV4ooH8ccYuS5PMC/g=
-X-Received: by 2002:a05:6871:6286:b0:315:b768:bd1d with SMTP id
- 586e51a60fabf-3ffc0967ea5mr3701993fac.6.1767904095408; Thu, 08 Jan 2026
- 12:28:15 -0800 (PST)
+	s=k20201202; t=1767905740;
+	bh=xBJe/1TFcmT6ykWBd9m6VDk/sy5CDIe6A5UhmE5fQMc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SjSg9NeThhyh+++t7oDphRi9jrjfHMpyjFOTzaeh0gYoZ3izGVjS4O26bFUA1QUvm
+	 J3SqsMuOQCewM7IKUQ96hK2KMq/kcHx9beh18yud/0R4cTYRVZLISqCM0zEThG8jQ+
+	 h5AYr5uN46Rj5jEJLWP1pW79KbPjBYUs+2Un3MzTPCOu3AXqD7aNoNxS/PtrsiFlh/
+	 hahC8p89QMUHjsXVrAsAGZl/GL0U9LcdaKzZNuS74lwloUO1xDsSnYzTWALX39Z9GL
+	 rvyrOUOB/9IfhehMJlaoXTpriWA0L1IpI4LhNpjLMymvGJSP5UfbZz9Kzfuz+mPimt
+	 U7lpSI5WgMQxg==
+Date: Thu, 8 Jan 2026 21:55:27 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Koichiro Den <den@valinux.co.jp>
+Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org,
+	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com,
+	vigneshr@ti.com, s-vadapalli@ti.com, hongxing.zhu@nxp.com,
+	l.stach@pengutronix.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, minghuan.Lian@nxp.com,
+	mingkai.hu@nxp.com, roy.zang@nxp.com, jesper.nilsson@axis.com,
+	heiko@sntech.de, srikanth.thokala@intel.com,
+	marek.vasut+renesas@gmail.com, yoshihiro.shimoda.uh@renesas.com,
+	geert+renesas@glider.be, magnus.damm@gmail.com,
+	christian.bruel@foss.st.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, thierry.reding@gmail.com,
+	jonathanh@nvidia.com, hayashi.kunihiko@socionext.com,
+	mhiramat@kernel.org, kishon@kernel.org, jirislaby@kernel.org,
+	rongqianfeng@vivo.com, 18255117159@163.com,
+	shawn.lin@rock-chips.com, nicolas.frattaroli@collabora.com,
+	linux.amoon@gmail.com, vidyas@nvidia.com, Frank.Li@nxp.com,
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@axis.com, linux-rockchip@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v5 3/3] PCI: dwc: ep: Support BAR subrange inbound
+ mapping via Address Match Mode iATU
+Message-ID: <aWAZv3ZwdUmo4_wc@ryzen>
+References: <20260108172403.2629671-1-den@valinux.co.jp>
+ <20260108172403.2629671-4-den@valinux.co.jp>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260108-omap-cpufreq-removal-v1-0-8fe42f130f48@kemnade.info> <7hcy3j6ete.fsf@baylibre.com>
-In-Reply-To: <7hcy3j6ete.fsf@baylibre.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 8 Jan 2026 21:28:04 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0jePerpMJR8CbiMKOKmSV6f7BLc0ZO6wTQztLvw9Sj3PQ@mail.gmail.com>
-X-Gm-Features: AQt7F2pzPNY50L89-SzxYk921ngz4w4SrcmdZ2faUD5N5yDRK2xJTjtpeDawf7E
-Message-ID: <CAJZ5v0jePerpMJR8CbiMKOKmSV6f7BLc0ZO6wTQztLvw9Sj3PQ@mail.gmail.com>
-Subject: Re: [PATCH 0/2] cpufreq: omap: remove driver
-To: Kevin Hilman <khilman@baylibre.com>, Andreas Kemnade <andreas@kemnade.info>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>, linux-kernel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>, 
-	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260108172403.2629671-4-den@valinux.co.jp>
 
-On Thu, Jan 8, 2026 at 9:16=E2=80=AFPM Kevin Hilman <khilman@baylibre.com> =
-wrote:
->
-> Andreas Kemnade <andreas@kemnade.info> writes:
->
-> > The driver is not useable since 10 years, and the affected
-> > platforms have alternative drivers, so remove it.
-> >
-> > To: Rafael J. Wysocki <rafael@kernel.org>
-> > To: Viresh Kumar <viresh.kumar@linaro.org>
-> > Cc: linux-kernel@vger.kernel.org
-> > Cc: linux-pm@vger.kernel.org
-> > Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-> > Cc: Andreas Kemnade <andreas@kemnade.info>
-> > Cc: Kevin Hilman <khilman@baylibre.com>
-> > Cc: Roger Quadros <rogerq@kernel.org>
-> > Cc: Tony Lindgren <tony@atomide.com>
-> > Cc: linux-omap@vger.kernel.org
-> >
-> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
->
-> Acked-by: Kevin Hilman <khilman@baylibre.com>
->
-> Viresh, this is/was technically maintained by me, but feel free to take
-> this via your tree, or let me know if you want me to queue it up.
+Hello Koichiro,
 
-No need to bother Viresh with this, I've just applied it as 6.20 material.
+On Fri, Jan 09, 2026 at 02:24:03AM +0900, Koichiro Den wrote:
 
-Thanks!
+(snip)
+
+> +/* Address Match Mode inbound iATU mapping */
+> +static int dw_pcie_ep_ib_atu_addr(struct dw_pcie_ep *ep, u8 func_no, int type,
+> +				  const struct pci_epf_bar *epf_bar)
+> +{
+> +	const struct pci_epf_bar_submap *submap = epf_bar->submap;
+> +	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+> +	enum pci_barno bar = epf_bar->barno;
+> +	struct device *dev = pci->dev;
+> +	u64 pci_addr, parent_bus_addr;
+> +	struct dw_pcie_ib_map *new;
+> +	u64 size, off, base;
+> +	unsigned long flags;
+> +	int free_win, ret;
+> +	unsigned int i;
+> +
+> +	if (!epf_bar->num_submap || !submap || !epf_bar->size)
+> +		return -EINVAL;
+> +
+> +	ret = dw_pcie_ep_validate_submap(ep, submap, epf_bar->num_submap,
+> +					 epf_bar->size);
+> +	if (ret)
+> +		return ret;
+> +
+> +	base = dw_pcie_ep_read_bar_assigned(ep, func_no, bar, epf_bar->flags);
+> +	if (!base) {
+> +		dev_err(dev,
+> +			"BAR%u not assigned, cannot set up sub-range mappings\n",
+> +			bar);
+> +		return -EINVAL;
+> +	}
+
+Sorry for giving additional review comments.
+
+But there is one thing that I might not be so obvious for someone just
+reading this source. How is this API supposed to be used in practice?
+
+Most DWC-based controllers are not hotplug capable.
+
+That means that we must boot the EP, create the EPF symlink in configfs,
+and start link training by writing to configfs, before starting the host.
+
+dw_pcie_ep_ib_atu_addr() reads the PCI address that the host has assigned
+to the BAR, and returns an error if the host has not already assigned a
+PCI addres to the BAR.
+
+Does that mean that the usage of this API will be something like:
+
+1) set_bar() ## using BAR match mode, since BAR match mode can write
+   the BAR mask to define a BAR size, so that the host can assign a
+   PCI address to the BAR.
+
+2) start() ## start link
+
+3) link up
+
+4) wait for some special command, perhaps NTB_EPF_COMMAND
+CMD_CONFIGURE_DOORBELL or NTB_EPF_COMMAND CMD_CONFIGURE_MW
+
+5) set_bar() ## using Address match mode. Because address match mode
+   requires that the host has assigned a PCI address to the BAR, we
+   can only change the mapping for a BAR after the host has assigned
+   PCI addresses for all bars.
+
+
+
+Perhaps you should add some text to:
+Documentation/PCI/endpoint/pci-endpoint.rst
+
+Because right now the documentation for pci_epc_set_bar() says:
+
+   The PCI endpoint function driver should use pci_epc_set_bar() to configure
+   the Base Address Register in order for the host to assign PCI addr space.
+   Register space of the function driver is usually configured
+   using this API.
+
+So it is obviously meant to be called *before* the host assigns a PCI
+address for the BAR. Now with submap ranges, it appears that it has to
+be called *after* the host assigned a PCI address for the BAR.
+
+So I can only assume that you will call set_bar() twice.
+Once with BAR match mode, and then a second time with address map mode.
+
+It might be obvious to you, but I think it makes sense to also have some
+kind of documentation for this feature.
+
+
+Kind regards,
+Niklas
 
