@@ -1,118 +1,96 @@
-Return-Path: <linux-omap+bounces-5388-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5391-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDA00D00698
-	for <lists+linux-omap@lfdr.de>; Thu, 08 Jan 2026 00:44:33 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31F38D039E1
+	for <lists+linux-omap@lfdr.de>; Thu, 08 Jan 2026 16:01:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DD64B30060FA
-	for <lists+linux-omap@lfdr.de>; Wed,  7 Jan 2026 23:44:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 18434300AC9D
+	for <lists+linux-omap@lfdr.de>; Thu,  8 Jan 2026 14:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96DE92F90DB;
-	Wed,  7 Jan 2026 23:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73570361DCF;
+	Thu,  8 Jan 2026 08:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="M4uB9ZZP"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="KJej+N6e"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E88828B4FE;
-	Wed,  7 Jan 2026 23:44:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089C4350D41;
+	Thu,  8 Jan 2026 08:26:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767829470; cv=none; b=Y7iVVaLIuVxFSyLrb8bvuQIrxTdCe+UmjlxNbQuTuko6rQZh9ATt1COycnF/Bi1iY9PccIgGbta4cU1lHyJslXma3/9A+8Tkbn7BjcI7Ie3y/ZAcFFCIAEgZIDom1w4dHZAl7TcWbcZQARhMwTznQzVQ82pfhq6fkHorH+nzLmY=
+	t=1767860831; cv=none; b=spQilgJ026Td4CGbnB/BUUr5Xcgv2yuOkS69wVvkNv6IfJVILhfgQNSz5ks2zXdt+qlML31s0TrahGe3inkW4swlu6Oeha1dKUYYzMBO4camkBU6be/o9LeNaffgfJh8R28V+NM5x4HIsN1EIcLTm0a6BLJAUG+ueQe60Qe9JtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767829470; c=relaxed/simple;
-	bh=oEpYS0+p12KjtD1xjYH6uX4JLkjrqmw8h27UjRsu9RI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rtXC6qQ4UdtyS5knD+TrYArrYaSnLK2h2C194+OAF9Z9t/DPr4GtE3jlXXoeiq+SCDLcaojwj3DNvqbuvYSEh3w21/63VbBWmDlACaLGOI82tihWmOGJvlwGjRtn6afWun/C3+R4SSPBVdhXv+AEEiwdShuCOZWJdKbtt9qWm30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=M4uB9ZZP; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1767829460;
-	bh=vvbUvshcKay+5SyzipSpDu2A7P68B5vbaeosqp5G+WQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=M4uB9ZZPVsPXY6riJWKTZi9afSO24SmdJ5MMFaOwN3rouRWR5waBAj2H4hjNLawRM
-	 ZJzz7xC13YYt7/R065LFCDhNv7Vp07k8CK0xHfTgbenYVw3gDPCCHlKw/QzXzX4MgT
-	 tolqAxGati8jljrqUv5Y8lBIUc6yr/q7JeoeTB6282y47EHXOdU5QpmdI3RMbUFfpg
-	 /1GiryloDRy6NI38fkGfFuQGc1PQvVg9MrRZOdZQ2iQCjN048LDo+eDLS/kfAIfi1D
-	 ngkxKedmntRuoWPybC08mbY7EAn+gdJbyVzihucVkEZ1cZ4L9jlZKsTmatsnhFaeD9
-	 QKzVOIbpc0Wdw==
-Received: from [192.168.68.115] (unknown [180.150.112.60])
-	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 65D5479F8C;
-	Thu,  8 Jan 2026 07:44:18 +0800 (AWST)
-Message-ID: <245bb0d1cfc1dee91baaab7c1fd73bc264586a0d.camel@codeconstruct.com.au>
-Subject: Re: [PATCH 0/3] pinctrl: single: bit-per-mux DT flexibility, probe
- robustness, and consistent pinconf offsets
-From: Andrew Jeffery <andrew@codeconstruct.com.au>
-To: Billy Tsai <billy_tsai@aspeedtech.com>, Tony Lindgren
- <tony@atomide.com>,  Haojian Zhuang <haojian.zhuang@linaro.org>, Linus
- Walleij <linusw@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- BMC-SW@aspeedtech.com
-Date: Thu, 08 Jan 2026 10:14:17 +1030
-In-Reply-To: <20251222-upstream_pinctrl_single-v1-0-e4aaa4eeb936@aspeedtech.com>
-References: 
-	<20251222-upstream_pinctrl_single-v1-0-e4aaa4eeb936@aspeedtech.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	s=arc-20240116; t=1767860831; c=relaxed/simple;
+	bh=ye9EsldyVtkyFEEHWlpwVnLNt05/xILj4xvBjgVBhPU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=KSD7Du++d1v9lM9lnPFTmf7/LtmsQ2ryw8pzi+5n/thwm6EdshAQiwpKGR/1OdkyhVsOJWviHP+AW/U2SMS1E6NuMVZAXIeqHsOVAewHcAAVrTGe/H9HJvHiUx5YO2uyL6IVSSdErJSZtAe/4QlNspzMim6Q/rjCEX7vhjCr/WE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=KJej+N6e; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=Cc:In-Reply-To:References:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=sgbPhfaFLVrbkpz4PqBhY7w/yeiN7lhQkPSEva2tULE=; b=KJej+N6egpcNSGRSIDDDiXm34j
+	gRfFIreBUNUNlzGuOq+WgHgSKu7wyoNXUu932sCL317b9/pJ6Is2aG7JAlLEFMiw5lGVNASJ0yBsM
+	LYYTMaQuhOudmvK7tyRAJWSe7yfga0yckzLGfEnPYN7u06/3rzUbWMimuw4qsYSzJHJHjiLusFhBk
+	Z05oqBHymIn5XrSc+MnzfgAz9DMf0ZYTyn1tAk0WuPoHVi3Wt/Hv5Nkz8RlbbWAlcdhkmB3uzzy0I
+	Pqlwe8bpm1gQsXDCXe68r5NJuN1gRi6QNNu5nLpBZpsPS5N7Iuuz5EmDe4ilYLTLYUv2df7esG3Wo
+	vmIM0/kQ==;
+From: Andreas Kemnade <andreas@kemnade.info>
+Date: Thu, 08 Jan 2026 09:26:13 +0100
+Subject: [PATCH 2/2] MAINTAINERS: remove omap-cpufreq
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260108-omap-cpufreq-removal-v1-2-8fe42f130f48@kemnade.info>
+References: <20260108-omap-cpufreq-removal-v1-0-8fe42f130f48@kemnade.info>
+In-Reply-To: <20260108-omap-cpufreq-removal-v1-0-8fe42f130f48@kemnade.info>
+To: "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Viresh Kumar <viresh.kumar@linaro.org>
+Cc: linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
+ Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
+ Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+ linux-omap@vger.kernel.org
+X-Mailer: b4 0.15-dev-a6db3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=564; i=andreas@kemnade.info;
+ h=from:subject:message-id; bh=ye9EsldyVtkyFEEHWlpwVnLNt05/xILj4xvBjgVBhPU=;
+ b=owGbwMvMwCUm/rzkS6lq2x3G02pJDJnxWZZd7ib110zc2gLvvfJlZyxfOYnvsInGG5d7AnMvF
+ M8X1BToKGVhEONikBVTZPllreD2SeVZbvDUCHuYOaxMIEMYuDgFYCLbFRn++3/cOuG1jA3POQZu
+ iVdWYn09JzeUN0XrFJypMF5Sz/34M8P/7AnHDl0L1HlV0ODdG6pmdd3F/oH19b/PWSZLX1ffEL+
+ aFwA=
+X-Developer-Key: i=andreas@kemnade.info; a=openpgp;
+ fpr=EEC0DB858E66C0DA70620AC07DBD6AC74DE29324
 
-Hi Billy,
+Remove entry for omap-cpufreq, since it is removed.
 
-On Mon, 2025-12-22 at 20:04 +0800, Billy Tsai wrote:
-> This series updates pinctrl-single to behave more predictably on
-> bit-per-mux platforms by making its DT interface more flexible, its probe
-> path more tolerant of pre-reserved resources, and its pin configuration
-> register addressing consistent with pinmux.
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+---
+ MAINTAINERS | 1 -
+ 1 file changed, 1 deletion(-)
 
-Can you provide some more context here? For instance, this is motivated
-by the AST2700 - can you talk a bit more about why its design needs
-these changes?
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 765ad2daa2183..1065195a22ce2 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -19132,7 +19132,6 @@ M:	Kevin Hilman <khilman@kernel.org>
+ L:	linux-omap@vger.kernel.org
+ S:	Maintained
+ F:	arch/arm/*omap*/*pm*
+-F:	drivers/cpufreq/omap-cpufreq.c
+ 
+ OMAP POWERDOMAIN SOC ADAPTATION LAYER SUPPORT
+ M:	Paul Walmsley <paul@pwsan.com>
 
-> It extends the driver to accept a per-pin <pin_index func_sel> style
-> description for bit-per-mux users while keeping the existing
-> pinctrl-single,bits binding as the preferred input when available. It als=
-o
-> relaxes probe failure when the I/O memory region cannot be reserved
-> exclusively, allowing initialization to proceed with a warning on systems
-> where that region is already reserved.
->=20
+-- 
+2.47.3
 
-Can you unpack what's going on here in the context of the target soc?
-
-Andrew
-
->  Finally, it aligns pinconf register
-> offset computation with the pinmux logic so that both muxing and pin
-> configuration access the same register offsets, avoiding incorrect pincon=
-f
-> operations on bit-per-mux configurations.
->=20
-> Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
-> ---
-> Billy Tsai (3):
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pinctrl: single: add per-pin binding suppo=
-rt for bit-per-mux
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pinctrl: single: Allow probe to continue i=
-f mem region busy
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pinctrl: single: unify pinconf offset mapp=
-ing with pinmux
->=20
-> =C2=A0drivers/pinctrl/pinctrl-single.c | 150 ++++++++++++++++++++++++++++=
------------
-> =C2=A01 file changed, 110 insertions(+), 40 deletions(-)
-> ---
-> base-commit: dd9b004b7ff3289fb7bae35130c0a5c0537266af
-> change-id: 20251222-upstream_pinctrl_single-99e8df1fe2b9
->=20
-> Best regards,
 
