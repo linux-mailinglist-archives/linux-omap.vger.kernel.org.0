@@ -1,114 +1,123 @@
-Return-Path: <linux-omap+bounces-5407-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5408-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC892D0B583
-	for <lists+linux-omap@lfdr.de>; Fri, 09 Jan 2026 17:45:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6656D0BA89
+	for <lists+linux-omap@lfdr.de>; Fri, 09 Jan 2026 18:31:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F2DE30ECA74
-	for <lists+linux-omap@lfdr.de>; Fri,  9 Jan 2026 16:39:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 60A0430E101F
+	for <lists+linux-omap@lfdr.de>; Fri,  9 Jan 2026 17:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 279B08F49;
-	Fri,  9 Jan 2026 16:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97C636C5A1;
+	Fri,  9 Jan 2026 17:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FCgnkZPM"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="PFfpv9+k"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E78364022;
-	Fri,  9 Jan 2026 16:39:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0717E36C595;
+	Fri,  9 Jan 2026 17:18:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767976784; cv=none; b=dHZz0Kp+jq8yVUMIwpqPckNX8Jthe7QCJCZZF7G1ExqreJLeM9QYBeMBK6pQPnttVPws50Hf+q2BWKO+aY2WfJdDtLoiY3shBG/oye5e5Ra+pCwGBZ5cmee+F3juoTHEfH7wYdw+iwVLWcGEz1CluvM+oTFvdYY4+RewApmAyi0=
+	t=1767979135; cv=none; b=Hl/FH+6yarsVh3nTtZj8Z37LTDO/FvnRAAjGrkv9xrdHCvnO5OrUyfMooDIn6lE2WYZUrTnIb10lES+9OYQQXMlEYlEUOyfOcbVXxaA7d0zsJ0lxBpNfhIcaDwT4kOFr+m4aZcnPobh2c+opBg+4IuStbgFyljUYAsH4vaHA6lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767976784; c=relaxed/simple;
-	bh=NvBUETpJzVjtlrKtXgpeoF5isYgT00Uiw6BOs/OZSQ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kIhJwGRzHDyM9ZWDWzal7rki0FE3e+hqu0UK+T219vH3rLjeeXiFbY99+Yr16OtCLa5FFFt1blYsqcM2Ay7ojQGKBMSHLbU9dUX/3fF5oUNyFYaoJ3uBNaV2ODaTIlqJFOvoM1zOX51YDOtuBcUdvizxrp8l/7EDgJKZKDuhg00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FCgnkZPM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2831AC4CEF1;
-	Fri,  9 Jan 2026 16:39:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767976784;
-	bh=NvBUETpJzVjtlrKtXgpeoF5isYgT00Uiw6BOs/OZSQ4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FCgnkZPMXqPMO91nJEM/4+1hQFFQD4MXuLhEjK+ORrWvvY6+YaRwhpdiuihgIY8GU
-	 hX5N2RWG6Wf7ZRqsVLm+sKWPXD0XZe7eA+CF3H6reL3h19KVF0hMoeJ19bvdb6NM0/
-	 EGS0/gkXnWKbmAgYA5pxDZD4O72y6AlVZ8ky5JgKnt7we2KXG6nzEP/yrJfIBt0PUN
-	 PSBq+QtaSYKBSj6gOaiWvRZOqVEqgWLioL5QqD3RzIm8Gr3/mqYWLczhebxAwdFD0o
-	 leONP0SxdP7j266x6sr7lkaq8ubZu5EbJ+2IUZcbQX+jdPCPLe3c0ZHUMTbHIWoOGm
-	 0/JfZG54YqOcQ==
-Date: Fri, 9 Jan 2026 16:39:39 +0000
-From: Lee Jones <lee@kernel.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
+	s=arc-20240116; t=1767979135; c=relaxed/simple;
+	bh=vqFvY8aZZm1076+rFe+8Ar9hzHvJ09+D07mW9l2VxVg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KR+6tyVb0wouFhhfNqftZxIa1jxj5aODCiX5nQh4ymlZp8Yaa/FiQ1Zda7q+Mh+XJWewvTfbgcmAAGPvLhpbO3xNXAk2w0A6wrzvsKd7+iBBApPH/6xXkRNkIagLJZjmxOgx+sZpkPu29SVUs7Pqs/Msl9gLaN8kOKRkYAsfxhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=PFfpv9+k; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=zsoJl9QFT6lB2tvMX9foCwnsyxHgvWSU5kf9CkJLzMY=; b=PFfpv9+kxOZMuMoz/hl6ikeL1T
+	5xpDMVbKoEI2Ix8nEflv1Cy/IjIClBVilrLg+DXy5/74vbnTYuKcW9fBXyiNctq0ZGpCrdPMxyFFg
+	rpf1pMwmuLjjLorOt++ywgPc8GrV9+S8E7Hj7ep1wVYsiwH0dDcaZu31v7HWuDCEhtIFXR3lEgnCY
+	88sMxC0s4qLe2azNaB+JdU68PJ7yZA8COYJ2rP6pNAI2x6HByz0Qkzt/lyG5x9UXlxxvOL8qW1WIQ
+	TN2uPngw3C9Pktnhk6Gv8LrQOe9fREpFsugFc+H6S7YSY6PlQ3RmTLP84AYHQNH12VBZxPoCpLLqp
+	dUTjJGBw==;
+Date: Fri, 9 Jan 2026 18:18:39 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Lee Jones <lee@kernel.org>
+Cc: Johan Hovold <johan@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>,
+ Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>,
+ Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Subject: Re: [PATCH] mfd: omap-usb-host: fix OF populate on driver rebind
-Message-ID: <20260109163939.GC1808297@google.com>
+Message-ID: <20260109181839.58ec0802@kemnade.info>
+In-Reply-To: <20260109163939.GC1808297@google.com>
 References: <20251219110714.23919-1-johan@kernel.org>
- <20260109163725.GB1808297@google.com>
+	<20260109163725.GB1808297@google.com>
+	<20260109163939.GC1808297@google.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; aarch64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260109163725.GB1808297@google.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, 09 Jan 2026, Lee Jones wrote:
+On Fri, 9 Jan 2026 16:39:39 +0000
+Lee Jones <lee@kernel.org> wrote:
 
-> On Fri, 19 Dec 2025, Johan Hovold wrote:
+> On Fri, 09 Jan 2026, Lee Jones wrote:
 > 
-> > Since commit c6e126de43e7 ("of: Keep track of populated platform
-> > devices") child devices will not be created by of_platform_populate()
-> > if the devices had previously been deregistered individually so that the
-> > OF_POPULATED flag is still set in the corresponding OF nodes.
+> > On Fri, 19 Dec 2025, Johan Hovold wrote:
+> >   
+> > > Since commit c6e126de43e7 ("of: Keep track of populated platform
+> > > devices") child devices will not be created by of_platform_populate()
+> > > if the devices had previously been deregistered individually so that the
+> > > OF_POPULATED flag is still set in the corresponding OF nodes.
+> > > 
+> > > Switch to using of_platform_depopulate() instead of open coding so that
+> > > the child devices are created if the driver is rebound.
+> > > 
+> > > Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
+> > > Cc: stable@vger.kernel.org	# 3.16
+> > > Signed-off-by: Johan Hovold <johan@kernel.org>
+> > > ---
+> > >  drivers/mfd/omap-usb-host.c | 6 ++++--
+> > >  1 file changed, 4 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/drivers/mfd/omap-usb-host.c b/drivers/mfd/omap-usb-host.c
+> > > index a77b6fc790f2..4d29a6e2ed87 100644
+> > > --- a/drivers/mfd/omap-usb-host.c
+> > > +++ b/drivers/mfd/omap-usb-host.c
+> > > @@ -819,8 +819,10 @@ static void usbhs_omap_remove(struct platform_device *pdev)
+> > >  {
+> > >  	pm_runtime_disable(&pdev->dev);
+> > >  
+> > > -	/* remove children */
+> > > -	device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
+> > > +	if (pdev->dev.of_node)
+> > > +		of_platform_depopulate(&pdev->dev);  
 > > 
-> > Switch to using of_platform_depopulate() instead of open coding so that
-> > the child devices are created if the driver is rebound.
+> > devm_of_platform_populate()?
+> >   
+> > > +	else
+> > > +		device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);  
 > > 
-> > Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
-> > Cc: stable@vger.kernel.org	# 3.16
-> > Signed-off-by: Johan Hovold <johan@kernel.org>
-> > ---
-> >  drivers/mfd/omap-usb-host.c | 6 ++++--
-> >  1 file changed, 4 insertions(+), 2 deletions(-)
+> > What on earth is this driver even doing in MFD?
 > > 
-> > diff --git a/drivers/mfd/omap-usb-host.c b/drivers/mfd/omap-usb-host.c
-> > index a77b6fc790f2..4d29a6e2ed87 100644
-> > --- a/drivers/mfd/omap-usb-host.c
-> > +++ b/drivers/mfd/omap-usb-host.c
-> > @@ -819,8 +819,10 @@ static void usbhs_omap_remove(struct platform_device *pdev)
-> >  {
-> >  	pm_runtime_disable(&pdev->dev);
-> >  
-> > -	/* remove children */
-> > -	device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
-> > +	if (pdev->dev.of_node)
-> > +		of_platform_depopulate(&pdev->dev);
+> > Nightmare - quick dig, bury it!  
 > 
-> devm_of_platform_populate()?
+> Is the old platform method even supported anymore?
 > 
-> > +	else
-> > +		device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
+> $ git grep \"usbhs_omap\""
+> drivers/mfd/omap-usb-host.c:#define USBHS_DRIVER_NAME   "usbhs_omap"
 > 
-> What on earth is this driver even doing in MFD?
-> 
-> Nightmare - quick dig, bury it!
+:~/linux/arch/arm/boot/dts/ti/omap$ grep ti,usbhs-host *.dtsi
+omap3.dtsi:			compatible = "ti,usbhs-host";
+omap4-l4.dtsi:				compatible = "ti,usbhs-host";
+omap5-l4.dtsi:				compatible = "ti,usbhs-host";
 
-Is the old platform method even supported anymore?
+So it is still in use.
 
-$ git grep \"usbhs_omap\""
-drivers/mfd/omap-usb-host.c:#define USBHS_DRIVER_NAME   "usbhs_omap"
-
--- 
-Lee Jones [李琼斯]
+Regards,
+Andreas
 
