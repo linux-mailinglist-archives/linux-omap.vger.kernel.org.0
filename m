@@ -1,78 +1,79 @@
-Return-Path: <linux-omap+bounces-5424-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5425-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2EF8D11BD2
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Jan 2026 11:11:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D44E9D125C7
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Jan 2026 12:45:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9F2C630FCC2E
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Jan 2026 10:06:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7BD1330AE7B4
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Jan 2026 11:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39C328F948;
-	Mon, 12 Jan 2026 10:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E453D3570A7;
+	Mon, 12 Jan 2026 11:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="buiWGnw9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BDSFaEjh"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5BE28C037;
-	Mon, 12 Jan 2026 10:06:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4648B356A27;
+	Mon, 12 Jan 2026 11:44:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768212379; cv=none; b=iQxkeUwJLL6yXfGylrYYZqwXq6guB19n/W5Wf9wZwFRyqukQdkBLqWRSujeM9MU4oiDOrcrLGEbBYqmg7nz9eok/3Kux4AE+dQejRm6h1mX6Ra4jz2E81JuR6/EfbQdEgLqWvE7/EiEjSqHNx9+vZ0G57o5oP7ASlctbbl6FY8c=
+	t=1768218243; cv=none; b=Di+0c759mNTBspbdiW2UbQsVRmnniBp6CLYeeighTF2Ja4Nc8y1Z9YuKkCnluimvsvoPhWrPGWbsuXQa16TUOG/2TZFYqAuE9oZg+aVRn92Ye1M00roEH3KJFlVGgwHBkY7u6DBWs1AO/B7FBCG2LiEaynTIJmcuWVRQdeEMJaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768212379; c=relaxed/simple;
-	bh=3PW+lccnBZa1wwf7a30nZMPulFc55qZnM/4SokkMUr8=;
+	s=arc-20240116; t=1768218243; c=relaxed/simple;
+	bh=wYxzqaucRGuoMNi3CMgj0x5c6RoysJv8GcSjGMutuIM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MFefhKQglU7xjUWDlgNS48hHlP+tWS246ZlTeYgNwmC4YiQOEDIvS0n+ypag3u6t5xTvs7sBiGkdtCPnfrun8OI5P/1swWfyYCFtzpaPXavuaU7xFEzh+jcGuDtjZMzp+X55H29LYEpWf/vtoPRuj6EnmUXvBc38SBz4ArOTlsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=buiWGnw9; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768212378; x=1799748378;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3PW+lccnBZa1wwf7a30nZMPulFc55qZnM/4SokkMUr8=;
-  b=buiWGnw9QFQwAbZ32BBCqSvFXq8BxGIZVw29M+C7IuwJFTixgociIq9w
-   ri6VF7Sg9vqnK2b67MzvIsOzXFpm5B9ouWjanvHvqshhaLU0l9N3bG5Eb
-   RZC8EHpqOLFjTYSFlp5chDMWuUFY8FbRErcq4c8pSVIEAx18/6afUYoAF
-   PKqlvC43YjTJX9WPj/iRju/e7ykwTpIeRNVmjMx3RH4GQXG1qwYdjAya9
-   8KGThJczsO7S6t5uoH3oZLw6izbXAbp1pPXQP25xj6Qr2IRDeYFUNzv69
-   jbgkYLL56/12QWfHGn4b3LkUk/o79tRC4ExSmLDhi/it3AA8n/6CtniHy
-   g==;
-X-CSE-ConnectionGUID: LAqXYovoTvmJPWZJLeUneA==
-X-CSE-MsgGUID: /sd8rrndRteyRh+v1GgrIg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="57034236"
-X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="57034236"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 02:06:16 -0800
-X-CSE-ConnectionGUID: JWYITz9qRL2wHgPvTI3OEA==
-X-CSE-MsgGUID: Fl4ph0OrQhmwRKYcLvXrkg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="203264499"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 12 Jan 2026 02:06:12 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vfEoM-00000000DF6-03aY;
-	Mon, 12 Jan 2026 10:06:10 +0000
-Date: Mon, 12 Jan 2026 18:05:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Chintan Patel <chintanlike@gmail.com>, linux-fbdev@vger.kernel.org,
-	linux-staging@lists.linux.dev, linux-omap@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	tzimmermann@suse.de, andy@kernel.org, deller@gmx.de,
-	gregkh@linuxfoundation.org, Chintan Patel <chintanlike@gmail.com>,
-	kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v5] staging: fbtft: use dev_of_fbinfo() instead of
- info->dev
-Message-ID: <202601121705.2kgxpvsS-lkp@intel.com>
-References: <20260112010740.186248-1-chintanlike@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=GUrZC4+4w8TEk8GNxSIQC1bHBxE70WZ+J4cxp6yharDzScne3xPH0NT/pDp+oaeOUi/WNiH1D5y0S+7XA3jLCdfzqsG4FvMkIeJ2+WctU2DcAKDCGkjeVnpoqvIi6uBRTuCkCgQCYrSUts5Ro7M/LjApUq3Hpa8cB0pZYr2H/IQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BDSFaEjh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02848C16AAE;
+	Mon, 12 Jan 2026 11:43:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768218242;
+	bh=wYxzqaucRGuoMNi3CMgj0x5c6RoysJv8GcSjGMutuIM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BDSFaEjhcr82fZbuOnjBsIysguMmvESRnrY4Tpsv9UGf02g8W7lpkhwWzD3ZIsLOR
+	 7AeG2s+ycAlQNjCw8YvdfZWEU6xGElMYLW6io9YkNrIvlGIPar1iQI7aij9znZaI/6
+	 BxJ/wIFz6DdmbdPiZHbOoiwkZUJv3hQjpiOuavR/2Ua7mkrI3qhF0BRjXMU8U5mBPo
+	 2HMuNGiN0xFNsBs0I4Q2tw3Cwl1R6aWTYi3pXz6xaXjzyFoGuIH7U0OtYGZv4JnSKY
+	 y+AXIMFWSkAK5y7yHajqyXFoHhHBAtAJssYs+UufUpqaqMQPxX/X1j7u9ik4vwXeRY
+	 +s9LbpjkC3sow==
+Date: Mon, 12 Jan 2026 12:43:50 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Koichiro Den <den@valinux.co.jp>
+Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org,
+	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com,
+	vigneshr@ti.com, s-vadapalli@ti.com, hongxing.zhu@nxp.com,
+	l.stach@pengutronix.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, minghuan.Lian@nxp.com,
+	mingkai.hu@nxp.com, roy.zang@nxp.com, jesper.nilsson@axis.com,
+	heiko@sntech.de, srikanth.thokala@intel.com,
+	marek.vasut+renesas@gmail.com, yoshihiro.shimoda.uh@renesas.com,
+	geert+renesas@glider.be, magnus.damm@gmail.com,
+	christian.bruel@foss.st.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, thierry.reding@gmail.com,
+	jonathanh@nvidia.com, hayashi.kunihiko@socionext.com,
+	mhiramat@kernel.org, kishon@kernel.org, jirislaby@kernel.org,
+	rongqianfeng@vivo.com, 18255117159@163.com,
+	shawn.lin@rock-chips.com, nicolas.frattaroli@collabora.com,
+	linux.amoon@gmail.com, vidyas@nvidia.com, Frank.Li@nxp.com,
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@axis.com, linux-rockchip@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v5 3/3] PCI: dwc: ep: Support BAR subrange inbound
+ mapping via Address Match Mode iATU
+Message-ID: <aWTedhkOclAVvktO@ryzen>
+References: <20260108172403.2629671-1-den@valinux.co.jp>
+ <20260108172403.2629671-4-den@valinux.co.jp>
+ <aWAZv3ZwdUmo4_wc@ryzen>
+ <nqpwi6ewen4kf7jqgon4ljerceqjeaule25dzb6ytas3wslqhp@ddkr3jum6eac>
+ <aWC8jGTtKIzVuG-X@ryzen>
+ <wvb42kyfcpyii3jql2gm75dd6hqpcd32yat2yb7cg7sl3raw4l@d4mfxk47l6md>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -81,85 +82,45 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260112010740.186248-1-chintanlike@gmail.com>
+In-Reply-To: <wvb42kyfcpyii3jql2gm75dd6hqpcd32yat2yb7cg7sl3raw4l@d4mfxk47l6md>
 
-Hi Chintan,
+Hello Koichiro,
 
-kernel test robot noticed the following build errors:
+On Sat, Jan 10, 2026 at 11:29:06PM +0900, Koichiro Den wrote:
 
-[auto build test ERROR on staging/staging-testing]
+(snip)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Chintan-Patel/staging-fbtft-use-dev_of_fbinfo-instead-of-info-dev/20260112-091221
-base:   staging/staging-testing
-patch link:    https://lore.kernel.org/r/20260112010740.186248-1-chintanlike%40gmail.com
-patch subject: [PATCH v5] staging: fbtft: use dev_of_fbinfo() instead of info->dev
-config: x86_64-randconfig-005-20260112 (https://download.01.org/0day-ci/archive/20260112/202601121705.2kgxpvsS-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260112/202601121705.2kgxpvsS-lkp@intel.com/reproduce)
+> > Your new feature (epc_features->subrange_mapping) in epc_features appears
+> > to depend on epc_features->dynamic_inbound_mapping, so it is a shame that
+> > we don't have a epc_features->dynamic_inbound_mapping bit, so that this new
+> > feature could have depended on that bit.
+> > 
+> > 	if (epf_bar->use_submap &&
+> > 	    !(epc_features->dynamic_inbound_mapping &&
+> > 	      epc_features->subrange_mapping))
+> > 		return -EINVAL;
+> > 
+> > 
+> > I think adding some documentation is a good step.
+> > 
+> > Perhaps we should also introduce a epc_features->dynamic_inbound_mapping bit?
+> > Since you are making DWC glue drivers return a mutable EPC features, we could
+> > set this bit in the DWC driver after that commit. What do you think?
+> 
+> As you pointed out, support for dynamic_inbound_mapping is needed
+> independently of my series. Given that, it would make sense to handle it
+> either before this series, or to fold it into the next iteration (=v6) of
+> the series if that is preferred.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601121705.2kgxpvsS-lkp@intel.com/
+Please fold it into the next iteration (=v6).
 
-All errors (new ones prefixed by >>):
+It should be a one liner patch in the DWC driver, at least if you put it
+after your "PCI: dwc: Allow glue drivers to return mutable EPC features"
+patch.
 
->> drivers/staging/fbtft/fbtft-core.c:367:23: error: call to undeclared function 'dev_of_fbinfo'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     367 |         struct device *dev = dev_of_fbinfo(info);
-         |                              ^
->> drivers/staging/fbtft/fbtft-core.c:367:17: error: incompatible integer to pointer conversion initializing 'struct device *' with an expression of type 'int' [-Wint-conversion]
-     367 |         struct device *dev = dev_of_fbinfo(info);
-         |                        ^     ~~~~~~~~~~~~~~~~~~~
-   drivers/staging/fbtft/fbtft-core.c:393:23: error: call to undeclared function 'dev_of_fbinfo'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     393 |         struct device *dev = dev_of_fbinfo(info);
-         |                              ^
-   drivers/staging/fbtft/fbtft-core.c:393:17: error: incompatible integer to pointer conversion initializing 'struct device *' with an expression of type 'int' [-Wint-conversion]
-     393 |         struct device *dev = dev_of_fbinfo(info);
-         |                        ^     ~~~~~~~~~~~~~~~~~~~
-   drivers/staging/fbtft/fbtft-core.c:744:23: error: call to undeclared function 'dev_of_fbinfo'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     744 |         struct device *dev = dev_of_fbinfo(fb_info);
-         |                              ^
-   drivers/staging/fbtft/fbtft-core.c:744:17: error: incompatible integer to pointer conversion initializing 'struct device *' with an expression of type 'int' [-Wint-conversion]
-     744 |         struct device *dev = dev_of_fbinfo(fb_info);
-         |                        ^     ~~~~~~~~~~~~~~~~~~~~~~
-   6 errors generated.
+Thank you for all your efforts on improving the endpoint framework.
 
 
-vim +/dev_of_fbinfo +367 drivers/staging/fbtft/fbtft-core.c
-
-   360	
-   361	static int fbtft_fb_setcolreg(unsigned int regno, unsigned int red,
-   362				      unsigned int green, unsigned int blue,
-   363				      unsigned int transp, struct fb_info *info)
-   364	{
-   365		unsigned int val;
-   366		int ret = 1;
- > 367		struct device *dev = dev_of_fbinfo(info);
-   368	
-   369		dev_dbg(dev,
-   370			"%s(regno=%u, red=0x%X, green=0x%X, blue=0x%X, trans=0x%X)\n",
-   371			__func__, regno, red, green, blue, transp);
-   372	
-   373		switch (info->fix.visual) {
-   374		case FB_VISUAL_TRUECOLOR:
-   375			if (regno < 16) {
-   376				u32 *pal = info->pseudo_palette;
-   377	
-   378				val  = chan_to_field(red,   &info->var.red);
-   379				val |= chan_to_field(green, &info->var.green);
-   380				val |= chan_to_field(blue,  &info->var.blue);
-   381	
-   382				pal[regno] = val;
-   383				ret = 0;
-   384			}
-   385			break;
-   386		}
-   387		return ret;
-   388	}
-   389	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Kind regards,
+Niklas
 
