@@ -1,245 +1,99 @@
-Return-Path: <linux-omap+bounces-5422-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5423-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90582D1145E
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Jan 2026 09:39:09 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0B6ED11494
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Jan 2026 09:43:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 89FE53063278
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Jan 2026 08:36:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E9BF630031AF
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Jan 2026 08:43:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C125B341072;
-	Mon, 12 Jan 2026 08:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F8C3431F8;
+	Mon, 12 Jan 2026 08:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="OBkk/jlY";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="IoI0aLRO";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="OBkk/jlY";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="IoI0aLRO"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="MmN64m3L"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5866340D82
-	for <linux-omap@vger.kernel.org>; Mon, 12 Jan 2026 08:36:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADEC342526;
+	Mon, 12 Jan 2026 08:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768207002; cv=none; b=KqRUaov9J9GdGKg4XZPCOgXxPwdf/Xa2dolk9Vm3Iyzw0V4fwrKVNxjCOFJg8w7x3l7ErPKpWOC4gsgEl4UcWeyk7bi0O10RiE+Z2s8OmTKbWsKpdZw9HNoVs66hpdhKgd3z7cMmao7Ug+29DLsuDYknUEWbJlfhiABmX81diMc=
+	t=1768207396; cv=none; b=LbTGTMSXrhtC1KrdyMG2FpH6ahSqG9BxmqQZ36m8QDd0M4P03keDW0MNq4qa+cTUR4b5/YOq5saa3HYHoY1fC8FqYkqkQpjQ7GRtsnuBGlVCYUfVjmvGHMojiIJKy/LeuKrCAb6knTNoXhd/uva0h47AQSkHOKYbicvwamwd+W8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768207002; c=relaxed/simple;
-	bh=02hxfbX5Q66uLg8txEPTWe6Et5trWJQeHs96Kig+h4U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SYkpZU9RI9UoSZU2CilPBFznt3+wafgsdFrYDBVcES+VjIuX1C+ANU5Y+vz8EPrekQRy4gFM85lRnTvoQE67VDSJzaY4CAg13ralnVOA8z03gr91Q1TdWv7zG8bZkUuEnMpmHpMJfgwupoUue5q8OoY9efCNJGWlO/4bhN/R0do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=OBkk/jlY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=IoI0aLRO; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=OBkk/jlY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=IoI0aLRO; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 0884D3368A;
-	Mon, 12 Jan 2026 08:36:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1768206999; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FAekRge9sn5O1ohwPEurWfUBwoDhVg6a3GDMsrAihLQ=;
-	b=OBkk/jlYwUVRqPACpJBlknUhK+ySp87q2KLcgMFRNQ48K2VIrXjNQY5rbCICq0Zo7qBkJR
-	clh9yVLgk+hggrokLhYIlWgxTtk+SKiPNUcDbLE3vq6j8jBGm8GSc4vGtjXXsfhZGwdqb5
-	nWojDxOuL/pX7/IjfFgW2xYWbhk7pYU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1768206999;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FAekRge9sn5O1ohwPEurWfUBwoDhVg6a3GDMsrAihLQ=;
-	b=IoI0aLROkuzvCzAjjmmHF5DffF1mtkyznt1SX9tOf32WwU4lVGlmoyGaP1y1xSzzR/J8YA
-	UUKcur0gj6fNBUBg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1768206999; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FAekRge9sn5O1ohwPEurWfUBwoDhVg6a3GDMsrAihLQ=;
-	b=OBkk/jlYwUVRqPACpJBlknUhK+ySp87q2KLcgMFRNQ48K2VIrXjNQY5rbCICq0Zo7qBkJR
-	clh9yVLgk+hggrokLhYIlWgxTtk+SKiPNUcDbLE3vq6j8jBGm8GSc4vGtjXXsfhZGwdqb5
-	nWojDxOuL/pX7/IjfFgW2xYWbhk7pYU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1768206999;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FAekRge9sn5O1ohwPEurWfUBwoDhVg6a3GDMsrAihLQ=;
-	b=IoI0aLROkuzvCzAjjmmHF5DffF1mtkyznt1SX9tOf32WwU4lVGlmoyGaP1y1xSzzR/J8YA
-	UUKcur0gj6fNBUBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B6E4E3EA63;
-	Mon, 12 Jan 2026 08:36:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id kgI4K5ayZGloCAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 12 Jan 2026 08:36:38 +0000
-Message-ID: <33398025-d294-40df-a33b-9ddfec9c6a4e@suse.de>
-Date: Mon, 12 Jan 2026 09:36:38 +0100
+	s=arc-20240116; t=1768207396; c=relaxed/simple;
+	bh=ylg53CFQMcFOWZq+OaZP8KskwuBY1zcwOT/DVRs6FBQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CGM+iDB1yLiZlnxsjJ6I6Tnb3VfiTF8bcIn8b9YVHICkblUUH5JXKdjCCnppM/CJtXiVQZVetBCTXv0wYskFoBOT4KRTPnsq9AwlyA1qzT0UXk2lsVCGAuX3g/7Hfb+7ujwFpFwO9D95U1TnRB/+JWvzxO/iiIQzc15sDLN+2KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=MmN64m3L; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=s0Hq7TpKuiBwJrLhHZ1L9fuGzvKt6/dBTepcFLwguoU=; b=MmN64m3LAgnbW+OBKYPXRA9maE
+	P9f51MhW+XhYcvNPwtL+HC1MsnGaYF+NXj/jmhU7XWCdrQiVHpi5Y16eOAksVkwl0QkZb5NWpujJK
+	H0bUUU66ZzHeJae/yYr8zi3GftNMeCfFPdxccqC3cji7XF5ZAmX8uiEywVgNFH2P6OkzhXBFEZQn1
+	Ubs43hHWW0NVzeIO4H+KCOx/LHV/vX3sOWY0w0XybB1BHvsLvGPHqY1ri37For01XQG9jDMPONrkN
+	0iLcpBOd2BE1boDlbokTLKkk0QFiwhg1v+gVGi1J62pOkjfVFngYmHS3dKL4VF4UaK8pU/oyPgV2V
+	2wIv7z0Q==;
+Date: Mon, 12 Jan 2026 09:42:59 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: akemnade@kernel.org, Jean-Baptiste Maneyrol
+ <jean-baptiste.maneyrol@tdk.com>, David Lechner <dlechner@baylibre.com>,
+ Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko
+ <andy@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, Kevin Hilman
+ <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, Tony Lindgren
+ <tony@atomide.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+ devicetree@vger.kernel.org
+Subject: Re: [PATCH 2/2] ARM: dts: ti/omap: omap4-epson-embt2ws: fix typo in
+ iio device property
+Message-ID: <20260112094259.4648cfaa@kemnade.info>
+In-Reply-To: <20260111123200.6871a41b@jic23-huawei>
+References: <20251231-mpu9150-v1-0-08ecf085c4ae@kernel.org>
+	<20251231-mpu9150-v1-2-08ecf085c4ae@kernel.org>
+	<20260111123200.6871a41b@jic23-huawei>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; aarch64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] staging: fbtft: use dev_of_fbinfo() instead of
- info->dev
-To: Chintan Patel <chintanlike@gmail.com>, linux-fbdev@vger.kernel.org,
- linux-staging@lists.linux.dev, linux-omap@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- andy@kernel.org, deller@gmx.de, gregkh@linuxfoundation.org,
- kernel test robot <lkp@intel.com>
-References: <20260112010740.186248-1-chintanlike@gmail.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20260112010740.186248-1-chintanlike@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_TLS_ALL(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org,lists.linux.dev];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,kernel.org,gmx.de,linuxfoundation.org,intel.com];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,intel.com:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spam-Level: 
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi
+On Sun, 11 Jan 2026 12:32:00 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-Am 12.01.26 um 02:07 schrieb Chintan Patel:
-> This fixes commit
-> a06d03f9f238 ("staging: fbtft: Make FB_DEVICE dependency optional")
->
-> from my previous v4 series:
-> https://patchwork.kernel.org/project/dri-devel/cover/20260107044258.528624-1-chintanlike@gmail.com/
->
-> All direct accesses to info->dev or fb_info->dev are replaced with
-> dev_of_fbinfo() helper, improving readability and ensuring
-> compilation succeeds when CONFIG_FB_DEVICE=n.
->
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202601110740.Y9XK5HtN-lkp@intel.com
-> Signed-off-by: Chintan Patel <chintanlike@gmail.com>
-> ---
->   drivers/staging/fbtft/fbtft-core.c | 9 ++++++---
->   1 file changed, 6 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
-> index 8a5ccc8ae0a1..309e81d7d208 100644
-> --- a/drivers/staging/fbtft/fbtft-core.c
-> +++ b/drivers/staging/fbtft/fbtft-core.c
-> @@ -364,8 +364,9 @@ static int fbtft_fb_setcolreg(unsigned int regno, unsigned int red,
->   {
->   	unsigned int val;
->   	int ret = 1;
-> +	struct device *dev = dev_of_fbinfo(info);
->   
-> -	dev_dbg(info->dev,
-> +	dev_dbg(dev,
->   		"%s(regno=%u, red=0x%X, green=0x%X, blue=0x%X, trans=0x%X)\n",
->   		__func__, regno, red, green, blue, transp);
+> On Wed, 31 Dec 2025 22:14:17 +0100
+> akemnade@kernel.org wrote:
+> 
+> > From: Andreas Kemnade <andreas@kemnade.info>
+> > 
+> > Define interrupts properly. Unfortunately, this hides a bug in the linux
+> > driver, so it needs to be used with the driver fixed only.
+> > 
+> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>  
+> 
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Not related to patch 1 so if TI soc folk can pick this up that would be
+> great.
+> 
+well, it needs things fixed via patch 1 to avoid creating havoc...
+But from a strictly dogmatic point of view the devicetree describes the
+hardware, so it is unrelated.
+... but from a more pragmatic point of view, I do not want to have interrupts
+enabled for drivers which do not handle them correctly.
 
-Rather use fb_dbg() from <linux/fb.h>. It will format the output 
-appropriately.
+Of course this should be picked up by omap folks.
 
->   
-> @@ -389,9 +390,10 @@ static int fbtft_fb_setcolreg(unsigned int regno, unsigned int red,
->   static int fbtft_fb_blank(int blank, struct fb_info *info)
->   {
->   	struct fbtft_par *par = info->par;
-> +	struct device *dev = dev_of_fbinfo(info);
->   	int ret = -EINVAL;
->   
-> -	dev_dbg(info->dev, "%s(blank=%d)\n",
-> +	dev_dbg(dev, "%s(blank=%d)\n",
->   		__func__, blank);
->   
->   	if (!par->fbtftops.blank)
-> @@ -739,6 +741,7 @@ int fbtft_register_framebuffer(struct fb_info *fb_info)
->   	char text2[50] = "";
->   	struct fbtft_par *par = fb_info->par;
->   	struct spi_device *spi = par->spi;
-> +	struct device *dev = dev_of_fbinfo(fb_info);
->   
->   	/* sanity checks */
->   	if (!par->fbtftops.init_display) {
-> @@ -793,7 +796,7 @@ int fbtft_register_framebuffer(struct fb_info *fb_info)
->   	if (spi)
->   		sprintf(text2, ", spi%d.%d at %d MHz", spi->controller->bus_num,
->   			spi_get_chipselect(spi, 0), spi->max_speed_hz / 1000000);
-> -	dev_info(fb_info->dev,
-> +	dev_info(dev,
-
-fb_info() here.
-
-Best regards
-Thomas
-
->   		 "%s frame buffer, %dx%d, %d KiB video memory%s, fps=%lu%s\n",
->   		 fb_info->fix.id, fb_info->var.xres, fb_info->var.yres,
->   		 fb_info->fix.smem_len >> 10, text1,
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
-
-
+Regards,
+Andreas
 
