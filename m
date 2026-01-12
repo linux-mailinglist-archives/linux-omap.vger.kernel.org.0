@@ -1,131 +1,159 @@
-Return-Path: <linux-omap+bounces-5428-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5429-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FDD0D14A3B
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Jan 2026 19:01:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13247D14C27
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Jan 2026 19:26:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4DA9F3019866
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Jan 2026 17:50:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0FBDB300E839
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Jan 2026 18:26:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C24837F119;
-	Mon, 12 Jan 2026 17:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A46938758E;
+	Mon, 12 Jan 2026 18:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="r+fsgxij"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fNVqGG21"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591A637E2FE;
-	Mon, 12 Jan 2026 17:50:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0E8350A02;
+	Mon, 12 Jan 2026 18:26:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768240209; cv=none; b=b83GSoR7hhC88YKQI0G+DMY+pYUWudfUf8xzdy0CEUORHtDSWxHqsd7iaTPKtds4p6YgxNrSgSujy00Hmk8PHWOxHcW2srB8TOfkx8ZXX13Hd2FXk1SZa4vV7FNjWApzYi4zuA1SsUkAJYFzYgfct2dTYy/BSrnl/oSTordMcnE=
+	t=1768242409; cv=none; b=Hbc2JpuSkQudbRKRiGf9hwAc7i8jwlYiGPN6QBAwNsUcv3l9xSvEHcw/fm59mnjs4wq1H3yznfWU4SMpeiFUYbu10hozPEmMmbVN95wKNsnP/8WGVOGXXNB16ebfuiLMt9MlVuOrErI4Vsg4gOfRBI8QfR7CFXDduk3Or0BBytA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768240209; c=relaxed/simple;
-	bh=If0EDU6H4zCtbyzNr1wpDXu4gqKUvy4RcPtwcDab0Jg=;
+	s=arc-20240116; t=1768242409; c=relaxed/simple;
+	bh=4tX4yfMZLD9CinH/qL7aTz2HXhyLociwzo5T9q1Yp6E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VNunT4zFPaRDdBNOc2Tzx74qP+HctKWV7fvyp1q6G9lIRmjR4YsOwr4SVmu9jpm0E0XnMJ67vnoteK6S5oGMjQmJSeKno9JwCOp+U3YByoQD/oHg7SNlVfl2jx1VKAm16v/P4xkYPTkOKHlY144vipAprpUs/xb+Twf/T/befxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=r+fsgxij; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-152.bb.dnainternet.fi [81.175.209.152])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id D49C1316;
-	Mon, 12 Jan 2026 18:49:39 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1768240180;
-	bh=If0EDU6H4zCtbyzNr1wpDXu4gqKUvy4RcPtwcDab0Jg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=r+fsgxijiI5VwhvVQ0/zspPgkpcAp+k8uz8tvsulb5M0phoPVD8Nc1C9NL7cBFz0W
-	 lasBayTK2d5c34FlRBIkNR+PeiAyIq/IG6n3YP7rLTFV1VQAYoDos/iYaiqY7pimQw
-	 tzy52CdaIw4CdBV+qoEM45ZOLeExVKNY22nxdrPI=
-Date: Mon, 12 Jan 2026 19:49:45 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>, Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: display: bridge: nxp,tda998x: Add missing
- clocks
-Message-ID: <20260112174945.GC26365@pendragon.ideasonboard.com>
-References: <2b66577296583a6787f770f0eb13c42a6b50768b.1768233569.git.geert+renesas@glider.be>
+	 Content-Type:Content-Disposition:In-Reply-To; b=TMGomw22oDFmURXGIvJMrvuBWx/z5wksehDQX4CGTKztRkYlbnz3frm32dAcXyoHfe0BGe6TAPNW0Oi8QiPf/yMN/7QI6CN3t2MgYPtUUG/Dro8ktjMDnka4/nWjV/1wmM3TkZKiNOvbQn42D9enSX+QBUoYJd8QotV7wBIy+bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fNVqGG21; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768242408; x=1799778408;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4tX4yfMZLD9CinH/qL7aTz2HXhyLociwzo5T9q1Yp6E=;
+  b=fNVqGG211/+HxCbYy5aGaKlTyNoTHyPMlTc4pgphexFQUMGb9aYZeJ5B
+   5rO5zOPPhJvvJQJT/45ucrwaN0WL+zfpC8POZ/LYn/Osuk3sO2EMS8g0P
+   qWJ0ndIrJ6/iwYrSzhpJFwL2LtUzYDLeGe41lLn6HlprberV3h13BhFH8
+   akH2mq/Re1wir/GSF7wJHCIkynOfFSE7QAzF7XvUM45neeikKx/YcA4a4
+   D6UohQpCA2+w29Z6sa4/SwI1Sho42AvzLX/YEikX0J5hEcxcl1uwdgCGu
+   6S+qbd8xtjK9H5EAG1HHhcMkd5RMygAGkhN7EnEHADuvJW/ctpZjqgVgr
+   Q==;
+X-CSE-ConnectionGUID: Rm8hQyYDTEesPJx9W1zE5g==
+X-CSE-MsgGUID: m5u4CrMhSJORi3krLGhrwg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11669"; a="69447447"
+X-IronPort-AV: E=Sophos;i="6.21,221,1763452800"; 
+   d="scan'208";a="69447447"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 10:26:48 -0800
+X-CSE-ConnectionGUID: 4ETuplM6TSypTjzSJgZikA==
+X-CSE-MsgGUID: CPf5HPlCTZa/DTGCHI6eTA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,221,1763452800"; 
+   d="scan'208";a="204175332"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 12 Jan 2026 10:26:45 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vfMck-00000000Dk0-30cu;
+	Mon, 12 Jan 2026 18:26:42 +0000
+Date: Tue, 13 Jan 2026 02:26:11 +0800
+From: kernel test robot <lkp@intel.com>
+To: Chintan Patel <chintanlike@gmail.com>, linux-fbdev@vger.kernel.org,
+	linux-staging@lists.linux.dev, linux-omap@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, tzimmermann@suse.de,
+	andy@kernel.org, deller@gmx.de, gregkh@linuxfoundation.org,
+	Chintan Patel <chintanlike@gmail.com>,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v5] staging: fbtft: use dev_of_fbinfo() instead of
+ info->dev
+Message-ID: <202601130116.rVB5C8Xx-lkp@intel.com>
+References: <20260112010740.186248-1-chintanlike@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2b66577296583a6787f770f0eb13c42a6b50768b.1768233569.git.geert+renesas@glider.be>
+In-Reply-To: <20260112010740.186248-1-chintanlike@gmail.com>
 
-Hi Geert,
+Hi Chintan,
 
-Thank you for the patch.
+kernel test robot noticed the following build errors:
 
-On Mon, Jan 12, 2026 at 05:02:40PM +0100, Geert Uytterhoeven wrote:
-> Some TDA998x variants (e.g. TDA19988) have an OSC_IN pin, to connect
-> an external oscillator circuit or clock source.
-> 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> ---
-> This fixes "make dtbs_check":
-> 
->     arch/arm64/boot/dts/renesas/r8a774c0-ek874-mipi-2.1.dtb: tda19988@70 (nxp,tda998x): Unevaluated properties are not allowed ('clocks' was unexpected)
-> 	    from schema $id: http://devicetree.org/schemas/display/bridge/nxp,tda998x.yaml
->     arch/arm64/boot/dts/renesas/r8a774c0-cat874.dtb: tda19988@70 (nxp,tda998x): Unevaluated properties are not allowed ('clocks' was unexpected)
-> 	    from schema $id: http://devicetree.org/schemas/display/bridge/nxp,tda998x.yaml
->     arch/arm64/boot/dts/renesas/r8a774c0-ek874.dtb: tda19988@70 (nxp,tda998x): Unevaluated properties are not allowed ('clocks' was unexpected)
-> 	    from schema $id: http://devicetree.org/schemas/display/bridge/nxp,tda998x.yaml
->     arch/arm64/boot/dts/renesas/r8a774c0-ek874-idk-2121wr.dtb: tda19988@70 (nxp,tda998x): Unevaluated properties are not allowed ('clocks' was unexpected)
-> 	    from schema $id: http://devicetree.org/schemas/display/bridge/nxp,tda998x.yaml
-> 
-> This patch can be considered v3 of "[PATCH v2 2/3] [RFC] arm64: dts:
-> renesas: cat874: Drop bogus clocks property"[1], as the pin is actually
-> connected to a clock source on that board.  On BeagleBone Black, it is
-> also connected to a clock source, but not described in DT.
-> 
-> The linux driver does not use this clock directly, but I suspect[2] the
-> use of this pin is controlled through the AP_ENA register value, as
-> specified in the second cell of the the audio-ports property.
-> 
-> [1] https://lore.kernel.org/97b949cddd7e30e9c05873800330dccd3483b12b.1663165552.git.geert+renesas@glider.be
-> [2] I do not have access to the programming manual.
-> ---
->  .../devicetree/bindings/display/bridge/nxp,tda998x.yaml        | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml b/Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml
-> index 3fce9e698ea1d2dd..1205c8e9de329bbc 100644
-> --- a/Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml
-> +++ b/Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml
-> @@ -19,6 +19,9 @@ properties:
->    interrupts:
->      maxItems: 1
->  
-> +  clocks:
-> +    maxItems: 1
-> +
+[auto build test ERROR on staging/staging-testing]
 
-I wonder if we should add a compatible string for the variants with a
-clock pin, to let drivers manage the clock.
+url:    https://github.com/intel-lab-lkp/linux/commits/Chintan-Patel/staging-fbtft-use-dev_of_fbinfo-instead-of-info-dev/20260112-091221
+base:   staging/staging-testing
+patch link:    https://lore.kernel.org/r/20260112010740.186248-1-chintanlike%40gmail.com
+patch subject: [PATCH v5] staging: fbtft: use dev_of_fbinfo() instead of info->dev
+config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20260113/202601130116.rVB5C8Xx-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260113/202601130116.rVB5C8Xx-lkp@intel.com/reproduce)
 
-If the clock does not need to be controlled, an alternative would be to
-drop the clocks property from
-arch/arm64/boot/dts/renesas/r8a774c0-cat874.dts.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601130116.rVB5C8Xx-lkp@intel.com/
 
->    video-ports:
->      $ref: /schemas/types.yaml#/definitions/uint32
->      default: 0x230145
+All errors (new ones prefixed by >>):
+
+   drivers/staging/fbtft/fbtft-core.c: In function 'fbtft_fb_setcolreg':
+>> drivers/staging/fbtft/fbtft-core.c:367:30: error: implicit declaration of function 'dev_of_fbinfo'; did you mean 'dev_info'? [-Wimplicit-function-declaration]
+     367 |         struct device *dev = dev_of_fbinfo(info);
+         |                              ^~~~~~~~~~~~~
+         |                              dev_info
+>> drivers/staging/fbtft/fbtft-core.c:367:30: error: initialization of 'struct device *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+   drivers/staging/fbtft/fbtft-core.c: In function 'fbtft_fb_blank':
+   drivers/staging/fbtft/fbtft-core.c:393:30: error: initialization of 'struct device *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+     393 |         struct device *dev = dev_of_fbinfo(info);
+         |                              ^~~~~~~~~~~~~
+   drivers/staging/fbtft/fbtft-core.c: In function 'fbtft_register_framebuffer':
+   drivers/staging/fbtft/fbtft-core.c:744:30: error: initialization of 'struct device *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+     744 |         struct device *dev = dev_of_fbinfo(fb_info);
+         |                              ^~~~~~~~~~~~~
+
+
+vim +367 drivers/staging/fbtft/fbtft-core.c
+
+   360	
+   361	static int fbtft_fb_setcolreg(unsigned int regno, unsigned int red,
+   362				      unsigned int green, unsigned int blue,
+   363				      unsigned int transp, struct fb_info *info)
+   364	{
+   365		unsigned int val;
+   366		int ret = 1;
+ > 367		struct device *dev = dev_of_fbinfo(info);
+   368	
+   369		dev_dbg(dev,
+   370			"%s(regno=%u, red=0x%X, green=0x%X, blue=0x%X, trans=0x%X)\n",
+   371			__func__, regno, red, green, blue, transp);
+   372	
+   373		switch (info->fix.visual) {
+   374		case FB_VISUAL_TRUECOLOR:
+   375			if (regno < 16) {
+   376				u32 *pal = info->pseudo_palette;
+   377	
+   378				val  = chan_to_field(red,   &info->var.red);
+   379				val |= chan_to_field(green, &info->var.green);
+   380				val |= chan_to_field(blue,  &info->var.blue);
+   381	
+   382				pal[regno] = val;
+   383				ret = 0;
+   384			}
+   385			break;
+   386		}
+   387		return ret;
+   388	}
+   389	
 
 -- 
-Regards,
-
-Laurent Pinchart
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
