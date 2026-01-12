@@ -1,105 +1,160 @@
-Return-Path: <linux-omap+bounces-5426-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5427-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E396ED13DE2
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Jan 2026 17:03:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D16A9D14635
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Jan 2026 18:34:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 92C803032707
-	for <lists+linux-omap@lfdr.de>; Mon, 12 Jan 2026 16:02:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A4C04302426A
+	for <lists+linux-omap@lfdr.de>; Mon, 12 Jan 2026 17:32:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8799364046;
-	Mon, 12 Jan 2026 16:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 803F237E307;
+	Mon, 12 Jan 2026 17:32:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AO7cGcsP"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D293612E8;
-	Mon, 12 Jan 2026 16:02:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52223378D8B;
+	Mon, 12 Jan 2026 17:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768233766; cv=none; b=e7bOy82jgU0skFi4h4hlfX/xXPtPsYJEt6HEnQHCrrvxetvindb47bBIhe06EiI0iphydJr5nrDHOiGGAvBTtoLArH/BZ5H+d+pzjNbqmQ8vyyR2FJu45bS+glPJvnFajweeH2JtRxdmfMXXG5w0owH6mWfU/HkYn1BjSOt/O0w=
+	t=1768239170; cv=none; b=Wj0aNRLeFB//TDMvpdT0R5s80icRFfUdbD7hUur+LjLn94HEzQDC71pjZuQ/1Pxk4OKHsnGfaZ1jeryn5SvKRk69VHKRK71K03/Dn1/m0alrnuuXGoxRsyiGZRzLnff/+Qn/X4/BpvqxwNZCpAwtNlPUrDEKPKonZJdAIxLIg14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768233766; c=relaxed/simple;
-	bh=9P8LssV6p2iWWZSIv/jXldkASAAgElurt6r9n/2FuT0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hxhjlxMd2Q5UALBemtEeB3kDZJjncGd7EvN75hSV/x5TCNyfAdz9A9iQGhr7YkNGxj7ixq8UE04TmKIFyL7O9srQo0CljBF7sewDp5L9SVEpXzqHL2A5J2kJi09emzfmi3NMQCYq0N5H/npOvkgfoDIhqQrcLNxIzE+q75rLH0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DFD4C116D0;
-	Mon, 12 Jan 2026 16:02:43 +0000 (UTC)
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>
-Cc: dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] dt-bindings: display: bridge: nxp,tda998x: Add missing clocks
-Date: Mon, 12 Jan 2026 17:02:40 +0100
-Message-ID: <2b66577296583a6787f770f0eb13c42a6b50768b.1768233569.git.geert+renesas@glider.be>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1768239170; c=relaxed/simple;
+	bh=OR/IteiQnlHXasGusgNXutT+OFGgvrqsqPj9gtcQV6w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S621mur6Lsil2RXtBV/IGgaGl7/eEmcVTKTzf8SXEm9J6O9hJYzvPbFUXTD2eLmWPT52CMWggvlW7+QRnOJCErMzNem8FulIAE0dM5XlraPoxyiw4EfQeAvP7nGy9WMJsCA5bklspDWzWElODpIJp/Jrpla8PeAx6sQUdT8Nq7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AO7cGcsP; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768239168; x=1799775168;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=OR/IteiQnlHXasGusgNXutT+OFGgvrqsqPj9gtcQV6w=;
+  b=AO7cGcsP55YEgI2MOMnyyZXhrucqvf7Mhyesg5YIQnP2JjzMX+YE0+ah
+   doui6maWY7cWFql3qoe0Aegq6XNlCmIkAWd4xPO0W9aaw5uXnClotf4+k
+   lCz07DTAB/5h6NFkAnnHbjEM8o5pNkiTe7LeYtyHWc3i+RGdC+F+oWOGe
+   54juC1pBcEYGHP48jQyV0Huxj3nkm8ncK4clOK/4+vHPBGFd1huVpdkHc
+   jgWWT6xQ0ier0xR5VkYATMpFppD+P+exXr8U2l8C1PlAh9ENpSecgK5aL
+   m+RnQDh/mZIA626hrdjvUoBiOBW0n9q1a9/OKY90pyJgFyRtNsFmuRi12
+   A==;
+X-CSE-ConnectionGUID: 4fNECDlPTsOY9lCvV/m0AQ==
+X-CSE-MsgGUID: F5jPsA7CRu2kLoGtE0KAyA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11669"; a="68522604"
+X-IronPort-AV: E=Sophos;i="6.21,221,1763452800"; 
+   d="scan'208";a="68522604"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 09:32:46 -0800
+X-CSE-ConnectionGUID: cmPI29FYT3yFlVjLv98KUQ==
+X-CSE-MsgGUID: cgkz92DXRRCWb3hgnntwEQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,221,1763452800"; 
+   d="scan'208";a="208662251"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 12 Jan 2026 09:32:42 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vfLmR-00000000Dg2-2mFw;
+	Mon, 12 Jan 2026 17:32:39 +0000
+Date: Tue, 13 Jan 2026 01:31:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: Chintan Patel <chintanlike@gmail.com>, linux-fbdev@vger.kernel.org,
+	linux-staging@lists.linux.dev, linux-omap@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, tzimmermann@suse.de,
+	andy@kernel.org, deller@gmx.de, gregkh@linuxfoundation.org,
+	Chintan Patel <chintanlike@gmail.com>,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v5] staging: fbtft: use dev_of_fbinfo() instead of
+ info->dev
+Message-ID: <202601130026.1M3d4LWk-lkp@intel.com>
+References: <20260112010740.186248-1-chintanlike@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260112010740.186248-1-chintanlike@gmail.com>
 
-Some TDA998x variants (e.g. TDA19988) have an OSC_IN pin, to connect
-an external oscillator circuit or clock source.
+Hi Chintan,
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
-This fixes "make dtbs_check":
+kernel test robot noticed the following build warnings:
 
-    arch/arm64/boot/dts/renesas/r8a774c0-ek874-mipi-2.1.dtb: tda19988@70 (nxp,tda998x): Unevaluated properties are not allowed ('clocks' was unexpected)
-	    from schema $id: http://devicetree.org/schemas/display/bridge/nxp,tda998x.yaml
-    arch/arm64/boot/dts/renesas/r8a774c0-cat874.dtb: tda19988@70 (nxp,tda998x): Unevaluated properties are not allowed ('clocks' was unexpected)
-	    from schema $id: http://devicetree.org/schemas/display/bridge/nxp,tda998x.yaml
-    arch/arm64/boot/dts/renesas/r8a774c0-ek874.dtb: tda19988@70 (nxp,tda998x): Unevaluated properties are not allowed ('clocks' was unexpected)
-	    from schema $id: http://devicetree.org/schemas/display/bridge/nxp,tda998x.yaml
-    arch/arm64/boot/dts/renesas/r8a774c0-ek874-idk-2121wr.dtb: tda19988@70 (nxp,tda998x): Unevaluated properties are not allowed ('clocks' was unexpected)
-	    from schema $id: http://devicetree.org/schemas/display/bridge/nxp,tda998x.yaml
+[auto build test WARNING on staging/staging-testing]
 
-This patch can be considered v3 of "[PATCH v2 2/3] [RFC] arm64: dts:
-renesas: cat874: Drop bogus clocks property"[1], as the pin is actually
-connected to a clock source on that board.  On BeagleBone Black, it is
-also connected to a clock source, but not described in DT.
+url:    https://github.com/intel-lab-lkp/linux/commits/Chintan-Patel/staging-fbtft-use-dev_of_fbinfo-instead-of-info-dev/20260112-091221
+base:   staging/staging-testing
+patch link:    https://lore.kernel.org/r/20260112010740.186248-1-chintanlike%40gmail.com
+patch subject: [PATCH v5] staging: fbtft: use dev_of_fbinfo() instead of info->dev
+config: nios2-allmodconfig (https://download.01.org/0day-ci/archive/20260113/202601130026.1M3d4LWk-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260113/202601130026.1M3d4LWk-lkp@intel.com/reproduce)
 
-The linux driver does not use this clock directly, but I suspect[2] the
-use of this pin is controlled through the AP_ENA register value, as
-specified in the second cell of the the audio-ports property.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601130026.1M3d4LWk-lkp@intel.com/
 
-[1] https://lore.kernel.org/97b949cddd7e30e9c05873800330dccd3483b12b.1663165552.git.geert+renesas@glider.be
-[2] I do not have access to the programming manual.
----
- .../devicetree/bindings/display/bridge/nxp,tda998x.yaml        | 3 +++
- 1 file changed, 3 insertions(+)
+All warnings (new ones prefixed by >>):
 
-diff --git a/Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml b/Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml
-index 3fce9e698ea1d2dd..1205c8e9de329bbc 100644
---- a/Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml
-+++ b/Documentation/devicetree/bindings/display/bridge/nxp,tda998x.yaml
-@@ -19,6 +19,9 @@ properties:
-   interrupts:
-     maxItems: 1
- 
-+  clocks:
-+    maxItems: 1
-+
-   video-ports:
-     $ref: /schemas/types.yaml#/definitions/uint32
-     default: 0x230145
+   drivers/staging/fbtft/fbtft-core.c: In function 'fbtft_fb_setcolreg':
+   drivers/staging/fbtft/fbtft-core.c:367:30: error: implicit declaration of function 'dev_of_fbinfo'; did you mean 'dev_info'? [-Werror=implicit-function-declaration]
+     367 |         struct device *dev = dev_of_fbinfo(info);
+         |                              ^~~~~~~~~~~~~
+         |                              dev_info
+>> drivers/staging/fbtft/fbtft-core.c:367:30: warning: initialization of 'struct device *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+   drivers/staging/fbtft/fbtft-core.c: In function 'fbtft_fb_blank':
+   drivers/staging/fbtft/fbtft-core.c:393:30: warning: initialization of 'struct device *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+     393 |         struct device *dev = dev_of_fbinfo(info);
+         |                              ^~~~~~~~~~~~~
+   drivers/staging/fbtft/fbtft-core.c: In function 'fbtft_register_framebuffer':
+   drivers/staging/fbtft/fbtft-core.c:744:30: warning: initialization of 'struct device *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+     744 |         struct device *dev = dev_of_fbinfo(fb_info);
+         |                              ^~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
+
+
+vim +367 drivers/staging/fbtft/fbtft-core.c
+
+   360	
+   361	static int fbtft_fb_setcolreg(unsigned int regno, unsigned int red,
+   362				      unsigned int green, unsigned int blue,
+   363				      unsigned int transp, struct fb_info *info)
+   364	{
+   365		unsigned int val;
+   366		int ret = 1;
+ > 367		struct device *dev = dev_of_fbinfo(info);
+   368	
+   369		dev_dbg(dev,
+   370			"%s(regno=%u, red=0x%X, green=0x%X, blue=0x%X, trans=0x%X)\n",
+   371			__func__, regno, red, green, blue, transp);
+   372	
+   373		switch (info->fix.visual) {
+   374		case FB_VISUAL_TRUECOLOR:
+   375			if (regno < 16) {
+   376				u32 *pal = info->pseudo_palette;
+   377	
+   378				val  = chan_to_field(red,   &info->var.red);
+   379				val |= chan_to_field(green, &info->var.green);
+   380				val |= chan_to_field(blue,  &info->var.blue);
+   381	
+   382				pal[regno] = val;
+   383				ret = 0;
+   384			}
+   385			break;
+   386		}
+   387		return ret;
+   388	}
+   389	
+
 -- 
-2.43.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
