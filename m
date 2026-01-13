@@ -1,61 +1,75 @@
-Return-Path: <linux-omap+bounces-5441-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5442-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AFA0D17CC2
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Jan 2026 10:55:15 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AF32D17E5D
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Jan 2026 11:13:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1DC0C301D123
-	for <lists+linux-omap@lfdr.de>; Tue, 13 Jan 2026 09:37:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 61DE2301470B
+	for <lists+linux-omap@lfdr.de>; Tue, 13 Jan 2026 10:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B21341AD0;
-	Tue, 13 Jan 2026 09:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D03C38A29F;
+	Tue, 13 Jan 2026 10:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uBkZISuq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TR1n3nxe"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F534192B75;
-	Tue, 13 Jan 2026 09:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB98343D7B;
+	Tue, 13 Jan 2026 10:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768297042; cv=none; b=WI2y8DJLBWUNonzZpQJedl97s7IXVIUaAGAg7eYuUysqjzw+yC7yaQVANrxd3gjsf3yxcWcd5MeFmK9Wr8/uvotLaUf4ySVXtgtlxF2L4xZiZ3hbLPB2CJPkJuF/EPAkrBc7z3tZySx4TKeVy8ksm8KZ9O3O3IasEsgQCY1tL4c=
+	t=1768299190; cv=none; b=G4TK+JRCZZI66p5qXk74KGpH9b0edMr+yZiOm08rk1ua1oOYgsJe5K4Gsxam1CNdHiHFkYnlTtuboi6huu6i17VEoVVH3ze1LkFn2KWoppGqhEJXtvd/9/16TyG0RaZFg9ih0Ex6Gct12s+8rcl4NYtMSxG3yFzDsi1Xwxq8A30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768297042; c=relaxed/simple;
-	bh=cIOwD58Ak3CSKnQkYorESYs4Kr9I5bL41mQonQmvir0=;
+	s=arc-20240116; t=1768299190; c=relaxed/simple;
+	bh=B60Fgt62EI+KMFzznTOtUxbSOZ4bl9cL8ytB20WIh18=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O5qAoR546KtI6hPeS1z6LyvANz40dOO2KO+G2JWv4+9APmk5ctUvH+rsyMTQ1PWRBS7OdV3ChrbiKZElqNyWiUUN4s4s5+qkcXcdZvceigVDE6P9qE7M0693aAmxAXixDWW2ikarKQPv3iAFlH72QT2pMrXfv1hsyV64zaaPgQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uBkZISuq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DFD3C19423;
-	Tue, 13 Jan 2026 09:37:21 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=MaehaiuR4gzZoefHKFNXfcAPqFlAolryYuJPDK+Pc0P3Pd3imCRcsHdQ1y2HoJdWg7PP6uF8MiU1ivFb7/wwwMaWvkAHBr2jEeOgfqTJEKe+GYiCi/d7fZnz45DP8TJZ+gJMa+eKEvrRBOkenUJbdYa54+CuAJ0JGeiJ/Ws4E7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TR1n3nxe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED356C19423;
+	Tue, 13 Jan 2026 10:12:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768297041;
-	bh=cIOwD58Ak3CSKnQkYorESYs4Kr9I5bL41mQonQmvir0=;
+	s=k20201202; t=1768299189;
+	bh=B60Fgt62EI+KMFzznTOtUxbSOZ4bl9cL8ytB20WIh18=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uBkZISuq3zLz7rwGsDG/uxDJP89ZjWYZC8pGI9aBdbIQis/rWdcoim/+eWjOeUmte
-	 5FL84gG/S8J58j0z9OPaRtgYpx5kbFhpEHU9M9bb4WM0iSme3Vc5gO3dIvX4Unys+0
-	 ALfaktbCVUcPQxEEvSlrmHJ3iBIFP0H3SX2ygcyDd2n8eW0I7ExQf7jPhcze7xdVat
-	 1yKFpUEmEEFCubyoSwmQvbZUL8l/KpGJe4BHah0sHtPnwN12Ivd8SvYZWTGtUy/gvd
-	 otpRhvksxjykieG1c84JR1CVj19hRZnfuZT9a8DaQvoMGqpQszPuOcqnSwtGSC9Xeb
-	 IYUBRfE5tTqCA==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1vfapt-000000005qF-2o82;
-	Tue, 13 Jan 2026 10:37:14 +0100
-Date: Tue, 13 Jan 2026 10:37:13 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Lee Jones <lee@kernel.org>
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mfd: omap-usb-host: fix OF populate on driver rebind
-Message-ID: <aWYSSa0w4eNdRyEC@hovoldconsulting.com>
-References: <20251219110714.23919-1-johan@kernel.org>
- <20260109163725.GB1808297@google.com>
+	b=TR1n3nxeNYKPBju7jSmTmUvHf2B07hvvjuClTqXpglYDTqUIy3Qc+ayTSIQ67kdIW
+	 M0dogUadKwpI8h4jvgScUNLHuPpfbDt72RggjaLhTMNJ7ilAdcNOaFZ7DP4BB8L3iQ
+	 pxtiM+2rAxz/7nXY1Gfa4Lf/sua6WJYBRwQl3QgHhT9y7zjGrl8I21BrlhCOtmeZ7M
+	 j/QK2RGJUmXm/TWFHY1viLqWV/1cRQnveztEjn7wZpPxhcp3HkUUE5GqdpNOtWv+Z3
+	 JSgAtsbANLy8Foi9gAgpkGw7D1b7Q4uu7lOrRkXsdRH4iHGFcjMTZa2D+8nBwldlOa
+	 l9AGfTdUR8RjQ==
+Date: Tue, 13 Jan 2026 11:12:57 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Koichiro Den <den@valinux.co.jp>
+Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org,
+	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com,
+	vigneshr@ti.com, s-vadapalli@ti.com, hongxing.zhu@nxp.com,
+	l.stach@pengutronix.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, minghuan.Lian@nxp.com,
+	mingkai.hu@nxp.com, roy.zang@nxp.com, jesper.nilsson@axis.com,
+	heiko@sntech.de, srikanth.thokala@intel.com,
+	marek.vasut+renesas@gmail.com, yoshihiro.shimoda.uh@renesas.com,
+	geert+renesas@glider.be, magnus.damm@gmail.com,
+	christian.bruel@foss.st.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, thierry.reding@gmail.com,
+	jonathanh@nvidia.com, hayashi.kunihiko@socionext.com,
+	mhiramat@kernel.org, kishon@kernel.org, jirislaby@kernel.org,
+	rongqianfeng@vivo.com, 18255117159@163.com,
+	shawn.lin@rock-chips.com, nicolas.frattaroli@collabora.com,
+	linux.amoon@gmail.com, vidyas@nvidia.com, Frank.Li@nxp.com,
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@axis.com, linux-rockchip@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v6 3/5] PCI: endpoint: Add dynamic_inbound_mapping EPC
+ feature
+Message-ID: <aWYaqZLhNVHof4BW@ryzen>
+References: <20260113023715.3463724-1-den@valinux.co.jp>
+ <20260113023715.3463724-4-den@valinux.co.jp>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -64,42 +78,24 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260109163725.GB1808297@google.com>
+In-Reply-To: <20260113023715.3463724-4-den@valinux.co.jp>
 
-On Fri, Jan 09, 2026 at 04:37:25PM +0000, Lee Jones wrote:
-> On Fri, 19 Dec 2025, Johan Hovold wrote:
+On Tue, Jan 13, 2026 at 11:37:13AM +0900, Koichiro Den wrote:
+> Introduce a new EPC feature bit (dynamic_inbound_mapping) that indicates
+> whether an Endpoint Controller can update the inbound address
+> translation for a BAR without requiring the EPF driver to clear/reset
+> the BAR first.
 > 
-> > Since commit c6e126de43e7 ("of: Keep track of populated platform
-> > devices") child devices will not be created by of_platform_populate()
-> > if the devices had previously been deregistered individually so that the
-> > OF_POPULATED flag is still set in the corresponding OF nodes.
-> > 
-> > Switch to using of_platform_depopulate() instead of open coding so that
-> > the child devices are created if the driver is rebound.
-> > 
-> > Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
-> > Cc: stable@vger.kernel.org	# 3.16
-> > Signed-off-by: Johan Hovold <johan@kernel.org>
-
-> > @@ -819,8 +819,10 @@ static void usbhs_omap_remove(struct platform_device *pdev)
-> >  {
-> >  	pm_runtime_disable(&pdev->dev);
-> >  
-> > -	/* remove children */
-> > -	device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
-> > +	if (pdev->dev.of_node)
-> > +		of_platform_depopulate(&pdev->dev);
+> Endpoint Function drivers (e.g. vNTB) can use this information to decide
+> whether it really is safe to call pci_epc_set_bar() multiple times to
+> update inbound mappings for the BAR.
 > 
-> devm_of_platform_populate()?
+> Signed-off-by: Koichiro Den <den@valinux.co.jp>
+> ---
 
-Looks like that would work here, but I prefer using explicit removal for
-both the OF and non-OF for symmetry and readability reasons.
+Since your new feature depends on this feature, this patch should be first
+in the series.
 
-If you think that the non-OF support can be removed then a devres
-conversion can be done as part of that change.
-
-> > +	else
-> > +		device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
-
-Johan
+With that fixed:
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
 
