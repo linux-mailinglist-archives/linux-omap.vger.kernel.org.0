@@ -1,154 +1,171 @@
-Return-Path: <linux-omap+bounces-5466-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5467-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10AC8D1CC91
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Jan 2026 08:15:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44CEAD1E224
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Jan 2026 11:39:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 107BA30563C9
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Jan 2026 07:15:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B803930049E7
+	for <lists+linux-omap@lfdr.de>; Wed, 14 Jan 2026 10:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9648378D8A;
-	Wed, 14 Jan 2026 07:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4554C392819;
+	Wed, 14 Jan 2026 10:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cxdO8vco"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c1cx4AN6"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3377336BCF8;
-	Wed, 14 Jan 2026 07:15:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC041E98E6;
+	Wed, 14 Jan 2026 10:39:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768374945; cv=none; b=WggrcW5BMbWbo/pLbkJ5jY9fwBBMLOuFZWsSuJdGAzHx3AqxGtaHzNZWg0IgmsVPnSNi8hpUI3h/yhXurt/RxlaKa/0VpO9BVnPb53iRwFVsVMel4dfaP2ullcEh9+F4YmEAMNx8PRAxmbQq94JBfeUcmYn7LCenwS8YhRq1Qq0=
+	t=1768387157; cv=none; b=ZfrAqyoTKAl4qMr2klRkiEvtX1g9Z9sHwu0/6O7mWrygM+CKLTYQGpl+x1aSEySEISD9/azt4tdxS9rLq0XUTKKLIB8iB7IuTKGtxTjMMxUUZmqe58rlbQFByJkYa2PvzXZi/YcsW9ZraY9Dqx1ZVvImxY7fAV62unCvB4x4gXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768374945; c=relaxed/simple;
-	bh=VA9a9AXvtKiBXo9K3S8LA7RsTwJ5v/VjkAbf2RrgN2w=;
+	s=arc-20240116; t=1768387157; c=relaxed/simple;
+	bh=GXOUS5IVA/W+B1bIiXQJ9wm/cqS9Cfmo4/ZzvR1iFTY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PqyXslRlD2t6Ee57rEMoGwJ64oO4NiyKmgeW7GD1vDi/eEveQSk56EY+DBX5dSleeYjWXVJ3qTXu4slKl+DVM53HQ7nVreWVmZ03oeNG5YxVfdy0sgOsVagPdCBMwuZRePVXoVrIXIr3/54vE7lSCksyxozQlkraxsJrLbxAD3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cxdO8vco; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768374940; x=1799910940;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=VA9a9AXvtKiBXo9K3S8LA7RsTwJ5v/VjkAbf2RrgN2w=;
-  b=cxdO8vcoD87PGZR95EERve6eBLwcY2X9KS0coNy2m1SPy5szMc4t4D1z
-   id+IpLOpiDjjUNJLrNie76ufNwr4JvZqRMTROsXevjrMc58lC4z0eUPrb
-   T7KePjqY9VXBI12+xW0ypC0MEFFnSMGmjurWciMuZiNrpNTNqrCssUYDl
-   1bSh+57u6YVevfuUpSxBoBM1OZqEgJuwEat+fd6+9TbX3MKIz+MgJr3xe
-   PFQ/3AGuvFY4tcKIbUaWEHqAe7uCPcQtcEfmYN6S0E1rH867kzpQhOCTD
-   PFFvMw44IijeXU2oIhukTDH5qlQufA2c8p+BMkoDeb/bxIuYYidYWsxqZ
-   g==;
-X-CSE-ConnectionGUID: XCDOnRthS72KTZv7j1t9Og==
-X-CSE-MsgGUID: nCreN38LRCOa58gS2nNE+Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="69588483"
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
-   d="scan'208";a="69588483"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 23:15:33 -0800
-X-CSE-ConnectionGUID: BRCY7p9xTYmfuVsllxvXpQ==
-X-CSE-MsgGUID: 6GpVhYH1TXubYBdtY+OV9A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
-   d="scan'208";a="209448783"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.83])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 23:15:30 -0800
-Date: Wed, 14 Jan 2026 09:15:27 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Chintan Patel <chintanlike@gmail.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, linux-fbdev@vger.kernel.org,
-	linux-staging@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	tzimmermann@suse.de, andy@kernel.org, deller@gmx.de,
-	kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v6] staging: fbtft: Use fbdev logging helpers when
- FB_DEVICE is disabled
-Message-ID: <aWdCj9FPfOaLNf8L@smile.fi.intel.com>
-References: <20260113045909.336931-1-chintanlike@gmail.com>
- <2026011341-chomp-protegee-6be5@gregkh>
- <0a90bd0a-cb74-43a3-a50b-4c83bc086556@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=QvSRYZNGFYqYGC2wZO/++RWfwJHURaJtApLjqiZ+3brltGZO9LhaqrHleAMnZaZ/jqYgh27ZNVMKPjvfJMY8nwPK2UzU3KCjtacymGytdPSO2eTnPu6vRXRjmfYHn8O1Zwx3dSx29zQ4pI4OW/gbyULNYq1Ctv0JkKC7TnRn1gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c1cx4AN6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26CFAC4CEF7;
+	Wed, 14 Jan 2026 10:39:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768387157;
+	bh=GXOUS5IVA/W+B1bIiXQJ9wm/cqS9Cfmo4/ZzvR1iFTY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=c1cx4AN6qnW//qfPtg+YU+kBK0Fwi1qx7TD4KI7OcyvNk84LcaOGokwsZbcc85njb
+	 qNE/fDPQvFv/hrK3hmEx5+u9dS2ysExw/sZMu59+B6tkrQgcsiR0HoyBLL0SqDaJNl
+	 lZiiHfClvv5U5qlwltVlii620fXgPEmppvSDIBUFS8QaAvEzvcf7lbCi351zOc3W8f
+	 OSyJms1RzaBtduqCcc4R6U9FLBKh2qAsW/1bGu/5Vq+EF+x+/uK/2ZYuVFmug/pbtL
+	 IQE5Pt8WGKFCXfH5aCcnYzBH4PHJ3+KmYKvQ4C17LfDVYZ564TGrXzWP3iZN+7Q5zE
+	 l1TuhhZkNiuDQ==
+Date: Wed, 14 Jan 2026 11:39:03 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Koichiro Den <den@valinux.co.jp>
+Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org,
+	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com,
+	vigneshr@ti.com, s-vadapalli@ti.com, hongxing.zhu@nxp.com,
+	l.stach@pengutronix.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, minghuan.Lian@nxp.com,
+	mingkai.hu@nxp.com, roy.zang@nxp.com, jesper.nilsson@axis.com,
+	heiko@sntech.de, srikanth.thokala@intel.com,
+	marek.vasut+renesas@gmail.com, yoshihiro.shimoda.uh@renesas.com,
+	geert+renesas@glider.be, magnus.damm@gmail.com,
+	christian.bruel@foss.st.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, thierry.reding@gmail.com,
+	jonathanh@nvidia.com, hayashi.kunihiko@socionext.com,
+	mhiramat@kernel.org, kishon@kernel.org, jirislaby@kernel.org,
+	rongqianfeng@vivo.com, 18255117159@163.com,
+	shawn.lin@rock-chips.com, nicolas.frattaroli@collabora.com,
+	linux.amoon@gmail.com, vidyas@nvidia.com, Frank.Li@nxp.com,
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@axis.com, linux-rockchip@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v7 5/6] PCI: dwc: ep: Support BAR subrange inbound
+ mapping via Address Match Mode iATU
+Message-ID: <aWdyR4Xkh2_ZgOf8@fedora>
+References: <20260113162719.3710268-1-den@valinux.co.jp>
+ <20260113162719.3710268-6-den@valinux.co.jp>
+ <5kexuvze2a4m6bd3yhv2cd7yrzo4r6ubbbouktdsurv7n22v7o@7s3pgf6ftgur>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0a90bd0a-cb74-43a3-a50b-4c83bc086556@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <5kexuvze2a4m6bd3yhv2cd7yrzo4r6ubbbouktdsurv7n22v7o@7s3pgf6ftgur>
 
-On Tue, Jan 13, 2026 at 08:47:54PM -0800, Chintan Patel wrote:
-> On 1/12/26 22:16, Greg KH wrote:
-> > On Mon, Jan 12, 2026 at 08:59:09PM -0800, Chintan Patel wrote:
-> > > Replace direct accesses to info->dev with fb_dbg() and fb_info()
-> > > helpers to avoid build failures when CONFIG_FB_DEVICE=n.
-> > 
-> > Why is there a fb_* specific logging helper?  dev_info() and dev_dbg()
-> > should be used instead.
+On Wed, Jan 14, 2026 at 12:54:37PM +0900, Koichiro Den wrote:
+> I realized that I missed one case in v7.
 > 
-> You’re correct that dev_dbg()/dev_info() are the standard logging APIs.
+> I think dw_pcie_ep_clear_ib_maps() should also be called from
+> dw_pcie_ep_ib_atu_bar() to tear down any existing inbound mappings for the
+> same BAR before re-programming it in BAR Match Mode.
 > 
-> The reason I switched to fb_dbg()/fb_info() is not stylistic: direct
-> dereferences of info->dev / fb_info->dev are invalid when
-> CONFIG_FB_DEVICE=n, which causes compile-time errors.
+> This matters when updating inbound mappings for a BAR without resetting the
+> BAR in between. There are four possible transition patterns, and pattern #4
+> below was overlooked:
 > 
-> fb_dbg() and fb_info() are framebuffer-specific helpers that handle
-> this case correctly, allowing logging without touching info->dev.
+>   1. BAR Match Mode -> BAR Match Mode
+>      As the current implementation does, the mapping is simply updated
+>      (with the same atu index)
 > 
-> > > Fixes: a06d03f9f238 ("staging: fbtft: Make FB_DEVICE dependency optional")
-> > 
-> > Is this really a bug?
+>   2. BAR Match Mode -> Address Match Mode
+>      This patch series already ensures the old BAR Match mapping is
+>      torn down before reprogramming.
 > 
-> The build failure occurs when CONFIG_FB_DEVICE=n, where direct
-> dereferences of info->dev / fb_info->dev are not valid. This was reported by
-> the kernel test robot.
+>   3. Address Match Mode -> Address Match Mode
+>      Likewise, existing Address Match mappings are cleared first.
 > 
-> That said, I’m fine dropping the Fixes tag if you don’t consider this a
-> regression.
-
-I believe the point Greg made is that: If it's a bug, state it more clearly in
-the commit message. The summary of the above sounds to me like a good enough
-justification to leave Fixes tag as is.
-
-...
-
-> Same reason: dereferencing info->dev is invalid when CONFIG_FB_DEVICE=n.
-> fb_dbg() handles this correctly without needing info->dev.
-
-Similar comment here, make it more clearly, e.g. by adding more details in the
-commit message, like explaining that there is no such a field to access when it
-goes under some circumstances.
-
-...
-
-> > > +	fb_info(fb_info,
-> > > +		"%s frame buffer, %dx%d, %d KiB video memory%s, fps=%lu%s\n",
-> > > +		fb_info->fix.id, fb_info->var.xres, fb_info->var.yres,
-> > > +		fb_info->fix.smem_len >> 10, text1,
-> > > +		HZ / fb_info->fbdefio->delay, text2);
-> > 
-> > When drivers work properly, they are quiet.  Why is this needed at all
-> > except as a debug message?
+>   4. Address Match Mode  -> BAR Match Mode
+>      This case was not handled. The change below adds the missing
+>      teardown so that stale Address Match mappings do not remain active.
 > 
-> Agreed. The informational message during framebuffer registration is not
-> necessary. I will either remove it entirely or convert it to a debug-only
-> message.
+>      --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
+>      +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+>      @@ -148,9 +148,12 @@ static int dw_pcie_ep_ib_atu_bar(struct dw_pcie_ep *ep, u8 func_no, int type,
+>              u32 free_win;
+>              struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+>      
+>      -       if (!ep->bar_to_atu[bar])
+>      +       if (!ep->bar_to_atu[bar]) {
+>      +               /* Tear down existing mappings before (re)programming. */
+>      +               dw_pcie_ep_clear_ib_maps(ep, bar);
+>      +
+>                      free_win = find_first_zero_bit(ep->ib_window_map,
+>                                                    pci->num_ib_windows);
+>      -       else
+>      +       } else
+>                      free_win = ep->bar_to_atu[bar] - 1;
+
+If one of the branches has braces, both branches should have braces:
+https://www.kernel.org/doc/html/latest/process/coding-style.html#placing-braces-and-spaces
+
+
 > 
-> I’ll rework the patch accordingly and resend.
+> Unless there are objections, I'll include this fix in v8.
 
-If you go this direction, I would do it in two stages (first is a direct
-fix for a compilation issue and second one is switching to dbg level, each
-with the respective commit message), but I leave it up to you and Greg.
+Isn't it easier/cleaner if we call dw_pcie_ep_clear_ib_maps() in
+dw_pcie_ep_set_bar(), rather than calling it in both dw_pcie_ep_ib_atu_addr()
+and dw_pcie_ep_ib_atu_bar() ?
 
--- 
-With Best Regards,
-Andy Shevchenko
+dw_pcie_ep_set_bar() knows the condition if we are dynamically reprogramming
+a BAR or not, and all the four cases are when dynamically reprogramming a BAR.
+
+I.e. instead of adding additional code to dw_pcie_ep_ib_atu_bar(), we do
+something like:
+
+diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+index b2ea2c2c986f..63ae5471fe13 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -318,9 +318,6 @@ static int dw_pcie_ep_ib_atu_addr(struct dw_pcie_ep *ep, u8 func_no, int type,
+                return -EINVAL;
+        }
+ 
+-       /* Tear down any existing mappings before (re)programming. */
+-       dw_pcie_ep_clear_ib_maps(ep, bar);
+-
+        for (i = 0; i < epf_bar->num_submap; i++) {
+                off = submap[i].offset;
+                size = submap[i].size;
+@@ -571,6 +568,9 @@ static int dw_pcie_ep_set_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+                    ep->epf_bar[bar]->flags != flags)
+                        return -EINVAL;
+ 
++               if (ep->epf_bar[bar]->num_submap || epf_bar->num_submap)
++                       dw_pcie_ep_clear_ib_maps(ep, bar);
++
+                /*
+                 * When dynamically changing a BAR, skip writing the BAR reg, as
+                 * that would clear the BAR's PCI address assigned by the host.
+
 
 
 
