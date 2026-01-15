@@ -1,115 +1,140 @@
-Return-Path: <linux-omap+bounces-5480-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5481-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FAEED21A37
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Jan 2026 23:42:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D4FD22585
+	for <lists+linux-omap@lfdr.de>; Thu, 15 Jan 2026 05:05:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 86172301F02C
-	for <lists+linux-omap@lfdr.de>; Wed, 14 Jan 2026 22:42:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 45DF1302488F
+	for <lists+linux-omap@lfdr.de>; Thu, 15 Jan 2026 04:05:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226373A9D98;
-	Wed, 14 Jan 2026 22:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5F427979A;
+	Thu, 15 Jan 2026 04:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="qQj2aDH1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a1b95REO"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7527234250B
-	for <linux-omap@vger.kernel.org>; Wed, 14 Jan 2026 22:42:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4469627510E
+	for <linux-omap@vger.kernel.org>; Thu, 15 Jan 2026 04:05:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768430554; cv=none; b=VOIZv4NWixdqmD6d42QZlFCrwam9k9M0d6f73HZywrjqnez08MQo5j2mjqvfU3dQVUQn++J6rdEkJL9B/QAt3kHdnm3NFeRlrT0kXII5oC8CTkVZIO42e++/VFOhIjRn0dHhLP4IwTCGohoDtC0XxK/Vt/WQXLBgSSXdVMAR6lo=
+	t=1768449904; cv=none; b=C3AUz47NoQxf03WY//+Us1Fst5/tZ6nbE4UM/tbk0ddaY9zt3uAm32o+pcuM4Hvqq/RYuHFp72LwyHyzvFu5929ePyAdDKgF20l+CPcBtH6kS6mvKjIPtc89raNKwZqlLvD8DcfIr/48vuuZpa0K1QPCXMC7zmvoKH7kOAoIh9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768430554; c=relaxed/simple;
-	bh=FsoC5ZXVIM0tPvsgw+kQrOtyl7nYAB/8v6gWuJPFCrc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=CWxVxt6GQHAXjThDc6wggE4M0KlWyQn4vsufE47mXpBVXylly5m9rpChqmHsMi7sgTmx0kMp5vzWLSE3gOIjQnJiWFNw9zcGkOQhdoxQzGCRT+eSWPP/f3O5dGmDgS9zKXv3hERUcXbAdJQnyTWTzO7YTN9nrt9D0+ig+r1wSt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=qQj2aDH1; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a0834769f0so2192065ad.2
-        for <linux-omap@vger.kernel.org>; Wed, 14 Jan 2026 14:42:28 -0800 (PST)
+	s=arc-20240116; t=1768449904; c=relaxed/simple;
+	bh=iaWwaYwF+Z56LvJlOQ3qTsiq6EK6HcVBvHQn6iq9Yjs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=izg/ildRD6rUzSNTxk1nP0Gxeyj5z76IkdnJ0C0zU9AxHaQ7u/Iz7NeVqqP1okVwRZHkhklt2Q0NOISzTX/Kp9KRMMGlI6IeyGi+laMrF7I3bz7TmacHtEQTV15uCrj2EibIISC9drVKz8VlKplDa0XVn/AEs4lbO6nhtL3W7gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a1b95REO; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a0d67f1877so3402395ad.2
+        for <linux-omap@vger.kernel.org>; Wed, 14 Jan 2026 20:05:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1768430544; x=1769035344; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Mq+7e6HHgulV0HLjSWXnWUAjSy0Qs9edOct4mk3Fy3A=;
-        b=qQj2aDH1eXj2Uyw8N5GCdNw2JeYK+YBDNspEGd9ipUWH0Tu8L4HK+8DiJPN7+LhrYO
-         nWStZAzdQuRbGK3gY39BNl8+X0OKeelc0NcqAskVB9c5xSPEaHKzLeTlbbo55WDheNJn
-         2+FWDJhN+Rs98waGiSXJC6VPkp3e0uLpyrhYlP5n2AOpoiP+x5U3XaH9wb6ESdrxW44+
-         hYvSbZZCpG3hiYIuwNtqtBQByvPD01455JpAXJ8klzGB7rE+K4f6AG79k/KgLOUZyszO
-         VBCvH6iDI/o5pxbLh9lhaRv8mQq+dJnJ+LXsIshD4RTAhL/UArDeZnGG33bsPiPsN1Yi
-         ikDQ==
+        d=gmail.com; s=20230601; t=1768449902; x=1769054702; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UKefXX9KTkiQnQU4SrQGPHAT+zK2SvRI2HKryej3vYE=;
+        b=a1b95REO5pbmU5vvwN4atCluKHcNs4YgMRFvtNF9HOIGCc3SN2KYe7wL1Bj9Ae2saP
+         uTyelth04clp+VW01BGtjvXFoFjw1ujT/GPEQiLPE6/QVB7eoOqKFJXBCQ5ANqT1TV/I
+         D2lnIrkcGLAt8HYphLEXly3Bs4XvgJWyealHZMSfWz/+GJ2SPrC/J3fp9S7SXwWZ5Z7Y
+         NU5/dB/rHqhbtB0bWrOGXrJh8z24k3khEuhCsgTXNi7c8nDbFuS4EJ2mSMX/KA67CvJp
+         oCC8fxfKf9Ic12C94wZIOlOC09UGv9pG7cPqVFKZAhuGq5IOs3fvtD7Uk8bw1uydWEyz
+         Nmeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768430544; x=1769035344;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Mq+7e6HHgulV0HLjSWXnWUAjSy0Qs9edOct4mk3Fy3A=;
-        b=Z83c5mWyUr0CEFPvnSP5DR9JKXQa1L/re77AeRbQG+/+wJpMjnQSTInIWzgRklnECb
-         WS4vrwuONAXHMScr+qX9AQ0U8SqMf6xjHiu7mSG9e4PguPO9Jfkkbef2+vWF5enqeo+R
-         +hlgya0YUurChsinCI9JdzJ+vtRO75+wvwGiyjBuwSOOiQ5XlU9qsLxjfLQeFRyzwwL3
-         d9heAWTnZ3FfdFb51NO9PV4X3dFMDRFpe3pFd36EWZzGGN7ttkELePXagKCgH4lPjl14
-         e1fFI2KZJdoxHhS2Bb1M/6WMc50Sx/wYaPW2HwI0HiWT3JOIIeEA/eWsmtO63WbmbyGP
-         IQ4w==
-X-Forwarded-Encrypted: i=1; AJvYcCV+VVnCKhojlmBskvJZaGadApLG/7rJA/3PAwsvaG2xhHp/Z7DkUV8txbzqQhYgnKMD7A1nalSbWE6o@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPUWHZ7nAxoZScSSZNxo2NejX2euGogDFUdIZpN5gZMQ1YNFD3
-	3VFpf2Pz+LISaI9lsZRuWEq7al4eSJCzrtZUrG2azFr2NpZSQhBGP7ddf/CfcLWSOos=
-X-Gm-Gg: AY/fxX40S2bP4veZ+z5B8K1jIjWFsR5s1/nVQkAiCiVjpiXPfgFR4ZJYJ3xnjBlfARm
-	f3wrfV9yLlTfDCtdMW6Ps5ucsgkvNdro3+YCIWfHoXZC6GdJUyaQRseaM0QwzJM9zJsXPUK5si/
-	fOT+n0Q0JBWc3klMrtIP8ESaNrTFOvMipQtvDdz/zpyQq7mF+TUOYbCXAnYyT79R8JP5/6Smu3c
-	dFaXYg5p3bsW/FMBB8t3rl7p3rHtjunkK9OtTP4wdbCzzhrNV+W4dWPxAvL99+1oaT7WqFG/NrV
-	tzS0675MuWnfJVkdX1NiDa7mR+XHn4dbHU5asMLE3NoIQXckNQv6np24oztZCFJW4ejVEFCZw7s
-	GftYz+F8PAj4V4T5ji6RqOSn8A5KEw9sH54891RhaOvGqciS2ZkFqdfwLhk9ROPyLeoDGpHnJzG
-	yxtyKERU8SUs6sGLuEG8Y=
-X-Received: by 2002:a17:902:d58f:b0:29e:c2dd:85ea with SMTP id d9443c01a7336-2a599dac14emr43196155ad.11.1768430544458;
-        Wed, 14 Jan 2026 14:42:24 -0800 (PST)
-Received: from localhost ([71.212.208.158])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c48dc1sm232455225ad.40.2026.01.14.14.42.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jan 2026 14:42:23 -0800 (PST)
-From: Kevin Hilman <khilman@baylibre.com>
-To: andersson@kernel.org, Haotian Zhang <vulab@iscas.ac.cn>
-Cc: baolin.wang@linux.alibaba.com, linux-omap@vger.kernel.org, 
- linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20251124104805.135-1-vulab@iscas.ac.cn>
-References: <20251124104805.135-1-vulab@iscas.ac.cn>
-Subject: Re: [PATCH] hwspinlock: omap: Handle devm_pm_runtime_enable()
- errors
-Message-Id: <176843054363.3597156.2942719740253822601.b4-ty@baylibre.com>
-Date: Wed, 14 Jan 2026 14:42:23 -0800
+        d=1e100.net; s=20230601; t=1768449902; x=1769054702;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UKefXX9KTkiQnQU4SrQGPHAT+zK2SvRI2HKryej3vYE=;
+        b=PAo5wk11WHsbGrAKqSsUNA8/lQ57ixDSVVQWTLeqNg0HyyyiWBqw+KlVgb0Z+U6Xj5
+         27t3Z3+leIMPGOBbx1GgoL7OrgBxgVMhBbmEpQOtSfy/a19HR6ID3YLa8f9gMhZX1D+R
+         F0lrKI8kc3R/iiG90obsISwTYNEDbHRBPHVujDgy6b3mNjipz4qq0HdnCtGnWZws86OQ
+         9Crl9PrG05agBQEh6vgHWpdrzmHvbolS71NYI1a5g3a6Dhu5KbPaxeOCA/nxjbxTzGbR
+         Eu7W1wQPWjNVJ0Syh5LdTrRcsyJi6GeFZvKBOScU/HtEbNx7hKzB27RrplD66FKf6kVN
+         eI/A==
+X-Forwarded-Encrypted: i=1; AJvYcCWqL3g3o4Vk1h9lZthjta8rrOZsqojspL/XKYfVNpsB3bqWQ2hNAWuoKrYvrCPomuvTbXQ+x0vcDpNA@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1BN+abkwBABt8Mer2GlobInNrZ/yevsFZ35AUWgWXGUNRTn52
+	tAcnM0g4svfr5XvLgzX7rxu47gHqQvEI+B7/mSoKKrwOwV/seVLihTuZ
+X-Gm-Gg: AY/fxX6uB5W7ch5Cof3d1wTV7/BoDWIPhefVDfGUtabYjAQb+kpawdHXPNe0871SIQt
+	KSy1d6VElmSmjnad7kvwnmf5NHhqgeo//WVqAdrr5CSVpE4BYf1SFKbAX+DQifisls++StGe0lv
+	Rki8D/rfzXHdD3pIfDQFHoK1yvgDaPpMQ17y1m2tDMrBY91trgn58z/USnZlH2A0ddBRzK6RgnW
+	OMkkJUTz3YQj3XB487cT0tj5dPv54FTRC6jwAja7aQydIFwQ3yIYG0E0mYZMVb+HVpzC6/hDCoq
+	8nx4NMTMwxxgiehTWeYkpMwrv+IjFQICH9gmGcrC9dxQjtLfYTRQ55iHmVQw8vHZuAHn/aBT5zt
+	OxQ0hN+jE5vRvqWYOK0+4Lt/GIPJCZYHxJp8FA9A+92oMqqGA2PvtElHOf0CB0QFmPotp7Umv+9
+	nTpk5qD+aCxDP8kN0m1Y+suLVklL9tHisrz7oqIIeGIwJHSdesXjYBKwVZ2set
+X-Received: by 2002:a17:902:da82:b0:298:55c8:eb8d with SMTP id d9443c01a7336-2a599e2411bmr51391755ad.35.1768449902516;
+        Wed, 14 Jan 2026 20:05:02 -0800 (PST)
+Received: from ?IPV6:2601:1c0:5780:9200:e9f3:c6f4:5dd4:2565? ([2601:1c0:5780:9200:e9f3:c6f4:5dd4:2565])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cb2d79sm244924275ad.56.2026.01.14.20.05.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Jan 2026 20:05:01 -0800 (PST)
+Message-ID: <ed199efe-f6b2-426e-b679-ef1f019e6433@gmail.com>
+Date: Wed, 14 Jan 2026 20:05:01 -0800
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-a6db3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6] staging: fbtft: Use fbdev logging helpers when
+ FB_DEVICE is disabled
+To: Thomas Zimmermann <tzimmermann@suse.de>,
+ Greg KH <gregkh@linuxfoundation.org>
+Cc: linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
+ linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, andy@kernel.org, deller@gmx.de,
+ kernel test robot <lkp@intel.com>
+References: <20260113045909.336931-1-chintanlike@gmail.com>
+ <2026011341-chomp-protegee-6be5@gregkh>
+ <a2d5cc20-5160-4294-bda1-3d5b645ec787@suse.de>
+Content-Language: en-US
+From: Chintan Patel <chintanlike@gmail.com>
+In-Reply-To: <a2d5cc20-5160-4294-bda1-3d5b645ec787@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
-On Mon, 24 Nov 2025 18:48:05 +0800, Haotian Zhang wrote:
-> Although unlikely, devm_pm_runtime_enable() can fail due to memory
-> allocations. Without proper error handling, the subsequent
-> pm_runtime_resume_and_get() call may operate on incorrectly
-> initialized runtime PM state.
+
+On 1/14/26 03:38, Thomas Zimmermann wrote:
+> Hi
 > 
-> Add error handling to check the return value of
-> devm_pm_runtime_enable() and return on failure.
+> Am 13.01.26 um 07:16 schrieb Greg KH:
+>> On Mon, Jan 12, 2026 at 08:59:09PM -0800, Chintan Patel wrote:
+>>> Replace direct accesses to info->dev with fb_dbg() and fb_info()
+>>> helpers to avoid build failures when CONFIG_FB_DEVICE=n.
+>> Why is there a fb_* specific logging helper?  dev_info() and dev_dbg()
+>> should be used instead.
 > 
-> [...]
+> Fbdev is entirely inconsistent about its logging. There's dev_*(), 
+> there's pr_*(), and even printk(). The problem with dev_*() logging is 
+> that devices are not always available. The HW device can be NULL and 
+> might not be all that useful in practice. The Fbdev software device is 
+> often not even compiled in nowadays. (This patch is about that problem.) 
+> Hence the next best option is to make fb_*() logging helpers that 
+> address these problems. They are based on pr_*() and print the 
+> framebuffer index, which should always be available after 
+> register_framebuffer().
+> 
+>>
 
-Applied, thanks!
+Thanks Andy and Thomas.
 
-[1/1] hwspinlock: omap: Handle devm_pm_runtime_enable() errors
-      commit: 3bd4edd67b034f8e1f61c86e0eb098de6179e3f2
+I’ll update the commit message to clearly describe the underlying issue.
 
-Best regards,
--- 
-Kevin Hilman <khilman@baylibre.com>
+I’ll also split the changes as suggested in 2 patches and send v7:
+1) a patch focused purely on fixing the compilation issue by avoiding
+    info->dev dereferences (using fb_dbg() where logging remains), and
+2) a follow-up cleanup that removes or downgrades the framebuffer
+    registration message to debug level.
+
+I’ll rework the series accordingly and resend.
+
+Thanks for the guidance.
+
 
 
