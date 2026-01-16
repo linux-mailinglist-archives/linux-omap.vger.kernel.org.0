@@ -1,113 +1,223 @@
-Return-Path: <linux-omap+bounces-5498-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5499-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4B81D322DC
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Jan 2026 14:55:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B204D33A27
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Jan 2026 18:03:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BA6D13007668
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Jan 2026 13:55:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EFF473023515
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Jan 2026 17:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 573E328726A;
-	Fri, 16 Jan 2026 13:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB8833F8C4;
+	Fri, 16 Jan 2026 17:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="jdOcwESw"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="a/mfLc4O"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80020238D52;
-	Fri, 16 Jan 2026 13:55:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355462248A0;
+	Fri, 16 Jan 2026 17:02:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768571736; cv=none; b=lbNgTXERRnJxAO3hM8yNMlU0CIvE4GCVSFocG7PgK8UIYj4h1N8qv0H+kQ4BFSZKUXpGT7GstLmGD9eqetU7KGEV7ZT5wWZP4idFK8RMT0sSF55XXcNs/NYukkb1bw8YuqPJIZA/NiSzKFXclcbaRfduel+Q353sjyWUSe/9AHM=
+	t=1768582959; cv=none; b=DJi0MzCIqYFMoBcPCWOnGoTJyMdO7QJjD0N7BjULqnucjIeY5imJxFlm4yV5MUGl+mZd6S+hGSDZTZVHYlPWcQLQC+3t05AHF6ut1mKCXl/b6/o0pOdsxqxO11pwz7gb7IwQ2HjNI+aXFDZp+eDkVehWfJi29v13ofvzI5VML6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768571736; c=relaxed/simple;
-	bh=I0XCyUeDtuxysS4p9zJrWOJAivWPd7yP+p1bN+bktSg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JWfG6G2N5JKq5ebeXhe+6yKfwWmYhNvjj/F9BHlNH+LEO68SwayXBGL8pCE3fe8nmpFJwR27UzZV/PYbBb4iSySK05E4L18e+mL86e+IwubhKkCB0PuGjBumtZj2KveH5RwXcKUZWtjFSov3YZFddHOcdHgdJ3SxnpuRI3VPDN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=jdOcwESw; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=ndo/z/ZlLRolf1OeTpw88B+RYHztIyRUkD+K94epJM4=; b=jd
-	OcwESwJUMwTJqJ3m59hjuAnufo/Yg8UgR4YRnu/pp0tlumajmMYDO3I/PKXXopFak96VhNzvPlEPa
-	haMNdiRURAt0Z1X9FOOYushPWJWyslLfapNSDosOQVvkr14eNF/FiigpF2bRXhLInmGlgZv8MpXVx
-	7p8zgRq2uTYAuFQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vgkIK-0034xf-WE; Fri, 16 Jan 2026 14:55:21 +0100
-Date: Fri, 16 Jan 2026 14:55:20 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Parvathi Pudi <parvathi@couthit.com>
-Cc: Andrew Davis <afd@ti.com>, nm <nm@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Kevin Hilman <khilman@baylibre.com>, rogerq <rogerq@kernel.org>,
-	tony <tony@atomide.com>, robh <robh@kernel.org>,
-	krzk+dt <krzk+dt@kernel.org>, conor+dt <conor+dt@kernel.org>,
-	richardcochran <richardcochran@gmail.com>,
-	aaro koskinen <aaro.koskinen@iki.fi>,
-	andreas <andreas@kemnade.info>,
-	linux-omap <linux-omap@vger.kernel.org>,
-	devicetree <devicetree@vger.kernel.org>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	netdev <netdev@vger.kernel.org>, danishanwar <danishanwar@ti.com>,
-	pratheesh <pratheesh@ti.com>, j-rameshbabu <j-rameshbabu@ti.com>,
-	praneeth <praneeth@ti.com>, srk <srk@ti.com>,
-	rogerq <rogerq@ti.com>, krishna <krishna@couthit.com>,
-	mohan <mohan@couthit.com>, pmohan <pmohan@couthit.com>,
-	basharath <basharath@couthit.com>,
-	Murali Karicheri <m-karicheri2@ti.com>
-Subject: Re: [PATCH v4 2/2] arm: dts: ti: Adds support for AM335x and AM437x
-Message-ID: <2a977fd4-910a-4838-9ed6-97224d6ab775@lunn.ch>
-References: <20260105162546.1809714-1-parvathi@couthit.com>
- <20260105162546.1809714-3-parvathi@couthit.com>
- <84b08398-5622-45c9-a8fa-54639c1cf0b3@ti.com>
- <2110802326.88645.1767873743162.JavaMail.zimbra@couthit.local>
- <180076068.145887.1768567659299.JavaMail.zimbra@couthit.local>
+	s=arc-20240116; t=1768582959; c=relaxed/simple;
+	bh=XkCk3fnK9WW7ID9KvS8IzvS5mjDeOvHvLQ4GmLKzMxg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dp1IhEhNExwaLQYlKiNvgbahfC9c6HanuOzGB0QZ9lGaHJkQivIOQ7BFjV5v7RoL750Pvagfjd2NhPxyOTbwugPFkPmjo+QEXJHPu6aca5zrBreePlGrkuv+urz2TZsHutHlge/URgZv76heIL+PSHgUrsX5Z/fYFRwbRJRn3Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=a/mfLc4O; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id B21A71A28CC;
+	Fri, 16 Jan 2026 17:02:34 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7FC7E606F9;
+	Fri, 16 Jan 2026 17:02:34 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D0C8610B68C84;
+	Fri, 16 Jan 2026 18:02:24 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1768582952; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=Mlrkt2Cy4qV+9kwAUK6c/QgVVoDWCENjPhDBijpvPxM=;
+	b=a/mfLc4OEHY3xgw9VM0zD2WVgbQshIuD30TJK1roQBoDb6kMOfzTnqmvKtMCvXBZ1T6W/9
+	Wmxqw+Et88L82ZK3VmsI11zCjEPC0AQphtTPpB/ZOzXYoimuUwBr7/Hh8EZP2kknNO4K2a
+	64oeqOpHd2janyen4xUEokaVJAnK0XcPeCgTDljMLRZ7+ggBpprMuy+bsJNquSxr0/zWi1
+	rN/FIAbUSZRITUEBWg0IcKIgaqHL5HtCtPhqzqYGLKsg4ljYjt7zVEsM47dSmLVz49UzOH
+	3/pzWuUkp14tJgJBrMq6UMBvtaFzLrkcbTTCouL9TztQ0xmY5QVvdhwMOBeUTQ==
+From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
+Subject: [PATCH v4 00/25] Clean and update tilcdc driver to support
+ DRM_BRIDGE_ATTACH_NO_CONNECTOR
+Date: Fri, 16 Jan 2026 18:02:00 +0100
+Message-Id: <20260116-feature_tilcdc-v4-0-2c1c22143087@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <180076068.145887.1768567659299.JavaMail.zimbra@couthit.local>
+X-B4-Tracking: v=1; b=H4sIAAhvamkC/2XOTQrCMBCG4auUrI1kktgaV95DRPIzsQFtJK1FK
+ b27aUVEu3w/mIcZSIspYEt2xUAS9qENsckhVwWxtW7OSIPLTTjjG2AgqUfd3ROeunCxztJKWSc
+ VlpXxiuSjW0IfHjN4OOauQ9vF9Jz9Hqb1TQEv/6keKKNSGYWeo9Ca7U2M3SU0axuvZMJ6/gU4w
+ ALgGfBya7QV1gmBS0B8gJIBW34gMqCMdsxXkkMpf4FxHF+uY0lBMAEAAA==
+X-Change-ID: 20251014-feature_tilcdc-79cd49e67bf9
+To: Jyri Sarha <jyri.sarha@iki.fi>, 
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Russell King <linux@armlinux.org.uk>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, Tony Lindgren <tony@atomide.com>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>
+Cc: Markus Schneider-Pargmann <msp@baylibre.com>, 
+ Bajjuri Praneeth <praneeth@ti.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Louis Chauvet <louis.chauvet@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Miguel Gazquez <miguel.gazquez@bootlin.com>, 
+ Herve Codina <herve.codina@bootlin.com>, dri-devel@lists.freedesktop.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org, 
+ "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
-> On the AM335x board, the CPSW MDIO and PRUSS MDIO signals are routed to the same physical
-> pins (as shown in the schematic, see page 10 “MII_MUX” in tmdxice3359_sch_3h0013_v2_1a.pdf
-> from https://www.ti.com/lit/zip/TIDR336 ). Because of this shared routing, the pinmux
-> configuration applied by U-Boot for CPSW MDIO remains active even if the CPSW MDIO node is
-> later disabled in Linux, and Linux does not automatically revert the pins to their reset state.
+The starting point for this work was adding support for the HDMI cape:
+https://www.seeedstudio.com/Seeed-Studio-BeagleBone-Green-HDMI-Cape.html
+This will be sent in a later series.
 
-It is generally a bad idea to rely on the bootloader. I would make the
-CPSW MDIO configure the pins how it needs it. The PRUSS MDIO should
-also configure the pins how it needs them. However, it is not as
-simple as that...
+Initially, Miguel proposed modifying the ite-it66121 bridge to support
+the legacy behavior without the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag:
+https://lore.kernel.org/lkml/20250909-it66121-fix-v1-1-bc79ca83df17@bootlin.com/
+This patch was NAK'd as we don't want to add more legacy code. Maxime
+requested that the tilcdc driver be updated to use
+DRM_BRIDGE_ATTACH_NO_CONNECTOR instead.
 
-Looking at the schematic, what you have is ugly. You literally wire
-the outputs together, without a hardware mux. For MDC you assume one
-is Hi-Z, while the other drives the line. For MDIO it does not matter,
-both are inputs. so Hi-Z.
+While working on this update, I discovered that the tilcdc driver
+contained significant amounts of legacy code that needed cleaning.
+Since this driver was developed alongside the tda998x driver for
+several AM335x boards, the tda998x driver also required cleanup and
+support for the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag.
 
-I actually think you might need to represent this in Linux, with
-something i would call a pinmux-mux. You give it two sets of pinmux
-configurations. The active device claims the mux and gets it to set
-the two sets of pinmux as needed. Also, just setting the pinmux to
-GPIO is not sufficient, you also need to ensure the GPIO is configured
-for input, so the lines go Hi-Z. Often pinmux and GPIO controllers are
-interconnected, so the pinmux subsystem might be able to do that for
-you.
+A new tilcdc_panel_legacy driver replaces the old tilcdc_panel driver.
+It modifies the devicetree at boot time to properly bind the tilcdc driver
+with the standard panel-simple driver.
 
-I don't know if a pinmux-mux already exists in Linux. You probably
-want to ask on the pinmux mailing list, or they might have a different
-idea how to cleanly do this.
+This series is based on the tilcdc fix sent to mainline:
+https://lore.kernel.org/lkml/20251125090546.137193-1-kory.maincent@bootlin.com/
 
-	Andrew
+This series has been tested on:
+- BeagleBone Black (tilcdc + tda998x bridge)
+- BeagleBone Black with LCD cape (tilcdc + ti,tilcdc,panel binding)
+- BeagleBone Green Eco with HDMI cape (tilcdc + it66121 bridge)
+
+The following mainline devicetrees still use ti,tilcdc,panel binding.
+I believe this series maintains compatibility, but I cannot test without
+hardware:
+- da850-evm.dts
+- am335x-guardian.dts
+- am335x-pdu001.dts
+- am335x-pepper.dts
+- am335x-sbc-t335.dts
+- am335x-sl50.dts
+
+Patches 1-2: Convert tilcdc binding to YAML and set the ti,tilcdc,panel
+	     sub-binding as legacy.
+Patches 3-6: Replace tilcdc_panel driver to the new tilcdc_panel_legacy
+	     driver which is tweaking the devicetree at boot time.
+Patches 7-20: Clean up tilcdc driver.
+Patches 21-23: Clean up tda998x driver.
+Patch 24: Add DRM_BRIDGE_ATTACH_NO_CONNECTOR support for tda998x driver.
+Patch 25: Add DRM_BRIDGE_ATTACH_NO_CONNECTOR support for tilcdc driver.
+
+Changes in v4:
+- Use device_get_match_data instead of of_match_node.
+- Convert the driver to use DRM managed resources to avoid lifetime
+  resources issue.
+- Add a patch to convert to drm_device-based logging helpers.
+- Replace drm_of_find_panel_or_bridge() with the newer
+  devm_drm_of_get_bridge() helper.
+- Link to v3: https://lore.kernel.org/r/20260106-feature_tilcdc-v3-0-9bad0f742164@bootlin.com
+
+Changes in v3:
+- Split patch 13 and patch 14 into two for better readability and git
+  history clarity.
+- Update patch 5 to use OF changeset and __free() macro. Made also few
+  small improvements as requested by Luca.
+- Rename binding file to ti,am33xx-tilcdc.yaml, use generic node name and
+  drop unused label.
+- Link to v2: https://lore.kernel.org/r/20251211-feature_tilcdc-v2-0-f48bac3cd33e@bootlin.com
+
+Changes in v2:
+- Remove patch 2 that add fifo-threshold property. Use FIFO threshold
+  value from SoC id instead.
+- Remove the part that breaks DTB compatibility.
+- Add tilcdc_panel_legacy to modify the devicetree at boot time to properly
+  bind the tilcdc driver with the standard panel-simple driver.
+- Link to v1: https://lore.kernel.org/r/20251126-feature_tilcdc-v1-0-49b9ef2e3aa0@bootlin.com
+
+Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
+---
+Kory Maincent (TI.com) (25):
+      dt-bindings: display: tilcdc: Convert to DT schema
+      dt-bindings: display: tilcdc: Mark panel binding as deprecated
+      drm/tilcdc: Remove simulate_vesa_sync flag
+      drm/tilcdc: Add support for DRM bus flags and simplify panel config
+      drm/tilcdc: Convert legacy panel binding via DT overlay at boot time
+      drm/tilcdc: Remove tilcdc panel driver
+      drm/tilcdc: Remove component framework support
+      drm/tilcdc: Remove tilcdc_panel_info structure
+      drm/tilcdc: Remove redundant #endif/#ifdef in debugfs code
+      drm/tilcdc: Remove unused encoder and connector tracking arrays
+      drm/tilcdc: Rename external_encoder and external_connector to encoder and connector
+      drm/tilcdc: Rename tilcdc_external to tilcdc_encoder
+      drm/tilcdc: Remove the useless module list support
+      drm/tilcdc: Use drm_module_platform_driver() helper
+      drm/tilcdc: Move tilcdc_init/fini closer to probe/remove
+      drm/tilcdc: Modernize driver initialization and cleanup paths
+      drm/tilcdc: Remove the use of drm_device private_data
+      drm/tilcdc: Convert to DRM managed resources
+      drm/tilcdc: Convert to drm_device-based logging helpers
+      drm/tilcdc: Use devm_drm_of_get_bridge() helper
+      drm/bridge: tda998x: Remove component support
+      drm/bridge: tda998x: Move tda998x_create/destroy into probe and remove
+      drm/bridge: tda998x: Remove useless tda998x_connector_destroy wrapper
+      drm/bridge: tda998x: Add support for DRM_BRIDGE_ATTACH_NO_CONNECTOR
+      rm/tilcdc: Add support for DRM_BRIDGE_ATTACH_NO_CONNECTOR
+
+ .../devicetree/bindings/display/tilcdc/panel.txt   |   1 +
+ .../bindings/display/tilcdc/ti,am33xx-tilcdc.yaml  | 100 +++++
+ .../devicetree/bindings/display/tilcdc/tilcdc.txt  |  82 ----
+ drivers/gpu/drm/bridge/tda998x_drv.c               | 251 +++++------
+ drivers/gpu/drm/tilcdc/Kconfig                     |  18 +
+ drivers/gpu/drm/tilcdc/Makefile                    |   5 +-
+ drivers/gpu/drm/tilcdc/tilcdc_crtc.c               | 189 +++-----
+ drivers/gpu/drm/tilcdc/tilcdc_drv.c                | 486 ++++++++-------------
+ drivers/gpu/drm/tilcdc/tilcdc_drv.h                |  99 +----
+ drivers/gpu/drm/tilcdc/tilcdc_encoder.c            |  69 +++
+ .../tilcdc/{tilcdc_external.h => tilcdc_encoder.h} |   5 +-
+ drivers/gpu/drm/tilcdc/tilcdc_external.c           | 179 --------
+ drivers/gpu/drm/tilcdc/tilcdc_panel.c              | 408 -----------------
+ drivers/gpu/drm/tilcdc/tilcdc_panel.h              |  15 -
+ drivers/gpu/drm/tilcdc/tilcdc_panel_legacy.c       | 185 ++++++++
+ drivers/gpu/drm/tilcdc/tilcdc_panel_legacy.dtso    |  29 ++
+ drivers/gpu/drm/tilcdc/tilcdc_plane.c              |  37 +-
+ drivers/gpu/drm/tilcdc/tilcdc_regs.h               |   8 +-
+ 18 files changed, 811 insertions(+), 1355 deletions(-)
+---
+base-commit: e10a789098f56fe8e1c1c320fe25d739f836eeaf
+change-id: 20251014-feature_tilcdc-79cd49e67bf9
+
+Best regards,
+-- 
+Köry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
+
 
