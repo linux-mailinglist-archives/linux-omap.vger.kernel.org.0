@@ -1,55 +1,55 @@
-Return-Path: <linux-omap+bounces-5512-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5513-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C63BAD33B1A
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Jan 2026 18:08:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD37BD33AC6
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Jan 2026 18:06:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2BFBC30D60DE
-	for <lists+linux-omap@lfdr.de>; Fri, 16 Jan 2026 17:04:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CC1D13042685
+	for <lists+linux-omap@lfdr.de>; Fri, 16 Jan 2026 17:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6801E3A1D0B;
-	Fri, 16 Jan 2026 17:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A2E339B4B7;
+	Fri, 16 Jan 2026 17:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JxZWnaR+"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="rdcMsSZV"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAFE3A1CEA;
-	Fri, 16 Jan 2026 17:03:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6544F340D93;
+	Fri, 16 Jan 2026 17:03:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768583002; cv=none; b=j1rrhHBbcTggPbxfblauXcKUAQZCplHyOvbKPo0pSqnv8oU+Ytv23mDsPu2V+1DSdGk9JZZxkvh+9yp6lKfXMZ/xB2B7A8daQhbFDTNkRATgppz2gbe8up5PauRj6SuHtrskpvDQFhhrKCWAd2x286UuOJuIr1MGY+80KNukWZM=
+	t=1768583006; cv=none; b=aGua+QfDr8RQO7ndXy6+ct8x8IgRJXqidXaKoHZd9vAseCK7hoEhIiuRVj+9asqA0f9IlAiQVv9oUidBVmxP95BAUKXFW2xwIvw5Yv9AD8BRbbx+7eEjY65WdOZBDW3mdsAHQ8VABshRjWFj3OuLitIP5N5FuyB6PyX8ayqN6Zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768583002; c=relaxed/simple;
-	bh=GR7KRzd9qZUHXwQIIR69f5QZLz3OIa8InWeLMybn/6U=;
+	s=arc-20240116; t=1768583006; c=relaxed/simple;
+	bh=lJiDDYQDyArxvkbKVbTYBxx/K8OzPcchN4N7TsrEWe0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tBOIIDRNq/NRSwYbVKBNdiuJS2fU4eVsHyedOuXEq5822exe/Z2ws8M1uC/QoNMoDJyKTVlti8+tVC53PL4NM41voB7qdXucHwJvv9sBYQ7BomU8G64WWaGmyRWEgbGx/YdvG4I06V8kMBVTShkfWqiqloJ9XOCK/DdLSDH4bnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JxZWnaR+; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:To:Cc; b=UQx+z2fmJLh/+uU1Clp9cLyitDCYC+Ih1C66PT0RmcbP7OnWTY/y3QK8Ve9akspQmL0FsoxTroIf256u8ubDspX3Xjq3pORIVO131qR7zdGkEKpxer1i7fEOywvmE4aHKW8VRKzGpoCgVAcgLyFAGQFbsLTjhnBA5EJLJqvxzvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=rdcMsSZV; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 1AD8B4E42117;
-	Fri, 16 Jan 2026 17:03:20 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 51D2AC1F1FE;
+	Fri, 16 Jan 2026 17:02:57 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DC1AC606F9;
-	Fri, 16 Jan 2026 17:03:19 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B631710B68CBA;
-	Fri, 16 Jan 2026 18:03:14 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2371A606F9;
+	Fri, 16 Jan 2026 17:03:24 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6613E10B68CBC;
+	Fri, 16 Jan 2026 18:03:18 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768582997; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1768583002; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=xKMRSlk+kSO+I85v8aEyssRs5j3tcpi0RUOAjUjTJUw=;
-	b=JxZWnaR+TiqqE2+5REq3f0k8Jozy9UYa5fubLMUWJAi1lMo6s2f8SkxO2GD1L0hDYTylQl
-	BTPg0eYounmB9sv4oXp662vTp4X9itiaaa7xlbd0GU7DUU0WH+pcZ89d+MKPDDfzRj8RJ4
-	F/A+ROKmj+PyGxdfQRlvs9V3vW+mHdZ067SqHWiy7SGjXxWBHd8egvrWAKXtEcSjDpU6uF
-	i912qzL7fPLuRcPHL2Bs4nPxjQBiqQBydXF0DSTFLFwrbAUDY1j7WN/Ye96duoSM4VGbl9
-	VVleduW4CIhoWb0wmr3bghqQF8V1uLMNbIK7WjJCvdiHZ01UZLzNy4zribAoQw==
+	bh=FQ0P42EzhOi6Mvdjh1r2E2jQmcpCktzh4DgjhufdPjg=;
+	b=rdcMsSZVvAX3sGyS3YDOQDm55QbdOmclQDY0PuXcCWOw8y7mspCFXFUQpKIQtdgjndm9aJ
+	pHCyA0d5BNhNi5LoZErPdK9wYPU4qwnL09zi2wxaif+t3AZelEmeJmFYB9cWXz5vCWX0CF
+	xCiiFjoawSRdTEv+Q4DO7Pq1V6KIyWV6sIFx1iCstA7i6CAaY6LxNxUatnBD4Amsd3afyE
+	aJv9kiP7kOCST6huK1O/WisidXr+KU7HPgxl2izoeDPMC5kR/DiFjgPQqoNrySrT1snQiG
+	VVuKxrrAHgSt05/TWNkBT93zEdQcanOFHr+/kpiGx3zmBIkmgz/R6LJ7OaGhtw==
 From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
-Date: Fri, 16 Jan 2026 18:02:13 +0100
-Subject: [PATCH v4 13/25] drm/tilcdc: Remove the useless module list
- support
+Date: Fri, 16 Jan 2026 18:02:14 +0100
+Subject: [PATCH v4 14/25] drm/tilcdc: Use drm_module_platform_driver()
+ helper
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -58,7 +58,7 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260116-feature_tilcdc-v4-13-2c1c22143087@bootlin.com>
+Message-Id: <20260116-feature_tilcdc-v4-14-2c1c22143087@bootlin.com>
 References: <20260116-feature_tilcdc-v4-0-2c1c22143087@bootlin.com>
 In-Reply-To: <20260116-feature_tilcdc-v4-0-2c1c22143087@bootlin.com>
 To: Jyri Sarha <jyri.sarha@iki.fi>, 
@@ -86,132 +86,57 @@ Cc: Markus Schneider-Pargmann <msp@baylibre.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-The tilcdc driver previously supported a sub-module system where
-external display drivers (panels, encoders) could register themselves
-through tilcdc_module_init() and be automatically initialized through
-a module list. This infrastructure became unused after the component
-framework support and panel driver was removed.
+Use the drm_module_platform_driver() helper macro to simplify driver
+registration. This macro handles both the platform driver registration
+and the drm_firmware_drivers_only() check, making the custom init/exit
+functions unnecessary.
 
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
 ---
 
 Change in v3:
-- Move the removal of module_init/exit in a following patch.
+- New patch split from previous patch of the series.
 ---
- drivers/gpu/drm/tilcdc/tilcdc_drv.c | 29 -----------------------------
- drivers/gpu/drm/tilcdc/tilcdc_drv.h | 27 ---------------------------
- 2 files changed, 56 deletions(-)
+ drivers/gpu/drm/tilcdc/tilcdc_drv.c | 19 ++-----------------
+ 1 file changed, 2 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.c b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-index d0503778b5f6f..20f93240b335c 100644
+index 20f93240b335c..97380b623fca3 100644
 --- a/drivers/gpu/drm/tilcdc/tilcdc_drv.c
 +++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-@@ -7,7 +7,6 @@
- /* LCDC DRM driver, based on da8xx-fb */
+@@ -20,6 +20,7 @@
+ #include <drm/drm_gem_dma_helper.h>
+ #include <drm/drm_gem_framebuffer_helper.h>
+ #include <drm/drm_mm.h>
++#include <drm/drm_module.h>
+ #include <drm/drm_probe_helper.h>
+ #include <drm/drm_vblank.h>
  
- #include <linux/mod_devicetable.h>
--#include <linux/module.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
-@@ -34,8 +33,6 @@ enum tilcdc_variant {
- 	DA850_TILCDC,
+@@ -532,23 +533,7 @@ static struct platform_driver tilcdc_platform_driver = {
+ 	},
  };
  
--static LIST_HEAD(module_list);
--
- static const u32 tilcdc_rev1_formats[] = { DRM_FORMAT_RGB565 };
- 
- static const u32 tilcdc_straight_formats[] = { DRM_FORMAT_RGB565,
-@@ -50,20 +47,6 @@ static const u32 tilcdc_legacy_formats[] = { DRM_FORMAT_RGB565,
- 					     DRM_FORMAT_RGB888,
- 					     DRM_FORMAT_XRGB8888 };
- 
--void tilcdc_module_init(struct tilcdc_module *mod, const char *name,
--		const struct tilcdc_module_ops *funcs)
+-static int __init tilcdc_drm_init(void)
 -{
--	mod->name = name;
--	mod->funcs = funcs;
--	INIT_LIST_HEAD(&mod->list);
--	list_add(&mod->list, &module_list);
+-	if (drm_firmware_drivers_only())
+-		return -ENODEV;
+-
+-	DBG("init");
+-	return platform_driver_register(&tilcdc_platform_driver);
 -}
 -
--void tilcdc_module_cleanup(struct tilcdc_module *mod)
+-static void __exit tilcdc_drm_fini(void)
 -{
--	list_del(&mod->list);
+-	DBG("fini");
+-	platform_driver_unregister(&tilcdc_platform_driver);
 -}
 -
- static int tilcdc_atomic_check(struct drm_device *dev,
- 			       struct drm_atomic_state *state)
- {
-@@ -97,12 +80,6 @@ static const struct drm_mode_config_funcs mode_config_funcs = {
- static void modeset_init(struct drm_device *dev)
- {
- 	struct tilcdc_drm_private *priv = dev->dev_private;
--	struct tilcdc_module *mod;
--
--	list_for_each_entry(mod, &module_list, list) {
--		DBG("loading module: %s", mod->name);
--		mod->funcs->modeset_init(mod, dev);
--	}
+-module_init(tilcdc_drm_init);
+-module_exit(tilcdc_drm_fini);
++drm_module_platform_driver(tilcdc_platform_driver);
  
- 	dev->mode_config.min_width = 0;
- 	dev->mode_config.min_height = 0;
-@@ -465,15 +442,9 @@ static struct drm_info_list tilcdc_debugfs_list[] = {
- 
- static void tilcdc_debugfs_init(struct drm_minor *minor)
- {
--	struct tilcdc_module *mod;
--
- 	drm_debugfs_create_files(tilcdc_debugfs_list,
- 				 ARRAY_SIZE(tilcdc_debugfs_list),
- 				 minor->debugfs_root, minor);
--
--	list_for_each_entry(mod, &module_list, list)
--		if (mod->funcs->debugfs_init)
--			mod->funcs->debugfs_init(mod, minor);
- }
- #endif
- 
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.h b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-index dafb00908d1d4..60e85e29b1063 100644
---- a/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-@@ -81,33 +81,6 @@ struct tilcdc_drm_private {
- 	bool irq_enabled;
- };
- 
--/* Sub-module for display.  Since we don't know at compile time what panels
-- * or display adapter(s) might be present (for ex, off chip dvi/tfp410,
-- * hdmi encoder, various lcd panels), the connector/encoder(s) are split into
-- * separate drivers.  If they are probed and found to be present, they
-- * register themselves with tilcdc_register_module().
-- */
--struct tilcdc_module;
--
--struct tilcdc_module_ops {
--	/* create appropriate encoders/connectors: */
--	int (*modeset_init)(struct tilcdc_module *mod, struct drm_device *dev);
--#ifdef CONFIG_DEBUG_FS
--	/* create debugfs nodes (can be NULL): */
--	int (*debugfs_init)(struct tilcdc_module *mod, struct drm_minor *minor);
--#endif
--};
--
--struct tilcdc_module {
--	const char *name;
--	struct list_head list;
--	const struct tilcdc_module_ops *funcs;
--};
--
--void tilcdc_module_init(struct tilcdc_module *mod, const char *name,
--		const struct tilcdc_module_ops *funcs);
--void tilcdc_module_cleanup(struct tilcdc_module *mod);
--
- #define DBG(fmt, ...) DRM_DEBUG(fmt"\n", ##__VA_ARGS__)
- 
- int tilcdc_crtc_create(struct drm_device *dev);
+ MODULE_AUTHOR("Rob Clark <robdclark@gmail.com");
+ MODULE_DESCRIPTION("TI LCD Controller DRM Driver");
 
 -- 
 2.43.0
