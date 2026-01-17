@@ -1,74 +1,74 @@
-Return-Path: <linux-omap+bounces-5527-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5528-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8DEAD38CC1
-	for <lists+linux-omap@lfdr.de>; Sat, 17 Jan 2026 06:54:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 323FCD38CD7
+	for <lists+linux-omap@lfdr.de>; Sat, 17 Jan 2026 07:23:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D6678300A3FE
-	for <lists+linux-omap@lfdr.de>; Sat, 17 Jan 2026 05:54:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 877E93038047
+	for <lists+linux-omap@lfdr.de>; Sat, 17 Jan 2026 06:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6252F329E6D;
-	Sat, 17 Jan 2026 05:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7803B32BF58;
+	Sat, 17 Jan 2026 06:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LFyQOzPo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nD0Fz8SA"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3AD314B60
-	for <linux-omap@vger.kernel.org>; Sat, 17 Jan 2026 05:54:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1BF279907
+	for <linux-omap@vger.kernel.org>; Sat, 17 Jan 2026 06:22:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768629282; cv=none; b=hY6plKlzqf+iUoSHRUOfX3zLzSmnKpcFGw3HnoGzP0UHrn9HZPaCA+QWXZ8NWyh5P4VwEkwgif3TC2MEm3xhI6wkci6Rf0sL4EIA7OOHT4+8KmsXqosoIDGbBbQb3qsTMGZminGtwx8S+RkowNVbxQBqN2YWPSYODC7sJJzuwHc=
+	t=1768630965; cv=none; b=XzFifd+VuC/uqHJH+XzNY66wcs41Zva/WdFfyRTBZIEWeKHuDL4QYUho2o+U+pFczy5Ytkg7KXWAzr13lG/oZt5D7+XeAMhsej101ecRIar/IsgetTjT8ZC9iswkK/bG66MhnhSk9mutJGCv2aB/SSRa8+KzNXw3F38PyD+OCTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768629282; c=relaxed/simple;
-	bh=X28oz4Hqu8C9OrNAoigAJocOtIUCqP9c5jKWoshxS8A=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=F9Gj5SNdGHSGeQx+As1Q4aGz1CmLh1wBwsTapHsCWrKWBv+lb59qHbEQIPALithBU6KG2yiiSaCMC/+Q2Ej8wiR9ziyHlNI0gBYRKtRrz5MIz+eDc7k6ZzNk8O3f7SG7zbM96Rf4C46L1FbtAWmImcJKV5piwQdPQ8u6Dl9wj9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LFyQOzPo; arc=none smtp.client-ip=209.85.215.172
+	s=arc-20240116; t=1768630965; c=relaxed/simple;
+	bh=3FMUpbSyvaBsSjWl7wNChTOpAPhfLU+5WdVXV+kFTVM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hvJRsXKYbewPj8eOV1kJ8M8vuku5isrVvoJ3ULOF6DkSVxl3w2sKdrD+VaolV1awS5AaDdwB9M0QBMBiSgZbM6WiguVcK+8psjdmmogc0eW7VxeUYyjI/pdvzKfG4Ezgy8e5+bWY2Axsy27Heh55RD7BaYb63auXxNBkYgO8s7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nD0Fz8SA; arc=none smtp.client-ip=209.85.210.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c03e8ac1da3so1033278a12.2
-        for <linux-omap@vger.kernel.org>; Fri, 16 Jan 2026 21:54:40 -0800 (PST)
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7b22ffa2a88so1176288b3a.1
+        for <linux-omap@vger.kernel.org>; Fri, 16 Jan 2026 22:22:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768629280; x=1769234080; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768630962; x=1769235762; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/3Y2YH3nM767IcqTvERX11GvwkdtC120hdoDxqBZKew=;
-        b=LFyQOzPorXJunsHZVvd2JKEQoxTrPZMc2PXAORIkJIDwazBca9x1UeW614FnKUk46W
-         5sqXe+fvZHnWnQAiQXX7k0Ybia7YVROUnPSkmFc1ALQM3ELPbY8RAeJLwJESRcneJpbz
-         Bv3KTE4w4NAlYbam0PBu11ncJtSyoxKSdnN31DbNopNArBFKoWOrMOYoNLAgSQG3FkAm
-         2sNFTA234aqrLLZqpvAu4GfRRwUDI3/RSZcl+c28v/BxzRa+BOhaUQ7DK1liqlU3/ivV
-         qzZB+h6/abccnfQVku07xcqOhIoS2AOdebWkn1ubF9oCUeeK4pr/c0+yDSY+iufZcasw
-         GzJg==
+        bh=dzgEeF9hpKbrY/SjLzdTBS2moZ5Wv1qjh67NLpQv99c=;
+        b=nD0Fz8SACqM+KcdyuQfHhV7QKLkw6LTcvjsB1L3oUdhUauq7PgLpSkcBr02Nc8P1Wd
+         slEo86vgmixhNwIy9PN2lDry+4erz75LM3tjEHerVRN/7O9KRfbpKmFkCCLcR5M7clFI
+         77WlCaXYwFjVITYOVRNoJW9Sbh6dVjc6rYQFORB2EjzKASk7C8dDVn/5aqGqeslyC+UP
+         gwoFAk5M0gHe9ddVB+mP8kGPOnASycs6menNKgGIP9OATL7COZmLmfYR/ynhEjXI0G7F
+         XpQgoetW1Gu3oDsoaizZ1BFuCUkElPvWIRHnENZRqijCRhJBl4h6ADlOMk6GNyBliu0O
+         AtHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768629280; x=1769234080;
+        d=1e100.net; s=20230601; t=1768630962; x=1769235762;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/3Y2YH3nM767IcqTvERX11GvwkdtC120hdoDxqBZKew=;
-        b=xFyETbf3kmzRntspNsL+yX9X1pzPpuWeHx2FiPXEXamMV2W3w9u+9U+aHF+0G2uRyS
-         6QVMeOuPKL0PGML7Oupnzy3/PRub27EQxTIltdspau4O+qFU/VBxIdSnY7Yq/kNL/9qh
-         Jkb3+21reg9xLl8J3/1r6JsNiGom8EZtGRWDWI63EctuX3d3U3s6bcefR7+WDpNxIx+o
-         KzmPyNZbP/rvcxGFx7vRzmfFohq7x274xDM8cYOmVAVf8RqJGsIwWCFd5iuNK4zpst7T
-         s7lbe3D0kdefZ+PQnKT+yVHFohvDgTYfzKCuWacfwP2YEgUtRXvk1l06Zs/sC7eZJnUU
-         /TJQ==
-X-Gm-Message-State: AOJu0YzKiJgJvaKegdA2mSVeHxIt8QrmyOsiFdAbiX7JXdUEsIptpsnp
-	8Gvsc9121UPI8Lvpyh/21Iuan9uU3H+VC0qJ41hrl9msZU2hAh/uaRjs
-X-Gm-Gg: AY/fxX5FSfihawnadmik04/gSX3Yma7XWh4o9vyN8VDIGThpm+/yYHHhkXOsiNKzqZD
-	fVPqVI8vZlX19Oyp33ho1CkfYko97srS9ICSNDZ1dKcTekGzN0YKy1NCXfI9Y1FfdgVAXnuFjuu
-	G5EcOwJtU6x1XCWCSCV3m44W+pa7Z8IPppIaT3c6tyz7YFVdCGUBQYiHwWf2hTa2iDQHNF+4dBA
-	3cOXWt2zm1bqB/WjtpJF9OVE1TsbKtgxVGorTB0tg/aif+qdpnbZyHFiSgVX1DyiYGvHFG0DZdf
-	ANHcuakeMfj6D0PwXpqAq5A9uvFY1z/38CCdArNVw1oXSGOtJsAaJAg+q8vFHh7Wu2HlH26tEIE
-	XvulOBDD4TX/GDx6pk+Z/nqF5ym27n8lymFTtRTATW+0bfagDznNIgOUkjnh8GX7MdxM4diiSMY
-	V3MgPvEvfpAr8AP3rolsWNr5W98l9yhO2LEZwzQQrT9V7z+OXKzPyCJBM+X36kuIlTWg8uoMxdE
-	Zyou9WUF/tLFn/cqKogNI4eAKI5tIaZVpKZqyhev3olAbs=
-X-Received: by 2002:a05:6a20:5499:b0:38d:f0f3:b96f with SMTP id adf61e73a8af0-38dfe7b8b24mr5870030637.64.1768629280156;
-        Fri, 16 Jan 2026 21:54:40 -0800 (PST)
+        bh=dzgEeF9hpKbrY/SjLzdTBS2moZ5Wv1qjh67NLpQv99c=;
+        b=f6iAASjdfH8CtTjnWLbXERyLVSZgUU02AGBe3MKQE/2RLFF6wwMNTI80rfCu5DnfDr
+         M/koparNjNAooW9NUS76ebmfxH57zcOH1rTfEdjOe1mDIdH0tOFS335O8CLOIduIVLXL
+         J9DmrvyJUYxi6Sipq6wtpGly4o+ig5WwD7tqvQ73C7W25K3s8omA1XxYbZvZpQwquSD2
+         pixDfSqWbsT/UcLst7lXxpLe7WIijo1PXqrLK4+hY2jJvFsdyic6jB807T0/1pT5kbgO
+         P/t/UourVZ2aeS/KlW+1kOF+J3Bn+LnuSeNaSuK0SSx+0zEVG25GUDkrxHk+Y9D1xduz
+         EXqg==
+X-Gm-Message-State: AOJu0YylYeRz53ENu4uUhqMc0ZOmHOSwxNPyvL6iKcZ+nUbBXepWWVak
+	ZJfEsxHsOqqiwuihC91oOWVAyK/JzNNMOOQ/sSlas1PHhJEQsElKX2nJ
+X-Gm-Gg: AY/fxX7i3nzO+UeowDxYRyLx0ZJ5DOahjoD/6/zv3mKTpGodrX77Enn1YVs9/Yanag4
+	REjCfl8ZsWH+iWP7KjJh6VaNxX1mtCNdR2muOAXavga5sawxbG4abFBnU/LyfS9jv6Q+KgmzMlw
+	hN+c6a+7RxQvItGDynB3CmqenVPk+G7RlceLEAHDyIVODTQm6amEddW0Y4lQB+D0x+jWN2cI4na
+	QF3LvVfElflhRdSYshqsU72xYeHCx1YCciF/G9jKgNR4dF6eQx3l8EBYa5lQzs7O5VgnZtQdk0z
+	nl9gXqjdnP9QQbtdJlR26c5n/1PNGxLbM0J7Qi9N6ciu2qOA4Itum7jLJ708N+qbU49X3WP/WUn
+	/Pwrqk1IzkbFUPjmcc9o+oLh3onsSDlsKiVqZT6flef822hTOY4YhrS9Ac7JEaNtg4L7nhSZyyO
+	EPdbxzpf0zLc6ilYg1R8dvVH1ETGJ/E//Q68hdb3kpb7RrXSRp0C9+z00G1aFLhYSX7Qz4/6GAb
+	VoNuB+Zwh0vfOyIZmH3I93tYEFq/hz0FOxDZWatDTU+I4KWfV0zJBunGg==
+X-Received: by 2002:a05:6a20:12c9:b0:38d:e87c:48b3 with SMTP id adf61e73a8af0-38e00bbfd6cmr5718140637.2.1768630962577;
+        Fri, 16 Jan 2026 22:22:42 -0800 (PST)
 Received: from c8971f1abf06.ap-southeast-2.compute.internal (ec2-54-252-206-51.ap-southeast-2.compute.amazonaws.com. [54.252.206.51])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c5edf32d175sm3413091a12.23.2026.01.16.21.54.36
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c5edf32d82fsm3507131a12.19.2026.01.16.22.22.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 21:54:39 -0800 (PST)
+        Fri, 16 Jan 2026 22:22:42 -0800 (PST)
 From: Weigang He <geoffreyhe2@gmail.com>
 To: tony@atomide.com,
 	aaro.koskinen@iki.fi,
@@ -79,9 +79,9 @@ Cc: linux-omap@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Weigang He <geoffreyhe2@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] bus: ti-sysc: fix reference count leak in sysc_init_stdout_path()
-Date: Sat, 17 Jan 2026 05:54:33 +0000
-Message-Id: <20260117055433.416027-1-geoffreyhe2@gmail.com>
+Subject: [PATCH] bus: ti-sysc: fix reference count leak in sysc_init_static_data()
+Date: Sat, 17 Jan 2026 06:22:35 +0000
+Message-Id: <20260117062235.435174-1-geoffreyhe2@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
@@ -92,16 +92,13 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 of_find_node_by_path() returns a device_node with refcount incremented.
-When of_get_property() is called to get the stdout-path property, the
-reference to the "/chosen" node stored in np is either leaked if the
-property lookup fails, or overwritten when np is reassigned to the uart
-node path without releasing the "/chosen" reference first.
+The reference to the "/ocp" node is acquired for a WARN_ONCE check but
+is never released with of_node_put(), causing a reference count leak.
 
-Add of_node_put(np) after of_get_property() to properly release the
-"/chosen" node reference before either going to the error path or
-acquiring a new reference for the uart path.
+Add of_node_put(np) after the WARN_ONCE check to properly release the
+"/ocp" node reference.
 
-Fixes: 3bb37c8e6e6a ("bus: ti-sysc: Handle stdout-path for debug console")
+Fixes: 5f7259a578e9 ("bus: ti-sysc: Check for old incomplete dtb")
 Cc: stable@vger.kernel.org
 Signed-off-by: Weigang He <geoffreyhe2@gmail.com>
 ---
@@ -109,17 +106,17 @@ Signed-off-by: Weigang He <geoffreyhe2@gmail.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 610354ce7f8f0..091cdad2f2cc6 100644
+index 610354ce7f8f0..fd631a9889c1e 100644
 --- a/drivers/bus/ti-sysc.c
 +++ b/drivers/bus/ti-sysc.c
-@@ -696,6 +696,7 @@ static void sysc_init_stdout_path(struct sysc *ddata)
- 		goto err;
- 
- 	uart = of_get_property(np, "stdout-path", NULL);
-+	of_node_put(np);
- 	if (!uart)
- 		goto err;
- 
+@@ -3014,6 +3014,7 @@ static int sysc_init_static_data(struct sysc *ddata)
+ 		np = of_find_node_by_path("/ocp");
+ 		WARN_ONCE(np && of_device_is_compatible(np, "simple-bus"),
+ 			  "ti-sysc: Incomplete old dtb, please update\n");
++		of_node_put(np);
+ 		break;
+ 	default:
+ 		break;
 -- 
 2.34.1
 
