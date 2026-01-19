@@ -1,51 +1,51 @@
-Return-Path: <linux-omap+bounces-5567-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5568-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC57D3B502
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Jan 2026 18:59:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F871D3B51B
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Jan 2026 19:03:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D029A3074E7C
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Jan 2026 17:58:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0458B3065627
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Jan 2026 18:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E7832F745;
-	Mon, 19 Jan 2026 17:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D673132FA30;
+	Mon, 19 Jan 2026 18:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ViZZYN+8"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GJLz99Fu"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E483332ED24;
-	Mon, 19 Jan 2026 17:58:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEEFD32B9A2
+	for <linux-omap@vger.kernel.org>; Mon, 19 Jan 2026 18:00:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768845519; cv=none; b=uGqKU02DCDLXSBxvl5Hjq4W9Dx/VgxdNOG2IKz1UVih4GtdQpDrKxfXAM/O8JU7Ehr1JNJluUQT0ZNAJpJ394WVuIIp+kOV/4y7XOBEyuVUuAftudQ/G3eNXN8coACj+RWx1OnRMM+7Zoknm0XObih61N5XPPjsfCpy1f1pH5XI=
+	t=1768845630; cv=none; b=N6dm7BMGN20axVMGPK7u7zJtFzK34JhmwJlr6lbAI65spEIlsuanPfuKhJu+tnVAe3WDSqNm5ZIiAKlYF2+GAe/pMGKdJP/8q3rLIvq4Zoce/PAp38rg1GMHHwyVv7QtwrLUxmZUqIRxaO88zOZnXMOarVJVAJ+SLCtVkNQUhQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768845519; c=relaxed/simple;
-	bh=tlHP0hDhxy+IQJ9D3V2tIVVhXaDv6oV4qNqHZZl+64s=;
+	s=arc-20240116; t=1768845630; c=relaxed/simple;
+	bh=WBf2lasmqqjrfsbF6WKQjkm17EIQ2p9rHE9R1xVmfv4=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=dfQXdQ3Fe3y1eO5sGY2gzkiW9ohF5wZOENPuaiklcLn61NxInBhVazAXFuKnQkzOd/d6p+epJyuGTBXyUmDfNg0yzQfFVmHkVjAswf6vlM+OXt4WbxqMccVaEOsbGw8+fv53ArgfsuDU7ZFXg9nk1JBX3U2SbROPA/ISlZKlENQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ViZZYN+8; arc=none smtp.client-ip=185.246.84.56
+	 References:In-Reply-To; b=VWlziHnTAKXhCN8TR7h8TsEsQdzJV7lzE9uwPjqFId4Hma6III9jxFUZGTXsf0ukpgdq2+xEg/gFzz5Kbq7eMT8dwGyb7f9dj2spUPLyR1HLw5yYdrCKYzL2x77KZLCN8i43erAAj0roupSMJ1S0SxZXc5wEO5rcJG8V9G2Od5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GJLz99Fu; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 06CE21A2998;
-	Mon, 19 Jan 2026 17:58:33 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id E7CCFC214D8;
+	Mon, 19 Jan 2026 17:59:59 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id BC08160731;
-	Mon, 19 Jan 2026 17:58:32 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6D05710B682D3;
-	Mon, 19 Jan 2026 18:58:23 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6905960731;
+	Mon, 19 Jan 2026 18:00:26 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CA3D810B682D3;
+	Mon, 19 Jan 2026 19:00:18 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768845511; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1768845624; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=YR6+2Itn40lkRnr+OAS9zREnR4405rvByb0P/AItP0E=;
-	b=ViZZYN+8ZA6EeG7KsC3ELuWixrmDwmHDTXz3U+7SrA4LgjdSwWjXCPqNp8XIowdvv677da
-	5Jp7DO+6d+qjAAJhuoeAWI2KZcoOwfKv/Y8v0GBENrBvc/VwUAgPp9+Ji+1G2u3tXANlqR
-	s0/8m4tHi49V9k/wLLPeluE1LdlNGllup5ozlTR4jiQUMyiCemL/PBcTg/LSgpNBeUeKn1
-	F38GQo9ntcGj3KoGFl8a42yZiwjavj0bZdGv4cHQpS0XmeH6Mmq+2YSnQNWjJYyRyxVkKT
-	qPkX1FWjDoDEQmh4uRlXSHBYL0MF3DEVVEFsQQO4q9e2t3Sn0eaHYjvdKdiaOQ==
+	bh=WBf2lasmqqjrfsbF6WKQjkm17EIQ2p9rHE9R1xVmfv4=;
+	b=GJLz99FuROhVPQbODGQoBmS8mQkJhHWgqwlB4dozNcQWeCn/sgZRLtTpvY1LDTWNwJs2Rk
+	Q+XON3cIQ+yRX282TPZuXCbz7bIyLua5y6Scd4xEcjwJ06TYhC/GWP+A0al5xyhsygUfSc
+	Suius3yeo98RjQHO1C7bVOYI6pwgJ2eKp4h8ub91LXxE/6q1XlcwDIVrg3i6FZcCTa1kSS
+	pIeYCVaCaD/GP2lcbshIEzNpQWfS0SQLQkYGNNCuoSQIuhaiIYB2vObKV70l9D4esLxKaX
+	OjKFHkZze15koeCsKB2EGcFkERJaoWpYrgDeEnLDV+3gtXrHXlDCr+FG7Vhr5Q==
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -54,10 +54,10 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 Jan 2026 18:58:22 +0100
-Message-Id: <DFSREDMLBHB0.30X5TCHNLAZ9B@bootlin.com>
-Subject: Re: [PATCH v4 25/25] rm/tilcdc: Add support for
- DRM_BRIDGE_ATTACH_NO_CONNECTOR
+Date: Mon, 19 Jan 2026 19:00:18 +0100
+Message-Id: <DFSRFUYPL99P.WTKNJRWA36F7@bootlin.com>
+Subject: Re: [PATCH v4 19/25] drm/tilcdc: Convert to drm_device-based
+ logging helpers
 Cc: "Markus Schneider-Pargmann" <msp@baylibre.com>, "Bajjuri Praneeth"
  <praneeth@ti.com>, "Louis Chauvet" <louis.chauvet@bootlin.com>, "Thomas
  Petazzoni" <thomas.petazzoni@bootlin.com>, "Miguel Gazquez"
@@ -81,58 +81,29 @@ To: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>, "Jyri Sarha"
 From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
 X-Mailer: aerc 0.20.1
 References: <20260116-feature_tilcdc-v4-0-2c1c22143087@bootlin.com>
- <20260116-feature_tilcdc-v4-25-2c1c22143087@bootlin.com>
-In-Reply-To: <20260116-feature_tilcdc-v4-25-2c1c22143087@bootlin.com>
+ <20260116-feature_tilcdc-v4-19-2c1c22143087@bootlin.com>
+In-Reply-To: <20260116-feature_tilcdc-v4-19-2c1c22143087@bootlin.com>
 X-Last-TLS-Session-Version: TLSv1.3
 
 On Fri Jan 16, 2026 at 6:02 PM CET, Kory Maincent (TI.com) wrote:
-> Convert the driver to use the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag when
-> attaching bridges. This modernizes the driver by delegating connector
-> creation to the bridge subsystem through drm_bridge_connector_init()
-> instead of manually searching for connectors created by the bridge.
->
-> The custom tilcdc_encoder_find_connector() function is removed and
-> replaced with the standard drm_bridge_connector infrastructure, which
-> simplifies the code and aligns with current DRM bridge best practices.
->
-> This change is safe as there are now no in-tree devicetrees that
-> connect tilcdc to bridges which do not support the
-> DRM_BRIDGE_ATTACH_NO_CONNECTOR flag.
+> Replace dev_* logging calls with their DRM equivalents.
+> This aligns with the DRM subsystem's logging infrastructure and provides
+> better integration with DRM debugging mechanisms. The drm_* helpers
+> automatically include device information and integrate with DRM's
+> debug category filtering.
 >
 > Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
 > ---
 >
-> Changes in v4:
-> - Select missing DRM_BRIDGE_CONNECTOR and DRM_DISPLAY_HELPER config
->   dependency in Kconfig
-> ---
->  drivers/gpu/drm/tilcdc/Kconfig          |  2 ++
->  drivers/gpu/drm/tilcdc/tilcdc_encoder.c | 37 ++++++++++++++-------------=
-------
->  2 files changed, 18 insertions(+), 21 deletions(-)
->
-> diff --git a/drivers/gpu/drm/tilcdc/Kconfig b/drivers/gpu/drm/tilcdc/Kcon=
-fig
-> index a36e809f984cd..80f53bdd0ace0 100644
-> --- a/drivers/gpu/drm/tilcdc/Kconfig
-> +++ b/drivers/gpu/drm/tilcdc/Kconfig
-> @@ -6,9 +6,11 @@ config DRM_TILCDC
->  	select DRM_KMS_HELPER
->  	select DRM_GEM_DMA_HELPER
->  	select DRM_BRIDGE
-> +	select DRM_BRIDGE_CONNECTOR
->  	select DRM_PANEL_BRIDGE
->  	select VIDEOMODE_HELPERS
->  	select BACKLIGHT_CLASS_DEVICE
-> +	select DRM_DISPLAY_HELPER
-
-It looks more logical to put DRM_DISPLAY_HELPER just before
-DRM_BRIDGE_CONNECTOR.
-
-Other than that this patch is de facto the same as v2 which I had already
-reviewed, so:
+> Change in v4:
+> - New patch.
 
 Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+
+But please avoid adding more patches to a v2+ series unless there is a
+specific need. It does not help getting it applied.
+
+Luca
 
 --
 Luca Ceresoli, Bootlin
