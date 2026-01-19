@@ -1,75 +1,75 @@
-Return-Path: <linux-omap+bounces-5543-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5542-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D037DD39CFB
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Jan 2026 04:31:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02AC8D39CF9
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Jan 2026 04:31:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D0905301C0BD
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Jan 2026 03:31:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DFF9630161C1
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Jan 2026 03:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDCA029BDBF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 786F928642D;
 	Mon, 19 Jan 2026 03:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N0ivzO53"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vp8uDvin"
 X-Original-To: linux-omap@vger.kernel.org
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6EA23EAB7
-	for <linux-omap@vger.kernel.org>; Mon, 19 Jan 2026 03:30:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A44F285C91
+	for <linux-omap@vger.kernel.org>; Mon, 19 Jan 2026 03:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768793451; cv=none; b=omSTx0zUle0YPGiFq3MCSJ3wY2/+FMzKPt03Xeg+rS7zRCafC60gR9F1+7souuUfUQaXdgJqGTyhfRRWI6b0LIz81SZHtMs18zbIv1bRxsMF/KtN/hMw0jUiehqCKe0/s7o4avl3RePFvdtYiMDiOztusQGdFc+u497A/4W5Cyc=
+	t=1768793450; cv=none; b=sqelAv6+R5JdqnRbI8UqYdtUdpeuKTNd+cVobMsT4/Uy+Y9GZjAf4ZMDAjzO9vBMHg6GZeLFobSoLAVz1HyeQ/O314Vv4Cta4y6tlV35E+U0ID8lxfVqsvG5hGERXDCaYBdt2DFOI51uSjs/cI6L3MeAAQ8irS+Q6ODcCALYVec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768793451; c=relaxed/simple;
-	bh=QtehmTlxVE2ImMqTMUlN+wssHL5rLi9pMI7VHV6x+J0=;
+	s=arc-20240116; t=1768793450; c=relaxed/simple;
+	bh=eLdlv9TEAKtAVrbAkOJSd2uzG1zAErgJhfjsS5MIxoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eLDsnx7N6btaZGeMpLu7u+Cg4XFcqsL1DylnrtkNzY4P5sFQp5GdsSnRhznpipMe6Mkl05kNEG9pxPYF7ZFcytHgyH2/z4aGXomfUr3zHXdzzVXc9WmEF2uk8fGx6m3cEjteKH8aTAmDlzmkK6sRCO0QfKRTdo8VXKRbJZrKZaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N0ivzO53; arc=none smtp.client-ip=209.85.219.54
+	 MIME-Version; b=GrAomBzeHTj3uRLQc2myBekhevc3EDsSD8D9/dqOL54XWGekHUk+fHEpjg3R6/6CKUvCKee18+obdmFNuECcT5gEaywFRAbBaHbv3at5Tq/7RBQ38zIsBjlGS6DSXIAxIadYiCJepjeHYVrDEbFXk8dGCb4LzlYeNSarzlck6Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vp8uDvin; arc=none smtp.client-ip=209.85.219.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-8888546d570so54006706d6.2
-        for <linux-omap@vger.kernel.org>; Sun, 18 Jan 2026 19:30:48 -0800 (PST)
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-88ffcb14e11so52361746d6.0
+        for <linux-omap@vger.kernel.org>; Sun, 18 Jan 2026 19:30:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768793447; x=1769398247; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768793448; x=1769398248; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0Hq1Jil93LKWD5SqiddgyBykMfT43TbOI7JPjGrETyE=;
-        b=N0ivzO53nkFxHh3yaSkbLQjkCtKfFOof09VTSNOigXmKAr6xgRNE2linhP6dP/rIaS
-         e1A1S2wwPCmkRpj78eoI5Awt47QjbDK74xig07J6iGnGAGrhV1MN3b21qTv2e6WfOaFB
-         F6TODsoql6wPQFTmlt76QpS8Iky19GWZiJ+8n8RjPrFqJAjdwW5mn3kJBf3mefFENAC5
-         +Edsbc/BhFeiqS3XimIs48iy8m/p/DzEyPnRDdUy2lREVnu0vXI0qE4bkoS2ZjyvV2hk
-         buulq28P6VcJtn6Lj3oUk5O64dEskSuz7BH4rHpYFWqw5fxiaT4Z3+abwPrS3u/BDM2v
-         Dpzg==
+        bh=xT+OlgLwisjDHGRQGA0CO4AmF6Wqh7tGvnECOOk06AE=;
+        b=Vp8uDvin6Vl4VNt0Bsp5GIT18BgI1C2ommmoJ4zIx/ZkpRfx0lwl4mfY1eCreZKJcH
+         mGONuCcyjz1MYS9mIoMFbMTtHa4yx4NDNqYX7EhimdEEm7VJ3wOksw6booBT0spT0agM
+         YJ0nNJCuxXJZbm4diBU/xRzKPYqSaNMllEfI1Neo10wAjYQ+K2XaMGFDKpIpBhjmcjq+
+         0UIigk0Kym5G1XdCb/o07jqq9hb9BntzU5QLLPSBCn7rwRjO6ogImtT0RhATM9J9g4mB
+         yc1deJ8LANj8bcI8CJxSh3Isvo3JuTtxmimx6sLThkRDv3YmyeUaSkjw92uCWRf1MkBl
+         FZOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768793447; x=1769398247;
+        d=1e100.net; s=20230601; t=1768793448; x=1769398248;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=0Hq1Jil93LKWD5SqiddgyBykMfT43TbOI7JPjGrETyE=;
-        b=bLvf58pRtkl/1bse6SpusTfjJJhE8gWzHXnhB9Mr6jw+qbIkPhllYD+lC1997b+s0I
-         90GAhgjJF/cgvPWksevkTiDGImXx2oacdWk3UDFMEHG7VEsrRNL4IUSdXmMK49+/fd2f
-         Kmm6EKrFTIKYKotnz69UzJcUh2EDi5oMmgzeEuPoeAy1HEjn9hEvjbsAyLzJFcFmQsmv
-         J3U2nX/dmGgmb5RSIw882rWweAnxKS6Ejzc8pHqooNObTaMQ4hL7bgN75CoNbDJj09Ei
-         cT1fBx43H0ez1224+hZCrkaxlKISRqUkXRE7mXHDZDFbJQ2WPN0NnnicsBn+rgdcDNqH
-         LaXQ==
-X-Gm-Message-State: AOJu0Yxz+HBvJUNtniQr0rfRwkxUZ18EH1bBNcW1Khzt9ZK/XvTbC9rE
-	oeO8GD5qBdXx965mF3x7WWd8ZQO/y3EE2JMKJ/qYaPNIGr+LiQmaZquF
-X-Gm-Gg: AY/fxX5xxjwX3/L7+vdf5Rq8+KgJ/T0xi94uHUxPGevdRjQZIkM8N6M2B+kobrezBy/
-	njSl25oDfQURIKI2Qb5kWNZBva031JEqTXPnqedpn7y8NBTxi+caTzLGHmURErOSSYkm4C/msx3
-	zD05fr7umxigabw28JOKr+KqyGarCw6TfWI60KuNYslYp19SXDmD41GqqoW64sZdedTGxBim2vI
-	YnPWrrBjU2REXQNvvhBP59IPcAHQuH/G5av7UwqgpxVxAS6pfoC9PCeJVBhQSfrggxYcbaKuzCZ
-	yxTNwJeRIGl+lzA5cqmTCBvoH5ktKC/Db037t7eVC9ZkPy4mmMB7ustvsRUX5U2n8uP0UktyhYK
-	kdb2V6TT+hk4g0Z7pvyLuq0hh3uabTzK1QyiyJjZbgSCKhtjdbByoIuUZ1FyK7jcrF8DMrzfbxS
-	R/oPmFdAngjUYWPN4SqAtuF+np58rNaezd2BmGkxO04Y6kQSPGfdlWAsxzfZ0UeP3C/bs=
-X-Received: by 2002:a0c:e008:0:b0:894:565c:98bf with SMTP id 6a1803df08f44-894565c9997mr6435226d6.13.1768793446858;
-        Sun, 18 Jan 2026 19:30:46 -0800 (PST)
+        bh=xT+OlgLwisjDHGRQGA0CO4AmF6Wqh7tGvnECOOk06AE=;
+        b=H6/GNUuodAiHbRDuEpu+Qd5G0JadLynFtjqn/+E38BlZP+ZNtd3NHrtQsuRjhQVaLC
+         wUkJ4YPrBFG7uLaYZy/9NGPE4DiG63LqDzrwxK58LqevjVBYNbk1yBGeNWuX309zW31D
+         CuKsG6XJjAGWqSoC9gIAoHRUSp2RJAHD51kAufDzLpOe0cgtabeByNBs8mQUGetnBm9h
+         veC1o8Ctbi/RjFdWviH2FrTNZ2sY08jznurI4/AYlv7WxSqeGItBXYQgqzym3SiQmW7L
+         wNt9bpUd+tZhjKBzEU4x8Unnxse/rvGFnzH2X1wa5bdqVL8huqbslzbwC30vVwvQQK1h
+         Lhjg==
+X-Gm-Message-State: AOJu0YxhH8rsMqX7DcNQ2zRR8VstJ+usTyTzHsWFUA1YGt5HMYeBmp4O
+	/kKxebLCW+XRzxHIBNP42pK/FCLp6v/39sMUtoMeP3nvR1TcgtS/7YfA
+X-Gm-Gg: AY/fxX4/NQuKVbCLSGdWtVhX64IcX1Sv+NOtaT7xkvD5BY2wittaJYcAWNLYkQe65Kw
+	d8U1vUSVaYHGEYX91+CLGcfojsYoGjM7LoLzt4DXTZFk7wcD9CfunBeUJcvOK6/UZxT3Xn4TUGr
+	j+u7/28C2Wmb+PE//sIRwOVzymZAG4Jqupg5r5ghb/NrOsGWYP7SMqsffd+5s813FbkI8ZnwuhE
+	p9t1MRSnLVNLvgLHuY110WbiZqhfP0aiZHHzrCVSYYjV/TDt5x+rwsDFbZi1304JyV44R7erkVi
+	JqfEKbKaIeAxUOvLv00H++9ZNTphkW6xFdSUOmkMWJNe2dKXE4J8NAOqBop0g+HcA9aNznid3hk
+	zpYYmVmn4wCPkETByfpdBFcxn5FbgjIpBDyCOpIO4c7DnmsbnBe0ocsMSDXoigZa4Wc1HhJuNwX
+	NLJ47SoqBpWEcZKQorPazDm3tiENehmXYVqFv7J/328j/Wh/S+7NPVrLi0A7pHhVVORn4=
+X-Received: by 2002:a05:6214:1d25:b0:7d2:e1e6:f79f with SMTP id 6a1803df08f44-8942dda1871mr127151346d6.47.1768793448154;
+        Sun, 18 Jan 2026 19:30:48 -0800 (PST)
 Received: from mighty.localdomain (nat-130-245-192-1.resnet.stonybrook.edu. [130.245.192.1])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c6a71ab20dsm724706885a.5.2026.01.18.19.30.45
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c6a71ab20dsm724706885a.5.2026.01.18.19.30.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Jan 2026 19:30:46 -0800 (PST)
+        Sun, 18 Jan 2026 19:30:47 -0800 (PST)
 From: Mithil Bavishi <bavishimithil@gmail.com>
 To: aaro.koskinen@iki.fi,
 	andreas@kemnade.info,
@@ -99,9 +99,9 @@ Cc: linux-omap@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	linux-hardening@vger.kernel.org,
 	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v4 03/10] dt-bindings: display: bridge: lvds-codec: add doestek,dtc34lm85am
-Date: Sun, 18 Jan 2026 22:30:28 -0500
-Message-ID: <20260119033035.57538-5-bavishimithil@gmail.com>
+Subject: [PATCH v4 04/10] dt-bindings: display: panel-lvds: Add compatible for Samsung LTN070NL01 Panel
+Date: Sun, 18 Jan 2026 22:30:29 -0500
+Message-ID: <20260119033035.57538-6-bavishimithil@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260119033035.57538-1-bavishimithil@gmail.com>
 References: <20260119033035.57538-1-bavishimithil@gmail.com>
@@ -113,27 +113,28 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add compatible strings for the Doestek DTC34LM85AM Flat Panel Display
-Transmitter
+The LTN070NL01 is a 7.0 inch 1024x600, 24 bit, VESA Compatible, TFT
+display panel
 
 Signed-off-by: Mithil Bavishi <bavishimithil@gmail.com>
 Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/devicetree/bindings/display/panel/panel-lvds.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml b/Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml
-index 4f7d3e9cf..3ad01645c 100644
---- a/Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml
-+++ b/Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml
-@@ -33,6 +33,7 @@ properties:
-     oneOf:
-       - items:
-           - enum:
-+              - doestek,dtc34lm85am # For the Doestek DTC34LM85AM Flat Panel Display (FPD) Transmitter
-               - ti,ds90c185   # For the TI DS90C185 FPD-Link Serializer
-               - ti,ds90c187   # For the TI DS90C187 FPD-Link Serializer
-               - ti,sn75lvds83 # For the TI SN75LVDS83 FlatLink transmitter
+diff --git a/Documentation/devicetree/bindings/display/panel/panel-lvds.yaml b/Documentation/devicetree/bindings/display/panel/panel-lvds.yaml
+index dbc01e640..68c16c1ae 100644
+--- a/Documentation/devicetree/bindings/display/panel/panel-lvds.yaml
++++ b/Documentation/devicetree/bindings/display/panel/panel-lvds.yaml
+@@ -58,6 +58,8 @@ properties:
+           - hydis,hv070wx2-1e0
+           # Jenson Display BL-JT60050-01A 7" WSVGA (1024x600) color TFT LCD LVDS panel
+           - jenson,bl-jt60050-01a
++          # Samsung LTN070NL01 7.0" WSVGA (1024x600) TFT LCD LVDS panel
++          - samsung,ltn070nl01
+           - tbs,a711-panel
+           # Winstar WF70A8SYJHLNGA 7" WSVGA (1024x600) color TFT LCD LVDS panel
+           - winstar,wf70a8syjhlnga
 -- 
 2.43.0
 
