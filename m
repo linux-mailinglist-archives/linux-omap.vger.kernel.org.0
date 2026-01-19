@@ -1,51 +1,51 @@
-Return-Path: <linux-omap+bounces-5563-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5564-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72145D3B04E
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Jan 2026 17:18:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30551D3B054
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Jan 2026 17:19:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0027D3029298
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Jan 2026 16:18:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4739630119F9
+	for <lists+linux-omap@lfdr.de>; Mon, 19 Jan 2026 16:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED552DB78E;
-	Mon, 19 Jan 2026 16:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EFB92DE702;
+	Mon, 19 Jan 2026 16:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VIjm40O9"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="yPosepBr"
 X-Original-To: linux-omap@vger.kernel.org
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B962628852B
-	for <linux-omap@vger.kernel.org>; Mon, 19 Jan 2026 16:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF9B2BE655;
+	Mon, 19 Jan 2026 16:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768839501; cv=none; b=EJxBFNifC9IeECzjE4XKnVNfbc87mWgmmqJZ8tWfLEChUSqOnoDTy2euwGXdTGu5T9V52A6nwkQOwxKggX5YXsp/svunQaAJeWiOrt6iAdDBIeRAJG/jPshceYO4wUnDMvrDLzLMz3FZN1n9Uh9A3IsDatgEUAV/6i9p1H3oS5Y=
+	t=1768839508; cv=none; b=XzkGJVeGDUVi2WJJFFc6D5Yr23AkHXLY+hItoGNDr1DT2gcOT7RulmXu9qDMjHiiWqtd0kU/ZQW4U7pPwxXJ+VUJluXTT4Rd9DvvZ8YUn6cC1kF6lfKRvnlXWwr+Pc79IJ4px6ek3bfYPlh5nV4MQEqvpDzTqi+mvgpT4VmTpZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768839501; c=relaxed/simple;
-	bh=Jiu8fQFB+7M2IZaxcK+RFxDWZNOenFQNmVdddV8IPDM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=LuMl6NtUOejGS0H9aVZ1D6PihHO268/73NYMLd7sbIqxI7A4uksGkXiSHASL6hvJfou02gCP5hbBN+1xU50CybJMDpbwUQlcYtuDf4UgNsFvgVYh/USmZvlF/ME8p6VUwql95V/s1o+S9/gXQrBWUA7el4YfVQWF6YZyoYe6ATY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VIjm40O9; arc=none smtp.client-ip=185.171.202.116
+	s=arc-20240116; t=1768839508; c=relaxed/simple;
+	bh=eGRrOLSF8zzcut0I8GX0vJC50dPFuIcvEQChQK1moFY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=h/gIGMyIkQjnyixwatfrJEWQcoFe/HfNXTD1RAMjBurvyoJpSy7Av/otdUmF309WYgVDMao5HIFLVryhDICvYJ3m5TORwrPmd0jQJ6gGI8R5WUKUcGNXXB3xHg2i4QfF0PpRhdPvh2SXzEWMQSSJuMAdnla9nE19jxx1uxg1Ys8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=yPosepBr; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 5511AC214D8;
-	Mon, 19 Jan 2026 16:17:51 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 1DC83C214D1;
+	Mon, 19 Jan 2026 16:17:59 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5FDA960731;
-	Mon, 19 Jan 2026 16:18:18 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9B71610B6B0D3;
-	Mon, 19 Jan 2026 17:18:12 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 293B260731;
+	Mon, 19 Jan 2026 16:18:26 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3B81010B6B095;
+	Mon, 19 Jan 2026 17:18:20 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768839497; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1768839504; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=JqokSB/0RBOseZeyT2qAuti6f2yMS8AqAjej/iFQSJA=;
-	b=VIjm40O9btn2BNORZgu1rSWFqSTOiWnukvS9ClC7/IpC3nUIk4dGSI86PLSEbDDn/FnoDX
-	2PL+hO5tZrNft6PPrDOiADadKHEn7U+oictFAiyJDKpz7+z5O+WYB5H5RbUEuh7t1IL1fi
-	rNCigWn/Me9UFD+pgDOy+51QMhD7KSRI4Li0vUsANhdeYAZS/7I6IiowdRHGy278RX3qNQ
-	4wQBsr+3xoy0HDXRjcg0XBRh2ZagzgO1+v/1JKNFgrwZumeTlVIxY2h6PpWgUdG46xwLqk
-	DTDPDowAyghuUoHioDnUAdFYv5NaEOmuL8wbW0QokAE/k6RqUrOmlCJ47QB9zg==
+	bh=eGRrOLSF8zzcut0I8GX0vJC50dPFuIcvEQChQK1moFY=;
+	b=yPosepBr+0ut4fkNOHX/63o9U1Z4o7UWoGQVP6oCF0EmUKgZJMuofXfiL2VoGfy2GDBqZ5
+	+2pWA24g+6aS0i6aNN4wTcoBfriG7gPRdnG+hwBsLZv/Foj6sxCUk2BshWzMJxnVYz5iLm
+	XvYBT1luW6JspTK2YQ4aS+aij2qeQBpEC0fQha3UzghIGdD+wWpbFmNj17KRerTtUoPHtK
+	jE2Qn+s0If0z18VOl9u8wLdh1JqXBYtZ5hnB1s+GVs/hrUbf5yt5hv5Lcn8HfMt6BUnJx7
+	YJcRJ1VQeE/AOHrJHcLZAo9DWMsCkvOpTsRrDg3581FP//quU11/hJU6jF8wqw==
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
@@ -54,10 +54,8 @@ List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 Jan 2026 17:18:12 +0100
-Message-Id: <DFSP9OPJNVYB.2C96Z9GQ17BW1@bootlin.com>
-Subject: Re: [PATCH v4 05/25] drm/tilcdc: Convert legacy panel binding via
- DT overlay at boot time
+Date: Mon, 19 Jan 2026 17:18:19 +0100
+Message-Id: <DFSP9S7UZ2N8.3AGP43OE5TX5C@bootlin.com>
 Cc: "Markus Schneider-Pargmann" <msp@baylibre.com>, "Bajjuri Praneeth"
  <praneeth@ti.com>, "Louis Chauvet" <louis.chauvet@bootlin.com>, "Thomas
  Petazzoni" <thomas.petazzoni@bootlin.com>, "Miguel Gazquez"
@@ -79,50 +77,21 @@ To: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>, "Jyri Sarha"
  "Jonas Karlman" <jonas@kwiboo.se>, "Jernej Skrabec"
  <jernej.skrabec@gmail.com>
 From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH v4 14/25] drm/tilcdc: Use drm_module_platform_driver()
+ helper
 X-Mailer: aerc 0.20.1
 References: <20260116-feature_tilcdc-v4-0-2c1c22143087@bootlin.com>
- <20260116-feature_tilcdc-v4-5-2c1c22143087@bootlin.com>
-In-Reply-To: <20260116-feature_tilcdc-v4-5-2c1c22143087@bootlin.com>
+ <20260116-feature_tilcdc-v4-14-2c1c22143087@bootlin.com>
+In-Reply-To: <20260116-feature_tilcdc-v4-14-2c1c22143087@bootlin.com>
 X-Last-TLS-Session-Version: TLSv1.3
 
 On Fri Jan 16, 2026 at 6:02 PM CET, Kory Maincent (TI.com) wrote:
-> To maintain backward compatibility while removing the deprecated
-> tilcdc_panel driver, add a tilcdc_panel_legacy subdriver that converts
-> the legacy "ti,tilcdc,panel" devicetree binding to the standard
-> panel-dpi binding at early boot.
+> Use the drm_module_platform_driver() helper macro to simplify driver
+> registration. This macro handles both the platform driver registration
+> and the drm_firmware_drivers_only() check, making the custom init/exit
+> functions unnecessary.
 >
-> The conversion uses an embedded device tree overlay that is applied and
-> modified during subsys_initcall. The process:
->
-> - Apply embedded overlay to create a tilcdc-panel-dpi node with
->   port/endpoint connections to the LCDC
-> - Copy all properties from the legacy panel node to the new
->   tilcdc-panel-dpi node
-> - Copy display-timings from the legacy panel
-> - Convert legacy panel-info properties (invert-pxl-clk, sync-edge) to
->   standard display timing properties (pixelclk-active, syncclk-active)
-> - Disable the legacy panel by removing its compatible property to
->   prevent the deprecated driver from binding
->
-> The result is a standard tilcdc-panel-dpi node with proper endpoints and
-> timing properties, allowing the DRM panel infrastructure to work with
-> legacy devicetrees without modification.
->
-> Other legacy panel-info properties are not migrated as they consistently
-> use default values across all mainline devicetrees and can be hardcoded
-> in the tilcdc driver.
->
-> This feature is optional via CONFIG_DRM_TILCDC_PANEL_LEGACY and should
-> only be enabled for systems with legacy devicetrees containing
-> "ti,tilcdc,panel" nodes.
->
-> Suggested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-> Link: https://lore.kernel.org/all/1d9a9269-bfda-4d43-938b-2df6b82b9369@id=
-easonboard.com/
 > Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
-> ---
-
-Looks very good now, thanks for the improvements!
 
 Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
