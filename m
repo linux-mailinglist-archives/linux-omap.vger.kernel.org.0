@@ -1,237 +1,126 @@
-Return-Path: <linux-omap+bounces-5570-lists+linux-omap=lfdr.de@vger.kernel.org>
+Return-Path: <linux-omap+bounces-5571-lists+linux-omap=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-omap@lfdr.de
 Delivered-To: lists+linux-omap@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A75DD3B944
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Jan 2026 22:19:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ED096302D2D4
-	for <lists+linux-omap@lfdr.de>; Mon, 19 Jan 2026 21:19:40 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA4D2F90DB;
-	Mon, 19 Jan 2026 21:19:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Cx1fTB/a"
-X-Original-To: linux-omap@vger.kernel.org
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4A9D3C44E
+	for <lists+linux-omap@lfdr.de>; Tue, 20 Jan 2026 10:57:11 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FA12F7ADE;
-	Mon, 19 Jan 2026 21:19:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 330F65403E5
+	for <lists+linux-omap@lfdr.de>; Tue, 20 Jan 2026 09:40:56 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29A43E95BA;
+	Tue, 20 Jan 2026 09:35:19 +0000 (UTC)
+X-Original-To: linux-omap@vger.kernel.org
+Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8CD3446AC
+	for <linux-omap@vger.kernel.org>; Tue, 20 Jan 2026 09:35:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768857577; cv=none; b=uFReiFs9JQd/28dDk32mH7AUGEELLUJSpqMnkxreJ2flUxhLThNGSFHvJ5mpz2ujLByBcC/N0x2JQ+ZLTl/IXl0uSd3rh2dBx0KUSCuHsr/uxavXChL04Op/Kup3lCgvJ8IH3iAl+66qsNcW7hvK/JqEHNQfYCe5LbcMPckAvac=
+	t=1768901719; cv=none; b=RN7Jyt2CO/rUJt+B4bP6gDXmZhOlJ9SSvTo2Zx9m+6KSj0/8/3fh5Zcq76L8L7oW3zsA7QuhdOdIo9kye6lCzNv6JkJT136xcR2L4B0Ql5dvVzJ5GpSE8T99+XQGNC1P9wK8Dvb2l0JLs3WxAIEwI6XS0ZP06NJAGYT/mM+UyNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768857577; c=relaxed/simple;
-	bh=NQqsKvuK3+2nErWFrdjDSuz6YmgzQ5qHb9c01FHiLU0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=LiQoLcmThiu8/P3R/WdOSfRbebAHnFmv4HdJrRRj66SFgjRn2Aeps0yktJ6oKXPyikYyuCjFj/KRRLhC8sKkwZAo8xy7Q3xfFDjigEVe7/3J/dKpKOL5o8CW0XxH5/fL9tIGRJ5YOdGXIi3w4A+el51/VrGXWQgsFtfOBofyieo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Cx1fTB/a; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 7F1764E42189;
-	Mon, 19 Jan 2026 21:19:34 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5349460731;
-	Mon, 19 Jan 2026 21:19:34 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CB8AB10B68B40;
-	Mon, 19 Jan 2026 22:19:26 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768857572; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=+zd79SvLMG1hly2QtcgDamJi4UDVLpEodKvpOQbHx3E=;
-	b=Cx1fTB/anyFkJSlJojV05GGAUS8Rrrj2qHPs3Cw9BTX1xfq2a0z1psGb46PsIiLjSWtdXG
-	6+3qiW2HEbVTQTvxQBBE+UuWJuWhvGMc0vYGoiYgklXHi2JgcgD3fJBWDdqGnWRU9npwcB
-	uR9urfBFw0wc2ShFmN9TPUAEcUf75mOjPy+SAjkkxHLu2EEwWt7Ywsodvqg7brBq/xl5D+
-	QURco2CNWXdR/C5VD8fo+1LMcE4l2zvNGfgv+QK/3Oluj1JCCC0ShO+jUu7Io0ignMKtJt
-	FkC+Jtrtqmhen15CTNLMjNxnMDBMqo3AIZrivQFMN0DcBqeELvnb+y4R9SVkGA==
+	s=arc-20240116; t=1768901719; c=relaxed/simple;
+	bh=8oF7WvkLTpbnCP6yb2DMCynlFu+13M83ZUzjQuNxXOc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bcoc6BzIefM/VQDhqj1aBxhTbM45gjBLmRmXhYPU6WbrN7Ob/BPoTvuJ/nZp9VUAKlkGyQ9QEfEqz+9yFQpFx708U1vCo6Z9FoICbpBbKOKPE3HgkDIEJYzNpFYDChK77+UtQxSSOKyJ070M3oCdeljjWj0+CD/YRlA6jL8Tj9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-5ec87b1f525so2236471137.0
+        for <linux-omap@vger.kernel.org>; Tue, 20 Jan 2026 01:35:16 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768901716; x=1769506516;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=97LNh80TR77S8pwS2e4ZBU/MTmpHjj3Q16znIrdsedk=;
+        b=Ea9IeOOQ/y+8cfq76rGe6ufDpUgMTk1DEToIL/MIkzsWCv47gyqrqxy05UZhukGfjR
+         8uSsMLa5Lsn+uSERfeh5kALT3gGSonYJSMeW0eBB0BC1ayQKI6TDMxYYJz0t1YpFuYq2
+         yCKF8k6Jypti/70ih/RimJr17lhz9D/ErIbHcbjNAfXZwkbVZVdO/cxoxQYXTOhACjSQ
+         PjZK4r5wzAux5FCp2ZaKY4tcunj7nKfQP7VtLmK0+Vi8f92Xg17W9EChIMXBfidl1XlW
+         fn4xO7g+9gs2izb9KR4b+zFVoDgtq0cCuLiL1Sx83gN9yNC7rKoeudsPFHT6wPmkqYza
+         HIWw==
+X-Forwarded-Encrypted: i=1; AJvYcCUv8PlmMUxTSOTE370E0k9bUrAlq24p5WFORHY1y9YQAK6FSh122s4hR6mg4zZKpysY00OQodL6xu9e@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyzpuByMEwoe1kW7PSAZDyxlnpe0CeavL/jmFNpjdTfxYUiBrs
+	PIrguaOmM16SBna/G8pcFwBSeW2iNFeCbwCbgvfRaKfGcIaxPuHl9g7noqXENDWx
+X-Gm-Gg: AZuq6aIabK15Dj+lEb3mia8D7kyh0bKcKQNswG6OQKet05BedjJ2wc+jlxbMkfV7eh3
+	XIMnuS3RtRAHY6stYx2Gwd0ntIUukp/NUVEXPQevTwGAoCaLf+aytqla1dYiZCEidanRlHOxj4+
+	vXNdH6fpXrEjbaxdpdlG8Bvl5bxAHyA//cT9C92zhCcE3OQlk6Te+J1Yp+HAVuJs/ZGeeF1L16z
+	U4r8et9AsRipni/qfoanBmVdbirdBAGVlqHFnCeq5XhiMRgj8fDymFEhrRQGb/7dww0c9kJqbNv
+	nJ7kCo5trqNPRArcNRFLx51G57WLwDq5MMDqV5fsFHptCXyHfjCLcwm5+l4iTjRr3ll8kNedFKo
+	95PTR2b1kQwZLi6vyOTrMsJp2LOpDXilNZn7XdpKYGX1m8N70JdzH3jQP2LkMBCQKPjVlAjDHqE
+	7HxQLjs7piol/Anee7NaLOy5cLYGBzEAU+62xQa7aBxiX3xndN
+X-Received: by 2002:a05:6102:dc6:b0:5dc:7fe3:1d0 with SMTP id ada2fe7eead31-5f1a700dba0mr5204868137.19.1768901715999;
+        Tue, 20 Jan 2026 01:35:15 -0800 (PST)
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com. [209.85.222.54])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-947d0458fc0sm4056544241.15.2026.01.20.01.35.15
+        for <linux-omap@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Jan 2026 01:35:15 -0800 (PST)
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-94121102a54so3447383241.1
+        for <linux-omap@vger.kernel.org>; Tue, 20 Jan 2026 01:35:15 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVImyp7Iy5eeo0CjqHeBMZU/dy1MscLRy4df2J9Nb6w74CsHNrjbEdMP6TmMrqIBmjm/4G+9fzGgEiM@vger.kernel.org
+X-Received: by 2002:a05:6102:1610:b0:530:f657:c40 with SMTP id
+ ada2fe7eead31-5f1a712440dmr4338759137.22.1768901715766; Tue, 20 Jan 2026
+ 01:35:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-omap@vger.kernel.org
 List-Id: <linux-omap.vger.kernel.org>
 List-Subscribe: <mailto:linux-omap+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-omap+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 Jan 2026 22:19:26 +0100
-Message-Id: <DFSVOBV5UY37.3HTQHOJT3A40N@bootlin.com>
-Subject: Re: [PATCH v4 18/25] drm/tilcdc: Convert to DRM managed resources
-Cc: "Markus Schneider-Pargmann" <msp@baylibre.com>, "Bajjuri Praneeth"
- <praneeth@ti.com>, "Louis Chauvet" <louis.chauvet@bootlin.com>, "Thomas
- Petazzoni" <thomas.petazzoni@bootlin.com>, "Miguel Gazquez"
- <miguel.gazquez@bootlin.com>, "Herve Codina" <herve.codina@bootlin.com>,
- <dri-devel@lists.freedesktop.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <linux-omap@vger.kernel.org>
-To: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>, "Jyri Sarha"
- <jyri.sarha@iki.fi>, "Tomi Valkeinen" <tomi.valkeinen@ideasonboard.com>,
- "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Rob
- Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
- "Conor Dooley" <conor+dt@kernel.org>, "Russell King"
- <linux@armlinux.org.uk>, "Bartosz Golaszewski" <brgl@bgdev.pl>, "Tony
- Lindgren" <tony@atomide.com>, "Andrzej Hajda" <andrzej.hajda@intel.com>,
- "Neil Armstrong" <neil.armstrong@linaro.org>, "Robert Foss"
- <rfoss@kernel.org>, "Laurent Pinchart" <Laurent.pinchart@ideasonboard.com>,
- "Jonas Karlman" <jonas@kwiboo.se>, "Jernej Skrabec"
- <jernej.skrabec@gmail.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-X-Mailer: aerc 0.20.1
-References: <20260116-feature_tilcdc-v4-0-2c1c22143087@bootlin.com>
- <20260116-feature_tilcdc-v4-18-2c1c22143087@bootlin.com>
-In-Reply-To: <20260116-feature_tilcdc-v4-18-2c1c22143087@bootlin.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+References: <20260118-rz-sdio-mux-v5-0-3c37e8872683@solid-run.com> <20260118-rz-sdio-mux-v5-1-3c37e8872683@solid-run.com>
+In-Reply-To: <20260118-rz-sdio-mux-v5-1-3c37e8872683@solid-run.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 20 Jan 2026 10:35:04 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVf7MjEAaTAy3kgaTcfs240UcnL_yFWfYH_eqVfp-6jvA@mail.gmail.com>
+X-Gm-Features: AZwV_QifN5dzgWIfmsNWfdw085d37JEd6a5y3M-TObPOlkszfcRmE9SintqdNzo
+Message-ID: <CAMuHMdVf7MjEAaTAy3kgaTcfs240UcnL_yFWfYH_eqVfp-6jvA@mail.gmail.com>
+Subject: Re: [PATCH v5 1/7] phy: can-transceiver: rename temporary helper
+ function to avoid conflict
+To: Josua Mayer <josua@solid-run.com>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>, Vincent Mailhol <mailhol@kernel.org>, 
+	Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Peter Rosin <peda@axentia.se>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
+	Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
+	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>, Vignesh R <vigneshr@ti.com>, 
+	Andi Shyti <andi.shyti@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	Yazan Shhady <yazan.shhady@solid-run.com>, Jon Nettleton <jon@solid-run.com>, 
+	Mikhail Anikin <mikhail.anikin@solid-run.com>, linux-can@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-omap@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri Jan 16, 2026 at 6:02 PM CET, Kory Maincent (TI.com) wrote:
-> Convert the tilcdc driver to use DRM managed resources (drmm_* APIs)
-> to eliminate resource lifetime issues, particularly in probe deferral
-> scenarios.
->
-> This conversion addresses potential use-after-free bugs by ensuring
-> proper cleanup ordering through the DRM managed resource framework.
-> The changes include:
-> - Replace drm_crtc_init_with_planes() with drmm_crtc_alloc_with_planes()
-> - Replace drm_universal_plane_init() with drmm_universal_plane_alloc()
-> - Replace drm_simple_encoder_init() with drmm_simple_encoder_alloc()
-> - Remove manual cleanup in tilcdc_crtc_destroy() and error paths
-> - Remove drm_encoder_cleanup() from encoder error handling paths
-> - Use drmm_add_action_or_reset() for remaining cleanup operations
->
-> This approach is recommended by the DRM subsystem for improved resource
-> lifetime management and is particularly important for drivers that may
-> experience probe deferral.
->
-> Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
-> ---
->
-> Change in v4:
-> - Newt patch.
+Hi Josua,
 
-Why? Adding patches along the way does not help getting your series merged
-timely. If there's a good reason for adding a new patch, please mention it
-here.
+On Sun, 18 Jan 2026 at 11:29, Josua Mayer <josua@solid-run.com> wrote:
+> Rename the temporary devm_mux_state_get_optional function to avoid
+> conflict with upcoming implementation in multiplexer subsystem.
+>
+> Acked-by: Vinod Koul <vkoul@kernel.org>
+> Signed-off-by: Josua Mayer <josua@solid-run.com>
 
-> -void tilcdc_crtc_destroy(struct drm_crtc *crtc)
-> +static void tilcdc_crtc_destroy(struct drm_device *dev, void *data)
->  {
-> -	struct tilcdc_drm_private *priv =3D ddev_to_tilcdc_priv(crtc->dev);
-> +	struct tilcdc_drm_private *priv =3D (struct tilcdc_drm_private *)data;
->
-> -	tilcdc_crtc_shutdown(crtc);
-> +	tilcdc_crtc_shutdown(priv->crtc);
->
->  	flush_workqueue(priv->wq);
->
-> -	of_node_put(crtc->port);
-> -	drm_crtc_cleanup(crtc);
-> +	of_node_put(priv->crtc->port);
->  }
->
->  int tilcdc_crtc_update_fb(struct drm_crtc *crtc,
-> @@ -714,7 +714,6 @@ static void tilcdc_crtc_reset(struct drm_crtc *crtc)
->  }
->
->  static const struct drm_crtc_funcs tilcdc_crtc_funcs =3D {
-> -	.destroy        =3D tilcdc_crtc_destroy,
->  	.set_config     =3D drm_atomic_helper_set_config,
->  	.page_flip      =3D drm_atomic_helper_page_flip,
->  	.reset		=3D tilcdc_crtc_reset,
-> @@ -960,12 +959,27 @@ int tilcdc_crtc_create(struct drm_device *dev)
->  {
->  	struct tilcdc_drm_private *priv =3D ddev_to_tilcdc_priv(dev);
->  	struct tilcdc_crtc *tilcdc_crtc;
-> +	struct tilcdc_plane *primary;
->  	struct drm_crtc *crtc;
->  	int ret;
->
-> -	tilcdc_crtc =3D devm_kzalloc(dev->dev, sizeof(*tilcdc_crtc), GFP_KERNEL=
-);
-> -	if (!tilcdc_crtc)
-> -		return -ENOMEM;
-> +	primary =3D tilcdc_plane_init(dev);
-> +	if (IS_ERR(primary)) {
-> +		dev_err(dev->dev, "Failed to initialize plane: %pe\n", primary);
-> +		return PTR_ERR(primary);
-> +	}
-> +
-> +	tilcdc_crtc =3D drmm_crtc_alloc_with_planes(dev, struct tilcdc_crtc, ba=
-se,
-> +						  &primary->base,
-> +						  NULL,
-> +						  &tilcdc_crtc_funcs,
-> +						  "tilcdc crtc");
-> +	if (IS_ERR(tilcdc_crtc)) {
-> +		dev_err(dev->dev, "Failed to init CRTC: %pe\n", tilcdc_crtc);
-> +		return PTR_ERR(tilcdc_crtc);
-> +	}
-> +
-> +	tilcdc_crtc->primary =3D primary;
+My
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+on v3 is still valid.
 
-(*) see below
+Gr{oetje,eeting}s,
 
->
->  	init_completion(&tilcdc_crtc->palette_loaded);
->  	tilcdc_crtc->palette_base =3D dmam_alloc_coherent(dev->dev,
-> @@ -978,10 +992,6 @@ int tilcdc_crtc_create(struct drm_device *dev)
->
->  	crtc =3D &tilcdc_crtc->base;
->
-> -	ret =3D tilcdc_plane_init(dev, &tilcdc_crtc->primary);
-> -	if (ret < 0)
-> -		goto fail;
-> -
->  	mutex_init(&tilcdc_crtc->enable_lock);
->
->  	init_waitqueue_head(&tilcdc_crtc->frame_done_wq);
-> @@ -989,20 +999,12 @@ int tilcdc_crtc_create(struct drm_device *dev)
->  	spin_lock_init(&tilcdc_crtc->irq_lock);
->  	INIT_WORK(&tilcdc_crtc->recover_work, tilcdc_crtc_recover_work);
->
-> -	ret =3D drm_crtc_init_with_planes(dev, crtc,
-> -					&tilcdc_crtc->primary,
-> -					NULL,
-> -					&tilcdc_crtc_funcs,
-> -					"tilcdc crtc");
-> -	if (ret < 0)
-> -		goto fail;
-> -
->  	drm_crtc_helper_add(crtc, &tilcdc_crtc_helper_funcs);
->
-> +	ret =3D drmm_add_action_or_reset(dev, tilcdc_crtc_destroy, priv);
-> +	if (ret)
-> +		return ret;
+                        Geert
 
-Not related to your patch, but if the dmam_alloc_coherent() (not visible in
-the diff) fails, tilcdc_crtc_destroy() won't be called. Is this intended?
-At first sight this drmm_add_action_or_reset() should be moved at (*), just
-after the allocation.
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-However being not related to your patch I'd leave this for another series
-anyway, to avoid making this series a moving target.
-
-> +
->  	priv->crtc =3D crtc;
->  	return 0;
-> -
-> -fail:
-> -	tilcdc_crtc_destroy(crtc);
-> -	return ret;
->  }
-
-I find this patch hard to read and I think because it is converting
-multiple things at once. Splitting it in small steps would have been nice,
-even thought I'm not 100% sure it would have been doable.
-
-Nevertheless it looks correct, so:
-
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-
-Luca
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
